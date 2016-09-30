@@ -3,10 +3,12 @@
 angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService) {
 
   var originalList;
-  var CONTACTS_SHOW_LIMIT = 10;
-  var currentContactsPage = 0;
+  var CONTACTS_SHOW_LIMIT;
+  var currentContactsPage;
 
   var updateList = function() {
+    CONTACTS_SHOW_LIMIT = 10;
+    currentContactsPage = 0;
     originalList = [];
 
     var wallets = profileService.getWallets({
@@ -15,16 +17,18 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     $scope.hasWallets = lodash.isEmpty(wallets) ? false : true;
     $scope.oneWallet = wallets.length == 1;
 
-    lodash.each(wallets, function(v) {
-      originalList.push({
-        color: v.color,
-        name: v.name,
-        isWallet: true,
-        getAddress: function(cb) {
-          walletService.getAddress(v, false, cb);
-        },
+    if (!$scope.oneWallet) {
+      lodash.each(wallets, function(v) {
+        originalList.push({
+          color: v.color,
+          name: v.name,
+          isWallet: true,
+          getAddress: function(cb) {
+            walletService.getAddress(v, false, cb);
+          },
+        });
       });
-    });
+    }
 
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);
@@ -50,7 +54,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
-      }, 10);
+      }, 100);
     });
   };
 
