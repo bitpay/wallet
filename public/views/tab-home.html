@@ -123,7 +123,7 @@
     </div>
 
     <div class="list card"
-         ng-show="(!externalServices.AmazonGiftCards || !externalServices.BitpayCard || !externalServices.BuyAndSell) && nextStepEnabled">
+         ng-show="nextStepEnabled">
       <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
         Next steps
         <i class="icon nav-item-arrow-down" ng-show="!hideNextSteps"></i>
