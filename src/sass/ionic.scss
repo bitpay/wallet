@@ -19,5 +19,10 @@ $ios-transition-duration: 200ms;
 // class to dynamically hide the ion-nav-bar for v1 Amazon flow
 ion-nav-bar.hide { display: block !important; }
 
+// the ion tabs element never needs it's own background (backgrounds are
+// rendered by the tabs), and the default background would cover the scanner
+ion-tabs.ion-tabs-transparent {
+  background: none transparent;
+}
 
 @import "../../bower_components/ionic/scss/ionic";

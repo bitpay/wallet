@@ -1,0 +1,22 @@
+<ion-view id="tab-scan">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Scan' | translate}}</ion-nav-title>
+  </ion-nav-bar>
+  <ion-content scroll="false">
+    <div class="guides">
+      <img class="qr-scan-guides" src="img/bitpay-wallet-qr-scan-guides.svg">
+    </div>
+    <div class="scanner-controls">
+      <a ng-click="toggleLight()" ng-show="canEnableLight">
+        <i class="icon">
+          <div class="icon-flash" ng-class="{'active': lightActive}"></div>
+        </i>
+      </a>
+      <a ng-click="toggleCamera()" ng-show="canChangeCamera">
+        <i class="icon">
+          <div class="icon-camera-toggle" ng-class="{'active': cameraToggleActive}"></div>
+        </i>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

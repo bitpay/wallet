@@ -8,7 +8,7 @@
     <label class="item item-input bitcoin-address">
       <i class="icon ion-social-bitcoin placeholder-icon"></i>
       <div class="qr-scan-icon" ng-style="{'width': '100%'}">
-        <qr-scanner class="qr-icon size-24" ng-style="{'top': '3px'}" on-scan="onQrCodeScanned(data)"></qr-scanner>
+        <a ui-sref="tabs.scan" ng-style="{'top': '6px'}"><i class="icon ion-qr-scanner"></i></a>
         <input type="text"
                placeholder="{{'Search or enter bitcoin address' | translate}}"
                ng-model="formData.search"
