@@ -208,6 +208,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.scan', {
+        url: '/scan',
+        views: {
+          'tab-scan': {
+            controller: 'tabScanController',
+            templateUrl: 'views/tab-scan.html',
+          }
+        }
+      })
       .state('tabs.send', {
         url: '/send',
         views: {
@@ -875,7 +884,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService) {
 
     uxLanguage.init();
     openURLService.init();
@@ -982,7 +991,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
-
+          scannerService.gentleInitialize();
           $state.go('tabs.home');
         }
       });

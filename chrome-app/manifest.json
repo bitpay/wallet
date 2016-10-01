@@ -3,9 +3,9 @@
   "//":"        Modify it at app-template/", 
 
   "manifest_version": 2,
-  "name": "BitPay",
-  "description": "The BitPay Bitcoin Wallet",
-  "version": "0.13.0",
+  "name": "BitPay Wallet",
+  "description": "Secure Bitcoin Storage",
+  "version": "0.6.0",
   "permissions": [
     "storage",
     "unlimitedStorage",
