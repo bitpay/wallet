@@ -97,12 +97,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-  $scope.onQrCodeScanned = function(data) {
-    if (!incomingData.redir(data)) {
-      popupService.showAlert(null, gettextCatalog.getString('Invalid data'));
-    }
-  };
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.formData = {
       search: null
