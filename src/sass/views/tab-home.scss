@@ -1,12 +1,14 @@
 #tab-home {
   .icon-create-wallet {
-    background-image: url("../img/icon-bitcoin.svg");
+    background-image: url("../img/icon-wallet.svg");
+    background-color: #4A90E2; // default wallet color
   }
   .icon-buy-bitcoin {
-    background-image: url("../img/icon-gift.svg");
+    background-image: url("../img/icon-bitcoin.svg");
   }
   .icon-bitpay-card {
-    background-image: url("../img/icon-bitpay.svg");
+    background-image: url("../img/icon-card.svg");
+    background-color: #1e3186;
   }
   .icon-gift {
     background-image: url("../img/icon-gift.svg");
