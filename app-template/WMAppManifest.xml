@@ -11,7 +11,7 @@
     <Language code="pl" />
     <Language code="cs" />
   </Languages>
-  <App Author="Bitpay Inc." BitsPerPixel="32" Description="*DESCRIPTION*" Genre="apps.normal" ProductID="*WPPRODUCTID*" Publisher="*APPDESCRIPTION*" PublisherID="*WPPUBLISHERID*" RuntimeType="Silverlight" Title="*APPDESCRIPTION*" Version="*VERSION*.0" xmlns="" NotificationService="MPN">
+  <App Author="Bitpay Inc." BitsPerPixel="32" Description="*DESCRIPTION*" Genre="apps.normal" ProductID="*WPPRODUCTID*" Publisher="*APPDESCRIPTION*" PublisherID="*WPPUBLISHERID*" RuntimeType="Silverlight" Title="*PURPOSELINE*" Version="*VERSION*.0" xmlns="" NotificationService="MPN">
     <IconPath IsRelative="true" IsResource="false">Assets\icon@2.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />

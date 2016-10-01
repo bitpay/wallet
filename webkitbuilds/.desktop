@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Version=0.6.0
+Version=0.14.0
 Name=BitPay Wallet
 Comment=Secure Bitcoin Storage
-Exec=wallet
+Exec=bitpay-wallet
 Icon=icon-256.png
 Terminal=false
 Categories=Finance
