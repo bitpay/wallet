@@ -9,7 +9,7 @@ clean:
 
 
 $(WORKDIR)android $(WORKDIR)ios:  config.xml
-	cordova create $@ com.bitpay.*NAMENOSPACE* *NAMECASENOSPACE* || echo "Project Path Existed"
+	cordova create $@ com.bitpay.*NAMENOSPACE* '*NAMECASENOSPACE*' || echo "Project Path Existed"
 	cp ProjectMakefile $@/Makefile
 	rm -r $@/www && ln -sF ../../public $@/www
 	cp config.xml $@/config.xml
@@ -35,7 +35,7 @@ wp-init: config.xml
 	cp config.xml $(WORKDIR)$@/config.xml
 	make -C $(WORKDIR)$@  $(subst $(WORKDIR),, $(WORKDIR)$@)
 
-wp-copy: 
+wp-copy:
 	cp -rvf wp/Properties/* $(WORKDIR)wp/platforms/wp8/Properties/
 	cp -rvf wp/MainPage.xaml $(WORKDIR)wp/platforms/wp8/
 	cp -rvf wp/Package.appxmanifest $(WORKDIR)wp/platforms/wp8/
