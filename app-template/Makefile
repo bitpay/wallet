@@ -9,7 +9,7 @@ clean:
 
 
 $(WORKDIR)android $(WORKDIR)ios:  config.xml
-	cordova create $@ com.bitpay.*NAMENOSPACE* '*NAMECASENOSPACE*' || echo "Project Path Existed"
+	cordova create $@ com.bitpay.*BUNDLENAME* "*USERVISIBLENAME*" || echo "Project Path Existed"
 	cp ProjectMakefile $@/Makefile
 	rm -r $@/www && ln -sF ../../public $@/www
 	cp config.xml $@/config.xml
@@ -28,7 +28,7 @@ android: project-android
 	make -C $(WORKDIR)android build-android
 
 wp-init: config.xml
-	cordova create $(WORKDIR)$@ com.bitpay.*NAMENOSPACE* *NAMECASENOSPACE* || echo "Project Path Existed"
+	cordova create $(WORKDIR)$@ com.bitpay.*BUNDLENAME* "*USERVISIBLENAME*" || echo "Project Path Existed"
 	cp ProjectMakefile $(WORKDIR)$@/Makefile
 	mkdir -p $(WORKDIR)$@/www
 	cp -Rf ../public/* $(WORKDIR)$@/www
