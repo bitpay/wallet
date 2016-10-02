@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
 Version=*VERSION*
-Name=*NAMECASENOSPACE*
-Comment=*DESCRIPTION*
-Exec=*NAMENOSPACE*
+Name=*USERVISIBLENAME*
+Comment=*PURPOSELINE*
+Exec=*PACKAGENAME*
 Icon=icon-256.png
 Terminal=false
 Categories=Finance

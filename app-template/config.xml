@@ -3,9 +3,9 @@
   version="*VERSION*"
   android-versionCode="*ANDROIDVERSION*"
   ios-CFBundleVersion="*VERSION*">
-    <name>*NAMECASENOSPACE*</name>
+    <name>*USERVISIBLENAME*</name>
     <description>
-      *APPDESCRIPTION*
+      *PURPOSELINE*
     </description>
     <author email="support@bitpay.com" href="*URL*">
         BitPay Inc.

@@ -1,7 +1,7 @@
 .PHONY:plugins ios-platform android-platform wp8-platform
 
 plugins:
-	cordova plugin add https://github.com/cmgustavo/Custom-URL-scheme.git --variable URL_SCHEME=bitcoin --variable SECOND_URL_SCHEME=*NAMENOSPACE*
+	cordova plugin add https://github.com/cmgustavo/Custom-URL-scheme.git --variable URL_SCHEME=bitcoin --variable SECOND_URL_SCHEME=*APPURI*
 	cordova prepare
 	rm -rf platforms/android/res/values-es
 

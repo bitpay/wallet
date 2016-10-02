@@ -1,5 +1,5 @@
 {
-  "name": "*NAMENOSPACE*",
+  "name": "*PACKAGENAME*",
   "description": "*DESCRIPTION*",
   "author": "BitPay",
   "version": "*VERSION*",
@@ -13,7 +13,7 @@
   ],
   "main": "public/index.html",
   "window": {
-    "title": "*NAMECASE* - *DESCRIPTION*",
+    "title": "*USERVISIBLENAME* - *PURPOSELINE*",
     "icon": "./public/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,
@@ -95,7 +95,7 @@
     "test": "./node_modules/.bin/grunt test-coveralls",
     "clean": "git clean -dfx",
     "start:ios": "npm run build && cd cordova && trash project-ios && make ios && open project-ios/platforms/ios/BitPay\\ Wallet.xcodeproj",
-    "start:android": "npm run build && cd cordova && trash project-android && make android"
+    "start:android": "npm run build && cd cordova && trash project-android && make android && open -a /Applications/Android\\ Studio.app project-android/platforms/android"
   },
   "devDependencies": {
     "trash-cli": "^1.4.0"
