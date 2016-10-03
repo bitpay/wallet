@@ -11,7 +11,7 @@
           <img src="img/icon-address-book.svg" class="bg"/>
         </i>
         <span translate>Address Book</span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <div class="item item-divider" translate>Preferences</div>
@@ -21,7 +21,7 @@
           <img src="img/icon-notifications.svg" class="bg"/>
         </i>
         <span translate>Notifications</span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.language">
@@ -32,7 +32,7 @@
         <span class="item-note">
           {{currentLanguageName|translate}}
         </span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.unit">
@@ -43,7 +43,7 @@
         <span class="item-note">
           {{unitName}}
         </span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
@@ -54,7 +54,7 @@
         <span class="item-note">
           {{selectedAlternative.name}}
         </span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.fee">
@@ -65,7 +65,7 @@
         <span class="item-note">
           {{feeOpts[currentFeeLevel]|translate}}
         </span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <div class="item item-divider" ng-show="wallets[0]" translate>Wallets Preferences</div>
@@ -80,13 +80,13 @@
         <span class="right text-light assertive" ng-show="!item.isComplete()" translate>
           Incomplete
         </span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <div class="item item-divider"></div>
       <a class="item item-icon-right" href ui-sref="tabs.advanced">
         <span translate>Advanced</span>
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
 
       <div class="item item-divider"></div>
@@ -95,7 +95,7 @@
           <img src="img/icon-about.svg" class="bg"/>
         </i>
         <span translate>About</span> {{appName}}
-        <i class="icon nav-item-arrow-right"></i>
+        <i class="icon bp-arrow-right"></i>
       </a>
     </div>
   </ion-content>
