@@ -1,19 +1,9 @@
-/* constants */
-$royal: #1e3186;
-$soft-blue: #647ce8;
-$subtle-gray: #f5f5f5;
-$roboto: "Roboto", sans-serif;
-$roboto-light: "Roboto-Light", sans-serif-light;
+// This file is for changes to the standard Ionic Framework which cannot be made
+// in variables.scss.
 
-/* Set ionic variables */
-$font-family-sans-serif: $roboto;
-$font-family-light-sans-serif: $roboto-light;
-$base-background-color: $subtle-gray;
-$item-default-active-bg: $subtle-gray;
+@import "../../bower_components/ionic/scss/ionic";
 
-$ios-transition-duration: 200ms;
-
-/* Ionic Workarounds */
+/* Ionic Overrides and Workarounds */
 // Please include a description of the problem solved by the workaround.
 
 // class to dynamically hide the ion-nav-bar for v1 Amazon flow
@@ -25,4 +15,15 @@ ion-tabs.ion-tabs-transparent {
   background: none transparent;
 }
 
-@import "../../bower_components/ionic/scss/ionic";
+// Some overrides for the card class which can't be set by variable
+.card, .list {
+  .icon {
+    color: $light-gray;
+  }
+  & > .item-heading {
+    font-weight: 700;
+    .icon {
+      color: $mid-gray;
+    }
+  }
+}

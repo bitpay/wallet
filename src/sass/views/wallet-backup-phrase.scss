@@ -26,6 +26,9 @@
           color: rgb(43, 43, 43);
         }
       }
+      .bold-text {
+        font-weight: bold !important;
+      }
       p {
         color: rgb(58, 58, 58);
         font-weight: 200;
@@ -115,7 +118,7 @@
         &,
         & ion-content,
         & ion-content .scroll {
-          overflow-y:visible; 
+          overflow-y:visible;
         }
           #select-phrase {
             float: left;
