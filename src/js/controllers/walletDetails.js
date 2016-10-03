@@ -153,9 +153,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.showMore = function() {
-    currentTxHistoryPage++;
-    $scope.showHistory();
-    $scope.$broadcast('scroll.infiniteScrollComplete');
+    $timeout(function() {
+      currentTxHistoryPage++;
+      $scope.showHistory();
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    }, 100);
   };
 
   $scope.updateAll = function(force, cb)  {

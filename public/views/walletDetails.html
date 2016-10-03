@@ -9,6 +9,7 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
+
   <ion-content delegate-handle="my-handle">
     <div class="oh pr" ng-show="wallet && wallet.isComplete()">
       <div ng-style="{'background-color':wallet.color}" class="amount">
@@ -88,21 +89,20 @@
       </div>
 
 
-    <div class="card list" ng-if="txps[0]">
-      <div class="item item-heading" translate>
-        <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
-        <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
+      <div class="card list" ng-if="txps[0]">
+        <div class="item item-heading" translate>
+          <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
+          <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
+        </div>
+        <div ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
+          <span ng-include="'views/includes/txp.html'"></span>
+        </div>
+        <div class="item item-footer" ng-show="status.lockedBalanceSat">
+          <span translate>Total Locked Balance</span>:
+          <b>{{status.lockedBalanceStr}} </b>
+          <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
+        </div>
       </div>
-      <div ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
-        <span ng-include="'views/includes/txp.html'"></span>
-      </div>
-      <div class="item item-footer" ng-show="status.lockedBalanceSat">
-        <span translate>Total Locked Balance</span>:
-        <b>{{status.lockedBalanceStr}} </b>
-        <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
-      </div>
-    </div>
-
 
       <!-- Transactions -->
 
@@ -173,15 +173,12 @@
             </div>
             <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
           </h2>
-
         </div>
-
-        <ion-infinite-scroll
-          ng-if="txHistoryShowMore"
-          on-infinite="showMore()"
-          distance="1%">
-        </ion-infinite-scroll>
       </div>
-
+      <ion-infinite-scroll
+        ng-if="txHistoryShowMore"
+        on-infinite="showMore()"
+        distance="1%">
+      </ion-infinite-scroll>
   </ion-content>
 </ion-view>
