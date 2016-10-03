@@ -22,30 +22,37 @@
         <span translate>Contacts</span>
         <a ng-show="hasContacts" ui-sref="tabs.send.addressbook"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
-      <a class="item item-icon-left item-icon-right ng-hide" ng-show="!hasContacts" ui-sref="tabs.send.addressbook">
-        <gravatar class="send-gravatar" name="" width="30" email=""></gravatar>
-        <span translate>Add a Contact</span>
-        <i class="icon nav-item-arrow-right"></i>
-      </a>
-      <a class="item item-icon-left item-icon-right ng-hide" ng-repeat="item in list" ng-show="hasContacts && !item.isWallet" ng-click="goToAmount(item)">
-        <gravatar class="send-gravatar" name="{{item.name}}" width="30" email="{{item.email}}"></gravatar>
-        {{item.name}}
-        <i class="icon nav-item-arrow-right"></i>
-      </a>
-      <div class="show-more" ng-show="contactsShowMore" ng-click="showMore()" translate>
-        Show more
+      <div class="list">
+        <a class="item item-icon-left item-icon-right ng-hide" ng-show="!hasContacts" ui-sref="tabs.send.addressbook">
+          <gravatar class="send-gravatar" name="" width="30" email=""></gravatar>
+          <span translate>Add a Contact</span>
+          <i class="icon nav-item-arrow-right"></i>
+        </a>
+        <a class="item item-icon-left item-icon-right ng-hide" ng-repeat="item in list" ng-show="hasContacts && !item.isWallet" ng-click="goToAmount(item)">
+          <gravatar class="send-gravatar" name="{{item.name}}" width="30" email="{{item.email}}"></gravatar>
+          {{item.name}}
+          <i class="icon nav-item-arrow-right"></i>
+        </a>
+        <div class="show-more" ng-show="contactsShowMore" ng-click="showMore()" translate>
+          Show more
+        </div>
       </div>
     </div>
 
     <div class="card" ng-show="hasWallets && !oneWallet">
-      <div class="item item-heading">
-        <span translate>Transfer to Wallet</span>
+      <div class="list">
+        <div class="item item-heading">
+          <span translate>Transfer to Wallet</span>
+        </div>
+        <a class="item item-icon-left item-icon-right ng-hide" ng-repeat="item in list" ng-show="hasWallets && item.isWallet" ng-click="goToAmount(item)">
+          <!-- <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i> -->
+          <i class="icon big-icon-svg" ng-show="item.isWallet">
+            <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
+          </i>
+          {{item.name}}
+          <i class="icon nav-item-arrow-right"></i>
+        </a>
       </div>
-      <a class="item item-icon-left item-icon-right ng-hide" ng-repeat="item in list" ng-show="hasWallets && item.isWallet" ng-click="goToAmount(item)">
-        <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
-        {{item.name}}
-        <i class="icon nav-item-arrow-right"></i>
-      </a>
     </div>
   </ion-content>
 </ion-view>
