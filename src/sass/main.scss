@@ -1,44 +1,3 @@
-/*
- *
- * Copay main CSS
- *
- */
- body {
-  font-family: 'roboto-regular';
-}
-
-h3.title {
-  margin-left: 10px !important;
-}
-
-.walletHome h4.title {
-  padding: 0px 0 10px 15px;
-  margin: 5px 0 5px 0;
-  font-size: 16px;
-}
-
-.bitpay_card select {
-  margin: 5px 0 5px 0;
-  padding: 0 20px;
-  font-size: 16px;
-  width: auto;
-  border: none;
-}
-
-.bitpay_card select:focus {
-  background-color: transparent;
-}
-
-.preferences ul, .modal-content ul {
-  font-size: 14px;
-  background: white;
-}
-
-.preferences ul li {
-  padding: 16px 10px 16px 16px;
-  border-bottom: 1px solid #E9E9EC;
-}
-
 .addressbook-input, .disabled-input {
   display: block;
   margin-bottom: 1.5rem;
@@ -602,54 +561,9 @@ input[type=number] {
   }
 }
 
-/* Starting */
-
-#starting {
-  background: rgba(30, 49, 134, 1);
-  background: -moz-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(30, 49, 134, 1)), color-stop(100%, rgba(17, 27, 73, 1)));
-  background: -webkit-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: -o-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  color: #fff;
-  height: 100%;
-  .scroll-content {
-    display: table !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-  .scroll {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-  }
-}
-
 @import "fonts";
 @import "ionic";
 @import "common";
 @import "forms";
-@import 'mixins/mixins';
-@import 'views/tabs';
-@import "views/add";
-@import "views/amount";
-@import "views/confirm";
-@import "views/tab-home";
-@import "views/tab-receive";
-@import "views/tab-scan";
-@import "views/tab-send";
-@import "views/tab-settings";
-@import "views/walletDetails";
-@import "views/advancedSettings";
-@import "views/bitpayCard";
-@import "views/address-book";
-@import "views/wallet-backup-phrase";
-@import "views/address-book";
-@import 'views/onboarding/onboarding';
-@import "views/includes/walletActivity";
-@import "views/includes/wallets";
-@import "views/includes/modals/modals";
-@import "views/includes/tx-details";
-@import "views/includes/txp-details";
-@import "views/includes/tx-status";
+@import "mixins/mixins";
+@import "views/views";
