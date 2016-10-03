@@ -29,3 +29,30 @@
     }
   }
 }
+
+.wallet-details-release {
+  cursor: pointer;
+  cursor: hand;
+  background-color: #E9E9EC;
+  margin-top: -30px;
+  margin-bottom: 5px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  text-align: center;
+  text-color: #444;
+  span {
+    margin-left: 15px;
+  }
+  i {
+    margin-right: 15px;
+  }
+}
+
+.wallet-details-wallet-info {
+  position: absolute;
+  top: inherit;
+  left: 10px;
+  bottom: 15px;
+  font-size: 20px;
+  color: #fff;
+}

@@ -101,7 +101,7 @@
     </div>
 
     <ul ng-show="index.coinbaseAccount" class="no-bullet m0 size-12">
-      <li class="line-b line-t p15 pointer"
+      <li class="line-b line-t p15 coinbase-pointer"
         href ui-sref="buyCoinbase">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30">
         <span class="m10 text-normal text-bold">Buy Bitcoin</span>
@@ -109,7 +109,7 @@
           <i class="icon-arrow-right3 size-24 right"></i>
         </span>
       </li>
-      <li class="line-b p15 pointer"
+      <li class="line-b p15 coinbase-pointer"
         href ui-sref="sellCoinbase">
         <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="30">
         <span class="m10 text-normal text-bold">Sell Bitcoin</span>
@@ -128,7 +128,7 @@
       </div>
       <div ng-repeat="(id, tx) in index.coinbasePendingTransactions | orderObjectBy:'updated_at':true track by $index"
         ng-click="coinbase.openTxModal(tx)"
-        class="row collapse last-transactions-content">
+        class="row collapse coinbase-last-transactions-content">
         <div class="large-2 medium-2 small-2 columns">
           <img src="img/bought-pending.svg" alt="bought" width="24" ng-show="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
           <img src="img/bought.svg" alt="bought" width="30" ng-show="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
