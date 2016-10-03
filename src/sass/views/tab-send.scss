@@ -23,4 +23,47 @@
     color: #387ef5;
     font-weight: bold;
   }
+  .list {
+    .item {
+      color: #444;
+      border-top: none;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      .big-icon-svg {
+        left:5px;
+       & > .bg{
+        width:30px;
+        height:30px;
+        box-shadow: none;
+       }
+      }
+      &:before {
+        display: block;
+        position: absolute;
+        width: 80%;
+        height: 1px;
+        background: rgba(221, 221, 221, 0.3);
+        top: 0;
+        right: 0;
+        content: '';
+      }
+      &.item-divider {
+        color: rgba(74, 74, 74, .8);
+      }
+      &.item-heading {
+        &:before {
+          top: 99%;
+          width:100%;
+        }
+      }
+      &:nth-child(2) {
+        &:before {
+          width: 0;
+        }
+      }
+      .item-note {
+        color: rgb(58, 58, 58);
+      }
+    }
+  }
 }
