@@ -58,17 +58,6 @@
     <plugin name="cordova-plugin-whitelist" spec="~1.3.0" />
     <plugin name="cordova-plugin-wkwebview-engine" spec="https://github.com/driftyco/cordova-plugin-wkwebview-engine.git" />
     <plugin name="cordova-plugin-qrscanner" spec="~2.3.3" />
-    <platform name="wp8">
-      <plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/jrontend/phonegap-plugin-barcodescanner" />
-    </platform>
-    <platform name="android">
-      <plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/jrontend/phonegap-plugin-barcodescanner" />
-      <plugin name="phonegap-plugin-push" spec="~1.8.2" />
-    </platform>
-    <platform name="ios">
-      <plugin name="cordova-plugin-cszbar" spec="https://github.com/tjwoon/csZBar.git" />
-      <plugin name="phonegap-plugin-push" spec="~1.5.3" />
-    </platform>
 
     <!-- Hooks -->
 
