@@ -154,8 +154,6 @@ angular.module('copayApp.directives')
       link: function(scope, element, attrs) {
         scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
           scope.slider = data.slider;
-          if(scope.slider.slides.length == 1)
-            scope.slider.lockSwipes();
           scope.$emit('Wallet/Changed', scope.wallets ? scope.wallets[0] : null);
         });
 
