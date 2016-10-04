@@ -1,17 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="26px" height="24px" viewBox="0 0 26 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
-    <title>ui-24px-outline-1_send</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icons/Tabs/Send/Highlighted" transform="translate(1.000000, 0.000000)" stroke-width="1.4" stroke="#647CE8">
-            <g id="ui-24px-outline-1_send" transform="translate(11.003015, 10.003015) rotate(10.000000) translate(-11.003015, -10.003015) translate(0.003015, -0.996985)">
-                <g id="Group" transform="translate(0.000000, -0.000000)">
-                    <polyline id="Shape" fill-opacity="0.4" fill="#617EE9" points="22 1.07469589e-13 5.5 13.2 5.5 20.9 9.46 16.17"></polyline>
-                    <polygon id="Shape" fill-opacity="0.71447577" fill="#9BB0FF" points="-4.4408921e-16 8.8 22 8.8817842e-16 17.6 22"></polygon>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Send_Icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 27 24" style="enable-background:new 0 0 27 24;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#647ce8;fill-opacity:0.4;stroke:#647ce8;stroke-width:1.4;}
+	.st1{fill:#D5DFFF;fill-opacity:0.7145;stroke:#647ce8;stroke-width:1.4;}
+</style>
+<g>
+	<polyline class="st0" points="25.5,1.5 6.3,11.7 4.9,19.3 9.8,15.3 	"/>
+	<polygon class="st1" points="1.5,6.4 25.5,1.5 17.1,22.5 	"/>
+</g>
 </svg>
