@@ -1,73 +1,39 @@
 #onboard-welcome {
-  ion-content {
+  & > ion-content {
     background: url(../img/onboarding-welcome-bg.png);
     background-position: top center;
     background-size: contain;
     background-repeat: repeat-x;
-    #shopping-24 {
-      content: url("../img/onboarding-welcome-shopping24.png");
-      position: absolute;
-      top: 5%;
-      right: 5%;
-      width: 35px;
-      height: auto;
-    }
-    .logo,
-    p {
-      @include center-block();
-    }
-    .logo {
-      margin-top: 20rem;
-    }
+  }
+  #qrcode {
+    content: url("../img/onboarding-welcome-qrcode.png");
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    width: 20px;
+    height: auto;
+  }
+  #logo-tagline {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  #logo {
+    width: 40%;
+    max-width: 200px;
+    margin: 5rem auto 0;
+  }
+  .lead {
+    line-height: 1.6;
+  }
+  #cta-buttons {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     button {
-      @include center-block(1rem);
-      color: #fff;
-      &.get-started {
-        background: rgb(100, 124, 232);
-        margin-top: 4rem;
-      }
-      &.restore {
-        background: none;
-      }
-    }
-    #cta-buttons {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      button {
-        max-width: 400px;
-        min-width: 300px;
-      }
-    }
-  }
-}
-
-@media (max-width:500px),
-(max-height:800px) {
-  #onboard-welcome {
-    ion-content {
-      .logo {
-        margin-top: 12rem;
-      }
-    }
-  }
-}
-
-@media (max-width:420px) {
-  #onboard-welcome {
-    ion-content {
-      .logo {
-        margin-top: 8rem;
-      }
-    }
-  }
-}
-
-@media (max-height:550px) {
-  #onboard-welcome {
-    #cta-buttons {
-      position: relative !important;
-      float: left;
+      max-width: 400px;
     }
   }
 }
