@@ -1,0 +1,78 @@
+#bitpayCard-intro {
+  .swiper-container-horizontal > .swiper-pagination {
+    bottom: 150px;
+  }
+  .cta-button{
+    text-align: center;
+    position: absolute;
+    bottom: 45px;
+    padding: 0 1.5rem;
+    width: 100%;
+  }
+  background: rgba(30, 49, 134, 1);
+  background: -moz-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(30, 49, 134, 1)), color-stop(100%, rgba(17, 27, 73, 1)));
+  background: -webkit-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: -o-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  color: #fff;
+  height: 100%;
+  .bar.bar-header {
+    background: rgb(30, 49, 134);
+    color: #fff;
+    button {
+      color: #fff;
+    }
+    .secondary-buttons {
+      button {
+        color: rgba(255, 255, 255, .5);
+      }
+    }
+  }
+  .bar.bar-stable{
+    border-color: transparent;
+    border:none;
+  }
+  .swiper-pagination {
+    &-bullet {
+      background: rgb(100, 124, 232);
+      &-active {
+        background: rgb(100, 124, 232);
+      }
+    }
+  }
+  .button-transparent{
+    background: none !important;
+  }
+  .button-translucent{
+    background: rgba(215, 215, 215, 0.1)
+  }
+  .button-primary{
+    background: rgb(100, 124, 232) !important;
+    color:#fff;
+  }
+  .light-blue{
+    color:rgb(100, 124, 232);
+  }
+  .text-white{
+    color: #ffffff;
+  }
+  ion-content {
+    background: url(../img/onboarding-welcome-bg.png);
+    background-position: top center;
+    background-size: contain;
+    background-repeat: repeat-x;
+    height: 100%;
+    .scroll{
+      height: 100%;
+    }
+    color: #fff;
+    p {
+      text-align: center;
+      margin: 40px 20px;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, .5);
+    }
+  }
+}

@@ -35,6 +35,7 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
     'tabs.receive.backup',
     'tabs.bitpayCard.amount',
     'tabs.bitpayCard.confirm',
+    'tabs.bitpayCardIntro'
   ];
 
   $rootScope.$on('$ionicView.beforeEnter', function() {
