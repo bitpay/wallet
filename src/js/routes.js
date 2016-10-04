@@ -846,7 +846,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.bitpayCard', {
+      .state('tabs.bitpayCardIntro', {
+        url: '/bitpay-card-intro',
+        views: {
+          'tab-home@tabs': {
+            controller: 'bitpayCardIntroController',
+            templateUrl: 'views/bitpayCardIntro.html'
+          }
+        }
+      })
+      .state('tabs.bitpayCard', {
         url: '/bitpay-card',
         views: {
           'tab-home@tabs': {
