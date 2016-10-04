@@ -1,20 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="32px" height="20px" viewBox="0 0 32 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
-    <title>scan</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
-        <g id="Icons/Tabs/Scan/2" transform="translate(1.000000, -6.000000)" stroke-width="1.5" stroke="#464646">
-            <g id="scan" transform="translate(-1.000000, 6.000000)">
-                <g id="Scan">
-                    <path d="M10.4803945,1.62179474 L6.04824505,1.62179474 M5.74546723,1.62179474 L5.74546723,5.91363686" id="Line-Copy-2" stroke-linejoin="round"></path>
-                    <path d="M21.3245328,1.62179474 L25.7566822,1.62179474 M26.05946,1.62179474 L26.05946,5.91363686" id="Line-Copy-3" stroke-linejoin="round"></path>
-                    <path d="M10.4803945,18.8877694 L6.04824505,18.8877694 M5.74546723,18.8877694 L5.74546723,14.5959273" id="Line-Copy-5" stroke-linejoin="round"></path>
-                    <path d="M21.3245328,18.8877694 L25.7566822,18.8877694 M26.05946,18.8877694 L26.05946,14.5959273" id="Line-Copy-4" stroke-linejoin="round"></path>
-                    <path d="M0.73043476,10.1130435 L31.1652175,10.1130435" id="Line"></path>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Scan_Icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 20" style="enable-background:new 0 0 32 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#343434;}
+</style>
+<path class="st0" d="M6.3,6.3c-0.5,0-0.8-0.4-0.8-0.8V1.8C5.5,1.3,5.9,1,6.3,1H11c0.5,0,0.8,0.4,0.8,0.8c0,0.5-0.4,0.8-0.8,0.8H7.1
+	v3C7.1,5.9,6.7,6.3,6.3,6.3z"/>
+<path class="st0" d="M25.7,13.7c0.5,0,0.8,0.4,0.8,0.8v3.8c0,0.5-0.4,0.8-0.8,0.8H21c-0.5,0-0.8-0.4-0.8-0.8c0-0.5,0.4-0.8,0.8-0.8
+	h4v-3C24.9,14.1,25.3,13.7,25.7,13.7z"/>
+<path class="st0" d="M7.1,14.4v3h4c0.5,0,0.8,0.4,0.8,0.8c0,0.5-0.4,0.8-0.8,0.8H6.4c-0.5,0-0.8-0.4-0.8-0.8v-3.8
+	c0-0.5,0.4-0.8,0.8-0.8C6.7,13.7,7.1,14.1,7.1,14.4z"/>
+<path class="st0" d="M24.9,5.6v-3h-4c-0.5,0-0.8-0.4-0.8-0.8c0-0.5,0.4-0.8,0.8-0.8h4.7c0.5,0,0.8,0.4,0.8,0.8v3.8
+	c0,0.5-0.4,0.8-0.8,0.8C25.3,6.3,24.9,5.9,24.9,5.6z"/>
+<path class="st0" d="M31.1,10.8H0.8c-0.4,0-0.8-0.3-0.8-0.7c0-0.3,0.3-0.7,0.8-0.7h30.4c0.4,0,0.8,0.3,0.8,0.7
+	C31.9,10.4,31.6,10.8,31.1,10.8z"/>
 </svg>
