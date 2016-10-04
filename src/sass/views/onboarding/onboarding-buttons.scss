@@ -1,0 +1,32 @@
+$button-primary-bg:              $positive;
+$button-primary-text:            #fff;
+$button-primary-border:          transparent;
+$button-primary-active-bg:       darken($positive, 5%);
+$button-primary-active-border:   transparent;
+
+$button-secondary-bg:              rgba(215, 215, 215, 0.1);
+$button-secondary-text:            #fff;
+$button-secondary-border:          transparent;
+$button-secondary-active-bg:       rgba(215, 215, 215, 0.2);
+$button-secondary-active-border:   transparent;
+
+.onboarding .button {
+  &.button-primary {
+    @include button-style($button-primary-bg, $button-primary-border, $button-primary-active-bg, $button-primary-active-border, $button-primary-text);
+    @include button-clear($button-primary-bg);
+    @include button-outline($button-primary-bg);
+  }
+  &.button-secondary {
+    @include button-style($button-secondary-bg, $button-secondary-border, $button-secondary-active-bg, $button-secondary-active-border, $button-secondary-text);
+    @include button-clear($button-secondary-text);
+    @include button-outline($button-secondary-text);
+  }
+  &.button-primary,
+  &.button-secondary {
+    &.button-block {
+      width: 85%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}

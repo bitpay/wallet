@@ -1,23 +1,13 @@
 <ion-view id="onboard-welcome" class="onboarding">
   <ion-content ng-controller="welcomeController" ng-init="createProfile()" scroll="false">
-    <!-- <qr-scanner id="shopping-24" on-scan="goImport(data)"></qr-scanner> -->
-    <article id="logo-tagline">
-      <div class="row text-center">
-        <img src='img/bitpay-logo.svg' class="logo col col-50" />
-      </div>
-      <div class="row text-center">
-        <p translate class="text-center col col-60">
-          Take control of your money, <br /> get started with bitcoin.
-        </p>
-      </div>
-    </article>
-    <article id="cta-buttons">
-      <div class="row">
-        <button class="button button-block get-started col col-75" href ui-sref="onboarding.tour" translate>Get started</button>
-      </div>
-      <div class="row">
-        <button class="button button-block restore col col-75" translate href ui-sref="onboarding.import({'fromOnboarding':true})">Restore</button>
-      </div>
-    </article>
+    <!-- <qr-scanner id="qrcode" on-scan="goImport(data)"></qr-scanner> -->
+    <div id="logo-tagline">
+        <img src='img/bitpay-logo.svg' id="logo" />
+        <p translate class="lead">Take control of your money,<br /> get started with bitcoin.</p>
+    </div>
+    <div id="cta-buttons">
+        <button class="button button-block button-primary" id="get-started" href ui-sref="onboarding.tour" translate>Get started</button>
+        <button class="button button-block button-secondary button-clear" id="restore" translate href ui-sref="onboarding.import({'fromOnboarding':true})">Restore</button>
+    </div>
   </ion-content>
 </ion-view>
