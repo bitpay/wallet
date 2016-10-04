@@ -1,4 +1,7 @@
 #view-amount {
+  .item-no-bottom-border + .item {
+      border-top: 0;
+  }
   .icon-bitpay-card {
     background-image: url("../img/icon-bitpay.svg");
   }

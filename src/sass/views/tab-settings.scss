@@ -10,8 +10,8 @@
     .item {
       color: #444;
       border-top: none;
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
+      padding-top: 1.3rem;
+      padding-bottom: 1.3rem;
       .big-icon-svg {
        & > .bg{
         width:20px;
@@ -31,7 +31,9 @@
         content: '';
       }
       &.item-divider {
-        color: rgba(74, 74, 74, .8);
+        color: $mid-gray;
+        padding-bottom: .5rem;
+        font-size: .9rem;
       }
       &.item-heading {
         &:before {
@@ -44,8 +46,11 @@
         }
       }
       .item-note {
-        color: rgb(58, 58, 58);
+        color: $light-gray;
       }
     }
+  }
+  .item-radio .radio-icon {
+    font-size: 18px;
   }
 }
