@@ -65,27 +65,31 @@
     padding-bottom: 27px;
   }
   .homeTip {
+    text-align: center;
+    & > .item-heading {
+      margin-top: 10px;
+      background: 0 none;
+    }
     .item {
       border-style: none;
     }
-    div {
-      text-align: center;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-    .title {
+    & > .title {
       font-size: 20px;
       font-weight: bold;
+      color: $dark-gray;
+      margin: 20px 10px;
     }
-    .subtitle{
-      margin-left: 25px;
-      margin-right: 25px;
-      font-size: 18px;
-      font-weight: 100;
+    & > .subtitle {
+      font-size: 1rem;
+      line-height: 1.5em;
+      font-weight: 300;
+      color: $dark-gray;
+      margin: 20px 3em 2.5em;
     }
     .big-icon-svg{
       .bg.green{
         padding: 0 10px;
+        box-shadow: none;
       }
     }
   }
