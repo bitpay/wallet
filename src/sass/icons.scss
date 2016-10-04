@@ -1,0 +1,31 @@
+.icon.bp-arrow-right {
+  @extend .ion-ios-arrow-right;
+}
+
+.icon.bp-arrow-down {
+  @extend .ion-ios-arrow-down;
+}
+
+.icon.bp-arrow-up {
+  @extend .ion-ios-arrow-up;
+}
+
+.item.item-big-icon-left {
+  padding-left: 74px;
+}
+
+.big-icon-svg {
+  padding: 0 7px;
+  > .bg {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+    background-repeat:no-repeat;
+    background-clip: padding-box;
+    background-size: 103%;
+    &.green{
+      background: rgb(1, 209, 162);
+    }
+  }
+}

@@ -13,12 +13,13 @@
   .icon-gift {
     background-image: url("../img/icon-gift.svg");
   }
+  .icon-amazon {
+    background-image: url("../img/icon-amazon.svg");
+  }
   .card{
     .item {
       color: #444;
       border-top:none;
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
       &:before {
         display: block;
         position: absolute;
@@ -59,14 +60,9 @@
       }
     }
   }
-
-  .next-step {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    &.item{
-      padding-top:2rem;
-      padding-bottom: 2rem;
-    }
+  .next-step.item {
+    padding-top: 27px;
+    padding-bottom: 27px;
   }
   .homeTip {
     .item {
@@ -92,5 +88,9 @@
         padding: 0 10px;
       }
     }
+  }
+  .icon.close-home-tip {
+    color: #666;
+    font-size: 38px;
   }
 }

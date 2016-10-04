@@ -62,6 +62,42 @@ input[type=number] {
   height: 24px;
 }
 
+/* Wrap text from item-note */
+.item-note{
+  white-space: -moz-pre-wrap !important;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  white-space: -webkit-pre-wrap;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.back-button {
+  border: 0;
+  .icon:before {
+    color: #fff;
+    font-size: 30px !important;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+}
+
+.search-button {
+  .icon:before {
+    color: #fff;
+    font-size: 30px !important;
+    margin-left: 5px;
+  }
+}
+
+.button-block {
+  width: 90% !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .name-wallet {
   font-size: 14px;
   font-weight: 400;
