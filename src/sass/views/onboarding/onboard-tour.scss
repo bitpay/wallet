@@ -1,69 +1,40 @@
-#onboard-tour {
-  &-secure {
-    #cta {
-      background-image: url(../img/onboarding-tour-phone.svg);
-      height: 17rem;
-      margin-bottom:-1.5rem;
-    }
-  }
+#onboarding-tour {
   &-currency {
-    #cta {
-      background-image: url(../img/onboarding-tour-currency-bg.svg);
-      height:18rem;
-    }
     .next-slide {
       margin-top: 3rem;
     }
   }
-  &-control {
-    #cta {
-      background-image: url(../img/onboarding-tour-control.svg);
-      margin-bottom: .05rem;
-      height: 15rem;
-      background-position: top;
-    }
+  .cta-buttons {
+    @extend %cta-buttons;
+    padding-bottom: 100px;
   }
-  .cta-button{
-    position: absolute;
-    bottom: 85px;
+  .onboarding-topic,
+  .onboarding-description,
+  .onboarding-tldr {
+    margin: 1rem 3rem .5rem;
   }
-}
-
-@media (max-width: 359px){
-  #onboard-tour{
-    &-secure, &-currency, &-control{
-      #cta{
-        height: 14rem;
-      }
-    }
+  .onboarding-topic {
+    font-size: 24px;
   }
-}
-
-@media (min-width: 450px){
-  #onboard-tour{
-    &-secure, &-currency, &-control{
-      #cta{
-        height: 26rem;
-      }
-    }
+  .onboarding-description {
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
   }
-}
-
-@media (min-width: 1000px){
-  #onboard-tour{
-    p, h2, h3{
-      max-width: 600px;
-    }
-    button{
-      max-width: 400px;
-    }
-    #cta{
-      margin: 2rem 0 0;
-    }
-    &-control{
-      #cta{
-        margin-bottom: 2rem;
-      }
-    }
+  .onboarding-tldr {
+    font-size: 18px;
+    margin-bottom: 1em;
+  }
+  #onboarding-illustration-currency-exchange-rate {
+    background-color: $soft-blue;
+    border-radius: $button-border-radius;
+    box-shadow: $subtle-box-shadow;
+    font-size: 14px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 38px;
+    margin: 10px auto 0;
+    position: relative;
+    width: 120px;
+    z-index: 1;
   }
 }

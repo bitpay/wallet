@@ -8,6 +8,8 @@ $roboto-light: "Roboto-Light", sans-serif-light;
 $dark-gray: #445;
 $mid-gray: #667;
 $light-gray: #9b9bab;
+$subtle-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+$hovering-box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
 
 /* Set ionic variables */
 
@@ -31,4 +33,4 @@ $tabs-icon-size: 22px;
 
 $ios-transition-duration: 200ms;
 
-$card-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+$card-box-shadow: $subtle-box-shadow;
