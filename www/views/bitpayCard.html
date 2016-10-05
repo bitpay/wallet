@@ -92,28 +92,30 @@
     <div ng-show="bitpayCard.bitpayCardAuthenticated">
       <div class="oh pr">
         <div class="amount">
-          <div ng-if="!loadingHistory && bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
+          <div ng-if="bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
             <div class="size-36 m20b">${{bitpayCard.bitpayCardCurrentBalance}}</div>
             <a class="button button-positive button-small" ui-sref="tabs.bitpayCard.amount({'isCard': true, 'toName': 'BitPay Card'})">
               <i class="icon ion-ios-plus-empty"></i> {{'Add Funds'|translate}}
             </a>
           </div>
-          <div ng-if="loadingHistory" class="m10t">
+          <div ng-if="!bitpayCard.bitpayCardCurrentBalance" class="m10t">
             <strong class="size-36">...</strong>
           </div>
+        </div>
+        <div class="wallet-details-wallet-info">
+          <img style="height:0.6em"  ng-show="loadingHistory" src="img/icon-sync-white.svg">
         </div>
       </div>
 
       <div
         class="m10t text-center padding"
-        ng-show="!bitpayCard.bitpayCardTransactionHistory[0] &&
-        !bitpayCard.bitpayCardInvoiceHistory[0] && (!loadingHistory || !bitpayCardCached)">
+        ng-if="!bitpayCardCached && !loadingHistory && !bitpayCard.bitpayCardTransactionHistory[0]">
         <i class="icon ion-ios-arrow-thin-up size-24"></i>
         <h1>Get started</h1>
         <h4>Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.</h4>
       </div>
 
-      <div class="list" ng-if="bitpayCardCached">
+      <div class="list" ng-show="bitpayCardCached">
         <div class="item item-divider">
         <select class="select-style" ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
           <option value="last30Days">Recent Activity</option>

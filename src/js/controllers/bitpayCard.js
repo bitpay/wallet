@@ -94,6 +94,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
               transactions: self.bitpayCardTransactionHistory
             };
             bitpayCardService.setCacheData(cacheData, function(err) {
+              $scope.bitpayCardCached = true;
               if (err) $log.error(err);
             });
           });
