@@ -1,33 +1,25 @@
 <ion-view ng-controller="collectEmailController" id="onboarding-collect-email" class="onboarding">
   <ion-content>
-    <div class="row">
+    <div class="success-message">
       <img src="img/onboarding-success.svg" class="col col-75" id="success-image" />
-    </div>
-    <div class="row text-center">
-      <h3 translate class="col">Wallet Created</h3>
+      <h3 translate>Wallet Created</h3>
     </div>
     <div id="collect-email">
       <div ng-if="!confirmation">
-        <div class="row text-center">
-          <p translate class="col col-75">Where would you like to receive email notifications about payments?</p>
-        </div>
-        <form name="emailForm" ng-submit="confirm(emailForm)" novalidate>
-          <label class="item item-input col col-75">
+        <span translate class="prompt">Where would you like to receive email notifications about payments?</span>
+        <form id="email-form" name="emailForm" ng-submit="confirm(emailForm)" novalidate>
+          <label class="item item-input">
             <i class="icon ion-arrow-right-c"></i>
-            <input type="email" id="email" name="email" ng-model="email" placeholder="satoshi@example.com" required></input>
+            <input type="email" id="email-input" name="email" ng-model="email" placeholder="satoshi@example.com" required></input>
           </label>
         </form>
-        <ion-list id="news-updates" class="row">
-          <ion-checkbox ng-model="data.accept" class="col col-80"><span translate>Get news and updates from Bitpay</span></ion-checkbox>
+        <ion-list id="news-updates">
+          <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from BitPay</span></ion-checkbox>
         </ion-list>
       </div>
       <div ng-if="confirmation">
-        <div class="row text-center">
-          <p translate class="col col-75">Is this email address correct?</p>
-        </div>
-        <div class="row text-center">
-          <p class="col col-75">{{email}}</p>
-        </div>
+          <p translate class="confirm">Is this email address correct?</p>
+          <p class="user-email">{{email}}</p>
         <div class="row">
           <div class="col col-50">
             <button class="button button-block button-stable" ng-click="cancel()">

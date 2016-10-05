@@ -10,6 +10,7 @@ $mid-gray: #667;
 $light-gray: #9b9bab;
 $subtle-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 $hovering-box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+$visible-radius: 6px;
 
 /* Set ionic variables */
 
@@ -20,7 +21,7 @@ $font-size-small: 12px;
 $font-family-sans-serif: $roboto;
 $font-family-light-sans-serif: $roboto-light;
 
-$button-border-radius: 6px;
+$button-border-radius: $visible-radius;
 $button-height: 52px;
 $button-padding: 16px;
 

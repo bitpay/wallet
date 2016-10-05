@@ -1,3 +1,5 @@
+$relish-success: 1.3s;
+
 #onboarding-collect-email {
   background: rgb(17, 209, 166);
   .overlay {
@@ -13,33 +15,46 @@
     margin-top: 0;
     height: 101%;
   }
-  .scroll {
-    height: 100%;
+  .success-message {
+    top: 30vh;
+    position: relative;
+    animation-name: slideUp;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: .5s;
+    animation-delay: $relish-success;
+    animation-fill-mode: forwards;
   }
   #success-image {
-    margin-top: 4rem;
-    height: 10rem;
-  }
-  .col {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    width: 8rem;
+    margin: 0 auto;
   }
   .collect-overlay {
    animation-name: opacity;
    animation-iteration-count: 1;
    animation-timing-function: ease-in;
    animation-duration: .2s;
-   animation-delay: .8s;
+   animation-delay: $relish-success;
    animation-fill-mode: forwards;
    opacity: 0;
    button {
      position: absolute;
-     right: 11px;
+     right: 0;
    }
- }
- .collect-overlay{
-   top:-1px;
- }
+  }
+  .collect-overlay {
+    top:-1px;
+  }
+  .prompt {
+    padding: 2rem 2rem 1rem;
+    display: block;
+  }
+  #email-form {
+    margin: 0 2rem 1rem;
+  }
+  #email-input {
+    border-radius: $visible-radius;
+  }
   #collect-email {
     opacity: 1;
     background: #fff;
@@ -49,7 +64,7 @@
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
     animation-duration: .4s;
-    animation-delay: 1s;
+    animation-delay: $relish-success + .2s;
     position: absolute;
     bottom: -14rem;
     animation-fill-mode: forwards;
@@ -174,5 +189,14 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    top: 30vh;
+  }
+  100% {
+    top: 10vh;
   }
 }
