@@ -5,6 +5,7 @@
   text-align: center;
   .bar.bar-header {
     background: none;
+    border: 0 none transparent;
     color: #fff;
     button {
       color: #fff;
@@ -14,9 +15,6 @@
         color: rgba(255, 255, 255, .5);
       }
     }
-  }
-  .bar.bar-stable {
-    border: 0 none transparent;
   }
   ion-content {
     height: 100%;
@@ -79,6 +77,12 @@
   }
 }
 
+%cta-buttons {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
 @import "terms-of-use";
 @import "onboarding-buttons";
 @import "onboard-welcome";
@@ -88,3 +92,28 @@
 @import "../backup-warning";
 @import "onboard-disclaimer";
 @import "onboard-push-notifications";
+
+%onboarding-illustration {
+  position: absolute;
+  width: 100%;
+  height: 40%;
+  margin-top: 25vh;
+  top: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.onboarding-illustration {
+  &-secure {
+      @extend %onboarding-illustration;
+      background-image: url(../img/onboarding-tour-phone.svg);
+  }
+  &-currency {
+    @extend %onboarding-illustration;
+      background-image: url(../img/onboarding-tour-currency-bg.svg);
+  }
+  &-control {
+    @extend %onboarding-illustration;
+      background-image: url(../img/onboarding-tour-control.svg);
+  }
+}

@@ -25,6 +25,7 @@ $button-secondary-active-border:   transparent;
   &.button-secondary {
     &.button-block {
       width: 85%;
+      max-width: 300px;
       margin-left: auto;
       margin-right: auto;
     }

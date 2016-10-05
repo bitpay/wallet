@@ -25,15 +25,12 @@
     max-width: 200px;
     margin: 5rem auto 0;
   }
-  .lead {
+  #lead {
     line-height: 1.6;
+    font-size: 18px;
   }
   #cta-buttons {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    button {
-      max-width: 400px;
-    }
+    @extend %cta-buttons;
+    padding-bottom: 1rem;
   }
 }
