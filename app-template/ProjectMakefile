@@ -5,19 +5,13 @@ plugins:
 	cordova prepare
 	rm -rf platforms/android/res/values-es
 
-ios-platform android-platform wp8-platform:
+wp8-platform:
 	cordova platforms add $(subst -platform,,$@) || echo "Platform already added"
 
-ios: ios-platform plugins
-	echo
-
-android: android-platform plugins
-	echo
-
 wp: wp8-platform plugins
-	echo
+	cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner
 
-build-ios build-android build-wp8:
+build-wp8:
 	cordova build $(subst build-,,$@)
 
 run:
