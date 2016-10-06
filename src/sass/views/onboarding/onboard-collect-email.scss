@@ -2,27 +2,11 @@ $relish-success: 1.3s;
 
 #onboarding-collect-email {
   background: rgb(17, 209, 166);
-  .overlay {
-    position: absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height: 100%;
-    background: rgba(0,0,0,.4);
-    z-index: 4;
-  }
-  .scroll-content {
-    margin-top: 0;
-    height: 101%;
-  }
-  .scroll {
-    height: 100%;
-    transform: translate3d(0px, 0px, 0px) scale(1) !important;
-  }
-  .success-message {
-    top: 30vh;
+
+  #success-container {
+    top: 41vh;
     position: relative;
-    animation-name: slideUp;
+    animation-name: emailCollectSlideUp;
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
     animation-duration: .5s;
@@ -30,103 +14,80 @@ $relish-success: 1.3s;
     animation-fill-mode: forwards;
   }
   #success-image {
-    width: 8rem;
-    margin: 0 auto;
+    width: 13vh;
+    margin: 0 auto 2vh;
+  }
+  #success-message {
+    font-size: 3vh;
   }
   .collect-overlay {
-   animation-name: opacity;
-   animation-iteration-count: 1;
-   animation-timing-function: ease-in;
-   animation-duration: .2s;
-   animation-delay: $relish-success;
-   animation-fill-mode: forwards;
-   opacity: 0;
-   button {
-     position: absolute;
-     right: 0;
-   }
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background: rgba(0,0,0,.4);
+    z-index: 4;
+    animation-name: emailCollectOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: .2s;
+    animation-delay: $relish-success;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    button {
+      position: absolute;
+      right: 0;
+    }
   }
-  .collect-overlay {
-    top:-1px;
+  .heading {
+    color: $dark-gray;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 3rem 0 1rem;
   }
   .prompt {
-    padding: 2rem 2rem 1rem;
-    display: block;
+    margin: 1rem 1.5rem;
+    color: $mid-gray;
   }
   #email-form {
-    margin: 0 2rem 1rem;
+    margin: 0 1.5rem 1rem;
   }
-  #email-input {
+  #email-label {
     border-radius: $visible-radius;
+    background: rgba(200, 200, 200, 0.20);
+    height: 3rem;
+    margin-top:0;
   }
   #collect-email {
     opacity: 1;
     background: #fff;
-    color: rgb(108, 108, 108);
-    height: 14rem;
+    height: 25rem;
     animation-name: topBottom;
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
     animation-duration: .4s;
     animation-delay: $relish-success + .2s;
     position: absolute;
-    bottom: -14rem;
+    bottom: -100%;
     animation-fill-mode: forwards;
     z-index: 5;
     margin-top: 0;
     width: 100%;
-    form {
-      label {
-        background: rgba(200, 200, 200, 0.20);
-        height: 3rem;
-        margin-top:0;
-        i {
-          position: absolute;
-          right: 3%;
-          top: 1rem;
-        }
-      }
-    }
-    #news-updates{
-      padding-top:0;
-      .list{
-        max-width: 310px;
-        text-align: center;
-        width: 100%;
-        @include center-block();
-        label{
-          display: inline-block;
-          margin-top: 0;
-          padding-bottom: 1rem;
-          .checkbox{
-            left:0;
-            margin-left:0;
-          }
-          .item-content{
-            margin-left: 12%;
-            position: relative;
-            font-size:.8rem;
-          }
-        }
-        @media (min-width: 415px){
-          &{
-            max-width: 400px;
-            label{
-              .checkbox{
-                left:1rem;
-              }
-              .item-content{
-                font-size: 1rem;
-              }
-            }
-          }
-        }
-      }
-    }
+  }
+  #collect-email-inner {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+
+
+  #news-updates {
+    padding-top: 0;
   }
   .item {
     border: none;
-    label{
+    label {
       background: none;
     }
     .checkbox input:before,
@@ -134,29 +95,34 @@ $relish-success: 1.3s;
       border-radius: 50% !important;
       background: none;
       border-width: 2px;
-      padding: .9rem;
+      padding: 12px;
       position: relative;
-      left: -7px;
-      top: -8px;
+      right: 5px;
+      bottom: 5px;
     }
     .checkbox input:checked:after,
     input:checked + .checkbox-icon:after {
       border-color: rgb(19, 229, 182);
-      top:20%;
-      left:11%;
+      top: 4px;
+      left: 6px;
     }
     .item-content {
-      width: 90%;
-      margin-left: 10%;
+      color: $mid-gray;
+      text-align: left;
+      margin-left: 75px;
+      white-space: initial;
     }
   }
+  .item-checkbox {
+    padding: 1rem 0;
+    margin: 1rem 0;
+  }
   .item-checkbox .checkbox {
-    margin-left: 10%;
-    top: 55%;
+    margin-left: 15px;
   }
   .checkbox input:before,
   .checkbox .checkbox-icon:before{
-    border-color:$soft-blue;
+    border-color: $soft-blue;
   }
   .checkbox input:checked:before,
   .checkbox input:checked + .checkbox-icon:before {
@@ -164,43 +130,17 @@ $relish-success: 1.3s;
   }
 }
 
-@media (min-width: 1000px){
-  #onboarding-collect-email{
-    #collect-email{
-      p, form{
-        max-width: 600px;
-        @include center-block();
-      }
-      form{
-        margin-top:.5rem;
-      }
-    }
-  }
-}
-
 @keyframes topBottom {
-  0% {
-    bottom: -100%;
-  }
-  100% {
-    bottom: 0;
-  }
+  0% { bottom: -100%; }
+  100% { bottom: 0; }
 }
 
-@keyframes opacity {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+@keyframes emailCollectOpacity {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-@keyframes slideUp {
-  0% {
-    top: 30vh;
-  }
-  100% {
-    top: 10vh;
-  }
+@keyframes emailCollectSlideUp {
+  0% { top: 41vh; }
+  100% { top: calc((100vh - 20rem) / 2 - 11vh);}
 }

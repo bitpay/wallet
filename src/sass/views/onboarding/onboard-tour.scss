@@ -11,17 +11,21 @@
   .onboarding-topic,
   .onboarding-description,
   .onboarding-tldr {
-    margin: 1rem 3rem .5rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
   }
   .onboarding-topic {
     font-size: 24px;
+    margin-top: .5rem;
   }
   .onboarding-description {
+    margin-top: 1rem;
     font-size: 16px;
     color: rgba(255,255,255,0.5);
   }
   .onboarding-tldr {
     font-size: 18px;
+    margin-top: 1rem;
     margin-bottom: 1em;
   }
   #onboarding-illustration-currency-exchange-rate {
