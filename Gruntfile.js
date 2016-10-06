@@ -34,7 +34,7 @@ module.exports = function(grunt) {
       wpcopy: {
         command: 'make -C cordova wp-copy',
       },
-      ios-debug: {
+      iosdebug: {
         command: 'npm run build:ios',
       },
       ios: {
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
       xcode: {
         command: 'npm run open:ios',
       },
-      android-debug: {
+      androiddebug: {
         command: 'npm run build:android',
       },
       android: {
@@ -268,11 +268,11 @@ module.exports = function(grunt) {
   grunt.registerTask('wp-copy', ['default', 'exec:wpcopy']);
   grunt.registerTask('wp-init', ['default', 'exec:wpinit']);
   grunt.registerTask('ios', ['exec:ios']);
-  grunt.registerTask('ios-debug', ['exec:ios-debug']);
+  grunt.registerTask('ios-debug', ['exec:iosdebug']);
   grunt.registerTask('ios-run', ['exec:xcode']);
   grunt.registerTask('cordovaclean', ['exec:cordovaclean']);
-  grunt.registerTask('android-debug', ['exec:android-debug', 'exec:androidrun']);
-  grunt.registerTask('android', ['exec:android-release']);
+  grunt.registerTask('android-debug', ['exec:androiddebug', 'exec:androidrun']);
+  grunt.registerTask('android', ['exec:android']);
   grunt.registerTask('android-release', ['prod', 'exec:android', 'exec:androidsign']);
   grunt.registerTask('desktopsign', ['exec:desktopsign', 'exec:desktopverify']);
 

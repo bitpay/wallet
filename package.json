@@ -79,7 +79,6 @@
     "final:www":              "npm run clean && npm run build:www-release",
     "final:ios":              "npm run final:www && npm run build:ios-release && npm run open:ios",
     "final:android":          "npm run final:www && npm run build:android-release && npm run open:android",
-    "final:all-mac":          "npm run final:www npm run build:ios-release npm run build:android-release && npm run open:ios && npm run open:android",
     "run:android":            "cordova run android --device",
     "log:android":            "adb logcat | grep chromium",
     "apply:copay":            "cd app-template && node apply.js",
