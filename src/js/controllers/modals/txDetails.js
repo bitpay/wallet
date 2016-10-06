@@ -81,7 +81,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     var opts = {};
     if ($scope.btx.note && $scope.btx.note.body) opts.defaultText = $scope.btx.note.body;
 
-    popupService.showPrompt(null, gettextCatalog.getString('Memo'), opts, function(text) {
+    popupService.showPrompt(wallet.name, gettextCatalog.getString('Memo'), opts, function(text) {
       if (typeof text == "undefined") return;
 
       $log.debug('Saving memo');
