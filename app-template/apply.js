@@ -5,10 +5,10 @@
 //
 
 var templates = {
-  'package.json': '/',
   'Makefile': 'cordova/',
   'ProjectMakefile': 'cordova/',
-  'config.xml': 'cordova/',
+  'config-template.xml': '/',
+  'ionic.config.json': '/',
   'Package.appxmanifest': 'cordova/wp/',
   '.desktop': 'webkitbuilds/',
   'setup-win.iss': 'webkitbuilds/',
@@ -60,6 +60,9 @@ Object.keys(templates).forEach(function(k) {
     process.exit(1);
   }
 
+  if(k === 'config-template.xml'){
+    k = 'config.xml';
+  }
   fs.writeFileSync('../' + targetDir + k, content, 'utf8');
 });
 
@@ -113,7 +116,7 @@ function copyDir(from, to, cb) {
 }
 
 
-copyDir(configDir + '/img/', '../public/img/', function() {
+copyDir(configDir + '/img/', '../www/img/', function() {
   copyDir(configDir + '/androidRes/', '../cordova/android/res/', function() {
     copyDir(configDir + '/iosIcons/', '../cordova/ios/icons/', function() {
       copyDir(configDir + '/iosSplash/', '../cordova/ios/splash/', function() {

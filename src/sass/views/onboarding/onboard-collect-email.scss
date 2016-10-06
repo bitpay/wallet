@@ -15,6 +15,10 @@ $relish-success: 1.3s;
     margin-top: 0;
     height: 101%;
   }
+  .scroll {
+    height: 100%;
+    transform: translate3d(0px, 0px, 0px) scale(1) !important;
+  }
   .success-message {
     top: 30vh;
     position: relative;

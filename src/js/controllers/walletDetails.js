@@ -100,7 +100,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   $scope.recreate = function() {
     walletService.recreate($scope.wallet, function(err) {
-      $scope.init();
       if (err) return;
       $timeout(function() {
         walletService.startScan($scope.wallet, function() {
