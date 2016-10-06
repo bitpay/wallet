@@ -55,7 +55,7 @@
     <plugin name="cordova-plugin-customurlscheme" spec="~4.2.0">
       <variable name="URL_SCHEME" value="UNUSED" />
     </plugin>
-    <plugin name="phonegap-plugin-push" spec="1.5.3" />
+    <plugin name="phonegap-plugin-push" spec="1.8.2" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
