@@ -20,7 +20,8 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="FadeSplashScreen" value="true" />
-    <preference name="FadeSplashScreenDuration" value="1" />
+    <preference name="FadeSplashScreenDuration" value=".3" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarBackgroundColor" value="#1e3186" />
     <preference name="StatusBarStyle" value="lightcontent" />

@@ -1,21 +1,22 @@
 <ion-view ng-controller="collectEmailController" id="onboarding-collect-email" class="onboarding">
-  <ion-content>
-    <div class="success-message">
-      <img src="img/onboarding-success.svg" class="col col-75" id="success-image" />
-      <h3 translate>Wallet Created</h3>
+  <ion-content scroll="false">
+    <div id="success-container">
+      <img src="img/onboarding-success.svg" id="success-image" />
+      <div id="success-message" translate>Wallet Created</div>
     </div>
     <div id="collect-email">
-      <div ng-if="!confirmation">
-        <span translate class="prompt">Where would you like to receive email notifications about payments?</span>
+      <div id="collect-email-inner" ng-if="!confirmation">
+        <div translate class="heading">Email Notifications</div>
+        <div translate class="prompt">Where would you like to receive email notifications about payments?</div>
         <form id="email-form" name="emailForm" ng-submit="confirm(emailForm)" novalidate>
-          <label class="item item-input">
-            <i class="icon ion-arrow-right-c"></i>
-            <input type="email" id="email-input" name="email" ng-model="email" placeholder="satoshi@example.com" required></input>
+          <label class="item item-input" id="email-label">
+            <input type="email" name="email" ng-model="email" placeholder="email address" required></input>
           </label>
-        </form>
-        <ion-list id="news-updates">
           <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from BitPay</span></ion-checkbox>
-        </ion-list>
+          <button class="button button-block button-primary" disabled>
+            Continue &rarr;
+          </button>
+        </form>
       </div>
       <div ng-if="confirmation">
           <p translate class="confirm">Is this email address correct?</p>
