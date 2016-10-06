@@ -9,16 +9,16 @@ BASE=$(CURDIR)
 
 all: $(ZIPFILE)
 
-dir: 
+dir:
 	rm -rf $(BUILDDIR)
 	mkdir -p $(BUILDDIR)
 	cp manifest.json $(BUILDDIR)/manifest.json
 	cp -vf $(INITIAL) $(BUILDDIR)
 
 files:
-	cd ../public && rsync -rLRv --exclude-from $(BASE)/exclude $(INCLUDE) $(BASE)/$(BUILDDIR) && cd -
+	cd ../www && rsync -rLRv --exclude-from $(BASE)/exclude $(INCLUDE) $(BASE)/$(BUILDDIR) && cd -
 	cd .. && rsync -rLRv ./bower_components/trezor-connect/chrome/* $(BASE)/$(BUILDDIR)/ && cd -
-	
+
 
 $(ZIPFILE): dir files
 	cd $(BUILDDIR)
