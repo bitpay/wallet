@@ -23,6 +23,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       return newUri;
     };
 
+    function getParameterByName(name, url) {
+      if (!url) return;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
@@ -32,7 +42,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       }, 100);
       return true;
     }
-
 
     data = sanitizeUri(data);
 
@@ -86,6 +95,21 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       return $state.go('uriglidera', {url: data});
     } else if (data && data.indexOf($window.appConfig.name + '://coinbase')==0) {
       return $state.go('uricoinbase', {url: data});
+
+    // BitPayCard Authentication
+    } else if (data && data.indexOf($window.appConfig.name + '://')==0) {
+      var secret = getParameterByName('secret', data);
+      var email = getParameterByName('email', data);
+      var otp = getParameterByName('otp', data);
+      $state.go('tabs.home');
+      $timeout(function() {
+        $state.transitionTo('tabs.bitpayCardIntro', {
+          secret: secret,
+          email: email,
+          otp: otp
+        });
+      }, 100);
+      return true;
 
     // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {

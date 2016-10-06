@@ -128,7 +128,7 @@ module.exports = function(grunt) {
           'bower_components/angular-md5/angular-md5.js',
           'bower_components/angular-mocks/angular-mocks.js',
           'bower_components/ngtouch/src/ngTouch.js',
-          'angular-pbkdf2/angular-pbkdf2.js',
+          'angular-bitauth/angular-bitauth.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
         dest: 'www/lib/angular.js'
@@ -251,7 +251,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js': ['angular-bitcore-wallet-client/index.js'],
-          'angular-pbkdf2/angular-pbkdf2.js': ['angular-pbkdf2/index.js']
+          'angular-bitauth/angular-bitauth.js': ['angular-bitauth/index.js']
         },
       }
     }

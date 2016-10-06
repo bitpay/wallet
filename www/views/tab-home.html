@@ -78,7 +78,6 @@
               {{wallet.m}}-of-{{wallet.n}}
             </span>
           </span>
-
           <p>
           <span ng-if="!wallet.isComplete()" class="assertive" translate>
             Incomplete
@@ -91,15 +90,15 @@
           </p>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a ui-sref="tabs.bitpayCard"
-           ng-if="wallets[0] && externalServices.BitpayCard && bitpayCardEnabled"
-           class="item item-sub item-icon-left item-big-icon-left item-icon-right">
+        <a ng-repeat="card in bitpayCards"
+           ui-sref="tabs.bitpayCard({id:card.id})"
+           ng-if="bitpayCardEnabled && bitpayCards[0]"
+           class="item item-icon-left item-big-icon-left item-icon-right">
           <i class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
           <h2>BitPay Card</h2>
-          <p ng-if="!bitpayCard" translate>Add funds to get started</p>
-          <span ng-if="bitpayCard">${{bitpayCard.balance}}</span>
+          <p>{{card.lastFourDigits}}</p>
           <i class="icon bp-arrow-right"></i>
         </a>
       </div>

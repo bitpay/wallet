@@ -50,7 +50,7 @@ build/Release
 node_modules
 bower_components
 angular-bitcore-wallet-client/angular-bitcore-wallet-client.js
-angular-pbkdf2/angular-pbkdf2.js
+angular-bitauth/angular-bitauth.js
 
 # Users Environment Variables
 .lock-wscript

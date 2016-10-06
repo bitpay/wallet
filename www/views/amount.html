@@ -12,15 +12,15 @@
     <div>
       <div class="item item-no-bottom-border" translate>Recipient</div>
 
-      <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':isCard}">
+      <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':cardId}">
         <i ng-if="isWallet" class="icon ion-briefcase size-21"></i>
         <span ng-if="!isWallet">
-          <gravatar ng-if="!isCard" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
-          <i ng-if="isCard" class="icon big-icon-svg">
+          <gravatar ng-if="!cardId" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
+          <i ng-if="cardId" class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
         </span>
-        <span ng-class="{'m10l':isCard}">{{toName || toAddress}}</span>
+        <span ng-class="{'m10l':cardId}">{{toName || toAddress}}</span>
       </div>
     </div>
 
