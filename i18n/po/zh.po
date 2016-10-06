@@ -14,16 +14,16 @@ msgstr ""
 "Language: zh\n"
 "PO-Revision-Date: 2016-07-14 14:39-0400\n"
 
-#: public/views/modals/search.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/walletHome.html
 msgid "(possible double spend)"
 msgstr "（重复支付）"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "（可信的）"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "[Balance Hidden]"
 msgstr "[隐藏余额]"
 
@@ -31,56 +31,56 @@ msgstr "[隐藏余额]"
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "扣除比特币网络费 {{fee}}"
 
-#: public/views/includes/confirm-tx.html
+#: www/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
 msgstr "交易的{{feeRateStr}}"
 
-#: public/views/copayers.html
-#: public/views/includes/walletInfo.html
+#: www/views/copayers.html
+#: www/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.n}} 分之 {{index.m}}"
 
-#: public/views/modals/search.html
+#: www/views/modals/search.html
 msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
 msgstr "{{index.result.length - index.txHistorySearchResults.length}} 更多"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
 msgstr "{{index.txProgress}} 条交易已下载"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.n}} 分之 {{item.m}}"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr "* 如果 1) 你是创造者，及没有其他 copayer 签名，或 2) 24 小时已经过去，支付提议将被删除。"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
 msgstr "<b>如果你无法访问你的 COPAY 钱包或加密私钥，及你没有分开储存钱包备份和相应密码，你承认并同意有关 COPAY 钱包里的任何比特币将不可被存取。</b>"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet recovery phrases (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet recovery phrases of any of the other copayers)."
 msgstr "<b>或</b> 1 钱包导出文件和钱包恢复短语的剩余法定人数 (例如在 3-5 钱包︰1 钱包导出文件 + 任何其他 copayers 的 2 钱包恢复短语)。"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "<b>OR</b> the wallet recovery phrase of <b>all</b> copayers in the wallet"
 msgstr "<b>或</b> 钱包里的 <b>所有</b> copayers 的钱包恢复短语"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "<b>OR</b> the wallet recovery phrases of <b>all</b> copayers in the wallet"
 msgstr "<b>或</b> 钱包里的 <b>所有</b> copayers 的钱包恢复短语"
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "A multisignature bitcoin wallet"
 msgstr "多重签名比特币钱包"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "About Copay"
 msgstr "Copay 简介"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -88,84 +88,84 @@ msgstr "Copay 简介"
 msgid "Accept"
 msgstr "同意"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Account"
 msgstr "帐户"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Account Number"
 msgstr "帐号"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 #: src/js/controllers/index.js
 msgid "Activity"
 msgstr "活动"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Add a new entry"
 msgstr "添加新条目"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Add a Password"
 msgstr "添加密码"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Add an optional password to secure the recovery phrase"
 msgstr "添加可选的密码，以保护恢复短语"
 
-#: public/views/includes/note.html
-#: public/views/modals/tx-details.html
+#: www/views/includes/note.html
+#: www/views/modals/tx-details.html
 msgid "Add comment"
 msgstr "添加评论"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr "添加钱包"
 
-#: public/views/modals/addressbook.html
-#: public/views/modals/customized-amount.html
-#: public/views/modals/paypro.html
-#: public/views/paymentUri.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/customized-amount.html
+#: www/views/modals/paypro.html
+#: www/views/paymentUri.html
 msgid "Address"
 msgstr "地址"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Address Type"
 msgstr "地址类型"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Advanced"
 msgstr "進階"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Alias"
 msgstr "别名"
 
-#: public/views/preferencesAlias.html
+#: www/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "<i>{{index.walletName}}</i>别名"
 
-#: public/views/preferencesLanguage.html
-#: public/views/translators.html
+#: www/views/preferencesLanguage.html
+#: www/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
 msgstr "欢迎大家为 Copay 提供翻译，注册 crowdin.com 并加入 Copay 项目"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "All transaction requests are irreversible."
 msgstr "所有交易请求均不可逆。"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Alternative Currency"
 msgstr "替代货币"
 
-#: public/views/includes/output.html
-#: public/views/modals/customized-amount.html
-#: public/views/paymentUri.html
-#: public/views/walletHome.html
+#: www/views/includes/output.html
+#: www/views/modals/customized-amount.html
+#: www/views/paymentUri.html
+#: www/views/walletHome.html
 msgid "Amount"
 msgstr "数额"
 
@@ -173,8 +173,8 @@ msgstr "数额"
 msgid "Amount below minimum allowed"
 msgstr "数额低于最低允许值"
 
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Amount in"
 msgstr "已转换的数额"
 
@@ -187,36 +187,36 @@ msgstr "你确定要删除恢复短语吗?"
 msgid "Are you sure you want to delete this wallet?"
 msgstr "确定要删除这钱包？"
 
-#: public/views/includes/walletInfo.html
+#: www/views/includes/walletInfo.html
 msgid "Auditable"
 msgstr "可审核"
 
-#: public/views/includes/available-balance.html
+#: www/views/includes/available-balance.html
 msgid "Available Balance"
 msgstr "可用余额"
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
 msgstr "平均确认时间: {{fee.nbBlocks * 10}} 分钟"
 
-#: public/views/includes/topbar.html
+#: www/views/includes/topbar.html
 msgid "Back"
 msgstr "返回"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Backup"
 msgstr "备份"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Backup failed"
 msgstr "备份失败"
 
-#: public/views/paperWallet.html
-#: public/views/walletHome.html
+#: www/views/paperWallet.html
+#: www/views/walletHome.html
 msgid "Backup Needed"
 msgstr "需要备份"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Backup now"
 msgstr "现在备份"
 
@@ -224,42 +224,42 @@ msgstr "现在备份"
 msgid "Bad wallet invitation"
 msgstr "坏钱包邀请"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Balance By Address"
 msgstr "地址余额"
 
-#: public/views/paperWallet.html
-#: public/views/walletHome.html
+#: www/views/paperWallet.html
+#: www/views/walletHome.html
 msgid "Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
 msgstr "接收资金前, 务必备份你的钱包。如果你遗失此设备，就无法在没有备份的情况下找回资金。"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "BETA: Android Key Derivation Test:"
 msgstr "BETA: Android 密钥衍生测试︰"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "BIP32 path for address derivation"
 msgstr "BIP32 路径的地址衍生"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Bitcoin address"
 msgstr "比特币地址"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Bitcoin Network Fee Policy"
 msgstr "比特币网络手续费策略"
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "比特币交易可能包括网络矿工所收取的费用。收费越高，交易数据块包含矿工的奖励也越大。当前收费的确定取决于网络负载和所选定的策略。"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
 msgstr "比特币 URI 无效！"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Broadcast Payment"
 msgstr "广播支付"
 
@@ -267,11 +267,11 @@ msgstr "广播支付"
 msgid "Broadcasting transaction"
 msgstr "正在广播交易"
 
-#: public/views/unsupported.html
+#: www/views/unsupported.html
 msgid "Browser unsupported"
 msgstr "浏览器不被支持"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Buy and Sell"
 msgstr ""
 
@@ -279,12 +279,12 @@ msgstr ""
 msgid "Calculating fee"
 msgstr "正在计算费用"
 
-#: public/views/includes/confirm-tx.html
-#: public/views/includes/note.html
-#: public/views/includes/password.html
-#: public/views/modals/addressbook.html
-#: public/views/modals/confirmation.html
-#: public/views/walletHome.html
+#: www/views/includes/confirm-tx.html
+#: www/views/includes/note.html
+#: www/views/includes/password.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/confirmation.html
+#: www/views/walletHome.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -292,7 +292,7 @@ msgstr "正在计算费用"
 msgid "Cancel"
 msgstr "取消"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Cancel and delete the wallet"
 msgstr "取消并删除钱包"
 
@@ -308,50 +308,50 @@ msgstr "无法重复加入同一个钱包"
 msgid "Cannot sign: The payment request has expired"
 msgstr "无法签名︰支付请求已过期"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Certified by"
 msgstr "通过认证："
 
-#: public/views/preferencesAlias.html
+#: www/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "更改钱包别名只会影响本地钱包名称。"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Chinese"
 msgstr "中文"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Choose a backup file from your computer"
 msgstr "从你的计算机选择一个备份文件"
 
-#: public/views/preferencesHistory.html
+#: www/views/preferencesHistory.html
 msgid "Clear cache"
 msgstr "清空缓存"
 
-#: public/views/includes/topbar.html
-#: public/views/modals/addressbook.html
-#: public/views/modals/customized-amount.html
-#: public/views/modals/paypro.html
-#: public/views/modals/scanner.html
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/includes/topbar.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/customized-amount.html
+#: www/views/modals/paypro.html
+#: www/views/modals/scanner.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Close"
 msgstr "关闭"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Color"
 msgstr "颜色"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Comment"
 msgstr "评论"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Commit hash"
 msgstr "提交哈希"
 
-#: public/views/includes/confirm-tx.html
+#: www/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -359,15 +359,15 @@ msgstr "提交哈希"
 msgid "Confirm"
 msgstr "确定"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Confirm your wallet recovery phrase"
 msgstr "确认你的钱包恢复短语"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "确认"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Congratulations!"
 msgstr "恭喜！"
 
@@ -383,7 +383,7 @@ msgstr "正在连接 Glidera..."
 msgid "Connection reset by peer"
 msgstr "连接被对方重置"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Continue"
 msgstr "继续"
 
@@ -399,7 +399,7 @@ msgstr "Copayer 已经表决此花费提议"
 msgid "Copayer data mismatch"
 msgstr "Copayer 的数据不匹配"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Copayers"
 msgstr "Copayers"
 
@@ -410,15 +410,15 @@ msgstr "Copayers"
 msgid "Copied to clipboard"
 msgstr "已复制到剪贴板"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "将此文本复制到一个安全的地方（记事本或电子邮件）"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Copy to clipboard"
 msgstr "复制到剪贴板"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "无法访问服务器上的钱包。请确认︰"
 
@@ -502,24 +502,24 @@ msgstr "无法发送支付"
 msgid "Could not update Wallet"
 msgstr "无法更新钱包"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Create"
 msgstr "创建"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
 msgstr "创建{{totalCopayers}}-的-{{requiredCopayers}} 的钱包"
 
-#: public/views/add.html
-#: public/views/create.html
+#: www/views/add.html
+#: www/views/create.html
 msgid "Create new wallet"
 msgstr "创建新钱包"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Create, join or import"
 msgstr "创建、 加入或导入"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Created by"
 msgstr "创建者:"
 
@@ -531,43 +531,43 @@ msgstr "正在创建交易"
 msgid "Creating Wallet..."
 msgstr "正在创建钱包..."
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "此策略的当前收费率︰{{fee.feePerKBUnit}}/kiB"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Czech"
 msgstr "捷克文"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Date"
 msgstr "日期"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
 msgstr "在此设备上解密纸钱包可能需要大约 5 分钟。请耐心等候并保持程序开着。"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Delete it and create a new one"
 msgstr "删除并创建新的"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Delete Payment Proposal"
 msgstr "删除支付提议"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Delete recovery phrase"
 msgstr "删除恢复短语"
 
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWords.html
 msgid "Delete Recovery Phrase"
 msgstr "删除恢复短语"
 
-#: public/views/preferencesDeleteWallet.html
+#: www/views/preferencesDeleteWallet.html
 msgid "Delete wallet"
 msgstr "删除钱包"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Delete Wallet"
 msgstr "删除钱包"
 
@@ -575,49 +575,49 @@ msgstr "删除钱包"
 msgid "Deleting Wallet..."
 msgstr "正在删除钱包..."
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Derivation Path"
 msgstr "衍生路径"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "衍生策略"
 
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
-#: public/views/walletHome.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
+#: www/views/walletHome.html
 msgid "Description"
 msgstr "说明"
 
-#: public/views/modals/coinbase-tx-details.html
-#: public/views/modals/customized-amount.html
-#: public/views/modals/glidera-tx-details.html
-#: public/views/modals/paypro.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/coinbase-tx-details.html
+#: www/views/modals/customized-amount.html
+#: www/views/modals/glidera-tx-details.html
+#: www/views/modals/paypro.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Details"
 msgstr "详细信息"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Disabled"
 msgstr "未启用"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Do not include private key"
 msgstr "不包括私钥"
 
-#: public/views/preferencesLanguage.html
-#: public/views/translators.html
+#: www/views/preferencesLanguage.html
+#: www/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "在 Crowdin 找不到你的语言？请联系 Crowdin 的所有者！我们很乐意支持你的语言。"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Done"
 msgstr "完成"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Download"
 msgstr "下载"
 
@@ -625,24 +625,24 @@ msgstr "下载"
 msgid "Economy"
 msgstr "经济"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Edit"
 msgstr "编辑"
 
-#: public/views/includes/note.html
-#: public/views/modals/tx-details.html
+#: www/views/includes/note.html
+#: www/views/modals/tx-details.html
 msgid "Edit comment"
 msgstr "编辑评论"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Edited by"
 msgstr "编辑者："
 
-#: public/views/preferencesEmail.html
+#: www/views/preferencesEmail.html
 msgid "Email for wallet notifications"
 msgstr "发送钱包通知到邮箱"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Email Notifications"
 msgstr "邮箱通知"
 
@@ -650,15 +650,15 @@ msgstr "邮箱通知"
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "已达到空地址限制。无法生成新的地址。"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Enable Coinbase Service"
 msgstr "启用 Coinbase 服务"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Enable Glidera Service"
 msgstr "启用 Glidera 服务"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Enable push notifications"
 msgstr "启用推式通知"
 
@@ -666,16 +666,16 @@ msgstr "启用推式通知"
 msgid "Encrypted export file saved"
 msgstr "已保存加密的导出文件"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Enter the recovery phrase (BIP39)"
 msgstr "输入恢复短语 (BIP39)"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Enter your password"
 msgstr "请输入你的密码"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Enter your spending password"
 msgstr "输入你的支付密码"
 
@@ -687,32 +687,32 @@ msgstr "Wallet Service 出现错误"
 msgid "Error creating wallet"
 msgstr "创建钱包时出现错误"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Expired"
 msgstr "已过期"
 
-#: public/views/modals/paypro.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/paypro.html
+#: www/views/modals/txp-details.html
 msgid "Expires"
 msgstr "到期"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Export options"
 msgstr "导出选项"
 
-#: public/views/preferencesHistory.html
+#: www/views/preferencesHistory.html
 msgid "Export to file"
 msgstr "导出到文件"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Export Wallet"
 msgstr "导出钱包"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Exporting via QR not supported for this wallet"
 msgstr "此钱包不支持通过 QR 的导出"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Extended Public Keys"
 msgstr "扩展的公钥"
 
@@ -720,21 +720,21 @@ msgstr "扩展的公钥"
 msgid "Extracting Wallet Information..."
 msgstr "正在获取钱包信息..."
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Failed to export"
 msgstr "导出失败"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Failed to verify backup. Please check your information"
 msgstr "验证备份失败。请检查你的信息"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Family vacation funds"
 msgstr "家庭度假资金"
 
-#: public/views/includes/confirm-tx.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/includes/confirm-tx.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Fee"
 msgstr "费用"
 
@@ -742,8 +742,8 @@ msgstr "费用"
 msgid "Fetching Payment Information"
 msgstr "获取支付信息"
 
-#: public/views/export.html
-#: public/views/import.html
+#: www/views/export.html
+#: www/views/import.html
 msgid "File/Text"
 msgstr "文件/文本"
 
@@ -751,19 +751,19 @@ msgstr "文件/文本"
 msgid "Finger Scan Failed"
 msgstr "指纹扫描失败"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Finish"
 msgstr "完成"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "For audit purposes"
 msgstr "供审计目的"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "French"
 msgstr "法语"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
 msgstr "从目标设备，请到添加钱包 &gt; 导入钱包和扫描此 QR 代码"
 
@@ -771,7 +771,7 @@ msgstr "从目标设备，请到添加钱包 &gt; 导入钱包和扫描此 QR �
 msgid "Funds are locked by pending spend proposals"
 msgstr "资金由未决的花费提议锁定"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Funds found"
 msgstr "找到资金"
 
@@ -779,15 +779,15 @@ msgstr "找到资金"
 msgid "Funds received"
 msgstr "收到的资金"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Funds will be transferred to"
 msgstr "资金将会转移到"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Generate new address"
 msgstr "生成新的地址"
 
-#: public/views/modals/customized-amount.html
+#: www/views/modals/customized-amount.html
 msgid "Generate QR Code"
 msgstr "生成 QR 码"
 
@@ -795,50 +795,50 @@ msgstr "生成 QR 码"
 msgid "Generating .csv file..."
 msgstr "正在生成 .csv 文件..."
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "German"
 msgstr "德语"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "获取{{selectedWalletName}} 钱包的地址..."
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Global preferences"
 msgstr "全局首选项"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Hardware wallet"
 msgstr "硬件钱包"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Hardware Wallet"
 msgstr "硬件钱包"
 
-#: public/views/create.html
-#: public/views/export.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/export.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Hide advanced options"
 msgstr "隐藏高级选项"
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "I affirm that I have read, understood, and agree with these terms."
 msgstr "我确定已阅读、理解并同意这些条款。"
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "I AGREE. GET STARTED"
 msgstr "我同意。现即开始"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Import"
 msgstr "导入"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Import backup"
 msgstr "导入备份"
 
-#: public/views/add.html
+#: www/views/add.html
 msgid "Import wallet"
 msgstr "导入钱包"
 
@@ -846,11 +846,11 @@ msgstr "导入钱包"
 msgid "Importing Wallet..."
 msgstr "正在导入钱包..."
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
 msgstr "在任何情况下，软件作者、Bitpay 的员工及附属公司、版权持有人或 BitPay，Inc. 均不对由软件引起，与软件有关联或无关联，所任何索赔、损害或其他责任，无论是合同诉讼、侵权行为或其他，产生从本合同或与本软件有关。"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr "为了验证你的钱包备份，请键入你的密码："
 
@@ -871,8 +871,8 @@ msgstr "资金不足"
 msgid "Insufficient funds for fee"
 msgstr "费用的资金不足"
 
-#: public/views/modals/search.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/walletHome.html
 msgid "Invalid"
 msgstr "无效"
 
@@ -896,20 +896,20 @@ msgstr "衍生路径无效"
 msgid "Invitation to share a Copay Wallet"
 msgstr "邀请分享 Copay 钱包"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Italian"
 msgstr "義大利文"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Japanese"
 msgstr "日语"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "John"
 msgstr "John"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Join"
 msgstr "加入"
 
@@ -917,7 +917,7 @@ msgstr "加入"
 msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
 msgstr "加入我的 Copay 钱包。这是邀请码 ︰ {{secret}} 你可以在 https://copay.io 下载 Copay 到你的手机或桌式电脑"
 
-#: public/views/add.html
+#: www/views/add.html
 msgid "Join shared wallet"
 msgstr "加入共享钱包"
 
@@ -929,27 +929,27 @@ msgstr "正在加入钱包..."
 msgid "Key already associated with an existing wallet"
 msgstr "钥已经关联现有的钱包"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Label"
 msgstr "标签"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Language"
 msgstr "语言"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Last Wallet Addresses"
 msgstr "最后的钱包地址"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Learn more about Copay backups"
 msgstr "了解更多关于 Copay 备份"
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Loading..."
 msgstr "正在加载..."
 
-#: public/views/includes/available-balance.html
+#: www/views/includes/available-balance.html
 msgid "locked by pending payments"
 msgstr "被未决支付锁定"
 
@@ -961,7 +961,7 @@ msgstr "Locktime 在进行中。请稍等以创建新的花费提议"
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime 在进行中。请稍等以删除花费提议"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Make a payment to"
 msgstr "支付给"
 
@@ -973,22 +973,22 @@ msgstr "匹配："
 msgid "me"
 msgstr "我"
 
-#: public/views/includes/copayers.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
-#: public/views/preferencesInformation.html
+#: www/views/includes/copayers.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
+#: www/views/preferencesInformation.html
 msgid "Me"
 msgstr "我"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Memo"
 msgstr "便签"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Merchant message"
 msgstr "商家的消息"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Message"
 msgstr "信息"
 
@@ -1000,34 +1000,34 @@ msgstr "缺失参数"
 msgid "Missing private keys to sign"
 msgstr "遗失需要签名的私钥"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/walletHome.html
 msgid "Moved"
 msgstr "已调动"
 
-#: public/views/includes/confirm-tx.html
-#: public/views/modals/txp-details.html
+#: www/views/includes/confirm-tx.html
+#: www/views/modals/txp-details.html
 msgid "Multiple recipients"
 msgstr "多个接收者"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "My Bitcoin address"
 msgstr "我的比特币地址"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "My contacts"
 msgstr "我的联系人"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "My wallets"
 msgstr "我的钱包"
 
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWords.html
 msgid "Need to do backup"
 msgstr "需要做备份"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Network"
 msgstr "网络"
 
@@ -1044,11 +1044,11 @@ msgstr "新的支付提议"
 msgid "New Random Recovery Phrase"
 msgstr "新的随机恢复短语"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "No hardware wallets supported on this device"
 msgstr "此设备不支持硬件钱包"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "No transactions yet"
 msgstr "没有交易记录"
 
@@ -1060,7 +1060,7 @@ msgstr "常规"
 msgid "Not authorized"
 msgstr "尚未授权"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Not completed"
 msgstr "未完成"
 
@@ -1068,13 +1068,13 @@ msgstr "未完成"
 msgid "Not enough funds for fee"
 msgstr "费用的资金不足"
 
-#: public/views/modals/addressbook.html
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Not valid"
 msgstr "无效"
 
-#: public/views/includes/output.html
+#: www/views/includes/output.html
 msgid "Note"
 msgstr "备注"
 
@@ -1086,52 +1086,52 @@ msgstr "备注︰共有{{amountAboveMaxSizeStr}} 被排除了。超出了交易�
 msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "备注：共有{{amountBelowFeeStr}} 被排除了。这些来自 UTXOs 的资金小于提供的网络费用。"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there."
 msgstr "注意︰欲从第三方软件导入钱包，请到添加钱包 &gt; 创建钱包，并指定恢复短语。"
 
-#: public/views/disclaimer.html
-#: public/views/termOfUse.html
+#: www/views/disclaimer.html
+#: www/views/termOfUse.html
 msgid "Official English Disclaimer"
 msgstr "官方英文免责声明"
 
-#: public/views/modals/tx-status.html
+#: www/views/modals/tx-status.html
 msgid "OKAY"
 msgstr "OKAY"
 
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWords.html
 msgid "Once you have copied your wallet recovery phrase down, it is recommended to delete it from this device."
 msgstr "一旦抄下你的钱包恢复短语，建议从此设备上删除。"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "只显示主要（不改变）的地址。这个时候不本地验证此列表上的地址。"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Open Settings app"
 msgstr "打开设置应用"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "optional"
 msgstr "可选"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Paper Wallet Private Key"
 msgstr "纸钱包私钥"
 
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Participants"
 msgstr "参与者"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Passphrase"
 msgstr "密码短语"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
-#: public/views/paperWallet.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
+#: www/views/paperWallet.html
 msgid "Password"
 msgstr "密码"
 
@@ -1139,15 +1139,15 @@ msgstr "密码"
 msgid "Password required. Make sure to enter your password in advanced options"
 msgstr "需要密码。请务必在高级选项中输入你的密码"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Paste invitation here"
 msgstr "在此粘贴邀请"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Paste the backup plain text code"
 msgstr "粘贴备份的纯文本代码"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Paste your paper wallet private key here"
 msgstr "在此粘贴你的纸钱包私钥"
 
@@ -1155,35 +1155,35 @@ msgstr "在此粘贴你的纸钱包私钥"
 msgid "Pasted from clipboard"
 msgstr "自剪贴板粘贴"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Pay To"
 msgstr "支付给"
 
-#: public/views/modals/tx-status.html
+#: www/views/modals/tx-status.html
 msgid "Payment Accepted"
 msgstr "已接受支付"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "支付已被接受，但尚未广播"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "支付以被接受。它将由 Glidera 广播。如果出现问题，它可以在创建后的 6 个小时内删除。"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment details"
 msgstr "支付明细"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Payment expires"
 msgstr "支付期满"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment Proposal"
 msgstr "支付提议"
 
-#: public/views/modals/tx-status.html
+#: www/views/modals/tx-status.html
 msgid "Payment Proposal Created"
 msgstr "支付提议已创建"
 
@@ -1199,7 +1199,7 @@ msgstr "支付提议已被 Copayer 拒绝"
 msgid "Payment Proposal Signed by Copayer"
 msgstr "支付提议已获 Copayer 签名"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Payment Proposals"
 msgstr "支付提议"
 
@@ -1211,33 +1211,33 @@ msgstr "支付协议无效"
 msgid "Payment Protocol not supported on Chrome App"
 msgstr "支付协议不支持 Chrome 应用程序"
 
-#: public/views/modals/tx-status.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/tx-status.html
+#: www/views/modals/txp-details.html
 msgid "Payment Rejected"
 msgstr "支付被拒绝"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Payment request"
 msgstr "支付请求"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 #: src/js/services/notificationsService.js
 msgid "Payment Sent"
 msgstr "支付已发送"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Payment to"
 msgstr "支付给"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Pending Confirmation"
 msgstr "待确认"
 
-#: public/views/preferencesDeleteWallet.html
+#: www/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "永久删除这个钱包。此操作无法撤消"
 
-#: public/views/create.html
+#: www/views/create.html
 #: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr "个人钱包"
@@ -1256,7 +1256,7 @@ msgstr "请输入必须填写的信息"
 msgid "Please enter the wallet recovery phrase"
 msgstr "请输入钱包恢复短语"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
 msgstr "请按顺序点击词句，以确认你的备份短语填写正确。"
 
@@ -1264,7 +1264,7 @@ msgstr "请按顺序点击词句，以确认你的备份短语填写正确。"
 msgid "Please upgrade Copay to perform this action"
 msgstr "请升级 Copay 以执行此操作"
 
-#: public/views/uri.html
+#: www/views/uri.html
 msgid "Please wait to be redirected..."
 msgstr "请等待重新定向..."
 
@@ -1272,11 +1272,11 @@ msgstr "请等待重新定向..."
 msgid "Please, select your backup file"
 msgstr "请选择你的备份文件"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Polish"
 msgstr "波兰文"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Preferences"
 msgstr "偏好"
 
@@ -1284,7 +1284,7 @@ msgstr "偏好"
 msgid "Preparing backup..."
 msgstr "正在准备备份..."
 
-#: public/views/preferencesHistory.html
+#: www/views/preferencesHistory.html
 msgid "preparing..."
 msgstr "准备中..."
 
@@ -1300,16 +1300,16 @@ msgstr "优先"
 msgid "Private key is encrypted, cannot sign"
 msgstr "私钥已加密，无法签名"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
 msgstr "Copay 的推式通知目前未启用。请在设置应用里启用它。"
 
-#: public/views/export.html
-#: public/views/modals/customized-amount.html
+#: www/views/export.html
+#: www/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "QR 码"
 
-#: public/views/modals/scanner.html
+#: www/views/modals/scanner.html
 msgid "QR-Scanner"
 msgstr "QR-扫描仪"
 
@@ -1317,18 +1317,18 @@ msgstr "QR-扫描仪"
 msgid "Receive"
 msgstr "接收"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/walletHome.html
 msgid "Received"
 msgstr "已接收"
 
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Recipients"
 msgstr "接收者"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Recovery Phrase"
 msgstr "恢复短语"
 
@@ -1336,7 +1336,7 @@ msgstr "恢复短语"
 msgid "Recovery phrase deleted"
 msgstr "恢复短语已删除"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Recreate"
 msgstr "重新创建"
 
@@ -1344,44 +1344,44 @@ msgstr "重新创建"
 msgid "Recreating Wallet..."
 msgstr "正在重新创建的钱包..."
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Reject"
 msgstr "拒絕"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Release Information"
 msgstr "发布信息"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Remove"
 msgstr "移除"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Repeat password"
 msgstr "重复输入密码"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Repeat the password"
 msgstr "重复密码"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Repeat the spending password"
 msgstr "重复支付密码"
 
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Request a specific amount"
 msgstr "请求特定数额"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Request Spending Password"
 msgstr "请求支付密码"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Required"
 msgstr "必需"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Required number of signatures"
 msgstr "所需的签名数"
 
@@ -1389,23 +1389,23 @@ msgstr "所需的签名数"
 msgid "Retrieving inputs information"
 msgstr "正在获取输入的信息。"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Russian"
 msgstr "俄语"
 
-#: public/views/includes/note.html
-#: public/views/modals/addressbook.html
-#: public/views/preferencesAlias.html
-#: public/views/preferencesBwsUrl.html
-#: public/views/preferencesEmail.html
+#: www/views/includes/note.html
+#: www/views/modals/addressbook.html
+#: www/views/preferencesAlias.html
+#: www/views/preferencesBwsUrl.html
+#: www/views/preferencesEmail.html
 msgid "Save"
 msgstr "保存"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Scan addresses for funds"
 msgstr "扫描资金的地址"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Scan Fingerprint"
 msgstr "扫描指纹"
 
@@ -1413,11 +1413,11 @@ msgstr "扫描指纹"
 msgid "Scan Finished"
 msgstr "扫描完成"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Scan status finished with error"
 msgstr "扫描完成，出现错误"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Scan Wallet Funds"
 msgstr "扫描钱包资金"
 
@@ -1429,57 +1429,57 @@ msgstr "请扫描你的指纹"
 msgid "Scanning Wallet funds..."
 msgstr "正在扫描钱包资金..."
 
-#: public/views/modals/search.html
+#: www/views/modals/search.html
 msgid "Search transactions"
 msgstr "搜索交易"
 
-#: public/views/modals/search.html
+#: www/views/modals/search.html
 msgid "Search Transactions"
 msgstr "搜索交易"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Security preferences"
 msgstr "安全首选项"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "See it on the blockchain"
 msgstr "在区块链查看"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Select a backup file"
 msgstr "选择备份文件"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "选择钱包"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Self-signed Certificate"
 msgstr "自签名证书"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 #: src/js/controllers/index.js
 msgid "Send"
 msgstr "发送"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Send addresses by email"
 msgstr "通过电邮发送地址"
 
-#: public/views/includes/confirm-tx.html
+#: www/views/includes/confirm-tx.html
 msgid "Send bitcoin"
 msgstr "发送比特币"
 
-#: public/views/export.html
-#: public/views/preferencesLogs.html
+#: www/views/export.html
+#: www/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "通过电邮发送"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Send Max"
 msgstr "发送最大"
 
-#: public/views/includes/transaction.html
+#: www/views/includes/transaction.html
 msgid "Sending"
 msgstr "正在发送"
 
@@ -1487,10 +1487,10 @@ msgstr "正在发送"
 msgid "Sending transaction"
 msgstr "正在发送交易"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/tx-status.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/tx-status.html
+#: www/views/walletHome.html
 msgid "Sent"
 msgstr "已发送"
 
@@ -1498,64 +1498,64 @@ msgstr "已发送"
 msgid "Server response could not be verified"
 msgstr "无法验证服务器响应"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Session log"
 msgstr "会话日志"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "SET"
 msgstr "设置"
 
-#: public/views/preferencesBwsUrl.html
+#: www/views/preferencesBwsUrl.html
 msgid "Set default url"
 msgstr "设置默认的 url"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Set up a password"
 msgstr "设置密码"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Set up a spending password"
 msgstr "设置支付密码"
 
-#: public/views/preferencesEmail.html
+#: www/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr "设置电邮通知可能会削弱你的隐私，如果钱包服务提供商受到损害。攻击者可能获得的信息包括你的钱包地址及其结余，可仅此而已。"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Settings"
 msgstr "设置"
 
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Share address"
 msgstr "共享地址"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Share invitation"
 msgstr "共享邀请"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Share this invitation with your copayers"
 msgstr "将此邀请与你的 copayers 共享"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Share this wallet address to receive payments"
 msgstr "分享此钱包地址，以接收付款"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "共享此钱包地址，以便接收支付。为了保护你的隐私，一旦你使用它们，新地址将自动生成。"
 
-#: public/views/create.html
-#: public/views/import.html
+#: www/views/create.html
+#: www/views/import.html
 msgid "Shared Wallet"
 msgstr "共享的钱包"
 
-#: public/views/create.html
-#: public/views/export.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/export.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Show advanced options"
 msgstr "显示高级选项"
 
@@ -1567,11 +1567,11 @@ msgstr "签名被服务器拒绝"
 msgid "Signing transaction"
 msgstr "签名交易"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Single Address Wallet"
 msgstr "单一地址钱包"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Spanish"
 msgstr "西班牙语"
 
@@ -1607,11 +1607,11 @@ msgstr "成功"
 msgid "Super Economy"
 msgstr "超级经济"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Sweep paper wallet"
 msgstr "Sweep 纸钱包"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Sweep Wallet"
 msgstr "Sweep 钱包"
 
@@ -1619,24 +1619,24 @@ msgstr "Sweep 钱包"
 msgid "Sweeping Wallet..."
 msgstr "正在导出钱包"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Tap and hold to show"
 msgstr "点击并按住以显示"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Tap to retry"
 msgstr "点击以重试"
 
-#: public/views/disclaimer.html
-#: public/views/preferencesAbout.html
+#: www/views/disclaimer.html
+#: www/views/preferencesAbout.html
 msgid "Terms of Use"
 msgstr "使用条款"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
 msgstr "如果你遗失或忘记私钥或密码，软件作者、Bitpay 的员工及附属公司、版权持有人或 BitPay，Inc. 均无法取回你的私钥或密码，由于他们没有比特币网络的管理权，他们并不能保证交易确认。"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The derivation path"
 msgstr "衍生路径"
 
@@ -1644,7 +1644,7 @@ msgstr "衍生路径"
 msgid "The Ledger Chrome application is not installed"
 msgstr "Ledger Chrome 应用程序未安装"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The password of the recovery phrase (if set)"
 msgstr "恢复短语的密码 (如已设置)"
 
@@ -1652,12 +1652,12 @@ msgstr "恢复短语的密码 (如已设置)"
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "支付已创建，但无法完成。请从首页再试一次"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "The payment was removed by creator"
 msgstr "支付已被创建者移除"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "The recovery phrase could require a password to be imported"
 msgstr "恢复短语需要密码才能导入"
 
@@ -1665,11 +1665,11 @@ msgstr "恢复短语需要密码才能导入"
 msgid "The request could not be understood by the server"
 msgstr "服务器不理解此请求"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin."
 msgstr "此软件并不构成一个账户，让 BitPay 或其他第三方作为金融中介机构或保管人以保管你的比特币。"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr "你将使用的软件是一个免费、开放源代码和多重签名的数字钱包。"
 
@@ -1682,15 +1682,15 @@ msgstr "花费提议不是未决"
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr "\"{{walletName}}\"钱包已删除"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The Wallet Recovery Phrase could require a password to be imported"
 msgstr "钱包恢复短语需要密码才能导入"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The wallet service URL"
 msgstr "钱包服务 URL"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "There are no wallets to make this payment"
 msgstr "没有钱包以进行此支付"
 
@@ -1702,46 +1702,46 @@ msgstr "Copay 有新版本。请更新"
 msgid "There is an error in the form"
 msgstr "表格中有错误"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "此恢复短语是用密码创建。为了恢复此钱包，需要恢复短语和密码。"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "此交易已无效; 可能是双花尝试导致。"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "此钱包不在给定的 Bitcore Wallet Service (BWS) 注册。你可以从本地信息重新创建它。"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Time"
 msgstr "时间"
 
-#: public/views/includes/output.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
-#: public/views/walletHome.html
+#: www/views/includes/output.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
+#: www/views/walletHome.html
 msgid "To"
 msgstr "发送到"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
 msgstr "要恢复此 {{index.m}}{{index.n}} <b>共享</b> 钱包，你需要"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
 msgstr "在法律允许的最大范围内，本软件“按原样”提供，不提供任何形式、明示 或暗示的担保或陈述，包括但不是限于商品适销性，针对特定目的的适用性或非侵害性的保证。"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "too long!"
 msgstr "太长了 ！"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Total Locked Balance"
 msgstr "锁定结余的总额"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Total number of copayers"
 msgstr "Copayers 的总数"
 
@@ -1749,7 +1749,7 @@ msgstr "Copayers 的总数"
 msgid "Touch ID Failed"
 msgstr "触摸 ID 失败"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "交易"
 
@@ -1757,49 +1757,49 @@ msgstr "交易"
 msgid "Transaction already broadcasted"
 msgstr "交易已经广播"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Transaction History"
 msgstr "交易历史记录"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Translation Credits"
 msgstr "翻译志愿者"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Translators"
 msgstr "翻译者"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Try again"
 msgstr "重新尝试"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Type the Recovery Phrase (usually 12 words)"
 msgstr "键入恢复短语 （通常 12 个字）"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/walletHome.html
 msgid "Unconfirmed"
 msgstr "未确认"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Unit"
 msgstr "单位"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Unsent transactions"
 msgstr "未发送的交易"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Updating transaction history. Please stand by."
 msgstr "更新交易历史记录。请等待。"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "正在更新钱包..."
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
 msgstr "使用未经确认的资金"
 
@@ -1811,15 +1811,15 @@ msgstr "正在验证恢复短语。。。"
 msgid "Validating wallet integrity..."
 msgstr "正在验证钱包完整性。。。"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Version"
 msgstr "版本"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "View"
 msgstr "查看"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Waiting for copayers"
 msgstr "正在等待 copayers"
 
@@ -1831,7 +1831,7 @@ msgstr "正在等待 Ledger..."
 msgid "Waiting for Trezor..."
 msgstr "正在等待 Trezor..."
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Waiting..."
 msgstr "等待中..."
 
@@ -1843,32 +1843,32 @@ msgstr "钱包已存在"
 msgid "Wallet already in Copay"
 msgstr "钱包已经在 Copay"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Configuration (m-n)"
 msgstr "钱包配置 (m n)"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Wallet Export"
 msgstr "钱包导出"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Id"
 msgstr "钱包 Id"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Wallet incomplete and broken"
 msgstr "钱包不完整和损坏"
 
-#: public/views/preferencesAdvanced.html
-#: public/views/preferencesInformation.html
+#: www/views/preferencesAdvanced.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Information"
 msgstr "钱包信息"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Wallet Invitation"
 msgstr "钱包邀请"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Wallet Invitation is not valid!"
 msgstr "钱包邀请无效！"
 
@@ -1884,11 +1884,11 @@ msgstr "钱包被锁定"
 msgid "Wallet is not complete"
 msgstr "钱包不完整"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Wallet name"
 msgstr "钱包名称"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Name (at creation)"
 msgstr "钱包名称（在创建时）"
 
@@ -1896,7 +1896,7 @@ msgstr "钱包名称（在创建时）"
 msgid "Wallet needs backup"
 msgstr "钱包需要备份"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Network"
 msgstr "钱包网"
 
@@ -1912,9 +1912,9 @@ msgstr "钱包不在 Wallet Service 注册。使用“创建钱包\"的\"高级�
 msgid "Wallet Preferences"
 msgstr "钱包首选项"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Wallet Recovery Phrase"
 msgstr "钱包恢复短语"
 
@@ -1922,8 +1922,8 @@ msgstr "钱包恢复短语"
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "无效的钱包恢复短语"
 
-#: public/views/backup.html
-#: public/views/preferencesDeleteWords.html
+#: www/views/backup.html
+#: www/views/preferencesDeleteWords.html
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
 msgstr "没有可用的钱包恢复短语。你仍然可以从 Advanced &gt; Export 中导出。"
 
@@ -1931,53 +1931,53 @@ msgstr "没有可用的钱包恢复短语。你仍然可以从 Advanced &gt; Exp
 msgid "Wallet service not found"
 msgstr "找不到 Wallet Service"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "警告︰此设备/钱包无法运行钥匙衍生。无法在此钱包上执行操作。"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
 msgstr "警告︰不包括私钥，以检查钱包余额、交易历史记录，及从导出创建开销提议。可是，不允许批准（签名）提议，因此 <b>资金将无法从导出访问</b>。"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password."
 msgstr "警告︰密码不能恢复。<b>必须要把它抄写下来</b>。如果没有密码，钱包无法恢复。"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
 msgstr "警告︰此钱包没有可用的私钥。导出可以检查钱包余额、交易历史记录，及从导出创建开销提议。可是，不允许批准（签名）提议，因此 <b>资金将无法从导出访问</b>。"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "警告︰此交易有未经确认的输入"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "警告︰不受信任的证书"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "WARNING: Wallet not registered"
 msgstr "警告 ︰ 钱包没有注册"
 
-#: public/views/preferencesDeleteWallet.html
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWallet.html
+#: www/views/preferencesDeleteWords.html
 msgid "Warning!"
 msgstr "警告！​​​​​"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "We reserve the right to modify this disclaimer from time to time."
 msgstr "我们保留权利以修改此免责声明。"
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "WELCOME TO COPAY"
 msgstr "欢迎使用 COPAY"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
 msgstr "虽然软件经历了 beta 测试，并持续获得开源用户和开发者社区的反馈而改进，我们无法保证软件没有错误。"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Write your wallet recovery phrase"
 msgstr "抄写下你的钱包恢复短语"
 
@@ -1989,49 +1989,49 @@ msgstr "恢复词句数不正确："
 msgid "Wrong spending password"
 msgstr "支付密码错误"
 
-#: public/views/modals/confirmation.html
+#: www/views/modals/confirmation.html
 msgid "Yes"
 msgstr "是"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws."
 msgstr "你承认和同意使用此软件是你自己的判断，并遵守所有适用法律。"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software."
 msgstr "你有责任保管你的密码、私钥对，PINs 及你用以访问软件的任何其他代码。"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "You assume any and all risks associated with the use of the software."
 msgstr "你承担使用本软件的任何和所有相关风险。"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "You backed up your wallet. You can now restore this wallet at any time."
 msgstr "你已备份了钱包。你现在可以在任何时候复原此钱包。"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "You can safely install your wallet on another device and use it from multiple devices at the same time."
 msgstr "你可以安全地在另一台设备上安装你的钱包,并同时在多个设备上使用。"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "You do not have any wallet"
 msgstr "你没有任何钱包"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "You need the wallet recovery phrase to restore this personal wallet. Write it down and keep them somewhere safe."
 msgstr "你需要钱包恢复短语以恢复此个人钱包。把它抄写下来，并存放在安全的地方。"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Your nickname"
 msgstr "你的昵称"
 
-#: public/views/export.html
-#: public/views/import.html
+#: www/views/export.html
+#: www/views/import.html
 msgid "Your password"
 msgstr "你的密码"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Your spending password"
 msgstr "你的支付密码"
 
@@ -2039,11 +2039,11 @@ msgstr "你的支付密码"
 msgid "Your wallet has been imported correctly"
 msgstr "你的钱包已正确导入"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down"
 msgstr "你的钱包钥匙将被加密。支付密码不能恢复。必须把它抄写下来"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend."
 msgstr "你的钱包恢复短语及访问协调初始钱包创建的服务器。你仍然需要 {{index.m}} 钥匙来支付。"
 
