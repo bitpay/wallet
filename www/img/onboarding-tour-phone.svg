@@ -1,167 +1,107 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="375px" height="247px" viewBox="0 0 375 247" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
-    <title>digital-money</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="75.2641068%" id="linearGradient-1">
-            <stop stop-color="#3950B5" offset="0%"></stop>
-            <stop stop-color="#162360" offset="100%"></stop>
-        </linearGradient>
-        <path d="M31.8181818,0 L0,0 L0,31.8181818 L31.8181818,31.8181818 L31.8181818,0 L31.8181818,0 Z M27.2727273,27.2727273 L4.54545455,27.2727273 L4.54545455,4.54545455 L27.2727273,4.54545455 L27.2727273,27.2727273 L27.2727273,27.2727273 Z" id="path-2"></path>
-        <mask id="mask-3" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="31.8181818" height="31.8181818" fill="white">
-            <use xlink:href="#path-2"></use>
-        </mask>
-        <polygon id="path-4" points="65.9090909 90.9090909 61.3636364 90.9090909 61.3636364 100 100 100 100 95.4545455 65.9090909 95.4545455"></polygon>
-        <mask id="mask-5" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="38.6363636" height="9.09090909" fill="white">
-            <use xlink:href="#path-4"></use>
-        </mask>
-        <rect id="path-6" x="9.09090909" y="9.09090909" width="13.6363636" height="13.6363636"></rect>
-        <mask id="mask-7" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="13.6363636" height="13.6363636" fill="white">
-            <use xlink:href="#path-6"></use>
-        </mask>
-        <path d="M0,100 L31.8181818,100 L31.8181818,68.1818182 L0,68.1818182 L0,100 L0,100 Z M4.54545455,72.7272727 L27.2727273,72.7272727 L27.2727273,95.4545455 L4.54545455,95.4545455 L4.54545455,72.7272727 L4.54545455,72.7272727 Z" id="path-8"></path>
-        <mask id="mask-9" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="31.8181818" height="31.8181818" fill="white">
-            <use xlink:href="#path-8"></use>
-        </mask>
-        <rect id="path-10" x="9.09090909" y="77.2727273" width="13.6363636" height="13.6363636"></rect>
-        <mask id="mask-11" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="13.6363636" height="13.6363636" fill="white">
-            <use xlink:href="#path-10"></use>
-        </mask>
-        <path d="M68.1818182,0 L68.1818182,31.8181818 L100,31.8181818 L100,0 L68.1818182,0 L68.1818182,0 Z M95.4545455,27.2727273 L72.7272727,27.2727273 L72.7272727,4.54545455 L95.4545455,4.54545455 L95.4545455,27.2727273 L95.4545455,27.2727273 Z" id="path-12"></path>
-        <mask id="mask-13" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="31.8181818" height="31.8181818" fill="white">
-            <use xlink:href="#path-12"></use>
-        </mask>
-        <rect id="path-14" x="77.2727273" y="9.09090909" width="13.6363636" height="13.6363636"></rect>
-        <mask id="mask-15" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="13.6363636" height="13.6363636" fill="white">
-            <use xlink:href="#path-14"></use>
-        </mask>
-        <rect id="path-16" x="90.9090909" y="36.3636364" width="9.09090909" height="9.09090909"></rect>
-        <mask id="mask-17" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="9.09090909" height="9.09090909" fill="white">
-            <use xlink:href="#path-16"></use>
-        </mask>
-        <rect id="path-18" x="0" y="54.5454545" width="9.09090909" height="9.09090909"></rect>
-        <mask id="mask-19" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="9.09090909" height="9.09090909" fill="white">
-            <use xlink:href="#path-18"></use>
-        </mask>
-        <polygon id="path-20" points="47.7272727 36.3636364 29.5454545 36.3636364 29.5454545 40.9090909 52.2727273 40.9090909 52.2727273 31.8181818 52.2727273 27.2727273 56.8181818 27.2727273 56.8181818 18.1818182 52.2727273 18.1818182 47.7272727 18.1818182 43.1818182 18.1818182 43.1818182 9.09090909 47.7272727 9.09090909 47.7272727 13.6363636 63.6363636 13.6363636 63.6363636 0 59.0909091 0 59.0909091 9.09090909 52.2727273 9.09090909 52.2727273 0 50 0 40.9090909 0 38.6363636 0 38.6363636 22.7272727 47.7272727 22.7272727 47.7272727 27.2727273 38.6363636 27.2727273 38.6363636 31.8181818 47.7272727 31.8181818"></polygon>
-        <mask id="mask-21" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="34.0909091" height="40.9090909" fill="white">
-            <use xlink:href="#path-20"></use>
-        </mask>
-        <polygon id="path-22" points="6.81818182 50 15.9090909 50 20.4545455 50 22.7272727 50 22.7272727 54.5454545 13.6363636 54.5454545 13.6363636 59.0909091 22.7272727 59.0909091 22.7272727 63.6363636 40.9090909 63.6363636 40.9090909 59.0909091 27.2727273 59.0909091 27.2727273 54.5454545 27.2727273 45.4545455 20.4545455 45.4545455 20.4545455 38.6363636 15.9090909 38.6363636 15.9090909 45.4545455 11.3636364 45.4545455 11.3636364 36.3636364 0 36.3636364 0 40.9090909 6.81818182 40.9090909"></polygon>
-        <mask id="mask-23" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="40.9090909" height="27.2727273" fill="white">
-            <use xlink:href="#path-22"></use>
-        </mask>
-        <polygon id="path-24" points="50 90.9090909 50 79.5454545 40.9090909 79.5454545 40.9090909 70.4545455 36.3636364 70.4545455 36.3636364 84.0909091 45.4545455 84.0909091 45.4545455 90.9090909 36.3636364 90.9090909 36.3636364 95.4545455 45.4545455 95.4545455 45.4545455 100 56.8181818 100 56.8181818 95.4545455 50 95.4545455"></polygon>
-        <mask id="mask-25" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="20.4545455" height="29.5454545" fill="white">
-            <use xlink:href="#path-24"></use>
-        </mask>
-        <polygon id="path-26" points="72.7272727 45.4545455 63.6363636 45.4545455 63.6363636 34.0909091 59.0909091 34.0909091 59.0909091 50 81.8181818 50 81.8181818 45.4545455 77.2727273 45.4545455 77.2727273 40.9090909 84.0909091 40.9090909 84.0909091 36.3636364 77.2727273 36.3636364 72.7272727 36.3636364 68.1818182 36.3636364 68.1818182 40.9090909 72.7272727 40.9090909"></polygon>
-        <mask id="mask-27" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="25" height="15.9090909" fill="white">
-            <use xlink:href="#path-26"></use>
-        </mask>
-        <polygon id="path-28" points="68.1818182 86.3636364 75 86.3636364 75 90.9090909 84.0909091 90.9090909 84.0909091 86.3636364 84.0909091 81.8181818 84.0909091 75 75 75 75 81.8181818 68.1818182 81.8181818 68.1818182 75 63.6363636 75 63.6363636 81.8181818 59.0909091 81.8181818 59.0909091 63.6363636 54.5454545 63.6363636 54.5454545 59.0909091 50 59.0909091 50 45.4545455 34.0909091 45.4545455 34.0909091 54.5454545 38.6363636 54.5454545 38.6363636 50 45.4545455 50 45.4545455 59.0909091 45.4545455 68.1818182 54.5454545 68.1818182 54.5454545 81.8181818 54.5454545 86.3636364 59.0909091 86.3636364 63.6363636 86.3636364"></polygon>
-        <mask id="mask-29" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="50" height="45.4545455" fill="white">
-            <use xlink:href="#path-28"></use>
-        </mask>
-        <polygon id="path-30" points="95.4545455 56.8181818 88.6363636 56.8181818 84.0909091 56.8181818 72.7272727 56.8181818 72.7272727 65.9090909 68.1818182 65.9090909 68.1818182 56.8181818 63.6363636 56.8181818 63.6363636 70.4545455 77.2727273 70.4545455 77.2727273 61.3636364 84.0909091 61.3636364 84.0909091 68.1818182 88.6363636 68.1818182 88.6363636 61.3636364 95.4545455 61.3636364 95.4545455 75 88.6363636 75 88.6363636 88.6363636 100 88.6363636 100 84.0909091 93.1818182 84.0909091 93.1818182 79.5454545 100 79.5454545 100 61.3636364 100 56.8181818 100 50 95.4545455 50"></polygon>
-        <mask id="mask-31" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="36.3636364" height="38.6363636" fill="white">
-            <use xlink:href="#path-30"></use>
-        </mask>
-    </defs>
-    <g id="Onboarding" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="0.2.1---Tour-1" transform="translate(0.000000, -210.000000)">
-            <g id="digital-money" transform="translate(0.000000, 210.000000)">
-                <g id="bg-1">
-                    <g id="cityscape" opacity="0.15" transform="translate(0.000000, 54.000000)" stroke-width="2" stroke="#FFFFFF">
-                        <g id="travel-24px-outline_hotel" transform="translate(0.000000, 47.163934)">
-                            <g id="Group">
-                                <polyline id="Shape" points="12.9658816 82.4918033 0 82.4918033 0 48.7451565 12.9658816 48.7451565"></polyline>
-                                <polyline id="Shape" points="58.3464671 82.4918033 71.3123487 82.4918033 71.3123487 48.7451565 58.3464671 48.7451565"></polyline>
-                                <rect id="Rectangle-path" x="12.9658816" y="0" width="45.3805855" height="82.4918033"></rect>
-                                <path d="M25.9317632,14.9985097 L29.1732335,14.9985097" id="Shape"></path>
-                                <path d="M42.1391151,14.9985097 L45.3805855,14.9985097" id="Shape"></path>
-                                <path d="M25.9317632,29.9970194 L29.1732335,29.9970194" id="Shape"></path>
-                                <path d="M42.1391151,29.9970194 L45.3805855,29.9970194" id="Shape"></path>
-                                <path d="M25.9317632,44.9955291 L29.1732335,44.9955291" id="Shape"></path>
-                                <path d="M42.1391151,44.9955291 L45.3805855,44.9955291" id="Shape"></path>
-                                <path d="M25.9317632,59.9940387 L29.1732335,59.9940387" id="Shape"></path>
-                                <path d="M42.1391151,59.9940387 L45.3805855,59.9940387" id="Shape"></path>
-                                <path d="M35.6561743,82.4918033 L35.6561743,74.9925484" id="Shape"></path>
-                            </g>
-                        </g>
-                        <g id="business-24px-outline_building" transform="translate(71.312349, 0.000000)">
-                            <g id="Group">
-                                <polyline id="Shape" points="71.5050847 59.1304348 71.5050847 29.5652174 61.2900726 29.5652174 61.2900726 11.826087 40.8600484 11.826087 40.8600484 29.5652174 30.6450363 29.5652174 30.6450363 76.8695652"></polyline>
-                                <path d="M40.8600484,130.086957 L61.2900726,130.086957" id="Shape"></path>
-                                <path d="M51.0750605,0 L51.0750605,11.826087" id="Shape"></path>
-                                <rect id="Rectangle-path" x="0" y="76.8695652" width="40.8600484" height="53.2173913"></rect>
-                                <rect id="Rectangle-path" x="61.2900726" y="59.1304348" width="40.8600484" height="70.9565217"></rect>
-                                <path d="M76.6125908,76.8695652 L86.8276029,76.8695652" id="Shape"></path>
-                                <path d="M76.6125908,94.6086957 L86.8276029,94.6086957" id="Shape"></path>
-                                <path d="M76.6125908,112.347826 L86.8276029,112.347826" id="Shape"></path>
-                                <path d="M15.3225182,94.6086957 L25.5375303,94.6086957" id="Shape"></path>
-                                <path d="M15.3225182,112.347826 L25.5375303,112.347826" id="Shape"></path>
-                            </g>
-                        </g>
-                        <g id="travel-24px-outline_hotel-copy" transform="translate(224.537530, 50.163934)">
-                            <g id="Group">
-                                <polyline id="Shape" points="12.9658816 82.4918033 0 82.4918033 0 48.7451565 12.9658816 48.7451565"></polyline>
-                                <polyline id="Shape" points="58.3464671 82.4918033 71.3123487 82.4918033 71.3123487 48.7451565 58.3464671 48.7451565"></polyline>
-                                <rect id="Rectangle-path" x="12.9658816" y="0" width="45.3805855" height="82.4918033"></rect>
-                                <path d="M25.9317632,14.9985097 L29.1732335,14.9985097" id="Shape"></path>
-                                <path d="M42.1391151,14.9985097 L45.3805855,14.9985097" id="Shape"></path>
-                                <path d="M25.9317632,29.9970194 L29.1732335,29.9970194" id="Shape"></path>
-                                <path d="M42.1391151,29.9970194 L45.3805855,29.9970194" id="Shape"></path>
-                                <path d="M25.9317632,44.9955291 L29.1732335,44.9955291" id="Shape"></path>
-                                <path d="M42.1391151,44.9955291 L45.3805855,44.9955291" id="Shape"></path>
-                                <path d="M25.9317632,59.9940387 L29.1732335,59.9940387" id="Shape"></path>
-                                <path d="M42.1391151,59.9940387 L45.3805855,59.9940387" id="Shape"></path>
-                                <path d="M35.6561743,82.4918033 L35.6561743,74.9925484" id="Shape"></path>
-                            </g>
-                        </g>
-                        <g id="business-24px-outline_building-copy" transform="translate(295.849879, 3.000000)">
-                            <g id="Group">
-                                <polyline id="Shape" points="71.5050847 59.1304348 71.5050847 29.5652174 61.2900726 29.5652174 61.2900726 11.826087 40.8600484 11.826087 40.8600484 29.5652174 30.6450363 29.5652174 30.6450363 76.8695652"></polyline>
-                                <path d="M40.8600484,130.086957 L61.2900726,130.086957" id="Shape"></path>
-                                <path d="M51.0750605,0 L51.0750605,11.826087" id="Shape"></path>
-                                <rect id="Rectangle-path" x="0" y="76.8695652" width="40.8600484" height="53.2173913"></rect>
-                                <rect id="Rectangle-path" x="61.2900726" y="59.1304348" width="40.8600484" height="70.9565217"></rect>
-                                <path d="M76.6125908,76.8695652 L86.8276029,76.8695652" id="Shape"></path>
-                                <path d="M76.6125908,94.6086957 L86.8276029,94.6086957" id="Shape"></path>
-                                <path d="M76.6125908,112.347826 L86.8276029,112.347826" id="Shape"></path>
-                                <path d="M15.3225182,94.6086957 L25.5375303,94.6086957" id="Shape"></path>
-                                <path d="M15.3225182,112.347826 L25.5375303,112.347826" id="Shape"></path>
-                            </g>
-                        </g>
-                    </g>
-                    <path d="M187.5,247 C255.707167,247 311,191.707167 311,123.5 C311,55.2928334 255.707167,1.42108547e-14 187.5,1.42108547e-14 C119.292833,1.42108547e-14 64,55.2928334 64,123.5 C64,191.707167 119.292833,247 187.5,247 Z" id="Oval-2" fill="url(#linearGradient-1)" opacity="0.300000012"></path>
-                </g>
-                <g id="phone" transform="translate(133.000000, 32.000000)" stroke-width="2">
-                    <rect id="Combined-Shape" stroke="#647CE8" fill-opacity="0.65477808" fill="#223483" x="0" y="0" width="99.8310062" height="183.875349" rx="8"></rect>
-                    <path d="M0.519953157,155.972885 L99.311053,155.972885" id="Line" stroke="#647CE8" stroke-linecap="square"></path>
-                    <path d="M44.0762994,170.254952 L62.7946131,170.254952" id="Line" stroke="#647CE8" stroke-linecap="square"></path>
-                    <g id="qr-code" transform="translate(33.000000, 34.000000)" stroke="#1E307E" fill="#12E5B6">
-                        <g id="Group">
-                            <use id="Shape" mask="url(#mask-3)" xlink:href="#path-2"></use>
-                            <use id="Shape" mask="url(#mask-5)" xlink:href="#path-4"></use>
-                            <use id="Rectangle-path" mask="url(#mask-7)" xlink:href="#path-6"></use>
-                            <use id="Shape" mask="url(#mask-9)" xlink:href="#path-8"></use>
-                            <use id="Rectangle-path" mask="url(#mask-11)" xlink:href="#path-10"></use>
-                            <use id="Shape" mask="url(#mask-13)" xlink:href="#path-12"></use>
-                            <use id="Rectangle-path" mask="url(#mask-15)" xlink:href="#path-14"></use>
-                            <use id="Rectangle-path" mask="url(#mask-17)" xlink:href="#path-16"></use>
-                            <use id="Rectangle-path" mask="url(#mask-19)" xlink:href="#path-18"></use>
-                            <use id="Shape" mask="url(#mask-21)" xlink:href="#path-20"></use>
-                            <use id="Shape" mask="url(#mask-23)" xlink:href="#path-22"></use>
-                            <use id="Shape" mask="url(#mask-25)" xlink:href="#path-24"></use>
-                            <use id="Shape" mask="url(#mask-27)" xlink:href="#path-26"></use>
-                            <use id="Shape" mask="url(#mask-29)" xlink:href="#path-28"></use>
-                            <use id="Shape" mask="url(#mask-31)" xlink:href="#path-30"></use>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 375 247" style="enable-background:new 0 0 375 247;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.15;}
+	.st1{fill:none;stroke:#FFFFFF;stroke-width:2;}
+	.st2{opacity:0.3;fill:url(#SVGID_1_);enable-background:new    ;}
+	.st3{fill:#293881;fill-opacity:0.6548;stroke:#6778BA;stroke-width:2;}
+	.st4{fill:none;stroke:#6778BA;stroke-width:2;stroke-linecap:square;}
+	.st5{fill:#5BC2A7;}
+</style>
+<g transform="translate(0.000000, 54.000000)" class="st0">
+	<g>
+		<polyline id="Shape" class="st1" points="13,123.7 0,123.7 0,90 13,90 		"/>
+		<polyline id="Shape_1_" class="st1" points="58.3,123.7 71.3,123.7 71.3,90 58.3,90 		"/>
+		<rect id="Rectangle-path" x="13" y="41.2" class="st1" width="45.4" height="82.5"/>
+		<path id="Shape_2_" class="st1" d="M25.9,56.2h3.2"/>
+		<path id="Shape_3_" class="st1" d="M42.1,56.2h3.2"/>
+		<path id="Shape_4_" class="st1" d="M25.9,71.2h3.2"/>
+		<path id="Shape_5_" class="st1" d="M42.1,71.2h3.2"/>
+		<path id="Shape_6_" class="st1" d="M25.9,86.2h3.2"/>
+		<path id="Shape_7_" class="st1" d="M42.1,86.2h3.2"/>
+		<path id="Shape_8_" class="st1" d="M25.9,101.2h3.2"/>
+		<path id="Shape_9_" class="st1" d="M42.1,101.2h3.2"/>
+		<path id="Shape_10_" class="st1" d="M35.7,123.7v-7.5"/>
+	</g>
+	<g>
+		<polyline id="Shape_11_" class="st1" points="142.8,67 142.8,37.5 132.6,37.5 132.6,19.7 112.2,19.7 112.2,37.5 102,37.5 
+			102,84.8 		"/>
+		<path id="Shape_12_" class="st1" d="M112.2,138h20.4"/>
+		<path id="Shape_13_" class="st1" d="M122.4,7.9v11.8"/>
+		<rect id="Rectangle-path_1_" x="71.3" y="84.8" class="st1" width="40.9" height="53.2"/>
+		<rect id="Rectangle-path_2_" x="132.6" y="67" class="st1" width="40.9" height="71"/>
+		<path id="Shape_14_" class="st1" d="M147.9,84.8h10.2"/>
+		<path id="Shape_15_" class="st1" d="M147.9,102.5h10.2"/>
+		<path id="Shape_16_" class="st1" d="M147.9,120.2h10.2"/>
+		<path id="Shape_17_" class="st1" d="M86.6,102.5h10.2"/>
+		<path id="Shape_18_" class="st1" d="M86.6,120.2h10.2"/>
+	</g>
+	<g>
+		<polyline id="Shape_19_" class="st1" points="237.5,135.4 224.5,135.4 224.5,101.6 237.5,101.6 		"/>
+		<polyline id="Shape_20_" class="st1" points="282.9,135.4 295.8,135.4 295.8,101.6 282.9,101.6 		"/>
+		<rect id="Rectangle-path_3_" x="237.5" y="52.9" class="st1" width="45.4" height="82.5"/>
+		<path id="Shape_21_" class="st1" d="M250.5,67.9h3.2"/>
+		<path id="Shape_22_" class="st1" d="M266.7,67.9h3.2"/>
+		<path id="Shape_23_" class="st1" d="M250.5,82.9h3.2"/>
+		<path id="Shape_24_" class="st1" d="M266.7,82.9h3.2"/>
+		<path id="Shape_25_" class="st1" d="M250.5,97.9h3.2"/>
+		<path id="Shape_26_" class="st1" d="M266.7,97.9h3.2"/>
+		<path id="Shape_27_" class="st1" d="M250.5,112.9h3.2"/>
+		<path id="Shape_28_" class="st1" d="M266.7,112.9h3.2"/>
+		<path id="Shape_29_" class="st1" d="M260.2,135.4v-7.5"/>
+	</g>
+	<g>
+		<polyline id="Shape_30_" class="st1" points="367.4,56 367.4,26.4 357.1,26.4 357.1,8.7 336.7,8.7 336.7,26.4 326.5,26.4 
+			326.5,73.8 		"/>
+		<path id="Shape_31_" class="st1" d="M336.7,127.1h20.4"/>
+		<path id="Shape_32_" class="st1" d="M346.9-3.1V8.7"/>
+		<rect id="Rectangle-path_4_" x="295.8" y="73.8" class="st1" width="40.9" height="53.2"/>
+		<rect id="Rectangle-path_5_" x="357.1" y="56" class="st1" width="40.9" height="71"/>
+		<path id="Shape_33_" class="st1" d="M372.5,73.8h10.2"/>
+		<path id="Shape_34_" class="st1" d="M372.5,91.5h10.2"/>
+		<path id="Shape_35_" class="st1" d="M372.5,109.2h10.2"/>
+		<path id="Shape_36_" class="st1" d="M311.2,91.5h10.2"/>
+		<path id="Shape_37_" class="st1" d="M311.2,109.2h10.2"/>
+	</g>
+</g>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-234.5445" y1="2.2024" x2="-234.5445" y2="2.9551" gradientTransform="matrix(247 0 0 247 58120 -544)">
+	<stop  offset="0" style="stop-color:#4054A5"/>
+	<stop  offset="1" style="stop-color:#24285E"/>
+</linearGradient>
+<path class="st2" d="M187.5,247c68.2,0,123.5-55.3,123.5-123.5S255.7,0,187.5,0S64,55.3,64,123.5S119.3,247,187.5,247z"/>
+<g>
+	<path class="st3" d="M141,32h83.8c4.4,0,8,3.6,8,8v167.9c0,4.4-3.6,8-8,8H141c-4.4,0-8-3.6-8-8V40C133,35.6,136.6,32,141,32z"/>
+	<path class="st4" d="M133.5,188h98.8"/>
+	<path class="st4" d="M177.1,202.3h18.7"/>
+</g>
+<g>
+	<path class="st5" d="M197.8,66H166v31.8h31.8V66L197.8,66z M193.3,93.3h-22.7V70.5h22.7V93.3L193.3,93.3z"/>
+	<polygon class="st5" points="231.9,156.9 227.4,156.9 227.4,166 266,166 266,161.5 231.9,161.5 	"/>
+	<rect x="175.1" y="75.1" class="st5" width="13.6" height="13.6"/>
+	<path class="st5" d="M166,166h31.8v-31.8H166V166L166,166z M170.5,138.7h22.7v22.7h-22.7V138.7L170.5,138.7z"/>
+	<rect x="175.1" y="143.3" class="st5" width="13.6" height="13.6"/>
+	<path class="st5" d="M234.2,66v31.8H266V66H234.2L234.2,66z M261.5,93.3h-22.7V70.5h22.7V93.3L261.5,93.3z"/>
+	<rect x="243.3" y="75.1" class="st5" width="13.6" height="13.6"/>
+	<rect x="256.9" y="102.4" class="st5" width="9.1" height="9.1"/>
+	<rect x="166" y="120.5" class="st5" width="9.1" height="9.1"/>
+	<polygon class="st5" points="213.7,102.4 195.5,102.4 195.5,106.9 218.3,106.9 218.3,97.8 218.3,93.3 222.8,93.3 222.8,84.2 
+		218.3,84.2 213.7,84.2 209.2,84.2 209.2,75.1 213.7,75.1 213.7,79.6 229.6,79.6 229.6,66 225.1,66 225.1,75.1 218.3,75.1 218.3,66 
+		216,66 206.9,66 204.6,66 204.6,88.7 213.7,88.7 213.7,93.3 204.6,93.3 204.6,97.8 213.7,97.8 	"/>
+	<polygon class="st5" points="172.8,116 181.9,116 186.5,116 188.7,116 188.7,120.5 179.6,120.5 179.6,125.1 188.7,125.1 
+		188.7,129.6 206.9,129.6 206.9,125.1 193.3,125.1 193.3,120.5 193.3,111.5 186.5,111.5 186.5,104.6 181.9,104.6 181.9,111.5 
+		177.4,111.5 177.4,102.4 166,102.4 166,106.9 172.8,106.9 	"/>
+	<polygon class="st5" points="216,156.9 216,145.5 206.9,145.5 206.9,136.5 202.4,136.5 202.4,150.1 211.5,150.1 211.5,156.9 
+		202.4,156.9 202.4,161.5 211.5,161.5 211.5,166 222.8,166 222.8,161.5 216,161.5 	"/>
+	<polygon class="st5" points="238.7,111.5 229.6,111.5 229.6,100.1 225.1,100.1 225.1,116 247.8,116 247.8,111.5 243.3,111.5 
+		243.3,106.9 250.1,106.9 250.1,102.4 243.3,102.4 238.7,102.4 234.2,102.4 234.2,106.9 238.7,106.9 	"/>
+	<polygon class="st5" points="234.2,152.4 241,152.4 241,156.9 250.1,156.9 250.1,152.4 250.1,147.8 250.1,141 241,141 241,147.8 
+		234.2,147.8 234.2,141 229.6,141 229.6,147.8 225.1,147.8 225.1,129.6 220.5,129.6 220.5,125.1 216,125.1 216,111.5 200.1,111.5 
+		200.1,120.5 204.6,120.5 204.6,116 211.5,116 211.5,125.1 211.5,134.2 220.5,134.2 220.5,147.8 220.5,152.4 225.1,152.4 
+		229.6,152.4 	"/>
+	<polygon class="st5" points="261.5,122.8 254.6,122.8 250.1,122.8 238.7,122.8 238.7,131.9 234.2,131.9 234.2,122.8 229.6,122.8 
+		229.6,136.5 243.3,136.5 243.3,127.4 250.1,127.4 250.1,134.2 254.6,134.2 254.6,127.4 261.5,127.4 261.5,141 254.6,141 
+		254.6,154.6 266,154.6 266,150.1 259.2,150.1 259.2,145.5 266,145.5 266,127.4 266,122.8 266,116 261.5,116 	"/>
+</g>
 </svg>
