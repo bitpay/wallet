@@ -34,17 +34,23 @@ module.exports = function(grunt) {
       wpcopy: {
         command: 'make -C cordova wp-copy',
       },
+      iosdebug: {
+        command: 'npm run build:ios',
+      },
       ios: {
-        command: 'make -C cordova ios',
+        command: 'npm run build:ios-release',
       },
       xcode: {
-        command: 'open cordova/project-ios/platforms/ios/*.xcodeproj',
+        command: 'npm run open:ios',
+      },
+      androiddebug: {
+        command: 'npm run build:android',
       },
       android: {
-        command: 'make -C cordova android',
+        command: 'npm run build:android-release',
       },
       androidrun: {
-        command: 'make -C cordova androidrun',
+        command: 'npm run run:android && npm run log:android',
       },
       androidbuild: {
         command: 'cd cordova/project && cordova build android --release',
@@ -125,7 +131,7 @@ module.exports = function(grunt) {
           'angular-pbkdf2/angular-pbkdf2.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
-        dest: 'public/lib/angular.js'
+        dest: 'www/lib/angular.js'
       },
       js: {
         src: [
@@ -144,11 +150,11 @@ module.exports = function(grunt) {
           'bower_components/trezor-connect/login.js',
           'node_modules/cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js'
         ],
-        dest: 'public/js/copay.js'
+        dest: 'www/js/copay.js'
       },
       css: {
         src: ['src/sass/*.css', 'src/css/*.css'],
-        dest: 'public/css/copay.css'
+        dest: 'www/css/copay.css'
       }
     },
     uglify: {
@@ -157,8 +163,8 @@ module.exports = function(grunt) {
       },
       prod: {
         files: {
-          'public/js/copay.js': ['public/js/copay.js'],
-          'public/lib/angular.js': ['public/lib/angular.js']
+          'www/js/copay.js': ['www/js/copay.js'],
+          'www/lib/angular.js': ['www/lib/angular.js']
         }
       }
     },
@@ -166,8 +172,8 @@ module.exports = function(grunt) {
       pot: {
         files: {
           'i18n/po/template.pot': [
-            'public/index.html',
-            'public/views/**/*.html',
+            'www/index.html',
+            'www/views/**/*.html',
             'src/js/routes.js',
             'src/js/services/*.js',
             'src/js/controllers/**/*.js'
@@ -190,19 +196,19 @@ module.exports = function(grunt) {
         expand: true,
         flatten: true,
         src: 'bower_components/ionic/release/fonts/ionicons.*',
-        dest: 'public/fonts/'
+        dest: 'www/fonts/'
       },
       ionic_js: {
         expand: true,
         flatten: true,
         src: 'bower_components/ionic/release/js/ionic.bundle.min.js',
-        dest: 'public/lib/'
+        dest: 'www/lib/'
       },
       linux: {
         files: [{
           expand: true,
           cwd: 'webkitbuilds/',
-          src: ['.desktop', '../public/img/icons/favicon.ico', '../public/img/icons/icon-256.png'],
+          src: ['.desktop', '../www/img/icons/favicon.ico', '../www/img/icons/icon-256.png'],
           dest: 'webkitbuilds/Copay/linux64/',
           flatten: true,
           filter: 'isFile'
@@ -224,10 +230,10 @@ module.exports = function(grunt) {
         platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
         version: '0.16.0',
-        macIcns: './public/img/icons/icon.icns',
-        exeIco: './public/img/icons/icon.ico'
+        macIcns: './www/img/icons/icon.icns',
+        exeIco: './www/img/icons/icon.ico'
       },
-      src: ['./package.json', './public/**/*']
+      src: ['./package.json', './www/**/*']
     },
     compress: {
       linux: {
@@ -261,12 +267,12 @@ module.exports = function(grunt) {
   grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-copy', ['default', 'exec:wpcopy']);
   grunt.registerTask('wp-init', ['default', 'exec:wpinit']);
-  grunt.registerTask('ios', ['prod', 'exec:ios']);
-  grunt.registerTask('ios-debug', ['default', 'exec:ios']);
+  grunt.registerTask('ios', ['exec:ios']);
+  grunt.registerTask('ios-debug', ['exec:iosdebug']);
   grunt.registerTask('ios-run', ['exec:xcode']);
   grunt.registerTask('cordovaclean', ['exec:cordovaclean']);
-  grunt.registerTask('android-debug', ['default', 'exec:android', 'exec:androidrun']);
-  grunt.registerTask('android', ['prod', 'exec:android']);
+  grunt.registerTask('android-debug', ['exec:androiddebug', 'exec:androidrun']);
+  grunt.registerTask('android', ['exec:android']);
   grunt.registerTask('android-release', ['prod', 'exec:android', 'exec:androidsign']);
   grunt.registerTask('desktopsign', ['exec:desktopsign', 'exec:desktopverify']);
 
