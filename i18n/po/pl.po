@@ -14,16 +14,16 @@ msgstr ""
 "Language: pl\n"
 "PO-Revision-Date: 2016-07-15 09:26-0400\n"
 
-#: public/views/modals/search.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/walletHome.html
 msgid "(possible double spend)"
 msgstr "(możliwa podwójna wypłata)"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "(Zaufany)"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "[Balance Hidden]"
 msgstr "[Balans Ukryty]"
 
@@ -31,56 +31,56 @@ msgstr "[Balans Ukryty]"
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}} zostanie potrącone jako prowizja sieci bitcoin"
 
-#: public/views/includes/confirm-tx.html
+#: www/views/includes/confirm-tx.html
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} transakcji"
 
-#: public/views/copayers.html
-#: public/views/includes/walletInfo.html
+#: www/views/copayers.html
+#: www/views/includes/walletInfo.html
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-z-{{index.n}}"
 
-#: public/views/modals/search.html
+#: www/views/modals/search.html
 msgid "{{index.result.length - index.txHistorySearchResults.length}} more"
 msgstr "{{index.result.length - index.txHistorySearchResults.length}} więcej"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "{{index.txProgress}} transactions downloaded"
 msgstr "{{index.txProgress}} transakcji pobrane"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.m}}-z-{{item.n}}"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr "* Wniosek wypłaty może być usunięty jeśli: 1) Po utworzeniu nie zatwierdził go żaden inny współwłaściciel portfela lub 2) minęły 24 godziny od kiedy wniosek został utworzony."
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
 msgstr "<b>JEŚLI UŻYTKOWNIK STRACI DOSTĘP DO PORTFELA COPAY LUB ZASZYFROWANYCH KLUCZY PRYWATNYCH, A NIE MA ZAPISANEJ KOPII ZAPASOWEJ PORTFELA I HASŁA, PRZYJMUJE DO WIADOMOŚCI, ŻE JAKIEKOLWIEK POSIADANE BITCOINY ZWIĄZANE Z TYM PORTFELEM COPAY BĘDĄ NIEDOSTĘPNE.</b>"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet recovery phrases (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet recovery phrases of any of the other copayers)."
 msgstr "<b>LUB</b> 1 plik eksportu portfela i reszta wymaganych fraz odzyskiwania portfela (np. w portfelu 3-5: 1 plik eksportu portfela + 2 frazy odzyskiwania któregokolwiek z pozostałych współwłaścicieli portfela)."
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "<b>OR</b> the wallet recovery phrase of <b>all</b> copayers in the wallet"
 msgstr "<b>LUB</b> frazy odzyskiwania <b>wszystkich</b> współwłaścicieli portfela"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "<b>OR</b> the wallet recovery phrases of <b>all</b> copayers in the wallet"
 msgstr "<b>LUB</b> fraz odzyskiwania <b>wszystkich</b> współwłaścicieli portfela"
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "A multisignature bitcoin wallet"
 msgstr "Portfel bitcoin z multipodpisami"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "About Copay"
 msgstr "Informacje o Copay"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -88,84 +88,84 @@ msgstr "Informacje o Copay"
 msgid "Accept"
 msgstr "Akceptuj"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Account"
 msgstr "Konto"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Account Number"
 msgstr "Numer konta"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 #: src/js/controllers/index.js
 msgid "Activity"
 msgstr "Transakcje"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Add a new entry"
 msgstr "Dodaj nowy wpis"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Add a Password"
 msgstr "Dodaj hasło"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Add an optional password to secure the recovery phrase"
 msgstr "Dodaj opcjonalne hasło do bezpiecznego odzyskiwania frazy"
 
-#: public/views/includes/note.html
-#: public/views/modals/tx-details.html
+#: www/views/includes/note.html
+#: www/views/modals/tx-details.html
 msgid "Add comment"
 msgstr "Dodaj komentarz"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr "Dodaj portfel"
 
-#: public/views/modals/addressbook.html
-#: public/views/modals/customized-amount.html
-#: public/views/modals/paypro.html
-#: public/views/paymentUri.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/customized-amount.html
+#: www/views/modals/paypro.html
+#: www/views/paymentUri.html
 msgid "Address"
 msgstr "Adres"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Address Type"
 msgstr "Rodzaj adresu"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Advanced"
 msgstr "Zaawansowane"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Alias"
 msgstr "Nazwa"
 
-#: public/views/preferencesAlias.html
+#: www/views/preferencesAlias.html
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Nazwa dla <i>{{index.walletName}}</i>"
 
-#: public/views/preferencesLanguage.html
-#: public/views/translators.html
+#: www/views/preferencesLanguage.html
+#: www/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
 msgstr "Wkład do tłumaczenia Copay mile widziany. Zapisz się na crowdin.com i dołącz do projektu Copay na"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "All transaction requests are irreversible."
 msgstr "Transakcji nie można wycofać."
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Alternative Currency"
 msgstr "Alternatywna waluta"
 
-#: public/views/includes/output.html
-#: public/views/modals/customized-amount.html
-#: public/views/paymentUri.html
-#: public/views/walletHome.html
+#: www/views/includes/output.html
+#: www/views/modals/customized-amount.html
+#: www/views/paymentUri.html
+#: www/views/walletHome.html
 msgid "Amount"
 msgstr "Kwota"
 
@@ -173,8 +173,8 @@ msgstr "Kwota"
 msgid "Amount below minimum allowed"
 msgstr "Kwota poniżej minimum dozwolona"
 
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Amount in"
 msgstr "Kwota w"
 
@@ -187,36 +187,36 @@ msgstr "Czy na pewno chcesz usunąć frazę?"
 msgid "Are you sure you want to delete this wallet?"
 msgstr "Czy na pewno chcesz usunąć ten portfel?"
 
-#: public/views/includes/walletInfo.html
+#: www/views/includes/walletInfo.html
 msgid "Auditable"
 msgstr "Weryfikowalny"
 
-#: public/views/includes/available-balance.html
+#: www/views/includes/available-balance.html
 msgid "Available Balance"
 msgstr "Dostępne saldo"
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
 msgstr "Średni czas potwierdzenia: {{fee.nbBlocks * 10}} minut"
 
-#: public/views/includes/topbar.html
+#: www/views/includes/topbar.html
 msgid "Back"
 msgstr "Powrót"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Backup"
 msgstr "Kopia zapasowa"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Backup failed"
 msgstr "Tworzenie kopii zapasowej nie powiodło się"
 
-#: public/views/paperWallet.html
-#: public/views/walletHome.html
+#: www/views/paperWallet.html
+#: www/views/walletHome.html
 msgid "Backup Needed"
 msgstr "Potrzebna kopia zapasowa"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Backup now"
 msgstr "Utwórz kopię zapasową teraz"
 
@@ -224,42 +224,42 @@ msgstr "Utwórz kopię zapasową teraz"
 msgid "Bad wallet invitation"
 msgstr "Nieprawidłowe zaproszenie"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Balance By Address"
 msgstr "Saldo wg adresu"
 
-#: public/views/paperWallet.html
-#: public/views/walletHome.html
+#: www/views/paperWallet.html
+#: www/views/walletHome.html
 msgid "Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
 msgstr "Przed otrzymaniem środków, konieczne jest wykonanie kopii zapasowej portfela. Jeśli utracisz to urządzenie, dostęp do funduszy bez kopii zapasowej będzie niemożliwy."
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "BETA: Android Key Derivation Test:"
 msgstr "BETA: Test Android Key Derivation:"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "BIP32 path for address derivation"
 msgstr "BIP32 ścieżka dla adresu derywacji"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Bitcoin address"
 msgstr "Adres bitcoin"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Bitcoin Network Fee Policy"
 msgstr "Polityka prowizji sieci bitcoin"
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
 msgstr "Transakcje bitcoinowe mogą zawierać prowizję pobieraną przez górników. Im wyższa prowizja, tym większa zachęta dla górnika, aby zawarł tę transakcję w bloku. Rzeczywiste opłaty ustala się w oparciu o obciążenie sieci i wybraną politykę."
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
 msgstr "Bitcoin URI jest nieprawidłowy!"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Broadcast Payment"
 msgstr "Przekaż płatność"
 
@@ -267,11 +267,11 @@ msgstr "Przekaż płatność"
 msgid "Broadcasting transaction"
 msgstr "Przekazywanie transakcji"
 
-#: public/views/unsupported.html
+#: www/views/unsupported.html
 msgid "Browser unsupported"
 msgstr "Przeglądarka nieobsługiwana"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Buy and Sell"
 msgstr ""
 
@@ -279,12 +279,12 @@ msgstr ""
 msgid "Calculating fee"
 msgstr "Obliczanie prowizji"
 
-#: public/views/includes/confirm-tx.html
-#: public/views/includes/note.html
-#: public/views/includes/password.html
-#: public/views/modals/addressbook.html
-#: public/views/modals/confirmation.html
-#: public/views/walletHome.html
+#: www/views/includes/confirm-tx.html
+#: www/views/includes/note.html
+#: www/views/includes/password.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/confirmation.html
+#: www/views/walletHome.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -292,7 +292,7 @@ msgstr "Obliczanie prowizji"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Cancel and delete the wallet"
 msgstr "Anuluj i usuń portfel"
 
@@ -308,50 +308,50 @@ msgstr "Nie można dołączyć tego samego portfela więcej niż raz"
 msgid "Cannot sign: The payment request has expired"
 msgstr "Nie można podpisać: Wniosek wypłaty wygasł"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Certified by"
 msgstr "Certyfikowane przez"
 
-#: public/views/preferencesAlias.html
+#: www/views/preferencesAlias.html
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Zmiana nazwy portfela wpływa tylko na jego nazwę lokalną."
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Chinese"
 msgstr "chiński"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Choose a backup file from your computer"
 msgstr "Wybierz plik kopii zapasowej z komputera"
 
-#: public/views/preferencesHistory.html
+#: www/views/preferencesHistory.html
 msgid "Clear cache"
 msgstr "Wyczyść pamięć podręczną"
 
-#: public/views/includes/topbar.html
-#: public/views/modals/addressbook.html
-#: public/views/modals/customized-amount.html
-#: public/views/modals/paypro.html
-#: public/views/modals/scanner.html
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/includes/topbar.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/customized-amount.html
+#: www/views/modals/paypro.html
+#: www/views/modals/scanner.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Close"
 msgstr "Zamknij"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Color"
 msgstr "Kolor"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Comment"
 msgstr "Skomentuj"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Commit hash"
 msgstr "Zatwierdzony hash"
 
-#: public/views/includes/confirm-tx.html
+#: www/views/includes/confirm-tx.html
 #: src/js/services/confirmDialog.js
 #: src/js/controllers/copayers.js
 #: src/js/controllers/preferencesDelete.js
@@ -359,15 +359,15 @@ msgstr "Zatwierdzony hash"
 msgid "Confirm"
 msgstr "Potwierdź"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Confirm your wallet recovery phrase"
 msgstr "Potwierdź swoją frazę odzyskiwania portfela"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Confirmations"
 msgstr "Potwierdzenia"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Congratulations!"
 msgstr "Gratulacje!"
 
@@ -383,7 +383,7 @@ msgstr "Łączenie z Gildera..."
 msgid "Connection reset by peer"
 msgstr "Połączenie zostało zresetowane"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Continue"
 msgstr "Dalej"
 
@@ -399,7 +399,7 @@ msgstr "Użytkownik głosował już za tym wnioskiem wypłaty"
 msgid "Copayer data mismatch"
 msgstr "Niezgodność danych współwłaściciela portfela"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Copayers"
 msgstr "Współwłaściciele portfela"
 
@@ -410,15 +410,15 @@ msgstr "Współwłaściciele portfela"
 msgid "Copied to clipboard"
 msgstr "Skopiowano do schowka"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "Skopiuj ten tekst w bezpiecznym miejscu (notatnik lub e-mail)"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Copy to clipboard"
 msgstr "Skopiuj do schowka"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "Nie można uzyskać dostępu do portfela na serwerze. Proszę sprawdzić:"
 
@@ -502,24 +502,24 @@ msgstr "Wypłata nie może zostać wysłana"
 msgid "Could not update Wallet"
 msgstr "Nie można zaktualizować portfela"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Create"
 msgstr "Utwórz"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
 msgstr "Utwórz portfel {{requiredCopayers}} z {{totalCopayers}}"
 
-#: public/views/add.html
-#: public/views/create.html
+#: www/views/add.html
+#: www/views/create.html
 msgid "Create new wallet"
 msgstr "Utwórz nowy portfel"
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Create, join or import"
 msgstr "Utwórz, dołącz lub importuj"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Created by"
 msgstr "Utworzony przez"
 
@@ -531,43 +531,43 @@ msgstr "Tworzenie transakcji"
 msgid "Creating Wallet..."
 msgstr "Tworzenie portfela..."
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
 msgstr "Obecna stawka prowizji dla tych ustawień: {{fee.feePerKBUnit}}/KiB"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Czech"
 msgstr "czeski"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Date"
 msgstr "Data"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
 msgstr "Odszyfrowywanie papierowego portfela zajmie na tym urządzeniu około 5 minut. Prosimy o niezamykanie aplikacji."
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Delete it and create a new one"
 msgstr "Usuń i utwórz nowy portfel"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Delete Payment Proposal"
 msgstr "Usuń wniosek wypłaty"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Delete recovery phrase"
 msgstr "Usuń frazę odzyskiwania"
 
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWords.html
 msgid "Delete Recovery Phrase"
 msgstr "Usuń Frazę Odzyskiwania"
 
-#: public/views/preferencesDeleteWallet.html
+#: www/views/preferencesDeleteWallet.html
 msgid "Delete wallet"
 msgstr "Usuń portfel"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Delete Wallet"
 msgstr "Usuń portfel"
 
@@ -575,49 +575,49 @@ msgstr "Usuń portfel"
 msgid "Deleting Wallet..."
 msgstr "Usuwanie portfela..."
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Derivation Path"
 msgstr "Ścieżka derywacji"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Derivation Strategy"
 msgstr "Strategia derywacji"
 
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
-#: public/views/walletHome.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
+#: www/views/walletHome.html
 msgid "Description"
 msgstr "Opis"
 
-#: public/views/modals/coinbase-tx-details.html
-#: public/views/modals/customized-amount.html
-#: public/views/modals/glidera-tx-details.html
-#: public/views/modals/paypro.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/coinbase-tx-details.html
+#: www/views/modals/customized-amount.html
+#: www/views/modals/glidera-tx-details.html
+#: www/views/modals/paypro.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Details"
 msgstr "Szczegóły"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Disabled"
 msgstr "Wyłącz"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Do not include private key"
 msgstr "Nie uwzględniaj klucza prywatnego"
 
-#: public/views/preferencesLanguage.html
-#: public/views/translators.html
+#: www/views/preferencesLanguage.html
+#: www/views/translators.html
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Nie widzisz swojego języka na Crowdin? Skontaktuj się z właścicielem projektu, ponieważ bardzo chcielibyśmy, wspierać twój język."
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Done"
 msgstr "Gotowe"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Download"
 msgstr "Pobierz"
 
@@ -625,24 +625,24 @@ msgstr "Pobierz"
 msgid "Economy"
 msgstr "Ekonomiczna"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Edit"
 msgstr "Edytuj"
 
-#: public/views/includes/note.html
-#: public/views/modals/tx-details.html
+#: www/views/includes/note.html
+#: www/views/modals/tx-details.html
 msgid "Edit comment"
 msgstr "Edytuj komentarz"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Edited by"
 msgstr "Edytowane przez"
 
-#: public/views/preferencesEmail.html
+#: www/views/preferencesEmail.html
 msgid "Email for wallet notifications"
 msgstr "Adres e-mail dla powiadomień portfela"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Email Notifications"
 msgstr "Powiadomienia e-mail"
 
@@ -650,15 +650,15 @@ msgstr "Powiadomienia e-mail"
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Puste adresy osiągnęły limit. Nowe adresy nie mogą być generowane."
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Enable Coinbase Service"
 msgstr "Włącz usługę Coinbase"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Enable Glidera Service"
 msgstr "Włącz usługę Glidera"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Enable push notifications"
 msgstr "Włącz powiadomienia"
 
@@ -666,16 +666,16 @@ msgstr "Włącz powiadomienia"
 msgid "Encrypted export file saved"
 msgstr "Zaszyfrowany plik eksportu zapisany"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Enter the recovery phrase (BIP39)"
 msgstr "Wprowadź frazę odzyskiwania (BIP39)"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Enter your password"
 msgstr "Wprowadź hasło"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Enter your spending password"
 msgstr "Wprowadź hasło w celu wypłaty"
 
@@ -687,32 +687,32 @@ msgstr "Błąd na Wallet Service"
 msgid "Error creating wallet"
 msgstr "Błąd podczas tworzenia portfela"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Expired"
 msgstr "Wygasł"
 
-#: public/views/modals/paypro.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/paypro.html
+#: www/views/modals/txp-details.html
 msgid "Expires"
 msgstr "Wygasa"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Export options"
 msgstr "Opcje eksportu"
 
-#: public/views/preferencesHistory.html
+#: www/views/preferencesHistory.html
 msgid "Export to file"
 msgstr "Eksportuj do pliku"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Export Wallet"
 msgstr "Eksport portfela"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Exporting via QR not supported for this wallet"
 msgstr "Dla tego portfela nie jest obsługiwany eksport przez QR"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Extended Public Keys"
 msgstr "Rozszerzone klucze publiczne"
 
@@ -720,21 +720,21 @@ msgstr "Rozszerzone klucze publiczne"
 msgid "Extracting Wallet Information..."
 msgstr "Wyodrębnianie danych z portfela..."
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Failed to export"
 msgstr "Nie udało się wyeksportować"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Failed to verify backup. Please check your information"
 msgstr "Nie udało się zweryfikować kopii zapasowej. Proszę sprawdzić swoje dane"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Family vacation funds"
 msgstr "Fundusz wczasów rodzinnych"
 
-#: public/views/includes/confirm-tx.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/includes/confirm-tx.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Fee"
 msgstr "Prowizja"
 
@@ -742,8 +742,8 @@ msgstr "Prowizja"
 msgid "Fetching Payment Information"
 msgstr "Pobieranie informacji o płatności"
 
-#: public/views/export.html
-#: public/views/import.html
+#: www/views/export.html
+#: www/views/import.html
 msgid "File/Text"
 msgstr "Plik/Tekst"
 
@@ -751,19 +751,19 @@ msgstr "Plik/Tekst"
 msgid "Finger Scan Failed"
 msgstr "Skanowanie odcisku nie powiodło się"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Finish"
 msgstr "Zakończ"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "For audit purposes"
 msgstr "Do celów audytu"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "French"
 msgstr "francuski"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "From the destination device, go to Add wallet &gt; Import wallet and scan this QR code"
 msgstr "Z urządzenia docelowego, przejdź do Dodaj portfel &gt; Import portfela i Zeskanuj ten kod QR"
 
@@ -771,7 +771,7 @@ msgstr "Z urządzenia docelowego, przejdź do Dodaj portfel &gt; Import portfela
 msgid "Funds are locked by pending spend proposals"
 msgstr "Fundusze są zablokowane przez rozpatrywane wniosku wypłaty"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Funds found"
 msgstr "Znaleziono środki"
 
@@ -779,15 +779,15 @@ msgstr "Znaleziono środki"
 msgid "Funds received"
 msgstr "Otrzymano środki"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Funds will be transferred to"
 msgstr "Środki będą przekazane do"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Generate new address"
 msgstr "Generuj nowy adres"
 
-#: public/views/modals/customized-amount.html
+#: www/views/modals/customized-amount.html
 msgid "Generate QR Code"
 msgstr "Generowanie kodu QR"
 
@@ -795,50 +795,50 @@ msgstr "Generowanie kodu QR"
 msgid "Generating .csv file..."
 msgstr "Generowanie pliku csv..."
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "German"
 msgstr "niemiecki"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Otrzymywanie adresu dla portfela {{selectedWalletName}} ..."
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Global preferences"
 msgstr "Ogólne preferencje"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Hardware wallet"
 msgstr "Portfel sprzętowy"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Hardware Wallet"
 msgstr "Portfel sprzętowy"
 
-#: public/views/create.html
-#: public/views/export.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/export.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Hide advanced options"
 msgstr "Ukryj opcje zaawansowane"
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "I affirm that I have read, understood, and agree with these terms."
 msgstr "Potwierdzam, że przeczytałem, zrozumiałem i zgadza się z regulaminem."
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "I AGREE. GET STARTED"
 msgstr "ZGADZAM SIĘ. ZACZYNAMY"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Import"
 msgstr "Importuj"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Import backup"
 msgstr "Importuj kopię zapasową"
 
-#: public/views/add.html
+#: www/views/add.html
 msgid "Import wallet"
 msgstr "Importuj portfel"
 
@@ -846,11 +846,11 @@ msgstr "Importuj portfel"
 msgid "Importing Wallet..."
 msgstr "Importowanie portfela..."
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "In no event shall the authors of the software, employees and affiliates of Bitpay, copyright holders, or BitPay, Inc. be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software."
 msgstr "W żadnym wypadku autorzy oprogramowania, pracownicy i oddziały Bitpay, posiadacze praw autorskich, czy BitPay, Inc. nie ponoszą odpowiedzialności za wszelkie roszczenia, odszkodowania lub inne zobowiązania, zarówno wynikające z umowy, czynu niedozwolonego lub z innego tytułu, związanego z oprogramowaniem."
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "In order to verify your wallet backup, please type your password:"
 msgstr "W celu weryfikacji kopii zapasowej portfela wpisz swoje hasło:"
 
@@ -871,8 +871,8 @@ msgstr "Nie ma wystarczającej ilości środków"
 msgid "Insufficient funds for fee"
 msgstr "Niewystarczające środki na prowizję"
 
-#: public/views/modals/search.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/walletHome.html
 msgid "Invalid"
 msgstr "Nieprawidłowy"
 
@@ -896,20 +896,20 @@ msgstr "Nieprawidłowa ścieżka derywacji"
 msgid "Invitation to share a Copay Wallet"
 msgstr "Zaproszenie do współdzielenia portfela Copay"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Italian"
 msgstr "włoski"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Japanese"
 msgstr "japoński"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "John"
 msgstr "Jan"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Join"
 msgstr "Dołącz"
 
@@ -917,7 +917,7 @@ msgstr "Dołącz"
 msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
 msgstr "Dołącz do mojego portfela Copay. Kod zaproszenia: {{secret}} Wersję desktopową lub aplikację na telefon można pobrać z https://copay.io"
 
-#: public/views/add.html
+#: www/views/add.html
 msgid "Join shared wallet"
 msgstr "Dołącz do portfela"
 
@@ -929,27 +929,27 @@ msgstr "Dołączanie do portfela..."
 msgid "Key already associated with an existing wallet"
 msgstr "Klucz jest już powiązany z istniejącym portfelem"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Label"
 msgstr "Etykieta"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Language"
 msgstr "Język"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Last Wallet Addresses"
 msgstr "Ostatnie adresy portfela"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Learn more about Copay backups"
 msgstr "Dowiedz się więcej o kopiach zapasowych Copay"
 
-#: public/views/preferencesFee.html
+#: www/views/preferencesFee.html
 msgid "Loading..."
 msgstr "Ładowanie..."
 
-#: public/views/includes/available-balance.html
+#: www/views/includes/available-balance.html
 msgid "locked by pending payments"
 msgstr "zablokowane przez oczekujące wypłaty"
 
@@ -961,7 +961,7 @@ msgstr "Skuteczna blokada. Proszę czekać, aby utworzyć nowy wniosek wypłaty"
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Skuteczna blokada. Proszę czekać, aby usunąć wniosek wypłaty"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Make a payment to"
 msgstr "Wypłać do"
 
@@ -973,22 +973,22 @@ msgstr "Dopasowania:"
 msgid "me"
 msgstr "ja"
 
-#: public/views/includes/copayers.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
-#: public/views/preferencesInformation.html
+#: www/views/includes/copayers.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
+#: www/views/preferencesInformation.html
 msgid "Me"
 msgstr "Ja"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Memo"
 msgstr "Notatka"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Merchant message"
 msgstr "Wiadomość handlowa"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Message"
 msgstr "Wiadomość"
 
@@ -1000,34 +1000,34 @@ msgstr "Brak parametru"
 msgid "Missing private keys to sign"
 msgstr "Brak kluczy prywatnych do podpisania"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/walletHome.html
 msgid "Moved"
 msgstr "Przeniesiony"
 
-#: public/views/includes/confirm-tx.html
-#: public/views/modals/txp-details.html
+#: www/views/includes/confirm-tx.html
+#: www/views/modals/txp-details.html
 msgid "Multiple recipients"
 msgstr "Wielu odbiorców"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "My Bitcoin address"
 msgstr "Mój adres Bitcoin"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "My contacts"
 msgstr "Moje kontakty"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "My wallets"
 msgstr "Moje portfele"
 
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWords.html
 msgid "Need to do backup"
 msgstr "Musisz zrobić kopię zapasową"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Network"
 msgstr "Sieć"
 
@@ -1044,11 +1044,11 @@ msgstr "Nowy wniosek wypłaty"
 msgid "New Random Recovery Phrase"
 msgstr "Nowa losowa fraza odzyskiwania"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "No hardware wallets supported on this device"
 msgstr "Portfele sprzętowe nie są obsługiwane przez to urządzenie"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "No transactions yet"
 msgstr "Brak transakcji"
 
@@ -1060,7 +1060,7 @@ msgstr "Zwykła"
 msgid "Not authorized"
 msgstr "Brak autoryzacji"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Not completed"
 msgstr "Nie ukończono"
 
@@ -1068,13 +1068,13 @@ msgstr "Nie ukończono"
 msgid "Not enough funds for fee"
 msgstr "Brak środków na opłacenie prowizji"
 
-#: public/views/modals/addressbook.html
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/addressbook.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Not valid"
 msgstr "Nieprawidłowy"
 
-#: public/views/includes/output.html
+#: www/views/includes/output.html
 msgid "Note"
 msgstr "Notatka"
 
@@ -1086,52 +1086,52 @@ msgstr "Uwaga: łącznie kwota {{amountAboveMaxSizeStr}} została wyłączona. Z
 msgid "Note: a total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "Uwaga: łącznie kwota {{amountBelowFeeStr}} została wyłączona. Fundusze te pochodzą z UTXOs mniejszych niż gwarantowana prowizja sieci."
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there."
 msgstr "Uwaga: Aby zaimportować portfel z oprogramowania innego niż Copay, przejdź do Dodaj Portfel &gt; Utwórz Portfel, i podaj tam frazę odzyskiwania."
 
-#: public/views/disclaimer.html
-#: public/views/termOfUse.html
+#: www/views/disclaimer.html
+#: www/views/termOfUse.html
 msgid "Official English Disclaimer"
 msgstr "Oficjalna rezygnacja w języku angielskim"
 
-#: public/views/modals/tx-status.html
+#: www/views/modals/tx-status.html
 msgid "OKAY"
 msgstr "W PORZĄDKU"
 
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWords.html
 msgid "Once you have copied your wallet recovery phrase down, it is recommended to delete it from this device."
 msgstr "Po skopiowaniu frazy odzyskiwania portfela, zaleca się usunięcie jej z urządzenia."
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time."
 msgstr "Wyświetlane są tylko główne (niezmienne) adresy. Adresy na tej liście nie zostały w tej chwili zweryfikowane lokalnie."
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Open Settings app"
 msgstr "Otwórz ustawienia aplikacji"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "optional"
 msgstr "opcjonalnie"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Paper Wallet Private Key"
 msgstr "Klucz prywatny portfela papierowego"
 
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Participants"
 msgstr "Uczestnicy"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Passphrase"
 msgstr "Hasło"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
-#: public/views/paperWallet.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
+#: www/views/paperWallet.html
 msgid "Password"
 msgstr "Hasło"
 
@@ -1139,15 +1139,15 @@ msgstr "Hasło"
 msgid "Password required. Make sure to enter your password in advanced options"
 msgstr "Wymagane hasło. Upewnij się, aby wprowadzić hasło w opcjach zaawansowanych"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Paste invitation here"
 msgstr "Wklej tutaj zaproszenie"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Paste the backup plain text code"
 msgstr "Wklej tekst kodu kopii zapasowej"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Paste your paper wallet private key here"
 msgstr "Wklej tutaj prywatny klucz portfela papierowego"
 
@@ -1155,35 +1155,35 @@ msgstr "Wklej tutaj prywatny klucz portfela papierowego"
 msgid "Pasted from clipboard"
 msgstr "Wklejone ze schowka"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Pay To"
 msgstr "Zapłać"
 
-#: public/views/modals/tx-status.html
+#: www/views/modals/tx-status.html
 msgid "Payment Accepted"
 msgstr "Wypłata zaakceptowana"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment accepted, but not yet broadcasted"
 msgstr "Wypłata zaakceptowana, ale jeszcze nie nadana"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "Wypłata zaakceptowana. Będzie nadana przez Glidera. W przypadku wystąpienia problemu, może być usunięta 6 godzin po utworzeniu."
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment details"
 msgstr "Szczegóły wypłaty"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Payment expires"
 msgstr "Płatność wygasa"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Payment Proposal"
 msgstr "Wniosek wypłaty"
 
-#: public/views/modals/tx-status.html
+#: www/views/modals/tx-status.html
 msgid "Payment Proposal Created"
 msgstr "Wniosek wypłaty utworzony"
 
@@ -1199,7 +1199,7 @@ msgstr "Wniosek wypłaty odrzucony przez współwłaściciela portfela"
 msgid "Payment Proposal Signed by Copayer"
 msgstr "Wniosek wypłaty zatwierdzony przez współwłaściciela portfela"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Payment Proposals"
 msgstr "Wniosek wypłaty"
 
@@ -1211,33 +1211,33 @@ msgstr "Protokół wypłaty nieprawidłowy"
 msgid "Payment Protocol not supported on Chrome App"
 msgstr "Protokół wypłaty nieobsługiwany przez Chrome"
 
-#: public/views/modals/tx-status.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/tx-status.html
+#: www/views/modals/txp-details.html
 msgid "Payment Rejected"
 msgstr "Wypłata odrzucona"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Payment request"
 msgstr "Wniosek o płatność"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 #: src/js/services/notificationsService.js
 msgid "Payment Sent"
 msgstr "Płatność wysłana"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Payment to"
 msgstr "Wypłata dla"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Pending Confirmation"
 msgstr "Oczekiwanie na potwierdzenie"
 
-#: public/views/preferencesDeleteWallet.html
+#: www/views/preferencesDeleteWallet.html
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Trwale usuń ten portfel. TEN KROK JEST NIEODWRACALNY"
 
-#: public/views/create.html
+#: www/views/create.html
 #: src/js/services/profileService.js
 msgid "Personal Wallet"
 msgstr "Portfel osobisty"
@@ -1256,7 +1256,7 @@ msgstr "Proszę wypełnić wymagane pola"
 msgid "Please enter the wallet recovery phrase"
 msgstr "Wpisz frazę odzyskiwania portfela"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Please tap the words in order to confirm your backup phrase is correctly written."
 msgstr "Proszę wybrać słowa w celu potwierdzenia poprawności frazy odzyskiwania."
 
@@ -1264,7 +1264,7 @@ msgstr "Proszę wybrać słowa w celu potwierdzenia poprawności frazy odzyskiwa
 msgid "Please upgrade Copay to perform this action"
 msgstr "Proszę uaktualnić Copay, by móc wykonać tę operację"
 
-#: public/views/uri.html
+#: www/views/uri.html
 msgid "Please wait to be redirected..."
 msgstr "Proszę czekać na przekierowanie..."
 
@@ -1272,11 +1272,11 @@ msgstr "Proszę czekać na przekierowanie..."
 msgid "Please, select your backup file"
 msgstr "Proszę wybrać plik kopii zapasowej"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Polish"
 msgstr "polski"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Preferences"
 msgstr "Ustawienia"
 
@@ -1284,7 +1284,7 @@ msgstr "Ustawienia"
 msgid "Preparing backup..."
 msgstr "Przygotowywanie kopii zapasowej..."
 
-#: public/views/preferencesHistory.html
+#: www/views/preferencesHistory.html
 msgid "preparing..."
 msgstr "Przygotowywanie..."
 
@@ -1300,16 +1300,16 @@ msgstr "Priorytetowa"
 msgid "Private key is encrypted, cannot sign"
 msgstr "Klucz prywatny jest zaszyfrowany, nie można podpisać"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Push notifications for Copay are currently disabled. Enable them in the Settings app."
 msgstr "Powiadomienia Copay są obecnie wyłączone. Włącz je w ustawieniach aplikacji."
 
-#: public/views/export.html
-#: public/views/modals/customized-amount.html
+#: www/views/export.html
+#: www/views/modals/customized-amount.html
 msgid "QR Code"
 msgstr "Kod QR"
 
-#: public/views/modals/scanner.html
+#: www/views/modals/scanner.html
 msgid "QR-Scanner"
 msgstr "Skaner kodów QR"
 
@@ -1317,18 +1317,18 @@ msgstr "Skaner kodów QR"
 msgid "Receive"
 msgstr "Otrzymaj"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/walletHome.html
 msgid "Received"
 msgstr "Otrzymane"
 
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
 msgid "Recipients"
 msgstr "Odbiorcy"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Recovery Phrase"
 msgstr "Fraza odzyskiwania"
 
@@ -1336,7 +1336,7 @@ msgstr "Fraza odzyskiwania"
 msgid "Recovery phrase deleted"
 msgstr "Fraza odzyskiwania usunięta"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Recreate"
 msgstr "Przywróć"
 
@@ -1344,44 +1344,44 @@ msgstr "Przywróć"
 msgid "Recreating Wallet..."
 msgstr "Przywracanie portfela..."
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Reject"
 msgstr "Odrzuć"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Release Information"
 msgstr "Informacje o wersji"
 
-#: public/views/modals/addressbook.html
+#: www/views/modals/addressbook.html
 msgid "Remove"
 msgstr "Usuń"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Repeat password"
 msgstr "Powtórz hasło"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Repeat the password"
 msgstr "Powtórz hasło"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Repeat the spending password"
 msgstr "Powtórz hasło wypłat"
 
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Request a specific amount"
 msgstr "Prośba o konkretną kwotę"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Request Spending Password"
 msgstr "Wymaganie Hasła Wypłat"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Required"
 msgstr "Wymagania"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Required number of signatures"
 msgstr "Wymagana liczba podpisów"
 
@@ -1389,23 +1389,23 @@ msgstr "Wymagana liczba podpisów"
 msgid "Retrieving inputs information"
 msgstr "Pobieranie informacji o danych wejściowych"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Russian"
 msgstr "rosyjski"
 
-#: public/views/includes/note.html
-#: public/views/modals/addressbook.html
-#: public/views/preferencesAlias.html
-#: public/views/preferencesBwsUrl.html
-#: public/views/preferencesEmail.html
+#: www/views/includes/note.html
+#: www/views/modals/addressbook.html
+#: www/views/preferencesAlias.html
+#: www/views/preferencesBwsUrl.html
+#: www/views/preferencesEmail.html
 msgid "Save"
 msgstr "Zapisz"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Scan addresses for funds"
 msgstr "Skanuj adresy w celu znalezienia środków"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Scan Fingerprint"
 msgstr "Skanuj linie papilarne"
 
@@ -1413,11 +1413,11 @@ msgstr "Skanuj linie papilarne"
 msgid "Scan Finished"
 msgstr "Skanowanie zakończone"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Scan status finished with error"
 msgstr "Stan skanowania zakończony błędem"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Scan Wallet Funds"
 msgstr "Skanuj środki portfela"
 
@@ -1429,57 +1429,57 @@ msgstr "Proszę zeskanować linie papilarne"
 msgid "Scanning Wallet funds..."
 msgstr "Skanowanie środków portfela..."
 
-#: public/views/modals/search.html
+#: www/views/modals/search.html
 msgid "Search transactions"
 msgstr "Szukaj transakcji"
 
-#: public/views/modals/search.html
+#: www/views/modals/search.html
 msgid "Search Transactions"
 msgstr "Szukaj transakcji"
 
-#: public/views/preferences.html
+#: www/views/preferences.html
 msgid "Security preferences"
 msgstr "Ustawienia zabezpieczeń"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "See it on the blockchain"
 msgstr "Zobacz w blockchainie"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Select a backup file"
 msgstr "Wybierz plik kopii zapasowej"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "Select a wallet"
 msgstr "Wybierz portfel"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "Self-signed Certificate"
 msgstr "Certyfikat z podpisem własnym"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 #: src/js/controllers/index.js
 msgid "Send"
 msgstr "Wyślij"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Send addresses by email"
 msgstr "Wyślij adresy przez e-mail"
 
-#: public/views/includes/confirm-tx.html
+#: www/views/includes/confirm-tx.html
 msgid "Send bitcoin"
 msgstr "Wyślij bitcoiny"
 
-#: public/views/export.html
-#: public/views/preferencesLogs.html
+#: www/views/export.html
+#: www/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "Wyślij przez e-mail"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Send Max"
 msgstr "Wyślij wszystko"
 
-#: public/views/includes/transaction.html
+#: www/views/includes/transaction.html
 msgid "Sending"
 msgstr "Wysyłanie"
 
@@ -1487,10 +1487,10 @@ msgstr "Wysyłanie"
 msgid "Sending transaction"
 msgstr "Wysyłanie transakcji"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/tx-status.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/tx-status.html
+#: www/views/walletHome.html
 msgid "Sent"
 msgstr "Wysłane"
 
@@ -1498,64 +1498,64 @@ msgstr "Wysłane"
 msgid "Server response could not be verified"
 msgstr "Odpowiedź serwera nie mogła zostać zweryfikowana"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Session log"
 msgstr "Dziennik sesji"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "SET"
 msgstr "ZATWIERDŹ"
 
-#: public/views/preferencesBwsUrl.html
+#: www/views/preferencesBwsUrl.html
 msgid "Set default url"
 msgstr "Ustaw domyślny adres url"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Set up a password"
 msgstr "Ustawianie hasła"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Set up a spending password"
 msgstr "Wprowadź hasło w celu wypłaty"
 
-#: public/views/preferencesEmail.html
+#: www/views/preferencesEmail.html
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
 msgstr "Włączenie powiadomień e-mail może mieć wpływ na twoją prywatność, jeżeli usługodawca portfela będzie narażony na ataki cyberprzestępców. Informacje dostępne dla atakującego będą zawierać jedynie adres twojego portfela i saldo."
 
-#: public/views/includes/sidebar.html
+#: www/views/includes/sidebar.html
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: public/views/modals/customized-amount.html
-#: public/views/walletHome.html
+#: www/views/modals/customized-amount.html
+#: www/views/walletHome.html
 msgid "Share address"
 msgstr "Udostępnij adres"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Share invitation"
 msgstr "Wyślij zaproszenie"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Share this invitation with your copayers"
 msgstr "Wyślij zaproszenie współwłaścicielom portfela"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Share this wallet address to receive payments"
 msgstr "Udostępnij ten adres portfela w celu otrzymania płatności"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "Udostępnij ten adres w celu otrzymania płatności. Aby chronić twoją prywatność nowe adresy są generowane automatycznie po ich użyciu."
 
-#: public/views/create.html
-#: public/views/import.html
+#: www/views/create.html
+#: www/views/import.html
 msgid "Shared Wallet"
 msgstr "Współdzielony portfel"
 
-#: public/views/create.html
-#: public/views/export.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/export.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Show advanced options"
 msgstr "Pokaż opcje zaawansowane"
 
@@ -1567,11 +1567,11 @@ msgstr "Podpisy odrzucone przez serwer"
 msgid "Signing transaction"
 msgstr "Podpisywanie transakcji"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Single Address Wallet"
 msgstr "Pojedynczy adres portfela"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Spanish"
 msgstr "hiszpański"
 
@@ -1607,11 +1607,11 @@ msgstr "Udało się"
 msgid "Super Economy"
 msgstr "Super Ekonomiczna"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Sweep paper wallet"
 msgstr "Wyczyść papierowy portfel"
 
-#: public/views/paperWallet.html
+#: www/views/paperWallet.html
 msgid "Sweep Wallet"
 msgstr "Wyczyść portfel"
 
@@ -1619,24 +1619,24 @@ msgstr "Wyczyść portfel"
 msgid "Sweeping Wallet..."
 msgstr "Sczytywanie portfela..."
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Tap and hold to show"
 msgstr "Dotknij i przytrzymaj, aby pokazać"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Tap to retry"
 msgstr "Ponów próbę"
 
-#: public/views/disclaimer.html
-#: public/views/preferencesAbout.html
+#: www/views/disclaimer.html
+#: www/views/preferencesAbout.html
 msgid "Terms of Use"
 msgstr "Warunki użytkowania"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
 msgstr "Autorzy oprogramowania, pracownicy i asystenci Bitpay, posiadacze praw autorskich i BitPay Inc. nie mogą odzyskać kluczy prywatnych lub haseł w wypadku ich utraty i nie mogą zagwarantować potwierdzenia transakcji, ponieważ nie mają kontroli nad siecią Bitcoin."
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The derivation path"
 msgstr "Ścieżka derywacji"
 
@@ -1644,7 +1644,7 @@ msgstr "Ścieżka derywacji"
 msgid "The Ledger Chrome application is not installed"
 msgstr "Aplikacja Ledger Chrome nie jest zainstalowana"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The password of the recovery phrase (if set)"
 msgstr "Hasło odzyskiwania frazy (jeśli ustawione)"
 
@@ -1652,12 +1652,12 @@ msgstr "Hasło odzyskiwania frazy (jeśli ustawione)"
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "Wypłata została utworzona, ale nie może być zakończona. Spróbuj ponownie na stronie głównej"
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "The payment was removed by creator"
 msgstr "Wypłata została usunięta przez jej twórcę"
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "The recovery phrase could require a password to be imported"
 msgstr "Fraza odzyskiwania może wymagać hasła do zaimportowania"
 
@@ -1665,11 +1665,11 @@ msgstr "Fraza odzyskiwania może wymagać hasła do zaimportowania"
 msgid "The request could not be understood by the server"
 msgstr "Wniosek nie został zrozumiany przez serwer"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "The software does not constitute an account where BitPay or other third parties serve as financial intermediaries or custodians of your bitcoin."
 msgstr "Oprogramowanie nie jest kontem, gdzie BitPay lub inne osoby trzecie mogą służyć jako pośrednicy finansowi lub opiekunowie twoich bitcoinów."
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "The software you are about to use functions as a free, open source, and multi-signature digital wallet."
 msgstr "Oprogramowanie to jest darmowym, open source, obsługującym multipodpisy cyfrowym portfelem."
 
@@ -1682,15 +1682,15 @@ msgstr "Wniosek płatności nie jest oczekujący"
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr "Portfel \"{{walletName}}\" został usunięty"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The Wallet Recovery Phrase could require a password to be imported"
 msgstr "Fraza odzyskiwania portfela może wymagać hasła do zaimportowania"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "The wallet service URL"
 msgstr "Adres URL usługi Portfel"
 
-#: public/views/paymentUri.html
+#: www/views/paymentUri.html
 msgid "There are no wallets to make this payment"
 msgstr "Brak portfela, aby dokonać tej wypłaty"
 
@@ -1702,46 +1702,46 @@ msgstr "Jest dostępna nowa wersja Copay. Proszę zaktualizować"
 msgid "There is an error in the form"
 msgstr "Wystąpił błąd w postaci"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr "Ta fraza odzyskiwania został utworzona przy użyciu hasła. Aby odzyskać ten portfel potrzebna jest fraza odzyskiwania i hasło."
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "Ta transakcja jest nieprawidłowa. Może to być spowodowane próbą podwójnej płatności."
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "Ten portfel nie jest zarejestrowany na Bitcore Wallet Service (BWS). Możesz go odtworzyć z lokalnego nośnika."
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Time"
 msgstr "Czas"
 
-#: public/views/includes/output.html
-#: public/views/modals/tx-details.html
-#: public/views/modals/txp-details.html
-#: public/views/walletHome.html
+#: www/views/includes/output.html
+#: www/views/modals/tx-details.html
+#: www/views/modals/txp-details.html
+#: www/views/walletHome.html
 msgid "To"
 msgstr "Do"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
 msgstr "Aby przywrócić ten {{index.m}}-{{index.n}} <b>wspólny</b> portfel musisz"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement."
 msgstr "W najszerszym zakresie dozwolonym przez prawo, to oprogramowanie jest dostarczane w stanie, w jakim jest (\"jak widać\") bez jakiejkolwiek gwarancji, ani wyraźnej, ani domyślnej, w tym między innymi domyślnych gwarancji co do przydatności handlowej, przydatności do określonych zastosowań i nienaruszalności."
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "too long!"
 msgstr "za długo!"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Total Locked Balance"
 msgstr "Łącznie zablokowane środki"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Total number of copayers"
 msgstr "Liczba współwłaścicieli portfela"
 
@@ -1749,7 +1749,7 @@ msgstr "Liczba współwłaścicieli portfela"
 msgid "Touch ID Failed"
 msgstr "Odczyt Touch ID nie powiódł się"
 
-#: public/views/modals/tx-details.html
+#: www/views/modals/tx-details.html
 msgid "Transaction"
 msgstr "Transakcja"
 
@@ -1757,49 +1757,49 @@ msgstr "Transakcja"
 msgid "Transaction already broadcasted"
 msgstr "Transakcja została już wysłana"
 
-#: public/views/preferencesAdvanced.html
+#: www/views/preferencesAdvanced.html
 msgid "Transaction History"
 msgstr "Historia transakcji"
 
-#: public/views/translators.html
+#: www/views/translators.html
 msgid "Translation Credits"
 msgstr "Przetłumaczone przez"
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Translators"
 msgstr "Tłumacze"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Try again"
 msgstr "Spróbuj ponownie"
 
-#: public/views/import.html
+#: www/views/import.html
 msgid "Type the Recovery Phrase (usually 12 words)"
 msgstr "Wpisz frazę odzyskiwania (zazwyczaj 12 słów)"
 
-#: public/views/modals/search.html
-#: public/views/modals/tx-details.html
-#: public/views/walletHome.html
+#: www/views/modals/search.html
+#: www/views/modals/tx-details.html
+#: www/views/walletHome.html
 msgid "Unconfirmed"
 msgstr "Niepotwierdzone"
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Unit"
 msgstr "Jednostka"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Unsent transactions"
 msgstr "Niewysłane transakcje"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Updating transaction history. Please stand by."
 msgstr "Aktualizowanie historii transakcji. Proszę czekać."
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "Updating Wallet..."
 msgstr "Aktualizowanie portfela..."
 
-#: public/views/preferencesGlobal.html
+#: www/views/preferencesGlobal.html
 msgid "Use Unconfirmed Funds"
 msgstr "Użyj niepotwierdzonych środków"
 
@@ -1811,15 +1811,15 @@ msgstr "Sprawdzanie poprawności frazy odzyskiwania..."
 msgid "Validating wallet integrity..."
 msgstr "Sprawdzanie integralności portfela..."
 
-#: public/views/preferencesAbout.html
+#: www/views/preferencesAbout.html
 msgid "Version"
 msgstr "Wersja"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "View"
 msgstr "Widok"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Waiting for copayers"
 msgstr "Oczekiwanie na współwłaścicieli portfela"
 
@@ -1831,7 +1831,7 @@ msgstr "Oczekiwanie na Ledger..."
 msgid "Waiting for Trezor..."
 msgstr "Oczekiwanie na Trezor..."
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Waiting..."
 msgstr "Oczekiwanie..."
 
@@ -1843,32 +1843,32 @@ msgstr "Portfel już istnieje"
 msgid "Wallet already in Copay"
 msgstr "Portfel jest już w Copay"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Configuration (m-n)"
 msgstr "Konfiguracja portfela (m-n)"
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "Wallet Export"
 msgstr "Eksport portfela"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Id"
 msgstr "Id Portfela"
 
-#: public/views/copayers.html
+#: www/views/copayers.html
 msgid "Wallet incomplete and broken"
 msgstr "Awaria: Portfel nie działa"
 
-#: public/views/preferencesAdvanced.html
-#: public/views/preferencesInformation.html
+#: www/views/preferencesAdvanced.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Information"
 msgstr "Informacje o portfelu"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Wallet Invitation"
 msgstr "Zaproszenie do portfela"
 
-#: public/views/join.html
+#: www/views/join.html
 msgid "Wallet Invitation is not valid!"
 msgstr "Zaproszenie do portfela jest nieważne!"
 
@@ -1884,11 +1884,11 @@ msgstr "Portfel jest zablokowany"
 msgid "Wallet is not complete"
 msgstr "Portfel jest niekompletny"
 
-#: public/views/create.html
+#: www/views/create.html
 msgid "Wallet name"
 msgstr "Nazwa portfela"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Name (at creation)"
 msgstr "Nazwa portfela (oryginalna)"
 
@@ -1896,7 +1896,7 @@ msgstr "Nazwa portfela (oryginalna)"
 msgid "Wallet needs backup"
 msgstr "Portfel wymaga kopii zapasowej"
 
-#: public/views/preferencesInformation.html
+#: www/views/preferencesInformation.html
 msgid "Wallet Network"
 msgstr "Sieć portfela"
 
@@ -1912,9 +1912,9 @@ msgstr "Portfel nie jest zarejestrowany w Wallet Service. Odtwórz go używając
 msgid "Wallet Preferences"
 msgstr "Preferencje Portfela"
 
-#: public/views/create.html
-#: public/views/import.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/import.html
+#: www/views/join.html
 msgid "Wallet Recovery Phrase"
 msgstr "Fraza Odzyskiwania Portfela"
 
@@ -1922,8 +1922,8 @@ msgstr "Fraza Odzyskiwania Portfela"
 msgid "Wallet Recovery Phrase is invalid"
 msgstr "Fraza odzyskiwania portfela nieprawidłowa"
 
-#: public/views/backup.html
-#: public/views/preferencesDeleteWords.html
+#: www/views/backup.html
+#: www/views/preferencesDeleteWords.html
 msgid "Wallet recovery phrase not available. You can still export it from Advanced &gt; Export."
 msgstr "Fraza odzyskiwania portfela niedostępna. Nadal można go wyeksportować w: Zaawansowane &gt; Eksport portfela."
 
@@ -1931,53 +1931,53 @@ msgstr "Fraza odzyskiwania portfela niedostępna. Nadal można go wyeksportować
 msgid "Wallet service not found"
 msgstr "Nie znaleziono serwera"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "Ostrzeżenie: klucz derywacji nie działa na tym urządzeniu/portfel. Działania dla tego portfela nie można wykonać."
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
 msgstr "UWAGA: Jeśli plik eksportu nie zawiera klucza prywatnego, możliwe będzie jedynie sprawdzenie salda i historii transakcji, jak również wygenerowanie wniosków o płatność. Nie może być on jednak używany do sprawdzania poprawności (podpisywania) wniosków płatności, więc <b>środki z wyeksportowanego pliku nie będą dostępne</b>."
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password."
 msgstr "OSTRZEŻENIE: Hasła nie można odzyskać. <b>Pamiętaj, aby je zapisać</b>. Portfela nie można przywrócić bez hasła."
 
-#: public/views/export.html
+#: www/views/export.html
 msgid "WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
 msgstr "UWAGA: Klucz prywatny nie jest dostępny. Ten eksport umożliwia sprawdzenie salda i historii transakcji, jak również wygenerowanie wniosków o płatność. Nie może być on jednak używany do sprawdzania poprawności (podpisywania) wniosków płatności, więc <b>środki z wyeksportowanego pliku nie będą dostępne</b>."
 
-#: public/views/modals/txp-details.html
+#: www/views/modals/txp-details.html
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "Ostrzeżenie: ta transakcja ma niepotwierdzone dane wejściowe"
 
-#: public/views/modals/paypro.html
+#: www/views/modals/paypro.html
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "OSTRZEŻENIE: CERTYFIKAT NIEZAUFANY"
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "WARNING: Wallet not registered"
 msgstr "Ostrzeżenie: Portfel niezarejestrowany"
 
-#: public/views/preferencesDeleteWallet.html
-#: public/views/preferencesDeleteWords.html
+#: www/views/preferencesDeleteWallet.html
+#: www/views/preferencesDeleteWords.html
 msgid "Warning!"
 msgstr "Ostrzeżenie!"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "We reserve the right to modify this disclaimer from time to time."
 msgstr "Zastrzegamy sobie prawo do wprowadzania zmian w niniejszych warunkach użytkowania."
 
-#: public/views/disclaimer.html
+#: www/views/disclaimer.html
 msgid "WELCOME TO COPAY"
 msgstr "WITAMY W COPAY"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
 msgstr "Dopóki oprogramowanie jest w fazie testów i nadal, dzięki informacjom od użytkowników i społeczności programistów, dokonywane są poprawki, nie możemy zagwarantować, że będzie ono wolne od błędów."
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Write your wallet recovery phrase"
 msgstr "Wpisz swoją frazę odzyskiwania portfela"
 
@@ -1989,49 +1989,49 @@ msgstr "Nieprawidłowa ilość słów frazy:"
 msgid "Wrong spending password"
 msgstr "Nieprawidłowe hasło wypłat"
 
-#: public/views/modals/confirmation.html
+#: www/views/modals/confirmation.html
 msgid "Yes"
 msgstr "Tak"
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws."
 msgstr "Użytkownik przyjmuje do wiadomości, że korzysta z tego oprogramowania na własną odpowiedzialność i zgodnie z obowiązującym prawem."
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software."
 msgstr "Użytkownik jest odpowiedzialny za przechowywanie swoich haseł, kluczy publicznych i prywatnych, numerów PIN i innych kodów, których używa do uzyskania dostępu do oprogramowania."
 
-#: public/views/includes/terms.html
+#: www/views/includes/terms.html
 msgid "You assume any and all risks associated with the use of the software."
 msgstr "Użytkownik bierze na siebie wszelkie ryzyko związane z korzystaniem z tego oprogramowania."
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "You backed up your wallet. You can now restore this wallet at any time."
 msgstr "Wykonałeś kopię zapasową portfela. Teraz możesz go odtworzyć w każdej chwili."
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "You can safely install your wallet on another device and use it from multiple devices at the same time."
 msgstr "Możesz bezpiecznie zainstalować swój portfel na innym urządzeniu i używać go z wieloma urządzeniami jednocześnie."
 
-#: public/views/walletHome.html
+#: www/views/walletHome.html
 msgid "You do not have any wallet"
 msgstr "Nie masz żadnego portfela"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "You need the wallet recovery phrase to restore this personal wallet. Write it down and keep them somewhere safe."
 msgstr "Potrzebujesz frazę odzyskiwania, aby móc odtworzyć ten portfel. Zapisz ją i przechowuj w bezpiecznym miejscu."
 
-#: public/views/create.html
-#: public/views/join.html
+#: www/views/create.html
+#: www/views/join.html
 msgid "Your nickname"
 msgstr "Twój nick"
 
-#: public/views/export.html
-#: public/views/import.html
+#: www/views/export.html
+#: www/views/import.html
 msgid "Your password"
 msgstr "Twoje hasło"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Your spending password"
 msgstr "Twoje hasło wypłat"
 
@@ -2039,11 +2039,11 @@ msgstr "Twoje hasło wypłat"
 msgid "Your wallet has been imported correctly"
 msgstr "Twój portfel został zaimportowany poprawnie"
 
-#: public/views/includes/password.html
+#: www/views/includes/password.html
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down"
 msgstr "Klucz portfela będzie zaszyfrowany. Hasło wypłat nie może być odzyskane. Pamiętaj, aby je zapisać"
 
-#: public/views/backup.html
+#: www/views/backup.html
 msgid "Your wallet recovery phrase and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend."
 msgstr "Twoja fraza odzyskiwania i dostęp do serwera koordynowały tworzenie początkowego portfela. Musisz jeszcze {{index.m}} w celu dokonania płatności."
 
