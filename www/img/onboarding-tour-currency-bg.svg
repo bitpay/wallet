@@ -1,46 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 375 257" style="enable-background:new 0 0 375 257;" xml:space="preserve">
+<svg version="1.1" id="onboarding-market-illustration"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 375 257"
+	 style="enable-background:new 0 0 375 257;" xml:space="preserve">
 <style type="text/css">
-	.st0{opacity:6.325793e-02;fill:url(#Line-Copy_1_);enable-background:new    ;}
-	.st1{fill:none;stroke:#13E5B6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-	
-		.st2{opacity:0.3335;fill:none;stroke:#FFFFFF;stroke-width:0.5;stroke-linecap:square;stroke-dasharray:4;enable-background:new    ;}
-	.st3{opacity:0.3;fill:url(#Oval-2_1_);enable-background:new    ;}
+	.st0{opacity:0.3;fill:url(#SVGID_1_);enable-background:new    ;}
+	.st1{opacity:0.3;fill:url(#SVGID_2_);enable-background:new    ;}
+	.st2{opacity:0.3;}
+	.st3{fill:#13E5B6;}
 	.st4{opacity:0.64;fill:none;stroke:#9012FE;stroke-width:2;stroke-linecap:square;enable-background:new    ;}
 	.st5{fill:#1A2A71;stroke:#FFFFFF;stroke-width:3;}
 </style>
-<g id="Onboarding">
-	<g id="_x30_.2.2---Tour-2" transform="translate(0.000000, -200.000000)">
-		<g id="bitcoin-currency" transform="translate(0.000000, 206.000000)">
-			<g id="bg-2" transform="translate(0.000000, 3.530453)">
-				
-					<linearGradient id="Line-Copy_1_" gradientUnits="userSpaceOnUse" x1="-117.185" y1="513.6823" x2="-117.185" y2="512.8358" gradientTransform="matrix(374.5743 0 0 -148.6105 44082.1914 76374.0547)">
-					<stop  offset="0" style="stop-color:#CDE7FF"/>
-					<stop  offset="1" style="stop-color:#FFFFFF"/>
-				</linearGradient>
-				<polygon id="Line-Copy" class="st0" points="54.3,126.6 98.8,99.6 139.1,120.4 185.5,82.4 222.9,82.4 246.7,49.3 278.8,65.2 
-					324.3,56.6 375,35.5 375,185.5 150.1,185.5 0.4,185.5 0.4,135.2 				"/>
-				<polyline id="Line" class="st1" points="0,134 54.3,127.8 97.7,98.3 140.1,120.4 184.6,81.2 222.9,81.2 247.7,48 280.8,67.7 
-					321.2,56.6 375,35.5 				"/>
-				<path id="Line-Copy-2" class="st2" d="M137.2,120.5v63"/>
-				<path id="Line-Copy-3" class="st2" d="M77.2,110.5v73.8"/>
-				<path id="Line-Copy-4" class="st2" d="M264.2,64.5v119.4"/>
-				<path id="Line-Copy-5" class="st2" d="M330.2,57.5v126"/>
-				
-					<linearGradient id="Oval-2_1_" gradientUnits="userSpaceOnUse" x1="-117.0223" y1="514.3885" x2="-117.0223" y2="513.4939" gradientTransform="matrix(247 0 0 -247 29092 127054.4453)">
-					<stop  offset="0" style="stop-color:#3950B5"/>
-					<stop  offset="1" style="stop-color:#162360"/>
-				</linearGradient>
-				<path id="Oval-2" class="st3" d="M187.5,247.5c68.2,0,123.5-55.3,123.5-123.5S255.7,0.5,187.5,0.5S64,55.8,64,124
-					S119.3,247.5,187.5,247.5z"/>
-			</g>
-			<g id="price-" transform="translate(122.000000, 0.000000)">
-				<path id="Line_1_" class="st4" d="M67,42.5v146"/>
-				<circle id="Oval-5" class="st5" cx="67.5" cy="83.5" r="4.5"/>
-			</g>
-		</g>
-	</g>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-234.5445" y1="11.6925" x2="-234.5445" y2="12.5871" gradientTransform="matrix(247 0 0 247 58120 -2878.0242)">
+	<stop  offset="0" style="stop-color:#3950B5"/>
+	<stop  offset="1" style="stop-color:#162360"/>
+</linearGradient>
+<path class="st0" d="M187.5,257c68.2,0,123.5-55.3,123.5-123.5S255.7,10,187.5,10S64,65.3,64,133.5S119.3,257,187.5,257z"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="187.5" y1="195.0305" x2="187.5" y2="45.0305">
+	<stop  offset="0" style="stop-color:#3950B5"/>
+	<stop  offset="1" style="stop-color:#202F77"/>
+</linearGradient>
+<polygon class="st1" points="54.3,137.3 97.7,107.8 140.1,129.9 184.6,90.7 222.9,90.7 247.7,57.5 280.8,77.2 321.2,66.1 375,45 
+	375,195 150.1,195 0.4,195 0,143.5 "/>
+<g class="st2">
+	<path class="st3" d="M300.2,195h-0.5v-4h0.5V195z M300.2,187h-0.5v-4h0.5V187z M300.2,179h-0.5v-4h0.5V179z M300.2,171h-0.5v-4h0.5
+		V171z M300.2,163h-0.5v-4h0.5V163z M300.2,155h-0.5v-4h0.5V155z M300.2,147h-0.5v-4h0.5V147z M300.2,139h-0.5v-4h0.5V139z
+		 M300.2,131h-0.5v-4h0.5V131z M300.2,123h-0.5v-4h0.5V123z M300.2,115h-0.5v-4h0.5V115z M300.2,107h-0.5v-4h0.5V107z M300.2,99
+		h-0.5v-4h0.5V99z M300.2,91h-0.5v-4h0.5V91z M300.2,83h-0.5v-4h0.5V83z M300.2,75h-0.5v-4h0.5V75z"/>
+	<path class="st3" d="M225.2,195h-0.5v-4h0.5V195z M225.2,187h-0.5v-4h0.5V187z M225.2,179h-0.5v-4h0.5V179z M225.2,171h-0.5v-4h0.5
+		V171z M225.2,163h-0.5v-4h0.5V163z M225.2,155h-0.5v-4h0.5V155z M225.2,147h-0.5v-4h0.5V147z M225.2,139h-0.5v-4h0.5V139z
+		 M225.2,131h-0.5v-4h0.5V131z M225.2,123h-0.5v-4h0.5V123z M225.2,115h-0.5v-4h0.5V115z M225.2,107h-0.5v-4h0.5V107z M225.2,99
+		h-0.5v-4h0.5V99z M225.2,91h-0.5v-3.2h0.5V91z"/>
+	<path class="st3" d="M150.2,195h-0.5v-4h0.5V195z M150.2,187h-0.5v-4h0.5V187z M150.2,179h-0.5v-4h0.5V179z M150.2,171h-0.5v-4h0.5
+		V171z M150.2,163h-0.5v-4h0.5V163z M150.2,155h-0.5v-4h0.5V155z M150.2,147h-0.5v-4h0.5V147z M150.2,139h-0.5v-4h0.5V139z
+		 M150.2,131h-0.5v-4h0.5V131z M150.2,123h-0.5v-2h0.5V123z"/>
+	<path class="st3" d="M75.2,195h-0.5v-4h0.5V195z M75.2,187h-0.5v-4h0.5V187z M75.2,179h-0.5v-4h0.5V179z M75.2,171h-0.5v-4h0.5V171
+		z M75.2,163h-0.5v-4h0.5V163z M75.2,155h-0.5v-4h0.5V155z M75.2,147h-0.5v-4h0.5V147z M75.2,139h-0.5v-4h0.5V139z M75.2,131h-0.5
+		v-4h0.5V131z"/>
+</g>
+<path class="st3" d="M0,144.5c-0.5,0-0.9-0.4-1-0.9c-0.1-0.5,0.3-1,0.9-1.1l54.1-6.2L97.1,107c0.3-0.2,0.7-0.2,1-0.1l41.8,21.8
+	l44-38.7c0.2-0.2,0.4-0.2,0.7-0.2h37.8l24.5-32.8c0.3-0.4,0.9-0.5,1.3-0.3l32.7,19.5l39.9-11l53.8-21.1c0.5-0.2,1.1,0.1,1.3,0.6
+	c0.2,0.5-0.1,1.1-0.6,1.3l-53.8,21.1c0,0-0.1,0-0.1,0l-40.4,11.1c-0.3,0.1-0.5,0-0.8-0.1L248,58.9l-24.3,32.5
+	c-0.2,0.3-0.5,0.4-0.8,0.4H185l-44.2,39c-0.3,0.3-0.8,0.3-1.1,0.1L97.8,109l-42.9,29.2c-0.1,0.1-0.3,0.1-0.4,0.2l-54.3,6.2
+	C0.1,144.5,0,144.5,0,144.5z"/>
+<g>
+	<path id="Line_1_" class="st4" d="M187.5,48.5v146"/>
+	<circle id="dot" class="st5" cx="187.5" cy="89.5" r="4.5"/>
 </g>
 </svg>
