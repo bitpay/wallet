@@ -6,6 +6,11 @@ angular.module('copayApp.controllers').controller('preferencesController',
     var walletId = wallet.credentials.walletId;
     $scope.wallet = wallet;
 
+    $scope.encryptEnabled = {
+      value: walletService.isEncrypted(wallet)
+    };
+
+
     $scope.encryptChange = function() {
       if (!wallet) return;
       var val = $scope.encryptEnabled.value;
@@ -18,6 +23,9 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
             // ToDo show error?
             $scope.encryptEnabled.value = false;
+            $timeout(function() {
+              $scope.$apply();
+            });
             return;
           }
           profileService.updateCredentials(JSON.parse(wallet.export()), function() {
@@ -32,6 +40,9 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
             // ToDo show error?
             $scope.encryptEnabled.value = true;
+            $timeout(function() {
+              $scope.$apply();
+            });
             return;
           }
           profileService.updateCredentials(JSON.parse(wallet.export()), function() {
@@ -64,9 +75,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
       var config = configService.getSync();
 
-      $scope.encryptEnabled = {
-        value: walletService.isEncrypted(wallet)
-      };
+
 
       if (wallet.isPrivKeyExternal)
         $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
