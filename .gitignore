@@ -104,7 +104,7 @@ www/fonts
 externalServices.json
 cordova/Makefile
 cordova/ProjectMakefile
-app-template/bpapp
+app-template/bitpay-wallet
 cordova/ProjectMakefile
 cordova/config.xml
 cordova/wp/Package.appxmanifest
@@ -116,7 +116,7 @@ src/js/externalServices.js
 
 cordova/Makefile
 cordova/ProjectMakefile
-app-template/bpapp
+app-template/bitpay-wallet
 cordova/ProjectMakefile
 cordova/config.xml
 cordova/wp/Package.appxmanifest
