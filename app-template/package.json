@@ -11,10 +11,10 @@
     "multisignature",
     "bitcore"
   ],
-  "main": "public/index.html",
+  "main": "www/index.html",
   "window": {
     "title": "*USERVISIBLENAME* - *PURPOSELINE*",
-    "icon": "./public/img/icons/icon-256.png",
+    "icon": "./www/img/icons/icon-256.png",
     "toolbar": false,
     "show": true,
     "visible": true,

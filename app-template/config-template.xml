@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bitpay.*BUNDLENAME*"
+  version="*VERSION*"
+  android-versionCode="*ANDROIDVERSION*"
+  ios-CFBundleVersion="*VERSION*">
+    <name>*USERVISIBLENAME*</name>
+    <description>
+      *PURPOSELINE*
+    </description>
+    <author email="support@bitpay.com" href="*URL*">
+        BitPay Inc.
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <preference name="iosPersistentFileLocation" value="Library" />
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="HideKeyboardFormAccessoryBar" value="true"/>
+    <preference name="SplashScreen" value="copayscreen" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreenDuration" value="1" />
+    <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarBackgroundColor" value="#1e3186" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="BackupWebStorage" value="none"/>
+    <preference name="windows-target-version" value="8.1"/>
+    <preference name="Orientation" value="default" />
+
+    <!-- Plugins -->
+    <plugin name="cordova-plugin-globalization" spec="~1.0.4" />
+    <plugin name="cordova.plugins.diagnostic" spec="~3.2.1" />
+    <plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.2.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />
+    <plugin name="cordova-plugin-x-toast" spec="~2.5.2" />
+    <plugin name="com.verso.cordova.clipboard" spec="https://github.com/VersoSolutions/CordovaClipboard" />
+    <plugin name="cordova-plugin-x-socialsharing" spec="https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git" />
+    <plugin name="cordova-plugin-spinner-dialog" spec="~1.3.1" />
+    <plugin name="cordova-plugin-dialogs" spec="~1.3.0" />
+    <plugin name="cordova-plugin-network-information" spec="~1.3.0" />
+    <plugin name="cordova-plugin-console" spec="~1.0.4" />
+    <plugin name="cordova-plugin-uniquedeviceid" spec="~1.3.2" />
+    <plugin name="cordova-plugin-file" spec="~4.3.0" />
+    <plugin name="cordova-plugin-touch-id" spec="~3.2.0" />
+    <plugin name="cordova-plugin-transport-security" spec="~0.1.2" />
+    <plugin name="cordova-ios-requires-fullscreen" spec="~0.0.2" />
+    <plugin name="cordova-plugin-android-fingerprint-auth" spec="~0.2.0" />
+    <plugin name="cordova-plugin-screen-orientation" spec="~1.4.2" />
+    <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
+    <plugin name="cordova-plugin-whitelist" spec="~1.3.0" />
+    <plugin name="cordova-plugin-wkwebview-engine" spec="https://github.com/driftyco/cordova-plugin-wkwebview-engine.git" />
+    <plugin name="cordova-plugin-qrscanner" spec="~2.4.0" />
+    <plugin name="cordova-plugin-customurlscheme" spec="~4.2.0">
+      <variable name="URL_SCHEME" value="UNUSED" />
+    </plugin>
+
+    <!-- Supported Platforms -->
+    <engine name="ios" spec="~4.2.1" />
+    <engine name="android" spec="~5.2.2" />
+    <engine name="wp8" spec="~3.8.2" />
+
+    <!-- Platform Specific Settings -->
+    <platform name="ios">
+      <plugin name="phonegap-plugin-push" spec="1.5.3" />
+      <!-- <hook type="after_prepare" src="util/hooks/ios/add-custom-urls-to-plist.js" />
+      <hook type="after_prepare" src="util/hooks/ios/add-uistatusbarhidden-to-plist.js" /> -->
+    </platform>
+
+    <platform name="android">
+      <hook type="after_prepare" src="util/hooks/android/add-custom-urls-to-android-manifest.js" />
+      <hook type="after_prepare" src="util/hooks/android/prohibit-cloud-backups-in-android-manifest.js" />
+      <!-- https://github.com/phonegap/phonegap-plugin-push/issues/424 -->
+      <plugin name="phonegap-plugin-push" spec="1.2.3" />
+    </platform>
+
+    <platform name="wp8">
+      <plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/jrontend/phonegap-plugin-barcodescanner" />
+    </platform>
+
+  </widget>

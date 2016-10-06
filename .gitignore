@@ -4,6 +4,8 @@ i18n/crowdin_api_key.txt
 src/js/translations.js
 
 # cordova
+plugins
+platforms
 cordova/project-*/*
 cordova/*.keystore
 
@@ -89,13 +91,15 @@ Session.vim
 src/sass/*.css
 .sass-cache
 
-# copay public
-public/css/*
-public/lib/*
-public/js/*
-public/fonts
+# copay www
+www/css/*
+www/lib/*
+www/js/*
+www/fonts
 
 ## templates
+/config.xml
+/ionic.config.json
 /appConfig.json
 externalServices.json
 cordova/Makefile
@@ -104,8 +108,8 @@ app-template/bpapp
 cordova/ProjectMakefile
 cordova/config.xml
 cordova/wp/Package.appxmanifest
-public/img/logo-negative.svg
-public/img/logo.svg
+www/img/logo-negative.svg
+www/img/logo.svg
 src/js/appConfig.js
 src/js/externalServices.js
 
@@ -116,8 +120,8 @@ app-template/bpapp
 cordova/ProjectMakefile
 cordova/config.xml
 cordova/wp/Package.appxmanifest
-public/img/logo-negative.svg
-public/img/logo.svg
+www/img/logo-negative.svg
+www/img/logo.svg
 src/js/appConfig.js
 
 cordova/android/res/
@@ -127,7 +131,3 @@ cordova/wp/*.jpg
 cordova/ios/splash/
 cordova/ios/icons/
 cordova/project/
-
-
-
-
