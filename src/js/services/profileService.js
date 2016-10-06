@@ -333,6 +333,11 @@ angular.module('copayApp.services')
           }, 100);
         }
       });
+
+      push.on('error', function(e) {
+        $log.error(e.message);
+      });
+
     };
 
     root.loadAndBindProfile = function(cb) {
