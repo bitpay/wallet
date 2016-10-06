@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($http, $log, lodash, storageService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($http, $log, lodash, storageService, bitauthService, platformInfo) {
   var root = {};
   var credentials = {};
   var bpSession = {};
+  var pubkey, sin;
 
   var _setCredentials = function() {
     /*
@@ -12,16 +13,26 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
      */
     credentials.NETWORK = 'livenet';
     if (credentials.NETWORK == 'testnet') {
+      credentials.BITPAY_PRIV_KEY = '';
       credentials.BITPAY_API_URL = 'https://test.bitpay.com';
     }
     else {
+      credentials.BITPAY_PRIV_KEY = '';
       credentials.BITPAY_API_URL = 'https://bitpay.com';
+    }
+    try {
+      pubkey = bitauthService.getPublicKeyFromPrivateKey(credentials.BITPAY_PRIV_KEY);
+      sin = bitauthService.getSinFromPublicKey(pubkey);
+    }
+    catch (e) {
+      $log.error(e);
     };
   };
 
   var _setError = function(msg, e) {
     $log.error(msg);
-    return e;
+    var error = e.data ? e.data.error : msg;
+    return error;
   };
 
   var _getUser = function(cb) {
@@ -92,40 +103,163 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     return credentials.NETWORK;
   };
 
-  root.topUp = function(data, cb) {
-    var dataSrc = {
-      amount: data.amount,
-      currency: data.currency
+  root.getApiUrl = function() {
+    _setCredentials();
+    return credentials.BITPAY_API_URL;
+  };
+
+  var _postBitAuth = function(endpoint, data) {
+    var dataToSign = credentials.BITPAY_API_URL + endpoint + JSON.stringify(data);
+    var signedData = bitauthService.sign(dataToSign, credentials.BITPAY_PRIV_KEY);
+
+    return {
+      method: 'POST',
+      url: credentials.BITPAY_API_URL + endpoint,
+      headers: {
+        'content-type': 'application/json',
+        'x-identity': pubkey,
+        'x-signature': signedData
+      },
+      data: data
     };
-    $http(_postBitPay('/visa-api/topUp', dataSrc)).then(function(data) {
-      $log.info('BitPay TopUp: SUCCESS');
-      return cb(null, data.data.data.invoice);
+  };
+
+  var _afterBitAuthSuccess = function(obj, cb) {
+    var data = {
+      method: 'getTokens'
+    };
+    // Get tokens
+    $http(_postBitAuth('/api/v2/', data)).then(function(data) {
+      $log.info('BitPay Get Tokens: SUCCESS');
+      var token = lodash.find(data.data.data, 'visaUser');
+      if (lodash.isEmpty(token)) return cb(_setError('No token for visaUser'));
+      token = token.visaUser;
+      data['method'] = 'getDebitCards';
+      // Get Debit Cards
+      $http(_postBitAuth('/api/v2/' + token, data)).then(function(data) {
+        $log.info('BitPay Get Debit Cards: SUCCESS');
+        var cards = data.data.data;
+        return cb(null, {token: token, cards: cards, email: obj.email});
+      }, function(data) {
+        return cb(_setError('BitPay Card Error: Get Debit Cards', data));
+      });
     }, function(data) {
-      return cb(_setError('BitPay Card Error: TopUp', data));
+      return cb(_setError('BitPay Card Error: Get Token', data));
     });
   };
 
-  root.transactionHistory = function(dateRange, cb) {
-    var params;
-    if (!dateRange.startDate) {
-      params = '';
-    } else {
-      params = '/?startDate=' + dateRange.startDate + '&endDate=' + dateRange.endDate;
+  root.bitAuthPair = function(obj, cb) {
+    _getSession(function(err, session) {
+      if (err) return cb(err);
+      var deviceName = 'Unknow device';
+      if (platformInfo.isNW) {
+        deviceName = require('os').platform();
+      } else if (platformInfo.isCordova) {
+        deviceName = device.model;
+      }
+      var userData = {
+        csrf: session.csrfToken,
+        secret: obj.secret,
+        deviceName: deviceName,
+        code: obj.otp
+      };
+
+      var dataToSign = credentials.BITPAY_API_URL + '/visa-api/validateBitAuthPairingCode' + JSON.stringify(userData);
+      var signedData = bitauthService.sign(dataToSign, credentials.BITPAY_PRIV_KEY);
+
+      $http({
+        method: 'POST',
+        url: credentials.BITPAY_API_URL + '/visa-api/validateBitAuthPairingCode',
+        headers: {
+          'content-type': 'application/json',
+          'x-csrf-token': session.csrfToken,
+          'x-identity': pubkey,
+          'x-signature': signedData
+        },
+        data: userData
+      }).then(function(data) {
+        $log.info('BitPay Card BitAuth: SUCCESS');
+        // Set an UI flag
+        storageService.setNextStep('BitpayCard', true, function(err) {});
+        // Get cards
+        _afterBitAuthSuccess(obj, cb);
+      }, function(data) {
+        return cb(_setError('BitPay Card Error: BitAuth', data));
+      });
+
+    });
+  };
+
+  var _processTransactions = function(invoices, history) {
+    invoices = invoices || [];
+    for (var i = 0; i < invoices.length; i++) {
+      var matched = false;
+      for (var j = 0; j < history.length; j++) {
+        if (history[j].description[0].indexOf(invoices[i].id) > -1) {
+          matched = true;
+        }
+      }
+      if (!matched && ['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) > -1) {
+
+        history.unshift({
+          timestamp: invoices[i].invoiceTime,
+          description: invoices[i].itemDesc,
+          amount: invoices[i].price,
+          type: '00611 = Client Funded Deposit',
+          pending: true,
+          status: invoices[i].status
+        });
+      }
     }
-    $http(_getBitPay('/visa-api/transactionHistory' + params)).then(function(data) {
-      $log.info('BitPay Get Transaction History: SUCCESS');
-      return cb(null, data.data.data);
-    }, function(data) {
-      return cb(_setError('BitPay Card Error: Get Transaction History', data));
+    return history;
+  };
+
+  root.getHistory = function(cardId, params, cb) {
+    params = params || {};
+    var json = {};
+//    json = {
+//      method: 'getInvoiceHistory'
+//    };
+    root.getBitpayDebitCards(function(err, data) {
+      var card = lodash.find(data.cards, {id : cardId});
+      if (!card) return cb(_setError('No card available'));
+      // Get invoices
+//      $http(_postBitAuth('/api/v2/' + card.token, json)).then(function(data) {
+//        var invoices = data.data.data;
+        json = {
+          method: 'getTransactionHistory',
+          params: JSON.stringify(params)
+        };
+        // Get transactions list
+        $http(_postBitAuth('/api/v2/' + card.token, json)).then(function(data) {
+          $log.info('BitPay Get Transactions: SUCCESS');
+          var history = data.data.data || data.data;
+//          history['txs'] = _processTransactions(invoices, history.transactionList);
+          return cb(null, history);
+        }, function(data) {
+          return cb(_setError('BitPay Card Error: Get Transactions', data));
+        });
+//      }, function(data) {
+//        return cb(_setError('BitPay Card Error: Get Invoices', data));
+//      });
     });
   };
 
-  root.invoiceHistory = function(cb) {
-    $http(_getBitPay('/visa-api/invoiceHistory')).then(function(data) {
-      $log.info('BitPay Get Invoice History: SUCCESS');
-      return cb(null, data.data.data);
-    }, function(data) {
-      return cb(_setError('BitPay Card Error: Get Invoice History', data));
+  root.topUp = function(cardId, params, cb) {
+    var json = {
+      method: 'generateTopUpInvoice',
+      params: JSON.stringify(params)
+    };
+    root.getBitpayDebitCards(function(err, data) {
+      var card = lodash.find(data.cards, {id : cardId});
+      if (!card) return cb(_setError('No card available'));
+      $http(_postBitAuth('/api/v2/' + card.token, json)).then(function(data) {
+        $log.info('BitPay TopUp: SUCCESS');
+        var invoiceId = data.data.data.invoice;
+        return cb(null, invoiceId);
+      }, function(data) {
+        return cb(_setError('BitPay Card Error: TopUp', data));
+      });
     });
   };
 
@@ -138,58 +272,9 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     });
   };
 
-  root.authenticate = function(userData, cb) {
-    _setUser(userData, function(err) {
-      $http(_postBitPay('/visa-api/authenticate', userData)).then(function(data) {
-        $log.info('BitPay Authenticate: SUCCESS');
-          _getSession(function(err, session) {
-            if (err) return cb(err);
-            return cb(null, session);
-          });
-      }, function(data) {
-        if (data && data.data && data.data.error.twoFactorPending) {
-          $log.error('BitPay Card needs 2FA Authentication');
-          _getSession(function(err, session) {
-            if (err) return cb(err);
-            return cb(null, session);
-          });
-        } else {
-          return cb(data);
-        }
-      });
-    });
-  };
-
-  root.authenticate2FA = function(userData, cb) {
-    $http(_postBitPay('/visa-api/verify-two-factor', userData)).then(function(data) {
-      $log.info('BitPay 2FA: SUCCESS');
-      return cb(null, data);
-    }, function(data) {
-      return cb(_setError('BitPay Card Error: 2FA', data));
-    });
-  };
-
-  root.isAuthenticated = function(cb) {
-    _getSession(function(err, session) {
-      if (err) return cb(err);
-      if (!session.isAuthenticated) {
-        _getUser(function(err, user) {
-          if (err) return cb(err);
-          if (lodash.isEmpty(user)) return cb(null, session);
-          root.authenticate(user, function(err, session) {
-            if (err) return cb(err);
-            return cb(null, session);
-          });
-        });
-      } else {
-        return cb(null, session);
-      }
-    });
-  };
-
-  root.getCacheData = function(cb) {
+  root.getBitpayDebitCards = function(cb) {
     _setCredentials();
-    storageService.getBitpayCardCache(credentials.NETWORK, function(err, data) {
+    storageService.getBitpayDebitCards(credentials.NETWORK, function(err, data) {
       if (err) return cb(err);
       if (lodash.isString(data)) {
         data = JSON.parse(data);
@@ -199,18 +284,18 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     });
   };
 
-  root.setCacheData = function(data, cb) {
+  root.setBitpayDebitCards = function(data, cb) {
     _setCredentials();
     data = JSON.stringify(data);
-    storageService.setBitpayCardCache(credentials.NETWORK, data, function(err) {
+    storageService.setBitpayDebitCards(credentials.NETWORK, data, function(err) {
       if (err) return cb(err);
       return cb();
     });
   };
 
-  root.removeCacheData = function(cb) {
+  root.removeBitpayDebitCards = function(cb) {
     _setCredentials();
-    storageService.removeBitpayCardCache(credentials.NETWORK, function(err) {
+    storageService.removeBitpayDebitCards(credentials.NETWORK, function(err) {
       if (err) return cb(err);
       return cb();
     });
@@ -218,14 +303,8 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
 
   root.logout = function(cb) {
     _setCredentials();
-    root.removeCacheData(function() {});
-    storageService.removeBitpayCard(credentials.NETWORK, function(err) {
-      $http(_getBitPay('/visa-api/logout')).then(function(data) {
-        $log.info('BitPay Logout: SUCCESS');
-        return cb(data);
-      }, function(data) {
-        return cb(_setError('BitPay Card Error: Logout ', data));
-      });
+    storageService.removeBitpayDebitCards(credentials.NETWORK, function(err) {
+      $log.info('BitPay Logout: SUCCESS');
     });
   };
 

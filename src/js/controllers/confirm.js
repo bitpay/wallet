@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWallet = data.stateParams.isWallet;
-    $scope.isCard = data.stateParams.isCard;
+    $scope.cardId = data.stateParams.cardId;
     $scope.toAmount = data.stateParams.toAmount;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;

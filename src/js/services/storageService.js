@@ -337,16 +337,16 @@ angular.module('copayApp.services')
       storage.remove('bitpayCard-' + network, cb);
     };
 
-    root.setBitpayCardCache = function(network, data, cb) {
-      storage.set('bitpayCardCache-' + network, data, cb);
+    root.setBitpayDebitCards = function(network, data, cb) {
+      storage.set('bitpayDebitCards-' + network, data, cb);
     };
 
-    root.getBitpayCardCache = function(network, cb) {
-      storage.get('bitpayCardCache-' + network, cb);
+    root.getBitpayDebitCards = function(network, cb) {
+      storage.get('bitpayDebitCards-' + network, cb);
     };
 
-    root.removeBitpayCardCache = function(network, cb) {
-      storage.remove('bitpayCardCache-' + network, cb);
+    root.removeBitpayDebitCards = function(network, cb) {
+      storage.remove('bitpayDebitCards-' + network, cb);
     };
 
     root.removeAllWalletData = function(walletId, cb) {

@@ -46,6 +46,7 @@
     "angular": "1.4.6",
     "angular-mocks": "1.4.10",
     "bhttp": "^1.2.1",
+    "bitauth": "^0.3.2",
     "bitcore-wallet-client": "4.2.1",
     "bower": "^1.7.9",
     "chai": "^3.5.0",
@@ -80,7 +81,6 @@
     "karma-sinon": "^1.0.5",
     "load-grunt-tasks": "^3.5.0",
     "mocha": "^2.4.5",
-    "pbkdf2": "^3.0.4",
     "phantomjs-prebuilt": "^2.1.7",
     "shelljs": "^0.3.0",
     "xcode": "^0.8.2"

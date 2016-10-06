@@ -23,7 +23,16 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" copy-to-clipboard="toAddress">
-            <img src="img/icon-bitcoin-small.svg">
+            <img ng-if="isWallet" src="img/icon-bitcoin-small.svg">
+            <i ng-if="cardId" class="icon big-icon-svg">
+              <div class="bg icon-bitpay-card"></div>
+            </i>
+            <span ng-show="toName">{{toName}}</span>
+            <div ng-show="_paypro" ng-click="openPPModal(_paypro)">
+              <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
+              <i ng-show="!_paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
+              {{_paypro.domain}}
+            </div>
             <contact class="ellipsis" address="{{toAddress}}">{{toAddress}}</contact>
             <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{toAddress}}"></contact>
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
