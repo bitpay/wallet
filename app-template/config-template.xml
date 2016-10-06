@@ -55,6 +55,7 @@
     <plugin name="cordova-plugin-customurlscheme" spec="~4.2.0">
       <variable name="URL_SCHEME" value="UNUSED" />
     </plugin>
+    <plugin name="phonegap-plugin-push" spec="1.5.3" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
@@ -63,7 +64,6 @@
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
-      <plugin name="phonegap-plugin-push" spec="1.5.3" />
       <!-- <hook type="after_prepare" src="util/hooks/ios/add-custom-urls-to-plist.js" />
       <hook type="after_prepare" src="util/hooks/ios/add-uistatusbarhidden-to-plist.js" /> -->
     </platform>
@@ -72,7 +72,6 @@
       <hook type="after_prepare" src="util/hooks/android/add-custom-urls-to-android-manifest.js" />
       <hook type="after_prepare" src="util/hooks/android/prohibit-cloud-backups-in-android-manifest.js" />
       <!-- https://github.com/phonegap/phonegap-plugin-push/issues/424 -->
-      <plugin name="phonegap-plugin-push" spec="1.2.3" />
     </platform>
 
     <platform name="wp8">
