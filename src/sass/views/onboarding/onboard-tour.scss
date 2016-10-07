@@ -8,26 +8,6 @@
     @extend %cta-buttons;
     padding-bottom: 100px;
   }
-  .onboarding-topic,
-  .onboarding-description,
-  .onboarding-tldr {
-    margin-left: 3rem;
-    margin-right: 3rem;
-  }
-  .onboarding-topic {
-    font-size: 24px;
-    margin-top: .5rem;
-  }
-  .onboarding-description {
-    margin-top: 1rem;
-    font-size: 16px;
-    color: rgba(255,255,255,0.5);
-  }
-  .onboarding-tldr {
-    font-size: 18px;
-    margin-top: 1rem;
-    margin-bottom: 1em;
-  }
   #onboarding-illustration-currency-exchange-rate {
     background-color: $soft-blue;
     border-radius: $button-border-radius;
@@ -40,5 +20,13 @@
     position: relative;
     width: 140px;
     z-index: 1;
+  }
+  .swiper-pagination {
+    &-bullet {
+      background: $soft-blue;
+      &-active {
+        background: $soft-blue;
+      }
+    }
   }
 }
