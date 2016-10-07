@@ -90,8 +90,10 @@ angular.module('copayApp.controllers').controller('backupController',
         if (val) {
           $ionicHistory.removeBackView();
           $state.go('tabs.home');
-        }
-        else $state.go('onboarding.disclaimer', {walletId: $stateParams.walletId, backedUp: true});
+        } else $state.go('onboarding.disclaimer', {
+          walletId: $stateParams.walletId,
+          backedUp: true
+        });
       });
     };
 
