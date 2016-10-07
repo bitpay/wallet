@@ -8,6 +8,9 @@
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
+    height: calc(100vh - 160px);
+  }
+  .has-header > &-container {
     height: calc(100vh - 210px);
   }
   #disclaimer-topic {
@@ -16,9 +19,9 @@
   #disclaimer-description {
     margin: 1rem 1rem 2rem;
   }
-  ion-content{
-    height: 100%;
-    &.has-header{
+  ion-content {
+    height: 101%;
+    &.has-header {
       top:40px !important;
     }
     .scroll{
