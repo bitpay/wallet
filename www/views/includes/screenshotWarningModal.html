@@ -1,15 +1,12 @@
 <div id="screenshot-warning-modal" class="popup-modal">
-  <div class="popup-modal-header-success">
-    <div class="popup-modal-header-img"></div>
+  <div class="popup-modal-header popup-modal-header-warning">
+    <div class="popup-modal-header-img-warning popup-modal-header-img"></div>
   </div>
-  <div class="popup-modal-content" ng-class="{'popup-modal-content-success': !backupError, 'popup-modal-content-fail': backupError}">
-    <div class="text-center" ng-show="!backupError">
-      <h5 translate>Screenshots are <br /> not secure</h5>
-      <p translate> If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen.</p>
-      <button
-        class="button button-clear expand"
-        ng-click="close()"
-        translate>I Understand
+  <div class="popup-modal-content popup-modal-content-warning">
+    <div>
+      <div class="popup-modal-heading" translate>Screenshots are not secure</div>
+      <div class="popup-modal-message"> If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen.</div>
+      <button class="button button-clear" ng-click="close()" translate>I understand
       </button>
     </div>
   </div>
