@@ -64,7 +64,7 @@
   "scripts": {
     "preinstall":             "bower install && npm i fs-extra",
     "postinstall":            "npm run apply:bitpay && cordova prepare",
-    "start":                  "npm run build:www && ionic serve --nolivereload --nogulp",
+    "start":                  "npm run build:www && ionic serve --nolivereload --nogulp -s",
     "start:ios":              "npm run build:www && npm run build:ios && npm run open:ios",
     "start:android":          "npm run build:www && npm run build:android && npm run open:android",
     "watch":                  "grunt watch",

@@ -1,68 +1,31 @@
-#onboard-tour {
-  &-secure {
-    #cta {
-      background-image: url(../img/onboarding-tour-phone.svg);
-      height: 17rem;
-      margin-bottom:-1.5rem;
-    }
-  }
+#onboarding-tour {
   &-currency {
-    #cta {
-      background-image: url(../img/onboarding-tour-currency-bg.svg);
-      height:18rem;
-    }
     .next-slide {
       margin-top: 3rem;
     }
   }
-  &-control {
-    #cta {
-      background-image: url(../img/onboarding-tour-control.svg);
-      margin-bottom: .05rem;
-      height: 15rem;
-      background-position: top;
-    }
+  .cta-buttons {
+    @extend %cta-buttons;
+    padding-bottom: 12vh;
   }
-  .cta-button{
-    position: absolute;
-    bottom: 85px;
+  #onboarding-illustration-currency-exchange-rate {
+    background-color: $soft-blue;
+    border-radius: $button-border-radius;
+    box-shadow: $subtle-box-shadow;
+    font-size: 14px;
+    font-weight: normal;
+    height: 40px;
+    line-height: 38px;
+    margin: 10px auto 0;
+    position: relative;
+    width: 140px;
+    z-index: 1;
   }
-}
-
-@media (max-width: 359px){
-  #onboard-tour{
-    &-secure, &-currency, &-control{
-      #cta{
-        height: 14rem;
-      }
-    }
-  }
-}
-
-@media (min-width: 450px){
-  #onboard-tour{
-    &-secure, &-currency, &-control{
-      #cta{
-        height: 26rem;
-      }
-    }
-  }
-}
-
-@media (min-width: 1000px){
-  #onboard-tour{
-    p, h2, h3{
-      max-width: 600px;
-    }
-    button{
-      max-width: 400px;
-    }
-    #cta{
-      margin: 2rem 0 0;
-    }
-    &-control{
-      #cta{
-        margin-bottom: 2rem;
+  .swiper-pagination {
+    &-bullet {
+      background: $soft-blue;
+      &-active {
+        background: $soft-blue;
       }
     }
   }

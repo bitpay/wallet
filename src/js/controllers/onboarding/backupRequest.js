@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('backupRequestController', fun
   $scope.openPopup = function() {
 
     var title = gettextCatalog.getString('Without a backup, you could lose money.');
-    var message = gettextCatalog.getString('If this device is damaged, this app is delted, or you migrate to another device, neither you nor BitPay can recover your funds.');
+    var message = gettextCatalog.getString('If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.');
     var okText = gettextCatalog.getString('I understand');
     var cancelText = gettextCatalog.getString('Go back');
     popupService.showConfirm(title, message, okText, cancelText, function(val) {

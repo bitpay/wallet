@@ -7,16 +7,17 @@
   width: 90%;
   max-width: 350px;
   transform: translate(-50%, -50%);
-  border-radius: .25rem;
+  border-radius: $unmistakable-radius;
+  text-align: center;
   &-header {
     &-success {
-      background: rgb(1, 209, 162);
+      background: $success-green;
     }
     &-warning {
-      background: orange;
+      background: $warning-orange;
     }
-    padding: 1rem;
-    border-radius: .25rem .25rem 0 0;
+    padding: 2rem;
+    border-radius: $unmistakable-radius $unmistakable-radius 0 0;
     min-height: 120px;
     &-img{
       height: 6rem;
@@ -39,28 +40,31 @@
     }
   }
   &-content {
-    padding: .5rem .8rem;
-    h5,p{
-      margin:0 0 1rem;
-    }
-    h5 {
-      color: rgb(74, 74, 74);
-      font-weight: bold;
-      font-size: 1.3rem;
-      margin-top:1rem;
-    }
-    p{
-      font-weight: 200;
-    }
+    padding: 1rem 2rem;
+  }
+  &-heading {
+    margin:0 0 1rem;
+    color: $dark-gray;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    line-height: 1.3;
+  }
+  &-message {
+    color: $mid-gray;
+    font-weight: 200;
+  }
+  .button {
+    margin-top: 1rem;
   }
   &-content-success {
-    button{
-      color:rgb(23, 174, 140) !important;
+    .button {
+      color: $success-green !important;
     }
   }
   &-content-warning {
-    button{
-      color: orange !important;
+    .button {
+      color: $warning-orange !important;
     }
   }
 }

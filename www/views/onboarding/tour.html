@@ -1,5 +1,5 @@
-<ion-view ng-controller="tourController" ng-init="init()" class="onboarding" id="onboard-tour">
-  <ion-nav-bar class="bar-stable">
+<ion-view ng-controller="tourController" ng-init="init()" class="onboarding" id="onboarding-tour">
+  <ion-nav-bar>
     <ion-nav-title></ion-nav-title>
     <ion-nav-buttons side="primary">
       <button class="button back-button button-clear" ng-click="goBack()">
@@ -7,79 +7,46 @@
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button class="button back-button button-clear" ng-show="data.index == 0" ng-click="createDefaultWallet()">
-        {{'Skip' | translate}}
-      </button>
+      <button class="button back-button button-clear" ng-show="data.index == 0" ng-click="createDefaultWallet()">{{'Skip' | translate}}</button>
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-slides class="slides" options="options" slider="data.slider">
     <ion-slide-page>
       <ion-content id="onboard-tour-secure" scroll="false">
-        <div class="text-center row">
-          <h2 class="col col-60" translate>Bitcoin is secure, digital money</h2>
-        </div>
-        <div class="text-center row">
-          <p translate class="col col-75 tagline">
-            You can spend bitcoin at millions of websites and stores worldwide
-          </p>
-        </div>
-        <div id="cta">
-        </div>
-        <div class="row text-center">
-          <p translate class="col">
-            Just scan the code to pay
-          </p>
-        </div>
-        <div class="row cta-button">
-          <button class="button button-positive col col-75 next-slide button-translucent" ng-click="slideNext()">
-            Got it <i class="icon ion-ios-arrow-thin-right"></i>
+        <div class="onboarding-topic" translate>Bitcoin is secure,<br/>digital money.</div>
+        <div class="onboarding-description" translate>You can spend bitcoin at millions of websites and stores worldwide.</div>
+        <div class="onboarding-illustration-secure"></div>
+        <div class="cta-buttons">
+          <div class="onboarding-tldr" translate>Just scan the code to pay.</div>
+          <button class="button button-standard button-secondary" ng-click="slideNext()">
+            Got it &rarr;
           </button>
         </div>
       </ion-content>
     </ion-slide-page>
     <ion-slide-page>
       <ion-content id="onboard-tour-currency" scroll="false">
-        <div class="text-center row">
-          <h2 class="col col-75" translate>Bitcoin is a currency</h2>
+        <div class="onboarding-topic" translate>Bitcoin is a currency.</div>
+        <div class="onboarding-description" translate>You can trade it for other currencies like US Dollars, Euros, or Pounds.</div>
+        <div class="onboarding-illustration-currency">
+          <div id="onboarding-illustration-currency-exchange-rate">1 BTC = {{localCurrencySymbol}}{{localCurrencyPerBtc}}</div>
         </div>
-        <div class="text-center row">
-          <p translate class="col col-75 tagline">
-            You can trade it for other currencies like US Dollars, Euros, or Pounds
-          </p>
-        </div>
-        <div id="cta">
-        </div>
-        <div class="row text-center">
-          <p translate class="col">
-            The exchange rate changes with the market
-          </p>
-        </div>
-        <div class="row cta-button">
-          <button class="button button-positive col col-75 next-slide button-translucent" ng-click="slideNext()">
-            Makes sense <i class="icon ion-ios-arrow-thin-right"></i>
+        <div class="cta-buttons">
+          <div class="onboarding-tldr" translate>The exchange rate changes with the market.</div>
+          <button class="button button-standard button-secondary" ng-click="slideNext()">
+            Makes sense &rarr;
           </button>
         </div>
       </ion-content>
     </ion-slide-page>
     <ion-slide-page>
       <ion-content id="onboard-tour-control" scroll="false">
-        <div class="text-center row">
-          <h2 translate class="col col-80">You control your bitcoin</h2>
-        </div>
-        <div class="text-center row">
-          <p translate class="col col-75 tagline">
-            The BitPay wallet stores your bitcoin with cutting-edge security
-          </p>
-        </div>
-        <div id="cta">
-        </div>
-        <div class="row text-center">
-          <p translate class="col">
-            Not even BitPay can access it
-          </p>
-        </div>
-        <div class="row cta-button">
-          <button class="button button-positive col col-75 get-started" ng-click="createDefaultWallet()">
+        <div translate class="onboarding-topic">You control your bitcoin.</div>
+        <div translate class="onboarding-description">This app stores your bitcoin with cutting-edge security.</div>
+        <div class="onboarding-illustration-control"></div>
+        <div class="cta-buttons">
+          <div class="onboarding-tldr" translate>Not even BitPay can access it.</div>
+          <button class="button button-standard button-primary" ng-click="createDefaultWallet()">
             Create bitcoin wallet
           </button>
         </div>

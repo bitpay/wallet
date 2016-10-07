@@ -1,0 +1,58 @@
+// white on $positive
+$button-primary-bg:              $positive;
+$button-primary-text:            #fff;
+$button-primary-border:          transparent;
+$button-primary-active-bg:       darken($positive, 5%);
+$button-primary-active-border:   transparent;
+
+//white on translucent-white
+$button-secondary-onboarding-bg:              rgba($light-gray, 0.1); // rgba(215, 215, 215, 0.1);
+$button-secondary-onboarding-text:            #fff;
+$button-secondary-onboarding-border:          transparent;
+$button-secondary-onboarding-active-bg:       rgba($light-gray, 0.2); // rgba(215, 215, 215, 0.2);
+$button-secondary-onboarding-active-border:   transparent;
+
+//dark-gray on translucent-gray
+$button-secondary-bg:              $subtle-gray;
+$button-secondary-text:            $dark-gray;
+$button-secondary-border:          transparent;
+$button-secondary-active-bg:       darken($subtle-gray, 5%);
+$button-secondary-active-border:   transparent;
+
+%button-standard {
+  width: 85%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.button,
+.onboarding .button {
+  &.button-primary {
+    @include button-style($button-primary-bg, $button-primary-border, $button-primary-active-bg, $button-primary-active-border, $button-primary-text);
+    @include button-clear($button-primary-bg);
+    @include button-outline($button-primary-bg);
+  }
+  &.button-primary,
+  &.button-secondary {
+    &.button-standard {
+      @extend %button-standard;
+    }
+  }
+}
+.onboarding .button {
+  &.button-secondary {
+    @include button-style($button-secondary-onboarding-bg, $button-secondary-onboarding-border, $button-secondary-onboarding-active-bg, $button-secondary-onboarding-active-border, $button-secondary-onboarding-text);
+    @include button-clear($button-secondary-onboarding-text);
+    @include button-outline($button-secondary-onboarding-text);
+  }
+}
+
+.button {
+  &.button-secondary {
+    @include button-style($button-secondary-bg, $button-secondary-border, $button-secondary-active-bg, $button-secondary-active-border, $button-secondary-text);
+    @include button-clear($button-secondary-text);
+    @include button-outline($button-secondary-text);
+  }
+}
