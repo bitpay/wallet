@@ -278,6 +278,49 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     });
   };
 
+  root.getBitpayDebitCardsHistory = function(cardId, cb) {
+    _setCredentials();
+    storageService.getBitpayDebitCardsHistory(credentials.NETWORK, function(err, data) {
+      if (err) return cb(err);
+      if (lodash.isString(data)) {
+        data = JSON.parse(data);
+      }
+      data = data || {};
+      if (cardId) data = data[cardId];
+      return cb(null, data);
+    });
+  };
+
+  root.setBitpayDebitCardsHistory = function(cardId, data, opts, cb) {
+    _setCredentials();
+    storageService.getBitpayDebitCardsHistory(credentials.NETWORK, function(err, oldData) {
+      if (lodash.isString(oldData)) {
+        oldData = JSON.parse(oldData);
+      }
+      if (lodash.isString(data)) {
+        data = JSON.parse(data);
+      }
+      var inv = oldData || {};
+      inv[cardId] = data;
+      if (opts && opts.remove) {
+        delete(inv[cardId]);
+      }
+      inv = JSON.stringify(inv);
+
+      storageService.setBitpayDebitCardsHistory(credentials.NETWORK, inv, function(err) {
+        return cb(err);
+      });
+    });
+  };
+
+  root.removeBitpayDebitCardsHistory = function(cb) {
+    _setCredentials();
+    storageService.removeBitpayDebitCardsHistory(credentials.NETWORK, function(err) {
+      if (err) return cb(err);
+      return cb();
+    });
+  };
+
   root.logout = function(cb) {
     _setCredentials();
     storageService.removeBitpayDebitCards(credentials.NETWORK, function(err) {

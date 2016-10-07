@@ -6,13 +6,15 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   $scope.dateRange = 'last30Days';
   $scope.network = bitpayCardService.getEnvironment();
 
-  /*
-  bitpayCardService.getCacheData(function(err, data) {
-    if (err || lodash.isEmpty(data)) return;
-    self.bitpayCardTransactionHistory = data.transactions;
-    self.bitpayCardCurrentBalance = data.balance;
-  });
-  */
+  var getFromCache = function() {
+    bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {
+      if (err || lodash.isEmpty(data)) return;
+      $scope.historyCached = true;
+      self.bitpayCardTransactionHistory = data.transactions;
+      self.bitpayCardCurrentBalance = data.balance;
+      $scope.$apply();
+    });
+  };
 
   var setDateRange = function(preset) {
     var startDate, endDate;
@@ -54,10 +56,17 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       self.bitpayCardTransactionHistory = history.transactionList;
       self.bitpayCardCurrentBalance = history.currentCardBalance;
 
-      var cacheData = {
+      var cacheHistory = {
         balance: self.bitpayCardCurrentBalance,
         transactions: self.bitpayCardTransactionHistory
       };
+      bitpayCardService.setBitpayDebitCardsHistory($scope.cardId, cacheHistory, {}, function(err) {
+        if (err) $log.error(err);
+        $scope.historyCached = true;
+      });
+      $timeout(function() {
+        $scope.$apply();
+      });
     });
   };
 
@@ -93,6 +102,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       $state.go('tabs.home');
       popupService.showAlert(null, msg);
     } else {
+      getFromCache();
       self.update();
     }
   });
