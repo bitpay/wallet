@@ -100,7 +100,7 @@
           <div class="bg icon-bitpay-card"></div>
         </i>
         <h2>BitPay Visa&reg; Card</h2>
-        <p>{{!cardsHistory[card.id].balance ? '$' + cardsHistory[card.id].balance : 'Add funds to get started'|translate}}</p>
+        <p>{{cardsHistory[card.id].balance ? '$' + cardsHistory[card.id].balance : 'Add funds to get started'|translate}}</p>
         <i class="icon bp-arrow-right"></i>
       </a>
       <a ui-sref="tabs.bitpayCardIntro"
