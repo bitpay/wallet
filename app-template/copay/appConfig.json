@@ -1,4 +1,9 @@
 {
+  "packageName": "copay",
+  "packageDescription": "Copay Bitcoin Wallet",
+  "userVisibleName": "Copay",
+  "purposeLine": "Copay Bitcoin Wallet",
+  "appUri": "copay",
 
   "name": "copay",
   "nameNoSpace": "copay",

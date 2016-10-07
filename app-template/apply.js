@@ -117,16 +117,5 @@ function copyDir(from, to, cb) {
 
 
 copyDir(configDir + '/img/', '../www/img/', function() {
-  copyDir(configDir + '/androidRes/', '../cordova/android/res/', function() {
-    copyDir(configDir + '/iosIcons/', '../cordova/ios/icons/', function() {
-      copyDir(configDir + '/iosSplash/', '../cordova/ios/splash/', function() {
-        copyDir(configDir + '/wpAssets/', '../cordova/wp/Assets/', function() {
-          copyDir(configDir + '/wpImg/', '../cordova/wp/', function() {
-            // TODO WP
-            console.log("apply.js finished. \n\n");
-          });
-        });
-      });
-    });
-  });
+  console.log("apply.js finished. \n\n");
 });

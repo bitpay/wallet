@@ -1,0 +1,30 @@
+{
+  "packageName": "bitpay",
+  "packageDescription": "Secure Bitcoin Wallet",
+  "userVisibleName": "BitPay",
+  "purposeLine": "Secure Bitcoin Wallet",
+  "bundleName": "wallet",
+  "appUri": "bitpay",
+
+  "name": "bitpay",
+  "nameNoSpace": "bitpay",
+  "nameCase": "BitPay",
+  "nameCaseNoSpace": "BitPay",
+  "gitHubRepoName": "bitpay-wallet",
+  "disclaimerUrl": "",
+  "url": "https://bitpay.com",
+  "appDescription": "Secure Bitcoin Storage",
+  "winAppName": "BitPayWallet",
+  "wpPublisherId": "{}",
+  "wpProductId": "{}",
+  "description": "Secure Bitcoin Storage",
+  "version": "0.14.0",
+  "androidVersion": "1",
+  "_extraCSS": null,
+  "_enabledExtensions": {
+    "coinbase": true,
+    "glidera": true,
+    "debitcard": true,
+    "amazon": true
+  }
+}
