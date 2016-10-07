@@ -81,8 +81,8 @@
     "final:android":          "npm run final:www && npm run build:android-release && npm run open:android",
     "run:android":            "cordova run android --device",
     "log:android":            "adb logcat | grep chromium",
-    "apply:copay":            "cd app-template && node apply.js",
-    "apply:bitpay":           "cd app-template && node apply.js bitpay-wallet",
+    "apply:copay":            "cd app-template && node apply.js copay",
+    "apply:bitpay":           "cd app-template && node apply.js bitpay",
     "test":                   "./node_modules/.bin/grunt test-coveralls",
     "clean":                  "git clean -dfx && npm install"
   },
