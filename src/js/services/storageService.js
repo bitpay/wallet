@@ -325,16 +325,16 @@ angular.module('copayApp.services')
       storage.remove('coinbaseTxs-' + network, cb);
     };
 
-    root.setBitpayCard = function(network, data, cb) {
-      storage.set('bitpayCard-' + network, data, cb);
+    root.setBitpayDebitCardsHistory = function(network, data, cb) {
+      storage.set('bitpayDebitCardsHistory-' + network, data, cb);
     };
 
-    root.getBitpayCard = function(network, cb) {
-      storage.get('bitpayCard-' + network, cb);
+    root.getBitpayDebitCardsHistory = function(network, cb) {
+      storage.get('bitpayDebitCardsHistory-' + network, cb);
     };
 
-    root.removeBitpayCard = function(network, cb) {
-      storage.remove('bitpayCard-' + network, cb);
+    root.removeBitpayDebitCardsHistory = function(network, cb) {
+      storage.remove('bitpayDebitCardsHistory-' + network, cb);
     };
 
     root.setBitpayDebitCards = function(network, data, cb) {
