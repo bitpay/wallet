@@ -335,7 +335,7 @@ angular.module('copayApp.services')
       });
 
       push.on('error', function(e) {
-        $log.error(e.message);
+        $log.warn('Error with push notifications:' + e.message);
       });
 
     };
