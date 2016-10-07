@@ -1,74 +1,45 @@
 <ion-view id="bitpayCard-intro">
   <ion-nav-bar class="bar-stable">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
     <ion-nav-title></ion-nav-title>
-    <ion-nav-buttons side="primary">
-      <button class="button back-button button-clear" ng-click="goBack()">
-        <i class="icon ion-ios-arrow-thin-left"></i>
-      </button>
-    </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button class="button back-button button-clear" ng-click="openExternalInfo()">
+      <button class="button back-button button-clear" ng-click="orderBitPayCard()">
         <i class="icon ion-ios-information-outline"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-slides class="slides" options="options" slider="data.slider">
-    <ion-slide-page>
-      <ion-content scroll="false">
-        <div class="text-center">
-          <img src="img/bitpay-card-visa.svg" width="200">
-        </div>
+  <ion-content scroll="false">
+    <div class="text-center padding">
+      <img src="img/bitpay-card-visa.svg" width="100%">
+    </div>
+    <ion-slide-box>
+      <ion-slide>
         <p translate>
-          Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted.
+        Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted.
         </p>
-        <div class="cta-button">
-          <button class="button button-block button-primary" ng-click="orderBitPayCard()" translate>
-            Order the BitPay Card
-          </button>
-          <button class="button button-block button-transparent text-white m10t" ng-click="connectBitPayCard()" translate>
-            Connect my BitPay Card
-          </button>
-        </div>
-      </ion-content>
-    </ion-slide-page>
-    <ion-slide-page>
-      <ion-content scroll="false">
-        <div class="text-center">
-          <img src="img/bitpay-card-visa.svg" width="200">
-        </div>
+      </ion-slide>
+      <ion-slide>
         <p translate>
-          <span translate>Get local cash anywhere you go, from any Visa&reg;-compatible ATM.</span>
-          <div translate class="size-10 m20t text-center">
-            *ATM bank fees may apply
-          </div>
+        <span translate>Get local cash anywhere you go, from any Visa&reg;-compatible ATM.</span>
+        <div translate class="size-10 m20t text-center">
+          *ATM bank fees may apply
+        </div>
         </p>
-        <div class="cta-button">
-          <button class="button button-block button-primary" ng-click="orderBitPayCard()" translate>
-            Order the BitPay Card
-          </button>
-          <button class="button button-block button-transparent text-white m10t" ng-click="connectBitPayCard()" translate>
-            Connect my BitPay Card
-          </button>
-        </div>
-      </ion-content>
-    </ion-slide-page>
-    <ion-slide-page>
-      <ion-content scroll="false">
-        <div class="text-center">
-          <img src="img/bitpay-card-visa.svg" width="200">
-        </div>
+      </ion-slide>
+      <ion-slide>
         <p translate>
-          Pay 0% fees to turn bitcoin into dollars.
+        Pay 0% fees to turn bitcoin into dollars.
         </p>
-        <div class="cta-button">
-          <button class="button button-block button-primary" ng-click="orderBitPayCard()" translate>
-            Order the BitPay Card
-          </button>
-          <button class="button button-block button-transparent text-white m10t" ng-click="connectBitPayCard()" translate>
-            Connect my BitPay Card
-          </button>
-        </div>
-      </ion-content>
-    </ion-slide-page>
-  </ion-slides>
+      </ion-slide>
+    </ion-slide-box>
+    <div class="cta-button">
+      <button class="button button-block button-primary" ng-click="orderBitPayCard()" translate>
+        Order the BitPay Card
+      </button>
+      <button class="button button-block button-transparent text-white m10t" ng-click="connectBitPayCard()" translate>
+        Connect my BitPay Card
+      </button>
+    </div>
+  </ion-content>
 </ion-view>

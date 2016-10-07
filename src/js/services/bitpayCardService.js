@@ -35,27 +35,6 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     return error;
   };
 
-  var _getUser = function(cb) {
-    _setCredentials();
-    storageService.getBitpayCard(credentials.NETWORK, function(err, user) {
-      if (err) return cb(err);
-      if (lodash.isString(user)) {
-        user = JSON.parse(user);
-      }
-      return cb(null, user);
-    });
-  };
-
-  var _setUser = function(user, cb) {
-    _setCredentials();
-    user = JSON.stringify(user);
-    storageService.setBitpayCard(credentials.NETWORK, user, function(err) {
-      return cb(err);
-    });
-    // Show pending task from the UI
-    storageService.setNextStep('BitpayCard', true, function(err) {});
-  };
-
   var _getSession = function(cb) {
     _setCredentials();
     $http({
@@ -179,8 +158,6 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
         data: userData
       }).then(function(data) {
         $log.info('BitPay Card BitAuth: SUCCESS');
-        // Set an UI flag
-        storageService.setNextStep('BitpayCard', true, function(err) {});
         // Get cards
         _afterBitAuthSuccess(obj, cb);
       }, function(data) {

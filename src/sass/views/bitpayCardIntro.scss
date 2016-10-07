@@ -1,11 +1,11 @@
 #bitpayCard-intro {
-  .swiper-container-horizontal > .swiper-pagination {
-    bottom: 150px;
+  .slider-pager .slider-pager-page {
+    color: #fff;
   }
   .cta-button{
     text-align: center;
     position: absolute;
-    bottom: 45px;
+    bottom: 55px;
     padding: 0 1.5rem;
     width: 100%;
   }
@@ -33,14 +33,6 @@
   .bar.bar-stable{
     border-color: transparent;
     border:none;
-  }
-  .swiper-pagination {
-    &-bullet {
-      background: rgb(100, 124, 232);
-      &-active {
-        background: rgb(100, 124, 232);
-      }
-    }
   }
   .button-transparent{
     background: none !important;

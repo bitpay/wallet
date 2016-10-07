@@ -2,16 +2,6 @@
 angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $state, $timeout, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.data = {
-      index: 0
-    };
-
-    $scope.options = {
-      loop: false,
-      effect: 'flip',
-      speed: 500,
-      spaceBetween: 100
-    };
 
     if (data.stateParams && data.stateParams.secret) {
       var obj = {
@@ -25,11 +15,13 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
           return;
         }
         var title = gettextCatalog.getString('Add BitPay Cards?');
-        var msg = gettextCatalog.getString('Would you like to add this account to your wallet?');
+        var msg = gettextCatalog.getString('Would you like to add this account ({{email}}) to your wallet?', {email: obj.email});
         var ok = gettextCatalog.getString('Add cards');
         var cancel = gettextCatalog.getString('Go back');
         popupService.showConfirm(title, msg, ok, cancel, function(res) {
           if (res) {
+            // Set flag for nextStep
+            storageService.setNextStep('BitpayCard', true, function(err) {});
             // Save data
             bitpayCardService.setBitpayDebitCards(data, function(err) {
               if (err) return;
@@ -71,25 +63,5 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
     var target = '_system';
     externalLinkService.open(url, target);
   };
-
-  $scope.goBack = function() {
-    if ($scope.data.index != 0) $scope.slider.slidePrev();
-    else $state.go('tabs.home');
-  };
-
-  $scope.slideNext = function() {
-    if ($scope.data.index != 2) $scope.slider.slideNext();
-    else $state.go('tabs.home');
-  };
-
-  $scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
-    $scope.slider = data.slider;
-  });
-
-  $scope.$on("$ionicSlides.slideChangeStart", function(event, data) {
-    $scope.data.index = data.slider.activeIndex;
-  });
-
-  $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {});
 });
 
