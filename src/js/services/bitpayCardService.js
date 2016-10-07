@@ -1,24 +1,29 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($http, $log, lodash, storageService, bitauthService, platformInfo) {
+angular.module('copayApp.services').factory('bitpayCardService', function($http, $log, $window, lodash, storageService, bitauthService, platformInfo) {
   var root = {};
   var credentials = {};
   var bpSession = {};
   var pubkey, sin;
 
   var _setCredentials = function() {
+    if (!$window.externalServices || !$window.externalServices.bitpayCard) {
+      return;
+    }
+
+    var bitpayCard = $window.externalServices.bitpayCard;
     /*
      * Development: 'testnet'
      * Production: 'livenet'
      */
     credentials.NETWORK = 'livenet';
     if (credentials.NETWORK == 'testnet') {
-      credentials.BITPAY_PRIV_KEY = '';
-      credentials.BITPAY_API_URL = 'https://test.bitpay.com';
+      credentials.BITPAY_PRIV_KEY = bitpayCard.sandbox.secret;
+      credentials.BITPAY_API_URL = bitpayCard.sandbox.host;
     }
     else {
-      credentials.BITPAY_PRIV_KEY = '';
-      credentials.BITPAY_API_URL = 'https://bitpay.com';
+      credentials.BITPAY_PRIV_KEY = bitpayCard.production.secret;
+      credentials.BITPAY_API_URL = bitpayCard.production.host;
     }
     try {
       pubkey = bitauthService.getPublicKeyFromPrivateKey(credentials.BITPAY_PRIV_KEY);
@@ -85,6 +90,12 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   root.getApiUrl = function() {
     _setCredentials();
     return credentials.BITPAY_API_URL;
+  };
+
+  root.testSession = function(cb) {
+    _getSession(function(err, session) {
+      return cb(err, session);
+    });
   };
 
   var _postBitAuth = function(endpoint, data) {
