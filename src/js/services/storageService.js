@@ -361,21 +361,6 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setScanTipsAccepted = function(val, cb) {
-      storage.set('scanTips', val, cb);
-    };
-
-    root.getScanTipsAccepted = function(cb) {
-      storage.get('scanTips', cb);
-    };
-
-    root.setReceiveTipsAccepted = function(val, cb) {
-      storage.set('receiveTips', val, cb);
-    };
-
-    root.getReceiveTipsAccepted = function(cb) {
-      storage.get('receiveTips', cb);
-    };
 
     root.setBackupNeededModalFlag = function(walletId, val, cb) {
       storage.set('showBackupNeededModal-' + walletId, val, cb);
