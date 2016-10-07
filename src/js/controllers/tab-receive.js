@@ -5,21 +5,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
 
-  $scope.checkTips = function(force) {
-    storageService.getReceiveTipsAccepted(function(err, accepted) {
-      if (err) $log.warn(err);
-      if (accepted && !force) return;
-
-      $timeout(function() {
-        $ionicModal.fromTemplateUrl('views/modals/receive-tips.html', {
-          scope: $scope
-        }).then(function(modal) {
-          $scope.receiveTipsModal = modal;
-          $scope.receiveTipsModal.show();
-        });
-      }, force ? 1 : 1000);
-    });
-  };
 
   $scope.shareAddress = function(addr) {
     if ($scope.generatingAddress) return;
@@ -84,7 +69,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
-  if (!$scope.isCordova) $scope.checkTips();
   $scope.$on('Wallet/Changed', function(event, wallet) {
     if (!wallet) {
       $log.debug('No wallet provided');
