@@ -1,140 +1,112 @@
-    #wallet-backup-phrase {
-      &,
-      & ion-content,
-      & ion-content .scroll {
-        height: 100%;
-        overflow-y: hidden;
+#wallet-backup-phrase {
+  .bar.bar-royal .title {
+      font-size: 1rem;
+  }
+  background: #fff;
+  text-align: center;
+  .backup-phrase {
+    background-color: $subtle-gray;
+    padding: 12px;
+    border: 2px dashed darken($subtle-gray, 10%);
+    border-radius: $subtle-radius;
+    color: #2b2b2b;
+    text-align: center;
+    max-width: 500px;
+    min-height: 10rem;
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &-content {
+      font-weight: bold;
+      line-height: 2;
+      font-size: 16px;
+      letter-spacing: 1px;
+      @media (min-width: 575px) {
+        font-size: 18px;
+        padding: 3rem;
       }
-      .bar.bar-royal {
-        .title {
-          font-size: 1rem;
-        }
-      }
-      background: #fff;
-      .backup-phrase {
-        background: rgba(246, 246, 246, 0.87);
-        padding: .5rem .5rem 1.7rem;
-        border: 2px dashed rgb(206, 206, 206);
-        width: 95%;
-        margin: 1rem auto;
-        color: rgb(43, 43, 43);
-        text-align: center;
-        span {
-          line-height: 2rem;
-          font-weight: bold;
-          max-width: 400px;
-          color: rgb(43, 43, 43);
-        }
-      }
-      .bold-text {
-        font-weight: bold !important;
-      }
-      p {
-        color: rgb(58, 58, 58);
-        font-weight: 200;
-      }
-      .cta-buttons {
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        bottom: 45px;
-        button {
-          max-width: 400px;
-        }
-      }
-      .select-word {
-        background: #fff;
-        box-shadow: $hovering-box-shadow;
-        margin: .1rem 0;
-        display: inline-block;
-        padding: 0 5px;
-      }
-      #select-phrase {
-        background: rgba(246, 246, 246, 0.87);
-        width: 100%;
-        text-align: center;
-        position: absolute;
-        bottom: 45px;
-        padding-bottom: 20px;
-        padding: .5rem .5rem .9rem;
-        p {
-          font-weight: bold;
-          font-weight: bold;
-          padding-top: .7rem;
-          margin-bottom: 0.3rem;
-          float: left;
-          width: 100%;
-        }
-        .select-word {
-          &.button[disabled] {
-            background: transparent !important;
-            box-shadow: none !important;
-            color: transparent;
-            border: 1px solid rgb(211, 211, 211);
-          }
-        }
-        #confirm-phrase {
-          margin: 5px auto 0;
-        }
-      }
-      ion-content.has-tabs{
-        .cta-buttons{
-          bottom:110px;
-        }
-        .cta-buttons, #select-phrase{
-          bottom:110px;
+      &-word-readonly {
+        padding: 0 1px;
+        @media (min-width: 575px) {
+          padding: 0 6px;
         }
       }
     }
+  }
+  &-step-1,
+  &-step-2 {
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  &-step-1 {
+    height: 70%;
+  }
+  &-step-2 {
+    height: 60%
+  }
+  &-step-3 {
 
-    @media (min-width : 320px) and (max-width : 415px) and (orientation : portrait), (min-width : 650px) and (max-width : 770px) and (orientation : portrait){
-      #wallet-backup-phrase{
-        .cta-buttons,#select-phrase{
-          bottom: 64px;
-        }
+  }
+  .initial-prompt,
+  .confirmation-prompt,
+  .tldr-prompt {
+    color: $dark-gray;
+    padding-bottom: 1.5rem;
+  }
+  .initial-prompt,
+  .confirmation-prompt {
+    padding-top: 1.5rem;
+  }
+  .tldr-prompt {
+    font-weight: bold;
+  }
+  .cta-buttons {
+    @extend %cta-buttons;
+    padding-bottom: 5vh;
+  }
+  .select-word {
+    background: #fff;
+    box-shadow: $subtle-box-shadow;
+    display: inline-block;
+    margin: 3px 0;
+    min-height: 38px;
+    line-height: 33px;
+    padding: 0 8px;
+    @media (min-width: 400px) {
+      margin: 4px 3px;
+      padding: 0 16px;
+    }
+  }
+  #select-phrase {
+    background: $subtle-gray;
+    padding: 5% 0;
+    .select-word {
+      &.button[disabled] {
+        background: transparent !important;
+        box-shadow: none !important;
+        color: transparent;
+        border: 1px solid rgb(211, 211, 211);
       }
     }
-
-    @media (max-width: 400px) {
-      #wallet-backup-phrase {
-        ion-content {
-          h2 {
-            font-size: 1.2rem;
-          }
-          p,
-          h2,
-          h3 {
-            max-width: 600px !important;
-          }
-          button {
-            max-width: 400px !important;
-          }
-        }
-      }
+    &-content {
+      max-width: 500px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
-
-    @media (max-height: 560px) {
-      #wallet-backup-phrase {
-        &,
-        & ion-content,
-        & ion-content .scroll {
-          overflow-y:visible;
-        }
-          #select-phrase {
-            float: left;
-            position: relative;
-          }
-          .backup-phrase {
-            margin-bottom: 5rem;
-          }
-        }
-      }
-      @media (max-height: 379px) {
-        #wallet-backup-phrase {
-          .cta-buttons {
-            float: left;
-            position: relative;
-            bottom: 0;
-          }
-        }
-      }
+  }
+  ion-content.has-tabs{
+    // TODO: review
+    .cta-buttons{
+      bottom:110px;
+    }
+    .cta-buttons, #select-phrase{
+      bottom:110px;
+    }
+  }
+}

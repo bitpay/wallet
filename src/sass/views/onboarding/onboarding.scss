@@ -12,12 +12,6 @@
       color: #fff;
     }
   }
-  ion-content {
-    height: 100%;
-    .scroll{
-      height: 100%;
-    }
-  }
   .onboarding-topic,
   .onboarding-description,
   .onboarding-tldr {
@@ -43,10 +37,6 @@
   }
 }
 
-@media (min-width: 415px){
-  //
-}
-
 %cta-buttons {
   position: absolute;
   bottom: 0;
@@ -54,7 +44,6 @@
 }
 
 @import "terms-of-use";
-@import "onboarding-buttons";
 @import "onboard-welcome";
 @import "onboard-tour";
 @import "onboard-collect-email";
