@@ -1,8 +1,19 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($scope, $timeout, $log, $ionicHistory, backupService, walletService, storageService, profileService, platformInfo, gettextCatalog, $state, $stateParams, popupService) {
+  function($scope, $timeout, $log, $ionicHistory, $ionicScrollDelegate, backupService, walletService, storageService, profileService, platformInfo, gettextCatalog, $state, $stateParams, popupService) {
     var wallet = profileService.getWallet($stateParams.walletId);
+
+    $scope.showAdvChange = function() {
+      $scope.showAdv = !$scope.showAdv;
+      $scope.resizeView();
+    };
+
+    $scope.resizeView = function() {
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      });
+    };
 
     var init = function() {
       $scope.formData = {};
