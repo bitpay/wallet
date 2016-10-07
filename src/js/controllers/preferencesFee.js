@@ -21,14 +21,13 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
       $scope.currentFeeLevel = newFee.level;
-      $ionicHistory.goBack();
       $timeout(function() {
         $scope.$apply();
-      }, 100);
+      });
     });
   };
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.$on("$ionicView.enter", function(event, data) {
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
   });
