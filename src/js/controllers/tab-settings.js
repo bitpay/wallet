@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, uxLanguage, platformInfo, profileService, feeService, configService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService) {
 
   var updateConfig = function() {
 
@@ -22,6 +22,10 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
 
     $scope.wallets = profileService.getWallets();
+  };
+
+  $scope.openExternalLink = function(url, target) {
+      externalLinkService.open(url, target);
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {

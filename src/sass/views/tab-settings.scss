@@ -19,6 +19,15 @@
         border-radius: 0;
         box-shadow: none;
        }
+       &.circle{
+          left:8px;
+          .bg {
+            border-radius: 50%;
+            width:30px;
+            height:30px;
+            padding:.1rem;
+          }
+        }
       }
       &:before {
         display: block;

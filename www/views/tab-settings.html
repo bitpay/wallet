@@ -6,11 +6,25 @@
   <ion-content>
     <div class="list">
       <div class="item item-divider"></div>
+      <a class="item item-icon-left item-icon-right" ui-sref="" ng-hide="true">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-excahnge.svg" class="bg"/>
+        </i>
+        <span translate>Bitcoin Exchanges</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.addressbook">
         <i class="icon big-icon-svg">
           <img src="img/icon-address-book.svg" class="bg"/>
         </i>
         <span translate>Address Book</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+      <a class="item item-icon-left item-icon-right" ui-sref="" ng-hide="true">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-send-feedback.svg" class="bg"/>
+        </i>
+        <span translate>Send Feedback</span>
         <i class="icon bp-arrow-right"></i>
       </a>
 
@@ -67,12 +81,21 @@
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
+      <a class="item item-icon-right item-icon-left" href ui-sref="tabs.advanced">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-advanced.svg" class="bg"/>
+        </i>
+        <span translate>Advanced</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
 
-      <div class="item item-divider" ng-show="wallets[0]" translate>Wallets Preferences</div>
+      <div class="item item-divider" ng-show="wallets[0]" translate>Wallets &amp; Integrations</div>
       <a class="item item-icon-left item-icon-right" href
            ui-sref="tabs.preferences({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
-        <i class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i>
+         <i class="icon big-icon-svg circle">
+          <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
+        </i>
         {{item.name || item.id}}
         <span  ng-show="item.n > 1" class="text-light">
           {{item.m}}-of-{{item.n}}
@@ -84,12 +107,6 @@
       </a>
 
       <div class="item item-divider"></div>
-      <a class="item item-icon-right" href ui-sref="tabs.advanced">
-        <span translate>Advanced</span>
-        <i class="icon bp-arrow-right"></i>
-      </a>
-
-      <div class="item item-divider"></div>
       <a class="item item-icon-left item-icon-right" href ui-sref="tabs.about">
         <i class="icon big-icon-svg">
           <img src="img/icon-about.svg" class="bg"/>
@@ -97,6 +114,25 @@
         <span translate>About</span> {{appName}}
         <i class="icon bp-arrow-right"></i>
       </a>
+      <a class="item item-icon-left item-icon-right" href ng-hide="true">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-heart.svg" class="bg"/>
+        </i>
+        <span translate>Tell a friend</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+
+      <div class="item item-divider"></div>
+      <a class="item item-icon-left item-icon-right" ng-click=openExternalLink("https://help.bitpay.com")>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-help-support.svg" class="bg"/>
+        </i>
+        <span translate>Help &amp; Support</span>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-link.svg" class="bg"/>
+        </i>
+      </a>
+      <div class="item item-divider"></div>
     </div>
   </ion-content>
 </ion-view>
