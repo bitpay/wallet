@@ -54,7 +54,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
-      }, 100);
+      });
     });
   };
 
@@ -73,7 +73,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $scope.list = originalList;
       $timeout(function() {
         $scope.$apply();
-      }, 10);
+      });
       return;
     }
 
@@ -86,18 +86,20 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.goToAmount = function(item) {
-    item.getAddress(function(err, addr) {
-      if (err || !addr) {
-        $log.error(err);
-        return;
-      }
-      $log.debug('Got toAddress:' + addr + ' | ' + item.name);
-      return $state.transitionTo('tabs.send.amount', {
-        isWallet: item.isWallet,
-        toAddress: addr,
-        toName: item.name,
-        toEmail: item.email
-      })
+    $timeout(function() {
+      item.getAddress(function(err, addr) {
+        if (err || !addr) {
+          $log.error(err);
+          return;
+        }
+        $log.debug('Got toAddress:' + addr + ' | ' + item.name);
+        return $state.transitionTo('tabs.send.amount', {
+          isWallet: item.isWallet,
+          toAddress: addr,
+          toName: item.name,
+          toEmail: item.email
+        })
+      });
     });
   };
 
