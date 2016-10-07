@@ -1,5 +1,5 @@
 <ion-view id="backup-warning" class="onboarding" ng-controller="backupWarningController">
-  <ion-nav-bar  class="bar-royal">
+  <ion-nav-bar>
     <ion-nav-buttons side="primary">
       <button class="button button-back button-clear" ng-click="goBack()">
         <i class="icon ion-ios-arrow-thin-left"></i>
@@ -7,26 +7,12 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <div class="row text-center">
-      <h3 translate class="col col-80">
-        Are you being watched?
-      </h3>
-    </div>
-    <div class="row text-center">
-      <p class="col col-75 tagline">
-        Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?
-      </p>
-    </div>
-    <div class="row">
-      <img src="img/backup-warning.svg" class="col col-60 warning-image">
-    </div>
-    <div class="row text-center">
-      <p class="col col-60">
-        Anyone with your backup phrase can access or spend your bitcoin.
-      </p>
-    </div>
-    <div class="cta-buttons">
-      <button class="button button-block button-primary col col-75" ng-click="openPopup()" translate>All clear, let's do this</button>
+    <div class="onboarding-topic">Are you being watched?</div>
+    <div class="onboarding-description">Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?</div>
+    <div class="onboarding-illustration-backup-warning"></div>
+    <div id="cta-buttons">
+      <div class="onboarding-tldr">Anyone with your backup phrase can access or spend your bitcoin.</div>
+      <button class="button button-block button-primary" ng-click="openPopup()" translate>All clear, let's do this</button>
     </div>
   </ion-content>
 </ion-view>
