@@ -1,9 +1,27 @@
 #onboarding-disclaimer {
   color: #fff;
   height: 100%;
-  ion-content{
-    height: 100%;
-    &.has-header{
+  &-container {
+    max-width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: calc(100vh - 160px);
+  }
+  .has-header > &-container {
+    height: calc(100vh - 210px);
+  }
+  #disclaimer-topic {
+    margin: 0 1rem;
+  }
+  #disclaimer-description {
+    margin: 1rem 1rem 2rem;
+  }
+  ion-content {
+    height: 101%;
+    &.has-header {
       top:40px !important;
     }
     .scroll{
@@ -29,6 +47,7 @@
     background: transparent;
     border: none;
     color: #fff;
+    text-align: left;
     .checkbox input:before,
     .checkbox .checkbox-icon:before {
       border-radius: 50% !important;
@@ -46,13 +65,8 @@
     .checkbox input:checked:after,
     input:checked + .checkbox-icon:after {
       border-color: rgb(19, 229, 182);
-      top:20%;
-      left:11%;
-      @media (min-width:450px){
-        &{
-          left: 20%;
-        }
-      }
+      top: 4px;
+      left: 5px;
     }
     .item-content {
       width: 90%;
@@ -64,14 +78,14 @@
     margin-left: 3%;
     top:44%;
   }
-  #agree-to-terms{
+  #agree-to-terms {
     background: #fff;
     padding:1rem;
     position: absolute;
     bottom: 0;
     width: 100%;
     &.header-present{
-      bottom:16px;
+      bottom: 38px;
     }
     &-content{
       max-width: 600px;
@@ -87,6 +101,7 @@
     }
     p{
       color:rgb(58,58,58);
+      text-align: left;
     }
     @media (min-width:450px){
       p{

@@ -1,29 +1,15 @@
 <ion-view id="onboarding-backup-request" class="onboarding">
   <ion-content ng-controller="backupRequestController" scroll="false">
-    <div class="row">
-      <img src="img/onboarding-warning.svg" class="col col-75 warning">
-    </div>
-    <div class="row text-center">
-      <h3 translate class="col-75 col">
-        No backup, no bitcoin.
-      </h3>
-    </div>
-    <div class="row">
-      <p class="col col-60 text-center">
-        Since only you control your money, you’ll need save your backup phrase in case this app is deleted.
-      </p>
-    </div>
-    <div class="row text-center">
-      <i class="ion-ios-arrow-thin-down light-blue col col-60" id="arrow-down"></i>
+    <div id="warning">
+      <img src="img/onboarding-warning.svg" id="alert-icon">
+      <div class="onboarding-topic" translate>No backup, no bitcoin.</div>
+      <div class="onboarding-description" id="backup-description" translate>Since only you control your money, you’ll need save your backup phrase in case this app is deleted.</div>
     </div>
     <div class="cta-buttons">
-      <div class="row">
-        <button class="button button-block button-positive col-75 col" href
-                ui-sref="onboarding.backupWarning({from: 'onboarding.backupRequest', walletId: walletId})" translate>Backup wallet</button>
-      </div>
-      <div class="row">
-        <button class="button button-block button-transparent col-75 col" ng-click="openPopup()" translate>I'll backup my wallet later</button>
-      </div>
+      <i class="ion-ios-arrow-thin-down" id="arrow-down"></i>
+      <div class="onboarding-tldr" id="backup-tldr" translate>Your wallet is never saved to cloud storage or standard device backups.</div>
+      <button class="button button-standard button-primary" ui-sref="onboarding.backupWarning({from: 'onboarding.backupRequest', walletId: walletId})" translate>Backup wallet</button>
+      <button class="button button-standard button-secondary button-clear" ng-click="openPopup()" translate>I'll backup my wallet later</button>
     </div>
   </ion-content>
 </ion-view>

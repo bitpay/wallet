@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('tourController',
-  function($scope, $state, $log, $timeout, ongoingProcess, profileService) {
+  function($scope, $state, $log, $timeout, $filter, ongoingProcess, profileService, rateService) {
 
     var tries = 0;
 
@@ -16,6 +16,14 @@ angular.module('copayApp.controllers').controller('tourController',
         spaceBetween: 100
       }
     };
+
+    rateService.whenAvailable(function() {
+      var localCurrency = 'USD';
+      var btcAmount = 1;
+      var rate = rateService.toFiat(btcAmount * 1e8, localCurrency);
+      $scope.localCurrencySymbol = '$';
+      $scope.localCurrencyPerBtc = $filter('formatFiatAmount')(parseFloat(rate.toFixed(2), 10));
+    });
 
     $scope.createDefaultWallet = function() {
       ongoingProcess.set('creatingWallet', true);

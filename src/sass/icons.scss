@@ -20,7 +20,7 @@
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: $hovering-box-shadow;
     background-repeat:no-repeat;
     background-clip: padding-box;
     background-size: 103%;

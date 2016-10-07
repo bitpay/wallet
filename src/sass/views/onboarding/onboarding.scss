@@ -1,110 +1,46 @@
 .onboarding {
-  background: rgba(30, 49, 134, 1);
-  background: -moz-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(30, 49, 134, 1)), color-stop(100%, rgba(17, 27, 73, 1)));
-  background: -webkit-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: -o-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
-  background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+  background: #1e3186;
   color: #fff;
+  background-image: linear-gradient(to bottom, #1e3186 0%, #111b49 100%);
   height: 100%;
+  text-align: center;
   .bar.bar-header {
-    background: rgb(30, 49, 134);
+    background: none;
+    border: 0 none transparent;
     color: #fff;
     button {
       color: #fff;
     }
-    .secondary-buttons {
-      button {
-        color: rgba(255, 255, 255, .5);
-      }
-    }
   }
-  .bar.bar-stable{
-    border-color: transparent;
-    border:none;
+  .onboarding-topic,
+  .onboarding-description,
+  .onboarding-tldr {
+    margin-left: 3rem;
+    margin-right: 3rem;
   }
-  ion-content {
-    height: 100%;
-    .scroll{
-      height: 100%;
-    }
-    color: #fff;
-    h2, h3{color:#fff;}
-    h2 {
-      font-size: 1.4rem;
-    }
-    p {
-      &.tagline {
-        color: rgba(255, 255, 255, .5);
-      }
-    }
-    #cta {
-      background-size: contain;
-      width: 100%;
-      clear: both;
-      height: 23rem;
-      margin-bottom: -3rem;
-      background-position: center;
-      background-repeat: no-repeat;
-      img {
-        height: 16rem;
-      }
-    }
-    button {
-      color:#fff;
-    }
-    @media (min-width: 450px){
-      p{
-        font-size: 1.1rem;
-        line-height: 1.5rem;
-      }
-    }
+  .onboarding-topic {
+    font-size: 24px;
+    margin-top: .5rem;
+    line-height: 1.3;
   }
-  .col {
-    @include center-block(.5rem);
+  .onboarding-description {
+    margin-top: 1rem;
+    font-size: 16px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
   }
-  .swiper-pagination {
-    &-bullet {
-      background: rgb(100, 124, 232);
-      &-active {
-        background: rgb(100, 124, 232);
-      }
-    }
-  }
-  .button-transparent{
-    background: none !important;
-  }
-  .button-translucent{
-    background: rgba(215, 215, 215, 0.1)
-  }
-  .button-primary{
-    background: rgb(100, 124, 232) !important;
-    color:#fff;
-  }
-  .light-blue{
-    color:rgb(100, 124, 232);
+  .onboarding-tldr {
+    font-size: 18px;
+    margin-top: 1rem;
+    margin-bottom: 1em;
+    line-height: 1.3;
   }
 }
 
-@media (min-width: 415px){
-  .onboarding{
-    ion-content{
-      h2{
-        font-size: 2rem;
-      }
-      p{
-        font-size: 1.4rem;
-        line-height: 1.9rem;
-      }
-      p,h2,h3{
-        max-width: 600px !important;
-      }
-      button{
-        max-width: 400px !important;
-      }
-    }
-  }
+%cta-buttons {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 @import "terms-of-use";
@@ -115,3 +51,37 @@
 @import "../backup-warning";
 @import "onboard-disclaimer";
 @import "onboard-push-notifications";
+
+%onboarding-illustration {
+  position: absolute;
+  width: 100%;
+  height: 40%;
+  margin-top: 25vh;
+  top: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: -1;
+}
+.onboarding-illustration {
+  &-secure {
+      @extend %onboarding-illustration;
+      background-image: url(../img/onboarding-tour-phone.svg);
+  }
+  &-currency {
+    @extend %onboarding-illustration;
+      background-image: url(../img/onboarding-tour-currency-bg.svg);
+  }
+  &-control {
+    @extend %onboarding-illustration;
+      background-image: url(../img/onboarding-tour-control.svg);
+  }
+  &-notifications {
+    @extend %onboarding-illustration;
+      background-image: url(../img/onboarding-push-notifications.svg);
+  }
+  &-backup-warning {
+    @extend %onboarding-illustration;
+      background-image: url(../img/backup-warning.svg);
+  }
+}
