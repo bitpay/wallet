@@ -518,15 +518,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.preferences.deleteWords', {
-        url: '/deleteWords',
-        views: {
-          'tab-settings@tabs': {
-            controller: 'preferencesDeleteWordsController',
-            templateUrl: 'views/preferencesDeleteWords.html'
-          }
-        }
-      })
       .state('tabs.preferences.delete', {
         url: '/delete',
         views: {
