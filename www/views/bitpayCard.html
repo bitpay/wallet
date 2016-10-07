@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>BitPay Card</ion-nav-title>
+    <ion-nav-title>BitPay Visa&reg; Card</ion-nav-title>
     <ion-nav-buttons side="secondary">
       <button class="button back-button" ng-show="!error" ui-sref="tabs.bitpayCard.preferences">
         <i class="icon ion-ios-gear-outline"></i>
@@ -45,7 +45,7 @@
       <h4>Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.</h4>
     </div>
 
-    <div class="list" ng-show="bitpayCard.bitpayCardTransactionHistory[0]">
+    <div class="list" ng-if="bitpayCard.bitpayCardTransactionHistory[0] && !error" ng-init="cardTxs = bitpayCard.bitpayCardTransactionHistory">
       <div class="item item-divider">
       <select class="select-style" ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
         <option value="last30Days">Recent Activity</option>
@@ -54,7 +54,7 @@
       </select>
       </div>
       <div
-        ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
+        ng-repeat="tx in cardTxs | orderBy: ['pending','-timestamp']"
         class="item row"
         ng-init="bitpayCard.getMerchantInfo(tx)">
         <div class="col col-10" ng-init="icon = bitpayCard.getIconName(tx)">
