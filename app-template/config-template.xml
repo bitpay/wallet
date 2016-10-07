@@ -74,6 +74,7 @@
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@2x.png" width="120" height="120" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-76.png" width="76" height="76" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-76@2x.png" width="152" height="152" />
+      <icon src="resources/*PACKAGENAME*/ios/icon/icon-83.5@2x.png" width="167" height="167" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-40.png" width="40" height="40" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-40@2x.png" width="80" height="80" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon.png" width="57" height="57" />
