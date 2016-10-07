@@ -13,11 +13,11 @@
   <ion-slides class="slides" options="options" slider="data.slider">
     <ion-slide-page>
       <ion-content id="onboard-tour-secure" scroll="false">
-        <h2 class="onboarding-topic" translate>Bitcoin is secure,<br/>digital money.</h2>
-        <p class="onboarding-description" translate>You can spend bitcoin at millions of websites and stores worldwide.</p>
+        <div class="onboarding-topic" translate>Bitcoin is secure,<br/>digital money.</div>
+        <div class="onboarding-description" translate>You can spend bitcoin at millions of websites and stores worldwide.</div>
         <div class="onboarding-illustration-secure"></div>
         <div class="cta-buttons">
-          <p class="onboarding-tldr" translate>Just scan the code to pay.</p>
+          <div class="onboarding-tldr" translate>Just scan the code to pay.</div>
           <button class="button button-block button-secondary" ng-click="slideNext()">
             Got it &rarr;
           </button>
@@ -26,13 +26,13 @@
     </ion-slide-page>
     <ion-slide-page>
       <ion-content id="onboard-tour-currency" scroll="false">
-        <h2 class="onboarding-topic" translate>Bitcoin is a currency.</h2>
-        <p class="onboarding-description" translate>You can trade it for other currencies like US Dollars, Euros, or Pounds.</p>
+        <div class="onboarding-topic" translate>Bitcoin is a currency.</div>
+        <div class="onboarding-description" translate>You can trade it for other currencies like US Dollars, Euros, or Pounds.</div>
         <div class="onboarding-illustration-currency">
           <div id="onboarding-illustration-currency-exchange-rate">1 BTC = {{localCurrencySymbol}}{{localCurrencyPerBtc}}</div>
         </div>
         <div class="cta-buttons">
-          <p class="onboarding-tldr" translate>The exchange rate changes with the market.</p>
+          <div class="onboarding-tldr" translate>The exchange rate changes with the market.</div>
           <button class="button button-block button-secondary" ng-click="slideNext()">
             Makes sense &rarr;
           </button>
@@ -41,11 +41,11 @@
     </ion-slide-page>
     <ion-slide-page>
       <ion-content id="onboard-tour-control" scroll="false">
-        <h2 translate class="onboarding-topic">You control your bitcoin.</h2>
-        <p translate class="onboarding-description">The BitPay wallet stores your bitcoin with cutting-edge security.</p>
+        <div translate class="onboarding-topic">You control your bitcoin.</div>
+        <div translate class="onboarding-description">This app stores your bitcoin with cutting-edge security.</div>
         <div class="onboarding-illustration-control"></div>
         <div class="cta-buttons">
-          <p class="onboarding-tldr" translate>Not even BitPay can access it.</p>
+          <div class="onboarding-tldr" translate>Not even BitPay can access it.</div>
           <button class="button button-block button-primary" ng-click="createDefaultWallet()">
             Create bitcoin wallet
           </button>
