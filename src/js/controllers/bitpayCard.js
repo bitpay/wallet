@@ -6,13 +6,13 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   $scope.dateRange = 'last30Days';
   $scope.network = bitpayCardService.getEnvironment();
 
-  var getFromCache = function() {
+  var getFromCache = function(cb) {
     bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {
-      if (err || lodash.isEmpty(data)) return;
+      if (err || lodash.isEmpty(data)) return cb();
       $scope.historyCached = true;
       self.bitpayCardTransactionHistory = data.transactions;
       self.bitpayCardCurrentBalance = data.balance;
-      $scope.$apply();
+      return cb();
     });
   };
 
@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         return;
       }
 
-      self.bitpayCardTransactionHistory = history.transactionList;
+      self.bitpayCardTransactionHistory = history.txs;
       self.bitpayCardCurrentBalance = history.currentCardBalance;
 
       var cacheHistory = {
@@ -102,8 +102,9 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       $state.go('tabs.home');
       popupService.showAlert(null, msg);
     } else {
-      getFromCache();
-      self.update();
+      getFromCache(function() {
+        self.update();
+      });
     }
   });
 

@@ -194,15 +194,17 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   root.getHistory = function(cardId, params, cb) {
     params = params || {};
     var json = {};
-//    json = {
-//      method: 'getInvoiceHistory'
-//    };
+    json = {
+      method: 'getInvoiceHistory',
+      params: JSON.stringify(params)
+    };
     root.getBitpayDebitCards(function(err, data) {
       var card = lodash.find(data.cards, {id : cardId});
       if (!card) return cb(_setError('No card available'));
       // Get invoices
-//      $http(_postBitAuth('/api/v2/' + card.token, json)).then(function(data) {
-//        var invoices = data.data.data;
+      $http(_postBitAuth('/api/v2/' + card.token, json)).then(function(data) {
+        $log.info('BitPay Get Invoices: SUCCESS');
+        var invoices = data.data.data;
         json = {
           method: 'getTransactionHistory',
           params: JSON.stringify(params)
@@ -211,14 +213,14 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
         $http(_postBitAuth('/api/v2/' + card.token, json)).then(function(data) {
           $log.info('BitPay Get Transactions: SUCCESS');
           var history = data.data.data || data.data;
-//          history['txs'] = _processTransactions(invoices, history.transactionList);
+          history['txs'] = _processTransactions(invoices, history.transactionList);
           return cb(null, history);
         }, function(data) {
           return cb(_setError('BitPay Card Error: Get Transactions', data));
         });
-//      }, function(data) {
-//        return cb(_setError('BitPay Card Error: Get Invoices', data));
-//      });
+      }, function(data) {
+        return cb(_setError('BitPay Card Error: Get Invoices', data));
+      });
     });
   };
 
@@ -321,10 +323,13 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     });
   };
 
-  root.logout = function(cb) {
+  root.remove = function(cb) {
     _setCredentials();
     storageService.removeBitpayDebitCards(credentials.NETWORK, function(err) {
-      $log.info('BitPay Logout: SUCCESS');
+      storageService.removeBitpayDebitCardsHistory(credentials.NETWORK, function(err) {
+        $log.info('BitPay Debit Cards Removed: SUCCESS');
+        return cb();
+      });
     });
   };
 

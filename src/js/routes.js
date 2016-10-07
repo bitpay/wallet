@@ -887,6 +887,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/preferences',
         views: {
           'tab-home@tabs': {
+            controller: 'preferencesBitpayCardController',
             templateUrl: 'views/preferencesBitpayCard.html'
           }
         }
