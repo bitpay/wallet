@@ -61,9 +61,6 @@ angular-pbkdf2/angular-pbkdf2.js
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
-Icon
-
 # Thumbnails
 ._*
 
