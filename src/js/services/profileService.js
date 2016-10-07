@@ -296,6 +296,8 @@ angular.module('copayApp.services')
             if (!val) {
               return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
             }
+            if (usePushNotifications)
+              root.pushNotificationsInit();
             return cb();
           });
         });
@@ -331,6 +333,11 @@ angular.module('copayApp.services')
           }, 100);
         }
       });
+
+      push.on('error', function(e) {
+        $log.warn('Error with push notifications:' + e.message);
+      });
+
     };
 
     root.loadAndBindProfile = function(cb) {
