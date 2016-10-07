@@ -24,6 +24,7 @@
     "angular-mocks": "1.4.10",
     "bezier-easing": "^2.0.3",
     "bhttp": "^1.2.1",
+    "bitauth": "^0.3.2",
     "bitcore-wallet-client": "4.3.1",
     "bower": "^1.7.9",
     "chai": "^3.5.0",

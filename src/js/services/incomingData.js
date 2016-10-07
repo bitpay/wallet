@@ -70,6 +70,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Plain URL
     } else if (/^https?:\/\//.test(data)) {
+      if ($state.current.name == 'tabs.bitpayCardIntro' || $state.current.name == 'tabs.buyandsell.glidera') return false;
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});

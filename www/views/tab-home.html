@@ -104,7 +104,7 @@
         <i class="icon bp-arrow-right"></i>
       </a>
       <a ui-sref="tabs.bitpayCardIntro"
-         ng-if="bitpayCardEnabled && !bitpayCards[0]"
+         ng-if="bitpayCardEnabled && !bitpayCards[0] && externalServices.BitpayCard"
          class="item item-icon-left item-big-icon-left item-icon-right">
         <i class="icon big-icon-svg">
           <div class="bg icon-bitpay-card"></div>
