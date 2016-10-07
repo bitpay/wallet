@@ -37,9 +37,24 @@ angular.module('copayApp.controllers').controller('createController',
     };
 
     $scope.showAdvChange = function() {
+      $scope.showAdv = !$scope.showAdv;
+      $scope.resizeView();
+    };
+
+    $scope.resizeView = function() {
       $timeout(function() {
         $ionicScrollDelegate.resize();
-      }, 10);
+      });
+      checkPasswordFields();
+    };
+
+    function checkPasswordFields() {
+      if (!$scope.encrypt) {
+        $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = null;
+        $timeout(function() {
+          $scope.$apply();
+        });
+      }
     };
 
     function updateRCSelect(n) {
@@ -160,7 +175,8 @@ angular.module('copayApp.controllers').controller('createController',
     function _create(opts) {
       ongoingProcess.set('creatingWallet', true);
       $timeout(function() {
-
+        console.log(opts);
+        return;
         profileService.createWallet(opts, function(err, client) {
           ongoingProcess.set('creatingWallet', false);
           if (err) {
@@ -173,11 +189,12 @@ angular.module('copayApp.controllers').controller('createController',
             $log.debug('Remote preferences saved for:' + client.credentials.walletId)
           });
 
-
           if ($scope.seedSource.id == 'set') {
             profileService.setBackupFlag(client.credentials.walletId);
           }
+
           $ionicHistory.removeBackView();
+
           if (!client.isComplete()) {
             $ionicHistory.nextViewOptions({
               disableAnimate: true
@@ -188,8 +205,7 @@ angular.module('copayApp.controllers').controller('createController',
                 walletId: client.credentials.walletId
               });
             }, 100);
-          }
-          else $state.go('tabs.home')
+          } else $state.go('tabs.home');
         });
       }, 100);
     }
