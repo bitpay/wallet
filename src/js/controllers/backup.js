@@ -90,8 +90,10 @@ angular.module('copayApp.controllers').controller('backupController',
         if (val) {
           $ionicHistory.removeBackView();
           $state.go('tabs.home');
-        }
-        else $state.go('onboarding.disclaimer', {walletId: $stateParams.walletId, backedUp: true});
+        } else $state.go('onboarding.disclaimer', {
+          walletId: $stateParams.walletId,
+          backedUp: true
+        });
       });
     };
 
@@ -196,7 +198,7 @@ angular.module('copayApp.controllers').controller('backupController',
       walletService.getKeys(wallet, function(err, k) {
         if (err || !k) {
           $log.error('Could not get keys: ', err);
-          $state.go('wallet.preferences');
+          $ionicHistory.goBack();
           return;
         }
         $scope.credentialsEncrypted = false;
