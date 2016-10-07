@@ -1,7 +1,7 @@
 #terms-of-use {
   ion-header-bar {
     background: #fff;
-    box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.2);
+    box-shadow: $subtle-box-shadow;
     .primary-buttons{
       .button{
         font-size: 2rem;
@@ -10,7 +10,7 @@
   }
   ion-content{
     padding-top: 1.5rem;
-    color: rgba(86, 86, 86, 0.77);
+    color: $dark-gray;
     p {
       padding: 0 2.5%;
       margin: 2rem auto;
@@ -54,7 +54,7 @@
       width: 10%;
       position: relative;
       padding-right: 0;
-      top: 50px;
+      top: 25px;
       .item-content {
         white-space: normal;
       }
@@ -62,7 +62,7 @@
     p {
       color: rgb(58, 58, 58);
       float: left;
-      width: 70%;
+      width: 80%;
     }
     .checkbox input:before,
     .checkbox .checkbox-icon:before {
