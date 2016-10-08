@@ -48,7 +48,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     return ongoingProcess[processName];
   };
 
-  root.set = function(processName, isOn) {
+  root.set = function(processName, isOn, customHandler) {
     $log.debug('ongoingProcess', processName, isOn);
     root[processName] = isOn;
     ongoingProcess[processName] = isOn;
@@ -64,7 +64,9 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
 
     var showName = $filter('translate')(processNames[name] || name);
 
-    if (root.onGoingProcessName) {
+    if(customHandler) {
+      customHandler(processName, showName, isOn);
+    } else if (root.onGoingProcessName) {
       if (isCordova) {
         window.plugins.spinnerDialog.show(null, showName, true);
       } else {

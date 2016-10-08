@@ -915,7 +915,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.publishAndSign = function(wallet, txp, cb) {
+  root.publishAndSign = function(wallet, txp, cb, customStatusHandler) {
 
     var publishFn = root.publishTx;
 
@@ -929,12 +929,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     root.prepare(wallet, function(err, password) {
       if (err) return cb('Prepare error: ' + err);
 
-      ongoingProcess.set('sendingTx', true);
+      ongoingProcess.set('sendingTx', true, customStatusHandler);
+
       publishFn(wallet, txp, function(err, publishedTxp) {
-        ongoingProcess.set('sendingTx', false);
+        ongoingProcess.set('sendingTx', false, customStatusHandler);
         if (err) return cb('Send Error: ' + err);
 
-        ongoingProcess.set('signingTx', true);
+        ongoingProcess.set('signingTx', true, customStatusHandler);
         root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
           ongoingProcess.set('signingTx', false);
           root.invalidateCache(wallet);
@@ -952,22 +953,29 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           }
 
           if (signedTxp.status == 'accepted') {
-            ongoingProcess.set('broadcastingTx', true);
+            ongoingProcess.set('broadcastingTx', true, customStatusHandler);
             root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
-              ongoingProcess.set('broadcastingTx', false);
+              ongoingProcess.set('broadcastingTx', false, customStatusHandler);
               if (err) return cb('sign error' + err);
 
               $rootScope.$emit('Local/TxAction', wallet.id);
               var type = root.getViewStatus(wallet, broadcastedTxp);
-              root.openStatusModal(type, broadcastedTxp, function() {});
 
-              return cb(null, broadcastedTxp)
+              if(!customStatusHandler) {
+                root.openStatusModal(type, broadcastedTxp, function() {});
+              }
+
+              return cb(null, broadcastedTxp);
             });
           } else {
             $rootScope.$emit('Local/TxAction', wallet.id);
 
             var type = root.getViewStatus(wallet, signedTxp);
-            root.openStatusModal(type, signedTxp, function() {});
+
+            if(!customStatusHandler) {
+              root.openStatusModal(type, signedTxp, function() {});
+            }
+
             return cb(null, signedTxp);
           }
         });

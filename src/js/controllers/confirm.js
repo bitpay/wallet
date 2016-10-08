@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
 
@@ -273,9 +273,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (err) return setSendError(err);
       });
     }
-    ongoingProcess.set('creatingTx', true);
+
+    ongoingProcess.set('creatingTx', true, onSendStatusChange);
     createTx(wallet, false, function(err, txp) {
-      ongoingProcess.set('creatingTx', false);
+      ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;
 
       var config = configService.getSync();
@@ -308,9 +309,29 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
+  function onSendStatusChange(processName, showName, isOn) {
+    if(processName === 'broadcastingTx' && !isOn) {
+      $scope.sendStatus = 'success';
+      $scope.$digest();
+    } else if(showName) {
+      $scope.sendStatus = showName;
+    }
+  }
+
+  $scope.onConfirm = function() {
+    $scope.approve(true);
+  };
+
+  $scope.onSuccessConfirm = function() {
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true
+    });
+    $state.go('tabs.send');
+  };
+
   function publishAndSign(wallet, txp) {
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
-    });
-  };
+    }, onSendStatusChange);
+  }
 });
