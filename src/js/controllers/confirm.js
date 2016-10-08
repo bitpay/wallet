@@ -259,7 +259,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  $scope.approve = function() {
+  $scope.approve = function(onSendStatusChange) {
     var wallet = $scope.wallet;
     if (!wallet) {
       return setSendError(gettextCatalog.getString('No wallet selected'));
@@ -295,21 +295,21 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (isCordova && bigAmount) {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
             if (!ok) return;
-            publishAndSign(wallet, txp);
+            publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
         else {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
             if (!ok) return;
-            publishAndSign(wallet, txp);
+            publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
       }
-      else publishAndSign(wallet, txp);
+      else publishAndSign(wallet, txp, onSendStatusChange);
     });
   };
 
-  function onSendStatusChange(processName, showName, isOn) {
+  function statusChangeHandler(processName, showName, isOn) {
     if(processName === 'broadcastingTx' && !isOn) {
       $scope.sendStatus = 'success';
       $scope.$digest();
@@ -319,7 +319,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   }
 
   $scope.onConfirm = function() {
-    $scope.approve(true);
+    $scope.approve(statusChangeHandler);
   };
 
   $scope.onSuccessConfirm = function() {
@@ -329,7 +329,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $state.go('tabs.send');
   };
 
-  function publishAndSign(wallet, txp) {
+  function publishAndSign(wallet, txp, onSendStatusChange) {
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
     }, onSendStatusChange);
