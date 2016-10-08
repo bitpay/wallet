@@ -1,0 +1,126 @@
+slide-to-accept {
+  $slide-bg-color: #647CE8;
+  $slider-bg-color: #5063B9;
+  $slide-text-color: #FFFFFF;
+  position: fixed;
+  bottom: 0;
+  height: 92px;
+  width: 100%;
+  background: $slide-bg-color;
+
+  @mixin center-vertically {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    position: absolute;
+  }
+
+  .slide {
+    &__listener {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    &__slider {
+      @include center-vertically;
+      height: 100%;
+      width: 100%;
+      background: $slider-bg-color;
+      transform: translateX(0);
+      margin-left: -100%;
+      z-index: 2;
+
+      &::before {
+        @include center-vertically;
+        content: '';
+        width: 10000px;
+        left: -10000px + 1;
+        background: $slider-bg-color;
+      }
+
+      &::after {
+        @include center-vertically;
+        content: '';
+        width: 15px;
+        right: -10px;
+        background: $slider-bg-color;
+      }
+
+      &__tip {
+        @include center-vertically;
+        width: 124px;
+        height: 116px;
+        background: $slider-bg-color;
+        right: -71px;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-47%);
+      }
+
+    }
+    &__bitcoin {
+      @include center-vertically;
+      left: 20px;
+      z-index: 3;
+
+      > img {
+        transform: rotateZ(-5deg);
+      }
+    }
+    &__button-text {
+      @include center-vertically;
+
+      justify-content: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      color: $slide-text-color;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: .03rem;
+      z-index: 1;
+    }
+
+    &__status-text {
+      @include center-vertically;
+      justify-content: center;
+      color: $slide-text-color;
+      z-index: 4;
+      width: 100%;
+      font-size: 17px;
+      letter-spacing: 0.02rem;
+      text-transform: capitalize;
+      transform: translateY(2rem);
+      opacity: 0;
+      transition: transform 250ms ease, opacity 250ms ease;
+
+      &.enter {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      > img {
+        margin-right: 10px;
+        animation-name: spin;
+        animation-duration: 500ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+    }
+
+    &__arrow {
+      @include center-vertically;
+      right: 20px;
+    }
+  }
+
+  @keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+  }
+}

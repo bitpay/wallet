@@ -22,6 +22,7 @@
     "adm-zip": "^0.4.7",
     "angular": "1.4.6",
     "angular-mocks": "1.4.10",
+    "bezier-easing": "^2.0.3",
     "bhttp": "^1.2.1",
     "bitcore-wallet-client": "4.2.1",
     "bower": "^1.7.9",

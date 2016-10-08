@@ -44,10 +44,11 @@ angular.module('copayApp.controllers').controller('tourController',
         };
         ongoingProcess.set('creatingWallet', false);
         var wallet = walletClient;
-        $state.go('onboarding.collectEmail', {
-          fromOnboarding: true,
-          walletId: wallet.credentials.walletId
-        });
+        // $state.go('onboarding.collectEmail', {
+        //   fromOnboarding: true,
+        //   walletId: wallet.credentials.walletId
+        // });
+        $state.go('tabs.home');
       });
     };
 
