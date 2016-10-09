@@ -9,26 +9,18 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
       var isCordova = platformInfo.isCordova;
       var isIOS = platformInfo.isIOS;
 
+      $scope.appName = $window.appConfig.nameCase;
       $scope.PNEnabledByUser = true;
       $scope.isIOSApp = isIOS && isCordova;
       if ($scope.isIOSApp) {
-        cordova.plugins.diagnostic.isRemoteNotificationsEnabled(function(isEnabled) {
-          $scope.PNEnabledByUser = isEnabled;
-          $scope.$digest();
+        PushNotification.hasPermission(function(data) {
+          $scope.PNEnabledByUser = data.isEnabled;
         });
       }
 
       $scope.pushNotifications = {
         value: config.pushNotifications.enabled
       };
-    };
-
-    $scope.openSettings = function() {
-      cordova.plugins.diagnostic.switchToSettings(function() {
-        $log.debug('switched to settings');
-      }, function(err) {
-        $log.debug(err);
-      });
     };
 
     $scope.pushNotificationsChange = function() {
