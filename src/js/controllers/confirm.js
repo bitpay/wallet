@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
+
+  $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWallet = data.stateParams.isWallet;
