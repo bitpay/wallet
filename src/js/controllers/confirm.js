@@ -190,6 +190,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   var setSendError = function(msg) {
+    $scope.sendStatus = '';
     popupService.showAlert(gettextCatalog.getString('Error at confirm:'), msg);
   };
 
@@ -197,7 +198,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.fee = txFormatService.formatAmountStr(txp.fee);
     $scope.txp = txp;
     $scope.$apply();
-  };
+  }
 
   var createTx = function(wallet, dryRun, cb) {
     var config = configService.getSync().wallet;
@@ -327,6 +328,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
   }
 
+  $scope.statusChangeHandler = statusChangeHandler;
+
   $scope.onConfirm = function() {
     $scope.approve(statusChangeHandler);
   };
@@ -335,6 +338,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $ionicHistory.nextViewOptions({
       disableAnimate: true
     });
+    $scope.sendStatus = '';
     $state.go('tabs.send');
   };
 
