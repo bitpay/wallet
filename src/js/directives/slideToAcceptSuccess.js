@@ -8,7 +8,8 @@ angular.module('copayApp.directives')
       transclude: true,
       scope: {
         isShown: '=slideSuccessShow',
-        onConfirm: '&slideSuccessOnConfirm'
+        onConfirm: '&slideSuccessOnConfirm',
+        hideOnConfirm: '=slideSuccessHideOnConfirm'
       },
       link: function(scope, element, attrs) {
         var elm = element[0];
@@ -23,8 +24,10 @@ angular.module('copayApp.directives')
         });
         scope.onConfirmButtonClick = function() {
           scope.onConfirm();
-          scope.fillScreen = false;
-          elm.style.display = 'none';
+          if(scope.hideOnConfirm) {
+            scope.fillScreen = false;
+            elm.style.display = 'none';
+          }
         };
       }
     };
