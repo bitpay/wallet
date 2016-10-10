@@ -983,7 +983,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
           scannerService.gentleInitialize();
-          //$state.go('tabs.home');
+          $state.go('tabs.home');
         }
       });
     });
