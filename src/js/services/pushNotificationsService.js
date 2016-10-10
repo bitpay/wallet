@@ -11,7 +11,12 @@ angular.module('copayApp.services')
 
     root.init = function(walletsClients) {
       var defaults = configService.getDefaults();
-      var push = PushNotification.init(defaults.pushNotifications.config);
+      try {
+        var push = PushNotification.init(defaults.pushNotifications.config);
+      } catch(e) {
+        $log.error(e);
+        return;
+      };
 
       push.on('registration', function(data) {
         $log.debug('Starting push notification registration');
