@@ -11,9 +11,9 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
      * Development: 'testnet'
      * Production: 'livenet'
      */
-    credentials.NETWORK = 'testnet';
+    credentials.NETWORK = 'livenet';
     if (credentials.NETWORK == 'testnet') {
-      credentials.BITPAY_API_URL = 'https://gustavo.bp:8088';
+      credentials.BITPAY_API_URL = 'https://test.bitpay.com';
     }
     else {
       credentials.BITPAY_API_URL = 'https://bitpay.com';
