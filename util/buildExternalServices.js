@@ -24,10 +24,6 @@ if (externalServices.glidera &&
 if (externalServices.glidera &&
     (externalServices.glidera.sandbox.mobile.client_id || externalServices.glidera.sandbox.desktop.client_id))
   console.log('Glidera Sandbox Enabled');
-if (externalServices.bitpayCard && externalServices.bitpayCard.production.secret)
-  console.log('BitPay Card Production Enabled');
-if (externalServices.bitpayCard && externalServices.bitpayCard.sandbox.secret)
-  console.log('BitPay Card Sandbox Enabled');
 
 var content = 'window.externalServices=' + JSON.stringify(externalServices) + ';';
 fs.writeFileSync("./src/js/externalServices.js", content);
