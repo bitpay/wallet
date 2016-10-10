@@ -48,10 +48,12 @@
           </select>
         </label>
 
-        <ion-toggle ng-model="showAdv" toggle-class="toggle-stable" ng-change="showAdvChange()">
+        <div class="item item-divider"></div>
+
+        <a class="item" ng-click="showAdvChange()">
           <span translate ng-show="!showAdv">Show advanced options</span>
           <span translate ng-show="showAdv">Hide advanced options</span>
-        </ion-toggle>
+        </a>
 
         <div ng-show="showAdv">
           <label class="item item-input item-stacked-label">
@@ -71,20 +73,6 @@
             <input type="number" ng-model="formData.account" ignore-mouse-wheel>
           </label>
 
-          <div class="card" ng-show="seedSource.id =='new' && formData.createPassphrase">
-            <div class="item item-text-wrap" translate>
-              WARNING: The password cannot be recovered. <b>Be sure to write it down</b>. The wallet can not be restored without the password.
-            </div>
-          </div>
-
-          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'new'">
-            <span class="input-label" translate>Add a Password</span>
-            <input type="text"
-            placeholder="{{'Add an optional password to secure the recovery phrase'|translate}}"
-            autocapitalize="off"
-            ng-model="formData.createPassphrase">
-          </label>
-
           <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
             <span class="input-label" translate>Wallet Recovery Phrase</span>
             <input placeholder="{{'Enter the recovery phrase (BIP39)'|translate}}"
@@ -93,13 +81,33 @@
             ng-model="formData.privateKey">
           </label>
 
-          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set'">
-            <span class="input-label" translate>Password</span>
+          <ion-toggle ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()" ng-show="seedSource.id == 'new' || seedSource.id == 'set'">
+            <span translate>Encrypt with a Password</span>
+          </ion-toggle>
+
+          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'new' && encrypt">
+            <span class="input-label" translate>Add a Password</span>
+            <input type="text"
+            placeholder="{{'Add an optional password to secure the recovery phrase'|translate}}"
+            autocapitalize="off"
+            ng-model="formData.createPassphrase">
+          </label>
+
+          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set' && encrypt">
+            <span class="input-label" translate>Add a Password</span>
             <input type="text"
             placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
             autocapitalize="off"
             ng-model="formData.passphrase">
           </label>
+
+          <div class="text-center box-notification error" ng-show="(seedSource.id =='new' || seedSource.id =='set') && encrypt">
+            <strong translate>This password cannot be recovered. If the password is lost, funds can only be recovered with a valid backup.</strong>
+          </div>
+
+          <ion-checkbox ng-model="formData.passwordSaved" class="checkbox-positive" ng-show="encrypt">
+            <span class="toggle-label" translate>I have written it down</span>
+          </ion-checkbox>
 
           <label class="item item-input item-stacked-label" ng-show="seedSource.id  == 'set'">
             <span class="input-label" translate>Derivation Path</span>
@@ -120,7 +128,8 @@
         </div> <!-- advanced -->
       </div> <!-- list -->
 
-      <button type="submit" class="button button-block button-positive" ng-disabled="setupForm.$invalid">
+      <button type="submit" class="button button-block button-positive"
+        ng-disabled="setupForm.$invalid || ((encrypt && !formData.passwordSaved) || encrypt && ((seedSource.id == 'new' && !formData.createPassphrase) || (seedSource.id == 'set' && !formData.passphrase)))">
         <span translate>Create {{formData.requiredCopayers}}-of-{{formData.totalCopayers}} wallet</span>
       </button>
     </form>
