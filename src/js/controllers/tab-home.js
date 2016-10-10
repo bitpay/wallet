@@ -172,11 +172,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       storageService.setHomeTipAccepted(false, function(error, value){
         $scope.homeTip = false;
-        $state.transitionTo($state.current, null, {
-          reload: true,
-          inherit: false,
-          notify: false
-        });
       });
     };
 
