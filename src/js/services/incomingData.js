@@ -1,8 +1,17 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore) {
+angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore, lodash) {
 
   var root = {};
+
+  var ignoreState = [
+    'tabs.language',
+    'tabs.about.translators',
+    'tabs.bitpayCardIntro',
+    'tabs.buyandsell.glidera',
+    'tabs.giftcards.amazon',
+    'tabs.giftcards.amazon.buy'
+  ];
 
   root.redir = function(data) {
     $log.debug('Processing incoming data:'  +data);
@@ -70,7 +79,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Plain URL
     } else if (/^https?:\/\//.test(data)) {
-      if ($state.current.name == 'tabs.bitpayCardIntro' || $state.current.name == 'tabs.buyandsell.glidera') return false;
+      var currentState = $state.current.name;
+      if (lodash.indexOf(ignoreState, currentState) != -1) return false;
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
