@@ -52,13 +52,15 @@
 
         <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
 
-        <button class="button button-block button-positive"
-                ng-disabled="!formData.fiat"
-                type="submit">
-          Buy now
-        </button>
-        <div class="size-10 text-gray text-center">
-          Purchase Amount is limited to USD 500 per day
+        <div class="padding">
+          <button class="button button-block button-positive"
+                  ng-disabled="!formData.fiat"
+                  type="submit">
+            Buy now
+          </button>
+          <div class="size-10 text-gray text-center">
+            Purchase Amount is limited to USD 500 per day
+          </div>
         </div>
       </form>
     </div>
