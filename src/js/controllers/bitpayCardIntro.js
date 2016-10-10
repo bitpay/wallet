@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
     } else {
       // TEST TODO
       bitpayCardService.testSession(function(err, session) {
-        if (err) $log.error(err);
+        if (err) popupService.showAlert(null, err);
       });
     }
 

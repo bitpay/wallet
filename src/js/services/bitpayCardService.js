@@ -44,7 +44,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     _setCredentials();
     $http({
       method: 'GET',
-      url: credentials.BITPAY_API_URL + '/visa-api/session',
+      url: credentials.BITPAY_API_URL + '/api/session',
       headers: {
         'content-type': 'application/json'
       }
@@ -154,12 +154,12 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
         code: obj.otp
       };
 
-      var dataToSign = credentials.BITPAY_API_URL + '/visa-api/validateBitAuthPairingCode' + JSON.stringify(userData);
+      var dataToSign = credentials.BITPAY_API_URL + '/api/validateBitAuthPairingCode' + JSON.stringify(userData);
       var signedData = bitauthService.sign(dataToSign, credentials.BITPAY_PRIV_KEY);
 
       $http({
         method: 'POST',
-        url: credentials.BITPAY_API_URL + '/visa-api/validateBitAuthPairingCode',
+        url: credentials.BITPAY_API_URL + '/api/validateBitAuthPairingCode',
         headers: {
           'content-type': 'application/json',
           'x-csrf-token': session.csrfToken,
