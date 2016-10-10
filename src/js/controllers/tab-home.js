@@ -12,6 +12,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.name = $window.appConfig.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
 
+    if(!$scope.homeTip){
+       storageService.getHomeTipAccepted(function(error, value){
+         $scope.homeTip = (value == 'false') ? false : true;
+       });
+     }
+
     $scope.openNotificationModal = function(n) {
       wallet = profileService.getWallet(n.walletId);
 
@@ -164,11 +170,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.hideHomeTip = function() {
-      $scope.homeTip = null;
-      $state.transitionTo($state.current, null, {
-        reload: true,
-        inherit: false,
-        notify: false
+      storageService.setHomeTipAccepted(false, function(error, value){
+        $scope.homeTip = false;
+        $state.transitionTo($state.current, null, {
+          reload: true,
+          inherit: false,
+          notify: false
+        });
       });
     };
 
