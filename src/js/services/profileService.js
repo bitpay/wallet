@@ -318,6 +318,8 @@ angular.module('copayApp.services')
       var defaults = configService.getDefaults();
       var push = pushNotificationsService.init(root.wallet);
 
+      if (!push) return;
+
       push.on('notification', function(data) {
         if (!data.additionalData.foreground) {
           $log.debug('Push notification event: ', data.message);
