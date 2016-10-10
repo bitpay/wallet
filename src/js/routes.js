@@ -904,18 +904,18 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         $ionicPlatform.registerBackButtonAction(function(e) {
 
           //from root tabs view
-          var matchHome = $ionicHistory.currentStateName().match(/home/) ? true : false;
-          var matchReceive = $ionicHistory.currentStateName().match(/receive/) ? true : false;
-          var matchScan = $ionicHistory.currentStateName().match(/scan/) ? true : false;
-          var matchSend = $ionicHistory.currentStateName().match(/send/) ? true : false;
-          var matchSettings = $ionicHistory.currentStateName().match(/settings/) ? true : false;
+          var matchHome = $ionicHistory.currentStateName() == 'tabs.home' ? true : false;
+          var matchReceive = $ionicHistory.currentStateName() == 'tabs.receive' ? true : false;
+          var matchScan = $ionicHistory.currentStateName() == 'tabs.scan' ? true : false;
+          var matchSend = $ionicHistory.currentStateName() == 'tabs.send' ? true : false;
+          var matchSettings = $ionicHistory.currentStateName() == 'tabs.settings' ? true : false;
           var fromTabs = matchHome | matchReceive | matchScan | matchSend | matchSettings;
 
           //onboarding with no back views
-          var matchWelcome = $ionicHistory.currentStateName().match(/welcome/) ? true : false;
-          var matchCollectEmail = $ionicHistory.currentStateName().match(/collectEmail/) ? true : false;
-          var matchBackupRequest = $ionicHistory.currentStateName().match(/backupRequest/) ? true : false;
-          var matchNotifications = $ionicHistory.currentStateName().match(/onboarding.notifications/) ? true : false;
+          var matchWelcome = $ionicHistory.currentStateName() == 'onboarding.welcome' ? true : false;
+          var matchCollectEmail = $ionicHistory.currentStateName() == 'onboarding.collectEmail' ? true : false;
+          var matchBackupRequest = $ionicHistory.currentStateName() == 'onboarding.backupRequest' ? true : false;
+          var matchNotifications = $ionicHistory.currentStateName() == 'onboarding.notifications' ? true : false;
 
           var fromOnboarding = matchCollectEmail | matchBackupRequest | matchNotifications | matchWelcome;
 
