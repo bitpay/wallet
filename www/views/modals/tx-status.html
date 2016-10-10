@@ -1,15 +1,17 @@
 <ion-modal-view id="tx-status" ng-controller="txStatusController">
-  <div ng-if="type == 'broadcasted'" class="popup-txsent text-center m30tp">
-    <i class="icon ion-checkmark-round"></i>
-    <div ng-show="tx.amountStr" class="m20t size-36">
-      {{tx.amountStr}}
-    </div>
-    <div class="size-24 text-gray m20v">
-      <span ng-if="!fromBitPayCard" translate>Sent</span>
-      <span ng-if="fromBitPayCard" translate>Funds sent</span>
-    </div>
-    <div class="text-center m20t" ng-if="entryExist || !fromSendTab || fromPayPro">
-      <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
+  <div ng-if="type == 'broadcasted'">
+    <div class="popup-txsent text-center m30tp">
+        <i class="icon ion-checkmark-round"></i>
+        <div ng-show="tx.amountStr" class="m20t size-36">
+        {{tx.amountStr}}
+        </div>
+        <div class="size-24 text-gray m20v">
+        <span ng-if="!fromBitPayCard" translate>Sent</span>
+        <span ng-if="fromBitPayCard" translate>Funds sent</span>
+        </div>
+        <div class="text-center m20t" ng-if="entryExist || !fromSendTab || fromPayPro">
+        <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
+        </div>
     </div>
     <div class="collect-address" ng-if="!entryExist && fromSendTab && !fromPayPro">
       <div class="row">
