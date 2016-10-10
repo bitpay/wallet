@@ -32,6 +32,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       throw ('bad params');
     }
     $scope.isCordova = platformInfo.isCordova;
+    $scope.hasClick = platformInfo.hasClick;
     $scope.data = {};
 
     var config = configService.getSync().wallet;
