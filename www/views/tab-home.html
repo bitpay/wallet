@@ -126,8 +126,8 @@
          ng-show="nextStepEnabled && wallets[0]">
       <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
         Next steps
-        <i class="icon bp-arrow-down" ng-show="!hideNextSteps"></i>
-        <i class="icon bp-arrow-up" ng-show="hideNextSteps"></i>
+        <i class="icon bp-arrow-up" ng-show="!hideNextSteps"></i>
+        <i class="icon bp-arrow-down" ng-show="hideNextSteps"></i>
       </div>
       <div ng-show="!hideNextSteps">
         <a ui-sref="tabs.bitpayCard" ng-show="!externalServices.BitpayCard && bitpayCardEnabled" class="item item-icon-left item-big-icon-left item-icon-right next-step">
