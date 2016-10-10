@@ -13,9 +13,13 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
       $scope.PNEnabledByUser = true;
       $scope.isIOSApp = isIOS && isCordova;
       if ($scope.isIOSApp) {
-        PushNotification.hasPermission(function(data) {
-          $scope.PNEnabledByUser = data.isEnabled;
-        });
+        try {
+          PushNotification.hasPermission(function(data) {
+            $scope.PNEnabledByUser = data.isEnabled;
+          });
+        } catch(e) {
+          $log.error(e);
+        };
       }
 
       $scope.pushNotifications = {
@@ -24,6 +28,7 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
     };
 
     $scope.pushNotificationsChange = function() {
+      if (!$scope.pushNotifications) return;
       var opts = {
         pushNotifications: {
           enabled: $scope.pushNotifications.value
