@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.txps = [];
   $scope.completeTxHistory = [];
   $scope.openTxpModal = txpModalService.open;
+  $scope.isCordova = platformInfo.isCordova;
 
   $scope.openExternalLink = function(url, target) {
     externalLinkService.open(url, target);
@@ -157,6 +158,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.showHistory();
       $scope.$broadcast('scroll.infiniteScrollComplete');
     }, 100);
+  };
+
+  $scope.onRefresh = function() {
+    $scope.$broadcast('scroll.refreshComplete');
+    $scope.updateAll(true);
   };
 
   $scope.updateAll = function(force, cb)  {
