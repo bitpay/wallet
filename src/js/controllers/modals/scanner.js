@@ -73,28 +73,7 @@ angular.module('copayApp.controllers').controller('scannerController', function(
   };
 
   $scope.init = function() {
-    if (platformInfo.isCordova) scannerInit();
-    else checkTips();
-  };
-
-  function checkTips() {
-    //TODO addapt tips to the new QR plugin (mobile)
-    storageService.getScanTipsAccepted(function(err, accepted) {
-      if (err) $log.warn(err);
-      if (accepted) {
-        scannerInit();
-        return;
-      }
-
-      $timeout(function() {
-        $ionicModal.fromTemplateUrl('views/modals/scan-tips.html', {
-          scope: $scope
-        }).then(function(modal) {
-          $scope.scanTipsModal = modal;
-          $scope.scanTipsModal.show();
-        });
-      }, 1000);
-    });
+    scannerInit();
   };
 
   $scope.$on('TipsModalClosed', function(event) {
