@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     };
 
-    $scope.initFlow = function() {
+    $scope.setFlow = function(step) {
       if (!keys) return;
 
       var words = keys.mnemonic;
@@ -39,7 +39,7 @@ angular.module('copayApp.controllers').controller('backupController',
       $scope.useIdeograms = words.indexOf("\u3000") >= 0;
       $scope.data.passphrase = null;
       $scope.customWords = [];
-      $scope.step = 1;
+      $scope.step = step || 1;
       $scope.selectComplete = false;
       $scope.backupError = false;
 
@@ -72,10 +72,10 @@ angular.module('copayApp.controllers').controller('backupController',
 
     var showBackupResult = function() {
       if ($scope.backupError) {
-        var title = gettextCatalog.getString('Uh oh...');
+        var title = 'Uh oh...';
         var message = gettextCatalog.getString("It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again.");
         popupService.showAlert(title, message, function() {
-          $scope.goToStep(1);
+          $scope.setFlow(2);
         })
       } else {
         openConfirmBackupModal();
@@ -151,7 +151,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
     $scope.goToStep = function(n) {
       if (n == 1)
-        $scope.initFlow();
+        $scope.setFlow();
       if (n == 2)
         $scope.step = 2;
       if (n == 3) {
@@ -203,7 +203,7 @@ angular.module('copayApp.controllers').controller('backupController',
         }
         $scope.credentialsEncrypted = false;
         keys = k;
-        $scope.initFlow();
+        $scope.setFlow();
       });
     });
 
