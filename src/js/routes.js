@@ -832,13 +832,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * BitPay Card
-       *
-       */
+    /*
+     *
+     * BitPay Card
+     *
+     */
 
-      .state('tabs.bitpayCard', {
+    .state('tabs.bitpayCard', {
         url: '/bitpay-card',
         views: {
           'tab-home@tabs': {
@@ -904,30 +904,25 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         $ionicPlatform.registerBackButtonAction(function(e) {
 
           //from root tabs view
-          var fromWelcome = $ionicHistory.currentStateName().match(/welcome/) ? true : false;
           var matchHome = $ionicHistory.currentStateName().match(/home/) ? true : false;
           var matchReceive = $ionicHistory.currentStateName().match(/receive/) ? true : false;
+          var matchScan = $ionicHistory.currentStateName().match(/scan/) ? true : false;
           var matchSend = $ionicHistory.currentStateName().match(/send/) ? true : false;
           var matchSettings = $ionicHistory.currentStateName().match(/settings/) ? true : false;
-          var fromTabs = matchHome | matchReceive | matchSend | matchSettings;
+          var fromTabs = matchHome | matchReceive | matchScan | matchSend | matchSettings;
 
           //onboarding with no back views
+          var matchWelcome = $ionicHistory.currentStateName().match(/welcome/) ? true : false;
           var matchCollectEmail = $ionicHistory.currentStateName().match(/collectEmail/) ? true : false;
           var matchBackupRequest = $ionicHistory.currentStateName().match(/backupRequest/) ? true : false;
-          var matchDisclaimer = $ionicHistory.currentStateName().match(/disclaimer/) ? true : false;
-          var matchNotifications = $ionicHistory.currentStateName().match(/notifications/) ? true : false;
+          var matchNotifications = $ionicHistory.currentStateName().match(/onboarding.notifications/) ? true : false;
 
-          var fromOnboarding = matchCollectEmail | matchBackupRequest | matchDisclaimer | matchNotifications;
+          var fromOnboarding = matchCollectEmail | matchBackupRequest | matchNotifications | matchWelcome;
 
-          if (fromOnboarding) {
-            e.preventDefault();
-            return;
-          }
-
-          if ($ionicHistory.backView() && !fromTabs) {
+          if ($ionicHistory.backView() && !fromTabs && !fromOnboarding) {
             $ionicHistory.goBack();
           } else
-          if ($rootScope.backButtonPressedOnceToExit || fromWelcome) {
+          if ($rootScope.backButtonPressedOnceToExit) {
             ionic.Platform.exitApp();
           } else {
             $rootScope.backButtonPressedOnceToExit = true;
