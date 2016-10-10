@@ -296,7 +296,8 @@ angular.module('copayApp.services')
             if (!val) {
               return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
             }
-            if (usePushNotifications)
+            var config = configService.getSync();
+            if (config.pushNotifications.enabled && usePushNotifications)
               root.pushNotificationsInit();
             return cb();
           });
@@ -316,6 +317,8 @@ angular.module('copayApp.services')
     root.pushNotificationsInit = function() {
       var defaults = configService.getDefaults();
       var push = pushNotificationsService.init(root.wallet);
+
+      if (!push) return;
 
       push.on('notification', function(data) {
         if (!data.additionalData.foreground) {
