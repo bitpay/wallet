@@ -9,13 +9,17 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
       var isCordova = platformInfo.isCordova;
       var isIOS = platformInfo.isIOS;
 
+      $scope.appName = $window.appConfig.nameCase;
       $scope.PNEnabledByUser = true;
       $scope.isIOSApp = isIOS && isCordova;
       if ($scope.isIOSApp) {
-        cordova.plugins.diagnostic.isRemoteNotificationsEnabled(function(isEnabled) {
-          $scope.PNEnabledByUser = isEnabled;
-          $scope.$digest();
-        });
+        try {
+          PushNotification.hasPermission(function(data) {
+            $scope.PNEnabledByUser = data.isEnabled;
+          });
+        } catch(e) {
+          $log.error(e);
+        };
       }
 
       $scope.pushNotifications = {
@@ -23,15 +27,8 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
       };
     };
 
-    $scope.openSettings = function() {
-      cordova.plugins.diagnostic.switchToSettings(function() {
-        $log.debug('switched to settings');
-      }, function(err) {
-        $log.debug(err);
-      });
-    };
-
     $scope.pushNotificationsChange = function() {
+      if (!$scope.pushNotifications) return;
       var opts = {
         pushNotifications: {
           enabled: $scope.pushNotifications.value
@@ -39,9 +36,9 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
       };
       configService.set(opts, function(err) {
         if (opts.pushNotifications.enabled)
-          pushNotificationsService.enableNotifications(profileService.walletClients);
+          profileService.pushNotificationsInit();
         else
-          pushNotificationsService.disableNotifications(profileService.walletClients);
+          pushNotificationsService.disableNotifications(profileService.getWallets());
         if (err) $log.debug(err);
       });
     };
