@@ -32,7 +32,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     // NAV BACK-BUTTON TEXT/ICON
     $ionicConfigProvider.backButton.icon('icon ion-ios-arrow-thin-left').text('');
     $ionicConfigProvider.backButton.previousTitleText(false);
-    $ionicConfigProvider.views.swipeBackEnabled(false);
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
