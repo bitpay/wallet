@@ -33,9 +33,13 @@ angular.module('copayApp.directives')
         scope.displaySendStatus = '';
 
         scope.$watch('sendStatus', function() {
-          if(scope.sendStatus === 'success') {
-            scope.displaySendStatus = '';
+          if(!scope.sendStatus) {
             reset();
+          } else if(scope.sendStatus === 'success') {
+            scope.displaySendStatus = '';
+            $timeout(function() {
+              reset();
+            }, 500);
           } else {
             scope.displaySendStatus = scope.sendStatus;
           }
@@ -79,13 +83,11 @@ angular.module('copayApp.directives')
         }
 
         function reset() {
-          $timeout(function() {
-            scope.isSlidFully = false;
-            isSliding = false;
-            setNewSliderStyle(getKnobWidthPercentage());
-            setNewBitcoinStyle(0);
-            setNewTextStyle(0);
-          }, 500);
+          scope.isSlidFully = false;
+          isSliding = false;
+          setNewSliderStyle(getKnobWidthPercentage());
+          setNewBitcoinStyle(0);
+          setNewTextStyle(0);
         }
 
         function setNewSliderStyle(pct) {

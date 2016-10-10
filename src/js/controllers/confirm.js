@@ -297,13 +297,19 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (!spendingPassEnabled && !touchIdEnabled) {
         if (isCordova && bigAmount) {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-            if (!ok) return;
+            if (!ok) {
+              $scope.sendStatus = '';
+              return;
+            }
             publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
         else {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-            if (!ok) return;
+            if (!ok) {
+              $scope.sendStatus = '';
+              return;
+            }
             publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
