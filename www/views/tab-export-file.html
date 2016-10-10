@@ -18,13 +18,13 @@
     </div>
   </form>
 
-  <ion-toggle ng-show="canSign" ng-model="formData.showAdvanced" toggle-class="toggle-balanced">
-    <span translate ng-show="!formData.showAdvanced">Show advanced options</span>
-    <span translate ng-show="formData.showAdvanced">Hide advanced options</span>
-  </ion-toggle>
+  <div class="list card" ng-show="canSign">
+    <a class="item" ng-click="showAdvChange()">
+      <span translate ng-show="!showAdv">Show advanced options</span>
+      <span translate ng-show="showAdv">Hide advanced options</span>
+    </a>
 
-  <div class="card" ng-show="formData.showAdvanced">
-    <ion-checkbox ng-model="formData.noSignEnabled" class="checkbox-balanced" ng-change="noSignEnabledChange()">
+    <ion-checkbox ng-show="showAdv" ng-model="formData.noSignEnabled" class="checkbox-balanced" ng-change="noSignEnabledChange(); resizeView()">
       <span class="toggle-label" translate>Do not include private key</span>
     </ion-checkbox>
   </div>

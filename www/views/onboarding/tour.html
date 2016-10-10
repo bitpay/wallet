@@ -1,13 +1,10 @@
-<ion-view ng-controller="tourController" ng-init="init()" class="onboarding" id="onboarding-tour">
+<ion-view ng-controller="tourController" class="onboarding" id="onboarding-tour">
   <ion-nav-bar>
     <ion-nav-title></ion-nav-title>
     <ion-nav-buttons side="primary">
       <button class="button back-button button-clear" ng-click="goBack()">
         <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="secondary">
-      <button class="button back-button button-clear" ng-show="data.index == 0" ng-click="createDefaultWallet()">{{'Skip' | translate}}</button>
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-slides class="slides" options="options" slider="data.slider">

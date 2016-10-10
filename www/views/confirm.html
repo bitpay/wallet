@@ -45,13 +45,19 @@
       </div>
     </div>
 
-    <div class="text-center" ng-show="notAvailable">
-      <span class="badge badge-assertive" translate>No wallet with enough funds</span>
+    <div class="text-center" ng-show="noMatchingWallet">
+      <span class="badge badge-assertive" translate>No appropiate wallet to make this payment</span>
+    </div>
+
+
+
+    <div class="text-center" ng-show="insuffientFunds">
+      <span class="badge badge-assertive" translate>Insufficient funds</span>
     </div>
 
     <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
 
-    <div class="list card">
+    <div ng-show="wallets[0]" class="list card">
       <div class="item item-icon-left item-icon-right" ng-click="showDescriptionPopup()">
         <i class="icon ion-ios-chatbubble-outline size-21"></i>
         <span ng-show="!description" translate>Add description</span>
@@ -59,16 +65,15 @@
         <i ng-show="!description" class="icon ion-ios-plus-empty size-21"></i>
       </div>
     </div>
-
     <click-to-accept
       ng-click="approve(statusChangeHandler)"
-      ng-if="hasClick"
+      ng-if="hasClick && wallets[0]"
       click-send-status="sendStatus">
       Click to pay
     </click-to-accept>
   </ion-content>
   <slide-to-accept
-    ng-if="!hasClick"
+    ng-if="!hasClick && wallets[0]"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus">
     Slide to pay

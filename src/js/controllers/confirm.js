@@ -44,14 +44,20 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var networkName = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.network = networkName;
 
-    $scope.notAvailable = false;
+    $scope.insuffientFunds = false;
+    $scope.noMatchingWallet = false;
+
     var wallets = profileService.getWallets({
       onlyComplete: true,
       network: networkName,
     });
 
+    if (!wallets || !wallets.length) {
+      $scope.noMatchingWallet = true;
+    }
+
     var filteredWallets = [];
-    var index = 0;
+    var index = 0, enoughFunds = false;
 
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
@@ -59,15 +65,20 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           $log.error(err);
         } else {
           if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
-          if (status.availableBalanceSat > $scope.toAmount) filteredWallets.push(w);
+          if (status.availableBalanceSat > $scope.toAmount) {
+            filteredWallets.push(w);
+            enoughFunds = true;
+          }
         }
 
         if (++index == wallets.length) {
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
-            $scope.notAvailable = false;
           } else {
-            $scope.notAvailable = true;
+
+            if (!enoughFunds)
+              $scope.insuffientFunds = true;
+
             $log.warn('No wallet available to make the payment');
           }
         }
