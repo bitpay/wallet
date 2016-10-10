@@ -59,7 +59,13 @@
         <i ng-show="!description" class="icon ion-ios-plus-empty size-21"></i>
       </div>
     </div>
-    <button class="button button-block button-positive" ng-click="approve()" ng-if="hasClick" translate>Click to pay</button>
+
+    <click-to-accept
+      ng-click="approve(statusChangeHandler)"
+      ng-if="hasClick"
+      click-send-status="sendStatus">
+      Click to pay
+    </click-to-accept>
   </ion-content>
   <slide-to-accept
     ng-if="!hasClick"
