@@ -331,7 +331,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function statusChangeHandler(processName, showName, isOn) {
-    if(processName === 'broadcastingTx' && !isOn) {
+    console.log('in statusChangeHandler', processName, showName, isOn);
+    console.log('$scope.wallet', $scope.wallet);
+    if(
+      (processName === 'broadcastingTx' ||
+      ((processName === 'signingTx') && $scope.wallet.m > 1)) && !isOn) {
       $scope.sendStatus = 'success';
       $scope.$digest();
     } else if(showName) {

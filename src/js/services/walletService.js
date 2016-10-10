@@ -937,7 +937,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
         ongoingProcess.set('signingTx', true, customStatusHandler);
         root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
-          ongoingProcess.set('signingTx', false);
+          ongoingProcess.set('signingTx', false, customStatusHandler);
           root.invalidateCache(wallet);
 
 
