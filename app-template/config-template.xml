@@ -32,7 +32,6 @@
     <!-- Plugins -->
     <plugin name="cordova-plugin-device" spec="~1.1.3"/>
     <plugin name="cordova-plugin-globalization" spec="~1.0.4" />
-    <plugin name="cordova.plugins.diagnostic" spec="~3.2.1" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />
     <plugin name="cordova-plugin-statusbar" spec="~2.2.0" />
     <plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />
@@ -57,7 +56,9 @@
     <plugin name="cordova-plugin-customurlscheme" spec="~4.2.0">
       <variable name="URL_SCHEME" value="UNUSED" />
     </plugin>
-    <plugin name="phonegap-plugin-push" spec="1.8.2" />
+    <plugin name="phonegap-plugin-push" spec="~1.8.2">
+         <variable name="SENDER_ID" value="*PUSHSENDERID*"/>
+     </plugin>
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />

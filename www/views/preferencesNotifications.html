@@ -18,11 +18,8 @@
       <div ng-show="!PNEnabledByUser && isIOSApp">
         <div class="item item-divider" translate>Notifications</div>
         <div class="padding text-light" translate>
-          Push notifications for Copay are currently disabled. Enable them in the Settings app.
+          Push notifications for {{appName}} are currently disabled. Enable them in the Settings app.
         </div>
-        <a class="item" ng-click="openSettings()">
-          <span translate>Open Settings app</span>
-        </a>
       </div>
     </div>
   </ion-content>
