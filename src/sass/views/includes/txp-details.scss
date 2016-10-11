@@ -4,9 +4,8 @@
   $item-border-color: #EFEFEF;
   $item-label-color: #6C6C6E;
 
-  .wallet-color-header-bar {
-    border: 0;
-    background: none;
+  .list {
+    background: #f5f5f5;
   }
   .slide-to-pay {
     bottom: 100px;
@@ -122,6 +121,9 @@
     }
 
     .timeline-item {
+      border: 0;
+      padding: 17px $item-lateral-padding;
+      
       > * {
         padding-right: 0;
       }
@@ -130,6 +132,56 @@
     .timeline-content {
       display: flex;
       align-items: center;
+
+      &__icon {
+        display: flex;
+        align-items: center;
+        min-width: 40px;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        margin-right: .5rem;
+        position: relative;
+
+        &::before {
+          content: '';
+          background: #D2D2D2;
+          height: 100px;
+          width: 1px;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%) translateY(-100%);
+          top: 0;
+        }
+
+        &::after {
+          content: '';
+          background: #D2D2D2;
+          height: 100px;
+          width: 1px;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%) translateY(100%);
+          bottom: 0;
+        }
+
+        &::after {
+
+        }
+
+        > div {
+          border: 3px solid #09C286;
+          border-radius: 50%;
+          display: flex;
+          height: 26px;
+          width: 26px;
+          font-size: 13px;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          vertical-align: middle;
+          color: #09C286;
+        }
+      }
 
       &__label {
         flex-grow: 1;
