@@ -173,6 +173,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.hideHomeTip = function() {
       storageService.setHomeTipAccepted(false, function(error, value) {
         $scope.homeTip = false;
+        $timeout(function() {
+          $scope.$apply();
+        })
       });
     };
 
