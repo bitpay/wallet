@@ -92,6 +92,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   $scope.pushDigit = function(digit) {
     if ($scope.amount && $scope.amount.length >= LENGTH_EXPRESSION_LIMIT) return;
+    if ($scope.amount.indexOf('.') > -1 && digit == '.') return;
+    if($scope.showAlternativeAmount && $scope.amount.indexOf('.') > -1 && $scope.amount[$scope.amount.indexOf('.') + 2]) return;
 
     $scope.amount = ($scope.amount + digit).replace('..', '.');
     checkFontSize();

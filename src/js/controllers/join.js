@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -12,6 +12,26 @@ angular.module('copayApp.controllers').controller('joinController',
     $scope.derivationPath = derivationPathHelper.default;
     $scope.account = 1;
 
+    $scope.showAdvChange = function() {
+      $scope.showAdv = !$scope.showAdv;
+      $scope.resizeView();
+    };
+
+    $scope.resizeView = function() {
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      });
+      checkPasswordFields();
+    };
+
+    function checkPasswordFields() {
+      if (!$scope.encrypt) {
+        $scope.passphrase = $scope.createPassphrase = $scope.passwordSaved = null;
+        $timeout(function() {
+          $scope.$apply();
+        });
+      }
+    };
 
     this.onQrCodeScanned = function(data) {
       $scope.secret = data;
@@ -156,11 +176,10 @@ angular.module('copayApp.controllers').controller('joinController',
               $state.transitionTo('tabs.copayers', {
                 walletId: client.credentials.walletId
               });
-            }, 100);
-          }
-          else $state.go('tabs.home')
+            });
+          } else $state.go('tabs.home');
         });
-      }, 100);
+      });
     };
 
     updateSeedSourceSelect();
