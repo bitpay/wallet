@@ -59,6 +59,7 @@ angular.module('copayApp.controllers').controller('tourController',
             }
           }, 2000);
         };
+        ongoingProcess.set('creatingWallet', false);
         var wallet = walletClient;
         var walletId = wallet.credentials.walletId;
         if (!usePushNotifications) {
