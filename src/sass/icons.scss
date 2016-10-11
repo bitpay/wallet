@@ -14,6 +14,19 @@
   padding-left: 74px;
 }
 
+
+.icon-svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > img {
+    background-repeat:no-repeat;
+    background-clip: padding-box;
+    background-size: contain;
+    height: 18px;
+  }
+}
+
 .big-icon-svg {
   padding: 0 7px;
   > .bg {
