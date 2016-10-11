@@ -49,10 +49,21 @@
       border-color: $item-border-color;
       padding: $item-vertical-padding $item-lateral-padding;
 
-      &__label {
+      .label {
         font-size: 14px;
         color: $item-label-color;
         margin-bottom: 8px;
+      }
+
+      &.single-line {
+        display: flex;
+        align-items: center;
+        padding: 17px $item-lateral-padding;
+
+        .label {
+          margin: 0;
+          flex-grow: 1;
+        }
       }
     }
     .payment-proposal-to {
