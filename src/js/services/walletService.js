@@ -512,6 +512,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.editTxNote = function(wallet, args, cb) {
+    wallet.editTxNote(args, function(err, res) {
+      return cb(err, res);
+    });
+  };
+
   root.getTxp = function(wallet, txpid, cb) {
     wallet.getTx(txpid, function(err, txp) {
       if (err) return cb(err);
