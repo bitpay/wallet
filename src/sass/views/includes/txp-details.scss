@@ -1,35 +1,57 @@
-#txp-details{
+#txp-details {
+  $item-lateral-padding: 20px;
+  $item-vertical-padding: 10px;
+  $item-border-color: #EFEFEF;
+  $item-label-color: #6C6C6E;
+
+  .wallet-color-header-bar {
+    border: 0;
+    background: none;
+  }
   .slide-to-pay {
     bottom: 100px;
   }
   .head {
-    padding-bottom: 30px;
-    .sending-label{
-      line-height: 70px;
-      font-size: 25px;
-      i {
-        margin-left: 20px;
-      }
-      span {
-        margin-left: 15px;
+    padding: 30px $item-lateral-padding 4rem;
+    .sending-label {
+      display: flex;
+      font-size: 18px;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      img {
+        margin-right: 1rem;
       }
     }
     .amount-label{
-      margin-left: 20px;
       line-height: 30px;
       .amount{
-        font-size: 36px;
+        font-size: 38px;
+        margin-bottom: .5rem;
+
+        > .unit {
+          font-family: "Roboto-Light";
+        }
       }
-      .alternative{
-        font-size: 18px;
-        font-weight: 200;
-        color: grey;
+      .alternative {
+        font-size: 16px;
+        font-family: "Roboto-Light";
+        color: #9B9B9B;
       }
     }
   }
-  .info{
+  .info {
     span {
       display: block;
+    }
+    .item {
+      border-color: $item-border-color;
+      padding: $item-vertical-padding $item-lateral-padding;
+
+      &__label {
+        font-size: 14px;
+        color: $item-label-color;
+      }
     }
     .payment-proposal-to {
       width: 100%;
