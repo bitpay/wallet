@@ -4,6 +4,9 @@ $scannerBackgroundColor: #060d2d;
   color: #fff;
   text-align: center;
   background: transparent none;
+  .bar-header {
+    opacity: .9;
+  }
   &-has-problems,
   &-loading-camera {
     background-color: $scannerBackgroundColor;
@@ -50,7 +53,8 @@ $scannerBackgroundColor: #060d2d;
     }
   }
   &-loading-camera {
-
+    height: 100%;
+    width: 100%
   }
   &-camera-ready {
     // view background is transparent to show video preview

@@ -8,9 +8,8 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
   var backCamera = true; // the plugin defaults to the back camera
 
   // Initalize known capabilities
-  var isAvailable = false;
-  var hasPermission = isDesktop? true: false;
-  var isAuthorized = false;
+  var isAvailable = isDesktop? false: true; // assume camera exists on mobile
+  var hasPermission = isDesktop? true: false; // assume desktop has permission
   var isDenied = false;
   var isRestricted = false;
   var canEnableLight = false;
@@ -59,6 +58,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
     }
   }
 
+  var initializeStarted = false;
   /**
    * If camera access has been granted, pre-initialize the QRScanner. This method
    * can be safely called before the scanner is visible to improve perceived
@@ -67,27 +67,32 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
    * The `status` of QRScanner is returned to the callback.
    */
   this.gentleInitialize = function(callback) {
+    if(initializeStarted){
+      QRScanner.getStatus(function(status){
+        _completeInitialization(status, callback);
+      });
+      return;
+    }
+    initializeStarted = true;
     $log.debug('Trying to pre-initialize QRScanner.');
     if(!isDesktop){
       QRScanner.getStatus(function(status){
         _checkCapabilities(status);
         if(status.authorized){
           $log.debug('Camera permission already granted.');
-          _initalize(callback);
+          initialize(callback);
         } else {
           $log.debug('QRScanner not authorized, waiting to initalize.');
-          if(typeof callback === "function"){
-            callback && callback(status);
-          }
+          _completeInitialization(status, callback);
         }
       });
     } else {
       $log.debug('Camera permission assumed on desktop.');
-      _initalize(callback);
+      initialize(callback);
     }
   };
 
-  function _initalize(callback){
+  function initialize(callback){
     $log.debug('Initializing scanner...');
     QRScanner.prepare(function(err, status){
       if(err){
@@ -103,18 +108,24 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
       }
     });
   }
+  this.initialize = initialize;
 
   // This could be much cleaner with a Promise API
   // (needs a polyfill for some platforms)
   var initializeCompleted = false;
   function _completeInitialization(status, callback){
     _checkCapabilities(status);
-    $rootScope.$emit('scannerServiceInitialized');
     initializeCompleted = true;
-    callback && callback(status);
+    $rootScope.$emit('scannerServiceInitialized');
+    if(typeof callback === "function"){
+      callback(status);
+    }
   }
   this.isInitialized = function(){
     return initializeCompleted;
+  }
+  this.initializeStarted = function(){
+    return initializeStarted;
   }
 
   var nextHide = null;
@@ -132,7 +143,9 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
     $log.debug('Activating scanner...');
       QRScanner.show(function(status){
         _checkCapabilities(status);
-        callback(status);
+        if(typeof callback === "function"){
+          callback(status);
+        }
       });
       if(nextHide !== null){
         $timeout.cancel(nextHide);
@@ -183,6 +196,12 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
     QRScanner.destroy();
   }
 
+  this.reinitialize = function(callback){
+    initializeCompleted = false;
+    QRScanner.destroy();
+    initialize(callback);
+  }
+
   /**
    * Toggle the device light (if available).
    *
@@ -227,5 +246,10 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
       $log.debug('Camera toggled. Now using the ' + cameraToString(backCamera) + ' camera.');
       callback(status);
     });
+  };
+
+  this.openSettings = function() {
+    $log.debug('Attempting to open device settings...');
+    QRScanner.openSettings();
   };
 });
