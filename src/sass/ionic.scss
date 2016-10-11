@@ -27,3 +27,14 @@ ion-tabs.ion-tabs-transparent {
     }
   }
 }
+
+// .placeholder-icon padding cannot be modified by a variable
+$placeholder-icon-padding: 10px;
+.placeholder-icon {
+  &:first-child {
+    padding-right: $placeholder-icon-padding;
+  }
+  &:last-child {
+    padding-left: $placeholder-icon-padding;
+  }
+}
