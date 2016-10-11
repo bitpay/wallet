@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('backupWarningController', function($scope, $state, $timeout, $stateParams, $ionicModal) {
 
   $scope.walletId = $stateParams.walletId;
-  $scope.fromState = $stateParams.from;
+  $scope.fromState = $stateParams.from == 'onboarding' ? $stateParams.from + '.backupRequest' : $stateParams.from;
   $scope.toState = $scope.fromState + ".backup";
 
   $scope.openPopup = function() {
