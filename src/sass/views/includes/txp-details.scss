@@ -12,6 +12,8 @@
   }
   .head {
     padding: 30px $item-lateral-padding 4rem;
+    border-top: 0;
+
     .sending-label {
       display: flex;
       font-size: 18px;
@@ -122,8 +124,14 @@
 
     .timeline-item {
       border: 0;
+      &:nth-child(2) {
+        border-top: 1px solid $item-border-color;
+      }
+      &:last-child {
+        border-bottom: 1px solid $item-border-color;
+      }
       padding: 17px $item-lateral-padding;
-      
+
       > * {
         padding-right: 0;
       }
@@ -144,7 +152,7 @@
 
         &::before {
           content: '';
-          background: #D2D2D2;
+          background: #e8e8e8;
           height: 100px;
           width: 1px;
           position: absolute;
@@ -155,17 +163,13 @@
 
         &::after {
           content: '';
-          background: #D2D2D2;
+          background: #e8e8e8;
           height: 100px;
           width: 1px;
           position: absolute;
           left: 50%;
           transform: translateX(-50%) translateY(100%);
           bottom: 0;
-        }
-
-        &::after {
-
         }
 
         > div {
