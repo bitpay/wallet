@@ -6,7 +6,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var CONTACTS_SHOW_LIMIT;
   var currentContactsPage;
 
-  $scope.hasFunds = false;
 
   var updateList = function() {
     CONTACTS_SHOW_LIMIT = 10;
@@ -105,11 +104,56 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
+
+  var updateHasFunds = function() {
+    $scope.hasFunds = null;
+
+    var wallets = profileService.getWallets({
+      onlyComplete: true,
+    });
+
+    if (!wallets || !wallets.length) {
+      $scope.hasFunds = false;
+    }
+
+    var index = 0;
+    lodash.each(wallets, function(w) {
+      walletService.getStatus(w, {}, function(err, status) {
+        ++index;
+        if (err || !status) {
+          $log.error(err);
+          return;
+        }
+
+        if (status.availableBalanceSat) {
+          $scope.hasFunds = true;
+        }
+        if (index == wallets.length) {
+          $scope.hasFunds = $scope.hasFunds || false;
+        }
+      });
+    });
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.formData = {
       search: null
     };
     updateList();
+    updateHasFunds();
   });
+
+  // This could probably be enhanced refactoring the routes abstract states
+  $scope.createWallet = function() {
+    $state.go('tabs.home').then(function() {
+      $state.go('tabs.add.create-personal');
+    });
+  };
+
+  $scope.buyBitcoin = function() {
+    $state.go('tabs.home').then(function() {
+      $state.go('tabs.buyandsell.glidera');
+    });
+  };
 
 });
