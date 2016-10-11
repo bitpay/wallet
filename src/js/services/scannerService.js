@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').service('scannerService', function($log, $timeout, platformInfo) {
+angular.module('copayApp.services').service('scannerService', function($log, $timeout, platformInfo, $rootScope) {
 
   var isDesktop = !platformInfo.isCordova;
   var QRScanner = window.QRScanner;
@@ -8,21 +8,40 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
   var backCamera = true; // the plugin defaults to the back camera
 
   // Initalize known capabilities
+  var isAvailable = false;
   var hasPermission = isDesktop? true: false;
+  var isAuthorized = false;
+  var isDenied = false;
+  var isRestricted = false;
   var canEnableLight = false;
   var canChangeCamera = false;
+  var canOpenSettings = false;
 
   function _checkCapabilities(status){
     $log.debug('scannerService is reviewing platform capabilities...');
     // Permission can be assumed on the desktop builds
     hasPermission = (isDesktop || status.authorized)? true: false;
+    isDenied = status.denied? true : false;
+    isRestricted = status.restricted? true : false;
     canEnableLight = status.canEnableLight? true : false;
     canChangeCamera = status.canChangeCamera? true : false;
-    function orIsNot(bool){
+    canOpenSettings = status.canOpenSettings? true : false;
+    _logCapabilities();
+  }
+
+  function _logCapabilities(){
+    function _orIsNot(bool){
       return bool? '' : 'not ';
     }
-    $log.debug('A light is ' + orIsNot(canEnableLight) + 'available on this platform.');
-    $log.debug('A second camera is ' + orIsNot(canChangeCamera) + 'available on this platform.');
+    $log.debug('A camera is ' + _orIsNot(isAvailable) + 'available to this app.');
+    var access = 'not authorized';
+    if(hasPermission) access = 'authorized';
+    if(isDenied) access = 'denied';
+    if(isRestricted) access = 'restricted';
+    $log.debug('Camera access is ' + access + '.');
+    $log.debug('Support for opening device settings is ' + _orIsNot(canOpenSettings) + 'available on this platform.');
+    $log.debug('A light is ' + _orIsNot(canEnableLight) + 'available on this platform.');
+    $log.debug('A second camera is ' + _orIsNot(canChangeCamera) + 'available on this platform.');
   }
 
   /**
@@ -30,9 +49,13 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
    */
   this.getCapabilities = function(){
     return {
+      isAvailable: isAvailable,
       hasPermission: hasPermission,
+      isDenied: isDenied,
+      isRestricted: isRestricted,
       canEnableLight: canEnableLight,
-      canChangeCamera: canChangeCamera
+      canChangeCamera: canChangeCamera,
+      canOpenSettings: canOpenSettings
     }
   }
 
@@ -50,7 +73,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
         _checkCapabilities(status);
         if(status.authorized){
           $log.debug('Camera permission already granted.');
-          _initalize();
+          _initalize(callback);
         } else {
           $log.debug('QRScanner not authorized, waiting to initalize.');
           if(typeof callback === "function"){
@@ -60,23 +83,43 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
       });
     } else {
       $log.debug('Camera permission assumed on desktop.');
-      _initalize();
-    }
-    function _initalize(){
-      $log.debug('Preparing scanner...');
-      QRScanner.prepare(function(err, status){
-        if(err){
-          $log.error(err);
-        }
-        _checkCapabilities(status);
-        callback && callback(status);
-      });
+      _initalize(callback);
     }
   };
 
+  function _initalize(callback){
+    $log.debug('Initializing scanner...');
+    QRScanner.prepare(function(err, status){
+      if(err){
+        $log.error(err);
+        // does not return `status` if there is an error
+        QRScanner.getStatus(function(status){
+          _completeInitialization(status, callback);
+
+        });
+      } else {
+        isAvailable = true;
+        _completeInitialization(status, callback);
+      }
+    });
+  }
+
+  // This could be much cleaner with a Promise API
+  // (needs a polyfill for some platforms)
+  var initializeCompleted = false;
+  function _completeInitialization(status, callback){
+    _checkCapabilities(status);
+    $rootScope.$emit('scannerServiceInitialized');
+    initializeCompleted = true;
+    callback && callback(status);
+  }
+  this.isInitialized = function(){
+    return initializeCompleted;
+  }
+
   var nextHide = null;
   var nextDestroy = null;
-  var hideAfterSeconds = 15;
+  var hideAfterSeconds = 10;
   var destroyAfterSeconds = 5 * 60;
 
   /**
@@ -121,7 +164,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
    */
   this.deactivate = function(callback) {
     $log.debug('Deactivating scanner...');
-    QRScanner.cancelScan();
+    // QRScanner.cancelScan();
     nextHide = $timeout(_hide, hideAfterSeconds * 1000);
     nextDestroy = $timeout(_destroy, destroyAfterSeconds * 1000);
   };
