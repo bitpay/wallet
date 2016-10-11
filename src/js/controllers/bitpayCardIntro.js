@@ -42,31 +42,22 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
                   disableAnimate: true
                 });
                 $state.go('tabs.home');
+                if (data.cards[0]) {
+                  $timeout(function() {
+                    $state.transitionTo('tabs.bitpayCard', {id: data.cards[0].id});
+                  }, 100);
+                }
               });
             }
           });
         });
       });
     } else {
-      // TEST TODO
-      bitpayCardService.testSession(function(err, session) {
+      bitpayCardService.getCredentials(function(err, credentials) {
         if (err) popupService.showAlert(null, err);
+        else $log.info('BitPay Debit Card Credentials: Ok.');
       });
     }
-
-    /*
-    storageService.getNextStep('BitpayCard', function(err, value) {
-      if (value)  {
-        $ionicHistory.nextViewOptions({
-          disableAnimate: true
-        });
-        $state.go('tabs.home');
-        $timeout(function() {
-          $state.transitionTo('tabs.bitpayCard');
-        }, 100);
-      }
-    });
-    */
   });
 
   $scope.orderBitPayCard = function() {

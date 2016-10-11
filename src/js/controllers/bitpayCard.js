@@ -4,9 +4,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   var self = this;
   $scope.dateRange = 'last30Days';
-  bitpayCardService.getEnvironment(function(err, network) {
-    $scope.network = network;
-  });
+  $scope.network = bitpayCardService.getEnvironment();
 
   var getFromCache = function(cb) {
     bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {
@@ -49,8 +47,8 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     $scope.loadingHistory = true;
     bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
       $scope.loadingHistory = false;
-      if (err || history.error) {
-        $log.error(err || history.error);
+      if (err) {
+        $log.error(err);
         $scope.error = gettextCatalog.getString('Could not get transactions');
         return;
       }
