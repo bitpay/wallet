@@ -4,6 +4,12 @@
   </ion-nav-bar>
 
   <ion-content class="padding">
+    <ion-refresher
+     ng-if="isCordova"
+     pulling-icon="ion-ios-refresh"
+     spinner="ios-small"
+     on-refresh="onRefresh()">
+   </ion-refresher>
     <div class="list card homeTip" ng-if="homeTip">
       <div class="item item-icon-right item-heading">
         <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
