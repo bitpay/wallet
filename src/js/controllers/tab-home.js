@@ -11,12 +11,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.version = $window.version;
     $scope.name = $window.appConfig.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
+    $scope.isCordova = platformInfo.isCordova;
 
-    if(!$scope.homeTip){
-       storageService.getHomeTipAccepted(function(error, value){
-         $scope.homeTip = (value == 'false') ? false : true;
-       });
-     }
+    if (!$scope.homeTip) {
+      storageService.getHomeTipAccepted(function(error, value) {
+        $scope.homeTip = (value == 'false') ? false : true;
+      });
+    }
 
     $scope.openNotificationModal = function(n) {
       wallet = profileService.getWallet(n.walletId);
@@ -170,7 +171,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.hideHomeTip = function() {
-      storageService.setHomeTipAccepted(false, function(error, value){
+      storageService.setHomeTipAccepted(false, function(error, value) {
         $scope.homeTip = false;
       });
     };
@@ -199,6 +200,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         if (err ||  lodash.isEmpty(data)) return;
         $scope.bitpayCard = data;
       });
+    };
+
+    $scope.onRefresh = function() {
+      $scope.$broadcast('scroll.refreshComplete');
+      updateAllWallets();
     };
 
     $scope.$on("$ionicView.enter", function(event, data) {
