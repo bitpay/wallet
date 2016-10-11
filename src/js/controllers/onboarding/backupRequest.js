@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('backupRequestController', function($scope, $state, $stateParams, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('backupRequestController', function($scope, $state, $stateParams, $ionicConfig, popupService, gettextCatalog) {
 
+  $ionicConfig.views.swipeBackEnabled(false);
   $scope.walletId = $stateParams.walletId;
 
   $scope.openPopup = function() {
@@ -18,7 +19,10 @@ angular.module('copayApp.controllers').controller('backupRequestController', fun
         var cancelText = gettextCatalog.getString('Go back');
         popupService.showConfirm(title, message, okText, cancelText, function(val) {
           if (val) {
-            $state.go('onboarding.disclaimer', {walletId: $scope.walletId, backedUp: false});
+            $state.go('onboarding.disclaimer', {
+              walletId: $scope.walletId,
+              backedUp: false
+            });
           }
         });
       }

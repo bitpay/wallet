@@ -1,10 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('notificationsController', function($scope, $state, $timeout, $stateParams, profileService, configService) {
+angular.module('copayApp.controllers').controller('notificationsController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService) {
 
-  $scope.$on("$ionicView.enter", function(event, data) {
-    $scope.walletId = data.stateParams.walletId;
-  });
+  $ionicConfig.views.swipeBackEnabled(false);
+  $scope.walletId = $stateParams.walletId;
 
   $scope.allowNotif = function() {
     $timeout(function() {
