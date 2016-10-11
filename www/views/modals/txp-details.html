@@ -1,5 +1,5 @@
 <ion-modal-view id="txp-details" ng-controller="txpDetailsController" ng-init="init()">
-  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color': wallet.color}">
+  <ion-header-bar align-title="center" class="bar-royal wallet-color-header-bar" ng-style="{'background-color': wallet.color}">
     <button class="button button-clear" ng-click="close()">
       Close
     </button>
@@ -15,11 +15,12 @@
     <div class="list">
       <div class="item head">
         <div class="sending-label">
-          <i class="icon ion-arrow-up-c"></i>
+          <!-- <i class="icon ion-arrow-up-c"></i> -->
+          <img src="img/sending-icon.svg">
           <span translate>Sending</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{tx.amountStr}}</div>
+          <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
           <div class="alternative" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
         </div>
 
@@ -50,7 +51,7 @@
 
       <div class="info">
         <div class="item">
-          <span translate>To</span>
+          <span class="item__label" translate>To</span>
           <span class="payment-proposal-to" copy-to-clipboard="tx.toAddress">
             <i class="icon ion-social-bitcoin"></i>
             <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>
@@ -71,7 +72,7 @@
         </div>
 
         <div class="item">
-          {{'From'|translate}}
+          <span class="item__label" translate>From</span>
           <span class="item-note">
             <i class="icon big-icon-svg right">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -80,7 +81,7 @@
           </span>
         </div>
         <div class="item">
-          {{'Created by'|translate}}
+          <span class="item__label" translate>Created by</span>
           <span class="item-note">
             {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
           </span>
@@ -92,7 +93,7 @@
           </span>
         </div>
         <div class="item">
-          {{'Fee'|translate}}
+          <span class="item__label" translate>Fee</span>
           <span class="item-note">
             {{tx.feeStr}}
           </span>
