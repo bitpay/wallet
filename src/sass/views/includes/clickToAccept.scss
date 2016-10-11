@@ -1,0 +1,40 @@
+click-to-accept {
+
+  .click-to-accept {
+    &__status-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 4;
+      text-transform: capitalize;
+      transform: translateY(2rem);
+      opacity: 0;
+
+      &.enter {
+        transition: transform 250ms ease, opacity 250ms ease;
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      > img {
+        margin-right: 10px;
+        animation-name: spin;
+        animation-duration: 500ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+    }
+
+  }
+
+  @keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+  }
+}

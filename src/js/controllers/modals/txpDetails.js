@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, walletService, popupService) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, walletService, popupService, $state, $ionicHistory) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
     $scope.color = $scope.wallet.color;
     $scope.data = {};
-
+    $scope.hasClick = platformInfo.hasClick;
     initActionList();
     checkPaypro();
   }
@@ -66,17 +66,18 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   }
 
   var setSendError = function(msg) {
+    $scope.sendStatus = '';
     var error = msg || gettextCatalog.getString('Could not send payment');
     popupService.showAlert(gettextCatalog.getString('Error'), error);
   }
 
-  $scope.sign = function() {
+  $scope.sign = function(onSendStatusChange) {
     $scope.loading = true;
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
       $scope.$emit('UpdateTx');
       if (err) return setSendError(err);
-      $scope.close();
-    });
+      success();
+    }, onSendStatusChange);
   };
 
   function setError(err, prefix) {
@@ -211,6 +212,31 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         }
       });
     });
+  };
+
+  function statusChangeHandler(processName, showName, isOn) {
+    $log.debug('statusChangeHandler: ', processName, showName, isOn);
+    if (showName) {
+      $scope.sendStatus = showName;
+    }
+  }
+
+  function success() {
+    $scope.sendStatus = 'success';
+    $scope.$digest();
+  }
+
+  $scope.statusChangeHandler = statusChangeHandler;
+
+  $scope.onConfirm = function() {
+    $scope.sign(statusChangeHandler);
+  };
+
+  $scope.onSuccessConfirm = function() {
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true
+    });
+    $scope.close();
   };
 
   $scope.close = function() {

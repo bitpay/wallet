@@ -65,7 +65,25 @@
         <i ng-show="!description" class="icon ion-ios-plus-empty size-21"></i>
       </div>
     </div>
-    <button  ng-show="wallets[0]"  class="button button-block button-positive" ng-click="approve()" ng-if="!isCordova" translate>Click to pay</button>
+    <click-to-accept
+      ng-click="approve(statusChangeHandler)"
+      ng-if="hasClick && wallets[0]"
+      click-send-status="sendStatus">
+      Click to pay
+    </click-to-accept>
   </ion-content>
-  <accept class="accept-slide" ng-if="isCordova"></accept>
+  <slide-to-accept
+    ng-if="!hasClick && wallets[0]"
+    slide-on-confirm="onConfirm()"
+    slide-send-status="sendStatus">
+    Slide to pay
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="onSuccessConfirm()"
+    slide-success-hide-on-confirm="true"
+    >
+    <span ng-hide="wallet.m > 1">Payment Sent</span>
+    <span ng-show="wallet.m > 1">Proposal Created</span>
+  </slide-to-accept-success>
 </ion-view>
