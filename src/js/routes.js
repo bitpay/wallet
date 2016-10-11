@@ -979,7 +979,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             }
             else {
               $log.debug('Display disclaimer... redirecting');
-              $state.go('onboarding.disclaimer');
+              $state.go('onboarding.disclaimer', {
+                resume: true
+              });
             }
           } else {
             throw new Error(err); // TODO
