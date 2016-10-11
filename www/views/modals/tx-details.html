@@ -56,7 +56,7 @@
 
     <div class="list">
       <div class="item item-icon-left" ng-show="btx.action == 'sent'">
-        <i class="icon ion-social-bitcoin-outline"></i>
+        <i class="icon icon-svg"><img src="img/icon-bitcoin-symbol.svg"></i>
         <div ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" copy-to-clipboard="btx.addressTo">
           <span ng-if="btx.merchant">
             <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
