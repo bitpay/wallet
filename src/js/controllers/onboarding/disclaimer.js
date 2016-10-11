@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
     $scope.terms = {};
     $scope.accept1 = $scope.accept2 = $scope.accept3 = false;
     $scope.backedUp = $stateParams.backedUp;
+    $scope.resume = $stateParams.resume;
     $timeout(function() {
       $scope.$apply();
     }, 1);
@@ -35,8 +36,10 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
     });
   };
 
-  $scope.goBack = function(){
-    $state.go('onboarding.backupRequest', {walletId: $stateParams.walletId});
+  $scope.goBack = function() {
+    $state.go('onboarding.backupRequest', {
+      walletId: $stateParams.walletId
+    });
   }
 
 
