@@ -12,7 +12,7 @@
     </button>
   </ion-header-bar>
 
-  <ion-content ng-init="updateCopayerList()" ng-class="{'slide-to-pay': tx.pendingForUs && canSign && isCordova}">
+  <ion-content ng-init="updateCopayerList()" ng-class="{'slide-to-pay': tx.pendingForUs && canSign && !hasClick}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
