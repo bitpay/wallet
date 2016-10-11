@@ -51,7 +51,7 @@
 
       <div class="info">
         <div class="item">
-          <span class="item__label" translate>To</span>
+          <span class="label" translate>To</span>
           <span class="payment-proposal-to" copy-to-clipboard="tx.toAddress">
             <img src="img/icon-bitcoin-small.svg">
             <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>
@@ -72,7 +72,7 @@
         </div>
 
         <div class="item">
-          <span class="item__label" translate>From</span>
+          <span class="label" translate>From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -80,8 +80,8 @@
             <div>{{wallet.name}}</div>
           </div>
         </div>
-        <div class="item">
-          <span class="item__label" translate>Created by</span>
+        <div class="item single-line">
+          <span class="label" translate>Created by</span>
           <span class="item-note">
             {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
           </span>
@@ -92,8 +92,8 @@
             {{tx.message}}
           </span>
         </div>
-        <div class="item">
-          <span class="item__label" translate>Fee</span>
+        <div class="item single-line">
+          <span class="label" translate>Fee</span>
           <span class="item-note">
             {{tx.feeStr}}
           </span>
