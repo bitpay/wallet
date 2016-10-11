@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, walletService, popupService, $state, $ionicHistory) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, walletService, popupService, $state, $ionicHistory) {
   var self = $scope.self;
   var tx = $scope.tx;
   var copayers = $scope.copayers;
@@ -215,9 +215,8 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   function statusChangeHandler(processName, showName, isOn) {
-    console.log('in statusChangeHandler', processName, showName, isOn);
-    console.log('$scope.wallet', $scope.wallet);
-    if(showName) {
+    $log.debug('statusChangeHandler: ', processName, showName, isOn);
+    if (showName) {
       $scope.sendStatus = showName;
     }
   }
