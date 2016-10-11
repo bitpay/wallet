@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, profileService, configService, walletService, platformInfo) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, walletService, platformInfo) {
 
+  $ionicConfig.views.swipeBackEnabled(false);
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
   var usePushNotifications = isCordova && !isWP;
