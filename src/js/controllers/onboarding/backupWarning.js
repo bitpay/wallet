@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
 
   $scope.walletId = $stateParams.walletId;
   $scope.fromState = $stateParams.from == 'onboarding' ? $stateParams.from + '.backupRequest' : $stateParams.from;
-  $scope.toState = $scope.fromState + ".backup";
+  $scope.toState = $stateParams.from + '.backup';
 
   $scope.openPopup = function() {
     $ionicModal.fromTemplateUrl('views/includes/screenshotWarningModal.html', {
