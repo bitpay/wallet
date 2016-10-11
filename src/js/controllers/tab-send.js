@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var CONTACTS_SHOW_LIMIT;
   var currentContactsPage;
 
+  $scope.hasFunds = false;
+
   var updateList = function() {
     CONTACTS_SHOW_LIMIT = 10;
     currentContactsPage = 0;
