@@ -689,7 +689,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('onboarding.disclaimer', {
-        url: '/disclaimer/:walletId/:backedUp',
+        url: '/disclaimer/:walletId/:backedUp/:resume',
         views: {
           'onboarding': {
             templateUrl: 'views/onboarding/disclaimer.html'
@@ -840,13 +840,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      /*
-       *
-       * BitPay Card
-       *
-       */
+    /*
+     *
+     * BitPay Card
+     *
+     */
 
-      .state('tabs.bitpayCard', {
+    .state('tabs.bitpayCard', {
         url: '/bitpay-card',
         views: {
           'tab-home@tabs': {
@@ -973,21 +973,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             $log.debug('No profile... redirecting');
             $state.go('onboarding.welcome');
           } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
-            $log.debug('Display disclaimer... redirecting');
-            storageService.getLastState(function(err, state) {
-              if (err && !state) {
-                $log.error(err);
-                $state.go('onboarding.disclaimer');
-              }
-              else {
-                var state = JSON.parse(state);
-                $state.go(state.name, state.toParams);
-              }
-            })
+            if (lodash.isEmpty(profileService.getWallets())) {
+              $log.debug('No wallets and no disclaimer... redirecting');
+              $state.go('onboarding.welcome');
+            }
+            else {
+              $log.debug('Display disclaimer... redirecting');
+              $state.go('onboarding.disclaimer', {
+                resume: true
+              });
+            }
           } else {
             throw new Error(err); // TODO
           }
-        } else {
+        }
+        else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
           scannerService.gentleInitialize();
@@ -1014,11 +1014,5 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
-
-      if (!toState.name.match(/onboarding/)) return;
-      var state = {};
-      state.name = toState.name;
-      state.toParams = toParams;
-      if (state.name != 'starting') storageService.setLastState(JSON.stringify(state), function() {});
     });
   });
