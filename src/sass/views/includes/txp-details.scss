@@ -41,13 +41,15 @@
       }
     }
   }
+  .item {
+    border-color: $item-border-color;
+  }
   .info {
     span {
       display: block;
     }
     .item {
       color: #4A4A4A;
-      border-color: $item-border-color;
       padding: $item-vertical-padding $item-lateral-padding;
 
       .label {
