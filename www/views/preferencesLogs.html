@@ -5,11 +5,11 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <button class="button button-block button-positive" copy-to-clipboard="prepare()">
+    <button class="button button-standard button-primary" style="margin-top: 1rem" copy-to-clipboard="prepare()">
       <i class="icon ion-clipboard"></i>
       <span translate>Copy to clipboard</span>
     </button>
-    <button class="button button-block button-positive" ng-show="isCordova" ng-click="sendLogs()">
+    <button class="button button-standard button-secondary" ng-show="isCordova" ng-click="sendLogs()">
       <i class="icon ion-ios-email-outline"></i>
       <span translate>Send by email</span>
     </button>
