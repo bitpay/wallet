@@ -182,7 +182,7 @@
       Click to accept
     </click-to-accept>
     <div class="m30t text-center" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
-      <div class="size-12 padding" ng-show="!tx.isGlidera && isShared" translate>
+      <div class="size-12 padding proposal-deletion-help" ng-show="!tx.isGlidera && isShared" translate>
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
       </div>
       <button class="button button-assertive button-clear" ng-click="remove()" ng-disabled="loading">
