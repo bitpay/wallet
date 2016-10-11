@@ -57,7 +57,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     var filteredWallets = [];
-    var index = 0, enoughFunds = false;
+    var index = 0;
+    var enoughFunds = false;
 
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
@@ -311,6 +312,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
             if (!ok) {
               $scope.sendStatus = '';
+              $timeout(function() {
+                $scope.$apply();
+              });
               return;
             }
             publishAndSign(wallet, txp, onSendStatusChange);
@@ -331,14 +335,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function statusChangeHandler(processName, showName, isOn) {
-    console.log('in statusChangeHandler', processName, showName, isOn);
-    console.log('$scope.wallet', $scope.wallet);
-    if(
-      (processName === 'broadcastingTx' ||
-      ((processName === 'signingTx') && $scope.wallet.m > 1)) && !isOn) {
+    $log.debug('statusChangeHandler: ', processName, showName, isOn);
+    if ((processName === 'broadcastingTx' || ((processName === 'signingTx') && $scope.wallet.m > 1)) && !isOn) {
       $scope.sendStatus = 'success';
       $scope.$digest();
-    } else if(showName) {
+    } else if (showName) {
       $scope.sendStatus = showName;
     }
   }
