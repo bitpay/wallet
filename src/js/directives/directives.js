@@ -162,23 +162,4 @@ angular.module('copayApp.directives')
         });
       }
     }
-  })
-  .directive('accept', function() {
-    return {
-      restrict: 'E',
-      templateUrl: 'views/includes/acceptSlide.html',
-      scope: {},
-      link: function(scope, element, attrs) {
-        scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
-          scope.slider = data.slider;
-        });
-
-        scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-          if (data.slider.activeIndex == 0) {
-            scope.slider.slideNext();
-            scope.$emit('accepted');
-          }
-        });
-      }
-    }
   });

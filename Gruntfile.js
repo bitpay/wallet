@@ -127,6 +127,7 @@ module.exports = function(grunt) {
           'bower_components/angular-clipboard/angular-clipboard.js',
           'bower_components/angular-md5/angular-md5.js',
           'bower_components/angular-mocks/angular-mocks.js',
+          'bower_components/ngtouch/src/ngTouch.js',
           'angular-pbkdf2/angular-pbkdf2.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
@@ -147,6 +148,7 @@ module.exports = function(grunt) {
           'src/js/init.js',
           'src/js/trezor-url.js',
           'bower_components/trezor-connect/login.js',
+          'node_modules/bezier-easing/dist/bezier-easing.min.js',
           'node_modules/cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js'
         ],
         dest: 'www/js/copay.js'

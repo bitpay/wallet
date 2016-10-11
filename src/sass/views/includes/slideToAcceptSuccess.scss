@@ -1,0 +1,96 @@
+slide-to-accept-success {
+  $slider-bg-color: #5063B9;
+  $success-bg-color: #11D1A6;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .slide-success {
+    $duration: 400ms;
+    &__background {
+      $start-radius: 5;
+      $scale-factor: 20;
+      height: 10vmax;
+      width: 10vmax;
+      background: $slider-bg-color;
+      bottom: 0;
+      position: absolute;
+      left: calc(50% - 5vmax);
+      border-radius: 50%;
+      transition: transform $duration*1.5 ease, background $duration*1.5 ease;
+
+      &.fill-screen {
+        transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
+        background: $success-bg-color;
+      }
+    }
+
+    &__content {
+      position: relative;
+      z-index: 1;
+      margin-top: -20vh;
+
+      > img {
+        margin-bottom: 1.8rem;
+        transform: translateY(5rem);
+        opacity: 0;
+        transition: transform $duration ease, opacity $duration ease;
+        transition-delay: 200ms;
+
+        &.reveal {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      &__header {
+        color: #FFFFFF;
+        font-size: 26px;
+        transform: translateY(5rem);
+        opacity: 0;
+        transition: transform $duration ease, opacity $duration ease;
+        transition-delay: 250ms;
+
+        &.reveal {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    }
+
+    &__footer {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 0 1.75rem;
+      width: 100%;
+      transform: translateY(5rem);
+      opacity: 0;
+      transition: transform $duration ease, opacity $duration ease;
+      transition-delay: 250ms;
+
+      &.reveal {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      &__btn {
+        display: block;
+        color: #FFFFFF;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 2.86px;
+        padding: 1rem 0 1.1rem;
+        border-top: 1px solid rgba(255, 255, 255, .45);
+        cursor: pointer;
+      }
+    }
+  }
+}

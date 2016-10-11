@@ -7,6 +7,7 @@ var modules = [
   'ionic',
   'ionic-toast',
   'angular-clipboard',
+  'ngTouch',
   'ngLodash',
   'ngCsv',
   'angular-md5',

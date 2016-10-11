@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
+
+  $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWallet = data.stateParams.isWallet;
@@ -30,6 +32,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       throw ('bad params');
     }
     $scope.isCordova = platformInfo.isCordova;
+    $scope.hasClick = platformInfo.hasClick;
     $scope.data = {};
 
     var config = configService.getSync().wallet;
@@ -54,7 +57,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     var filteredWallets = [];
-    var index = 0, enoughFunds = false;
+    var index = 0;
+    var enoughFunds = false;
 
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
@@ -198,6 +202,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   var setSendError = function(msg) {
+    $scope.sendStatus = '';
     popupService.showAlert(gettextCatalog.getString('Error at confirm:'), msg);
   };
 
@@ -205,7 +210,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.fee = txFormatService.formatAmountStr(txp.fee);
     $scope.txp = txp;
     $scope.$apply();
-  };
+  }
 
   var createTx = function(wallet, dryRun, cb) {
     var config = configService.getSync().wallet;
@@ -270,7 +275,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  $scope.approve = function() {
+  $scope.approve = function(onSendStatusChange) {
     var wallet = $scope.wallet;
     if (!wallet) {
       return setSendError(gettextCatalog.getString('No wallet selected'));
@@ -284,9 +289,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (err) return setSendError(err);
       });
     }
-    ongoingProcess.set('creatingTx', true);
+
+    ongoingProcess.set('creatingTx', true, onSendStatusChange);
     createTx(wallet, false, function(err, txp) {
-      ongoingProcess.set('creatingTx', false);
+      ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;
 
       var config = configService.getSync();
@@ -304,24 +310,57 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (!spendingPassEnabled && !touchIdEnabled) {
         if (isCordova && bigAmount) {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-            if (!ok) return;
-            publishAndSign(wallet, txp);
+            if (!ok) {
+              $scope.sendStatus = '';
+              $timeout(function() {
+                $scope.$apply();
+              });
+              return;
+            }
+            publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
         else {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-            if (!ok) return;
-            publishAndSign(wallet, txp);
+            if (!ok) {
+              $scope.sendStatus = '';
+              return;
+            }
+            publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
       }
-      else publishAndSign(wallet, txp);
+      else publishAndSign(wallet, txp, onSendStatusChange);
     });
   };
 
-  function publishAndSign(wallet, txp) {
+  function statusChangeHandler(processName, showName, isOn) {
+    $log.debug('statusChangeHandler: ', processName, showName, isOn);
+    if ((processName === 'broadcastingTx' || ((processName === 'signingTx') && $scope.wallet.m > 1)) && !isOn) {
+      $scope.sendStatus = 'success';
+      $scope.$digest();
+    } else if (showName) {
+      $scope.sendStatus = showName;
+    }
+  }
+
+  $scope.statusChangeHandler = statusChangeHandler;
+
+  $scope.onConfirm = function() {
+    $scope.approve(statusChangeHandler);
+  };
+
+  $scope.onSuccessConfirm = function() {
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true
+    });
+    $scope.sendStatus = '';
+    $state.go('tabs.send');
+  };
+
+  function publishAndSign(wallet, txp, onSendStatusChange) {
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
-    });
-  };
+    }, onSendStatusChange);
+  }
 });

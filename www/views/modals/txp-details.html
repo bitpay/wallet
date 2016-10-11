@@ -149,11 +149,13 @@
         </div>
       </div>
     </div>
-    <button class="button button-block button-positive"
-            ng-click="sign()"
-            ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && !isCordova" translate>
+
+    <click-to-accept
+      ng-click="onConfirm(statusChangeHandler)"
+      ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
+      click-send-status="sendStatus">
       Click to accept
-    </button>
+    </click-to-accept>
     <div class="m30t text-center" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="size-12 padding" ng-show="!tx.isGlidera && isShared" translate>
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
@@ -164,5 +166,17 @@
       </button>
     </div>
   </ion-content>
-  <accept class="accept-slide" ng-if="tx.pendingForUs && canSign && !loading && !paymentExpired && isCordova"></accept>
+
+  <slide-to-accept
+    ng-if="tx.pendingForUs && canSign && !paymentExpired && !hasClick"
+    slide-on-confirm="onConfirm()"
+    slide-send-status="sendStatus">
+    Slide to accept
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="onSuccessConfirm()"
+    >
+    Payment Sent
+  </slide-to-accept-success>
 </ion-modal-view>
