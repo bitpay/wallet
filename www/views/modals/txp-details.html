@@ -1,7 +1,8 @@
 <ion-modal-view id="txp-details" ng-controller="txpDetailsController" ng-init="init()">
-  <ion-header-bar align-title="center" class="bar-royal wallet-color-header-bar" ng-style="{'background-color': wallet.color}">
+  <ion-header-bar align-title="center" class="bar-royal">
     <button class="button button-clear" ng-click="close()">
       Close
+      <!-- <i class="icon ion-ios-arrow-thin-left"></i> -->
     </button>
     <div class="title" translate>
       Payment Proposal
@@ -131,17 +132,19 @@
         <div ng-if="actionList[0]">
           <div class="item item-divider" translate>Timeline</div>
 
-          <div class="item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
+          <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
             <div class="row">
               <div class="col col-10">
-                <span id="timeline-icon">{{$index + 1}}</span>
+                <span class="timeline-icon">{{$index + 1}}</span>
               </div>
-              <div class="col">
-                <div>{{a.description}}</div>
+              <div class="col timeline-content">
+                <div class="timeline-content__label">
+                  <div class="action">{{a.description}}</div>
+                  <div class="name">{{a.by}}</div>
+                </div>
                 <div>
-                  <span>{{a.by}}</span>
                   <span class="item-note">
-                    <time>{{ a.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+                    <time>{{ a.time * 1000 | amDateFormat:'HH:mm a'}}</time>
                   </span>
                 </div>
               </div>

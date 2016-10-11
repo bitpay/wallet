@@ -66,12 +66,18 @@
         }
       }
     }
+    .item-divider {
+      padding-top: 1.2rem;
+      color: $item-label-color;
+      font-size: 15px;
+    }
     .payment-proposal-to {
       width: 100%;
       display: inline-block;
       padding: 8px 13px;
       background-color: rgba(203, 203, 203, .13);
       margin-top: 10px;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
       border-radius: 4px;
@@ -112,6 +118,30 @@
         padding: 2px;
         margin-right: .7rem;
         box-shadow: none;
+      }
+    }
+
+    .timeline-item {
+      > * {
+        padding-right: 0;
+      }
+    }
+
+    .timeline-content {
+      display: flex;
+      align-items: center;
+
+      &__label {
+        flex-grow: 1;
+
+        > .action {
+          font-size: 16px;
+        }
+
+        > .name {
+          color: #aaa;
+          font-size: 14px;
+        }
       }
     }
   }
