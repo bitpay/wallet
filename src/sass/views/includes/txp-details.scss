@@ -184,6 +184,14 @@
           font-weight: 600;
           vertical-align: middle;
           color: #09C286;
+
+          &.rejected {
+            background: #E15061;
+            border-color: #E15061;
+            color: #FFFFFF;
+            font-family: "Roboto-Bold";
+            font-size: 19px;
+          }
         }
       }
 

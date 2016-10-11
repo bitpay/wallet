@@ -84,7 +84,7 @@
         <div class="item single-line">
           <span class="label" translate>Created by</span>
           <span class="item-note">
-            {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+            {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
           </span>
         </div>
         <div class="item" ng-show="tx.message">
@@ -131,45 +131,22 @@
         </div>
         <div ng-if="actionList[0]">
           <div class="item item-divider" translate>Timeline</div>
-
-          <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
-            <!-- <div class="row">
-              <div class="col col-10 timeline-icon">
-                <div>{{$index + 1}}</div>
+          <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList | orderBy: 'time' track by $index">
+            <div class="timeline-content">
+              <div class="timeline-content__icon">
+                <div class="rejected" ng-if="a.type === 'reject'">!</div>
+                <div ng-if="a.type !== 'reject'">{{$index + 1}}</div>
               </div>
-              <div class="col timeline-content">
-                <div class="timeline-content__label">
-                  <div class="action">{{a.description}}</div>
-                  <div class="name">{{a.by}}</div>
-                </div>
-                <div>
-                  <span class="item-note">
-                    <time>{{ a.time * 1000 | amDateFormat:'HH:mm a'}}</time>
-                  </span>
-                </div>
+              <div class="timeline-content__label">
+                <div class="action">{{a.description}}</div>
+                <div class="name">{{a.by}}</div>
               </div>
-            </div> -->
-
-            <!-- <div class="row">
-              <div class="col col-10 timeline-icon">
-                <div>{{$index + 1}}</div>
-              </div> -->
-              <div class="timeline-content">
-                <div class="timeline-content__icon">
-                  <div>{{$index + 1}}</div>
-                </div>
-                <div class="timeline-content__label">
-                  <div class="action">{{a.description}}</div>
-                  <div class="name">{{a.by}}</div>
-                </div>
-                <div>
-                  <span class="item-note">
-                    <time>{{ a.time * 1000 | amDateFormat:'HH:mm a'}}</time>
-                  </span>
-                </div>
+              <div>
+                <span class="item-note">
+                  <time>{{ a.time * 1000 | amDateFormat:'hh:mm a'}}</time>
+                </span>
               </div>
-            <!-- </div> -->
-
+            </div>
           </div>
         </div>
       </div>
