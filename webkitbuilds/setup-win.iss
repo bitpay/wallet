@@ -8,7 +8,7 @@
 #define MyAppExeName "*PACKAGENAME.exe"
 
 [Setup]
-AppId={{804636ee-b017-4cad-8719-e58ac97ffa5c}
+AppId={804636ee-b017-4cad-8719-e58ac97ffa5c}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
