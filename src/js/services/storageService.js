@@ -199,9 +199,9 @@ angular.module('copayApp.services')
       storage.get('homeTip', cb);
     };
 
-   root.setHomeTipAccepted = function(val, cb) {
-     storage.set('homeTip', val, cb);
-   };
+    root.setHomeTipAccepted = function(val, cb) {
+      storage.set('homeTip', val, cb);
+    };
 
     root.setHideBalanceFlag = function(walletId, val, cb) {
       storage.set('hideBalance-' + walletId, val, cb);
@@ -282,14 +282,6 @@ angular.module('copayApp.services')
 
     root.removeNextStep = function(service, cb) {
       storage.remove('nextStep-' + service, cb);
-    };
-
-    root.setLastState = function(state, toParams, cb) {
-      storage.set('lastState', state, toParams, cb);
-    };
-
-    root.getLastState = function(cb) {
-      storage.get('lastState', cb);
     };
 
     root.checkQuota = function() {

@@ -9,8 +9,9 @@
   </ion-nav-bar>
   <ion-content scroll="false" ng-class="{'has-header': backedUp == 'false'}">
     <div id="onboarding-disclaimer-container">
-      <div class="onboarding-topic" id="disclaimer-topic">Almost done! Let's review.</div>
-      <div class="onboarding-description" id="disclaimer-description">Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</div>
+      <div ng-show="resume" class="onboarding-topic" id="disclaimer-topic" translate>Quick review!</div>
+      <div ng-show="!resume" class="onboarding-topic" id="disclaimer-topic" translate>Almost done! Let's review.</div>
+      <div class="onboarding-description" id="disclaimer-description" translate>Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</div>
       <ion-list>
         <ion-checkbox ng-model="accept1">
           <span translate>I understand that my funds are held securely on this device, not by a company.</span>
