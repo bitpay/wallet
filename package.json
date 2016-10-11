@@ -3,7 +3,7 @@
   "//":"        Modify it at app-template/", 
 
   "name": "bitpay",
-  "description": "Secure Bitcoin Storage",
+  "description": "Secure Bitcoin Wallet",
   "author": "BitPay",
   "version": "0.14.0",
   "keywords": [
