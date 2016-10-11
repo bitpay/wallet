@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('welcomeController', function($scope, $state, $timeout, $log, profileService) {
+angular.module('copayApp.controllers').controller('welcomeController', function($scope, $state, $timeout, $ionicConfig, $log, profileService) {
+
+  $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.goImport = function(code) {
     $state.go('onboarding.import', {

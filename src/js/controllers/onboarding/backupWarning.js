@@ -2,6 +2,10 @@
 
 angular.module('copayApp.controllers').controller('backupWarningController', function($scope, $state, $timeout, $stateParams, $ionicModal) {
 
+  $scope.walletId = $stateParams.walletId;
+  $scope.fromState = $stateParams.from == 'onboarding' ? $stateParams.from + '.backupRequest' : $stateParams.from;
+  $scope.toState = $stateParams.from + '.backup';
+
   $scope.openPopup = function() {
     $ionicModal.fromTemplateUrl('views/includes/screenshotWarningModal.html', {
       scope: $scope,
@@ -15,24 +19,15 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
     $scope.close = function() {
       $scope.warningModal.hide();
       $scope.warningModal.remove();
-
-      $timeout(function() {
-        if ($stateParams.from == 'onboarding.backupRequest') {
-          $state.go('onboarding.backup', {
-            walletId: $stateParams.walletId
-          });
-        } else {
-          $state.go($stateParams.from + '.backup', {
-            walletId: $stateParams.walletId
-          });
-        }
+      $state.go($scope.toState, {
+        walletId: $scope.walletId
       });
     };
   }
 
   $scope.goBack = function() {
-    $state.go($stateParams.from, {
-      walletId: $stateParams.walletId
+    $state.go($scope.fromState, {
+      walletId: $scope.walletId
     });
   };
 

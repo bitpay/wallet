@@ -116,7 +116,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     popupService.showPrompt(null, message, opts, function(res) {
-      if (res) $scope.description = res;
+      if (typeof res != 'undefined') $scope.description = res;
       $timeout(function() {
         $scope.$apply();
       }, 100);

@@ -56,7 +56,7 @@
 
     <div class="list">
       <div class="item item-icon-left" ng-show="btx.action == 'sent'">
-        <i class="icon ion-social-bitcoin-outline"></i>
+        <i class="icon icon-svg"><img src="img/icon-bitcoin-symbol.svg"></i>
         <div ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" copy-to-clipboard="btx.addressTo">
           <span ng-if="btx.merchant">
             <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
@@ -90,7 +90,7 @@
         </div>
       </div>
 
-      <div class="item" ng-if="btx.action != 'received' && btx.feeLevel" copy-to-clipboard="btx.feeStr">
+      <div class="item" ng-if="btx.action != 'received' && btx.feeStr" copy-to-clipboard="btx.feeStr">
         {{'Fee'|translate}}: {{btx.feeStr}}
         <span class="item-note">
           <span class="text-warning" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
@@ -102,7 +102,7 @@
           <span class="label gray radius" ng-show="btx.safeConfirmed">
             {{btx.safeConfirmed}}
           </span>
-          <span translate>Confirmations</span>
+          <span ng-show="btx.confirmations && btx.confirmations > 0" translate>Confirmations</span>
         </span>
       </div>
 
