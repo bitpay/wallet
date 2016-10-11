@@ -14,14 +14,14 @@
   "main": "www/index.html",
   "window": {
     "title": "*USERVISIBLENAME* - *PURPOSELINE*",
-    "icon": "./www/img/icons/icon-256.png",
+    "icon": "www/img/icon-128.png",
     "toolbar": false,
     "show": true,
     "visible": true,
     "resizable": true,
     "frame": true,
     "width": 400,
-    "height": 600,
+    "height": 650,
     "position": "center",
     "fullscreen": false
   },
@@ -32,14 +32,14 @@
   },
   "dom_storage_quota": 200,
   "id": "jid1-x7bV5evAaI1P9Q",
-  "homepage": "https://github.com/bitpay/copay",
+  "homepage": "*URL*",
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/bitpay/copay.git",
+    "url": "*GITHUBREPOURL*",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/bitpay/copay/issues"
+    "url": "*GITHUBREPOBUGS*"
   },
   "dependencies": {
     "adm-zip": "^0.4.7",
@@ -82,22 +82,41 @@
     "load-grunt-tasks": "^3.5.0",
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.7",
-    "shelljs": "^0.3.0",
-    "xcode": "^0.8.2"
+    "shelljs": "^0.3.0"
   },
   "scripts": {
-    "preinstall": "bower install && npm i fs-extra",
-    "build": "grunt",
-    "apply:copay": "cd app-template && node apply.js",
-    "apply:bitpay-wallet": "cd app-template && node apply.js bitpay-wallet",
-    "start": "npm run build && node app.js",
-    "watch": "grunt watch",
-    "test": "./node_modules/.bin/grunt test-coveralls",
-    "clean": "git clean -dfx",
-    "start:ios": "npm run build && cd cordova && trash project-ios && make ios && open project-ios/platforms/ios/BitPay\\ Wallet.xcodeproj",
-    "start:android": "npm run build && cd cordova && trash project-android && make android && open -a /Applications/Android\\ Studio.app project-android/platforms/android"
+    "preinstall":             "bower install && npm i fs-extra",
+    "postinstall":            "npm run apply:bitpay && cordova prepare",
+    "start":                  "npm run build:www && ionic serve --nolivereload --nogulp -s",
+    "start:ios":              "npm run build:www && npm run build:ios && npm run open:ios",
+    "start:android":          "npm run build:www && npm run build:android && npm run run:android",
+    "watch":                  "grunt watch",
+    "build:www":              "grunt",
+    "build:www-release":      "grunt prod",
+    "build:ios":              "cordova prepare ios && cordova build ios --debug",
+    "build:android":          "cordova prepare android && cordova build android --debug",
+    "build:ios-release":      "cordova prepare ios && cordova build ios --release",
+    "build:android-release":  "cordova prepare android && cordova build android --release",
+    "open:ios":               "open platforms/ios/*.xcodeproj",
+    "open:android":           "open -a open -a /Applications/Android\\ Studio.app platforms/android",
+    "final:www":              "npm run clean-all && npm run build:www-release",
+    "final:ios":              "npm run final:www && npm run build:ios-release && npm run open:ios",
+    "final:android":          "npm run final:www && npm run build:android-release && npm run run:android",
+    "run:android":            "cordova run android --device",
+    "log:android":            "adb logcat | grep chromium",
+    "apply:copay":            "cd app-template && node apply.js copay",
+    "apply:bitpay":           "cd app-template && node apply.js bitpay",
+    "test":                   "./node_modules/.bin/grunt test-coveralls",
+    "clean":                  "trash platforms && trash plugins && npm run postinstall",
+    "clean-all":              "git clean -dfx && npm install"
   },
   "devDependencies": {
-    "trash-cli": "^1.4.0"
+    "androidmanifest": "^2.0.0",
+    "cordova": "^5.4.1",
+    "globby": "^6.0.0",
+    "ionic": "^2.1.0",
+    "plist": "^2.0.1",
+    "trash-cli": "^1.4.0",
+    "xcode": "^0.8.2"
   }
 }
