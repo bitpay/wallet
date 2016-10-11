@@ -143,4 +143,17 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     updateHasFunds();
   });
 
+  // This could probably be enhanced refactoring the routes abstract states
+  $scope.createWallet = function() {
+    $state.go('tabs.home').then(function() {
+      $state.go('tabs.add.create-personal');
+    });
+  };
+
+  $scope.buyBitcoin = function() {
+    $state.go('tabs.home').then(function() {
+      $state.go('tabs.buyandsell.glidera');
+    });
+  };
+
 });
