@@ -1,5 +1,15 @@
 #tab-send {
+  .zero-state-cta {
+    padding-bottom: 3vh;
+  }
+  .send-heading {
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 0;
+  }
   .bitcoin-address {
+    border-top: none;
+    padding-bottom: .5rem;
     @media(max-width: 480px) {
       input {
         font-size: 12px;
