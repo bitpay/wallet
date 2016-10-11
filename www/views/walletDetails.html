@@ -124,7 +124,7 @@
       </div>
 
       <div class="card list" ng-show="txHistory[0]">
-        <div class="item" ng-repeat="btx in txHistory track by btx.txid" ng-click="openTxModal(btx)">
+        <div class="item" ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
           <span class="item-note text-right">
             <span class="size-16"  ng-class="{'text-bold': btx.recent}">
               <span ng-if="btx.action == 'received'">+</span>
