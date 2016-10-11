@@ -6,12 +6,13 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
   /*************** Ionic ****************/
 
-  var _ionicAlert = function(title, message, cb) {
+  var _ionicAlert = function(title, message, cb, buttonName) {
     if (!cb) cb = function() {};
     $ionicPopup.alert({
       title: title,
       subTitle: message,
-      okType: 'button-clear button-positive'
+      okType: 'button-clear button-positive',
+      okText: buttonName || gettextCatalog.getString('OK'),
     }).then(cb);
   };
 
@@ -43,9 +44,9 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
   /*************** Cordova ****************/
 
-  var _cordovaAlert = function(title, message, cb) {
+  var _cordovaAlert = function(title, message, cb, buttonName) {
     if (!cb) cb = function() {};
-    navigator.notification.alert(message, cb, title);
+    navigator.notification.alert(message, cb, title, buttonName);
   };
 
   var _cordovaConfirm = function(title, message, okText, cancelText, cb) {
@@ -74,14 +75,14 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
    * @param {Callback} Function (optional)
    */
 
-  this.showAlert = function(title, msg, cb) {
+  this.showAlert = function(title, msg, cb, buttonName) {
     var message = (msg && msg.message) ? msg.message : msg;
     $log.warn(title + ": " + message);
 
     if (isCordova)
-      _cordovaAlert(title, message, cb);
+      _cordovaAlert(title, message, cb, buttonName);
     else
-      _ionicAlert(title, message, cb);
+      _ionicAlert(title, message, cb, buttonName);
   };
 
   /**
