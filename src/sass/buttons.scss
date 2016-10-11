@@ -38,6 +38,9 @@ $button-secondary-active-border:   transparent;
   &.button-secondary {
     &.button-standard {
       @extend %button-standard;
+      & + .button-standard {
+        margin-top: 1rem;
+      }
     }
   }
 }

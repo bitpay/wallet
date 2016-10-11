@@ -7,50 +7,12 @@ $scannerBackgroundColor: #060d2d;
   .bar-header {
     opacity: .9;
   }
+  .zero-state-cta {
+    padding-bottom: 6vh;
+  }
   &-has-problems,
   &-loading-camera {
     background-color: $scannerBackgroundColor;
-  }
-  &-has-problems {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    .zero-state {
-      &-icon {
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        padding: 13px;
-        box-shadow: $subtle-box-shadow;
-        background-color: #fff;
-      }
-      &-heading {
-        font-size: 20px;
-        margin: 1rem;
-      }
-      &-description {
-        margin: 0 2rem 120px;
-        opacity: .6;
-        max-width: 300px;
-      }
-      &-tldr {
-        margin: 1rem auto;
-      }
-      &-description,
-      &-tldr {
-        max-width: 300px;
-      }
-      &-cta {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        padding-bottom: 6vh;
-      }
-    }
   }
   &-loading-camera {
     height: 100%;
