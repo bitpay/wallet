@@ -1,22 +1,45 @@
 <ion-view id="tab-scan">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Scan' | translate}}</ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear ng-hide" ng-click="goBack()" ng-show="canGoBack()">
+        <i class="icon ion-ios-close-empty"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <div class="guides">
-      <img class="qr-scan-guides" src="img/bitpay-wallet-qr-scan-guides.svg">
+    <div class="ng-hide" id="tab-scan-has-problems" ng-show="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
+      <i class="icon zero-state-icon">
+        <img src="img/tab-icons/ico-receive.svg" />
+      </i>
+      <div class="zero-state-heading" translate>Scan QR Codes</div>
+      <div class="zero-state-description" translate>You can scan bitcoin addresses, payment requests, paper wallets, and more.</div>
+      <div class="zero-state-cta">
+        <div class="ng-hide zero-state-tldr" ng-show="currentState === scannerStates.unauthorized" translate>Enable the camera to get started.</div>
+        <div class="ng-hide zero-state-tldr" ng-show="currentState === scannerStates.denied" translate>Enable camera access in your device settings to get started.</div>
+        <div class="ng-hide zero-state-tldr" ng-show="currentState === scannerStates.unavailable" translate>Please connect a camera to get started.</div>
+        <button ng-show="currentState === scannerStates.unauthorized" class="ng-hide button button-standard button-primary" ng-click="attemptActivate">Allow Camera Access</button>
+        <button ng-show="currentState === scannerStates.denied && canOpenSettings" class="ng-hide button button-standard button-primary" ng-click="openSettings">Open Settings</button>
+        <button ng-show="currentState === scannerStates.unavailable" class="ng-hide button button-standard button-primary">Retry Camera</button>
+      </div>
     </div>
-    <div class="scanner-controls">
-      <a ng-click="toggleLight()" ng-show="canEnableLight">
-        <i class="icon">
-          <div class="icon-flash" ng-class="{'active': lightActive}"></div>
-        </i>
-      </a>
-      <a ng-click="toggleCamera()" ng-show="canChangeCamera">
-        <i class="icon">
-          <div class="icon-camera-toggle" ng-class="{'active': cameraToggleActive}"></div>
-        </i>
-      </a>
+    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading"></div>
+    <div class="ng-hide" id="tab-scan-camera-ready" ng-show="currentState === scannerStates.visible">
+      <div class="guides">
+        <img class="qr-scan-guides" src="img/bitpay-wallet-qr-scan-guides.svg">
+      </div>
+      <div class="scanner-controls">
+        <a ng-click="toggleLight()" ng-show="canEnableLight">
+          <i class="icon">
+            <div class="icon-flash" ng-class="{'active': lightActive}"></div>
+          </i>
+        </a>
+        <a ng-click="toggleCamera()" ng-show="canChangeCamera">
+          <i class="icon">
+            <div class="icon-camera-toggle" ng-class="{'active': cameraToggleActive}"></div>
+          </i>
+        </a>
+      </div>
     </div>
   </ion-content>
 </ion-view>
