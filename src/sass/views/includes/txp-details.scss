@@ -122,6 +122,10 @@
       padding: .2rem 0;
       margin-bottom: 5px;
 
+      ~ .bp-arrow-right {
+        top: 14px;
+      }
+
       > i {
         padding: 0;
         position: static;
