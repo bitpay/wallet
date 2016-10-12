@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($http, $log, $window, lodash, storageService, bitauthService, platformInfo) {
+angular.module('copayApp.services').factory('bitpayCardService', function($http, $log, lodash, storageService, bitauthService, platformInfo) {
   var root = {};
   var BITPAY_CARD_NETWORK = 'livenet';
   var BITPAY_CARD_API_URL = BITPAY_CARD_NETWORK == 'livenet' ? 'https://bitpay.com' : 'https://test.bitpay.com';

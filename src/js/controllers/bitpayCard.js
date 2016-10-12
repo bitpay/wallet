@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, configService, profileService, walletService, ongoingProcess, moment, popupService, gettextCatalog, bwcError, $ionicHistory) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory) {
 
   var self = this;
   $scope.dateRange = 'last30Days';

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $timeout, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService) {
+angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService) {
 
   var checkOtp = function(obj, cb) {
     if (obj.otp) {
@@ -41,12 +41,11 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
                 $ionicHistory.nextViewOptions({
                   disableAnimate: true
                 });
-                $state.go('tabs.home');
-                if (data.cards[0]) {
-                  $timeout(function() {
+                $state.go('tabs.home').then(function() {
+                  if (data.cards[0]) {
                     $state.transitionTo('tabs.bitpayCard', {id: data.cards[0].id});
-                  }, 100);
-                }
+                  }
+                });
               });
             }
           });

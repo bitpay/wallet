@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore, lodash) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, bitcore, lodash) {
 
   var root = {};
 
@@ -45,10 +45,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
-      $state.go('tabs.send');
-      $timeout(function() {
+      $state.go('tabs.send').then(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
-      }, 100);
+      });
       return true;
     }
 
@@ -63,8 +62,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
       var amount = parsed.amount ?  parsed.amount : '';
 
-      $state.go('tabs.send');
-      $timeout(function() {
+      $state.go('tabs.send').then(function() {
         if (parsed.r) {
           $state.transitionTo('tabs.send.confirm', {paypro: parsed.r});
         } else {
@@ -74,31 +72,28 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
             $state.transitionTo('tabs.send.amount', {toAddress: addr});
           }
         }
-      }, 100);
+      });
       return true;
 
     // Plain URL
     } else if (/^https?:\/\//.test(data)) {
       var currentState = $state.current.name;
       if (lodash.indexOf(ignoreState, currentState) != -1) return false;
-      $state.go('tabs.send');
-      $timeout(function() {
+      $state.go('tabs.send').then(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
-      }, 100);
+      });
       return true;
 
     // Plain Address
     } else if (bitcore.Address.isValid(data, 'livenet')) {
-      $state.go('tabs.send');
-      $timeout(function() {
+      $state.go('tabs.send').then(function() {
         $state.transitionTo('tabs.send.amount', {toAddress: data});
-      }, 100);
+      });
       return true;
     } else if (bitcore.Address.isValid(data, 'testnet')) {
-      $state.go('tabs.send');
-      $timeout(function() {
+      $state.go('tabs.send').then(function() {
         $state.transitionTo('tabs.send.amount', {toAddress: data});
-      }, 100);
+      });
       return true;
 
     // Protocol
@@ -112,30 +107,27 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
-      $state.go('tabs.home');
-      $timeout(function() {
+      $state.go('tabs.home').then(function() {
         $state.transitionTo('tabs.bitpayCardIntro', {
           secret: secret,
           email: email,
           otp: otp
         });
-      }, 100);
+      });
       return true;
 
     // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home');
-      $timeout(function() {
+      $state.go('tabs.home').then(function() {
         $state.transitionTo('tabs.add.join', {url: data});
-      }, 100);
+      });
       return true;
 
     // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home');
-      $timeout(function() {
+      $state.go('tabs.home').then(function() {
         $state.transitionTo('tabs.add.join', {url: data});
-      }, 100);
+      });
       return true;
     }
 
