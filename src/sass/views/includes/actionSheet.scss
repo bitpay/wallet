@@ -7,8 +7,8 @@ action-sheet {
       width: 100%;
       position: fixed;
       bottom: 0;
-      left: 0;
-      transform: translateY(100%);
+      left: 50%;
+      transform: translateY(100%) translateX(-50%);
       transition: transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
       z-index: 100;
       padding-top: 1.75rem;
@@ -16,9 +16,10 @@ action-sheet {
       padding-right: .75rem;
       color: #2f2f2f;
       padding-bottom: 3.5rem;
+      max-width: 550px;
 
       &.slide-up {
-        transform: translateY(0);
+        transform: translateY(0) translateX(-50%);
         box-shadow: 0px 2px 13px 3px rgba(0, 0, 0, .3);
       }
 
