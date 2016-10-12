@@ -7,7 +7,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-class="{'slide-to-pay': !hasClick}">
+  <ion-content ng-class="{'slide-to-pay': !hasClick && !insuffientFunds}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
