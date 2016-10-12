@@ -17,7 +17,7 @@
           BitPay Invoice ID: {{buy.errorInfo.invoiceId}}.
         </div>
         <div class="text-center">
-          <a ng-click="openExternalLink(buy.errorInfo.invoiceUrl)">Open invoice</a>
+          <a ng-click="openExternalLink(buy.errorInfo.invoiceUrl, 'Amazon invoice error')">Open invoice</a>
         </div>
       </div>
 
@@ -88,7 +88,7 @@
         <div class="size-12 p15h">
           Thank you for participating in the BitPay offer. It is our pleasure to send
           you this Amazon.com Gift Card* that can be redeemed towards millions of items at
-          <a ng-click="openExternalLink('https://www.amazon.com')">www.amazon.com</a>.
+          <a ng-click="openExternalLink('https://www.amazon.com', 'Amazon')">www.amazon.com</a>.
           You may want to print this screen for easy reference later you will need the gift card claim code below.
         </div>
 
@@ -105,19 +105,19 @@
           </div>
           <div class="m10t">
             <button class="button button-positive"
-                    ng-click="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.claimCode, '_system')">
+                    ng-click="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + buy.giftCard.claimCode, 'Amazon gift card redemtion')">
               Redeem Now
             </button>
           </div>
           <div class="m10t text-center">
-            <a class="button button-clear button-calm" ng-click="openExternalLink(buy.giftCard.invoiceUrl)">See invoice</a>
+            <a class="button button-clear button-calm" ng-click="openExternalLink(buy.giftCard.invoiceUrl, 'this Amazon gift card redemtion')">See invoice</a>
           </div>
         </div>
         <div class="oh m20t p15h size-12">
           To redeem your gift card, follow these steps:
 
           <ol class="m10t size-12">
-            <li>1. Visit <a ng-click="openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>
+            <li>1. Visit <a ng-click="openExternalLink('https://www.amazon.com/gc', 'Amazon gift card information')">www.amazon.com/gc</a>
             <li>2. Click Apply to Account and enter the Claim Code when prompted.
             <li>3. Gift card funds will be applied automatically to eligible orders during the checkout process.
             <li>4. You must pay for any remaining balance on your order with another payment method.
@@ -130,7 +130,7 @@
 
           <p class="size-12">
           If you have questions about redeeming your gift card, please visit
-          <a ng-click="openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>.
+          <a ng-click="openExternalLink('https://www.amazon.com/gc-redeem', 'Amazon git card hel & support')">www.amazon.com/gc-redeem</a>.
           If you have questions regarding the BitPay Introductory offer, please contact BitPay.
           </p>
 
@@ -139,14 +139,14 @@
     </div>
 
     <div class="size-12 white p15 m20t">
-      * <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion.
-      Except as required by law, <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>
+      * <a ng-click="openExternalLink('http://amazon.com', 'Amazon')">Amazon.com</a> is not a sponsor of this promotion.
+      Except as required by law, <a ng-click="openExternalLink('http://amazon.com', 'Amazon')">Amazon.com</a>
       Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of
-      eligible goods at <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its
+      eligible goods at <a ng-click="openExternalLink('http://amazon.com', 'Amazon')">Amazon.com</a> or certain of its
       affiliated websites. For complete terms and conditions, see
-      <a ng-click="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>.
+      <a ng-click="openExternalLink('https://www.amazon.com/gc-legal', 'Amazon')">www.amazon.com/gc-legal</a>.
       GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP
-      of <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates.
+      of <a ng-click="openExternalLink('http://amazon.com', 'Amazon')">Amazon.com</a>, Inc. or its affiliates.
       No expiration date or service fees.
     </div>
 
