@@ -79,8 +79,25 @@
     <span ng-hide="wallet.m > 1">Payment Sent</span>
     <span ng-show="wallet.m > 1">Proposal Created</span>
   </slide-to-accept-success>
-  <action-sheet action-sheet-show="showWallets">
-
+  <action-sheet action-sheet-show="showWallets" class="wallet-selector">
+    <!-- <div ng-repeat="wallet in wallets">{{wallet.name}}</div> -->
+    <a ng-repeat="wallet in wallets track by $index" class="item item-icon-left item-big-icon-left item-icon-right wallet" ng-click="openWallet(wallet)">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
+        </i>
+        <div class="wallet-details">
+          <span>
+            {{wallet.name}}
+          </span>
+          <p>
+            <span ng-if="wallet.isComplete()">
+            <span ng-if="!wallet.balanceHidden" class="ng-binding">0.00 BTC</span>
+          </span>
+          &nbsp;
+          </p>
+        </div>
+        <!-- <i class="icon bp-arrow-right"></i> -->
+      </a>
   </action-sheet>
 </ion-view>
 <!-- <ion-view id="view-confirm">
