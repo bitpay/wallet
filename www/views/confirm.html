@@ -29,7 +29,7 @@
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
           </span>
         </div>
-        <div class="item">
+        <a class="item item-icon-right">
           <span class="label" translate>From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
@@ -37,19 +37,22 @@
             </i>
             <div>{{wallet.name}}</div>
           </div>
-        </div>
-        <div class="item single-line">
-          <span class="label" translate>{{'Memo'|translate}}</span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <a class="item single-line item-icon-right">
+          <span class="label" translate>{{'Add Memo'|translate}}</span>
           <span class="item-note">
             {{description}}
           </span>
-        </div>
-        <div class="item single-line">
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <a class="item single-line item-icon-right">
           <span class="label" translate>Fee</span>
           <span class="item-note">
             {{fee}}
           </span>
-        </div>
+          <i class="icon bp-arrow-right"></i>
+        </a>
       </div>
     </div>
   </ion-content>

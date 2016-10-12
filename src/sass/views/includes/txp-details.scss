@@ -51,7 +51,13 @@
     }
     .item {
       color: #4A4A4A;
-      padding: $item-vertical-padding $item-lateral-padding;
+      padding-top: $item-vertical-padding;
+      padding-bottom: $item-vertical-padding;
+      padding-left: $item-lateral-padding;
+
+      &:not(.item-icon-right) {
+        padding-right: $item-lateral-padding;
+      }
 
       .label {
         font-size: 14px;
@@ -62,7 +68,8 @@
       &.single-line {
         display: flex;
         align-items: center;
-        padding: 17px $item-lateral-padding;
+        padding-top: 17px;
+        padding-bottom: 17px;
 
         .label {
           margin: 0;
@@ -113,15 +120,19 @@
       display: flex;
       align-items: center;
       padding: .2rem 0;
-      i {
+      margin-bottom: 5px;
+
+      > i {
         padding: 0;
-      }
-      img {
-        height: 24px;
-        width: 24px;
-        padding: 2px;
-        margin-right: .7rem;
-        box-shadow: none;
+        position: static;
+
+        > img {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+          margin-right: .7rem;
+          box-shadow: none;
+        }
       }
     }
 
