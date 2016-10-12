@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').service('externalLinkService', function($window, $timeout, platformInfo, nodeWebkitService) {
+angular.module('copayApp.services').service('externalLinkService', function($window, $timeout, $log, platformInfo, nodeWebkitService) {
 
   this.open = function(url, target) {
     var old = $window.handleOpenURL;
