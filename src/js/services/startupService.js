@@ -6,7 +6,7 @@ angular.module('copayApp.services').service('startupService', function($log, $ti
   var statusBarVisible = false;
 
   function _hideSplash(){
-    if(navigator.splashscreen && splashscreenVisible){
+    if(typeof navigator.splashscreen !== "undefined" && splashscreenVisible){
       $log.debug('startupService is hiding the splashscreen...');
       $timeout(function(){
         navigator.splashscreen.hide();
@@ -15,7 +15,7 @@ angular.module('copayApp.services').service('startupService', function($log, $ti
     }
   }
   function _showStatusBar(){
-    if(StatusBar && !statusBarVisible){
+    if(typeof StatusBar !== "undefined" && !statusBarVisible){
       $log.debug('startupService is showing the StatusBar...');
       StatusBar.show();
       statusBarVisible = true;
