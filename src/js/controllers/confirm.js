@@ -297,7 +297,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
       var config = configService.getSync();
       var spendingPassEnabled = walletService.isEncrypted(wallet);
-      var touchIdEnabled = config.touchIdFor && !config.touchIdFor[wallet.id];
+      var touchIdEnabled = config.touchIdFor && config.touchIdFor[wallet.id];
       var isCordova = $scope.isCordova;
       var bigAmount = parseFloat(txFormatService.formatToUSD(txp.amount)) > 20;
       var message = gettextCatalog.getString('Sending {{amountStr}} from your {{name}} wallet', {
