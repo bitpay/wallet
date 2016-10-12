@@ -16,11 +16,6 @@
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="HideKeyboardFormAccessoryBar" value="true"/>
-    <preference name="SplashScreen" value="copayscreen" />
-    <preference name="ShowSplashScreenSpinner" value="false" />
-    <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="FadeSplashScreen" value="true" />
-    <preference name="FadeSplashScreenDuration" value="1" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarBackgroundColor" value="#1e3186" />
@@ -28,6 +23,13 @@
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="8.1"/>
     <preference name="Orientation" value="default" />
+    <preference name="cordova-custom-config-stoponerror" value="true" />
+
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreenDuration" value="100" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
 
     <!-- Plugins -->
     <plugin name="cordova-plugin-device" spec="~1.1.3"/>
@@ -57,8 +59,9 @@
       <variable name="URL_SCHEME" value="UNUSED" />
     </plugin>
     <plugin name="phonegap-plugin-push" spec="~1.8.2">
-         <variable name="SENDER_ID" value="*PUSHSENDERID*"/>
-     </plugin>
+      <variable name="SENDER_ID" value="*PUSHSENDERID*"/>
+    </plugin>
+    <plugin name="cordova-custom-config" spec="~3.0.5" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
@@ -67,9 +70,8 @@
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
-      <!-- <hook type="after_prepare" src="util/hooks/ios/add-custom-urls-to-plist.js" />
-      <hook type="after_prepare" src="util/hooks/ios/add-uistatusbarhidden-to-plist.js" /> -->
-
+      <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
+      <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance"><false/></config-file>
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@3x.png" width="180" height="180" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60.png" width="60" height="60" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@2x.png" width="120" height="120" />
@@ -87,7 +89,6 @@
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-50.png" width="50" height="50" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-50@2x.png" width="100" height="100" />
 
-
       <splash src="resources/*PACKAGENAME*/ios/splash/Default~iphone.png" width="320" height="480"/>
       <splash src="resources/*PACKAGENAME*/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
       <splash src="resources/*PACKAGENAME*/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
@@ -101,8 +102,7 @@
     </platform>
 
     <platform name="android">
-      <hook type="after_prepare" src="util/hooks/android/add-custom-urls-to-android-manifest.js" />
-      <hook type="after_prepare" src="util/hooks/android/prohibit-cloud-backups-in-android-manifest.js" />
+      <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <icon src="resources/*PACKAGENAME*/android/icon/drawable-ldpi-icon.png" density="ldpi" />
       <icon src="resources/*PACKAGENAME*/android/icon/drawable-mdpi-icon.png" density="mdpi" />
