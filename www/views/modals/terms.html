@@ -10,7 +10,7 @@
   <ion-content class="has-header" scroll="false">
     <ion-scroll ng-include="'views/includes/terms.html'" direction="y" ng-style="{'height': '60%'}"></ion-scroll>
     <div id="agree-to-terms">
-      <a ng-click="openExternalLink('https://copay.io/disclaimer', 'BitPay terms and conditions')" ng-show="lang != 'en'" translate>Official English Disclaimer</a>
+      <a ng-click="openExternalLink('https://copay.io/disclaimer', true, 'View Terms of Service', 'The official English Terms of Service are available on the BitPay website. Would you like to view them?', 'Open Website', 'Go Back')" ng-show="lang != 'en'" translate>Official English Disclaimer</a>
       <ion-checkbox ng-model="terms.accept3"></ion-checkbox>
       <p translate>I have read, understood, and agree with the Terms of use.</p>
       <button ng-disabled="!terms.accept3" class="button button-block button-positive" ng-click="termsModal.hide(); confirm()" translate>Confirm & Finish</button>

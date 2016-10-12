@@ -5,8 +5,8 @@ angular.module('copayApp.controllers').controller('glideraController',
 
     $scope.network = glideraService.getEnvironment();
 
-    $scope.openExternalLink = function(url, target) {
-      externalLinkService.open(url);
+    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 
     var initGlidera = function(accessToken) {
