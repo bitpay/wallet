@@ -1,6 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService, storageService, $stateParams) {
+angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService, storageService, $stateParams, startupService) {
+
+  $scope.$on("$ionicView.afterEnter", function() {
+    startupService.ready();
+  });
+
   $scope.init = function() {
     $scope.lang = uxLanguage.currentLanguage;
     $scope.terms = {};

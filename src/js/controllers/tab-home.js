@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -12,6 +12,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.name = $window.appConfig.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
+
+    $scope.$on("$ionicView.afterEnter", function() {
+      startupService.ready();
+    });
 
     if (!$scope.homeTip) {
       storageService.getHomeTipAccepted(function(error, value) {
