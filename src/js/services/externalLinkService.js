@@ -3,6 +3,17 @@
 angular.module('copayApp.services').service('externalLinkService', function(platformInfo, nodeWebkitService, popupService, gettextCatalog) {
 
   this.open = function(url, optIn, title, desc, okText, cancelText) {
+    var old = $window.handleOpenURL;
+
+    $window.handleOpenURL = function(url) {
+      // Ignore external URLs
+      $log.debug('Skip: ' + url);
+    };
+
+    $timeout(function() {
+      $window.handleOpenURL = old;
+    }, 500);
+
     if (platformInfo.isNW) {
       nodeWebkitService.openExternalLink(url);
     } else {

@@ -27,16 +27,26 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   };
 
   function updateMemo() {
-    wallet.getTxNote({
-      txid: $scope.btx.txid
-    }, function(err, note) {
-      if (err || !note) {
-        $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+    walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
+      if (err) {
+        $log.warn('Could not fetch transaction note ' + err);
         return;
       }
-      $scope.note = note;
-      $timeout(function() {
-        $scope.$apply();
+
+      if (!note) return;
+
+      $scope.btx.note = note;
+
+      walletService.getTx(wallet, $scope.btx.txid, function(err, tx) {
+        if (err) {
+          $log.error(err);
+          return;
+        }
+
+        tx.note = note;
+        $timeout(function() {
+          $scope.$apply();
+        });
       });
     });
   };
@@ -91,19 +101,13 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         body: text
       };
 
-      wallet.editTxNote(args, function(err) {
+      walletService.editTxNote(wallet, args, function(err, res) {
         if (err) {
-          $log.debug('Could not save tx comment');
+          $log.debug('Could not save tx comment ' + err);
           return;
         }
         // This is only to refresh the current screen data
-        $scope.btx.note = null;
-        if (args.body) {
-          $scope.btx.note = {};
-          $scope.btx.note.body = text;
-          $scope.btx.note.editedByName = wallet.credentials.copayerName;
-          $scope.btx.note.editedOn = Math.floor(Date.now() / 1000);
-        }
+        updateMemo();
         $scope.btx.searcheableString = null;
         $timeout(function() {
           $scope.$apply();
