@@ -37,7 +37,7 @@
           <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
 
           <button class="button button-block button-positive"
-            ng-click="openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true">
+            ng-click="openExternalLink(glidera.getAuthenticateUrl(), 'Glidera authentication'); showOauthForm = true">
             Connect to Glidera
           </button>
           <div class="m10t">
@@ -96,9 +96,8 @@
           <h4 class="text-bold"> Complete Setup</h4>
           <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
           <a class="button"
-             ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' :
-             'https://glidera.io/login'"
-             ng-click="openExternalLink(glideraUrl)">
+            ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login'"
+             ng-click="openExternalLink(glideraUrl, 'Glidera account verification')">
             Go to Glidera
           </a>
           </div>

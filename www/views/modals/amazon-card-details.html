@@ -23,7 +23,7 @@
           </div>
           <div class="m10t" ng-show="card.cardStatus == 'Fulfilled'">
             <button class="button button-positive"
-                    ng-click="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode, '_system')">
+                    ng-click="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode, 'Amazon gift card redemption')">
               Redeem Now
             </button>
           </div>
@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="m10t text-center">
-          <a class="button button-clear button-calm" ng-click="openExternalLink(card.invoiceUrl)">See invoice</a>
+          <a class="button button-clear button-calm" ng-click="openExternalLink(card.invoiceUrl, 'Amazon gift card invoice')">See invoice</a>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
         To redeem your gift card, follow these steps:
 
         <ol class="m10t size-12">
-          <li>1. Visit <a ng-click="openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>
+          <li>1. Visit <a ng-click="openExternalLink('https://www.amazon.com/gc', 'Amazon gift card information')">www.amazon.com/gc</a>
           <li>2. Click Apply to Account and enter the Claim Code when prompted.
           <li>3. Gift card funds will be applied automatically to eligible orders during the checkout process.
           <li>4. You must pay for any remaining balance on your order with another payment method.
@@ -73,7 +73,7 @@
 
         <p class="size-12">
         If you have questions about redeeming your gift card, please visit
-        <a ng-click="openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>.
+        <a ng-click="openExternalLink('https://www.amazon.com/gc-redeem', 'Amazon git card hel & support')">www.amazon.com/gc-redeem</a>.
         If you have questions regarding the BitPay Introductory offer, please contact BitPay.
         </p>
 
@@ -81,13 +81,13 @@
 
       <div class="size-12 p15 m30v">
         * <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion.
-        Except as required by law, <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>
+        Except as required by law, <a ng-click="openExternalLink('http://amazon.com', 'Amazon')">Amazon.com</a>
         Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of
-        eligible goods at <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its
+        eligible goods at <a ng-click="openExternalLink('http://amazon.com', 'Amazon')">Amazon.com</a> or certain of its
         affiliated websites. For complete terms and conditions, see
-        <a ng-click="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>.
+        <a ng-click="openExternalLink('https://www.amazon.com/gc-legal', 'Amazon gift card legal information')">www.amazon.com/gc-legal</a>.
         GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP
-        of <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates.
+        of <a ng-click="openExternalLink('http://amazon.com', 'Amazon')">Amazon.com</a>, Inc. or its affiliates.
         No expiration date or service fees.
       </div>
 
