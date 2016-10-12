@@ -18,8 +18,18 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.color = $scope.wallet.color;
     $scope.data = {};
     $scope.hasClick = platformInfo.hasClick;
+    $scope.displayAmount = getDisplayAmount(tx.amountStr);
+    $scope.displayUnit = getDisplayUnit(tx.amountStr);
     initActionList();
     checkPaypro();
+  }
+
+  function getDisplayAmount(amountStr) {
+    return amountStr.split(' ')[0];
+  }
+
+  function getDisplayUnit(amountStr) {
+    return amountStr.split(' ')[1];
   }
 
   function initActionList() {
