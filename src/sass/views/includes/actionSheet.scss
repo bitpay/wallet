@@ -4,7 +4,6 @@ action-sheet {
 
     &__sheet {
       background: #fff;
-      //height: 300px;
       width: 100%;
       position: fixed;
       bottom: 0;
@@ -24,7 +23,7 @@ action-sheet {
       }
 
       .back-arrow {
-        padding-bottom: 1rem;
+        padding-bottom: 1.25rem;
         cursor: pointer;
       }
 
