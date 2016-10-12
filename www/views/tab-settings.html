@@ -6,7 +6,7 @@
   <ion-content>
     <div class="list">
       <div class="item item-divider"></div>
-      <a class="item item-icon-left item-icon-right" ng-hide="true">
+      <a class="ng-hide item item-icon-left item-icon-right" ng-hide="true">
         <i class="icon big-icon-svg">
           <img src="img/icon-exchange.svg" class="bg"/>
         </i>
@@ -20,7 +20,7 @@
         <span translate>Address Book</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="item item-icon-left item-icon-right" ng-hide="true">
+      <a class="ng-hide item item-icon-left item-icon-right" ng-hide="true">
         <i class="icon big-icon-svg">
           <img src="img/icon-send-feedback.svg" class="bg"/>
         </i>
@@ -53,8 +53,8 @@
         <i class="icon big-icon-svg">
           <img src="img/icon-unit.svg" class="bg"/>
         </i>
-        <span translate>Unit</span>
-        <span class="item-note">
+        <span class="setting-title" translate>Unit</span>
+        <span class="setting-value">
           {{unitName}}
         </span>
         <i class="icon bp-arrow-right"></i>
@@ -64,8 +64,8 @@
         <i class="icon big-icon-svg">
           <img src="img/icon-alternative-currency.svg" class="bg"/>
         </i>
-        <span translate>Alternative Currency</span>
-        <span class="item-note">
+        <span class="setting-title" translate>Alternative Currency</span>
+        <span class="setting-value">
           {{selectedAlternative.name}}
         </span>
         <i class="icon bp-arrow-right"></i>
@@ -75,8 +75,8 @@
         <i class="icon big-icon-svg">
           <img src="img/icon-network.svg" class="bg"/>
         </i>
-        <span translate>Bitcoin Network Fee Policy</span>
-        <span class="item-note">
+        <span class="setting-title" translate>Bitcoin Network Fee Policy</span>
+        <span class="setting-value">
           {{feeOpts[currentFeeLevel]|translate}}
         </span>
         <i class="icon bp-arrow-right"></i>
