@@ -1,11 +1,22 @@
 .settings {
   .item {
-    color: #444;
+    color: $dark-gray;
     border-color: rgba(221, 221, 221, 0.3);
   }
-}
-
-#tab-settings {
+  &-explaination {
+    padding: 0 1rem;
+    margin: 1rem 0;
+  }
+  &-heading {
+    font-size: 17px;
+    color: $dark-gray;
+    margin: 1rem 0;
+  }
+  &-description {
+    font-size: 15px;
+    color: $mid-gray;
+    margin: 1rem 0;
+  }
   .setting-title, .setting-value {
     display: block;
     overflow: hidden;
@@ -16,9 +27,12 @@
     color: $light-gray;
     font-size: 14px;
   }
+}
+
+#tab-settings {
   .list {
     .item {
-      color: #444;
+      color: $dark-gray;
       border-top: none;
       padding-top: 1.3rem;
       padding-bottom: 1.3rem;
@@ -68,5 +82,22 @@
   }
   .item-radio .radio-icon {
     font-size: 18px;
+  }
+}
+
+#settings-fee {
+  .estimates {
+    font-size: 15px;
+    color: $dark-gray;
+  }
+  .fee-minutes, .fee-rate {
+    font-weight: bold;
+    display: block;
+    margin-bottom: .5rem;
+  }
+  .fee-policies {
+    border-color: #fff;
+    border-width: 2px 0;
+    border-style: solid;
   }
 }
