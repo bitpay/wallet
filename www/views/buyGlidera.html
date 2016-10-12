@@ -80,7 +80,7 @@
           ...
         </div>
 
-        <button class="button button-block button-positive"
+        <button class="button button-standard button-primary"
                 type="submit"
                 ng-disabled="limits.transactDisabledPendingFirstTransaction || !buy.buyPrice.qty || buy.loading">
           Continue
@@ -101,7 +101,7 @@
               <input type="number" ng-model="twoFaCode" placeholder="2FA Code" required ignore-mouse-wheel>
             </label>
           </div>
-          <button class="button button-block button-positive"
+          <button class="button button-standard button-primary"
                   type="submit" ng-disabled="buyForm.$invalid || buy.loading">
             Buy
           </button>
@@ -117,7 +117,7 @@
       A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business days.
       </p>
 
-      <button class="button button-block button-positive" ui-sref="tabs.buyandsell.glidera">OK</button>
+      <button class="button button-standard button-primary" ui-sref="tabs.buyandsell.glidera">OK</button>
     </div>
   </ion-content>
 </ion-view>
