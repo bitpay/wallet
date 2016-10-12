@@ -959,6 +959,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.info('Init profile...');
       // Try to open local profile
       profileService.loadAndBindProfile(function(err) {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true
+        });
         if (err) {
           if (err.message && err.message.match('NOPROFILE')) {
             $log.debug('No profile... redirecting');

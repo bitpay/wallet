@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').service('startupService', function($log) {
+angular.module('copayApp.services').service('startupService', function($log, $timeout) {
 
   var splashscreenVisible = true;
   var statusBarVisible = false;
@@ -8,7 +8,9 @@ angular.module('copayApp.services').service('startupService', function($log) {
   function _hideSplash(){
     if(navigator.splashscreen && splashscreenVisible){
       $log.debug('startupService is hiding the splashscreen...');
-      navigator.splashscreen.hide();
+      $timeout(function(){
+        navigator.splashscreen.hide();
+      }, 20);
       splashscreenVisible = false;
     }
   }
