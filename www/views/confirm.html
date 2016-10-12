@@ -81,25 +81,32 @@
   </slide-to-accept-success>
   <action-sheet action-sheet-show="showWallets" class="wallet-selector">
     <!-- <div ng-repeat="wallet in wallets">{{wallet.name}}</div> -->
-    <a ng-repeat="wallet in wallets track by $index" class="item item-icon-left item-big-icon-left item-icon-right wallet" ng-click="openWallet(wallet)">
+    <a
+      ng-repeat="w in wallets track by $index"
+      class="item item-icon-left item-big-icon-left item-icon-right wallet"
+      ng-click="selectWallet(w)"
+    >
         <i class="icon big-icon-svg">
-          <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
+          <img src="img/icon-wallet.svg" ng-style="{'background-color': w.color}" class="bg">
         </i>
-        <div class="wallet-details">
-          <div class="wallet-name">
-            {{wallet.name}}
+        <div class="wallet-inner">
+          <div class="wallet-details">
+            <div class="wallet-name">
+              {{w.name}}
+            </div>
+            <p class="wallet-balance">
+              <span ng-if="!w.isComplete()" class="assertive" translate>
+                Incomplete
+              </span>
+              <span ng-if="w.isComplete()">
+                <span ng-if="!w.balanceHidden">{{w.status.availableBalanceStr}}</span>
+                <span ng-if="w.balanceHidden" translate>[Balance Hidden]</span>
+              </span>
+            </span>
+            &nbsp;
+            </p>
           </div>
-          <p class="wallet-balance">
-            <span ng-if="!wallet.isComplete()" class="assertive" translate>
-              Incomplete
-            </span>
-            <span ng-if="wallet.isComplete()">
-              <span ng-if="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
-              <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
-            </span>
-          </span>
-          &nbsp;
-          </p>
+          <img class="check" src="img/icon-check-selected.svg" ng-show="wallet === w">
         </div>
         <!-- <i class="icon bp-arrow-right"></i> -->
       </a>
