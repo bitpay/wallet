@@ -37,8 +37,20 @@
       border: 0;
       padding-right: 0;
       padding-top: 0;
+      padding-left: 65px;
       padding-bottom: 0;
       margin-bottom: 1px;
+
+      > i {
+        padding: 0;
+        margin-left: -5px;
+
+        > img {
+          height: 39px;
+          width: 39px;
+          padding: 4px;
+        }
+      }
     }
     .wallet-details {
       position: relative;
