@@ -40,6 +40,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.toAmount = parseInt($scope.toAmount);
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
+    $scope.displayAmount = getDisplayAmount($scope.amountStr);
+    $scope.displayUnit = getDisplayUnit($scope.amountStr);
 
     var networkName = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.network = networkName;
@@ -75,6 +77,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (++index == wallets.length) {
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
+            setWallet($scope.wallets[0]);
           } else {
 
             if (!enoughFunds)
@@ -122,6 +125,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       }, 100);
     });
   };
+
+  function getDisplayAmount(amountStr) {
+    return amountStr.split(' ')[0];
+  }
+
+  function getDisplayUnit(amountStr) {
+    return amountStr.split(' ')[1];
+  }
 
   var setFromPayPro = function(uri, cb) {
     if (!cb) cb = function() {};
