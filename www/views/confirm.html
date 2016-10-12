@@ -86,12 +86,17 @@
           <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
         </i>
         <div class="wallet-details">
-          <span>
+          <div class="wallet-name">
             {{wallet.name}}
-          </span>
-          <p>
+          </div>
+          <p class="wallet-balance">
+            <span ng-if="!wallet.isComplete()" class="assertive" translate>
+              Incomplete
+            </span>
             <span ng-if="wallet.isComplete()">
-            <span ng-if="!wallet.balanceHidden" class="ng-binding">0.00 BTC</span>
+              <span ng-if="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
+              <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+            </span>
           </span>
           &nbsp;
           </p>

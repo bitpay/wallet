@@ -67,6 +67,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (err || !status) {
           $log.error(err);
         } else {
+          w.status = status;
           if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
           if (status.availableBalanceSat > $scope.toAmount) {
             filteredWallets.push(w);
@@ -113,6 +114,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.showWalletSelector = function() {
     console.log('showWalletSelector called');
+    console.log('$scope.wallets', $scope.wallets);
     $scope.showWallets = true;
   };
 
