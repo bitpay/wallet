@@ -49,6 +49,10 @@
     span {
       display: block;
     }
+    .badge {
+      border-radius: 0;
+      padding: .5rem;
+    }
     .item {
       color: #4A4A4A;
       padding-top: $item-vertical-padding;
