@@ -3,15 +3,11 @@
 angular.module('copayApp.controllers').controller('copayersController',
   function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
 
+    $scope.isCordova = platformInfo.isCordova;
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-      init();
-    });
-
-    var init = function() {
-      $scope.isCordova = platformInfo.isCordova;
-      $scope.wallet = profileService.getWallet($stateParams.walletId);
+      $scope.wallet = profileService.getWallet(data.stateParams.walletId);
       updateWallet();
-    };
+    });
 
     $rootScope.$on('bwsEvent', function() {
       updateWallet();
@@ -40,7 +36,9 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     $scope.showDeletePopup = function() {
-      popupService.showConfirm(gettextCatalog.getString('Confirm'), gettextCatalog.getString('Are you sure you want to delete this wallet?'), null, null, function(res) {
+      var title = gettextCatalog.getString('Confirm');
+      var msg = gettextCatalog.getString('Are you sure you want to cancel and delete this wallet?');
+      popupService.showConfirm(title, msg, null, null, function(res) {
         if (res) deleteWallet();
       });
     };
