@@ -53,7 +53,7 @@
         <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
 
         <div class="padding">
-          <button class="button button-block button-positive"
+          <button class="button button-standard button-primary"
                   ng-disabled="!formData.fiat"
                   type="submit">
             Buy now
@@ -79,7 +79,7 @@
           <span ng-show="buy.giftCard.status == 'FAILURE'">
             This failure could not be recoverable. Request your refund from your list of cards
           </span>
-          <button class="button button-block button-positive" ng-click="$root.go('amazon')">
+          <button class="button button-standard button-primary" ng-click="$root.go('amazon')">
             Back
           </button>
         </div>

@@ -128,12 +128,10 @@
         </div> <!-- advanced -->
       </div> <!-- list -->
 
-      <button type="submit" class="button button-block button-positive"
+      <button type="submit" class="button button-standard button-primary"
         ng-disabled="setupForm.$invalid || ((encrypt && !formData.passwordSaved) || encrypt && ((seedSource.id == 'new' && !formData.createPassphrase) || (seedSource.id == 'set' && !formData.passphrase)))">
         <span translate>Create {{formData.requiredCopayers}}-of-{{formData.totalCopayers}} wallet</span>
       </button>
     </form>
   </ion-content>
 </ion-view>
-
-
