@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $log, $timeout, bwcError, amazonService, lodash, ongoingProcess, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $log, $timeout, bwcError, amazonService, lodash, ongoingProcess, popupService, gettextCatalog, externalLinkService) {
 
   $scope.cancelGiftCard = function() {
     ongoingProcess.set('Canceling gift card...', true);
@@ -60,6 +60,10 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
 
   $scope.cancel = function() {
     $scope.amazonCardDetailsModal.hide();
+  };
+
+  $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
 });
