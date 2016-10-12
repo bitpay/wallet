@@ -1,11 +1,6 @@
 <ion-view id="tab-receive">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
-    <ion-nav-buttons side="secondary">
-      <button class="button button-clear" ng-click="checkTips(true)">
-        <i class="ion-help-circled"></i>
-      </button>
-    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content>
     <div class="list card padding text-center" ng-if="!wallets[0]">
@@ -23,7 +18,7 @@
         <div class="row border-top">
           <div class="col col-90 center-block bit-address text-center">
             <div class="item item-icon-left">
-              <i class="icon ion-social-bitcoin-outline"></i>
+              <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
               <span class="bit-address-gen-address">...</span>
             </div>
           </div>
@@ -38,13 +33,13 @@
             <span translate>All signing devices must be added to this multisig wallet before bitcoin addresses can be created.</span>
           </div>
           <div>
-            <button class="button button-block button-positive" ng-click="goCopayers()" translate>Open wallet</button>
+            <button class="button button-standard button-primary" ng-click="goCopayers()" translate>Open wallet</button>
           </div>
         </div>
         <div class="row border-top">
           <div class="col col-90 center-block bit-address text-center">
             <div class="item item-icon-left">
-              <i class="icon ion-social-bitcoin-outline"></i>
+              <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
               <span class="bit-address-gen-address" ng-if="!generatingAddress" translate>address not yet available</span>
             </div>
           </div>
@@ -81,7 +76,7 @@
         <div class="row border-top">
           <div class="col col-90 center-block bit-address text-center">
             <div class="item item-icon-left">
-              <i class="icon ion-social-bitcoin-outline"></i>
+              <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
               <span class="bit-address-gen-address" ng-if="generatingAddress">...</span>
               <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
             </div>
