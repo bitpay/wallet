@@ -32,7 +32,7 @@
         <div class="text-center" ng-show="insuffientFunds">
           <span class="badge badge-energized" translate>Insufficient funds</span>
         </div>
-        <a class="item item-icon-right" ng-hide="insuffientFunds">
+        <a class="item item-icon-right" ng-hide="insuffientFunds" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
@@ -79,6 +79,9 @@
     <span ng-hide="wallet.m > 1">Payment Sent</span>
     <span ng-show="wallet.m > 1">Proposal Created</span>
   </slide-to-accept-success>
+  <action-sheet action-sheet-show="showWallets">
+
+  </action-sheet>
 </ion-view>
 <!-- <ion-view id="view-confirm">
   <ion-nav-bar class="bar-royal">

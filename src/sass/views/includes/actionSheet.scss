@@ -1,0 +1,37 @@
+action-sheet {
+  .bp-action-sheet {
+
+    &__sheet {
+      background: #fff;
+      height: 300px;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      transform: translateY(100%);
+      transition: transform 250ms ease;
+      z-index: 100;
+
+      &.slide-up {
+        transform: translateY(0);
+      }
+    }
+
+    &__backdrop {
+      height: 100%;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0);
+      transition: background 250ms ease;
+      pointer-events: none;
+      z-index: 99;
+
+      &.fade-in {
+        background: rgba(0, 0, 0, .5);
+        pointer-events: all;
+      }
+    }
+  }
+}
