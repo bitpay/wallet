@@ -28,10 +28,13 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   function updateMemo() {
     walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
-      if (err || !note) {
-        $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+      if (err) {
+        $log.warn('Could not fetch transaction note ' + err);
         return;
       }
+
+      if (!note) return;
+
       $scope.btx.note = note;
 
       walletService.getTx(wallet, $scope.btx.txid, function(err, tx) {
@@ -100,7 +103,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
       walletService.editTxNote(wallet, args, function(err, res) {
         if (err) {
-          $log.debug('Could not save tx comment');
+          $log.debug('Could not save tx comment ' + err);
           return;
         }
         // This is only to refresh the current screen data
