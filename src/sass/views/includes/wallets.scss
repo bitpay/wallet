@@ -1,20 +1,33 @@
 .wallets {
   .slides {
     .swiper-container {
-      width: 75% !important;
+      width: 85% !important;
       overflow: visible;
     }
     .card {
-      padding: .7rem;
-      padding-left: .25rem;
-      padding-right: .25rem;
-      border-radius: .25rem;
       max-width: 350px;
+      box-shadow:$subtle-box-shadow;
       @media (min-width: 500px) {
         & {
           width: 350px;
           position: relative;
           margin: 1.5rem auto 0;
+        }
+      }
+      .item{
+        padding:.7rem 1.5rem;
+        span{
+          clear:both;
+          width: 100%;
+          display: inline-block;
+          &.wallet-name{
+            margin-top:10px;
+            margin-bottom:5px;
+            font-size:14px;
+          }
+        }
+        .big-icon-svg{
+          & > .bg{padding:.3rem;width: 50px;height:50px;}
         }
       }
     }
