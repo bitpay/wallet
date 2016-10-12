@@ -27,6 +27,17 @@
     color: $light-gray;
     font-size: 14px;
   }
+ .settings-list {
+    background-color: #fff;
+    .item-stacked-label {
+      padding: 1rem;
+    }
+    .input-label {
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: bold;
+    }
+ }
 }
 
 #tab-settings {
