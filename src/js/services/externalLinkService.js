@@ -1,8 +1,19 @@
 'use strict';
 
-angular.module('copayApp.services').service('externalLinkService', function(platformInfo, nodeWebkitService) {
+angular.module('copayApp.services').service('externalLinkService', function($window, $timeout, platformInfo, nodeWebkitService) {
 
   this.open = function(url, target) {
+    var old = $window.handleOpenURL;
+
+    $window.handleOpenURL = function(url) {
+      // Ignore external URLs
+      $log.debug('Skip: ' + url);
+    };
+
+    $timeout(function() {
+      $window.handleOpenURL = old;
+    }, 500);
+
     if (platformInfo.isNW) {
       nodeWebkitService.openExternalLink(url);
     } else {
