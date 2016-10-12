@@ -118,6 +118,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.showWallets = true;
   };
 
+  $scope.selectWallet = function(w) {
+    $timeout(function() {
+      $scope.showWallets = false;
+    }, 100);
+    setWallet(w);
+  };
+
 
   $scope.showDescriptionPopup = function() {
     var message = gettextCatalog.getString('Add description');
