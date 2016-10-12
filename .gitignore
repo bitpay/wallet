@@ -84,6 +84,9 @@ Session.vim
 .netrwhist
 *~
 
+.tags
+.tags1
+
 # SASS
 src/sass/*.css
 .sass-cache
