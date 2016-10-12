@@ -308,17 +308,20 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       var cancelText = gettextCatalog.getString('Cancel');
 
       if (!spendingPassEnabled && !touchIdEnabled) {
-        if (isCordova && bigAmount) {
-          popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-            if (!ok) {
-              $scope.sendStatus = '';
-              $timeout(function() {
-                $scope.$apply();
-              });
-              return;
-            }
-            publishAndSign(wallet, txp, onSendStatusChange);
-          });
+        if (isCordova) {
+          if (bigAmount) {
+            popupService.showConfirm(null, message, okText, cancelText, function(ok) {
+              if (!ok) {
+                $scope.sendStatus = '';
+                $timeout(function() {
+                  $scope.$apply();
+                });
+                return;
+              }
+              publishAndSign(wallet, txp, onSendStatusChange);
+            });
+          }
+          else publishAndSign(wallet, txp, onSendStatusChange);
         }
         else {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
