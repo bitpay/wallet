@@ -872,7 +872,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       if (!password) return cb('no password');
       if (!wallet.checkPassword(password)) return cb('wrong password');
 
-
+      wallet.credentials.decryptPrivateKey(password);
       return cb(null, password);
     });
   };
