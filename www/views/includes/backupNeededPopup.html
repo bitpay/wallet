@@ -3,25 +3,11 @@
     <div class="popup-modal-header-img-warning popup-modal-header-img"></div>
   </div>
   <div class="popup-modal-content popup-modal-content-warning">
-    <div class="text-center">
-      <h5 translate>Backup Needed</h5>
-      <p translate>Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup.</p>
-      <div class="row">
-        <div class="col">
-          <button
-            class="button button-clear expand"
-            ng-click="close()"
-            translate>Not now
-          </button>
-        </div>
-        <div class="col">
-          <button
-            class="button button-clear expand"
-            ng-click="doBackup()"
-            translate>Backup wallet now
-          </button>
-        </div>
-      </div>
+    <div>
+      <div class="popup-modal-heading" translate>Backup Needed</div>
+      <div class="popup-modal-message" translate>Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup.</div>
+      <button class="button button-clear" ng-click="doBackup()" translate>Backup now</button>
+      <button class="button button-secondary button-clear" ng-click="close()" translate>Remind me later</button>
     </div>
   </div>
 </div>

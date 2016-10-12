@@ -58,7 +58,7 @@
 
         <button type="submit"
           ng-disabled="scanning || !scannedKey"
-          class="button button-block button-positive"
+          class="button button-standard button-primary"
           ng-style="{'background-color': wallet.color}"
           translate>Scan Wallet Funds
         </button>
@@ -74,7 +74,7 @@
           <button
             ng-show="balanceSat > 0"
             ng-disabled="sending"
-            class="button button-block button-positive"
+            class="button button-standard button-primary"
             ng-style="{'background-color': wallet.color}"
             ng-click="sweepWallet()"
             translate>Sweep Wallet
@@ -82,7 +82,7 @@
 
           <button
             ng-show="balanceSat <= 0 && scanned"
-            class="button button-block button-positive"
+            class="button button-standard button-primary"
             ng-style="{'background-color': wallet.color}"
             ng-click="init()"
             translate>Scan Again

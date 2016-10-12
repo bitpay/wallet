@@ -35,7 +35,6 @@
           </p>
 
           <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
-
           <button class="button button-block button-positive"
             ng-click="openExternalLink(glidera.getAuthenticateUrl(), 'Glidera authentication'); showOauthForm = true">
             Connect to Glidera
@@ -65,7 +64,7 @@
               </div>
               <div class="col">
                 <input
-                   class="button button-block button-positive"
+                   class="button button-standard button-primary"
                    type="submit"
                    value="Get started"
                    ng-disabled="oauthCodeForm.$invalid">

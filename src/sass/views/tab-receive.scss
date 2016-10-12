@@ -32,9 +32,6 @@
       font-size: .8rem;
       i {
         font-size: 1.3rem;
-        &.ion-social-bitcoin-outline {
-          border-right: 1px solid rgb(228, 228, 228);
-        }
       }
     }
     .bit-address {
@@ -110,6 +107,10 @@
       color: #fff;
       margin-bottom:1rem;
     }
+  }
+  .receive-tab-bitcoin-icon {
+    border-right: 1px solid rgb(228, 228, 228);
+    padding-right: 10px;
   }
 }
 
