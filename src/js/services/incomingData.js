@@ -4,15 +4,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
   var root = {};
 
-  var ignoreState = [
-    'tabs.language',
-    'tabs.about.translators',
-    'tabs.bitpayCardIntro',
-    'tabs.buyandsell.glidera',
-    'tabs.giftcards.amazon',
-    'tabs.giftcards.amazon.buy'
-  ];
-
   root.redir = function(data) {
     $log.debug('Processing incoming data:'  +data);
 
@@ -77,8 +68,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     // Plain URL
     } else if (/^https?:\/\//.test(data)) {
-      var currentState = $state.current.name;
-      if (lodash.indexOf(ignoreState, currentState) != -1) return false;
       $state.go('tabs.send').then(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
       });
