@@ -129,9 +129,10 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       deviceName = device.model;
     }
     var json = {
-      method: 'registerSinWithSecret',
+      method: 'createToken',
       params: {
         secret: obj.secret,
+        version: 2,
         deviceName: deviceName,
         code: obj.otp
       }

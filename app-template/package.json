@@ -51,8 +51,8 @@
     "bitcore-wallet-client": "4.3.1",
     "bower": "^1.7.9",
     "chai": "^3.5.0",
-    "cordova": "5.4.1",
     "cordova-android": "5.1.1",
+    "cordova-custom-config": "^3.0.5",
     "cordova-plugin-qrscanner": "^2.3.1",
     "coveralls": "^2.11.9",
     "express": "^4.11.2",
@@ -112,12 +112,10 @@
     "clean-all":              "git clean -dfx && npm install"
   },
   "devDependencies": {
-    "androidmanifest": "^2.0.0",
-    "cordova": "^5.4.1",
-    "globby": "^6.0.0",
+    "cordova": "^6.3.1",
+    "grunt": "^1.0.1",
     "ionic": "^2.1.0",
-    "plist": "^2.0.1",
     "trash-cli": "^1.4.0",
-    "xcode": "^0.8.2"
+    "lodash": "^4.3.0"
   }
 }
