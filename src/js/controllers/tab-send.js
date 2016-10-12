@@ -114,6 +114,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
     if (!wallets || !wallets.length) {
       $scope.hasFunds = false;
+      $timeout(function() {
+        $scope.$apply();
+      });
     }
 
     var index = 0;
@@ -130,6 +133,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         }
         if (index == wallets.length) {
           $scope.hasFunds = $scope.hasFunds || false;
+          $timeout(function() {
+            $scope.$apply();
+          });
         }
       });
     });
