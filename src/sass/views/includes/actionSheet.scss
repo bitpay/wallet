@@ -17,6 +17,8 @@ action-sheet {
       color: #2f2f2f;
       padding-bottom: 3.5rem;
       max-width: 550px;
+      max-height: 100vh;
+      overflow: scroll;
 
       &.slide-up {
         transform: translateY(0) translateX(-50%);
