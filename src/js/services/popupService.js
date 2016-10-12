@@ -118,7 +118,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   this.showPrompt = function(title, message, opts, cb) {
     $log.warn(title + ": " + message);
 
-    if (isCordova && !opts.force)
+    if (isCordova && !opts.forceHTMLPrompt)
       _cordovaPrompt(title, message, opts, cb);
     else
       _ionicPrompt(title, message, opts, cb);

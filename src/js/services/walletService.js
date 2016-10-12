@@ -822,7 +822,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   var askPassword = function(name, title, cb) {
     var opts = {
       inputType: 'password',
-      force: true
+      forceHTMLPrompt: true
     };
     popupService.showPrompt(title, name, opts, function(res) {
       if (!res) return cb();
