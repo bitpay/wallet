@@ -55,6 +55,12 @@
         </a>
       </div>
     </div>
+    <click-to-accept
+      ng-click="approve(statusChangeHandler)"
+      ng-if="hasClick && wallets[0]"
+      click-send-status="sendStatus">
+      Click to pay
+    </click-to-accept>
   </ion-content>
   <slide-to-accept
     ng-if="!hasClick && wallets[0]"
