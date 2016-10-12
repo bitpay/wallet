@@ -17,13 +17,14 @@
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="HideKeyboardFormAccessoryBar" value="true"/>
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
-    <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarBackgroundColor" value="#1e3186" />
-    <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="8.1"/>
     <preference name="Orientation" value="default" />
     <preference name="cordova-custom-config-stoponerror" value="true" />
+
+    <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarStyle" value="lightcontent" />
 
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
