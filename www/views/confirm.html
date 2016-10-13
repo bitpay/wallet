@@ -7,7 +7,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-class="{'slide-to-pay': !hasClick && !insuffientFunds}">
+  <ion-content ng-class="{'slide-to-pay': isCordova && !insuffientFunds}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
@@ -42,31 +42,30 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-hide="insuffientFunds">
-          <span class="label" translate>{{'Add Memo'|translate}}</span>
-          <span class="item-note">
+        <a class="item single-line item-icon-right" ng-hide="insuffientFunds" ng-click="showDescriptionPopup()">
+          <span class="label" translate>Add Memo</span>
+          <span class="item-note m10l">
             {{description}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-hide="insuffientFunds">
-          <span class="label" translate>Fee</span>
+        <a class="item single-line" ng-hide="insuffientFunds">
+          <span class="label" translate>Fee: {{feeLevel}}</span>
           <span class="item-note">
-            {{fee}}
+            {{fee || '...'}}
           </span>
-          <i class="icon bp-arrow-right"></i>
         </a>
       </div>
     </div>
     <click-to-accept
       ng-click="approve(statusChangeHandler)"
-      ng-if="hasClick && wallets[0]"
+      ng-if="!isCordova && wallets[0]"
       click-send-status="sendStatus">
       Click to pay
     </click-to-accept>
   </ion-content>
   <slide-to-accept
-    ng-if="!hasClick && wallets[0]"
+    ng-if="isCordova && wallets[0]"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus">
     Slide to pay

@@ -32,11 +32,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       throw ('bad params');
     }
     $scope.isCordova = platformInfo.isCordova;
-    $scope.hasClick = platformInfo.hasClick;
     $scope.data = {};
 
     var config = configService.getSync().wallet;
-    $scope.feeLevel = config.settings ? config.settings.feeLevel : '';
+    $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
 
     $scope.toAmount = parseInt($scope.toAmount);
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
@@ -274,7 +273,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txp.message = description;
     txp.payProUrl = paypro;
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
-    txp.feeLevel = config.settings.feeLevel || 'normal';
+    txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     txp.dryRun = dryRun;
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
