@@ -1,4 +1,4 @@
-<ion-view class="settings">
+<ion-view id="settings-fee" class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Bitcoin Network Fee Policy'|translate}}
@@ -6,19 +6,21 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-
   <ion-content>
-    <ion-radio ng-repeat="fee in feeLevels.livenet" ng-value="fee.level" ng-model="currentFeeLevel" ng-click="save(fee)">
-      {{feeOpts[fee.level]|translate}}
-    </ion-radio>
-    <div class="padding text-center positive" ng-repeat="fee in feeLevels.livenet" ng-if="fee.level == currentFeeLevel">
-      <div ng-show="fee.nbBlocks">
-        <span translate>Average confirmation time: {{fee.nbBlocks * 10}} minutes</span>.
+    <div class="settings-explaination">
+      <div class="settings-heading" translate>Bitcoin transactions include a fee collected by miners on the network.</div>
+      <div class="settings-description" translate>The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.</div>
+      <div class="estimates" ng-repeat="fee in feeLevels.livenet" ng-if="fee.level == currentFeeLevel">
+        <div ng-show="fee.nbBlocks">
+          <span translate>Average confirmation time: <span class="fee-minutes">{{fee.nbBlocks * 10}} minutes</span></span>
+        </div>
+        <span translate>Current fee rate for this policy: <span class="fee-rate">{{fee.feePerKBUnit}}/kiB</span></span>
       </div>
-      <span translate>Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB</span>
     </div>
-    <div class="padding" translate>
-      Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.
+    <div class="fee-policies">
+      <ion-radio ng-repeat="fee in feeLevels.livenet" ng-value="fee.level" ng-model="currentFeeLevel" ng-click="save(fee)">
+        {{feeOpts[fee.level]|translate}}
+      </ion-radio>
     </div>
   </ion-content>
 </ion-view>

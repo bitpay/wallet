@@ -88,15 +88,21 @@
 
       <div ng-show="addrs">
         <div class="item item-divider" translate>
-          Last Wallet Addresses
+          Latest Wallet Addresses
         </div>
-
+        <div class="settings-explaination">
+          <div class="settings-description" translate>
+            Only &ldquo;main&rdquo; addresses are shown below. This excludes &ldquo;change&rdquo; address.
+          </div>
+        </div>
         <div class="item" ng-repeat="a in addrs" class="oh" copy-to-clipboard="a.address">
           <span>{{a.address}}</span>
           <span class="item-note">{{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}</span>
         </div>
-        <div class="padding text-center" translate>
-          Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time.
+        <div class="settings-explaination">
+          <div class="settings-description" translate>
+            Please note: due to resource constraints, this list of addresses is not verified locally. A compromised BWS node could return addresses which are not controlled by this wallet.
+          </div>
         </div>
         <button class="button button-standard button-primary" ng-click="scan()" translate>
           Scan addresses for funds

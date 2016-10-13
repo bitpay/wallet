@@ -35,3 +35,17 @@
     }
   }
 }
+
+#tab-home, #tab-send {
+  .card, .list {
+    .icon {
+      color: $light-gray;
+    }
+    & > .item-heading {
+      font-weight: 700;
+      .icon {
+        color: $mid-gray;
+      }
+    }
+  }
+}
