@@ -113,16 +113,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.showWalletSelector = function() {
-    console.log('showWalletSelector called');
-    console.log('$scope.wallets', $scope.wallets);
     $scope.showWallets = true;
   };
 
-  $scope.selectWallet = function(w) {
-    $timeout(function() {
-      $scope.showWallets = false;
-    }, 100);
-    setWallet(w);
+  $scope.onWalletSelect = function(wallet) {
+    setWallet(wallet);
   };
 
 
