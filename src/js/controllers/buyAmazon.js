@@ -16,12 +16,14 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       $log.debug('Wallet changed: ' + w.name);
     });
 
-    $scope.openExternalLink = function(url, target) {
-      externalLinkService.open(url, target);
+    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 
     this.confirm = function() {
-      var message = gettextCatalog.getString('Amazon.com Gift Card purchase for ${{amount}} USD', {amount: $scope.formData.fiat});
+      var message = gettextCatalog.getString('Amazon.com Gift Card purchase for ${{amount}} USD', {
+        amount: $scope.formData.fiat
+      });
       var ok = gettextCatalog.getString('Buy');
       popupService.showConfirm(null, message, ok, null, function(res) {
         if (res) self.createTx();
@@ -209,8 +211,10 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
-      $scope.formData = { fiat: null };
+    $scope.$on("$ionicView.enter", function(event, data) {
+      $scope.formData = {
+        fiat: null
+      };
       $scope.wallets = profileService.getWallets({
         network: network,
         onlyComplete: true
