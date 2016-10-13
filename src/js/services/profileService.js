@@ -611,7 +611,8 @@ angular.module('copayApp.services')
 
       str = JSON.parse(str);
 
-      if (str.xPrivKey) {
+      if (str.xPrivKey && str.xPrivKeyEncrypted) {
+        $log.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
         delete str.xPrivKeyEncrypted;
         delete str.mnemonicEncrypted;
       }
