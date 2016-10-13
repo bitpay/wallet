@@ -21,7 +21,7 @@
         <div ng-if="bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
           <div class="size-36 m20b">${{bitpayCard.bitpayCardCurrentBalance}}</div>
           <a class="button button-positive button-small" ui-sref="tabs.bitpayCard.amount({'cardId': cardId, 'toName': 'BitPay Card'})">
-            <i class="icon ion-ios-plus-empty"></i> {{'Add Funds'|translate}}
+            {{'Add Funds'|translate}}
           </a>
         </div>
         <div ng-if="!bitpayCard.bitpayCardCurrentBalance" class="m10t">
@@ -45,20 +45,19 @@
       <h4>Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.</h4>
     </div>
 
-    <div class="list" ng-if="bitpayCard.bitpayCardTransactionHistory[0] && !error" ng-init="cardTxs = bitpayCard.bitpayCardTransactionHistory">
+    <div class="list" ng-if="bitpayCard.bitpayCardTransactionHistory[0] && !error">
       <div class="item item-divider">
-      <select class="select-style" ng-model="dateRange" ng-change="bitpayCard.update(dateRange)">
+      <select class="select-style" ng-model="dateRange.value" ng-change="bitpayCard.update()">
         <option value="last30Days">Recent Activity</option>
         <option value="lastMonth">Last Month</option>
         <option value="all">All Activity</option>
       </select>
       </div>
       <div
-        ng-repeat="tx in cardTxs | orderBy: ['pending','-timestamp']"
-        class="item row"
-        ng-init="bitpayCard.getMerchantInfo(tx)">
-        <div class="col col-10" ng-init="icon = bitpayCard.getIconName(tx)">
-          <img class="m5t" ng-src="img/mcc-icons/{{icon}}.svg" width="22">
+        ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
+        class="item row">
+        <div class="col col-10">
+          <img class="m5t" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="22">
         </div>
 
         <div class="col">
@@ -69,10 +68,8 @@
             {{tx.merchant.city}}, {{tx.merchant.state}}
           </div>
         </div>
-        <div
-          ng-init="desc = bitpayCard.processDescription(tx)"
-          class="col size-12">
-          {{desc}}
+        <div class="col size-12">
+          {{tx.desc}}
         </div>
         <div class="col">
           <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
@@ -85,7 +82,8 @@
                'text-gray': tx.amount.indexOf('-') == -1 && tx.pending}">
             {{tx.amount | currency:'$':2 }}
           </div>
-          <time>{{tx.timestamp | amTimeAgo}}</time>
+          <time ng-if="!tx.pending">{{tx.timestamp | amCalendar}}</time>
+          <span ng-if="tx.pending" class="tu" translate>Pending</span>
         </div>
       </div>
     </div>
