@@ -70,7 +70,7 @@
       </div>
 
       <div class="item item-icon-left"
-        ng-click="openExternalLink('https://' + (getShortNetworkName() == 'test' ? 'test-' : '', 'blockchain transaction') + 'insight.bitpay.com/tx/' + btx.txid, yes, 'View Transaction on Insight', 'Would you like to view this transaction on the Insight blockchain explorer? ', 'Open Insight', 'Go back')">
+        ng-click="openExternalLink('https://' + (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid, true, 'View Transaction on Insight', 'Would you like to view this transaction on the Insight blockchain explorer? ', 'Open Insight', 'Go back')">
         <i class="icon ion-ios-upload-outline"></i>
         <span class="text-gray" translate>View transaction on the blockchain</span>
       </div>
