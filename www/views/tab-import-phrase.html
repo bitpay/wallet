@@ -12,20 +12,16 @@
 
 <form name="importForm12" ng-submit="importMnemonic(importForm12)" novalidate>
   <div class="list settings-list settings-input-group">
-    <div class="row">
-      <div class="col col-90">
-        <label class="item item-input item-stacked-label no-border">
-          <span class="input-label" translate>Type the Recovery Phrase (usually 12 words)</span>
-          <textarea ng-model="formData.words"
-                    rows="3"
-                    autocapitalize="off"
-                    spellcheck="false"></textarea>
-        </label>
-      </div>
-      <div class="col text-center">
+    <label class="item item-input item-stacked-label no-border">
+      <span class="input-label" translate>Type the Recovery Phrase (usually 12 words)</span>
+      <div class="qr-scan-icon">
         <qr-scanner class="qr-icon size-24" on-scan="processWalletInfo(data)"></qr-scanner>
+        <textarea ng-model="formData.words"
+                  rows="3"
+                  autocapitalize="off"
+                  spellcheck="false"></textarea>
       </div>
-    </div>
+    </label>
 
     <div class="item item-divider"></div>
 

@@ -5,7 +5,7 @@
   </div>
 
   <form name="exportForm" novalidate>
-    <div class="card">
+    <div class="list">
       <label class="item item-input item-stacked-label">
         <span class="input-label" translate>Set up a password</span>
         <input type="password" placeholder="{{'Your password'|translate}}" ng-model="formData.password">
@@ -15,75 +15,77 @@
         <span class="input-label" translate>Repeat the password</span>
         <input type="password" placeholder="{{'Repeat password'|translate}}" ng-model="formData.repeatpassword">
       </label>
+
+      <div ng-show="canSign">
+        <div class="item item-divider"></div>
+        <a class="item" ng-click="showAdvChange()">
+          <span translate ng-show="!showAdv">Show advanced options</span>
+          <span translate ng-show="showAdv">Hide advanced options</span>
+        </a>
+
+        <ion-checkbox ng-show="showAdv" ng-model="formData.noSignEnabled" class="checkbox-balanced" ng-change="noSignEnabledChange(); resizeView()">
+          <span class="toggle-label" translate>Do not include private key</span>
+        </ion-checkbox>
+      </div>
+
+      <div class="box-notification warning ng-hide" ng-show="!canSign">
+        <span class="size-14">
+          <i class="ion-alert-circled"></i>
+          <span translate>
+            WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+          </span>
+        </span>
+      </div>
+
+      <div class="box-notification warning ng-hide" ng-show="formData.noSignEnabled">
+        <span class="size-14">
+          <i class="ion-alert-circled"></i>
+          <span translate>
+          WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+          </span>
+        </span>
+      </div>
     </div>
-  </form>
 
-  <div class="list card" ng-show="canSign">
-    <a class="item" ng-click="showAdvChange()">
-      <span translate ng-show="!showAdv">Show advanced options</span>
-      <span translate ng-show="showAdv">Hide advanced options</span>
-    </a>
-
-    <ion-checkbox ng-show="showAdv" ng-model="formData.noSignEnabled" class="checkbox-balanced" ng-change="noSignEnabledChange(); resizeView()">
-      <span class="toggle-label" translate>Do not include private key</span>
-    </ion-checkbox>
-  </div>
-
-  <div class="box-notification error ng-hide" ng-show="!canSign">
-    <span class="size-14">
-      <i class="ion-alert-circled"></i>
-      <span translate>
-        WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
-      </span>
-    </span>
-  </div>
-
-  <div class="box-notification error ng-hide" ng-show="formData.noSignEnabled">
-    <span class="size-14">
-      <i class="ion-alert-circled"></i>
-      <span translate>
-      WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
-      </span>
-    </span>
-  </div>
-
-  <button
-    ng-click="downloadWalletBackup()"
-    class="button button-standard button-primary"
-    ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
-    ng-style="{'background-color':wallet.color}"
-    ng-show="!isSafari && !isCordova">
-    <i class="fi-download"></i>
-    <span translate>Download</span>
-  </button>
-
-  <button
-    ng-click="viewWalletBackup()"
-    class="button button-standard button-primary"
-    ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
-    ng-style="{'background-color':wallet.color}"
-    ng-show="isSafari && !isCordova">
-    <i class="fi-eye"></i>
-    <span translate>View</span>
-  </button>
-
-  <div ng-show="isCordova">
-    <h4 translate>Export options</h4>
-    <button class="button button-standard button-primary"
+    <button
+      ng-click="downloadWalletBackup()"
+      class="button button-standard button-primary"
       ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
       ng-style="{'background-color':wallet.color}"
-      ng-click="copyWalletBackup()">
-      <i class="fi-clipboard-pencil"></i>
-      <span translate>Copy to clipboard</span></button>
-    <button class="button button-standard button-primary" ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
+      ng-show="!isSafari && !isCordova">
+      <i class="fi-download"></i>
+      <span translate>Download</span>
+    </button>
+
+    <button
+      ng-click="viewWalletBackup()"
+      class="button button-standard button-primary"
+      ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
       ng-style="{'background-color':wallet.color}"
-      ng-click="sendWalletBackup()"><i class="fi-mail"></i>
-      <span translate>Send by email</span></button>
-  </div>
+      ng-show="isSafari && !isCordova">
+      <i class="fi-eye"></i>
+      <span translate>View</span>
+    </button>
+
+    <div ng-show="isCordova">
+      <h4 translate>Export options</h4>
+      <button class="button button-standard button-primary"
+        ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
+        ng-style="{'background-color':wallet.color}"
+        ng-click="copyWalletBackup()">
+        <i class="fi-clipboard-pencil"></i>
+        <span translate>Copy to clipboard</span></button>
+      <button class="button button-standard button-primary" ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
+        ng-style="{'background-color':wallet.color}"
+        ng-click="sendWalletBackup()"><i class="fi-mail"></i>
+        <span translate>Send by email</span></button>
+    </div>
+  </form>
 </div>
 
-<div ng-show="backupWalletPlainText" class="text-center card">
+<div ng-show="backupWalletPlainText" class="text-center list">
   <label class="item item-input item-stacked-label">
+    <span class="input-label" translate>Backup wallet</span>
     <textarea rows="12">{{backupWalletPlainText}}</textarea>
   </label>
   <div class="item text-gray item-icon-left">
