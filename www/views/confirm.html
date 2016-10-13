@@ -52,7 +52,7 @@
         <a class="item single-line" ng-hide="insuffientFunds">
           <span class="label" translate>Fee: {{feeLevel}}</span>
           <span class="item-note">
-            {{fee}}
+            {{fee || '...'}}
           </span>
         </a>
       </div>
