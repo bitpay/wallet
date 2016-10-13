@@ -59,6 +59,10 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
+  $scope.openScanner = function() {
+    $state.go('tabs.scan');
+  }
+
   $scope.showMore = function() {
     currentContactsPage++;
     updateList();
@@ -106,7 +110,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
 
   var updateHasFunds = function() {
-    $scope.hasFunds = true;
+    $scope.hasFunds = null;
 
     var wallets = profileService.getWallets({
       onlyComplete: true,
@@ -127,16 +131,16 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           $log.error(err);
           return;
         }
-        if (status.availableBalanceSat && status.availableBalanceSat > 0) {
+
+        if (status.availableBalanceSat) {
           $scope.hasFunds = true;
         }
-        else $scope.hasFunds = false;
         if (index == wallets.length) {
           $scope.hasFunds = $scope.hasFunds || false;
+          $timeout(function() {
+            $scope.$apply();
+          });
         }
-        $timeout(function() {
-          $scope.$apply();
-        })
       });
     });
   };

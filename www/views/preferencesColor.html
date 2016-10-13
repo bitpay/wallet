@@ -1,15 +1,15 @@
-<ion-view>
+<ion-view id="settings-color" class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
-      {{'Color'|translate}}
+      {{'Wallet Color'|translate}}
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <ion-radio ng-repeat="c in colorList" ng-value="c" ng-model="currentColor" ng-click="save(c.color)">
-      <span ng-style="{'color': c.color}">&block;</span>
-      <span> {{c.name}}</span>
+    <ion-radio ng-repeat="c in colorList" ng-value="c.color" ng-model="currentColor" ng-click="save(c.color)">
+      <span ng-style="{'background-color': c.color, 'color' : c.color}" class="settings-color-block"></span>
+      <span class="settings-color-name"> {{c.name}}</span>
     </ion-radio>
   </ion-content>
 </ion-view>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -350,4 +350,16 @@ angular.module('copayApp.controllers').controller('importController',
         fromOnboarding: $stateParams.fromOnboarding
       });
     };
+
+    $scope.showAdvChange = function() {
+      $scope.showAdv = !$scope.showAdv;
+      $scope.resizeView();
+    };
+
+    $scope.resizeView = function() {
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      });
+    };
+
   });

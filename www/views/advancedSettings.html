@@ -6,7 +6,7 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="list">
+    <div class="settings-list list">
       <div class="item item-divider" translate>Enabled Integrations</div>
 
       <ion-toggle ng-show="!isWP" ng-model="bitpayCardEnabled.value" toggle-class="toggle-balanced" ng-change="bitpayCardChange()">
@@ -30,7 +30,7 @@
 
       <div class="item item-divider" translate>Wallet Operation</div>
 
-      <ion-toggle ng-model="spendUnconfirmed.value" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
+      <ion-toggle class="has-comment" ng-model="spendUnconfirmed.value" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
       <div class="comment">
@@ -38,11 +38,13 @@
       </div>
 
       <div class="item item-divider" translate>Experimental Features</div>
-      <div class="divider-comment">
-        <span translate>These features aren't quite ready for primetime. They may change, stop working, or disappear at any time.</span>
+      <div class="settings-explaination">
+        <div class="settings-description" translate>
+          These features aren't quite ready for primetime. They may change, stop working, or disappear at any time.
+        </div>
       </div>
 
-      <ion-toggle ng-show="!isWP" ng-model="recentTransactionsEnabled.value" toggle-class="toggle-balanced" ng-change="recentTransactionsChange()">
+      <ion-toggle class="has-comment" ng-show="!isWP" ng-model="recentTransactionsEnabled.value" toggle-class="toggle-balanced" ng-change="recentTransactionsChange()">
         <span class="toggle-label" translate>Recent Transaction Card</span>
       </ion-toggle>
       <div class="comment">

@@ -2,7 +2,7 @@
 $royal: #1e3186;
 $soft-blue: #647ce8;
 $fill-blue: #D5DFFF;
-$subtle-gray: #f7f7f7;
+$subtle-gray: darken(#fff, 5%);
 $roboto: "Roboto", sans-serif;
 $roboto-light: "Roboto-Light", sans-serif-light;
 $success-green: #17ae8c;
@@ -10,7 +10,7 @@ $warning-orange: #ffa500;
 $dark-gray: #445;
 $mid-gray: #667;
 $light-gray: #9b9bab;
-$subtle-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+$subtle-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 $hovering-box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
 $subtle-radius: 3px;
 $visible-radius: 6px;
@@ -18,21 +18,34 @@ $unmistakable-radius: 12px;
 
 /* Set ionic variables */
 
-$positive: $soft-blue;
+$positive:                        $soft-blue;
 
-$font-size-base: 16px;
-$font-size-small: 12px;
-$font-family-sans-serif: $roboto;
-$font-family-light-sans-serif: $roboto-light;
+$font-size-base:                  16px;
+$font-size-small:                 12px;
+$font-family-sans-serif:          $roboto;
+$font-family-light-sans-serif:    $roboto-light;
 
-$button-border-radius: $visible-radius;
-$button-height: 52px;
-$button-padding: 16px;
+$button-border-radius:            $visible-radius;
+$button-height:                   52px;
+$button-padding:                  16px;
 
-$base-background-color: $subtle-gray;
+$base-background-color:           $subtle-gray;
 
-$item-default-active-bg: $subtle-gray;
-$item-icon-font-size: 24px;
+$item-default-active-bg:          $subtle-gray;
+$item-icon-font-size:             24px;
+
+$input-color:                     $dark-gray;
+$input-border:                    $light-gray;
+$input-label-color:               $mid-gray;
+$input-color-placeholder:         lighten($dark-gray, 40%);
+
+$item-default-bg:                 #ffffff;
+$item-default-border:             $subtle-gray;
+$item-default-text:               $dark-gray;
+$item-default-active-bg:          darken(#ffffff, 7%);
+$item-default-active-border:      darken($subtle-gray, 7%);
+
+$bar-default-border:              $subtle-gray;
 
 $tabs-icon-size: 22px;
 

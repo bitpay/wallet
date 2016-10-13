@@ -36,10 +36,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.data = {};
 
     var config = configService.getSync().wallet;
-    $scope.feeLevel = config.settings ? config.settings.feeLevel : '';
+    $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
 
     $scope.toAmount = parseInt($scope.toAmount);
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
+    $scope.displayAmount = getDisplayAmount($scope.amountStr);
+    $scope.displayUnit = getDisplayUnit($scope.amountStr);
 
     var networkName = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.network = networkName;
@@ -65,6 +67,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (err || !status) {
           $log.error(err);
         } else {
+          w.status = status;
           if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
           if (status.availableBalanceSat > $scope.toAmount) {
             filteredWallets.push(w);
@@ -75,6 +78,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (++index == wallets.length) {
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
+            setWallet($scope.wallets[0]);
           } else {
 
             if (!enoughFunds)
@@ -108,6 +112,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     setWallet(wallet, true);
   });
 
+  $scope.showWalletSelector = function() {
+    $scope.showWallets = true;
+  };
+
+  $scope.onWalletSelect = function(wallet) {
+    setWallet(wallet);
+  };
+
 
   $scope.showDescriptionPopup = function() {
     var message = gettextCatalog.getString('Add description');
@@ -122,6 +134,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       }, 100);
     });
   };
+
+  function getDisplayAmount(amountStr) {
+    return amountStr.split(' ')[0];
+  }
+
+  function getDisplayUnit(amountStr) {
+    return amountStr.split(' ')[1];
+  }
 
   var setFromPayPro = function(uri, cb) {
     if (!cb) cb = function() {};
@@ -254,7 +274,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txp.message = description;
     txp.payProUrl = paypro;
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
-    txp.feeLevel = config.settings.feeLevel || 'normal';
+    txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     txp.dryRun = dryRun;
 
     walletService.createTx(wallet, txp, function(err, ctxp) {

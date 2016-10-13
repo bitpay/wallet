@@ -6,21 +6,13 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="row" ng-show="needsBackup">
-      <div class="columns">
-        <h4></h4>
-        <div class="size-14 text-warning m20b">
-          <i class="fi-alert size-12"></i>
-          <span class="text-warning" translate>Backup Needed</span>.
-          <span translate>
-            Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
-          </span>
+    <div class="settings" class="row" ng-show="needsBackup">
+      <div class="settings-explaination">
+        <div class="settings-heading" translate>Backup Needed</div>
+        <div class="settings-description" translate>
+          Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
         </div>
-        <div class="text-center m20t">
-          <a class="button outline round dark-gray" href ui-sref="tabs.preferences.preferencesAdvanced">
-            <span translate>Preferences</span>
-          </a>
-        </div>
+        <a class="button button-standard button-primary" href ui-sref="tabs.preferences.preferencesAdvanced" translate>Preferences</a>
       </div>
     </div>
 

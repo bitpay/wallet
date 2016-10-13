@@ -19,7 +19,8 @@ $button-secondary-border:          transparent;
 $button-secondary-active-bg:       darken($subtle-gray, 5%);
 $button-secondary-active-border:   transparent;
 
-%button-standard {
+%button-standard,
+click-to-accept {
   width: 85%;
   max-width: 300px;
   margin-left: auto;
@@ -35,7 +36,8 @@ $button-secondary-active-border:   transparent;
     @include button-outline($button-primary-bg);
   }
   &.button-primary,
-  &.button-secondary {
+  &.button-secondary,
+  &.button-assertive {
     &.button-standard {
       @extend %button-standard;
       & + .button-standard {
