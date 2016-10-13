@@ -15,19 +15,6 @@ ion-tabs.ion-tabs-transparent {
   background: none transparent;
 }
 
-// Some overrides for the card class which can't be set by variable
-.card, .list {
-  .icon {
-    color: $light-gray;
-  }
-  & > .item-heading {
-    font-weight: 700;
-    .icon {
-      color: $mid-gray;
-    }
-  }
-}
-
 // .placeholder-icon padding cannot be modified by a variable
 $placeholder-icon-padding: 10px;
 .placeholder-icon {
@@ -37,4 +24,9 @@ $placeholder-icon-padding: 10px;
   &:last-child {
     padding-left: $placeholder-icon-padding;
   }
+}
+
+// .item-input-wrapper background cannot be modified by a variable
+.item-input-wrapper {
+  background: none transparent;
 }

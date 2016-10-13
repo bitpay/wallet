@@ -41,7 +41,7 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
 
   ret.hasClick = false;
 
-  if($window.sessionStorage.getItem('hasClick')) {
+  if ($window.sessionStorage.getItem('hasClick')) {
     ret.hasClick = true;
   }
 

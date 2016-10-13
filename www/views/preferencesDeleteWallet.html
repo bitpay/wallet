@@ -16,6 +16,10 @@
         </p>
       </div>
     </div>
-    <button class="button button-block button-assertive" ng-click="showDeletePopup()"translate>Delete <span ng-show="alias">{{alias}}</span>{{walletName}}</button>
+    <div class="padding">
+      <button class="button button-standard button-assertive" ng-click="showDeletePopup()">
+        {{'Delete'|translate}} <span ng-show="alias">{{alias}}</span>{{walletName}}
+      </button>
+    </div>
   </ion-content>
 </ion-view>

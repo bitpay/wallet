@@ -1,7 +1,13 @@
 .copayers-secret {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   margin: 10px;
+  white-space: -moz-pre-wrap !important;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  white-space: -webkit-pre-wrap;
+  word-break: break-all;
+  white-space: normal;
 }

@@ -34,6 +34,9 @@ angular.module('copayApp.controllers').controller('tourController',
         var rate = rateService.toFiat(btcAmount * 1e8, localCurrency);
         $scope.localCurrencySymbol = '$';
         $scope.localCurrencyPerBtc = $filter('formatFiatAmount')(parseFloat(rate.toFixed(2), 10));
+        $timeout(function() {
+          $scope.$apply();
+        })
       });
     });
 
@@ -50,7 +53,7 @@ angular.module('copayApp.controllers').controller('tourController',
               ongoingProcess.set('creatingWallet', false);
               popupService.showAlert(
                 gettextCatalog.getString('Cannot Create Wallet'), err,
-                 function() {
+                function() {
                   retryCount = 0;
                   return $scope.createDefaultWallet();
                 }, gettextCatalog.getString('Retry'));

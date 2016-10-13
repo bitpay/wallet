@@ -2,8 +2,8 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
-  <ion-content scroll="false">
-    <div class="ng-hide zero-state" ng-show="!hasFunds">
+  <ion-content scroll="false" class="ng-hide" ng-show="!hasFunds">
+    <div class="zero-state">
       <i class="icon zero-state-icon">
         <img src="img/tab-icons/ico-send-selected.svg"/>
       </i>
@@ -11,9 +11,9 @@
       <div class="zero-state-description" ng-show="hasWallets" translate>To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service.</div>
       <div class="zero-state-description" ng-show="!hasWallets" translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</div>
       <div class="zero-state-cta">
-        <button class="button button-standard button-primary" ng-click="buyBitcoin()" ng-show="hasWallets">Buy Bitcoin</button>
-        <button class="button button-standard button-primary" ng-click="createWallet()" ng-show="!hasWallets">Create bitcoin wallet</button>
-        <button class="button button-standard button-secondary" ui-sref="tabs.receive" ng-show="hasWallets">Show bitcoin address</button>
+        <button class="button button-standard button-primary" ng-click="buyBitcoin()" ng-show="hasWallets" translate>Buy Bitcoin</button>
+        <button class="button button-standard button-primary" ng-click="createWallet()" ng-show="!hasWallets" translate>Create bitcoin wallet</button>
+        <button class="button button-standard button-secondary" ui-sref="tabs.receive" ng-show="hasWallets" translate>Show bitcoin address</button>
       </div>
     </div>
   </ion-content>
@@ -22,7 +22,7 @@
     <label class="item item-input bitcoin-address">
       <i class="icon icon-svg placeholder-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
       <div class="qr-scan-icon" ng-style="{'width': '100%'}">
-        <a ui-sref="tabs.scan" ng-style="{'top': '6px'}">
+        <a on-tap="openScanner()" ng-style="{'top': '6px'}">
           <i class="icon ion-qr-scanner"></i>
         </a>
         <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>

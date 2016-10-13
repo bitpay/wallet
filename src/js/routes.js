@@ -947,22 +947,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         });
 
         $ionicPlatform.on('resume', function() {
-          // Nothing tot do
+          // Nothing to do
         });
 
         $ionicPlatform.on('menubutton', function() {
           window.location = '#/preferences';
         });
-
-        setTimeout(function() {
-          navigator.splashscreen.hide();
-        }, 500);
       }
 
 
       $log.info('Init profile...');
       // Try to open local profile
       profileService.loadAndBindProfile(function(err) {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true
+        });
         if (err) {
           if (err.message && err.message.match('NOPROFILE')) {
             $log.debug('No profile... redirecting');

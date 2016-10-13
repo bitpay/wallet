@@ -1,17 +1,6 @@
-.settings {
-  .item {
-    color: #444;
-    border-color: rgba(221, 221, 221, 0.3);
-  }
-}
-
 #advanced-settings {
   .list {
     .item {
-      color: #444;
-      border-top: none;
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
       &:before {
         display: block;
         position: absolute;
@@ -23,31 +12,19 @@
         content: '';
       }
       &.item-divider {
-        color: rgba(74, 74, 74, .8);
-      }
-      &.item-heading {
-        &:before {
-          top: 99%
-        }
-      }
-      &:nth-child(2) {
-        &:before {
-          width: 0;
-        }
+        color: $dark-gray;
       }
       .item-note {
-        color: rgb(58, 58, 58);
+        color: $dark-gray;
       }
+    }
+    .has-comment {
+      border-bottom: 0 none;
     }
     .comment {
       padding: 15px;
       background-color: #fff;
-      color: rgba(74, 74, 74, 0.8);
-    }
-    .divider-comment {
-      padding: 15px;
-      color: rgba(74, 74, 74, 0.8);
-      font-size: 15px;
+      color: $mid-gray;
     }
   }
 }
