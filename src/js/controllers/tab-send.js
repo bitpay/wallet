@@ -59,6 +59,10 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
+  $scope.openScanner = function() {
+    $state.go('tabs.scan');
+  }
+
   $scope.showMore = function() {
     currentContactsPage++;
     updateList();
