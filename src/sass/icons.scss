@@ -1,13 +1,20 @@
 .icon.bp-arrow-right {
   @extend .ion-ios-arrow-right;
+  @extend %just-a-hint;
 }
 
 .icon.bp-arrow-down {
   @extend .ion-ios-arrow-down;
+  @extend %just-a-hint;
 }
 
 .icon.bp-arrow-up {
   @extend .ion-ios-arrow-up;
+  @extend %just-a-hint;
+}
+
+%just-a-hint {
+  opacity: 0.2;
 }
 
 .item.item-big-icon-left {
