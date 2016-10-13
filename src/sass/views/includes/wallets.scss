@@ -7,6 +7,7 @@
     .card {
       max-width: 350px;
       box-shadow:$subtle-box-shadow;
+      padding:0;
       @media (min-width: 500px) {
         & {
           width: 350px;
@@ -15,7 +16,7 @@
         }
       }
       .item{
-        padding:.7rem 1.5rem;
+        padding:.6rem;
         span{
           clear:both;
           width: 100%;
@@ -23,7 +24,7 @@
           &.wallet-name{
             margin-top:10px;
             margin-bottom:5px;
-            font-size:14px;
+            font-size:13px;
           }
         }
         .big-icon-svg{
@@ -50,13 +51,14 @@
       }
       &.swiper-slide-prev,
       &.swiper-slide-next {
-        opacity: .2;
+        opacity: .3;
+        transform: scale(.8);
       }
       &.swiper-slide-prev {
-        left: -5%;
+        left: 10vw;
       }
       &.swiper-slide-next {
-        left: 4%;
+        left: -10vw;
       }
     }
   }
