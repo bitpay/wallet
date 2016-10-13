@@ -160,10 +160,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $log.debug('Fetch PayPro Request...', uri);
 
     ongoingProcess.set('fetchingPayPro', true);
+    //debugger;
+    var uri = 'https://bitpay.com/i/NhjqGZo1RNoHxiHxK7VBuM';
+    uri = 'https://test.bitpay.com:443/i/LCy5Y7hxmEbkprAK27odAU';
     wallet.fetchPayPro({
       payProUrl: uri,
     }, function(err, paypro) {
-
+      console.log('paypro', paypro);
       ongoingProcess.set('fetchingPayPro', false);
 
       if (err) {

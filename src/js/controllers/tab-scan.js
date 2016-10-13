@@ -11,6 +11,10 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   };
   $scope.scannerStates = scannerStates;
 
+  $timeout(function() {
+    $scope.showActionSheet = true;
+  }, 2000);
+
   function _updateCapabilities(){
     var capabilities = scannerService.getCapabilities();
     $scope.scannerIsAvailable = capabilities.isAvailable;
