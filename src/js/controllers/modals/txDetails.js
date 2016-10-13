@@ -24,7 +24,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     updateMemo();
     initActionList();
     getAlternativeAmount();
-console.log('[txDetails.js.16:btx:]',$scope.btx, $scope.btx.addressTo); //TODO
   };
 
   function updateMemo() {
