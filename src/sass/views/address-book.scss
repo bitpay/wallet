@@ -1,21 +1,14 @@
-#add-address{
-  .list{
-    background: #ffffff;
+#add-address {
+  .zero-state-cta {
+    padding-bottom: 3vh;
+  }
+  .list {
+    background-color: #fff;
   }
 }
 #view-address-book {
-  .scroll{
+  .scroll {
     height:100%;
-  }
-  #add-contact{
-    min-width: 300px;
-    img{
-      width: 10rem;
-      display: inline-block;
-    }
-    a{
-      text-decoration: none;
-    }
   }
   .list {
     .item {
@@ -66,5 +59,27 @@
         }
       }
     }
+  }
+}
+
+#address-book-view {
+  .bar.bar-royal {
+    border: 0 transparent;
+  }
+  .gravatar-content {
+    position: relative;
+    height: 70px;
+    border-color: $royal;
+    background-color: $royal;
+    padding-top: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+  .address-book-field-label {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    display: block;
+    color: $mid-gray;
   }
 }

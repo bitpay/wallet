@@ -1,37 +1,31 @@
-<ion-view>
+<ion-view id="address-book-view">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>
-      <span translate>Addressbook</span>
+      <span>{{addressbookEntry.name}}</span>
     </ion-nav-title>
   </ion-nav-bar>
-
-  <ion-content>
-
+  <ion-content scroll="false">
     <div class="gravatar-content">
       <gravatar name="{{addressbookEntry.name}}" width="80" email="{{addressbookEntry.email}}"></gravatar>
     </div>
-
-    <div class="card">
+    <div class="list">
       <div class="item item-text-wrap">
-        <h3 translate>Name</h3>
-        <strong>{{addressbookEntry.name}}</strong>
+        <span class="address-book-field-label" translate>Name</span>
+        <span>{{addressbookEntry.name}}</span>
       </div>
       <div class="item item-text-wrap" ng-show="addressbookEntry.email">
-        <h3 translate>Email</h3>
-        <strong>{{addressbookEntry.email}}</strong>
+        <span class="address-book-field-label" translate>Email</span>
+        <span>{{addressbookEntry.email}}</span>
       </div>
       <div class="item item-text-wrap">
-        <h3 translate>Address</h3>
-        <strong>{{addressbookEntry.address}}</strong>
+        <span class="address-book-field-label" translate>Address</span>
+        <span>{{addressbookEntry.address}}</span>
       </div>
     </div>
-
-    <button class="button button-standard button-primary"
-            ng-click="sendTo()" translate>
+    <button class="button button-standard button-primary" ng-click="sendTo()" translate>
       Send Money
     </button>
-
   </ion-content>
 </ion-view>

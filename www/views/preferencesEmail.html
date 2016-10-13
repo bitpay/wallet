@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Email Notifications'|translate}}
@@ -7,10 +7,15 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
+    <div class="settings-explaination">
+      <div class="settings-description" translate>
+        You'll receive email notifications about payments sent and received from this wallet.
+      </div>
+    </div>
     <form name="emailForm" ng-submit="save(emailForm)" novalidate>
-      <div class="card list">
+      <div class="list settings-input-group">
         <label class="item item-input item-stacked-label">
-          <span class="input-label" transalate>Email for wallet notifications</span>
+          <span class="input-label" translate>Email Address</span>
           <input type="email" id="email" name="email" ng-model="email.value" required></input>
         </label>
       </div>
