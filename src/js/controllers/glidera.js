@@ -5,8 +5,8 @@ angular.module('copayApp.controllers').controller('glideraController',
 
     $scope.network = glideraService.getEnvironment();
 
-    $scope.openExternalLink = function(url, target) {
-      externalLinkService.open(url, target);
+    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 
     var initGlidera = function(accessToken) {
@@ -27,7 +27,9 @@ angular.module('copayApp.controllers').controller('glideraController',
         }
         $scope.token = glidera.token;
         $scope.permissions = glidera.permissions;
-        $scope.update({fullUpdate: true});
+        $scope.update({
+          fullUpdate: true
+        });
       });
     };
 
@@ -113,7 +115,7 @@ angular.module('copayApp.controllers').controller('glideraController',
       });
     };
 
-    $scope.$on("$ionicView.beforeEnter", function(event, data){
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       initGlidera();
     });
 

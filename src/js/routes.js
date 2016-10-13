@@ -970,8 +970,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             if (lodash.isEmpty(profileService.getWallets())) {
               $log.debug('No wallets and no disclaimer... redirecting');
               $state.go('onboarding.welcome');
-            }
-            else {
+            } else {
               $log.debug('Display disclaimer... redirecting');
               $state.go('onboarding.disclaimer', {
                 resume: true
@@ -980,8 +979,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           } else {
             throw new Error(err); // TODO
           }
-        }
-        else {
+        } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
           scannerService.gentleInitialize();
