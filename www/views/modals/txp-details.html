@@ -11,7 +11,7 @@
     </button>
   </ion-header-bar>
 
-  <ion-content ng-init="updateCopayerList()" ng-class="{'slide-to-pay': tx.pendingForUs && canSign && isCordova}">
+  <ion-content ng-init="updateCopayerList()" ng-class="{'slide-to-pay': tx.pendingForUs && canSign && !hasClick}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
@@ -152,7 +152,7 @@
 
     <click-to-accept
       ng-click="onConfirm(statusChangeHandler)"
-      ng-if="tx.pendingForUs && canSign && !paymentExpired && !isCordova"
+      ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
       click-send-status="sendStatus">
       Click to accept
     </click-to-accept>
@@ -168,7 +168,7 @@
   </ion-content>
 
   <slide-to-accept
-    ng-if="tx.pendingForUs && canSign && !paymentExpired && isCordova"
+    ng-if="tx.pendingForUs && canSign && !paymentExpired && !hasClick"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus">
     Slide to accept
