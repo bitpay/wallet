@@ -1000,7 +1000,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     // not supported yet
     if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
-      return null;
+      return cb(gettextCatalog.getString('Exporting via QR not supported for this wallet'));
 
     var keys = root.getKeysWithPassword(wallet, password);
 

@@ -16,22 +16,14 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     function prepareWallet(cb) {
-      if ($scope.password) return cb($scope.password);
+      if ($scope.password) return cb(null, $scope.password);
 
       walletService.prepare(wallet, function(err, password) {
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return cb();
-        }
+        if (err) return cb(err);
         $scope.password = password;
 
         walletService.getEncodedWalletInfo(wallet, $scope.password, function(err, code) {
-          if (err) {
-            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not decrypt private key'));
-            return cb(password);
-          }
-
-          $scope.file.value = false;
+          if (err) return cb(err);
 
           if (!code)
             $scope.formData.supported = false;
@@ -40,10 +32,7 @@ angular.module('copayApp.controllers').controller('exportController',
             $scope.formData.exportWalletInfo = code;
           }
 
-          $timeout(function() {
-            $scope.$apply();
-          });
-          return cb(password);
+          return cb(null, password);
         });
       });
     };
@@ -57,9 +46,19 @@ angular.module('copayApp.controllers').controller('exportController',
         return;
       }
 
-      prepareWallet(function(password) {
+      prepareWallet(function(err, password) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
         if (!password) return;
+
+        $scope.file.value = false;
         $scope.password = password;
+
+        $timeout(function() {
+          $scope.$apply();
+        });
       });
     };
 
@@ -72,7 +71,6 @@ angular.module('copayApp.controllers').controller('exportController',
       $scope.showAdvanced = false;
       $scope.wallet = wallet;
       $scope.canSign = wallet.canSign();
-
     };
 
     /*
@@ -98,7 +96,11 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.downloadWalletBackup = function() {
-      prepareWallet(function(password) {
+      prepareWallet(function(err, password) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
         if (!password) return;
 
         $scope.getAddressbook(function(err, localAddressBook) {
@@ -140,21 +142,30 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.getBackup = function(cb) {
-      $scope.getAddressbook(function(err, localAddressBook) {
+      prepareWallet(function(err, password) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
-          return cb(null);
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
         }
-        var opts = {
-          noSign: $scope.formData.noSignEnabled,
-          addressBook: localAddressBook
-        };
+        if (!password) return;
 
-        var ew = backupService.walletExport($scope.formData.password, opts);
-        if (!ew) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
-        }
-        return cb(ew);
+        $scope.getAddressbook(function(err, localAddressBook) {
+          if (err) {
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
+            return cb(null);
+          }
+          var opts = {
+            noSign: $scope.formData.noSignEnabled,
+            addressBook: localAddressBook,
+            password: password
+          };
+
+          var ew = backupService.walletExport($scope.formData.password, opts);
+          if (!ew) {
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
+          }
+          return cb(ew);
+        });
       });
     };
 
