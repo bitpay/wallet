@@ -17,6 +17,9 @@
     color: $mid-gray;
     margin: 1rem 0;
   }
+  &-description-disabled {
+    color: cadetblue;
+  }
   .setting-title, .setting-value {
     display: block;
     overflow: hidden;
