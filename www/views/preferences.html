@@ -1,7 +1,7 @@
 <ion-view class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
-      {{'Wallet Preferences'|translate}}
+      {{'Wallet Settings'|translate}}
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -24,8 +24,8 @@
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
         <span translate>Color</span>
-        <span class="item-note" ng-style="{'color': wallet.color}">
-          &block;
+        <span class="item-note">
+          <span class="settings-color-block" ng-style="{'background-color': wallet.color, 'color': wallet.color}"></span>
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>

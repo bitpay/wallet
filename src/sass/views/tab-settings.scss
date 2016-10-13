@@ -61,6 +61,7 @@
             width: 25px;
             height: 25px;
             padding:.1rem;
+            box-shadow: 0px 1px 5px rgba($mid-gray, .1);
           }
         }
       }
@@ -111,4 +112,15 @@
     border-width: 2px 0;
     border-style: solid;
   }
+}
+.settings-color-name {
+  margin-left: 1rem;
+}
+.settings-color-block {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px;
+  float: left; // we don't want these indicators to affect their container's sizing
 }
