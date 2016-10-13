@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore) {
+angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog) {
 
   var root = {};
 
@@ -61,12 +61,20 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Plain URL
     } else if (/^https?:\/\//.test(data)) {
-      $state.go('tabs.send');
-      $timeout(function() {
-        $state.transitionTo('tabs.send.confirm', {paypro: data});
-      }, 100);
-      return true;
+      console.log('in here brah');
 
+      getPayProDetails(data, function(err, details) {
+        if(err) {
+          console.log('getPayProDetails err', err);
+          return;
+        }
+        console.log('paypro details', details);
+        $state.go('tabs.send');
+        $timeout(function() {
+          $state.transitionTo('tabs.send.confirm', {paypro: data});
+        }, 100);
+        return true;
+      });
     // Plain Address
     } else if (bitcore.Address.isValid(data, 'livenet')) {
       $state.go('tabs.send');
@@ -106,6 +114,60 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     return false;
 
+  };
+
+  function getPayProDetails(uri, cb) {
+    if (!cb) cb = function() {};
+
+    var wallet = profileService.getWallets({
+      onlyComplete: true
+    })[0];
+
+    if (!wallet) return cb();
+
+    if (platformInfo.isChromeApp) {
+      popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
+      return cb(true);
+    }
+
+    $log.debug('Fetch PayPro Request...', uri);
+
+    ongoingProcess.set('fetchingPayPro', true);
+    //debugger;
+    // uri = 'https://bitpay.com/i/NhjqGZo1RNoHxiHxK7VBuM';
+    // uri = 'https://test.bitpay.com:443/i/LCy5Y7hxmEbkprAK27odAU';
+    wallet.fetchPayPro({
+      payProUrl: uri,
+    }, function(err, paypro) {
+      console.log('paypro', paypro);
+      ongoingProcess.set('fetchingPayPro', false);
+
+      if (err) {
+        $log.warn('Could not fetch payment request:', err);
+        var msg = err.toString();
+        if (msg.match('HTTP')) {
+          msg = gettextCatalog.getString('Could not fetch payment information');
+        }
+        popupService.showAlert(msg);
+        return cb(true);
+      }
+
+      if (!paypro.verified) {
+        $log.warn('Failed to verify payment protocol signatures');
+        popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
+        return cb(true);
+      }
+
+      // $scope.toAmount = paypro.amount;
+      // $scope.toAddress = paypro.toAddress;
+      // $scope.description = paypro.memo;
+      // $scope.paypro = null;
+      //
+      // $scope._paypro = paypro;
+
+      //return initConfirm();
+      cb(null, paypro);
+    });
   };
 
   return root;
