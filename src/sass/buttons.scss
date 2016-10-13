@@ -35,7 +35,8 @@ $button-secondary-active-border:   transparent;
     @include button-outline($button-primary-bg);
   }
   &.button-primary,
-  &.button-secondary {
+  &.button-secondary,
+  &.button-assertive {
     &.button-standard {
       @extend %button-standard;
       & + .button-standard {
