@@ -99,9 +99,11 @@
          <i class="icon big-icon-svg circle">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
         </i>
-        {{item.name || item.id}}
-        <span  ng-show="item.n > 1" class="text-light">
-          {{item.m}}-of-{{item.n}}
+        <span>
+          {{item.name || item.id}}
+          <span class="size-12 text-light" ng-show="item.n > 1">
+            {{item.m}}-of-{{item.n}}
+          </span>
         </span>
         <span class="right text-light assertive" ng-show="!item.isComplete()" translate>
           Incomplete
