@@ -5,17 +5,17 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-init="file = true">
-    <div class="row text-center top-tabs">
-      <div class="col" ng-click="file = true" ng-style="file && {'border-bottom-style': 'solid'}">
+  <ion-content>
+    <div class="row text-center">
+      <div class="col" ng-click="file.value = true" ng-style="file.value && {'border-bottom': '2px solid'}">
         <span class="" translate>File/Text</span>
       </div>
-      <div class="col" ng-click="file = false" ng-style="!file && {'border-bottom-style': 'solid'}">
+      <div class="col" ng-click="generateQrCode();" ng-style="!file.value && {'border-bottom': '2px solid'}">
         <span class="" translate>QR Code</span>
       </div>
     </div>
 
-    <div ng-include="'views/tab-export-file.html'" ng-if="file"></div>
-    <div ng-include="'views/tab-export-qrCode.html'" ng-if="!file"></div>
+    <div ng-include="'views/tab-export-file.html'" ng-if="file.value"></div>
+    <div ng-include="'views/tab-export-qrCode.html'" ng-if="!file.value"></div>
   </ion-content>
 </ion-view>
