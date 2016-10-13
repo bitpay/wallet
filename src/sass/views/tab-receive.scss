@@ -15,7 +15,7 @@
     background: #fff;
     height:80%;
     article{height: 100%;position: relative;}
-    #wallet-info{
+    #bit-address{
       position: absolute;
       bottom:0;
       width:100%;
@@ -52,7 +52,7 @@
       }
     }
     .qr {
-      padding: 50px 0 20px 0;
+      padding: 13vh 0 5vh 0;
     }
     .backup {
       background-color: orange;
