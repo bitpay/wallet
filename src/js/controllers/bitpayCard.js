@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory) {
 
   var self = this;
-  $scope.dateRange = 'last30Days';
+  $scope.dateRange = { value: 'last30Days'};
   $scope.network = bitpayCardService.getEnvironment();
 
   var getFromCache = function(cb) {
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   this.update = function() {
-    var dateRange = setDateRange($scope.dateRange);
+    var dateRange = setDateRange($scope.dateRange.value);
 
     $scope.loadingHistory = true;
     bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
@@ -53,39 +53,49 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         return;
       }
 
-      self.bitpayCardTransactionHistory = history.txs;
+      var txs = lodash.clone(history.txs);
+      for (var i = 0; i < txs.length; i++) {
+        txs[i] = _getMerchantInfo(txs[i]);
+        txs[i].icon = _getIconName(txs[i]);
+        txs[i].desc = _processDescription(txs[i]);
+      }
+      self.bitpayCardTransactionHistory = txs;
       self.bitpayCardCurrentBalance = history.currentCardBalance;
 
-      var cacheHistory = {
-        balance: self.bitpayCardCurrentBalance,
-        transactions: self.bitpayCardTransactionHistory
-      };
-      bitpayCardService.setBitpayDebitCardsHistory($scope.cardId, cacheHistory, {}, function(err) {
-        if (err) $log.error(err);
-        $scope.historyCached = true;
-      });
+      if ($scope.dateRange.value == 'last30Days') {
+        $log.debug('BitPay Card: store cache history');
+        var cacheHistory = {
+          balance: history.currentCardBalance,
+          transactions: history.txs
+        };
+        bitpayCardService.setBitpayDebitCardsHistory($scope.cardId, cacheHistory, {}, function(err) {
+          if (err) $log.error(err);
+          $scope.historyCached = true;
+        });
+      }
       $timeout(function() {
         $scope.$apply();
       });
     });
   };
 
-  this.getMerchantInfo = function(tx) {
+  var _getMerchantInfo = function(tx) {
     var bpTranCodes = bitpayCardService.bpTranCodes;
     lodash.keys(bpTranCodes).forEach(function(code) {
       if (tx.type.indexOf(code) === 0) {
         lodash.assign(tx, bpTranCodes[code]);
       }
     });
+    return tx;
   };
 
-  this.getIconName = function(tx) {
+  var _getIconName = function(tx) {
     var icon = tx.mcc || tx.category || null;
     if (!icon) return 'default';
     return bitpayCardService.iconMap[icon];
   };
 
-  this.processDescription = function(tx) {
+  var _processDescription = function(tx) {
     if (lodash.isArray(tx.description)) {
       return tx.description[0];
     }

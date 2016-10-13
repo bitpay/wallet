@@ -203,11 +203,19 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     var bitpayCardCache = function() {
       bitpayCardService.getBitpayDebitCards(function(err, data) {
-        if (err || lodash.isEmpty(data)) return;
+        if (err) return;
+        if (lodash.isEmpty(data)) {
+          $scope.bitpayCards = null;
+          return;
+        }
         $scope.bitpayCards = data.cards;
       });
       bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
-        if (err || lodash.isEmpty(data)) return;
+        if (err) return;
+        if (lodash.isEmpty(data)) {
+          $scope.cardsHistory = null;
+          return;
+        }
         $scope.cardsHistory = data;
       });
     };

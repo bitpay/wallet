@@ -25,11 +25,8 @@
           <span class="payment-proposal-to" copy-to-clipboard="toAddress">
             <img ng-if="!cardId" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
-            <i ng-if="cardId" class="icon big-icon-svg">
-              <div class="bg icon-bitpay-card"></div>
-            </i>
-            <span ng-show="toName">{{toName}}</span>
-            <contact class="ellipsis" address="{{toAddress}}">{{toAddress}}</contact>
+            <span ng-if="toName">{{toName}}</span>
+            <contact ng-if="!toName" class="ellipsis" address="{{toAddress}}">{{toAddress}}</contact>
             <div ng-show="_paypro" ng-click="openPPModal(_paypro)">
               <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
               <i ng-show="!_paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
