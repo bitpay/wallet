@@ -102,7 +102,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           isWallet: item.isWallet,
           toAddress: addr,
           toName: item.name,
-          toEmail: item.email
+          toEmail: item.email,
+          toColor: item.color
         })
       });
     });
