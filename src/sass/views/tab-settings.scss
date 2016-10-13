@@ -27,7 +27,7 @@
     color: $light-gray;
     font-size: 14px;
   }
- .settings-list {
+  .settings-input-group {
     background-color: #fff;
     .item-stacked-label {
       padding: 1rem;
@@ -37,16 +37,25 @@
       font-size: 12px;
       font-weight: bold;
     }
+  }
+ .settings-list {
+    .item {
+      color: $dark-gray;
+      border-top: none;
+      padding-top: 1.3rem;
+      padding-bottom: 1.3rem;
+      &.item-divider {
+        color: $mid-gray;
+        padding-bottom: .5rem;
+        font-size: .9rem;
+      }
+    }
  }
 }
 
 #tab-settings {
   .list {
     .item {
-      color: $dark-gray;
-      border-top: none;
-      padding-top: 1.3rem;
-      padding-bottom: 1.3rem;
       .big-icon-svg {
        & > .bg{
         width:20px;
@@ -74,11 +83,6 @@
         top: 0;
         right: 0;
         content: '';
-      }
-      &.item-divider {
-        color: $mid-gray;
-        padding-bottom: .5rem;
-        font-size: .9rem;
       }
       &.item-heading {
         &:before {

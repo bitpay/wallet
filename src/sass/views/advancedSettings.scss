@@ -8,10 +8,6 @@
 #advanced-settings {
   .list {
     .item {
-      color: #444;
-      border-top: none;
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
       &:before {
         display: block;
         position: absolute;
@@ -39,15 +35,13 @@
         color: rgb(58, 58, 58);
       }
     }
+    .has-comment {
+      border-bottom: 0 none;
+    }
     .comment {
       padding: 15px;
       background-color: #fff;
       color: rgba(74, 74, 74, 0.8);
-    }
-    .divider-comment {
-      padding: 15px;
-      color: rgba(74, 74, 74, 0.8);
-      font-size: 15px;
     }
   }
 }
