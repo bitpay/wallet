@@ -55,9 +55,9 @@
     </div>
 
     <div class="list">
-      <div class="item item-icon-left" ng-show="btx.action == 'sent'">
+      <div class="item item-icon-left" ng-show="btx.action == 'sent' && !btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'">
         <i class="icon icon-svg"><img src="img/icon-bitcoin-symbol.svg"></i>
-        <div ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" copy-to-clipboard="btx.addressTo">
+        <div  copy-to-clipboard="btx.addressTo">
           <span ng-if="btx.merchant">
             <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
             <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
@@ -68,6 +68,20 @@
           </span>
         </div>
       </div>
+
+      <div ng-show="btx.hasMultiplesOutputs" class="item item-icon-right item-heading" ng-click="showMultiplesOutputs = !showMultiplesOutputs">
+        {{'Recipients'|translate}}
+          [ {{btx.recipientCount}} ]
+          
+        <i class="icon bp-arrow-up" ng-show="showMultiplesOutputs"></i>
+        <i class="icon bp-arrow-down" ng-show="!showMultiplesOutputs"></i>
+      </div>
+
+      <div class="item" ng-show="btx.hasMultiplesOutputs && showMultiplesOutputs"
+        ng-repeat="output in btx.outputs"
+        ng-include="'views/includes/output.html'">
+      </div>
+
 
       <div class="item item-icon-left"
         ng-click="openExternalLink('https://' + (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid, true, 'View Transaction on Insight', 'Would you like to view this transaction on the Insight blockchain explorer? ', 'Open Insight', 'Go back')">
@@ -118,20 +132,6 @@
         <span class="item-note">
           {{btx.merchant.pr.pd.memo}}
         </span>
-      </div>
-
-      <div ng-show="btx.hasMultiplesOutputs" class="item" ng-click="showMultiplesOutputs = !showMultiplesOutputs">
-        {{'Recipients'|translate}}
-        <span class="item-note">
-          {{btx.recipientCount}}
-          <i ng-show="showMultiplesOutputs" class="icon-arrow-up3 size-24"></i>
-          <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
-        </span>
-      </div>
-
-      <div class="item" ng-show="btx.hasMultiplesOutputs && showMultiplesOutputs"
-        ng-repeat="output in btx.outputs"
-        ng-include="'views/includes/output.html'">
       </div>
 
       <div ng-if="btx.action == 'invalid'" class="item">
