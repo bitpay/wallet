@@ -22,7 +22,7 @@
     <label class="item item-input bitcoin-address">
       <i class="icon icon-svg placeholder-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
       <div class="qr-scan-icon" ng-style="{'width': '100%'}">
-        <a ui-sref="tabs.scan" ng-style="{'top': '6px'}">
+        <a on-tap="openScanner()" ng-style="{'top': '6px'}">
           <i class="icon ion-qr-scanner"></i>
         </a>
         <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>
