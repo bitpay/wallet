@@ -42,19 +42,18 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-hide="insuffientFunds">
-          <span class="label" translate>{{'Add Memo'|translate}}</span>
-          <span class="item-note">
+        <a class="item single-line item-icon-right" ng-hide="insuffientFunds" ng-click="showDescriptionPopup()">
+          <span class="label" translate>Add Memo</span>
+          <span class="item-note m10l">
             {{description}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-hide="insuffientFunds">
-          <span class="label" translate>Fee</span>
+        <a class="item single-line" ng-hide="insuffientFunds">
+          <span class="label" translate>Fee: {{feeLevel}}</span>
           <span class="item-note">
             {{fee}}
           </span>
-          <i class="icon bp-arrow-right"></i>
         </a>
       </div>
     </div>
