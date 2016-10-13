@@ -11,7 +11,7 @@
       <div class="settings-description" translate>
         You'll receive email notifications about payments sent and received from {{wallet.name}}.
       </div>
-      <span ng-if="emailForExist" class="settings-description-disabled" ng-click="save(null)" translate>Disable notifications</span>
+      <a href ng-if="emailForExist" class="settings-description-disabled" ng-click="save(null)" translate>Remove email notifications</a>
     </div>
     <form name="emailForm" ng-submit="save(email.value)" novalidate>
       <div class="list settings-input-group">
