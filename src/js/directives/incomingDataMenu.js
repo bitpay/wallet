@@ -16,6 +16,9 @@ angular.module('copayApp.directives')
         $timeout(function() {
           scope.showMenu = true;
         }, 2000);
+        scope.hide = function() {
+          scope.showMenu = false;
+        };
         scope.$watch('showMenu', function() {
           console.log('scope.showMenu', scope.showMenu);
           if(!scope.showMenu) {
