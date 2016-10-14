@@ -30,6 +30,9 @@
       position: absolute;
       bottom:0;
       width:100%;
+      #next-address{
+        color:$light-gray;
+      }
     }
     .incomplete {
       padding: 50px;

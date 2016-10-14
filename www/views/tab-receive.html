@@ -75,10 +75,11 @@
         </div>
         <div id="bit-address" class="row border-top">
           <div class="col col-90 center-block bit-address text-center">
-            <div class="item item-icon-left">
+            <div class="item item-icon-left item-icon-right">
               <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
               <span class="bit-address-gen-address" ng-if="generatingAddress">...</span>
               <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>
+              <i id="next-address" class="icon ion-ios-arrow-right" ng-click="setAddress(true)"></i>
             </div>
           </div>
         </div>
