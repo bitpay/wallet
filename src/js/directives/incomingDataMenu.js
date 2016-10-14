@@ -1,16 +1,20 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('incomingDataMenu', function($timeout) {
+  .directive('incomingDataMenu', function($timeout, $rootScope) {
     return {
       restrict: 'E',
       templateUrl: 'views/includes/incomingDataMenu.html',
       link: function(scope, element, attrs) {
-        console.log('incomingDataMenu constructed');
-        $timeout(function() {
+        $rootScope.$on('incomingDataMenu.showMenu', function() {
           scope.showMenu = true;
-        }, 5000);
-
+        });
+        scope.$watch('showMenu', function() {
+          console.log('scope.showMenu', scope.showMenu);
+          if(!scope.showMenu) {
+            $rootScope.$broadcast('incomingDataMenu.menuHidden');
+          }
+        });
       }
     };
   });

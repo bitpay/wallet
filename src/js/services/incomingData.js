@@ -1,10 +1,14 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog) {
+angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog, scannerService, $rootScope) {
 
   var root = {};
 
-  root.redir = function(data) {
+  root.showMenu = function() {
+    $rootScope.$broadcast('incomingDataMenu.showMenu');
+  };
+
+  root.redir = function(data, resumeScan) {
     $log.debug('Processing incoming data:'  +data);
 
     function sanitizeUri(data) {
@@ -66,6 +70,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       getPayProDetails(data, function(err, details) {
         if(err) {
           console.log('getPayProDetails err', err);
+          root.showMenu();
           return;
         }
         console.log('paypro details', details);
@@ -143,12 +148,12 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       ongoingProcess.set('fetchingPayPro', false);
 
       if (err) {
-        $log.warn('Could not fetch payment request:', err);
-        var msg = err.toString();
-        if (msg.match('HTTP')) {
-          msg = gettextCatalog.getString('Could not fetch payment information');
-        }
-        popupService.showAlert(msg);
+        // $log.warn('Could not fetch payment request:', err);
+        // var msg = err.toString();
+        // if (msg.match('HTTP')) {
+        //   msg = gettextCatalog.getString('Could not fetch payment information');
+        // }
+        // popupService.showAlert(msg);
         return cb(true);
       }
 
