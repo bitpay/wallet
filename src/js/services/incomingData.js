@@ -4,11 +4,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
   var root = {};
 
-  root.showMenu = function() {
-    $rootScope.$broadcast('incomingDataMenu.showMenu');
+  root.showMenu = function(data) {
+    $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
-  root.redir = function(data, resumeScan) {
+  $timeout(function() {
+    var data = 'https://bitpay.com';
+    root.redir(data);
+  }, 2000);
+
+  root.redir = function(data) {
     $log.debug('Processing incoming data:'  +data);
 
     function sanitizeUri(data) {
@@ -69,7 +74,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       getPayProDetails(data, function(err, details) {
         if(err) {
           console.log('getPayProDetails err', err);
-          root.showMenu();
+          root.showMenu(data);
           return;
         }
         console.log('paypro details', details);
