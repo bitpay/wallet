@@ -11,6 +11,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.name = $window.appConfig.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
+    $scope.isAndroid = platformInfo.isAndroid;
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -221,7 +222,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.onRefresh = function() {
-      $scope.$broadcast('scroll.refreshComplete');
+      $timeout(function() {
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 300);
       updateAllWallets();
     };
 
