@@ -1,4 +1,14 @@
 #bitpayCard {
+  .bar-header {
+    border: 0;
+    background: #1e3186;
+    .title, .button {
+      color: #fff;
+    }
+    .button {
+      background-color: transparent;
+    }
+  }
   .amount {
     width: 100%;
     text-align: center;

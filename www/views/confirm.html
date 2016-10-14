@@ -22,15 +22,21 @@
       <div class="info">
         <div class="item">
           <span class="label" translate>To</span>
-          <span class="payment-proposal-to" copy-to-clipboard="toAddress">
+          <span class="payment-proposal-to">
             <img ng-if="!cardId" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
-            <span ng-if="toName">{{toName}}</span>
-            <contact ng-if="!toName" class="ellipsis" address="{{toAddress}}">{{toAddress}}</contact>
-            <div ng-show="_paypro" ng-click="openPPModal(_paypro)">
+
+            <contact ng-if="!toName && !_paypro" class="ellipsis" address="{{toAddress}}" copy-to-clipboard="toAddress">
+            {{toAddress}}
+            </contact>
+
+            <span class="m15l size-14" ng-if="toName && !_paypro" copy-to-clipboard="toAddress">{{toName}}</span>
+
+            <div ng-if="_paypro" ng-click="openPPModal(_paypro)" class="m15l size-14 w100p pointer">
               <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
               <i ng-show="!_paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
-              {{_paypro.domain}}
+              <span class="ellipsis" ng-show="!toName">{{_paypro.domain || _paypro.toAddress}}</span>
+              <span ng-show="toName">{{toName}}</span>
             </div>
             <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{toAddress}}"></contact>
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
@@ -56,12 +62,12 @@
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line" ng-hide="insuffientFunds">
+        <div class="item single-line" ng-hide="insuffientFunds">
           <span class="label" translate>Fee: {{feeLevel}}</span>
           <span class="item-note">
             {{fee || '...'}}
           </span>
-        </a>
+        </div>
       </div>
     </div>
     <click-to-accept
