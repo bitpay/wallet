@@ -1,0 +1,31 @@
+incoming-data-menu {
+
+  .incoming-data-menu {
+    &__header {
+      padding-bottom: 1rem;
+    }
+    &__url {
+      background: rgba(203, 203, 203, .13);
+      padding: .5rem;
+      padding-left: 0;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+
+      &__icon {
+        padding: 0 9px 0 10px;
+        display: flex;
+        align-items: center;
+        //margin-right: .5rem;
+        //border-right: 1px solid #E4E4E4;
+      }
+
+      &__text {
+        color: #4A4A4A;
+        font-size: 14px;
+        border-left: 1px solid #E4E4E4;
+        padding-left: 1rem;
+      }
+    }
+  }
+}
