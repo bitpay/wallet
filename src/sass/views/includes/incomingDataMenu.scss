@@ -3,6 +3,7 @@ incoming-data-menu {
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
+    padding: 0;
   }
   .incoming-data-menu {
     &__header {
@@ -33,7 +34,13 @@ incoming-data-menu {
     }
 
     &__cancel {
-
+      background: #EDEDED;
+      font-size: 18px;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3A3A3A;
     }
     &__url {
       background: rgba(203, 203, 203, .13);
