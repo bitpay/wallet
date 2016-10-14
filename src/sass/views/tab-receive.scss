@@ -76,9 +76,11 @@
         align-items: center;
       }
     }
-    .share{
-      flex:1;
-      max-width: 120px;
+    #qr-options{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-content: center;
       .item{
         i{left:25px;}
       }

@@ -17,6 +17,7 @@
       max-width: 350px;
       box-shadow:$subtle-box-shadow;
       padding:0;
+      border-radius: .3rem;
       @media (min-width: 500px) {
         & {
           width: 350px;
@@ -25,7 +26,7 @@
         }
       }
       .item{
-        padding:.6rem;
+        padding: calc(100vh - 99vh) calc(100vh - 98vh) calc(100vh - 97vh);
         &.noBalance{
           padding:.6rem 1rem 1.7rem;
         }
