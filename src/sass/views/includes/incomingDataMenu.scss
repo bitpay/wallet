@@ -1,8 +1,39 @@
 incoming-data-menu {
-
+  .bp-action-sheet__sheet {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+  }
   .incoming-data-menu {
     &__header {
       padding-bottom: 1rem;
+      font-size: 16px;
+    }
+
+    &__item {
+      border-top: 1px solid #f7f4f4;
+      font-size: 14px;
+      padding: 1rem 1.25rem;
+      color: #4A4A4A;
+      display: flex;
+      align-items: center;
+
+      &.head {
+        display: block;
+        padding-top: 1.5rem;
+      }
+
+      &:first-child {
+        border: 0;
+      }
+
+      > img {
+        margin-right: 1rem;
+      }
+    }
+
+    &__cancel {
+
     }
     &__url {
       background: rgba(203, 203, 203, .13);
@@ -11,13 +42,12 @@ incoming-data-menu {
       border-radius: 4px;
       display: flex;
       align-items: center;
+      margin-bottom: .5rem;
 
       &__icon {
         padding: 0 9px 0 10px;
         display: flex;
         align-items: center;
-        //margin-right: .5rem;
-        //border-right: 1px solid #E4E4E4;
       }
 
       &__text {
