@@ -25,7 +25,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       newUri.replace('://', ':');
 
       return newUri;
-    };
+    }
 
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
@@ -65,7 +65,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     // Plain URL
     } else if (/^https?:\/\//.test(data)) {
-      console.log('in here brah');
 
       getPayProDetails(data, function(err, details) {
         if(err) {
@@ -75,9 +74,13 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
         }
         console.log('paypro details', details);
         $state.go('tabs.send');
-        $timeout(function() {
-          $state.transitionTo('tabs.send.confirm', {paypro: data});
-        }, 100);
+        var stateParams = {
+          toAmount: details.amount,
+          toAddress: details.toAddress,
+          description: details.memo,
+          paypro: details
+        };
+        $state.transitionTo('tabs.send.confirm', stateParams);
         return true;
       });
     // Plain Address
@@ -137,16 +140,17 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     $log.debug('Fetch PayPro Request...', uri);
 
+    console.log('show fetchingPayPro loader');
     ongoingProcess.set('fetchingPayPro', true);
     //debugger;
     // uri = 'https://bitpay.com/i/NhjqGZo1RNoHxiHxK7VBuM';
-    // uri = 'https://test.bitpay.com:443/i/LCy5Y7hxmEbkprAK27odAU';
+    //uri = 'https://test.bitpay.com:443/i/LCy5Y7hxmEbkprAK27odAU';
     wallet.fetchPayPro({
       payProUrl: uri,
     }, function(err, paypro) {
       console.log('paypro', paypro);
-      ongoingProcess.set('fetchingPayPro', false);
 
+      ongoingProcess.set('fetchingPayPro', false);
       if (err) {
         // $log.warn('Could not fetch payment request:', err);
         // var msg = err.toString();
@@ -162,18 +166,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
         popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
         return cb(true);
       }
-
-      // $scope.toAmount = paypro.amount;
-      // $scope.toAddress = paypro.toAddress;
-      // $scope.description = paypro.memo;
-      // $scope.paypro = null;
-      //
-      // $scope._paypro = paypro;
-
-      //return initConfirm();
       cb(null, paypro);
+
     });
-  };
+  }
 
   return root;
 });

@@ -208,7 +208,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
     initializeCompleted = false;
     QRScanner.destroy();
     initialize(callback);
-  }
+  };
 
   /**
    * Toggle the device light (if available).
@@ -244,7 +244,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
     var nextCamera = backCamera? 1 : 0;
     function cameraToString(index){
       return index === 1? 'front' : 'back'; // front = 1, back = 0
-    };
+    }
     $log.debug('Toggling to the ' + cameraToString(nextCamera) + ' camera...');
     QRScanner.useCamera(nextCamera, function(err, status){
       if(err){

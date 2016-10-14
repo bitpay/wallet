@@ -19,13 +19,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   var initConfirm = function() {
-    if ($scope.paypro) {
-      return setFromPayPro($scope.paypro, function(err) {
-        if (err && !isChromeApp) {
-          popupService.showAlert(gettext('Could not fetch payment'));
-        }
-      });
-    }
+    // if ($scope.paypro) {
+    //   return setFromPayPro($scope.paypro, function(err) {
+    //     if (err && !isChromeApp) {
+    //       popupService.showAlert(gettext('Could not fetch payment'));
+    //     }
+    //   });
+    // }
     // TODO (URL , etc)
     if (!$scope.toAddress || !$scope.toAmount) {
       $log.error('Bad params at amount')
@@ -143,58 +143,58 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     return amountStr.split(' ')[1];
   }
 
-  var setFromPayPro = function(uri, cb) {
-    if (!cb) cb = function() {};
-
-    var wallet = profileService.getWallets({
-      onlyComplete: true
-    })[0];
-
-    if (!wallet) return cb();
-
-    if (isChromeApp) {
-      popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
-      return cb(true);
-    }
-
-    $log.debug('Fetch PayPro Request...', uri);
-
-    ongoingProcess.set('fetchingPayPro', true);
-    //debugger;
-    var uri = 'https://bitpay.com/i/NhjqGZo1RNoHxiHxK7VBuM';
-    uri = 'https://test.bitpay.com:443/i/LCy5Y7hxmEbkprAK27odAU';
-    wallet.fetchPayPro({
-      payProUrl: uri,
-    }, function(err, paypro) {
-      console.log('paypro', paypro);
-      ongoingProcess.set('fetchingPayPro', false);
-
-      if (err) {
-        $log.warn('Could not fetch payment request:', err);
-        var msg = err.toString();
-        if (msg.match('HTTP')) {
-          msg = gettextCatalog.getString('Could not fetch payment information');
-        }
-        popupService.showAlert(msg);
-        return cb(true);
-      }
-
-      if (!paypro.verified) {
-        $log.warn('Failed to verify payment protocol signatures');
-        popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
-        return cb(true);
-      }
-
-      $scope.toAmount = paypro.amount;
-      $scope.toAddress = paypro.toAddress;
-      $scope.description = paypro.memo;
-      $scope.paypro = null;
-
-      $scope._paypro = paypro;
-
-      return initConfirm();
-    });
-  };
+  // var setFromPayPro = function(uri, cb) {
+  //   if (!cb) cb = function() {};
+  //
+  //   var wallet = profileService.getWallets({
+  //     onlyComplete: true
+  //   })[0];
+  //
+  //   if (!wallet) return cb();
+  //
+  //   if (isChromeApp) {
+  //     popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
+  //     return cb(true);
+  //   }
+  //
+  //   $log.debug('Fetch PayPro Request...', uri);
+  //
+  //   ongoingProcess.set('fetchingPayPro', true);
+  //   //debugger;
+  //   var uri = 'https://bitpay.com/i/NhjqGZo1RNoHxiHxK7VBuM';
+  //   uri = 'https://test.bitpay.com:443/i/LCy5Y7hxmEbkprAK27odAU';
+  //   wallet.fetchPayPro({
+  //     payProUrl: uri,
+  //   }, function(err, paypro) {
+  //     console.log('paypro', paypro);
+  //     ongoingProcess.set('fetchingPayPro', false);
+  //
+  //     if (err) {
+  //       $log.warn('Could not fetch payment request:', err);
+  //       var msg = err.toString();
+  //       if (msg.match('HTTP')) {
+  //         msg = gettextCatalog.getString('Could not fetch payment information');
+  //       }
+  //       popupService.showAlert(msg);
+  //       return cb(true);
+  //     }
+  //
+  //     if (!paypro.verified) {
+  //       $log.warn('Failed to verify payment protocol signatures');
+  //       popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
+  //       return cb(true);
+  //     }
+  //
+  //     $scope.toAmount = paypro.amount;
+  //     $scope.toAddress = paypro.toAddress;
+  //     $scope.description = paypro.memo;
+  //     $scope.paypro = null;
+  //
+  //     $scope._paypro = paypro;
+  //
+  //     return initConfirm();
+  //   });
+  // };
 
   function setWallet(wallet, delayed) {
     var stop;

@@ -136,7 +136,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   $scope.canGoBack = function(){
     return $state.params.passthroughMode;
-  }
+  };
   function goBack(){
     $ionicHistory.nextViewOptions({
       disableAnimate: true
