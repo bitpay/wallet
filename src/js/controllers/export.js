@@ -15,14 +15,28 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     };
 
-    function prepareWallet(cb) {
+    function getPassword(cb) {
       if ($scope.password) return cb(null, $scope.password);
 
       walletService.prepare(wallet, function(err, password) {
         if (err) return cb(err);
         $scope.password = password;
+        return cb(null, password);
+      });
+    };
 
-        walletService.getEncodedWalletInfo(wallet, $scope.password, function(err, code) {
+    $scope.generateQrCode = function() {
+      if ($scope.formData.exportWalletInfo || !walletService.isEncrypted(wallet)) {
+        $scope.file.value = false;
+      }
+
+      getPassword(function(err, password) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+
+        walletService.getEncodedWalletInfo(wallet, password, function(err, code) {
           if (err) return cb(err);
 
           if (!code)
@@ -32,32 +46,10 @@ angular.module('copayApp.controllers').controller('exportController',
             $scope.formData.exportWalletInfo = code;
           }
 
-          return cb(null, password);
-        });
-      });
-    };
-
-    $scope.generateQrCode = function() {
-      if ($scope.formData.exportWalletInfo) {
-        $scope.file.value = false;
-        $timeout(function() {
-          $scope.$apply();
-        });
-        return;
-      }
-
-      prepareWallet(function(err, password) {
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return;
-        }
-        if (!password) return;
-
-        $scope.file.value = false;
-        $scope.password = password;
-
-        $timeout(function() {
-          $scope.$apply();
+          $scope.file.value = false;
+          $timeout(function() {
+            $scope.$apply();
+          });
         });
       });
     };
@@ -96,12 +88,11 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.downloadWalletBackup = function() {
-      prepareWallet(function(err, password) {
+      getPassword(function(err, password) {
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
-        if (!password) return;
 
         $scope.getAddressbook(function(err, localAddressBook) {
           if (err) {
@@ -142,12 +133,11 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.getBackup = function(cb) {
-      prepareWallet(function(err, password) {
+      getPassword(function(err, password) {
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
-        if (!password) return;
 
         $scope.getAddressbook(function(err, localAddressBook) {
           if (err) {
