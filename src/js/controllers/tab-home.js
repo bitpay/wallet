@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     if (!$scope.homeTip) {
       storageService.getHomeTipAccepted(function(error, value) {
-        $scope.homeTip = (value == 'false') ? false : true;
+        $scope.homeTip = (value == 'accepted') ? false : true;
       });
     }
 
@@ -175,7 +175,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.hideHomeTip = function() {
-      storageService.setHomeTipAccepted(JSON.stringify(false), function(error, value) {
+      storageService.setHomeTipAccepted('accepted', function() {
         $scope.homeTip = false;
         $timeout(function() {
           $scope.$apply();
