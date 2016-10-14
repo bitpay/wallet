@@ -6,7 +6,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     var listeners = [];
     var notifications = [];
     $scope.externalServices = {};
-    $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
     $scope.version = $window.version;
     $scope.name = $window.appConfig.nameCase;
@@ -203,9 +202,21 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     var bitpayCardCache = function() {
-      bitpayCardService.getCacheData(function(err, data) {
-        if (err ||  lodash.isEmpty(data)) return;
-        $scope.bitpayCard = data;
+      bitpayCardService.getBitpayDebitCards(function(err, data) {
+        if (err) return;
+        if (lodash.isEmpty(data)) {
+          $scope.bitpayCards = null;
+          return;
+        }
+        $scope.bitpayCards = data.cards;
+      });
+      bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
+        if (err) return;
+        if (lodash.isEmpty(data)) {
+          $scope.cardsHistory = null;
+          return;
+        }
+        $scope.cardsHistory = data;
       });
     };
 
@@ -215,7 +226,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.$on("$ionicView.enter", function(event, data) {
-      $scope.bitpayCard = null;
       nextStep();
       updateAllWallets();
 

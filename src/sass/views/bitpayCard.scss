@@ -3,11 +3,14 @@
     width: 100%;
     text-align: center;
     padding: 2rem 1rem 1.5rem 1rem;
-    min-height: 140px;
+    height: 140px;
     border-color: #172565;
     background-color: #1e3186;
     background-image: linear-gradient(0deg, #172565, #172565 0%, transparent 0%);
     color: #fff;
+  }
+  .wallet-details-wallet-info {
+    bottom: 5px;
   }
   strong {
     line-height: 100%;
