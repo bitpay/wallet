@@ -211,7 +211,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.onRefresh = function() {
-      $scope.$broadcast('scroll.refreshComplete');
+      $timeout(function() {
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 300);
       updateAllWallets();
     };
 

@@ -162,7 +162,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.onRefresh = function() {
-    $scope.$broadcast('scroll.refreshComplete');
+    $timeout(function() {
+      $scope.$broadcast('scroll.refreshComplete');
+    }, 300);
     $scope.updateAll(true);
   };
 
