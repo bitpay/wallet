@@ -6,11 +6,11 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="row text-center">
-      <div class="col" ng-click="file.value = true" ng-style="file.value && {'border-bottom': '2px solid'}">
+    <div class="row text-center top-tabs">
+      <div class="col" ng-click="file.value = true" ng-style="file.value && {'border-bottom-style': 'solid'}">
         <span class="" translate>File/Text</span>
       </div>
-      <div class="col" ng-click="generateQrCode();" ng-style="!file.value && {'border-bottom': '2px solid'}">
+      <div class="col" ng-click="generateQrCode();" ng-style="!file.value && {'border-bottom-style': 'solid'}">
         <span class="" translate>QR Code</span>
       </div>
     </div>
