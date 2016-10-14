@@ -13,8 +13,19 @@
   .scroll{height:100%;}
   #address {
     background: #fff;
-    height:80%;
-    article{height: 100%;position: relative;}
+    height: calc(100vh - 33vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-flow: column;
+    @media(max-height: 600px){
+      height: calc(100vh - 36vh);
+    }
+    article{
+      flex:1;
+      width: 100%;
+    }
     #bit-address{
       position: absolute;
       bottom:0;
@@ -52,26 +63,41 @@
       }
     }
     .qr {
-      padding: 13vh 0 5vh 0;
+      padding: calc(100vh - 85vh) 0 calc(100vh - 96vh);
+      @media(max-height: 700px){
+        padding: calc(100vh - 90vh) 0 calc(100vh - 96vh);
+      }
+      div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .share{
+      flex:1;
+      max-width: 120px;
+      .item{
+        i{left:25px;}
+      }
     }
     .backup {
       background-color: orange;
       color: #fff;
       position: absolute;
-      top: 5px;
+      top: 0;
       i {
         padding: 10px;
       }
     }
     @media (max-height: 600px){
       &{
-        height: 77%;
         .qr{
-          padding:6.5vh 0 2vh;
+          padding:6vh 0 0;
           div{
             transform: scale(.7);
           }
         }
+        #bit-address{position: realtive;}
       }
     }
   }
@@ -89,6 +115,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 2;
     }
   }
   #first-time-tip {
@@ -130,6 +157,10 @@
   .receive-tab-bitcoin-icon {
     border-right: 1px solid rgb(228, 228, 228);
     padding-right: 10px;
+  }
+  .wallets{
+    position: relative;
+    height: calc(100vh - 83vh);
   }
 }
 
