@@ -59,23 +59,21 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col" ng-show="isCordova && addr">
-            <div class="item item-icon-left" ng-click="shareAddress(addr)">
-              <i class="icon ion-ios-upload-outline"></i>
-              <span translate>Share</span>
-            </div>
+        <div id="qr-options" class="row text-center">
+          <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr">
+            <i class="icon ion-ios-upload-outline"></i>
+            <span translate>Share</span>
           </div>
-          <div class="col" ng-class="{'center-block col-50': !isCordova || !addr}">
+          <div ng-class="{'center-block': !isCordova || !addr}">
             <div class="item item-icon-left" ng-click="setAddress(true)">
               <i class="icon ion-ios-loop"></i>
               <span translate>Next Address</span>
             </div>
           </div>
         </div>
-        <div class="row border-top">
+        <div id="bit-address" class="row border-top">
           <div class="col col-90 center-block bit-address text-center">
-            <div class="item item-icon-left">
+            <div class="item item-icon-left item-icon-right">
               <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
               <span class="bit-address-gen-address" ng-if="generatingAddress">...</span>
               <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="addr">{{addr}}</span>

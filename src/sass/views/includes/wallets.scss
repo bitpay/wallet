@@ -1,20 +1,45 @@
 .wallets {
   .slides {
     .swiper-container {
-      width: 75% !important;
+      width: 85% !important;
       overflow: visible;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      @media (max-height: 600px){
+        &{
+          transform: translate(-50%, -58%);
+        }
+      }
     }
     .card {
-      padding: .7rem;
-      padding-left: .25rem;
-      padding-right: .25rem;
-      border-radius: .25rem;
       max-width: 350px;
+      box-shadow:$subtle-box-shadow;
+      padding:0;
+      border-radius: 6px;
       @media (min-width: 500px) {
         & {
           width: 350px;
           position: relative;
           margin: 1.5rem auto 0;
+        }
+      }
+      .item{
+        padding: calc(100vh - 99vh) calc(100vw - 93vw) calc(100vh - 97vh) calc(100vw - 95vw);
+        i{left:auto;}
+        span{
+          clear:both;
+          width: 100%;
+          display: inline-block;
+          &.wallet-name{
+            margin-top:10px;
+            margin-bottom:5px;
+            font-size:13px;
+          }
+        }
+        .big-icon-svg{
+          & > .bg{padding:.3rem;width: 40px;height:40px;}
         }
       }
     }
@@ -37,13 +62,14 @@
       }
       &.swiper-slide-prev,
       &.swiper-slide-next {
-        opacity: .2;
+        opacity: .3;
+        transform: scale(.8);
       }
       &.swiper-slide-prev {
-        left: -5%;
+        left: 10vw;
       }
       &.swiper-slide-next {
-        left: 4%;
+        left: -10vw;
       }
     }
   }

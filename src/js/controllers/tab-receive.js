@@ -74,6 +74,10 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       $log.debug('No wallet provided');
       return;
     }
+    if (wallet == $scope.wallet) {
+      $log.debug('No change in wallet');
+      return;
+    }
     $scope.wallet = wallet;
     $log.debug('Wallet changed: ' + wallet.name);
     $timeout(function() {
@@ -83,5 +87,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
+    $scope.wallet = $scope.wallets[0];
+    $scope.setAddress();
   });
 });
