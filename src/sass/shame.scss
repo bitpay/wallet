@@ -423,3 +423,11 @@ input[type=file] {
 .left {
   float: left;
 }
+
+.keyboard-open .tabs{
+  display: none;
+}
+
+.keyboard-open .has-tabs{
+  bottom:0;
+ }
