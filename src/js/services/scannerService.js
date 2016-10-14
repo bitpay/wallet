@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').service('scannerService', function($log, $timeout, platformInfo, $rootScope) {
+angular.module('copayApp.services').service('scannerService', function($log, $timeout, platformInfo, $rootScope, $window) {
 
   var isDesktop = !platformInfo.isCordova;
-  var QRScanner = window.QRScanner;
+  var QRScanner = $window.QRScanner;
   var lightEnabled = false;
   var backCamera = true; // the plugin defaults to the back camera
 
@@ -55,8 +55,8 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
       canEnableLight: canEnableLight,
       canChangeCamera: canChangeCamera,
       canOpenSettings: canOpenSettings
-    }
-  }
+    };
+  };
 
   var initializeStarted = false;
   /**
@@ -123,10 +123,10 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
   }
   this.isInitialized = function(){
     return initializeCompleted;
-  }
+  };
   this.initializeStarted = function(){
     return initializeStarted;
-  }
+  };
 
   var nextHide = null;
   var nextDestroy = null;
@@ -167,6 +167,14 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
     QRScanner.scan(callback);
   };
 
+  this.pausePreview = function() {
+    QRScanner.pausePreview();
+  };
+
+  this.resumePreview = function() {
+    QRScanner.resumePreview();
+  };
+
   /**
    * Deactivate the QRScanner. To balance user-perceived performance and power
    * consumption, this kicks off a countdown which will "sleep" the scanner
@@ -177,7 +185,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
    */
   this.deactivate = function(callback) {
     $log.debug('Deactivating scanner...');
-    // QRScanner.cancelScan();
+    QRScanner.cancelScan();
     nextHide = $timeout(_hide, hideAfterSeconds * 1000);
     nextDestroy = $timeout(_destroy, destroyAfterSeconds * 1000);
   };
