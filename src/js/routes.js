@@ -910,7 +910,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
 
         window.addEventListener('native.keyboardshow', function() {
-          document.body.classList.add('keyboard-open');
+          document.querySelector('div.tabs').style.display = 'none';
+          angular.element(document.querySelector('ion-content.has-tabs')).css('bottom', 0);
+        });
+
+        window.addEventListener('native.keyboardhide', function() {
+          var tabs = document.querySelectorAll('div.tabs');
+          angular.element(tabs[0]).css('display', '');
         });
 
         $ionicPlatform.registerBackButtonAction(function(e) {
