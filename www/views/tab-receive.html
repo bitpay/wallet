@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
   </ion-nav-bar>
-  <ion-content>
+  <ion-content scroll="false">
     <div class="list card padding text-center" ng-if="!wallets[0]">
       <span translate>No Wallet</span>
     </div>
@@ -88,15 +88,4 @@
       </div>
     </article>
   </ion-content>
-  <div id="first-time-tip" ng-if="firstTime">
-    <i class="ion-close close"></i>
-    <div class="row">
-      <h3 class="col col-60 center-block">Receive bitcoin by sharing your address</h3>
-    </div>
-    <div class="row">
-      <p class="col col-60 center-block">
-        Other bitcoin users can scan this code to send you money
-      </p>
-    </div>
-  </div>
 </ion-view>
