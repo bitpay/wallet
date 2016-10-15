@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, $rootScope) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -113,6 +113,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var updateHasFunds = function() {
     $scope.hasFunds = true;
 
+    if ($rootScope.everHasFunds) 
+      return;
+
     var wallets = profileService.getWallets({
       onlyComplete: true,
     });
@@ -134,6 +137,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           return;
         }
         walletsTotalBalance = walletsTotalBalance + status.availableBalanceSat;
+        if (walletsTotalBalance>0) {
+          $rootScope.everHasFunds = true;
+        }
         if (index == wallets.length && walletsTotalBalance == 0) {
           $scope.hasFunds = false;
           $timeout(function() {
