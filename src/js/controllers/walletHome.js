@@ -616,7 +616,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       this.lockAddress = true;
     }
 
-    if (amount) {
+    if (amount > 0) {
       form.amount.$setViewValue("" + amount);
       form.amount.$isValid = true;
       form.amount.$render();
