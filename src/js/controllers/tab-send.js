@@ -113,8 +113,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var updateHasFunds = function() {
     $scope.hasFunds = true;
 
-    if ($rootScope.everHasFunds) 
+    if ($rootScope.everHasFunds) {
       return;
+    }
 
     var wallets = profileService.getWallets({
       onlyComplete: true,
@@ -137,7 +138,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           return;
         }
         walletsTotalBalance = walletsTotalBalance + status.availableBalanceSat;
-        if (walletsTotalBalance>0) {
+        if (walletsTotalBalance > 0) {
           $rootScope.everHasFunds = true;
         }
         if (index == wallets.length && walletsTotalBalance == 0) {
