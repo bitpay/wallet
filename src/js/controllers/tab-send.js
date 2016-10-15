@@ -109,27 +109,26 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-
   var updateHasFunds = function() {
-    $scope.hasFunds = true;
 
-    if ($rootScope.everHadFunds) {
+    if ($rootScope.everHasFunds) {
+      $scope.hasFunds = true;
       return;
     }
+
+    $scope.hasFunds = false;
 
     var wallets = profileService.getWallets({
       onlyComplete: true,
     });
 
     if (!wallets || !wallets.length) {
-      $scope.hasFunds = false;
-      $timeout(function() {
+      return $timeout(function() {
         $scope.$apply();
       });
     }
 
     var index = 0;
-    var walletsTotalBalance = 0;
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
         ++index;
@@ -137,12 +136,13 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           $log.error(err);
           return;
         }
-        walletsTotalBalance = walletsTotalBalance + status.availableBalanceSat;
-        if (walletsTotalBalance > 0) {
-          $rootScope.everHadFunds = true;
+
+        if (status.availableBalanceSat > 0) {
+          $scope.hasFunds = true;
+          $rootScope.everHasFunds = true;
         }
-        if (index == wallets.length && walletsTotalBalance == 0) {
-          $scope.hasFunds = false;
+
+        if (index == wallets.length) {
           $timeout(function() {
             $scope.$apply();
           });
