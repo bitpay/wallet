@@ -175,23 +175,23 @@
       }
     }
   }
-  @media(min-width: 700px) and (min-height: 700px){
-    .wallets{display: none;}
-    #address{
-      height:90vh;
-      width:75%;
-      .qr{
-        height: 70%;
-        div{
-          transform: scale(1.5);
-        }
-      }
-      #bit-address{
-        height: 10%;
-        padding: calc(100vh - 99vh);
-      }
-    }
-  }
+  // @media(min-width: 700px) and (min-height: 700px){
+  //   .wallets{display: none;}
+  //   #address{
+  //     height:90vh;
+  //     width:75%;
+  //     .qr{
+  //       height: 70%;
+  //       div{
+  //         transform: scale(1.5);
+  //       }
+  //     }
+  //     #bit-address{
+  //       height: 10%;
+  //       padding: calc(100vh - 99vh);
+  //     }
+  //   }
+  // }
 }
 
 @keyframes fadeIn {
