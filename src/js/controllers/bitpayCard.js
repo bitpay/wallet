@@ -7,7 +7,9 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   $scope.network = bitpayCardService.getEnvironment();
 
   var getFromCache = function(cb) {
+    $scope.loadingCache = true;
     bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {
+      $scope.loadingCache = false;
       if (err || lodash.isEmpty(data)) return cb();
       $scope.historyCached = true;
       self.bitpayCardTransactionHistory = data.transactions;

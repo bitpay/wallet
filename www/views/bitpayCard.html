@@ -40,7 +40,7 @@
 
     <div
       class="m10t text-center padding"
-      ng-if="!loadingHistory && !bitpayCard.bitpayCardTransactionHistory[0] && !error">
+      ng-if="!loadingCache && !loadingHistory && !bitpayCard.bitpayCardTransactionHistory[0] && !error">
       <i class="icon ion-ios-arrow-thin-up size-24"></i>
       <h1>Get started</h1>
       <h4>Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.</h4>
@@ -74,11 +74,11 @@
           {{tx.desc}}
         </div>
         -->
-        <div class="col col-20 text-center p10t">
+        <div class="col col-10 text-center p10t">
           <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
           <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
         </div>
-        <div class="col col-20 text-right size-12 text-gray">
+        <div class="col col-25 text-right size-12 text-gray">
           <div class="size-14"
                ng-class="{
                'text-success': tx.amount.indexOf('-') == -1 && !tx.pending,
