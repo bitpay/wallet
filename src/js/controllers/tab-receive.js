@@ -23,7 +23,10 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
       $scope.addr = addr;
       if ($scope.wallet.showBackupNeededModal) $scope.openBackupNeededModal();
-      $scope.$apply();
+
+      $timeout(function(){
+        $scope.$apply();
+      },10);
     });
   };
 
