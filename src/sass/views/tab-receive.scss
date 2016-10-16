@@ -166,6 +166,31 @@
   .wallets{
     position: relative;
     height: calc(100vh - 83vh);
+    .slides {
+      .swiper-container{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+  @media(min-width: 700px) and (min-height: 700px){
+    .wallets{display: none;}
+    #address{
+      height:90vh;
+      width:75%;
+      .qr{
+        height: 70%;
+        div{
+          transform: scale(1.5);
+        }
+      }
+      #bit-address{
+        height: 10%;
+        padding: calc(100vh - 99vh);
+      }
+    }
   }
 }
 
