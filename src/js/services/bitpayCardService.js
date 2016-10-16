@@ -68,7 +68,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     json['params'].pubkey = credentials.pub;
     json['params'] = JSON.stringify(json.params);
 
-    return {
+    var ret = {
       method: 'POST',
       url: BITPAY_CARD_API_URL + endpoint,
       headers: {
@@ -76,6 +76,9 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       },
       data: json
     };
+
+    $log.debug('post auth:' + JSON.stringify(ret));
+    return ret;
   };
 
   var _afterBitAuthSuccess = function(token, obj, credentials, cb) {
