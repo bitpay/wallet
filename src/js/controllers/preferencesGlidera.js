@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
     $scope.$on("$ionicView.enter", function(event, data){
       $scope.network = glideraService.getEnvironment();
 
-      $scope.token = accessToken;
+      $scope.token = null;
       $scope.permissions = null;
       $scope.email = null;
       $scope.personalInfo = null;
