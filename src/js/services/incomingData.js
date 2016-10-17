@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, bitcore, lodash) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, lodash) {
 
   var root = {};
 
   root.redir = function(data) {
-    $log.debug('Processing incoming data:'  +data);
+    $log.debug('Processing incoming data: ' + data);
 
     function sanitizeUri(data) {
       // Fixes when a region uses comma to separate decimals
@@ -53,7 +53,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
       var amount = parsed.amount ?  parsed.amount : '';
 
-      $state.go('tabs.send').then(function() {
+      $state.go('tabs.send');
+      $timeout(function() {
         if (parsed.r) {
           $state.transitionTo('tabs.send.confirm', {paypro: parsed.r});
         } else {
