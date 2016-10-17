@@ -507,7 +507,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.getTxNote({
       txid: txid
     }, function(err, note) {
-      if (err || !note) return cb(true);
+      if (err) return cb(err);
       return cb(null, note);
     });
   };
