@@ -96,7 +96,5 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
-    $scope.wallet = $scope.wallets[0];
-    $scope.setAddress();
   });
 });
