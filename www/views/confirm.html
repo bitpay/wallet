@@ -27,7 +27,6 @@
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
 
             <contact ng-if="!toName && !_paypro" class="ellipsis" address="{{toAddress}}" copy-to-clipboard="toAddress">
-            {{toAddress}}
             </contact>
 
             <span class="m15l size-14" ng-if="toName && !_paypro" copy-to-clipboard="toAddress">{{toName}}</span>
