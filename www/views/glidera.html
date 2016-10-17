@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view id="glidera">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -22,22 +22,21 @@
           <img src="img/glidera-logo.png" ng-click="update(token, permissions)" width="200">
         </div>
         <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
-          <p class="m10b">You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
+          <p class="glidera-lead">You can buy and sell Bitcoin with a US bank account directly in this app.</p>
 
-          <p class="m20t padding text-gray size-12 text-left">
+          <p class="disclosure">
             DISCLOSURE.<br>
-            Glidera Inc. (Glidera) is providing the service of buying or selling bitcoins to Copay users.  To enable this
+            Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users.  To enable this
             service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business
-            (#31000042625755).  Users of Copay must agree to the service agreement presented by Glidera prior to obtaining
+            (#31000042625755).  Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining
             Glidera’s service of buying or selling bitcoins. Service available in U.S. and Canada only. In U.S. (buy & sell) CA, GA, IL, KS,
             MA, MD, MO, MT, MN, SC, TX, AZ, CO, DE, ME, NJ, PA, TN, UT, NV, WI. In Canada (buy & sell) AB, BC, MB, NB, NL, NS, NT, NU,
             ON, PE, SK, YT.
           </p>
 
           <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
-
           <button class="button button-standard button-primary"
-            ng-click="openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true">
+            ng-click="openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true">
             Connect to Glidera
           </button>
           <div class="m10t">
@@ -96,8 +95,7 @@
           <h4 class="text-bold"> Complete Setup</h4>
           <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
           <a class="button"
-             ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' :
-             'https://glidera.io/login'"
+            ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login'"
              ng-click="openExternalLink(glideraUrl)">
             Go to Glidera
           </a>

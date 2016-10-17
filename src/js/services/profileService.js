@@ -134,8 +134,7 @@ angular.module('copayApp.services')
 
         if (n.type == "NewBlock" && n.data.network == "testnet") {
           throttledBwsEvent(n, wallet);
-        }
-        else newBwsEvent(n, wallet);
+        } else newBwsEvent(n, wallet);
       });
 
       wallet.on('walletCompleted', function() {
@@ -600,6 +599,7 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient(null, opts);
 
       $log.debug('Importing Wallet:', opts);
+
       try {
         walletClient.import(str, {
           compressed: opts.compressed,
@@ -610,6 +610,12 @@ angular.module('copayApp.services')
       }
 
       str = JSON.parse(str);
+
+      if (str.xPrivKey && str.xPrivKeyEncrypted) {
+        $log.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
+        delete str.xPrivKeyEncrypted;
+        delete str.mnemonicEncrypted;
+      }
 
       var addressBook = str.addressBook || {};
 

@@ -869,9 +869,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     if (!root.isEncrypted(wallet)) return cb();
 
     askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
-      if (!password) return cb('no password');
-      if (!wallet.checkPassword(password)) return cb('wrong password');
-
+      if (!password) return cb('No password');
+      if (!wallet.checkPassword(password)) return cb('Wrong password');
 
       return cb(null, password);
     });
@@ -990,8 +989,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.getEncodedWalletInfo = function(wallet, cb) {
-
+  root.getEncodedWalletInfo = function(wallet, password, cb) {
     var derivationPath = wallet.credentials.getBaseAddressDerivationPath();
     var encodingType = {
       mnemonic: 1,
@@ -1002,25 +1000,23 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     // not supported yet
     if (wallet.credentials.derivationStrategy != 'BIP44' || !wallet.canSign())
-      return null;
+      return cb(gettextCatalog.getString('Exporting via QR not supported for this wallet'));
 
-    root.getKeys(wallet, function(err, keys) {
-      if (err || !keys) return cb(err);
+    var keys = root.getKeysWithPassword(wallet, password);
 
-      if (keys.mnemonic) {
-        info = {
-          type: encodingType.mnemonic,
-          data: keys.mnemonic,
-        }
-      } else {
-        info = {
-          type: encodingType.xpriv,
-          data: keys.xPrivKey
-        }
+    if (keys.mnemonic) {
+      info = {
+        type: encodingType.mnemonic,
+        data: keys.mnemonic,
       }
-      return cb(null, info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase));
+    } else {
+      info = {
+        type: encodingType.xpriv,
+        data: keys.xPrivKey
+      }
+    }
 
-    });
+    return cb(null, info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase));
   };
 
   root.setTouchId = function(wallet, enabled, cb) {
@@ -1054,6 +1050,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return cb(null, keys);
     });
   };
+
+  root.getKeysWithPassword = function(wallet, password) {
+    try {
+      return wallet.getKeys(password);
+    } catch (e) {}
+  }
 
   root.getViewStatus = function(wallet, txp) {
     var status = txp.status;

@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWallet = data.stateParams.isWallet;
-    $scope.isCard = data.stateParams.isCard;
+    $scope.cardId = data.stateParams.cardId;
     $scope.toAmount = data.stateParams.toAmount;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.data = {};
 
     var config = configService.getSync().wallet;
-    $scope.feeLevel = config.settings ? config.settings.feeLevel : '';
+    $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
 
     $scope.toAmount = parseInt($scope.toAmount);
     $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
@@ -274,7 +274,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txp.message = description;
     txp.payProUrl = paypro;
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
-    txp.feeLevel = config.settings.feeLevel || 'normal';
+    txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     txp.dryRun = dryRun;
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
@@ -374,11 +374,22 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.onSuccessConfirm = function() {
+    var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
+    var fromBitPayCard = previousView.match(/tabs.bitpayCard/) ? true : false;
+
     $ionicHistory.nextViewOptions({
       disableAnimate: true
     });
+    $ionicHistory.removeBackView();
     $scope.sendStatus = '';
-    $state.go('tabs.send');
+
+    if (fromBitPayCard) {
+      $timeout(function() {
+        $state.transitionTo('tabs.bitpayCard', {id: $stateParams.cardId});
+      }, 100);
+    } else {
+      $state.go('tabs.send');
+    }
   };
 
   function publishAndSign(wallet, txp, onSendStatusChange) {
