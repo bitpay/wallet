@@ -11,6 +11,7 @@
   ion-content{
     padding-top: 1.5rem;
     color: $dark-gray;
+    margin-bottom: 210px;
     p {
       padding: 0 2.5%;
       margin: 2rem auto;
@@ -25,6 +26,9 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    .text-center {
+      text-align: center;
+    }
     .checkbox input:before,
     .checkbox .checkbox-icon:before {
       border-radius: 50% !important;
@@ -54,15 +58,13 @@
       width: 10%;
       position: relative;
       padding-right: 0;
-      top: 25px;
+      padding-left: 50px;
       .item-content {
         white-space: normal;
       }
     }
     p {
       color: rgb(58, 58, 58);
-      float: left;
-      width: 80%;
     }
     .checkbox input:before,
     .checkbox .checkbox-icon:before {
