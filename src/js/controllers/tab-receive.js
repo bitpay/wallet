@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
-
+  var showModalTimeout;
 
   $scope.shareAddress = function(addr) {
     if ($scope.generatingAddress) return;
@@ -14,19 +14,21 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.setAddress = function(forceNew) {
-    if ($scope.generatingAddress || !$scope.wallet.isComplete()) return;
-
+    if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
     $scope.addr = null;
     $scope.generatingAddress = true;
     walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
       $scope.generatingAddress = false;
       if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
       $scope.addr = addr;
-      if ($scope.wallet.showBackupNeededModal) $scope.openBackupNeededModal();
-
-      $timeout(function(){
+      if ($scope.wallet.showBackupNeededModal) {
+        showModalTimeout = $timeout(function() {
+          $scope.openBackupNeededModal();
+        }, 2000);
+      }
+      $timeout(function() {
         $scope.$apply();
-      },10);
+      }, 10);
     });
   };
 
@@ -86,6 +88,10 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $timeout(function() {
       $scope.setAddress();
     }, 100);
+  });
+
+  $scope.$on("$ionicView.leave", function(event, data) {
+    $timeout.cancel(showModalTimeout);
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
