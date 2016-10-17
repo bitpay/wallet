@@ -3,10 +3,6 @@
     .swiper-container {
       width: 85% !important;
       overflow: visible;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
       @media (max-height: 600px){
         &{
           transform: translate(-50%, -58%);
