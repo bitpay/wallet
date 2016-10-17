@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
 
         walletService.getTxNote(wallet, n.txid, function(err, note) {
-          if (err) $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+          if (err) $log.warn('Could not fetch transaction note: ' + err);
           $scope.btx.note = note;
         });
       });
