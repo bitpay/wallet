@@ -96,16 +96,20 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   $scope.reject = function(txp) {
-    $scope.loading = true;
+    var title = gettextCatalog.getString('Warning!');
+    var msg = gettextCatalog.getString('Are you sure you want to reject this transaction?');
+    popupService.showConfirm(title, msg, null, null, function(res) {
+      if (res) {
+        $scope.loading = true;
 
-    walletService.reject($scope.wallet, $scope.tx, function(err, txpr) {
-      if (err)
-        return setError(err, gettextCatalog.getString('Could not reject payment'));
+        walletService.reject($scope.wallet, $scope.tx, function(err, txpr) {
+          if (err)
+            return setError(err, gettextCatalog.getString('Could not reject payment'));
 
-      $scope.close();
+          $scope.close();
+        });
+      }
     });
-
-
   };
 
   $scope.remove = function() {
