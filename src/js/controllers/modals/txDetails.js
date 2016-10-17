@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   function updateMemo() {
     walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
       if (err) {
-        $log.warn('Could not fetch transaction note ' + err);
+        $log.warn('Could not fetch transaction note: ' + err);
         return;
       }
 
