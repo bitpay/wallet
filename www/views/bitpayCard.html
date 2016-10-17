@@ -39,22 +39,25 @@
     </div>
 
     <div
-      class="m10t text-center padding"
-      ng-if="!loadingHistory && !bitpayCard.bitpayCardTransactionHistory[0] && !error">
+      class="m10t text-center padding ng-hide"
+      ng-show="bitpayCard.getStarted">
       <i class="icon ion-ios-arrow-thin-up size-24"></i>
       <h1>Get started</h1>
       <h4>Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.</h4>
     </div>
 
-    <div class="list" ng-if="bitpayCard.bitpayCardTransactionHistory[0] && !error">
-      <div class="item item-divider">
-      <select class="select-style" ng-model="dateRange.value" ng-change="bitpayCard.update()">
-        <option value="last30Days">Recent Activity</option>
-        <option value="lastMonth">Last Month</option>
-        <option value="all">All Activity</option>
-      </select>
-      </div>
-      <div
+    <div class="list" ng-show="!bitpayCard.getStarted">
+      <label class="item item-input item-select">
+        <div class="input-label" translate>
+          Activity
+        </div>
+        <select ng-model="dateRange.value" ng-change="bitpayCard.update()">
+          <option value="last30Days" selected translate>Recent</option>
+          <option value="lastMonth" translate>Last Month</option>
+          <option value="all" translate>All</option>
+        </select>
+      </label>
+      <div ng-if="bitpayCard.bitpayCardTransactionHistory[0]"
         ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
         class="item row">
         <div class="col col-10">
@@ -74,18 +77,18 @@
           {{tx.desc}}
         </div>
         -->
-        <div class="col col-20 text-center p10t">
+        <div class="col col-10 text-center p10t">
           <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
           <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
         </div>
-        <div class="col col-20 text-right size-12 text-gray">
+        <div class="col text-right size-12 text-gray">
           <div class="size-14"
                ng-class="{
                'text-success': tx.amount.indexOf('-') == -1 && !tx.pending,
                'text-gray': tx.amount.indexOf('-') == -1 && tx.pending}">
             {{tx.amount | currency:'$':2 }}
           </div>
-          <time ng-if="!tx.pending">{{tx.timestamp | amCalendar}}</time>
+          <time ng-if="!tx.pending">{{tx.timestamp | amTimeAgo}}</time>
           <span ng-if="tx.pending" class="tu" translate>Pending</span>
         </div>
       </div>
