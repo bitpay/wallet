@@ -3,15 +3,20 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>Glidera</ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-show="token" ui-sref="tabs.buyandsell.glidera.preferences">
+        <i class="icon ion-ios-gear-outline"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
 
-    <div class="box-notification error" ng-show="!network">
+    <div class="box-notification error m0" ng-show="!network">
       Glidera is disabled for this application
     </div>
 
-    <div class="box-notification warning" ng-show="network == 'testnet'">
+    <div class="box-notification warning m0" ng-show="network == 'testnet'">
       Testnet wallets only work with Glidera Sandbox Accounts
     </div>
 
@@ -19,7 +24,7 @@
 
       <div ng-init="showOauthForm = false">
         <div class="text-center m20v">
-          <img src="img/glidera-logo.png" ng-click="update(token, permissions)" width="200">
+          <img src="img/glidera-logo.png" ng-click="update({'fullUpdate': true})" width="200">
         </div>
         <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
           <p class="glidera-lead">You can buy and sell Bitcoin with a US bank account directly in this app.</p>
@@ -59,7 +64,7 @@
               <div class="col">
                 <input type="button"
                        value="Cancel"
-                       class="button button-block button-light"
+                       class="button button-standard button-light"
                        ng-click="showOauthForm = false">
               </div>
               <div class="col">
@@ -75,32 +80,19 @@
       </div>
     </div>
 
-    <div ng-if="token && permissions">
+    <div ng-if="token">
       <div class="text-center m20v">
-        <img src="img/glidera-logo.png" ng-click="update(token, permissions)" width="200">
+        <img src="img/glidera-logo.png" ng-click="update({'fullUpdate': true})" width="200">
       </div>
-      <div class="list">
-        <a class="item item-icon-left item-icon-right" href ui-sref="tabs.buyandsell.glidera.preferences">
-          <i class="icon ion-ios-gear"></i>
-          <span ng-show="personalInfo">{{personalInfo.firstName}} {{personalInfo.lastName}}</span>
-          <span class="item-note" ng-show="email">
-            {{email}}
-          </span>
-          <i class="icon bp-arrow-right"></i>
+      <div class="text-center m30v size-12"
+           ng-show="status && !status.userCanTransact">
+        <h4 class="text-bold">Complete Setup</h4>
+        <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
+        <a class="button"
+           ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login'"
+           ng-click="openExternalLink(glideraUrl)">
+          Go to Glidera
         </a>
-      </div>
-      <div class="padding">
-        <div class="text-center m30v size-12"
-          ng-show="status && !status.userCanTransact">
-          <h4 class="text-bold"> Complete Setup</h4>
-          <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
-          <a class="button"
-            ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login'"
-             ng-click="openExternalLink(glideraUrl)">
-            Go to Glidera
-          </a>
-          </div>
-        </div>
       </div>
 
       <div class="list"
@@ -121,7 +113,7 @@
         </a>
       </div>
 
-      <div class="list card" ng-show="permissions.transaction_history">
+      <div class="list card" ng-show="permissions && permissions.transaction_history">
         <div class="item item-heading">
           Activity
         </div>
