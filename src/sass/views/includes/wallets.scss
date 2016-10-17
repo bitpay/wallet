@@ -3,11 +3,6 @@
     .swiper-container {
       width: 85% !important;
       overflow: visible;
-      @media (max-height: 600px){
-        &{
-          transform: translate(-50%, -58%);
-        }
-      }
     }
     .card {
       max-width: 350px;
