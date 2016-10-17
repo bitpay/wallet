@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('activityController',
     $scope.openTxpModal = txpModalService.open;
     $scope.fetchingNotifications = true;
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       profileService.getNotifications(50, function(err, n) {
         if (err) {
           $log.error(err);
@@ -74,7 +74,7 @@ angular.module('copayApp.controllers').controller('activityController',
         });
 
         walletService.getTxNote(wallet, n.txid, function(err, note) {
-          if (err) $log.debug('Could not fetch transaction note');
+          if (err) $log.warn('Could not fetch transaction note: ' + err);
           $scope.btx.note = note;
         });
       });
