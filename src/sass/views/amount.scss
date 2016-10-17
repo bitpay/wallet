@@ -11,6 +11,14 @@
         left: 8px;
         font-size: 24px;
       }
+      .big-icon-svg {
+        left:5px;
+        & > .bg{
+          width:30px;
+          height:30px;
+          box-shadow: none;
+        }
+      }
       font-size: 11px;
       padding-left: 48px;
     }

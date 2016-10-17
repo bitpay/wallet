@@ -12,7 +12,7 @@
 
   <ion-content has-bouncing="false">
     <ion-refresher
-      ng-if="isCordova"
+      ng-if="isAndroid"
       pulling-icon="ion-ios-refresh"
       spinner="ios-small"
       on-refresh="onRefresh()">
@@ -88,10 +88,6 @@
             <span translate>Recreate</span>
           </span>
         </div>
-      </div>
-
-      <div class="wallet-details-release size-12" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest')">
-        <span>{{newRelease}}</span><i class="icon-arrow-right3 right size-18"></i>
       </div>
 
 

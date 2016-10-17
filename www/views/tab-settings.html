@@ -20,7 +20,7 @@
         <span translate>Address Book</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="item item-icon-left item-icon-right" ng-click=openExternalLink("https://help.bitpay.com")>
+      <a class="item item-icon-left item-icon-right" ng-click="openExternalLink('https://help.bitpay.com', true, 'BitPay Help Center', 'Help and support information is available at the BitPay Help Center website. Would you like to go there now?', 'Open Help Center', 'Go Back')">
         <i class="icon big-icon-svg">
           <img src="img/icon-help-support.svg" class="bg"/>
         </i>
@@ -99,9 +99,11 @@
          <i class="icon big-icon-svg circle">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
         </i>
-        {{item.name || item.id}}
-        <span  ng-show="item.n > 1" class="text-light">
-          {{item.m}}-of-{{item.n}}
+        <span>
+          {{item.name || item.id}}
+          <span class="size-12 text-light" ng-show="item.n > 1">
+            {{item.m}}-of-{{item.n}}
+          </span>
         </span>
         <span class="right text-light assertive" ng-show="!item.isComplete()" translate>
           Incomplete
@@ -135,7 +137,6 @@
         <span translate>About</span> {{appName}}
         <i class="icon bp-arrow-right"></i>
       </a>
-
       <div class="item item-divider"></div>
     </div>
   </ion-content>

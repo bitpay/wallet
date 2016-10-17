@@ -128,7 +128,7 @@ module.exports = function(grunt) {
           'bower_components/angular-md5/angular-md5.js',
           'bower_components/angular-mocks/angular-mocks.js',
           'bower_components/ngtouch/src/ngTouch.js',
-          'angular-pbkdf2/angular-pbkdf2.js',
+          'angular-bitauth/angular-bitauth.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
         dest: 'www/lib/angular.js'
@@ -216,15 +216,6 @@ module.exports = function(grunt) {
         }],
       }
     },
-    karma: {
-      unit: {
-        configFile: 'test/karma.conf.js'
-      },
-      prod: {
-        configFile: 'test/karma.conf.js',
-        singleRun: true
-      }
-    },
     nwjs: {
       options: {
         appName: 'Copay',
@@ -251,7 +242,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js': ['angular-bitcore-wallet-client/index.js'],
-          'angular-pbkdf2/angular-pbkdf2.js': ['angular-pbkdf2/index.js']
+          'angular-bitauth/angular-bitauth.js': ['angular-bitauth/index.js']
         },
       }
     }
@@ -260,8 +251,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['nggettext_compile', 'exec:appConfig', 'exec:externalServices', 'browserify', 'sass', 'concat', 'copy:ionic_fonts', 'copy:ionic_js']);
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
-  grunt.registerTask('test', ['karma:unit']);
-  grunt.registerTask('test-coveralls', ['browserify', 'karma:prod', 'exec:coveralls']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
   grunt.registerTask('chrome', ['exec:chrome']);
