@@ -54,6 +54,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var amount = parsed.amount ?  parsed.amount : '';
 
       $state.go('tabs.send');
+      // Timeout is required to enable the "Back" button
       $timeout(function() {
         if (parsed.r) {
           $state.transitionTo('tabs.send.confirm', {paypro: parsed.r});
