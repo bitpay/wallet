@@ -37,6 +37,7 @@ click-to-accept {
   }
   &.button-primary,
   &.button-secondary,
+  &.button-light,
   &.button-assertive {
     &.button-standard {
       @extend %button-standard;
