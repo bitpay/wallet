@@ -6,15 +6,12 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   $scope.dateRange = { value: 'last30Days'};
   $scope.network = bitpayCardService.getEnvironment();
 
-  var getFromCache = function(cb) {
-    $scope.loadingCache = true;
+  var getFromCache = function() {
     bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {
-      $scope.loadingCache = false;
-      if (err || lodash.isEmpty(data)) return cb();
+      if (err || lodash.isEmpty(data)) return;
       $scope.historyCached = true;
       self.bitpayCardTransactionHistory = data.transactions;
       self.bitpayCardCurrentBalance = data.balance;
-      return cb();
     });
   };
 
@@ -43,17 +40,27 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     };
   };
 
+  var setGetStarted = function() {
+    var dateRange = setDateRange('all');
+    bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
+      if (lodash.isEmpty(history.transactionList)) self.getStarted = true;
+    });
+  };
+
   this.update = function() {
     var dateRange = setDateRange($scope.dateRange.value);
 
     $scope.loadingHistory = true;
     bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
       $scope.loadingHistory = false;
+
       if (err) {
         $log.error(err);
         $scope.error = gettextCatalog.getString('Could not get transactions');
         return;
       }
+
+      if (lodash.isEmpty(history.transactionList)) setGetStarted();
 
       var txs = lodash.clone(history.txs);
       for (var i = 0; i < txs.length; i++) {
@@ -114,10 +121,12 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       $state.go('tabs.home');
       popupService.showAlert(null, msg);
     } else {
-      getFromCache(function() {
-        self.update();
-      });
+      getFromCache();
     }
+  });
+
+  $scope.$on("$ionicView.afterEnter", function(event, data) {
+    self.update();
   });
 
 });

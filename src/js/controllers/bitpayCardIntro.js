@@ -3,7 +3,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
 
   var checkOtp = function(obj, cb) {
     if (obj.otp) {
-      var msg = gettextCatalog.getString('Enter Two Factor for BitPay Cards');
+      var msg = gettextCatalog.getString('Enter Two Factor for BitPay Card');
       popupService.showPrompt(null, msg, null, function(res) {
         cb(res);
       });
@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
             popupService.showAlert(null, err);
             return;
           }
-          var title = gettextCatalog.getString('Add BitPay Cards?');
+          var title = gettextCatalog.getString('Add BitPay Card?');
           var msg = gettextCatalog.getString('Would you like to add this account ({{email}}) to your wallet?', {email: obj.email});
           var ok = gettextCatalog.getString('Add cards');
           var cancel = gettextCatalog.getString('Go back');
