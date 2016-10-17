@@ -223,6 +223,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   var setSendError = function(msg) {
     $scope.sendStatus = '';
+    $timeout(function() {
+      $scope.$apply();
+    });
     popupService.showAlert(gettextCatalog.getString('Error at confirm:'), msg);
   };
 
@@ -385,7 +388,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (fromBitPayCard) {
       $timeout(function() {
-        $state.transitionTo('tabs.bitpayCard', {id: $stateParams.cardId});
+        $state.transitionTo('tabs.bitpayCard', {
+          id: $stateParams.cardId
+        });
       }, 100);
     } else {
       $state.go('tabs.send');
