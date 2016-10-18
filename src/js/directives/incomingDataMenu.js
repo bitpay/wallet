@@ -17,26 +17,24 @@ angular.module('copayApp.directives')
         });
         scope.hide = function() {
           scope.showMenu = false;
+          $rootScope.$broadcast('incomingDataMenu.menuHidden');
         };
         scope.sendPaymentToAddress = function(bitcoinAddress) {
-          scope.hide();
+          scope.showMenu = false;
           $state.go('tabs.send');
           $timeout(function() {
             $state.transitionTo('tabs.send.amount', {toAddress: bitcoinAddress});
           }, 100);
         };
         scope.addToAddressBook = function(bitcoinAddress) {
-          scope.hide();
-          $state.go('tabs.send');
+          scope.showMenu = false;
           $timeout(function() {
-            $state.transitionTo('tabs.send.addressbook', {addressbookEntry: bitcoinAddress});
+            $state.go('tabs.send');
+            $timeout(function() {
+              $state.transitionTo('tabs.send.addressbook', {addressbookEntry: bitcoinAddress});
+            });
           }, 100);
         };
-        scope.$watch('showMenu', function() {
-          if(!scope.showMenu) {
-            $rootScope.$broadcast('incomingDataMenu.menuHidden');
-          }
-        });
       }
     };
   });
