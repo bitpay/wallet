@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('actionSheet', function() {
+  .directive('actionSheet', function($rootScope) {
     return {
       restrict: 'E',
       templateUrl: 'views/includes/actionSheet.html',
@@ -12,6 +12,7 @@ angular.module('copayApp.directives')
       link: function(scope, element, attrs) {
         scope.hide = function() {
           scope.show = false;
+          $rootScope.$broadcast('incomingDataMenu.menuHidden');
         };
       }
     };
