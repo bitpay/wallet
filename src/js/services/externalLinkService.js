@@ -2,6 +2,12 @@
 
 angular.module('copayApp.services').service('externalLinkService', function(platformInfo, nodeWebkitService, popupService, gettextCatalog, $window, $log, $timeout) {
 
+  var _restoreHandleOpenURL = function(old) {
+    $timeout(function() {
+      $window.handleOpenURL = old;
+    }, 500);
+  };
+
   this.open = function(url, optIn, title, message, okText, cancelText) {
     var old = $window.handleOpenURL;
 
@@ -10,12 +16,9 @@ angular.module('copayApp.services').service('externalLinkService', function(plat
       $log.debug('Skip: ' + url);
     };
 
-    $timeout(function() {
-      $window.handleOpenURL = old;
-    }, 500);
-
     if (platformInfo.isNW) {
       nodeWebkitService.openExternalLink(url);
+      _restoreHandleOpenURL(old);
     } else {
       if (optIn) {
         var message = gettextCatalog.getString(message),
@@ -24,9 +27,13 @@ angular.module('copayApp.services').service('externalLinkService', function(plat
           cancelText = gettextCatalog.getString(cancelText),
           openBrowser = function(res) {
             if (res) window.open(url, '_system');
+            _restoreHandleOpenURL(old);
           };
         popupService.showConfirm(title, message, okText, cancelText, openBrowser);
-      } else window.open(url, '_system');
+      } else {
+        window.open(url, '_system');
+        _restoreHandleOpenURL(old);
+      }
     }
   };
 
