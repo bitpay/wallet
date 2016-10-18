@@ -24,8 +24,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.wallets = profileService.getWallets();
   };
 
-  $scope.openExternalLink = function(url, target) {
-      externalLinkService.open(url, target);
+  $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {

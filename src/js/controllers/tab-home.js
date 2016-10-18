@@ -6,12 +6,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     var listeners = [];
     var notifications = [];
     $scope.externalServices = {};
-    $scope.bitpayCardEnabled = true; // TODO
     $scope.openTxpModal = txpModalService.open;
     $scope.version = $window.version;
     $scope.name = $window.appConfig.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
+    $scope.isAndroid = platformInfo.isAndroid;
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     if (!$scope.homeTip) {
       storageService.getHomeTipAccepted(function(error, value) {
-        $scope.homeTip = (value == 'false') ? false : true;
+        $scope.homeTip = (value == 'accepted') ? false : true;
       });
     }
 
@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
 
         walletService.getTxNote(wallet, n.txid, function(err, note) {
-          if (err) $log.debug(gettextCatalog.getString('Could not fetch transaction note'));
+          if (err) $log.warn('Could not fetch transaction note: ' + err);
           $scope.btx.note = note;
         });
       });
@@ -175,7 +175,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.hideHomeTip = function() {
-      storageService.setHomeTipAccepted(false, function(error, value) {
+      storageService.setHomeTipAccepted('accepted', function() {
         $scope.homeTip = false;
         $timeout(function() {
           $scope.$apply();
@@ -203,19 +203,32 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     var bitpayCardCache = function() {
-      bitpayCardService.getCacheData(function(err, data) {
-        if (err ||  lodash.isEmpty(data)) return;
-        $scope.bitpayCard = data;
+      bitpayCardService.getBitpayDebitCards(function(err, data) {
+        if (err) return;
+        if (lodash.isEmpty(data)) {
+          $scope.bitpayCards = null;
+          return;
+        }
+        $scope.bitpayCards = data.cards;
+      });
+      bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
+        if (err) return;
+        if (lodash.isEmpty(data)) {
+          $scope.cardsHistory = null;
+          return;
+        }
+        $scope.cardsHistory = data;
       });
     };
 
     $scope.onRefresh = function() {
-      $scope.$broadcast('scroll.refreshComplete');
+      $timeout(function() {
+        $scope.$broadcast('scroll.refreshComplete');
+      }, 300);
       updateAllWallets();
     };
 
     $scope.$on("$ionicView.enter", function(event, data) {
-      $scope.bitpayCard = null;
       nextStep();
       updateAllWallets();
 

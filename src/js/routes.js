@@ -251,7 +251,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.send.amount', {
-        url: '/amount/:isWallet/:toAddress/:toName/:toEmail',
+        url: '/amount/:isWallet/:toAddress/:toName/:toEmail/:toColor',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
@@ -571,7 +571,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.addressbook.view', {
-        url: '/view/:address',
+        url: '/view/:address/:email/:name',
         views: {
           'tab-settings@tabs': {
             templateUrl: 'views/addressbook.view.html',
@@ -846,8 +846,17 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('tabs.bitpayCard', {
-        url: '/bitpay-card',
+      .state('tabs.bitpayCardIntro', {
+        url: '/bitpay-card-intro/:secret/:email/:otp',
+        views: {
+          'tab-home@tabs': {
+            controller: 'bitpayCardIntroController',
+            templateUrl: 'views/bitpayCardIntro.html'
+          }
+        }
+      })
+      .state('tabs.bitpayCard', {
+        url: '/bitpay-card/:id',
         views: {
           'tab-home@tabs': {
             controller: 'bitpayCardController',
@@ -857,7 +866,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.bitpayCard.amount', {
-        url: '/amount/:isCard/:toName',
+        url: '/amount/:cardId/:toName',
         views: {
           'tab-home@tabs': {
             controller: 'amountController',
@@ -866,7 +875,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.bitpayCard.confirm', {
-        url: '/confirm/:isCard/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        url: '/confirm/:cardId/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
         views: {
           'tab-home@tabs': {
             controller: 'confirmController',
@@ -878,12 +887,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/preferences',
         views: {
           'tab-home@tabs': {
+            controller: 'preferencesBitpayCardController',
             templateUrl: 'views/preferencesBitpayCard.html'
           }
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService) {
 
     uxLanguage.init();
     openURLService.init();
@@ -895,7 +905,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           screen.lockOrientation('portrait');
 
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
           cordova.plugins.Keyboard.disableScroll(true);
         }
 
@@ -970,8 +980,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             if (lodash.isEmpty(profileService.getWallets())) {
               $log.debug('No wallets and no disclaimer... redirecting');
               $state.go('onboarding.welcome');
-            }
-            else {
+            } else {
               $log.debug('Display disclaimer... redirecting');
               $state.go('onboarding.disclaimer', {
                 resume: true
@@ -980,8 +989,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           } else {
             throw new Error(err); // TODO
           }
-        }
-        else {
+        } else {
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
           scannerService.gentleInitialize();
@@ -997,7 +1005,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         type: "menubar"
       });
       try {
-        nativeMenuBar.createMacBuiltin("Copay");
+        nativeMenuBar.createMacBuiltin($window.appConfig.nameCase);
       } catch (e) {
         $log.debug('This is not OSX');
       }

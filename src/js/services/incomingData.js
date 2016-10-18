@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog, scannerService, $rootScope) {
+angular.module('copayApp.services').factory('incomingData', function($log, $ionicModal, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog, scannerService, $rootScope, lodash) {
 
   var root = {};
 
@@ -14,7 +14,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
   // }, 2000);
 
   root.redir = function(data) {
-    $log.debug('Processing incoming data:'  +data);
+    $log.debug('Processing incoming data: ' + data);
 
     function sanitizeUri(data) {
       // Fixes when a region uses comma to separate decimals
@@ -32,16 +32,24 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       return newUri;
     }
 
+    function getParameterByName(name, url) {
+      if (!url) return;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
-      $state.go('tabs.send');
-      $timeout(function() {
+      $state.go('tabs.send').then(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
-      }, 100);
+      });
       return true;
     }
-
 
     data = sanitizeUri(data);
     data = '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
@@ -56,6 +64,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       var amount = parsed.amount ?  parsed.amount : '';
 
       $state.go('tabs.send');
+      // Timeout is required to enable the "Back" button
       $timeout(function() {
         if (parsed.r) {
           $state.transitionTo('tabs.send.confirm', {paypro: parsed.r});
@@ -66,7 +75,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
             $state.transitionTo('tabs.send.amount', {toAddress: addr});
           }
         }
-      }, 100);
+      });
       return true;
 
     // Plain URL
@@ -91,40 +100,41 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       });
     // Plain Address
     } else if (bitcore.Address.isValid(data, 'livenet')) {
-      return root.showMenu({data: data, type: 'bitcoinAddress'});
-      $state.go('tabs.send');
-      $timeout(function() {
-        $state.transitionTo('tabs.send.amount', {toAddress: data});
-      }, 100);
-      return true;
+      root.showMenu({data: data, type: 'bitcoinAddress'});
     } else if (bitcore.Address.isValid(data, 'testnet')) {
-      return root.showMenu({data: data, type: 'bitcoinAddress'});
-      $state.go('tabs.send');
-      $timeout(function() {
-        $state.transitionTo('tabs.send.amount', {toAddress: data});
-      }, 100);
-      return true;
-
+      root.showMenu({data: data, type: 'bitcoinAddress'});
     // Protocol
     } else if (data && data.indexOf($window.appConfig.name + '://glidera')==0) {
       return $state.go('uriglidera', {url: data});
     } else if (data && data.indexOf($window.appConfig.name + '://coinbase')==0) {
       return $state.go('uricoinbase', {url: data});
 
+    // BitPayCard Authentication
+    } else if (data && data.indexOf($window.appConfig.name + '://')==0) {
+      var secret = getParameterByName('secret', data);
+      var email = getParameterByName('email', data);
+      var otp = getParameterByName('otp', data);
+      $state.go('tabs.home').then(function() {
+        $state.transitionTo('tabs.bitpayCardIntro', {
+          secret: secret,
+          email: email,
+          otp: otp
+        });
+      });
+      return true;
+
     // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home');
-      $timeout(function() {
+      $state.go('tabs.home').then(function() {
         $state.transitionTo('tabs.add.join', {url: data});
-      }, 100);
+      });
       return true;
 
     // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home');
-      $timeout(function() {
+      $state.go('tabs.home').then(function() {
         $state.transitionTo('tabs.add.join', {url: data});
-      }, 100);
+      });
       return true;
     }
 

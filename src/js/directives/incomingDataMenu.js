@@ -21,16 +21,14 @@ angular.module('copayApp.directives')
         };
         scope.sendPaymentToAddress = function(bitcoinAddress) {
           scope.showMenu = false;
-          $state.go('tabs.send');
-          $timeout(function() {
+          $state.go('tabs.send').then(function() {
             $state.transitionTo('tabs.send.amount', {toAddress: bitcoinAddress});
-          }, 100);
+          });
         };
         scope.addToAddressBook = function(bitcoinAddress) {
           scope.showMenu = false;
           $timeout(function() {
-            $state.go('tabs.send');
-            $timeout(function() {
+            $state.go('tabs.send').then(function() {
               $state.transitionTo('tabs.send.addressbook', {addressbookEntry: bitcoinAddress});
             });
           }, 100);

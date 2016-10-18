@@ -15,6 +15,45 @@ angular.module('copayApp.controllers').controller('exportController',
       });
     };
 
+    function getPassword(cb) {
+      if ($scope.password) return cb(null, $scope.password);
+
+      walletService.prepare(wallet, function(err, password) {
+        if (err) return cb(err);
+        $scope.password = password;
+        return cb(null, password);
+      });
+    };
+
+    $scope.generateQrCode = function() {
+      if ($scope.formData.exportWalletInfo || !walletService.isEncrypted(wallet)) {
+        $scope.file.value = false;
+      }
+
+      getPassword(function(err, password) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+
+        walletService.getEncodedWalletInfo(wallet, password, function(err, code) {
+          if (err) return cb(err);
+
+          if (!code)
+            $scope.formData.supported = false;
+          else {
+            $scope.formData.supported = true;
+            $scope.formData.exportWalletInfo = code;
+          }
+
+          $scope.file.value = false;
+          $timeout(function() {
+            $scope.$apply();
+          });
+        });
+      });
+    };
+
     var init = function() {
       $scope.formData = {};
       $scope.isEncrypted = wallet.isPrivKeyEncrypted();
@@ -24,24 +63,6 @@ angular.module('copayApp.controllers').controller('exportController',
       $scope.showAdvanced = false;
       $scope.wallet = wallet;
       $scope.canSign = wallet.canSign();
-
-      walletService.getEncodedWalletInfo(wallet, function(err, code) {
-        if (err || !code) {
-          $log.warn(err);
-          return $ionicHistory.goBack();
-        }
-
-        if (!code)
-          $scope.formData.supported = false;
-        else {
-          $scope.formData.supported = true;
-          $scope.formData.exportWalletInfo = code;
-        }
-
-        $timeout(function() {
-          $scope.$apply();
-        }, 1);
-      });
     };
 
     /*
@@ -67,23 +88,31 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.downloadWalletBackup = function() {
-      $scope.getAddressbook(function(err, localAddressBook) {
+      getPassword(function(err, password) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
-        var opts = {
-          noSign: $scope.formData.noSignEnabled,
-          addressBook: localAddressBook
-        };
 
-        backupService.walletDownload($scope.formData.password, opts, function(err) {
+        $scope.getAddressbook(function(err, localAddressBook) {
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
             return;
           }
-          $ionicHistory.removeBackView();
-          $state.go('tabs.home');
+          var opts = {
+            noSign: $scope.formData.noSignEnabled,
+            addressBook: localAddressBook,
+            password: password
+          };
+
+          backupService.walletDownload($scope.formData.password, opts, function(err) {
+            if (err) {
+              popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
+              return;
+            }
+            $ionicHistory.removeBackView();
+            $state.go('tabs.home');
+          });
         });
       });
     };
@@ -104,21 +133,29 @@ angular.module('copayApp.controllers').controller('exportController',
     };
 
     $scope.getBackup = function(cb) {
-      $scope.getAddressbook(function(err, localAddressBook) {
+      getPassword(function(err, password) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
-          return cb(null);
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
         }
-        var opts = {
-          noSign: $scope.formData.noSignEnabled,
-          addressBook: localAddressBook
-        };
 
-        var ew = backupService.walletExport($scope.formData.password, opts);
-        if (!ew) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
-        }
-        return cb(ew);
+        $scope.getAddressbook(function(err, localAddressBook) {
+          if (err) {
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
+            return cb(null);
+          }
+          var opts = {
+            noSign: $scope.formData.noSignEnabled,
+            addressBook: localAddressBook,
+            password: password
+          };
+
+          var ew = backupService.walletExport($scope.formData.password, opts);
+          if (!ew) {
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Failed to export'));
+          }
+          return cb(ew);
+        });
       });
     };
 
@@ -171,6 +208,11 @@ angular.module('copayApp.controllers').controller('exportController',
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       init();
+      $scope.file = {
+        value: true
+      };
+      $scope.formData.exportWalletInfo = null;
+      $scope.password = null;
     });
 
   });
