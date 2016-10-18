@@ -102,13 +102,10 @@ cordova/ProjectMakefile
 app-template/bitpay-wallet
 cordova/config.xml
 cordova/wp/Package.appxmanifest
-www/img/logo-negative.svg
-www/img/logo.svg
 src/js/appConfig.js
 src/js/externalServices.js
 chrome-app/manifest.json
-www/img/favicon.ico
-www/img/icon-128.png
+www/img/app
 
 
 cordova/android/res/
