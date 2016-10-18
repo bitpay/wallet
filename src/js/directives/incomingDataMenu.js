@@ -25,6 +25,13 @@ angular.module('copayApp.directives')
             $state.transitionTo('tabs.send.amount', {toAddress: bitcoinAddress});
           }, 100);
         };
+        scope.addToAddressBook = function(bitcoinAddress) {
+          scope.hide();
+          $state.go('tabs.send');
+          $timeout(function() {
+            $state.transitionTo('tabs.send.addressbook', {addressbookEntry: bitcoinAddress});
+          }, 100);
+        };
         scope.$watch('showMenu', function() {
           if(!scope.showMenu) {
             $rootScope.$broadcast('incomingDataMenu.menuHidden');
