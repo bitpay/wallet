@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         command: 'make -C cordova clean'
       },
       osx: {
-        command: 'webkitbuilds/build-osx.sh sign'
+        command: 'webkitbuilds/build-macos.sh sign'
       },
       coveralls: {
         command: 'cat  coverage/report-lcov/lcov.info |./node_modules/coveralls/bin/coveralls.js'
@@ -209,7 +209,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'webkitbuilds/',
-          src: ['.desktop', '../www/img/icons/favicon.ico', '../www/img/icons/icon-256.png'],
+          src: ['.desktop', '../www/img/icons/favicon.ico', '../www/img/icons/512x512.png'],
           dest: 'webkitbuilds/Copay/linux64/',
           flatten: true,
           filter: 'isFile'
@@ -222,8 +222,8 @@ module.exports = function(grunt) {
         platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
         version: '0.16.0',
-        macIcns: './www/img/icons/icon.icns',
-        exeIco: './www/img/icons/icon.ico'
+        macIcns: './www/img/icons/logo.icns',
+        exeIco: './www/img/icons/logo.ico'
       },
       src: ['./package.json', './www/**/*']
     },
