@@ -6,6 +6,7 @@
 
 var templates = {
   'package.json': '/',
+  'index.html': 'www/',
   'Makefile': 'cordova/',
   'ProjectMakefile': 'cordova/',
   'config-template.xml': '/',
