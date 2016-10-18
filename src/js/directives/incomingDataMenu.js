@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('incomingDataMenu', function($timeout, $rootScope, $state) {
+  .directive('incomingDataMenu', function($timeout, $rootScope, $state, externalLinkService) {
     return {
       restrict: 'E',
       templateUrl: 'views/includes/incomingDataMenu.html',
@@ -18,6 +18,9 @@ angular.module('copayApp.directives')
         scope.hide = function() {
           scope.showMenu = false;
           $rootScope.$broadcast('incomingDataMenu.menuHidden');
+        };
+        scope.goToUrl = function(url){
+          externalLinkService.open(url);
         };
         scope.sendPaymentToAddress = function(bitcoinAddress) {
           scope.showMenu = false;
