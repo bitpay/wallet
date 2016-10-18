@@ -18,6 +18,7 @@
   "winAppName": "CopayWallet",
   "wpPublisherId": "{31cdd08b-457c-413d-b440-f6665eec847d}",
   "wpProductId": "{5381aa50-9069-11e4-84cc-293caf9cbdc8}",
+  "windowsAppId": "804636ee-b017-4cad-8719-e58ac97ffa5c",
   "pushSenderId": "1036948132229",
   "description": "A Secure Bitcoin Wallet",
   "version": "2.5.0",

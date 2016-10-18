@@ -13,7 +13,7 @@ var templates = {
   'Package.appxmanifest': 'cordova/wp/',
   '.desktop': 'webkitbuilds/',
   'setup-win.iss': 'webkitbuilds/',
-  'manifest.json': 'chrome-app/',
+  'build-macos.sh': 'webkitbuilds/',
   //  'bower.json': '/',
 };
 var configDir = process.argv[2] || 'copay';
@@ -117,6 +117,6 @@ function copyDir(from, to, cb) {
 }
 
 
-copyDir(configDir + '/img/', '../www/img/', function() {
+copyDir(configDir + '/img/', '../www/img/app/', function() {
   console.log("apply.js finished. \n\n");
 });
