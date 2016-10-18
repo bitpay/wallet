@@ -1,23 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="20px" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
-    <title>ui-24px-outline-1_lock</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Addresss-(Secure-URL)" transform="translate(-9.000000, -9.000000)" stroke-width="2" stroke="#12E5B6">
-            <g id="Items/Bitcoin-Address">
-                <g id="Items/Bitcoin-Address-Copy">
-                    <g id="ui-24px-outline-1_lock" transform="translate(10.955302, 10.000000)">
-                        <g id="Group">
-                            <path d="M6.5,0 L6.5,0 C4.225,0 2.4375,1.8 2.4375,4.09090909 L2.4375,6.54545455 L10.5625,6.54545455 L10.5625,4.09090909 C10.5625,1.8 8.775,0 6.5,0 L6.5,0 Z" id="Shape"></path>
-                            <rect id="Rectangle-path" x="0" y="6.54545455" width="13" height="11.4545455"></rect>
-                            <ellipse id="Oval" cx="6.5" cy="11.4545455" rx="1.625" ry="1.63636364"></ellipse>
-                            <path d="M6.5,13.0909091 L6.5,14.7272727" id="Shape"></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="bitpay-lock" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 15 20" style="enable-background:new 0 0 15 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#12E5B6;}
+</style>
+<path class="st0" d="M12.2,6.7V5.4c0-2.7-2-4.7-4.7-4.7s-4.7,2-4.7,4.7v1.4H0.5v12.5h13.9V6.7H12.2z M4.6,5.4c0-1.6,1.3-2.9,2.9-2.9
+	s2.9,1.3,2.9,2.9v1.4H4.6V5.4z M12.6,17.4H2.4V8.6h0.4h9.4h0.5V17.4z"/>
+<path class="st0" d="M7.5,9.8c-1.3,0-2.4,1.1-2.4,2.4c0,1,0.7,1.9,1.5,2.2v0.7h1.9v-0.7c0.9-0.4,1.5-1.2,1.5-2.2
+	C9.9,10.9,8.8,9.8,7.5,9.8z M7.5,11.7c0.3,0,0.6,0.3,0.6,0.6c0,0.4-0.3,0.6-0.6,0.6s-0.6-0.3-0.6-0.6C6.9,12,7.2,11.7,7.5,11.7z"/>
 </svg>
