@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   function updateMemo() {
     walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
       if (err) {
-        $log.warn('Could not fetch transaction note ' + err);
+        $log.warn('Could not fetch transaction note: ' + err);
         return;
       }
 
@@ -139,8 +139,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   };
 
-  $scope.openExternalLink = function(url, target) {
-    externalLinkService.open(url, target);
+  $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
   $scope.getShortNetworkName = function() {

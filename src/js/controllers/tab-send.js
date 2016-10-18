@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, $rootScope) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -102,23 +102,28 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           isWallet: item.isWallet,
           toAddress: addr,
           toName: item.name,
-          toEmail: item.email
+          toEmail: item.email,
+          toColor: item.color
         })
       });
     });
   };
 
-
   var updateHasFunds = function() {
-    $scope.hasFunds = null;
+
+    if ($rootScope.everHasFunds) {
+      $scope.hasFunds = true;
+      return;
+    }
+
+    $scope.hasFunds = false;
 
     var wallets = profileService.getWallets({
       onlyComplete: true,
     });
 
     if (!wallets || !wallets.length) {
-      $scope.hasFunds = false;
-      $timeout(function() {
+      return $timeout(function() {
         $scope.$apply();
       });
     }
@@ -132,11 +137,12 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           return;
         }
 
-        if (status.availableBalanceSat) {
+        if (status.availableBalanceSat > 0) {
           $scope.hasFunds = true;
+          $rootScope.everHasFunds = true;
         }
+
         if (index == wallets.length) {
-          $scope.hasFunds = $scope.hasFunds || false;
           $timeout(function() {
             $scope.$apply();
           });

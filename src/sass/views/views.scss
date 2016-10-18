@@ -12,6 +12,7 @@
 @import "walletDetails";
 @import "advancedSettings";
 @import "bitpayCard";
+@import "bitpayCardIntro";
 @import "address-book";
 @import "wallet-backup-phrase";
 @import "zero-state";
@@ -30,4 +31,5 @@
 @import "includes/txp-details";
 @import "includes/tx-status";
 @import "includes/walletSelector";
-@import "integrations/coinbase.scss";
+@import "integrations/coinbase";
+@import "integrations/glidera";

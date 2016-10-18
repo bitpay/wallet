@@ -17,13 +17,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     $scope.isWallet = data.stateParams.isWallet;
-    $scope.isCard = data.stateParams.isCard;
+    $scope.cardId = data.stateParams.cardId;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.isCard;
+    $scope.showAlternativeAmount = !!$scope.cardId;
+    $scope.toColor = data.stateParams.toColor;
 
-    if (!$scope.isCard && !$stateParams.toAddress) {
+    if (!$scope.cardId && !$stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -93,7 +94,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.pushDigit = function(digit) {
     if ($scope.amount && $scope.amount.length >= LENGTH_EXPRESSION_LIMIT) return;
     if ($scope.amount.indexOf('.') > -1 && digit == '.') return;
-    if($scope.showAlternativeAmount && $scope.amount.indexOf('.') > -1 && $scope.amount[$scope.amount.indexOf('.') + 2]) return;
+    if ($scope.showAlternativeAmount && $scope.amount.indexOf('.') > -1 && $scope.amount[$scope.amount.indexOf('.') + 2]) return;
 
     $scope.amount = ($scope.amount + digit).replace('..', '.');
     checkFontSize();
@@ -189,7 +190,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.finish = function() {
     var _amount = evaluate(format($scope.amount));
 
-    if ($scope.isCard) {
+    if ($scope.cardId) {
       var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
 
       var dataSrc = {
@@ -199,7 +200,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       ongoingProcess.set('Processing Transaction...', true);
       $timeout(function() {
 
-        bitpayCardService.topUp(dataSrc, function(err, invoiceId) {
+        bitpayCardService.topUp($scope.cardId, dataSrc, function(err, invoiceId) {
           if (err) {
             ongoingProcess.set('Processing Transaction...', false);
             popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
@@ -215,7 +216,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
             var payProUrl = data.paymentUrls.BIP73;
 
             $state.transitionTo('tabs.bitpayCard.confirm', {
-              isCard: $scope.isCard,
+              cardId: $scope.cardId,
               toName: $scope.toName,
               paypro: payProUrl
             });

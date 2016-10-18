@@ -1,4 +1,4 @@
-<ion-view id="view-address-book">
+<ion-view id="view-address-book" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -24,7 +24,7 @@
     </div>
   </ion-content>
   <ion-content class="ng-hide" ng-show="!isEmptyList">
-    <div class="bar bar-header item-input-inset" ng-show="!isEmptyList">
+    <div class="bar bar-header item-input-inset" ng-show="!isEmptyList && addressbook.length >= 5">
       <label class="item-input-wrapper">
         <i class="icon ion-ios-search placeholder-icon"></i>
         <input type="search"
@@ -36,7 +36,7 @@
     <ion-list>
       <ion-item ng-repeat="addrEntry in addressbook"
                 class="item-icon-right item-avatar"
-                ui-sref="tabs.addressbook.view({address:addrEntry.address})">
+                ui-sref="tabs.addressbook.view({address:addrEntry.address, email: addrEntry.email, name: addrEntry.name})">
         <gravatar name="{{addrEntry.name}}" width="50" email="{{addrEntry.email}}"></gravatar>
         <h2>{{addrEntry.name}}</h2>
         <p>{{addrEntry.address}}</p>

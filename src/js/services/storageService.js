@@ -325,28 +325,40 @@ angular.module('copayApp.services')
       storage.remove('coinbaseTxs-' + network, cb);
     };
 
-    root.setBitpayCard = function(network, data, cb) {
-      storage.set('bitpayCard-' + network, data, cb);
+    root.setBitpayDebitCardsHistory = function(network, data, cb) {
+      storage.set('bitpayDebitCardsHistory-' + network, data, cb);
     };
 
-    root.getBitpayCard = function(network, cb) {
-      storage.get('bitpayCard-' + network, cb);
+    root.getBitpayDebitCardsHistory = function(network, cb) {
+      storage.get('bitpayDebitCardsHistory-' + network, cb);
     };
 
-    root.removeBitpayCard = function(network, cb) {
-      storage.remove('bitpayCard-' + network, cb);
+    root.removeBitpayDebitCardsHistory = function(network, cb) {
+      storage.remove('bitpayDebitCardsHistory-' + network, cb);
     };
 
-    root.setBitpayCardCache = function(network, data, cb) {
-      storage.set('bitpayCardCache-' + network, data, cb);
+    root.setBitpayDebitCards = function(network, data, cb) {
+      storage.set('bitpayDebitCards-' + network, data, cb);
     };
 
-    root.getBitpayCardCache = function(network, cb) {
-      storage.get('bitpayCardCache-' + network, cb);
+    root.getBitpayDebitCards = function(network, cb) {
+      storage.get('bitpayDebitCards-' + network, cb);
     };
 
-    root.removeBitpayCardCache = function(network, cb) {
-      storage.remove('bitpayCardCache-' + network, cb);
+    root.removeBitpayDebitCards = function(network, cb) {
+      storage.remove('bitpayDebitCards-' + network, cb);
+    };
+
+    root.setBitpayCardCredentials = function(network, data, cb) {
+      storage.set('bitpayCardCredentials-' + network, data, cb);
+    };
+
+    root.getBitpayCardCredentials = function(network, cb) {
+      storage.get('bitpayCardCredentials-' + network, cb);
+    };
+
+    root.removeBitpayCardCredentials = function(network, cb) {
+      storage.remove('bitpayCardCredentials-' + network, cb);
     };
 
     root.removeAllWalletData = function(walletId, cb) {

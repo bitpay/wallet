@@ -2,23 +2,25 @@
 
 angular.module('copayApp.controllers').controller('preferencesEmailController', function($scope, $ionicHistory, $stateParams, gettextCatalog, profileService, walletService, configService) {
 
-  var wallet = profileService.getWallet($stateParams.walletId);
-  var walletId = wallet.credentials.walletId;
+  $scope.wallet = profileService.getWallet($stateParams.walletId);
+  var walletId = $scope.wallet.credentials.walletId;
 
   var config = configService.getSync();
   config.emailFor = config.emailFor || {};
+  $scope.emailForExist = config.emailFor && config.emailFor[walletId];
   $scope.email = {
     value: config.emailFor && config.emailFor[walletId]
   };
 
-  $scope.save = function() {
+
+  $scope.save = function(val) {
     var opts = {
       emailFor: {}
     };
-    opts.emailFor[walletId] = $scope.email.value;
+    opts.emailFor[walletId] = val;
 
-    walletService.updateRemotePreferences(wallet, {
-      email: $scope.email.value,
+    walletService.updateRemotePreferences($scope.wallet, {
+      email: val,
     }, function(err) {
       if (err) $log.warn(err);
       configService.set(opts, function(err) {

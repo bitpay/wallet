@@ -16,7 +16,8 @@
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="HideKeyboardFormAccessoryBar" value="true"/>
-    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <!-- #355 -->
+    <!-- <preference name="KeyboardDisplayRequiresUserAction" value="false" /> -->
     <preference name="StatusBarBackgroundColor" value="#1e3186" />
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="8.1"/>
@@ -56,8 +57,9 @@
     <plugin name="cordova-plugin-whitelist" spec="~1.3.0" />
     <plugin name="cordova-plugin-wkwebview-engine" spec="https://github.com/driftyco/cordova-plugin-wkwebview-engine.git" />
     <plugin name="cordova-plugin-qrscanner" spec="~2.4.0" />
-    <plugin name="cordova-plugin-customurlscheme" spec="~4.2.0">
-      <variable name="URL_SCHEME" value="UNUSED" />
+    <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/cmgustavo/Custom-URL-scheme.git">
+      <variable name="URL_SCHEME" value="bitcoin" />
+      <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
     </plugin>
     <plugin name="phonegap-plugin-push" spec="~1.8.2">
       <variable name="SENDER_ID" value="*PUSHSENDERID*"/>

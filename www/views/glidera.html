@@ -1,17 +1,22 @@
-<ion-view>
+<ion-view id="glidera">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>Glidera</ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-show="token" ui-sref="tabs.buyandsell.glidera.preferences">
+        <i class="icon ion-ios-gear-outline"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
 
-    <div class="box-notification error" ng-show="!network">
+    <div class="box-notification error m0" ng-show="!network">
       Glidera is disabled for this application
     </div>
 
-    <div class="box-notification warning" ng-show="network == 'testnet'">
+    <div class="box-notification warning m0" ng-show="network == 'testnet'">
       Testnet wallets only work with Glidera Sandbox Accounts
     </div>
 
@@ -19,25 +24,24 @@
 
       <div ng-init="showOauthForm = false">
         <div class="text-center m20v">
-          <img src="img/glidera-logo.png" ng-click="update(token, permissions)" width="200">
+          <img src="img/glidera-logo.png" ng-click="update({'fullUpdate': true})" width="200">
         </div>
         <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
-          <p class="m10b">You can buy and sell Bitcoin with a US bank account directly in Copay.</p>
+          <p class="glidera-lead">You can buy and sell Bitcoin with a US bank account directly in this app.</p>
 
-          <p class="m20t padding text-gray size-12 text-left">
+          <p class="disclosure">
             DISCLOSURE.<br>
-            Glidera Inc. (Glidera) is providing the service of buying or selling bitcoins to Copay users.  To enable this
+            Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users.  To enable this
             service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business
-            (#31000042625755).  Users of Copay must agree to the service agreement presented by Glidera prior to obtaining
+            (#31000042625755).  Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining
             Glidera’s service of buying or selling bitcoins. Service available in U.S. and Canada only. In U.S. (buy & sell) CA, GA, IL, KS,
             MA, MD, MO, MT, MN, SC, TX, AZ, CO, DE, ME, NJ, PA, TN, UT, NV, WI. In Canada (buy & sell) AB, BC, MB, NB, NL, NS, NT, NU,
             ON, PE, SK, YT.
           </p>
 
           <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
-
           <button class="button button-standard button-primary"
-            ng-click="openExternalLink(glidera.getAuthenticateUrl(), '_system'); showOauthForm = true">
+            ng-click="openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true">
             Connect to Glidera
           </button>
           <div class="m10t">
@@ -60,7 +64,7 @@
               <div class="col">
                 <input type="button"
                        value="Cancel"
-                       class="button button-block button-light"
+                       class="button button-standard button-light"
                        ng-click="showOauthForm = false">
               </div>
               <div class="col">
@@ -76,33 +80,19 @@
       </div>
     </div>
 
-    <div ng-if="token && permissions">
+    <div ng-if="token">
       <div class="text-center m20v">
-        <img src="img/glidera-logo.png" ng-click="update(token, permissions)" width="200">
+        <img src="img/glidera-logo.png" ng-click="update({'fullUpdate': true})" width="200">
       </div>
-      <div class="list">
-        <a class="item item-icon-left item-icon-right" href ui-sref="tabs.buyandsell.glidera.preferences">
-          <i class="icon ion-ios-gear"></i>
-          <span ng-show="personalInfo">{{personalInfo.firstName}} {{personalInfo.lastName}}</span>
-          <span class="item-note" ng-show="email">
-            {{email}}
-          </span>
-          <i class="icon bp-arrow-right"></i>
+      <div class="text-center m30v size-12"
+           ng-show="status && !status.userCanTransact">
+        <h4 class="text-bold">Complete Setup</h4>
+        <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
+        <a class="button"
+           ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login'"
+           ng-click="openExternalLink(glideraUrl)">
+          Go to Glidera
         </a>
-      </div>
-      <div class="padding">
-        <div class="text-center m30v size-12"
-          ng-show="status && !status.userCanTransact">
-          <h4 class="text-bold"> Complete Setup</h4>
-          <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
-          <a class="button"
-             ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' :
-             'https://glidera.io/login'"
-             ng-click="openExternalLink(glideraUrl)">
-            Go to Glidera
-          </a>
-          </div>
-        </div>
       </div>
 
       <div class="list"
@@ -123,7 +113,7 @@
         </a>
       </div>
 
-      <div class="list card" ng-show="permissions.transaction_history">
+      <div class="list card" ng-show="permissions && permissions.transaction_history">
         <div class="item item-heading">
           Activity
         </div>

@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWallet = data.stateParams.isWallet;
-    $scope.isCard = data.stateParams.isCard;
+    $scope.cardId = data.stateParams.cardId;
     $scope.toAmount = data.stateParams.toAmount;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
@@ -226,6 +226,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   var setSendError = function(msg) {
     $scope.sendStatus = '';
+    $timeout(function() {
+      $scope.$apply();
+    });
     popupService.showAlert(gettextCatalog.getString('Error at confirm:'), msg);
   };
 
@@ -377,11 +380,24 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.onSuccessConfirm = function() {
+    var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
+    var fromBitPayCard = previousView.match(/tabs.bitpayCard/) ? true : false;
+
     $ionicHistory.nextViewOptions({
       disableAnimate: true
     });
+    $ionicHistory.removeBackView();
     $scope.sendStatus = '';
-    $state.go('tabs.send');
+
+    if (fromBitPayCard) {
+      $timeout(function() {
+        $state.transitionTo('tabs.bitpayCard', {
+          id: $stateParams.cardId
+        });
+      }, 100);
+    } else {
+      $state.go('tabs.send');
+    }
   };
 
   function publishAndSign(wallet, txp, onSendStatusChange) {

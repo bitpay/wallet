@@ -77,7 +77,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
   this.showAlert = function(title, msg, cb, buttonName) {
     var message = (msg && msg.message) ? msg.message : msg;
-    $log.warn(title + ": " + message);
+    $log.warn(title ? (title + ': ' + message) : message);
 
     if (isCordova)
       _cordovaAlert(title, message, cb, buttonName);
@@ -97,7 +97,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
    */
 
   this.showConfirm = function(title, message, okText, cancelText, cb) {
-    $log.warn(title + ": " + message);
+    $log.warn(title ? (title + ': ' + message) : message);
 
     if (isCordova)
       _cordovaConfirm(title, message, okText, cancelText, cb);
@@ -116,7 +116,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
    */
 
   this.showPrompt = function(title, message, opts, cb) {
-    $log.warn(title + ": " + message);
+    $log.warn(title ? (title + ': ' + message) : message);
 
     if (isCordova && !opts.forceHTMLPrompt)
       _cordovaPrompt(title, message, opts, cb);
