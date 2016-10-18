@@ -17,7 +17,7 @@ fi
 
 # set up your app name, architecture, and background image file name
 APP_NAME="*USERVISIBLENAME*"
-DMG_BACKGROUND_IMG="../www/img/Background.png"
+DMG_BACKGROUND_IMG="Background.png"
 
 PATH_NAME="${APP_NAME}/osx64/"
 # you should not need to change these
