@@ -6,6 +6,7 @@ module.exports = function(grunt) {
 
   // Project Configuration
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     exec: {
       appConfig: {
         command: 'node ./util/buildAppConfig.js'
@@ -19,8 +20,8 @@ module.exports = function(grunt) {
       cordovaclean: {
         command: 'make -C cordova clean'
       },
-      osx: {
-        command: 'webkitbuilds/build-osx.sh sign'
+      macos: {
+        command: 'sh webkitbuilds/build-macos.sh sign'
       },
       coveralls: {
         command: 'cat  coverage/report-lcov/lcov.info |./node_modules/coveralls/bin/coveralls.js'
@@ -60,10 +61,10 @@ module.exports = function(grunt) {
         stdin: true,
       },
       desktopsign: {
-        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/Copay-linux.zip.sig --detach-sig webkitbuilds/Copay-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/Copay-win.exe.sig --detach-sig webkitbuilds/Copay-win.exe'
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-win.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>-win.exe'
       },
       desktopverify: {
-        cmd: 'gpg --verify webkitbuilds/Copay-linux.zip.sig webkitbuilds/Copay-linux.zip && gpg --verify webkitbuilds/Copay-win.exe.sig webkitbuilds/Copay-win.exe'
+        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>-win.exe.sig webkitbuilds/<%= pkg.title %>-win.exe'
       },
     },
     watch: {
@@ -209,8 +210,8 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'webkitbuilds/',
-          src: ['.desktop', '../www/img/icons/favicon.ico', '../www/img/icons/icon-256.png'],
-          dest: 'webkitbuilds/Copay/linux64/',
+          src: ['.desktop', '../www/img/app/favicon.ico', '../www/img/app/512x512.png'],
+          dest: 'webkitbuilds/<%= pkg.title %>/linux64/',
           flatten: true,
           filter: 'isFile'
         }],
@@ -218,24 +219,24 @@ module.exports = function(grunt) {
     },
     nwjs: {
       options: {
-        appName: 'Copay',
+        appName: '<%= pkg.title %>',
         platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
         version: '0.16.0',
-        macIcns: './www/img/icons/icon.icns',
-        exeIco: './www/img/icons/icon.ico'
+        macIcns: './www/img/app/logo.icns',
+        exeIco: './www/img/app/logo.ico'
       },
       src: ['./package.json', './www/**/*']
     },
     compress: {
       linux: {
         options: {
-          archive: './webkitbuilds/Copay-linux.zip'
+          archive: './webkitbuilds/<%= pkg.title %>-linux.zip'
         },
         expand: true,
-        cwd: './webkitbuilds/Copay/linux64/',
+        cwd: './webkitbuilds/<%= pkg.title %>/linux64/',
         src: ['**/*'],
-        dest: 'copay-linux/'
+        dest: '<%= pkg.title %>-linux/'
       }
     },
     browserify: {
@@ -252,7 +253,7 @@ module.exports = function(grunt) {
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
-  grunt.registerTask('osx', ['prod', 'nwjs', 'exec:osx']);
+  grunt.registerTask('macos', ['prod', 'nwjs', 'exec:macos']);
   grunt.registerTask('chrome', ['exec:chrome']);
   grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-copy', ['default', 'exec:wpcopy']);

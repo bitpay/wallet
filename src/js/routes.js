@@ -893,7 +893,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService) {
 
     uxLanguage.init();
     openURLService.init();
@@ -1005,7 +1005,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         type: "menubar"
       });
       try {
-        nativeMenuBar.createMacBuiltin("Copay");
+        nativeMenuBar.createMacBuiltin($window.appConfig.nameCase);
       } catch (e) {
         $log.debug('This is not OSX');
       }
