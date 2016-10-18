@@ -12,6 +12,15 @@ angular.module('copayApp.directives')
             scope.type = data.type;
             scope.showMenu = true;
 
+            console.log('scope.type', scope.type);
+            if(scope.type === 'url') {
+              console.log('scope.data', scope.data);
+              console.log('scope.data.indexOf("https://")', scope.data.indexOf('https://'));
+              if(scope.data.indexOf('https://') === 0) {
+                scope.https = true;
+              }
+            }
+
             console.log('data', data);
           });
         });
