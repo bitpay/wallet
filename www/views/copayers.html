@@ -18,7 +18,7 @@
           Share this invitation with your copayers
         </div>
         <div class="item text-center" copy-to-clipboard="secret" ng-click="copySecret()">
-          <qrcode size="220" error-correction-level="L" data="{{secret}}"></qrcode>
+          <qrcode size="220" error-correction-level="L" data="{{secret}}" color="#334"></qrcode>
           <div ng-show="!secret" style="position:relative; top:-226px; height:0px">
             <div style="height:220px; width:220px; margin:auto; background: white">
               <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
