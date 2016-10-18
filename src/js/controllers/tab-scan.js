@@ -105,6 +105,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   }
 
   $rootScope.$on('incomingDataMenu.menuHidden', function() {
+    console.log('in herererere');
     scannerService.resumePreview();
     activate();
   });
