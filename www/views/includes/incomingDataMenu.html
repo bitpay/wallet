@@ -1,22 +1,47 @@
 <action-sheet
   action-sheet-show="showMenu">
-  <div class="incoming-data-menu__item head">
-    <div class="incoming-data-menu__header">Website</div>
-    <div class="incoming-data-menu__url">
-      <div class="incoming-data-menu__url__icon">
-        <img src="img/icon-lock-green.svg">
-      </div>
-      <div class="incoming-data-menu__url__text">
-        {{data}}
+
+  <div ng-show="type === 'url'">
+    <div class="incoming-data-menu__item head">
+      <div class="incoming-data-menu__header">Website</div>
+      <div class="incoming-data-menu__url">
+        <div class="incoming-data-menu__url__icon">
+          <img src="img/icon-lock-green.svg">
+        </div>
+        <div class="incoming-data-menu__url__text">
+          {{data}}
+        </div>
       </div>
     </div>
+    <a class="incoming-data-menu__item item item-icon-right" ng-href="{{data}}" target="_blank">
+      <img src="img/icon-link-external.svg">
+      <div>Open website</div>
+      <i class="icon bp-arrow-right"></i>
+    </a>
+    <a class="incoming-data-menu__cancel item" ng-click="hide()">
+      Cancel
+    </a>
   </div>
-  <a class="incoming-data-menu__item item item-icon-right" ng-href="{{data}}" target="_blank">
-    <img src="img/icon-link-external.svg">
-    <div>Open website</div>
-    <i class="icon bp-arrow-right"></i>
-  </a>
-  <a class="incoming-data-menu__cancel item" ng-click="hide()">
-    Cancel
-  </a>
+
+  <div ng-show="type === 'bitcoinAddress'">
+    <div class="incoming-data-menu__item head">
+      <div class="incoming-data-menu__header">Bitcoin Address</div>
+      <div class="incoming-data-menu__url">
+        <div class="incoming-data-menu__url__icon">
+          <img src="img/icon-bitcoin-small.svg">
+        </div>
+        <div class="incoming-data-menu__url__text">
+          {{data}}
+        </div>
+      </div>
+    </div>
+    <a class="incoming-data-menu__item item item-icon-right" ng-href="{{data}}" target="_blank">
+      <img src="img/icon-link-external.svg">
+      <div>Open website</div>
+      <i class="icon bp-arrow-right"></i>
+    </a>
+    <a class="incoming-data-menu__cancel item" ng-click="hide()">
+      Cancel
+    </a>
+  </div>
 </action-sheet>

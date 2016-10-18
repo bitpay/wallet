@@ -8,10 +8,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
-  $timeout(function() {
-    var data = 'https://bitpay.com';
-    root.redir(data);
-  }, 2000);
+  // $timeout(function() {
+  //   var data = 'https://bitpay.com';
+  //   root.redir(data);
+  // }, 2000);
 
   root.redir = function(data) {
     $log.debug('Processing incoming data:'  +data);
@@ -44,6 +44,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
 
     data = sanitizeUri(data);
+    data = '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
 
     // BIP21
     if (bitcore.URI.isValid(data)) {
@@ -74,7 +75,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       getPayProDetails(data, function(err, details) {
         if(err) {
           console.log('getPayProDetails err', err);
-          root.showMenu(data);
+          root.showMenu({data: data, type: 'url'});
           return;
         }
         console.log('paypro details', details);
@@ -90,12 +91,14 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       });
     // Plain Address
     } else if (bitcore.Address.isValid(data, 'livenet')) {
+      return root.showMenu({data: data, type: 'bitcoinAddress'});
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.amount', {toAddress: data});
       }, 100);
       return true;
     } else if (bitcore.Address.isValid(data, 'testnet')) {
+      return root.showMenu({data: data, type: 'bitcoinAddress'});
       $state.go('tabs.send');
       $timeout(function() {
         $state.transitionTo('tabs.send.amount', {toAddress: data});
