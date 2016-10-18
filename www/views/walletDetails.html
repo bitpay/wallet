@@ -91,7 +91,7 @@
       </div>
 
 
-      <div class="card list" ng-if="txps[0]">
+      <div class="list" ng-if="txps[0]">
         <div class="item item-heading" translate>
           <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
           <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
@@ -125,7 +125,7 @@
         </div>
       </div>
 
-      <div class="card list" ng-show="txHistory[0]">
+      <div class="list" ng-show="txHistory[0]">
         <div class="item" ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
           <span class="item-note text-right">
             <span class="size-16"  ng-class="{'text-bold': btx.recent}">
