@@ -67,6 +67,9 @@ incoming-data-menu {
         font-size: 14px;
         border-left: 1px solid #E4E4E4;
         padding-left: 1rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
   }
