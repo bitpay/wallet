@@ -13,7 +13,7 @@ var templates = {
   'Package.appxmanifest': 'cordova/wp/',
   '.desktop': 'webkitbuilds/',
   'setup-win.iss': 'webkitbuilds/',
-  'manifest.json': 'chrome-app/',
+  'build-macos.sh': 'webkitbuilds/',
   //  'bower.json': '/',
 };
 var configDir = process.argv[2] || 'copay';

@@ -14,7 +14,7 @@
   "main": "www/index.html",
   "window": {
     "title": "*USERVISIBLENAME* - *PURPOSELINE*",
-    "icon": "www/img/icon-128.png",
+    "icon": "www/img/icons/logo.ico",
     "toolbar": false,
     "show": true,
     "visible": true,

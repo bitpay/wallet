@@ -18,6 +18,7 @@
   "winAppName": "BitPayWallet",
   "wpPublisherId": "{}",
   "wpProductId": "{}",
+  "windowsAppId": "",
   "pushSenderId": "1036948132229",
   "description": "Secure Bitcoin Wallet",
   "version": "0.14.0",

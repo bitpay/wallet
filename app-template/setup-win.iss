@@ -5,10 +5,11 @@
 #define MyAppVersion "*VERSION*"
 #define MyAppPublisher "BitPay"
 #define MyAppURL "*URL*"
-#define MyAppExeName "*PACKAGENAME.exe"
+#define MyAppExeName "*PACKAGENAME*.exe"
+#define AppId "*WINDOWSAPPID*"
 
 [Setup]
-AppId={804636ee-b017-4cad-8719-e58ac97ffa5c}
+AppId={#AppId}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
