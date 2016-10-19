@@ -23,6 +23,9 @@
     "frame": true,
     "width": 400,
     "height": 650,
+    "min_width": 400,
+    "max_width": 800,
+    "min_height": 650,
     "position": "center",
     "fullscreen": false
   },
