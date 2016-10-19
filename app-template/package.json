@@ -1,4 +1,7 @@
 {
+  "//":"Having trouble with this file? Try `npm run reset`",
+  "//":"Want git to ignore changes to this file? Run `npm run ignore`",
+
   "name": "*PACKAGENAME*",
   "description": "*DESCRIPTION*",
   "author": "BitPay",
@@ -79,8 +82,7 @@
     "shelljs": "^0.3.0"
   },
   "scripts": {
-    "preinstall":             "bower install && npm install fs-extra",
-    "postinstall":            "echo && echo \"To finish, choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
+    "postinstall":            "bower install && echo && echo \"To finish, choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
     "start":                  "npm run build:www && ionic serve --nolivereload --nogulp -s",
     "start:ios":              "npm run build:www && npm run build:ios && npm run open:ios",
     "start:android":          "npm run build:www && npm run build:android && npm run run:android",
@@ -98,21 +100,24 @@
     "final:www":              "npm run build:www-release",
     "final:ios":              "npm run final:www && npm run build:ios-release && npm run open:ios",
     "final:android":          "npm run final:www && npm run build:android-release && npm run run:android",
-    "final:desktop":          "grunt desktop",
-    "sign:android":           "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && ../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
+    "final:desktop":          "npm run build:desktop && npm run build:macos",
     "run:android":            "cordova run android --device",
     "log:android":            "adb logcat | grep chromium",
+    "sign:android":           "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && ../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
     "apply:copay":            "cd app-template && node apply.js copay && cordova prepare",
     "apply:bitpay":           "cd app-template && node apply.js bitpay && cordova prepare",
     "test":                   "./node_modules/.bin/grunt test-coveralls",
     "clean":                  "trash platforms && trash plugins && cordova prepare",
-    "clean-all":              "git clean -dfx && npm install"
+    "ignore":                 "git update-index --skip-worktree package.json",
+    "reset":                  "git update-index --no-skip-worktree package.json",
+    "clean-all":              "npm run reset && git clean -dfx"
   },
   "devDependencies": {
     "cordova": "^6.3.1",
     "grunt": "^1.0.1",
     "ionic": "^2.1.0",
     "trash-cli": "^1.4.0",
-    "lodash": "^4.3.0"
+    "lodash": "^4.3.0",
+    "fileicon": "^0.1.8"
   }
 }

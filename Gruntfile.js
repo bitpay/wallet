@@ -210,7 +210,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'webkitbuilds/',
-          src: ['.desktop', '../www/img/app/favicon.ico', '../www/img/app/512x512.png'],
+          src: ['.desktop', '../www/img/app/favicon.ico', '../resources/<%= pkg.name %>/linux/512x512.png'],
           dest: 'webkitbuilds/<%= pkg.title %>/linux64/',
           flatten: true,
           filter: 'isFile'
@@ -223,7 +223,7 @@ module.exports = function(grunt) {
         platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
         version: '0.16.0',
-        macIcns: './www/img/app/logo.icns',
+        macIcns: './resources/<%= pkg.name %>/mac/app.icns',
         exeIco: './www/img/app/logo.ico'
       },
       src: ['./package.json', './www/**/*']
