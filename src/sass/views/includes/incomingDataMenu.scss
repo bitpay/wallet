@@ -29,7 +29,12 @@ incoming-data-menu {
       }
 
       > img {
-        margin-right: 1rem;
+        margin-left: .2rem;
+        position: absolute;
+      }
+
+      &__text {
+        padding-left: 2.7rem;
       }
     }
 

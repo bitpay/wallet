@@ -52,7 +52,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     }
 
     data = sanitizeUri(data);
-    //data = '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
+    // data = '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
+    //data = 'msEVvmpiFEtXv3MdsFLUYMbnNLeNYrqBEA';
     //data = 'alkjsdflkajsdf';
     console.log('brroooooo');
 
