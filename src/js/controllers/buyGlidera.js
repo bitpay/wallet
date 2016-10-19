@@ -139,7 +139,6 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
 
       $scope.wallets = profileService.getWallets({
         network: $scope.network,
-        n: 1,
         onlyComplete: true
       });
     });
