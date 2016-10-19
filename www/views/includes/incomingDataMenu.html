@@ -1,7 +1,7 @@
 <action-sheet
   action-sheet-show="showMenu">
 
-  <div ng-show="type === 'url'">
+  <div ng-if="type === 'url'">
     <div class="incoming-data-menu__item head">
       <div class="incoming-data-menu__header">Website</div>
       <div class="incoming-data-menu__url">
@@ -24,7 +24,7 @@
     </a>
   </div>
 
-  <div ng-show="type === 'bitcoinAddress'">
+  <div ng-if="type === 'bitcoinAddress'">
     <div class="incoming-data-menu__item head">
       <div class="incoming-data-menu__header">Bitcoin Address</div>
       <div class="incoming-data-menu__url">
@@ -56,7 +56,7 @@
     </a>
   </div>
 
-  <div ng-show="type === 'text'">
+  <div ng-if="type === 'text'">
     <div class="incoming-data-menu__item head">
       <div class="incoming-data-menu__header">Text</div>
       <div class="incoming-data-menu__url">
@@ -74,5 +74,5 @@
       Cancel
     </a>
   </div>
-  
+
 </action-sheet>
