@@ -11,6 +11,7 @@ angular.module('copayApp.directives')
             scope.data = data.data;
             scope.type = data.type;
             scope.showMenu = true;
+            scope.https = false;
 
             console.log('scope.type', scope.type);
             if(scope.type === 'url') {
