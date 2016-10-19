@@ -8,11 +8,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
-  // $timeout(function() {
-  //   var data = 'https://bitpay.com';
-  //   root.redir(data);
-  // }, 2000);
-
   root.redir = function(data) {
     $log.debug('Processing incoming data: ' + data);
 
@@ -52,10 +47,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     }
 
     data = sanitizeUri(data);
-    // data = '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
-    //data = 'msEVvmpiFEtXv3MdsFLUYMbnNLeNYrqBEA';
-    //data = 'alkjsdflkajsdf';
-    console.log('brroooooo');
 
     // BIP21
     if (bitcore.URI.isValid(data)) {
@@ -86,11 +77,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
       getPayProDetails(data, function(err, details) {
         if(err) {
-          console.log('getPayProDetails err', err);
           root.showMenu({data: data, type: 'url'});
           return;
         }
-        console.log('paypro details', details);
         $state.go('tabs.send');
         var stateParams = {
           toAmount: details.amount,
@@ -107,13 +96,13 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
     } else if (bitcore.Address.isValid(data, 'testnet')) {
       root.showMenu({data: data, type: 'bitcoinAddress'});
     // Protocol
-    } else if (data && data.indexOf($window.appConfig.name + '://glidera')==0) {
+  } else if (data && data.indexOf($window.appConfig.name + '://glidera') === 0) {
       return $state.go('uriglidera', {url: data});
-    } else if (data && data.indexOf($window.appConfig.name + '://coinbase')==0) {
+    } else if (data && data.indexOf($window.appConfig.name + '://coinbase') === 0) {
       return $state.go('uricoinbase', {url: data});
 
     // BitPayCard Authentication
-    } else if (data && data.indexOf($window.appConfig.name + '://')==0) {
+  } else if (data && data.indexOf($window.appConfig.name + '://') === 0) {
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
@@ -140,7 +129,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
       });
       return true;
     } else {
-      console.log('unrecognized dood');
       root.showMenu({data: data, type: 'text'});
     }
 
@@ -164,24 +152,14 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     $log.debug('Fetch PayPro Request...', uri);
 
-    console.log('show fetchingPayPro loader');
     ongoingProcess.set('fetchingPayPro', true);
-    //debugger;
-    // uri = 'https://bitpay.com/i/NhjqGZo1RNoHxiHxK7VBuM';
-    //uri = 'https://test.bitpay.com:443/i/LCy5Y7hxmEbkprAK27odAU';
+
     wallet.fetchPayPro({
       payProUrl: uri,
     }, function(err, paypro) {
-      console.log('paypro', paypro);
 
       ongoingProcess.set('fetchingPayPro', false);
       if (err) {
-        // $log.warn('Could not fetch payment request:', err);
-        // var msg = err.toString();
-        // if (msg.match('HTTP')) {
-        //   msg = gettextCatalog.getString('Could not fetch payment information');
-        // }
-        // popupService.showAlert(msg);
         return cb(true);
       }
 
