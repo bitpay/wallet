@@ -45,7 +45,7 @@ angular.module('copayApp.directives')
             $state.go('tabs.send').then(function() {
               $timeout(function() {
                 $state.transitionTo('tabs.send.addressbook', {addressbookEntry: bitcoinAddress});
-              }, 10);
+              });
             });
           }, 100);
         };
