@@ -68,7 +68,7 @@
           <div class="size-12 text-bold">
             {{tx.merchant.name}}
           </div>
-          <div class="size-12">
+          <div class="size-12" ng-show="tx.merchant.city && tx.merchant.state">
             {{tx.merchant.city}}, {{tx.merchant.state}}
           </div>
         </div>
