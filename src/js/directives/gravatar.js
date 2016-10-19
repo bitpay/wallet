@@ -12,9 +12,10 @@ angular.module('copayApp.directives')
         email: '@'
       },
       link: function(scope, el, attr) {
-        scope.emailHash = md5.createHash(scope.email || '');
+        if(typeof scope.email === "string"){
+          scope.emailHash = md5.createHash(scope.email.toLowerCase() || '');
+        }
       },
       template: '<img class="gravatar" alt="{{ name }}" height="{{ height }}"  width="{{ width }}" src="https://secure.gravatar.com/avatar/{{ emailHash }}.jpg?s={{ width }}&d=mm">'
     }
   });
-

@@ -1,3 +1,30 @@
+.wallet-details {
+  &__tx-amount {
+    font-size: 16px;
+    &--recent {
+      color: $mid-gray;
+      font-weight: bold;
+    }
+    &--received {
+      color: #30af6c;
+    }
+    &--sent {
+      color: $dark-gray;
+    }
+  }
+  &__tx-time {
+    color: $light-gray;
+  }
+  &__tx-title {
+    padding-top: 10px;
+    color: $dark-gray;
+  }
+  &__tx-icon {
+    float: left;
+    margin-right: 10px;
+  }
+}
+
 #walletDetails {
   .bar-header {
     border: 0;
@@ -31,23 +58,8 @@
   .item.item-footer {
     font-weight: lighter;
   }
-}
-
-.wallet-details-release {
-  cursor: pointer;
-  cursor: hand;
-  background-color: #E9E9EC;
-  margin-top: -30px;
-  margin-bottom: 5px;
-  padding-top: 30px;
-  padding-bottom: 20px;
-  text-align: center;
-  text-color: #444;
-  span {
-    margin-left: 15px;
-  }
-  i {
-    margin-right: 15px;
+  .tx-search:before {
+    font-size: 22px !important;
   }
 }
 
