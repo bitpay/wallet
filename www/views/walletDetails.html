@@ -4,8 +4,8 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-buttons side="secondary">
-      <button class="button back-button" ng-click="startSearch(); openSearchModal()">
-        <i class="icon ion-ios-search tx-search"></i>
+      <button class="button back-button" ng-click="startSearch(); openSearchModal()" ng-if="txHistory.length > 4">
+        <i class="icon ion-ios-search-strong tx-search"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
