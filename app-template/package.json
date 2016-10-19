@@ -98,6 +98,8 @@
     "final:www":              "npm run build:www-release",
     "final:ios":              "npm run final:www && npm run build:ios-release && npm run open:ios",
     "final:android":          "npm run final:www && npm run build:android-release && npm run run:android",
+    "final:desktop":          "grunt desktop",
+    "sign:android":           "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && ../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
     "run:android":            "cordova run android --device",
     "log:android":            "adb logcat | grep chromium",
     "apply:copay":            "cd app-template && node apply.js copay && cordova prepare",
