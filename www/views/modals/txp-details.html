@@ -129,11 +129,11 @@
         </div>
         <div ng-if="actionList[0]">
           <div class="item item-divider" translate>Timeline</div>
-          <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList | orderBy: 'time' track by $index">
+          <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList | orderBy: 'time' :true track by $index">
             <div class="timeline-content">
               <div class="timeline-content__icon">
                 <div class="rejected" ng-if="a.type === 'reject'">!</div>
-                <div ng-if="a.type !== 'reject'">{{$index + 1}}</div>
+                <div ng-if="a.type !== 'reject'">{{actionList.length - $index}}</div>
               </div>
               <div class="timeline-content__label">
                 <div class="action">{{a.description}}</div>
