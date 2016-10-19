@@ -1,6 +1,5 @@
 #tab-home {
   .icon-create-wallet {
-    background-image: url("../img/icon-wallet.svg");
     background-color: #4A90E2; // default wallet color
   }
   .icon-buy-bitcoin {
@@ -16,19 +15,17 @@
   .icon-amazon {
     background-image: url("../img/icon-amazon.svg");
   }
+  .bg {
+    &.wallet{
+      padding: .25rem
+    }
+  }
   .card{
     .item {
       color: #444;
       border-top:none;
       padding-bottom: 1.5rem;
       padding-top:1.5rem;
-      &.wallet{
-        .big-icon-svg{
-          & > .bg{
-            padding: .25rem
-          }
-        }
-      }
     }
     .item-sub {
       &:first-child:before {
