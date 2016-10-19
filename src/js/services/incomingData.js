@@ -53,6 +53,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
 
     data = sanitizeUri(data);
     //data = '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
+    data = 'alkjsdflkajsdf';
     console.log('brroooooo');
 
     // BIP21
@@ -137,6 +138,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $ioni
         $state.transitionTo('tabs.add.join', {url: data});
       });
       return true;
+    } else {
+      console.log('unrecognized dood');
+      root.showMenu({data: data, type: 'text'});
     }
 
     return false;
