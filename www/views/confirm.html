@@ -62,9 +62,8 @@
           <i class="icon bp-arrow-right"></i>
         </a>
         <div class="item single-line" ng-hide="insuffientFunds">
-          <span class="label" translate>Fee</span>
+          <span class="label" translate>Fee: {{feeLevel}}</span>
           <span class="item-note">
-            <!-- {{feeLevel}} -->
             {{fee || '...'}}
           </span>
         </div>
