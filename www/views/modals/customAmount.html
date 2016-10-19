@@ -14,7 +14,7 @@
         <h4 class="title m0" translate>QR Code</h4>
         <ul class="no-bullet size-14 m0">
           <li class="line-b p10 oh text-center">
-            <qrcode size="220" data="bitcoin:{{addr + '?amount=' + customizedAmountBtc}}"></qrcode>
+            <qrcode size="220" data="bitcoin:{{addr + '?amount=' + customizedAmountBtc}}" color="#334"></qrcode>
             <div class="m10t text-center" ng-show="isCordova">
               <span class="button outline dark-gray tiny round"
                 ng-click="shareAddress('bitcoin:' + addr + '?amount=' + customizedAmountBtc)">
