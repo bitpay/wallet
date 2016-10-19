@@ -55,4 +55,24 @@
       Cancel
     </a>
   </div>
+
+  <div ng-show="type === 'text'">
+    <div class="incoming-data-menu__item head">
+      <div class="incoming-data-menu__header">Text</div>
+      <div class="incoming-data-menu__url">
+        <div class="incoming-data-menu__url__text" style="border: 0;">
+          {{data}}
+        </div>
+      </div>
+    </div>
+    <a class="incoming-data-menu__item item item-icon-right" copy-to-clipboard="data">
+      <img src="img/icon-paperclip.svg">
+      <div>Copy to clipboard</div>
+      <i class="icon bp-arrow-right"></i>
+    </a>
+    <a class="incoming-data-menu__cancel item" ng-click="hide()">
+      Cancel
+    </a>
+  </div>
+  
 </action-sheet>
