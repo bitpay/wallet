@@ -161,8 +161,7 @@
               <span class="ellipsis">
                 <div ng-if="btx.message">{{btx.message}}</div>
                 <div ng-if="!btx.message && btx.note.body">{{btx.note.body}}</div>
-                <div ng-if="!btx.message && !btx.note.body && wallet.addressbook[btx.addressTo]">{{wallet.addressbook[btx.addressTo]}}</div>
-                <div ng-if="!btx.message && !btx.note.body && !wallet.addressbook[btx.addressTo]" translate> Sent</div>
+                <contact ng-if="!btx.message && !btx.note.body" class="ellipsis" address="{{btx.addressTo}}" label="'Sent'"></contact>
               </span>
             </div>
 
