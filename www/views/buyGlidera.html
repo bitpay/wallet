@@ -32,7 +32,7 @@
       <form name="buyPriceForm" ng-if="token"
         ng-submit="buy.get2faCode(token)" novalidate>
 
-        <div class="card list">
+        <div class="list card">
           <label class="item item-input item-stacked-label">
             <span class="input-label">Amount in {{showAlternative ? 'USD' : 'BTC'}}</span>
             <input ng-show="!showAlternative"
@@ -66,7 +66,7 @@
 
         <wallets ng-if="wallets[0]" wallets="wallets"></wallets>
 
-        <div class="text-center text-gray size-12 m20b" ng-show="!buy.gettingBuyPrice && buy.buyPrice.qty">
+        <div class="text-center text-gray size-12 m20v" ng-show="!buy.gettingBuyPrice && buy.buyPrice.qty">
           Buy
           <span ng-show="qty">{{buy.buyPrice.subtotal|currency:'':2}} {{buy.buyPrice.currency}} in Bitcoin</span>
           <span ng-show="fiat">{{buy.buyPrice.qty}} BTC</span>
@@ -96,7 +96,7 @@
         </p>
         <form name="buyForm"
           ng-submit="buy.sendRequest(token, permissions, twoFaCode)" novalidate>
-          <div class="card list">
+          <div class="list card">
             <label class="item item-input">
               <input type="number" ng-model="twoFaCode" placeholder="2FA Code" required ignore-mouse-wheel>
             </label>
@@ -106,12 +106,12 @@
             Buy
           </button>
         </form>
-        <p class="m10t size-12 text-gray">
+        <p class="m10t size-12 text-gray padding">
        Fiat will be immediately withdrawn from your bank account. The bitcoins will be purchased and deposited to your wallet in 2-4 business days.
         </p>
       </div>
     </div>
-    <div class="text-center" ng-show="buy.success">
+    <div class="text-center padding" ng-show="buy.success">
       <h1>Purchase initiated</h1>
       <p class="text-gray">
       A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business days.

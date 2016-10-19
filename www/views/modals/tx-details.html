@@ -1,5 +1,5 @@
 <ion-modal-view ng-controller="txDetailsController" ng-init="init()" id="tx-details">
-  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color': color}">
+  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color': color, 'border-color': color}">
     <button class="button button-clear" ng-click="cancel()">
       {{'Close' | translate}}
     </button>
@@ -72,7 +72,7 @@
       <div ng-show="btx.hasMultiplesOutputs" class="item item-icon-right item-heading" ng-click="showMultiplesOutputs = !showMultiplesOutputs">
         {{'Recipients'|translate}}
           [ {{btx.recipientCount}} ]
-          
+
         <i class="icon bp-arrow-up" ng-show="showMultiplesOutputs"></i>
         <i class="icon bp-arrow-down" ng-show="!showMultiplesOutputs"></i>
       </div>

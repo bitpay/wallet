@@ -601,20 +601,22 @@ angular.module('copayApp.services')
       $log.debug('Importing Wallet:', opts);
 
       try {
+        var c = JSON.parse(str);
+
+        if (c.xPrivKey && c.xPrivKeyEncrypted) {
+          $log.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
+          delete c.xPrivKeyEncrypted;
+          delete c.mnemonicEncrypted;
+        }
+
+        str = JSON.stringify(c);
+
         walletClient.import(str, {
           compressed: opts.compressed,
           password: opts.password
         });
       } catch (err) {
         return cb(gettext('Could not import. Check input file and spending password'));
-      }
-
-      str = JSON.parse(str);
-
-      if (str.xPrivKey && str.xPrivKeyEncrypted) {
-        $log.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
-        delete str.xPrivKeyEncrypted;
-        delete str.mnemonicEncrypted;
       }
 
       var addressBook = str.addressBook || {};

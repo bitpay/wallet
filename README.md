@@ -3,7 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
-Copay is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both individuals and companies.  Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
+Copay is an easy-to-use, open-source, multiplatform, multisignature, secure bitcoin wallet platform for both individuals and companies. Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
 
 Binary versions of Copay are available for download at [Copay.io](https://copay.io/#download). Copay Binaries are signed with the key `copay@bitpay.com` – See the section [`How to Verify Copay Signatures`](https://github.com/bitpay/copay#how-to-verify-copay-signatures) for details.
 
@@ -29,7 +29,9 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Multiple languages supported
 - Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](http://www.windowsphone.com/en-us/store/app/copay-wallet/4372479b-a064-4d18-8bd3-74a3bdb81c3a), [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices
 
-## Install For Development
+## Testing in a Browser
+
+> **Note:** This method should only be used for development purposes. When running Copay in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://github.com/bitpay/copay/releases/).
 
 Clone the repo and open the directory:
 
@@ -47,78 +49,89 @@ npm start
 
 Visit [`localhost:3000`](http://localhost:3000/) to view the app.
 
-> **Note:** This method should only be used for development purposes. When running Copay in a normal browser environment, browser extensions and other malicious code might have access to internal data and private keys. For production use, see the latest official [releases](https://github.com/bitpay/copay/releases/).
+A watch task is also available to rebuild components of the app as changes are made. This task can be run in a separate process – while the server started by `npm start` is running – to quickly test changes.
 
-## Build Copay App Bundles
+```
+npm run watch
+```
+
+## Testing on Real Devices
+
+It's recommended that all final testing be done on a real device – both to assess performance and to enable features that are unavailable to the emulator (e.g. a device camera).
 
 ### Android
 
-- Install Android SDK
-- Run `make android`
+Follow the [Cordova Android Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
+
+When your developement enviroment is ready, run the `start:android` npm package script.
+
+```sh
+npm run apply:copay
+npm run start:android
+```
 
 ### iOS
 
-- Install Xcode 6.1 (or newer)
-- Run `make ios-prod`
+Follow the [Cordova iOS Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/android/) to set up your development environment.
 
-##### Notes for Xcode 7.0
+When your developement enviroment is ready, run the `start:ios` npm package script.
 
-###### ATS support
-
-Before starting Copay from Xcode, add these lines to "Custom iOS Target Properties":
-
-```
-<key>NSAppTransportSecurity</key>
- <dict>
-  <key>NSAllowsArbitraryLoads</key>
-  <true/>
- </dict>
+```sh
+npm run apply:copay
+npm run start:ios
 ```
 
-![Example](http://i.stack.imgur.com/nGw3j.png)
+### Desktop (Linux, macOS, and Windows)
 
+The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
 
-App Transport Security (ATS) enforces best practices in the secure connections between an app and its back end. [Read complete documentation](https://developer.apple.com/library/prerelease/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html).
+When NW.js is installed, run the `start:desktop` npm package script.
 
-###### Invalid Bundle while submitting application
-
-`iPad Multitasking support requires launch story board in bundle`
-
-To fix this problem, add the following:
-
+```sh
+npm run apply:copay
+npm run start:desktop
 ```
-<key>UIRequiresFullScreen</key>
-<string>YES</string>
+
+## Build Copay App Bundles
+
+Before building the release version for a platform, run the `clean-all` command to delete any untracked files in your current working directory. (Be sure to stash any uncommited changes you've made.) This guarantees consistency across builds for the current state of this repository.
+
+The `final` commands build the production version of the app, and bundle it with the release version of the platform being built.
+
+### Android
+
+```sh
+npm run clean-all
+npm run apply:copay
+npm run final:android
 ```
-###### Build settings, headers search path
 
-Add this line to your Build Settings -> Header Search Paths -> Release
+### iOS
 
-"$(OBJROOT)/UninstalledProducts/$(PLATFORM_NAME)/include"
-
-
+```sh
+npm run clean-all
+npm run apply:copay
+npm run final:ios
+```
 
 ### Windows Phone
 
 - Install Visual Studio 2013 (or newer)
 - Run `make wp8-prod`
 
-### Desktop versions (Windows, OS X, Linux)
+### Desktop (Linux, macOS, and Windows)
 
-Copay uses NW.js (also know as node-webkit) for its desktop version. NW.js is an app runtime based on `Chromium` and `node.js`.
-
-- Install NW.js on your system from [nwjs.io](http://nwjs.io/)
-- Run `grunt desktop`
+```sh
+npm run clean-all
+npm run apply:copay
+npm run final:desktop
+```
 
 ### Google Chrome App
 
 - Run `npm run-script chrome`
 
 On success, the Chrome extension will be located at: `browser-extensions/chrome/copay-chrome-extension`.  To install it go to `chrome://extensions/` in your browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
-
-### Firefox Add-on
-
-The Copay Firefox Extension has been deprecated and is no longer supported.
 
 ## About Copay
 

@@ -52,6 +52,9 @@
       position: absolute;
       bottom: 254px;
       top: 66px;
+      .light {
+        color: #A4A4A4;
+      }
     }
   }
 
@@ -84,7 +87,8 @@
 
     .operator-send {
       font-weight: bolder;
-      background-color: #f7f7f7;
+      color: #f8f8f8;
+      background-color: #1e3186;
       font-size: 36px;
       cursor: pointer;
 
