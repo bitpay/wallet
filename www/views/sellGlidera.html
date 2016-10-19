@@ -31,7 +31,7 @@
       <form name="sellPriceForm" ng-if="token"
         ng-submit="sell.get2faCode(token)" novalidate>
 
-        <div class="card list">
+        <div class="list">
           <label class="item item-input item-stacked-label">
             <span class="input-label"><span>Amount in</span> {{showAlternative ? 'USD' : 'BTC'}}</span>
             <input ng-show="!showAlternative"
@@ -96,7 +96,7 @@
         </p>
         <form name="sellForm"
               ng-submit="sell.createTx(token, permissions, twoFaCode)" novalidate>
-          <div class="card list">
+          <div class="list">
             <label class="item item-input">
               <input type="number" ng-model="twoFaCode" placeholder="2FA Code" required ignore-mouse-wheel>
             </label>
