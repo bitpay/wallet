@@ -20,7 +20,7 @@
       </div>
       <button type="submit"
               class="button button-standard button-primary"
-              ng-disabled="disableSave" translate>
+              ng-disabled="aliasForm.$invalid || (alias.value == walletAlias)" translate>
         Save
       </button>
     </form>
