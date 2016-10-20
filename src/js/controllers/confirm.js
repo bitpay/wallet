@@ -339,6 +339,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.approve = function(onSendStatusChange) {
     if ($scope._paypro && $scope.paymentExpired.value) {
       popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
+      $scope.sendStatus = '';
+      $timeout(function() {
+        $scope.$apply();
+      });
       return;
     }
 
