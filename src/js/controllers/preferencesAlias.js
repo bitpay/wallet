@@ -23,4 +23,11 @@ angular.module('copayApp.controllers').controller('preferencesAliasController',
         $ionicHistory.goBack();
       });
     };
+    $scope.valueCheck = function() {
+      if ($scope.alias.value == wallet.credentials.walletName || $scope.alias.value == '') $scope.disableSave = true;
+      else $scope.disableSave = false;
+    };
+    $scope.$watch('alias.value', function(newvalue, oldvalue) {
+      $scope.valueCheck();
+    });
   });

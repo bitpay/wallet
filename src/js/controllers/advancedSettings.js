@@ -106,7 +106,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.$on("$ionicView.enter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     updateConfig();
   });
 

@@ -61,15 +61,19 @@
         ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
         class="item row">
         <div class="col col-10">
-          <img class="m5t" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="22">
+          <img class="m5t" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="28">
         </div>
 
         <div class="col col-50">
           <div class="size-12 text-bold">
             {{tx.merchant.name}}
           </div>
-          <div class="size-12">
-            {{tx.merchant.city}}, {{tx.merchant.state}}
+          <div class="size-10">
+            <span ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.city}}, {{tx.merchant.state}}</span>
+            <span ng-show="tx.desc">
+              <span ng-show="tx.merchant.city && tx.merchant.state"> - </span>
+              {{tx.desc}}
+            </span>
           </div>
         </div>
         <!--
@@ -81,15 +85,16 @@
           <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
           <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
         </div>
-        <div class="col text-right size-12 text-gray">
-          <div class="size-14"
+        <div class="col text-right size-14 text-gray">
+          <div ng-show="tx.fee != '0.00'">{{tx.fee | currency:'$':2}}</div>
+          <div ng-show="tx.fee == '0.00'"
                ng-class="{
                'text-success': tx.amount.indexOf('-') == -1 && !tx.pending,
                'text-gray': tx.amount.indexOf('-') == -1 && tx.pending}">
             {{tx.amount | currency:'$':2 }}
           </div>
-          <time ng-if="!tx.pending">{{tx.timestamp | amTimeAgo}}</time>
-          <span ng-if="tx.pending" class="tu" translate>Pending</span>
+          <time class="size-12" ng-if="!tx.pending">{{tx.timestamp | amTimeAgo}}</time>
+          <span class="size-12" ng-if="tx.pending" class="tu" translate>Pending</span>
         </div>
       </div>
     </div>
