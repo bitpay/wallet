@@ -209,8 +209,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     function setExpirationTime() {
       var now = Math.floor(Date.now() / 1000);
-      if ($scope.paymentExpired.value)
-        popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
 
       if (now > expirationTime) {
         setExpiredValues();
