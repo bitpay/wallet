@@ -60,13 +60,12 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
   });
 
   $scope.orderBitPayCard = function() {
-    var url = 'https://bitpay.com/visa/';
+    var url = 'https://bitpay.com/visa/get-started';
     externalLinkService.open(url);
   };
 
   $scope.connectBitPayCard = function() {
-    var url = 'https://bitpay.com/visa/login';
+    var url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
     externalLinkService.open(url);
   };
 });
-
