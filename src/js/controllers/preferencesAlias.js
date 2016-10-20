@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('preferencesAliasController',
     var config = configService.getSync();
 
     $scope.walletName = wallet.credentials.walletName;
-    $scope.walletAlias = config.aliasFor[walletId] || wallet.credentials.walletName;
+    $scope.walletAlias = config.aliasFor && config.aliasFor[walletId] ? config.aliasFor[walletId] : wallet.credentials.walletName;
     $scope.alias = {
       value: $scope.walletAlias
     };
