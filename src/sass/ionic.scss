@@ -30,3 +30,8 @@ $placeholder-icon-padding: 10px;
 .item-input-wrapper {
   background: none transparent;
 }
+
+// the default .item p color of #666 cannot be modified by a variable
+.item p {
+  color: $mid-gray;
+}
