@@ -8,6 +8,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
+  // $timeout(function() {
+  //   root.redir('data');
+  // }, 2000);
+
   root.redir = function(data) {
     $log.debug('Processing incoming data: ' + data);
 
@@ -48,6 +52,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     data = sanitizeUri(data);
     //data = 'msEVvmpiFEtXv3MdsFLUYMbnNLeNYrqBEA';
+    //data = 'bitcoin:n4asaBf1Vr9Sfijv6e3YJH2SCMdSLNeW64?amount=0.001592&r=https%3A%2F%2Ftest.bitpay.com%3A443%2Fi%2FVLafdjvp5EnEDwV5UHLoFQ';
 
     // BIP21
     if (bitcore.URI.isValid(data)) {
@@ -62,7 +67,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       // Timeout is required to enable the "Back" button
       $timeout(function() {
         if (parsed.r) {
-          $state.transitionTo('tabs.send.confirm', {paypro: parsed.r});
+          getPayProDetails(parsed.r, function(err, details) {
+            handlePayPro(details);
+          });
         } else {
           if (amount) {
             $state.transitionTo('tabs.send.confirm', {toAmount: amount, toAddress: addr, description:message});
@@ -81,14 +88,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           root.showMenu({data: data, type: 'url'});
           return;
         }
-        $state.go('tabs.send');
-        var stateParams = {
-          toAmount: details.amount,
-          toAddress: details.toAddress,
-          description: details.memo,
-          paypro: details
-        };
-        $state.transitionTo('tabs.send.confirm', stateParams);
+        handlePayPro(details);
         return true;
       });
       // Plain Address
@@ -179,11 +179,24 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
   }
 
   function goToAmountPage(toAddress) {
-    console.log('goToAmountPage called', toAddress);
     $state.go('tabs.send');
     $timeout(function() {
       $state.transitionTo('tabs.send.amount', {toAddress: toAddress});
     }, 100);
+  }
+
+  function handlePayPro(payProDetails){
+    var stateParams = {
+      toAmount: payProDetails.amount,
+      toAddress: payProDetails.toAddress,
+      description: payProDetails.memo,
+      paypro: payProDetails
+    };
+    $state.go('tabs.send').then(function() {
+      $timeout(function() {
+        $state.transitionTo('tabs.send.confirm', stateParams);
+      });
+    });
   }
 
   return root;
