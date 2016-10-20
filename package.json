@@ -6,8 +6,9 @@
     "postinstall": "npm run apply:copay",
     "start": "echo && echo \"Choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
     "preapply": "npm i fs-extra",
-    "apply:copay": "npm run preapply && cd app-template && node apply.js copay && cd .. && npm i",
-    "apply:bitpay": "npm run preapply && cd app-template && node apply.js bitpay && cd .. && npm i"
+    "apply:copay": "npm run preapply && cd app-template && node apply.js copay && cd .. && npm i && npm run postapply",
+    "apply:bitpay": "npm run preapply && cd app-template && node apply.js bitpay && cd .. && npm i && npm run postapply",
+    "clean-all": "git clean -dfx"
   },
   "license": "MIT",
   "repository": {

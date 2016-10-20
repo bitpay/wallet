@@ -79,7 +79,8 @@
     "shelljs": "^0.3.0"
   },
   "scripts": {
-    "postinstall":            "bower install && echo && echo \"To finish, choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
+    "postinstall":            "bower install && npm run postapply",
+    "postapply":              "echo && echo \"To finish, choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
     "start":                  "npm run build:www && ionic serve --nolivereload --nogulp -s",
     "start:ios":              "npm run build:www && npm run build:ios && npm run open:ios",
     "start:android":          "npm run build:www && npm run build:android && npm run run:android",
