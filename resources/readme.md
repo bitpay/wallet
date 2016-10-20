@@ -13,7 +13,7 @@ Sketch is only available for macOS, and several processes in `generate.sh` requi
 If you do not have `sketchtool` installed, you'll first need to install it.
 
 ```sh
-install.sh
+sh install.sh
 ```
 
 ## Generate assets
