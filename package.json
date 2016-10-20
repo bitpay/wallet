@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "npm run apply:copay",
     "start": "echo && echo \"Choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
-    "preapply": "npm i fs-extra && git update-index --skip-worktree package.json",
+    "preapply": "npm i fs-extra",
     "apply:copay": "npm run preapply && cd app-template && node apply.js copay && cd .. && npm i",
     "apply:bitpay": "npm run preapply && cd app-template && node apply.js bitpay && cd .. && npm i"
   },
@@ -14,5 +14,6 @@
     "url": "git://github.com/bitpay/copay.git",
     "url": "git://github.com/bitpay/bitpay-wallet.git",
     "type": "git"
-  }
+  },
+  "changes": "changes to this file can be commited with the --no-verify option"
 }
