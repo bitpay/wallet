@@ -12,6 +12,14 @@
 </head>
 <body>
 
+  <!-- Workaround to prevent autofill -->
+  <div style="display: none;">
+    <input type="text"
+           id="PreventChromeAutocomplete"
+           name="PreventChromeAutocomplete"
+           autocomplete="address-level4" />
+  </div>
+
   <ion-nav-view></ion-nav-view>
 
   <script src="lib/ionic.bundle.min.js"></script>
