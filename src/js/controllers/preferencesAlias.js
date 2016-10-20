@@ -7,8 +7,9 @@ angular.module('copayApp.controllers').controller('preferencesAliasController',
     var config = configService.getSync();
 
     $scope.walletName = wallet.credentials.walletName;
+    $scope.walletAlias = config.aliasFor && config.aliasFor[walletId] ? config.aliasFor[walletId] : wallet.credentials.walletName;
     $scope.alias = {
-      value: (config.aliasFor && config.aliasFor[walletId]) || wallet.credentials.walletName
+      value: $scope.walletAlias
     };
 
     $scope.save = function() {
@@ -23,11 +24,4 @@ angular.module('copayApp.controllers').controller('preferencesAliasController',
         $ionicHistory.goBack();
       });
     };
-    $scope.valueCheck = function() {
-      if ($scope.alias.value == wallet.credentials.walletName || $scope.alias.value == '') $scope.disableSave = true;
-      else $scope.disableSave = false;
-    };
-    $scope.$watch('alias.value', function(newvalue, oldvalue) {
-      $scope.valueCheck();
-    });
   });
