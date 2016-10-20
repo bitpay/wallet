@@ -18,6 +18,10 @@
     border-color: #e6b500;
     background-color: #ffc900;
     color: #fff;
+    &.warning-red{
+      border-color: #EB475A;
+      background-color: $warning-red;
+    }
   }
   &.error {
     background-color: #ef473a;
