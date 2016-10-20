@@ -26,10 +26,10 @@
             <img ng-if="!cardId" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
 
-            <contact ng-if="!toName && !_paypro" class="ellipsis" address="{{toAddress}}" copy-to-clipboard="toAddress">
-            </contact>
-
-            <span class="m15l size-14" ng-if="toName && !_paypro" copy-to-clipboard="toAddress">{{toName}}</span>
+            <div copy-to-clipboard="toAddress" ng-if="!_paypro" class="ellipsis">
+              <contact ng-if="!toName" address="{{toAddress}}"></contact>
+              <span class="m15l size-14" ng-if="toName">{{toName}}</span>
+            </div>
 
             <div ng-if="_paypro" ng-click="openPPModal(_paypro)" class="m15l size-14 w100p pointer">
               <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
