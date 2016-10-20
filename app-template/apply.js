@@ -65,6 +65,10 @@ Object.keys(templates).forEach(function(k) {
   if(k === 'config-template.xml'){
     k = 'config.xml';
   }
+
+  if (!fs.existsSync('../' + targetDir)){
+    fs.mkdirSync('../' + targetDir);
+  }
   fs.writeFileSync('../' + targetDir + k, content, 'utf8');
 });
 
