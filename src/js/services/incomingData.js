@@ -47,6 +47,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     }
 
     data = sanitizeUri(data);
+    //data = 'msEVvmpiFEtXv3MdsFLUYMbnNLeNYrqBEA';
 
     // BIP21
     if (bitcore.URI.isValid(data)) {
@@ -90,30 +91,32 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         $state.transitionTo('tabs.send.confirm', stateParams);
         return true;
       });
-    // Plain Address
+      // Plain Address
     } else if (bitcore.Address.isValid(data, 'livenet')) {
-      root.showMenu({data: data, type: 'bitcoinAddress'});
+      //root.showMenu({data: data, type: 'bitcoinAddress'});
+      goToAmountPage(data);
     } else if (bitcore.Address.isValid(data, 'testnet')) {
-      root.showMenu({data: data, type: 'bitcoinAddress'});
-    // Protocol
-  } else if (data && data.indexOf($window.appConfig.name + '://glidera') === 0) {
-      return $state.go('uriglidera', {url: data});
+      //root.showMenu({data: data, type: 'bitcoinAddress'});
+      goToAmountPage(data);
+      // Protocol
+    } else if (data && data.indexOf($window.appConfig.name + '://glidera') === 0) {
+        return $state.go('uriglidera', {url: data});
     } else if (data && data.indexOf($window.appConfig.name + '://coinbase') === 0) {
-      return $state.go('uricoinbase', {url: data});
+        return $state.go('uricoinbase', {url: data});
 
-    // BitPayCard Authentication
-  } else if (data && data.indexOf($window.appConfig.name + '://') === 0) {
-      var secret = getParameterByName('secret', data);
-      var email = getParameterByName('email', data);
-      var otp = getParameterByName('otp', data);
-      $state.go('tabs.home').then(function() {
-        $state.transitionTo('tabs.bitpayCardIntro', {
-          secret: secret,
-          email: email,
-          otp: otp
+      // BitPayCard Authentication
+    } else if (data && data.indexOf($window.appConfig.name + '://') === 0) {
+        var secret = getParameterByName('secret', data);
+        var email = getParameterByName('email', data);
+        var otp = getParameterByName('otp', data);
+        $state.go('tabs.home').then(function() {
+          $state.transitionTo('tabs.bitpayCardIntro', {
+            secret: secret,
+            email: email,
+            otp: otp
+          });
         });
-      });
-      return true;
+        return true;
 
     // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
@@ -171,6 +174,14 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       cb(null, paypro);
 
     });
+  }
+
+  function goToAmountPage(toAddress) {
+    console.log('goToAmountPage called', toAddress);
+    $state.go('tabs.send');
+    $timeout(function() {
+      $state.transitionTo('tabs.send.amount', {toAddress: toAddress});
+    }, 100);
   }
 
   return root;
