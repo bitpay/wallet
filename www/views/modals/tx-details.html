@@ -156,10 +156,10 @@
 
       <div ng-if="actionList[0]">
         <div class="item item-divider" translate>Timeline</div>
-        <div class="item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
+        <div class="item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList | orderBy: 'time' :true track by $index">
           <div class="row">
             <div class="col col-10">
-              <span id="timeline-icon">{{$index + 1}}</span>
+              <span id="timeline-icon">{{actionList.length - $index}}</span>
             </div>
             <div class="col">
               <div>{{a.description}}</div>

@@ -17,13 +17,18 @@ fi
 
 # set up your app name, architecture, and background image file name
 APP_NAME="*USERVISIBLENAME*"
-DMG_BACKGROUND_IMG="Background.png"
+rm dmg-background.tiff
+ln -s ../resources/*PACKAGENAME*/mac/dmg-background.tiff dmg-background.tiff
+rm volume-icon.icns
+ln -s ../resources/*PACKAGENAME*/mac/volume-icon.icns volume-icon.icns
+DMG_VOLUME_ICON="volume-icon.icns"
+DMG_BACKGROUND_IMG="dmg-background.tiff"
 
 PATH_NAME="${APP_NAME}/osx64/"
 # you should not need to change these
 APP_EXE="${PATH_NAME}${APP_NAME}.app/Contents/MacOS/nwjs"
 
-VOL_NAME="${APP_NAME}-osx"
+VOL_NAME="${APP_NAME}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME}.dmg"
 STAGING_DIR="tmp"
@@ -95,17 +100,43 @@ DEVICE=$(hdiutil attach -readwrite -noverify "${DMG_TMP}" | \
 sleep 2
 
 # add a link to the Applications dir
-echo "Add link to /Applications"
+echo "Adding link to /Applications"
 pushd /Volumes/"${VOL_NAME}"
-ln -s /Applications
+# We name the symlink with a *non-breaking space* to avoid displaying extra text
+ln -s /Applications " " # <- not your ordinary space
 popd
 
+# "bless" the folder to open it in Finder automatically when the volume is mounted
+echo "Blessing disk image"
+bless --folder /Volumes/"${VOL_NAME}" --openfolder /Volumes/"${VOL_NAME}"
+
 # add a background image
+echo "Adding background to disk image"
 mkdir /Volumes/"${VOL_NAME}"/.background
 cp "${DMG_BACKGROUND_IMG}" /Volumes/"${VOL_NAME}"/.background/
 
+echo "Adding volume icon to disk image"
+# use fileicon node_module
+cp "${DMG_VOLUME_ICON}" /Volumes/"${VOL_NAME}"/.VolumeIcon.icns
+`npm bin`/fileicon set /Volumes/"${VOL_NAME}"/ /Volumes/"${VOL_NAME}"/.VolumeIcon.icns
+
 # tell the Finder to resize the window, set the background,
 #  change the icon size, place the icons in the right position, etc.
+echo "Designing the unboxing experience..."
+WINDOW_X=400
+WINDOW_Y=100
+WINDOW_WIDTH=500
+WINDOW_HEIGHT=375
+ICON_SIZE=100
+ICON_LR_PADDING=140
+ICON_Y=185
+
+WINDOW_RIGHT=$(expr $WINDOW_X + $WINDOW_WIDTH)
+WINDOW_BOTTOM=$(expr $WINDOW_Y + $WINDOW_HEIGHT)
+RIGHT_ICON_PADDING_RIGHT=$(expr $WINDOW_WIDTH - $ICON_LR_PADDING)
+HIDE_X=100 # no need to exceed WINDOW_WIDTH – will only create another scrollbar
+HIDE_Y=$(expr $WINDOW_HEIGHT + $ICON_SIZE)
+
 echo '
    tell application "Finder"
      tell disk "'${VOL_NAME}'"
@@ -113,13 +144,17 @@ echo '
            set current view of container window to icon view
            set toolbar visible of container window to false
            set statusbar visible of container window to false
-           set the bounds of container window to {400, 100, 920, 440}
+           set the bounds of container window to {'${WINDOW_X}', '${WINDOW_Y}', '${WINDOW_RIGHT}', '${WINDOW_BOTTOM}'}
            set viewOptions to the icon view options of container window
            set arrangement of viewOptions to not arranged
-           set icon size of viewOptions to 72
+           set icon size of viewOptions to '${ICON_SIZE}'
            set background picture of viewOptions to file ".background:'${DMG_BACKGROUND_IMG}'"
-           set position of item "'${APP_NAME}'.app" of container window to {160, 205}
-           set position of item "Applications" of container window to {360, 205}
+           set position of item "'${APP_NAME}'.app" of container window to {'${ICON_LR_PADDING}', '${ICON_Y}'}
+           set position of item " " of container window to {'${RIGHT_ICON_PADDING_RIGHT}', '${ICON_Y}'}
+           set position of item ".background" of container window to {'${HIDE_X}', '${HIDE_Y}'}
+           set position of item ".VolumeIcon.icns" of container window to {'${HIDE_X}', '${HIDE_Y}'}
+           set position of item ".fseventsd" of container window to {'${HIDE_X}', '${HIDE_Y}'}
+           set position of item "Icon?" of container window to {'${HIDE_X}', '${HIDE_Y}'}
            close
            open
            update without registering applications
