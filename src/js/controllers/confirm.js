@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
-
+  var countDown = null;
   $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -15,6 +15,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
+    $scope.paymentExpired = {
+      value: false
+    };
+    $scope.remainingTimeStr = {
+      value: null
+    };
     initConfirm();
   });
 
@@ -28,7 +34,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
     // TODO (URL , etc)
     if (!$scope.toAddress || !$scope.toAmount) {
-      $log.error('Bad params at amount')
+      $log.error('Bad params at amount');
       throw ('bad params');
     }
     $scope.isCordova = platformInfo.isCordova;
@@ -188,9 +194,43 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.paypro = null;
 
       $scope._paypro = paypro;
-
+      _paymentTimeControl(paypro.expires);
       return initConfirm();
     });
+  };
+
+  function _paymentTimeControl(expirationTime) {
+    $scope.paymentExpired.value = false;
+    setExpirationTime();
+
+    countDown = $interval(function() {
+      setExpirationTime();
+    }, 1000);
+
+    function setExpirationTime() {
+      var now = Math.floor(Date.now() / 1000);
+      if ($scope.paymentExpired.value)
+        popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
+
+      if (now > expirationTime) {
+        setExpiredValues();
+        return;
+      }
+
+      var totalSecs = expirationTime - now;
+      var m = Math.floor(totalSecs / 60);
+      var s = totalSecs % 60;
+      $scope.remainingTimeStr.value = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+    };
+
+    function setExpiredValues() {
+      $scope.paymentExpired.value = true;
+      $scope.remainingTimeStr.value = gettextCatalog.getString('Expired');
+      if (countDown) $interval.cancel(countDown);
+      $timeout(function() {
+        $scope.$apply();
+      });
+    };
   };
 
   function setWallet(wallet, delayed) {
@@ -299,11 +339,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
+    if ($scope._paypro && $scope.paymentExpired.value) {
+      popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
+      return;
+    }
+
     var wallet = $scope.wallet;
     if (!wallet) {
       return setSendError(gettextCatalog.getString('No wallet selected'));
     };
-
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
@@ -343,10 +387,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               }
               publishAndSign(wallet, txp, onSendStatusChange);
             });
-          }
-          else publishAndSign(wallet, txp, onSendStatusChange);
-        }
-        else {
+          } else publishAndSign(wallet, txp, onSendStatusChange);
+        } else {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
             if (!ok) {
               $scope.sendStatus = '';
@@ -355,8 +397,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
-      }
-      else publishAndSign(wallet, txp, onSendStatusChange);
+      } else publishAndSign(wallet, txp, onSendStatusChange);
     });
   };
 

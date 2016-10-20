@@ -20,6 +20,11 @@
         </div>
       </div>
       <div class="info">
+        <div class="item single-line" ng-if="_paypro">
+          <span class="label" translate>Payment Expires:</span>
+          <span class="item-note" ng-if="!paymentExpired.value">{{remainingTimeStr.value}}</span>
+          <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
+        </div>
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to">
@@ -85,8 +90,7 @@
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()"
-    slide-success-hide-on-confirm="true"
-    >
+    slide-success-hide-on-confirm="true">
     <span ng-hide="wallet.m > 1">Payment Sent</span>
     <span ng-show="wallet.m > 1">Proposal Created</span>
   </slide-to-accept-success>
@@ -95,8 +99,7 @@
     wallet-selector-wallets="wallets"
     wallet-selector-selected-wallet="wallet"
     wallet-selector-show="showWallets"
-    wallet-selector-on-select="onWalletSelect"
-  >
+    wallet-selector-on-select="onWalletSelect">
   </wallet-selector>
 
 </ion-view>
