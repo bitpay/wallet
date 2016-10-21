@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>BitPay Visa&reg; Card</ion-nav-title>
+    <ion-nav-title>BitPay Visa<sup>&reg;</sup> Card</ion-nav-title>
     <ion-nav-buttons side="secondary">
       <button class="button back-button" ng-show="!error" ui-sref="tabs.bitpayCard.preferences">
         <i class="icon ion-ios-gear-outline"></i>
@@ -20,8 +20,9 @@
       <div class="amount">
         <div ng-if="bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
           <div class="size-36 m20b">${{bitpayCard.bitpayCardCurrentBalance}}</div>
-          <a class="button button-positive button-small"
-             ui-sref="tabs.bitpayCard.amount({'cardId': cardId, 'toName': 'BitPay Card'})" translate>
+          <a class="button button-primary button-small"
+            style="padding-left: 1em; padding-right: 1em;"
+            ui-sref="tabs.bitpayCard.amount({'cardId': cardId, 'toName': 'BitPay Card'})" translate>
             Add Funds
           </a>
         </div>

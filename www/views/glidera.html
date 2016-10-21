@@ -28,31 +28,26 @@
         </div>
         <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
           <p class="glidera-lead">You can buy and sell Bitcoin with a US bank account directly in this app.</p>
+          
+          <p class="glidera-text">Connect your Glidera account to get started.</p>
 
-          <p class="disclosure">
-            DISCLOSURE.<br>
-            Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users.  To enable this
-            service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business
-            (#31000042625755).  Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining
-            Glidera’s service of buying or selling bitcoins. Service available in U.S. and Canada only. In U.S. (buy & sell) CA, GA, IL, KS,
-            MA, MD, MO, MT, MN, SC, TX, AZ, CO, DE, ME, NJ, PA, TN, UT, NV, WI. In Canada (buy & sell) AB, BC, MB, NB, NL, NS, NT, NU,
-            ON, PE, SK, YT.
-          </p>
-
-          <p class="m20t text-gray size-12">Connect your Glidera account to get started</p>
           <button class="button button-standard button-primary"
             ng-click="openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true">
             Connect to Glidera
           </button>
           <div class="m10t">
-            <a href ng-click="showOauthForm = true" class="text-gray size-12">
-              Do you already have the Oauth Code?
+            <a href ng-click="showOauthForm = true" class="button button-standard button-secondary buttion-clear" translate>
+              Have the OAuth Code?
             </a>
+          </div>
+          <div class="disclosure">
+            <p translate>Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users. To enable this service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business (#31000042625755). Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining Glidera’s service of buying or selling bitcoin.</p>
+            <p>Service is available in the U.S. and Canada. In the U.S. – AZ, CA, CO, DE, GA, IL, KS, MA, MD, ME, MN, MO, MT, NJ, NV, PA, SC, TN, TX, UT, WI. In Canada – AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, SK, YT.</p>
           </div>
         </div>
         <div ng-show="showOauthForm">
-          <form name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
-            <div class="list">
+          <form class="settings" name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
+            <div class="list settings-input-group">
               <label class="item item-input item-stacked-label">
                 <span class="input-label">OAuth Code</span>
                 <input type="text"
@@ -60,21 +55,7 @@
                        ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
               </label>
             </div>
-            <div class="row">
-              <div class="col">
-                <input type="button"
-                       value="Cancel"
-                       class="button button-standard button-light"
-                       ng-click="showOauthForm = false">
-              </div>
-              <div class="col">
-                <input
-                   class="button button-standard button-primary"
-                   type="submit"
-                   value="Get started"
-                   ng-disabled="oauthCodeForm.$invalid">
-              </div>
-            </div>
+            <input class="button button-standard button-primary" type="submit" value="Connect Glidera Account" ng-disabled="oauthCodeForm.$invalid">
           </form>
         </div>
       </div>
