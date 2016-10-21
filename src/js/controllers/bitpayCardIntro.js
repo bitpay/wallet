@@ -27,9 +27,9 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
             popupService.showAlert(null, err);
             return;
           }
-          var title = gettextCatalog.getString('Add BitPay Card?');
+          var title = gettextCatalog.getString('Add BitPay Card Account?');
           var msg = gettextCatalog.getString('Would you like to add this account ({{email}}) to your wallet?', {email: obj.email});
-          var ok = gettextCatalog.getString('Add cards');
+          var ok = gettextCatalog.getString('Add Account');
           var cancel = gettextCatalog.getString('Go back');
           popupService.showConfirm(title, msg, ok, cancel, function(res) {
             if (res) {
@@ -59,14 +59,18 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
     }
   });
 
+  $scope.bitPayCardInfo = function() {
+    var url = 'https://bitpay.com/visa/faq';
+    externalLinkService.open(url);
+  };
+
   $scope.orderBitPayCard = function() {
-    var url = 'https://bitpay.com/visa/';
+    var url = 'https://bitpay.com/visa/get-started';
     externalLinkService.open(url);
   };
 
   $scope.connectBitPayCard = function() {
-    var url = 'https://bitpay.com/visa/login';
+    var url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
     externalLinkService.open(url);
   };
 });
-
