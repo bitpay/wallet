@@ -20,32 +20,16 @@
         </div>
       </div>
       <div class="info">
-        <div class="item single-line" ng-if="_paypro">
-          <span class="label" translate>Payment Expires:</span>
-          <span class="item-note" ng-if="!paymentExpired.value">{{remainingTimeStr.value}}</span>
-          <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
-        </div>
         <div class="item" ng-if="btx.action === 'sent'">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to">
             <img ng-if="!cardId" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
-
-            <div copy-to-clipboard="toAddress" ng-if="!_paypro" class="ellipsis">
-              <contact ng-if="!toName" address="{{btx.addressTo}}"></contact>
+            <div copy-to-clipboard="toAddress" class="ellipsis">
+              <contact ng-if="!toName" address="{{btx.addressTo}}" class="ellipsis" style="display: block;"></contact>
               <span class="m15l size-14" ng-if="toName">{{toName}}</span>
             </div>
-
-            <div ng-if="_paypro" ng-click="openPPModal(_paypro)" class="m15l size-14 w100p pointer">
-              <i ng-show="_paypro.verified && _paypro.caTrusted" class="ion-locked" style="color:green"></i>
-              <i ng-show="!_paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
-              <span class="ellipsis" ng-show="!toName">{{_paypro.domain || _paypro.toAddress}}</span>
-              <span ng-show="toName">{{toName}}</span>
-            </div>
           </span>
-        </div>
-        <div class="text-center" ng-show="insuffientFunds">
-          <span class="badge badge-energized" translate>Insufficient funds</span>
         </div>
         <div class="item">
           <span class="label" ng-if="btx.action === 'sent'" translate>From</span>
