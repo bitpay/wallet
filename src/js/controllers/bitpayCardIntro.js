@@ -27,9 +27,9 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
             popupService.showAlert(null, err);
             return;
           }
-          var title = gettextCatalog.getString('Add BitPay Card?');
+          var title = gettextCatalog.getString('Add BitPay Card Account?');
           var msg = gettextCatalog.getString('Would you like to add this account ({{email}}) to your wallet?', {email: obj.email});
-          var ok = gettextCatalog.getString('Add cards');
+          var ok = gettextCatalog.getString('Add Account');
           var cancel = gettextCatalog.getString('Go back');
           popupService.showConfirm(title, msg, ok, cancel, function(res) {
             if (res) {
