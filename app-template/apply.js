@@ -5,7 +5,7 @@
 //
 
 var templates = {
-  'package.json': '/',
+  'package-template.json': '/',
   'index.html': 'www/',
   'Makefile': 'cordova/',
   'ProjectMakefile': 'cordova/',
@@ -64,6 +64,8 @@ Object.keys(templates).forEach(function(k) {
 
   if(k === 'config-template.xml'){
     k = 'config.xml';
+  } else if (k === 'package-template.json') {
+    k = 'package.json';
   }
 
   if (!fs.existsSync('../' + targetDir)){
@@ -80,8 +82,11 @@ fs.writeFileSync('../appConfig.json', configBlob, 'utf8');
 ////////////////
 var externalServices;
 try {
-  console.log('Copying ' + configDir + '/externalServices.json' + ' to root');
-  externalServices = fs.readFileSync(configDir + '/externalServices.json', 'utf8');
+  if(typeof process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION !== 'undefined') {
+    var location = process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION;
+    console.log('Copying ' + location + ' to root');
+    externalServices = fs.readFileSync(location, 'utf8');
+  }
 } catch(err) {
   externalServices = '{}';
   console.log('External services not configured');
