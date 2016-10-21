@@ -1,21 +1,17 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
-  console.log('in txDetailsController');
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
   var wallet;
   $scope.title = gettextCatalog.getString('Transaction');
 
-  console.log('$stateParams', $stateParams);
   $scope.btx = $stateParams.tx;
   $scope.wallet = $stateParams.wallet;
 
   $scope.init = function() {
-    console.log('init called');
     wallet = $scope.wallet;
-    console.log('wallet', wallet);
     $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
     $scope.color = wallet.color;
     $scope.copayerId = wallet.credentials.copayerId;
@@ -28,14 +24,11 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
     }
 
-    //$scope.toAmount = parseInt($scope.toAmount);
-    //$scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
     $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
 
     updateMemo();
     initActionList();
-    //getAlternativeAmount();
   };
 
   function getDisplayAmount(amountStr) {
@@ -47,13 +40,11 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   }
 
   function updateMemo() {
-    console.log('in updateMemo()');
     walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
       if (err) {
         $log.warn('Could not fetch transaction note: ' + err);
         return;
       }
-      console.log('note', note);
       if (!note) return;
 
       $scope.btx.note = note;
@@ -71,36 +62,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       });
     });
   }
-
-  // function initActionList() {
-  //   $scope.actionList = [];
-  //   var tx = $scope.btx;
-  //
-  //   if (!$scope.isShared) return;
-  //
-  //   var actionDescriptions = {
-  //     created: gettextCatalog.getString('Proposal Created'),
-  //     accept: gettextCatalog.getString('Accepted'),
-  //     reject: gettextCatalog.getString('Rejected'),
-  //     broadcasted: gettextCatalog.getString('Broadcasted'),
-  //   };
-  //
-  //   $scope.actionList.push({
-  //     type: 'created',
-  //     time: tx.createdOn,
-  //     description: actionDescriptions['created'],
-  //     by: tx.creatorName
-  //   });
-  //
-  //   lodash.each(tx.actions, function(action) {
-  //     $scope.actionList.push({
-  //       type: action.type,
-  //       time: action.createdOn,
-  //       description: actionDescriptions[action.type],
-  //       by: action.copayerName
-  //     });
-  //   });
-  // }
 
   function initActionList() {
     $scope.actionList = [];
@@ -134,7 +95,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       time: $scope.btx.time,
       description: actionDescriptions['broadcasted'],
     });
-  };
+  }
 
   $scope.showCommentPopup = function() {
     var opts = {};
@@ -167,29 +128,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       });
     });
   };
-
-  // var getAlternativeAmount = function() {
-  //   var satToBtc = 1 / 100000000;
-  //
-  //   wallet.getFiatRate({
-  //     code: $scope.alternativeIsoCode,
-  //     ts: $scope.btx.time * 1000
-  //   }, function(err, res) {
-  //     if (err) {
-  //       $log.debug('Could not get historic rate');
-  //       return;
-  //     }
-  //     if (res && res.rate) {
-  //       var alternativeAmountBtc = ($scope.btx.amount * satToBtc).toFixed(8);
-  //       $scope.rateDate = res.fetchedOn;
-  //       $scope.rateStr = res.rate + ' ' + $scope.alternativeIsoCode;
-  //       $scope.alternativeAmountStr = $filter('formatFiatAmount')(alternativeAmountBtc * res.rate) + ' ' + $scope.alternativeIsoCode;
-  //       $timeout(function() {
-  //         $scope.$apply();
-  //       });
-  //     }
-  //   });
-  // };
 
   $scope.viewOnBlockchain = function() {
     var btx = $scope.btx;

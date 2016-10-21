@@ -86,21 +86,13 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     $scope.close = function() {
       $scope.searchModal.hide();
-    }
+    };
   };
 
   $scope.openTxModal = function(btx) {
     $scope.btx = lodash.cloneDeep(btx);
     $scope.walletId = $scope.wallet.id;
-
-    console.log('$state.go called');
     $state.go('tabs.wallet.tx-details', {tx: $scope.btx, wallet: $scope.wallet});
-    // $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
-    //   scope: $scope
-    // }).then(function(modal) {
-    //   $scope.txDetailsModal = modal;
-    //   $scope.txDetailsModal.show();
-    // });
   };
 
   $scope.recreate = function() {
