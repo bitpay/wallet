@@ -76,7 +76,10 @@
             <div class="timeline-content">
               <div class="timeline-content__icon">
                 <div class="rejected" ng-if="a.type === 'reject'">!</div>
-                <div ng-if="a.type !== 'reject'">{{actionList.length - $index}}</div>
+                <img src="img/icon-broadcasted.svg" ng-if="a.type === 'broadcasted'">
+                <div ng-if="a.type !== 'reject' && a.type !== 'broadcasted'">
+                  {{actionList.length - $index}}
+                </div>
               </div>
               <div class="timeline-content__label">
                 <div class="action">{{a.description}}</div>
