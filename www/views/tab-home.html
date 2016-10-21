@@ -94,7 +94,7 @@
         <a ng-repeat="card in bitpayCards"
            ui-sref="tabs.bitpayCard({id:card.id})"
            ng-if="bitpayCardEnabled && bitpayCards[0]"
-           class="item item-icon-left item-big-icon-left item-icon-right">
+           class="item item-sub item-icon-left item-big-icon-left item-icon-right">
           <i class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
@@ -104,7 +104,7 @@
         </a>
         <a ui-sref="tabs.bitpayCardIntro"
            ng-if="bitpayCardEnabled && !bitpayCards[0] && externalServices.BitpayCard"
-           class="item item-icon-left item-big-icon-left item-icon-right">
+           class="item item-sub item-icon-left item-big-icon-left item-icon-right">
           <i class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
@@ -150,7 +150,7 @@
         <i class="icon bp-arrow-down" ng-show="hideNextSteps"></i>
       </div>
       <div ng-show="!hideNextSteps">
-        <a ui-sref="tabs.bitpayCardIntro" ng-if="!externalServices.BitpayCard && bitpayCardEnabled" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+        <a ui-sref="tabs.bitpayCardIntro" ng-if="!externalServices.BitpayCard && bitpayCardEnabled" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
          <i class="icon big-icon-svg">
            <div class="bg icon-bitpay-card"></div>
          </i>
