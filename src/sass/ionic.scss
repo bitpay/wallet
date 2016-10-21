@@ -35,3 +35,8 @@ $placeholder-icon-padding: 10px;
 .item p {
   color: $mid-gray;
 }
+
+// we'd like to diverge from the standard ionic formula for left-right card margins
+.card {
+  margin: ($content-padding * 2) 14px;
+}

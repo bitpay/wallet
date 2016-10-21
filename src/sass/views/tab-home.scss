@@ -16,16 +16,20 @@
     background-image: url("../img/icon-amazon.svg");
   }
   .bg {
-    &.wallet{
+    &.wallet {
       padding: .25rem
     }
   }
-  .card{
+  .card {
     .item {
       color: #444;
       border-top:none;
-      padding-bottom: 1.5rem;
-      padding-top:1.5rem;
+      padding-bottom: 1rem;
+      padding-top:1rem;
+      &.item-extra-padding {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
     }
     .item-sub {
       &:first-child:before {
@@ -84,5 +88,19 @@
   .icon.close-home-tip {
     color: #666;
     font-size: 38px;
+  }
+  .tab-home {
+    &__logo {
+      height: 18px;
+      position: relative;
+      top: 3px;
+    }
+    &__wallet {
+      &__multisig-number {
+        font-size: .8rem;
+        font-weight: 300;
+        color: $light-gray;
+      }
+    }
   }
 }
