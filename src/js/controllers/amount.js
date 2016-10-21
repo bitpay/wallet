@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var unitDecimals;
   var satToBtc;
   var self = $scope.self;
-  var SMALL_FONT_SIZE_LIMIT = 13;
+  var SMALL_FONT_SIZE_LIMIT = 10;
   var LENGTH_EXPRESSION_LIMIT = 19;
 
   $scope.$on('$ionicView.leave', function() {
@@ -197,18 +197,18 @@ angular.module('copayApp.controllers').controller('amountController', function($
         amount: amountUSD,
         currency: 'USD'
       };
-      ongoingProcess.set('Processing Transaction...', true);
+      ongoingProcess.set('Preparing transaction...', true);
       $timeout(function() {
 
         bitpayCardService.topUp($scope.cardId, dataSrc, function(err, invoiceId) {
           if (err) {
-            ongoingProcess.set('Processing Transaction...', false);
+            ongoingProcess.set('Preparing transaction...', false);
             popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
             return;
           }
 
           bitpayCardService.getInvoice(invoiceId, function(err, data) {
-            ongoingProcess.set('Processing Transaction...', false);
+            ongoingProcess.set('Preparing transaction...', false);
             if (err) {
               popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
               return;
