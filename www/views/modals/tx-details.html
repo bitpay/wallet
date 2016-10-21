@@ -48,7 +48,8 @@
           <span class="badge badge-energized" translate>Insufficient funds</span>
         </div>
         <div class="item">
-          <span class="label" translate>From</span>
+          <span class="label" ng-if="btx.action === 'sent'" translate>From</span>
+          <span class="label" ng-if="btx.action !== 'sent'" translate>To</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
