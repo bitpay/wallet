@@ -69,36 +69,34 @@
             {{btx.feeStr}}
           </span>
         </div>
+
+        <div ng-if="actionList[0]">
+          <div class="item item-divider" translate>Timeline</div>
+          <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList | orderBy: 'time' :true track by $index">
+            <div class="timeline-content">
+              <div class="timeline-content__icon">
+                <div class="rejected" ng-if="a.type === 'reject'">!</div>
+                <div ng-if="a.type !== 'reject'">{{actionList.length - $index}}</div>
+              </div>
+              <div class="timeline-content__label">
+                <div class="action">{{a.description}}</div>
+                <div class="name">{{a.by}}</div>
+              </div>
+              <div>
+                <span class="item-note">
+                  <time>{{ a.time * 1000 | amDateFormat:'hh:mm a'}}</time>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+
     </div>
-    <click-to-accept
-      ng-click="approve(statusChangeHandler)"
-      ng-if="hasClick && wallets[0]"
-      click-send-status="sendStatus">
-      Click to pay
-    </click-to-accept>
+
+
   </ion-content>
-  <slide-to-accept
-    ng-if="!hasClick && wallets[0]"
-    slide-on-confirm="onConfirm()"
-    slide-send-status="sendStatus">
-    Slide to pay
-  </slide-to-accept>
-  <slide-to-accept-success
-    slide-success-show="sendStatus === 'success'"
-    slide-success-on-confirm="onSuccessConfirm()"
-    slide-success-hide-on-confirm="true">
-    <span ng-hide="wallet.m > 1">Payment Sent</span>
-    <span ng-show="wallet.m > 1">Proposal Created</span>
-  </slide-to-accept-success>
-
-  <wallet-selector
-    wallet-selector-wallets="wallets"
-    wallet-selector-selected-wallet="wallet"
-    wallet-selector-show="showWallets"
-    wallet-selector-on-select="onWalletSelect">
-  </wallet-selector>
-
 </ion-view>
 
 

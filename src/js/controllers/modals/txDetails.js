@@ -70,7 +70,37 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         });
       });
     });
-  };
+  }
+
+  // function initActionList() {
+  //   $scope.actionList = [];
+  //   var tx = $scope.btx;
+  //
+  //   if (!$scope.isShared) return;
+  //
+  //   var actionDescriptions = {
+  //     created: gettextCatalog.getString('Proposal Created'),
+  //     accept: gettextCatalog.getString('Accepted'),
+  //     reject: gettextCatalog.getString('Rejected'),
+  //     broadcasted: gettextCatalog.getString('Broadcasted'),
+  //   };
+  //
+  //   $scope.actionList.push({
+  //     type: 'created',
+  //     time: tx.createdOn,
+  //     description: actionDescriptions['created'],
+  //     by: tx.creatorName
+  //   });
+  //
+  //   lodash.each(tx.actions, function(action) {
+  //     $scope.actionList.push({
+  //       type: action.type,
+  //       time: action.createdOn,
+  //       description: actionDescriptions[action.type],
+  //       by: action.copayerName
+  //     });
+  //   });
+  // }
 
   function initActionList() {
     $scope.actionList = [];
