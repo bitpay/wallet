@@ -188,6 +188,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.finish = function() {
+    console.log('in finish');
     var _amount = evaluate(format($scope.amount));
 
     if ($scope.cardId) {
@@ -225,13 +226,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
       });
 
     } else {
+      console.log('about to transitionTo');
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount).toFixed(unitDecimals) : _amount.toFixed(unitDecimals);
       $state.transitionTo('tabs.send.confirm', {
         isWallet: $scope.isWallet,
         toAmount: amount * unitToSatoshi,
         toAddress: $scope.toAddress,
         toName: $scope.toName,
-        toEmail: $scope.toEmail
+        toEmail: $scope.toEmail//,
+        //paypro: {hi: 'there'}
       });
     }
   };

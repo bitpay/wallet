@@ -261,7 +261,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     txp.outputs = outputs;
     txp.message = description;
-    txp.payProUrl = paypro.url;
+    if(paypro) {
+      txp.payProUrl = paypro.url;
+    }
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
     txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     txp.dryRun = dryRun;
