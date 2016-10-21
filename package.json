@@ -1,13 +1,15 @@
 {
-  "changes": "changes to this file can be commited with the --no-verify option",
   "name": "distribution-not-selected",
   "description": "Choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.",
   "primary-package-json": "See the tempate in app-template/package.json",
+  "pre-commit": "unstage-package",
+  "changes": "changes to this file can be commited with the --no-verify option",
   "scripts": {
     "postinstall": "npm run apply:copay && echo && echo \"Repo configured for standard Copay distribution. To switch to the BitPay distribution, run 'npm run apply:bitpay'.\" && echo",
     "start": "echo && echo \"Choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
     "apply:copay": "cd app-template && node apply.js copay && cd .. && npm i && npm run postapply",
     "apply:bitpay": "cd app-template && node apply.js bitpay && cd .. && npm i && npm run postapply",
+    "unstage-package": "git reset package.json",
     "clean-all": "git clean -dfx"
   },
   "dependencies": {
