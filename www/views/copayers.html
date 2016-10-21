@@ -17,7 +17,8 @@
         <div class="item item-heading item-text-wrap" translate>
           Share this invitation with your copayers
         </div>
-        <div class="item text-center" copy-to-clipboard="secret" ng-click="copySecret()">
+        <div class="item text-center">
+          <div copy-to-clipboard="secret">
           <qrcode size="220" error-correction-level="L" data="{{secret}}" color="#334"></qrcode>
           <div ng-show="!secret" style="position:relative; top:-226px; height:0px">
             <div style="height:220px; width:220px; margin:auto; background: white">
@@ -27,19 +28,19 @@
           <div class="copayers-secret">
             {{secret || ('Loading...'|translate)}}
           </div>
-        </div>
-      </div>
-
-      <div ng-show="secret">
-        <div class="text-center m10t" ng-if="isCordova">
-          <button class="button button-outline button-primary"
-            ng-click="shareSecret()">
+          </div>
+          <button ng-if="isCordova && secret"
+                  class="button button-primary button-outline button-small"
+                  ng-click="shareSecret()">
             <i class="icon ion-ios-upload-outline"></i>
             <span translate>Share invitation</span>
           </button>
         </div>
+      </div>
 
-        <div class="list">
+      <div ng-show="secret">
+
+        <div class="list card">
           <div class="item item-heading">
             <span class="text-gray right">
               [ <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
