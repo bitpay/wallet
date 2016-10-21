@@ -68,12 +68,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
         $scope.wallet = wallet;
         $scope.btx = lodash.cloneDeep(tx);
-        $ionicModal.fromTemplateUrl('views/confirm.html', {
-          scope: $scope
-        }).then(function(modal) {
-          $scope.txDetailsModal = modal;
-          $scope.txDetailsModal.show();
-        });
+        $state.go('tabs.wallet.tx-details', {tx: $scope.btx, wallet: $scope.wallet});
 
         walletService.getTxNote(wallet, n.txid, function(err, note) {
           if (err) $log.warn('Could not fetch transaction note: ' + err);
