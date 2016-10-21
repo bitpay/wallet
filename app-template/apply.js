@@ -82,9 +82,11 @@ fs.writeFileSync('../appConfig.json', configBlob, 'utf8');
 ////////////////
 var externalServices;
 try {
-  console.log('Looking for COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION...');
-  if(typeof process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION !== 'undefined') {
-    var location = process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION;
+  var confName = configDir.toUpperCase();
+  externalServicesConf = confName + '_EXTERNAL_SERVICES_CONFIG_LOCATION';
+  console.log('Looking for ' + externalServicesConf + '...');
+  if(typeof process.env[externalServicesConf] !== 'undefined') {
+    var location = process.env[externalServicesConf]
     if(location.charAt(0) === '~') {
       location = location.replace(/^\~/, process.env.HOME || process.env.USERPROFILE);
     }
