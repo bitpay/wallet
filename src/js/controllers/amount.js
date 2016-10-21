@@ -133,6 +133,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   $scope.resetAmount = function() {
     $scope.amount = $scope.alternativeResult = $scope.amountResult = $scope.globalResult = '';
+    $scope.allowSend = false;
+
     checkFontSize();
   };
 
@@ -144,7 +146,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     var formatedValue = format(val);
     var result = evaluate(formatedValue);
-
+    $scope.allowSend = lodash.isNumber(result) && +result > 0;
     if (lodash.isNumber(result)) {
       $scope.globalResult = isExpression(val) ? '= ' + processResult(result) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
