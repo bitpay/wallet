@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('activityController',
-  function($timeout, $scope, $log, $ionicModal, lodash, txpModalService, profileService, walletService, ongoingProcess, popupService, gettextCatalog) {
+  function($timeout, $scope, $log, $ionicModal, lodash, txpModalService, profileService, walletService, ongoingProcess, popupService, gettextCatalog, $state) {
     $scope.openTxpModal = txpModalService.open;
     $scope.fetchingNotifications = true;
 
@@ -66,12 +66,13 @@ angular.module('copayApp.controllers').controller('activityController',
 
         $scope.wallet = wallet;
         $scope.btx = lodash.cloneDeep(tx);
-        $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
-          scope: $scope
-        }).then(function(modal) {
-          $scope.txDetailsModal = modal;
-          $scope.txDetailsModal.show();
-        });
+        $state.go('tabs.wallet.tx-details', {tx: $scope.btx, wallet: $scope.wallet});
+        // $ionicModal.fromTemplateUrl('views/modals/tx-details.html', {
+        //   scope: $scope
+        // }).then(function(modal) {
+        //   $scope.txDetailsModal = modal;
+        //   $scope.txDetailsModal.show();
+        // });
 
         walletService.getTxNote(wallet, n.txid, function(err, note) {
           if (err) $log.warn('Could not fetch transaction note: ' + err);
