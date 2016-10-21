@@ -28,18 +28,32 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
     }
 
+    //$scope.toAmount = parseInt($scope.toAmount);
+    //$scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
+    $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
+    $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
+
     updateMemo();
     initActionList();
     getAlternativeAmount();
   };
 
+  function getDisplayAmount(amountStr) {
+    return amountStr.split(' ')[0];
+  }
+
+  function getDisplayUnit(amountStr) {
+    return amountStr.split(' ')[1];
+  }
+
   function updateMemo() {
+    console.log('in updateMemo()');
     walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
       if (err) {
         $log.warn('Could not fetch transaction note: ' + err);
         return;
       }
-
+      console.log('note', note);
       if (!note) return;
 
       $scope.btx.note = note;
@@ -94,6 +108,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.showCommentPopup = function() {
     var opts = {};
+    if($scope.btx.message) {
+      opts.defaultText = $scope.btx.message;
+    }
     if ($scope.btx.note && $scope.btx.note.body) opts.defaultText = $scope.btx.note.body;
 
     popupService.showPrompt(wallet.name, gettextCatalog.getString('Memo'), opts, function(text) {
