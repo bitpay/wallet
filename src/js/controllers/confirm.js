@@ -95,7 +95,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
 
     if($scope.paypro) {
-      console.log('$scope.paypro', $scope.paypro);
       _paymentTimeControl($scope.paypro.expires);
     }
 
@@ -148,60 +147,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     return amountStr.split(' ')[1];
   }
 
-// <<<<<<< HEAD
-// =======
-  // var setFromPayPro = function(uri, cb) {
-  //   if (!cb) cb = function() {};
-  //
-  //   var wallet = profileService.getWallets({
-  //     onlyComplete: true
-  //   })[0];
-  //
-  //   if (!wallet) return cb();
-  //
-  //   if (isChromeApp) {
-  //     popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
-  //     return cb(true);
-  //   }
-  //
-  //   $log.debug('Fetch PayPro Request...', uri);
-  //
-  //   ongoingProcess.set('fetchingPayPro', true);
-  //   wallet.fetchPayPro({
-  //     payProUrl: uri,
-  //   }, function(err, paypro) {
-  //
-  //     ongoingProcess.set('fetchingPayPro', false);
-  //
-  //     if (err) {
-  //       $log.warn('Could not fetch payment request:', err);
-  //       var msg = err.toString();
-  //       if (msg.match('HTTP')) {
-  //         msg = gettextCatalog.getString('Could not fetch payment information');
-  //       }
-  //       popupService.showAlert(msg);
-  //       return cb(true);
-  //     }
-  //
-  //     if (!paypro.verified) {
-  //       $log.warn('Failed to verify payment protocol signatures');
-  //       popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
-  //       return cb(true);
-  //     }
-  //
-  //     $scope.toAmount = paypro.amount;
-  //     $scope.toAddress = paypro.toAddress;
-  //     $scope.description = paypro.memo;
-  //     $scope.paypro = null;
-  //
-  //     $scope._paypro = paypro;
-  //     _paymentTimeControl(paypro.expires);
-  //     return initConfirm();
-  //   });
-  // };
-
   function _paymentTimeControl(expirationTime) {
-    console.log('expirationTime', expirationTime);
     $scope.paymentExpired.value = false;
     setExpirationTime();
 
@@ -233,7 +179,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
   }
 
-// >>>>>>> de248d56393535b819d879d38692af68c9e6e4da
   function setWallet(wallet, delayed) {
     var stop;
     $scope.wallet = wallet;
@@ -323,7 +268,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
-        console.log('in createTx error', err);
         setSendError(err);
         return cb(err);
       }
@@ -341,8 +285,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
-    console.log('$scope._paypro', $scope._paypro);
-    console.log('$scope.paymentExpired', $scope.paymentExpired);
     if ($scope._paypro && $scope.paymentExpired.value) {
       popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
       $scope.sendStatus = '';
@@ -355,7 +297,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var wallet = $scope.wallet;
     if (!wallet) {
       return setSendError(gettextCatalog.getString('No wallet selected'));
-    };
+    }
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
