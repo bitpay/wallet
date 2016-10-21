@@ -82,8 +82,13 @@ fs.writeFileSync('../appConfig.json', configBlob, 'utf8');
 ////////////////
 var externalServices;
 try {
+  console.log('Looking for COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION...');
   if(typeof process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION !== 'undefined') {
     var location = process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION;
+    if(location.charAt(0) === '~') {
+      location = location.replace(/^\~/, os.homedir());
+    }
+    console.log('Found at: ' + location);
     console.log('Copying ' + location + ' to root');
     externalServices = fs.readFileSync(location, 'utf8');
   }
