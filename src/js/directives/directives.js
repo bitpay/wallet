@@ -113,13 +113,10 @@ angular.module('copayApp.directives')
       }
     }
   })
-  .directive('contact', ['addressbookService', 'lodash', 'gettextCatalog',
-    function(addressbookService, lodash, gettextCatalog) {
+  .directive('contact', ['addressbookService', 'lodash',
+    function(addressbookService, lodash) {
       return {
         restrict: 'E',
-        scope: {
-          label: '='
-        },
         link: function(scope, element, attrs) {
           var addr = attrs.address;
           addressbookService.get(addr, function(err, ab) {
@@ -127,11 +124,7 @@ angular.module('copayApp.directives')
               var name = lodash.isObject(ab) ? ab.name : ab;
               element.append(name);
             } else {
-              if (scope.label && scope.label == 'Sent') {
-                element.append(gettextCatalog.getString('Sent'));
-              } else {
-                element.append(addr);
-              }
+              element.append(addr);
             }
           });
         }
