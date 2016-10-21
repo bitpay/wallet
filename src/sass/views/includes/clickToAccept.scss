@@ -1,6 +1,11 @@
 click-to-accept {
 
   .click-to-accept {
+
+    &__button.disable {
+      pointer-events: none;
+    }
+
     &__status-text {
       position: absolute;
       top: 0;
@@ -11,6 +16,7 @@ click-to-accept {
       text-transform: capitalize;
       transform: translateY(2rem);
       opacity: 0;
+      pointer-events: none;
 
       &.enter {
         transition: transform 250ms ease, opacity 250ms ease;
