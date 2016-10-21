@@ -7,7 +7,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-class="{'slide-to-pay': !hasClick && !insuffientFunds}">
+  <ion-content>
     <div class="list">
       <div class="item head">
         <div class="sending-label">
@@ -16,7 +16,7 @@
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
-          <div class="alternative">{{alternativeAmountStr}}</div>
+          <div class="alternative">{{btx.alternativeAmountStr}}</div>
         </div>
       </div>
       <div class="info">

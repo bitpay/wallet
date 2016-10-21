@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
     updateMemo();
     initActionList();
-    getAlternativeAmount();
+    //getAlternativeAmount();
   };
 
   function getDisplayAmount(amountStr) {
@@ -138,28 +138,28 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   };
 
-  var getAlternativeAmount = function() {
-    var satToBtc = 1 / 100000000;
-
-    wallet.getFiatRate({
-      code: $scope.alternativeIsoCode,
-      ts: $scope.btx.time * 1000
-    }, function(err, res) {
-      if (err) {
-        $log.debug('Could not get historic rate');
-        return;
-      }
-      if (res && res.rate) {
-        var alternativeAmountBtc = ($scope.btx.amount * satToBtc).toFixed(8);
-        $scope.rateDate = res.fetchedOn;
-        $scope.rateStr = res.rate + ' ' + $scope.alternativeIsoCode;
-        $scope.alternativeAmountStr = $filter('formatFiatAmount')(alternativeAmountBtc * res.rate) + ' ' + $scope.alternativeIsoCode;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      }
-    });
-  };
+  // var getAlternativeAmount = function() {
+  //   var satToBtc = 1 / 100000000;
+  //
+  //   wallet.getFiatRate({
+  //     code: $scope.alternativeIsoCode,
+  //     ts: $scope.btx.time * 1000
+  //   }, function(err, res) {
+  //     if (err) {
+  //       $log.debug('Could not get historic rate');
+  //       return;
+  //     }
+  //     if (res && res.rate) {
+  //       var alternativeAmountBtc = ($scope.btx.amount * satToBtc).toFixed(8);
+  //       $scope.rateDate = res.fetchedOn;
+  //       $scope.rateStr = res.rate + ' ' + $scope.alternativeIsoCode;
+  //       $scope.alternativeAmountStr = $filter('formatFiatAmount')(alternativeAmountBtc * res.rate) + ' ' + $scope.alternativeIsoCode;
+  //       $timeout(function() {
+  //         $scope.$apply();
+  //       });
+  //     }
+  //   });
+  // };
 
   $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
