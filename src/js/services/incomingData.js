@@ -180,6 +180,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
   }
 
   function handlePayPro(payProDetails){
+    console.log('payProDetails', payProDetails);
     var stateParams = {
       toAmount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
