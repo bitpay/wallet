@@ -74,9 +74,6 @@
           </i>
           <span>
             {{wallet.name || wallet.id}}
-            <span class="size-12 text-light" ng-if="wallet.n > 1">
-              {{wallet.m}}-of-{{wallet.n}}
-            </span>
           </span>
           <p>
           <span ng-if="!wallet.isComplete()" class="assertive" translate>
@@ -85,6 +82,9 @@
           <span ng-if="wallet.isComplete()">
             <span ng-if="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
             <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+            <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+              {{wallet.m}}-of-{{wallet.n}}
+            </span>
           </span>
           &nbsp;
           </p>
