@@ -25,7 +25,7 @@
           <span class="item-note" ng-if="!paymentExpired.value">{{remainingTimeStr.value}}</span>
           <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
-        <div class="item">
+        <div class="item" ng-if="btx.action === 'sent'">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to">
             <img ng-if="!cardId" src="img/icon-bitcoin-small.svg">
