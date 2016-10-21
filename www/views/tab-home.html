@@ -3,7 +3,7 @@
     <ion-nav-title><img class="tab-home__logo" src="img/app/logo-negative.svg"></ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content class="padding">
+  <ion-content>
     <ion-refresher
      ng-if="isAndroid"
      pulling-icon="ion-ios-refresh"
@@ -121,7 +121,7 @@
         <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <div>
-        <a ng-if="glideraEnabled" ui-sref="tabs.buyandsell.glidera" class="item item-sub item-icon-right">
+        <a ng-if="glideraEnabled" ui-sref="tabs.buyandsell.glidera" class="item item-extra-padding item-sub item-icon-right">
           <img src="img/glidera-logo.png" width="90"/>
           <i class="icon bp-arrow-right"></i>
         </a>
