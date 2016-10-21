@@ -191,6 +191,14 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   //   });
   // };
 
+  $scope.viewOnBlockchain = function() {
+    var btx = $scope.btx;
+    var url = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid;
+    var title = 'View Transaction on Insight';
+    var message = 'Would you like to view this transaction on the Insight blockchain explorer?';
+    $scope.openExternalLink(url, true, title, message, 'Open Insight', 'Go back');
+  };
+
   $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
