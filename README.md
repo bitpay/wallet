@@ -137,10 +137,12 @@ On success, the Chrome extension will be located at: `browser-extensions/chrome/
 
 ### Enable External Services
 
-To enable external services, set the `COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` environment variable to the location of your configuration before running the `apply` task.
+To enable external services, set the `COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` or `BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION` environment variable to the location of your configuration before running the `apply` task.
 
 ```sh
-export COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.copay/externalServices.json"
+COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.copay/externalServices.json" && npm run apply:copay
+# or
+BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" && npm run apply:bitpay
 ```
 
 ## About Copay
