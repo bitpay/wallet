@@ -177,6 +177,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.wallet.tx-details', {
+        url: '/:id',
+        views: {
+          'tab-home@tabs': {
+            controller: 'txDetailsController',
+            templateUrl: 'views/modals/tx-details.html'
+          }
+        },
+        params: {
+          tx: null,
+          wallet: null
+        }
+      })
 
     /*
      *

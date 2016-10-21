@@ -1,14 +1,21 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
+  console.log('in txDetailsController');
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
   var wallet;
   $scope.title = gettextCatalog.getString('Transaction');
 
+  console.log('$stateParams', $stateParams);
+  $scope.btx = $stateParams.tx;
+  $scope.wallet = $stateParams.wallet;
+
   $scope.init = function() {
+    console.log('init called');
     wallet = $scope.wallet;
+    console.log('wallet', wallet);
     $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
     $scope.color = wallet.color;
     $scope.copayerId = wallet.credentials.copayerId;
@@ -149,4 +156,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.cancel = function() {
     $scope.txDetailsModal.hide();
   };
+
+  $scope.init();
 });
