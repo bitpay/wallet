@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
-
+  var countDown = null;
   $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -15,6 +15,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
+    $scope.paymentExpired = {
+      value: false
+    };
+    $scope.remainingTimeStr = {
+      value: null
+    };
     initConfirm();
   });
 
@@ -87,6 +93,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.alternativeAmountStr = v;
     });
 
+    if($scope.paypro) {
+      _paymentTimeControl($scope.paypro.expires);
+    }
+
     $timeout(function() {
       $scope.$apply();
     }, 100);
@@ -136,6 +146,91 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     return amountStr.split(' ')[1];
   }
 
+// <<<<<<< HEAD
+// =======
+  // var setFromPayPro = function(uri, cb) {
+  //   if (!cb) cb = function() {};
+  //
+  //   var wallet = profileService.getWallets({
+  //     onlyComplete: true
+  //   })[0];
+  //
+  //   if (!wallet) return cb();
+  //
+  //   if (isChromeApp) {
+  //     popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
+  //     return cb(true);
+  //   }
+  //
+  //   $log.debug('Fetch PayPro Request...', uri);
+  //
+  //   ongoingProcess.set('fetchingPayPro', true);
+  //   wallet.fetchPayPro({
+  //     payProUrl: uri,
+  //   }, function(err, paypro) {
+  //
+  //     ongoingProcess.set('fetchingPayPro', false);
+  //
+  //     if (err) {
+  //       $log.warn('Could not fetch payment request:', err);
+  //       var msg = err.toString();
+  //       if (msg.match('HTTP')) {
+  //         msg = gettextCatalog.getString('Could not fetch payment information');
+  //       }
+  //       popupService.showAlert(msg);
+  //       return cb(true);
+  //     }
+  //
+  //     if (!paypro.verified) {
+  //       $log.warn('Failed to verify payment protocol signatures');
+  //       popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
+  //       return cb(true);
+  //     }
+  //
+  //     $scope.toAmount = paypro.amount;
+  //     $scope.toAddress = paypro.toAddress;
+  //     $scope.description = paypro.memo;
+  //     $scope.paypro = null;
+  //
+  //     $scope._paypro = paypro;
+  //     _paymentTimeControl(paypro.expires);
+  //     return initConfirm();
+  //   });
+  // };
+
+  function _paymentTimeControl(expirationTime) {
+    $scope.paymentExpired.value = false;
+    setExpirationTime();
+
+    countDown = $interval(function() {
+      setExpirationTime();
+    }, 1000);
+
+    function setExpirationTime() {
+      var now = Math.floor(Date.now() / 1000);
+
+      if (now > expirationTime) {
+        setExpiredValues();
+        return;
+      }
+
+      var totalSecs = expirationTime - now;
+      var m = Math.floor(totalSecs / 60);
+      var s = totalSecs % 60;
+      $scope.remainingTimeStr.value = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+    }
+
+    function setExpiredValues() {
+      $scope.paymentExpired.value = true;
+      $scope.remainingTimeStr.value = gettextCatalog.getString('Expired');
+      if (countDown) $interval.cancel(countDown);
+      $timeout(function() {
+        $scope.$apply();
+      });
+    }
+  }
+
+// >>>>>>> de248d56393535b819d879d38692af68c9e6e4da
   function setWallet(wallet, delayed) {
     var stop;
     $scope.wallet = wallet;
@@ -242,11 +337,19 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
+    if ($scope._paypro && $scope.paymentExpired.value) {
+      popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
+      $scope.sendStatus = '';
+      $timeout(function() {
+        $scope.$apply();
+      });
+      return;
+    }
+
     var wallet = $scope.wallet;
     if (!wallet) {
       return setSendError(gettextCatalog.getString('No wallet selected'));
     };
-
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
@@ -286,10 +389,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               }
               publishAndSign(wallet, txp, onSendStatusChange);
             });
-          }
-          else publishAndSign(wallet, txp, onSendStatusChange);
-        }
-        else {
+          } else publishAndSign(wallet, txp, onSendStatusChange);
+        } else {
           popupService.showConfirm(null, message, okText, cancelText, function(ok) {
             if (!ok) {
               $scope.sendStatus = '';
@@ -298,8 +399,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             publishAndSign(wallet, txp, onSendStatusChange);
           });
         }
-      }
-      else publishAndSign(wallet, txp, onSendStatusChange);
+      } else publishAndSign(wallet, txp, onSendStatusChange);
     });
   };
 
