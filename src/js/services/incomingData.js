@@ -47,7 +47,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     }
 
     data = sanitizeUri(data);
-    //data = 'msEVvmpiFEtXv3MdsFLUYMbnNLeNYrqBEA';
 
     // BIP21
     if (bitcore.URI.isValid(data)) {
