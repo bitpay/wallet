@@ -1,12 +1,20 @@
 #glidera {
   .glidera-lead {
-    margin: 1rem;
+    margin: 2rem 1rem;
+    color: $dark-gray;
+    font-size: 20px;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .glidera-text {
+    margin: 2rem 1rem;
     color: $mid-gray;
-    font-size: 18px;
+    font-size: 16px;
+    line-height: 1.4;
     text-align: center;
   }
   .disclosure {
-    color: $mid-gray;
+    color: $light-gray;
     font-size: 12px;
     text-align: left;
     margin: 1rem;

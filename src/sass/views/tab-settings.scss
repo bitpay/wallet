@@ -47,11 +47,21 @@
       color: $dark-gray;
       padding-top: 1.3rem;
       padding-bottom: 1.3rem;
+      &.has-setting-value {
+        padding-top: .65rem;
+        padding-bottom: .65rem;
+      }
       &.item-divider {
         color: $mid-gray;
         padding-bottom: .5rem;
         font-size: .9rem;
       }
+      .icon {
+        color: $light-gray;
+      }
+    }
+    .item-note {
+      color: $light-gray;
     }
  }
 }

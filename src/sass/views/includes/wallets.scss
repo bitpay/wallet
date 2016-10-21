@@ -28,6 +28,12 @@
             margin-bottom:5px;
             font-size:13px;
           }
+          &.wallet-number{
+            visibility: hidden;
+          }
+          &.visible{
+            visibility: visible !important; 
+          }
         }
         .big-icon-svg{
           & > .bg{padding:.3rem;width: 40px;height:40px;}

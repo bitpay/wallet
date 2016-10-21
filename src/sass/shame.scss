@@ -18,6 +18,10 @@
     border-color: #e6b500;
     background-color: #ffc900;
     color: #fff;
+    &.warning-red{
+      border-color: #EB475A;
+      background-color: $warning-red;
+    }
   }
   &.error {
     background-color: #ef473a;
@@ -128,8 +132,8 @@ input[type=number] {
 .postfix {
   position: absolute;
   right: 10px;
-  background-color: #f8f8f8;
-  color: #444;
+  background-color: $subtle-gray;
+  color: $dark-gray;
   border-radius: 4px;
   padding: 2px 10px;
   cursor: pointer;
