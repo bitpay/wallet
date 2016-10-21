@@ -85,4 +85,13 @@
     color: #666;
     font-size: 38px;
   }
+  .tab-home {
+    &__wallet {
+      &__multisig-number {
+        font-size: .8rem;
+        font-weight: 300;
+        color: $light-gray;
+      }
+    }
+  }
 }
