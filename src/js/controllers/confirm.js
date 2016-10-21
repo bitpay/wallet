@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
+    $scope._paypro = $scope.paypro;
     $scope.paymentExpired = {
       value: false
     };
@@ -94,6 +95,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
 
     if($scope.paypro) {
+      console.log('$scope.paypro', $scope.paypro);
       _paymentTimeControl($scope.paypro.expires);
     }
 
@@ -199,6 +201,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   // };
 
   function _paymentTimeControl(expirationTime) {
+    console.log('expirationTime', expirationTime);
     $scope.paymentExpired.value = false;
     setExpirationTime();
 
@@ -313,13 +316,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     txp.outputs = outputs;
     txp.message = description;
-    txp.payProUrl = paypro;
+    txp.payProUrl = paypro.url;
     txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
     txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     txp.dryRun = dryRun;
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
+        console.log('in createTx error', err);
         setSendError(err);
         return cb(err);
       }
@@ -337,6 +341,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
+    console.log('$scope._paypro', $scope._paypro);
+    console.log('$scope.paymentExpired', $scope.paymentExpired);
     if ($scope._paypro && $scope.paymentExpired.value) {
       popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
       $scope.sendStatus = '';
