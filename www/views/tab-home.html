@@ -120,14 +120,16 @@
         Buy &amp; Sell Bitcoin
         <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
-      <a ng-if="glideraEnabled" ui-sref="tabs.buyandsell.glidera" class="item item-sub item-icon-right">
-        <img src="img/glidera-logo.png" width="90"/>
-        <i class="icon bp-arrow-right"></i>
-      </a>
-      <!-- disable coinbase for this release -->
-      <!-- <a ng-if="coinbaseEnabled" ui-sref="exchange.coinbase" class="item">
-        <img src="img/coinbase-logo.png" width="90"> TODO
-      </a> -->
+      <div>
+        <a ng-if="glideraEnabled" ui-sref="tabs.buyandsell.glidera" class="item item-sub item-icon-right">
+          <img src="img/glidera-logo.png" width="90"/>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <!-- disable coinbase for this release -->
+        <!-- <a ng-if="coinbaseEnabled" ui-sref="exchange.coinbase" class="item">
+          <img src="img/coinbase-logo.png" width="90"> TODO
+        </a> -->
+      </div>
     </div>
 
     <div class="list card" ng-if="wallets[0] && externalServices.AmazonGiftCards && amazonEnabled">
