@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
+  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, $window, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
+
+    var appName = $window.appConfig.userVisibleName;
+    var appUrl = $window.appConfig.url;
 
     $scope.isCordova = platformInfo.isCordova;
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -64,10 +67,14 @@ angular.module('copayApp.controllers').controller('copayersController',
 
     $scope.shareSecret = function() {
       if ($scope.isCordova) {
-        var message = gettextCatalog.getString('Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io', {
-          secret: $scope.secret
+        var message = gettextCatalog.getString('Join my {{appName}} Wallet. Here is the invitation code: {{secret}} You can download {{appName}} for your phone or desktop at {{appUrl}}', {
+          secret: $scope.secret,
+          appName: appName,
+          appUrl: appUrl
         });
-        window.plugins.socialsharing.share(message, gettextCatalog.getString('Invitation to share a Copay Wallet'), null, null);
+        window.plugins.socialsharing.share(message, gettextCatalog.getString('Invitation to share a {{appName}} Wallet', {
+          appName: appName
+        }), null, null);
       }
     };
 
