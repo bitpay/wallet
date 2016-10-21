@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -183,6 +183,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     $scope.wallet = profileService.getWallet(data.stateParams.walletId);
     $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
+
+    addressbookService.list(function(err, ab) {
+      if (err) $log.error(err);
+      $scope.addressbook = ab || {};
+    });
 
     $scope.updateAll();
 
