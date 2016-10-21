@@ -86,7 +86,7 @@ try {
   if(typeof process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION !== 'undefined') {
     var location = process.env.COPAY_EXTERNAL_SERVICES_CONFIG_LOCATION;
     if(location.charAt(0) === '~') {
-      location = location.replace(/^\~/, os.homedir());
+      location = location.replace(/^\~/, process.env.HOME || process.env.USERPROFILE);
     }
     console.log('Found at: ' + location);
     console.log('Copying ' + location + ' to root');
