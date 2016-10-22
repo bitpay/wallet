@@ -83,7 +83,7 @@ fs.writeFileSync('../appConfig.json', configBlob, 'utf8');
 var externalServices;
 try {
   var confName = configDir.toUpperCase();
-  externalServicesConf = confName + '_EXTERNAL_SERVICES_CONFIG_LOCATION';
+  var externalServicesConf = confName + '_EXTERNAL_SERVICES_CONFIG_LOCATION';
   console.log('Looking for ' + externalServicesConf + '...');
   if(typeof process.env[externalServicesConf] !== 'undefined') {
     var location = process.env[externalServicesConf]
@@ -93,8 +93,11 @@ try {
     console.log('Found at: ' + location);
     console.log('Copying ' + location + ' to root');
     externalServices = fs.readFileSync(location, 'utf8');
+  } else {
+    throw externalServicesConf + ' environment variable not set.';
   }
 } catch(err) {
+  console.log(err);
   externalServices = '{}';
   console.log('External services not configured');
 }
