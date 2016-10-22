@@ -1,34 +1,39 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $ionicHistory, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
-  var wallet;
+  var wallet = profileService.getWallet($stateParams.walletId);
+
+  $scope.wallet = wallet;
   $scope.title = gettextCatalog.getString('Transaction');
 
-  $scope.btx = $stateParams.tx;
-  $scope.wallet = $stateParams.wallet;
-
   $scope.init = function() {
-    wallet = $scope.wallet;
     $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
     $scope.color = wallet.color;
     $scope.copayerId = wallet.credentials.copayerId;
     $scope.isShared = wallet.credentials.n > 1;
-    $scope.btx.feeLevel = walletSettings.feeLevel;
+    walletService.getTx(wallet, $stateParams.txid, function(err, tx) {
+      if (err) {
+        $log.warn('Could not get tx');
+        $ionicHistory.goBack();
+        return;
+      }
+      $scope.btx = tx;
+      $scope.btx.feeLevel = walletSettings.feeLevel;
+      if ($scope.btx.action != 'invalid') {
+        if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
+        if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
+        if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
+      }
 
-    if ($scope.btx.action != 'invalid') {
-      if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
-      if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
-      if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
-    }
+      $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
+      $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
 
-    $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
-    $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
-
-    updateMemo();
-    initActionList();
+      updateMemo();
+      initActionList();
+    });
   };
 
   function getDisplayAmount(amountStr) {
@@ -99,7 +104,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.showCommentPopup = function() {
     var opts = {};
-    if($scope.btx.message) {
+    if ($scope.btx.message) {
       opts.defaultText = $scope.btx.message;
     }
     if ($scope.btx.note && $scope.btx.note.body) opts.defaultText = $scope.btx.note.body;

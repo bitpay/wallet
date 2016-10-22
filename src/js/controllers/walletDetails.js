@@ -92,7 +92,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.openTxModal = function(btx) {
     $scope.btx = lodash.cloneDeep(btx);
     $scope.walletId = $scope.wallet.id;
-    $state.go('tabs.wallet.tx-details', {tx: $scope.btx, wallet: $scope.wallet});
+    $state.transitionTo('tabs.wallet.tx-details', {
+      txid: $scope.btx.txid,
+      walletId: $scope.walletId
+    });
   };
 
   $scope.recreate = function() {
