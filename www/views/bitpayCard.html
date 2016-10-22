@@ -4,8 +4,8 @@
     </ion-nav-back-button>
     <ion-nav-title>BitPay Visa<sup>&reg;</sup> Card</ion-nav-title>
     <ion-nav-buttons side="secondary">
-      <button class="button back-button" ng-show="!error" ui-sref="tabs.bitpayCard.preferences">
-        <i class="icon ion-ios-gear-outline"></i>
+      <button class="button no-border" ng-show="!error" ui-sref="tabs.bitpayCard.preferences">
+        <i class="icon ion-ios-settings"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
@@ -20,10 +20,11 @@
       <div class="amount">
         <div ng-if="bitpayCard.bitpayCardCurrentBalance" ng-click="bitpayCard.update()">
           <div class="size-36 m20b">${{bitpayCard.bitpayCardCurrentBalance}}</div>
-          <a class="button button-primary button-small"
-            style="padding-left: 1em; padding-right: 1em;"
-            ui-sref="tabs.bitpayCard.amount({'cardId': cardId, 'toName': 'BitPay Card'})" translate>
-            Add Funds
+          <a class="button button-primary button-small m5t size-14"
+            style="padding: 0.5em 1em;"
+            ui-sref="tabs.bitpayCard.amount({'cardId': cardId, 'toName': 'BitPay Card'})">
+            <i class="icon ion-plus m10r" style="vertical-align: baseline;"></i>
+            {{'Add Funds'|translate}}
           </a>
         </div>
         <div ng-if="!bitpayCard.bitpayCardCurrentBalance" class="m10t">
@@ -61,19 +62,22 @@
       <div ng-if="bitpayCard.bitpayCardTransactionHistory[0]"
         ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
         class="item row">
+        <div class="col col-10 text-center">
+          <div class="tu size-12">{{tx.timestamp | amDateFormat:'MMM'}}</div>
+          <div class="text-light">{{tx.timestamp | amDateFormat:'DD'}}</div>
+        </div>
         <div class="col col-10">
-          <img class="m5t" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="28">
+          <img class="m15t" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="24">
         </div>
 
         <div class="col col-50">
           <div class="size-12 text-bold">
             {{tx.merchant.name}}
           </div>
-          <div class="size-10">
+          <div class="size-12 text-gray">
             <span ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.city}}, {{tx.merchant.state}}</span>
-            <span ng-show="tx.desc">
-              <span ng-show="tx.merchant.city && tx.merchant.state"> - </span>
-              {{tx.desc}}
+            <span ng-class="{'m5l':tx.merchant.city && tx.merchant.state}">
+              {{tx.timestamp | amDateFormat:'h:mm A'}}
             </span>
           </div>
         </div>
@@ -81,21 +85,20 @@
         <div class="col size-12">
           {{tx.desc}}
         </div>
-        -->
         <div class="col col-10 text-center p10t">
           <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
           <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
         </div>
-        <div class="col text-right size-14 text-gray">
-          <div ng-show="tx.fee != '0.00'">{{tx.fee | currency:'$':2}}</div>
-          <div ng-show="tx.fee == '0.00'"
-               ng-class="{
-               'text-success': tx.amount.indexOf('-') == -1 && !tx.pending,
-               'text-gray': tx.amount.indexOf('-') == -1 && tx.pending}">
-            {{tx.amount | currency:'$':2 }}
+        -->
+        <div class="col text-right">
+          <div ng-class="{
+               'balanced': tx.price.toString().indexOf('-') == -1 && !tx.pending,
+               'stable': tx.price.toString().indexOf('-') == -1 && tx.pending}">
+            <span ng-show="tx.price.toString().indexOf('-') == -1 && !tx.pending">+ </span>
+            {{tx.price | currency:'$':2 }}
           </div>
-          <time class="size-12" ng-if="!tx.pending">{{tx.timestamp | amTimeAgo}}</time>
-          <span class="size-12" ng-if="tx.pending" class="tu" translate>Pending</span>
+          <time class="size-12 text-gray" ng-if="!tx.pending">{{tx.runningBalance | currency:'$':2}}</time>
+          <span class="size-12 text-gray text-italic" ng-if="tx.pending" class="tu" translate>Pending</span>
         </div>
       </div>
     </div>
