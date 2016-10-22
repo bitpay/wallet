@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory) {
 
   var self = this;
+  var runningBalance;
   $scope.dateRange = { value: 'last30Days'};
   $scope.network = bitpayCardService.getEnvironment();
 
@@ -68,10 +69,14 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         self.getStarted = getStarted;
 
         var txs = lodash.clone(history.txs);
+        runningBalance = parseFloat(history.endingBalance);
         for (var i = 0; i < txs.length; i++) {
           txs[i] = _getMerchantInfo(txs[i]);
           txs[i].icon = _getIconName(txs[i]);
           txs[i].desc = _processDescription(txs[i]);
+          txs[i].price = _price(txs[i]);
+          txs[i].runningBalance = runningBalance;
+          _runningBalance(txs[i]);
         }
         self.bitpayCardTransactionHistory = txs;
         self.bitpayCardCurrentBalance = history.currentCardBalance;
@@ -115,6 +120,14 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       return tx.description[0];
     }
     return tx.description;
+  };
+
+  var _price = function(tx) {
+    return parseFloat(tx.amount) + parseFloat(tx.fee)
+  };
+
+  var _runningBalance = function(tx) {
+    runningBalance -= parseFloat(tx.amount);
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
