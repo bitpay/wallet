@@ -5,7 +5,7 @@
 //
 
 var templates = {
-  'package.json': '/',
+  'package-template.json': '/',
   'index.html': 'www/',
   'Makefile': 'cordova/',
   'ProjectMakefile': 'cordova/',
@@ -64,6 +64,8 @@ Object.keys(templates).forEach(function(k) {
 
   if(k === 'config-template.xml'){
     k = 'config.xml';
+  } else if (k === 'package-template.json') {
+    k = 'package.json';
   }
 
   if (!fs.existsSync('../' + targetDir)){
@@ -80,9 +82,22 @@ fs.writeFileSync('../appConfig.json', configBlob, 'utf8');
 ////////////////
 var externalServices;
 try {
-  console.log('Copying ' + configDir + '/externalServices.json' + ' to root');
-  externalServices = fs.readFileSync(configDir + '/externalServices.json', 'utf8');
+  var confName = configDir.toUpperCase();
+  var externalServicesConf = confName + '_EXTERNAL_SERVICES_CONFIG_LOCATION';
+  console.log('Looking for ' + externalServicesConf + '...');
+  if(typeof process.env[externalServicesConf] !== 'undefined') {
+    var location = process.env[externalServicesConf]
+    if(location.charAt(0) === '~') {
+      location = location.replace(/^\~/, process.env.HOME || process.env.USERPROFILE);
+    }
+    console.log('Found at: ' + location);
+    console.log('Copying ' + location + ' to root');
+    externalServices = fs.readFileSync(location, 'utf8');
+  } else {
+    throw externalServicesConf + ' environment variable not set.';
+  }
 } catch(err) {
+  console.log(err);
   externalServices = '{}';
   console.log('External services not configured');
 }
