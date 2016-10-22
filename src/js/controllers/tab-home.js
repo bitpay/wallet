@@ -68,7 +68,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
         $scope.wallet = wallet;
         $scope.btx = lodash.cloneDeep(tx);
-        $state.go('tabs.wallet.tx-details', {tx: $scope.btx, wallet: $scope.wallet});
+        $state.transitionTo('tabs.wallet.tx-details', {
+          txid: $scope.btx.txid,
+          walletId: $scope.walletId
+        });
 
         walletService.getTxNote(wallet, n.txid, function(err, note) {
           if (err) $log.warn('Could not fetch transaction note: ' + err);
