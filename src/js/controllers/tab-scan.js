@@ -58,7 +58,6 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   $scope.$on("$ionicView.afterEnter", function() {
     // try initializing and refreshing status any time the view is entered
     scannerService.gentleInitialize();
-    scannerService.resumePreview();
   });
 
   function activate(){
@@ -96,14 +95,8 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   function handleSuccessfulScan(contents){
     $log.debug('Scan returned: "' + contents + '"');
-    scannerService.pausePreview();
     incomingData.redir(contents);
   }
-
-  $rootScope.$on('incomingDataMenu.menuHidden', function() {
-    scannerService.resumePreview();
-    activate();
-  });
 
   $scope.openSettings = function(){
     scannerService.openSettings();
@@ -133,7 +126,7 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   $scope.canGoBack = function(){
     return $state.params.passthroughMode;
-  };
+  }
   function goBack(){
     $ionicHistory.nextViewOptions({
       disableAnimate: true
