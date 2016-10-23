@@ -269,14 +269,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.send.confirm', {
-        url: '/confirm/:isWallet/:toAddress/:toName/:toAmount/:toEmail/:description',
+        url: '/confirm/:isWallet/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
         views: {
           'tab-send@tabs': {
             controller: 'confirmController',
             templateUrl: 'views/confirm.html'
           }
-        },
-        params: { paypro: null }
+        }
       })
       .state('tabs.send.addressbook', {
         url: '/addressbook/add/:fromSendTab/:addressbookEntry',
