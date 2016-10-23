@@ -4,8 +4,8 @@
     {{tx.amountStr}}
   </div>
   <span ng-show="!tx.merchant">
-    <span ng-show="addressbook[tx.toAddress] && !tx.message">
-      {{addressbook[tx.toAddress]}}
+    <span ng-show="addressbook[tx.toAddress] && addressbook[tx.toAddress].name && !tx.message">
+      {{addressbook[tx.toAddress].name}}
     </span>
     <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
       {{tx.message}}
@@ -17,8 +17,6 @@
   <span ng-show="tx.merchant">
     <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
     <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-  </span>
-  <span>
   </span>
 
   <p class="wallet-activity-note">
