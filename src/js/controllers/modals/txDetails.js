@@ -1,30 +1,48 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $ionicHistory, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
   var config = configService.getSync();
   var configWallet = config.wallet;
   var walletSettings = configWallet.settings;
-  var wallet;
+  var wallet = profileService.getWallet($stateParams.walletId);
+
+  $scope.wallet = wallet;
   $scope.title = gettextCatalog.getString('Transaction');
 
   $scope.init = function() {
-    wallet = $scope.wallet;
     $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
     $scope.color = wallet.color;
     $scope.copayerId = wallet.credentials.copayerId;
     $scope.isShared = wallet.credentials.n > 1;
-    $scope.btx.feeLevel = walletSettings.feeLevel;
+    walletService.getTx(wallet, $stateParams.txid, function(err, tx) {
+      if (err) {
+        $log.warn('Could not get tx');
+        $ionicHistory.goBack();
+        return;
+      }
+      $scope.btx = tx;
+      $scope.btx.feeLevel = walletSettings.feeLevel;
+      if ($scope.btx.action != 'invalid') {
+        if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
+        if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
+        if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
+      }
 
-    if ($scope.btx.action != 'invalid') {
-      if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
-      if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
-      if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
-    }
+      $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
+      $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
 
-    updateMemo();
-    initActionList();
-    getAlternativeAmount();
+      updateMemo();
+      initActionList();
+    });
   };
+
+  function getDisplayAmount(amountStr) {
+    return amountStr.split(' ')[0];
+  }
+
+  function getDisplayUnit(amountStr) {
+    return amountStr.split(' ')[1];
+  }
 
   function updateMemo() {
     walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
@@ -32,7 +50,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $log.warn('Could not fetch transaction note: ' + err);
         return;
       }
-
       if (!note) return;
 
       $scope.btx.note = note;
@@ -49,7 +66,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         });
       });
     });
-  };
+  }
 
   function initActionList() {
     $scope.actionList = [];
@@ -83,10 +100,13 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       time: $scope.btx.time,
       description: actionDescriptions['broadcasted'],
     });
-  };
+  }
 
   $scope.showCommentPopup = function() {
     var opts = {};
+    if ($scope.btx.message) {
+      opts.defaultText = $scope.btx.message;
+    }
     if ($scope.btx.note && $scope.btx.note.body) opts.defaultText = $scope.btx.note.body;
 
     popupService.showPrompt(wallet.name, gettextCatalog.getString('Memo'), opts, function(text) {
@@ -114,27 +134,12 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   };
 
-  var getAlternativeAmount = function() {
-    var satToBtc = 1 / 100000000;
-
-    wallet.getFiatRate({
-      code: $scope.alternativeIsoCode,
-      ts: $scope.btx.time * 1000
-    }, function(err, res) {
-      if (err) {
-        $log.debug('Could not get historic rate');
-        return;
-      }
-      if (res && res.rate) {
-        var alternativeAmountBtc = ($scope.btx.amount * satToBtc).toFixed(8);
-        $scope.rateDate = res.fetchedOn;
-        $scope.rateStr = res.rate + ' ' + $scope.alternativeIsoCode;
-        $scope.alternativeAmountStr = $filter('formatFiatAmount')(alternativeAmountBtc * res.rate) + ' ' + $scope.alternativeIsoCode;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      }
-    });
+  $scope.viewOnBlockchain = function() {
+    var btx = $scope.btx;
+    var url = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid;
+    var title = 'View Transaction on Insight';
+    var message = 'Would you like to view this transaction on the Insight blockchain explorer?';
+    $scope.openExternalLink(url, true, title, message, 'Open Insight', 'Go back');
   };
 
   $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
@@ -149,4 +154,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.cancel = function() {
     $scope.txDetailsModal.hide();
   };
+
+  $scope.init();
 });

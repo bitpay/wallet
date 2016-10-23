@@ -177,6 +177,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.wallet.tx-details', {
+        url: '/tx-details/:txid',
+        views: {
+          'tab-home@tabs': {
+            controller: 'txDetailsController',
+            templateUrl: 'views/modals/tx-details.html'
+          }
+        }
+      })
 
     /*
      *
@@ -847,7 +856,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('tabs.bitpayCardIntro', {
+    .state('tabs.bitpayCardIntro', {
         url: '/bitpay-card-intro/:secret/:email/:otp',
         views: {
           'tab-home@tabs': {

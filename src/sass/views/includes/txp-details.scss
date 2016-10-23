@@ -24,6 +24,10 @@
       img {
         margin-right: 1rem;
       }
+
+      span {
+        text-transform: capitalize;
+      }
     }
     .amount-label{
       line-height: 30px;
@@ -191,7 +195,7 @@
         }
 
         > div {
-          border: 3px solid #09C286;
+          border: 3px solid #13e5b6;
           border-radius: 50%;
           display: flex;
           height: 26px;
@@ -201,7 +205,7 @@
           justify-content: center;
           font-weight: 600;
           vertical-align: middle;
-          color: #09C286;
+          color: #13e5b6;
 
           &.rejected {
             background: #E15061;
@@ -230,5 +234,11 @@
   .proposal-deletion-help {
     color: $item-label-color;
     padding: 1rem 2rem;
+  }
+
+  .view-on-blockchain-btn {
+    background: #e8e7e7;
+    color: rgba(58, 58, 58, .6);
+    margin-bottom: 1.5rem;
   }
 }

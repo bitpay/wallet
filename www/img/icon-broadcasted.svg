@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Wallet" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.4---Transaction-(Detail)" transform="translate(-39.000000, -914.000000)">
+            <g id="Group-2-Copy-6" transform="translate(41.000000, 909.000000)">
+                <g id="Group" transform="translate(0.000000, 7.000000)">
+                    <path d="M10.5,21 C16.2989899,21 21,16.2989899 21,10.5 C21,4.70101013 16.2989899,0 10.5,0 C4.70101013,0 0,4.70101013 0,10.5 C0,16.2989899 4.70101013,21 10.5,21 Z" id="Oval-2-Copy-3" stroke="#13E5B6" stroke-width="3" fill="#13E5B6"></path>
+                    <path d="M4.8565172,10.7739543 L17.6308211,10.7739543 M9.55650668,16.6261508 L3.82082067,10.8572239 L9.35708555,5.17917933" id="Line" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(10.725821, 10.902665) scale(1, -1) rotate(-135.000000) translate(-10.725821, -10.902665) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
