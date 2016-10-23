@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -229,6 +229,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.$on("$ionicView.enter", function(event, data) {
       nextStep();
       updateAllWallets();
+
+      addressbookService.list(function(err, ab) {
+        if (err) $log.error(err);
+        $scope.addressbook = ab || {};
+      });
 
       listeners = [
         $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
