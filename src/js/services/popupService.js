@@ -118,6 +118,8 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   this.showPrompt = function(title, message, opts, cb) {
     $log.warn(title ? (title + ': ' + message) : message);
 
+    opts = opts || {};
+
     if (isCordova && !opts.forceHTMLPrompt)
       _cordovaPrompt(title, message, opts, cb);
     else
