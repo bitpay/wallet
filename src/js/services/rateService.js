@@ -22,8 +22,6 @@ var RateService = function(opts) {
   self.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable() or use service.whenAvailable()';
   self.UNSUPPORTED_CURRENCY_ERROR = 'Currency not supported';
 
-  self._url = opts.url || 'https://insight.bitpay.com:443/api/rates';
-
   self._isAvailable = false;
   self._rates = {};
   self._alternatives = [];
@@ -82,39 +80,6 @@ RateService.prototype.getRate = function(code) {
   return this._rates[code];
 };
 
-RateService.prototype.getHistoricRate = function(code, date, cb) {
-  var self = this;
-
-  self.httprequest.get(self._url + '/' + code + '?ts=' + date)
-    .success(function(body) {
-      return cb(null, body.rate)
-    })
-    .error(function(err) {
-      return cb(err)
-    });
-
-};
-
-RateService.prototype.getHistoricRates = function(code, dates, cb) {
-  var self = this;
-
-  var tsList = dates.join(',');
-
-  self.httprequest.get(self._url + '/' + code + '?ts=' + tsList)
-    .success(function(body) {
-      if (!self.lodash.isArray(body)) {
-        body = [{
-          ts: dates[0],
-          rate: body.rate
-        }];
-      }
-      return cb(null, body);
-    })
-    .error(function(err) {
-      return cb(err)
-    });
-};
-
 RateService.prototype.getAlternatives = function() {
   return this._alternatives;
 };
@@ -137,15 +102,6 @@ RateService.prototype.toFiat = function(satoshis, code) {
   }
 
   return satoshis * this.SAT_TO_BTC * this.getRate(code);
-};
-
-RateService.prototype.toFiatHistoric = function(satoshis, code, date, cb) {
-  var self = this;
-
-  self.getHistoricRate(code, date, function(err, rate) {
-    if (err) return cb(err);
-    return cb(null, satoshis * self.SAT_TO_BTC * rate);
-  });
 };
 
 RateService.prototype.fromFiat = function(amount, code) {
