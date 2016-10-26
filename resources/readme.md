@@ -4,9 +4,9 @@ This directory contains a `src.sketch` file from which all other assets are expo
 
 ## Requirements
 
-You'll need [Sketch](https://www.sketchapp.com/) to make any changes to this directory.
+You'll need [Sketch](https://www.sketchapp.com/) to make any changes to this directory. You'll also need to have [Homebrew](http://brew.sh/) installed to regenerate all assets.
 
-Sketch is only available for macOS, and several processes in `generate.sh` require utilities that ship with the OS, so this process must be performed on macOS.
+Sketch and Homebrew are only available for macOS, and several processes in `generate.sh` require utilities that ship with macOS, so this process requires macOS.
 
 ## Install sketchtool
 
