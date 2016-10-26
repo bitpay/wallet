@@ -4,7 +4,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
-  var showModalTimeout;
 
   $scope.shareAddress = function(addr) {
     if ($scope.generatingAddress) return;
@@ -13,19 +12,14 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
   };
 
-  $scope.setAddress = function(forceNew) {
-    if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
+  $scope.setAddress = function(forceNew, wallet) {
+    if (!wallet || $scope.generatingAddress || !wallet.isComplete()) return;
     $scope.addr = null;
     $scope.generatingAddress = true;
-    walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
+    walletService.getAddress(wallet, forceNew, function(err, addr) {
       $scope.generatingAddress = false;
       if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
       $scope.addr = addr;
-      if ($scope.wallet.showBackupNeededModal) {
-        showModalTimeout = $timeout(function() {
-          $scope.openBackupNeededModal();
-        }, 2000);
-      }
       $timeout(function() {
         $scope.$apply();
       }, 10);
@@ -59,7 +53,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.close = function() {
     $scope.BackupNeededModal.hide();
     $scope.BackupNeededModal.remove();
-    profileService.setBackupNeededModalFlag($scope.wallet.credentials.walletId);
   };
 
   $scope.doBackup = function() {
@@ -84,14 +77,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       return;
     }
     $scope.wallet = wallet;
+    $scope.generatingAddress = false;
     $log.debug('Wallet changed: ' + wallet.name);
     $timeout(function() {
-      $scope.setAddress();
+      $scope.setAddress(false, wallet);
     }, 100);
-  });
-
-  $scope.$on("$ionicView.leave", function(event, data) {
-    $timeout.cancel(showModalTimeout);
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
