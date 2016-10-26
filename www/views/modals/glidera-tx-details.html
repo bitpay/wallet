@@ -1,0 +1,63 @@
+<ion-modal-view ng-controller="glideraTxDetailsController">
+  <ion-header-bar class="bar-royal">
+    <button class="button button-back button-clear"
+            ng-click="cancel()">
+      Close
+    </button>
+    <h1 class="title">Details</h1>
+  </ion-header-bar>
+
+  <ion-content>
+      <div class="text-center">
+        <div class="p20">
+          <img src="img/bought.svg" alt="bought" width="80" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+          <img src="img/bought-pending.svg" alt="bought" width="65" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+          <img src="img/sold.svg" alt="bought" width="80" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+          <img src="img/sold-pending.svg" alt="bought" width="65" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
+        </div>
+        <span ng-show="tx.type == 'BUY'">Bought</span>
+        <span ng-show="tx.type == 'SELL'">Sold</span>
+        <b>{{tx.qty}}</b> BTC
+        <div class="size-36 m20v">
+          {{tx.subtotal|currency:'':2}} {{tx.currency}}
+        </div>
+      </div>
+
+      <ul class="list">
+
+        <li class="item">
+          Status
+          <span class="item-note">
+            <span class="text-success" ng-if="tx.status == 'COMPLETE'">Completed</span>
+            <span class="text-info" ng-if="tx.status == 'PROCESSING'">Processing</span>
+            <span class="text-warning" ng-if="tx.status == 'ERROR'">Error</span>
+          </span>
+        </li>
+
+        <li ng-show="tx.transactionDate" class="item">
+          Date
+          <span class="item-note">{{tx.transactionDate | amCalendar}}</span>
+        </li>
+
+        <li ng-show="tx.price" class="item">
+          Exchange rate
+          <span class="item-note">{{tx.price|currency:'':2}} {{tx.currency}}/BTC</span>
+        </li>
+
+        <li ng-show="tx.subtotal" class="item">
+          Subtotal
+          <span class="item-note">{{tx.subtotal|currency:'':2}} {{tx.currency}}</span>
+        </li>
+
+        <li ng-show="tx.fees" class="item">
+          Fees
+          <span class="item-note">{{tx.fees|currency:'':2}} {{tx.currency}}</span>
+        </li>
+
+        <li ng-show="tx.total" class="item">
+          Total
+          <span class="item-note">{{tx.total|currency:'':2}} {{tx.currency}}</span>
+        </li>
+      </ul>
+  </ion-content>
+</ion-modal-view>

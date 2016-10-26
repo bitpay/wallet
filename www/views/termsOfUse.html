@@ -1,0 +1,18 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Terms Of Use' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list">
+      <div class="item item-text-wrap" id="settings-tos" ng-include="'views/includes/terms.html'"></div>
+    </div>
+    <button class="button button-standard button-primary"
+            ng-show="lang != 'en'"
+            ng-click="openExternalLink(disclaimerUrl, true, 'View Terms of Service', 'The official English Terms of Service are available on the BitPay website. Would you like to view them?', 'Open Website', 'Go Back')" translate>
+      Official English Disclaimer
+    </button>
+  </ion-content>
+</ion-view>

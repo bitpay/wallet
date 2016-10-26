@@ -3,30 +3,16 @@ i18n/po/*.mo
 i18n/crowdin_api_key.txt
 src/js/translations.js
 
-# Coinbase API ClientID/Secret
-coinbase.json
-src/js/coinbase.js
-
 # cordova
+plugins
+platforms
 cordova/project-*/*
 cordova/*.keystore
-
-amazon.json
-src/js/amazon.js
-
 
 # node-webkit
 cache
 webkitbuilds/*
 !webkitbuilds/README.md
-!webkitbuilds/setup-win.iss
-!webkitbuilds/favicon.ico
-!webkitbuilds/.desktop
-!webkitbuilds/build-osx.sh
-!webkitbuilds/Background.png
-
-#fonts
-public/fonts
 
 # chrome extensions
 chrome-app/build/*
@@ -59,7 +45,7 @@ build/Release
 node_modules
 bower_components
 angular-bitcore-wallet-client/angular-bitcore-wallet-client.js
-angular-pbkdf2/angular-pbkdf2.js
+angular-bitauth/angular-bitauth.js
 
 # Users Environment Variables
 .lock-wscript
@@ -69,9 +55,6 @@ angular-pbkdf2/angular-pbkdf2.js
 .DS_Store
 .AppleDouble
 .LSOverride
-
-# Icon must end with two \r
-Icon
 
 # Thumbnails
 ._*
@@ -96,38 +79,35 @@ Session.vim
 .netrwhist
 *~
 
+.tags
+.tags1
+
 # SASS
 src/sass/*.css
 .sass-cache
 
-# copay public
-public/icons/*
-public/css/*
-public/lib/*
-public/js/*
+# copay www
+www/css/*
+www/lib/*
+www/js/*
+www/fonts
 
 ## templates
+/config.xml
+/ionic.config.json
 /appConfig.json
+externalServices.json
 cordova/Makefile
 cordova/ProjectMakefile
-app-template/bpapp
-cordova/ProjectMakefile
+app-template/bitpay-wallet
 cordova/config.xml
 cordova/wp/Package.appxmanifest
-public/img/logo-negative.svg
-public/img/logo.svg
 src/js/appConfig.js
+src/js/externalServices.js
+chrome-app/manifest.json
+www/img/app
+www/index.html
 
-
-cordova/Makefile
-cordova/ProjectMakefile
-app-template/bpapp
-cordova/ProjectMakefile
-cordova/config.xml
-cordova/wp/Package.appxmanifest
-public/img/logo-negative.svg
-public/img/logo.svg
-src/js/appConfig.js
 
 cordova/android/res/
 cordova/wp/Assets/
@@ -136,7 +116,3 @@ cordova/wp/*.jpg
 cordova/ios/splash/
 cordova/ios/icons/
 cordova/project/
-
-
-
-

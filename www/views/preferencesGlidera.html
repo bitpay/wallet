@@ -1,0 +1,270 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Preferences</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+
+    <ul class="list">
+      <div ng-if="token">
+      <div class="item item-divider">
+        Permissions
+      </div>
+      <li class="item">
+      <span>Email</span>
+      <span class="item-note">
+        {{permissions.view_email_address}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Personal Information</span>
+      <span class="item-note">
+        {{permissions.personal_info}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Buy/Sell</span>
+      <span class="item-note">
+        {{permissions.transact}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Transaction History</span>
+      <span class="item-note">
+        {{permissions.transaction_history}}
+      </span>
+      </li>
+      </div>
+
+      <div ng-if="permissions.view_email_address">
+      <div class="item item-divider">
+        Email
+      </div>
+      <li class="item">
+      <span>Email</span>
+      <span class="item-note">
+        {{email.email}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Active</span>
+      <span class="item-note">
+        {{email.userEmailIsSetup}}
+      </span>
+      </li>
+      </div>
+
+      <div ng-if="permissions.personal_info">
+      <div class="item item-divider">
+        Personal Information
+      </div>
+
+      <li class="item">
+      <span>First Name</span>
+      <span class="item-note">
+        {{personalInfo.firstName}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Middle Name</span>
+      <span class="item-note">
+        {{personalInfo.middleName}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Last Name</span>
+      <span class="item-note">
+        {{personalInfo.lastName}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Birth Date</span>
+      <span class="item-note">
+        {{personalInfo.birthDate}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Address 1</span>
+      <span class="item-note">
+        {{personalInfo.address1}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Address 2</span>
+      <span class="item-note">
+        {{personalInfo.address2}}
+      </span>
+      </li>
+      <li class="item">
+      <span>City</span>
+      <span class="item-note">
+        {{personalInfo.city}}
+      </span>
+      </li>
+      <li class="item">
+      <span>State</span>
+      <span class="item-note">
+        {{personalInfo.state}}
+      </span>
+      </li>
+      <li class="item">
+      <span>ZIP Code</span>
+      <span class="item-note">
+        {{personalInfo.zipCode}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Country</span>
+      <span class="item-note">
+        {{personalInfo.countryCode}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Occupation</span>
+      <span class="item-note">
+        {{personalInfo.occupation}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Basic Information State</span>
+      <span class="item-note">
+        {{personalInfo.basicInfoState}}
+      </span>
+      </li>
+      </div>
+
+      <div ng-if="token">
+      <div class="item item-divider">
+      Status
+      </div>
+
+      <li class="item">
+      <span>Buy/Sell</span>
+      <span class="item-note">
+        {{status.userCanTransact}}
+      </span>
+      </li>
+
+      <li class="item">
+      <span>Buy</span>
+      <span class="item-note">
+        {{status.userCanBuy}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Sell</span>
+      <span class="item-note">
+        {{status.userCanSell}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Email Is Setup</span>
+      <span class="item-note">
+        {{status.userEmailIsSetup}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Phone Is Setup</span>
+      <span class="item-note">
+        {{status.userPhoneIsSetup}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Bank Account Is Setup</span>
+      <span class="item-note">
+        {{status.userBankAccountIsSetup}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Personal Information State</span>
+      <span class="item-note">
+        {{status.personalInfoState}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Bank Account State</span>
+      <span class="item-note">
+        {{status.bankAccountState}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Country</span>
+      <span class="item-note">
+        {{status.country}}
+      </span>
+      </li>
+      </div>
+
+      <div ng-if="token">
+      <div class="item item-divider">
+        Limits
+      </div>
+
+      <li class="item">
+      <span>Daily Buy</span>
+      <span class="item-note">
+        {{limits.dailyBuy|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Daily Sell</span>
+      <span class="item-note">
+        {{limits.dailySell|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Monthly Buy</span>
+      <span class="item-note">
+        {{limits.monthlyBuy|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Monthly Sell</span>
+      <span class="item-note">
+        {{limits.monthlySell|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Daily Buy Remaining</span>
+      <span class="item-note">
+        {{limits.dailyBuyRemaining|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Daily Sell Remaining</span>
+      <span class="item-note">
+        {{limits.dailySellRemaining|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Monthly Buy Remaining</span>
+      <span class="item-note">
+        {{limits.monthlyBuyRemaining|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Monthly Sell Remaining</span>
+      <span class="item-note">
+        {{limits.monthlySellRemaining|currency:'':2}} {{limits.currency}}
+      </span>
+      </li>
+      <li class="item">
+      <span>Buy/Sell Disabled (pending first transaction)</span>
+      <span class="item-note">
+        {{limits.transactDisabledPendingFirstTransaction}}
+      </span>
+      </li>
+      </div>
+
+      <div class="item item-divider">
+        Account
+      </div>
+
+      <li class="item" ng-click="revokeToken()">
+        <span class="assertive">Log out</span>
+      </li>
+    </ul>
+  </ion-content>
+</ion-view>

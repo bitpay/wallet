@@ -1,12 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, configService, feeService) {
+angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, gettextCatalog, configService, feeService, ongoingProcess) {
 
-  $scope.loading = true;
+  ongoingProcess.set('gettingFeeLevels', true);
   feeService.getFeeLevels(function(levels) {
-    $scope.loading = false;
-    $scope.feeOpts = feeService.feeOpts;
-    $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
+    ongoingProcess.set('gettingFeeLevels', false);
     $scope.feeLevels = levels;
     $scope.$apply();
   });
@@ -25,7 +23,12 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       $scope.currentFeeLevel = newFee.level;
       $timeout(function() {
         $scope.$apply();
-      }, 10);
+      });
     });
   };
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $scope.feeOpts = feeService.feeOpts;
+    $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
+  });
 });

@@ -1,0 +1,10 @@
+<div class="item item-icon-left" ng-repeat="copayer in copayers">
+  <span ng-show="copayer.id == wallet.copayerId">
+    <i class="icon ion-checkmark"></i>
+    {{'Me'|translate}}
+  </span>
+  <span ng-show="copayer.id != wallet.copayerId">
+    <i class="icon ion-checkmark"></i>
+    {{copayer.name}}
+  </span>
+</div>

@@ -1,23 +1,22 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, $timeout, configService, rateService, lodash, go, profileService, walletService) {
+  function($scope, $log, $timeout, $ionicHistory, gettextCatalog, configService, rateService, lodash, profileService, walletService) {
 
-    var config = configService.getSync();
     var next = 10;
     var completeAlternativeList;
+
+    var config = configService.getSync();
     $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
     $scope.listComplete = false;
 
-    $scope.init = function() {
-      rateService.whenAvailable(function() {
-        completeAlternativeList = rateService.listAlternatives();
-        lodash.remove(completeAlternativeList, function(c) {
-          return c.isoCode == 'BTC';
-        });
-        $scope.altCurrencyList = completeAlternativeList.slice(0, next);
+    rateService.whenAvailable(function() {
+      completeAlternativeList = rateService.listAlternatives();
+      lodash.remove(completeAlternativeList, function(c) {
+        return c.isoCode == 'BTC';
       });
-    };
+      $scope.altCurrencyList = completeAlternativeList.slice(0, next);
+    });
 
     $scope.loadMore = function() {
       $timeout(function() {
@@ -40,9 +39,9 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
-        go.preferencesGlobal();
-        $scope.$emit('Local/UnitSettingUpdated');
-        walletService.updateRemotePreferences(profileService.getClients(), {}, function() {
+
+        $ionicHistory.goBack();
+        walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
           $log.debug('Remote preferences saved');
         });
       });

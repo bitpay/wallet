@@ -195,6 +195,14 @@ angular.module('copayApp.services')
       storage.remove('config', cb);
     };
 
+    root.getHomeTipAccepted = function(cb) {
+      storage.get('homeTip', cb);
+    };
+
+    root.setHomeTipAccepted = function(val, cb) {
+      storage.set('homeTip', val, cb);
+    };
+
     root.setHideBalanceFlag = function(walletId, val, cb) {
       storage.set('hideBalance-' + walletId, val, cb);
     };
@@ -264,6 +272,17 @@ angular.module('copayApp.services')
       storage.remove('addressbook-' + network, cb);
     };
 
+    root.setNextStep = function(service, status, cb) {
+      storage.set('nextStep-' + service, status, cb);
+    };
+
+    root.getNextStep = function(service, cb) {
+      storage.get('nextStep-' + service, cb);
+    };
+
+    root.removeNextStep = function(service, cb) {
+      storage.remove('nextStep-' + service, cb);
+    };
 
     root.checkQuota = function() {
       var block = '';
@@ -306,16 +325,40 @@ angular.module('copayApp.services')
       storage.remove('coinbaseTxs-' + network, cb);
     };
 
-    root.setBitpayCard = function(network, data, cb) {
-      storage.set('bitpayCard-' + network, data, cb);
+    root.setBitpayDebitCardsHistory = function(network, data, cb) {
+      storage.set('bitpayDebitCardsHistory-' + network, data, cb);
     };
 
-    root.getBitpayCard = function(network, cb) {
-      storage.get('bitpayCard-' + network, cb);
+    root.getBitpayDebitCardsHistory = function(network, cb) {
+      storage.get('bitpayDebitCardsHistory-' + network, cb);
     };
 
-    root.removeBitpayCard = function(network, cb) {
-      storage.remove('bitpayCard-' + network, cb);
+    root.removeBitpayDebitCardsHistory = function(network, cb) {
+      storage.remove('bitpayDebitCardsHistory-' + network, cb);
+    };
+
+    root.setBitpayDebitCards = function(network, data, cb) {
+      storage.set('bitpayDebitCards-' + network, data, cb);
+    };
+
+    root.getBitpayDebitCards = function(network, cb) {
+      storage.get('bitpayDebitCards-' + network, cb);
+    };
+
+    root.removeBitpayDebitCards = function(network, cb) {
+      storage.remove('bitpayDebitCards-' + network, cb);
+    };
+
+    root.setBitpayCardCredentials = function(network, data, cb) {
+      storage.set('bitpayCardCredentials-' + network, data, cb);
+    };
+
+    root.getBitpayCardCredentials = function(network, cb) {
+      storage.get('bitpayCardCredentials-' + network, cb);
+    };
+
+    root.removeBitpayCardCredentials = function(network, cb) {
+      storage.remove('bitpayCardCredentials-' + network, cb);
     };
 
     root.removeAllWalletData = function(walletId, cb) {
@@ -328,6 +371,15 @@ angular.module('copayApp.services')
           });
         });
       });
+    };
+
+
+    root.setBackupNeededModalFlag = function(walletId, val, cb) {
+      storage.set('showBackupNeededModal-' + walletId, val, cb);
+    };
+
+    root.getBackupNeededModalFlag = function(walletId, cb) {
+      storage.get('showBackupNeededModal-' + walletId, cb);
     };
 
     root.setAmazonGiftCards = function(network, gcs, cb) {

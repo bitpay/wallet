@@ -1,69 +1,60 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sellGlideraController',
-  function($rootScope, $scope, $timeout, $ionicModal, $log, configService, profileService, addressService, feeService, glideraService, bwcError, lodash, walletService, fingerprintService, ongoingProcess, go) {
+  function($scope, $timeout, $log, profileService, glideraService, bwcError, lodash, walletService, configService, ongoingProcess, popupService, gettextCatalog) {
 
     var self = this;
-    var config = configService.getSync();
     this.data = {};
     this.show2faCodeInput = null;
     this.success = null;
-    this.error = null;
-    var client;
+    var wallet;
+    $scope.network = glideraService.getEnvironment();
 
-    var handleEncryptedWallet = function(client, cb) {
-      if (!walletService.isEncrypted(client)) return cb();
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
-      });
-    };
-
-    this.init = function(testnet) {
-      self.allWallets = profileService.getWallets(testnet ? 'testnet' : 'livenet', 1);
-
-      client = profileService.focusedClient;
-      if (client && client.credentials.m == 1) {
-        $timeout(function() {
-          self.selectedWalletId = client.credentials.walletId;
-          self.selectedWalletName = client.credentials.walletName;
-          $scope.$apply();
-        }, 100);
+    $scope.$on('Wallet/Changed', function(event, w) {
+      if (lodash.isEmpty(w)) {
+        $log.debug('No wallet provided');
+        return;
       }
-    };
+      wallet = w;
+      $log.debug('Wallet changed: ' + w.name);
+    });
 
+    $scope.update = function(opts) {
+      if (!$scope.token || !$scope.permissions) return;
+      $log.debug('Updating Glidera Account...');
+      var accessToken = $scope.token;
+      var permissions = $scope.permissions;
 
+      opts = opts || {};
 
-    $scope.openWalletsModal = function(wallets) {
-      self.error = null;
-
-      $scope.type = 'SELL';
-      $scope.wallets = wallets;
-      $scope.noColor = true;
-      $scope.self = self;
-
-      $ionicModal.fromTemplateUrl('views/modals/wallets.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.walletsModal = modal;
-        $scope.walletsModal.show();
+      glideraService.getStatus(accessToken, function(err, data) {
+        $scope.status = data;
       });
 
-      $scope.$on('walletSelected', function(ev, walletId) {
-        $timeout(function() {
-          client = profileService.getClient(walletId);
-          self.selectedWalletId = walletId;
-          self.selectedWalletName = client.credentials.walletName;
-          $scope.$apply();
-        }, 100);
-        $scope.walletsModal.hide();
+      glideraService.getLimits(accessToken, function(err, limits) {
+        $scope.limits = limits;
       });
+
+      if (permissions.transaction_history) {
+        glideraService.getTransactions(accessToken, function(err, data) {
+          $scope.txs = data;
+        });
+      }
+
+      if (permissions.view_email_address && opts.fullUpdate) {
+        glideraService.getEmail(accessToken, function(err, data) {
+          $scope.email = data.email;
+        });
+      }
+      if (permissions.personal_info && opts.fullUpdate) {
+        glideraService.getPersonalInfo(accessToken, function(err, data) {
+          $scope.personalInfo = data;
+        });
+      }
     };
 
     this.getSellPrice = function(token, price) {
       var self = this;
-      self.error = null;
       if (!price || (price && !price.qty && !price.fiat)) {
         self.sellPrice = null;
         return;
@@ -72,7 +63,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
       glideraService.sellPrice(token, price, function(err, sellPrice) {
         self.gettingSellPrice = false;
         if (err) {
-          self.error = 'Could not get exchange information. Please, try again.';
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get exchange information. Please, try again'));
           return;
         }
         self.sellPrice = sellPrice;
@@ -86,7 +77,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
         glideraService.get2faCode(token, function(err, sent) {
           ongoingProcess.set('Sending 2FA code...', false);
           if (err) {
-            self.error = 'Could not send confirmation code to your phone';
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send confirmation code to your phone'));
           } else {
             self.show2faCodeInput = sent;
           }
@@ -96,28 +87,27 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
 
     this.createTx = function(token, permissions, twoFaCode) {
       var self = this;
-      self.error = null;
       var outputs = [];
+      var config = configService.getSync();
       var configWallet = config.wallet;
       var walletSettings = configWallet.settings;
 
-      if (!client) {
-        self.error = 'No wallet selected';
+      if (!wallet) {
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('No wallet selected'));
         return;
       }
 
       ongoingProcess.set('creatingTx', true);
-      addressService.getAddress(client.credentials.walletId, null, function(err, refundAddress) {
+      walletService.getAddress(wallet, null, function(err, refundAddress) {
         if (!refundAddress) {
-
           ongoingProcess.clear();
-          self.error = bwcError.msg(err, 'Could not create address');
+          popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, 'Could not create address'));
           return;
         }
-        glideraService.getSellAddress(token, function(error, sellAddress) {
-          if (!sellAddress) {
+        glideraService.getSellAddress(token, function(err, sellAddress) {
+          if (!sellAddress || err) {
             ongoingProcess.clear();
-            self.error = 'Could not get the destination bitcoin address';
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get the destination bitcoin address'));
             return;
           }
           var amount = parseInt((self.sellPrice.qty * 100000000).toFixed(0));
@@ -142,74 +132,88 @@ angular.module('copayApp.controllers').controller('sellGlideraController',
             }
           };
 
-          walletService.createTx(client, txp, function(err, createdTxp) {
+          walletService.createTx(wallet, txp, function(err, createdTxp) {
             ongoingProcess.clear();
             if (err) {
-              self.error = err.message ||  bwcError.msg(err);
+              popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
               return;
             }
-            $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-              if (accept) {
-                fingerprintService.check(client, function(err) {
+            walletService.prepare(wallet, function(err, password) {
+              if (err) {
+                ongoingProcess.clear();
+                popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
+                return;
+              }
+              ongoingProcess.set('signingTx', true);
+              walletService.publishTx(wallet, createdTxp, function(err, publishedTxp) {
+                if (err) {
+                  ongoingProcess.clear();
+                  popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
+                  return;
+                }
+
+                walletService.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
                   if (err) {
-                    self.error = err.message ||  bwcError.msg(err);
+                    ongoingProcess.clear();
+                    popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
+                    walletService.removeTx(wallet, signedTxp, function(err) {
+                      if (err) $log.debug(err);
+                    });
                     return;
                   }
-
-                  handleEncryptedWallet(client, function(err) {
+                  var rawTx = signedTxp.raw;
+                  var data = {
+                    refundAddress: refundAddress,
+                    signedTransaction: rawTx,
+                    priceUuid: self.sellPrice.priceUuid,
+                    useCurrentPrice: self.sellPrice.priceUuid ? false : true,
+                    ip: null
+                  };
+                  ongoingProcess.set('Selling Bitcoin', true);
+                  glideraService.sell(token, twoFaCode, data, function(err, data) {
+                    ongoingProcess.clear();
                     if (err) {
-                      self.error = err.message ||  bwcError.msg(err);
+                      popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
                       return;
                     }
-
-                    ongoingProcess.set('signingTx', true);
-                    walletService.publishTx(client, createdTxp, function(err, publishedTxp) {
-                      if (err) {
-                        ongoingProcess.clear();
-                        self.error = err.message ||  bwcError.msg(err);
-                      }
-
-                      walletService.signTx(client, publishedTxp, function(err, signedTxp) {
-                        walletService.lock(client);
-                        walletService.removeTx(client, signedTxp, function(err) {
-                          if (err) $log.debug(err);
-                        });
-                        ongoingProcess.clear();
-                        if (err) {
-                          self.error = err.message ||  bwcError.msg(err);
-                          return;
-                        }
-                        var rawTx = signedTxp.raw;
-                        var data = {
-                          refundAddress: refundAddress,
-                          signedTransaction: rawTx,
-                          priceUuid: self.sellPrice.priceUuid,
-                          useCurrentPrice: self.sellPrice.priceUuid ? false : true,
-                          ip: null
-                        };
-                        ongoingProcess.set('Seling Bitcoin', true);
-                        glideraService.sell(token, twoFaCode, data, function(err, data) {
-                          ongoingProcess.clear();
-                          if (err) {
-                            self.error = err.message ||  bwcError.msg(err);
-                            $timeout(function() {
-                              $scope.$emit('Local/GlideraError');
-                            }, 100);
-                            return;
-                          }
-                          self.success = data;
-                          $scope.$emit('Local/GlideraTx');
-                        });
-                      });
+                    self.success = data;
+                    $timeout(function() {
+                      $scope.$digest();
                     });
                   });
                 });
-              } else {
-                go.path('glidera');
-              }
+              });
             });
           });
         });
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data){
+      $scope.token = null;
+      $scope.permissions = null;
+      $scope.email = null;
+      $scope.personalInfo = null;
+      $scope.txs = null;
+      $scope.status = null;
+      $scope.limits = null;
+
+      ongoingProcess.set('connectingGlidera', true);
+      glideraService.init($scope.token, function(err, glidera) {
+        ongoingProcess.set('connectingGlidera');
+        if (err || !glidera) {
+          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+        $scope.token = glidera.token;
+        $scope.permissions = glidera.permissions;
+        $scope.update({fullUpdate: true});
+      });
+
+      $scope.wallets = profileService.getWallets({
+        network: $scope.network,
+        n: 1,
+        onlyComplete: true
+      });
+    });
   });

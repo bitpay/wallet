@@ -1,0 +1,28 @@
+<ion-view id="import" ng-controller="tabsController" ng-init="importInit()" class="settings">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Import Wallet' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content ng-controller="importController" ng-init="phrase = true; init()">
+    <div class="row text-center top-tabs">
+      <div class="col" ng-click="phrase = true; file = hardware = false; showAdv = false" ng-style="phrase &&
+        {'border-bottom-style': 'solid'}">
+        <span translate>Recovery phrase</span>
+      </div>
+      <div class="col" ng-click="file = true; phrase = hardware = false; showAdv = false" ng-style="file &&
+        {'border-bottom-style': 'solid'}">
+        <span translate>File/Text</span>
+      </div>
+      <div class="col" ng-click="hardware = true; phrase = file = false; showAdv = false" ng-style="hardware &&
+        {'border-bottom-style': 'solid'}">
+        <span translate>Hardware wallet</span>
+      </div>
+    </div>
+
+    <div ng-include="'views/tab-import-phrase.html'" ng-if="phrase"></div>
+    <div ng-include="'views/tab-import-file.html'" ng-if="file"></div>
+    <div ng-include="'views/tab-import-hardware.html'" ng-if="hardware"></div>
+  </ion-content>
+</ion-view>

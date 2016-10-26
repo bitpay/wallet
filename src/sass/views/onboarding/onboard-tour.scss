@@ -1,0 +1,32 @@
+#onboarding-tour {
+  &-currency {
+    .next-slide {
+      margin-top: 3rem;
+    }
+  }
+  .cta-buttons {
+    @extend %cta-buttons;
+    padding-bottom: 12vh;
+  }
+  #onboarding-illustration-currency-exchange-rate {
+    background-color: $soft-blue;
+    border-radius: $button-border-radius;
+    box-shadow: $subtle-box-shadow;
+    font-size: 14px;
+    font-weight: normal;
+    height: 40px;
+    line-height: 38px;
+    margin: 10px auto 0;
+    position: relative;
+    width: 140px;
+    z-index: 1;
+  }
+  .swiper-pagination {
+    &-bullet {
+      background: $soft-blue;
+      &-active {
+        background: $soft-blue;
+      }
+    }
+  }
+}

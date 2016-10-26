@@ -1,0 +1,50 @@
+<ion-view id="view-address-book" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>
+      <span translate>Address Book</span>
+    </ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button button-back button-clear" ng-show="!isEmptyList" ui-sref="tabs.addressbook.add">
+        <i class="icon ion-ios-plus-empty"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false" id="add-address" class="ng-hide" ng-show="isEmptyList">
+    <div class="zero-state">
+      <i class="icon zero-state-icon">
+        <img src="img/address-book-add.svg"/>
+      </i>
+      <div class="zero-state-heading" translate>No contacts yet</div>
+      <div class="zero-state-description" translate>You haven’t added any contacts to your address book yet. Get started by adding your first one.</div>
+      <div class="zero-state-cta">
+        <button class="button button-standard button-primary" ui-sref="tabs.addressbook.add" translate>Add Contact</button>
+      </div>
+    </div>
+  </ion-content>
+  <ion-content class="ng-hide" ng-show="!isEmptyList">
+    <div class="bar bar-header item-input-inset" ng-show="!isEmptyList && addressbook.length >= 5">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search"
+               placeholder="Search"
+               ng-model="addrSearch"
+               ng-change="findAddressbook(addrSearch)" ng-model-onblur>
+      </label>
+    </div>
+    <ion-list>
+      <ion-item ng-repeat="addrEntry in addressbook"
+                class="item-icon-right item-avatar"
+                ui-sref="tabs.addressbook.view({address:addrEntry.address, email: addrEntry.email, name: addrEntry.name})">
+        <gravatar name="{{addrEntry.name}}" width="50" email="{{addrEntry.email}}"></gravatar>
+        <h2>{{addrEntry.name}}</h2>
+        <p>{{addrEntry.address}}</p>
+        <i class="icon bp-arrow-right"></i>
+        <ion-option-button class="button-assertive" ng-click="remove(addrEntry.address)">
+          <i class="icon ion-minus-circled"></i>
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

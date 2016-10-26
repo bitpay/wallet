@@ -1,0 +1,30 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Recent Activity'|translate}}
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content class="padding">
+
+    <div ng-if="fetchingNotifications" class="updatingHistory">
+      <div class="text-center">
+        <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+        <div translate>Updating activity. Please stand by</div>
+      </div>
+    </div>
+
+    <div ng-if="!fetchingNotifications">
+      <div class="list card">
+        <div class="item" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
+          <span ng-include="'views/includes/walletActivity.html'"></span>
+        </div>
+
+        <div class="item" ng-show="!notifications[0]">
+          <span translate>No recent activity</span>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

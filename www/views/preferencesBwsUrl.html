@@ -1,0 +1,20 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>Wallet Service URL</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+
+    <div class="list">
+      <label class="item item-input item-stacked-label no-border">
+        <span class="input-label">Wallet Service URL</span>
+        <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl.value">
+        <a class="postfix" on-tap="resetDefaultUrl()">
+          <i class="icon ion-ios-reload"></i>
+        </a>
+      </label>
+    </div>
+    <button class="button button-standard button-primary" ng-click="save()" translate>Save</button>
+  </ion-content>
+</ion-view>
