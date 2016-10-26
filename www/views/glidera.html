@@ -4,8 +4,8 @@
     </ion-nav-back-button>
     <ion-nav-title>Glidera</ion-nav-title>
     <ion-nav-buttons side="secondary">
-      <button class="button back-button" ng-show="token" ui-sref="tabs.buyandsell.glidera.preferences">
-        <i class="icon ion-ios-gear-outline"></i>
+      <button class="button no-border" ui-sref="tabs.buyandsell.glidera.preferences">
+        <i class="icon ion-ios-settings"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
@@ -28,7 +28,7 @@
         </div>
         <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
           <p class="glidera-lead">You can buy and sell Bitcoin with a US bank account directly in this app.</p>
-          
+
           <p class="glidera-text">Connect your Glidera account to get started.</p>
 
           <button class="button button-standard button-primary"
@@ -76,31 +76,27 @@
         </a>
       </div>
 
-      <div class="list"
+      <div class="list card"
         ng-show="status && status.userCanTransact">
         <a ng-show="status.userCanBuy"
             class="item item-icon-right"
             href ui-sref="tabs.buyandsell.glidera.buy">
-          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30">
+          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="45" class="item-img-buy">
           Buy Bitcoin
           <i class="icon bp-arrow-right"></i>
         </a>
         <a class="item item-icon-right"
             ng-show="status.userCanSell"
             href ui-sref="tabs.buyandsell.glidera.sell">
-          <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="30">
+          <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="45" class="item-img-sell">
           Sell Bitcoin
           <i class="icon bp-arrow-right"></i>
         </a>
       </div>
 
-      <div class="list card" ng-show="permissions && permissions.transaction_history">
+      <div class="list card" ng-show="permissions && permissions.transaction_history && txs.length > 0">
         <div class="item item-heading">
           Activity
-        </div>
-        <div ng-show="txs.length == 0 "
-          class="item">
-          No activity in your account
         </div>
         <a ng-repeat="tx in txs"
           ng-click="glidera.openTxModal(token, tx)"
