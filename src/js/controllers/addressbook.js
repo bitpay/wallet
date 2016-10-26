@@ -47,7 +47,7 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
     $timeout(function() {
       addressbookService.remove(addr, function(err, ab) {
         if (err) {
-          popupService.showAlert(err);
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
         initAddressbook();
@@ -56,7 +56,7 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
     }, 100);
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     initAddressbook();
   });
 
