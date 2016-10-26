@@ -38,22 +38,6 @@ angular.module('copayApp.services')
       });
     }
 
-    root.setBackupNeededModalFlag = function(walletId) {
-      storageService.setBackupNeededModalFlag(walletId, true, function(err) {
-        if (err) $log.error(err);
-        $log.debug('Backup warning modal flag stored');
-        root.wallet[walletId].showBackupNeededModal = false;
-      });
-    };
-
-    function _showBackupNeededModal(wallet, cb) {
-      storageService.getBackupNeededModalFlag(wallet.credentials.walletId, function(err, val) {
-        if (err) $log.error(err);
-        if (val) return cb(false);
-        return cb(true);
-      });
-    };
-
     root.setBackupFlag = function(walletId) {
       storageService.setBackupFlag(walletId, function(err) {
         if (err) $log.error(err);
@@ -115,11 +99,6 @@ angular.module('copayApp.services')
 
       _balanceIsHidden(wallet, function(val) {
         wallet.balanceHidden = val;
-      });
-
-      _showBackupNeededModal(wallet, function(val) {
-        if (wallet.needsBackup) wallet.showBackupNeededModal = val;
-        else wallet.showBackupNeededModal = false;
       });
 
       wallet.removeAllListeners();
