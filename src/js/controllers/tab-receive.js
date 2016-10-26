@@ -12,11 +12,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
   };
 
-  $scope.setAddress = function(forceNew, wallet) {
-    if (!wallet || $scope.generatingAddress || !wallet.isComplete()) return;
+  $scope.setAddress = function(forceNew) {
+    if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
     $scope.addr = null;
     $scope.generatingAddress = true;
-    walletService.getAddress(wallet, forceNew, function(err, addr) {
+    walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
       $scope.generatingAddress = false;
       if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
       $scope.addr = addr;
@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.generatingAddress = false;
     $log.debug('Wallet changed: ' + wallet.name);
     $timeout(function() {
-      $scope.setAddress(false, wallet);
+      $scope.setAddress(false);
     }, 100);
   });
 
