@@ -885,7 +885,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.bitpayCard.confirm', {
-        url: '/confirm/:cardId/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        url: '/confirm/:cardId/:toAddress/:toName/:toAmount/:toEmail/:description/:payProUrl',
         views: {
           'tab-home@tabs': {
             controller: 'confirmController',

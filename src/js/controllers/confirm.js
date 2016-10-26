@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService) {
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
   var countDown = null;
@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
+    $scope.payProUrl = data.stateParams.payProUrl;
     $scope._paypro = $scope.paypro;
     $scope.paymentExpired = {
       value: false
@@ -26,6 +27,19 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   var initConfirm = function() {
+    console.log('in init confirm');
+    console.log('$scope.paypro', $scope.paypro);
+    if($scope.payProUrl && !$scope.paypro) {
+      console.log('getting paypro details', $scope.payProUrl);
+      payproService.getPayProDetails($scope.payProUrl, function(err, details) {
+        console.log('paypro details', details);
+        $scope.toAmount = details.amount;
+        $scope.toAddress = details.toAddress;
+        $scope.description = details.memo;
+        $scope.paypro = details;
+        return initConfirm();
+      });
+    }
     // TODO (URL , etc)
     if (!$scope.toAddress || !$scope.toAmount) {
       $log.error('Bad params at amount');

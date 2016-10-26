@@ -8,9 +8,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
-  $timeout(function() {
-    root.redir();
-  }, 2000);;
+  // $timeout(function() {
+  //   root.redir();
+  // }, 2000);
 
   root.redir = function(data) {
     $log.debug('Processing incoming data: ' + data);

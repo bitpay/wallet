@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError) {
 
   var unitToSatoshi;
   var satToUnit;
@@ -203,6 +203,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $timeout(function() {
 
         bitpayCardService.topUp($scope.cardId, dataSrc, function(err, invoiceId) {
+          console.log('hereerere');
           if (err) {
             ongoingProcess.set('Preparing transaction...', false);
             popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
@@ -220,7 +221,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
             $state.transitionTo('tabs.bitpayCard.confirm', {
               cardId: $scope.cardId,
               toName: $scope.toName,
-              paypro: payProUrl
+              payProUrl: payProUrl
             });
           });
         });

@@ -215,7 +215,11 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
         if (!card) return cb(_setError('Not card found'));
         $http(_post('/api/v2/' + card.token, json, credentials)).then(function(data) {
           $log.info('BitPay TopUp: SUCCESS');
-          return cb(data.data.error, data.data.data.invoice);
+          if(data.data.error) {
+            return cb(data.data.error);
+          } else {
+            return cb(null, data.data.data.invoice);
+          }
         }, function(data) {
           return cb(_setError('BitPay Card Error: TopUp', data));
         });
