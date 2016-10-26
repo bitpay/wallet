@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService) {
 
   var unitToSatoshi;
   var satToUnit;
@@ -203,7 +203,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $timeout(function() {
 
         bitpayCardService.topUp($scope.cardId, dataSrc, function(err, invoiceId) {
-          console.log('hereerere');
           if (err) {
             ongoingProcess.set('Preparing transaction...', false);
             popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
@@ -211,18 +210,30 @@ angular.module('copayApp.controllers').controller('amountController', function($
           }
 
           bitpayCardService.getInvoice(invoiceId, function(err, data) {
-            ongoingProcess.set('Preparing transaction...', false);
             if (err) {
+              ongoingProcess.set('Preparing transaction...', false);
               popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
               return;
             }
             var payProUrl = data.paymentUrls.BIP73;
 
-            $state.transitionTo('tabs.bitpayCard.confirm', {
-              cardId: $scope.cardId,
-              toName: $scope.toName,
-              payProUrl: payProUrl
-            });
+            payproService.getPayProDetails(payProUrl, function(err, payProDetails) {
+              ongoingProcess.set('Preparing transaction...', false);
+              if (err) {
+                popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+                return;
+              }
+              var stateParams = {
+                cardId: $scope.cardId,
+                toName: $scope.toName,
+                toAmount: payProDetails.amount,
+                toAddress: payProDetails.toAddress,
+                description: payProDetails.memo,
+                paypro: payProDetails
+              };
+
+              $state.transitionTo('tabs.bitpayCard.confirm', stateParams);
+            }, true);
           });
         });
       });
