@@ -1,71 +1,50 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('buyAmazonController',
-  function($rootScope, $scope, $ionicModal, $log, $timeout, $state, lodash, profileService, bwcError, gettext, configService, walletService, fingerprintService, amazonService, ongoingProcess) {
+  function($scope, $log, $timeout, $state, lodash, profileService, bwcError, gettextCatalog, configService, walletService, amazonService, ongoingProcess, platformInfo, externalLinkService, popupService) {
 
     var self = this;
-    var client;
+    var network = amazonService.getEnvironment();
+    var wallet;
 
-    var handleEncryptedWallet = function(client, cb) {
-      if (!walletService.isEncrypted(client)) return cb();
-      $rootScope.$emit('Local/NeedsPassword', false, function(err, password) {
-        if (err) return cb(err);
-        return cb(walletService.unlock(client, password));
-      });
+    $scope.$on('Wallet/Changed', function(event, w) {
+      if (lodash.isEmpty(w)) {
+        $log.debug('No wallet provided');
+        return;
+      }
+      wallet = w;
+      $log.debug('Wallet changed: ' + w.name);
+    });
+
+    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 
-    this.init = function() {
-      var network = amazonService.getEnvironment();
-      self.allWallets = profileService.getWallets(network, 1);
-      client = profileService.focusedClient;
-
-      if (!client) return;
-
-      if (lodash.isEmpty(self.allWallets)) return;
-
-      if (client.credentials.network != network) return;
-
-      $timeout(function() {
-        self.selectedWalletId = client.credentials.walletId;
-        self.selectedWalletName = client.credentials.walletName;
-        $scope.$apply();
-      }, 100);
-    };
-
-    $scope.openWalletsModal = function(wallets) {
-      self.error = null;
-
-      $scope.type = 'SELL';
-      $scope.wallets = wallets;
-      $scope.self = self;
-
-      $ionicModal.fromTemplateUrl('views/modals/wallets.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.walletsModal = modal;
-        $scope.walletsModal.show();
+    this.confirm = function() {
+      var message = gettextCatalog.getString('Amazon.com Gift Card purchase for ${{amount}} USD', {
+        amount: $scope.formData.fiat
       });
-
-      $scope.$on('walletSelected', function(ev, walletId) {
-        $timeout(function() {
-          client = profileService.getClient(walletId);
-          self.selectedWalletId = walletId;
-          self.selectedWalletName = client.credentials.walletName;
-          $scope.$apply();
-        }, 100);
-        $scope.walletsModal.hide();
+      var ok = gettextCatalog.getString('Buy');
+      popupService.showConfirm(null, message, ok, null, function(res) {
+        if (res) self.createTx();
       });
     };
 
     this.createTx = function() {
-      self.error = null;
       self.errorInfo = null;
+
+      if (lodash.isEmpty(wallet)) return;
+
+      if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+        $log.info('No signing proposal: No private key');
+        popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg('MISSING_PRIVATE_KEY'));
+        return;
+      }
 
       var dataSrc = {
         currency: 'USD',
-        amount: $scope.fiat,
-        uuid: self.selectedWalletId
+        amount: $scope.formData.fiat,
+        uuid: wallet.id
       };
       var outputs = [];
       var config = configService.getSync();
@@ -78,26 +57,20 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
         amazonService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
           if (err) {
             ongoingProcess.set('Processing Transaction...', false);
-            self.error = bwcError.msg(err);
-            $timeout(function() {
-              $scope.$digest();
-            });
+            popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
             return;
           }
 
           amazonService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
             if (err) {
               ongoingProcess.set('Processing Transaction...', false);
-              self.error = bwcError.msg(err);
-              $timeout(function() {
-                $scope.$digest();
-              });
+              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
               return;
             }
 
             $log.debug('Fetch PayPro Request...', invoice.paymentUrls.BIP73);
 
-            client.fetchPayPro({
+            wallet.fetchPayPro({
               payProUrl: invoice.paymentUrls.BIP73,
             }, function(err, paypro) {
 
@@ -106,19 +79,16 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                 $log.warn('Could not fetch payment request:', err);
                 var msg = err.toString();
                 if (msg.match('HTTP')) {
-                  msg = gettext('Could not fetch payment information');
+                  msg = gettextCatalog.getString('Could not fetch payment information');
                 }
-                self.error = msg;
-                $timeout(function() {
-                  $scope.$digest();
-                });
+                popupService.showAlert(gettextCatalog.getString('Error'), msg);
                 return;
               }
 
               if (!paypro.verified) {
                 ongoingProcess.set('Processing Transaction...', false);
                 $log.warn('Failed to verify payment protocol signatures');
-                self.error = gettext('Payment Protocol Invalid');
+                popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Payment Protocol Invalid'));
                 $timeout(function() {
                   $scope.$digest();
                 });
@@ -148,37 +118,33 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
                 feeLevel: walletSettings.feeLevel || 'normal'
               };
 
-              walletService.createTx(client, txp, function(err, createdTxp) {
+              walletService.createTx(wallet, txp, function(err, createdTxp) {
                 ongoingProcess.set('Processing Transaction...', false);
                 if (err) {
-                  self.error = bwcError.msg(err);
-                  $timeout(function() {
-                    $scope.$digest();
-                  });
+                  popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
                   return;
                 }
-                $scope.$emit('Local/NeedsConfirmation', createdTxp, function(accept) {
-                  if (accept) {
-                    self.confirmTx(createdTxp, function(err, tx) {
-                      if (err) {
-                        ongoingProcess.set('Processing Transaction...', false);
-                        self.error = bwcError.msg(err);
-                        $timeout(function() {
-                          $scope.$digest();
-                        });
-                        return;
-                      }
-                      var count = 0;
-                      ongoingProcess.set('Processing Transaction...', true);
-
-                      dataSrc.accessKey = dataInvoice.accessKey;
-                      dataSrc.invoiceId = invoice.id;
-                      dataSrc.invoiceUrl = invoice.url;
-                      dataSrc.invoiceTime = invoice.invoiceTime;
-
-                      self.debounceCreate(count, dataSrc);
+                walletService.publishAndSign(wallet, createdTxp, function(err, tx) {
+                  if (err) {
+                    ongoingProcess.set('Processing Transaction...', false);
+                    popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+                    walletService.removeTx(wallet, tx, function(err) {
+                      if (err) $log.debug(err);
                     });
+                    $timeout(function() {
+                      $scope.$digest();
+                    });
+                    return;
                   }
+                  var count = 0;
+                  ongoingProcess.set('Processing Transaction...', true);
+
+                  dataSrc.accessKey = dataInvoice.accessKey;
+                  dataSrc.invoiceId = invoice.id;
+                  dataSrc.invoiceUrl = invoice.url;
+                  dataSrc.invoiceTime = invoice.invoiceTime;
+
+                  self.debounceCreate(count, dataSrc);
                 });
               });
             });
@@ -201,7 +167,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           giftCard = {};
           giftCard.status = 'FAILURE';
           ongoingProcess.set('Processing Transaction...', false);
-          self.error = bwcError.msg(err);
+          popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
           self.errorInfo = dataSrc;
           $timeout(function() {
             $scope.$digest();
@@ -237,60 +203,22 @@ angular.module('copayApp.controllers').controller('buyAmazonController',
           $log.debug("Saving new gift card with status: " + newData.status);
 
           self.giftCard = newData;
-          if (newData.status == 'PENDING') $state.transitionTo('amazon');
+          if (newData.status == 'PENDING') $state.transitionTo('tabs.giftcards.amazon');
           $timeout(function() {
             $scope.$digest();
           });
         });
       });
-    }
-
-    this.confirmTx = function(txp, cb) {
-
-      fingerprintService.check(client, function(err) {
-        if (err) {
-          $log.debug(err);
-          return cb(err);
-        }
-
-        handleEncryptedWallet(client, function(err) {
-          if (err) {
-            $log.debug(err);
-            return bwcError.cb(err, null, cb);
-          }
-
-          ongoingProcess.set('Processing Transaction...', true);
-          walletService.publishTx(client, txp, function(err, publishedTxp) {
-            if (err) {
-              $log.debug(err);
-              return bwcError.cb(err, null, cb);
-            }
-
-            walletService.signTx(client, publishedTxp, function(err, signedTxp) {
-              walletService.lock(client);
-              if (err) {
-                $log.debug(err);
-                walletService.removeTx(client, signedTxp, function(err) {
-                  if (err) $log.debug(err);
-                });
-                return bwcError.cb(err, null, cb);
-              }
-              walletService.broadcastTx(client, signedTxp, function(err, broadcastedTxp) {
-                if (err) {
-                  $log.debug(err);
-                  walletService.removeTx(client, broadcastedTxp, function(err) {
-                    if (err) $log.debug(err);
-                  });
-                  return bwcError.cb(err, null, cb);
-                }
-                $timeout(function() {
-                  return cb(null, broadcastedTxp);
-                }, 5000);
-              });
-            });
-          });
-        });
-      });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data) {
+      $scope.formData = {
+        fiat: null
+      };
+      $scope.wallets = profileService.getWallets({
+        network: network,
+        onlyComplete: true
+      });
+    });
 
   });

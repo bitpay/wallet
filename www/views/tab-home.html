@@ -1,0 +1,178 @@
+<ion-view id="tab-home">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title><img class="tab-home__logo" src="img/app/logo-negative.svg"></ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <ion-refresher
+     ng-if="isAndroid"
+     pulling-icon="ion-ios-refresh"
+     spinner="ios-small"
+     on-refresh="onRefresh()">
+   </ion-refresher>
+    <div class="list card homeTip" ng-if="homeTip">
+      <div class="item item-icon-right item-heading">
+        <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+      </div>
+      <div>
+        <i class="icon big-icon-svg">
+          <img src="img/check-white.svg" class="bg green"/>
+        </i>
+      </div>
+      <div class="title" translate>
+        Your bitcoin wallet is ready!
+      </div>
+      <div class="subtitle" translate>
+        On this screen you can see all your wallets, accounts, and assets.
+      </div>
+    </div>
+
+    <div class="list card" ng-hide="!txps[0]">
+      <a class="item item-icon-right item-heading" ui-sref="tabs.proposals">
+        {{'Payment Proposals'|translate}}
+        <i class="icon bp-arrow-right"></i>
+        <span class="badge badge-assertive m5t m10r" ng-show="txpsN>3"> {{txpsN}}</span>
+      </a>
+
+      <a ng-repeat="tx in txps" class="item item-sub" ng-click="openTxpModal(tx)">
+        <span ng-include="'views/includes/txp.html'"></span>
+      </a>
+    </div>
+
+    <div class="list card" ng-if="notifications[0] && recentTransactionsEnabled">
+      <a class="item item-icon-right item-heading" ui-sref="tabs.activity">
+        <span translate>Recent Transactions</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+      <span ng-if="fetchingNotifications" class="item text-center">
+        <ion-spinner icon="lines"></ion-spinner>
+        <div translate>Updating activity...</div>
+      </span>
+      <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
+        <span ng-include="'views/includes/walletActivity.html'"></span>
+      </a>
+    </div>
+
+    <div class="list card">
+      <div class="item item-icon-right item-heading">
+        <span translate>Wallets</span>
+        <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+      </div>
+      <div>
+        <a ng-if="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+         <i class="icon big-icon-svg">
+           <img src="img/icon-wallet.svg" class="bg wallet icon-create-wallet"/>
+         </i>
+          <span translate>Create a bitcoin wallet</span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <a ng-repeat="wallet in wallets track by $index"
+           class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
+           ng-click="openWallet(wallet)">
+          <i class="icon big-icon-svg">
+            <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+          </i>
+          <span>
+            {{wallet.name || wallet.id}}
+          </span>
+          <p>
+          <span ng-if="!wallet.isComplete()" class="assertive" translate>
+            Incomplete
+          </span>
+          <span ng-if="wallet.isComplete()">
+            <span ng-if="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
+            <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+            <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+              {{wallet.m}}-of-{{wallet.n}}
+            </span>
+          </span>
+          &nbsp;
+          </p>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+
+        <a ng-repeat="card in bitpayCards"
+           ui-sref="tabs.bitpayCard({id:card.id})"
+           ng-if="bitpayCardEnabled && bitpayCards[0]"
+           class="item item-sub item-icon-left item-big-icon-left item-icon-right">
+          <i class="icon big-icon-svg">
+            <div class="bg icon-bitpay-card"></div>
+          </i>
+          <span>BitPay Visa&reg; Card</span>
+          <p>{{cardsHistory[card.id].balance ? '$' + cardsHistory[card.id].balance : 'Add funds to get started'|translate}}</p>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <a ui-sref="tabs.bitpayCardIntro"
+           ng-if="bitpayCardEnabled && !bitpayCards[0] && externalServices.BitpayCard"
+           class="item item-sub item-icon-left item-big-icon-left item-icon-right">
+          <i class="icon big-icon-svg">
+            <div class="bg icon-bitpay-card"></div>
+          </i>
+          <span>BitPay Visa&reg; Card</span>
+          <p translate>Add your card</p>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="list card" ng-if="wallets[0] && externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
+      <div class="item item-sub item-icon-right item-heading" translate>
+        Buy &amp; Sell Bitcoin
+        <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+      </div>
+      <div>
+        <a ng-if="glideraEnabled" ui-sref="tabs.buyandsell.glidera" class="item item-extra-padding item-sub item-icon-right">
+          <img src="img/glidera-logo.png" width="90"/>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <!-- disable coinbase for this release -->
+        <!-- <a ng-if="coinbaseEnabled" ui-sref="exchange.coinbase" class="item">
+          <img src="img/coinbase-logo.png" width="90"> TODO
+        </a> -->
+      </div>
+    </div>
+
+    <div class="list card" ng-if="wallets[0] && externalServices.AmazonGiftCards && amazonEnabled">
+      <a class="item item-sub item-icon-left item-icon-right item-big-icon-left" ui-sref="tabs.giftcards.amazon">
+        <i class="icon big-icon-svg">
+          <div class="bg icon-amazon"></div>
+        </i>
+        <span translate>Amazon.com Gift Cards</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="list card"
+         ng-show="nextStepEnabled && wallets[0]">
+      <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
+        Next steps
+        <i class="icon bp-arrow-up" ng-show="!hideNextSteps"></i>
+        <i class="icon bp-arrow-down" ng-show="hideNextSteps"></i>
+      </div>
+      <div ng-show="!hideNextSteps">
+        <a ui-sref="tabs.bitpayCardIntro" ng-if="!externalServices.BitpayCard && bitpayCardEnabled" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
+         <i class="icon big-icon-svg">
+           <div class="bg icon-bitpay-card"></div>
+         </i>
+          <span translate>Add BitPay Visa&reg; Card</span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <a ng-if="!externalServices.BuyAndSell && (coinbaseEnabled || glideraEnabled)" ui-sref="tabs.buyandsell.glidera" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
+         <i class="icon big-icon-svg">
+           <div class="bg icon-buy-bitcoin"></div>
+         </i>
+          <span translate>Buy or Sell Bitcoin</span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <a ui-sref="tabs.giftcards.amazon" ng-if="!externalServices.AmazonGiftCards && amazonEnabled" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
+          <i class="icon big-icon-svg">
+            <div class="bg icon-amazon"></div>
+          </i>
+          <span translate>Buy an Amazon Gift Card</span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

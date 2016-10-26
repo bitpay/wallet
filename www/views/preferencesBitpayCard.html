@@ -1,0 +1,22 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>BitPay Visa&reg; Cards</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider" translate>
+        Cards
+      </div>
+      <div class="item" ng-repeat="card in bitpayCards">
+        xxxx-xxxx-xxxx-{{card.lastFourDigits}}
+      </div>
+      <div class="item item-divider"></div>
+      <div class="item assertive" ng-click="remove()">
+        Removes all data from this device
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

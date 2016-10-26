@@ -1,0 +1,128 @@
+<ion-view class="settings">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Wallet Information' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider"></div>
+      <div class="item" ng-click="saveBlack()">
+        <span translate>Wallet Name (at creation)</span>
+        <span class="item-note">
+          {{walletName}}
+        </span>
+      </div>
+      <div class="item" copy-to-clipboard="walletId">
+        <span translate>Wallet Id</span>
+        <span class="item-note">
+          {{walletId}}
+        </span>
+      </div>
+      <div class="item">
+        <span translate>Wallet Configuration (m-n)</span>
+        <span class="item-note">
+          {{M}}-{{N}}
+        </span>
+      </div>
+      <div class="item">
+        <span translate>Wallet Network</span>
+        <span class="item-note">
+          {{network}}
+        </span>
+      </div>
+      <div class="item">
+        <span translate>Address Type</span>
+        <span class="item-note">
+          {{addressType}}
+        </span>
+      </div>
+      <div class="item">
+        <span translate>Derivation Strategy</span>
+        <span class="item-note">
+          {{derivationStrategy}}
+        </span>
+      </div>
+      <div class="item" ng-show="wallet.isPrivKeyExternal()">
+        <span translate>Hardware Wallet</span>
+        <span class="item-note">
+        {{wallet.getPrivKeyExternalSourceName()}}
+        </span>
+      </div>
+      <div class="item" ng-show="!wallet.isPrivKeyExternal() && !wallet.canSign()">
+        <span translate></span>
+        <span class="item-note">
+          No private key
+        </span>
+      </div>
+      <div class="item" ng-show="wallet.credentials.account">
+        <span translate>Account</span>({{derivationStrategy}})
+        <span class="item-note">
+          #{{wallet.credentials.account}}
+        </span>
+      </div>
+
+      <div ng-show="wallet.cachedStatus.wallet.copayers[0]" class="item item-divider">
+        Copayers
+      </div>
+
+      <div class="item item-icon-right" ng-repeat="copayer in wallet.cachedStatus.wallet.copayers">
+        {{copayer.name}}
+        <span ng-show="copayer.id == wallet.copayerId">
+          ({{'Me'|translate}})
+        </span>
+      </div>
+
+      <div class="item item-divider" translate>
+        Extended Public Keys
+      </div>
+
+      <div class="item" ng-repeat="pk in pubKeys" copy-to-clipboard="pk">
+        <span translate>Copayer {{$index}}</span>
+        <span class="item-note">
+          <span>Copayer {{$index}}</span>
+          <span>{{pk}}</span>
+          <span ng-if="$index == 0">({{basePath}})</span>
+        </span>
+      </div>
+
+      <div ng-show="addrs">
+        <div class="item item-divider" translate>
+          Latest Wallet Addresses
+        </div>
+        <div class="settings-explaination">
+          <div class="settings-description" translate>
+            Only &ldquo;main&rdquo; addresses are shown below. This excludes &ldquo;change&rdquo; address.
+          </div>
+        </div>
+        <div class="item" ng-repeat="a in addrs" class="oh" copy-to-clipboard="a.address">
+          <span>{{a.address}}</span>
+          <span class="item-note">{{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}</span>
+        </div>
+        <div class="settings-explaination">
+          <div class="settings-description" translate>
+            Please note: due to resource constraints, this list of addresses is not verified locally. A compromised BWS node could return addresses which are not controlled by this wallet.
+          </div>
+        </div>
+        <button class="button button-standard button-primary" ng-click="scan()" translate>
+          Scan addresses for funds
+        </button>
+        <button class="button button-standard button-primary" ng-show="isCordova" ng-click="sendAddrs()" translate>
+          Send addresses by email
+        </button>
+      </div>
+
+      <div ng-show="wallet.balanceByAddress[0]">
+        <div class="item item-divider" translate>
+          Balance By Address
+        </div>
+        <div class="item" ng-repeat="a in wallet.balanceByAddress" copy-to-clipboard="a.address">
+          <span>{{a.address}}</span>
+          <span class="item-note">
+            {{(a.amount/1e8).toFixed(8)}} BTC
+          </span>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

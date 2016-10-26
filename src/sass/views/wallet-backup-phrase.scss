@@ -1,0 +1,112 @@
+#wallet-backup-phrase {
+  .bar.bar-royal .title {
+      font-size: 1rem;
+  }
+  background: #fff;
+  text-align: center;
+  .backup-phrase {
+    background-color: $subtle-gray;
+    padding: 12px;
+    border: 2px dashed darken($subtle-gray, 10%);
+    border-radius: $subtle-radius;
+    color: #2b2b2b;
+    text-align: center;
+    max-width: 500px;
+    min-height: 10rem;
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &-content {
+      font-weight: bold;
+      line-height: 2;
+      font-size: 16px;
+      letter-spacing: 1px;
+      @media (min-width: 575px) {
+        font-size: 18px;
+        padding: 3rem;
+      }
+      &-word-readonly {
+        padding: 0 1px;
+        @media (min-width: 575px) {
+          padding: 0 6px;
+        }
+      }
+    }
+  }
+  &-step-1,
+  &-step-2 {
+    display: flex;
+    flex-direction: column;
+    height: 70%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  &-step-1 {
+    height: 70%;
+  }
+  &-step-2 {
+    height: 60%
+  }
+  &-step-3 {
+
+  }
+  .initial-prompt,
+  .confirmation-prompt,
+  .tldr-prompt {
+    color: $dark-gray;
+    padding-bottom: 1.5rem;
+  }
+  .initial-prompt,
+  .confirmation-prompt {
+    padding-top: 1.5rem;
+  }
+  .tldr-prompt {
+    font-weight: bold;
+  }
+  .cta-buttons {
+    @extend %cta-buttons;
+    padding-bottom: 5vh;
+  }
+  .select-word {
+    background: #fff;
+    box-shadow: $subtle-box-shadow;
+    display: inline-block;
+    margin: 3px 0;
+    min-height: 38px;
+    line-height: 33px;
+    padding: 0 8px;
+    @media (min-width: 400px) {
+      margin: 4px 3px;
+      padding: 0 16px;
+    }
+  }
+  #select-phrase {
+    background: $subtle-gray;
+    padding: 5% 0;
+    .select-word {
+      &.button[disabled] {
+        background: transparent !important;
+        box-shadow: none !important;
+        color: transparent;
+        border: 1px solid rgb(211, 211, 211);
+      }
+    }
+    &-content {
+      max-width: 500px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  ion-content.has-tabs{
+    // TODO: review
+    .cta-buttons{
+      bottom:110px;
+    }
+    .cta-buttons, #select-phrase{
+      bottom:110px;
+    }
+  }
+}

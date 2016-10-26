@@ -1,0 +1,57 @@
+<ion-modal-view ng-controller="payproController">
+  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color': color, 'border-color': color}">
+    <button class="button button-clear" ng-click="cancel()">
+      {{'Close' | translate}}
+    </button>
+    <div class="title" translate>
+      Payment request
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <div class="header-modal text-center size-42">
+      {{amountStr}}
+    </div>
+
+    <div class="list">
+      <div class="item item-divider" translate>
+        Details
+      </div>
+      <div class="item">
+        {{'Pay To'|translate}}
+        <span class="item-note">{{_paypro.domain}}</span>
+      </div>
+      <div class="item" ng-if="_paypro.toAddress">
+        {{'Address'|translate}}
+        <span class="item-note">{{_paypro.toAddress}}</span>
+      </div>
+      <div class="item">
+        {{'Certified by'|translate}}
+        <span class="item-note">
+          <span ng-show="_paypro.caTrusted">
+            <i class="ion-locked" style="color:green"></i>
+            {{_paypro.caName}}<br>
+            <span translate>(Trusted)</span>
+          </span>
+          <span ng-show="!_paypro.caTrusted">
+            <span ng-show="_paypro.selfSigned">
+              <i class="ion-unlocked" style="color:red"></i> <span translate>Self-signed Certificate</span>
+            </span>
+            <span ng-show="!_paypro.selfSigned">
+              <i class="ion-locked" style="color:yellow"></i>{{_paypro.caName}}<br>
+              <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+            </span>
+          </span>
+        </span>
+      </div>
+      <div class="item" ng-if="_paypro.memo">
+        {{'Memo'|translate}}
+        <span class="item-note wrapword">{{_paypro.memo}}</span>
+      </div>
+      <div class="item" ng-if="_paypro.expires">
+        {{'Expires'|translate}}
+        <span class="item-note">{{_paypro.expires * 1000 | amTimeAgo }}</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

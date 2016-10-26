@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="34px" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Received</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Transaction/Send" transform="translate(-7.000000, -8.000000)">
+            <g id="Icons/Send">
+                <g id="icons/received">
+                    <g id="Received" transform="translate(24.244258, 24.883990) scale(-1, 1) rotate(-45.000000) translate(-24.244258, -24.883990) translate(7.244258, 7.883990)">
+                        <path d="M17.3272285,33.991292 C26.4399269,33.991292 33.8272285,26.6039904 33.8272285,17.491292 C33.8272285,8.37859367 26.4399269,0.991292046 17.3272285,0.991292046 C8.21453012,0.991292046 0.82722849,8.37859367 0.82722849,17.491292 C0.82722849,26.6039904 8.21453012,33.991292 17.3272285,33.991292 Z" id="Oval-204" fill="#F2F2F2" opacity="0.8"></path>
+                        <path d="M9.08046771,17.7310374 L25.550467,17.7310374 M15.140197,25.2788677 L7.74513693,17.8384337 L14.8830819,10.5152146" id="Line" stroke="#BEBEBE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(16.647802, 17.897041) scale(1, -1) rotate(-135.000000) translate(-16.647802, -17.897041) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

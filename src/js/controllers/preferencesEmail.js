@@ -1,19 +1,32 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesEmailController', function($rootScope, $scope, go, profileService, walletService) {
-  $scope.save = function(form) {
-    $scope.error = null;
-    $scope.saving = true;
-    var fc = profileService.focusedClient;
-    var email = $scope.email || '';
+angular.module('copayApp.controllers').controller('preferencesEmailController', function($scope, $ionicHistory, $stateParams, gettextCatalog, profileService, walletService, configService) {
 
-    walletService.updateRemotePreferences(fc, {
-      email: email,
+  $scope.wallet = profileService.getWallet($stateParams.walletId);
+  var walletId = $scope.wallet.credentials.walletId;
+
+  var config = configService.getSync();
+  config.emailFor = config.emailFor || {};
+  $scope.emailForExist = config.emailFor && config.emailFor[walletId];
+  $scope.email = {
+    value: config.emailFor && config.emailFor[walletId]
+  };
+
+
+  $scope.save = function(val) {
+    var opts = {
+      emailFor: {}
+    };
+    opts.emailFor[walletId] = val;
+
+    walletService.updateRemotePreferences($scope.wallet, {
+      email: val,
     }, function(err) {
-      $scope.saving = false;
-      if (!err)
-        $rootScope.$emit('Local/EmailUpdated', email);
-      go.path('preferences');
+      if (err) $log.warn(err);
+      configService.set(opts, function(err) {
+        if (err) $log.warn(err);
+        $ionicHistory.goBack();
+      });
     });
   };
 });

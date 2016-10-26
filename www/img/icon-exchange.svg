@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="18px" viewBox="0 0 19 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>CEACEB0C-360F-42C8-8D65-89BE2C0C9E86</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons" transform="translate(-496.000000, -770.000000)" stroke="#8F8F90">
+            <g id="icons/list-items/sync" transform="translate(497.000000, 770.000000)">
+                <g id="Group" transform="translate(0.403361, 0.391304)">
+                    <path d="M0,8.60869565 C0,4.30434783 3.6302521,0.782608696 8.06722689,0.782608696 C11.2134454,0.782608696 13.9563025,2.50434783 15.2470588,5.08695652" id="Shape"></path>
+                    <path d="M16.1344538,8.60869565 C16.1344538,12.9130435 12.5042017,16.4347826 8.06722689,16.4347826 C4.9210084,16.4347826 2.17815126,14.7130435 0.887394958,12.1304348" id="Shape"></path>
+                    <polyline id="Shape" points="15.9731092 0.547826087 15.3277311 5.16521739 10.487395 4.53913043"></polyline>
+                    <polyline id="Shape" points="0.161344538 16.6695652 0.806722689 12.0521739 5.64705882 12.6782609"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

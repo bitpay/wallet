@@ -1,0 +1,17 @@
+<div class="item" copy-to-clipboard="output.toAddress">
+  <span class="text-gray" translate>To</span>:
+  <span class="right enable_text_select">{{output.toAddress || output.address}}</span>
+</div>
+
+<div class="item" copy-to-clipboard="output.amountStr">
+  <span class="text-gray" translate>Amount</span>:
+  <span class="right enable_text_select">{{output.amountStr}}
+  <span ng-show="output.alternativeAmountStr">({{output.alternativeAmountStr}})</span>
+  </span>
+</div>
+
+
+<div class="item" copy-to-clipboard="output.message" ng-show-"output.message">
+  <span class="text-gray" translate>Note</span>:
+  <span class="right enable_text_select">{{output.message}}</span>
+</div>

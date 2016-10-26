@@ -1,52 +1,15 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, platformInfo, gettextCatalog, lodash, profileService, configService, go) {
+  function($scope, $log, $timeout, $ionicHistory, $ionicScrollDelegate, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
     var base = 'xpub';
-    var fc = profileService.focusedClient;
-    var c = fc.credentials;
-    var walletId = c.walletId;
+    var wallet = profileService.getWallet($stateParams.walletId);
+    var walletId = wallet.id;
+
     var config = configService.getSync();
     var b = 1;
-    var isCordova = platformInfo.isCordova;
+    $scope.isCordova = platformInfo.isCordova;
     config.colorFor = config.colorFor || {};
-
-    $scope.init = function() {
-      var basePath = c.getBaseAddressDerivationPath();
-
-      $scope.walletName = c.walletName;
-      $scope.walletId = c.walletId;
-      $scope.network = c.network;
-      $scope.addressType = c.addressType || 'P2SH';
-      $scope.derivationStrategy = c.derivationStrategy || 'BIP45';
-      $scope.basePath = basePath;
-      $scope.M = c.m;
-      $scope.N = c.n;
-      $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
-      $scope.addrs = null;
-
-      fc.getMainAddresses({
-        doNotVerify: true
-      }, function(err, addrs) {
-        if (err) {
-          $log.warn(err);
-          return;
-        };
-        var last10 = [],
-          i = 0,
-          e = addrs.pop();
-        while (i++ < 10 && e) {
-          e.path = base + e.path.substring(1);
-          last10.push(e);
-          e = addrs.pop();
-        }
-        $scope.addrs = last10;
-        $timeout(function() {
-          $scope.$apply();
-        });
-
-      });
-    };
 
     $scope.sendAddrs = function() {
       function formatDate(ts) {
@@ -62,7 +25,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       };
 
       $timeout(function() {
-        fc.getMainAddresses({
+        wallet.getMainAddresses({
           doNotVerify: true
         }, function(err, addrs) {
           if (err) {
@@ -102,9 +65,9 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         opts.colorFor[walletId] = color;
 
         configService.set(opts, function(err) {
-          go.walletHome();
+          $ionicHistory.removeBackView();
+          $state.go('tabs.home');
           if (err) $log.warn(err);
-          $scope.$emit('Local/ColorUpdated');
         });
       };
 
@@ -112,11 +75,49 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       save('#202020');
     };
 
-    $scope.copyToClipboard = function(data) {
-      if (isCordova) {
-        window.cordova.plugins.clipboard.copy(data);
-        window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
-      }
+    $scope.scan = function() {
+      walletService.startScan(wallet);
+      $ionicHistory.removeBackView();
+      $state.go('tabs.home');
     };
+
+    $scope.$on("$ionicView.enter", function(event, data) {
+      var c = wallet.credentials;
+      var basePath = c.getBaseAddressDerivationPath();
+
+      $scope.wallet = wallet;
+      $scope.walletName = c.walletName;
+      $scope.walletId = c.walletId;
+      $scope.network = c.network;
+      $scope.addressType = c.addressType || 'P2SH';
+      $scope.derivationStrategy = c.derivationStrategy || 'BIP45';
+      $scope.basePath = basePath;
+      $scope.M = c.m;
+      $scope.N = c.n;
+      $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
+      $scope.addrs = null;
+
+      wallet.getMainAddresses({
+        doNotVerify: true
+      }, function(err, addrs) {
+        if (err) {
+          $log.warn(err);
+          return;
+        };
+        var last10 = [],
+          i = 0,
+          e = addrs.pop();
+        while (i++ < 10 && e) {
+          e.path = base + e.path.substring(1);
+          last10.push(e);
+          e = addrs.pop();
+        }
+        $scope.addrs = last10;
+        $timeout(function() {
+          $ionicScrollDelegate.resize();
+          $scope.$apply();
+        }, 10);
+      });
+    });
 
   });

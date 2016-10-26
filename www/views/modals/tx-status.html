@@ -1,0 +1,49 @@
+<ion-modal-view id="tx-status" ng-controller="txStatusController">
+  <div ng-if="type == 'broadcasted'">
+    <div class="popup-txsent text-center m30tp">
+      <i class="icon ion-checkmark-round"></i>
+      <div ng-show="tx.amountStr" class="m20t size-36">
+      {{tx.amountStr}}
+      </div>
+      <div class="size-24 text-gray m20v">
+      <span translate>Sent</span>
+      </div>
+      <div class="text-center m20t">
+      <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div ng-if="type == 'created'" class="popup-txsigned text-center m30tp">
+    <i class="icon ion-checkmark-round"></i>
+    <div class="text-center size-24 tu text-bold m20v">
+      <span translate>Payment Proposal Created</span>
+    </div>
+    <div class="text-center">
+      <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
+    </div>
+  </div>
+
+
+
+  <div ng-if="type == 'accepted'" class="popup-txsigned text-center m30tp">
+    <i class="icon ion-checkmark-round"></i>
+    <div class="text-center size-24 tu text-bold m20v">
+      <span translate>Payment Accepted</span>
+    </div>
+    <div class="text-center">
+      <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
+    </div>
+  </div>
+
+  <div ng-if="type=='rejected'" class="popup-txrejected text-center m30tp">
+    <i class="icon ion-close-round"></i>
+    <div class="text-center size-24 tu text-bold m20v">
+      <span translate>Payment Rejected</span>
+    </div>
+    <div class="text-center">
+      <a class="button button-positive" ng-click="cancel()" translate>OKAY</a>
+    </div>
+  </div>
+</ion-modal-view>

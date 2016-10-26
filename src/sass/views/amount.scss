@@ -1,0 +1,167 @@
+#view-amount {
+  .recipient-label {
+    font-size: 14px;
+    padding-bottom: 0;
+    color: $mid-gray;
+  }
+  .item-no-bottom-border + .item {
+      border-top: 0;
+  }
+  .icon-bitpay-card {
+    background-image: url("../img/icon-bitpay.svg");
+  }
+  @media(max-width: 480px) {
+    .bitcoin-address {
+      .icon {
+        left: 8px;
+        font-size: 24px;
+      }
+      .big-icon-svg {
+        left:5px;
+        & > .bg{
+          width:30px;
+          height:30px;
+          box-shadow: none;
+        }
+      }
+      font-size: 13px;
+      padding-left: 48px;
+    }
+  }
+  .send-gravatar {
+    left: 11px;
+    position: absolute;
+    top: 10px;
+  }
+  .amount-pane {
+    position: absolute;
+    top: 95px;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 0 16px;
+
+    .amount-bar {
+      padding: 24px 0;
+      font-size: 18px;
+      .title {
+        float: left;
+        padding-top: 10px;
+        color: $dark-gray;
+        font-weight: bold;
+      }
+    }
+    .amount {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      position: absolute;
+      bottom: 254px;
+      top: 66px;
+      .light {
+        color: $light-gray;
+      }
+    }
+  }
+  .amount {
+    &__editable {
+      margin-bottom: 1rem;
+      &--minimize {
+        font-size: 22px;
+      }
+      &--standard {
+        font-size: 42px;
+      }
+      &--placeholder {
+        color: $light-gray;
+      }
+    }
+    &__number {
+      color: $dark-gray;
+    }
+    &__currency-toggle {
+      border: 1px solid $subtle-gray;
+      color: $dark-gray;
+      border-radius: 3px;
+      padding: 0 10px;
+      cursor: pointer;
+      font-size: .6em;
+      position: relative;
+      top: -3px;
+      line-height: 1;
+    }
+    &__results {
+      &--minimize {
+        font-size: 12px;
+      }
+      &--standard {
+        font-size: 18px;
+      }
+      &--placeholder {
+        color: $light-gray;
+      }
+    }
+    &__result {
+      color: $light-gray;
+      font-size: .9em;
+      margin-bottom: -.9em;
+      line-height: 1;
+    }
+    &__result-equiv {
+      color: $mid-gray;
+      font-size: 1.2em;
+      margin-top: 2rem;
+    }
+  }
+  .keypad {
+    text-align: center;
+    font-size: 24px;
+    font-weight: lighter;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: $mid-gray;
+
+    .row {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .col {
+      line-height: 45px;
+    }
+
+    .operator {
+      background-color: $subtle-gray;
+      font-weight: normal;
+      cursor: pointer;
+
+      &:active {
+        background-color: $light-gray;
+      }
+    }
+
+    .operator-send {
+      font-weight: bolder;
+      color: #fff;
+      background-color: $positive;
+      font-size: 36px;
+      cursor: pointer;
+
+      &:active {
+        background-color: #eaeaea;
+      }
+    }
+
+    .digit{
+      cursor: pointer;
+      border-top: 1px solid $subtle-gray;
+      border-left: 1px solid $subtle-gray;
+      &:active {
+        background-color: $subtle-gray;
+      }
+    }
+
+  }
+}

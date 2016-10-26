@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $timeout, storageService, go, profileService, lodash) {
-    var fc = profileService.focusedClient;
-    var c = fc.credentials;
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, gettextCatalog, storageService, platformInfo, profileService, lodash) {
+    $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
+    $scope.isCordova = platformInfo.isCordova;
 
     $scope.csvHistory = function(cb) {
       var allTxs = [];
 
       function getHistory(cb) {
-        storageService.getTxHistory(c.walletId, function(err, txs) {
+        storageService.getTxHistory($scope.wallet.id, function(err, txs) {
           if (err) return cb(err);
 
           var txsFromLocal = [];
@@ -21,25 +21,31 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           }
 
           allTxs.push(txsFromLocal);
-          return cb(null, lodash.flatten(allTxs));
+          return cb(null, lodash.compact(lodash.flatten(allTxs)));
         });
       };
 
       $log.debug('Generating CSV from History');
       getHistory(function(err, txs) {
-        if (err || !txs) {
-          $log.warn('Failed to generate CSV:', err);
+        if (err || lodash.isEmpty(txs)) {
+          if (err) {
+            $log.warn('Failed to generate CSV:', err);
+            $scope.err = err;
+          }
+          else {
+            $log.warn('Failed to generate CSV: no transactions');
+            $scope.err = 'no transactions';
+          }
           if (cb) return cb(err);
           return;
         }
-
         $log.debug('Wallet Transaction History Length:', txs.length);
 
         $scope.satToUnit = 1 / $scope.unitToSatoshi;
         var data = txs;
         var satToBtc = 1 / 100000000;
         $scope.csvContent = [];
-        $scope.csvFilename = 'Copay-' + ($scope.alias || $scope.walletName) + '.csv';
+        $scope.csvFilename = 'Copay-' + $scope.wallet.name + '.csv';
         $scope.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
 
         var _amount, _note, _copayers, _creator, _comment;
@@ -117,16 +123,23 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
     };
 
     $scope.clearTransactionHistory = function() {
-      storageService.removeTxHistory(c.walletId, function(err) {
+      storageService.removeTxHistory($scope.wallet.id, function(err) {
         if (err) {
           $log.error(err);
           return;
         }
-        $scope.$emit('Local/ClearHistory');
 
+        $ionicHistory.removeBackView();
+        $state.go('tabs.home');
         $timeout(function() {
-          go.walletHome();
+          $state.transitionTo('tabs.wallet', {
+            walletId: $scope.wallet.id
+          });
         }, 100);
       });
     };
+
+    $scope.$on("$ionicView.enter", function(event, data) {
+      $scope.csvHistory();
+    });
   });

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head ng-controller="headController">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="css/copay.css">
+  <title>*USERVISIBLENAME* - *PURPOSELINE*</title>
+  <link rel="shortcut icon" href="img/app/favicon.ico">
+</head>
+<body>
+
+  <!-- Workaround to prevent autofill -->
+  <div style="display: none;">
+    <input type="text"
+           id="PreventChromeAutocomplete"
+           name="PreventChromeAutocomplete"
+           autocomplete="address-level4" />
+  </div>
+
+  <ion-nav-view></ion-nav-view>
+
+  <script src="lib/ionic.bundle.min.js"></script>
+  <script src="lib/angular.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
+  <script src="js/copay.js"></script>
+
+</body>
+</html>

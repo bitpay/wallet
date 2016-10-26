@@ -1,0 +1,182 @@
+<ion-modal-view id="txp-details" ng-controller="txpDetailsController" ng-init="init()">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button button-clear" ng-click="close()">
+      Close
+    </button>
+    <div class="title" translate>
+      Payment Proposal
+    </div>
+    <button class="button button-clear" ng-click="reject()" ng-disabled="loading" ng-if="isShared && tx.pendingForUs">
+      Reject
+    </button>
+  </ion-header-bar>
+
+  <ion-content ng-init="updateCopayerList()" ng-class="{'slide-to-pay': tx.pendingForUs && canSign && !hasClick}">
+    <div class="list">
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/sending-icon.svg">
+          <span translate>Sending</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="alternative" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
+        </div>
+
+        <div class="text-center m10t assertive" ng-if="tx.removed" translate>
+          The payment was removed by creator
+        </div>
+
+        <div class="text-center m10t" ng-show="tx.status != 'pending'">
+          <div ng-show="tx.status == 'accepted' && !tx.isGlidera">
+            <div class="m10b positive" translate>Payment accepted, but not yet broadcasted</div>
+
+            <button class="button button-positive button-block" ng-click="broadcast(tx)" ng-disabled="loading">
+              <i class="icon ion-ios-cloud-upload-outline"></i>
+              <span translate>Broadcast Payment</span>
+            </button>
+          </div>
+          <div ng-show="tx.status == 'accepted' && tx.isGlidera" >
+            <div class="m10h" translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</div>
+          </div>
+          <div class="balanced" ng-show="tx.status == 'broadcasted'" translate>Payment Sent</div>
+          <div class="assertive" ng-show="tx.status=='rejected'" translate>Payment Rejected</div>
+        </div>
+      </div>
+
+      <div class="item assertive text-center" ng-show="!currentSpendUnconfirmed && tx.hasUnconfirmedInputs" translate>
+        Warning: this transaction has unconfirmed inputs
+      </div>
+
+      <div class="info">
+        <div class="item">
+          <span class="label" translate>To</span>
+          <span class="payment-proposal-to" copy-to-clipboard="tx.toAddress">
+            <img src="img/icon-bitcoin-small.svg">
+            <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>
+            <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span>
+          </span>
+        </div>
+
+        <div ng-show="tx.hasMultiplesOutputs" class="item" ng-click="showMultiplesOutputs = !showMultiplesOutputs">
+          <span class="text-gray" translate>Recipients</span>
+          <span class="right">{{tx.recipientCount}}
+            <i ng-show="showMultiplesOutputs" class="icon ion-ios-arrow-up"></i>
+            <i ng-show="!showMultiplesOutputs" class="icon ion-ios-arrow-up"></i>
+          </span>
+        </div>
+
+        <div class="item" ng-show="tx.hasMultiplesOutputs && showMultiplesOutputs"
+          ng-repeat="output in tx.outputs" ng-include="'views/includes/output.html'">
+        </div>
+
+        <div class="item">
+          <span class="label" translate>From</span>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+            <div>{{wallet.name}}</div>
+          </div>
+        </div>
+        <div class="item single-line">
+          <span class="label" translate>Created by</span>
+          <span class="item-note">
+            {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+          </span>
+        </div>
+        <div class="item" ng-show="tx.message">
+          {{'Memo'|translate}}
+          <span class="item-note">
+            {{tx.message}}
+          </span>
+        </div>
+        <div class="item single-line">
+          <span class="label" translate>Fee</span>
+          <span class="item-note">
+            {{tx.feeStr}}
+          </span>
+        </div>
+
+        <div ng-if="tx.paypro">
+          <div class="item item-divider" translate>Payment details</div>
+          <div class="item">
+            {{'To'|translate}}
+            <span class="item-note">
+              <span>
+                <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.paypro.domain}}</span>
+                <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
+              </span>
+              <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact>
+            </span>
+          </div>
+          <div class="item" ng-if="paymentExpired">
+            {{'Expired'|translate}}
+            <span class="item-note">
+              <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
+            </span>
+          </div>
+          <div class="item" ng-if="!paymentExpired">
+            {{'Expires'|translate}}
+            <span class="item-note">
+              <time>{{expires}}</time>
+            </span>
+          </div>
+          <div class="item">
+            {{'Merchant Message'|translate}}
+            <span class="item-note">{{tx.paypro.pr.pd.memo}}</span>
+          </div>
+        </div>
+        <div ng-if="actionList[0]">
+          <div class="item item-divider" translate>Timeline</div>
+          <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList | orderBy: 'time' :true track by $index">
+            <div class="timeline-content">
+              <div class="timeline-content__icon">
+                <div class="rejected" ng-if="a.type === 'reject'">!</div>
+                <div ng-if="a.type !== 'reject'">{{actionList.length - $index}}</div>
+              </div>
+              <div class="timeline-content__label">
+                <div class="action">{{a.description}}</div>
+                <div class="name">{{a.by}}</div>
+              </div>
+              <div>
+                <span class="item-note">
+                  <time>{{ a.time * 1000 | amDateFormat:'hh:mm a'}}</time>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <click-to-accept
+      ng-click="onConfirm(statusChangeHandler)"
+      ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
+      click-send-status="sendStatus">
+      Click to accept
+    </click-to-accept>
+    <div class="m30t text-center" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
+      <div class="size-12 padding proposal-deletion-help" ng-show="!tx.isGlidera && isShared" translate>
+        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
+      </div>
+      <button class="button button-assertive button-clear" ng-click="remove()" ng-disabled="loading">
+        <i class="fi-trash size-14 m5r"></i>
+        <span translate>Delete Payment Proposal</span>
+      </button>
+    </div>
+  </ion-content>
+
+  <slide-to-accept
+    ng-if="tx.pendingForUs && canSign && !paymentExpired && !hasClick"
+    slide-on-confirm="onConfirm()"
+    slide-send-status="sendStatus">
+    Slide to accept
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="onSuccessConfirm()"
+    >
+    Payment Sent
+  </slide-to-accept-success>
+</ion-modal-view>

@@ -1,0 +1,86 @@
+<ion-modal-view>
+  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color':color, 'border-color': color}">
+    <button class="button button-clear" ng-click="close()">
+      Close
+    </button>
+    <div class="title" translate>
+      Search Transactions
+    </div>
+  </ion-header-bar>
+
+  <ion-content ng-controller="searchController" ng-init="search = ''">
+    <div class="bar bar-header item-input-inset">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" ng-model="search" ng-init="search = ''" ng-change="updateSearchInput(search)"
+          placeholder="{{'Search transactions' | translate}}">
+      </label>
+    </div>
+
+    <div class="list">
+      <div class="item" ng-repeat="btx in txHistorySearchResults track by btx.txid" ng-click="openTxModal(btx)">
+
+        <span class="item-note text-right">
+          <span class="size-16"  ng-class="{'text-bold': btx.recent}">
+            <span ng-if="btx.action == 'received'">+</span>
+            <span ng-if="btx.action == 'sent'">-</span>
+            <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+            (possible double spend)
+            </span>
+            <span  ng-if="btx.action != 'invalid'">
+            {{btx.amountStr}}
+            </span>
+          </span>
+          <p>
+            <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
+            <span translate class="text-warning"
+              ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)" translate>
+              Unconfirmed
+            </span>
+          </p>
+        </span>
+
+        <img class="left m10r" src="img/icon-receive-history.svg" alt="sync" width="40" ng-if="btx.action == 'received'">
+        <img class="left m10r" src="img/icon-sent-history.svg" alt="sync" width="40" ng-if="btx.action == 'sent'">
+        <img class="left m10r" src="img/icon-moved.svg" alt="sync" width="40" ng-if="btx.action == 'moved'">
+
+        <h2>
+          <div class="padding" ng-if="btx.action == 'received'">
+            <span class="ellipsis">
+              <h2 ng-if="btx.note.body">{{btx.note.body}}</h2>
+              <h2 ng-if="!btx.note.body" translate> Received</h2>
+            </span>
+          </div>
+
+          <div class="padding" ng-if="btx.action == 'sent'">
+            <span class="ellipsis">
+              <h2 ng-if="btx.message">{{btx.message}}</h2>
+              <h2 ng-if="!btx.message && btx.note.body">{{btx.note.body}}</h2>
+              <h2 ng-if="!btx.message && !btx.note.body && wallet.addressbook[btx.addressTo]">{{wallet.addressbook[btx.addressTo]}}</h2>
+              <h2 ng-if="!btx.message && !btx.note.body && !wallet.addressbook[btx.addressTo]" translate> Sent</h2>
+            </span>
+          </div>
+
+          <div class="padding" ng-if="btx.action == 'moved'">
+            <span class="ellipsis">
+              <h2 ng-if="btx.note.body">{{btx.note.body}}</h2>
+              <h2 ng-if="!btx.note.body" translate>Moved</h2>
+            </span>
+          </div>
+          <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
+        </h2>
+
+      </div>
+      <div class="text-gray text-center size-12 p10t" ng-if="txHistoryShowMore">
+        <span class="size-12" translate>{{filteredTxHistory.length - txHistorySearchResults.length}} more</span>
+        &nbsp;
+        <i class="icon-arrow-down4"></i>
+      </div>
+      <ion-infinite-scroll
+        ng-if="txHistoryShowMore"
+        on-infinite="moreSearchResults()"
+        distance="1%">
+      </ion-infinite-scroll>
+    </div>
+  </ion-content>
+</ion-modal-view>

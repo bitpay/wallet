@@ -1,18 +1,18 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo) {
+  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, externalLinkService, popupService) {
 
-    if (platformInfo.isCordova && StatusBar.isVisible) {
-      StatusBar.backgroundColorByHexString("#4B6178");
-    }
+    $scope.network = amazonService.getEnvironment();
 
-    this.init = function() {
-      var self = this;
-      self.sandbox = amazonService.getEnvironment() == 'testnet' ? true : false;
+    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    };
+
+    var initAmazon = function() {
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
-          self.error = err;
+          popupService.showAlert(err);
           return;
         }
         $scope.giftCards = lodash.isEmpty(gcds) ? null : gcds;
@@ -20,11 +20,10 @@ angular.module('copayApp.controllers').controller('amazonController',
           $scope.$digest();
         });
       });
-      this.updatePendingGiftCards();
-    }
+      $scope.updatePendingGiftCards();
+    };
 
-    this.updatePendingGiftCards = lodash.debounce(function() {
-      var self = this;
+    $scope.updatePendingGiftCards = lodash.debounce(function() {
 
       amazonService.getPendingGiftCards(function(err, gcds) {
         lodash.forEach(gcds, function(dataFromStorage) {
@@ -32,7 +31,7 @@ angular.module('copayApp.controllers').controller('amazonController',
             $log.debug("creating gift card");
             amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
               if (err) {
-                $log.debug(bwcError.msg(err));
+                popupService.showAlert(bwcError.msg(err));
                 return;
               }
               if (giftCard.status != 'PENDING') {
@@ -52,7 +51,7 @@ angular.module('copayApp.controllers').controller('amazonController',
                   $log.debug("Saving new gift card");
                   amazonService.getPendingGiftCards(function(err, gcds) {
                     if (err) {
-                      self.error = err;
+                      popupService.showAlert(err);
                       return;
                     }
                     $scope.giftCards = gcds;
@@ -69,8 +68,7 @@ angular.module('copayApp.controllers').controller('amazonController',
 
     }, 1000);
 
-    this.openCardModal = function(card) {
-      var self = this;
+    $scope.openCardModal = function(card) {
       $scope.card = card;
 
       $ionicModal.fromTemplateUrl('views/modals/amazon-card-details.html', {
@@ -81,7 +79,11 @@ angular.module('copayApp.controllers').controller('amazonController',
       });
 
       $scope.$on('UpdateAmazonList', function(event) {
-        self.init();
+        initAmazon();
       });
     };
+
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      initAmazon();
+    });
   });

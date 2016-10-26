@@ -1,0 +1,31 @@
+#onboarding-backup-request {
+  #warning {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 320px);
+    justify-content: center;
+    align-content: center;
+  }
+  #alert-icon {
+    margin: 20px auto 5px;
+    height: 10vh;
+  }
+  @media (min-width: 570px){
+    #backup-description {
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  #arrow-down {
+    font-size: 4.2rem;
+    color: $soft-blue;
+  }
+  #backup-tldr {
+    font-size: 16px;
+  }
+  .cta-buttons {
+    @extend %cta-buttons;
+    padding-bottom: 4vw;
+  }
+}
