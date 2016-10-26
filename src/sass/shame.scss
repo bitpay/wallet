@@ -152,23 +152,9 @@ input[type=number] {
   margin: 0 auto;
 }
 
-.qr-icon {
-  line-height: 45px;
-}
-
 .input-notification {
   float: right;
   margin-right: 10px;
-}
-
-.qr-scan-icon a {
-  display: block;
-  position: absolute;
-  top: 25px;
-  right: 0;
-  padding: 0 10px;
-  font-size: 24px;
-  cursor: pointer;
 }
 
 .pr {
@@ -442,4 +428,12 @@ input[type=file] {
 
 .left {
   float: left;
+}
+
+.keyboard-open .tabs {
+   display: none;
+ }
+
+ .keyboard-open .has-tabs {
+   bottom: 0;
 }
