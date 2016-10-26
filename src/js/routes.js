@@ -885,13 +885,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.bitpayCard.confirm', {
-        url: '/confirm/:cardId/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        url: '/confirm/:cardId/:toAddress/:toName/:toAmount/:toEmail/:description',
         views: {
           'tab-home@tabs': {
             controller: 'confirmController',
             templateUrl: 'views/confirm.html'
           }
-        }
+        },
+        params: { paypro: null }
       })
       .state('tabs.bitpayCard.preferences', {
         url: '/preferences',
