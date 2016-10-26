@@ -91,6 +91,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               $scope.insuffientFunds = true;
 
             $log.warn('No wallet available to make the payment');
+            $timeout(function() {
+              $scope.$apply();
+            });
           }
         }
       });
@@ -102,7 +105,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $timeout(function() {
       $scope.$apply();
-    }, 100);
+    });
   };
 
   $scope.$on('accepted', function(event) {
