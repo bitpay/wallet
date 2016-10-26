@@ -83,11 +83,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       wallet.notAuthorized = true;
       $state.go('tabs.home');
     } else if (err instanceof errors.NOT_FOUND) {
-      popupService.showAlert(gettextCatalog.getString('Could not access Wallet Service: Not found'));
+      popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not access Wallet Service: Not found'));
     } else {
       var msg = ""
       $rootScope.$emit('Local/ClientError', (err.error ? err.error : err));
-      popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Error at Wallet Service')));
+      popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, gettextCatalog.getString('Error at Wallet Service')));
     }
   };
   root.handleError = lodash.debounce(_handleError, 1000);

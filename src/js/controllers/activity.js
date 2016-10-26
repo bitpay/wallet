@@ -39,7 +39,7 @@ angular.module('copayApp.controllers').controller('activityController',
             ongoingProcess.set('loadingTxInfo', false);
             if (err) {
               $log.warn('No txp found');
-              return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+              return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
             }
             txpModalService.open(_txp);
           });
@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('activityController',
 
         if (!tx) {
           $log.warn('No tx found');
-          return popupService.showAlert(null, gettextCatalog.getString('Transaction not found'));
+          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
         }
 
         $scope.wallet = wallet;
