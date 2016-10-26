@@ -8,10 +8,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
-  // $timeout(function() {
-  //   root.redir();
-  // }, 2000);
-
   root.redir = function(data) {
     $log.debug('Processing incoming data: ' + data);
 
@@ -51,7 +47,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     }
 
     data = sanitizeUri(data);
-    data = 'https://test.bitpay.com:443/i/YSHFLkxxVAZhQMGFi9Ptq9';
+    //data = 'https://test.bitpay.com:443/i/YSHFLkxxVAZhQMGFi9Ptq9';
 
     // BIP21
     if (bitcore.URI.isValid(data)) {

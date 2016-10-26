@@ -5,7 +5,7 @@ function($window, profileService, platformInfo, popupService, gettextCatalog, on
 
   var ret = {};
 
-  ret.getPayProDetails = function(uri, cb) {
+  ret.getPayProDetails = function(uri, cb, disableLoader) {
     if (!cb) cb = function() {};
 
     var wallet = profileService.getWallets({
@@ -21,13 +21,18 @@ function($window, profileService, platformInfo, popupService, gettextCatalog, on
 
     $log.debug('Fetch PayPro Request...', uri);
 
-    ongoingProcess.set('fetchingPayPro', true);
+    if(!disableLoader) {
+      ongoingProcess.set('fetchingPayPro', true);
+    }
 
     wallet.fetchPayPro({
       payProUrl: uri,
     }, function(err, paypro) {
 
-      ongoingProcess.set('fetchingPayPro', false);
+      if(!disableLoader) {
+        ongoingProcess.set('fetchingPayPro', false);
+      }
+
       if (err) {
         return cb(true);
       }
