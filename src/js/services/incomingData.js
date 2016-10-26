@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, $rootScope, payproService) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, $rootScope, payproService, scannerService) {
 
   var root = {};
 
@@ -149,6 +149,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       description: payProDetails.memo,
       paypro: payProDetails
     };
+    scannerService.pausePreview();
     $state.go('tabs.send').then(function() {
       $timeout(function() {
         $state.transitionTo('tabs.send.confirm', stateParams);
