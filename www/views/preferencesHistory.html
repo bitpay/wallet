@@ -5,7 +5,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="item item-divider"></div>
+    <div class="item item-divider" ng-show="!isCordova"></div>
     <a class="item ng-hide" href ng-show="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{wallet.name}}.csv">
       <span translate>Export to file</span>
     </a>
@@ -18,8 +18,14 @@
         {{err | translate}}
       </span>
     </a>
+    <div class="item item-divider"></div>
     <a class="item" ng-click="clearTransactionHistory()">
-      <span class="assertive" translate>Clear cache</span>
+      <span translate>Clear cache</span>
     </a>
+    <div class="settings-explanation">
+      <div class="settings-description" translate>
+        The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server
+      </div>
+    </div>
   </ion-content>
 </ion-view>
