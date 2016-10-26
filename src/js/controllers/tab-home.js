@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
+    $scope.isNW = platformInfo.isNW;
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -22,6 +23,21 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.homeTip = (value == 'accepted') ? false : true;
       });
     }
+
+    if ($scope.isNW) {
+      latestReleaseService.checkLatestRelease(function(err, newRelease) {
+        if (err) {
+          $log.warn(err);
+          return;
+        }
+
+        if (newRelease) $scope.newRelease = true;
+      });
+    }
+
+    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    };
 
     $scope.openNotificationModal = function(n) {
       wallet = profileService.getWallet(n.walletId);
