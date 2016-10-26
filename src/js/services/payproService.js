@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services').factory('payproService',
-function($window, profileService, platformInfo, popupService, gettextCatalog, ongoingProcess, $log, $state) {
+function($window, profileService, platformInfo, popupService, gettextCatalog, ongoingProcess, $log) {
 
   var ret = {};
 
