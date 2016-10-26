@@ -1,12 +1,16 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog, $rootScope) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog, $rootScope, payproService) {
 
   var root = {};
 
   root.showMenu = function(data) {
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
+
+  $timeout(function() {
+    root.redir();
+  }, 2000);;
 
   root.redir = function(data) {
     $log.debug('Processing incoming data: ' + data);
@@ -47,6 +51,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     }
 
     data = sanitizeUri(data);
+    data = 'https://test.bitpay.com:443/i/YSHFLkxxVAZhQMGFi9Ptq9';
 
     // BIP21
     if (bitcore.URI.isValid(data)) {
@@ -58,7 +63,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var amount = parsed.amount ?  parsed.amount : '';
 
       if (parsed.r) {
-        getPayProDetails(parsed.r, function(err, details) {
+        payproService.getPayProDetails(parsed.r, function(err, details) {
           handlePayPro(details);
         });
       } else {
@@ -77,7 +82,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     // Plain URL
     } else if (/^https?:\/\//.test(data)) {
 
-      getPayProDetails(data, function(err, details) {
+      payproService.getPayProDetails(data, function(err, details) {
         if(err) {
           root.showMenu({data: data, type: 'url'});
           return;
@@ -134,43 +139,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     return false;
 
   };
-
-  function getPayProDetails(uri, cb) {
-    if (!cb) cb = function() {};
-
-    var wallet = profileService.getWallets({
-      onlyComplete: true
-    })[0];
-
-    if (!wallet) return cb();
-
-    if (platformInfo.isChromeApp) {
-      popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
-      return cb(true);
-    }
-
-    $log.debug('Fetch PayPro Request...', uri);
-
-    ongoingProcess.set('fetchingPayPro', true);
-
-    wallet.fetchPayPro({
-      payProUrl: uri,
-    }, function(err, paypro) {
-
-      ongoingProcess.set('fetchingPayPro', false);
-      if (err) {
-        return cb(true);
-      }
-
-      if (!paypro.verified) {
-        $log.warn('Failed to verify payment protocol signatures');
-        popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
-        return cb(true);
-      }
-      cb(null, paypro);
-
-    });
-  }
 
   function goToAmountPage(toAddress) {
     $state.go('tabs.send');
