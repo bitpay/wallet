@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, profileService, popupService, ongoingProcess, platformInfo, gettextCatalog, $rootScope, payproService) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, $rootScope, payproService) {
 
   var root = {};
 
@@ -47,7 +47,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     }
 
     data = sanitizeUri(data);
-    //data = 'https://test.bitpay.com:443/i/YSHFLkxxVAZhQMGFi9Ptq9';
 
     // BIP21
     if (bitcore.URI.isValid(data)) {
