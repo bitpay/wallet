@@ -245,7 +245,7 @@ angular.module('copayApp.controllers').controller('importController',
         var wordList = words.split(/[\u3000\s]+/);
 
         if ((wordList.length % 3) != 0) {
-          popupService.showAlert(gettextCatalog.getString('Wrong number of recovery words:') + wordList.length);
+          popupService.showAlert(null, gettextCatalog.getString('Wrong number of recovery words'));
           return;
         }
       }
