@@ -61,6 +61,12 @@
   .tx-search:before {
     font-size: 22px !important;
   }
+  .description {
+    background-color: #f2f2f2;
+    text-align: center;
+    font-size: 13px;
+    color: $mid-gray;
+  }
 }
 
 .wallet-details-wallet-info {
