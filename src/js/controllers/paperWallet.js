@@ -120,10 +120,9 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       var wallet = profileService.getWallet($stateParams.walletId);
       $scope.wallet = wallet;
-      $scope.isCordova = platformInfo.isCordova;
       $scope.needsBackup = wallet.needsBackup;
       $scope.walletAlias = wallet.name;
       $scope.walletName = wallet.credentials.walletName;
