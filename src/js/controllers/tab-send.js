@@ -149,6 +149,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         }
       });
     });
+    if ($scope.hasFunds != true) {
+      $ionicScrollDelegate.freezeScroll(true);
+    }
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
