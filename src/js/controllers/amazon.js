@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('amazonController',
     var initAmazon = function() {
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
-          popupService.showAlert(err);
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
         $scope.giftCards = lodash.isEmpty(gcds) ? null : gcds;
@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('amazonController',
             $log.debug("creating gift card");
             amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
               if (err) {
-                popupService.showAlert(bwcError.msg(err));
+                popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
                 return;
               }
               if (giftCard.status != 'PENDING') {
@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('amazonController',
                   $log.debug("Saving new gift card");
                   amazonService.getPendingGiftCards(function(err, gcds) {
                     if (err) {
-                      popupService.showAlert(err);
+                      popupService.showAlert(gettextCatalog.getString('Error'), err);
                       return;
                     }
                     $scope.giftCards = gcds;

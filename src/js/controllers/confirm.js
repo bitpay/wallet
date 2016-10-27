@@ -84,6 +84,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               $scope.insuffientFunds = true;
 
             $log.warn('No wallet available to make the payment');
+            $timeout(function() {
+              $scope.$apply();
+            });
           }
         }
       });
@@ -99,7 +102,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $timeout(function() {
       $scope.$apply();
-    }, 100);
+    });
   };
 
   $scope.$on('accepted', function(event) {
@@ -286,6 +289,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
+
     if ($scope.paypro && $scope.paymentExpired.value) {
       popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
       $scope.sendStatus = '';
