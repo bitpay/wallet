@@ -79,12 +79,6 @@
             <div>{{wallet.name}}</div>
           </div>
         </div>
-        <div class="item single-line">
-          <span class="label" translate>Created by</span>
-          <span class="item-note">
-            {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
-          </span>
-        </div>
         <div class="item" ng-show="tx.message">
           {{'Memo'|translate}}
           <span class="item-note">
@@ -141,7 +135,7 @@
               </div>
               <div>
                 <span class="item-note">
-                  <time>{{ a.time * 1000 | amDateFormat:'hh:mm a'}}</time>
+                  <time>{{ a.time * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
                 </span>
               </div>
             </div>
