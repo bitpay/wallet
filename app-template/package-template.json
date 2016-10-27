@@ -107,7 +107,7 @@
     "sign:android":           "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && ../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
     "apply:copay":            "npm i && cd app-template && node apply.js copay && cordova prepare",
     "apply:bitpay":           "npm i && cd app-template && node apply.js bitpay && cordova prepare",
-    "test":                   "./node_modules/.bin/grunt test-coveralls",
+    "test":                   "echo \"no package tests configured\"",
     "clean":                  "trash platforms && trash plugins && cordova prepare",
     "unstage-package":        "git reset package.json",
     "clean-all":              "git clean -dfx"
