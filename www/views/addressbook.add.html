@@ -33,23 +33,25 @@
                  name="email"
                  ng-model="addressbookEntry.email">
         </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label" translate>Bitcoin Address</span>
-          <div class="input-notification">
-            <i class="icon ion-checkmark-circled balanced"
-               ng-show="!addressbookForm.address.$invalid"></i>
-            <i class="icon ion-close-circled assertive"
-               ng-show="addressbookForm.address.$invalid && addressbookEntry.address"></i>
-          </div>
-          <div class="qr-scan-icon">
-            <qr-scanner on-scan="onQrCodeScanned(data, addressbookForm)"></qr-scanner>
+        <div>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" translate>Bitcoin Address</span>
+            <div class="input-notification">
+              <i class="icon ion-checkmark-circled balanced"
+                 ng-show="!addressbookForm.address.$invalid"></i>
+              <i class="icon ion-close-circled assertive"
+                 ng-show="addressbookForm.address.$invalid && addressbookEntry.address"></i>
+            </div>
             <input type="text"
                    id="address"
                    name="address"
                    ng-model="addressbookEntry.address"
                    valid-address required>
+          </label>
+          <div class="qr-scan-icon">
+            <qr-scanner on-scan="onQrCodeScanned(data, addressbookForm)"></qr-scanner>
           </div>
-        </label>
+        </div>
       </div>
 
       <div class="padding">
