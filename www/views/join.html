@@ -1,4 +1,4 @@
-<ion-view class="settings">
+<ion-view id="join" class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -21,25 +21,26 @@
           ng-required="true">
         </label>
 
-        <label class="item item-input item-stacked-label no-border">
-          <span class="input-label" translate>Wallet Invitation</span>
-          <div class="input-notification">
-            <i class="icon ion-checkmark-circled balanced"
-               ng-show="!joinForm.secret.$invalid"></i>
-            <i class="icon ion-close-circled assertive"
-               ng-show="joinForm.secret.$invalid && secret"></i>
-          </div>
-          <div class="qr-scan-icon">
-            <qr-scanner class="qr-icon size-24" on-scan="join.onQrCodeScanned(data)"></qr-scanner>
+        <div>
+          <label class="item item-input item-stacked-label no-border">
+            <span class="input-label" translate>Wallet Invitation</span>
+            <div class="input-notification">
+              <i class="icon ion-checkmark-circled balanced"
+                 ng-show="!joinForm.secret.$invalid"></i>
+              <i class="icon ion-close-circled assertive"
+                 ng-show="joinForm.secret.$invalid && secret"></i>
+            </div>
             <input id="secret"
                    type="text"
                    placeholder="{{'Paste invitation here'|translate}}"
                    name="secret"
                    ng-model="secret"
                    wallet-secret required>
+          </label>
+          <div class="qr-scan-icon">
+            <qr-scanner class="qr-icon size-24" on-scan="join.onQrCodeScanned(data)"></qr-scanner>
           </div>
-        </label>
-
+        </div>
         <div class="item item-divider"></div>
 
         <a class="item" ng-click="showAdvChange()">
