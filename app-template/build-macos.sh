@@ -116,6 +116,9 @@ mkdir /Volumes/"${VOL_NAME}"/.background
 cp "${DMG_BACKGROUND_IMG}" /Volumes/"${VOL_NAME}"/.background/
 
 echo "Adding volume icon to disk image"
+# we install this here to avoid trying to install it on linux or windows, where
+# it fails to install
+npm install fileicon
 # use fileicon node_module
 cp "${DMG_VOLUME_ICON}" /Volumes/"${VOL_NAME}"/.VolumeIcon.icns
 `npm bin`/fileicon set /Volumes/"${VOL_NAME}"/ /Volumes/"${VOL_NAME}"/.VolumeIcon.icns
