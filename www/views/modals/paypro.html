@@ -19,38 +19,38 @@
       </div>
       <div class="item">
         {{'Pay To'|translate}}
-        <span class="item-note">{{_paypro.domain}}</span>
+        <span class="item-note">{{paypro.domain}}</span>
       </div>
-      <div class="item" ng-if="_paypro.toAddress">
+      <div class="item" ng-if="paypro.toAddress">
         {{'Address'|translate}}
-        <span class="item-note">{{_paypro.toAddress}}</span>
+        <span class="item-note">{{paypro.toAddress}}</span>
       </div>
       <div class="item">
         {{'Certified by'|translate}}
         <span class="item-note">
-          <span ng-show="_paypro.caTrusted">
+          <span ng-show="paypro.caTrusted">
             <i class="ion-locked" style="color:green"></i>
-            {{_paypro.caName}}<br>
+            {{paypro.caName}}<br>
             <span translate>(Trusted)</span>
           </span>
-          <span ng-show="!_paypro.caTrusted">
-            <span ng-show="_paypro.selfSigned">
+          <span ng-show="!paypro.caTrusted">
+            <span ng-show="paypro.selfSigned">
               <i class="ion-unlocked" style="color:red"></i> <span translate>Self-signed Certificate</span>
             </span>
-            <span ng-show="!_paypro.selfSigned">
-              <i class="ion-locked" style="color:yellow"></i>{{_paypro.caName}}<br>
+            <span ng-show="!paypro.selfSigned">
+              <i class="ion-locked" style="color:yellow"></i>{{paypro.caName}}<br>
               <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
             </span>
           </span>
         </span>
       </div>
-      <div class="item" ng-if="_paypro.memo">
+      <div class="item" ng-if="paypro.memo">
         {{'Memo'|translate}}
-        <span class="item-note wrapword">{{_paypro.memo}}</span>
+        <span class="item-note wrapword">{{paypro.memo}}</span>
       </div>
-      <div class="item" ng-if="_paypro.expires">
+      <div class="item" ng-if="paypro.expires">
         {{'Expires'|translate}}
-        <span class="item-note">{{_paypro.expires * 1000 | amTimeAgo }}</span>
+        <span class="item-note">{{paypro.expires * 1000 | amTimeAgo }}</span>
       </div>
     </div>
   </ion-content>
