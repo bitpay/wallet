@@ -45,6 +45,10 @@
   "bugs": {
     "url": "*GITHUBREPOBUGS*"
   },
+  "engines": {
+   "node": "6",
+   "npm": "3"
+  },
   "dependencies": {
     "adm-zip": "^0.4.7",
     "angular": "1.4.6",
