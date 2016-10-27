@@ -181,13 +181,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
-    var nextStep = function() {
-      lodash.each(['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'], function(service) {
+    var nextStep = function(cb) {
+      var i = 1;
+      var services = ['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'];
+      lodash.each(services, function(service) {
         storageService.getNextStep(service, function(err, value) {
           $scope.externalServices[service] = value ? true : false;
-          $timeout(function() {
-            $ionicScrollDelegate.resize();
-          }, 10);
+          if (i++ == services.length) return cb();
         });
       });
     };
@@ -227,7 +227,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.$on("$ionicView.enter", function(event, data) {
-      nextStep();
       updateAllWallets();
 
       addressbookService.list(function(err, ab) {
@@ -248,22 +247,28 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       ];
 
       configService.whenAvailable(function() {
-        var config = configService.getSync();
-        var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+        nextStep(function() {
+          var config = configService.getSync();
+          var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
 
-        $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-        $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
-        $scope.amazonEnabled = config.amazon.enabled;
-        $scope.bitpayCardEnabled = config.bitpayCard.enabled;
+          $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+          $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+          $scope.amazonEnabled = config.amazon.enabled;
+          $scope.bitpayCardEnabled = config.bitpayCard.enabled;
 
-        var buyAndSellEnabled = !$scope.externalServices.BuyAndSell && ($scope.glideraEnabled || $scope.coinbaseEnabled);
-        var amazonEnabled = !$scope.externalServices.AmazonGiftCards && $scope.amazonEnabled;
-        var bitpayCardEnabled = !$scope.externalServices.BitpayCard && $scope.bitpayCardEnabled;
+          var buyAndSellEnabled = !$scope.externalServices.BuyAndSell && ($scope.glideraEnabled || $scope.coinbaseEnabled);
+          var amazonEnabled = !$scope.externalServices.AmazonGiftCards && $scope.amazonEnabled;
+          var bitpayCardEnabled = !$scope.externalServices.BitpayCard && $scope.bitpayCardEnabled;
 
-        $scope.nextStepEnabled = buyAndSellEnabled || amazonEnabled || bitpayCardEnabled;
-        $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
+          $scope.nextStepEnabled = buyAndSellEnabled || amazonEnabled || bitpayCardEnabled;
+          $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
 
-        if ($scope.bitpayCardEnabled) bitpayCardCache();
+          if ($scope.bitpayCardEnabled) bitpayCardCache();
+          $timeout(function() {
+            $ionicScrollDelegate.resize();
+            $scope.$apply();
+          }, 10);
+        });
       });
     });
 
