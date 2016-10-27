@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if ($scope.paypro) {
       return setFromPayPro($scope.paypro, function(err) {
         if (err && !isChromeApp) {
-          popupService.showAlert(gettext('Could not fetch payment'));
+          popupService.showAlert(gettextCatalog.getString('Error'), gettext('Could not fetch payment'));
         }
       });
     }
@@ -162,7 +162,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (!wallet) return cb();
 
     if (isChromeApp) {
-      popupService.showAlert(gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
+      popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
       return cb(true);
     }
 
@@ -181,13 +181,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (msg.match('HTTP')) {
           msg = gettextCatalog.getString('Could not fetch payment information');
         }
-        popupService.showAlert(msg);
+        popupService.showAlert(gettextCatalog.getString('Error'), msg);
         return cb(true);
       }
 
       if (!paypro.verified) {
         $log.warn('Failed to verify payment protocol signatures');
-        popupService.showAlert(gettextCatalog.getString('Payment Protocol Invalid'));
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Payment Protocol Invalid'));
         return cb(true);
       }
 
@@ -341,7 +341,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.approve = function(onSendStatusChange) {
     if ($scope._paypro && $scope.paymentExpired.value) {
-      popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
+      popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('The payment request has expired'));
       $scope.sendStatus = '';
       $timeout(function() {
         $scope.$apply();
