@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('importController',
       };
 
       if (info.type == 1 && info.hasPassphrase)
-        popupService.showAlert(gettextCatalog.getString('Password required. Make sure to enter your password in advanced options'));
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Password required. Make sure to enter your password in advanced options'));
 
       $scope.formData.derivationPath = info.derivationPath;
       $scope.formData.testnetEnabled = info.network == 'testnet' ? true : false;
@@ -236,7 +236,7 @@ angular.module('copayApp.controllers').controller('importController',
       var words = $scope.formData.words || null;
 
       if (!words) {
-        popupService.showAlert(gettextCatalog.getString('Please enter the recovery phrase'));
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the recovery phrase'));
       } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
         return _importExtendedPrivateKey(words, opts);
       } else if (words.indexOf('xpub') == 0 || words.indexOf('tpuv') == 0) {
@@ -245,7 +245,7 @@ angular.module('copayApp.controllers').controller('importController',
         var wordList = words.split(/[\u3000\s]+/);
 
         if ((wordList.length % 3) != 0) {
-          popupService.showAlert(gettextCatalog.getString('Wrong number of recovery words:') + wordList.length);
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Wrong number of recovery words: ') + wordList.length);
           return;
         }
       }
@@ -280,7 +280,7 @@ angular.module('copayApp.controllers').controller('importController',
 
     $scope.importHW = function(form) {
       if (form.$invalid || $scope.formData.ccount < 0) {
-        popupService.showAlert(gettextCatalog.getString('There is an error in the form'));
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('There is an error in the form'));
         return;
       }
 
@@ -290,7 +290,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       if ($scope.seedSource.id == 'trezor') {
         if (account < 1) {
-          popupService.showAlert(gettextCatalog.getString('Invalid account number'));
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
         account = account - 1;

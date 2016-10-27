@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
 
   $scope.onScan = function(data) {
     if (!incomingData.redir(data)) {
-      popupService.showAlert(null, gettextCatalog.getString('Invalid data'));
+      popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid data'));
     }
   };
 
@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
     }, 1);
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data){
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $rootScope.hideTabs = '';
   });
 
