@@ -23,7 +23,7 @@ angular.module('copayApp.services')
         if (latest.major < current.major || (latest.major == current.major && latest.minor <= current.minor))
           return cb(null, false);
 
-        $log.debug('A new version of Copay is available: ' + latestVersion);
+        $log.debug('A new version is available: ' + latestVersion);
         return cb(null, true);
       });
 
