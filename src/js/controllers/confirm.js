@@ -291,7 +291,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.approve = function(onSendStatusChange) {
 
     if ($scope.paypro && $scope.paymentExpired.value) {
-      popupService.showAlert(null, gettextCatalog.getString('The payment request has expired'));
+      popupService.showAlert(null, gettextCatalog.getString('This bitcoin payment request has expired.'));
       $scope.sendStatus = '';
       $timeout(function() {
         $scope.$apply();
