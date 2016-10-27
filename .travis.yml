@@ -1,13 +1,10 @@
 language: node_js
 node_js:
-  - '4.0'
+  - '6'
 before_install:
-  - npm install -g bower
-  - npm install -g grunt-cli
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:
-  - bower install
-  - npm install
+  - npm run apply:bitpay
 after_success:
   - npm run exec:coveralls
