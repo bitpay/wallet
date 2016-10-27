@@ -99,7 +99,7 @@
         <div ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
           <span ng-include="'views/includes/txp.html'"></span>
         </div>
-        <div class="item item-footer" ng-show="status.lockedBalanceSat">
+        <div class="item item-footer description" ng-show="status.lockedBalanceSat">
           <span translate>Total Locked Balance</span>:
           <b>{{status.lockedBalanceStr}} </b>
           <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
@@ -158,10 +158,10 @@
             <div ng-show="btx.action == 'sent'" class="ellipsis">
               <div ng-if="btx.message">{{btx.message}}</div>
               <div ng-if="!btx.message && btx.note.body">{{btx.note.body}}</div>
-              <div ng-if="!btx.message && !btx.note.body && addressbook[btx.addressTo] && addressbook[btx.addressTo].name">
-                {{addressbook[btx.addressTo].name}}
+              <div ng-if="!btx.message && !btx.note.body && addressbook[btx.addressTo]">
+                {{addressbook[btx.addressTo].name || addressbook[btx.addressTo]}}
               </div>
-              <div ng-if="!btx.message && !btx.note.body && !(addressbook[btx.addressTo] && addressbook[btx.addressTo].name)" translate>Sent</div>
+              <div ng-if="!btx.message && !btx.note.body && !addressbook[btx.addressTo]" translate>Sent</div>
             </div>
 
             <div ng-show="btx.action == 'moved'" class="ellipsis">
