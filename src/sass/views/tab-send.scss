@@ -1,4 +1,17 @@
 #tab-send {
+  .qr-scan-icon a {
+    z-index: 10;
+    display: block;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    padding: 0 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .qr-icon {
+    line-height: 45px;
+  }
   .zero-state-cta {
     padding-bottom: 3vh;
   }
