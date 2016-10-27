@@ -6,17 +6,17 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="settings" class="row" ng-show="needsBackup">
+    <div class="settings ng-hide" class="row" ng-show="needsBackup">
       <div class="settings-explanation">
         <div class="settings-heading" translate>Backup Needed</div>
         <div class="settings-description" translate>
           Before receiving funds, you must backup your wallet. If this device is lost, it is impossible to access your funds without a backup.
         </div>
-        <a class="button button-standard button-primary" href ui-sref="tabs.preferences.preferencesAdvanced" translate>Preferences</a>
+        <a class="button button-standard button-primary" href ui-sref="tabs.preferences.backupWarning({from: 'tabs.preferences'})" translate>Backup Now</a>
       </div>
     </div>
 
-    <div ng-show="!needsBackup">
+    <div class="ng-hide" ng-show="!needsBackup">
       <h4 ng-show="!error"></h4>
       <div class="box-notification m20b" ng-show="error">
         <span class="text-warning">{{error|translate}}</span>
@@ -41,7 +41,7 @@
                 <span class="input-label" translate>Password</span>
                 <input type="text" name="passphrase" placeholder="{{'Passphrase'|translate}}" ng-model="passphrase">
               </label>
-              <p ng-show="isCordova" class="card size-12 text-gray" translate>
+              <p class="card size-12 text-gray" translate>
                 Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open.
               </p>
             </div>
