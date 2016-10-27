@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
     $timeout(function() {
       addressbookService.add(addressbook, function(err, ab) {
         if (err) {
-          popupService.showAlert(err);
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
         if ($scope.fromSendTab) $scope.goHome();

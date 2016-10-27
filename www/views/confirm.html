@@ -7,7 +7,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-class="{'slide-to-pay': !hasClick && !insuffientFunds}">
+  <ion-content ng-class="{'slide-to-pay': !hasClick && !insuffientFunds && !noMatchingWallet}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
@@ -46,10 +46,13 @@
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
           </span>
         </div>
+        <div class="text-center" ng-show="noMatchingWallet">
+          <span class="badge badge-energized" translate>No wallets available</span>
+        </div>
         <div class="text-center" ng-show="insuffientFunds">
           <span class="badge badge-energized" translate>Insufficient funds</span>
         </div>
-        <a class="item item-icon-right" ng-hide="insuffientFunds" ng-click="showWalletSelector()">
+        <a class="item item-icon-right" ng-hide="insuffientFunds || noMatchingWallet" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
@@ -59,14 +62,14 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-hide="insuffientFunds" ng-click="showDescriptionPopup()">
+        <a class="item single-line item-icon-right" ng-hide="insuffientFunds || noMatchingWallet" ng-click="showDescriptionPopup()">
           <span class="label" translate>Add Memo</span>
           <span class="item-note m10l">
             {{description}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-hide="insuffientFunds">
+        <div class="item single-line" ng-hide="insuffientFunds || noMatchingWallet">
           <span class="label" translate>Fee: {{feeLevel}}</span>
           <span class="item-note">
             {{fee || '...'}}

@@ -85,8 +85,8 @@
             {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
           </span>
         </div>
-        <div class="item" ng-show="tx.message">
-          {{'Memo'|translate}}
+        <div class="item single-line" ng-show="tx.message">
+          <span class="label" translate>{{'Memo'|translate}}</span>
           <span class="item-note">
             {{tx.message}}
           </span>
@@ -141,7 +141,7 @@
               </div>
               <div>
                 <span class="item-note">
-                  <time>{{ a.time * 1000 | amDateFormat:'hh:mm a'}}</time>
+                  <time>{{ a.time * 1000 | amTimeAgo}}</time>
                 </span>
               </div>
             </div>
