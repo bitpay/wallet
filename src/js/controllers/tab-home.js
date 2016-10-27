@@ -182,12 +182,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     var nextStep = function(cb) {
-      var i = 1;
+      var i = 0;
       var services = ['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'];
       lodash.each(services, function(service) {
         storageService.getNextStep(service, function(err, value) {
           $scope.externalServices[service] = value ? true : false;
-          if (i++ == services.length) return cb();
+          if (++i == services.length) return cb();
         });
       });
     };
