@@ -220,6 +220,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
       cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
       cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
+      cache.pendingBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat + cache.pendingAmount) + ' ' + cache.unitName;
 
       if (cache.pendingAmount) {
         cache.pendingAmountStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
