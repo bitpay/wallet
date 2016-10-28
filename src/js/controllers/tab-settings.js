@@ -1,17 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, uxLanguage, profileService, feeService, configService, externalLinkService) {
 
   var updateConfig = function() {
-
-    var config = configService.getSync();
-    var isCordova = platformInfo.isCordova;
-    var isWP = platformInfo.isWP;
-
-    $scope.usePushNotifications = isCordova && !isWP;
-
     $scope.appName = $window.appConfig.nameCase;
 
+    var config = configService.getSync();
     $scope.unitName = config.wallet.settings.unitName;
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
     $scope.selectedAlternative = {

@@ -85,6 +85,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         windows: {},
       }
     },
+
+    emailNotifications: {
+      enabled: true,
+    },
   };
 
   var configCache = null;
