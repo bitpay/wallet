@@ -269,13 +269,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.send.confirm', {
-        url: '/confirm/:isWallet/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        url: '/confirm/:isWallet/:toAddress/:toName/:toAmount/:toEmail/:description',
         views: {
           'tab-send@tabs': {
             controller: 'confirmController',
             templateUrl: 'views/confirm.html'
           }
-        }
+        },
+        params: { paypro: null }
       })
       .state('tabs.send.addressbook', {
         url: '/addressbook/add/:fromSendTab/:addressbookEntry',
@@ -884,13 +885,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.bitpayCard.confirm', {
-        url: '/confirm/:cardId/:toAddress/:toName/:toAmount/:toEmail/:description/:paypro',
+        url: '/confirm/:cardId/:toAddress/:toName/:toAmount/:toEmail/:description',
         views: {
           'tab-home@tabs': {
             controller: 'confirmController',
             templateUrl: 'views/confirm.html'
           }
-        }
+        },
+        params: { paypro: null }
       })
       .state('tabs.bitpayCard.preferences', {
         url: '/preferences',

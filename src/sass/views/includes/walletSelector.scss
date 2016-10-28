@@ -1,6 +1,11 @@
 wallet-selector {
-  
+
   $border-color: #EFEFEF;
+
+  .bp-action-sheet__sheet {
+    padding-left: 2rem;
+    padding-right: .75rem;
+  }
 
   .wallet-selector {
     .wallet {

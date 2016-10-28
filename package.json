@@ -12,10 +12,6 @@
     "unstage-package": "git reset package.json",
     "clean-all": "git clean -dfx"
   },
-  "engines": {
-   "node": "6",
-   "npm": "3"
-  },
   "dependencies": {
     "pre-commit": "^1.1.3"
   },
