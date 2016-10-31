@@ -27,6 +27,7 @@ slide-to-accept-success {
       transition: transform $duration*1.5 ease, background $duration*1.5 ease;
 
       &.fill-screen {
+        -webkit-transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
         transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
         background: $success-bg-color;
       }
@@ -39,12 +40,14 @@ slide-to-accept-success {
 
       > img {
         margin-bottom: 1.8rem;
+        -webkit-transform: translateY(5rem);
         transform: translateY(5rem);
         opacity: 0;
         transition: transform $duration ease, opacity $duration ease;
         transition-delay: 200ms;
 
         &.reveal {
+          -webkit-transform: translateY(0);
           transform: translateY(0);
           opacity: 1;
         }
@@ -53,12 +56,14 @@ slide-to-accept-success {
       &__header {
         color: #FFFFFF;
         font-size: 26px;
+        -webkit-transform: translateY(5rem);
         transform: translateY(5rem);
         opacity: 0;
         transition: transform $duration ease, opacity $duration ease;
         transition-delay: 250ms;
 
         &.reveal {
+          -webkit-transform: translateY(0);
           transform: translateY(0);
           opacity: 1;
         }
@@ -71,12 +76,14 @@ slide-to-accept-success {
       bottom: 0;
       padding: 0 1.75rem;
       width: 100%;
+      -webkit-transform: translateY(5rem);
       transform: translateY(5rem);
       opacity: 0;
       transition: transform $duration ease, opacity $duration ease;
       transition-delay: 250ms;
 
       &.reveal {
+        -webkit-transform: translateY(0);
         transform: translateY(0);
         opacity: 1;
       }
