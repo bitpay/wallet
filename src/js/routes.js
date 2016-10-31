@@ -276,7 +276,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/confirm.html'
           }
         },
-        params: { paypro: null }
+        params: {
+          paypro: null
+        }
       })
       .state('tabs.send.addressbook', {
         url: '/addressbook/add/:fromSendTab/:addressbookEntry',
@@ -462,15 +464,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-settings@tabs': {
             controller: 'preferencesColorController',
             templateUrl: 'views/preferencesColor.html'
-          }
-        }
-      })
-      .state('tabs.preferences.preferencesEmail', {
-        url: '/preferencesEmail',
-        views: {
-          'tab-settings@tabs': {
-            controller: 'preferencesEmailController',
-            templateUrl: 'views/preferencesEmail.html'
           }
         }
       })
@@ -892,7 +885,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/confirm.html'
           }
         },
-        params: { paypro: null }
+        params: {
+          paypro: null
+        }
       })
       .state('tabs.bitpayCard.preferences', {
         url: '/preferences',
