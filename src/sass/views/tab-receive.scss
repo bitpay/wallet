@@ -99,6 +99,7 @@
         .qr{
           padding:6vh 0 0;
           div{
+            -webkit-transform: scale(.7);
             transform: scale(.7);
           }
         }
@@ -119,6 +120,7 @@
       top: -9px;
       position: absolute;
       left: 50%;
+      -webkit-transform: translateX(-50%);
       transform: translateX(-50%);
       z-index: 2;
     }
@@ -171,9 +173,11 @@
         position: absolute;
         left: 50%;
         top: 50%;
+        -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
         @media (max-height: 600px){
           &{
+            -webkit-transform: translate(-50%, -58%);
             transform: translate(-50%, -58%);
           }
         }
