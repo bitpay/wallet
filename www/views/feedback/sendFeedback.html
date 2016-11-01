@@ -1,0 +1,34 @@
+<ion-view id="send-feedback">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-buttons side="secondary">
+      <button class="button button-back button-clear" ng-click="skip()">
+        Skip
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false">
+    <div class="row">
+      <div class="col col-50 title">
+        <span>{{reaction}}</span>
+      </div>
+      <div class="col col-50 star">
+        <a><i ng-class="{'gold': 1 <= score, 'grey': 1 > score}" class="icon ion-android-star"></i></a>
+        <a><i ng-class="{'gold': 2 <= score, 'grey': 2 > score}" class="icon ion-android-star"></i></a>
+        <a><i ng-class="{'gold': 3 <= score, 'grey': 3 > score}" class="icon ion-android-star"></i></a>
+        <a><i ng-class="{'gold': 4 <= score, 'grey': 4 > score}" class="icon ion-android-star"></i></a>
+        <a><i ng-class="{'gold': 5 == score, 'grey': 5 > score}" class="icon ion-android-star"></i></a>
+      </div>
+    </div>
+    <div class="row comment">
+      <span translate>{{comment}}</span>
+    </div>
+    <div>
+      <textarea row="40"></textarea>
+    </div>
+    <div class="padding">
+      <button type="submit" class="button button-full button-primary" ng-click="sendFeedback()" translate>
+        Send
+      </button>
+    </div>
+  </ion-content>
+</ion-view>
