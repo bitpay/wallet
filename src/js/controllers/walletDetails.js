@@ -149,6 +149,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.txHistory = $scope.completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT);
       $scope.txHistoryShowMore = $scope.completeTxHistory.length > $scope.txHistory.length;
     }
+    console.log('$scope.completeTxHistory', $scope.completeTxHistory);
+  };
+
+  $scope.getDate = function(txCreated) {
+    return new Date(txCreated * 1000);
   };
 
   $scope.showMore = function() {
