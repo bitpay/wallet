@@ -54,6 +54,13 @@
   &__tx-amount {
     white-space: nowrap;
   }
+
+  &__group-label {
+    font-size: 14px;
+    font-weight: 300;
+    color: #727272;
+    padding: 2px 1rem;
+  }
 }
 
 #walletDetails {
