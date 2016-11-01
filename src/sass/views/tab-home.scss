@@ -116,6 +116,23 @@
     font-size: 20px;
     margin-left: 10px;
     position: absolute;
+    }
   }
+  .starts {
+    display: flex;
+    border-bottom: none;
+    .button {
+      background-color: #fff;
+      width: 100%;
+    }
+    .gold {
+      color: #ffd700 !important;
+    }
+    .grey {
+      color: #667 !important;
+    }
+  }
+  .continue-button {
+    padding: 20px;
   }
 }

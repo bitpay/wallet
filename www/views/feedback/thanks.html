@@ -1,0 +1,37 @@
+<ion-view id="thanks-feedback">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-buttons side="secondary">
+      <button class="button icon ion-ios-close-empty " ui-sref="tabs.home">
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false">
+    <div ng-if="!skip">
+      <div class="title">
+          <span translate>Thank you!</span>
+      </div>
+      <div class="subtitle">
+        <span translate>A member of the team will review your feedback as soon as possible.</span>
+      </div>
+      <div class="subtitle" ng-if="score < 4">
+        <span translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</span>
+        <div>
+          <i class="icon zero-state-icon">
+            <img src="img/address-book-add.svg"/>
+          </i>
+        </div>
+      </div>
+    </div>
+    <div ng-if="skip" class="title">
+      <span translate>Invite friends to BitPay Wallet!</span>
+      <div>
+        <i class="icon zero-state-icon">
+          <img src="img/address-book-add.svg"/>
+        </i>
+      </div>
+    </div>
+    <div class="text-center" ng-if="score >= 4">
+      <span translate>Share the love by inviting your friends.</span>
+    </div>
+  </ion-content>
+</ion-view>
