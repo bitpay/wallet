@@ -60,6 +60,7 @@
       &.swiper-slide-prev,
       &.swiper-slide-next {
         opacity: .3;
+        -webkit-transform: scale(.8);
         transform: scale(.8);
       }
       &.swiper-slide-prev {
