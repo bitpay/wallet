@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
   var countDown = null;
+  $scope.isCordova = platformInfo.isCordova;
   $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -30,9 +31,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $log.error('Bad params at amount');
       throw ('bad params');
     }
-    $scope.isCordova = platformInfo.isCordova;
-    $scope.hasClick = platformInfo.hasClick;
-    $scope.data = {};
 
     var config = configService.getSync().wallet;
     $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
