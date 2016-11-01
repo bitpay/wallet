@@ -8,9 +8,10 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
     // Stop it from caching the first view as one to return when the app opens
     $ionicHistory.nextViewOptions({
       historyRoot: true,
-      disableBack: true,
+      disableBack: false,
       disableAnimation: true
     });
+
     var url = args.url;
     if (!url) {
       $log.error('No url provided');
