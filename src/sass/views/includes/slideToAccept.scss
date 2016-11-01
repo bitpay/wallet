@@ -27,6 +27,7 @@ slide-to-accept {
       height: 100%;
       width: 100%;
       background: $slider-bg-color;
+      -webkit-transform: translateX(0);
       transform: translateX(0);
       margin-left: -100%;
       z-index: 2;
@@ -55,6 +56,7 @@ slide-to-accept {
         right: -71px;
         border-radius: 50%;
         top: 50%;
+        -webkit-transform: translateY(-47%);
         transform: translateY(-47%);
       }
 
@@ -65,6 +67,7 @@ slide-to-accept {
       z-index: 3;
 
       > img {
+        -webkit-transform: rotateZ(-5deg);
         transform: rotateZ(-5deg);
       }
     }
@@ -91,11 +94,13 @@ slide-to-accept {
       font-size: 17px;
       letter-spacing: 0.02rem;
       text-transform: capitalize;
+      -webkit-transform: translateY(2rem);
       transform: translateY(2rem);
       opacity: 0;
 
       &.enter {
         transition: transform 250ms ease, opacity 250ms ease;
+        -webkit-transform: translateY(0);
         transform: translateY(0);
         opacity: 1;
       }
@@ -117,9 +122,11 @@ slide-to-accept {
 
   @keyframes spin {
     from {
+        -webkit-transform:rotate(0deg);
         transform:rotate(0deg);
     }
     to {
+        -webkit-transform:rotate(360deg);
         transform:rotate(360deg);
     }
   }
