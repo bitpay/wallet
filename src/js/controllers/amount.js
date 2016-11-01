@@ -242,7 +242,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.send.confirm', {
         isWallet: $scope.isWallet,
-        toAmount: (amount * unitToSatoshi).toFixed(unitDecimals),
+        toAmount: (amount * unitToSatoshi).toFixed(0),
         toAddress: $scope.toAddress,
         toName: $scope.toName,
         toEmail: $scope.toEmail
