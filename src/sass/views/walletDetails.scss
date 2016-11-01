@@ -14,10 +14,13 @@
   }
   &__tx-time {
     color: $light-gray;
+    font-size: 14px;
   }
   &__tx-title {
-    padding-top: 10px;
+    //padding-top: 10px;
+    flex-grow: 1;
     color: $dark-gray;
+    overflow: hidden;
   }
   &__tx-icon {
     float: left;
@@ -25,6 +28,31 @@
   }
   &__tx-message {
     margin-right: 1rem;
+  }
+
+  &__list {
+
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding-left: 1rem;
+  }
+
+  &__tx-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 1rem 0;
+    padding-right: 1rem;
+    border-bottom: 1px solid rgb(245, 245, 245);
+    overflow: hidden;
+  }
+
+  &__tx-amount {
+    white-space: nowrap;
   }
 }
 

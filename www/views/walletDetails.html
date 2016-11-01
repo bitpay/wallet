@@ -125,7 +125,7 @@
         </div>
       </div>
 
-      <div class="list" ng-show="txHistory[0]">
+      <!-- <div class="list" ng-show="txHistory[0]">
         <div class="item" ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
           <span class="item-note text-right">
             <span class="wallet-details__tx-amount" ng-class="{'wallet-details__tx-amount--recent': btx.recent, 'wallet-details__tx-amount--received': btx.action == 'received', 'wallet-details__tx-amount--sent': btx.action == 'sent'}">
@@ -170,6 +170,60 @@
             </div>
             <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
           </div>
+
+        </div>
+      </div> -->
+
+      <div class="wallet-details__list" ng-show="txHistory[0]">
+        <div class="wallet-details__item" ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
+
+          <img class="wallet-details__tx-icon" src="img/icon-tx-received.svg" width="40" ng-if="btx.action == 'received'">
+          <img class="wallet-details__tx-icon" src="img/icon-tx-sent.svg" width="40" ng-if="btx.action == 'sent'">
+          <img class="wallet-details__tx-icon" src="img/icon-tx-moved.svg" width="40" ng-if="btx.action == 'moved'">
+
+          <div class="wallet-details__tx-content">
+            <div class="wallet-details__tx-title">
+              <div ng-show="btx.action == 'received'" class="ellipsis">
+                <div ng-if="btx.note.body">{{btx.note.body}}</div>
+                <div ng-if="!btx.note.body" translate> Received</div>
+              </div>
+
+              <div ng-show="btx.action == 'sent'" class="ellipsis">
+                <div ng-if="btx.message" class="wallet-details__tx-message ellipsis">{{btx.message}}</div>
+                <div ng-if="!btx.message && btx.note.body">{{btx.note.body}}</div>
+                <div ng-if="!btx.message && !btx.note.body && addressbook[btx.addressTo]">
+                  {{addressbook[btx.addressTo].name || addressbook[btx.addressTo]}}
+                </div>
+                <div ng-if="!btx.message && !btx.note.body && !addressbook[btx.addressTo]" translate>Sent</div>
+              </div>
+
+              <div ng-show="btx.action == 'moved'" class="ellipsis">
+                <div ng-if="btx.note.body">{{btx.note.body}}</div>
+                <div ng-if="!btx.note.body" translate>Moved</div>
+              </div>
+              <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
+            </div>
+
+            <span class="item-note text-right wallet-details__tx-amount">
+              <span class="wallet-details__tx-amount" ng-class="{'wallet-details__tx-amount--recent': btx.recent, 'wallet-details__tx-amount--received': btx.action == 'received', 'wallet-details__tx-amount--sent': btx.action == 'sent'}">
+                <span ng-if="btx.action == 'sent'">–</span>
+                <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+                (possible double spend)
+                </span>
+                <span  ng-if="btx.action != 'invalid'">
+                {{btx.amountStr}}
+                </span>
+              </span>
+              <div>
+                <time class="wallet-details__tx-time" ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
+                <span translate class="text-warning"
+                  ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+                  Unconfirmed
+                </span>
+              </div>
+            </span>
+          </div>
+
         </div>
       </div>
       <ion-infinite-scroll
