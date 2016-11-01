@@ -1,0 +1,33 @@
+#send-feedback {
+  background-color: #fff;
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: $dark-gray;
+    margin: 20px 10px;
+  }
+  .star {
+    margin: 20px 0px;
+  }
+  a {
+    font-size: 25px;
+    padding: 12px;
+    .gold {
+      color: #ffd700 !important;
+    }
+    .grey {
+      color: #667 !important;
+    }
+  }
+  .comment {
+    padding: 20px;
+    font-size: 1rem;
+    line-height: 1.5em;
+    font-weight: 300;
+    color: $dark-gray;
+  }
+  textarea {
+    padding: 10px;
+    width: 100%;
+  }
+}
