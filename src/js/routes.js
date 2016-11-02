@@ -998,10 +998,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           $log.debug('Profile loaded ... Starting UX.');
           scannerService.gentleInitialize();
           $state.go('tabs.home');
-          $timeout(function() {
-            openURLService.init();
-          }, 1000);
         }
+
+        // After everything have been loaded, initialize handler URL
+        $timeout(function() {
+          openURLService.init();
+        }, 1000);
       });
     });
 
