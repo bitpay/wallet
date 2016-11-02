@@ -224,7 +224,15 @@ module.exports = function(grunt) {
         buildDir: './webkitbuilds',
         version: '0.16.0',
         macIcns: './resources/<%= pkg.name %>/mac/app.icns',
-        exeIco: './www/img/app/logo.ico'
+        exeIco: './www/img/app/logo.ico',
+        macPlist: {
+          'CFBundleURLTypes': [
+            {
+              'CFBundleURLName' : 'URI Handler',
+              'CFBundleURLSchemes' : ['bitcoin', '<%= pkg.name %>']
+            }
+          ]
+        }
       },
       src: ['./package.json', './www/**/*']
     },
@@ -254,6 +262,7 @@ module.exports = function(grunt) {
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('macos', ['prod', 'nwjs', 'exec:macos']);
+  grunt.registerTask('macos-debug', ['default', 'nwjs']);
   grunt.registerTask('chrome', ['exec:chrome']);
   grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-copy', ['default', 'exec:wpcopy']);
