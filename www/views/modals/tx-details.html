@@ -60,6 +60,20 @@
             {{btx.feeStr}}
           </span>
         </div>
+        <div class="item single-line">
+          <span class="label" translate>Confirmations</span>
+          <span class="item-note">
+            <span class="assertive" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
+              Unconfirmed
+            </span>
+            <span ng-show="btx.confirmations>0 && !btx.safeConfirmed">
+              {{btx.confirmations}}
+            </span>
+            <span ng-show="btx.safeConfirmed">
+              {{btx.safeConfirmed}}
+            </span>
+          </span>
+        </div>
         <div ng-if="actionList[0]">
           <div class="item item-divider" translate>Timeline</div>
           <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList | orderBy: 'time' :true track by $index">
