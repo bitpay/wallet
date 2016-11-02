@@ -22,11 +22,11 @@
       <span translate>Would you be willing to rate BitPay Wallet in the app store?</span>
     </div>
     <div>
-      <button type="submit" class="button button-standard button-primary" ng-click="goAppStore()">
+      <button type="submit" class="button button-standard button-primary" ng-click="goAppStore()" ng-if="isCordova">
         <span translate>Rate on the app store</span>
       </button>
       <button type="submit" class="button button-standard button-primary" ng-click="sendFeedback()">
-        <span translate>Send us feedback instead</span>
+        <span translate>Send us feedback</span>
       </button>
     </div>
   </ion-content>
