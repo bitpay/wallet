@@ -9,4 +9,15 @@
   .subtitle {
     padding: 10px 30px 20px 40px;
   }
+  .row {
+    margin: 20px 0px 20px;
+    span {
+      margin-top: 15px;
+      display: block;
+    }
+    div {
+      text-align: center;
+      width: 100%;
+    }
+  }
 }

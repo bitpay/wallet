@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('rateAppStoreController', func
   $scope.skip = function() {
     $state.go('feedback.thanks', {
       score: $scope.score,
-      skip: true
+      skipped: true
     });
   };
 

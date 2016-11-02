@@ -741,7 +741,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('feedback.thanks', {
-        url: '/thanks/:score/:skip',
+        url: '/thanks/:score/:skipped',
         views: {
           'feedback': {
             controller: 'thanksController',
