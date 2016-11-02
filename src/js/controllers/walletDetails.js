@@ -153,7 +153,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.getDate = function(txCreated) {
-    return new Date(txCreated * 1000);
+    var date = new Date(txCreated * 1000);
+    return date;
   };
 
   $scope.showGroupHeader = function(index) {
@@ -168,9 +169,16 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   function createdDuringSameMonth(tx1, tx2) {
     var date1 = new Date(tx1.time * 1000);
     var date2 = new Date(tx2.time * 1000);
-    var date1MonthYear = date1.getMonth() + date1.getFullYear();
-    var date2MonthYear = date2.getMonth() + date2.getFullYear();
-    return date1MonthYear === date2MonthYear;
+    return getMonthYear(date1) === getMonthYear(date2);
+  }
+
+  $scope.isDateInCurrentMonth = function(date) {
+    var now = new Date();
+    return getMonthYear(now) === getMonthYear(date);
+  };
+
+  function getMonthYear(date) {
+    return date.getMonth() + date.getFullYear();
   }
 
   $scope.showMore = function() {
