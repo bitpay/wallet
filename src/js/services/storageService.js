@@ -203,6 +203,14 @@ angular.module('copayApp.services')
       storage.set('homeTip', val, cb);
     };
 
+    root.getRateCardFlag = function(cb) {
+      storage.get('rateCardFlag', cb);
+    };
+
+    root.setRateCardFlag = function(val, cb) {
+      storage.set('rateCardFlag', val, cb);
+    };
+
     root.setHideBalanceFlag = function(walletId, val, cb) {
       storage.set('hideBalance-' + walletId, val, cb);
     };

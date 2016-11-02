@@ -10,13 +10,13 @@
      spinner="ios-small"
      on-refresh="onRefresh()">
    </ion-refresher>
-    <div class="release" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
+    <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
       <span translate>An update to this app is available</span><span><i class="icon bp-arrow-right"></i></span>
     </div>
-    <div class="list card">
+    <div class="list card ng-hide" ng-show="!hideRateCard">
       <div class="item item-icon-right item-heading">
         <span translate>How do you like BitPay Wallet?</span>
-        <a><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+        <a ng-click="hideCard()" ><i class="icon ion-ios-close-empty close-home-tip"></i></a>
       </div>
       <div class="starts item item-sub">
         <button class="button icon ion-android-star" ng-click="setScore(1)" ng-class="{'gold': 1 <= score, 'grey': 1 > score}"></button>
