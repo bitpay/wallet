@@ -176,7 +176,14 @@
 
       <div class="wallet-details__list" ng-show="txHistory[0]">
         <div ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
-          <div class="wallet-details__group-label" ng-if="showGroupHeader($index)">{{getDate(btx.time) | date:'MMMM'}}</div>
+          <div class="wallet-details__group-label" ng-if="showGroupHeader($index)">
+            <span ng-if="isDateInCurrentMonth(getDate(btx.time))">
+              Recent
+            </span>
+            <span ng-if="!isDateInCurrentMonth(getDate(btx.time))">
+              {{getDate(btx.time) | date:'MMMM'}}
+            </span>
+          </div>
 
           <div class="wallet-details__item">
             <img class="wallet-details__tx-icon" src="img/icon-tx-received.svg" width="40" ng-if="btx.action == 'received'">
