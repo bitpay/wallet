@@ -28,14 +28,15 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
   $scope.sendFeedback = function() {
     //Feedback entered in feedback flow should be sent to BWS, and BWS should send a plain-text email to feedback@bitpay.com with a reply-to going to the user's email address. (From the onboarding process)
     $state.go('feedback.thanks', {
-      score: $stateParams.score
+      score: $stateParams.score,
+      skipped: false
     });
   };
 
   $scope.skip = function() {
     $state.go('feedback.thanks', {
       score: $scope.score,
-      skip: true
+      skipped: true
     });
   };
 

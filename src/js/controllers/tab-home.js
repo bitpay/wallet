@@ -36,12 +36,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      $scope.hideRateCard = $stateParams.fromAppRate || !$scope.isCordova;
-      if (!$scope.hideRateCard) {
-        storageService.getRateCardFlag(function(error, value) {
-          $scope.hideRateCard = (value == 'true') ? true : false;
-        });
-      }
+      storageService.getRateCardFlag(function(error, value) {
+        $scope.hideRateCard = (value == 'true') ? true : false;
+      });
+
     });
 
     $scope.$on("$ionicView.enter", function(event, data) {
@@ -144,14 +142,15 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.goFeedbackFlow = function() {
-      if ($scope.score != 5)
-        $state.go('feedback.sendFeedback', {
-          score: $scope.score
-        });
-      else
+      if ($scope.isCordova && $scope.score == 5) {
         $state.go('feedback.rateAppStore', {
           score: $scope.score
         });
+      } else {
+        $state.go('feedback.sendFeedback', {
+          score: $scope.score
+        });
+      }
     };
 
     $scope.openNotificationModal = function(n) {
