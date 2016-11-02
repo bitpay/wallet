@@ -156,6 +156,23 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     return new Date(txCreated * 1000);
   };
 
+  $scope.showGroupHeader = function(index) {
+    if(index === 0) {
+      return true;
+    }
+    var curTx = $scope.txHistory[index];
+    var prevTx = $scope.txHistory[index - 1];
+    return !createdDuringSameMonth(curTx, prevTx);
+  };
+
+  function createdDuringSameMonth(tx1, tx2) {
+    var date1 = new Date(tx1.time * 1000);
+    var date2 = new Date(tx2.time * 1000);
+    var date1MonthYear = date1.getMonth() + date1.getFullYear();
+    var date2MonthYear = date2.getMonth() + date2.getFullYear();
+    return date1MonthYear === date2MonthYear;
+  }
+
   $scope.showMore = function() {
     $timeout(function() {
       currentTxHistoryPage++;
