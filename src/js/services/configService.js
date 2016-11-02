@@ -15,6 +15,16 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://bws.bitpay.com/bws/api',
     },
 
+    download: {
+      url: 'https://bitpay.com/wallet',
+    },
+
+    rateApp: {
+      ios: 'https://itunes.apple.com/app/bitpay-secure-bitcoin-wallet/id1149581638',
+      android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+      wp: ''
+    },
+
     // wallet default config
     wallet: {
       requiredCopayers: 2,
