@@ -902,7 +902,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
   .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService) {
 
     uxLanguage.init();
-    openURLService.init();
 
     $ionicPlatform.ready(function() {
       if (platformInfo.isCordova) {
@@ -995,6 +994,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           scannerService.gentleInitialize();
           $state.go('tabs.home');
         }
+
+        // After everything have been loaded, initialize handler URL
+        $timeout(function() {
+          openURLService.init();
+        }, 1000);
       });
     });
 
