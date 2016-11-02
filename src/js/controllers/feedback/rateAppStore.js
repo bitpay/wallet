@@ -2,7 +2,6 @@
 
 angular.module('copayApp.controllers').controller('rateAppStoreController', function($scope, $state, $stateParams, externalLinkService, configService, gettextCatalog, platformInfo) {
   $scope.score = parseInt($stateParams.score);
-  $scope.isCordova = platformInfo.isCordova;
   var isAndroid = platformInfo.isAndroid;
   var isIOS = platformInfo.isIOS;
   var isWP = platformInfo.isWP;

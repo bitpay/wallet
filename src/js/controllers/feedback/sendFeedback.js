@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendFeedbackController', function($scope, $state, $timeout, $stateParams, gettextCatalog) {
+angular.module('copayApp.controllers').controller('sendFeedbackController', function($scope, $state, $stateParams, gettextCatalog) {
   $scope.score = parseInt($stateParams.score);
   switch ($scope.score) {
     case 1:
