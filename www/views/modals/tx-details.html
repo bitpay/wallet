@@ -41,7 +41,7 @@
             <div>{{wallet.name}}</div>
           </div>
         </div>
-        <div class="item single-line">
+        <div class="item single-line" ng-if="btx.action != 'received'">
           <span class="label" translate>Created by</span>
           <span class="item-note">
             {{btx.creatorName}} <time>{{ (btx.ts || btx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
