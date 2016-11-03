@@ -22,9 +22,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toEmail = data.stateParams.toEmail;
     $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard;
     $scope.toColor = data.stateParams.toColor;
-    var network = (new bitcore.Address($scope.toAddress)).network.name;
+    $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.wallets = profileService.getWallets({
-      network: network
+      network: $scope.network
     });
 
     $scope.customAmount = data.stateParams.customAmount;
@@ -83,7 +83,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.getSendMaxInfo = function(wallet) {
-    feeService.getCurrentFeeValue(function(err, fee) {
+    feeService.getCurrentFeeValue($scope.network, function(err, fee) {
       if (err) {
         popupService.showAlert(gettextCatalog.getString('Error'), err.message);
         return;
