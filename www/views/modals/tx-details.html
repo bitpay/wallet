@@ -10,9 +10,13 @@
   <ion-content>
     <div class="list">
       <div class="item head">
-        <div class="sending-label">
+        <div class="sending-label" ng-if="btx.confirmations > 0">
           <img src="img/icon-check-circled.svg">
           <span translate>{{btx.action | translate}}</span>
+        </div>
+        <div class="sending-label" ng-if="btx.confirmations === 0">
+          <img src="img/icon-confirming.svg">
+          <span translate>Confirming</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
