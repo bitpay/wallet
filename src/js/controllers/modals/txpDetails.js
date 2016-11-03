@@ -141,22 +141,24 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   $scope.remove = function() {
-    $scope.loading = true;
+    var title = gettextCatalog.getString('Warning!');
+    var msg = gettextCatalog.getString('Are you sure you want to remove this transaction?');
+    popupService.showConfirm(title, msg, null, null, function(res) {
+      if (res) {
+        ongoingProcess.set('removeTx', true);
+        walletService.removeTx($scope.wallet, $scope.tx, function(err) {
+          ongoingProcess.set('removeTx', false);
 
-    $timeout(function() {
-      ongoingProcess.set('removeTx', true);
-      walletService.removeTx($scope.wallet, $scope.tx, function(err) {
-        ongoingProcess.set('removeTx', false);
+          // Hacky: request tries to parse an empty response
+          if (err && !(err.message && err.message.match(/Unexpected/))) {
+            $scope.$emit('UpdateTx');
+            return setError(err, gettextCatalog.getString('Could not delete payment proposal'));
+          }
 
-        // Hacky: request tries to parse an empty response
-        if (err && !(err.message && err.message.match(/Unexpected/))) {
-          $scope.$emit('UpdateTx');
-          return setError(err, gettextCatalog.getString('Could not delete payment proposal'));
-        }
-
-        $scope.close();
-      });
-    }, 10);
+          $scope.close();
+        });
+      }
+    });
   };
 
   $scope.broadcast = function(txp) {
@@ -183,7 +185,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   var updateTxInfo = function(eventName) {
     $scope.wallet.getTx($scope.tx.id, function(err, tx) {
       if (err) {
-        if (err.message && err.message == 'TX_NOT_FOUND' &&
+        if (err.message && err.message == 'Transaction proposal not found' &&
             (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
           $scope.tx.removed = true;
           $scope.tx.canBeRemoved = false;
