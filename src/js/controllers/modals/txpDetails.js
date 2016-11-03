@@ -1,13 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $ionicModal, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, fingerprintService, bwcError, gettextCatalog, lodash, walletService, popupService, $state, $ionicHistory) {
-  var self = $scope.self;
-  var tx = $scope.tx;
-  var copayers = $scope.copayers;
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, walletService, popupService, $ionicHistory) {
   var isGlidera = $scope.isGlidera;
   var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   var now = Math.floor(Date.now() / 1000);
   var countDown;
+  var listeners = [];
 
   $scope.init = function() {
     $scope.loading = null;
@@ -18,8 +16,8 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.color = $scope.wallet.color;
     $scope.data = {};
     $scope.hasClick = platformInfo.hasClick;
-    $scope.displayAmount = getDisplayAmount(tx.amountStr);
-    $scope.displayUnit = getDisplayUnit(tx.amountStr);
+    $scope.displayAmount = getDisplayAmount($scope.tx.amountStr);
+    $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
     initActionList();
     checkPaypro();
   }
@@ -46,12 +44,12 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
     $scope.actionList.push({
       type: 'created',
-      time: tx.createdOn,
+      time: $scope.tx.createdOn,
       description: actionDescriptions['created'],
-      by: tx.creatorName
+      by: $scope.tx.creatorName
     });
 
-    lodash.each(tx.actions, function(action) {
+    lodash.each($scope.tx.actions, function(action) {
       $scope.actionList.push({
         type: action.type,
         time: action.createdOn,
@@ -61,36 +59,68 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     });
   };
 
+  function checkPaypro() {
+    if ($scope.tx.payProUrl && !platformInfo.isChromeApp) {
+      $scope.wallet.fetchPayPro({
+        payProUrl: $scope.tx.payProUrl,
+      }, function(err, paypro) {
+        if (err) return;
+        $scope.tx.paypro = paypro;
+        paymentTimeControl($scope.tx.paypro.expires);
+        $timeout(function() {
+          $ionicScrollDelegate.resize();
+        }, 10);
+      });
+    }
+  };
+
+  function paymentTimeControl(expirationTime) {
+    $scope.paymentExpired = false;
+    setExpirationTime();
+
+    countDown = $interval(function() {
+      setExpirationTime();
+    }, 1000);
+
+    function setExpirationTime() {
+      var now = Math.floor(Date.now() / 1000);
+      if (now > expirationTime) {
+        $scope.paymentExpired = true;
+        if (countDown) $interval.cancel(countDown);
+        return;
+      }
+      var totalSecs = expirationTime - now;
+      var m = Math.floor(totalSecs / 60);
+      var s = totalSecs % 60;
+      $scope.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+    };
+  };
+
   $scope.$on('accepted', function(event) {
     $scope.sign();
   });
 
   // ToDo: use tx.customData instead of tx.message
-  if (tx.message === 'Glidera transaction' && isGlidera) {
-    tx.isGlidera = true;
-    if (tx.canBeRemoved) {
-      tx.canBeRemoved = (Date.now() / 1000 - (tx.ts || tx.createdOn)) > GLIDERA_LOCK_TIME;
+  if ($scope.tx.message === 'Glidera transaction' && isGlidera) {
+    $scope.tx.isGlidera = true;
+    if ($scope.tx.canBeRemoved) {
+      $scope.tx.canBeRemoved = (Date.now() / 1000 - ($scope.tx.ts || $scope.tx.createdOn)) > GLIDERA_LOCK_TIME;
     }
   }
 
-  var setSendError = function(msg) {
+  var setError = function (err, prefix) {
     $scope.sendStatus = '';
-    var error = msg || gettextCatalog.getString('Could not send payment');
-    popupService.showAlert(gettextCatalog.getString('Error'), error);
-  }
+    $scope.loading = false;
+    popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, prefix));
+  };
 
   $scope.sign = function(onSendStatusChange) {
     $scope.loading = true;
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
       $scope.$emit('UpdateTx');
-      if (err) return setSendError(err);
+      if (err) return setError(err, gettextCatalog.getString('Could not send payment'));
       success();
     }, onSendStatusChange);
-  };
-
-  function setError(err, prefix) {
-    $scope.loading = false;
-    popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, prefix));
   };
 
   $scope.reject = function(txp) {
@@ -150,69 +180,46 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     return $scope.wallet.credentials.networkName.substring(0, 4);
   };
 
-  function checkPaypro() {
-    if (tx.payProUrl && !platformInfo.isChromeApp) {
-      $scope.wallet.fetchPayPro({
-        payProUrl: tx.payProUrl,
-      }, function(err, paypro) {
-        if (err) return;
-        tx.paypro = paypro;
-        paymentTimeControl(tx.paypro.expires);
-        $timeout(function() {
-          $ionicScrollDelegate.resize();
-        }, 10);
-      });
-    }
-  };
-
-  function paymentTimeControl(expirationTime) {
-    $scope.paymentExpired = false;
-    setExpirationTime();
-
-    countDown = $interval(function() {
-      setExpirationTime();
-    }, 1000);
-
-    function setExpirationTime() {
-      var now = Math.floor(Date.now() / 1000);
-      if (now > expirationTime) {
-        $scope.paymentExpired = true;
-        if (countDown) $interval.cancel(countDown);
+  var updateTxInfo = function(eventName) {
+    $scope.wallet.getTx($scope.tx.id, function(err, tx) {
+      if (err) {
+        if (err.message && err.message == 'TX_NOT_FOUND' &&
+            (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
+          $scope.tx.removed = true;
+          $scope.tx.canBeRemoved = false;
+          $scope.tx.pendingForUs = false;
+          $scope.$apply();
+        }
         return;
       }
-      var totalSecs = expirationTime - now;
-      var m = Math.floor(totalSecs / 60);
-      var s = totalSecs % 60;
-      $scope.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
-    };
+
+      var action = lodash.find(tx.actions, {
+        copayerId: $scope.wallet.credentials.copayerId
+      });
+
+      $scope.tx = txFormatService.processTx(tx);
+
+      if (!action && tx.status == 'pending')
+        $scope.tx.pendingForUs = true;
+
+      $scope.updateCopayerList();
+      initActionList();
+      $scope.$apply();
+    });
   };
 
-  lodash.each(['TxProposalRejectedBy', 'TxProposalAcceptedBy', 'transactionProposalRemoved', 'TxProposalRemoved', 'NewOutgoingTx', 'UpdateTx'], function(eventName) {
-    $rootScope.$on(eventName, function() {
-      $scope.wallet.getTx($scope.tx.id, function(err, tx) {
-        if (err) {
-          if (err.message && err.message == 'TX_NOT_FOUND' &&
-            (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
-            $scope.tx.removed = true;
-            $scope.tx.canBeRemoved = false;
-            $scope.tx.pendingForUs = false;
-            $scope.$apply();
-          }
-          return;
-        }
-
-        var action = lodash.find(tx.actions, {
-          copayerId: $scope.wallet.credentials.copayerId
-        });
-
-        $scope.tx = txFormatService.processTx(tx);
-
-        if (!action && tx.status == 'pending')
-          $scope.tx.pendingForUs = true;
-
-        $scope.updateCopayerList();
-        $scope.$apply();
-      });
+  var bwsEvent =  $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+    lodash.each([
+        'TxProposalRejectedBy',
+        'TxProposalAcceptedBy',
+        'transactionProposalRemoved',
+        'TxProposalRemoved',
+        'NewOutgoingTx',
+        'UpdateTx'
+    ], function(eventName) {
+      if (walletId == $scope.wallet.id && type == eventName) {
+        updateTxInfo(eventName);
+      }
     });
   });
 
@@ -252,6 +259,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   $scope.close = function() {
+    bwsEvent();
     $scope.loading = null;
     $scope.txpDetailsModal.hide();
   };
