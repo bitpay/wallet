@@ -118,21 +118,24 @@
     position: absolute;
     }
   }
-  .starts {
+  .stars {
     display: flex;
     border-bottom: none;
     .button {
       background-color: #fff;
-      width: 100%;
+      outline: none;
+      border: none;
+      height:10px;
+      width:10px;
     }
     .gold {
-      color: #ffd700 !important;
+      color: #ffd700;
     }
-    .grey {
-      color: #667 !important;
+    .subtle-gray {
+      color: $subtle-gray;
     }
   }
-  .continue-button {
+  .feedback-flow-button {
     padding: 20px;
   }
 }
