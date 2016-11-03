@@ -186,12 +186,16 @@
           </div>
 
           <div class="wallet-details__item">
-            <img class="wallet-details__tx-icon" src="img/icon-tx-received.svg" width="40" ng-if="btx.action == 'received'">
-            <img class="wallet-details__tx-icon" src="img/icon-tx-sent.svg" width="40" ng-if="btx.action == 'sent'">
-            <img class="wallet-details__tx-icon" src="img/icon-tx-moved.svg" width="40" ng-if="btx.action == 'moved'">
+            <img class="wallet-details__tx-icon" src="img/icon-confirming.svg" width="40" ng-if="btx.confirmations === 0">
+            <span ng-if="btx.confirmations > 0">
+              <img class="wallet-details__tx-icon" src="img/icon-tx-received.svg" width="40" ng-if="btx.action == 'received'">
+              <img class="wallet-details__tx-icon" src="img/icon-tx-sent.svg" width="40" ng-if="btx.action == 'sent'">
+              <img class="wallet-details__tx-icon" src="img/icon-tx-moved.svg" width="40" ng-if="btx.action == 'moved'">
+            </span>
 
             <div class="wallet-details__tx-content">
-              <div class="wallet-details__tx-title">
+
+              <div class="wallet-details__tx-title" ng-if="btx.confirmations > 0">
                 <div ng-show="btx.action == 'received'" class="ellipsis">
                   <div ng-if="btx.note.body">{{btx.note.body}}</div>
                   <div ng-if="!btx.note.body" translate> Received</div>
@@ -211,6 +215,12 @@
                   <div ng-if="!btx.note.body" translate>Moved</div>
                 </div>
                 <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
+              </div>
+
+              <div class="wallet-details__tx-title" ng-if="btx.confirmations === 0">
+                <div class="ellipsis" style="color: #B4B4B4;">
+                  Confirming
+                </div>
               </div>
 
               <span class="item-note text-right wallet-details__tx-amount">
