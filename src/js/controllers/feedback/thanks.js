@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('thanksController', function($scope, $stateParams, platformInfo, configService, storageService) {
+angular.module('copayApp.controllers').controller('thanksController', function($scope, $stateParams, $timeout, $log, platformInfo, configService, storageService) {
   $scope.score = parseInt($stateParams.score);
   $scope.skipped = $stateParams.skipped == 'false' ? false : true;
   $scope.isCordova = platformInfo.isCordova;
@@ -11,11 +11,11 @@ angular.module('copayApp.controllers').controller('thanksController', function($
   };
 
   $scope.shareTwitter = function() {
-    window.plugins.socialsharing.shareVia('com.apple.social.twitter', config.download.url, null, null, 'http://www.x-services.nl', null, null);
+    window.plugins.socialsharing.shareVia($scope.shareTwitterVia, config.download.url, null, null, null, null, null);
   };
 
   $scope.shareGooglePlus = function() {
-    window.plugins.socialsharing.shareVia('com.google.android.apps.plus', config.download.url, null, null, null);
+    window.plugins.socialsharing.shareVia($scope.shareGooglePlusVia, config.download.url, null, null, null);
   };
 
   $scope.shareEmail = function() {
@@ -31,45 +31,46 @@ angular.module('copayApp.controllers').controller('thanksController', function($
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    storageService.setRateCardFlag('true', function() {});
     if (!$scope.isCordova) return;
 
     window.plugins.socialsharing.available(function(isAvailable) {
+      storageService.setRateCardFlag('true', function() {});
       // the boolean is only false on iOS < 6
       $scope.socialsharing = isAvailable;
       if (isAvailable) {
-
         window.plugins.socialsharing.canShareVia('com.apple.social.facebook', 'msg', null, null, null, function(e) {
           $scope.facebook = true;
         }, function(e) {
+          $log.debug('facebook error: ' + e);
           $scope.facebook = false;
         });
-        window.plugins.socialsharing.canShareVia('com.apple.social.twitter', 'msg', null, null, null, function(e) {
+        window.plugins.socialsharing.canShareVia('com.twitter.android', 'msg', null, null, null, function(e) {
+          $scope.shareTwitterVia = 'com.twitter.android';
           $scope.twitter = true;
         }, function(e) {
+          $log.debug('twitter error: ' + e);
           $scope.twitter = false;
         });
         window.plugins.socialsharing.canShareVia('com.google.android.apps.plus', 'msg', null, null, null, function(e) {
+          $scope.shareGooglePlusVia = 'com.google.android.apps.plus';
           $scope.googleplus = true;
         }, function(e) {
+          $log.debug('googlePlus error: ' + e);
           $scope.googleplus = false;
-        })
+        });
         window.plugins.socialsharing.canShareViaEmail(function(e) {
           $scope.email = true;
         }, function(e) {
+          $log.debug('email error: ' + e);
           $scope.email = false;
-        })
+        });
         window.plugins.socialsharing.canShareVia('whatsapp', 'msg', null, null, null, function(e) {
           $scope.whatsapp = true;
         }, function(e) {
+          $log.debug('whatsapp error: ' + e);
           $scope.whatsapp = false;
-        })
-        window.plugins.socialsharing.canShareVia('sms', 'msg', null, null, null, function(e) {
-          $scope.sms = true;
-        }, function(e) {
-          $scope.sms = false;
-        })
+        });
       }
-    });
+    }, 100);
   });
 });
