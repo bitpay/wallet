@@ -54,10 +54,19 @@
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-hide="insuffientFunds">
+        <div class="item single-line">
           <span class="label" translate>Fee</span>
           <span class="item-note">
             {{btx.feeStr}}
+          </span>
+        </div>
+        <div class="item single-line">
+          <span class="label" translate>Confirmations</span>
+          <span class="item-note" ng-if="btx.confirmations < 6">
+            {{btx.confirmations}}
+          </span>
+          <span class="item-note" ng-if="btx.confirmations >= 6">
+            6+
           </span>
         </div>
         <div ng-if="actionList[0]">
