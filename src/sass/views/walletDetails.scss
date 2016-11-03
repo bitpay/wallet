@@ -40,6 +40,10 @@
     background: #fff;
     padding-left: 1rem;
 
+    &.proposal {
+      position: relative;
+    }
+
     &__marker {
       position: absolute;
       height: 100%;
