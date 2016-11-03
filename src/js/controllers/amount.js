@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, amazonService, profileService) {
-
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, amazonService, profileService, bitcore, walletService, feeService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -15,7 +14,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-
     $scope.isGiftCard = data.stateParams.isGiftCard;
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
@@ -24,6 +22,10 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toEmail = data.stateParams.toEmail;
     $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard;
     $scope.toColor = data.stateParams.toColor;
+    var network = (new bitcore.Address($scope.toAddress)).network.name;
+    $scope.wallets = profileService.getWallets({
+      network: network
+    });
 
     $scope.customAmount = data.stateParams.customAmount;
 
@@ -80,6 +82,40 @@ angular.module('copayApp.controllers').controller('amountController', function($
     }, 10);
   });
 
+  $scope.getSendMaxInfo = function(wallet) {
+    feeService.getCurrentFeeValue(function(err, fee) {
+      if (err) {
+        popupService.showAlert(gettextCatalog.getString('Error'), err.message);
+        return;
+      }
+      console.log(fee);
+      var config = configService.getSync();
+
+      ongoingProcess.set('retrivingInputs', true);
+      walletService.getSendMaxInfo(wallet, {
+        feePerKb: feePerKb,
+        excludeUnconfirmedUtxos: !config.wallet.spendUnconfirmed,
+        returnInputs: true,
+      }, function(err, resp) {
+        ongoingProcess.set('retrivingInputs', false);
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+
+        console.log(err, resp);
+        if (resp.amount == 0) {
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
+          return;
+        }
+      });
+    });
+  };
+
+  $scope.showWalletSelector = function() {
+    $scope.showWallets = true;
+  };
+
   $scope.toggleAlternative = function() {
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
 
@@ -124,7 +160,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   function isExpression(val) {
     var regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
-
     return regex.test(val);
   };
 
@@ -137,7 +172,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.resetAmount = function() {
     $scope.amount = $scope.alternativeResult = $scope.amountResult = $scope.globalResult = '';
     $scope.allowSend = false;
-
     checkFontSize();
   };
 
@@ -251,7 +285,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
           onlyComplete: true,
           network: 'livenet',
         })[0].id;
-      } catch(err) {
+      } catch (err) {
         ongoingProcess.set('Preparing transaction...', false);
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('No wallet found!'));
         return;
