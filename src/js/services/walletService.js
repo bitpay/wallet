@@ -1083,6 +1083,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return type;
   };
 
+  root.getSendMaxInfo = function(wallet, opts, cb) {
+    opts = opts || {};
+    wallet.getSendMaxInfo(opts, function(err, res) {
+      if (err) return cb(err);
+      return cb(null, res);
+    });
+  };
 
   return root;
 });
