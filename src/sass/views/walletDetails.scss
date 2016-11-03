@@ -39,6 +39,14 @@
     align-items: center;
     background: #fff;
     padding-left: 1rem;
+
+    &__marker {
+      position: absolute;
+      height: 100%;
+      width: 3px;
+      background: #F5A623;
+      left: 0;
+    }
   }
 
   &__tx-content {

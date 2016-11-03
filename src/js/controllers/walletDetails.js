@@ -172,9 +172,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     return getMonthYear(date1) === getMonthYear(date2);
   }
 
-  $scope.createdWithinPastDay = function(tx) {
+  $scope.createdWithinPastDay = function(time) {
     var now = new Date();
-    var date = new Date(tx.time * 1000);
+    var date = new Date(time * 1000);
     return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
   };
 
@@ -186,6 +186,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   function getMonthYear(date) {
     return date.getMonth() + date.getFullYear();
   }
+
+  $scope.isUnconfirmed = function(tx) {
+    return !tx.time && (!tx.confirmations || tx.confirmations === 0);
+  };
 
   $scope.showMore = function() {
     $timeout(function() {
