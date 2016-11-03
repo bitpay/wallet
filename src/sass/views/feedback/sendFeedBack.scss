@@ -1,22 +1,25 @@
 #send-feedback {
-  background-color: #fff;
+  background-color: #ffffff;
+  .skip {
+    margin: 10px;
+    color: #667;
+  }
   .title {
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
-    margin: 20px 10px;
+    margin-left: 10px;
   }
   .star {
-    margin: 20px 0px;
-  }
-  a {
-    font-size: 25px;
-    padding: 12px;
-    .gold {
-      color: #ffd700 !important;
-    }
-    .grey {
-      color: #667 !important;
+    a {
+      font-size: 25px;
+      padding: 12px;
+      .gold {
+        color: #ffd700;
+      }
+      .subtle-gray {
+        color: $subtle-gray;
+      }
     }
   }
   .comment {
@@ -27,7 +30,8 @@
     color: $dark-gray;
   }
   textarea {
-    padding: 10px;
+    border-top: 1px solid $subtle-gray;
+    padding: 20px;
     width: 100%;
   }
 }
