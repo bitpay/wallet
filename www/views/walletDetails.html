@@ -92,12 +92,16 @@
 
 
       <div class="list" ng-if="txps[0]">
-        <div class="item item-heading" translate>
+        <!-- <div class="item item-heading" translate>
           <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
+          <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
+        </div> -->
+        <div class="wallet-details__group-label" style="padding-bottom: 8px;">
+          <span ng-show="requiresMultipleSignatures" translate>Proposals</span>
           <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
         </div>
         <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
-          <div class="wallet-details__item" ng-include="'views/includes/txp.html'"></div>
+          <div class="wallet-details__item proposal" ng-include="'views/includes/txp.html'"></div>
         </div>
         <div class="item item-footer description" ng-show="status.lockedBalanceSat">
           <span translate>Total Locked Balance</span>:
