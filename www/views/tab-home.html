@@ -37,9 +37,13 @@
         <span class="badge badge-assertive m5t m10r" ng-show="txpsN>3"> {{txpsN}}</span>
       </a>
 
-      <a ng-repeat="tx in txps" class="item item-sub" ng-click="openTxpModal(tx)">
+      <!-- <a ng-repeat="tx in txps" class="item item-sub" ng-click="openTxpModal(tx)">
         <span ng-include="'views/includes/txp.html'"></span>
-      </a>
+      </a> -->
+
+      <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
+        <div class="wallet-details__item" ng-include="'views/includes/txp.html'"></div>
+      </div>
     </div>
 
     <div class="list card" ng-if="notifications[0] && recentTransactionsEnabled">

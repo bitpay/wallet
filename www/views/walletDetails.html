@@ -96,8 +96,8 @@
           <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
           <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
         </div>
-        <div ng-repeat="tx in txps" class="item item-icon-left" ng-click="openTxpModal(tx)">
-          <span ng-include="'views/includes/txp.html'"></span>
+        <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
+          <div class="wallet-details__item" ng-include="'views/includes/txp.html'"></div>
         </div>
         <div class="item item-footer description" ng-show="status.lockedBalanceSat">
           <span translate>Total Locked Balance</span>:
@@ -186,8 +186,8 @@
           </div>
 
           <div class="wallet-details__item">
-            <img class="wallet-details__tx-icon" src="img/icon-confirming.svg" width="40" ng-if="btx.confirmations === 0">
-            <span ng-if="btx.confirmations > 0">
+            <img class="wallet-details__tx-icon" src="img/icon-confirming.svg" width="40" ng-if="isUnconfirmed(btx)">
+            <span ng-if="!isUnconfirmed(btx)">
               <img class="wallet-details__tx-icon" src="img/icon-tx-received.svg" width="40" ng-if="btx.action == 'received'">
               <img class="wallet-details__tx-icon" src="img/icon-tx-sent.svg" width="40" ng-if="btx.action == 'sent'">
               <img class="wallet-details__tx-icon" src="img/icon-tx-moved.svg" width="40" ng-if="btx.action == 'moved'">
@@ -195,7 +195,7 @@
 
             <div class="wallet-details__tx-content">
 
-              <div class="wallet-details__tx-title" ng-if="btx.confirmations > 0">
+              <div class="wallet-details__tx-title" ng-if="!isUnconfirmed(btx)">
                 <div ng-show="btx.action == 'received'" class="ellipsis">
                   <div ng-if="btx.note.body">{{btx.note.body}}</div>
                   <div ng-if="!btx.note.body" translate> Received</div>
@@ -217,7 +217,7 @@
                 <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
               </div>
 
-              <div class="wallet-details__tx-title" ng-if="btx.confirmations === 0">
+              <div class="wallet-details__tx-title" ng-if="isUnconfirmed(btx)">
                 <div class="ellipsis" style="color: #B4B4B4;">
                   Confirming
                 </div>
@@ -234,13 +234,13 @@
                   </span>
                 </span>
                 <div>
-                  <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx)">{{btx.time * 1000 | amTimeAgo}}</time>
-                  <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx)">{{btx.time * 1000 | date:'MMMM d, y'}}</time>
+                  <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx.time)">{{btx.time * 1000 | amTimeAgo}}</time>
+                  <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time)">{{btx.time * 1000 | date:'MMMM d, y'}}</time>
 
-                  <span translate class="text-warning"
+                  <!-- <span translate class="text-warning"
                     ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
                     Unconfirmed
-                  </span>
+                  </span> -->
                 </div>
               </span>
             </div>
