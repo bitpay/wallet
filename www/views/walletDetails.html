@@ -234,7 +234,9 @@
                   </span>
                 </span>
                 <div>
-                  <time class="wallet-details__tx-time" ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
+                  <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx)">{{btx.time * 1000 | amTimeAgo}}</time>
+                  <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx)">{{btx.time * 1000 | date:'MMMM d, y'}}</time>
+
                   <span translate class="text-warning"
                     ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
                     Unconfirmed

@@ -172,6 +172,12 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     return getMonthYear(date1) === getMonthYear(date2);
   }
 
+  $scope.createdWithinPastDay = function(tx) {
+    var now = new Date();
+    var date = new Date(tx.time * 1000);
+    return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+  };
+
   $scope.isDateInCurrentMonth = function(date) {
     var now = new Date();
     return getMonthYear(now) === getMonthYear(date);
