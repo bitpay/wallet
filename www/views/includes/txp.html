@@ -28,7 +28,7 @@
       <div class="wallet-details__item__marker"></div>
       <img class="wallet-details__tx-icon" src="img/icon-proposal-pending.svg" width="40">
 
-      <div class="wallet-details__tx-content">
+      <div class="wallet-details__tx-content" ng-class="{'no-border': $last}">
 
         <div class="wallet-details__tx-title">
           <span ng-show="!tx.merchant">
