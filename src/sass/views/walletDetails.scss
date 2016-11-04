@@ -61,6 +61,10 @@
     padding-right: 1rem;
     border-bottom: 1px solid rgb(245, 245, 245);
     overflow: hidden;
+
+    &.no-border {
+      border: 0;
+    }
   }
 
   &__tx-amount {
