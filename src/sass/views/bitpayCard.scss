@@ -10,6 +10,20 @@
       background-color: transparent;
     }
   }
+  .amount-wrapper {
+    position: relative;
+    overflow: visible;
+
+    &:before {
+      content: '';
+      top: -1000px;
+      left: 0;
+      position: absolute;
+      height: 1000px;
+      width: 100%;
+      background-color: #1e3186;
+    }
+  }
   .amount {
     width: 100%;
     text-align: center;
