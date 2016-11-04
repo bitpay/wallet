@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -86,6 +86,14 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     $scope.close = function() {
       $scope.searchModal.hide();
+    };
+
+    $scope.openTx = function(tx) {
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true
+      });
+      $scope.searchModal.hide();
+      $scope.openTxModal(tx);
     };
   };
 
