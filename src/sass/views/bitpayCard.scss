@@ -14,7 +14,7 @@
     position: relative;
     overflow: visible;
 
-    &:before {
+    .amount-bg {
       content: '';
       top: -1000px;
       left: 0;
