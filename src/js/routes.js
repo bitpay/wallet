@@ -182,7 +182,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         views: {
           'tab-home@tabs': {
             controller: 'txDetailsController',
-            templateUrl: 'views/modals/tx-details.html'
+            templateUrl: 'views/tx-details.html'
           }
         }
       })
