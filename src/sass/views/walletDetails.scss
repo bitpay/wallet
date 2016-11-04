@@ -94,6 +94,19 @@
   .nav-bar-block, .bar {
   background-color: inherit !important;
   }
+  .amount-wrapper {
+    position: relative;
+    overflow: visible;
+
+    .amount-bg {
+      content: '';
+      top: -1000px;
+      left: 0;
+      position: absolute;
+      height: 1000px;
+      width: 100%;
+    }
+  }
   .amount {
     width: 100%;
     text-align: center;

@@ -10,14 +10,15 @@
     </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content has-bouncing="false">
+  <ion-content>
     <ion-refresher
       ng-if="isAndroid"
       pulling-icon="ion-ios-refresh"
       spinner="ios-small"
       on-refresh="onRefresh()">
     </ion-refresher>
-    <div class="oh pr" ng-show="wallet && wallet.isComplete()">
+    <div class="amount-wrapper" ng-show="wallet && wallet.isComplete()" ng-style="{'background-color':wallet.color}">
+      <div class="amount-bg" ng-style="{'background-color':wallet.color}"></div>
       <div ng-style="{'background-color':wallet.color}" class="amount">
         <div ng-if="!notAuthorized && !updatingStatus">
 
