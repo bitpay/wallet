@@ -1,27 +1,21 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $ionicHistory, $scope, $filter, $stateParams, ongoingProcess, walletService, lodash, gettextCatalog, profileService, configService, txFormatService, externalLinkService, popupService) {
-  var config = configService.getSync();
-  var configWallet = config.wallet;
-  var walletSettings = configWallet.settings;
-  var wallet = profileService.getWallet($stateParams.walletId);
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $ionicHistory, $scope, $stateParams, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService) {
 
-  $scope.wallet = wallet;
-  $scope.title = gettextCatalog.getString('Transaction');
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.title = gettextCatalog.getString('Transaction');
+    $scope.wallet = profileService.getWallet(data.stateParams.walletId);
+    $scope.color = $scope.wallet.color;
+    $scope.copayerId = $scope.wallet.credentials.copayerId;
+    $scope.isShared = $scope.wallet.credentials.n > 1;
 
-  $scope.init = function() {
-    $scope.alternativeIsoCode = walletSettings.alternativeIsoCode;
-    $scope.color = wallet.color;
-    $scope.copayerId = wallet.credentials.copayerId;
-    $scope.isShared = wallet.credentials.n > 1;
-    walletService.getTx(wallet, $stateParams.txid, function(err, tx) {
+    walletService.getTx($scope.wallet, $stateParams.txid, function(err, tx) {
       if (err) {
         $log.warn('Could not get tx');
         $ionicHistory.goBack();
         return;
       }
       $scope.btx = tx;
-      $scope.btx.feeLevel = walletSettings.feeLevel;
       if ($scope.btx.action != 'invalid') {
         if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
         if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
@@ -34,7 +28,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       updateMemo();
       initActionList();
     });
-  };
+  });
 
   function getDisplayAmount(amountStr) {
     return amountStr.split(' ')[0];
@@ -45,7 +39,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   }
 
   function updateMemo() {
-    walletService.getTxNote(wallet, $scope.btx.txid, function(err, note) {
+    walletService.getTxNote($scope.wallet, $scope.btx.txid, function(err, note) {
       if (err) {
         $log.warn('Could not fetch transaction note: ' + err);
         return;
@@ -53,18 +47,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       if (!note) return;
 
       $scope.btx.note = note;
-
-      walletService.getTx(wallet, $scope.btx.txid, function(err, tx) {
-        if (err) {
-          $log.error(err);
-          return;
-        }
-
-        tx.note = note;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      });
+      $scope.$apply();
     });
   }
 
@@ -109,9 +92,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     }
     if ($scope.btx.note && $scope.btx.note.body) opts.defaultText = $scope.btx.note.body;
 
-    popupService.showPrompt(wallet.name, gettextCatalog.getString('Memo'), opts, function(text) {
+    popupService.showPrompt($scope.wallet.name, gettextCatalog.getString('Memo'), opts, function(text) {
       if (typeof text == "undefined") return;
 
+      $scope.btx.note.body = text;
       $log.debug('Saving memo');
 
       var args = {
@@ -119,17 +103,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         body: text
       };
 
-      walletService.editTxNote(wallet, args, function(err, res) {
+      walletService.editTxNote($scope.wallet, args, function(err, res) {
         if (err) {
           $log.debug('Could not save tx comment ' + err);
-          return;
         }
-        // This is only to refresh the current screen data
-        updateMemo();
-        $scope.btx.searcheableString = null;
-        $timeout(function() {
-          $scope.$apply();
-        });
       });
     });
   };
@@ -147,7 +124,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   };
 
   $scope.getShortNetworkName = function() {
-    var n = wallet.credentials.network;
+    var n = $scope.wallet.credentials.network;
     return n.substring(0, 4);
   };
 
@@ -155,5 +132,4 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.txDetailsModal.hide();
   };
 
-  $scope.init();
 });
