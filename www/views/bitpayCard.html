@@ -41,11 +41,13 @@
     </div>
 
     <div
-      class="m10t text-center padding ng-hide"
+      class="text-center padding get-started"
       ng-show="bitpayCard.getStarted">
-      <i class="icon ion-ios-arrow-thin-up size-24"></i>
+      <i class="icon ion-ios-arrow-thin-up get-started__arrow"></i>
       <h1>Get started</h1>
-      <h4>Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.</h4>
+      <div class="get-started__text">
+        Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.
+      </div>
     </div>
 
     <div class="list" ng-show="!bitpayCard.getStarted">

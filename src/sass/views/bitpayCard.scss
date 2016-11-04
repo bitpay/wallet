@@ -1,4 +1,5 @@
 #bitpayCard {
+  background: white;
   .bar-header {
     border: 0;
     background: #1e3186;
@@ -36,5 +37,27 @@
   }
   .item-select select {
     color: #667;
+  }
+
+  .get-started {
+
+    margin-top: 20px;
+
+    &__arrow {
+      font-size: 56px;
+      opacity: .2;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #4A4A4A;
+    }
+
+    &__text {
+      font-weight: 300;
+      color: #8e8e8e;
+      max-width: 300px;
+      margin: 0 auto;
+    }
   }
 }
