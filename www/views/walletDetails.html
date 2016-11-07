@@ -104,7 +104,7 @@
         <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
           <div class="wallet-details__item proposal" ng-include="'views/includes/txp.html'"></div>
         </div>
-        <div class="item item-footer description" ng-show="status.lockedBalanceSat">
+        <div class="item item-footer description" ng-show="status.lockedBalanceSat" style="background: white;">
           <span translate>Total Locked Balance</span>:
           <b>{{status.lockedBalanceStr}} </b>
           <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
@@ -241,11 +241,6 @@
                 <div>
                   <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx.time)">{{btx.time * 1000 | amTimeAgo}}</time>
                   <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time)">{{btx.time * 1000 | date:'MMMM d, y'}}</time>
-
-                  <!-- <span translate class="text-warning"
-                    ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
-                    Unconfirmed
-                  </span> -->
                 </div>
               </span>
             </div>
