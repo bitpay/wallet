@@ -67,7 +67,7 @@
         <div class="item single-line">
           <span class="label" translate>Confirmations</span>
           <span class="item-note">
-            <span class="assertive" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
+            <span ng-show="!btx.confirmations || btx.confirmations == 0" translate>
               Unconfirmed
             </span>
             <span ng-show="btx.confirmations>0 && !btx.safeConfirmed">
