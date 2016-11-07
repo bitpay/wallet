@@ -196,7 +196,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   }
 
   $scope.isUnconfirmed = function(tx) {
-    return !tx.time && (!tx.confirmations || tx.confirmations === 0);
+    return !tx.confirmations || tx.confirmations === 0;
   };
 
   $scope.showMore = function() {
