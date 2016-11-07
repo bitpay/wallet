@@ -45,7 +45,7 @@
             <div>{{wallet.name}}</div>
           </div>
         </div>
-        <div class="item single-line">
+        <div class="item single-line" ng-if="btx.action != 'received'">
           <span class="label" translate>Created by</span>
           <span class="item-note">
             {{btx.creatorName}} <time>{{ (btx.ts || btx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
@@ -66,11 +66,16 @@
         </div>
         <div class="item single-line">
           <span class="label" translate>Confirmations</span>
-          <span class="item-note" ng-if="btx.confirmations < 6">
-            {{btx.confirmations}}
-          </span>
-          <span class="item-note" ng-if="btx.confirmations >= 6">
-            6+
+          <span class="item-note">
+            <span class="assertive" ng-show="!btx.confirmations || btx.confirmations == 0" translate>
+              Unconfirmed
+            </span>
+            <span ng-show="btx.confirmations>0 && !btx.safeConfirmed">
+              {{btx.confirmations}}
+            </span>
+            <span ng-show="btx.safeConfirmed">
+              {{btx.safeConfirmed}}
+            </span>
           </span>
         </div>
         <div ng-if="actionList[0]">
