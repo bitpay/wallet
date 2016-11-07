@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendFeedbackController', function($scope, $state, $stateParams, gettextCatalog) {
+angular.module('copayApp.controllers').controller('sendFeedbackController', function($scope, $state, $log, $http, $httpParamSerializer, $stateParams, gettextCatalog, popupService, configService, lodash) {
+  var URL = "https://docs.google.com/forms/d/e/1FAIpQLSfHHAKb-CKjQnsuC_36IFaXlGsqLd5tZh79ywNfSADoVsw-gQ/formResponse";
   $scope.score = parseInt($stateParams.score);
   switch ($scope.score) {
     case 1:
@@ -25,12 +26,36 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
       break;
   }
 
-  $scope.sendFeedback = function() {
-    //Feedback entered in feedback flow should be sent to BWS, and BWS should send a plain-text email to feedback@bitpay.com with a reply-to going to the user's email address. (From the onboarding process)
-    $state.go('feedback.thanks', {
-      score: $stateParams.score,
-      skipped: false
+  $scope.sendFeedback = function(feedback) {
+
+    var config = configService.getSync();
+    var dataSrc = {
+      "entry.490635314": lodash.values(config.emailFor)[0] || 'no email setted',
+      "entry.1447064148": feedback,
+      "entry.2142850951": $stateParams.score
+    };
+
+    $http(_post(dataSrc)).then(function(data) {
+      $log.info("SUCCESS: Feedback sent");
+      $state.go('feedback.thanks', {
+        score: $stateParams.score,
+        skipped: false
+      });
+    }, function(data) {
+      $log.info("Could not send feedback");
+      popupService.showAlert(gettextCatalog.getString("Error"), gettextCatalog.getString("Could not send feedback, try again please"));
     });
+  };
+
+  var _post = function(dataSrc) {
+    return {
+      method: 'POST',
+      url: URL,
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data: $httpParamSerializer(dataSrc)
+    };
   };
 
   $scope.skip = function() {
