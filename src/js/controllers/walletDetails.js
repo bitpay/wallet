@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicHistory) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -225,9 +225,18 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
+  $scope.backup = function() {
+   //$state.go('tabs.preferences', {walletId: $scope.walletId});
+   //$state.transitionTo('tabs.preferences.backupWarning');
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    $scope.wallet = profileService.getWallet(data.stateParams.walletId);
+    $scope.walletId = data.stateParams.walletId;
+    storageService.getBackupFlag($scope.walletId, function(err, flag) {
+      $scope.isBackedUp = flag ? true : false;
+    });
+    $scope.wallet = profileService.getWallet($scope.walletId);
     $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
 
     addressbookService.list(function(err, ab) {
