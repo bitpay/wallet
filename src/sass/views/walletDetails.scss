@@ -147,7 +147,7 @@
 }
 
 .wallet-not-backed-up-warning {
-  margin-top: -10px;
+  margin-top: -15px;
   margin-bottom: 1rem;
   background: #E15061;
   text-align: center;
@@ -155,4 +155,6 @@
   font-size: 14px;
   display: block;
   text-decoration: none;
+  z-index: 9999;
+  position: relative;
 }
