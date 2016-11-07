@@ -17,10 +17,10 @@
       <span translate>{{comment}}</span>
     </div>
     <div>
-      <textarea placeholder="Is there anything we could do to improve your experience?" row="40"></textarea>
+      <textarea ng-model="feedback" placeholder="Is there anything we could do to improve your experience?" row="40"></textarea>
     </div>
     <div class="padding">
-      <button type="submit" class="button button-full button-primary" ng-click="sendFeedback()" translate>
+      <button ng-disabled="!feedback" type="submit" class="button button-full button-primary" ng-click="sendFeedback(feedback)" translate>
         Send
       </button>
     </div>
