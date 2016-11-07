@@ -38,10 +38,11 @@
 
 
           <div ng-click='updateAll(true)' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
-            <strong class="size-36">{{status.totalBalanceStr}}</strong>
-            <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
-            <div class="size-14" ng-if="status.pendingAmount">
-              <span translate>Pending Confirmation</span>: {{status.pendingAmountStr}}
+            <strong ng-if="!status.pendingAmount" class="size-36">{{status.totalBalanceStr}}</strong>
+            <div ng-if="!status.pendingAmount" class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
+            <div class="size-20" ng-if="status.pendingAmount">
+              <div style="margin-bottom:.5rem"><span translate>Available</span>: {{status.totalBalanceStr}}</div>
+              <div><span translate>Confirming</span>: {{status.pendingAmountStr}}</div>
             </div>
           </div>
 

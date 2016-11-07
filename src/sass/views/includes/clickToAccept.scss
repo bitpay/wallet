@@ -14,12 +14,14 @@ click-to-accept {
       width: 100%;
       z-index: 4;
       text-transform: capitalize;
+      -webkit-transform: translateY(2rem);
       transform: translateY(2rem);
       opacity: 0;
       pointer-events: none;
 
       &.enter {
         transition: transform 250ms ease, opacity 250ms ease;
+        -webkit-transform: translateY(0);
         transform: translateY(0);
         opacity: 1;
       }
@@ -37,9 +39,11 @@ click-to-accept {
 
   @keyframes spin {
     from {
+        -webkit-transform:rotate(0deg);
         transform:rotate(0deg);
     }
     to {
+        -webkit-transform:rotate(360deg);
         transform:rotate(360deg);
     }
   }

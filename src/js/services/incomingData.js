@@ -40,7 +40,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
-      $state.go('tabs.send').then(function() {
+      $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true}).then(function() {
         $state.transitionTo('tabs.send.confirm', {paypro: data});
       });
       return true;
@@ -62,7 +62,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           handlePayPro(details);
         });
       } else {
-        $state.go('tabs.send');
+        $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true});
         // Timeout is required to enable the "Back" button
         $timeout(function() {
           if (amount) {
@@ -70,7 +70,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           } else {
             $state.transitionTo('tabs.send.amount', {toAddress: addr});
           }
-        });
+        }, 100);
       }
       return true;
 
@@ -102,7 +102,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         var secret = getParameterByName('secret', data);
         var email = getParameterByName('email', data);
         var otp = getParameterByName('otp', data);
-        $state.go('tabs.home').then(function() {
+        $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
           $state.transitionTo('tabs.bitpayCardIntro', {
             secret: secret,
             email: email,
@@ -113,14 +113,14 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home').then(function() {
+      $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
         $state.transitionTo('tabs.add.join', {url: data});
       });
       return true;
 
     // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home').then(function() {
+      $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
         $state.transitionTo('tabs.add.join', {url: data});
       });
       return true;
@@ -136,7 +136,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
   };
 
   function goToAmountPage(toAddress) {
-    $state.go('tabs.send');
+    $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true});
     $timeout(function() {
       $state.transitionTo('tabs.send.amount', {toAddress: toAddress});
     }, 100);
@@ -150,7 +150,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       paypro: payProDetails
     };
     scannerService.pausePreview();
-    $state.go('tabs.send').then(function() {
+    $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true}).then(function() {
       $timeout(function() {
         $state.transitionTo('tabs.send.confirm', stateParams);
       });
