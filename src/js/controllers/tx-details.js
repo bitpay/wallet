@@ -95,7 +95,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     popupService.showPrompt($scope.wallet.name, gettextCatalog.getString('Memo'), opts, function(text) {
       if (typeof text == "undefined") return;
 
-      $scope.btx.note.body = text;
+      $scope.btx.note = {
+        body: text
+      };
       $log.debug('Saving memo');
 
       var args = {
