@@ -206,22 +206,22 @@
 
               <div class="wallet-details__tx-title" ng-if="!isUnconfirmed(btx)">
                 <div ng-show="btx.action == 'received'" class="ellipsis">
-                  <div ng-if="btx.note.body">{{btx.note.body}}</div>
-                  <div ng-if="!btx.note.body" translate> Received</div>
+                  <div ng-if="btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
+                  <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate> Received</div>
                 </div>
 
                 <div ng-show="btx.action == 'sent'" class="ellipsis">
                   <div ng-if="btx.message" class="wallet-details__tx-message ellipsis">{{btx.message}}</div>
-                  <div ng-if="!btx.message && btx.note.body">{{btx.note.body}}</div>
-                  <div ng-if="!btx.message && !btx.note.body && addressbook[btx.addressTo]">
+                  <div ng-if="!btx.message && btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
+                  <div ng-if="!btx.message && !btx.note.body && addressbook[btx.addressTo]" class="wallet-details__tx-message ellipsis">
                     {{addressbook[btx.addressTo].name || addressbook[btx.addressTo]}}
                   </div>
                   <div ng-if="!btx.message && !btx.note.body && !addressbook[btx.addressTo]" translate>Sent</div>
                 </div>
 
                 <div ng-show="btx.action == 'moved'" class="ellipsis">
-                  <div ng-if="btx.note.body">{{btx.note.body}}</div>
-                  <div ng-if="!btx.note.body" translate>Moved</div>
+                  <div ng-if="btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
+                  <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate>Moved</div>
                 </div>
                 <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
               </div>
