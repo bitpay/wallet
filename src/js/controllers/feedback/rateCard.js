@@ -42,8 +42,6 @@ angular.module('copayApp.controllers').controller('rateCardController', function
     });
   };
 
-  $scope.cancel = function() {};
-
   $scope.hideCard = function() {
     if ($scope.isModal) {
       $scope.rateModal.hide();
