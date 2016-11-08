@@ -34,10 +34,20 @@
 
   }
 
+  .item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding-left: 1rem;
+  }
+
   &__item {
     display: flex;
     align-items: center;
     background: #fff;
+    padding: 0;
+    margin: 0;
+    border: 0;
     padding-left: 1rem;
 
     &.proposal {
