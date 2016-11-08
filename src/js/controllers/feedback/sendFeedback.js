@@ -26,12 +26,12 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
       break;
   }
 
-  $scope.sendFeedback = function(feedback) {
+  $scope.sendFeedback = function(feedback, skip) {
 
     var config = configService.getSync();
     var dataSrc = {
       "entry.490635314": lodash.values(config.emailFor)[0] || 'no email setted',
-      "entry.1447064148": feedback,
+      "entry.1447064148": skip ? '-' : feedback,
       "entry.2142850951": $stateParams.score
     };
 
@@ -39,11 +39,14 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
       $log.info("SUCCESS: Feedback sent");
       $state.go('feedback.thanks', {
         score: $stateParams.score,
-        skipped: false
+        skipped: skip
       });
     }, function(data) {
-      $log.info("Could not send feedback");
-      popupService.showAlert(gettextCatalog.getString("Error"), gettextCatalog.getString("Could not send feedback, try again please"));
+      $log.info("ERROR: Feedback sent anyway.");
+      $state.go('feedback.thanks', {
+        score: $stateParams.score,
+        skipped: skip
+      });
     });
   };
 
@@ -56,13 +59,6 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
       },
       data: $httpParamSerializer(dataSrc)
     };
-  };
-
-  $scope.skip = function() {
-    $state.go('feedback.thanks', {
-      score: $scope.score,
-      skipped: true
-    });
   };
 
 });

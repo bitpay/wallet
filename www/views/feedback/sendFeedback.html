@@ -1,6 +1,6 @@
 <ion-view id="send-feedback">
   <ion-content scroll="false">
-    <a class="right skip" ng-click="skip()">Skip</a>
+    <a class="right skip" ng-click="sendFeedback(null,true)">Skip</a>
     <div class="row">
       <div class="col col-40 title">
         <span>{{reaction}}</span>
@@ -20,7 +20,7 @@
       <textarea ng-model="feedback" placeholder="Is there anything we could do to improve your experience?" row="40"></textarea>
     </div>
     <div class="padding">
-      <button ng-disabled="!feedback" type="submit" class="button button-full button-primary" ng-click="sendFeedback(feedback)" translate>
+      <button ng-disabled="!feedback" type="submit" class="button button-full button-primary" ng-click="sendFeedback(feedback, false)" translate>
         Send
       </button>
     </div>
