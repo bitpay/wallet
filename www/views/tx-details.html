@@ -47,14 +47,14 @@
             {{btx.creatorName}} <time>{{ (btx.ts || btx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
           </span>
         </div>
-        <a class="item single-line item-icon-right" ng-hide="insuffientFunds" ng-click="showCommentPopup()">
+        <a class="item single-line item-icon-right" ng-click="showCommentPopup()">
           <span class="label" translate>Memo</span>
           <span class="item-note m10l">
             {{btx.note.body || btx.message}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-hide="insuffientFunds">
+        <div class="item single-line">
           <span class="label" translate>Fee</span>
           <span class="item-note">
             {{btx.feeStr}}
