@@ -31,10 +31,10 @@ angular.module('copayApp.controllers').controller('thanksController', function($
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    storageService.setRateCardFlag('true', function() {});
     if (!$scope.isCordova) return;
 
     window.plugins.socialsharing.available(function(isAvailable) {
-      storageService.setRateCardFlag('true', function() {});
       // the boolean is only false on iOS < 6
       $scope.socialsharing = isAvailable;
       if (isAvailable) {

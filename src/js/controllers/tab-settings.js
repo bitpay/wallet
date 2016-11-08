@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, $ionicModal, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService) {
 
   var updateConfig = function() {
 
@@ -32,4 +32,15 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     updateConfig();
   });
 
+  $scope.openRateModal = function() {
+    $scope.isModal = true;
+    $ionicModal.fromTemplateUrl('views/feedback/rateCard.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false
+    }).then(function(modal) {
+      $scope.rateModal = modal;
+      $scope.rateModal.show();
+    });
+  }
 });
