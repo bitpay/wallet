@@ -5,7 +5,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var satToUnit;
   var unitDecimals;
   var satToBtc;
-  var self = $scope.self;
   var SMALL_FONT_SIZE_LIMIT = 10;
   var LENGTH_EXPRESSION_LIMIT = 19;
 
@@ -83,17 +82,19 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.getSendMaxInfo = function(wallet) {
+    ongoingProcess.set('gettingFeeLevels', true);
     feeService.getCurrentFeeValue($scope.network, function(err, fee) {
+      ongoingProcess.set('gettingFeeLevels', false);
       if (err) {
         popupService.showAlert(gettextCatalog.getString('Error'), err.message);
         return;
       }
-      console.log(fee);
+
       var config = configService.getSync();
 
       ongoingProcess.set('retrivingInputs', true);
       walletService.getSendMaxInfo(wallet, {
-        feePerKb: feePerKb,
+        feePerKb: fee,
         excludeUnconfirmedUtxos: !config.wallet.spendUnconfirmed,
         returnInputs: true,
       }, function(err, resp) {
@@ -103,11 +104,42 @@ angular.module('copayApp.controllers').controller('amountController', function($
           return;
         }
 
-        console.log(err, resp);
         if (resp.amount == 0) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
           return;
         }
+
+        var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
+          fee: txFormatService.formatAmount(resp.fee) + ' ' + $scope.unitName
+        });
+        var warningMsg = verifyExcludedUtxos();
+
+        if (!lodash.isEmpty(warningMsg))
+          msg += '. \n' + warningMsg;
+
+        popupService.showConfirm(null, msg, 'Ok', gettextCatalog.getString('Cancel'), function(result) {
+          if (!result) return;
+          var amount = (resp.amount * satToUnit).toFixed(0);
+
+          $scope.amount = amount;
+          processAmount(amount);
+        });
+
+        function verifyExcludedUtxos() {
+          var warningMsg = [];
+          if (resp.utxosBelowFee > 0) {
+            warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+              amountBelowFeeStr: txFormatService.formatAmount(resp.amountBelowFee) + ' ' + $scope.unitName
+            }));
+          }
+
+          if (resp.utxosAboveMaxSize > 0) {
+            warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded", {
+              amountAboveMaxSizeStr: txFormatService.formatAmount(resp.amountAboveMaxSize) + ' ' + $scope.unitName
+            }));
+          }
+          return warningMsg.join('\n');
+        };
       });
     });
   };
