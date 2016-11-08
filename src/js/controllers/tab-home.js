@@ -37,8 +37,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      storageService.getRateCardFlag(function(error, value) {
-        $scope.hideRateCard.value = (value == 'true') ? true : false;
+      storageService.getProfileCreationTime(function(error, time) {
+        var now = moment().unix() * 1000;
+        storageService.getRateCardFlag(function(error, value) {
+          $scope.hideRateCard.value = (value == 'true' || (time - now) > 0) ? true : false;
+        });
       });
 
     });

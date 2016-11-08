@@ -138,6 +138,14 @@ angular.module('copayApp.services')
       storage.remove('profile', cb);
     };
 
+    root.setProfileCreationTime = function(time, cb) {
+      storage.set('profileCreationTime', time, cb);
+    };
+
+    root.getProfileCreationTime = function(cb) {
+      storage.get('profileCreationTime', cb);
+    };
+
     root.storeFocusedWalletId = function(id, cb) {
       storage.set('focusedWalletId', id || '', cb);
     };

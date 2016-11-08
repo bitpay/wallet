@@ -30,8 +30,8 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
 
     var config = configService.getSync();
     var dataSrc = {
-      "entry.490635314": lodash.values(config.emailFor)[0] || 'no email setted',
-      "entry.1447064148": skip ? '-' : feedback,
+      "entry.490635314": lodash.values(config.emailFor)[0] || ' ',
+      "entry.1447064148": skip ? ' ' : feedback,
       "entry.2142850951": $stateParams.score
     };
 
