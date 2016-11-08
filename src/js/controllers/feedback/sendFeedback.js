@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
       break;
     case 4:
       $scope.reaction = gettextCatalog.getString("Thanks!");
-      $scope.comment = gettextCatalog.getString("That's exciting to hear. We'd love to earn that fifth star from you");
+      $scope.comment = gettextCatalog.getString("That's exciting to hear. We'd love to earn that fifth star from you.");
       break;
     case 5:
       $scope.reaction = gettextCatalog.getString("Feedback!");
