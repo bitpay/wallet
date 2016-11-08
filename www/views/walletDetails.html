@@ -194,7 +194,7 @@
             </span>
           </div>
 
-          <div class="wallet-details__item">
+          <a class="wallet-details__item item">
             <img class="wallet-details__tx-icon" src="img/icon-confirming.svg" width="40" ng-if="isUnconfirmed(btx)">
             <span ng-if="!isUnconfirmed(btx)">
               <img class="wallet-details__tx-icon" src="img/icon-tx-received-outline.svg" width="40" ng-if="btx.action == 'received'">
@@ -248,7 +248,7 @@
                 </div>
               </span>
             </div>
-          </div>
+          </a>
 
         </div>
       </div>
