@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="35px" height="35px" viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Transaction/Received" transform="translate(-7.000000, -7.000000)" stroke="#0EC286">
+            <g id="Group-2" transform="translate(8.000000, 7.000000)">
+                <g id="icons/received" opacity="0.8">
+                    <g id="Received" transform="translate(16.744258, 17.383990) scale(-1, 1) translate(-16.744258, -17.383990) translate(0.244258, 0.883990)">
+                        <circle id="Oval-204" cx="16.5" cy="16.5" r="16.5"></circle>
+                    </g>
+                </g>
+                <path d="M11.0503675,17.3722339 L24.0056239,17.3722339 M15.816934,23.3093365 L10,17.4567115 L15.614688,11.6962874" id="Line" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(17.002812, 17.502812) rotate(-90.000000) translate(-17.002812, -17.502812) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
