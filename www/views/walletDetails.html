@@ -31,9 +31,21 @@
         </div>
 
 
-        <div ng-click='updateAll(true)' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
+        <div
+          ng-click='updateAll(true)'
+          ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden"
+          on-hold="hideToggle()"
+          ng-style="{'transform': amountScale}"
+        >
           <strong ng-if="!status.pendingAmount" class="size-36">{{status.totalBalanceStr}}</strong>
-          <div ng-if="!status.pendingAmount" class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
+          <div
+            ng-if="!status.pendingAmount"
+            class="size-14 amount-alternative"
+            ng-if="status.totalBalanceAlternative"
+            ng-style="{opacity: altAmountOpacity}"
+            >
+            {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
+          </div>
           <div class="size-20" ng-if="status.pendingAmount">
             <div style="margin-bottom:.5rem"><span translate>Available</span>: {{status.totalBalanceStr}}</div>
             <div><span translate>Confirming</span>: {{status.pendingAmountStr}}</div>
@@ -54,7 +66,7 @@
       </div>
     </div> <!-- amount -->
 
-    <div class="wallet-details-wallet-info">
+    <div class="wallet-details-wallet-info" ng-style="{opacity: altAmountOpacity}">
       <span ng-include="'views/includes/walletInfo.html'"></span>
     </div>
   </div> <!-- oh -->
