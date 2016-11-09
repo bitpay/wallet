@@ -239,6 +239,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     if(amountHeight < 80) {
       amountHeight = 80;
     }
+    var contentMargin = amountHeight;
+    if(contentMargin > 180) {
+      contentMargin = 180;
+    }
 
     var amountScale = amountHeight/180;
     if(amountScale < 0.5) {
@@ -254,6 +258,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     console.log('amountHeight', amountHeight);
     $window.requestAnimationFrame(function() {
       $scope.amountHeight = amountHeight + 'px';
+      $scope.contentMargin = contentMargin + 'px';
       $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s+ ')';
       console.log('$scope.amountScale', $scope.amountScale);
       console.log('$scope.altAmountOpacity', $scope.altAmountOpacity);

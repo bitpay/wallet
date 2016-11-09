@@ -36,6 +36,7 @@
           ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden"
           on-hold="hideToggle()"
           ng-style="{'transform': amountScale}"
+          style="margin-top: 5px;"
         >
           <strong ng-if="!status.pendingAmount" class="size-36">{{status.totalBalanceStr}}</strong>
           <div
@@ -70,7 +71,7 @@
       <span ng-include="'views/includes/walletInfo.html'"></span>
     </div>
   </div> <!-- oh -->
-  <ion-content on-scroll="getScrollPosition()" ng-style="{'margin-top': amountHeight}">
+  <ion-content on-scroll="getScrollPosition()" ng-style="{'margin-top': contentMargin}">
     <ion-refresher
       ng-if="isAndroid"
       pulling-icon="ion-ios-refresh"
