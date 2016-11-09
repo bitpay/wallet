@@ -25,6 +25,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       wp: ''
     },
 
+    feedback: {
+      url: 'https://script.google.com/macros/s/AKfycbybtvNSQKUfgzgXcj3jYLlvCKrcBoktjiJ1V8_cwd2yVkpUBGe3/exec'
+    },
     // wallet default config
     wallet: {
       requiredCopayers: 2,
