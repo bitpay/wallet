@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $timeout, $ionicHistory, $scope, $stateParams, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, $stateParams, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.title = gettextCatalog.getString('Transaction');
@@ -128,6 +128,27 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   $scope.getShortNetworkName = function() {
     var n = $scope.wallet.credentials.network;
     return n.substring(0, 4);
+  };
+
+  $scope.getFiatRate = function() {
+    if ($scope.rateDate) return;
+    var alternativeIsoCode = $scope.wallet.status.alternativeIsoCode;
+    $scope.loadingRate = true;
+    $scope.wallet.getFiatRate({
+      code: alternativeIsoCode,
+      ts: $scope.btx.time * 1000
+    }, function(err, res) {
+      $scope.loadingRate = false;
+      if (err) {
+        $log.debug('Could not get historic rate');
+        return;
+      }
+      if (res && res.rate) {
+        $scope.rateDate = res.fetchedOn;
+        $scope.rateStr = res.rate + ' ' + alternativeIsoCode;
+        $scope.$apply();
+      }
+    });
   };
 
   $scope.cancel = function() {
