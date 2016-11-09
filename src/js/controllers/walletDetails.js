@@ -239,9 +239,24 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     if(amountHeight < 80) {
       amountHeight = 80;
     }
+
+    var amountScale = amountHeight/180;
+    if(amountScale < 0.5) {
+      amountScale = 0.5;
+    }
+    if(amountScale > 1.1) {
+      amountScale = 1.1;
+    }
+    var s = amountScale;
+
+    $scope.altAmountOpacity = (amountHeight - 100)/80;
+
     console.log('amountHeight', amountHeight);
     $window.requestAnimationFrame(function() {
       $scope.amountHeight = amountHeight + 'px';
+      $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s+ ')';
+      console.log('$scope.amountScale', $scope.amountScale);
+      console.log('$scope.altAmountOpacity', $scope.altAmountOpacity);
       $scope.$evalAsync(angular.noop);
     });
   };
