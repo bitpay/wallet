@@ -104,9 +104,16 @@
   .nav-bar-block, .bar {
   background-color: inherit !important;
   }
+  ion-content {
+    margin-top: 180px;
+    padding-top: 0;
+    top: 0;
+    //top: 40px;
+  }
   .amount-wrapper {
     position: relative;
     overflow: visible;
+    //margin-top: 40px;
 
     .amount-bg {
       content: '';
@@ -120,10 +127,14 @@
   .amount {
     width: 100%;
     text-align: center;
-    padding: 2rem 1rem 1.5rem 1rem;
+    //padding: 2rem 1rem 1.5rem 1rem;
     color: #fff;
-    height: 140px;
+    height: 180px;
     margin-bottom: 10px;
+    padding-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &-alternative {
       line-height: 36px;
@@ -157,7 +168,7 @@
 }
 
 .wallet-not-backed-up-warning {
-  margin-top: -15px;
+  //margin-top: -15px;
   margin-bottom: 1rem;
   background: #E15061;
   text-align: center;

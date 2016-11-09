@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicHistory) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicHistory, $ionicScrollDelegate, $window) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -228,6 +228,22 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.backup = function() {
    //$state.go('tabs.preferences', {walletId: $scope.walletId});
    //$state.transitionTo('tabs.preferences.backupWarning');
+  };
+
+  $scope.amountHeight = '180px';
+
+  $scope.getScrollPosition = function(){
+    console.log($ionicScrollDelegate.getScrollPosition().top);
+    var pos = $ionicScrollDelegate.getScrollPosition().top;
+    var amountHeight = 180 - pos;
+    if(amountHeight < 80) {
+      amountHeight = 80;
+    }
+    console.log('amountHeight', amountHeight);
+    $window.requestAnimationFrame(function() {
+      $scope.amountHeight = amountHeight + 'px';
+      $scope.$evalAsync(angular.noop);
+    });
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
