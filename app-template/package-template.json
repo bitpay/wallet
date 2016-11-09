@@ -87,6 +87,7 @@
     "start":                  "npm run build:www && ionic serve --nolivereload --nogulp -s",
     "start:ios":              "npm run build:www && npm run build:ios && npm run open:ios",
     "start:android":          "npm run build:www && npm run build:android && npm run run:android",
+    "start:desktop":          "npm start",
     "watch":                  "grunt watch",
     "build:www":              "grunt",
     "build:www-release":      "grunt prod",
