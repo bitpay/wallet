@@ -109,6 +109,9 @@
     padding-top: 0;
     top: 0;
     //top: 40px;
+    .scroll {
+      background: rgb(248, 248, 249);
+    }
   }
   .amount-wrapper {
     position: relative;
@@ -120,7 +123,7 @@
       top: -1000px;
       left: 0;
       position: absolute;
-      height: 1000px;
+      height: 2000px;
       width: 100%;
     }
   }
