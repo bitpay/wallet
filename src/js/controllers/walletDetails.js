@@ -53,7 +53,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       force: !!force,
     }, function(err, status) {
       $scope.updatingStatus = false;
-      console.log('status', status);
       if (err) {
         if (err === 'WALLET_NOT_REGISTERED') {
           $scope.walletNotRegistered = true;
@@ -150,7 +149,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.txHistory = $scope.completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT);
       $scope.txHistoryShowMore = $scope.completeTxHistory.length > $scope.txHistory.length;
     }
-    console.log('$scope.completeTxHistory', $scope.completeTxHistory);
   };
 
   $scope.getDate = function(txCreated) {
@@ -234,7 +232,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.amountScale = 'scale3d(' + 1 + ',' + 1 + ',' + 1+ ')';
 
   $scope.getScrollPosition = function(){
-    console.log($ionicScrollDelegate.getScrollPosition().top);
     var pos = $ionicScrollDelegate.getScrollPosition().top;
     var amountHeight = 180 - pos;
     if(amountHeight < 80) {
@@ -245,24 +242,22 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       contentMargin = 180;
     }
 
-    var amountScale = amountHeight/180;
+    var amountScale = (amountHeight/180);
     if(amountScale < 0.5) {
       amountScale = 0.5;
     }
     if(amountScale > 1.1) {
       amountScale = 1.1;
     }
+
     var s = amountScale;
 
     $scope.altAmountOpacity = (amountHeight - 100)/80;
 
-    console.log('amountHeight', amountHeight);
     $window.requestAnimationFrame(function() {
       $scope.amountHeight = amountHeight + 'px';
       $scope.contentMargin = contentMargin + 'px';
       $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s+ ')';
-      console.log('$scope.amountScale', $scope.amountScale);
-      console.log('$scope.altAmountOpacity', $scope.altAmountOpacity);
       $scope.$evalAsync(angular.noop);
     });
   };

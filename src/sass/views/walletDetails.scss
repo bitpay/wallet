@@ -17,7 +17,6 @@
     font-size: 12.5px;
   }
   &__tx-title {
-    //padding-top: 10px;
     flex-grow: 1;
     color: $dark-gray;
     overflow: hidden;
@@ -116,7 +115,6 @@
     margin-top: 180px;
     padding-top: 0;
     top: 0;
-    //top: 40px;
     .scroll {
       background: rgb(248, 248, 249);
       min-height: 300px;
@@ -125,7 +123,6 @@
   .amount-wrapper {
     position: relative;
     overflow: visible;
-    //margin-top: 40px;
 
     .amount-bg {
       content: '';
@@ -140,7 +137,6 @@
   .amount {
     width: 100%;
     text-align: center;
-    //padding: 2rem 1rem 1.5rem 1rem;
     color: #fff;
     height: 180px;
     margin-bottom: 10px;
@@ -181,7 +177,6 @@
 }
 
 .wallet-not-backed-up-warning {
-  //margin-top: -15px;
   margin-bottom: 1rem;
   background: #E15061;
   text-align: center;
