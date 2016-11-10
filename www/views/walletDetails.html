@@ -12,7 +12,10 @@
 
 
   <div class="amount-wrapper" ng-show="wallet && wallet.isComplete()" ng-style="{'background-color':wallet.color}">
-    <div class="amount-bg" ng-style="{'background-color':wallet.color}"></div>
+    <div
+      class="amount-bg"
+      ng-style="{'background-color':wallet.color}"
+      ng-show="scrollingDown || true"></div>
     <div ng-style="{'background-color':wallet.color, 'height': amountHeight}" class="amount">
       <div ng-if="!notAuthorized && !updatingStatus">
 
