@@ -83,53 +83,7 @@
       spinner="ios-small"
       on-refresh="onRefresh()">
     </ion-refresher>
-    <!-- <div class="amount-wrapper" ng-show="wallet && wallet.isComplete()" ng-style="{'background-color':wallet.color}">
-      <div class="amount-bg" ng-style="{'background-color':wallet.color}"></div>
-      <div ng-style="{'background-color':wallet.color}" class="amount">
-        <div ng-if="!notAuthorized && !updatingStatus">
 
-          <div ng-show="updateStatusError">
-            <a class="button button-outline button-light button-small" ng-click='update()' translate>Tap to retry</a>
-          </div>
-
-          <div ng-show="walletNotRegistered">
-            <span class="size-12 db m10b" translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
-            <a class="button button-outline button-light button-small" ng-click='recreate()' translate>Recreate</a>
-          </div>
-
-          <div ng-show="wallet.walletScanStatus == 'error'" ng-click='retryScan()'>
-            <span translate>Scan status finished with error</span>
-            <br><span translate>Tap to retry</span>
-          </div>
-
-
-          <div ng-click='updateAll(true)' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
-            <strong ng-if="!status.pendingAmount" class="size-36">{{status.totalBalanceStr}}</strong>
-            <div ng-if="!status.pendingAmount" class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
-            <div class="size-20" ng-if="status.pendingAmount">
-              <div style="margin-bottom:.5rem"><span translate>Available</span>: {{status.totalBalanceStr}}</div>
-              <div><span translate>Confirming</span>: {{status.pendingAmountStr}}</div>
-            </div>
-          </div>
-
-          <div ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && wallet.balanceHidden" on-hold="hideToggle()">
-            <strong class="size-24" translate>[Balance Hidden]</strong>
-            <div class="size-14" translate>
-              Tap and hold to show
-            </div>
-          </div>
-        </div>
-        <div ng-if="updatingStatus">
-          <div class="size-36">
-            <strong>...</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="wallet-details-wallet-info">
-        <span ng-include="'views/includes/walletInfo.html'"></span>
-      </div>
-    </div> -->
     <a class="wallet-not-backed-up-warning" ng-show="!isBackedUp" ng-click="backup()">
       Wallet not backed up
     </a>
@@ -199,55 +153,6 @@
           <div class="col" translate>{{updatingTxHistoryProgress}} transactions downloaded</div>
         </div>
       </div>
-
-      <!-- <div class="list" ng-show="txHistory[0]">
-        <div class="item" ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
-          <span class="item-note text-right">
-            <span class="wallet-details__tx-amount" ng-class="{'wallet-details__tx-amount--recent': btx.recent, 'wallet-details__tx-amount--received': btx.action == 'received', 'wallet-details__tx-amount--sent': btx.action == 'sent'}">
-              <span ng-if="btx.action == 'sent'">–</span>
-              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
-              (possible double spend)
-              </span>
-              <span  ng-if="btx.action != 'invalid'">
-              {{btx.amountStr}}
-              </span>
-            </span>
-            <p>
-              <time class="wallet-details__tx-time" ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
-              <span translate class="text-warning"
-                ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
-                Unconfirmed
-              </span>
-            </p>
-          </span>
-          <img class="wallet-details__tx-icon" src="img/icon-tx-received.svg" width="40" ng-if="btx.action == 'received'">
-          <img class="wallet-details__tx-icon" src="img/icon-tx-sent.svg" width="40" ng-if="btx.action == 'sent'">
-          <img class="wallet-details__tx-icon" src="img/icon-tx-moved.svg" width="40" ng-if="btx.action == 'moved'">
-
-          <div class="wallet-details__tx-title">
-            <div ng-show="btx.action == 'received'" class="ellipsis">
-              <div ng-if="btx.note.body">{{btx.note.body}}</div>
-              <div ng-if="!btx.note.body" translate> Received</div>
-            </div>
-
-            <div ng-show="btx.action == 'sent'" class="ellipsis">
-              <div ng-if="btx.message" class="wallet-details__tx-message ellipsis">{{btx.message}}</div>
-              <div ng-if="!btx.message && btx.note.body">{{btx.note.body}}</div>
-              <div ng-if="!btx.message && !btx.note.body && addressbook[btx.addressTo]">
-                {{addressbook[btx.addressTo].name || addressbook[btx.addressTo]}}
-              </div>
-              <div ng-if="!btx.message && !btx.note.body && !addressbook[btx.addressTo]" translate>Sent</div>
-            </div>
-
-            <div ng-show="btx.action == 'moved'" class="ellipsis">
-              <div ng-if="btx.note.body">{{btx.note.body}}</div>
-              <div ng-if="!btx.note.body" translate>Moved</div>
-            </div>
-            <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
-          </div>
-
-        </div>
-      </div> -->
 
       <div class="wallet-details__list" ng-show="txHistory[0]">
         <div ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
