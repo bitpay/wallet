@@ -91,6 +91,14 @@
 
 #walletDetails {
   background: #F8F8F9;
+  .bp-content {
+    position: relative;
+    height: 100%;
+
+    &.status-bar {
+      margin-top: 20px;
+    }
+  }
   .bar-header {
     border: 0;
     background: none;
