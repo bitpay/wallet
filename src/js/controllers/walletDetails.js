@@ -231,6 +231,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.amountHeight = '180px';
+  $scope.amountScale = 'scale3d(' + 1 + ',' + 1 + ',' + 1+ ')';
 
   $scope.getScrollPosition = function(){
     console.log($ionicScrollDelegate.getScrollPosition().top);
