@@ -1,7 +1,7 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
-      {{'Recent Activity'|translate}}
+      {{'Recent Transactions'|translate}}
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -11,7 +11,7 @@
     <div ng-if="fetchingNotifications" class="updatingHistory">
       <div class="text-center">
         <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
-        <div translate>Updating activity. Please stand by</div>
+        <div translate>Updating... Please stand by</div>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
         </div>
 
         <div class="item" ng-show="!notifications[0]">
-          <span translate>No recent activity</span>
+          <span translate>No recent transactions</span>
         </div>
       </div>
     </div>

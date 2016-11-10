@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, $stateParams, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.title = gettextCatalog.getString('Transaction');
@@ -9,11 +9,13 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
 
-    walletService.getTx($scope.wallet, $stateParams.txid, function(err, tx) {
+    ongoingProcess.set('loadingTxInfo', true);
+    walletService.getTx($scope.wallet, data.stateParams.txid, function(err, tx) {
+      ongoingProcess.set('loadingTxInfo', false);
       if (err) {
         $log.warn('Could not get tx');
         $ionicHistory.goBack();
-        return;
+        return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
       }
       $scope.btx = tx;
       if ($scope.btx.action != 'invalid') {
