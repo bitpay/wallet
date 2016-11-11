@@ -1,0 +1,18 @@
+<div id="rate-card" ng-class="{'popup-modal': isModal}" ng-controller="rateCardController">
+  <div class="item item-icon-right item-heading">
+    <span translate>How do you like BitPay Wallet?</span>
+    <a ng-click="hideCard()" ><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+  </div>
+  <div class="stars item item-sub">
+    <button class="button icon ion-android-star" ng-click="setScore(1)" ng-class="{'gold': 1 <= score, 'subtle-gray': 1 > score}"></button>
+    <button class="button icon ion-android-star" ng-click="setScore(2)" ng-class="{'gold': 2 <= score, 'subtle-gray': 2 > score}"></button>
+    <button class="button icon ion-android-star" ng-click="setScore(3)" ng-class="{'gold': 3 <= score, 'subtle-gray': 3 > score}"></button>
+    <button class="button icon ion-android-star" ng-click="setScore(4)" ng-class="{'gold': 4 <= score, 'subtle-gray': 4 > score}"></button>
+    <button class="button icon ion-android-star" ng-click="setScore(5)" ng-class="{'gold': 5 ==  score, 'subtle-gray': 5 > score}"></button>
+  </div>
+  <div class="feedback-flow-button" ng-if="button_title">
+    <button type="submit" class="button button-standard button-primary" ng-click="goFeedbackFlow()">
+      <span>{{button_title}}</span>
+    </button>
+  </div>
+</div>

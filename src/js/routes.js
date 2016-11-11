@@ -720,12 +720,49 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
       })
 
-
     /*
      *
-     * Buy or Sell Bitcoin
+     * Feedback
      *
      */
+
+    .state('feedback', {
+        url: '/feedback',
+        abstract: true,
+        template: '<ion-nav-view name="feedback"></ion-nav-view>'
+      })
+      .state('feedback.sendFeedback', {
+        url: '/sendFeedback/:score',
+        views: {
+          'feedback': {
+            controller: 'sendFeedbackController',
+            templateUrl: 'views/feedback/sendFeedback.html'
+          }
+        }
+      })
+      .state('feedback.thanks', {
+        url: '/thanks/:score/:skipped',
+        views: {
+          'feedback': {
+            controller: 'thanksController',
+            templateUrl: 'views/feedback/thanks.html'
+          }
+        }
+      })
+      .state('feedback.rateAppStore', {
+        url: '/rateAppStore/:score',
+        views: {
+          'feedback': {
+            controller: 'rateAppStoreController',
+            templateUrl: 'views/feedback/rateAppStore.html'
+          }
+        }
+      })
+      /*
+       *
+       * Buy or Sell Bitcoin
+       *
+       */
 
     .state('tabs.buyandsell', {
       url: '/buyandsell',

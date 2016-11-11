@@ -10,8 +10,11 @@
      spinner="ios-small"
      on-refresh="onRefresh()">
    </ion-refresher>
-    <div class="release" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
+    <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
       <span translate>An update to this app is available</span><span><i class="icon bp-arrow-right"></i></span>
+    </div>
+    <div class="list card ng-hide" ng-show="!hideRateCard.value">
+      <span ng-include="'views/feedback/rateCard.html'"></span>
     </div>
     <div class="list card homeTip" ng-if="homeTip">
       <div class="item item-icon-right item-heading">
@@ -47,10 +50,6 @@
         <span translate>Recent Transactions</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <span ng-if="fetchingNotifications" class="item text-center">
-        <ion-spinner icon="lines"></ion-spinner>
-        <div translate>Updating activity...</div>
-      </span>
       <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
         <span ng-include="'views/includes/walletActivity.html'"></span>
       </a>
