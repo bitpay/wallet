@@ -31,7 +31,12 @@ angular.module('copayApp.controllers').controller('thanksController', function($
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    storageService.setRateCardFlag('true', function() {});
+    storageService.getFeedbackInfo(function(error, info) {
+      var feedbackInfo = JSON.parse(info);
+      feedbackInfo.sent = true;
+      storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {});
+    });
+
     if (!$scope.isCordova) return;
 
     window.plugins.socialsharing.available(function(isAvailable) {
