@@ -1,0 +1,39 @@
+#send-feedback {
+  background-color: #ffffff;
+  .skip {
+    margin: 20px 20px 10px;
+    color: #667;
+    text-decoration: none;
+  }
+  .title {
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: $dark-gray;
+  }
+  .star {
+    a {
+      font-size: 25px;
+      padding: 20px;
+      .gold {
+        color: #ffd700;
+      }
+      .subtle-gray {
+        color: $subtle-gray;
+      }
+    }
+  }
+  .comment {
+    padding: 20px;
+    font-size: 1rem;
+    line-height: 1.5em;
+    font-weight: 300;
+    color: $dark-gray;
+  }
+  textarea {
+    padding: 20px;
+    border-top: 1px solid $subtle-gray;
+    padding: 20px;
+    width: 100%;
+  }
+}

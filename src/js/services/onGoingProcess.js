@@ -33,6 +33,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'validatingWallet': gettext('Validating wallet integrity...'),
     'validatingWords': gettext('Validating recovery phrase...'),
     'loadingTxInfo': gettext('Loading transaction info...'),
+    'sendingFeedback': gettext('Sending feedback...'),
   };
 
   root.clear = function() {
@@ -64,7 +65,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
 
     var showName = $filter('translate')(processNames[name] || name);
 
-    if(customHandler) {
+    if (customHandler) {
       customHandler(processName, showName, isOn);
     } else if (root.onGoingProcessName) {
       if (isCordova) {
