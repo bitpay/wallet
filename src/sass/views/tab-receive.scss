@@ -154,6 +154,7 @@
       position: absolute;
       top: 0;
       left:0;
+      z-index: 2;
       i {
         padding: 10px;
       }
@@ -248,6 +249,7 @@
           .card{
             margin-top:2vh;
             display: inline-block;
+            width:80%;
           }
           &-next{left:-25%;}
           &-prev{left:25%;}
