@@ -11,7 +11,7 @@
     </ion-nav-buttons>
   </ion-nav-bar>
 
-  <div class="bp-content" ng-class="{'status-bar': isCordova}">
+  <div class="bp-content" ng-class="{'status-bar': isCordova && isIOS}">
 
   <div class="amount-wrapper" ng-show="wallet && wallet.isComplete()" ng-style="{'background-color':wallet.color}">
     <div
@@ -76,7 +76,7 @@
       <span ng-include="'views/includes/walletInfo.html'"></span>
     </div>
   </div> <!-- oh -->
-  <ion-content on-scroll="getScrollPosition()" ng-style="{'margin-top': contentMargin}">
+  <ion-content ng-style="{'margin-top': contentMargin}">
     <ion-refresher
       ng-if="isAndroid"
       pulling-icon="ion-ios-refresh"
