@@ -279,9 +279,13 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   }
 
-  var scrollInterval;
+  var scrollWatcherInitialized;
 
   $scope.$on("$ionicView.enter", function(event, data) {
+    if(scrollWatcherInitialized) {
+      return;
+    }
+    scrollWatcherInitialized = true;
     $timeout(function() {
       getScrollPosition();
     }, 100);
