@@ -3,15 +3,15 @@
 angular.module('copayApp.controllers').controller('preferencesBitpayCardController',
   function($scope, $state, $timeout, $ionicHistory, bitpayCardService, popupService, gettextCatalog) {
 
-    $scope.remove = function() {
+    $scope.remove = function(card) {
       var msg = gettextCatalog.getString('Are you sure you would like to remove your BitPay Card account from this device?');
       popupService.showConfirm(null, msg, null, null, function(res) {
-        if (res) remove();
+        if (res) remove(card);
       });
     };
 
-    var remove = function() {
-      bitpayCardService.remove(function() {
+    var remove = function(card) {
+      bitpayCardService.remove(card, function() {
         $ionicHistory.removeBackView();
         $timeout(function() {
           $state.go('tabs.home');
@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayCardControll
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       bitpayCardService.getBitpayDebitCards(function(err, data) {
         if (err) return;
-        $scope.bitpayCards = data.cards;
+        $scope.bitpayCards = data;
       });
     });
 
