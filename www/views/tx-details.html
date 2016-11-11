@@ -16,7 +16,13 @@
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
-          <div class="alternative">{{btx.alternativeAmountStr}}</div>
+          <div class="alternative" ng-click="getFiatRate(); showRate = !showRate">
+            <span ng-show="!showRate">{{btx.alternativeAmountStr}}</span>
+            <span ng-show="showRate">
+              <span ng-show="!loadingRate">{{rateStr}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})</span>
+              <span ng-show="loadingRate">...</span>
+            </span>
+          </div>
         </div>
       </div>
       <div class="info">
