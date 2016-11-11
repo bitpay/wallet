@@ -19,11 +19,11 @@ angular.module('copayApp.controllers').controller('welcomeController', function(
     $log.debug('Creating profile');
     profileService.createProfile(function(err) {
       if (err) $log.warn(err);
-      $scope.setProfileCreationTime();
+      setProfileCreationTime();
     });
   };
 
-  $scope.setProfileCreationTime = function() {
+  function setProfileCreationTime() {
     var now = moment().unix() * 1000 + 24 * 60 * 60 * 1000;
     storageService.setProfileCreationTime(now, function() {});
   };

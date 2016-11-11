@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('rateCardController', function($scope, $state, $timeout, gettextCatalog, storageService) {
+angular.module('copayApp.controllers').controller('rateCardController', function($scope, $state, $timeout, gettextCatalog, platformInfo, storageService) {
+
+  $scope.isCordova = platformInfo.isCordova;
 
   $scope.goFeedbackFlow = function() {
     if ($scope.isModal) {
