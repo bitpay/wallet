@@ -1,0 +1,27 @@
+<ion-view id="rate-app-store">
+  <ion-content scroll="false">
+    <a class="right skip" ng-click="skip()">Skip</a>
+    <div class="title">
+      <span translate>Thank you!</span>
+      <div>
+        <i class="icon zero-state-icon">
+          <img src="img/address-book-add.svg"/>
+        </i>
+      </div>
+    </div>
+    <div class="subtitle">
+        <span translate>5-star ratings help us get BitPay Wallet into more hands, and more users means more resoucers can be committed to the app!</span>
+    </div>
+    <div class="subtitle">
+      <span class="text-bold" translate>Would you be willing to rate BitPay Wallet in the app store?</span>
+    </div>
+    <div class="buttons">
+      <button type="submit" class="button button-standard button-primary" ng-click="goAppStore()">
+        <span translate>Rate on the app store</span>
+      </button>
+      <button type="submit" class="button button-standard button-primary button-clear" ng-click="sendFeedback()">
+        <span translate>Send us feedback instead</span>
+      </button>
+    </div>
+  </ion-content>
+</ion-view>
