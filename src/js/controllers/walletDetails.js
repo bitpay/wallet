@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.openTxpModal = txpModalService.open;
   $scope.isCordova = platformInfo.isCordova;
   $scope.isAndroid = platformInfo.isAndroid;
+  $scope.isIOS = platformInfo.isIOS;
 
   $scope.openExternalLink = function(url, target) {
     externalLinkService.open(url, target);
@@ -239,8 +240,13 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.amountHeight = '180px';
   $scope.amountScale = 'scale3d(' + 1 + ',' + 1 + ',' + 1+ ')';
 
+  var prevPos;
   $scope.getScrollPosition = function(){
     var pos = $ionicScrollDelegate.getScrollPosition().top;
+    if(pos === prevPos) {
+      return;
+    }
+    prevPos = pos;
     var amountHeight = 180 - pos;
     if(amountHeight < 80) {
       amountHeight = 80;
@@ -262,16 +268,30 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     $scope.altAmountOpacity = (amountHeight - 100)/80;
 
-    $window.requestAnimationFrame(function() {
+    //$window.requestAnimationFrame(function() {
       $scope.amountHeight = amountHeight + 'px';
       $scope.contentMargin = contentMargin + 'px';
       $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s+ ')';
-      $scope.$evalAsync(angular.noop);
-    });
+      //$scope.$evalAsync(angular.noop);
+    //});
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+  // $scope.getScrollPosition();
 
+  // $timeout(function() {
+  //
+  // }, 300);
+
+  var scrollInterval;
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    scrollInterval = $interval(function(){
+      $scope.getScrollPosition();
+    }, 10);
+  });
+
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.walletId = data.stateParams.walletId;
     storageService.getBackupFlag($scope.walletId, function(err, flag) {
       $scope.isBackedUp = flag ? true : false;
@@ -296,6 +316,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
           updateStatus();
       }),
     ];
+  });
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $interval.cancel(scrollInterval);
   });
 
   $scope.$on("$ionicView.leave", function(event, data) {
