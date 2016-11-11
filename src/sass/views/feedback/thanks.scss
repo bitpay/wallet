@@ -1,0 +1,44 @@
+#thanks-feedback {
+  background-color: #ffffff;
+  .item-heading {
+    border-style: none;
+    margin-top: 10px;
+    a {
+      color: $dark-gray;
+    }
+    i {
+      font-size: 40px;
+    }
+  }
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: $dark-gray;
+    margin: 20px 10px;
+    text-align: center;
+  }
+  .subtitle {
+    padding: 10px 30px 20px 40px;
+    .image {
+      text-align: center;
+      padding: 30px;
+    }
+  }
+  .share-buttons {
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+    background-color: $subtle-gray;
+    .row {
+      margin: 20px 0px 20px;
+      span {
+        margin-top: 15px;
+        display: block;
+      }
+      div {
+        text-align: center;
+        width: 100%;
+      }
+    }
+  }
+}

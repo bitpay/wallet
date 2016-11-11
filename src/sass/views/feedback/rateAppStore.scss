@@ -1,0 +1,27 @@
+#rate-app-store {
+  background-color: #ffffff;
+  .skip {
+    margin: 10px;
+    color: #667;
+  }
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: $dark-gray;
+    margin: 40px 10px;
+    text-align: center;
+  }
+  .subtitle {
+    padding: 10px 30px 20px 40px;
+  }
+  .buttons {
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+    background-color: $subtle-gray;
+    .button {
+      margin-top: 40px;
+      margin-bottom: 30px;
+    }
+  }
+}
