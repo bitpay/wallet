@@ -26,7 +26,10 @@ angular.module('copayApp.controllers').controller('activityController',
 
     $scope.openNotificationModal = function(n) {
       if (n.txid) {
-        openTxModal(n);
+        $state.transitionTo('tabs.wallet.tx-details', {
+          txid: n.txid,
+          walletId: n.walletId
+        });
       } else {
         var txp = lodash.find($scope.txps, {
           id: n.txpId
@@ -45,36 +48,5 @@ angular.module('copayApp.controllers').controller('activityController',
           });
         }
       }
-    };
-
-    var openTxModal = function(n) {
-      var wallet = profileService.getWallet(n.walletId);
-
-      ongoingProcess.set('loadingTxInfo', true);
-      walletService.getTx(wallet, n.txid, function(err, tx) {
-        ongoingProcess.set('loadingTxInfo', false);
-
-        if (err) {
-          $log.error(err);
-          return popupService.showAlert(gettextCatalog.getString('Error'), err);
-        }
-
-        if (!tx) {
-          $log.warn('No tx found');
-          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
-        }
-
-        $scope.wallet = wallet;
-        $scope.btx = lodash.cloneDeep(tx);
-        $state.transitionTo('tabs.wallet.tx-details', {
-          txid: $scope.btx.txid,
-          walletId: $scope.walletId
-        });
-
-        walletService.getTxNote(wallet, n.txid, function(err, note) {
-          if (err) $log.warn('Could not fetch transaction note: ' + err);
-          $scope.btx.note = note;
-        });
-      });
     };
   });

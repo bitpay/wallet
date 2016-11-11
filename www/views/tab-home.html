@@ -47,10 +47,6 @@
         <span translate>Recent Transactions</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <span ng-if="fetchingNotifications" class="item text-center">
-        <ion-spinner icon="lines"></ion-spinner>
-        <div translate>Updating activity...</div>
-      </span>
       <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
         <span ng-include="'views/includes/walletActivity.html'"></span>
       </a>
