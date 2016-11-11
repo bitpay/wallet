@@ -223,7 +223,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           $scope.bitpayCards = null;
           return;
         }
-        $scope.bitpayCards = data.cards;
+        $scope.bitpayCards = data;
       });
       bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
         if (err) return;
