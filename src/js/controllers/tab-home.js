@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           initFeedBackInfo();
         } else {
           var feedbackInfo = JSON.parse(info);
-          //la version de ahora es mayor que la guardada ?
+          //Check if current version is greater than saved version
           var currentVersion = window.version;
           var savedVersion = feedbackInfo.version;
           var isVersionUpdated = feedbackService.isVersionUpdated(currentVersion, savedVersion);
