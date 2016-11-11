@@ -10,11 +10,11 @@ angular.module('copayApp.controllers').controller('rateCardController', function
       $scope.rateModal.remove();
     }
     if ($scope.isCordova && $scope.score == 5) {
-      $state.go('feedback.rateAppStore', {
+      $state.go('feedback.rateApp', {
         score: $scope.score
       });
     } else {
-      $state.go('feedback.sendFeedback', {
+      $state.go('feedback.send', {
         score: $scope.score
       });
     }

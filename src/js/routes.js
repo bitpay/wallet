@@ -731,30 +731,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         abstract: true,
         template: '<ion-nav-view name="feedback"></ion-nav-view>'
       })
-      .state('feedback.sendFeedback', {
-        url: '/sendFeedback/:score',
+      .state('feedback.send', {
+        url: '/send/:score',
         views: {
           'feedback': {
-            controller: 'sendFeedbackController',
-            templateUrl: 'views/feedback/sendFeedback.html'
+            controller: 'sendController',
+            templateUrl: 'views/feedback/send.html'
           }
         }
       })
-      .state('feedback.thanks', {
-        url: '/thanks/:score/:skipped',
+      .state('feedback.complete', {
+        url: '/complete/:score/:skipped',
         views: {
           'feedback': {
-            controller: 'thanksController',
-            templateUrl: 'views/feedback/thanks.html'
+            controller: 'completeController',
+            templateUrl: 'views/feedback/complete.html'
           }
         }
       })
-      .state('feedback.rateAppStore', {
-        url: '/rateAppStore/:score',
+      .state('feedback.rateApp', {
+        url: '/rateApp/:score',
         views: {
           'feedback': {
-            controller: 'rateAppStoreController',
-            templateUrl: 'views/feedback/rateAppStore.html'
+            controller: 'rateAppController',
+            templateUrl: 'views/feedback/rateApp.html'
           }
         }
       })
