@@ -102,12 +102,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     });
 
-    $scope.$on("$ionicView.leave", function(event, data) {
-      lodash.each(listeners, function(x) {
-        x();
-      });
-    });
-
     $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };

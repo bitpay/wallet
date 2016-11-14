@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, $state, $ionicHistory, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
 
+  var listeners = [];
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
   $scope.walletAddrs = {};
@@ -30,7 +31,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.loadAddresses = function(wallet, index) {
     walletService.getAddress(wallet, false, function(err, addr) {
-      $scope.walletAddrs[wallet.id] = addr || null;
+      $scope.walletAddrs[wallet.id] = addr;
     });
   }
 
@@ -94,13 +95,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
 
   $scope.$on('Wallet/Changed', function(event, wallet) {
-    $scope.wallet = wallet;
-    $scope.walletIndex = lodash.findIndex($scope.wallets, function(wallet) {
-      return wallet.id == $scope.wallet.id;
-    });
-    if (!$scope.walletAddrs[wallet.id]) $scope.setAddress(false);
-    else $scope.addr = $scope.walletAddrs[wallet.id];
-    $scope.$apply();
     if (!wallet) {
       $log.debug('No wallet provided');
       return;
@@ -111,12 +105,56 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
     $scope.wallet = wallet;
     $log.debug('Wallet changed: ' + wallet.name);
+
+    $scope.walletIndex = lodash.findIndex($scope.wallets, function(wallet) {
+      return wallet.id == $scope.wallet.id;
+    });
+
+    if (!$scope.walletAddrs[wallet.id]) $scope.setAddress(false);
+    else $scope.addr = $scope.walletAddrs[wallet.id];
+
+    $timeout(function() {
+      $scope.$apply();
+    }, 100);
+
   });
+
+  $scope.updateCurrentWallet = function() {
+    walletService.getStatus($scope.wallet, {}, function(err, status) {
+      if (err) {
+        $log.error(err);
+      }
+      $timeout(function() {
+        $scope.wallet = profileService.getWallet($scope.wallet.id);
+        $scope.wallet.status = status;
+        $scope.setAddress();
+        $scope.$apply();
+      }, 200);
+    });
+  };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
+
     lodash.each($scope.wallets, function(wallet, index) {
       $scope.loadAddresses(wallet);
+    });
+
+
+    listeners = [
+      $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+        // Update current address
+        if ($scope.wallet && walletId == $scope.wallet.id) $scope.updateCurrentWallet();
+      })
+    ];
+
+    // Update current wallet
+    if ($scope.wallet) $scope.updateCurrentWallet();
+  });
+
+  $scope.$on("$ionicView.leave", function(event, data) {
+    lodash.each(listeners, function(x) {
+      x();
     });
   });
 });
