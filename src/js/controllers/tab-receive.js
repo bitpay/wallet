@@ -48,6 +48,12 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }, 100);
   };
 
+  $scope.showAddresses = function() {
+    $state.transitionTo('tabs.receive.addresses', {
+      walletId: $scope.wallet.credentials.walletId
+    });
+  };
+
   $scope.openBackupNeededModal = function() {
     $ionicModal.fromTemplateUrl('views/includes/backupNeededPopup.html', {
       scope: $scope,
