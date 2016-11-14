@@ -1,4 +1,4 @@
-<ion-view class="settings" hide-tabs>
+<ion-view hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Wallet Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -6,30 +6,45 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="list">
-      <div class="item item-divider" translate>
-        Translation Credits
-      </div>
-      <div class="item">kinoshitajona<span class="item-note" translate>Japanese</span></div>
-      <div class="item">Kirvx<span class="item-note" translate>French</span></div>
-      <div class="item">saschad<span class="item-note" translate>German</span></div>
-      <div class="item">cmgustavo83<span class="item-note" translate>Spanish</span></div>
-      <div class="item">RussianNeuroMancer<span class="item-note" translate>Russian</span></div>
-      <div class="item">HostFat<span class="item-note" translate>Italian</span></div>
-      <div class="item">xm2hi<span class="item-note" translate>Chinese</span></div>
-      <div class="item">Pirx1618<span class="item-note" translate>Polish</span></div>
-      <div class="item">mareksip<span class="item-note" translate>Czech</span></div>
+    <div class="text-center padding">
+      <i class="icon ion-ios-ionic-outline"></i>
     </div>
-    <div class="padding">
-      <p>
-        <span translate>We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin.</span>
-        <button class="button button-standard button-primary" ng-click="openExternalLink(true, 'Open Translation Community', 'You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!
-  ', 'Open Crowdin', 'Go Back')" translate>Contribute Translations
-        </button>
-      </p>
-      <span translate>
-        Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
-      </span>
+
+    <div class="text-center">
+      <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time your recive a payment.</span><a ng-click="showInformation()" ng-if="!showInfo" translate> Why?</a>
+    </div>
+
+    <div class="text-center" ng-if="showInfo">
+      <span translate>It's a good idea to avoid reusing addresses-this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span><a ng-click="showInformation()" translate> Hide</a>
+    </div>
+
+    <div class="list">
+      <div class="item item-divider item-icon-right" ng-click="addNewAddress()" translate>
+        Unused Addresses
+        <i class="icon ion-ios-plus-empty"></i>
+      </div>
+
+      <div ng-if="unusedAddresses[0]">
+        <div class="item" ng-repeat="uAddr in unusedAddresses track by $index">
+          {{uAddr.address}}
+          <span class="item-note">
+            {{uAddr.path}} {{uAddr.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+          </span>
+        </div>
+      </div>
+
+      <div ng-if="!unusedAddresses[0]">
+        <span class="item" translate>Not unused addresses available</span>
+      </div>
+
+      <div class="item item-divider" translate>
+        Addresses With Balance
+      </div>
+
+      <div class="item" ng-repeat="addr in addresses track by $index">
+        {{addr.address}}
+        <div>{{addr.balanceStr}}</div>
+      </div>
     </div>
   </ion-content>
 </ion-view>
