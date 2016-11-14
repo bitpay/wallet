@@ -29,16 +29,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  // // RECEIVE
-  // // Check address
-  // root.isUsed(wallet.walletId, balance.byAddress, function(err, used) {
-  //   if (used) {
-  //     $log.debug('Address used. Creating new');
-  //     $rootScope.$emit('Local/AddressIsUsed');
-  //   }
-  // });
-  //
-
   var _signWithLedger = function(wallet, txp, cb) {
     $log.info('Requesting Ledger Chrome app to sign the transaction');
 
@@ -230,6 +220,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       cache.alternativeName = config.settings.alternativeName;
       cache.alternativeIsoCode = config.settings.alternativeIsoCode;
+
+      // Check address
+      root.isAddressUsed(wallet, balance.byAddress, function(err, used) {
+        if (used) {
+          $log.debug('Address used. Creating new');
+          // Force new address
+          root.getAddress(wallet, true, function(err, addr) {
+            $log.debug('New address: ', addr);
+          });
+        }
+      });
 
       rateService.whenAvailable(function() {
 
@@ -760,12 +761,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.isUsed = function(wallet, byAddress, cb) {
+  // Check address
+  root.isAddressUsed = function(wallet, byAddress, cb) {
     storageService.getLastAddress(wallet.id, function(err, addr) {
       var used = lodash.find(byAddress, {
         address: addr
       });
-      return cb(null, used);
+      return cb(err, used);
     });
   };
 
@@ -798,17 +800,20 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getAddress = function(wallet, forceNew, cb) {
-
     storageService.getLastAddress(wallet.id, function(err, addr) {
       if (err) return cb(err);
 
       if (!forceNew && addr) return cb(null, addr);
 
-      createAddress(wallet, function(err, _addr) {
-        if (err) return cb(err, addr);
-        storageService.storeLastAddress(wallet.id, _addr, function() {
-          if (err) return cb(err);
-          return cb(null, _addr);
+      root.isReady(wallet, function(err) {
+        if (err) return cb(err);
+
+        createAddress(wallet, function(err, _addr) {
+          if (err) return cb(err, addr);
+          storageService.storeLastAddress(wallet.id, _addr, function() {
+            if (err) return cb(err);
+            return cb(null, _addr);
+          });
         });
       });
     });
