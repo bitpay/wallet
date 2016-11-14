@@ -123,7 +123,11 @@
   background-color: inherit !important;
   }
   ion-content {
-    margin-top: 180px;
+
+    &.collapsible {
+      margin-top: 180px;
+    }
+
     padding-top: 0;
     top: 0;
     .scroll {
@@ -150,11 +154,14 @@
     text-align: center;
     color: #fff;
     height: 180px;
-    margin-bottom: 10px;
     padding-top: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &.collapsible {
+      margin-bottom: 10px;
+    }
 
     &__balance {
       transform: scale3d(1, 1, 1);
