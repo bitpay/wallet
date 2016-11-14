@@ -12,6 +12,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.isAndroid = platformInfo.isAndroid;
   $scope.isIOS = platformInfo.isIOS;
 
+  $scope.amountIsCollapsible = !$scope.isAndroid;
+
   $scope.openExternalLink = function(url, target) {
     externalLinkService.open(url, target);
   };
@@ -279,7 +281,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var scrollWatcherInitialized;
 
   $scope.$on("$ionicView.enter", function(event, data) {
-    if(scrollWatcherInitialized) {
+    if(scrollWatcherInitialized || !$scope.amountIsCollapsible) {
       return;
     }
     scrollWatcherInitialized = true;
