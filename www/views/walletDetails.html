@@ -19,10 +19,11 @@
     </ion-refresher>
     <div class="oh pr" ng-show="wallet && wallet.isComplete()">
       <div ng-style="{'background-color':wallet.color}" class="amount">
-        <div ng-if="!notAuthorized && !updatingStatus">
+        <div ng-if="!updatingStatus">
 
           <div ng-show="updateStatusError">
-            <a class="button button-outline button-light button-small" ng-click='update()' translate>Tap to retry</a>
+            <span class="size-12 db m10b">{{updateStatusError}}</span>
+            <a class="button button-outline button-light button-small" ng-click='updateAll()' translate>Tap to retry</a>
           </div>
 
           <div ng-show="walletNotRegistered">
@@ -30,13 +31,7 @@
             <a class="button button-outline button-light button-small" ng-click='recreate()' translate>Recreate</a>
           </div>
 
-          <div ng-show="wallet.walletScanStatus == 'error'" ng-click='retryScan()'>
-            <span translate>Scan status finished with error</span>
-            <br><span translate>Tap to retry</span>
-          </div>
-
-
-          <div ng-click='updateAll(true)' ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden" on-hold="hideToggle()">
+          <div ng-click='updateAll(true)' ng-show="!updateStatusError && !wallet.balanceHidden" on-hold="hideToggle()">
             <strong ng-if="!status.pendingAmount" class="size-36">{{status.totalBalanceStr}}</strong>
             <div ng-if="!status.pendingAmount" class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
             <div class="size-20" ng-if="status.pendingAmount">
@@ -45,7 +40,7 @@
             </div>
           </div>
 
-          <div ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && wallet.balanceHidden" on-hold="hideToggle()">
+          <div ng-show="!updateStatusError && wallet.balanceHidden" on-hold="hideToggle()">
             <strong class="size-24" translate>[Balance Hidden]</strong>
             <div class="size-14" translate>
               Tap and hold to show
@@ -64,7 +59,7 @@
       </div>
     </div> <!-- oh -->
 
-    <div class="p60b" ng-show="wallet &&  wallet.isComplete()">
+    <div class="p60b" ng-show="wallet &&  wallet.isComplete() && !walletNotRegistered">
       <div class="oh pr m20t" ng-show="wallet.incorrectDerivation">
         <div class="text-center text-warning">
           <i class="fi-alert"></i>
@@ -73,25 +68,6 @@
           </span>
         </div>
       </div>
-      <div class="oh pr m20t" ng-show="notAuthorized && !updatingStatus">
-        <div class="text-center text-warning">
-          <i class="fi-alert"></i>
-          <span translate>
-            WARNING: Wallet not registered
-          </span>
-        </div>
-        <div class="text-center text-gray m15r m15l" translate>
-          This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
-        </div>
-        <div class="text-center m10t ">
-          <span class="button outline round dark-gray tiny"
-            ng-click="recreate()">
-            <span translate>Recreate</span>
-          </span>
-        </div>
-      </div>
-
-
       <div class="list" ng-if="txps[0]">
         <div class="item item-heading" translate>
           <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
@@ -110,7 +86,7 @@
       <!-- Transactions -->
 
       <div class="oh pr m20t text-gray size-12 text-center"
-        ng-show="!txHistory[0] && !updatingTxHistory && !txHistoryError && !updateStatusError && !notAuthorized" translate>
+        ng-show="!txHistory[0] && !updatingTxHistory && !txHistoryError && !updateStatusError" translate>
         No transactions yet
       </div>
 
@@ -178,5 +154,6 @@
         on-infinite="showMore()"
         distance="1%">
       </ion-infinite-scroll>
+    </div>
   </ion-content>
 </ion-view>

@@ -87,6 +87,7 @@
             <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
               {{wallet.m}}-of-{{wallet.n}}
             </span>
+            <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
           </span>
           &nbsp;
           </p>
