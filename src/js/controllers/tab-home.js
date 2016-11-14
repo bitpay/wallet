@@ -179,7 +179,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
             if (err === 'WALLET_NOT_REGISTERED') wallet.error = gettextCatalog.getString('Wallet not registered');
-            else wallet.error = err;
+            else wallet.error = gettextCatalog.getString('Could not update');;
             $log.error(err);
           } else {
             wallet.error = null;
