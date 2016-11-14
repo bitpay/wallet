@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>Wallet Service URL</ion-nav-title>
     <ion-nav-back-button>
@@ -6,8 +6,8 @@
   </ion-nav-bar>
   <ion-content>
 
-    <div class="list">
-      <label class="item item-input item-stacked-label no-border">
+    <div class="list settings-list settings-input-group">
+      <label class="item item-input item-stacked-label">
         <span class="input-label">Wallet Service URL</span>
         <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl.value">
         <a class="postfix" on-tap="resetDefaultUrl()">
