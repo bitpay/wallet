@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('rateAppStoreController', function($scope, $state, $stateParams, externalLinkService, configService, gettextCatalog, platformInfo) {
+angular.module('copayApp.controllers').controller('rateAppController', function($scope, $state, $stateParams, externalLinkService, configService, gettextCatalog, platformInfo) {
   $scope.score = parseInt($stateParams.score);
   var isAndroid = platformInfo.isAndroid;
   var isIOS = platformInfo.isIOS;
@@ -8,14 +8,14 @@ angular.module('copayApp.controllers').controller('rateAppStoreController', func
   var config = configService.getSync();
 
   $scope.skip = function() {
-    $state.go('feedback.thanks', {
+    $state.go('feedback.complete', {
       score: $scope.score,
       skipped: true
     });
   };
 
   $scope.sendFeedback = function() {
-    $state.go('feedback.sendFeedback', {
+    $state.go('feedback.send', {
       score: $scope.score
     });
   };

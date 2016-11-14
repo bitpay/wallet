@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendFeedbackController', function($scope, $state, $log, $stateParams, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $stateParams, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
   $scope.score = parseInt($stateParams.score);
   switch ($scope.score) {
     case 1:
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('sendFeedbackController', func
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send feedback'));
         return;
       }
-      $state.go('feedback.thanks', {
+      $state.go('feedback.complete', {
         score: $stateParams.score,
         skipped: skip
       });
