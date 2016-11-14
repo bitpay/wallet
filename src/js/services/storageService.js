@@ -95,7 +95,8 @@ angular.module('copayApp.services')
     // Upgraders are executed in numerical order per the '##_' object key prefix.
     // 
     var _upgraders = {
-      '00_bitpayDebitCards' : _upgrade_bitpayDebitCards  // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
+      '00_bitpayDebitCards'      : _upgrade_bitpayDebitCards,      // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
+      '01_bitpayCardCredentials' : _upgrade_bitpayCardCredentials  // 2016-11: Upgrade bitpayCardCredentials-x to appIdentity-x
     };
 
     function _upgrade_bitpayDebitCards(key, network, cb) {
@@ -112,6 +113,28 @@ angular.module('copayApp.services')
             if (err) return cb(err);
             storage.remove(key, function() {
               cb(null, 'replaced with \'bitpayAccounts\'');
+            });
+          });
+        } else {
+          cb();
+        }
+      });
+    };
+
+    function _upgrade_bitpayCardCredentials(key, network, cb) {
+      key += '-' + network;
+      storage.get(key, function(err, data) {
+        if (err) return cb(err);
+        if (data != null) {
+          // Needs upgrade
+          if (lodash.isString(data)) {
+            data = JSON.parse(data);
+          }
+          data = data || {};
+          root.setAppIdentity(network, data, function(err) {
+            if (err) return cb(err);
+            storage.remove(key, function() {
+              cb(null, 'replaced with \'appIdentity\'');
             });
           });
         } else {
@@ -488,16 +511,16 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setBitpayCardCredentials = function(network, data, cb) {
-      storage.set('bitpayCardCredentials-' + network, data, cb);
+    root.setAppIdentity = function(network, data, cb) {
+      storage.set('appIdentity-' + network, data, cb);
     };
 
-    root.getBitpayCardCredentials = function(network, cb) {
-      storage.get('bitpayCardCredentials-' + network, cb);
+    root.getAppIdentity = function(network, cb) {
+      storage.get('appIdentity-' + network, cb);
     };
 
-    root.removeBitpayCardCredentials = function(network, cb) {
-      storage.remove('bitpayCardCredentials-' + network, cb);
+    root.removeAppIdentity = function(network, cb) {
+      storage.remove('appIdentity-' + network, cb);
     };
 
     root.removeAllWalletData = function(walletId, cb) {
