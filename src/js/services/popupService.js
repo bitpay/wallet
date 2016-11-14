@@ -1,130 +1,130 @@
 'use strict';
 
-angular.module('copayApp.services').service('popupService', function($log, $ionicPopup, platformInfo, gettextCatalog) {
+angular.module('copayApp.services').service('popupService', function($log, $ionicPopup, platformInfo, platformService) {
 
   var isCordova = platformInfo.isCordova;
+  var awaitingDialogResponse = [];
 
-  /*************** Ionic ****************/
+  function addDialogListener(callback){
+    var id = awaitingDialogResponse.push(callback) - 1;
+    return id;
+  }
 
-  var _ionicAlert = function(title, message, cb, buttonName) {
+  if(platformService.electron){
+    platformService.electron.ipcRenderer.on('alert-dialog-closed', handleDialogResponse);
+    platformService.electron.ipcRenderer.on('confirm-dialog-closed', handleDialogResponse);
+  }
+  function handleDialogResponse(e, id, args) {
+    var callback = awaitingDialogResponse[id];
+    awaitingDialogResponse = awaitingDialogResponse.splice(id, 1);
+    callback(args);
+  }
+
+  this.showAlert = function(title, msg, cb, buttonText) {
     if (!cb) cb = function() {};
-    $ionicPopup.alert({
-      title: title,
-      subTitle: message,
-      okType: 'button-clear button-positive',
-      okText: buttonName || gettextCatalog.getString('OK'),
-    }).then(cb);
-  };
-
-  var _ionicConfirm = function(title, message, okText, cancelText, cb) {
-    $ionicPopup.confirm({
-      title: title,
-      subTitle: message,
-      cancelText: cancelText,
-      cancelType: 'button-clear button-positive',
-      okText: okText,
-      okType: 'button-clear button-positive'
-    }).then(function(res) {
-      return cb(res);
-    });
-  };
-
-  var _ionicPrompt = function(title, message, opts, cb) {
-    opts = opts || {};
-    $ionicPopup.prompt({
-      title: title,
-      subTitle: message,
-      inputType: opts.inputType,
-      inputPlaceholder: opts.inputPlaceholder,
-      defaultText: opts.defaultText
-    }).then(function(res) {
-      return cb(res);
-    });
-  };
-
-  /*************** Cordova ****************/
-
-  var _cordovaAlert = function(title, message, cb, buttonName) {
-    if (!cb) cb = function() {};
-    navigator.notification.alert(message, cb, title, buttonName);
-  };
-
-  var _cordovaConfirm = function(title, message, okText, cancelText, cb) {
-    var onConfirm = function(buttonIndex) {
-      if (buttonIndex == 1) return cb(true);
-      else return cb(false);
+    if (!buttonText) {
+      // TODO: no button in this app should use generic text
+      $log.warn('Using generic buttonText');
+      buttonText = 'OK';
     }
-    okText = okText || gettextCatalog.getString('OK');
-    cancelText = cancelText || gettextCatalog.getString('Cancel');
-    navigator.notification.confirm(message, onConfirm, title, [okText, cancelText]);
-  };
-
-  var _cordovaPrompt = function(title, message, opts, cb) {
-    var onPrompt = function(results) {
-      if (results.buttonIndex == 1) return cb(results.input1);
-      else return cb();
-    }
-    navigator.notification.prompt(message, onPrompt, title, null, opts.defaultText);
-  };
-
-  /**
-   * Show a simple alert popup
-   *
-   * @param {String} Title (optional)
-   * @param {String} Message
-   * @param {Callback} Function (optional)
-   */
-
-  this.showAlert = function(title, msg, cb, buttonName) {
     var message = (msg && msg.message) ? msg.message : msg;
-    $log.warn(title ? (title + ': ' + message) : message);
+    var opts = {
+      title: title,
+      message: message,
+      buttonText: buttonText
+    }
+    $log.debug('Alert:', JSON.stringify(opts));
 
-    if (isCordova)
-      _cordovaAlert(title, message, cb, buttonName);
-    else
-      _ionicAlert(title, message, cb, buttonName);
+    if (isCordova) {
+      navigator.notification.alert(message, cb, title, buttonText);
+    } else if (platformService.electron) {
+      var id = addDialogListener(cb);
+      platformService.electron.ipcRenderer.send('open-alert-dialog', id, opts);
+    } else {
+      // Fallback only – use Ionic alert
+      $ionicPopup.alert({
+        title: title,
+        subTitle: message,
+        okType: 'button-clear button-positive',
+        okText: buttonText,
+      }).then(cb);
+    }
   };
 
-  /**
-   * Show a simple confirm popup
-   *
-   * @param {String} Title (optional)
-   * @param {String} Message
-   * @param {String} okText (optional)
-   * @param {String} cancelText (optional)
-   * @param {Callback} Function
-   * @returns {Callback} OK: true, Cancel: false
-   */
+  this.showConfirm = function(title, message, confirmText, cancelText, cb, actionIsDiscouraged) {
+    if (!cb) cb = function() {};
+    var opts = {
+      title: title,
+      message: message,
+      confirmText: confirmText,
+      cancelText: cancelText,
+      actionIsDiscouraged: actionIsDiscouraged
+    }
+    $log.debug('Confirm:', JSON.stringify(opts));
 
-  this.showConfirm = function(title, message, okText, cancelText, cb) {
-    $log.warn(title ? (title + ': ' + message) : message);
-
-    if (isCordova)
-      _cordovaConfirm(title, message, okText, cancelText, cb);
-    else
-      _ionicConfirm(title, message, okText, cancelText, cb);
+    if (isCordova) {
+      var button1 = cancelText
+      var button2 = confirmText
+      var confirmedIndex = 2;
+      if(actionIsDiscouraged){
+        button1 = confirmText
+        button2 = cancelText
+        var confirmedIndex = 1;
+      }
+      var onConfirm = function(buttonIndex) {
+        var confirmed = false;
+        if(buttonIndex === confirmedIndex) {
+          confirmed = true;
+        }
+        cb(confirmed);
+      }
+      navigator.notification.confirm(message, onConfirm, title, [button1, button2]);
+    } else if (platformService.electron) {
+      var onResponse = function(res){
+        if(res.confirmed) return cb(true);
+        else return cb(false);
+      }
+      var id = addDialogListener(onResponse);
+      platformService.electron.ipcRenderer.send('open-confirm-dialog', id, opts);
+    } else {
+      // Fallback only – use Ionic alert
+      $ionicPopup.confirm({
+        title: title,
+        subTitle: message,
+        cancelText: cancelText,
+        cancelType: 'button-clear button-positive',
+        okText: confirmText,
+        okType: 'button-clear button-positive'
+      }).then(function(res) {
+        return cb(res);
+      });
+    }
   };
-
-  /**
-   * Show a simple prompt popup
-   *
-   * @param {String} Title (optional)
-   * @param {String} Message
-   * @param {Object} Object{ inputType, inputPlaceholder, defaultText } (optional)
-   * @param {Callback} Function
-   * @returns {Callback} Return the value of the input if user presses OK
-   */
 
   this.showPrompt = function(title, message, opts, cb) {
     $log.warn(title ? (title + ': ' + message) : message);
 
     opts = opts || {};
 
-    if (isCordova && !opts.forceHTMLPrompt)
-      _cordovaPrompt(title, message, opts, cb);
-    else
-      _ionicPrompt(title, message, opts, cb);
+    if (isCordova && !opts.forceHTMLPrompt) {
+      var onPrompt = function(results) {
+        if (results.buttonIndex == 1) return cb(results.input1);
+        else return cb();
+      }
+      navigator.notification.prompt(message, onPrompt, title, null, opts.defaultText);
+    // TODO: } if (platformService.electron && !opts.forceHTMLPrompt) {
+    } else {
+      opts = opts || {};
+      $ionicPopup.prompt({
+        title: title,
+        subTitle: message,
+        inputType: opts.inputType,
+        inputPlaceholder: opts.inputPlaceholder,
+        defaultText: opts.defaultText
+      }).then(function(res) {
+        return cb(res);
+      });
+    }
   };
-
 
 });
