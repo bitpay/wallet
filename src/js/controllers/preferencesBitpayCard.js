@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayCardControll
 
     var remove = function(card) {
       bitpayCardService.remove(card, function() {
-        $ionicHistory.removeBackView();
+        $ionicHistory.clearHistory();
         $timeout(function() {
           $state.go('tabs.home');
         }, 100);
