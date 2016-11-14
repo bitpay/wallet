@@ -57,32 +57,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  // TODO
-  // This handles errors from BWS/index which normally
-  // trigger from async events (like updates).
-  // Debounce function avoids multiple popups
-  var _handleError = function(err) {
-    $log.warn('wallet ERROR: ', err);
-
-    $log.warn('TODO');
-    return; // TODO!!!
-    if (err instanceof errors.NOT_AUTHORIZED) {
-
-      console.log('[walletService.js.93] TODO NOT AUTH'); //TODO
-      // TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO  TODO
-      wallet.notAuthorized = true;
-      $state.go('tabs.home');
-    } else if (err instanceof errors.NOT_FOUND) {
-      popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not access Wallet Service: Not found'));
-    } else {
-      var msg = ""
-      $rootScope.$emit('Local/ClientError', (err.error ? err.error : err));
-      popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, gettextCatalog.getString('Error at Wallet Service')));
-    }
-  };
-  root.handleError = lodash.debounce(_handleError, 1000);
-
-
   root.invalidateCache = function(wallet) {
     if (wallet.cachedStatus)
       wallet.cachedStatus.isValid = false;
@@ -210,7 +184,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
       cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
       cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat + (cache.pendingAmount === null? 0 : cache.pendingAmount)) + ' ' + cache.unitName;
+      cache.pendingBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat + (cache.pendingAmount === null ? 0 : cache.pendingAmount)) + ' ' + cache.unitName;
 
       if (cache.pendingAmount !== null && cache.pendingAmount !== 0) {
         cache.pendingAmountStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
