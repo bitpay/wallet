@@ -221,12 +221,12 @@ angular.module('copayApp.services')
       storage.remove('profile', cb);
     };
 
-    root.setProfileCreationTime = function(time, cb) {
-      storage.set('profileCreationTime', time, cb);
+    root.setFeedbackInfo = function(feedbackValues, cb) {
+      storage.set('feedback', feedbackValues, cb);
     };
 
-    root.getProfileCreationTime = function(cb) {
-      storage.get('profileCreationTime', cb);
+    root.getFeedbackInfo = function(cb) {
+      storage.get('feedback', cb);
     };
 
     root.storeFocusedWalletId = function(id, cb) {
@@ -292,14 +292,6 @@ angular.module('copayApp.services')
 
     root.setHomeTipAccepted = function(val, cb) {
       storage.set('homeTip', val, cb);
-    };
-
-    root.getRateCardFlag = function(cb) {
-      storage.get('rateCardFlag', cb);
-    };
-
-    root.setRateCardFlag = function(val, cb) {
-      storage.set('rateCardFlag', val, cb);
     };
 
     root.setHideBalanceFlag = function(walletId, val, cb) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService, feedbackService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
     $scope.isNW = platformInfo.isNW;
-    $scope.hideRateCard = {};
+    $scope.showRateCard = {};
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -37,13 +37,37 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      storageService.getProfileCreationTime(function(error, time) {
-        var now = moment().unix() * 1000;
-        storageService.getRateCardFlag(function(error, value) {
-          $scope.hideRateCard.value = (value == 'true' || (time - now) > 0) ? true : false;
-        });
+      storageService.getFeedbackInfo(function(error, info) {
+        if (!info) {
+          initFeedBackInfo();
+        } else {
+          var feedbackInfo = JSON.parse(info);
+          //Check if current version is greater than saved version
+          var currentVersion = window.version;
+          var savedVersion = feedbackInfo.version;
+          var isVersionUpdated = feedbackService.isVersionUpdated(currentVersion, savedVersion);
+          if (!isVersionUpdated) {
+            initFeedBackInfo();
+            return;
+          }
+          var now = moment().unix();
+          var timeExceeded = (now - feedbackInfo.time) >= 24 * 60 * 60;
+          $scope.showRateCard.value = timeExceeded && !feedbackInfo.sent;
+          $timeout(function() {
+            $scope.$apply();
+          });
+        }
       });
 
+      function initFeedBackInfo() {
+        var feedbackInfo = {};
+        feedbackInfo.time = moment().unix();
+        feedbackInfo.version = window.version;
+        feedbackInfo.sent = false;
+        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
+          $scope.showRateCard.value = false;
+        });
+      };
     });
 
     $scope.$on("$ionicView.enter", function(event, data) {

@@ -13,7 +13,7 @@
     <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
       <span translate>An update to this app is available</span><span><i class="icon bp-arrow-right"></i></span>
     </div>
-    <div class="list card ng-hide" ng-show="!hideRateCard.value">
+    <div class="list card ng-hide" ng-show="showRateCard.value">
       <span ng-include="'views/feedback/rateCard.html'"></span>
     </div>
     <div class="list card homeTip" ng-if="homeTip">

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('thanksController', function($scope, $stateParams, $timeout, $log, platformInfo, configService, storageService) {
+angular.module('copayApp.controllers').controller('completeController', function($scope, $stateParams, $timeout, $log, platformInfo, configService, storageService) {
   $scope.score = parseInt($stateParams.score);
   $scope.skipped = $stateParams.skipped == 'false' ? false : true;
   $scope.isCordova = platformInfo.isCordova;
@@ -31,7 +31,12 @@ angular.module('copayApp.controllers').controller('thanksController', function($
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    storageService.setRateCardFlag('true', function() {});
+    storageService.getFeedbackInfo(function(error, info) {
+      var feedbackInfo = JSON.parse(info);
+      feedbackInfo.sent = true;
+      storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {});
+    });
+
     if (!$scope.isCordova) return;
 
     window.plugins.socialsharing.available(function(isAvailable) {
