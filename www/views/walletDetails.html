@@ -22,7 +22,8 @@
         <div ng-if="!notAuthorized && !updatingStatus">
 
           <div ng-show="updateStatusError">
-            <a class="button button-outline button-light button-small" ng-click='update()' translate>Tap to retry</a>
+            <span class="size-12 db m10b" translate>{{updateStatusError}}</span>
+            <a class="button button-outline button-light button-small" ng-click='updateAll()' translate>Tap to retry</a>
           </div>
 
           <div ng-show="walletNotRegistered">
