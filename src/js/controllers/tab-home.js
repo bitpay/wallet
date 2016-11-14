@@ -225,7 +225,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       var services = ['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'];
       lodash.each(services, function(service) {
         storageService.getNextStep(service, function(err, value) {
-          $scope.externalServices[service] = value ? true : false;
+          $scope.externalServices[service] = value == 'true' ? true : false;
           if (++i == services.length) return cb();
         });
       });
