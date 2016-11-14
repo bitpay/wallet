@@ -1001,41 +1001,50 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         });
       }
 
-
-      $log.info('Init profile...');
-      // Try to open local profile
-      profileService.loadAndBindProfile(function(err) {
-        $ionicHistory.nextViewOptions({
-          disableAnimate: true
-        });
+      $log.info('Verifying storage...');
+      storageService.verify(function(err) {
         if (err) {
-          if (err.message && err.message.match('NOPROFILE')) {
-            $log.debug('No profile... redirecting');
-            $state.go('onboarding.welcome');
-          } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
-            if (lodash.isEmpty(profileService.getWallets())) {
-              $log.debug('No wallets and no disclaimer... redirecting');
-              $state.go('onboarding.welcome');
-            } else {
-              $log.debug('Display disclaimer... redirecting');
-              $state.go('onboarding.disclaimer', {
-                resume: true
-              });
-            }
-          } else {
-            throw new Error(err); // TODO
-          }
+          $log.error('Storage failed to verify: ' + err);
+          // TODO - what next?
         } else {
-          profileService.storeProfileIfDirty();
-          $log.debug('Profile loaded ... Starting UX.');
-          scannerService.gentleInitialize();
-          $state.go('tabs.home');
+          $log.info('Storage OK');
         }
 
-        // After everything have been loaded, initialize handler URL
-        $timeout(function() {
-          openURLService.init();
-        }, 1000);
+        $log.info('Init profile...');
+        // Try to open local profile
+        profileService.loadAndBindProfile(function(err) {
+          $ionicHistory.nextViewOptions({
+            disableAnimate: true
+          });
+          if (err) {
+            if (err.message && err.message.match('NOPROFILE')) {
+              $log.debug('No profile... redirecting');
+              $state.go('onboarding.welcome');
+            } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
+              if (lodash.isEmpty(profileService.getWallets())) {
+                $log.debug('No wallets and no disclaimer... redirecting');
+                $state.go('onboarding.welcome');
+              } else {
+                $log.debug('Display disclaimer... redirecting');
+                $state.go('onboarding.disclaimer', {
+                  resume: true
+                });
+              }
+            } else {
+              throw new Error(err); // TODO
+            }
+          } else {
+            profileService.storeProfileIfDirty();
+            $log.debug('Profile loaded ... Starting UX.');
+            scannerService.gentleInitialize();
+            $state.go('tabs.home');
+          }
+
+          // After everything have been loaded, initialize handler URL
+          $timeout(function() {
+            openURLService.init();
+          }, 1000);
+        });
       });
     });
 
