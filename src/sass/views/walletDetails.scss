@@ -160,6 +160,11 @@
       margin-top: 5px;
     }
 
+    &__updating {
+      z-index: 999;
+      margin-top: -2.1rem;
+    }
+
     &-alternative {
       line-height: 36px;
     }

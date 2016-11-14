@@ -237,9 +237,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
    //$state.transitionTo('tabs.preferences.backupWarning');
   };
 
-  $scope.amountHeight = '180px';
-  $scope.amountScale = 'scale3d(' + 1 + ',' + 1 + ',' + 1+ ')';
-
   var prevPos;
   function getScrollPosition(){
     var pos = $ionicScrollDelegate.getScrollPosition().top;
