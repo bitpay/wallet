@@ -9,8 +9,6 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
   $scope.openPopup = function() {
     $ionicModal.fromTemplateUrl('views/includes/screenshotWarningModal.html', {
       scope: $scope,
-      backdropClickToClose: false,
-      hardwareBackButtonClose: false
     }).then(function(modal) {
       $scope.warningModal = modal;
       $scope.warningModal.show();
@@ -18,12 +16,15 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
 
     $scope.close = function() {
       $scope.warningModal.hide();
-      $scope.warningModal.remove();
       $state.go($scope.toState, {
         walletId: $scope.walletId
       });
     };
   }
+
+  $scope.$on('modal.hidden', function(modal) {
+    $scope.warningModal.remove();
+  });
 
   $scope.goBack = function() {
     $state.go($scope.fromState, {
