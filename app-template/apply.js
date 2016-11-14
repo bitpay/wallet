@@ -7,8 +7,6 @@
 var templates = {
   'package-template.json': '/',
   'index.html': 'www/',
-  'Makefile': 'cordova/',
-  'ProjectMakefile': 'cordova/',
   'config-template.xml': '/',
   'ionic.config.json': '/',
   'Package.appxmanifest': 'cordova/wp/',
