@@ -155,6 +155,11 @@
     align-items: center;
     justify-content: center;
 
+    &__balance {
+      transform: scale3d(1, 1, 1);
+      margin-top: 5px;
+    }
+
     &-alternative {
       line-height: 36px;
     }
