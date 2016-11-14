@@ -800,17 +800,20 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getAddress = function(wallet, forceNew, cb) {
-
     storageService.getLastAddress(wallet.id, function(err, addr) {
       if (err) return cb(err);
 
       if (!forceNew && addr) return cb(null, addr);
 
-      createAddress(wallet, function(err, _addr) {
-        if (err) return cb(err, addr);
-        storageService.storeLastAddress(wallet.id, _addr, function() {
-          if (err) return cb(err);
-          return cb(null, _addr);
+      root.isReady(wallet, function(err) {
+        if (err) return cb(err);
+
+        createAddress(wallet, function(err, _addr) {
+          if (err) return cb(err, addr);
+          storageService.storeLastAddress(wallet.id, _addr, function() {
+            if (err) return cb(err);
+            return cb(null, _addr);
+          });
         });
       });
     });
