@@ -779,15 +779,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       if (!forceNew && addr) return cb(null, addr);
 
-      root.isReady(wallet, function(err) {
-        if (err) return cb(err);
+      if (!wallet.isComplete())
+        return cb('WALLET_NOT_COMPLETE');
 
-        createAddress(wallet, function(err, _addr) {
-          if (err) return cb(err, addr);
-          storageService.storeLastAddress(wallet.id, _addr, function() {
-            if (err) return cb(err);
-            return cb(null, _addr);
-          });
+      createAddress(wallet, function(err, _addr) {
+        if (err) return cb(err, addr);
+        storageService.storeLastAddress(wallet.id, _addr, function() {
+          if (err) return cb(err);
+          return cb(null, _addr);
         });
       });
     });
