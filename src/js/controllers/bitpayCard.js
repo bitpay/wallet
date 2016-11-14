@@ -145,6 +145,12 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       updateHistoryFromCache(function() {
         self.update();
       });
+      bitpayCardService.getBitpayDebitCards(function(err, cards) {
+        if (err) return;
+        $scope.card = lodash.find(cards, function(card) {
+          return card.eid == $scope.cardId;
+        });
+      });
     }
   });
 
