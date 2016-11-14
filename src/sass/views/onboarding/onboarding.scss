@@ -1,4 +1,5 @@
 .onboarding {
+  @include electron-draggable();
   background: #1e3186;
   color: #fff;
   background-image: linear-gradient(to bottom, #1e3186 0%, #111b49 100%);
@@ -47,6 +48,7 @@
 }
 
 %cta-buttons {
+  @include electron-not-draggable();
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -64,7 +66,7 @@
 %onboarding-illustration {
   position: absolute;
   width: 100%;
-  height: 45%;
+  height: 38%;
   margin-top: 25vh;
   top: 0;
   background-position: center;

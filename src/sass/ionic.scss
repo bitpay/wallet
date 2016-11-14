@@ -40,3 +40,35 @@ $placeholder-icon-padding: 10px;
 .card {
   margin: ($content-padding * 2) 14px;
 }
+
+// Ionic does handling setting up Draggable regions for Electron:
+// https://github.com/electron/electron/blob/master/docs/api/frameless-window.md#draggable-region
+// so we'll do it here
+.bp-platform-desktop {
+  .bar.bar-header {
+    @include electron-draggable();
+    .button {
+      @include electron-not-draggable();
+    }
+  }
+  .modal-backdrop-bg {
+    @include electron-not-draggable();
+  }
+}
+
+// since we use 'hidden-inset' for the Electron BrowserWindow 'titleBarStyle' macOS property,
+// we need to re-space some heading elements on the Mac desktop build
+.bp-platform-desktop.platform-macintel {
+  .bar.bar-header {
+    height: 80px;
+    .button {
+      top: 24px;
+    }
+  }
+  .has-header {
+    top: 80px;
+  }
+  .bar .title {
+    top: 32px;
+  }
+}

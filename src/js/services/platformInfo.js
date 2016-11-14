@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('platformInfo', function($window) {
+angular.module('copayApp.services').factory('platformInfo', function($window, platformService) {
 
   var ua = navigator ? navigator.userAgent : null;
 
@@ -12,17 +12,36 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
   // Fixes IOS WebKit UA
   ua = ua.replace(/\(\d+\)$/, '');
 
-  var isNodeWebkit = function() {
-    var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
-    if (isNode) {
-      try {
-        return (typeof require('nw.gui') !== "undefined");
-      } catch (e) {
-        return false;
-      }
+  function getDesktopOsType(){
+    var osType = 'unknown';
+    if(platformService.electron){
+      var os = require('os');
+      osType = os.type();
     }
-  };
+    switch(osType){
+      case 'Darwin':
+        return 'macOS';
+        break;
+      case 'Linux':
+        return 'Linux';
+        break;
+      case 'Windows_NT':
+        return 'Windows'
+        break;
+      default:
+        return 'unknown';
+    }
+  }
 
+  function isMac(){
+    return getDesktopOsType === 'macOS';
+  }
+  function isLinux(){
+    return getDesktopOsType === 'Linux';
+  }
+  function isWindows(){
+    return getDesktopOsType === 'Windows';
+  }
 
   // Detect mobile devices
   var ret = {
@@ -32,7 +51,11 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
     isSafari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
     ua: ua,
     isCordova: !!$window.cordova,
-    isNW: isNodeWebkit(),
+    isNW: false,
+    isDesktop: platformService.electron !== false,
+    isMac: isMac(),
+    isLinux: isLinux(),
+    isWindows: isWindows()
   };
 
   ret.isMobile = ret.isAndroid || ret.isIOS || ret.isWP;

@@ -5,7 +5,6 @@
 //
 
 var templates = {
-  'package-template.json': '/',
   'index.html': 'www/',
   'config-template.xml': '/',
   'ionic.config.json': '/',
@@ -62,8 +61,6 @@ Object.keys(templates).forEach(function(k) {
 
   if(k === 'config-template.xml'){
     k = 'config.xml';
-  } else if (k === 'package-template.json') {
-    k = 'package.json';
   }
 
   if (!fs.existsSync('../' + targetDir)){

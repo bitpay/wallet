@@ -1,4 +1,5 @@
 #onboarding-tour {
+  @include electron-not-draggable();
   &-currency {
     .next-slide {
       margin-top: 3rem;
@@ -22,7 +23,9 @@
     z-index: 1;
   }
   .swiper-pagination {
+    @include electron-draggable();
     &-bullet {
+      @include electron-not-draggable();
       background: $soft-blue;
       &-active {
         background: $soft-blue;
