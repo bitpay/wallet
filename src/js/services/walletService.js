@@ -784,6 +784,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getBalance = function(wallet, opts, cb) {
+    opts = opts || {};
+    wallet.getBalance(opts, function(err, resp) {
+      return cb(err, resp);
+    });
+  };
+
   root.getAddress = function(wallet, forceNew, cb) {
     storageService.getLastAddress(wallet.id, function(err, addr) {
       if (err) return cb(err);

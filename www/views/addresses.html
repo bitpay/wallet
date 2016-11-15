@@ -25,10 +25,10 @@
       </div>
 
       <div ng-if="unusedAddresses[0]">
-        <div class="item" ng-repeat="uAddr in unusedAddresses track by $index">
-          {{uAddr.address}}
+        <div class="item" ng-repeat="uAddress in unusedAddresses track by $index">
+          {{uAddress.address}}
           <span class="item-note">
-            {{uAddr.path}} {{uAddr.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+            {{uAddress.path}} {{uAddress.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
           </span>
         </div>
       </div>
