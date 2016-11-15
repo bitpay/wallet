@@ -31,7 +31,7 @@
     <div class="comment">
       <span translate>{{comment}}</span>
     </div>
-    <textarea class="user-feedback" ng-model="feedback.value" placeholder="Your ideas, feedback, or comments"></textarea>
+    <textarea class="user-feedback" ng-model="feedback.value" placeholder="Your ideas, feedback, or comments" autofocus></textarea>
     <button ng-disabled="!feedback.value" type="submit" class="button button-full button-primary" ng-click="sendFeedback(feedback.value, false)" translate>
       Send
     </button>
