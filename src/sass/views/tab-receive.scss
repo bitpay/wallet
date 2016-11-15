@@ -72,7 +72,7 @@
       font-size: .8rem;
       // left:10%;
       position: absolute;
-      transition: all .4s ease;
+      transition: all .15s ease;
       width:100%;
       height: 100%;
       z-index: 0;
@@ -255,8 +255,10 @@
             display: inline-block;
             width:80%;
           }
-          &-next{left:-25%;}
-          &-prev{left:25%;}
+          @media(max-width: 500px){
+            &-next{left:-25%;}
+            &-prev{left:25%;}
+          }
         }
         @media (max-height: 600px){
           &{
