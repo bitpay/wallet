@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('rateCardController', function($scope, $state, $timeout, gettextCatalog, platformInfo, storageService) {
 
   $scope.isCordova = platformInfo.isCordova;
+  $scope.score = 0;
 
   $scope.goFeedbackFlow = function() {
     if ($scope.isModal) {
