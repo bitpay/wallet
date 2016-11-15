@@ -29,6 +29,20 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
     });
   };
 
+  $scope.$on("$ionicView.beforeEnter", function() {
+    if(window.StatusBar){
+      $log.debug('Hiding status bar...');
+      StatusBar.hide();
+    }
+  });
+
+  $scope.$on("$ionicView.afterLeave", function() {
+    if(window.StatusBar){
+      $log.debug('Showing status bar...');
+      StatusBar.show();
+    }
+  });
+
   $scope.sendFeedback = function() {
     $state.go('feedback.send', {
       score: $scope.score
@@ -40,11 +54,7 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
     var url;
     if (isAndroid) url = defaults.rateApp.android;
     if (isIOS) url = defaults.rateApp.ios;
-    // if (isWP) url = defaults.rateApp.ios; TODO
-    var title = gettextCatalog.getString('Rate the app');
-    var message = gettextCatalog.getString('You must go to the official website of the app to rate it');
-    var okText = gettextCatalog.getString('Go');
-    var cancelText = gettextCatalog.getString('Cancel');
-    externalLinkService.open(url, true, title, message, okText, cancelText);
+    // if (isWP) url = defaults.rateApp.windows; // TODO
+    externalLinkService.open(url);
   };
 });
