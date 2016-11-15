@@ -92,13 +92,18 @@
 #walletDetails {
   background: #F8F8F9;
 
-  .ionic-refresher-content {
-    color: white !important;
+  .scroll-refresher {
+    z-index: 1;
+    margin-top: 3.5rem;
   }
 
-  .spinner svg {
-    stroke: white;
-    fill: white;
+  .ionic-refresher-content {
+    color: white !important;
+
+    .spinner svg {
+      stroke: white;
+      fill: white;
+    }
   }
 
   .bp-content {
