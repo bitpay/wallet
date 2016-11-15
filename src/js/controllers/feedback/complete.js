@@ -32,7 +32,8 @@ angular.module('copayApp.controllers').controller('completeController', function
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if(window.StatusBar){
-      StatusBar.show();
+      $log.debug('Hiding status bar...');
+      StatusBar.hide();
     }
 
     storageService.getFeedbackInfo(function(error, info) {
@@ -83,8 +84,9 @@ angular.module('copayApp.controllers').controller('completeController', function
     }, 100);
   });
 
-  $scope.$on("$ionicView.afterLeave", function(event, data) {
+  $scope.$on("$ionicView.afterLeave", function() {
     if(window.StatusBar){
+      $log.debug('Showing status bar...');
       StatusBar.show();
     }
   });
