@@ -31,6 +31,10 @@ angular.module('copayApp.controllers').controller('completeController', function
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if(window.StatusBar){
+      StatusBar.show();
+    }
+
     storageService.getFeedbackInfo(function(error, info) {
       var feedbackInfo = JSON.parse(info);
       feedbackInfo.sent = true;
@@ -77,5 +81,11 @@ angular.module('copayApp.controllers').controller('completeController', function
         });
       }
     }, 100);
+  });
+
+  $scope.$on("$ionicView.afterLeave", function(event, data) {
+    if(window.StatusBar){
+      StatusBar.show();
+    }
   });
 });

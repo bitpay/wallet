@@ -1,11 +1,15 @@
 <ion-view id="send-feedback">
-  <ion-nav-bar class="bar-royal" ng-show="!score">
-    <ion-nav-back-button>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button ng-if="!score">
     </ion-nav-back-button>
+    <ion-nav-buttons side="right">
+      <button class="button button-clear skip" ng-click="sendFeedback(null, true)" translate>
+        Skip
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
-  <a class="right skip" ng-click="sendFeedback(null,true)" href translate>Skip</a>
   <ion-content class="has-header" scroll="false">
-    <div class="row item item-sub">
+    <div class="row item item-sub feedback-heading">
       <div class="col col-50">
         <div class="title">
           <span>{{reaction}}</span>
@@ -27,9 +31,7 @@
     <div class="comment">
       <span translate>{{comment}}</span>
     </div>
-    <div>
-      <textarea ng-model="feedback.value" placeholder="Your ideas, feedback, or comments" row="40"></textarea>
-    </div>
+    <textarea class="user-feedback" ng-model="feedback.value" placeholder="Your ideas, feedback, or comments"></textarea>
     <button ng-disabled="!feedback.value" type="submit" class="button button-full button-primary" ng-click="sendFeedback(feedback.value, false)" translate>
       Send
     </button>
