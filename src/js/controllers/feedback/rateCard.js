@@ -53,12 +53,14 @@ angular.module('copayApp.controllers').controller('rateCardController', function
       storageService.getFeedbackInfo(function(error, info) {
         var feedbackInfo = JSON.parse(info);
         feedbackInfo.sent = true;
-        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {});
+        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
+          $scope.showRateCard.value = false;
+        });
       });
     }
     $timeout(function() {
       $scope.$apply();
-    })
+    }, 100);
   }
 
 });
