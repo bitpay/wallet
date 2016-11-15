@@ -298,9 +298,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.walletId = data.stateParams.walletId;
-    storageService.getBackupFlag($scope.walletId, function(err, flag) {
-      $scope.isBackedUp = flag ? true : false;
-    });
     $scope.wallet = profileService.getWallet($scope.walletId);
     $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
 
