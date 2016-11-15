@@ -99,7 +99,7 @@
         padding-top: 5px;
         padding-bottom: 5px;
         display: inline-block;
-        font-size: .7rem;
+        font-size: .8rem;
       }
     }
     .qr {
@@ -236,6 +236,7 @@
   .wallets{
     position: relative;
     height: calc(100vh - 83vh);
+    z-index: 5;
     .slides {
       .swiper-container{
         position: absolute;
@@ -244,6 +245,9 @@
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
         max-width: 450px;
+        .swiper-wrapper{
+          @media(max-height: 600px){padding-top:.2rem}
+        }
         .swiper-slide{
           text-align: center;
           .card{
@@ -302,12 +306,15 @@
       display: flex;
       flex-direction: column;
       overflow: visible;
+      @media(max-height: 600px){
+        padding-top:.55rem;
+      }
       #sidebar-wallet{display: block;}
       .list{height: 100%;overflow: visible;}
       #wallet-list{
         position: absolute;
-        width: 100%;
-        overflow-y: scroll;
+        width: 110%;
+        overflow-y: auto;
         height: 100%;
         left: -6%;
       }
@@ -331,7 +338,7 @@
       }
       .card {
         max-width: 350px;
-        box-shadow:$subtle-box-shadow;
+        box-shadow: 0 1px 36px rgba(0, 0, 0, 0.07);
         padding:0;
         border-radius: 6px;
         padding:2px;
