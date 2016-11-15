@@ -194,6 +194,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.wallet.backup', {
+        url: '/backup/:walletId',
+        views: {
+          'tab-home@tabs': {
+            templateUrl: 'views/backup.html',
+            controller: 'backupController'
+          }
+        }
+      })
 
     /*
      *
