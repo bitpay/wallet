@@ -235,7 +235,8 @@
 
               <div class="wallet-details__tx-title" ng-if="isUnconfirmed(btx)">
                 <div class="ellipsis" style="color: #B4B4B4;">
-                  Confirming
+                  <span ng-if="btx.action == 'sent' || btx.action == 'moved'">Sending</span>
+                  <span ng-if="btx.action == 'received'">Receiving</span>
                 </div>
               </div>
 
