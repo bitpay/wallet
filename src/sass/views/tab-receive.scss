@@ -72,6 +72,17 @@
         font-size: 1.3rem;
       }
     }
+    #qr-options{
+      .item{
+        font-size:.7rem;
+        @media(min-width:350px){
+          font-size:.9rem;
+        }
+        @media(min-width:450px){
+          font-size:1rem;
+        }
+      }
+    }
     .bit-address {
       font-size: .8rem;
       // left:10%;
@@ -103,8 +114,14 @@
         padding-top: 5px;
         padding-bottom: 5px;
         display: inline-block;
-        font-size: .8rem;
-        color:$mid-gray;
+        font-size: .7rem;
+        @media(min-width:350px){
+          font-size:.9rem;
+        }
+        @media(min-width:450px){
+          font-size:1rem;
+        }
+        color:$light-gray;
       }
     }
     .qr {
@@ -296,6 +313,9 @@
       &-info{
         height: 100%;
       }
+      #qr-options{
+        .item{font-size:1rem;}
+      }
       .qr{
         height: 70%;
         div{
@@ -321,6 +341,7 @@
           .item{
             top: 40%;
             transform: translateY(-40%);
+            font-size:1rem;
           }
         }
       }
