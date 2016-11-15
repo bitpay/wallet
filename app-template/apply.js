@@ -5,10 +5,7 @@
 //
 
 var templates = {
-  'package-template.json': '/',
   'index.html': 'www/',
-  'Makefile': 'cordova/',
-  'ProjectMakefile': 'cordova/',
   'config-template.xml': '/',
   'ionic.config.json': '/',
   'Package.appxmanifest': 'cordova/wp/',
@@ -64,8 +61,6 @@ Object.keys(templates).forEach(function(k) {
 
   if(k === 'config-template.xml'){
     k = 'config.xml';
-  } else if (k === 'package-template.json') {
-    k = 'package.json';
   }
 
   if (!fs.existsSync('../' + targetDir)){

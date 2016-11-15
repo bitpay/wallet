@@ -1,0 +1,13 @@
+// Draggable regions can be clicked-and-dragged by the user to move the electron window.
+// Buttons and other interface elements need to be marked no-drag to function properly.
+// More info:
+// https://github.com/electron/electron/blob/master/docs/api/frameless-window.md#draggable-region
+
+@mixin electron-draggable() {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+@mixin electron-not-draggable() {
+  -webkit-app-region: no-drag;
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>bitpay</string>
+      </array>
+      <key>CFBundleURLName</key>
+      <string>BitPay Application Protocol</string>
+    </dict>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>bitcoin</string>
+      </array>
+      <key>CFBundleURLName</key>
+      <string>Bitcoin BIP 0021 URI Scheme</string>
+    </dict>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>copay</string>
+      </array>
+      <key>CFBundleURLName</key>
+      <string>BitPay Application Protocol</string>
+    </dict>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>bitpay</string>
+      </array>
+      <key>CFBundleURLName</key>
+      <string>BitPay Application Protocol</string>
+    </dict>
+  </array>
+  <key>BitPayTeamID</key>
+  <string>5B6HX3ZJPL</string>
+</dict>
+</plist>
