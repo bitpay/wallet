@@ -24,5 +24,35 @@ angular.module('copayApp.services').factory('feedbackService', function($http, $
     };
   };
 
+  root.isVersionUpdated = function(currentVersion, savedVersion) {
+
+    if (!verifyTagFormat(currentVersion))
+      return 'Cannot verify the format of version tag: ' + currentVersion;
+    if (!verifyTagFormat(savedVersion))
+      return 'Cannot verify the format of the saved version tag: ' + savedVersion;
+
+    var current = formatTagNumber(currentVersion);
+    var saved = formatTagNumber(savedVersion);
+    if (saved.major > current.major || (saved.major == current.major && saved.minor > current.minor))
+      return false;
+
+    return true;
+
+    function verifyTagFormat(tag) {
+      var regex = /^v?\d+\.\d+\.\d+$/i;
+      return regex.exec(tag);
+    };
+
+    function formatTagNumber(tag) {
+      var formattedNumber = tag.replace(/^v/i, '').split('.');
+      return {
+        major: +formattedNumber[0],
+        minor: +formattedNumber[1],
+        patch: +formattedNumber[2]
+      };
+    };
+
+  };
+
   return root;
 });

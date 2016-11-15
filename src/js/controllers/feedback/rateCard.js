@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('rateCardController', function($scope, $state, $timeout, gettextCatalog, platformInfo, storageService) {
 
   $scope.isCordova = platformInfo.isCordova;
+  $scope.score = 0;
 
   $scope.goFeedbackFlow = function() {
     if ($scope.isModal) {
@@ -10,11 +11,11 @@ angular.module('copayApp.controllers').controller('rateCardController', function
       $scope.rateModal.remove();
     }
     if ($scope.isCordova && $scope.score == 5) {
-      $state.go('feedback.rateAppStore', {
+      $state.go('feedback.rateApp', {
         score: $scope.score
       });
     } else {
-      $state.go('feedback.sendFeedback', {
+      $state.go('feedback.send', {
         score: $scope.score
       });
     }
@@ -49,13 +50,17 @@ angular.module('copayApp.controllers').controller('rateCardController', function
       $scope.rateModal.hide();
       $scope.rateModal.remove();
     } else {
-      storageService.setRateCardFlag('true', function() {
-        $scope.hideRateCard.value = true;
+      storageService.getFeedbackInfo(function(error, info) {
+        var feedbackInfo = JSON.parse(info);
+        feedbackInfo.sent = true;
+        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
+          $scope.showRateCard.value = false;
+        });
       });
     }
     $timeout(function() {
       $scope.$apply();
-    })
+    }, 100);
   }
 
 });

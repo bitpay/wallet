@@ -13,7 +13,7 @@
     <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
       <span translate>An update to this app is available</span><span><i class="icon bp-arrow-right"></i></span>
     </div>
-    <div class="list card ng-hide" ng-show="!hideRateCard.value">
+    <div class="list card ng-hide" ng-show="showRateCard.value">
       <span ng-include="'views/feedback/rateCard.html'"></span>
     </div>
     <div class="list card homeTip" ng-if="homeTip">
@@ -87,31 +87,29 @@
             <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
               {{wallet.m}}-of-{{wallet.n}}
             </span>
+            <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
           </span>
           &nbsp;
           </p>
           <i class="icon bp-arrow-right"></i>
         </a>
+      </div>
+    </div>
 
+    <div class="list card" ng-if="bitpayCardEnabled && bitpayCards[0] && externalServices.BitpayCard">
+      <div class="item item-icon-right item-heading">
+        <span translate>Cards</span>
+        <a ui-sref="tabs.bitpayCardIntro"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+      </div>
+      <div>
         <a ng-repeat="card in bitpayCards"
            ui-sref="tabs.bitpayCard({id:card.id})"
-           ng-if="bitpayCardEnabled && bitpayCards[0]"
            class="item item-sub item-icon-left item-big-icon-left item-icon-right">
           <i class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
-          <span>BitPay Visa&reg; Card</span>
+          <span>BitPay Visa&reg; Card ({{card.lastFourDigits}})</span>
           <p>{{cardsHistory[card.id].balance ? '$' + cardsHistory[card.id].balance : 'Add funds to get started'|translate}}</p>
-          <i class="icon bp-arrow-right"></i>
-        </a>
-        <a ui-sref="tabs.bitpayCardIntro"
-           ng-if="bitpayCardEnabled && !bitpayCards[0] && externalServices.BitpayCard"
-           class="item item-sub item-icon-left item-big-icon-left item-icon-right">
-          <i class="icon big-icon-svg">
-            <div class="bg icon-bitpay-card"></div>
-          </i>
-          <span>BitPay Visa&reg; Card</span>
-          <p translate>Add your card</p>
           <i class="icon bp-arrow-right"></i>
         </a>
       </div>
