@@ -168,7 +168,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.isFirstInGroup = function(index) {
-    if(index === 0) {
+    if (index === 0) {
       return true;
     }
     var curTx = $scope.txHistory[index];
@@ -177,7 +177,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.isLastInGroup = function(index) {
-    if(index === $scope.txHistory.length - 1) {
+    if (index === $scope.txHistory.length - 1) {
       return true;
     }
     return $scope.isFirstInGroup(index + 1);
@@ -234,15 +234,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
-  $scope.backup = function() {
-   //$state.go('tabs.preferences', {walletId: $scope.walletId});
-   //$state.transitionTo('tabs.preferences.backupWarning');
-  };
-
   var prevPos;
-  function getScrollPosition(){
+
+  function getScrollPosition() {
     var pos = $ionicScrollDelegate.getScrollPosition().top;
-    if(pos === prevPos) {
+    if (pos === prevPos) {
       $window.requestAnimationFrame(function() {
         getScrollPosition();
       });
@@ -250,29 +246,29 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     }
     prevPos = pos;
     var amountHeight = 180 - pos;
-    if(amountHeight < 80) {
+    if (amountHeight < 80) {
       amountHeight = 80;
     }
     var contentMargin = amountHeight;
-    if(contentMargin > 180) {
+    if (contentMargin > 180) {
       contentMargin = 180;
     }
 
-    var amountScale = (amountHeight/180);
-    if(amountScale < 0.5) {
+    var amountScale = (amountHeight / 180);
+    if (amountScale < 0.5) {
       amountScale = 0.5;
     }
-    if(amountScale > 1.1) {
+    if (amountScale > 1.1) {
       amountScale = 1.1;
     }
 
     var s = amountScale;
 
-    $scope.altAmountOpacity = (amountHeight - 100)/80;
+    $scope.altAmountOpacity = (amountHeight - 100) / 80;
     $window.requestAnimationFrame(function() {
       $scope.amountHeight = amountHeight + 'px';
       $scope.contentMargin = contentMargin + 'px';
-      $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s+ ')';
+      $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s + ')';
       $scope.$digest();
       getScrollPosition();
     });
@@ -281,7 +277,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var scrollWatcherInitialized;
 
   $scope.$on("$ionicView.enter", function(event, data) {
-    if(scrollWatcherInitialized || !$scope.amountIsCollapsible) {
+    if (scrollWatcherInitialized || !$scope.amountIsCollapsible) {
       return;
     }
     scrollWatcherInitialized = true;
