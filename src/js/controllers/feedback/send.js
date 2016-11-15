@@ -57,11 +57,11 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         break;
       case 5:
         $scope.reaction = gettextCatalog.getString("Thank you!");
-        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay wallet.") + ' ' + gettextCatalog.getString("Is there anything we could do better?");
+        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay.") + ' ' + gettextCatalog.getString("Is there anything we could do better?");
         break;
       default:
         $scope.reaction = gettextCatalog.getString("Feedback!");
-        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay wallet. How could we improve your experience?");
+        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay. How could we improve your experience?");
         break;
     }
   });
