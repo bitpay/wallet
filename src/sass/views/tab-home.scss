@@ -52,6 +52,15 @@
       }
     }
   }
+  .wallet-details__item.item {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .wallet-details__tx-icon {
+      background: #fff;
+      border-radius: 50px;
+    }
+  }
   .next-step.item {
     padding-top: 27px;
     padding-bottom: 27px;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -10,6 +10,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   $scope.openTxpModal = txpModalService.open;
   $scope.isCordova = platformInfo.isCordova;
   $scope.isAndroid = platformInfo.isAndroid;
+  $scope.isIOS = platformInfo.isIOS;
+
+  $scope.amountIsCollapsible = !$scope.isAndroid;
 
   $scope.openExternalLink = function(url, target) {
     externalLinkService.open(url, target);
@@ -158,6 +161,52 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     }
   };
 
+  $scope.getDate = function(txCreated) {
+    var date = new Date(txCreated * 1000);
+    return date;
+  };
+
+  $scope.isFirstInGroup = function(index) {
+    if (index === 0) {
+      return true;
+    }
+    var curTx = $scope.txHistory[index];
+    var prevTx = $scope.txHistory[index - 1];
+    return !createdDuringSameMonth(curTx, prevTx);
+  };
+
+  $scope.isLastInGroup = function(index) {
+    if (index === $scope.txHistory.length - 1) {
+      return true;
+    }
+    return $scope.isFirstInGroup(index + 1);
+  };
+
+  function createdDuringSameMonth(tx1, tx2) {
+    var date1 = new Date(tx1.time * 1000);
+    var date2 = new Date(tx2.time * 1000);
+    return getMonthYear(date1) === getMonthYear(date2);
+  }
+
+  $scope.createdWithinPastDay = function(time) {
+    var now = new Date();
+    var date = new Date(time * 1000);
+    return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+  };
+
+  $scope.isDateInCurrentMonth = function(date) {
+    var now = new Date();
+    return getMonthYear(now) === getMonthYear(date);
+  };
+
+  function getMonthYear(date) {
+    return date.getMonth() + date.getFullYear();
+  }
+
+  $scope.isUnconfirmed = function(tx) {
+    return !tx.confirmations || tx.confirmations === 0;
+  };
+
   $scope.showMore = function() {
     $timeout(function() {
       currentTxHistoryPage++;
@@ -184,9 +233,75 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+  var prevPos;
+  var screenInactive = true;
 
-    $scope.wallet = profileService.getWallet(data.stateParams.walletId);
+  function getScrollPosition() {
+    var scrollPosition = $ionicScrollDelegate.getScrollPosition();
+    if (!scrollPosition || screenInactive) {
+      $window.requestAnimationFrame(function() {
+        getScrollPosition();
+      });
+      return;
+    }
+    var pos = scrollPosition.top;
+    if (pos === prevPos) {
+      $window.requestAnimationFrame(function() {
+        getScrollPosition();
+      });
+      return;
+    }
+    prevPos = pos;
+    var amountHeight = 180 - pos;
+    if (amountHeight < 80) {
+      amountHeight = 80;
+    }
+    var contentMargin = amountHeight;
+    if (contentMargin > 180) {
+      contentMargin = 180;
+    }
+
+    var amountScale = (amountHeight / 180);
+    if (amountScale < 0.5) {
+      amountScale = 0.5;
+    }
+    if (amountScale > 1.1) {
+      amountScale = 1.1;
+    }
+
+    var s = amountScale;
+
+    $scope.altAmountOpacity = (amountHeight - 100) / 80;
+    $window.requestAnimationFrame(function() {
+      $scope.amountHeight = amountHeight + 'px';
+      $scope.contentMargin = contentMargin + 'px';
+      $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s + ')';
+      $scope.$digest();
+      getScrollPosition();
+    });
+  }
+
+  var scrollWatcherInitialized;
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $timeout(function() {
+      screenInactive = false;
+    }, 200);
+    if (scrollWatcherInitialized || !$scope.amountIsCollapsible) {
+      return;
+    }
+    scrollWatcherInitialized = true;
+    $timeout(function() {
+      getScrollPosition();
+    }, 100);
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.walletId = data.stateParams.walletId;
+    storageService.getBackupFlag($scope.walletId, function(err, flag) {
+      $scope.isBackedUp = flag ? true : false;
+    });
+    $scope.wallet = profileService.getWallet($scope.walletId);
     $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
 
     addressbookService.list(function(err, ab) {
@@ -208,7 +323,12 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     ];
   });
 
+  // $scope.$on("$ionicView.beforeLeave", function(event, data) {
+  //   $interval.cancel(scrollInterval);
+  // });
+
   $scope.$on("$ionicView.leave", function(event, data) {
+    screenInactive = true;
     lodash.each(listeners, function(x) {
       x();
     });
