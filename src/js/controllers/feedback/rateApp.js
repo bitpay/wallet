@@ -36,10 +36,11 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
   };
 
   $scope.goAppStore = function() {
+    var defaults = configService.getDefaults();
     var url;
-    if (isAndroid) url = config.rateApp.android;
-    if (isIOS) url = config.rateApp.ios;
-    // if (isWP) url = config.rateApp.ios; TODO
+    if (isAndroid) url = defaults.rateApp.android;
+    if (isIOS) url = defaults.rateApp.ios;
+    // if (isWP) url = defaults.rateApp.ios; TODO
     var title = gettextCatalog.getString('Rate the app');
     var message = gettextCatalog.getString('You must go to the official website of the app to rate it');
     var okText = gettextCatalog.getString('Go');
