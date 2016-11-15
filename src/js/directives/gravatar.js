@@ -16,6 +16,6 @@ angular.module('copayApp.directives')
           scope.emailHash = md5.createHash(scope.email.toLowerCase() || '');
         }
       },
-      template: '<img class="gravatar" alt="{{ name }}" height="{{ height }}"  width="{{ width }}" src="https://secure.gravatar.com/avatar/{{ emailHash }}.jpg?s={{ width }}&d=mm">'
-    }
+      template: '<img class="gravatar" alt="{{ name }}" height="{{ height }}"  width="{{ width }}" src="https://secure.gravatar.com/avatar/{{ emailHash }}.jpg?s={{ width }}&d=identicon">'
+    };
   });

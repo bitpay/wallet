@@ -1,27 +1,39 @@
+<div class="wallet-details__item__marker"></div>
+<img class="wallet-details__tx-icon" src="img/icon-proposal-pending.svg" width="40">
 
-<div class="wallet-activity" ng-class="{'wallet-activity-not-pending':!tx.pendingForUs}">
-  <div class="wallet-activity-amount">
-    {{tx.amountStr}}
+<div class="wallet-details__tx-content" ng-class="{'no-border': $last}">
+
+  <div class="wallet-details__tx-title">
+    <span ng-show="!tx.merchant">
+      <span ng-show="addressbook[tx.toAddress] && !tx.message">
+        {{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}
+      </span>
+      <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
+        {{tx.message}}
+      </span>
+      <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
+        Sending
+      </span>
+    </span>
+    <span ng-show="tx.merchant">
+      <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+      <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+    </span>
   </div>
-  <span ng-show="!tx.merchant">
-    <span ng-show="addressbook[tx.toAddress] && !tx.message">
-      {{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}
-    </span>
-    <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
-      {{tx.message}}
-    </span>
-    <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
-      Sending
-    </span>
-  </span>
-  <span ng-show="tx.merchant">
-    <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-    <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
-  </span>
 
-  <p class="wallet-activity-note">
-    <i class="icon ion-record wallet-activity-note-child" ng-style="{'color':tx.wallet.color}"></i>
-    <span class="wallet-activity-note-child">{{tx.wallet.name}}</span>
-    <time class="wallet-activity-note-child">{{tx.createdOn * 1000 | amTimeAgo}}</time>
-  </p>
+  <span class="item-note text-right wallet-details__tx-amount">
+    <span class="wallet-details__tx-amount wallet-details__tx-amount--sent">
+      <span ng-if="tx.action == 'sent'">–</span>
+      <span  class="size-12" ng-if="tx.action == 'invalid'" translate>
+      (possible double spend)
+      </span>
+      <span  ng-if="tx.action != 'invalid'">
+      – {{tx.amountStr}}
+      </span>
+    </span>
+    <div>
+      <time class="wallet-details__tx-time" ng-if="tx.createdOn && createdWithinPastDay(tx.createdOn)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
+      <time class="wallet-details__tx-time" ng-if="tx.createdOn && !createdWithinPastDay(tx.createdOn)">{{tx.createdOn * 1000 | date:'MMMM d, y'}}</time>
+    </div>
+  </span>
 </div>
