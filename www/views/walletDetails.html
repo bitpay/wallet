@@ -162,7 +162,7 @@
           <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
         </div>
         <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
-          <div class="wallet-details__item proposal" ng-include="'views/includes/txp.html'"></div>
+          <a class="wallet-details__item proposal item" ng-include="'views/includes/txp.html'"></a>
         </div>
         <div class="item item-footer description" ng-show="status.lockedBalanceSat" style="background: white;">
           <span translate>Total Locked Balance</span>:
