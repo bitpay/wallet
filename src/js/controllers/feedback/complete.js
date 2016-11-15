@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('completeController', function
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if(window.StatusBar){
-      StatusBar.show();
+      StatusBar.hide();
     }
 
     storageService.getFeedbackInfo(function(error, info) {
