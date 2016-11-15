@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('rateCardController', function
     $scope.score = score;
     switch ($scope.score) {
       case 1:
-        $scope.button_title = gettextCatalog.getString("I think this app is terrible");
+        $scope.button_title = gettextCatalog.getString("I think this app is terrible.");
         break;
       case 2:
         $scope.button_title = gettextCatalog.getString("I don't like it");
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('rateCardController', function
         $scope.button_title = gettextCatalog.getString("I like the app");
         break;
       case 5:
-        $scope.button_title = gettextCatalog.getString("This app is fantastic");
+        $scope.button_title = gettextCatalog.getString("This app is fantastic!");
         break;
     }
     $timeout(function() {
