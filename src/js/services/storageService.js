@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, platformInfo) {
+  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, platformInfo, $timeout) {
 
     var root = {};
 
@@ -74,7 +74,90 @@ angular.module('copayApp.services')
       });
     };
 
+    ////////////////////////////////////////////////////////////////////////////
+    //
+    // UPGRADING STORAGE
+    // 
+    // 1. Write a function to upgrade the desired storage key(s).  The function should have the protocol:
+    // 
+    //    _upgrade_x(key, network, cb), where:
+    //    
+    //    `x` is the name of the storage key
+    //    `key` is the name of the storage key being upgraded 
+    //    `network` is one of 'livenet', 'testnet'
+    //
+    // 2. Add the storage key to `_upgraders` object using the name of the key as the `_upgrader` object key
+    //    with the value being the name of the upgrade function (e.g., _upgrade_x).  In order to avoid conflicts
+    //    when a storage key is involved in multiple upgraders as well as predicte the order in which upgrades
+    //    occur the `_upgrader` object key should be prefixed with '##_' (e.g., '01_') to create a unique and 
+    //    sortable name. This format is interpreted by the _upgrade() function.
+    // 
+    // Upgraders are executed in numerical order per the '##_' object key prefix.
+    // 
+    var _upgraders = {
+      '00_bitpayDebitCards' : _upgrade_bitpayDebitCards  // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
+    };
 
+    function _upgrade_bitpayDebitCards(key, network, cb) {
+      key += '-' + network;
+      storage.get(key, function(err, data) {
+        if (err) return cb(err);
+        if (data != null) {
+          // Needs upgrade
+          if (lodash.isString(data)) {
+            data = JSON.parse(data);
+          }
+          data = data || {};
+          root.setBitpayDebitCards(network, data, function(err) {
+            if (err) return cb(err);
+            storage.remove(key, function() {
+              cb(null, 'replaced with \'bitpayAccounts\'');
+            });
+          });
+        } else {
+          cb();
+        }
+      });
+    };
+    //
+    ////////////////////////////////////////////////////////////////////////////
+
+    // IMPORTANT: This function is designed to block execution until it completes.
+    // Ideally storage should not be used until it has been verified.
+    root.verify = function(cb) {
+      _upgrade(function(err) {
+        cb(err);
+      });
+    };
+
+    function _handleUpgradeError(key, err) {
+      $log.error('Failed to upgrade storage for \'' + key + '\': ' + err);
+    };
+
+    function _handleUpgradeSuccess(key, msg) {
+      $log.info('Storage upgraded for \'' + key + '\': ' + msg);
+    };
+
+    function _upgrade(cb) {
+      var errorCount = 0;
+      var errorMessage = undefined;
+      var keys = Object.keys(_upgraders).sort();
+      var networks = ['livenet', 'testnet'];
+      keys.forEach(function(key) {
+        networks.forEach(function(network) {
+          var storagekey = key.split('_')[1];
+          _upgraders[key](storagekey, network, function(err, msg) {
+            if (err) {
+              _handleUpgradeError(storagekey, err);
+              errorCount++;
+              errorMessage = errorCount + ' storage upgrade failures';
+            }
+            if (msg) _handleUpgradeSuccess(storagekey, msg);
+          });
+        });
+      });
+      cb(errorMessage);
+    };
 
     root.tryToMigrate = function(cb) {
       if (!shouldUseFileStorage) return cb();
@@ -138,12 +221,12 @@ angular.module('copayApp.services')
       storage.remove('profile', cb);
     };
 
-    root.setProfileCreationTime = function(time, cb) {
-      storage.set('profileCreationTime', time, cb);
+    root.setFeedbackInfo = function(feedbackValues, cb) {
+      storage.set('feedback', feedbackValues, cb);
     };
 
-    root.getProfileCreationTime = function(cb) {
-      storage.get('profileCreationTime', cb);
+    root.getFeedbackInfo = function(cb) {
+      storage.get('feedback', cb);
     };
 
     root.storeFocusedWalletId = function(id, cb) {
@@ -209,14 +292,6 @@ angular.module('copayApp.services')
 
     root.setHomeTipAccepted = function(val, cb) {
       storage.set('homeTip', val, cb);
-    };
-
-    root.getRateCardFlag = function(cb) {
-      storage.get('rateCardFlag', cb);
-    };
-
-    root.setRateCardFlag = function(val, cb) {
-      storage.set('rateCardFlag', val, cb);
     };
 
     root.setHideBalanceFlag = function(walletId, val, cb) {
@@ -349,20 +424,76 @@ angular.module('copayApp.services')
       storage.get('bitpayDebitCardsHistory-' + network, cb);
     };
 
-    root.removeBitpayDebitCardsHistory = function(network, cb) {
-      storage.remove('bitpayDebitCardsHistory-' + network, cb);
+    root.removeBitpayDebitCardHistory = function(network, card, cb) {
+      root.getBitpayDebitCardsHistory(network, function(err, data) {
+        if (err) return cb(err);
+        if (lodash.isString(data)) {
+          data = JSON.parse(data);
+        }
+        data = data || {};
+        delete data[card.eid];
+        root.setBitpayDebitCardsHistory(network, JSON.stringify(data), cb);
+      });
     };
 
     root.setBitpayDebitCards = function(network, data, cb) {
-      storage.set('bitpayDebitCards-' + network, data, cb);
+      if (lodash.isString(data)) {
+        data = JSON.parse(data);
+      }
+      data = data || {};
+      if (lodash.isEmpty(data) || !data.email) return cb('No card(s) to set');
+      storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
+        if (err) return cb(err);
+        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
+        bitpayAccounts[data.email]['bitpayDebitCards-' + network] = data;
+        storage.set('bitpayAccounts-' + network, JSON.stringify(bitpayAccounts), cb);
+      });
     };
 
     root.getBitpayDebitCards = function(network, cb) {
-      storage.get('bitpayDebitCards-' + network, cb);
+      storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
+        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        var cards = [];
+        Object.keys(bitpayAccounts).forEach(function(email) {
+          // For the UI, add the account email to the card object.
+          var acctCards = bitpayAccounts[email]['bitpayDebitCards-' + network].cards;
+          for (var i = 0; i < acctCards.length; i++) {
+            acctCards[i].email = email;
+          }
+          cards = cards.concat(acctCards);
+        });
+        cb(err, cards);
+      });
     };
 
-    root.removeBitpayDebitCards = function(network, cb) {
-      storage.remove('bitpayDebitCards-' + network, cb);
+    root.removeBitpayDebitCard = function(network, card, cb) {
+      if (lodash.isString(card)) {
+        card = JSON.parse(card);
+      }
+      card = card || {};
+      if (lodash.isEmpty(card) || !card.eid) return cb('No card to remove');
+      storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
+        if (err) cb(err);
+        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        Object.keys(bitpayAccounts).forEach(function(userId) {
+          var data = bitpayAccounts[userId]['bitpayDebitCards-' + network];
+          var newCards = lodash.reject(data.cards, {'eid': card.eid});
+          data.cards = newCards;
+          root.setBitpayDebitCards(network, data, function(err) {
+            if (err) cb(err);
+            // If there are no more cards in storage then re-enable the next step entry.
+            root.getBitpayDebitCards(network, function(err, cards){
+              if (err) cb(err);
+              if (cards.length == 0) {
+                root.removeNextStep('BitpayCard', cb);
+              } else {
+                cb();
+              }
+            });
+          });
+        });
+      });
     };
 
     root.setBitpayCardCredentials = function(network, data, cb) {

@@ -1,14 +1,19 @@
-#rate-app-store {
+#rate-app {
   background-color: #ffffff;
   .skip {
     margin: 10px;
     color: #667;
   }
+  .icon-svg > img {
+    width: 80px;
+    height: 80px;
+    margin-top: 15px;
+  }
   .title {
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
-    margin: 40px 10px;
+    margin: 40px 50px 10px;
     text-align: center;
   }
   .subtitle {

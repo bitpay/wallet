@@ -1,0 +1,99 @@
+<ion-view id="complete">
+  <ion-content scroll="false">
+    <div class="item item-icon-right item-heading">
+      <a ui-sref="tabs.home"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+    </div>
+    <div ng-show="skipped && isCordova">
+      <div ng-show="score > 3">
+        <div class="title" translate>Invite friends to BitPay Wallet!</div>
+        <div class="text-center">
+          <i class="icon addressbook-icon-svg">
+            <img src="img/address-book-add.svg"/>
+          </i>
+        </div>
+        <div class="text-center">
+          <span translate>Share the love by inviting your friends.</span>
+        </div>
+      </div>
+      <div ng-show="score <= 3">
+        <div class="title" translate>Thank you!</div>
+        <div class="subtitle">
+          <span translate>A member of the team will review your feedback as soon as possible.</span>
+        </div>
+        <div class="subtitle" ng-if="score <= 3 || !isCordova">
+          <span translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</span>
+        </div>
+        <div ng-if="score <= 3 || !isCordova">
+          <div class="text-center">
+            <i class="icon icon-svg">
+              <img src="img/illustration-send-feedback.png"/>
+            </i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-show="!skipped || !isCordova">
+      <div class="title" translate>Thank you!</div>
+      <div class="subtitle">
+        <span translate>A member of the team will review your feedback as soon as possible.</span>
+      </div>
+      <div class="subtitle" ng-if="score <= 3 || !isCordova">
+        <span translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</span>
+      </div>
+      <div ng-if="score <= 3 || !isCordova">
+        <div class="text-center">
+          <i class="icon icon-svg">
+            <img src="img/illustration-send-feedback.png"/>
+          </i>
+        </div>
+      </div>
+      <div class="text-center" ng-if="score > 3 && isCordova">
+        <span translate>Share the love by inviting your friends.</span>
+      </div>
+    </div>
+    <div class="share-buttons" ng-if="isCordova && score > 3">
+      <div class="ng-hide" ng-show="socialsharing" ng-if="score >= 4">
+        <div class="row">
+          <div class="ng-hide" ng-show="facebook" ng-click="shareFacebook()">
+            <i class="icon socialsharing-icon">
+              <img src="img/social-icons/ico-social-facebook.svg"/>
+            </i>
+            <span>Facebook</span>
+          </div>
+          <div class="ng-hide" ng-show="twitter" ng-click="shareTwitter()">
+            <i class="icon socialsharing-icon">
+              <img src="img/social-icons/ico-social-twitter.svg"/>
+            </i>
+            <span>Twitter</span>
+          </div>
+          <div class="ng-hide" ng-show="googleplus" ng-click="shareGooglePlus()">
+            <i class="icon socialsharing-icon">
+              <img src="img/social-icons/ico-social-googleplus.svg"/>
+            </i>
+            <span>Google+</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="ng-hide" ng-show="email" ng-click="shareEmail()">
+            <i class="icon socialsharing-icon">
+              <img src="img/social-icons/ico-social-email.svg"/>
+            </i>
+            <span>Email</span>
+          </div>
+          <div class="ng-hide" ng-show="whatsapp" ng-click="shareWhatsapp()">
+            <i class="icon socialsharing-icon">
+              <img src="img/social-icons/ico-social-whatsapp.svg"/>
+            </i>
+            <span>Whatsapp</span>
+          </div>
+          <div ng-click="shareMessage()">
+            <i class="icon socialsharing-icon">
+              <img src="img/social-icons/ico-social-message.svg"/>
+            </i>
+            <span>Message</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

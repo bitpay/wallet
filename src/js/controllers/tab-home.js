@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService, feedbackService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
     $scope.isNW = platformInfo.isNW;
-    $scope.hideRateCard = {};
+    $scope.showRateCard = {};
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -37,13 +37,37 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      storageService.getProfileCreationTime(function(error, time) {
-        var now = moment().unix() * 1000;
-        storageService.getRateCardFlag(function(error, value) {
-          $scope.hideRateCard.value = (value == 'true' || (time - now) > 0) ? true : false;
-        });
+      storageService.getFeedbackInfo(function(error, info) {
+        if (!info) {
+          initFeedBackInfo();
+        } else {
+          var feedbackInfo = JSON.parse(info);
+          //Check if current version is greater than saved version
+          var currentVersion = window.version;
+          var savedVersion = feedbackInfo.version;
+          var isVersionUpdated = feedbackService.isVersionUpdated(currentVersion, savedVersion);
+          if (!isVersionUpdated) {
+            initFeedBackInfo();
+            return;
+          }
+          var now = moment().unix();
+          var timeExceeded = (now - feedbackInfo.time) >= 24 * 60 * 60;
+          $scope.showRateCard.value = timeExceeded && !feedbackInfo.sent;
+          $timeout(function() {
+            $scope.$apply();
+          });
+        }
       });
 
+      function initFeedBackInfo() {
+        var feedbackInfo = {};
+        feedbackInfo.time = moment().unix();
+        feedbackInfo.version = window.version;
+        feedbackInfo.sent = false;
+        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
+          $scope.showRateCard.value = false;
+        });
+      };
     });
 
     $scope.$on("$ionicView.enter", function(event, data) {
@@ -93,12 +117,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             $scope.$apply();
           }, 10);
         });
-      });
-    });
-
-    $scope.$on("$ionicView.leave", function(event, data) {
-      lodash.each(listeners, function(x) {
-        x();
       });
     });
 
@@ -178,8 +196,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
+            if (err === 'WALLET_NOT_REGISTERED') wallet.error = gettextCatalog.getString('Wallet not registered');
+            else wallet.error = gettextCatalog.getString('Could not update');;
             $log.error(err);
           } else {
+            wallet.error = null;
             wallet.status = status;
           }
           if (++j == i) {
@@ -231,7 +252,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       var services = ['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'];
       lodash.each(services, function(service) {
         storageService.getNextStep(service, function(err, value) {
-          $scope.externalServices[service] = value ? true : false;
+          $scope.externalServices[service] = value == 'true' ? true : false;
           if (++i == services.length) return cb();
         });
       });
@@ -252,7 +273,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           $scope.bitpayCards = null;
           return;
         }
-        $scope.bitpayCards = data.cards;
+        $scope.bitpayCards = data;
       });
       bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
         if (err) return;

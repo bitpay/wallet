@@ -1,5 +1,8 @@
 #send-feedback {
   background-color: #ffffff;
+  .row {
+    border: none;
+  }
   .skip {
     margin: 20px 20px 10px;
     color: #667;
@@ -10,18 +13,6 @@
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
-  }
-  .star {
-    a {
-      font-size: 25px;
-      padding: 20px;
-      .gold {
-        color: #ffd700;
-      }
-      .subtle-gray {
-        color: $subtle-gray;
-      }
-    }
   }
   .comment {
     padding: 20px;

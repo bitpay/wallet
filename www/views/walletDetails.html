@@ -143,7 +143,7 @@
       Wallet not backed up
     </a>
 
-    <div class="p60b" ng-show="wallet &&  wallet.isComplete()" style="padding-top: 1rem;">
+    <div class="p60b" ng-show="wallet &&  wallet.isComplete() && !walletNotRegistered" style="padding-top: 1rem;">
       <div class="oh pr m20t" ng-show="wallet.incorrectDerivation">
         <div class="text-center text-warning">
           <i class="fi-alert"></i>
@@ -152,25 +152,6 @@
           </span>
         </div>
       </div>
-      <div class="oh pr m20t" ng-show="notAuthorized && !updatingStatus">
-        <div class="text-center text-warning">
-          <i class="fi-alert"></i>
-          <span translate>
-            WARNING: Wallet not registered
-          </span>
-        </div>
-        <div class="text-center text-gray m15r m15l" translate>
-          This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
-        </div>
-        <div class="text-center m10t ">
-          <span class="button outline round dark-gray tiny"
-            ng-click="recreate()">
-            <span translate>Recreate</span>
-          </span>
-        </div>
-      </div>
-
-
       <div class="list" ng-if="txps[0]">
         <!-- <div class="item item-heading" translate>
           <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
@@ -193,7 +174,7 @@
       <!-- Transactions -->
 
       <div class="oh pr m20t text-gray size-12 text-center"
-        ng-show="!txHistory[0] && !updatingTxHistory && !txHistoryError && !updateStatusError && !notAuthorized" translate>
+        ng-show="!txHistory[0] && !updatingTxHistory && !txHistoryError && !updateStatusError" translate>
         No transactions yet
       </div>
 
@@ -283,6 +264,7 @@
         on-infinite="showMore()"
         distance="1%">
       </ion-infinite-scroll>
+    </div>
   </ion-content>
 </div>
 </ion-view>

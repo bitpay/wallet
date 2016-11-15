@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($scope, $timeout, $log, $ionicModal, $state, $ionicHistory, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError) {
 
+  var listeners = [];
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
+  $scope.walletAddrs = {};
 
   $scope.shareAddress = function(addr) {
     if ($scope.generatingAddress) return;
@@ -18,13 +20,20 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.generatingAddress = true;
     walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
       $scope.generatingAddress = false;
-      if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
+      if (err) popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
       $scope.addr = addr;
+      if ($scope.walletAddrs[$scope.wallet.id]) $scope.walletAddrs[$scope.wallet.id] = addr;
       $timeout(function() {
         $scope.$apply();
       }, 10);
     });
   };
+
+  $scope.loadAddresses = function(wallet, index) {
+    walletService.getAddress(wallet, false, function(err, addr) {
+      $scope.walletAddrs[wallet.id] = addr;
+    });
+  }
 
   $scope.goCopayers = function() {
     $ionicHistory.removeBackView();
@@ -67,6 +76,24 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
+  $scope.setWallet = function(index) {
+    $scope.wallet = $scope.wallets[index];
+    $scope.walletIndex = index;
+    if ($scope.walletAddrs[$scope.walletIndex].addr) $scope.addr = $scope.walletAddrs[$scope.walletIndex].addr;
+    else $scope.setAddress(false);
+  }
+
+  $scope.isActive = function(index) {
+    return $scope.wallets[index] == $scope.wallet;
+  }
+
+  $scope.walletPosition = function(index) {
+    if (index == $scope.walletIndex) return 'current';
+    if (index < $scope.walletIndex) return 'prev';
+    if (index > $scope.walletIndex) return 'next';
+  }
+
+
   $scope.$on('Wallet/Changed', function(event, wallet) {
     if (!wallet) {
       $log.debug('No wallet provided');
@@ -77,14 +104,57 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       return;
     }
     $scope.wallet = wallet;
-    $scope.generatingAddress = false;
     $log.debug('Wallet changed: ' + wallet.name);
+
+    $scope.walletIndex = lodash.findIndex($scope.wallets, function(wallet) {
+      return wallet.id == $scope.wallet.id;
+    });
+
+    if (!$scope.walletAddrs[wallet.id]) $scope.setAddress(false);
+    else $scope.addr = $scope.walletAddrs[wallet.id];
+
     $timeout(function() {
-      $scope.setAddress(false);
+      $scope.$apply();
     }, 100);
+
   });
+
+  $scope.updateCurrentWallet = function() {
+    walletService.getStatus($scope.wallet, {}, function(err, status) {
+      if (err) {
+        $log.error(err);
+      }
+      $timeout(function() {
+        $scope.wallet = profileService.getWallet($scope.wallet.id);
+        $scope.wallet.status = status;
+        $scope.setAddress();
+        $scope.$apply();
+      }, 200);
+    });
+  };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
+
+    lodash.each($scope.wallets, function(wallet, index) {
+      $scope.loadAddresses(wallet);
+    });
+
+
+    listeners = [
+      $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+        // Update current address
+        if ($scope.wallet && walletId == $scope.wallet.id) $scope.updateCurrentWallet();
+      })
+    ];
+
+    // Update current wallet
+    if ($scope.wallet) $scope.updateCurrentWallet();
+  });
+
+  $scope.$on("$ionicView.leave", function(event, data) {
+    lodash.each(listeners, function(x) {
+      x();
+    });
   });
 });

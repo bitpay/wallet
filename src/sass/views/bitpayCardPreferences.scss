@@ -1,0 +1,15 @@
+#bitpayCardPreferences {
+  .item {
+	  .item-title {
+	    display: block;
+	  }
+	  .item-subtitle {
+	  	display: block;
+	  	overflow: hidden;
+	  	text-overflow: ellipsis;
+	  	white-space: nowrap;
+	  	color: $light-gray;
+	  	font-size: 14px;
+	  }
+  }
+}

@@ -9,6 +9,7 @@
       box-shadow:$subtle-box-shadow;
       padding:0;
       border-radius: 6px;
+      margin: 0 auto;
       @media (min-width: 500px) {
         & {
           width: 350px;
@@ -32,7 +33,7 @@
             visibility: hidden;
           }
           &.visible{
-            visibility: visible !important; 
+            visibility: visible !important;
           }
         }
         .big-icon-svg{
@@ -64,10 +65,10 @@
         transform: scale(.8);
       }
       &.swiper-slide-prev {
-        left: 10vw;
+        left: 5vw;
       }
       &.swiper-slide-next {
-        left: -10vw;
+        left: -5vw;
       }
     }
   }
