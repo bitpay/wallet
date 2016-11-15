@@ -265,7 +265,9 @@
             display: inline-block;
             width:80%;
             @media(min-height: 1000px) and (max-width: 699px){
-              padding: 2vh 3vw 2vh 3vw;
+              .item{
+                padding: 2vh 3vw 2vh 3vw;
+              }
             }
           }
           @media(max-width: 500px){
