@@ -237,7 +237,14 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var prevPos;
 
   function getScrollPosition() {
-    var pos = $ionicScrollDelegate.getScrollPosition().top;
+    var scrollPosition = $ionicScrollDelegate.getScrollPosition();
+    if (!scrollPosition) {
+      $window.requestAnimationFrame(function() {
+        getScrollPosition();
+      });
+      return;
+    }
+    var pos = scrollPosition.top;
     if (pos === prevPos) {
       $window.requestAnimationFrame(function() {
         getScrollPosition();
