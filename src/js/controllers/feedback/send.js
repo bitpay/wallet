@@ -5,23 +5,23 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
   switch ($scope.score) {
     case 1:
       $scope.reaction = gettextCatalog.getString("Ouch!");
-      $scope.comment = gettextCatalog.getString("There's obviously something we're doing wrong.");
+      $scope.comment = gettextCatalog.getString("There's obviously something we're doing wrong.") + ' ' + gettextCatalog.getString("How could we improve your experience?");
       break;
     case 2:
       $scope.reaction = gettextCatalog.getString("Oh no!");
-      $scope.comment = gettextCatalog.getString("There's obviously something we're doing wrong.");
+      $scope.comment = gettextCatalog.getString("There's obviously something we're doing wrong.") + ' ' + gettextCatalog.getString("How could we improve your experience?");
       break;
     case 3:
-      $scope.reaction = gettextCatalog.getString("Thanks!");
-      $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay wallet.");
+      $scope.reaction = gettextCatalog.getString("Hmm...");
+      $scope.comment = gettextCatalog.getString("We'd love to do better.") + ' ' + gettextCatalog.getString("How could we improve your experience?");
       break;
     case 4:
       $scope.reaction = gettextCatalog.getString("Thanks!");
-      $scope.comment = gettextCatalog.getString("That's exciting to hear. We'd love to earn that fifth star from you.");
+      $scope.comment = gettextCatalog.getString("That's exciting to hear. We'd love to earn that fifth star from you – how could we improve your experience?");
       break;
     case 5:
-      $scope.reaction = gettextCatalog.getString("Feedback!");
-      $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay wallet.");
+      $scope.reaction = gettextCatalog.getString("Thank you!");
+      $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay wallet.") + ' ' + gettextCatalog.getString("Is there anything we could do better?");
       break;
   }
 
