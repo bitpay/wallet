@@ -1,9 +1,9 @@
 <ion-view id="send-feedback">
   <ion-nav-bar class="bar-royal">
-    <ion-nav-back-button ng-if="!score">
+    <ion-nav-back-button ng-show="!score">
     </ion-nav-back-button>
     <ion-nav-buttons side="right">
-      <button class="button button-clear skip" ng-click="sendFeedback(null, true)" translate>
+      <button ng-show="score" class="button button-clear skip ng-hide" ng-click="sendFeedback(null, true)" translate>
         Skip
       </button>
     </ion-nav-buttons>
