@@ -139,7 +139,7 @@
       </div>
     </div> <!-- oh -->
 
-    <a class="wallet-not-backed-up-warning" ng-if="!isBackedUp" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet'})">
+    <a class="wallet-not-backed-up-warning" ng-if="wallet.needsBackup" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet'})">
       Wallet not backed up
     </a>
 
