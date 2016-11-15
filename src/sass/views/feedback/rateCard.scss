@@ -1,20 +1,12 @@
 #rate-card {
-  .stars {
-    display: flex;
-    border-bottom: none;
-    .button {
-      background-color: #fff;
-      outline: none;
-      border: none;
-      height:10px;
-      width:10px;
-    }
-    .gold {
-      color: #ffd700;
-    }
-    .subtle-gray {
-      color: $subtle-gray;
-    }
+  .row {
+    border: none;
+  }
+  .row.row-margin{
+    margin: 20px 0px 20px 0px;
+  }
+  .item-icon-right {
+    margin: 0;
   }
   .feedback-flow-button {
     padding: 20px;

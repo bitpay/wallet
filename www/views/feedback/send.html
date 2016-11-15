@@ -4,12 +4,37 @@
     <div class="title">
       <span>{{reaction}}</span>
     </div>
-    <div class="star">
-      <a><i ng-class="{'gold': 1 <= score, 'subtle-gray': 1 > score}" class="icon ion-android-star"></i></a>
-      <a><i ng-class="{'gold': 2 <= score, 'subtle-gray': 2 > score}" class="icon ion-android-star"></i></a>
-      <a><i ng-class="{'gold': 3 <= score, 'subtle-gray': 3 > score}" class="icon ion-android-star"></i></a>
-      <a><i ng-class="{'gold': 4 <= score, 'subtle-gray': 4 > score}" class="icon ion-android-star"></i></a>
-      <a><i ng-class="{'gold': 5 == score, 'subtle-gray': 5 > score}" class="icon ion-android-star"></i></a>
+    <div class="row item item-sub">
+      <div class="col col-10">
+        <i class="icon icon-svg" ng-click="setScore(1)">
+          <img ng-if="1 <= score" src="img/ico-star-filled.svg"/>
+          <img ng-if="1 > score" src="img/ico-star.svg"/>
+        </i>
+      </div>
+      <div class="col col-10">
+        <i class="icon icon-svg" ng-click="setScore(2)">
+          <img ng-if="2 <= score" src="img/ico-star-filled.svg"/>
+          <img ng-if="2 > score" src="img/ico-star.svg"/>
+        </i>
+      </div>
+      <div class="col col-10">
+        <i class="icon icon-svg" ng-click="setScore(3)">
+          <img ng-if="3 <= score" src="img/ico-star-filled.svg"/>
+          <img ng-if="3 > score" src="img/ico-star.svg"/>
+        </i>
+      </div>
+      <div class="col col-10">
+        <i class="icon icon-svg" ng-click="setScore(4)">
+          <img ng-if="4 <= score" src="img/ico-star-filled.svg"/>
+          <img ng-if="4 > score" src="img/ico-star.svg"/>
+        </i>
+      </div>
+      <div class="col col-10">
+        <i class="icon icon-svg" ng-click="setScore(5)">
+          <img ng-if="5 ==  score" src="img/ico-star-filled.svg"/>
+          <img ng-if="5 > score" src="img/ico-star.svg"/>
+        </i>
+      </div>
     </div>
     <div class="comment">
       <span translate>{{comment}}</span>
