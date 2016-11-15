@@ -89,7 +89,7 @@
       on-refresh="onRefresh()">
     </ion-refresher>
 
-    <div class="amount-wrapper" ng-show="wallet && wallet.isComplete() && !amountIsCollapsible">
+    <div class="amount-wrapper" ng-if="wallet && wallet.isComplete() && !amountIsCollapsible">
       <div
         class="amount-bg"
         ng-style="{'background-color':wallet.color}"
@@ -139,11 +139,11 @@
       </div>
     </div> <!-- oh -->
 
-    <a class="wallet-not-backed-up-warning" ng-show="!isBackedUp" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet', walletId: walletId})">
+    <a class="wallet-not-backed-up-warning" ng-if="!isBackedUp" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet', walletId: walletId})">
       Wallet not backed up
     </a>
 
-    <div class="p60b" ng-show="wallet &&  wallet.isComplete() && !walletNotRegistered" style="padding-top: 1rem;">
+    <div class="p60b" ng-if="wallet &&  wallet.isComplete() && !walletNotRegistered" style="padding-top: 1rem;">
       <div class="oh pr m20t" ng-show="wallet.incorrectDerivation">
         <div class="text-center text-warning">
           <i class="fi-alert"></i>
