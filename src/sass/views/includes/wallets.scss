@@ -18,16 +18,18 @@
         }
       }
       .item{
-        padding: calc(100vh - 99vh) calc(100vw - 93vw) calc(100vh - 97vh) calc(100vw - 95vw);
-        i{left:auto;}
+        padding: 3vh 3vw 3vh 3vw;
         span{
           clear:both;
           width: 100%;
           display: inline-block;
           &.wallet-name{
-            margin-top:10px;
-            margin-bottom:5px;
-            font-size:13px;
+            font-size:16px;
+            width: 70%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-weight: 600;
           }
           &.wallet-number{
             visibility: hidden;
