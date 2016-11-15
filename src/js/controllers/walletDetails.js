@@ -323,10 +323,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     ];
   });
 
-  // $scope.$on("$ionicView.beforeLeave", function(event, data) {
-  //   $interval.cancel(scrollInterval);
-  // });
-
   $scope.$on("$ionicView.leave", function(event, data) {
     screenInactive = true;
     lodash.each(listeners, function(x) {
