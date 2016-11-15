@@ -20,6 +20,9 @@
     position: relative;
     flex-flow: column;
     @media(max-height: 600px){
+      height: calc(100vh - 32vh);
+    }
+    @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2){
       height: calc(100vh - 36vh);
     }
     &-info{
