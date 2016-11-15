@@ -739,7 +739,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
-     * Feedback
+     * Feedback from home
      *
      */
 
@@ -775,11 +775,32 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      /*
-       *
-       * Buy or Sell Bitcoin
-       *
-       */
+
+    /*
+     *
+     * Feedback from settings
+     *
+     */
+    .state('tabs.settings.feedback', {
+        url: '/feedback',
+        abstract: true,
+        template: '<ion-nav-view name="feedback"></ion-nav-view>'
+      })
+      .state('tabs.settings.feedback.send', {
+        url: '/send',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'sendController',
+            templateUrl: 'views/feedback/send.html'
+          }
+        }
+      })
+
+    /*
+     *
+     * Buy or Sell Bitcoin
+     *
+     */
 
     .state('tabs.buyandsell', {
       url: '/buyandsell',
