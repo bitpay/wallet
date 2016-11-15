@@ -234,10 +234,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   var prevPos;
+  var screenInactive = true;
 
   function getScrollPosition() {
     var scrollPosition = $ionicScrollDelegate.getScrollPosition();
-    if (!scrollPosition) {
+    if (!scrollPosition || screenInactive) {
       $window.requestAnimationFrame(function() {
         getScrollPosition();
       });
@@ -283,6 +284,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var scrollWatcherInitialized;
 
   $scope.$on("$ionicView.enter", function(event, data) {
+    $timeout(function() {
+      screenInactive = false;
+    }, 200);
     if (scrollWatcherInitialized || !$scope.amountIsCollapsible) {
       return;
     }
@@ -324,6 +328,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   // });
 
   $scope.$on("$ionicView.leave", function(event, data) {
+    screenInactive = true;
     lodash.each(listeners, function(x) {
       x();
     });
