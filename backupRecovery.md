@@ -19,7 +19,7 @@ Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the
 
 ### Wallet Recovery Scope
 * Basic Recovery: Wallet access is restored. It is possible to see wallet balance and past transactions. It is possible to send and receive payments.
- * Full Recovery: All the features of Partial Recovery + wallet name, copayer names are recovered, past payment proposal metadata (who signed, and notes) are recoved.
+ * Full Recovery: All the features of Partial Recovery + wallet name, copayer names are recovered, past payment proposal metadata (who signed, and notes) are recovered.
       
 ## Wallet Restore Scenarios
 
