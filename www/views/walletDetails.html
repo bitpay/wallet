@@ -17,6 +17,7 @@
     <div
       class="amount-bg"
       ng-style="{'background-color':wallet.color}"
+      ng-class="{collapsible: amountIsCollapsible}"
     ></div>
     <div
       ng-style="{'background-color':wallet.color, 'height': amountHeight}"
@@ -88,7 +89,11 @@
       on-refresh="onRefresh()">
     </ion-refresher>
 
-    <div class="oh pr" ng-show="wallet && wallet.isComplete() && !amountIsCollapsible">
+    <div class="amount-wrapper" ng-show="wallet && wallet.isComplete() && !amountIsCollapsible">
+      <div
+        class="amount-bg"
+        ng-style="{'background-color':wallet.color}"
+      ></div>
       <div
         ng-style="{'background-color':wallet.color}"
         class="amount"
