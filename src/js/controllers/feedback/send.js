@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
 
   $scope.sendFeedback = function(feedback, skip) {
 
@@ -20,10 +20,16 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         return;
       }
       if (!$stateParams.score) {
-        popupService.showAlert(gettextCatalog.getString('Thank you!'), gettextCatalog.getString('A member of the team will review your feedback as soon as possible.'));
-        $scope.feedback.value = '';
-        $timeout(function() {
-          $scope.$apply();
+        popupService.showAlert(gettextCatalog.getString('Thank you!'), gettextCatalog.getString('A member of the team will review your feedback as soon as possible.'), function() {
+          $scope.feedback.value = '';
+          $ionicHistory.nextViewOptions({
+            disableAnimate: true,
+            historyRoot: true
+          });
+          $ionicHistory.clearHistory();
+          $timeout(function() {
+            $state.go('tabs.settings');
+          });
         });
         return;
       }
