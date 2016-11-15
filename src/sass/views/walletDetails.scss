@@ -92,6 +92,11 @@
 #walletDetails {
   background: #F8F8F9;
 
+  .scroll-refresher {
+    z-index: 1;
+    margin-top: 3.5rem;
+  }
+
   .ionic-refresher-content {
     color: white !important;
   }
