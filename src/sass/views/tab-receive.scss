@@ -13,17 +13,17 @@
   .scroll{height:100%;}
   #address {
     background: #fff;
-    height: calc(100vh - 34vh);
+    height: 66vh;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     flex-flow: column;
     @media(max-height: 600px){
-      height: calc(100vh - 32vh);
+      height: 68vh;
     }
     @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2){
-      height: calc(100vh - 36vh);
+      height: 64vh;
     }
     &-info{
       height: 100%;
@@ -67,6 +67,7 @@
     .item {
       border: none;
       font-size: .8rem;
+      z-index: 0;
       i {
         font-size: 1.3rem;
       }
@@ -103,16 +104,18 @@
         padding-bottom: 5px;
         display: inline-block;
         font-size: .8rem;
+        color:$mid-gray;
       }
     }
     .qr {
-      padding: calc(100vh - 85vh) 0 calc(100vh - 96vh);
+      padding: 15vh 0 4vh;
       align-self: center;
       margin-top: auto;
       height: 220px;
       position: relative;
       justify-content: center;
       flex: 1;
+      z-index: 1;
       div{
         transition: all .4s ease;
         &.current, &.prev, &.next{
@@ -134,7 +137,7 @@
         }
       }
       @media(max-height: 700px){
-        padding: calc(100vh - 90vh) 0 calc(100vh - 96vh);
+        padding: 10vh 0 4vh;
       }
       div{
         display: flex;
@@ -238,7 +241,7 @@
   }
   .wallets{
     position: relative;
-    height: calc(100vh - 83vh);
+    height: calc(27vh - 62px);
     z-index: 5;
     .slides {
       .swiper-container{
@@ -249,7 +252,11 @@
         transform: translate(-50%, -50%);
         max-width: 450px;
         .swiper-wrapper{
+          height: auto;
+          top: 10%;
+          position:relative;
           @media(max-height: 600px){padding-top:.2rem}
+          @media(min-height: 900px){top:30%;}
         }
         .swiper-slide{
           text-align: center;
@@ -257,6 +264,9 @@
             margin-top:2vh;
             display: inline-block;
             width:80%;
+            @media(min-height: 1000px) and (max-width: 699px){
+              padding: 2vh 3vw 2vh 3vw;
+            }
           }
           @media(max-width: 500px){
             &-next{left:-25%;}
@@ -276,8 +286,11 @@
     .wallets{display: none;}
     #address{
       float:left;
-      height:90vh;
-      width:65%;
+      height:100%;
+      width:calc(100% - 410px);
+      @media(max-width: 1000px){
+        width:65%;
+      }
       &-info{
         height: 100%;
       }
@@ -301,7 +314,13 @@
       .backup, #bit-address{left:0;}
       #bit-address{
         height: 10%;
-        padding: calc(100vh - 99vh);
+        padding: 1vh;
+        .bit-address{
+          .item{
+            top: 40%;
+            transform: translateY(-40%);
+          }
+        }
       }
     }
     #wallets{
@@ -311,8 +330,12 @@
       display: flex;
       flex-direction: column;
       overflow: visible;
+      max-width: 410px;
       @media(max-height: 600px){
         padding-top:.55rem;
+      }
+      @media(max-width: 1000px){
+        max-width: none;
       }
       #sidebar-wallet{display: block;}
       .list{height: 100%;overflow: visible;}
@@ -324,8 +347,12 @@
         left: -6%;
       }
       .wallet{
-        position: relative;
         &.current{
+          position: relative;
+          .card{
+            opacity: 1;
+            transform: scale(1);
+          }
           &:before {
           	right: 93%;
           	top: 50%;
@@ -350,17 +377,23 @@
         width: 80%;
         position: relative;
         margin: 1.5rem auto 0;
+        position: relative;
+        opacity: .5;
+        transform:scale(.85);
+        transition:transform .2s ease;
         .item{
           padding: 6% 10% 6% 8%;
-          i{left:auto;}
           span{
             clear:both;
             width: 100%;
             display: inline-block;
             &.wallet-name{
-              margin-top:10px;
-              margin-bottom:5px;
-              font-size:13px;
+              font-size:16px;
+              width: 70%;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              font-weight: 600;
             }
             &.wallet-number{
               visibility: hidden;
