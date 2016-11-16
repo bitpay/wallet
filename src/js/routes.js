@@ -1101,14 +1101,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-      if(toState.customConfig && toState.customConfig.hideStatusBar) {
-        if($window.StatusBar) {
-          $window.StatusBar.hide();
-        }
+      if($window.StatusBar && toState.customConfig && toState.customConfig.hideStatusBar) {
+        $window.StatusBar.hide();
       } else {
-        if($window.StatusBar) {
-          $window.StatusBar.show();
-        }
+        $window.StatusBar.show();
       }
     });
   });
