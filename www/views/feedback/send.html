@@ -1,9 +1,9 @@
-<ion-view id="send-feedback">
+<ion-view id="send-feedback" hide-tabs>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-back-button ng-show="!score">
+    <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-buttons side="right">
-      <button ng-show="score" class="button button-clear skip ng-hide" ng-click="sendFeedback(null, true)" translate>
+    <ion-nav-buttons side="secondary">
+      <button ng-show="score" class="button no-border" ng-click="sendFeedback(null, true)" translate>
         Skip
       </button>
     </ion-nav-buttons>
@@ -15,7 +15,7 @@
           <span>{{reaction}}</span>
         </div>
       </div>
-      <div class="col col-50 rating">
+      <div class="col col-50 rating" ng-if="score">
         <img class="send-feedback-star" ng-if="1 <= score" src="img/ico-star-filled.svg"/>
         <img class="send-feedback-star" ng-if="1 > score" src="img/ico-star.svg"/>
         <img class="send-feedback-star" ng-if="2 <= score" src="img/ico-star-filled.svg"/>
@@ -32,7 +32,7 @@
       <span translate>{{comment}}</span>
     </div>
     <textarea class="user-feedback" ng-model="feedback.value" placeholder="Your ideas, feedback, or comments" autofocus></textarea>
-    <button ng-disabled="!feedback.value" type="submit" class="button button-full button-primary" ng-click="sendFeedback(feedback.value, false)" translate>
+    <button ng-disabled="!feedback.value" type="submit" class="button button-standard button-primary" ng-click="sendFeedback(feedback.value, false)" translate>
       Send
     </button>
   </ion-content>

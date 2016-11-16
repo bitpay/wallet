@@ -7,11 +7,11 @@ angular.module('copayApp.controllers').controller('rateCardController', function
 
   $scope.goFeedbackFlow = function() {
     if ($scope.isCordova && $scope.score == 5) {
-      $state.go('feedback.rateApp', {
+      $state.go('tabs.rate.rateApp', {
         score: $scope.score
       });
     } else {
-      $state.go('feedback.send', {
+      $state.go('tabs.rate.send', {
         score: $scope.score
       });
     }
