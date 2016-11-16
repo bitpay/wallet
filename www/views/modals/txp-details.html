@@ -11,7 +11,7 @@
     </button>
   </ion-header-bar>
 
-  <ion-content ng-init="updateCopayerList()" ng-class="{'slide-to-pay': tx.pendingForUs && canSign && !hasClick}">
+  <ion-content ng-init="updateCopayerList()" ng-class="{'add-bottom-for-cta': tx.pendingForUs && canSign}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
@@ -150,12 +150,6 @@
       </div>
     </div>
 
-    <click-to-accept
-      ng-click="onConfirm(statusChangeHandler)"
-      ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
-      click-send-status="sendStatus">
-      Click to accept
-    </click-to-accept>
     <div class="m30t text-center" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="size-12 padding proposal-deletion-help" ng-show="!tx.isGlidera && isShared" translate>
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
@@ -167,6 +161,12 @@
     </div>
   </ion-content>
 
+  <click-to-accept
+    ng-click="onConfirm(statusChangeHandler)"
+    ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
+    click-send-status="sendStatus">
+    Click to accept
+  </click-to-accept>
   <slide-to-accept
     ng-if="tx.pendingForUs && canSign && !paymentExpired && !hasClick"
     slide-on-confirm="onConfirm()"
