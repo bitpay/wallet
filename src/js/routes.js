@@ -752,6 +752,18 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.feedback.shareApp', {
+        url: '/shareApp/:score/:skipped',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'completeController',
+            templateUrl: 'views/feedback/complete.html'
+          }
+        },
+        customConfig: {
+          hideStatusBar: true
+        }
+      })
       .state('tabs.rate', {
         url: '/rate',
         abstract: true

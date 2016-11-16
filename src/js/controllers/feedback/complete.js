@@ -1,8 +1,6 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('completeController', function($scope, $stateParams, $timeout, $log, $ionicHistory, $state, platformInfo, configService, storageService, lodash) {
-  $scope.score = parseInt($stateParams.score);
-  $scope.skipped = $stateParams.skipped == 'false' ? false : true;
   $scope.isCordova = platformInfo.isCordova;
   var config = configService.getSync();
 
@@ -31,6 +29,9 @@ angular.module('copayApp.controllers').controller('completeController', function
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+
+    $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
+    $scope.skipped = (data.stateParams && data.stateParams.skipped) ? true : false;
 
     storageService.getFeedbackInfo(function(error, info) {
       var feedbackInfo = lodash.isString(info) ? JSON.parse(info) : null;
@@ -92,13 +93,10 @@ angular.module('copayApp.controllers').controller('completeController', function
   });
 
   $scope.close = function() {
-    $ionicHistory.clearHistory();
     $ionicHistory.nextViewOptions({
-      disableAnimate: true,
+      disableAnimate: false,
       historyRoot: true
     });
-    $timeout(function() {
-      $state.go('tabs.home');
-    }, 100);
+    $ionicHistory.goBack(-2);
   };
 });
