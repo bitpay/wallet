@@ -1,6 +1,12 @@
 <ion-view id="complete" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <a ng-show="!fromSettings" class="close-button" ng-click="close()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+    </ion-nav-buttons>
+  </ion-nav-bar>
   <ion-content scroll="false">
-    <a class="close-button" ng-click="close()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
     <div ng-show="skipped && isCordova">
       <div ng-show="score > 3">
         <div class="title" translate>Invite friends to BitPay!</div>
