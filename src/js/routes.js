@@ -743,7 +743,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('tabs.feedback', {
+    .state('tabs.feedback', {
         url: '/feedback',
         views: {
           'tab-settings@tabs': {
@@ -752,8 +752,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.feedback.shareApp', {
-        url: '/shareApp/:score/:skipped',
+      .state('tabs.shareApp', {
+        url: '/shareApp/:score/:skipped/:fromSettings',
         views: {
           'tab-settings@tabs': {
             controller: 'completeController',
@@ -1113,8 +1113,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-      if($window.StatusBar) {
-        if(toState.customConfig && toState.customConfig.hideStatusBar) {
+      if ($window.StatusBar) {
+        if (toState.customConfig && toState.customConfig.hideStatusBar) {
           $window.StatusBar.hide();
         } else {
           $window.StatusBar.show();
