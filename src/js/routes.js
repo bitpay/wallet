@@ -750,17 +750,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/feedback/send.html',
             controller: 'sendController'
           }
-        },
-        customConfig: {
-          hideStatusBar: true
         }
       })
       .state('tabs.rate', {
         url: '/rate',
-        abstract: true,
-        customConfig: {
-          hideStatusBar: true
-        }
+        abstract: true
       })
       .state('tabs.rate.send', {
         url: '/send/:score',
@@ -769,9 +763,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/feedback/send.html',
             controller: 'sendController'
           }
-        },
-        customConfig: {
-          hideStatusBar: true
         }
       })
       .state('tabs.rate.complete', {
@@ -1107,16 +1098,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
+    });
 
-      console.log('toState', toState);
-
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       if(toState.customConfig && toState.customConfig.hideStatusBar) {
-        console.log('hiding status bar');
         if($window.StatusBar) {
           $window.StatusBar.hide();
         }
       } else {
-        console.log('showing status bar');
         if($window.StatusBar) {
           $window.StatusBar.show();
         }

@@ -31,10 +31,6 @@ angular.module('copayApp.controllers').controller('completeController', function
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    if (window.StatusBar) {
-      $log.debug('Hiding status bar...');
-      StatusBar.hide();
-    }
 
     storageService.getFeedbackInfo(function(error, info) {
       var feedbackInfo = lodash.isString(info) ? JSON.parse(info) : null;
@@ -93,13 +89,6 @@ angular.module('copayApp.controllers').controller('completeController', function
         });
       }
     }, 100);
-  });
-
-  $scope.$on("$ionicView.afterLeave", function() {
-    if (window.StatusBar) {
-      $log.debug('Showing status bar...');
-      StatusBar.show();
-    }
   });
 
   $scope.close = function() {
