@@ -7,27 +7,27 @@ angular.module('copayApp.controllers').controller('completeController', function
   var config = configService.getSync();
 
   $scope.shareFacebook = function() {
-    window.plugins.socialsharing.shareVia($scope.shareFacebookVia, config.download.url, null, null, null, null, null);
+    window.plugins.socialsharing.shareVia($scope.shareFacebookVia, null, null, null, config.download.url);
   };
 
   $scope.shareTwitter = function() {
-    window.plugins.socialsharing.shareVia($scope.shareTwitterVia, config.download.url, null, null, null, null, null);
+    window.plugins.socialsharing.shareVia($scope.shareTwitterVia, null, null, null, config.download.url);
   };
 
   $scope.shareGooglePlus = function() {
-    window.plugins.socialsharing.shareVia($scope.shareGooglePlusVia, config.download.url, null, null, null);
+    window.plugins.socialsharing.shareVia($scope.shareGooglePlusVia, config.download.url);
   };
 
   $scope.shareEmail = function() {
-    window.plugins.socialsharing.shareViaEmail(config.download.url, null, null, null);
+    window.plugins.socialsharing.shareViaEmail(config.download.url);
   };
 
   $scope.shareWhatsapp = function() {
-    window.plugins.socialsharing.shareViaWhatsApp(config.download.url, null, null, null);
+    window.plugins.socialsharing.shareViaWhatsApp(config.download.url);
   };
 
   $scope.shareMessage = function() {
-    window.plugins.socialsharing.shareViaSMS(config.download.url, null, null, null);
+    window.plugins.socialsharing.shareViaSMS(config.download.url);
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
