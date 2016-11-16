@@ -8,24 +8,20 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
   var config = configService.getSync();
 
   $scope.skip = function() {
-
     var dataSrc = {
       "Email": lodash.values(config.emailFor)[0] || ' ',
       "Feedback": ' ',
       "Score": $stateParams.score
     };
-
-    ongoingProcess.set('sendingFeedback', true);
     feedbackService.send(dataSrc, function(err) {
-      ongoingProcess.set('sendingFeedback', false);
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send feedback'));
-        return;
+        // try to send, but not essential, since the user didn't add a message
+        $log.warn('Could not send feedback.');
       }
-      $state.go('tabs.rate.complete', {
-        score: $stateParams.score,
-        skipped: true
-      });
+    });
+    $state.go('tabs.rate.complete', {
+      score: $stateParams.score,
+      skipped: true
     });
   };
 
@@ -42,5 +38,9 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
     if (isIOS) url = defaults.rateApp.ios;
     // if (isWP) url = defaults.rateApp.windows; // TODO
     externalLinkService.open(url);
+    $state.go('tabs.rate.complete', {
+      score: $stateParams.score,
+      rated: true
+    });
   };
 });

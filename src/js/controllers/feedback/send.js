@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
 
-  $scope.sendFeedback = function(feedback, skip) {
+  $scope.sendFeedback = function(feedback, skip, goHome) {
 
     var config = configService.getSync();
 
@@ -15,11 +15,12 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
       "DeviceVersion": ionic.Platform.version()
     };
 
-    ongoingProcess.set('sendingFeedback', true);
+    if(!(goHome || skip)) ongoingProcess.set('sendingFeedback', true);
     feedbackService.send(dataSrc, function(err) {
+      if(goHome || skip) return;
       ongoingProcess.set('sendingFeedback', false);
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send feedback'));
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Feedback could not be submitted. Please try again later.'));
         return;
       }
       if (!$stateParams.score) {
@@ -30,7 +31,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
             historyRoot: true
           });
           $ionicHistory.goBack();
-        });
+        }, gettextCatalog.getString('Finish'));
         return;
       }
       $state.go('tabs.rate.complete', {
@@ -38,6 +39,14 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         skipped: skip
       });
     });
+    if(goHome){
+      $state.go('tabs.home');
+    } else if(skip) {
+      $state.go('tabs.rate.complete', {
+        score: $stateParams.score,
+        skipped: skip
+      });
+    }
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -71,7 +80,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay.") + ' ' + gettextCatalog.getString("Is there anything we could do better?");
         break;
       default:
-        $scope.reaction = gettextCatalog.getString("Feedback!");
+        $scope.reaction = gettextCatalog.getString("Send Feedback");
         $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay. How could we improve your experience?");
         break;
     }
