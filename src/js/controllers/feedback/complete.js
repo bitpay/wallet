@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('completeController', function($scope, $stateParams, $timeout, $log, $ionicHistory, $state, platformInfo, configService, storageService, lodash) {
+angular.module('copayApp.controllers').controller('completeController', function($scope, $stateParams, $timeout, $log, $ionicHistory, $state, $ionicNavBarDelegate, $ionicConfig, platformInfo, configService, storageService, lodash) {
   $scope.isCordova = platformInfo.isCordova;
   var config = configService.getSync();
 
@@ -32,6 +32,12 @@ angular.module('copayApp.controllers').controller('completeController', function
 
     $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.skipped = (data.stateParams && data.stateParams.skipped) ? true : false;
+    $scope.fromSettings = (data.stateParams && data.stateParams.fromSettings) ? true : false;
+
+    if (!$scope.fromSettings) {
+      $ionicNavBarDelegate.showBackButton(false);
+      $ionicConfig.views.swipeBackEnabled(false);
+    } else $ionicNavBarDelegate.showBackButton(true);
 
     storageService.getFeedbackInfo(function(error, info) {
       var feedbackInfo = lodash.isString(info) ? JSON.parse(info) : null;
@@ -97,6 +103,7 @@ angular.module('copayApp.controllers').controller('completeController', function
       disableAnimate: false,
       historyRoot: true
     });
-    $ionicHistory.goBack(-2);
+    if ($scope.score == 5) $ionicHistory.goBack(-3);
+    else $ionicHistory.goBack(-2);
   };
 });
