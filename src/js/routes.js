@@ -157,6 +157,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'walletDetailsController',
             templateUrl: 'views/walletDetails.html'
           }
+        },
+        customConfig: {
+          hideStatusBar: true
         }
       })
       .state('tabs.activity', {
@@ -1092,5 +1095,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
+
+      console.log('toState', toState);
+
+      if(toState.customConfig && toState.customConfig.hideStatusBar) {
+        console.log('hiding status bar');
+        if($window.StatusBar) {
+          $window.StatusBar.hide();
+        }
+      } else {
+        console.log('showing status bar');
+        if($window.StatusBar) {
+          $window.StatusBar.show();
+        }
+      }
     });
   });
