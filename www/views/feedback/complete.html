@@ -1,7 +1,7 @@
-<ion-view id="complete">
+<ion-view id="complete" hide-tabs>
   <ion-content scroll="false">
-    <div class="item item-icon-right item-heading">
-      <a ui-sref="tabs.home"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+    <div class="padding oh">
+      <a class="right size-36" ng-click="close()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
     </div>
     <div ng-show="skipped && isCordova">
       <div ng-show="score > 3">
@@ -53,45 +53,41 @@
     </div>
     <div class="share-buttons" ng-if="isCordova && score > 3">
       <div class="ng-hide" ng-show="socialsharing" ng-if="score >= 4">
-        <div class="row">
-          <div class="ng-hide" ng-show="facebook" ng-click="shareFacebook()">
-            <i class="icon socialsharing-icon">
-              <img src="img/social-icons/ico-social-facebook.svg"/>
-            </i>
-            <span>Facebook</span>
-          </div>
-          <div class="ng-hide" ng-show="twitter" ng-click="shareTwitter()">
-            <i class="icon socialsharing-icon">
-              <img src="img/social-icons/ico-social-twitter.svg"/>
-            </i>
-            <span>Twitter</span>
-          </div>
-          <div class="ng-hide" ng-show="googleplus" ng-click="shareGooglePlus()">
-            <i class="icon socialsharing-icon">
-              <img src="img/social-icons/ico-social-googleplus.svg"/>
-            </i>
-            <span>Google+</span>
-          </div>
+        <div class="left text-center m10r ng-hide" ng-show="facebook" ng-click="shareFacebook()">
+          <i class="icon socialsharing-icon">
+            <img src="img/social-icons/ico-social-facebook.svg"/>
+          </i>
+          <div>Facebook</div>
         </div>
-        <div class="row">
-          <div class="ng-hide" ng-show="email" ng-click="shareEmail()">
-            <i class="icon socialsharing-icon">
-              <img src="img/social-icons/ico-social-email.svg"/>
-            </i>
-            <span>Email</span>
-          </div>
-          <div class="ng-hide" ng-show="whatsapp" ng-click="shareWhatsapp()">
-            <i class="icon socialsharing-icon">
-              <img src="img/social-icons/ico-social-whatsapp.svg"/>
-            </i>
-            <span>Whatsapp</span>
-          </div>
-          <div ng-click="shareMessage()">
-            <i class="icon socialsharing-icon">
-              <img src="img/social-icons/ico-social-message.svg"/>
-            </i>
-            <span>Message</span>
-          </div>
+        <div class="left text-center m10r ng-hide" ng-show="twitter" ng-click="shareTwitter()">
+          <i class="icon socialsharing-icon">
+            <img src="img/social-icons/ico-social-twitter.svg"/>
+          </i>
+          <div>Twitter</div>
+        </div>
+        <div class="left text-center m10r ng-hide" ng-show="googleplus" ng-click="shareGooglePlus()">
+          <i class="icon socialsharing-icon">
+            <img src="img/social-icons/ico-social-googleplus.svg"/>
+          </i>
+          <div>Google+</div>
+        </div>
+        <div class="left text-center m10r ng-hide" ng-show="email" ng-click="shareEmail()">
+          <i class="icon socialsharing-icon">
+            <img src="img/social-icons/ico-social-email.svg"/>
+          </i>
+          <div>Email</div>
+        </div>
+        <div class="left text-center m10r ng-hide" ng-show="whatsapp" ng-click="shareWhatsapp()">
+          <i class="icon socialsharing-icon">
+            <img src="img/social-icons/ico-social-whatsapp.svg"/>
+          </i>
+          <div>Whatsapp</div>
+        </div>
+        <div class="left text-center m10r" ng-click="shareMessage()">
+          <i class="icon socialsharing-icon">
+            <img src="img/social-icons/ico-social-message.svg"/>
+          </i>
+          <div>Message</div>
         </div>
       </div>
     </div>
