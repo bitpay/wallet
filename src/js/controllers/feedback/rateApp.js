@@ -29,20 +29,6 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
     });
   };
 
-  $scope.$on("$ionicView.beforeEnter", function() {
-    if(window.StatusBar){
-      $log.debug('Hiding status bar...');
-      StatusBar.hide();
-    }
-  });
-
-  $scope.$on("$ionicView.afterLeave", function() {
-    if(window.StatusBar){
-      $log.debug('Showing status bar...');
-      StatusBar.show();
-    }
-  });
-
   $scope.sendFeedback = function() {
     $state.go('tabs.rate.send', {
       score: $scope.score
