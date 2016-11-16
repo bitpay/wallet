@@ -29,16 +29,16 @@
           <i class="icon ion-ios-plus-empty"></i>
         </div>
 
-        <div ng-if="unusedAddresses[0]">
-          <div class="item" ng-repeat="uAddress in unusedAddresses track by $index">
-            {{uAddress.address}}
+        <div ng-if="unused[0]">
+          <div class="item" ng-repeat="u in unused track by $index">
+            {{u.address}}
             <div class="addr-path">
-              {{uAddress.path}} {{uAddress.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+              {{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
             </div>
           </div>
         </div>
 
-        <div ng-if="!unusedAddresses[0]">
+        <div ng-if="!unused[0]">
           <span class="item" translate>Not unused addresses available</span>
         </div>
 
@@ -46,9 +46,14 @@
           Addresses With Balance
         </div>
 
-        <div class="item" ng-repeat="addr in addresses track by $index">
-          {{addr.address}}
-          <div class="addr-balance">{{addr.balanceStr}}</div>
+        <div class="item" ng-repeat="w in withBalance track by $index">
+          {{w.address}}
+          <div class="addr-balance">{{w.balanceStr}}</div>
+        </div>
+
+        <div class="item item-icon-right view-all" ng-show="viewAll.value">
+          <a ui-sref="#" translate>View All Addresses</a>
+          <i class="icon ion-ios-arrow-thin-right"></i>
         </div>
       </div>
     </div>
