@@ -1,0 +1,68 @@
+#addresses {
+  .addr {
+    &-explanation, &-button-group {
+      padding: 0 1rem;
+      margin: 1rem 0;
+    }
+    &-heading {
+      font-size: 17px;
+      color: $dark-gray;
+      margin: 1rem 0;
+    }
+    &-description {
+      text-align: center;
+      font-size: 15px;
+      color: $mid-gray;
+      margin: 1rem 0;
+    }
+    &-description-disabled {
+      color: cadetblue;
+      text-decoration: none;
+    }
+    &-balance {
+      margin-top: 4px;
+      color: #5DD263;
+    }
+    &-path {
+      margin-top: 4px;
+      color: #B8B8B8;
+    }
+    .addr-title, .addr-value {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  a {
+    font-weight: bold;
+  }
+
+  .addr-list {
+    .item {
+      color: $dark-gray;
+      padding-top: 1.3rem;
+      padding-bottom: 1.3rem;
+
+      &.has-addr-value {
+        padding-top: .65rem;
+        padding-bottom: .65rem;
+      }
+
+      &.item-divider {
+        color: $mid-gray;
+        padding-bottom: .5rem;
+        font-size: .9rem;
+      }
+
+      .icon {
+        color: $light-gray;
+      }
+    }
+
+    .item-note {
+      color: $light-gray;
+    }
+  }
+}
