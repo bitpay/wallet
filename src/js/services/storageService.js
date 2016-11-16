@@ -444,7 +444,10 @@ angular.module('copayApp.services')
       if (lodash.isEmpty(data) || !data.email) return cb('No card(s) to set');
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
-        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
         bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
         bitpayAccounts[data.email]['bitpayDebitCards-' + network] = data;
         storage.set('bitpayAccounts-' + network, JSON.stringify(bitpayAccounts), cb);
@@ -453,7 +456,10 @@ angular.module('copayApp.services')
 
     root.getBitpayDebitCards = function(network, cb) {
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
-        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
         var cards = [];
         Object.keys(bitpayAccounts).forEach(function(email) {
           // For the UI, add the account email to the card object.
@@ -475,7 +481,10 @@ angular.module('copayApp.services')
       if (lodash.isEmpty(card) || !card.eid) return cb('No card to remove');
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
-        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
         Object.keys(bitpayAccounts).forEach(function(userId) {
           var data = bitpayAccounts[userId]['bitpayDebitCards-' + network];
           var newCards = lodash.reject(data.cards, {'eid': card.eid});
