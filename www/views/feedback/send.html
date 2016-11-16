@@ -2,9 +2,14 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="primary">
+      <button ng-show="score" class="button no-border" ng-click="sendFeedback(null, true, true)" translate>
+        Cancel
+      </button>
+    </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-      <button ng-show="score" class="button no-border" ng-click="sendFeedback(null, true)" translate>
-        Skip
+      <button ng-disabled="!feedback.value" class="button no-border" type="submit" ng-click="sendFeedback(feedback.value, false)" translate>
+        Send
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>

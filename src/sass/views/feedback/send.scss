@@ -28,9 +28,11 @@
   }
   .user-feedback {
     border-top: 1px solid $subtle-gray;
+    border-bottom: 1px solid $subtle-gray;
     padding: 20px;
     width: 100%;
     margin-bottom: 20px;
+    -webkit-appearance: none;
   }
   .send-feedback-star {
     height: 1rem;

@@ -32,6 +32,7 @@ angular.module('copayApp.controllers').controller('completeController', function
 
     $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.skipped = (data.stateParams && data.stateParams.skipped) ? true : false;
+    $scope.rated = (data.stateParams && data.stateParams.rated) ? true : false;
 
     storageService.getFeedbackInfo(function(error, info) {
       var feedbackInfo = lodash.isString(info) ? JSON.parse(info) : null;
@@ -40,6 +41,7 @@ angular.module('copayApp.controllers').controller('completeController', function
     });
 
     if (!$scope.isCordova) return;
+    $scope.animate = true;
 
     window.plugins.socialsharing.available(function(isAvailable) {
       // the boolean is only false on iOS < 6
