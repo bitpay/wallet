@@ -1,13 +1,21 @@
 #complete {
   background-color: #ffffff;
-  .item-heading {
-    border-style: none;
-    margin-top: 10px;
-    a {
-      color: $dark-gray;
-    }
-    i {
-      font-size: 40px;
+  .close-button {
+    color: $dark-gray;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 36px;
+  }
+  .complete-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    &__expand {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: center;
     }
   }
   .title {
@@ -18,7 +26,7 @@
     text-align: center;
   }
   .subtitle {
-    padding: 10px 30px 20px 40px;
+    padding: 10px 30px 20px;
     text-align: center;
     color: $mid-gray;
   }
@@ -29,9 +37,7 @@
   }
   .socialsharing-icon {
     display: inline-block;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    width: 60px;
   }
   .addressbook-icon-svg {
     display: inline-block;
@@ -39,21 +45,14 @@
     height: 50px;
   }
   .share-buttons {
-    bottom: 0;
-    width: 100%;
-    position: absolute;
-    padding: 20px;
+    padding: 50px 10px;
     background-color: $subtle-gray;
-    .row {
-      margin: 20px 0px 20px;
-      span {
-        margin-top: 15px;
-        display: block;
-      }
-      div {
-        text-align: center;
-        width: 100%;
-      }
-    }
+    text-align: center;
+  }
+  .share-buttons__action {
+    display: inline-block;
+    color: #667;
+    font-size: .9rem;
+    width: 90px;
   }
 }
