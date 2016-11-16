@@ -1,15 +1,21 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate,  $ionicHistory, $ionicConfig, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo) {
 
   $scope.sendFeedback = function(feedback, skip) {
 
     var config = configService.getSync();
+    var isWP = platformInfo.isWP;
+    var isIOS = platformInfo.isIOS;
+    var isAndroid = platformInfo.isAndroid;
 
     var dataSrc = {
       "Email": lodash.values(config.emailFor)[0] || ' ',
       "Feedback": skip ? ' ' : feedback,
-      "Score": $stateParams.score || ' '
+      "Score": $stateParams.score || ' ',
+      "AppVersion": $window.version,
+      "Platform": ionic.Platform.platform(),
+      "DeviceVersion": ionic.Platform.version()
     };
 
     ongoingProcess.set('sendingFeedback', true);
@@ -47,8 +53,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
     if ($scope.score) {
       $ionicNavBarDelegate.showBackButton(false);
       $ionicConfig.views.swipeBackEnabled(false);
-    }
-    else $ionicNavBarDelegate.showBackButton(true);
+    } else $ionicNavBarDelegate.showBackButton(true);
 
     switch ($scope.score) {
       case 1:
