@@ -1,14 +1,18 @@
 #rate-card {
+  .item-heading {
+    font-weight: 700;
+  }
   .row {
     border: none;
-  }
-  .row.row-margin{
-    margin: 20px 0px 20px 0px;
   }
   .item-icon-right {
     margin: 0;
   }
   .feedback-flow-button {
-    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .icon-svg > img {
+    height: 1.8rem;
+    margin-bottom: 5px;
   }
 }

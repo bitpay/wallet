@@ -1,6 +1,6 @@
-<ion-view id="rate-app">
+<ion-view id="rate-app" hide-tabs>
   <ion-content scroll="false">
-    <a class="right skip" ng-click="skip()">Skip</a>
+    <a class="right skip skip-rating" ng-click="skip()" translate>Not now</a>
     <div class="title">
       <span translate>Thank you!</span>
       <div>
@@ -10,10 +10,10 @@
       </div>
     </div>
     <div class="subtitle text-center">
-        <span translate>5-star ratings help us get BitPay Wallet into more hands, and more users means more resoucers can be committed to the app!</span>
+        <span translate>5-star ratings help us get BitPay into more hands, and more users means more resources can be committed to the app!</span>
     </div>
     <div class="subtitle text-center">
-      <span class="text-bold" translate>Would you be willing to rate BitPay Wallet in the app store?</span>
+      <span class="text-bold" translate>Would you be willing to rate BitPay in the app store?</span>
     </div>
     <div class="buttons">
       <button type="submit" class="button button-standard button-primary" ng-click="goAppStore()">

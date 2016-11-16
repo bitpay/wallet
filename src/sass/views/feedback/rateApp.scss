@@ -1,8 +1,11 @@
 #rate-app {
   background-color: #ffffff;
   .skip {
-    margin: 10px;
+    margin-top: 15px;
     color: #667;
+  }
+  .skip-rating {
+    margin-right: 15px;
   }
   .icon-svg > img {
     width: 80px;
@@ -13,20 +16,18 @@
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
-    margin: 40px 50px 10px;
+    margin: 80px 50px 10px;
     text-align: center;
   }
   .subtitle {
     padding: 10px 30px 20px 40px;
+    color: #667;
   }
   .buttons {
     bottom: 0;
     width: 100%;
     position: absolute;
     background-color: $subtle-gray;
-    .button {
-      margin-top: 40px;
-      margin-bottom: 30px;
-    }
+    padding: 50px 0;
   }
 }

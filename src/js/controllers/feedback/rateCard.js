@@ -6,16 +6,12 @@ angular.module('copayApp.controllers').controller('rateCardController', function
   $scope.score = 0;
 
   $scope.goFeedbackFlow = function() {
-    if ($scope.isModal) {
-      $scope.rateModal.hide();
-      $scope.rateModal.remove();
-    }
     if ($scope.isCordova && $scope.score == 5) {
-      $state.go('feedback.rateApp', {
+      $state.go('tabs.rate.rateApp', {
         score: $scope.score
       });
     } else {
-      $state.go('feedback.send', {
+      $state.go('tabs.rate.send', {
         score: $scope.score
       });
     }
@@ -25,7 +21,7 @@ angular.module('copayApp.controllers').controller('rateCardController', function
     $scope.score = score;
     switch ($scope.score) {
       case 1:
-        $scope.button_title = gettextCatalog.getString("I think this app is terrible");
+        $scope.button_title = gettextCatalog.getString("I think this app is terrible.");
         break;
       case 2:
         $scope.button_title = gettextCatalog.getString("I don't like it");
@@ -37,7 +33,7 @@ angular.module('copayApp.controllers').controller('rateCardController', function
         $scope.button_title = gettextCatalog.getString("I like the app");
         break;
       case 5:
-        $scope.button_title = gettextCatalog.getString("This app is fantastic");
+        $scope.button_title = gettextCatalog.getString("This app is fantastic!");
         break;
     }
     $timeout(function() {
@@ -46,21 +42,16 @@ angular.module('copayApp.controllers').controller('rateCardController', function
   };
 
   $scope.hideCard = function() {
-    if ($scope.isModal) {
-      $scope.rateModal.hide();
-      $scope.rateModal.remove();
-    } else {
-      storageService.getFeedbackInfo(function(error, info) {
-        var feedbackInfo = JSON.parse(info);
-        feedbackInfo.sent = true;
-        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
-          $scope.showRateCard.value = false;
-        });
+    storageService.getFeedbackInfo(function(error, info) {
+      var feedbackInfo = JSON.parse(info);
+      feedbackInfo.sent = true;
+      storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
+        $scope.showRateCard.value = false;
+        $timeout(function() {
+          $scope.$apply();
+        }, 100);
       });
-    }
-    $timeout(function() {
-      $scope.$apply();
-    }, 100);
+    });
   }
 
 });

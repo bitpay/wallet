@@ -32,15 +32,4 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     updateConfig();
   });
 
-  $scope.openRateModal = function() {
-    $scope.isModal = true;
-    $ionicModal.fromTemplateUrl('views/feedback/rateCard.html', {
-      scope: $scope,
-      backdropClickToClose: false,
-      hardwareBackButtonClose: false
-    }).then(function(modal) {
-      $scope.rateModal = modal;
-      $scope.rateModal.show();
-    });
-  }
 });
