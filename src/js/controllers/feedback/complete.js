@@ -97,6 +97,7 @@ angular.module('copayApp.controllers').controller('completeController', function
       disableAnimate: false,
       historyRoot: true
     });
-    $ionicHistory.goBack(-2);
+    if ($scope.score == 5) $ionicHistory.goBack(-3);
+    else $ionicHistory.goBack(-2);
   };
 });
