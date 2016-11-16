@@ -157,9 +157,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'walletDetailsController',
             templateUrl: 'views/walletDetails.html'
           }
-        },
-        customConfig: {
-          hideStatusBar: true
         }
       })
       .state('tabs.activity', {
@@ -753,11 +750,17 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/feedback/send.html',
             controller: 'sendController'
           }
+        },
+        customConfig: {
+          hideStatusBar: true
         }
       })
       .state('tabs.rate', {
         url: '/rate',
-        abstract: true
+        abstract: true,
+        customConfig: {
+          hideStatusBar: true
+        }
       })
       .state('tabs.rate.send', {
         url: '/send/:score',
@@ -766,6 +769,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/feedback/send.html',
             controller: 'sendController'
           }
+        },
+        customConfig: {
+          hideStatusBar: true
         }
       })
       .state('tabs.rate.complete', {
@@ -775,6 +781,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'completeController',
             templateUrl: 'views/feedback/complete.html'
           }
+        },
+        customConfig: {
+          hideStatusBar: true
         }
       })
       .state('tabs.rate.rateApp', {
@@ -784,6 +793,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'rateAppController',
             templateUrl: 'views/feedback/rateApp.html'
           }
+        },
+        customConfig: {
+          hideStatusBar: true
         }
       })
 
