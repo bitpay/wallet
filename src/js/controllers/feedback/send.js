@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate,  $ionicHistory, $ionicConfig, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
 
   $scope.sendFeedback = function(feedback, skip) {
 
@@ -9,7 +9,10 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
     var dataSrc = {
       "Email": lodash.values(config.emailFor)[0] || ' ',
       "Feedback": skip ? ' ' : feedback,
-      "Score": $stateParams.score || ' '
+      "Score": $stateParams.score || ' ',
+      "AppVersion": $window.version,
+      "Platform": ionic.Platform.platform(),
+      "DeviceVersion": ionic.Platform.version()
     };
 
     ongoingProcess.set('sendingFeedback', true);
@@ -47,8 +50,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
     if ($scope.score) {
       $ionicNavBarDelegate.showBackButton(false);
       $ionicConfig.views.swipeBackEnabled(false);
-    }
-    else $ionicNavBarDelegate.showBackButton(true);
+    } else $ionicNavBarDelegate.showBackButton(true);
 
     switch ($scope.score) {
       case 1:
@@ -76,6 +78,10 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay. How could we improve your experience?");
         break;
     }
+  });
+
+  $scope.$on("$ionicView.afterEnter", function() {
+    $scope.showForm = true;
   });
 
 });

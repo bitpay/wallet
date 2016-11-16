@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('completeController', function
   var config = configService.getSync();
 
   $scope.shareFacebook = function() {
-    window.plugins.socialsharing.shareViaFacebook(config.download.url, null, null, null);
+    window.plugins.socialsharing.shareVia($scope.shareFacebookVia, config.download.url, null, null, null, null, null);
   };
 
   $scope.shareTwitter = function() {
@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('completeController', function
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    if(window.StatusBar){
+    if (window.StatusBar) {
       $log.debug('Hiding status bar...');
       StatusBar.hide();
     }
@@ -49,17 +49,28 @@ angular.module('copayApp.controllers').controller('completeController', function
       $scope.socialsharing = isAvailable;
       if (isAvailable) {
         window.plugins.socialsharing.canShareVia('com.apple.social.facebook', 'msg', null, null, null, function(e) {
+          $scope.shareFacebookVia = 'com.apple.social.facebook';
           $scope.facebook = true;
         }, function(e) {
-          $log.debug('facebook error: ' + e);
-          $scope.facebook = false;
+          window.plugins.socialsharing.canShareVia('com.facebook.katana', 'msg', null, null, null, function(e) {
+            $scope.shareFacebookVia = 'com.facebook.katana';
+            $scope.facebook = true;
+          }, function(e) {
+            $log.debug('facebook error: ' + e);
+            $scope.facebook = false;
+          });
         });
-        window.plugins.socialsharing.canShareVia('com.twitter.android', 'msg', null, null, null, function(e) {
-          $scope.shareTwitterVia = 'com.twitter.android';
+        window.plugins.socialsharing.canShareVia('com.apple.social.twitter', 'msg', null, null, null, function(e) {
+          $scope.shareTwitterVia = 'com.apple.social.twitter';
           $scope.twitter = true;
         }, function(e) {
-          $log.debug('twitter error: ' + e);
-          $scope.twitter = false;
+          window.plugins.socialsharing.canShareVia('com.twitter.android', 'msg', null, null, null, function(e) {
+            $scope.shareTwitterVia = 'com.twitter.android';
+            $scope.twitter = true;
+          }, function(e) {
+            $log.debug('twitter error: ' + e);
+            $scope.twitter = false;
+          });
         });
         window.plugins.socialsharing.canShareVia('com.google.android.apps.plus', 'msg', null, null, null, function(e) {
           $scope.shareGooglePlusVia = 'com.google.android.apps.plus';
@@ -85,7 +96,7 @@ angular.module('copayApp.controllers').controller('completeController', function
   });
 
   $scope.$on("$ionicView.afterLeave", function() {
-    if(window.StatusBar){
+    if (window.StatusBar) {
       $log.debug('Showing status bar...');
       StatusBar.show();
     }
