@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('rateAppController', function($scope, $state, $stateParams, lodash, externalLinkService, configService, gettextCatalog, platformInfo, feedbackService, ongoingProcess, popupService) {
+angular.module('copayApp.controllers').controller('rateAppController', function($scope, $state, $stateParams, $window, lodash, externalLinkService, configService, gettextCatalog, platformInfo, feedbackService, ongoingProcess, popupService) {
   $scope.score = parseInt($stateParams.score);
   var isAndroid = platformInfo.isAndroid;
   var isIOS = platformInfo.isIOS;
@@ -11,7 +11,10 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
     var dataSrc = {
       "Email": lodash.values(config.emailFor)[0] || ' ',
       "Feedback": ' ',
-      "Score": $stateParams.score
+      "Score": $stateParams.score,
+      "AppVersion": $window.version,
+      "Platform": ionic.Platform.platform(),
+      "DeviceVersion": ionic.Platform.version()
     };
     feedbackService.send(dataSrc, function(err) {
       if (err) {
