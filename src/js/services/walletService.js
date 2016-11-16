@@ -773,10 +773,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.getMainAddresses = function(wallet, limit, cb) {
-    var opts = {};
+  root.getMainAddresses = function(wallet, opts, cb) {
+    opts = opts || {};
     opts.reverse = true;
-    if (limit) opts.limit = limit;
 
     wallet.getMainAddresses(opts, function(err, addresses) {
       if (err) return cb(err);

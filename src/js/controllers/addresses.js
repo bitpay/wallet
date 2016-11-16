@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService) {
-  var ADDRESS_LIMIT = 5;
+  var UNUSED_ADDRESS_LIMIT = 5;
+  var BALANCE_ADDRESS_LIMIT = 5;
   var config;
   var unitName;
   var unitToSatoshi;
@@ -16,28 +17,47 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     satToUnit = 1 / unitToSatoshi;
     unitName = config.unitName;
     unitDecimals = config.unitDecimals;
+    init();
+  });
 
-    // $scope.unusedAddresses = getUnusedAddreses(); No backend support TODO
-    $scope.unusedAddresses = [{
-      createdOn: 1479138140,
-      address: "0m9sad00810m0m1d2192d9u12d9",
-      path: 'xpub/0/1'
-    }];
-
+  function init() {
     ongoingProcess.set('extractingWalletInfo', true);
-    walletService.getBalance($scope.wallet, {}, function(err, resp) {
-      ongoingProcess.set('extractingWalletInfo', false);
+    walletService.getMainAddresses($scope.wallet, {}, function(err, addresses) {
       if (err) {
+        ongoingProcess.set('extractingWalletInfo', false);
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
 
-      $scope.addresses = lodash.slice(resp.byAddress, 0, ADDRESS_LIMIT);
-      lodash.each($scope.addresses, function(a) {
-        a.balanceStr = (a.amount * satToUnit).toFixed(unitDecimals) + ' ' + unitName;
+      $scope.allAddresses = addresses;
+
+      walletService.getBalance($scope.wallet, {}, function(err, resp) {
+        ongoingProcess.set('extractingWalletInfo', false);
+        if (err) {
+          return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        }
+
+        var withBalance = resp.byAddress;
+        var idx = lodash.indexBy(withBalance, 'address');
+        var noBalance = lodash.reject($scope.allAddresses, function(x) {
+          return idx[x.address];
+        });
+        lodash.each(noBalance, function(n) {
+          n.path = n.path.replace(/^m/g, 'xpub');
+        });
+        $scope.unused = lodash.slice(noBalance, 0, UNUSED_ADDRESS_LIMIT);
+        $scope.withBalance = lodash.slice(withBalance, 0, BALANCE_ADDRESS_LIMIT);
+
+        lodash.each($scope.withBalance, function(a) {
+          a.balanceStr = (a.amount * satToUnit).toFixed(unitDecimals) + ' ' + unitName;
+        });
+
+        $scope.viewAll = {
+          value: noBalance.length > UNUSED_ADDRESS_LIMIT || withBalance.length > BALANCE_ADDRESS_LIMIT
+        };
+        $scope.$digest();
       });
-      $scope.$digest();
     });
-  });
+  };
 
   $scope.showInformation = function() {
     $timeout(function() {

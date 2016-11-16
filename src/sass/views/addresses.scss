@@ -14,6 +14,11 @@
       font-size: 15px;
       color: $mid-gray;
       margin: 1rem 0;
+      a {
+        font-weight: bold;
+        cursor: pointer;
+        cursor: hand;
+      }
     }
     &-description-disabled {
       color: cadetblue;
@@ -35,32 +40,34 @@
     }
   }
 
-  a {
-    font-weight: bold;
-  }
-
   .addr-list {
     .item {
       color: $dark-gray;
       padding-top: 1.3rem;
       padding-bottom: 1.3rem;
-
       &.has-addr-value {
         padding-top: .65rem;
         padding-bottom: .65rem;
       }
-
       &.item-divider {
         color: $mid-gray;
         padding-bottom: .5rem;
         font-size: .9rem;
       }
-
-      .icon {
-        color: $light-gray;
+      &.view-all {
+        margin: 20px 0px 20px 0px;
+        cursor: pointer;
+        cursor: hand;
+        i {
+          font-size: 35px;
+          margin-right: 5px;
+          color: #434CBE;
+        }
+        a {
+          font-weight: bold;
+        }
       }
     }
-
     .item-note {
       color: $light-gray;
     }
