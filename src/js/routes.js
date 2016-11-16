@@ -739,59 +739,47 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
-     * Feedback from home
+     * Feedback
      *
      */
 
-    .state('feedback', {
+      .state('tabs.feedback', {
         url: '/feedback',
-        abstract: true,
-        template: '<ion-nav-view name="feedback"></ion-nav-view>'
-      })
-      .state('feedback.send', {
-        url: '/send/:score',
         views: {
-          'feedback': {
-            controller: 'sendController',
-            templateUrl: 'views/feedback/send.html'
+          'tab-settings@tabs': {
+            templateUrl: 'views/feedback/send.html',
+            controller: 'sendController'
           }
         }
       })
-      .state('feedback.complete', {
+      .state('tabs.rate', {
+        url: '/rate',
+        abstract: true
+      })
+      .state('tabs.rate.send', {
+        url: '/send/:score',
+        views: {
+          'tab-home@tabs': {
+            templateUrl: 'views/feedback/send.html',
+            controller: 'sendController'
+          }
+        }
+      })
+      .state('tabs.rate.complete', {
         url: '/complete/:score/:skipped',
         views: {
-          'feedback': {
+          'tab-home@tabs': {
             controller: 'completeController',
             templateUrl: 'views/feedback/complete.html'
           }
         }
       })
-      .state('feedback.rateApp', {
+      .state('tabs.rate.rateApp', {
         url: '/rateApp/:score',
         views: {
-          'feedback': {
+          'tab-home@tabs': {
             controller: 'rateAppController',
             templateUrl: 'views/feedback/rateApp.html'
-          }
-        }
-      })
-
-    /*
-     *
-     * Feedback from settings
-     *
-     */
-    .state('tabs.settings.feedback', {
-        url: '/feedback',
-        abstract: true,
-        template: '<ion-nav-view name="feedback"></ion-nav-view>'
-      })
-      .state('tabs.settings.feedback.send', {
-        url: '/send',
-        views: {
-          'tab-settings@tabs': {
-            controller: 'sendController',
-            templateUrl: 'views/feedback/send.html'
           }
         }
       })

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('rateAppController', function($scope, $state, $stateParams, lodash, externalLinkService, configService, gettextCatalog, platformInfo, feedbackService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('rateAppController', function($scope, $state, $stateParams, lodash, externalLinkService, configService, gettextCatalog, platformInfo, feedbackService, ongoingProcess, popupService) {
   $scope.score = parseInt($stateParams.score);
   var isAndroid = platformInfo.isAndroid;
   var isIOS = platformInfo.isIOS;
@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send feedback'));
         return;
       }
-      $state.go('feedback.complete', {
+      $state.go('tabs.rate.complete', {
         score: $stateParams.score,
         skipped: true
       });
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
   });
 
   $scope.sendFeedback = function() {
-    $state.go('feedback.send', {
+    $state.go('tabs.rate.send', {
       score: $scope.score
     });
   };
