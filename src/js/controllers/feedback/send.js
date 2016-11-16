@@ -26,13 +26,10 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         popupService.showAlert(gettextCatalog.getString('Thank you!'), gettextCatalog.getString('A member of the team will review your feedback as soon as possible.'), function() {
           $scope.feedback.value = '';
           $ionicHistory.nextViewOptions({
-            disableAnimate: true,
+            disableAnimate: false,
             historyRoot: true
           });
-          $ionicHistory.clearHistory();
-          $timeout(function() {
-            $state.go('tabs.settings');
-          });
+          $ionicHistory.goBack();
         });
         return;
       }
