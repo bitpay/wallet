@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     var isWP = platformInfo.isWP;
 
     $scope.usePushNotifications = isCordova && !isWP;
+    $scope.isCordova = isCordova;
 
     $scope.appName = $window.appConfig.nameCase;
 
