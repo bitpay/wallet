@@ -8,17 +8,10 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
-  $scope.wallet = profileService.getWallet($stateParams.walletId);
+  var withBalance;
+  var noBalance;
   $scope.showInfo = false;
-
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    config = configService.getSync().wallet.settings;
-    unitToSatoshi = config.unitToSatoshi;
-    satToUnit = 1 / unitToSatoshi;
-    unitName = config.unitName;
-    unitDecimals = config.unitDecimals;
-    init();
-  });
+  $scope.wallet = profileService.getWallet($stateParams.walletId);
 
   function init() {
     ongoingProcess.set('extractingWalletInfo', true);
@@ -28,7 +21,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
 
-      $scope.allAddresses = addresses;
+      var allAddresses = addresses;
 
       walletService.getBalance($scope.wallet, {}, function(err, resp) {
         ongoingProcess.set('extractingWalletInfo', false);
@@ -36,26 +29,34 @@ angular.module('copayApp.controllers').controller('addressesController', functio
           return popupService.showAlert(gettextCatalog.getString('Error'), err);
         }
 
-        var withBalance = resp.byAddress;
+        withBalance = resp.byAddress;
         var idx = lodash.indexBy(withBalance, 'address');
-        var noBalance = lodash.reject($scope.allAddresses, function(x) {
+        noBalance = lodash.reject(allAddresses, function(x) {
           return idx[x.address];
         });
-        lodash.each(noBalance, function(n) {
-          n.path = n.path.replace(/^m/g, 'xpub');
-        });
-        $scope.unused = lodash.slice(noBalance, 0, UNUSED_ADDRESS_LIMIT);
-        $scope.withBalance = lodash.slice(withBalance, 0, BALANCE_ADDRESS_LIMIT);
 
-        lodash.each($scope.withBalance, function(a) {
+        processPaths(noBalance);
+        processPaths(withBalance);
+
+        $scope.latestUnused = lodash.slice(noBalance, 0, UNUSED_ADDRESS_LIMIT);
+        $scope.latestWithBalance = lodash.slice(withBalance, 0, BALANCE_ADDRESS_LIMIT);
+
+        lodash.each(withBalance, function(a) {
           a.balanceStr = (a.amount * satToUnit).toFixed(unitDecimals) + ' ' + unitName;
         });
 
         $scope.viewAll = {
           value: noBalance.length > UNUSED_ADDRESS_LIMIT || withBalance.length > BALANCE_ADDRESS_LIMIT
         };
+        $scope.allAddresses = noBalance.concat(withBalance);
         $scope.$digest();
       });
+    });
+  };
+
+  function processPaths(list) {
+    lodash.each(list, function(n) {
+      n.path = n.path.replace(/^m/g, 'xpub');
     });
   };
 
@@ -65,4 +66,14 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       $ionicScrollDelegate.resize();
     });
   };
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    config = configService.getSync().wallet.settings;
+    unitToSatoshi = config.unitToSatoshi;
+    satToUnit = 1 / unitToSatoshi;
+    unitName = config.unitName;
+    unitDecimals = config.unitDecimals;
+
+    if (!$scope.allAddresses || $scope.allAddresses.length < 0) init();
+  });
 });
