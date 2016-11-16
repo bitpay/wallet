@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate,  $ionicHistory, $ionicConfig, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
 
   $scope.sendFeedback = function(feedback, skip) {
 
@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         });
         return;
       }
-      $state.go('feedback.complete', {
+      $state.go('tabs.rate.complete', {
         score: $stateParams.score,
         skipped: skip
       });
@@ -41,8 +41,14 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.score = parseInt($stateParams.score);
+    $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.feedback = {};
+
+    if ($scope.score) {
+      $ionicNavBarDelegate.showBackButton(false);
+      $ionicConfig.views.swipeBackEnabled(false);
+    }
+    else $ionicNavBarDelegate.showBackButton(true);
 
     switch ($scope.score) {
       case 1:
