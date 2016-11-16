@@ -80,4 +80,8 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
     }
   });
 
+  $scope.$on("$ionicView.afterEnter", function() {
+    $scope.showForm = true;
+  });
+
 });
