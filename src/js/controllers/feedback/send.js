@@ -1,13 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
 
   $scope.sendFeedback = function(feedback, skip) {
 
     var config = configService.getSync();
-    var isWP = platformInfo.isWP;
-    var isIOS = platformInfo.isIOS;
-    var isAndroid = platformInfo.isAndroid;
 
     var dataSrc = {
       "Email": lodash.values(config.emailFor)[0] || ' ',
