@@ -151,7 +151,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.wallet', {
-        url: '/wallet/{walletId}/{fromOnboarding}',
+        url: '/wallet/:walletId/:fromOnboarding',
         views: {
           'tab-home@tabs': {
             controller: 'walletDetailsController',
@@ -183,6 +183,23 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-home@tabs': {
             controller: 'txDetailsController',
             templateUrl: 'views/tx-details.html'
+          }
+        }
+      })
+      .state('tabs.wallet.backupWarning', {
+        url: '/backupWarning/:from/:walletId',
+        views: {
+          'tab-home@tabs': {
+            templateUrl: 'views/backupWarning.html'
+          }
+        }
+      })
+      .state('tabs.wallet.backup', {
+        url: '/backup/:walletId',
+        views: {
+          'tab-home@tabs': {
+            templateUrl: 'views/backup.html',
+            controller: 'backupController'
           }
         }
       })
@@ -601,7 +618,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
-     * Back flow from receive
+     * Init backup flow
      *
      */
 
@@ -726,43 +743,52 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('feedback', {
+      .state('tabs.feedback', {
         url: '/feedback',
-        abstract: true,
-        template: '<ion-nav-view name="feedback"></ion-nav-view>'
-      })
-      .state('feedback.send', {
-        url: '/send/:score',
         views: {
-          'feedback': {
-            controller: 'sendController',
-            templateUrl: 'views/feedback/send.html'
+          'tab-settings@tabs': {
+            templateUrl: 'views/feedback/send.html',
+            controller: 'sendController'
           }
         }
       })
-      .state('feedback.complete', {
+      .state('tabs.rate', {
+        url: '/rate',
+        abstract: true
+      })
+      .state('tabs.rate.send', {
+        url: '/send/:score',
+        views: {
+          'tab-home@tabs': {
+            templateUrl: 'views/feedback/send.html',
+            controller: 'sendController'
+          }
+        }
+      })
+      .state('tabs.rate.complete', {
         url: '/complete/:score/:skipped',
         views: {
-          'feedback': {
+          'tab-home@tabs': {
             controller: 'completeController',
             templateUrl: 'views/feedback/complete.html'
           }
         }
       })
-      .state('feedback.rateApp', {
+      .state('tabs.rate.rateApp', {
         url: '/rateApp/:score',
         views: {
-          'feedback': {
+          'tab-home@tabs': {
             controller: 'rateAppController',
             templateUrl: 'views/feedback/rateApp.html'
           }
         }
       })
-      /*
-       *
-       * Buy or Sell Bitcoin
-       *
-       */
+
+    /*
+     *
+     * Buy or Sell Bitcoin
+     *
+     */
 
     .state('tabs.buyandsell', {
       url: '/buyandsell',

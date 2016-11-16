@@ -4,27 +4,34 @@
     border: none;
   }
   .skip {
-    margin: 20px 20px 10px;
-    color: #667;
-    text-decoration: none;
+    color: rgba(255, 255, 255, 0.3);
+  }
+  .feedback-heading {
+    padding-top: 20px
   }
   .title {
-    padding: 20px;
+    padding-left: 10px;
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
   }
+  .rating {
+    text-align: right;
+    padding-right: 15px;
+  }
   .comment {
-    padding: 20px;
+    padding: 0 20px 20px;
     font-size: 1rem;
     line-height: 1.5em;
     font-weight: 300;
     color: $dark-gray;
   }
-  textarea {
-    padding: 20px;
+  .user-feedback {
     border-top: 1px solid $subtle-gray;
-    padding: 20px;
     width: 100%;
+  }
+  .send-feedback-star {
+    height: 1rem;
+    margin-left: 5px;
   }
 }

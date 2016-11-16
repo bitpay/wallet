@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.title = gettextCatalog.getString('Transaction');
@@ -29,6 +29,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
       updateMemo();
       initActionList();
+      $timeout(function() {
+        $scope.$apply();
+      });
     });
   });
 

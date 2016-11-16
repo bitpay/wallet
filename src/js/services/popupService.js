@@ -51,12 +51,12 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
   var _cordovaConfirm = function(title, message, okText, cancelText, cb) {
     var onConfirm = function(buttonIndex) {
-      if (buttonIndex == 1) return cb(true);
+      if (buttonIndex == 2) return cb(true);
       else return cb(false);
     }
     okText = okText || gettextCatalog.getString('OK');
     cancelText = cancelText || gettextCatalog.getString('Cancel');
-    navigator.notification.confirm(message, onConfirm, title, [okText, cancelText]);
+    navigator.notification.confirm(message, onConfirm, title, [cancelText, okText]);
   };
 
   var _cordovaPrompt = function(title, message, opts, cb) {
