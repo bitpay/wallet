@@ -65,6 +65,7 @@
       <variable name="SENDER_ID" value="*PUSHSENDERID*"/>
     </plugin>
     <plugin name="cordova-custom-config" spec="~3.0.5" />
+    <plugin name="cordova-plugin-queries-schemes" spec="~0.1.5" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
