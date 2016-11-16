@@ -772,6 +772,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'completeController',
             templateUrl: 'views/feedback/complete.html'
           }
+        },
+        customConfig: {
+          hideStatusBar: true
         }
       })
       .state('tabs.rate.rateApp', {
@@ -781,6 +784,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'rateAppController',
             templateUrl: 'views/feedback/rateApp.html'
           }
+        },
+        customConfig: {
+          hideStatusBar: true
         }
       })
 
@@ -1092,5 +1098,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+      if($window.StatusBar) {
+        if(toState.customConfig && toState.customConfig.hideStatusBar) {
+          $window.StatusBar.hide();
+        } else {
+          $window.StatusBar.show();
+        }
+      }
     });
   });
