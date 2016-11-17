@@ -4,11 +4,6 @@
       padding: 0 1rem;
       margin: 1rem 0;
     }
-    &-heading {
-      font-size: 17px;
-      color: $dark-gray;
-      margin: 1rem 0;
-    }
     &-description {
       text-align: center;
       font-size: 15px;
@@ -20,10 +15,6 @@
         cursor: hand;
       }
     }
-    &-description-disabled {
-      color: cadetblue;
-      text-decoration: none;
-    }
     &-balance {
       margin-top: 4px;
       color: #5DD263;
@@ -32,15 +23,19 @@
       margin-top: 4px;
       color: #B8B8B8;
     }
-    .addr-title, .addr-value {
-      display: block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
 
   .addr-list {
+    .big-icon-svg {
+      padding: 0 7px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      box-shadow: none;
+      background-repeat: no-repeat;
+      background-clip: padding-box;
+      background-size: 103%;
+    }
     .item {
       color: $dark-gray;
       padding-top: 1.3rem;

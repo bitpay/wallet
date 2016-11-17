@@ -776,10 +776,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.getMainAddresses = function(wallet, opts, cb) {
     opts = opts || {};
     opts.reverse = true;
-
     wallet.getMainAddresses(opts, function(err, addresses) {
-      if (err) return cb(err);
-      return cb(null, addresses);
+      return cb(err, addresses);
     });
   };
 

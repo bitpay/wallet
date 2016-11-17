@@ -111,7 +111,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     });
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+  $scope.$on("$ionicView.afterEnter", function(event, data) {
     config = configService.getSync().wallet.settings;
     unitToSatoshi = config.unitToSatoshi;
     satToUnit = 1 / unitToSatoshi;

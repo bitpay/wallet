@@ -8,7 +8,7 @@
   <ion-content>
     <div class="addr-list">
       <div class="text-center padding size-42">
-        <i class="icon ion-ios-ionic-outline"></i>
+        <i class="icon ion-ios-ionic-outline big-icon-svg"></i>
       </div>
 
       <div class="addr-explanation">
@@ -36,7 +36,7 @@
             <p ng-if="showMore" translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated. <a ng-click="readMore()" translate>Read less</a></p>
           </div>
 
-          <div class="item" ng-repeat="u in latestUnused track by $index">
+          <div class="item" ng-repeat="u in latestUnused track by $index" copy-to-clipboard="u.address">
             {{u.address}}
             <div class="addr-path">
               {{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
@@ -49,7 +49,7 @@
             Addresses With Balance
           </div>
 
-          <div class="item" ng-repeat="w in latestWithBalance track by $index">
+          <div class="item" ng-repeat="w in latestWithBalance track by $index" copy-to-clipboard="w.address">
             {{w.address}}
             <div class="addr-balance">{{w.balanceStr}}</div>
           </div>

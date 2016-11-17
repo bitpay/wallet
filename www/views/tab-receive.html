@@ -64,19 +64,13 @@
             <i class="icon ion-ios-upload-outline"></i>
             <span translate>Share</span>
           </div>
-          <div ng-class="{'center-block': !isCordova || !addr}">
-            <div class="item item-icon-left" ng-click="setAddress(true)">
-              <i class="icon ion-ios-loop"></i>
-              <span translate>Next Address</span>
-            </div>
-          </div>
         </div>
         <div id="bit-address" class="row border-top" ng-click="showAddresses()">
           <div class="center-block bit-address text-center" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
             <div class="item item-icon-left item-icon-right">
               <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
               <span class="bit-address-gen-address" ng-if="generatingAddress">...</span>
-              <span class="bit-address-gen-address" ng-if="!generatingAddress" copy-to-clipboard="walletAddrs[wallet.id]">{{walletAddrs[wallet.id]}}</span>
+              <span class="bit-address-gen-address" ng-if="!generatingAddress">{{walletAddrs[wallet.id]}}</span>
               <i class="icon ion-ios-arrow-right"></i>
             </div>
           </div>
