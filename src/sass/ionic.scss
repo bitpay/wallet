@@ -6,10 +6,6 @@
 /* Ionic Overrides and Workarounds */
 // Please include a description of the problem solved by the workaround.
 
-// class to dynamically hide the ion-nav-bar for v1 Amazon flow
-// Fix hide-nav-bar (true|false)
-//ion-nav-bar.hide { display: block !important; }
-
 // the ion tabs element never needs it's own background (backgrounds are
 // rendered by the tabs), and the default background would cover the scanner
 ion-tabs.ion-tabs-transparent {
