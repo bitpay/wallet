@@ -86,6 +86,8 @@
     .bit-address {
       font-size: .8rem;
       // left:10%;
+      cursor: pointer;
+      cursor: hand;
       position: absolute;
       transition: all .15s ease;
       width:100%;

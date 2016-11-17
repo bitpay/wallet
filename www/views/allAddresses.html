@@ -9,7 +9,7 @@
     <div class="addr-list list">
       <div class="item item-divider"></div>
 
-      <div class="item" ng-repeat="a in allAddresses track by $index">
+      <div class="item" ng-repeat="a in allAddresses track by $index" copy-to-clipboard="a.address">
         {{a.address}}
         <div class="addr-path" ng-if="!a.balanceStr">
           {{a.path}} {{a.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
