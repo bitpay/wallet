@@ -54,9 +54,8 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
     $scope.feedback = {};
 
     if ($scope.score) {
-      $ionicNavBarDelegate.showBackButton(false);
       $ionicConfig.views.swipeBackEnabled(false);
-    } else $ionicNavBarDelegate.showBackButton(true);
+    }
 
     switch ($scope.score) {
       case 1:
@@ -89,5 +88,13 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
   $scope.$on("$ionicView.afterEnter", function() {
     $scope.showForm = true;
   });
+
+  $scope.goBack = function() {
+    $ionicHistory.nextViewOptions({
+      disableAnimate: false,
+      historyRoot: true
+    });
+    $ionicHistory.goBack();
+  };
 
 });

@@ -46,20 +46,18 @@ angular.module('copayApp.controllers').controller('completeController', function
     });
   };
 
-  $scope.$on("$ionicView.afterEnter", function() {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
+    $scope.skipped = (data.stateParams && data.stateParams.skipped) ? true : false;
+    $scope.rated = (data.stateParams && data.stateParams.rated) ? true : false;
+    $scope.fromSettings = (data.stateParams && data.stateParams.fromSettings) ? true : false;
+
     if (!$scope.fromSettings) {
       $ionicConfig.views.swipeBackEnabled(false);
     } else {
       $ionicNavBarDelegate.showBackButton(true);
       $ionicConfig.views.swipeBackEnabled(true);
     }
-  });
-
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
-    $scope.skipped = (data.stateParams && data.stateParams.skipped) ? true : false;
-    $scope.rated = (data.stateParams && data.stateParams.rated) ? true : false;
-    $scope.fromSettings = (data.stateParams && data.stateParams.fromSettings) ? true : false;
 
     storageService.getFeedbackInfo(function(error, info) {
       var feedbackInfo = lodash.isString(info) ? JSON.parse(info) : null;

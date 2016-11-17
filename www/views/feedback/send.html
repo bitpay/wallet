@@ -1,11 +1,12 @@
 <ion-view id="send-feedback" hide-tabs>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-back-button>
-    </ion-nav-back-button>
     <ion-nav-title>{{'Send Feedback' | translate}}</ion-nav-title>
     <ion-nav-buttons side="primary">
-      <button ng-show="score" class="button no-border" ng-click="sendFeedback(null, true, true)" translate>
+      <button ng-show="score" class="button no-border ng-hide" ng-click="sendFeedback(null, true, true)" translate>
         Cancel
+      </button>
+      <button ng-show="!score || fromSettings" class="button back-button button-clear ng-hide" ng-click="goBack()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
       </button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
