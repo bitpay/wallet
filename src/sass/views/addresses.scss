@@ -73,6 +73,23 @@
         margin-right: 2px;
       }
     }
+    .box-error {
+      padding: 25px;
+      background-color: #E65555;
+      color: #F4F4F4;
+      h5 {
+        margin: 5px;
+        color: #F4F4F4;
+        text-align: center;
+        font-weight: bold;
+      }
+      a {
+        font-weight: bold;
+        color: #F4F4F4;
+        cursor: pointer;
+        cursor: hand;
+      }
+    }
     .item-note {
       color: $light-gray;
     }

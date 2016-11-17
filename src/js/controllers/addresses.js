@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, bwcError) {
+angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
   var config;
@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   var unitDecimals;
   var withBalance;
   $scope.showInfo = false;
+  $scope.showMore = false;
   $scope.wallet = profileService.getWallet($stateParams.walletId);
 
   function init() {
@@ -60,11 +61,17 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   };
 
   $scope.newAddress = function() {
+    if ($scope.gapReached) return;
+
     ongoingProcess.set('generatingNewAddress', true);
     walletService.getAddress($scope.wallet, true, function(err, addr) {
       if (err) {
         ongoingProcess.set('generatingNewAddress', false);
-        return popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+        $scope.gapReached = true;
+        $timeout(function() {
+          $scope.$digest();
+        });
+        return;
       }
 
       walletService.getMainAddresses($scope.wallet, {
@@ -93,6 +100,13 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   $scope.showInformation = function() {
     $timeout(function() {
       $scope.showInfo = !$scope.showInfo;
+      $ionicScrollDelegate.resize();
+    });
+  };
+
+  $scope.readMore = function() {
+    $timeout(function() {
+      $scope.showMore = !$scope.showMore;
       $ionicScrollDelegate.resize();
     });
   };
