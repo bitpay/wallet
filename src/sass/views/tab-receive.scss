@@ -278,7 +278,7 @@
         .swiper-slide{
           text-align: center;
           .card{
-            margin-top:2vh;
+            margin-top: 1vh;
             display: inline-block;
             width:80%;
             @media(min-height: 1000px) and (max-width: 699px){
@@ -412,7 +412,7 @@
             display: inline-block;
             &.wallet-name{
               font-size:16px;
-              width: 70%;
+              width: 79%;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;
@@ -425,8 +425,13 @@
               visibility: visible !important;
             }
           }
-          .big-icon-svg{
-            & > .bg{padding:.3rem;width: 40px;height:40px;}
+          .big-icon-svg {
+            padding: 0;
+            & > .bg {
+              padding:.3rem;
+              width: 40px;
+              height:40px;
+            }
           }
         }
       }
