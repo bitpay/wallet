@@ -759,9 +759,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'completeController',
             templateUrl: 'views/feedback/complete.html'
           }
-        },
-        customConfig: {
-          hideStatusBar: true
         }
       })
       .state('tabs.rate', {

@@ -43,6 +43,7 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
     externalLinkService.open(url);
     $state.go('tabs.rate.complete', {
       score: $stateParams.score,
+      skipped: true,
       rated: true
     });
   };

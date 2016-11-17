@@ -1,33 +1,28 @@
 <ion-view id="complete" hide-tabs>
-  <ion-nav-bar class="bar-royal">
+  <ion-nav-bar class="bar-royal" ng-if="fromSettings">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-buttons side="secondary">
-      <a ng-show="!fromSettings" class="close-button" ng-click="close()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
-    </ion-nav-buttons>
+    <ion-nav-title>{{'Share BitPay' | translate}}</ion-nav-title>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <a class="close-button" ng-click="close()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+    <a class="close-button" ng-show="!fromSettings" ng-click="close()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
     <div class="complete-layout">
       <div class="complete-layout__expand" ng-class="{'fade-in': !animate || socialsharing}">
-        <div ng-switch="score && !skipped || rated">
-          <div class="title" ng-switch-when="true" translate>Thank you!</div>
-          <div ng-switch-default>
-            <div class="title" translate>Share BitPay</div>
-            <img src="img/ico-positive-feedback.svg" class="share-the-love-illustration"/>
-          </div>
+        <div ng-show="fromSettings">
+          <img src="img/ico-positive-feedback.svg" class="share-the-love-illustration"/>
+          <div class="subtitle" translate>Share the love by inviting your friends.</div>
         </div>
-        <div class="subtitle" ng-show="!skipped && !rated" translate>A member of the team will review your feedback as soon as possible.</div>
-        <img src="img/ico-positive-feedback.svg" ng-if="rated && socialsharing" class="share-the-love-illustration"/>
-        <div class="subtitle" ng-if="score > 3 && socialsharing" translate>Share the love by inviting your friends.</div>
-        <div class="subtitle" ng-if="score <= 3 || !socialsharing" translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</div>
-        <div class="text-center" ng-if="score <= 3 || !socialsharing">
-          <i class="icon icon-svg">
-            <img src="img/illustration-send-feedback.png"/>
-          </i>
+        <div ng-show="!fromSettings">
+          <div class="feedback-title" translate>Thank you!</div>
+          <div class="subtitle" ng-show="!skipped" translate>A member of the team will review your feedback as soon as possible.</div>
+          <div ng-if="score <= 3 || !socialsharing">
+            <div class="subtitle" translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</div>
+            <img src="img/illustration-send-feedback.png" class="send-feedback-illustration"/>
+          </div>
+          <div class="subtitle" ng-if="score > 3 && socialsharing" translate>Share the love by inviting your friends.</div>
         </div>
       </div>
-      <div class="share-buttons" ng-show="socialsharing" ng-class="{'slide-up': !animate || socialsharing }">
+      <div class="share-buttons" ng-if="score > 3 && socialsharing" ng-class="{'slide-up': socialsharing }">
         <div class="share-buttons__action" ng-show="facebook" ng-click="shareFacebook()">
           <i class="icon socialsharing-icon">
             <img src="img/social-icons/ico-social-facebook.svg"/>

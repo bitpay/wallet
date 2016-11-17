@@ -1,5 +1,5 @@
 #complete {
-  background-color: #ffffff;
+  background-color: #fff;
   .close-button {
     color: $dark-gray;
     position: absolute;
@@ -30,7 +30,11 @@
     width: 5rem;
     margin: 1rem;
   }
-  .title {
+  .send-feedback-illustration {
+    height: 21rem;
+    margin: 1rem;
+  }
+  .feedback-title {
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
