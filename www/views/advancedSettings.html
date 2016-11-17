@@ -51,7 +51,7 @@
         If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.
       </div>
 
-      <ion-toggle class="has-comment" ng-model="developmentUtilitiesEnabled.value" toggle-class="toggle-balanced" ng-change="toggledDevelopmentUtils()">
+      <ion-toggle class="has-comment" ng-model="global.developmentUtilitiesEnabled.value" toggle-class="toggle-balanced" ng-change="toggledDevelopmentUtils()">
         <span class="toggle-label" translate>Development Utilities</span>
       </ion-toggle>
       <div class="comment" translate>
@@ -67,7 +67,7 @@
         <span transaction>If enabled, the Frequently Used card - a list of the most commonly chosen recipients - will appear in the Send tab.</span>
       </div> -->
 
-      <div ng-show="developmentUtilitiesEnabled.value">
+      <div ng-show="global.developmentUtilitiesEnabled.value">
         <div class="item item-divider" translate>Development Utilities</div>
         <div class="settings-explanation">
           <div class="settings-description" translate>
@@ -77,13 +77,13 @@
 
         <div class="item has-comment item-button-right">
           Feedback Card
-          <button class="button" ng-click="activateFeedbackCard()" ng-show="!feedbackCardActivating && !feedbackCardActivated">
+          <button class="button button-secondary" ng-click="activateFeedbackCard()" ng-show="!feedbackCardActivating && !feedbackCardActivated">
             Activate
           </button>
-          <button class="button button-clear" disabled ng-show="feedbackCardActivating">
+          <button class="button button-secondary button-clear" disabled ng-show="feedbackCardActivating">
             <ion-spinner></ion-spinner>
           </button>
-          <button class="button" ng-show="feedbackCardActivated" ng-click="resetActivateFeedbackCard()">
+          <button class="button button-secondary button-clear" ng-show="feedbackCardActivated" ng-click="resetActivateFeedbackCard()">
             Activated
           </button>
         </div>
