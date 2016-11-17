@@ -37,3 +37,20 @@ $placeholder-icon-padding: 10px;
 .card {
   margin: ($content-padding * 2) 14px;
 }
+
+// A somewhat dirty solution to the nav-bar "flashing" during page transitions.
+// Since the old nav-bar is hidden before the new one is shown, this pseudo
+// element fills the space with the proper background color.
+ion-view.pane:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $bar-height;
+  background-color: $royal;
+}
+.platform-ios ion-view.pane:before {
+  height: $bar-height + $ios-statusbar-height;
+}
