@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $timeout) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $timeout, $ionicScrollDelegate) {
 
   var updateConfig = function() {
 
@@ -27,14 +27,19 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.frequentlyUsedEnabled = {
       value: config.frequentlyUsed.enabled
     };
-    $scope.developmentUtilitiesEnabled = {
-      value: false
-    };
   };
 
+  $scope.global = $rootScope;
+  if(!$scope.global.developmentUtilitiesEnabled){
+    $scope.global.developmentUtilitiesEnabled = {
+      value: false
+    };
+  }
+
   $scope.toggledDevelopmentUtils = function (){
-    if($scope.developmentUtilitiesEnabled.value){
+    if($scope.global.developmentUtilitiesEnabled.value){
       $log.debug('User enabled development utilities.');
+      $ionicScrollDelegate.resize();
     } else {
       $log.debug('User disabled development utilities.');
     }
@@ -54,6 +59,9 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
         $timeout(function(){
           $scope.feedbackCardActivating = false;
           $scope.feedbackCardActivated = true;
+          $timeout(function(){
+            $scope.feedbackCardActivated = false;
+          }, 10000);
         }, 500);
       });
     });
