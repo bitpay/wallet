@@ -9,7 +9,7 @@
   .feedback-heading {
     padding-top: 20px
   }
-  .title {
+  .feedback-title {
     padding-left: 10px;
     font-size: 20px;
     font-weight: bold;
@@ -38,4 +38,16 @@
     height: 1rem;
     margin-left: 5px;
   }
+  .form-fade-in {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
+  }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }

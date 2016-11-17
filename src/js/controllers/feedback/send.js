@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay.") + ' ' + gettextCatalog.getString("Is there anything we could do better?");
         break;
       default:
-        $scope.reaction = gettextCatalog.getString("Send Feedback");
+        $scope.justFeedback = true;
         $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay. How could we improve your experience?");
         break;
     }
