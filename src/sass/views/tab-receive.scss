@@ -1,16 +1,18 @@
 #tab-receive {
-  ion-header-bar{
-    button{
-      i{
+  ion-header-bar {
+    button {
+      i {
         color:#fff;
         font-size: 1.1rem;
       }
     }
   }
-  .border-top{
+  .border-top {
     border-top:1px solid rgb(228,228,228);
   }
-  .scroll{height:100%;}
+  .scroll {
+    height:100%;
+  }
   #address {
     background: #fff;
     height: 66vh;
@@ -19,13 +21,13 @@
     justify-content: center;
     position: relative;
     flex-flow: column;
-    @media(max-height: 600px){
+    @media(max-height: 600px) {
       height: 68vh;
     }
-    @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2){
+    @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2) {
       height: 64vh;
     }
-    &-info{
+    &-info {
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -33,11 +35,11 @@
       align-items: center;
       width: 100%;
     }
-    article{
+    article {
       flex:1;
       width: 100%;
     }
-    #bit-address{
+    #bit-address {
       width: 100%;
       align-self: flex-end;
       margin-top: auto;
@@ -45,7 +47,7 @@
       align-content: center;
       position: relative;
       min-height: 40px;
-      #next-address{
+      #next-address {
         color:$light-gray;
       }
     }
@@ -72,13 +74,13 @@
         font-size: 1.3rem;
       }
     }
-    #qr-options{
-      .item{
+    #qr-options {
+      .item {
         font-size:.7rem;
-        @media(min-width:350px){
+        @media(min-width:350px) {
           font-size:.9rem;
         }
-        @media(min-width:450px){
+        @media(min-width:450px) {
           font-size:1rem;
         }
       }
@@ -93,21 +95,22 @@
       z-index: 0;
       position: absolute;
       top:50%;
-      &, &.next{
+      &, &.next {
         left:100%;
         transform: translate(100%, -40%);
       }
-      &.next, &.prev{
+      &.next, &.prev {
         z-index:2;
       }
-      &.current, &.prev{
+      &.current,
+      &.prev {
         left:50%;
       }
-      &.current{
+      &.current {
         transform: translate(-50%, -40%);
         z-index: 3;
       }
-      &.prev{
+      &.prev {
         transform: translate(-150%, -40%);
       }
       .item {
@@ -115,10 +118,10 @@
         padding-bottom: 5px;
         display: inline-block;
         font-size: .7rem;
-        @media(min-width:350px){
+        @media(min-width:350px) {
           font-size:.9rem;
         }
-        @media(min-width:450px){
+        @media(min-width:450px) {
           font-size:1rem;
         }
         color:$light-gray;
@@ -133,30 +136,33 @@
       justify-content: center;
       flex: 1;
       z-index: 1;
-      div{
+      div {
         transition: all .4s ease;
-        &.current, &.prev, &.next{
+        &.current,
+        &.prev,
+        &.next {
           position: absolute;
           top:50%;
         }
-        &.current, &.prev{
+        &.current,
+        &.prev {
           left:50%;
         }
-        &.current{
+        &.current {
           transform: translate(-50%, -40%);
         }
-        &.prev{
+        &.prev {
           transform: translate(-150%, -40%);
         }
-        &.next{
+        &.next {
           left:100%;
           transform: translate(100%, -40%);
         }
       }
-      @media(max-height: 700px){
+      @media(max-height: 700px) {
         padding: 10vh 0 4vh;
       }
-      div{
+      div {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -164,7 +170,7 @@
         min-height: 220px;
       }
     }
-    #qr-options{
+    #qr-options {
       justify-content: center;
       align-self: flex-end;
       .item{
@@ -182,16 +188,18 @@
         padding: 10px;
       }
     }
-    @media (max-height: 600px){
-      &{
-        .qr{
+    @media (max-height: 600px) {
+      & {
+        .qr {
           padding:6vh 0 0;
-          div{
+          div {
             -webkit-transform: scale(.7);
             transform: scale(.7);
           }
         }
-        #bit-address{position: realtive;}
+        #bit-address {
+          position: realtive;
+        }
       }
     }
   }
@@ -253,47 +261,57 @@
     border-right: 1px solid rgb(228, 228, 228);
     padding-right: 10px;
   }
-  #wallets{
-    #sidebar-wallet{display: none;}
+  #wallets {
+    #sidebar-wallet{
+      display: none;
+    }
   }
-  .wallets{
+  .wallets {
     position: relative;
     height: calc(27vh - 62px);
     z-index: 5;
     .slides {
-      .swiper-container{
+      .swiper-container {
         position: absolute;
         left: 50%;
         top: 50%;
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
         max-width: 450px;
-        .swiper-wrapper{
+        .swiper-wrapper {
           height: auto;
           top: 10%;
           position:relative;
-          @media(max-height: 600px){padding-top:.2rem}
-          @media(min-height: 900px){top:30%;}
+          @media(max-height: 600px) {
+            padding-top:.2rem
+          }
+          @media(min-height: 900px) {
+            top:30%;
+          }
         }
-        .swiper-slide{
+        .swiper-slide {
           text-align: center;
           .card{
             margin-top: 1vh;
             display: inline-block;
             width:80%;
-            @media(min-height: 1000px) and (max-width: 699px){
-              .item{
+            @media(min-height: 1000px) and (max-width: 699px) {
+              .item {
                 padding: 2vh 3vw 2vh 3vw;
               }
             }
           }
-          @media(max-width: 500px){
-            &-next{left:-25%;}
-            &-prev{left:25%;}
+          @media(max-width: 500px) {
+            &-next {
+              left:-25%;
+            }
+            &-prev {
+              left:25%;
+            }
           }
         }
-        @media (max-height: 600px){
-          &{
+        @media (max-height: 600px) {
+          & {
             -webkit-transform: translate(-50%, -58%);
             transform: translate(-50%, -58%);
           }
@@ -301,43 +319,50 @@
       }
     }
   }
-  @media(min-width: 700px) and (min-height: 700px){
-    .wallets{display: none;}
-    #address{
+  @media(min-width: 700px) and (min-height: 700px) {
+    .wallets {
+      display: none;
+    }
+    #address {
       float:left;
       height:100%;
       width:calc(100% - 410px);
       @media(max-width: 1000px){
         width:65%;
       }
-      &-info{
+      &-info {
         height: 100%;
       }
-      #qr-options{
-        .item{font-size:1rem;}
+      #qr-options {
+        .item{
+          font-size:1rem;
+        }
       }
-      .qr{
+      .qr {
         height: 70%;
-        div{
+        div {
           opacity: 0;
           transition: none;
-          &.current{
+          &.current {
             opacity: 1;
           }
         }
       }
-      .bit-address{
+      .bit-address {
         opacity: 0;
         transition: none;
-        &.current{
+        &.current {
           opacity: 1;
         }
       }
-      .backup, #bit-address{left:0;}
-      #bit-address{
+      .backup,
+      #bit-address {
+        left:0;
+      }
+      #bit-address {
         height: 10%;
         padding: 1vh;
-        .bit-address{
+        .bit-address {
           .item{
             top: 40%;
             transform: translateY(-40%);
@@ -346,7 +371,7 @@
         }
       }
     }
-    #wallets{
+    #wallets {
       float:left;
       width:35%;
       height: 100%;
@@ -354,25 +379,29 @@
       flex-direction: column;
       overflow: visible;
       max-width: 410px;
-      @media(max-height: 600px){
+      @media(max-height: 600px) {
         padding-top:.55rem;
       }
-      @media(max-width: 1000px){
+      @media(max-width: 1000px) {
         max-width: none;
       }
-      #sidebar-wallet{display: block;}
-      .list{height: 100%;overflow: visible;}
-      #wallet-list{
+      #sidebar-wallet {
+        display: block;
+      }
+      .list {
+        height: 100%;overflow: visible;
+      }
+      #wallet-list {
         position: absolute;
         width: 110%;
         overflow-y: auto;
         height: 100%;
         left: -6%;
       }
-      .wallet{
-        &.current{
+      .wallet {
+        &.current {
           position: relative;
-          .card{
+          .card {
             opacity: 1;
             transform: scale(1);
           }
@@ -404,13 +433,13 @@
         opacity: .5;
         transform:scale(.85);
         transition:transform .2s ease;
-        .item{
+        .item {
           padding: 6% 10% 6% 8%;
-          span{
-            clear:both;
+          span {
+            clear: both;
             width: 100%;
             display: inline-block;
-            &.wallet-name{
+            &.wallet-name {
               font-size:16px;
               width: 79%;
               white-space: nowrap;
@@ -418,10 +447,10 @@
               overflow: hidden;
               font-weight: 600;
             }
-            &.wallet-number{
+            &.wallet-number {
               visibility: hidden;
             }
-            &.visible{
+            &.visible {
               visibility: visible !important;
             }
           }
@@ -438,7 +467,6 @@
     }
   }
 }
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
