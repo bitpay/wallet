@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('rateCardController', function
   $scope.score = 0;
 
   $scope.goFeedbackFlow = function() {
+    $scope.hideCard();
     if ($scope.isCordova && $scope.score == 5) {
       $state.go('tabs.rate.rateApp', {
         score: $scope.score

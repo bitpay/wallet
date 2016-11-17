@@ -1,9 +1,11 @@
 #complete {
-  background-color: #ffffff;
+  background-color: #fff;
   .close-button {
-    color: #fff;
+    color: $dark-gray;
     position: absolute;
-    right: 15px;
+    top: 5px;
+    right: 10px;
+    padding: 15px;
     font-size: 36px;
   }
   .complete-layout {
@@ -12,12 +14,27 @@
     height: 100%;
     &__expand {
       display: flex;
+      flex-direction: column;
       flex-grow: 1;
       align-items: center;
       justify-content: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity .3s;
+      &.fade-in {
+        opacity: 1;
+      }
     }
   }
-  .title {
+  .share-the-love-illustration {
+    width: 5rem;
+    margin: 1rem;
+  }
+  .send-feedback-illustration {
+    height: 21rem;
+    margin: 1rem;
+  }
+  .feedback-title {
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
@@ -44,14 +61,23 @@
     height: 50px;
   }
   .share-buttons {
-    padding: 50px 10px;
+    padding: 50px 10px 30px;
     background-color: $subtle-gray;
     text-align: center;
+    transition: transform .3s cubic-bezier(0.4, 0.0, 0.2, 1) .2s, opacity .5s ease-in .2s;
+    transform: translateY(100%);
+    opacity: 0;
+    &.slide-up {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
   .share-buttons__action {
     display: inline-block;
     color: #667;
     font-size: .9rem;
     width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
   }
 }
