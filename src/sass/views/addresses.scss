@@ -25,17 +25,14 @@
     }
   }
 
-  .addr-list {
-    .big-icon-svg {
-      padding: 0 7px;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      box-shadow: none;
-      background-repeat: no-repeat;
-      background-clip: padding-box;
-      background-size: 103%;
+  .banner-icon {
+    margin-top: 25px;
+    i {
+      box-shadow: $hovering-box-shadow;
     }
+  }
+
+  .addr-list {
     .item {
       color: $dark-gray;
       padding-top: 1.3rem;
