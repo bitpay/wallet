@@ -1,23 +1,28 @@
 #rate-app {
   background-color: #ffffff;
-  .skip {
-    margin-top: 15px;
-    color: #667;
-  }
+  text-align: center;
   .skip-rating {
-    margin-right: 15px;
+    color: $dark-gray;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    padding: 15px;
   }
   .icon-svg > img {
     width: 80px;
     height: 80px;
     margin-top: 15px;
   }
-  .title {
+  .feedback-title {
     font-size: 20px;
     font-weight: bold;
     color: $dark-gray;
     margin: 80px 50px 10px;
     text-align: center;
+  }
+  .share-the-love-illustration {
+    width: 5rem;
+    margin: 1rem;
   }
   .subtitle {
     padding: 10px 30px 20px 40px;
