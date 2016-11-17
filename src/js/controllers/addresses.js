@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
   var config;
@@ -57,6 +57,12 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   function processPaths(list) {
     lodash.each(list, function(n) {
       n.path = n.path.replace(/^m/g, 'xpub');
+    });
+  };
+
+  $scope.viewAllAddresses = function() {
+    $state.go('tabs.receive.allAddresses', {
+      walletId: $scope.wallet.id
     });
   };
 

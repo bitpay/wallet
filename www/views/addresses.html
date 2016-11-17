@@ -51,8 +51,8 @@
           <div class="addr-balance">{{w.balanceStr}}</div>
         </div>
 
-        <div class="item item-icon-right view-all" ng-show="viewAll.value">
-          <a ui-sref="tabs.receive.allAddresses({walletId: wallet.id})" translate>View All Addresses</a>
+        <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="viewAllAddresses()">
+          <span translate>View All Addresses</span>
           <i class="icon ion-ios-arrow-thin-right"></i>
         </div>
       </div>
