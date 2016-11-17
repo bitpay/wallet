@@ -6,19 +6,19 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="addr-list list">
+    <div class="addr-list">
       <div class="text-center padding size-42">
         <i class="icon ion-ios-ionic-outline"></i>
       </div>
 
       <div class="addr-explanation">
-        <div class="addr-description">
+        <div class="addr-description" translate>
           Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time your recive a payment. <a ng-click="showInformation()" ng-if="!showInfo" translate>Why?</a>
         </div>
       </div>
 
       <div class="addr-explanation" ng-if="showInfo">
-        <div class="addr-description">
+        <div class="addr-description" translate>
           It's a good idea to avoid reusing addresses-this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers. <a ng-click="showInformation()" translate>Hide</a>
         </div>
       </div>
@@ -30,6 +30,12 @@
         </div>
 
         <div ng-if="latestUnused[0]">
+          <div class="box-error" ng-if="gapReached">
+            <h5 translate>Unused Addresses Limit</h5>
+            <p translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab. <a ng-click="readMore()" ng-if="!showMore" translate>Read more</a></p>
+            <p ng-if="showMore" translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated. <a ng-click="readMore()" translate>Read less</a></p>
+          </div>
+
           <div class="item" ng-repeat="u in latestUnused track by $index">
             {{u.address}}
             <div class="addr-path">
