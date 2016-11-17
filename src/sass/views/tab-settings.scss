@@ -63,6 +63,13 @@
     .item-note {
       color: $light-gray;
     }
+    .item-toggle .toggle,
+    .item-button-right > .button {
+      top: 16px;
+    }
+    .item-button-right > .button {
+      font-size: 16px;
+    }
  }
 }
 

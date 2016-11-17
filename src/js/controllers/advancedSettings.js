@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $timeout) {
 
   var updateConfig = function() {
 
@@ -27,7 +27,41 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.frequentlyUsedEnabled = {
       value: config.frequentlyUsed.enabled
     };
+    $scope.developmentUtilitiesEnabled = {
+      value: false
+    };
   };
+
+  $scope.toggledDevelopmentUtils = function (){
+    if($scope.developmentUtilitiesEnabled.value){
+      $log.debug('User enabled development utilities.');
+    } else {
+      $log.debug('User disabled development utilities.');
+    }
+  }
+
+  $scope.activateFeedbackCard = function () {
+    $scope.feedbackCardActivating = true;
+    storageService.getFeedbackInfo(function(error, info) {
+      var feedbackInfo = JSON.parse(info);
+      // hardcoding so we can distinguish from normal operation
+      feedbackInfo.time = 1231006505; // genesis block time
+      feedbackInfo.version = window.version;
+      feedbackInfo.sent = false;
+      storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
+        $log.debug('Activated feedback card with: ' + JSON.stringify(feedbackInfo));
+        $ionicHistory.clearCache();
+        $timeout(function(){
+          $scope.feedbackCardActivating = false;
+          $scope.feedbackCardActivated = true;
+        }, 500);
+      });
+    });
+  }
+
+  $scope.resetActivateFeedbackCard = function(){
+    $scope.feedbackCardActivated = false;
+  }
 
   $scope.spendUnconfirmedChange = function() {
     var opts = {
