@@ -2,22 +2,22 @@
 
 angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
 
-  $scope.sendFeedback = function(feedback, skip, goHome) {
+  $scope.sendFeedback = function(feedback, goHome) {
 
     var config = configService.getSync();
 
     var dataSrc = {
       "Email": lodash.values(config.emailFor)[0] || ' ',
-      "Feedback": skip ? ' ' : feedback,
+      "Feedback": goHome ? ' ' : feedback,
       "Score": $stateParams.score || ' ',
       "AppVersion": $window.version,
       "Platform": ionic.Platform.platform(),
       "DeviceVersion": ionic.Platform.version()
     };
 
-    if(!(goHome || skip)) ongoingProcess.set('sendingFeedback', true);
+    if (!goHome) ongoingProcess.set('sendingFeedback', true);
     feedbackService.send(dataSrc, function(err) {
-      if(goHome || skip) return;
+      if (goHome) return;
       ongoingProcess.set('sendingFeedback', false);
       if (err) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Feedback could not be submitted. Please try again later.'));
@@ -35,18 +35,10 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         return;
       }
       $state.go('tabs.rate.complete', {
-        score: $stateParams.score,
-        skipped: skip
+        score: $stateParams.score
       });
     });
-    if(goHome){
-      $state.go('tabs.home');
-    } else if(skip) {
-      $state.go('tabs.rate.complete', {
-        score: $stateParams.score,
-        skipped: skip
-      });
-    }
+    if (goHome) $state.go('tabs.home');
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
