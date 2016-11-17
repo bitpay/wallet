@@ -74,11 +74,11 @@ angular.module('copayApp.controllers').controller('addressesController', functio
         if (err) return popupService.showAlert(gettextCatalog.getString('Error'), err);
         if (addr != _addr[0].address) return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('New address could not be generated. Please try again.'));
 
-        $scope.viewAll = {
-          value: [_addr[0]].concat($scope.latestUnused).length > UNUSED_ADDRESS_LIMIT
-        };
-        $scope.noBalance.concat(_addr[0]);
+        $scope.noBalance = [_addr[0]].concat($scope.noBalance);
         $scope.latestUnused = lodash.slice($scope.noBalance, 0, UNUSED_ADDRESS_LIMIT);
+        $scope.viewAll = {
+          value: $scope.noBalance.length > UNUSED_ADDRESS_LIMIT
+        };
         $scope.$digest();
       });
     });
