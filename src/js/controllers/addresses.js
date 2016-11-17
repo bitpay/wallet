@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, bwcError) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
   var config;
@@ -9,36 +9,35 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   var satToUnit;
   var unitDecimals;
   var withBalance;
-  var noBalance;
   $scope.showInfo = false;
   $scope.wallet = profileService.getWallet($stateParams.walletId);
 
   function init() {
-    ongoingProcess.set('extractingWalletInfo', true);
+    ongoingProcess.set('gettingAddresses', true);
     walletService.getMainAddresses($scope.wallet, {}, function(err, addresses) {
       if (err) {
-        ongoingProcess.set('extractingWalletInfo', false);
+        ongoingProcess.set('gettingAddresses', false);
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
 
       var allAddresses = addresses;
 
       walletService.getBalance($scope.wallet, {}, function(err, resp) {
-        ongoingProcess.set('extractingWalletInfo', false);
+        ongoingProcess.set('gettingAddresses', false);
         if (err) {
           return popupService.showAlert(gettextCatalog.getString('Error'), err);
         }
 
         withBalance = resp.byAddress;
         var idx = lodash.indexBy(withBalance, 'address');
-        noBalance = lodash.reject(allAddresses, function(x) {
+        $scope.noBalance = lodash.reject(allAddresses, function(x) {
           return idx[x.address];
         });
 
-        processPaths(noBalance);
+        processPaths($scope.noBalance);
         processPaths(withBalance);
 
-        $scope.latestUnused = lodash.slice(noBalance, 0, UNUSED_ADDRESS_LIMIT);
+        $scope.latestUnused = lodash.slice($scope.noBalance, 0, UNUSED_ADDRESS_LIMIT);
         $scope.latestWithBalance = lodash.slice(withBalance, 0, BALANCE_ADDRESS_LIMIT);
 
         lodash.each(withBalance, function(a) {
@@ -46,9 +45,9 @@ angular.module('copayApp.controllers').controller('addressesController', functio
         });
 
         $scope.viewAll = {
-          value: noBalance.length > UNUSED_ADDRESS_LIMIT || withBalance.length > BALANCE_ADDRESS_LIMIT
+          value: $scope.noBalance.length > UNUSED_ADDRESS_LIMIT || withBalance.length > BALANCE_ADDRESS_LIMIT
         };
-        $scope.allAddresses = noBalance.concat(withBalance);
+        $scope.allAddresses = $scope.noBalance.concat(withBalance);
         $scope.$digest();
       });
     });
@@ -57,6 +56,31 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   function processPaths(list) {
     lodash.each(list, function(n) {
       n.path = n.path.replace(/^m/g, 'xpub');
+    });
+  };
+
+  $scope.newAddress = function() {
+    ongoingProcess.set('generatingNewAddress', true);
+    walletService.getAddress($scope.wallet, true, function(err, addr) {
+      if (err) {
+        ongoingProcess.set('generatingNewAddress', false);
+        return popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+      }
+
+      walletService.getMainAddresses($scope.wallet, {
+        limit: 1
+      }, function(err, _addr) {
+        ongoingProcess.set('generatingNewAddress', false);
+        if (err) return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        if (addr != _addr[0].address) return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('New address could not be generated. Please try again.'));
+
+        $scope.viewAll = {
+          value: [_addr[0]].concat($scope.latestUnused).length > UNUSED_ADDRESS_LIMIT
+        };
+        $scope.noBalance.concat(_addr[0]);
+        $scope.latestUnused = lodash.slice($scope.noBalance, 0, UNUSED_ADDRESS_LIMIT);
+        $scope.$digest();
+      });
     });
   };
 

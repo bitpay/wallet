@@ -24,8 +24,8 @@
       </div>
 
       <div class="list">
-        <div class="item item-divider item-icon-right" ng-click="addNewAddress()" translate>
-          Unused Addresses
+        <div class="item item-divider item-icon-right" ng-click="newAddress()" translate>
+          Unused Addresses <span ng-if="noBalance.length > 5">({{noBalance.length}})</span>
           <i class="icon ion-ios-plus-empty"></i>
         </div>
 
@@ -42,13 +42,15 @@
           <span class="item" translate>Not unused addresses available</span>
         </div>
 
-        <div class="item item-divider" translate>
-          Addresses With Balance
-        </div>
+        <div ng-if="latestWithBalance[0]">
+          <div class="item item-divider" translate>
+            Addresses With Balance
+          </div>
 
-        <div class="item" ng-repeat="w in latestWithBalance track by $index">
-          {{w.address}}
-          <div class="addr-balance">{{w.balanceStr}}</div>
+          <div class="item" ng-repeat="w in latestWithBalance track by $index">
+            {{w.address}}
+            <div class="addr-balance">{{w.balanceStr}}</div>
+          </div>
         </div>
 
         <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="viewAllAddresses()">
