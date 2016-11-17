@@ -1,4 +1,5 @@
 .settings {
+  @extend .deflash-blue;
   .item {
     color: $dark-gray;
     border-color: rgba(221, 221, 221, 0.3);

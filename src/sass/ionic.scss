@@ -41,7 +41,7 @@ $placeholder-icon-padding: 10px;
 // A somewhat dirty solution to the nav-bar "flashing" during page transitions.
 // Since the old nav-bar is hidden before the new one is shown, this pseudo
 // element fills the space with the proper background color.
-ion-view.pane:before {
+ion-view.deflash-blue:before {
   content: " ";
   display: block;
   position: absolute;
@@ -51,6 +51,6 @@ ion-view.pane:before {
   height: $bar-height;
   background-color: $royal;
 }
-.platform-ios ion-view.pane:before {
+.platform-ios.platform-cordova:not(.fullscreen) ion-view.deflash-blue:before {
   height: $bar-height + $ios-statusbar-height;
 }
