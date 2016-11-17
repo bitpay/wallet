@@ -64,13 +64,13 @@
     padding: 50px 10px 30px;
     background-color: $subtle-gray;
     text-align: center;
-    transition: transform .3s cubic-bezier(0.4, 0.0, 0.2, 1) .2s, opacity .5s ease-in .2s;
     transform: translateY(100%);
     opacity: 0;
-    &.slide-up {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    animation-name: slideUpFadeIn;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+    animation-delay: .2s;
   }
   .share-buttons__action {
     display: inline-block;
@@ -79,5 +79,16 @@
     width: 90px;
     height: 90px;
     margin-bottom: 20px;
+  }
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
