@@ -284,6 +284,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var scrollWatcherInitialized;
 
   $scope.$on("$ionicView.enter", function(event, data) {
+    setAndroidStatusBarColor();
     $timeout(function() {
       screenInactive = false;
     }, 200);
@@ -320,10 +321,58 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     ];
   });
 
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    if($window.StatusBar) {
+      $window.StatusBar.backgroundColorByHexString('#1e3186');
+    }
+  });
+
   $scope.$on("$ionicView.leave", function(event, data) {
     screenInactive = true;
     lodash.each(listeners, function(x) {
       x();
     });
   });
+
+  function setAndroidStatusBarColor() {
+    var SUBTRACT_AMOUNT = 15;
+    if(!$scope.isAndroid) {
+      return;
+    }
+    var rgb = hexToRgb($scope.wallet.color);
+    var keys = Object.keys(rgb);
+    keys.forEach(function(k) {
+      if(rgb[k] - SUBTRACT_AMOUNT < 0) {
+        rgb[k] = 0;
+      } else {
+        rgb[k] -= SUBTRACT_AMOUNT;
+      }
+    });
+    var statusBarColorHexString = rgbToHex(rgb.r, rgb.g, rgb.b);
+    $window.StatusBar.backgroundColorByHexString(statusBarColorHexString);
+  }
+
+  function hexToRgb(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+  function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+
+  function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
 });
