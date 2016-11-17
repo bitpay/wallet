@@ -1,7 +1,7 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
   function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
 
-    $scope.onQrCodeScanned = function(data) {
+    $scope.onQrCodeScannedPaperWallet = function(data) {
       $scope.formData.inputData = data;
       $scope.onData(data);
     };
@@ -14,11 +14,11 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     function _scanFunds(cb) {
       function getPrivateKey(scannedKey, isPkEncrypted, passphrase, cb) {
         if (!isPkEncrypted) return cb(null, scannedKey);
-        wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
+        $scope.wallet.decryptBIP38PrivateKey(scannedKey, passphrase, null, cb);
       };
 
       function getBalance(privateKey, cb) {
-        wallet.getBalanceFromPrivateKey(privateKey, cb);
+        $scope.wallet.getBalanceFromPrivateKey(privateKey, cb);
       };
 
       function checkPrivateKey(privateKey) {
@@ -66,13 +66,13 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     function _sweepWallet(cb) {
-      walletService.getAddress(wallet, true, function(err, destinationAddress) {
+      walletService.getAddress($scope.wallet, true, function(err, destinationAddress) {
         if (err) return cb(err);
 
-        wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
+        $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
           if (err) return cb(err);
 
-          wallet.broadcastRawTx({
+          $scope.wallet.broadcastRawTx({
             rawTx: tx.serialize(),
             network: 'livenet'
           }, function(err, txid) {
@@ -109,7 +109,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       $scope.tx = {};
       $scope.tx.amountStr = $scope.balance;
       $scope.type = type;
-      $scope.color = wallet.backgroundColor;
+      $scope.color = $scope.wallet.backgroundColor;
       $scope.cb = cb;
 
       $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
