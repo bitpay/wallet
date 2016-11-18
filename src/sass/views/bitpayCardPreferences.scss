@@ -11,5 +11,12 @@
 	  	color: $light-gray;
 	  	font-size: 14px;
 	  }
+	  &.item-icon-right {
+		  .icon-hotspot {
+				right: 0px;
+				padding-left: 11px;
+				padding-right: 11px;
+		  }
+	  }
   }
 }
