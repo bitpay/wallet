@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService) {
+angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicHistory, $ionicPopover, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, platformInfo) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
+  var MENU_ITEM_HEIGHT = 55;
   var config;
   var unitName;
   var unitToSatoshi;
@@ -11,6 +12,8 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   var withBalance;
   $scope.showInfo = false;
   $scope.showMore = false;
+  $scope.allAddressesView = false;
+  $scope.isCordova = platformInfo.isCordova;
   $scope.wallet = profileService.getWallet($stateParams.walletId);
 
   function init() {
@@ -110,6 +113,79 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       $ionicScrollDelegate.resize();
     });
   };
+
+  $scope.showMenu = function(allAddresses, $event) {
+    var scanObj = {
+      text: gettextCatalog.getString('Scan addresses for funds'),
+      action: scan,
+    };
+
+    var sendAddressesObj = {
+      text: gettextCatalog.getString('Send addresses by email'),
+      action: sendByEmail,
+    }
+
+    $scope.items = allAddresses ? [sendAddressesObj] : [scanObj];
+    $scope.height = $scope.items.length * MENU_ITEM_HEIGHT;
+
+    $ionicPopover.fromTemplateUrl('views/includes/menu-popover.html', {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.menu = popover;
+      $scope.menu.show($event);
+    });
+  };
+
+  var scan = function() {
+    walletService.startScan($scope.wallet);
+    $scope.menu.hide();
+    $ionicHistory.clearHistory();
+    $state.go('tabs.home');
+  };
+
+  var sendByEmail = function() {
+    function formatDate(ts) {
+      var dateObj = new Date(ts * 1000);
+      if (!dateObj) {
+        $log.debug('Error formating a date');
+        return 'DateError';
+      }
+      if (!dateObj.toJSON()) {
+        return '';
+      }
+      return dateObj.toJSON();
+    };
+
+    ongoingProcess.set('sendingByEmail', true);
+    $timeout(function() {
+      var body = 'Copay Wallet "' + $scope.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
+      body += "\n";
+      body += $scope.allAddresses.map(function(v) {
+        return ('* ' + v.address + ' ' + 'xpub' + v.path.substring(1) + ' ' + formatDate(v.createdOn));
+      }).join("\n");
+      ongoingProcess.set('sendingByEmail', false);
+
+      window.plugins.socialsharing.shareViaEmail(
+        body,
+        'Copay Addresses',
+        null, // TO: must be null or an array
+        null, // CC: must be null or an array
+        null, // BCC: must be null or an array
+        null, // FILES: can be null, a string, or an array
+        function() {},
+        function() {}
+      );
+
+      $scope.menu.hide();
+    });
+  };
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.allAddressesView = data.stateName == 'tabs.receive.allAddresses' ? true : false;
+    $timeout(function() {
+      $scope.$apply();
+    });
+  });
 
   $scope.$on("$ionicView.afterEnter", function(event, data) {
     config = configService.getSync().wallet.settings;
