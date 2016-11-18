@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, $ionicHistory, $ionicScrollDelegate, platformInfo, gettextCatalog, lodash, profileService, configService, $stateParams, walletService, $state) {
+  function($scope, $log, $timeout, $ionicHistory, platformInfo, lodash, profileService, configService, $stateParams, walletService, $state) {
     var base = 'xpub';
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.id;
-
     var config = configService.getSync();
     var b = 1;
     $scope.isCordova = platformInfo.isCordova;
@@ -25,9 +24,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       };
 
       $timeout(function() {
-        wallet.getMainAddresses({
-          doNotVerify: true
-        }, function(err, addrs) {
+        walletService.getMainAddresses(wallet, {}, function(err, addrs) {
           if (err) {
             $log.warn(err);
             return;
@@ -52,9 +49,9 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
           $timeout(function() {
             $scope.$apply();
-          }, 1000);
+          });
         });
-      }, 100);
+      });
     };
 
     $scope.saveBlack = function() {
@@ -95,29 +92,5 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $scope.M = c.m;
       $scope.N = c.n;
       $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
-      $scope.addrs = null;
-
-      wallet.getMainAddresses({
-        doNotVerify: true
-      }, function(err, addrs) {
-        if (err) {
-          $log.warn(err);
-          return;
-        };
-        var last10 = [],
-          i = 0,
-          e = addrs.pop();
-        while (i++ < 10 && e) {
-          e.path = base + e.path.substring(1);
-          last10.push(e);
-          e = addrs.pop();
-        }
-        $scope.addrs = last10;
-        $timeout(function() {
-          $ionicScrollDelegate.resize();
-          $scope.$apply();
-        }, 10);
-      });
     });
-
   });
