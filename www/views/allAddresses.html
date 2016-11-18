@@ -3,6 +3,11 @@
     <ion-nav-title>{{'All Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="showMenu(true, $event)" ng-hide="!isCordova && allAddressesView">
+        <i class="icon ion-ios-more"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>

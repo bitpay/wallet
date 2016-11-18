@@ -1,0 +1,12 @@
+#menu-popover {
+  border-radius: 5px;
+  .list {
+    .item {
+      cursor: pointer;
+      cursor: hand;
+      &:hover {
+        background-color: #E4E2E2;
+      }
+    }
+  }
+}

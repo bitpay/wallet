@@ -3,10 +3,15 @@
     <ion-nav-title>{{'Wallet Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="showMenu(false, $event)">
+        <i class="icon ion-ios-more"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
-    <div class="zero-state banner-icon">
+    <div class="text-center banner-icon">
       <i class="icon zero-state-icon">
         <img src="img/tab-icons/ico-receive-selected.svg"/>
       </i>
