@@ -118,6 +118,16 @@
         <i class="icon bp-arrow-right"></i>
       </a>
 
+      <a class=" item item-icon-left item-icon-right"
+         ng-if="bitpayCardEnabled && bitpayCards"
+         ui-sref="tabs.preferences.bitpayCard">
+        <i class="icon big-icon-svg circle">
+          <div class="bg icon-bitpay-card"></div>
+        </i>
+        <span>BitPay Visa&reg; Card</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+
       <div class="item item-divider"></div>
 
       <a class="ng-hide item item-icon-left item-icon-right" href ng-hide="true">

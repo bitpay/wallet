@@ -967,10 +967,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           paypro: null
         }
       })
-      .state('tabs.bitpayCard.preferences', {
-        url: '/preferences',
+      .state('tabs.preferences.bitpayCard', {
+        url: '/bitpay-card',
         views: {
-          'tab-home@tabs': {
+          'tab-settings@tabs': {
             controller: 'preferencesBitpayCardController',
             templateUrl: 'views/preferencesBitpayCard.html'
           }

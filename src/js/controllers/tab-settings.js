@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, $ionicModal, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, $ionicModal, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService) {
 
   var updateConfig = function() {
 
@@ -23,6 +23,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
 
     $scope.wallets = profileService.getWallets();
+
+    $scope.bitpayCardEnabled = config.bitpayCard.enabled;
   };
 
   $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
@@ -31,6 +33,12 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     updateConfig();
+
+    bitpayCardService.getBitpayDebitCards(function(err, data) {
+      if (!lodash.isEmpty(data)) {
+        $scope.bitpayCards = true;
+      }
+    });
   });
 
 });
