@@ -34,7 +34,7 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
   };
 
   $scope.openTerms = function() {
-    $scope.shrinkView = true;
+    $scope.shrinkView = !$scope.shrinkView;
   }
 
   $scope.goBack = function() {

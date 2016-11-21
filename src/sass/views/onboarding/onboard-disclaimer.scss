@@ -1,9 +1,9 @@
 #onboarding-disclaimer {
   color: #fff;
   height: 100%;
-  transition: transform 1s ease;
+  transition: transform 2.5s ease;
   &.shrink{
-    transform: scale(.98);
+    transform: scale(.8);
   }
   &-container {
     max-width: 450px;
@@ -83,6 +83,41 @@
     left:0;
   }
 }
+#terms-of-use{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  transition: top 1s ease;
+  transition-delay: .25s;
+  width: 100%;
+  overflow: scroll;
+  background: #fff;
+  height: 100%;
+  ion-nav-bar{
+    position: fixed;
+    background: #fff;
+    width: 100%;
+    z-index: 15;
+  }
+  .has-header{
+    width:100%;
+    background:#fff;
+    overflow-y:scroll;
+    position:relative;
+    #terms{
+      max-width:400px;
+      padding-top:.5rem;
+      position: relative;
+      margin: 0 auto;
+      padding-bottom: 165px;
+      width:90%;
+    }
+  }
+  &.slideUp{
+    top:0;
+  }
+}
 #agree-to-terms {
   background: #fff;
   padding:1rem;
@@ -90,6 +125,7 @@
   bottom: 0;
   width: 100%;
   z-index: 10;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
   &-content{
     max-width: 450px;
     @include center-block();
