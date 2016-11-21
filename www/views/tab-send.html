@@ -18,19 +18,26 @@
         </div>
       </div>
     </div>
-    <div ng-if="hasFunds" class="has-funds">
+    <div ng-if="hasFunds">
       <div class="item item-heading send-heading" translate>Recipient</div>
-      <div>
+      <!-- <div>
         <label class="item item-input bitcoin-address">
           <i class="icon icon-svg placeholder-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
             <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>
         </label>
         <div class="qr-scan-icon">
           <a on-tap="openScanner()" ng-style="{'top': '55px'}">
-            <i class="icon ion-qr-scanner"></i>
+            <img src="img/tab-icons/ico-scan.svg"/>
           </a>
         </div>
+      </div> -->
+
+      <div class="item item-icon-left item-icon-right">
+        <i class="icon icon-svg placeholder-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
+        <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>
+        <i class="icon icon-svg qr-scan-icon" on-tap="openScanner()"><img src="img/tab-icons/ico-scan.svg"/></i>
       </div>
+
       <div class="card">
         <div class="item item-icon-right item-heading">
           <span translate>Contacts</span>
