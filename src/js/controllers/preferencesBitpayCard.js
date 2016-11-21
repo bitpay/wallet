@@ -11,7 +11,11 @@ angular.module('copayApp.controllers').controller('preferencesBitpayCardControll
     };
 
     var remove = function(card) {
-      bitpayCardService.remove(card, function() {
+      bitpayCardService.remove(card, function(err) {
+        if (err) {
+          $scope.error = gettextCatalog.getString('Could not remove card');
+          return;
+        }
         $ionicHistory.clearHistory();
         $timeout(function() {
           $state.go('tabs.home');

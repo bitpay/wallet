@@ -64,6 +64,8 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       if (err) {
         $log.error(err);
         $scope.error = gettextCatalog.getString('Could not get transactions');
+        self.bitpayCardTransactionHistory = null;
+        self.bitpayCardCurrentBalance = null;
         return;
       }
 
