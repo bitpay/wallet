@@ -5,7 +5,15 @@
   "private": true,
   "scripts": {
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+		"emulate:before": "build",
+		"deploy:before": "build",
+		"build:before": "build",
+		"run:before": "build",
+		"e2e": "protractor",
+		"postinstall": "ionic state restore && webdriver-manager update",
+		"start": "ionic serve",
+		"test": "ng test --code-coverage"
   },
   "dependencies": {
     "@angular/common": "2.1.1",
@@ -26,7 +34,23 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "0.0.45",
-    "typescript": "2.0.6"
+    "@types/jasmine": "2.5.37",
+    "angular-cli": "1.0.0-beta.20-1",
+    "codelyzer": "~0.0.26",
+    "jasmine-core": "2.5.2",
+    "jasmine-spec-reporter": "2.7.0",
+    "karma": "1.3.0",
+    "karma-chrome-launcher": "2.0.0",
+    "karma-cli": "1.0.1",
+    "karma-jasmine": "1.0.2",
+    "karma-mocha-reporter": "2.2.0",
+    "karma-remap-istanbul": "0.2.1",
+    "protractor": "4.0.10",
+    "protractor-jasmine2-screenshot-reporter": "0.3.2",
+    "ts-node": "1.6.1",
+    "tslint": "3.15.1",
+    "tslint-eslint-rules": "2.1.0",
+    "typescript": "2.0.7"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",

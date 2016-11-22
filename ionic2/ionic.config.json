@@ -1,6 +1,6 @@
 {
   "name": "copayApp",
-  "app_id": "com.bitpay.copay",
+  "app_id": "",
   "v2": true,
   "typescript": true
 }

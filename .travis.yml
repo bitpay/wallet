@@ -8,5 +8,9 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 install:
   - npm run apply:bitpay
+  - cd ionic2 && npm install
+script:
+  - npm test
+  - npm run e2e
 # after_success:
 #   - npm run exec:coveralls
