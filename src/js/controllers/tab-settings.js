@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, $ionicModal, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService) {
 
   var updateConfig = function() {
 
     var config = configService.getSync();
     var isCordova = platformInfo.isCordova;
     var isWP = platformInfo.isWP;
+    var isWindowsPhoneApp = platformInfo.isWP && isCordova;
 
     $scope.usePushNotifications = isCordova && !isWP;
     $scope.isCordova = isCordova;
@@ -25,6 +26,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.wallets = profileService.getWallets();
 
     $scope.bitpayCardEnabled = config.bitpayCard.enabled;
+
+    $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
   };
 
   $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
@@ -35,9 +38,15 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     updateConfig();
 
     bitpayCardService.getBitpayDebitCards(function(err, data) {
+      if (err) $log.error(err);
       if (!lodash.isEmpty(data)) {
         $scope.bitpayCards = true;
       }
+    });
+
+    storageService.getGlideraToken(glideraService.getEnvironment(), function(err, token) {
+      if (err) $log.error(err);
+      $scope.glideraToken = token;
     });
   });
 

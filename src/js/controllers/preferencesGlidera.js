@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlideraController',
-  function($scope, $log, $timeout, $state, ongoingProcess, glideraService, popupService, gettextCatalog) {
+  function($scope, $log, $timeout, $state, $ionicHistory, ongoingProcess, glideraService, popupService, gettextCatalog) {
 
     $scope.update = function(opts) {
       if (!$scope.token || !$scope.permissions) return;
@@ -41,8 +41,9 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
       popupService.showConfirm('Glidera', 'Are you sure you would like to log out of your Glidera account?', null, null, function(res) {
         if (res) {
           glideraService.removeToken(function() {
+            $ionicHistory.clearHistory();
             $timeout(function() {
-              $state.go('tabs.buyandsell.glidera');
+              $state.go('tabs.home');
             }, 100);
           });
         }
@@ -51,14 +52,6 @@ angular.module('copayApp.controllers').controller('preferencesGlideraController'
 
     $scope.$on("$ionicView.enter", function(event, data){
       $scope.network = glideraService.getEnvironment();
-
-      $scope.token = null;
-      $scope.permissions = null;
-      $scope.email = null;
-      $scope.personalInfo = null;
-      $scope.txs = null;
-      $scope.status = null;
-      $scope.limits = null;
 
       ongoingProcess.set('connectingGlidera', true);
       glideraService.init($scope.token, function(err, glidera) {
