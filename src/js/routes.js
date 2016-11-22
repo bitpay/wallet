@@ -877,10 +877,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.buyandsell.glidera.preferences', {
-        url: '/preferences',
+      .state('tabs.preferences.glidera', {
+        url: '/glidera',
         views: {
-          'tab-home@tabs': {
+          'tab-settings@tabs': {
             controller: 'preferencesGlideraController',
             templateUrl: 'views/preferencesGlidera.html'
           }
