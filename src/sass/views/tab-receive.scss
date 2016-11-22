@@ -89,6 +89,8 @@
     .bit-address {
       font-size: .8rem;
       // left:10%;
+      cursor: pointer;
+      cursor: hand;
       position: absolute;
       transition: all .15s ease;
       width:100%;
@@ -117,7 +119,6 @@
       .item {
         padding-top: 5px;
         padding-bottom: 5px;
-        display: inline-block;
         font-size: .7rem;
         @media(min-width:350px) {
           font-size:.9rem;

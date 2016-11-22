@@ -773,6 +773,21 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getMainAddresses = function(wallet, opts, cb) {
+    opts = opts || {};
+    opts.reverse = true;
+    wallet.getMainAddresses(opts, function(err, addresses) {
+      return cb(err, addresses);
+    });
+  };
+
+  root.getBalance = function(wallet, opts, cb) {
+    opts = opts || {};
+    wallet.getBalance(opts, function(err, resp) {
+      return cb(err, resp);
+    });
+  };
+
   root.getAddress = function(wallet, forceNew, cb) {
     storageService.getLastAddress(wallet.id, function(err, addr) {
       if (err) return cb(err);
