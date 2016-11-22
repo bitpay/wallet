@@ -4,16 +4,15 @@
   "homepage": "http://bitpay.com/",
   "private": true,
   "scripts": {
-    "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve",
-		"emulate:before": "build",
-		"deploy:before": "build",
-		"build:before": "build",
-		"run:before": "build",
+		"ionic:build": "ionic-app-scripts build",
+		"ionic:serve": "ionic-app-scripts serve",
 		"e2e": "protractor",
 		"postinstall": "ionic state restore && webdriver-manager update",
 		"start": "ionic serve",
-		"test": "ng test --code-coverage"
+		"test": "ng test",
+		"test-coverage": "ng test --watch=false --code-coverage",
+		"travis-serve": "npm install http-server && http-server www -p 8100",
+		"send-coverage": "cat coverage/lcov.info | ./node_modules/.bin/codecov"
   },
   "dependencies": {
     "@angular/common": "2.1.1",
@@ -37,6 +36,8 @@
     "@types/jasmine": "2.5.37",
     "angular-cli": "1.0.0-beta.20-1",
     "codelyzer": "~0.0.26",
+    "cordova": "^6.4.0",
+    "ionic": "^2.1.12",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.7.0",
     "karma": "1.3.0",

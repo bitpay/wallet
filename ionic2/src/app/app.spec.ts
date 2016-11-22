@@ -1,6 +1,5 @@
 import { CopayApp }                      from './app.component';
-import { MenuMock, NavMock, PlatformMock } from '../mocks';
-import { Page2 }                           from '../pages';
+import { NavMock, PlatformMock } from '../mocks';
 
 let instance: CopayApp = null;
 
