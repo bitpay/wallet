@@ -62,9 +62,12 @@
           </div>
         </div>
 
-        <div ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && wallet.balanceHidden" on-hold="hideToggle()">
+        <div ng-style="{'transform': amountScale}"
+        class="amount__balance"
+        ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && wallet.balanceHidden"
+        on-hold="hideToggle()">
           <strong class="size-24" translate>[Balance Hidden]</strong>
-          <div class="size-14" translate>
+          <div ng-style="{opacity: altAmountOpacity}" class="size-14 amount-alternative" translate>
             Tap and hold to show
           </div>
         </div>
