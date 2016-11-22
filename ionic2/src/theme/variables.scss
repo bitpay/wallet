@@ -23,8 +23,8 @@ $background-color:  #fff;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #387ef5,
-  secondary:  #32db64,
+  primary:    #1e3186,//#387ef5,
+  secondary:  #647ce8,
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222
@@ -34,21 +34,26 @@ $colors: (
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
+$navbar-ios-height: 44px;
+$toolbar-ios-background: color($colors, primary, base);
+$tabs-ios-background: white;
 
 
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
-
+$navbar-md-height: 44px;
+$toolbar-md-background: $toolbar-ios-background;
+$tabs-md-background: $tabs-ios-background;
 
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
+$navbar-wp-height: 44px;
+$toolbar-wp-background: $toolbar-ios-background;
+$tabs-wp-background: $tabs-ios-background;
 
 
 
@@ -60,6 +65,7 @@ $colors: (
 // default are overridden.
 
 @import "ionic.theme.default";
+@import "navbar";
 
 
 // Ionicons
