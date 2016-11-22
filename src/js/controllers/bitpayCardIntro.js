@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService) {
+angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService, appIdentityService) {
 
   var checkOtp = function(obj, cb) {
     if (obj.otp) {
@@ -56,9 +56,9 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
         });
       });
     } else {
-      bitpayCardService.getCredentials(function(err, credentials) {
+      appIdentityService.getIdentity(bitpayCardService.getEnvironment(), function(err, appIdentity) {
         if (err) popupService.showAlert(null, err);
-        else $log.info('BitPay Debit Card Credentials: Ok.');
+        else $log.info('App identity: Ok.');
       });
     }
   });
