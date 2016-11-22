@@ -1,6 +1,10 @@
 #onboarding-disclaimer {
   color: #fff;
   height: 100%;
+  transition: transform 2.5s ease;
+  &.shrink{
+    transform: scale(.8);
+  }
   &-container {
     max-width: 450px;
     display: flex;
@@ -78,57 +82,94 @@
     top:30%;
     left:0;
   }
-  #agree-to-terms {
+}
+#terms-of-use{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  transition: top 1s ease;
+  transition-delay: .25s;
+  width: 100%;
+  overflow: scroll;
+  background: #fff;
+  height: 100%;
+  ion-nav-bar{
+    position: fixed;
     background: #fff;
-    padding:1rem;
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    &.header-present{
-      bottom: 38px;
-    }
-    &-content{
-      max-width: 600px;
-      @include center-block();
-    }
-    .item{
-      color:rgb(58,58,58);
-      padding-bottom: 2.5rem;
-      float: left;
-      .item-content{
-        white-space: normal;
-      }
-    }
-    p{
-      color:rgb(58,58,58);
-      text-align: left;
-    }
-    @media (min-width:450px){
-      p{
-        position: relative;
-        top: .6rem;
-      }
-    }
-    .checkbox input:before,
-    .checkbox .checkbox-icon:before{
-      border-color:$soft-blue;
-    }
-    .checkbox input:checked:before,
-    .checkbox input:checked + .checkbox-icon:before {
-      border-color: rgb(19, 229, 182);
-    }
-    button{
-      margin-top:1.5rem;
+    z-index: 15;
+  }
+  .has-header{
+    width:100%;
+    background:#fff;
+    overflow-y:scroll;
+    position:relative;
+    #terms{
+      max-width:400px;
+      padding-top:.5rem;
       position: relative;
+      margin: 0 auto;
+      padding-bottom: 165px;
+      width:90%;
     }
   }
+  &.slideUp{
+    top:0;
+  }
 }
-
+#agree-to-terms {
+  background: #fff;
+  padding:1rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
+  &-content{
+    max-width: 450px;
+    @include center-block();
+  }
+  .item{
+    color:rgb(58,58,58);
+    padding-bottom: 2.5rem;
+    float: left;
+    border:none;
+    .item-content{
+      white-space: normal;
+    }
+  }
+  p{
+    color:rgb(58,58,58);
+    text-align: left;
+  }
+  @media (min-width:450px){
+    p{
+      position: relative;
+      top: .6rem;
+    }
+  }
+  .checkbox input:before,
+  .checkbox .checkbox-icon:before{
+    border-color:$soft-blue;
+    background:#fff;
+  }
+  .checkbox input:after,
+  .checkbox .checkbox-icon:after{
+    border-color:#13e5b6;
+  }
+  .checkbox input:checked:before,
+  .checkbox input:checked + .checkbox-icon:before {
+    border-color: rgb(19, 229, 182);
+  }
+  button{
+    margin-top:1.5rem;
+    position: relative;
+  }
+}
 @media (max-height:460px){
-  #onboarding-disclaimer{
     #agree-to-terms{
       position: relative;
       float:left;
     }
-  }
 }
