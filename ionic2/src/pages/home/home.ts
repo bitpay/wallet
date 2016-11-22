@@ -12,4 +12,7 @@ export class HomePage {
 
   }
 
+  itemSelected() {
+    console.log('selected');
+  }
 }

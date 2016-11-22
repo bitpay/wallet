@@ -1,9 +1,15 @@
-.toolbar-title.toolbar-title-md {
-  text-align: center;
-  font-size: 17px;
-  font-weight: 400;
+.toolbar-title {
+  &.toolbar-title-ios,
+  &.toolbar-title-md {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 400;
+  }
 }
 
-.toolbar.toolbar-md {
-  min-height: $navbar-md-height;
+.toolbar {
+  &.toolbar-ios,
+  &.toolbar-md {
+    min-height: $navbar-md-height;
+  }
 }
