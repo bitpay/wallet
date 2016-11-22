@@ -1,16 +1,6 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
   function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
 
-    $scope.onQrCodeScannedPaperWallet = function(data) {
-      $scope.formData.inputData = data;
-      $scope.onData(data);
-    };
-
-    $scope.onData = function(data) {
-      $scope.scannedKey = data;
-      $scope.isPkEncrypted = (data.substring(0, 2) == '6P');
-    };
-
     function _scanFunds(cb) {
       function getPrivateKey(scannedKey, isPkEncrypted, passphrase, cb) {
         if (!isPkEncrypted) return cb(null, scannedKey);
@@ -42,9 +32,6 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     };
 
     $scope.scanFunds = function() {
-      $scope.privateKey = '';
-      $scope.balanceSat = 0;
-
       ongoingProcess.set('scanning', true);
       $timeout(function() {
         _scanFunds(function(err, privateKey, balance) {
@@ -52,14 +39,15 @@ angular.module('copayApp.controllers').controller('paperWalletController',
           if (err) {
             $log.error(err);
             popupService.showAlert(gettextCatalog.getString('Error scanning funds:'), err || err.toString());
+            $state.go('tabs.home');
           } else {
             $scope.privateKey = privateKey;
             $scope.balanceSat = balance;
+            if ($scope.balanceSat <= 0)
+              popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not funds found'));
             var config = configService.getSync().wallet.settings;
             $scope.balance = txFormatService.formatAmount(balance) + ' ' + config.unitName;
-            $scope.scanned = true;
           }
-
           $scope.$apply();
         });
       }, 100);
@@ -95,45 +83,61 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             $log.error(err);
             popupService.showAlert(gettextCatalog.getString('Error sweeping wallet:'), err || err.toString());
           } else {
-            $scope.openStatusModal('broadcasted', function() {
-              $ionicHistory.removeBackView();
-              $state.go('tabs.home');
-            });
+            $scope.sendStatus = 'success';
           }
           $scope.$apply();
         });
       }, 100);
     };
 
-    $scope.openStatusModal = function(type, cb) {
-      $scope.tx = {};
-      $scope.tx.amountStr = $scope.balance;
-      $scope.type = type;
-      $scope.color = $scope.wallet.backgroundColor;
-      $scope.cb = cb;
-
-      $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
-        scope: $scope
-      }).then(function(modal) {
-        $scope.txStatusModal = modal;
-        $scope.txStatusModal.show();
-      });
+    $scope.onSuccessConfirm = function() {
+      $state.go('tabs.home');
     };
 
-    $scope.$on("$ionicView.beforeEnter", function(event, data) {
-      var wallet = profileService.getWallet($stateParams.walletId);
+    $scope.$on('Wallet/Changed', function(event, wallet) {
+      if (!wallet) {
+        $log.debug('No wallet provided');
+        return;
+      }
+      if (wallet == $scope.wallet) {
+        $log.debug('No change in wallet');
+        return;
+      }
       $scope.wallet = wallet;
-      $scope.needsBackup = wallet.needsBackup;
-      $scope.walletAlias = wallet.name;
-      $scope.walletName = wallet.credentials.walletName;
-      $scope.formData = {};
-      $scope.formData.inputData = null;
-      $scope.scannedKey = null;
-      $scope.balance = null;
-      $scope.balanceSat = null;
-      $scope.scanned = false;
+      $log.debug('Wallet changed: ' + wallet.name);
       $timeout(function() {
         $scope.$apply();
-      }, 10);
+      });
     });
+
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      $scope.scannedKey = (data.stateParams && data.stateParams.privateKey) ? data.stateParams.privateKey : null;
+      $scope.isPkEncrypted = $scope.scannedKey ? ($scope.scannedKey.substring(0, 2) == '6P') : null;
+      $scope.sendStatus = null;
+      $scope.error = false;
+
+      $scope.wallets = profileService.getWallets({
+        onlyComplete: true,
+        network: 'livenet',
+      });
+
+      if (!$scope.wallets || !$scope.wallets.length) {
+        $scope.noMatchingWallet = true;
+        return;
+      }
+    });
+
+    $scope.$on("$ionicView.enter", function(event, data) {
+      $scope.wallet = $scope.wallets[0];
+      if (!$scope.wallet) return;
+      if (!$scope.isPkEncrypted) $scope.scanFunds();
+      else {
+        var message = gettextCatalog.getString('Private key encrypted. Enter password');
+        popupService.showPrompt(null, message, null, function(res) {
+          $scope.passphrase = res;
+          $scope.scanFunds();
+        });
+      }
+    });
+
   });
