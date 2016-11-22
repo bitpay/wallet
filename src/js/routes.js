@@ -618,6 +618,31 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
+     * Addresses
+     *
+     */
+
+    .state('tabs.receive.addresses', {
+        url: '/addresses/:walletId',
+        views: {
+          'tab-receive@tabs': {
+            controller: 'addressesController',
+            templateUrl: 'views/addresses.html'
+          }
+        }
+      })
+      .state('tabs.receive.allAddresses', {
+        url: '/allAddresses/:walletId',
+        views: {
+          'tab-receive@tabs': {
+            controller: 'addressesController',
+            templateUrl: 'views/allAddresses.html'
+          }
+        }
+      })
+
+    /*
+     *
      * Init backup flow
      *
      */

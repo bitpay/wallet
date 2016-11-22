@@ -1,0 +1,89 @@
+#addresses {
+  .addr {
+    &-explanation, &-button-group {
+      padding: 0 1rem;
+      margin: 1rem 0;
+    }
+    &-description {
+      text-align: center;
+      font-size: 15px;
+      color: $mid-gray;
+      margin: 1rem 0;
+      a {
+        font-weight: bold;
+        cursor: pointer;
+        cursor: hand;
+      }
+    }
+    &-balance {
+      margin-top: 4px;
+      color: #5DD263;
+    }
+    &-path {
+      margin-top: 4px;
+      color: #B8B8B8;
+    }
+  }
+
+  .banner-icon {
+    margin-top: 25px;
+    i {
+      box-shadow: $hovering-box-shadow;
+    }
+  }
+
+  .addr-list {
+    .item {
+      color: $dark-gray;
+      padding-top: 1.3rem;
+      padding-bottom: 1.3rem;
+      &.has-addr-value {
+        padding-top: .65rem;
+        padding-bottom: .65rem;
+      }
+      &.item-divider {
+        color: $mid-gray;
+        padding-bottom: .5rem;
+        font-size: .9rem;
+      }
+      &.view-all {
+        margin: 20px 0px 20px 0px;
+        cursor: pointer;
+        cursor: hand;
+        i {
+          font-size: 35px;
+          margin-right: 5px;
+          color: #647ce8;
+        }
+        span {
+          color: #647ce8;
+          font-weight: bold;
+        }
+      }
+      i {
+        font-size: 35px;
+        margin-right: 2px;
+      }
+    }
+    .box-error {
+      padding: 25px;
+      background-color: #E65555;
+      color: #F4F4F4;
+      h5 {
+        margin: 5px;
+        color: #F4F4F4;
+        text-align: center;
+        font-weight: bold;
+      }
+      a {
+        font-weight: bold;
+        color: #F4F4F4;
+        cursor: pointer;
+        cursor: hand;
+      }
+    }
+    .item-note {
+      color: $light-gray;
+    }
+  }
+}

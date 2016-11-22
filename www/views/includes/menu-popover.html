@@ -1,0 +1,9 @@
+<ion-popover-view ng-style="{'height': height + 'px'}" id="menu-popover">
+  <ion-content>
+    <div class="list">
+      <div class="item" ng-repeat="i in items track by $index" ng-click="i.action()">
+        {{i.text}}
+      </div>
+    </div>
+  </ion-content>
+</ion-popover-view>
