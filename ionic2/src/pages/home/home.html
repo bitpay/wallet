@@ -5,58 +5,34 @@
 </ion-header>
 
 <ion-content padding>
-  <!-- <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p> -->
+
+  <ion-card>
+    <ion-card-header>
+      Wallets
+    </ion-card-header>
+    <ion-list>
+      <button ion-item>
+        <ion-icon name="cash" item-left></ion-icon>
+        Personal Wallet
+      </button>
+    </ion-list>
+  </ion-card>
 
 
-  <!-- <div class="list card"
-       ng-show="nextStepEnabled && wallets[0]">
-    <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
+  <ion-card>
+    <ion-card-header>
       Next steps
-      <i class="icon bp-arrow-up" ng-show="!hideNextSteps"></i>
-      <i class="icon bp-arrow-down" ng-show="hideNextSteps"></i>
-    </div>
-    <div ng-show="!hideNextSteps">
-      <a ui-sref="tabs.bitpayCardIntro" ng-if="!externalServices.BitpayCard && bitpayCardEnabled" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
-       <i class="icon big-icon-svg">
-         <div class="bg icon-bitpay-card"></div>
-       </i>
-        <span translate>Add BitPay Visa&reg; Card</span>
-        <i class="icon bp-arrow-right"></i>
-      </a>
-      <a ng-if="!externalServices.BuyAndSell && (coinbaseEnabled || glideraEnabled)" ui-sref="tabs.buyandsell.glidera" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
-       <i class="icon big-icon-svg">
-         <div class="bg icon-buy-bitcoin"></div>
-       </i>
-        <span translate>Buy or Sell Bitcoin</span>
-        <i class="icon bp-arrow-right"></i>
-      </a>
-      <a ui-sref="tabs.giftcards.amazon" ng-if="!externalServices.AmazonGiftCards && amazonEnabled" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
-        <i class="icon big-icon-svg">
-          <div class="bg icon-amazon"></div>
-        </i>
-        <span translate>Buy an Amazon Gift Card</span>
-        <i class="icon bp-arrow-right"></i>
-      </a>
-    </div>
-  </div> -->
+    </ion-card-header>
+    <ion-list>
+      <button ion-item>
+        <ion-icon name="medical" item-left></ion-icon>
+        Buy or Sell Bitcoin
+      </button>
+      <button ion-item>
+        <ion-icon name="cafe" item-left></ion-icon>
+        Buy an Amazon Gift Card
+      </button>
+    </ion-list>
+  </ion-card>
 
-  <ion-list inset>
-    <ion-list-header>
-      Next Steps
-    </ion-list-header>
-    <ion-item (click)="itemSelected(item)">
-      Buy or Sell Bitcoin
-    </ion-item>
-    <ion-item (click)="itemSelected(item)">
-      Buy an Amazon Gift Card
-    </ion-item>
-  </ion-list>
 </ion-content>
