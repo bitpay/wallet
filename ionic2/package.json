@@ -11,7 +11,7 @@
 		"start": "ionic serve",
 		"test": "ng test",
 		"test-coverage": "ng test --watch=false --code-coverage",
-		"travis-serve": "npm install http-server && http-server www -p 8100",
+		"travis-serve": "npm start",
 		"send-coverage": "cat coverage/lcov.info | ./node_modules/.bin/codecov"
   },
   "dependencies": {
