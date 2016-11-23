@@ -3,16 +3,13 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-scan',
+  templateUrl: 'scan.html'
 })
-export class HomePage {
+export class ScanPage {
 
   constructor(public navCtrl: NavController) {
 
   }
 
-  itemSelected() {
-    console.log('selected');
-  }
 }

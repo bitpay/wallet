@@ -4,15 +4,15 @@
   "homepage": "http://bitpay.com/",
   "private": true,
   "scripts": {
-		"ionic:build": "ionic-app-scripts build",
-		"ionic:serve": "ionic-app-scripts serve",
-		"e2e": "protractor",
-		"postinstall": "ionic state restore && webdriver-manager update",
-		"start": "ionic serve",
-		"test": "ng test",
-		"test-coverage": "ng test --watch=false --code-coverage",
-		"travis-serve": "npm install http-server && http-server www -p 8100",
-		"send-coverage": "cat coverage/lcov.info | ./node_modules/.bin/codecov"
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve",
+    "e2e": "protractor",
+    "postinstall": "ionic state restore && webdriver-manager update",
+    "start": "ionic serve",
+    "test": "ng test",
+    "test-coverage": "ng test --watch=false --code-coverage",
+    "travis-serve": "http-server www -p 8100",
+    "send-coverage": "cat coverage/lcov.info | ./node_modules/.bin/codecov"
   },
   "dependencies": {
     "@angular/common": "2.1.1",
@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "2.1.1",
     "@angular/platform-server": "2.1.1",
     "@ionic/storage": "1.1.6",
+    "http-server": "^0.9.0",
     "ionic-angular": "2.0.0-rc.3",
     "ionic-native": "2.2.3",
     "ionicons": "3.0.0",

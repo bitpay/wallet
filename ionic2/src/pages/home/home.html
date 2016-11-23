@@ -1,17 +1,38 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title><img class="tab-home__logo" src="assets/img/app/logo-negative.svg"></ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+
+  <ion-card>
+    <ion-card-header>
+      Wallets
+    </ion-card-header>
+    <ion-list>
+      <button ion-item>
+        <ion-icon name="cash" item-left></ion-icon>
+        Personal Wallet
+      </button>
+    </ion-list>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-header>
+      Next steps
+    </ion-card-header>
+    <ion-list>
+      <button ion-item>
+        <ion-icon name="medical" item-left></ion-icon>
+        Buy or Sell Bitcoin
+      </button>
+      <button ion-item>
+        <ion-icon name="cafe" item-left></ion-icon>
+        Buy an Amazon Gift Card
+      </button>
+    </ion-list>
+  </ion-card>
+
 </ion-content>
