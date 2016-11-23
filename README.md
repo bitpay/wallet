@@ -1,5 +1,6 @@
 <img src="https://raw.githubusercontent.com/bitpay/copay/master/resources/copay/android/icon/drawable-xxxhdpi-icon.png" alt="Copay" width="79">
 
+[![codecov](https://codecov.io/gh/bitpay/copay/branch/ionic2/graph/badge.svg)](https://codecov.io/gh/bitpay/copay)
 [![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
