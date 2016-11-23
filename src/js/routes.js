@@ -555,15 +555,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.preferences.paperWallet', {
-        url: '/paperWallet',
-        views: {
-          'tab-settings@tabs': {
-            controller: 'paperWalletController',
-            templateUrl: 'views/paperWallet.html'
-          }
-        }
-      })
 
     /*
      *
@@ -667,9 +658,24 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
-     * Onboarding
+     * Paper Wallet
      *
      */
+
+    .state('tabs.home.paperWallet', {
+        url: '/paperWallet/:privateKey',
+        views: {
+          'tab-home@tabs': {
+            controller: 'paperWalletController',
+            templateUrl: 'views/paperWallet.html'
+          }
+        }
+      })
+      /*
+       *
+       * Onboarding
+       *
+       */
 
     .state('onboarding', {
         url: '/onboarding',
