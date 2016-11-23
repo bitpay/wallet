@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
+import { CopayApp } from './app.component';
 import { PAGES } from '../pages/pages';
 
 @NgModule({
   declarations: [
-    MyApp,
+    CopayApp,
     PAGES
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(CopayApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
+    CopayApp,
     PAGES
   ],
   providers: []
