@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, amazonService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService) {
   var cachedTxp = {};
+  var amountStr;
+  var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
   var countDown = null;
   var giftCardAmountUSD;
@@ -12,7 +14,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-
     // Amazon.com Gift Card parameters
     $scope.isGiftCard = data.stateParams.isGiftCard;
     giftCardAmountUSD = data.stateParams.giftCardAmountUSD;
@@ -20,99 +21,172 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     giftCardInvoiceTime = data.stateParams.giftCardInvoiceTime;
     giftCardUUID = data.stateParams.giftCardUUID;
 
+    toAmount = data.stateParams.toAmount;
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
-    $scope.toAmount = data.stateParams.toAmount;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
+    $scope.useSendMax = data.stateParams.useSendMax;
+    $scope.insuffientFunds = false;
+    $scope.noMatchingWallet = false;
     $scope.paymentExpired = {
       value: false
     };
     $scope.remainingTimeStr = {
       value: null
     };
-    initConfirm();
-  });
-
-  var initConfirm = function() {
-    // TODO (URL , etc)
-    if (!$scope.toAddress || !$scope.toAmount) {
-      $log.error('Bad params at amount');
-      throw ('bad params');
-    }
 
     var config = configService.getSync().wallet;
     $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
 
-    $scope.toAmount = parseInt($scope.toAmount);
-    $scope.amountStr = txFormatService.formatAmountStr($scope.toAmount);
-    $scope.displayAmount = getDisplayAmount($scope.amountStr);
-    $scope.displayUnit = getDisplayUnit($scope.amountStr);
+    $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
 
-    var networkName = (new bitcore.Address($scope.toAddress)).network.name;
-    $scope.network = networkName;
-
-    $scope.insuffientFunds = false;
-    $scope.noMatchingWallet = false;
-
-    var wallets = profileService.getWallets({
+    $scope.wallets = profileService.getWallets({
       onlyComplete: true,
-      network: networkName,
+      network: $scope.network,
       n: $scope.isGiftCard ? true : false
     });
 
-    if (!wallets || !wallets.length) {
+    if (!$scope.wallets || !$scope.wallets.length) {
       $scope.noMatchingWallet = true;
+    } else {
+      $scope.wallet = $scope.wallets[0];
     }
+
+    if (!$scope.useSendMax) initConfirm();
+    else $scope.getSendMaxInfo();
+  });
+
+  var initConfirm = function() {
+    toAmount = parseInt(toAmount);
+    amountStr = txFormatService.formatAmountStr(toAmount);
+    $scope.displayAmount = getDisplayAmount(amountStr);
+    $scope.displayUnit = getDisplayUnit(amountStr);
 
     var filteredWallets = [];
     var index = 0;
     var enoughFunds = false;
 
-    lodash.each(wallets, function(w) {
+    lodash.each($scope.wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
         if (err || !status) {
           $log.error(err);
         } else {
           w.status = status;
           if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
-          if (status.availableBalanceSat > $scope.toAmount) {
+          if (status.availableBalanceSat > toAmount) {
             filteredWallets.push(w);
             enoughFunds = true;
           }
         }
 
-        if (++index == wallets.length) {
+        if (++index == $scope.wallets.length) {
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
             setWallet($scope.wallets[0]);
           } else {
-
-            if (!enoughFunds)
-              $scope.insuffientFunds = true;
-
+            if (!enoughFunds) $scope.insuffientFunds = true;
             $log.warn('No wallet available to make the payment');
-            $timeout(function() {
-              $scope.$apply();
-            });
           }
         }
       });
     });
 
-    txFormatService.formatAlternativeStr($scope.toAmount, function(v) {
+    txFormatService.formatAlternativeStr(toAmount, function(v) {
       $scope.alternativeAmountStr = v;
     });
 
-    if($scope.paypro) {
-      _paymentTimeControl($scope.paypro.expires);
-    }
+    if ($scope.paypro) _paymentTimeControl($scope.paypro.expires);
 
     $timeout(function() {
       $scope.$apply();
+    });
+  };
+
+  $scope.getSendMaxInfo = function() {
+    ongoingProcess.set('gettingFeeLevels', true);
+    feeService.getCurrentFeeValue($scope.network, function(err, feePerKb) {
+      ongoingProcess.set('gettingFeeLevels', false);
+      if (err) {
+        popupService.showAlert(gettextCatalog.getString('Error'), err.message);
+        return;
+      }
+
+      var config = configService.getSync().wallet;
+      var unitName = config.settings.unitName;
+      var unitToSatoshi = config.settings.unitToSatoshi;
+      var satToUnit = 1 / unitToSatoshi;
+      var unitDecimals = config.settings.unitDecimals;
+
+      ongoingProcess.set('retrievingInputs', true);
+      walletService.getSendMaxInfo($scope.wallet, {
+        feePerKb: feePerKb,
+        excludeUnconfirmedUtxos: !config.spendUnconfirmed,
+        returnInputs: true,
+      }, function(err, resp) {
+        ongoingProcess.set('retrievingInputs', false);
+        if (err) {
+          $scope.insuffientFunds = true;
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+
+        if (resp.amount == 0) {
+          $scope.insuffientFunds = true;
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
+          return;
+        }
+
+        $scope.sendMaxInfo = {
+          sendMax: true,
+          inputs: resp.inputs,
+          fee: resp.fee,
+          feePerKb: feePerKb,
+        };
+        toAmount = parseFloat((resp.amount * satToUnit).toFixed(unitDecimals));
+
+        var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
+          fee: txFormatService.formatAmount(resp.fee) + ' ' + unitName
+        });
+        var warningMsg = verifyExcludedUtxos();
+
+        if (!lodash.isEmpty(warningMsg))
+          msg += '. \n' + warningMsg;
+
+        popupService.showConfirm(null, msg, 'Ok', gettextCatalog.getString('Cancel'), function(result) {
+          if (!result) return;
+
+          var amount = txFormatService.formatAmount(resp.amount, true);
+          $scope.displayAmount = amount;
+          $scope.displayUnit = unitName;
+          $scope.fee = txFormatService.formatAmount($scope.sendMaxInfo.fee) + ' ' + unitName;
+
+          createTx($scope.wallet, true, function(err, txp) {
+            if (err) return;
+            cachedTxp[$scope.wallet.id] = txp;
+            apply(txp);
+          });
+        });
+
+        function verifyExcludedUtxos() {
+          var warningMsg = [];
+          if (resp.utxosBelowFee > 0) {
+            warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+              amountBelowFeeStr: txFormatService.formatAmount(resp.amountBelowFee) + ' ' + unitName
+            }));
+          }
+
+          if (resp.utxosAboveMaxSize > 0) {
+            warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded", {
+              amountAboveMaxSizeStr: txFormatService.formatAmount(resp.amountAboveMaxSize) + ' ' + unitName
+            }));
+          }
+          return warningMsg.join('\n');
+        };
+      });
     });
   };
 
@@ -134,9 +208,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.onWalletSelect = function(wallet) {
-    setWallet(wallet);
+    if (!$scope.useSendMax) setWallet(wallet);
+    else $scope.getSendMaxInfo();
   };
-
 
   $scope.showDescriptionPopup = function() {
     var message = gettextCatalog.getString('Add description');
@@ -154,11 +228,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function getDisplayAmount(amountStr) {
     return amountStr.split(' ')[0];
-  }
+  };
 
   function getDisplayUnit(amountStr) {
     return amountStr.split(' ')[1];
-  }
+  };
 
   function _paymentTimeControl(expirationTime) {
     $scope.paymentExpired.value = false;
@@ -180,7 +254,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       var m = Math.floor(totalSecs / 60);
       var s = totalSecs % 60;
       $scope.remainingTimeStr.value = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
-    }
+    };
 
     function setExpiredValues() {
       $scope.paymentExpired.value = true;
@@ -189,8 +263,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $timeout(function() {
         $scope.$apply();
       });
-    }
-  }
+    };
+  };
 
   function setWallet(wallet, delayed) {
     var stop;
@@ -200,7 +274,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $timeout(function() {
       $ionicScrollDelegate.resize();
       $scope.$apply();
-    }, 10);
+    });
 
     if (stop) {
       $timeout.cancel(stop);
@@ -218,7 +292,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         });
       }, delayed ? 2000 : 1);
     }
-  }
+  };
 
   var setSendError = function(msg) {
     $scope.sendStatus = '';
@@ -232,17 +306,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.fee = txFormatService.formatAmountStr(txp.fee);
     $scope.txp = txp;
     $scope.$apply();
-  }
+  };
 
   var createTx = function(wallet, dryRun, cb) {
     var config = configService.getSync().wallet;
     var currentSpendUnconfirmed = config.spendUnconfirmed;
-    var outputs = [];
-
     var paypro = $scope.paypro;
     var toAddress = $scope.toAddress;
-    var toAmount = $scope.toAmount;
     var description = $scope.description;
+    var unitToSatoshi = config.settings.unitToSatoshi;
+    var unitDecimals = config.settings.unitDecimals;
 
     // ToDo: use a credential's (or fc's) function for this
     if (description && !wallet.credentials.sharedEncryptingKey) {
@@ -257,28 +330,29 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return setSendError(msg);
     }
 
-    outputs.push({
-      'toAddress': toAddress,
-      'amount': toAmount,
-      'message': description
-    });
-
     var txp = {};
+    var amount;
+    if ($scope.useSendMax) amount = parseFloat((toAmount * unitToSatoshi));
+    else amount = toAmount;
 
-    // TODO
-    if (!lodash.isEmpty($scope.sendMaxInfo)) {
-      txp.sendMax = true;
+    txp.outputs = [{
+      'toAddress': toAddress,
+      'amount': amount,
+      'message': description
+    }];
+
+    if ($scope.sendMaxInfo) {
       txp.inputs = $scope.sendMaxInfo.inputs;
-      txp.fee = $scope.sendMaxInfo.fee;
-    }
+      txp.feePerKb = $scope.sendMaxInfo.feePerKb;
+    } else
+      txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
 
-    txp.outputs = outputs;
     txp.message = description;
-    if(paypro) {
+
+    if (paypro) {
       txp.payProUrl = paypro.url;
     }
-    txp.excludeUnconfirmedUtxos = config.spendUnconfirmed ? false : true;
-    txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
+    txp.excludeUnconfirmedUtxos = !currentSpendUnconfirmed;
     txp.dryRun = dryRun;
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
@@ -334,7 +408,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       var isCordova = $scope.isCordova;
       var bigAmount = parseFloat(txFormatService.formatToUSD(txp.amount)) > 20;
       var message = gettextCatalog.getString('Sending {{amountStr}} from your {{name}} wallet', {
-        amountStr: $scope.amountStr,
+        amountStr: amountStr,
         name: wallet.name
       });
       var okText = gettextCatalog.getString('Confirm');
@@ -375,7 +449,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     } else if (showName) {
       $scope.sendStatus = showName;
     }
-  }
+  };
 
   $scope.statusChangeHandler = statusChangeHandler;
 
