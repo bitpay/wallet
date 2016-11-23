@@ -5,6 +5,11 @@
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="showSendMaxSelector()">
+        <i class="icon ion-ios-more"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content scroll="false">
@@ -93,10 +98,9 @@
       </div>
     </div>
   </ion-content>
-  <wallet-selector
-    wallet-selector-wallets="wallets"
-    wallet-selector-selected-wallet="wallet"
-    wallet-selector-show="showWallets"
-    wallet-selector-on-select="getSendMaxInfo">
-  </wallet-selector>
+  <send-max-selector
+    send-max-selector-wallet="wallet"
+    send-max-selector-show="sendMax"
+    send-max-selector-on-select="setSendMax">
+  </send-max-selector>
 </ion-view>
