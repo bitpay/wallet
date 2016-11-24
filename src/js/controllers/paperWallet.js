@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, $ionicHistory, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, feeService, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
 
     function _scanFunds(cb) {
       function getPrivateKey(scannedKey, isPkEncrypted, passphrase, cb) {
@@ -57,15 +57,22 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       walletService.getAddress($scope.wallet, true, function(err, destinationAddress) {
         if (err) return cb(err);
 
-        $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, tx) {
+        $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, testTx) {
           if (err) return cb(err);
-
-          $scope.wallet.broadcastRawTx({
-            rawTx: tx.serialize(),
-            network: 'livenet'
-          }, function(err, txid) {
-            if (err) return cb(err);
-            return cb(null, destinationAddress, txid);
+          var rawTxLength = testTx.serialize().length;
+          feeService.getCurrentFeeValue($scope.wallet, function(err, feePerKB) {
+            var opts = {};
+            opts.fee = Math.round((feePerKB * rawTxLength) / 2000);
+            $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, opts, function(err, tx) {
+              if (err) return cb(err);
+              $scope.wallet.broadcastRawTx({
+                rawTx: tx.serialize(),
+                network: 'livenet'
+              }, function(err, txid) {
+                if (err) return cb(err);
+                return cb(null, destinationAddress, txid);
+              });
+            });
           });
         });
       });
