@@ -197,23 +197,26 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.$on('accepted', function(event) {
     $scope.approve();
   });
-
-  $scope.$on('Wallet/Changed', function(event, wallet) {
-    if (lodash.isEmpty(wallet)) {
-      $log.debug('No wallet provided');
-      return;
-    }
-    $log.debug('Wallet changed: ' + wallet.name);
-    setWallet(wallet, true);
-  });
+  //
+  // $scope.$on('Wallet/Changed', function(event, wallet) {
+  //   if (lodash.isEmpty(wallet)) {
+  //     $log.debug('No wallet provided');
+  //     return;
+  //   }
+  //   $log.debug('Wallet changed: ' + wallet.name);
+  //   setWallet(wallet, true);
+  // });
 
   $scope.showWalletSelector = function() {
     $scope.showWallets = true;
   };
 
   $scope.onWalletSelect = function(wallet) {
-    if (!$scope.useSendMax) setWallet(wallet);
-    else $scope.getSendMaxInfo();
+    if ($scope.useSendMax) {
+      $scope.wallet = wallet;
+      $scope.getSendMaxInfo();
+    } else
+      setWallet(wallet);
   };
 
   $scope.showDescriptionPopup = function() {
@@ -295,7 +298,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $timeout(function() {
       $ionicScrollDelegate.resize();
       $scope.$apply();
-    });
+    }, 10);
   };
 
   var setSendError = function(msg) {
