@@ -275,11 +275,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.wallet = wallet;
     $scope.fee = $scope.txp = null;
 
-    $timeout(function() {
-      $ionicScrollDelegate.resize();
-      $scope.$apply();
-    });
-
     if (stop) {
       $timeout.cancel(stop);
       stop = null;
@@ -296,6 +291,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         });
       }, delayed ? 2000 : 1);
     }
+
+    $timeout(function() {
+      $ionicScrollDelegate.resize();
+      $scope.$apply();
+    });
   };
 
   var setSendError = function(msg) {
@@ -309,7 +309,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   function apply(txp) {
     $scope.fee = txFormatService.formatAmountStr(txp.fee);
     $scope.txp = txp;
-    $scope.$apply();
+    $timeout(function() {
+      $scope.$apply();
+    });
   };
 
   var createTx = function(wallet, dryRun, cb) {
