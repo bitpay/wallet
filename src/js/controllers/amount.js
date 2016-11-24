@@ -26,8 +26,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    $scope.title = $scope.customAmount ? gettextCatalog.getString('Request Specific Amount') : gettextCatalog.getString('Enter Amount');
-    if (!$scope.cardId && !data.stateParams.toAddress && !data.stateParams.customAmount) {
+    if (!$scope.cardId && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
