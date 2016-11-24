@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($scope, $timeout, $filter, platformInfo, rateService) {
+angular.module('copayApp.controllers').controller('custommAmountController', function($scope, $timeout, $filter, platformInfo, rateService) {
   var self = $scope.self;
 
   $scope.unitName = self.unitName;

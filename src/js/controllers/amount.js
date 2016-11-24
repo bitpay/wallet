@@ -24,7 +24,10 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.showAlternativeAmount = !!$scope.cardId;
     $scope.toColor = data.stateParams.toColor;
 
-    if (!$scope.cardId && !$stateParams.toAddress) {
+    $scope.customAmount = data.stateParams.customAmount;
+
+    $scope.title = $scope.customAmount ? gettextCatalog.getString('Request Specific Amount') : gettextCatalog.getString('Enter Amount');
+    if (!$scope.cardId && !data.stateParams.toAddress && !data.stateParams.customAmount) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -240,13 +243,20 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
-      $state.transitionTo('tabs.send.confirm', {
-        isWallet: $scope.isWallet,
-        toAmount: (amount * unitToSatoshi).toFixed(0),
-        toAddress: $scope.toAddress,
-        toName: $scope.toName,
-        toEmail: $scope.toEmail
-      });
+      if ($scope.customAmount) {
+        $state.transitionTo('tabs.receive.customAmount', {
+          toAmount: (amount * unitToSatoshi).toFixed(0),
+          toAddress: $scope.toAddress
+        });
+      } else {
+        $state.transitionTo('tabs.send.confirm', {
+          isWallet: $scope.isWallet,
+          toAmount: (amount * unitToSatoshi).toFixed(0),
+          toAddress: $scope.toAddress,
+          toName: $scope.toName,
+          toEmail: $scope.toEmail
+        });
+      }
     }
   };
 });
