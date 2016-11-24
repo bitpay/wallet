@@ -32,10 +32,10 @@
         </div>
       </div> -->
 
-      <div class="item item-icon-left item-icon-right">
-        <i class="icon icon-svg placeholder-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
+      <div class="item item-icon-left item-icon-right input">
+        <i class="icon icon-svg left"><img src="img/icon-bitcoin-symbol.svg"></i>
         <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>
-        <i class="icon icon-svg qr-scan-icon" on-tap="openScanner()"><img src="img/tab-icons/ico-scan.svg"/></i>
+        <i class="icon icon-svg qr" on-tap="openScanner()"><img src="img/scan-ico.svg"/></i>
       </div>
 
       <div class="card">

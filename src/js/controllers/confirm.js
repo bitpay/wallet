@@ -146,7 +146,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           fee: resp.fee,
           feePerKb: feePerKb,
         };
+
         toAmount = parseFloat((resp.amount * satToUnit).toFixed(unitDecimals));
+        txFormatService.formatAlternativeStr(resp.amount, function(v) {
+          $scope.alternativeAmountStr = v;
+        });
 
         var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
           fee: txFormatService.formatAmount(resp.fee) + ' ' + unitName

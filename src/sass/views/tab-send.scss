@@ -1,7 +1,23 @@
 #tab-send {
   @extend .deflash-blue;
-  input {
-    width: 100%;
+  .input {
+    input {
+      width: 100%;
+      height: auto;
+    }
+    &.item {
+      height: 55px;
+    }
+    i {
+      &.left {
+        padding-left: 15px;
+      }
+      &.qr {
+        cursor: pointer;
+        cursor: hand;
+        padding-right: 5px;
+      }
+    }
   }
   .qr-scan-icon {
     cursor: pointer;
@@ -10,7 +26,7 @@
     padding-left: 10px;
   }
   .qr-icon {
-    line-height: 45px;
+    line-height: 20px;
   }
   .zero-state-cta {
     padding-bottom: 3vh;
