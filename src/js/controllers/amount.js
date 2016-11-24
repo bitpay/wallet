@@ -23,6 +23,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toEmail = data.stateParams.toEmail;
     $scope.showAlternativeAmount = !!$scope.cardId;
     $scope.toColor = data.stateParams.toColor;
+    $scope.paypro = data.stateParams.paypro;
+    $scope.description = data.stateParams.description;
 
     if (!$scope.cardId && !$stateParams.toAddress) {
       $log.error('Bad params at amount')
@@ -245,7 +247,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
         toAmount: (amount * unitToSatoshi).toFixed(0),
         toAddress: $scope.toAddress,
         toName: $scope.toName,
-        toEmail: $scope.toEmail
+        toEmail: $scope.toEmail,
+        paypro: $scope.paypro,
+        description: $scope.description
       });
     }
   };

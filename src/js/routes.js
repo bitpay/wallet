@@ -277,13 +277,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.send.amount', {
-        url: '/amount/:isWallet/:toAddress/:toName/:toEmail/:toColor',
+        url: '/amount/:isWallet/:toAddress/:toName/:toEmail/:toColor/:description',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
-        }
+        },
+        params: { paypro: null }
       })
       .state('tabs.send.confirm', {
         url: '/confirm/:isWallet/:toAddress/:toName/:toAmount/:toEmail/:description',

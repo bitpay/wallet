@@ -18,7 +18,7 @@ angular.module('copayApp.services').factory('txFormatService', function(bwcServi
   };
 
   root.formatAmountStr = function(satoshis) {
-    if (!satoshis) return;
+    if (!satoshis && satoshis !== 0) return;
     var config = configService.getSync().wallet.settings;
     return root.formatAmount(satoshis) + ' ' + config.unitName;
   };

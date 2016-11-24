@@ -214,7 +214,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       'notify': $state.current.name == 'tabs.send' ? false : true
     }).then(function() {
       $timeout(function() {
-        $state.transitionTo('tabs.send.confirm', stateParams);
+        $state.transitionTo(stateParams.toAmount
+          ? 'tabs.send.confirm'
+          : 'tabs.send.amount', stateParams);
       });
     });
   }
