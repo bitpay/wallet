@@ -634,6 +634,31 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     /*
      *
+     * Request Specific amount
+     *
+     */
+
+    .state('tabs.receive.amount', {
+        url: '/amount/:customAmount/:toAddress',
+        views: {
+          'tab-receive@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        }
+      })
+      .state('tabs.receive.customAmount', {
+        url: '/customAmount/:toAmount/:toAddress',
+        views: {
+          'tab-receive@tabs': {
+            controller: 'customAmountController',
+            templateUrl: 'views/customAmount.html'
+          }
+        }
+      })
+
+    /*
+     *
      * Init backup flow
      *
      */

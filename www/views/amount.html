@@ -1,7 +1,7 @@
 <ion-view id="view-amount" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
-      {{'Enter Amount'|translate}}
+      {{'Enter Amount' | translate}}
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -9,7 +9,7 @@
 
   <ion-content scroll="false">
 
-    <div>
+    <div ng-if="!customAmount">
       <div class="item item-no-bottom-border recipient-label" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':cardId}">
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div class="amount-pane">
+    <div ng-class="{'amount-pane-send': !customAmount, 'amount-pane-receive': customAmount}">
 
       <div class="amount-bar">
         <div class="title" translate>Amount</div>
