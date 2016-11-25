@@ -14,7 +14,7 @@
   <ion-content scroll="false">
     <div class="item head text-center">
       <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
-      <div class="row text-center share">
+      <div class="row text-center share" ng-if="isCordova">
         <div class="item item-icon-left" ng-click="shareAddress('bitcoin:' + address + '?amount=' + amountBtc)" ng-show="true">
           <i class="icon ion-ios-upload-outline"></i>
           <span translate>Share</span>
