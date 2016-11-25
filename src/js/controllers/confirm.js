@@ -22,6 +22,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     giftCardUUID = data.stateParams.giftCardUUID;
 
     toAmount = data.stateParams.toAmount;
+    $scope.useSendMax = data.stateParams.useSendMax;
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
     $scope.toAddress = data.stateParams.toAddress;
@@ -29,7 +30,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
-    $scope.useSendMax = data.stateParams.useSendMax;
     $scope.insuffientFunds = false;
     $scope.noMatchingWallet = false;
     $scope.paymentExpired = {
@@ -56,8 +56,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.wallet = $scope.wallets[0];
     }
 
-    if (!$scope.useSendMax) initConfirm();
-    else $scope.getSendMaxInfo();
+    if ($scope.useSendMax) $scope.showWalletSelector();
+    else initConfirm();
   });
 
   var initConfirm = function() {
@@ -107,6 +107,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.getSendMaxInfo = function() {
+    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = null;
+
     ongoingProcess.set('gettingFeeLevels', true);
     feeService.getCurrentFeeValue($scope.network, function(err, feePerKb) {
       ongoingProcess.set('gettingFeeLevels', false);
