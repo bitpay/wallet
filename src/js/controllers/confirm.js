@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
-    $scope.insuffientFunds = false;
+    $scope.insufficientFunds = false;
     $scope.noMatchingWallet = false;
     $scope.paymentExpired = {
       value: false
@@ -42,9 +42,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     var config = configService.getSync().wallet;
     $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
-
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
+    setwallets();
 
+    if ($scope.useSendMax) $scope.showWalletSelector();
+    else initConfirm();
+  });
+
+  function setwallets() {
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
       network: $scope.network,
@@ -56,16 +61,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     } else {
       $scope.wallet = $scope.wallets[0];
     }
-
-    if ($scope.useSendMax) $scope.showWalletSelector();
-    else initConfirm();
-  });
-
-  var initConfirm = function() {
-    toAmount = parseInt(toAmount);
-    amountStr = txFormatService.formatAmountStr(toAmount);
-    $scope.displayAmount = getDisplayAmount(amountStr);
-    $scope.displayUnit = getDisplayUnit(amountStr);
 
     var filteredWallets = [];
     var index = 0;
@@ -87,14 +82,24 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (++index == $scope.wallets.length) {
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
-            setWallet($scope.wallets[0]);
+            if (!$scope.useSendMax) setWallet($scope.wallets[0]);
           } else {
-            if (!enoughFunds) $scope.insuffientFunds = true;
+            if (!enoughFunds) $scope.insufficientFunds = true;
             $log.warn('No wallet available to make the payment');
           }
         }
       });
     });
+    $timeout(function() {
+      $scope.$apply();
+    });
+  };
+
+  var initConfirm = function() {
+    toAmount = parseInt(toAmount);
+    amountStr = txFormatService.formatAmountStr(toAmount);
+    $scope.displayAmount = getDisplayAmount(amountStr);
+    $scope.displayUnit = getDisplayUnit(amountStr);
 
     txFormatService.formatAlternativeStr(toAmount, function(v) {
       $scope.alternativeAmountStr = v;
@@ -127,13 +132,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       }, function(err, resp) {
         ongoingProcess.set('retrievingInputs', false);
         if (err) {
-          $scope.insuffientFunds = true;
+          $scope.insufficientFunds = true;
           popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
 
         if (resp.amount == 0) {
-          $scope.insuffientFunds = true;
+          $scope.insufficientFunds = true;
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
           return;
         }
@@ -207,6 +212,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.showWalletSelector = function() {
+    if ($scope.insufficientFunds || $scope.noMatchingWallet) return;
     $scope.showWallets = true;
   };
 
@@ -387,7 +393,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
-    if (!toAmount) return;
+    if (!toAmount || $scope.insufficientFunds || $scope.noMatchingWallet) return;
 
     if ($scope.paypro && $scope.paymentExpired.value) {
       popupService.showAlert(null, gettextCatalog.getString('This bitcoin payment request has expired.'));
