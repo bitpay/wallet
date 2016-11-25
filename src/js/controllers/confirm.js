@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var giftCardAccessKey;
   var giftCardInvoiceTime;
   var giftCardUUID;
+  var cachedSendMax = {};
   $scope.isCordova = platformInfo.isCordova;
   $ionicConfig.views.swipeBackEnabled(false);
 
@@ -22,7 +23,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     giftCardUUID = data.stateParams.giftCardUUID;
 
     toAmount = data.stateParams.toAmount;
-    $scope.useSendMax = data.stateParams.useSendMax;
+    $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
     $scope.toAddress = data.stateParams.toAddress;
@@ -116,12 +117,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         popupService.showAlert(gettextCatalog.getString('Error'), err.message);
         return;
       }
-
       var config = configService.getSync().wallet;
-      var unitName = config.settings.unitName;
-      var unitToSatoshi = config.settings.unitToSatoshi;
-      var satToUnit = 1 / unitToSatoshi;
-      var unitDecimals = config.settings.unitDecimals;
 
       ongoingProcess.set('retrievingInputs', true);
       walletService.getSendMaxInfo($scope.wallet, {
@@ -144,10 +140,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
         $scope.sendMaxInfo = {
           sendMax: true,
+          amount: resp.amount,
           inputs: resp.inputs,
           fee: resp.fee,
           feePerKb: feePerKb,
         };
+
+        cachedSendMax[$scope.wallet.id] = $scope.sendMaxInfo;
+        var unitName = config.settings.unitName;
 
         var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
           fee: txFormatService.formatAmount(resp.fee) + ' ' + unitName
@@ -158,13 +158,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           msg += '. \n' + warningMsg;
 
         popupService.showAlert(null, msg, function() {
-          $scope.displayAmount = txFormatService.formatAmount(resp.amount, true);
-          $scope.displayUnit = unitName;
-          $scope.fee = txFormatService.formatAmount($scope.sendMaxInfo.fee) + ' ' + unitName;
-          toAmount = parseFloat((resp.amount * satToUnit).toFixed(unitDecimals));
-          txFormatService.formatAlternativeStr(resp.amount, function(v) {
-            $scope.alternativeAmountStr = v;
-          });
+          setSendMaxValues(resp);
 
           createTx($scope.wallet, true, function(err, txp) {
             if (err) return;
@@ -192,6 +186,22 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
+  function setSendMaxValues(data) {
+    var config = configService.getSync().wallet;
+    var unitName = config.settings.unitName;
+    var unitToSatoshi = config.settings.unitToSatoshi;
+    var satToUnit = 1 / unitToSatoshi;
+    var unitDecimals = config.settings.unitDecimals;
+
+    $scope.displayAmount = txFormatService.formatAmount(data.amount, true);
+    $scope.displayUnit = unitName;
+    $scope.fee = txFormatService.formatAmount(data.fee) + ' ' + unitName;
+    toAmount = parseFloat((data.amount * satToUnit).toFixed(unitDecimals));
+    txFormatService.formatAlternativeStr(data.amount, function(v) {
+      $scope.alternativeAmountStr = v;
+    });
+  };
+
   $scope.$on('accepted', function(event) {
     $scope.approve();
   });
@@ -203,6 +213,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.onWalletSelect = function(wallet) {
     if ($scope.useSendMax) {
       $scope.wallet = wallet;
+      if (cachedSendMax[wallet.id]) {
+        $log.debug('Send max cached for wallet:', wallet.id);
+        setSendMaxValues(cachedSendMax[wallet.id]);
+        return;
+      }
       $scope.getSendMaxInfo();
     } else
       setWallet(wallet);
