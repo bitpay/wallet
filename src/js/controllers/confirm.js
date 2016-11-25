@@ -147,11 +147,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           feePerKb: feePerKb,
         };
 
-        toAmount = parseFloat((resp.amount * satToUnit).toFixed(unitDecimals));
-        txFormatService.formatAlternativeStr(resp.amount, function(v) {
-          $scope.alternativeAmountStr = v;
-        });
-
         var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
           fee: txFormatService.formatAmount(resp.fee) + ' ' + unitName
         });
@@ -160,13 +155,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (!lodash.isEmpty(warningMsg))
           msg += '. \n' + warningMsg;
 
-        popupService.showConfirm(null, msg, 'Ok', gettextCatalog.getString('Cancel'), function(result) {
-          if (!result) return;
-
-          var amount = txFormatService.formatAmount(resp.amount, true);
-          $scope.displayAmount = amount;
+        popupService.showAlert(null, msg, function() {
+          $scope.displayAmount = txFormatService.formatAmount(resp.amount, true);
           $scope.displayUnit = unitName;
           $scope.fee = txFormatService.formatAmount($scope.sendMaxInfo.fee) + ' ' + unitName;
+          toAmount = parseFloat((resp.amount * satToUnit).toFixed(unitDecimals));
+          txFormatService.formatAlternativeStr(resp.amount, function(v) {
+            $scope.alternativeAmountStr = v;
+          });
 
           createTx($scope.wallet, true, function(err, txp) {
             if (err) return;
@@ -374,6 +370,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
+    if (!toAmount) return;
 
     if ($scope.paypro && $scope.paymentExpired.value) {
       popupService.showAlert(null, gettextCatalog.getString('This bitcoin payment request has expired.'));

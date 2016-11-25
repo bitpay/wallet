@@ -21,10 +21,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toEmail = data.stateParams.toEmail;
     $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard;
     $scope.toColor = data.stateParams.toColor;
-    $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
-    $scope.wallets = profileService.getWallets({
-      network: $scope.network
-    });
 
     $scope.customAmount = data.stateParams.customAmount;
 

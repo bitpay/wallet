@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, profileService, gettextCatalog) {
+angular.module('copayApp.services').factory('feeService', function($log, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog) {
   var root = {};
 
   // Constant fee options to translate
