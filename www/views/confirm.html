@@ -28,8 +28,11 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to">
-            <img ng-if="!cardId" src="img/icon-bitcoin-small.svg">
+            <img ng-if="!cardId && !buyAmazon" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
+            <i ng-if="buyAmazon" class="icon big-icon-svg">
+              <div class="bg icon-amazon"></div>
+            </i>
 
             <div copy-to-clipboard="toAddress" ng-if="!paypro" class="ellipsis">
               <contact ng-if="!toName" address="{{toAddress}}"></contact>
