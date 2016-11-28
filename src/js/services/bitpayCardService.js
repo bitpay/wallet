@@ -136,7 +136,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   root.bitAuthPair = function(obj, cb) {
-    var deviceName = 'Unknow device';
+    var deviceName = 'Unknown device';
     if (platformInfo.isNW) {
       deviceName = require('os').platform();
     } else if (platformInfo.isCordova) {

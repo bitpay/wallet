@@ -965,6 +965,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'amazonController',
             templateUrl: 'views/amazon.html'
           }
+        },
+        params: {
+          cardClaimCode: null
         }
       })
       .state('tabs.giftcards.amazon.buy', {
@@ -975,6 +978,33 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controllerAs: 'buy',
             templateUrl: 'views/buyAmazon.html'
           }
+        }
+      })
+      .state('tabs.giftcards.amazon.amount', {
+        url: '/amount',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        },
+        params: {
+          buyAmazon: true,
+          toName: 'Amazon.com Gift Card'
+        }
+      })
+      .state('tabs.giftcards.amazon.confirm', {
+        url: '/confirm/:toAmount/:toAddress/:description/:giftAmountUSD/:giftAccessKey/:giftInvoiceTime/:giftUUID',
+        views: {
+          'tab-home@tabs': {
+            controller: 'confirmController',
+            templateUrl: 'views/confirm.html'
+          }
+        },
+        params: {
+          buyAmazon: true,
+          toName: 'Amazon.com Gift Card',
+          paypro: null
         }
       })
 

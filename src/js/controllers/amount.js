@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService) {
+angular.module('copayApp.controllers').controller('amountController', function($rootScope, $scope, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, amazonService) {
 
   var unitToSatoshi;
   var satToUnit;
@@ -16,17 +16,18 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
+    $scope.buyAmazon = data.stateParams.buyAmazon;
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.buyAmazon;
     $scope.toColor = data.stateParams.toColor;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !data.stateParams.toAddress) {
+    if (!$scope.cardId && !$scope.buyAmazon && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -201,6 +202,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         amount: amountUSD,
         currency: 'USD'
       };
+
       ongoingProcess.set('Preparing transaction...', true);
       $timeout(function() {
 
@@ -240,6 +242,51 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       });
 
+    } else if ($scope.buyAmazon) {
+      ongoingProcess.set('Preparing transaction...', true);
+      var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
+      var dataSrc = {
+        currency: 'USD',
+        amount: amountUSD,
+        uuid: moment().unix() * 1000
+      };
+
+      amazonService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
+        if (err) {
+          ongoingProcess.set('Preparing transaction...', false);
+          popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+          return;
+        }
+
+        amazonService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
+          if (err) {
+            popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+            return;
+          }
+
+          var payProUrl = invoice.paymentUrls.BIP73;
+
+          payproService.getPayProDetails(payProUrl, function(err, payProDetails) {
+            ongoingProcess.set('Preparing transaction...', false);
+            if (err) {
+              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+              return;
+            }
+            var stateParams = {
+              giftAmountUSD: amountUSD,
+              giftAccessKey: dataInvoice.accessKey,
+              giftInvoiceTime: invoice.invoiceTime,
+              giftUUID: dataSrc.uuid,
+              toAmount: payProDetails.amount,
+              toAddress: payProDetails.toAddress,
+              description: payProDetails.memo,
+              paypro: payProDetails
+            };
+
+            $state.transitionTo('tabs.giftcards.amazon.confirm', stateParams);
+          }, true);
+        });
+      });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       if ($scope.customAmount) {
