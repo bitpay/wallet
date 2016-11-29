@@ -54,6 +54,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var wallets = profileService.getWallets({
       onlyComplete: true,
       network: networkName,
+      n: $scope.buyAmazon ? true : false
     });
 
     if (!wallets || !wallets.length) {
