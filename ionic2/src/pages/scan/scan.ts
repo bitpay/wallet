@@ -53,7 +53,7 @@ export class ScanPage {
 
   _handleCapabilities() {
     // always update the view
-    setTimeout(function(){
+    setTimeout(() => {
       if(!this.scannerService.isInitialized()){
         this.currentState = this.scannerStates.loading;
       } else if(!this.scannerIsAvailable){
@@ -91,14 +91,14 @@ export class ScanPage {
   }
 
   activate(){
-    this.scannerService.activate(function(){
+    this.scannerService.activate(() => {
       this._updateCapabilities();
       this._handleCapabilities();
       //$log.debug('Scanner activated, setting to visible...');
       this.currentState = this.scannerStates.visible;
         // pause to update the view
-        setTimeout(function(){
-          this.scannerService.scan(function(err, contents){
+        setTimeout(() => {
+          this.scannerService.scan((err, contents) => {
           if(err){
             //$log.debug('Scan canceled.');
           }
@@ -115,7 +115,7 @@ export class ScanPage {
   }
 
   authorize(){
-    this.scannerService.initialize(function(){
+    this.scannerService.initialize(() => {
       this._refreshScanView();
     });
   };
