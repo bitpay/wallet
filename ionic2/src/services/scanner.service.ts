@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { PlatformInfo } from './platform-info.service';
-
+import QRScanner from 'cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js';
 
 @Injectable()
 export class ScannerService {
   win: any = window;
   isDesktop: boolean = false;// = !platformInfo.isCordova;
-  QRScanner: any = this.win.QRScanner;//this.win.QRScanner;
   lightEnabled: boolean = false;
   backCamera: boolean = true; // the plugin defaults to the back camera
 
@@ -83,7 +82,7 @@ export class ScannerService {
    */
   gentleInitialize(callback?) {
     if(this.initializeStarted){
-      this.QRScanner.getStatus(function(status){
+      QRScanner.getStatus((status) => {
         this._completeInitialization(status, callback);
       });
       return;
@@ -91,7 +90,7 @@ export class ScannerService {
     this.initializeStarted = true;
     //$log.debug('Trying to pre-initialize QRScanner.');
     if(!this.isDesktop){
-      this.QRScanner.getStatus(function(status){
+      QRScanner.getStatus((status) => {
         this._checkCapabilities(status);
         if(status.authorized){
           //$log.debug('Camera permission already granted.');
@@ -108,13 +107,13 @@ export class ScannerService {
   };
 
   initialize(callback){
-    //this.QRScanner = this.win.QRScanner;
+    //QRScanner = this.win.QRScanner;
     //$log.debug('Initializing scanner...');
-    this.QRScanner.prepare(function(err, status){
+    QRScanner.prepare((err, status) => {
       if(err){
         //$log.error(err);
         // does not return `status` if there is an error
-        this.QRScanner.getStatus(function(status){
+        QRScanner.getStatus((status) => {
           this._completeInitialization(status, callback);
         });
       } else {
@@ -155,7 +154,7 @@ export class ScannerService {
    */
   activate(callback) {
     //$log.debug('Activating scanner...');
-      this.QRScanner.show(function(status){
+      QRScanner.show((status) => {
         this._checkCapabilities(status);
         if(typeof callback === "function"){
           callback(status);
@@ -178,15 +177,15 @@ export class ScannerService {
    */
   scan(callback) {
     //$log.debug('Scanning...');
-    this.QRScanner.scan(callback);
+    QRScanner.scan(callback);
   }
 
   pausePreview() {
-    this.QRScanner.pausePreview();
+    QRScanner.pausePreview();
   }
 
   resumePreview() {
-    this.QRScanner.resumePreview();
+    QRScanner.resumePreview();
   }
 
   /**
@@ -199,7 +198,7 @@ export class ScannerService {
    */
   deactivate() {
     //$log.debug('Deactivating scanner...');
-    this.QRScanner.cancelScan();
+    QRScanner.cancelScan();
     this.nextHide = setTimeout(this._hide, this.hideAfterSeconds * 1000);
     this.nextDestroy = setTimeout(this._destroy, this.destroyAfterSeconds * 1000);
   };
@@ -209,18 +208,18 @@ export class ScannerService {
   // On desktop, this fully turns off the camera (and any associated privacy lights)
   _hide(){
     //$log.debug('Scanner not in use for ' + hideAfterSeconds + ' seconds, hiding...');
-    this.QRScanner.hide();
+    QRScanner.hide();
   }
 
   // Reduce QRScanner power/processing consumption by the maximum amount
   _destroy(){
     //$log.debug('Scanner not in use for ' + destroyAfterSeconds + ' seconds, destroying...');
-    this.QRScanner.destroy();
+    QRScanner.destroy();
   }
 
   reinitialize(callback?) {
     this.initializeCompleted = false;
-    this.QRScanner.destroy();
+    QRScanner.destroy();
     this.initialize(callback);
   };
 
@@ -242,9 +241,9 @@ export class ScannerService {
       callback(this.lightEnabled);
     }
     if(this.lightEnabled){
-      this.QRScanner.disableLight(_handleResponse);
+      QRScanner.disableLight(_handleResponse);
     } else {
-      this.QRScanner.enableLight(_handleResponse);
+      QRScanner.enableLight(_handleResponse);
     }
   };
 
@@ -260,7 +259,7 @@ export class ScannerService {
     //   return index === 1? 'front' : 'back'; // front = 1, back = 0
     // }
     //$log.debug('Toggling to the ' + cameraToString(nextCamera) + ' camera...');
-    this.QRScanner.useCamera(nextCamera, function(err, status){
+    QRScanner.useCamera(nextCamera, (err, status) => {
       if(err){
         //$log.error(err);
       }
@@ -272,6 +271,6 @@ export class ScannerService {
 
   openSettings() {
     //$log.debug('Attempting to open device settings...');
-    this.QRScanner.openSettings();
+    QRScanner.openSettings();
   };
 }
