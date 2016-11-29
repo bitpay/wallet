@@ -33,8 +33,11 @@
 
     <div ng-class="{'amount-pane-send': !customAmount, 'amount-pane-receive': customAmount}">
 
-      <div class="amount-bar">
-        <div class="title" translate>Amount</div>
+      <div class="amount-bar oh">
+        <div class="title">
+          <span translate>Amount</span>
+          <span ng-show="buyAmazon" class="size-12">(Purchase Amount is limited to USD 500 per day)</span>
+        </div>
       </div>
 
       <div class="amount">
