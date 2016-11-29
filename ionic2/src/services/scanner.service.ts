@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { PlatformInfo } from './platform-info.service';
 import QRScanner from 'cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js';
 
+// import { ReplaySubject } from "rxjs/subject/ReplaySubject";
+
 @Injectable()
 export class ScannerService {
   win: any = window;
@@ -26,9 +28,15 @@ export class ScannerService {
   hideAfterSeconds: number = 10;
   destroyAfterSeconds: number = 5 * 60;
 
+  // public initializedObservable: ReplaySubject<boolean> = new ReplaySubject();
+
   constructor(platformInfo: PlatformInfo) {
     this.isDesktop = platformInfo.isCordova;
   }
+
+  // onInitialize(value: boolean) {
+  //   this.initializedObservable.next(value);
+  // }
 
   _checkCapabilities(status){
     //$log.debug('scannerService is reviewing platform capabilities...');
@@ -81,6 +89,7 @@ export class ScannerService {
    * The `status` of QRScanner is returned to the callback.
    */
   gentleInitialize(callback?) {
+    console.log('in here');
     if(this.initializeStarted){
       QRScanner.getStatus((status) => {
         this._completeInitialization(status, callback);
@@ -90,6 +99,7 @@ export class ScannerService {
     this.initializeStarted = true;
     //$log.debug('Trying to pre-initialize QRScanner.');
     if(!this.isDesktop){
+      console.log('here 2');
       QRScanner.getStatus((status) => {
         this._checkCapabilities(status);
         if(status.authorized){
@@ -101,6 +111,7 @@ export class ScannerService {
         }
       });
     } else {
+      console.log('here 3');
       //$log.debug('Camera permission assumed on desktop.');
       this.initialize(callback);
     }

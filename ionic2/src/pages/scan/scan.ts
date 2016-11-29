@@ -86,7 +86,9 @@ export class ScanPage {
   //
   ionViewDidEnter() {
     // try initializing and refreshing status any time the view is entered
-    this.scannerService.gentleInitialize();
+    this.scannerService.gentleInitialize(() => {
+      this._refreshScanView();
+    });
     this.scannerService.resumePreview();
   }
 
