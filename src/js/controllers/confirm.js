@@ -153,10 +153,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         };
 
         cachedSendMax[$scope.wallet.id] = $scope.sendMaxInfo;
-        var unitName = config.settings.unitName;
 
         var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-          fee: txFormatService.formatAmount(resp.fee) + ' ' + unitName
+          fee: txFormatService.formatAmountStr(resp.fee)
         });
         var warningMsg = verifyExcludedUtxos();
 
@@ -177,13 +176,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           var warningMsg = [];
           if (resp.utxosBelowFee > 0) {
             warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-              amountBelowFeeStr: txFormatService.formatAmount(resp.amountBelowFee) + ' ' + unitName
+              amountBelowFeeStr: txFormatService.formatAmountStr(resp.amountBelowFee)
             }));
           }
 
           if (resp.utxosAboveMaxSize > 0) {
             warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded", {
-              amountAboveMaxSizeStr: txFormatService.formatAmount(resp.amountAboveMaxSize) + ' ' + unitName
+              amountAboveMaxSizeStr: txFormatService.formatAmountStr(resp.amountAboveMaxSize)
             }));
           }
           return warningMsg.join('\n');
@@ -202,7 +201,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.displayAmount = txFormatService.formatAmount(data.amount, true);
     $scope.displayUnit = unitName;
-    $scope.fee = txFormatService.formatAmount(data.fee) + ' ' + unitName;
+    $scope.fee = txFormatService.formatAmountStr(data.fee);
     toAmount = parseFloat((data.amount * satToUnit).toFixed(unitDecimals));
     txFormatService.formatAlternativeStr(data.amount, function(v) {
       $scope.alternativeAmountStr = v;
