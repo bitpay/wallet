@@ -50,7 +50,7 @@
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
           </span>
         </div>
-        <a class="item item-icon-right" ng-hide="insufficientFunds || noMatchingWallet" ng-click="showWalletSelector()">
+        <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
