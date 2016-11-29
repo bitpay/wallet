@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     giftCardUUID = data.stateParams.giftCardUUID;
 
     toAmount = data.stateParams.toAmount;
+    cachedSendMax = {};
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
@@ -44,9 +45,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     setwallets();
-
-    if ($scope.useSendMax) $scope.showWalletSelector();
-    else initConfirm();
   });
 
   function setwallets() {
@@ -56,11 +54,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       n: $scope.isGiftCard ? true : false
     });
 
-    if (!$scope.wallets || !$scope.wallets.length) {
+    if (!$scope.wallets || !$scope.wallets.length)
       $scope.noMatchingWallet = true;
-    } else {
-      $scope.wallet = $scope.wallets[0];
-    }
 
     var filteredWallets = [];
     var index = 0;
@@ -82,16 +77,17 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (++index == $scope.wallets.length) {
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
-            if (!$scope.useSendMax) setWallet($scope.wallets[0]);
+            if ($scope.useSendMax) $scope.showWalletSelector();
+            else initConfirm();
           } else {
             if (!enoughFunds) $scope.insufficientFunds = true;
             $log.warn('No wallet available to make the payment');
           }
+          $timeout(function() {
+            $scope.$apply();
+          });
         }
       });
-    });
-    $timeout(function() {
-      $scope.$apply();
     });
   };
 
@@ -107,13 +103,18 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if ($scope.paypro) _paymentTimeControl($scope.paypro.expires);
 
+    $scope.showWalletSelector();
     $timeout(function() {
       $scope.$apply();
     });
   };
 
+  function resetValues() {
+    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
+  };
+
   $scope.getSendMaxInfo = function() {
-    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = null;
+    resetValues();
 
     ongoingProcess.set('gettingFeeLevels', true);
     feeService.getCurrentFeeValue($scope.network, function(err, feePerKb) {
@@ -192,6 +193,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function setSendMaxValues(data) {
+    resetValues();
     var config = configService.getSync().wallet;
     var unitName = config.settings.unitName;
     var unitToSatoshi = config.settings.unitToSatoshi;
@@ -205,6 +207,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txFormatService.formatAlternativeStr(data.amount, function(v) {
       $scope.alternativeAmountStr = v;
     });
+    $timeout(function() {
+      $scope.$apply();
+    });
   };
 
   $scope.$on('accepted', function(event) {
@@ -212,7 +217,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.showWalletSelector = function() {
-    if ($scope.insufficientFunds || $scope.noMatchingWallet) return;
+    if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
     $scope.showWallets = true;
   };
 
@@ -239,7 +244,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (typeof res != 'undefined') $scope.description = res;
       $timeout(function() {
         $scope.$apply();
-      }, 100);
+      });
     });
   };
 
@@ -316,7 +321,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $timeout(function() {
       $scope.$apply();
     });
-    popupService.showAlert(gettextCatalog.getString('Error at confirm:'), msg);
+    popupService.showAlert(gettextCatalog.getString('Error at confirm'), msg);
   };
 
   function apply(txp) {
@@ -362,7 +367,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if ($scope.sendMaxInfo) {
       txp.inputs = $scope.sendMaxInfo.inputs;
-      txp.feePerKb = $scope.sendMaxInfo.feePerKb;
+      txp.fee = $scope.sendMaxInfo.fee;
     } else
       txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
 
