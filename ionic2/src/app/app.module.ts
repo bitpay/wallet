@@ -3,6 +3,9 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 import { CopayApp } from './app.component';
 import { PAGES } from '../pages/pages';
 
+import { PlatformInfo } from '../services/platform-info.service';
+import { ScannerService } from '../services/scanner.service';
+
 @NgModule({
   declarations: [
     CopayApp,
@@ -16,6 +19,9 @@ import { PAGES } from '../pages/pages';
     CopayApp,
     PAGES
   ],
-  providers: []
+  providers: [
+    PlatformInfo,
+    ScannerService
+  ]
 })
 export class AppModule {}
