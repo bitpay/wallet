@@ -13,15 +13,15 @@ page-scan {
   .zero-state-cta {
     padding-bottom: 6vh;
   }
-  &-has-problems,
-  &-loading-camera {
+  .has-problems,
+  .loading-camera {
     background-color: $scannerBackgroundColor;
   }
-  &-loading-camera {
+  .loading-camera {
     height: 100%;
     width: 100%
   }
-  &-camera-ready {
+  .camera-ready {
     // view background is transparent to show video preview
     background: none transparent;
     .scanner-controls {
