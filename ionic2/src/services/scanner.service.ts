@@ -31,7 +31,7 @@ export class ScannerService {
   // public initializedObservable: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(platformInfo: PlatformInfo) {
-    this.isDesktop = platformInfo.isCordova;
+    this.isDesktop = !platformInfo.isCordova;
   }
 
   // onInitialize(value: boolean) {

@@ -1,6 +1,9 @@
 $scannerBackgroundColor: #060d2d;
 
 page-scan {
+  ion-content.content-md {
+    background-color: transparent;
+  }
   color: #fff;
   text-align: center;
   background: transparent none;
@@ -73,4 +76,8 @@ page-scan {
 
 #cordova-plugin-qrscanner-still, #cordova-plugin-qrscanner-video-preview {
   background-color: $scannerBackgroundColor !important;
+}
+
+ion-app.md {
+  background-color: transparent !important;
 }
