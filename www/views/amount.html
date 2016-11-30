@@ -16,13 +16,13 @@
         <i class="icon big-icon-svg" ng-if="isWallet">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
-        <span ng-if="!isWallet && !buyAmazon">
+        <span ng-if="!isWallet && !isGiftCard">
           <gravatar ng-if="!cardId" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
           <i ng-if="cardId" class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
         </span>
-        <span ng-if="buyAmazon">
+        <span ng-if="isGiftCard">
           <i class="icon big-icon-svg">
             <div class="bg icon-amazon"></div>
           </i>
@@ -36,7 +36,7 @@
       <div class="amount-bar oh">
         <div class="title">
           <span translate>Amount</span>
-          <span ng-show="buyAmazon" class="size-12">(Purchase Amount is limited to USD 500 per day)</span>
+          <span ng-show="isGiftCard" class="size-12">(Purchase Amount is limited to USD 500 per day)</span>
         </div>
       </div>
 

@@ -16,18 +16,18 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    $scope.buyAmazon = data.stateParams.buyAmazon;
+    $scope.isGiftCard = data.stateParams.isGiftCard;
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.buyAmazon;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard;
     $scope.toColor = data.stateParams.toColor;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !$scope.buyAmazon && !data.stateParams.toAddress) {
+    if (!$scope.cardId && !$scope.isGiftCard && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -242,7 +242,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       });
 
-    } else if ($scope.buyAmazon) {
+    } else if ($scope.isGiftCard) {
       ongoingProcess.set('Preparing transaction...', true);
       // Get first wallet as UUID
       var uuid;
@@ -284,10 +284,10 @@ angular.module('copayApp.controllers').controller('amountController', function($
               return;
             }
             var stateParams = {
-              giftAmountUSD: amountUSD,
-              giftAccessKey: dataInvoice.accessKey,
-              giftInvoiceTime: invoice.invoiceTime,
-              giftUUID: dataSrc.uuid,
+              giftCardAmountUSD: amountUSD,
+              giftCardAccessKey: dataInvoice.accessKey,
+              giftCardInvoiceTime: invoice.invoiceTime,
+              giftCardUUID: dataSrc.uuid,
               toAmount: payProDetails.amount,
               toAddress: payProDetails.toAddress,
               description: payProDetails.memo,

@@ -4,15 +4,22 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var cachedTxp = {};
   var isChromeApp = platformInfo.isChromeApp;
   var countDown = null;
+  var giftCardAmountUSD;
+  var giftCardAccessKey;
+  var giftCardInvoiceTime;
+  var giftCardUUID;
   $scope.isCordova = platformInfo.isCordova;
   $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.buyAmazon = data.stateParams.buyAmazon;
-    $scope.giftAmountUSD = data.stateParams.giftAmountUSD;
-    $scope.giftAccessKey = data.stateParams.giftAccessKey;
-    $scope.giftInvoiceTime = data.stateParams.giftInvoiceTime;
-    $scope.giftUUID = data.stateParams.giftUUID;
+
+    // Amazon.com Gift Card parameters
+    $scope.isGiftCard = data.stateParams.isGiftCard;
+    giftCardAmountUSD = data.stateParams.giftCardAmountUSD;
+    giftCardAccessKey = data.stateParams.giftCardAccessKey;
+    giftCardInvoiceTime = data.stateParams.giftCardInvoiceTime;
+    giftCardUUID = data.stateParams.giftCardUUID;
+
     $scope.isWallet = data.stateParams.isWallet;
     $scope.cardId = data.stateParams.cardId;
     $scope.toAmount = data.stateParams.toAmount;
@@ -54,7 +61,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var wallets = profileService.getWallets({
       onlyComplete: true,
       network: networkName,
-      n: $scope.buyAmazon ? true : false
+      n: $scope.isGiftCard ? true : false
     });
 
     if (!wallets || !wallets.length) {
@@ -420,12 +427,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         var invoiceId = JSON.parse($scope.paypro.merchant_data).invoiceId;
         var dataSrc = {
           currency: 'USD',
-          amount: $scope.giftAmountUSD,
-          uuid: $scope.giftUUID,
-          accessKey: $scope.giftAccessKey,
+          amount: giftCardAmountUSD,
+          uuid: giftCardUUID,
+          accessKey: giftCardAccessKey,
           invoiceId: invoiceId,
           invoiceUrl: $scope.paypro.url,
-          invoiceTime: $scope.giftInvoiceTime
+          invoiceTime: giftCardInvoiceTime
         };
         debounceCreate(count, dataSrc, onSendStatusChange);
       }
