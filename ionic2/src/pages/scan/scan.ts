@@ -148,7 +148,6 @@ export class ScanPage {
   toggleLight(){
     this.scannerService.toggleLight((lightEnabled) => {
       this.lightActive = lightEnabled;
-      //$scope.$apply()
     });
   }
 
