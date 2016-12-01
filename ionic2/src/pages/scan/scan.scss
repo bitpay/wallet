@@ -1,6 +1,9 @@
 $scannerBackgroundColor: #060d2d;
 
 page-scan {
+  .toolbar-background.toolbar-background-ios {
+    border: 0;
+  }
   ion-content {
     &.content-md,
     &.content-ios {
