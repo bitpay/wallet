@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Logger } from 'angular2-logger/core';
 
 @Injectable()
 export class PlatformInfo {
@@ -17,9 +18,9 @@ export class PlatformInfo {
   isDevel: boolean;
   hasClick: boolean = false;
 
-  constructor() {
+  constructor(public logger: Logger) {
     if (!this.ua) {
-      console.log('Could not determine navigator. Using fixed string');
+      this.logger.debug('Could not determine navigator. Using fixed string');
       this.ua = 'dummy user-agent';
     }
 
@@ -52,14 +53,6 @@ export class PlatformInfo {
 
   isNodeWebkit() {
     return false;
-    // var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
-    // if (isNode) {
-    //   try {
-    //     return (typeof require('nw.gui') !== "undefined");
-    //   } catch (e) {
-    //     return false;
-    //   }
-    // }
   }
 
 }
