@@ -5,6 +5,11 @@
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="showSendMaxMenu($event)" ng-if="showMenu">
+        <i class="icon ion-ios-more"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content scroll="false">

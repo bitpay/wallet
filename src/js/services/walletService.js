@@ -562,20 +562,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     if (lodash.isEmpty(txp) || lodash.isEmpty(wallet))
       return cb('MISSING_PARAMETER');
 
-    if (txp.sendMax) {
-      wallet.createTxProposal(txp, function(err, createdTxp) {
-        if (err) return cb(err);
-        else return cb(null, createdTxp);
-      });
-    } else {
-      wallet.createTxProposal(txp, function(err, createdTxp) {
-        if (err) return cb(err);
-        else {
-          $log.debug('Transaction created');
-          return cb(null, createdTxp);
-        }
-      });
-    }
+    wallet.createTxProposal(txp, function(err, createdTxp) {
+      if (err) return cb(err);
+      else {
+        $log.debug('Transaction created');
+        return cb(null, createdTxp);
+      }
+    });
   };
 
   root.publishTx = function(wallet, txp, cb) {
@@ -1083,6 +1076,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return type;
   };
 
+  root.getSendMaxInfo = function(wallet, opts, cb) {
+    opts = opts || {};
+    wallet.getSendMaxInfo(opts, function(err, res) {
+      return cb(err, res);
+    });
+  };
 
   return root;
 });
