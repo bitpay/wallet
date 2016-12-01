@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PlatformInfo } from './platform-info.service';
+import { Logger } from 'angular2-logger/core';
 import QRScanner from 'cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js';
 
 @Injectable()
@@ -26,14 +27,14 @@ export class ScannerService {
   hideAfterSeconds: number = 10;
   destroyAfterSeconds: number = 5 * 60;
 
-  constructor(platformInfo: PlatformInfo) {
+  constructor(public platformInfo: PlatformInfo, public logger: Logger) {
     this.isDesktop = !platformInfo.isCordova;
     this.isAvailable = this.isDesktop ? false : true; // assume camera exists on mobile
     this.hasPermission = this.isDesktop ? true: false; // assume desktop has permission
   }
 
   _checkCapabilities(status){
-    console.log('scannerService is reviewing platform capabilities...');
+    this.logger.debug('scannerService is reviewing platform capabilities...');
     // Permission can be assumed on the desktop builds
     this.hasPermission = (this.isDesktop || status.authorized) ? true: false;
     this.isDenied = status.denied ? true : false;
@@ -48,15 +49,15 @@ export class ScannerService {
     let _orIsNot = (bool) => {
       return bool? '' : 'not ';
     };
-    console.log('A camera is ' + _orIsNot(this.isAvailable) + 'available to this app.');
+    this.logger.debug('A camera is ' + _orIsNot(this.isAvailable) + 'available to this app.');
     let access = 'not authorized';
     if(this.hasPermission) access = 'authorized';
     if(this.isDenied) access = 'denied';
     if(this.isRestricted) access = 'restricted';
-    console.log('Camera access is ' + access + '.');
-    console.log('Support for opening device settings is ' + _orIsNot(this.canOpenSettings) + 'available on this platform.');
-    console.log('A light is ' + _orIsNot(this.canEnableLight) + 'available on this platform.');
-    console.log('A second camera is ' + _orIsNot(this.canChangeCamera) + 'available on this platform.');
+    this.logger.debug('Camera access is ' + access + '.');
+    this.logger.debug('Support for opening device settings is ' + _orIsNot(this.canOpenSettings) + 'available on this platform.');
+    this.logger.debug('A light is ' + _orIsNot(this.canEnableLight) + 'available on this platform.');
+    this.logger.debug('A second camera is ' + _orIsNot(this.canChangeCamera) + 'available on this platform.');
   }
 
   /**
@@ -89,26 +90,26 @@ export class ScannerService {
       return;
     }
     this.initializeStarted = true;
-    console.log('Trying to pre-initialize QRScanner.');
+    this.logger.debug('Trying to pre-initialize QRScanner.');
     if(!this.isDesktop){
       QRScanner.getStatus((status) => {
         this._checkCapabilities(status);
         if(status.authorized){
-          console.log('Camera permission already granted.');
+          this.logger.debug('Camera permission already granted.');
           this.initialize(callback);
         } else {
-          console.log('QRScanner not authorized, waiting to initalize.');
+          this.logger.debug('QRScanner not authorized, waiting to initalize.');
           this._completeInitialization(status, callback);
         }
       });
     } else {
-      console.log('Camera permission assumed on desktop.');
+      this.logger.debug('Camera permission assumed on desktop.');
       this.initialize(callback);
     }
   };
 
   initialize(callback){
-    console.log('Initializing scanner...');
+    this.logger.debug('Initializing scanner...');
     QRScanner.prepare((err, status) => {
       if(err){
         console.error(err);
@@ -147,7 +148,7 @@ export class ScannerService {
    * is complete.
    */
   activate(callback) {
-    console.log('Activating scanner...');
+    this.logger.debug('Activating scanner...');
     QRScanner.show((status) => {
       this._checkCapabilities(status);
       if(typeof callback === "function"){
@@ -170,7 +171,7 @@ export class ScannerService {
    * The callback receives: (err, contents)
    */
   scan(callback) {
-    console.log('Scanning...');
+    this.logger.debug('Scanning...');
     QRScanner.scan(callback);
   }
 
@@ -191,7 +192,7 @@ export class ScannerService {
    * is complete.
    */
   deactivate() {
-    console.log('Deactivating scanner...');
+    this.logger.debug('Deactivating scanner...');
     QRScanner.cancelScan();
     this.nextHide = setTimeout(this._hide, this.hideAfterSeconds * 1000);
     this.nextDestroy = setTimeout(this._destroy, this.destroyAfterSeconds * 1000);
@@ -201,13 +202,13 @@ export class ScannerService {
   // On mobile platforms, this can reduce GPU/power usage
   // On desktop, this fully turns off the camera (and any associated privacy lights)
   _hide(){
-    console.log('Scanner not in use for ' + this.hideAfterSeconds + ' seconds, hiding...');
+    this.logger.debug('Scanner not in use for ' + this.hideAfterSeconds + ' seconds, hiding...');
     QRScanner.hide();
   }
 
   // Reduce QRScanner power/processing consumption by the maximum amount
   _destroy(){
-    console.log('Scanner not in use for ' + this.destroyAfterSeconds + ' seconds, destroying...');
+    this.logger.debug('Scanner not in use for ' + this.destroyAfterSeconds + ' seconds, destroying...');
     QRScanner.destroy();
   }
 
@@ -223,14 +224,14 @@ export class ScannerService {
    * The callback receives a boolean which is `true` if the light is enabled.
    */
   toggleLight(callback) {
-    console.log('Toggling light...');
+    this.logger.debug('Toggling light...');
     let _handleResponse = (err, status) => {
       if(err){
         console.error(err);
       } else {
         this.lightEnabled = status.lightEnabled;
         let state = this.lightEnabled? 'enabled' : 'disabled';
-        console.log('Light ' + state + '.');
+        this.logger.debug('Light ' + state + '.');
       }
       callback(this.lightEnabled);
     }
@@ -252,19 +253,19 @@ export class ScannerService {
     let cameraToString = (index) => {
       return index === 1? 'front' : 'back'; // front = 1, back = 0
     }
-    console.log('Toggling to the ' + cameraToString(nextCamera) + ' camera...');
+    this.logger.debug('Toggling to the ' + cameraToString(nextCamera) + ' camera...');
     QRScanner.useCamera(nextCamera, (err, status) => {
       if(err){
         console.error(err);
       }
       this.backCamera = status.currentCamera === 1? false : true;
-      console.log('Camera toggled. Now using the ' + cameraToString(this.backCamera) + ' camera.');
+      this.logger.debug('Camera toggled. Now using the ' + cameraToString(this.backCamera) + ' camera.');
       callback(status);
     });
   };
 
   openSettings() {
-    console.log('Attempting to open device settings...');
+    this.logger.debug('Attempting to open device settings...');
     QRScanner.openSettings();
   };
 }

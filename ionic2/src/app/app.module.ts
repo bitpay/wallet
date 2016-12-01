@@ -6,6 +6,9 @@ import { PAGES } from '../pages/pages';
 import { PlatformInfo } from '../services/platform-info.service';
 import { ScannerService } from '../services/scanner.service';
 
+import { Logger, Options as LoggerOptions, Level as LoggerLevel } from "angular2-logger/core";
+
+
 @NgModule({
   declarations: [
     CopayApp,
@@ -20,6 +23,8 @@ import { ScannerService } from '../services/scanner.service';
     PAGES
   ],
   providers: [
+    Logger,
+    { provide: LoggerOptions, useValue: { level: LoggerLevel.LOG } },
     PlatformInfo,
     ScannerService
   ]

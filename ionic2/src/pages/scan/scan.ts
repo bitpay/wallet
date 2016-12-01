@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
+import { Logger } from 'angular2-logger/core';
 import { ScannerService } from '../../services/scanner.service';
 
 @Component({
@@ -8,6 +9,8 @@ import { ScannerService } from '../../services/scanner.service';
   templateUrl: 'scan.html'
 })
 export class ScanPage {
+
+  passthroughMode: boolean = false;
 
   scannerStates:any = {
     unauthorized: 'unauthorized',
@@ -35,10 +38,14 @@ export class ScanPage {
   };
 
   constructor(
-    public navCtrl: NavController,
+    public logger: Logger,
+    public nav: NavController,
+    public navParams: NavParams,
     public scannerService: ScannerService
     //public incomingData: IncomingDataService
-  ) {}
+  ) {
+    this.passthroughMode = this.navParams.data.passthroughMode;
+  }
 
   _updateCapabilities() {
     let capabilities = this.scannerService.getCapabilities();
@@ -65,7 +72,7 @@ export class ScanPage {
       } else if(!this.scannerHasPermission){
         this.currentState = this.scannerStates.unauthorized;
       }
-      //$log.debug('Scan view state set to: ' + $scope.currentState);
+      this.logger.debug('Scan view state set to: ' + this.currentState);
     });
   }
 
@@ -80,7 +87,7 @@ export class ScanPage {
   // // This could be much cleaner with a Promise API
   // // (needs a polyfill for some platforms)
   // $rootScope.$on('scannerServiceInitialized', () => {
-  //   //$log.debug('Scanner initialization finished, reinitializing scan view...');
+  //   //this.logger.debug('Scanner initialization finished, reinitializing scan view...');
   //   this._refreshScanView();
   // });
   //
@@ -96,18 +103,18 @@ export class ScanPage {
     this.scannerService.activate(() => {
       this._updateCapabilities();
       this._handleCapabilities();
-      //$log.debug('Scanner activated, setting to visible...');
+      this.logger.debug('Scanner activated, setting to visible...');
       this.currentState = this.scannerStates.visible;
         // pause to update the view
         setTimeout(() => {
           this.scannerService.scan((err, contents) => {
           if(err){
-            //$log.debug('Scan canceled.');
+            this.logger.debug('Scan canceled.');
           }
-          // else if ($state.params.passthroughMode) {
-          //   $rootScope.scanResult = contents;
-          //   this.goBack();
-          // }
+          else if (this.passthroughMode) {
+            //$rootScope.scanResult = contents;
+            this.goBack();
+          }
           else {
             this.handleSuccessfulScan(contents);
           }
@@ -120,14 +127,14 @@ export class ScanPage {
     this.scannerService.initialize(() => {
       this._refreshScanView();
     });
-  };
+  }
 
   ionViewDidLeave() {
     this.scannerService.deactivate();
   }
 
   handleSuccessfulScan(contents){
-    //$log.debug('Scan returned: "' + contents + '"');
+    this.logger.debug('Scan returned: "' + contents + '"');
     this.scannerService.pausePreview();
     this.incomingData.redir(contents);
   }
@@ -157,19 +164,16 @@ export class ScanPage {
     // (a short delay for the user to see the visual feedback)
       setTimeout(() => {
         this.cameraToggleActive = false;
-        //$log.debug('Camera toggle control deactivated.');
+        this.logger.debug('Camera toggle control deactivated.');
       }, 200);
     });
-  };
+  }
 
   canGoBack(){
-    //return $state.params.passthroughMode;
-    return false;
-  };
+    return this.passthroughMode;
+  }
+
   goBack(){
-    // $ionicHistory.nextViewOptions({
-    //   disableAnimate: true
-    // });
-    // $ionicHistory.backView().go();
+    this.nav.pop();
   }
 }
