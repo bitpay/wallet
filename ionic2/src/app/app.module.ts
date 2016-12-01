@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
+
+import { CoreModule } from './core/core.module'
 import { CopayApp } from './app.component';
 import { PAGES } from '../pages/pages';
 
@@ -15,7 +17,8 @@ import { Logger, Options as LoggerOptions, Level as LoggerLevel } from "angular2
     PAGES
   ],
   imports: [
-    IonicModule.forRoot(CopayApp)
+    IonicModule.forRoot(CopayApp),
+		CoreModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
