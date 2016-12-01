@@ -33,6 +33,7 @@ export class ScanPage {
   cameraToggleActive: boolean = false;
   lightActive: boolean = false;
 
+  // placeholder for incomingData service for now
   incomingData: any = {
     redir: () => {}
   };
@@ -76,21 +77,14 @@ export class ScanPage {
     });
   }
 
-  _refreshScanView(){
+  _refreshScanView() {
     this._updateCapabilities();
     this._handleCapabilities();
-    if(this.scannerHasPermission){
+    if(this.scannerHasPermission) {
       this.activate();
     }
   }
 
-  // // This could be much cleaner with a Promise API
-  // // (needs a polyfill for some platforms)
-  // $rootScope.$on('scannerServiceInitialized', () => {
-  //   //this.logger.debug('Scanner initialization finished, reinitializing scan view...');
-  //   this._refreshScanView();
-  // });
-  //
   ionViewDidEnter() {
     // try initializing and refreshing status any time the view is entered
     this.scannerService.gentleInitialize(() => {
@@ -112,7 +106,6 @@ export class ScanPage {
             this.logger.debug('Scan canceled.');
           }
           else if (this.passthroughMode) {
-            //$rootScope.scanResult = contents;
             this.goBack();
           }
           else {

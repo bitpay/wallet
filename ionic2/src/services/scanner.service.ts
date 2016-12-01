@@ -27,6 +27,8 @@ export class ScannerService {
   hideAfterSeconds: number = 10;
   destroyAfterSeconds: number = 5 * 60;
 
+  latestScanResult: any;
+
   constructor(public platformInfo: PlatformInfo, public logger: Logger) {
     this.isDesktop = !platformInfo.isCordova;
     this.isAvailable = this.isDesktop ? false : true; // assume camera exists on mobile
@@ -129,7 +131,6 @@ export class ScannerService {
   _completeInitialization(status, callback){
     this._checkCapabilities(status);
     this.initializeCompleted = true;
-    //$rootScope.$emit('scannerServiceInitialized');
     if(typeof callback === "function"){
       callback(status);
     }
@@ -172,7 +173,10 @@ export class ScannerService {
    */
   scan(callback) {
     this.logger.debug('Scanning...');
-    QRScanner.scan(callback);
+    QRScanner.scan((err, contents) => {
+      this.latestScanResult = contents;
+      callback(err, contents);
+    });
   }
 
   pausePreview() {
@@ -251,7 +255,7 @@ export class ScannerService {
   toggleCamera(callback) {
     let nextCamera = this.backCamera ? 1 : 0;
     let cameraToString = (index) => {
-      return index === 1? 'front' : 'back'; // front = 1, back = 0
+      return index === 1 ? 'front' : 'back'; // front = 1, back = 0
     }
     this.logger.debug('Toggling to the ' + cameraToString(nextCamera) + ' camera...');
     QRScanner.useCamera(nextCamera, (err, status) => {
