@@ -16,10 +16,15 @@
         <i class="icon big-icon-svg" ng-if="isWallet">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
-        <span ng-if="!isWallet">
+        <span ng-if="!isWallet && !isGiftCard">
           <gravatar ng-if="!cardId" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
           <i ng-if="cardId" class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
+          </i>
+        </span>
+        <span ng-if="isGiftCard">
+          <i class="icon big-icon-svg">
+            <div class="bg icon-amazon"></div>
           </i>
         </span>
         <span class="m10l">{{toName || toAddress}}</span>
@@ -28,8 +33,11 @@
 
     <div ng-class="{'amount-pane-send': !customAmount, 'amount-pane-receive': customAmount}">
 
-      <div class="amount-bar">
-        <div class="title" translate>Amount</div>
+      <div class="amount-bar oh">
+        <div class="title">
+          <span translate>Amount</span>
+          <span ng-show="isGiftCard" class="size-12">(Purchase Amount is limited to USD 500 per day)</span>
+        </div>
       </div>
 
       <div class="amount">
