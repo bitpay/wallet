@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
+import { Logger, Options as LoggerOptions, Level as LoggerLevel } from "angular2-logger/core";
 
 import { CoreModule } from './core/core.module'
 import { CopayApp } from './app.component';
 import { PAGES } from '../pages/pages';
-
-import { PlatformInfo } from '../services/platform-info.service';
-import { ScannerService } from '../services/scanner.service';
-
-import { Logger, Options as LoggerOptions, Level as LoggerLevel } from "angular2-logger/core";
-
+import { SERVICES } from '../services/services';
 
 @NgModule({
   declarations: [
@@ -28,8 +24,7 @@ import { Logger, Options as LoggerOptions, Level as LoggerLevel } from "angular2
   providers: [
     Logger,
     { provide: LoggerOptions, useValue: { level: LoggerLevel.LOG } },
-    PlatformInfo,
-    ScannerService
+    SERVICES
   ]
 })
 export class AppModule {}
