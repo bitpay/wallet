@@ -312,7 +312,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         return tx.txid != endingTxid;
       });
 
-      return cb(null, res, res.length == limit);
+      return cb(null, res, res.length >= limit);
     });
   };
 
