@@ -252,6 +252,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
           network: 'livenet',
         })[0].id;
       } catch(err) {
+        ongoingProcess.set('Preparing transaction...', false);
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('No wallet found!'));
         return;
       };
@@ -271,6 +272,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
         amazonService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
           if (err) {
+            ongoingProcess.set('Preparing transaction...', false);
             popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
             return;
           }
