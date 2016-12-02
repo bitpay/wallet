@@ -34,12 +34,12 @@ export class IncomingDataService {
 
     // BIP21
     if (this.bitcore.URI.isValid(data)) {
-      var parsed = new this.bitcore.URI(data);
+      let parsed = new this.bitcore.URI(data);
 
-      var addr = parsed.address ? parsed.address.toString() : '';
-      var message = parsed.message;
+      let addr = parsed.address ? parsed.address.toString() : '';
+      let message = parsed.message;
 
-      var amount = parsed.amount ?  parsed.amount : '';
+      let amount = parsed.amount ?  parsed.amount : '';
 
       if (parsed.r) {
         this.payproService.getPayProDetails(parsed.r, function(err, details) {
@@ -83,9 +83,9 @@ export class IncomingDataService {
 
       // BitPayCard Authentication
     } else if (data && data.indexOf(this.win.appConfig.name + '://') === 0) {
-        var secret = this.getParameterByName('secret', data);
-        var email = this.getParameterByName('email', data);
-        var otp = this.getParameterByName('otp', data);
+        let secret = this.getParameterByName('secret', data);
+        let email = this.getParameterByName('email', data);
+        let otp = this.getParameterByName('otp', data);
         $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
           $state.transitionTo('tabs.bitpayCardIntro', {
             secret: secret,
@@ -121,13 +121,13 @@ export class IncomingDataService {
 
   sanitizeUri(data) {
     // Fixes when a region uses comma to separate decimals
-    var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
-    var match = regex.exec(data);
+    let regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
+    let match = regex.exec(data);
     if (!match || match.length === 0) {
       return data;
     }
-    var value = match[0].replace(',', '.');
-    var newUri = data.replace(regex, value);
+    let value = match[0].replace(',', '.');
+    let newUri = data.replace(regex, value);
 
     // mobile devices, uris like copay://glidera
     newUri.replace('://', ':');
@@ -138,7 +138,7 @@ export class IncomingDataService {
   getParameterByName(name, url) {
     if (!url) return;
     name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
     results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
@@ -153,7 +153,7 @@ export class IncomingDataService {
   }
 
   handlePayPro(payProDetails){
-    var stateParams = {
+    let stateParams = {
       toAmount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
