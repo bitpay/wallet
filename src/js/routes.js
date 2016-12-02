@@ -924,7 +924,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.buyandsell.glidera.confirm', {
-        url: '/confirm/:toAmount/:glideraBuy/:glideraAccessToken',
+        url: '/confirm/:toAmount/:glideraBuy/:glideraSell/:glideraAccessToken',
         views: {
           'tab-home@tabs': {
             controller: 'confirmController',

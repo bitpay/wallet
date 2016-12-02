@@ -19,6 +19,11 @@
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
           <div class="alternative">{{alternativeAmountStr || '...'}}</div>
         </div>
+        <div ng-show="isGlidera" class="buy-price">
+          <div ng-show="buyPrice.qty">
+            Buy {{buyPrice.subtotal|currency:'':2}} {{buyPrice.currency}} in Bitcoin at  {{buyPrice.price}} {{buyPrice.currency}}/BTC
+          </div>
+        </div>
       </div>
       <div class="info">
         <div class="item single-line" ng-if="paypro">
@@ -29,11 +34,12 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to">
-            <img ng-if="!cardId && !isGiftCard" src="img/icon-bitcoin-small.svg">
+            <img ng-if="!cardId && !isGiftCard && !isGlidera" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
             <i ng-if="isGiftCard" class="icon big-icon-svg">
               <div class="bg icon-amazon"></div>
             </i>
+            <img ng-if="isGlidera" src="img/glidera-logo.png" width="90"/>
 
             <div copy-to-clipboard="toAddress" ng-if="!paypro" class="ellipsis">
               <contact ng-if="!toName" address="{{toAddress}}"></contact>
@@ -67,7 +73,7 @@
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet">
+        <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet && !isGlidera">
           <span class="label" translate>Fee: {{feeLevel}}</span>
           <span class="item-note">
             {{fee || '...'}}

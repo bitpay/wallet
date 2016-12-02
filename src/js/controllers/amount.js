@@ -340,6 +340,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       });
     } else if ($scope.isGlidera) {
+      var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.buyandsell.glidera.confirm', {
         toAmount: (amount * unitToSatoshi).toFixed(0),
         glideraBuy: $scope.glideraBuy,
