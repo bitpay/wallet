@@ -37,7 +37,7 @@
     position: absolute;
     top: 10px;
   }
-  .amount-pane-send {
+  .amount-pane-recipient {
     position: absolute;
     top: 95px;
     bottom: 0;
@@ -68,7 +68,7 @@
       }
     }
   }
-  .amount-pane-receive {
+  .amount-pane-no-recipient {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -84,6 +84,10 @@
         padding-top: 10px;
         color: $dark-gray;
         font-weight: bold;
+        .limits {
+          margin-top: 20px;
+          color: $light-gray;
+        }
       }
     }
     .amount {

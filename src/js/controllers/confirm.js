@@ -21,6 +21,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     giftCardInvoiceTime = data.stateParams.giftCardInvoiceTime;
     giftCardUUID = data.stateParams.giftCardUUID;
 
+    // Glidera parameters
+
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
@@ -129,6 +131,23 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function resetValues() {
     $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
+  };
+
+  $scope.getBuyPrice = function(token, price) {
+
+    if (!price || (price && !price.qty && !price.fiat)) {
+      $scope.buyPrice = null;
+      return;
+    }
+    $scope.gettingBuyPrice = true;
+    glideraService.buyPrice(token, price, function(err, buyPrice) {
+      $scope.gettingBuyPrice = false;
+      if (err) {
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get exchange information. Please, try again'));
+        return;
+      }
+      $scope.buyPrice = buyPrice;
+    });
   };
 
   $scope.getSendMaxInfo = function() {
@@ -535,6 +554,24 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $state.transitionTo('tabs.home');
       });
     }
+  };
+
+  $scope.get2faCode = function(token, cb) {
+    ongoingProcess.set('Sending 2FA code...', true);
+    $timeout(function() {
+      glideraService.get2faCode(token, function(err, sent) {
+        ongoingProcess.set('Sending 2FA code...', false);
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send confirmation code to your phone'));
+          return;
+        }
+        var title = gettextCatalog.getString("Please, enter the code below");
+        var message = gettextCatalog.getString("A SMS containing a confirmation code was sent to your phone.");
+        popupService.showPrompt(title, message, null, function(code) {
+          return cb(code);
+        });
+      });
+    }, 100);
   };
 
   function publishAndSign(wallet, txp, onSendStatusChange) {
