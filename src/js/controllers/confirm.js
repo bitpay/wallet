@@ -22,6 +22,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     giftCardUUID = data.stateParams.giftCardUUID;
 
     // Glidera parameters
+    $scope.isGlidera = data.stateParams.isGlidera;
+    $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};

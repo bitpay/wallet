@@ -912,7 +912,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.buyandsell.glidera.amount', {
-        url: '/amount/:glideraBuy/:glideraAccessToken',
+        url: '/amount/:glideraBuy/:glideraSell/:glideraAccessToken',
         views: {
           'tab-home@tabs': {
             controller: 'amountController',
