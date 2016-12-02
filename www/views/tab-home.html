@@ -114,8 +114,8 @@
     </div>
 
     <div class="list card" ng-if="wallets[0] && externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
-      <div class="item item-sub item-icon-right item-heading" translate>
-        Buy &amp; Sell Bitcoin
+      <div class="item item-sub item-icon-right item-heading">
+        <span translate>Buy &amp; Sell Bitcoin</span>
         <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <div>
@@ -142,8 +142,8 @@
 
     <div class="list card"
          ng-show="nextStepEnabled && wallets[0]">
-      <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
-        Next steps
+      <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()">
+        <span translate>Next steps</span>
         <i class="icon bp-arrow-up" ng-show="!hideNextSteps"></i>
         <i class="icon bp-arrow-down" ng-show="hideNextSteps"></i>
       </div>
