@@ -241,6 +241,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.showWalletSelector = function() {
+    $scope.walletSelectorTitle = !$scope.isGlidera && !$scope.buyGlidera ? 'Send From' : 'Receive in';
     if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
     $scope.showWallets = true;
   };
