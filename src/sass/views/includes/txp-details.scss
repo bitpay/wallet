@@ -47,22 +47,6 @@
         color: #9B9B9B;
       }
     }
-    .glidera-explanation {
-      padding: 0 1rem;
-      margin: 1rem 0;
-      white-space: normal;
-    }
-    .glidera-description {
-      text-align: center;
-      font-size: 15px;
-      color: $mid-gray;
-      margin: 1rem 0;
-      a {
-        font-weight: bold;
-        cursor: pointer;
-        cursor: hand;
-      }
-    }
   }
   .item {
     border-color: $item-border-color;
@@ -261,12 +245,20 @@
     color: rgba(58, 58, 58, .6);
     margin-bottom: 1.5rem;
   }
-
   .glidera-success {
     margin-top: 15px;
     span {
       font-size: 15px;
       display: block;
     }
+  }
+  .glidera-explanation {
+    padding: 0 1rem;
+    white-space: normal;
+  }
+  .glidera-description {
+    text-align: center;
+    font-size: 12px;
+    color: $mid-gray;
   }
 }

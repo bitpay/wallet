@@ -12,25 +12,13 @@
       <div class="item head">
         <div class="sending-label">
           <img src="img/icon-tx-sent-outline.svg">
-          <span translate ng-if="!useSendMax">Sending</span>
+          <span translate ng-if="!useSendMax && !isGlidera">Sending</span>
           <span translate ng-if="useSendMax">Sending maximum amount</span>
+          <span ng-if="isGlidera && glideraBuy">Buying</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
           <div class="alternative">{{alternativeAmountStr || '...'}}</div>
-        </div>
-        <div ng-show="isGlidera">
-          <div class="glidera-explanation">
-            <div class="glidera-description" ng-show="buyPrice.qty">
-              Buy {{buyPrice.subtotal|currency:'':2}} {{buyPrice.currency}} in Bitcoin at  {{buyPrice.price}} {{buyPrice.currency}}/BTC
-            </div>
-            <div class="glidera-description">
-              Fiat will be immediately withdrawn from your bank account
-            </div>
-            <div class="glidera-description">
-              Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time your recive a payment
-            </div>
-          </div>
         </div>
       </div>
       <div class="info">
@@ -40,7 +28,8 @@
           <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
         <div class="item">
-          <span class="label" translate>To</span>
+          <span class="label" ng-if="!isGlidera" translate>To</span>
+          <span class="label" ng-if="isGlidera && glideraBuy">From</span>
           <span class="payment-proposal-to">
             <img ng-if="!cardId && !isGiftCard && !isGlidera" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
@@ -65,7 +54,8 @@
           </span>
         </div>
         <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
-          <span class="label" translate>From</span>
+          <span class="label" ng-if="!isGlidera" translate>From</span>
+          <span class="label" ng-if="isGlidera && glideraBuy" translate>To</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -87,6 +77,20 @@
             {{fee || '...'}}
           </span>
         </div>
+        <div class="item" ng-show="isGlidera">
+          <span class="label">Information</span>
+          <div class="glidera-explanation">
+            <div class="glidera-description" ng-show="buyPrice.qty">
+              Buy {{buyPrice.subtotal|currency:'':2}} {{buyPrice.currency}} in Bitcoin at  {{buyPrice.price}} {{buyPrice.currency}}/BTC
+            </div>
+            <div class="glidera-description">
+              Fiat will be immediately withdrawn from your bank account.
+            </div>
+            <div class="glidera-description">
+              The bitcoins will be purchased and deposited to "{{wallet.name || '...' }}" wallet in 2-4 business days.
+            </div>
+          </div>
+        </div>
         <div class="text-center" ng-show="noMatchingWallet">
           <span class="badge badge-energized" translate>No wallets available</span>
         </div>
@@ -97,15 +101,18 @@
     </div>
   </ion-content>
   <click-to-accept
-    ng-click="approve(statusChangeHandler)"
+    ng-click="wallet ? approve(statusChangeHandler) : null"
     ng-if="!isCordova && wallets[0] && !insufficientFunds && !noMatchingWallet"
-    click-send-status="sendStatus">
+    click-send-status="sendStatus"
+    has-wallet-chosen="wallet">
     Click to pay
   </click-to-accept>
   <slide-to-accept
+    ng-disabled="!wallet"
     ng-if="isCordova && wallets[0] && !insufficientFunds && !noMatchingWallet"
-    slide-on-confirm="onConfirm()"
-    slide-send-status="sendStatus">
+    slide-on-confirm="wallet ? onConfirm() : null"
+    slide-send-status="sendStatus"
+    has-wallet-chosen="wallet">
     Slide to pay
   </slide-to-accept>
   <slide-to-accept-success
@@ -121,6 +128,7 @@
   </slide-to-accept-success>
 
   <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
     wallet-selector-wallets="wallets"
     wallet-selector-selected-wallet="wallet"
     wallet-selector-show="showWallets"
