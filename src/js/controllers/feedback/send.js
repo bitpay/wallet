@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
 
     switch ($scope.score) {
       case 1:
-        $scope.reaction = gettextCatalog.getString("Ouch!");
+        $scope.reaction = "Ouch!";
         $scope.comment = gettextCatalog.getString("There's obviously something we're doing wrong.") + ' ' + gettextCatalog.getString("How could we improve your experience?");
         break;
       case 2:
@@ -59,7 +59,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         $scope.comment = gettextCatalog.getString("There's obviously something we're doing wrong.") + ' ' + gettextCatalog.getString("How could we improve your experience?");
         break;
       case 3:
-        $scope.reaction = gettextCatalog.getString("Hmm...");
+        $scope.reaction = "Hmm...";
         $scope.comment = gettextCatalog.getString("We'd love to do better.") + ' ' + gettextCatalog.getString("How could we improve your experience?");
         break;
       case 4:
