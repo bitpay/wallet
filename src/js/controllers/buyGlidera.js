@@ -9,65 +9,65 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     this.success = null;
     $scope.network = glideraService.getEnvironment();
 
-    $scope.$on('Wallet/Changed', function(event, w) {
-      if (lodash.isEmpty(w)) {
-        $log.debug('No wallet provided');
-        return;
-      }
-      wallet = w;
-      $log.debug('Wallet changed: ' + w.name);
-    });
-
-    $scope.update = function(opts) {
-      if (!$scope.token || !$scope.permissions) return;
-      $log.debug('Updating Glidera Account...');
-      var accessToken = $scope.token;
-      var permissions = $scope.permissions;
-
-      opts = opts || {};
-
-      glideraService.getStatus(accessToken, function(err, data) {
-        $scope.status = data;
-      });
-
-      glideraService.getLimits(accessToken, function(err, limits) {
-        $scope.limits = limits;
-      });
-
-      if (permissions.transaction_history) {
-        glideraService.getTransactions(accessToken, function(err, data) {
-          $scope.txs = data;
-        });
-      }
-
-      if (permissions.view_email_address && opts.fullUpdate) {
-        glideraService.getEmail(accessToken, function(err, data) {
-          $scope.email = data.email;
-        });
-      }
-      if (permissions.personal_info && opts.fullUpdate) {
-        glideraService.getPersonalInfo(accessToken, function(err, data) {
-          $scope.personalInfo = data;
-        });
-      }
-    };
-
-    this.getBuyPrice = function(token, price) {
-      var self = this;
-      if (!price || (price && !price.qty && !price.fiat)) {
-        this.buyPrice = null;
-        return;
-      }
-      this.gettingBuyPrice = true;
-      glideraService.buyPrice(token, price, function(err, buyPrice) {
-        self.gettingBuyPrice = false;
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get exchange information. Please, try again'));
-          return;
-        }
-        self.buyPrice = buyPrice;
-      });
-    };
+    // $scope.$on('Wallet/Changed', function(event, w) {
+    //   if (lodash.isEmpty(w)) {
+    //     $log.debug('No wallet provided');
+    //     return;
+    //   }
+    //   wallet = w;
+    //   $log.debug('Wallet changed: ' + w.name);
+    // });
+    //
+    // $scope.update = function(opts) {
+    //   if (!$scope.token || !$scope.permissions) return;
+    //   $log.debug('Updating Glidera Account...');
+    //   var accessToken = $scope.token;
+    //   var permissions = $scope.permissions;
+    //
+    //   opts = opts || {};
+    //
+    //   glideraService.getStatus(accessToken, function(err, data) {
+    //     $scope.status = data;
+    //   });
+    //
+    //   glideraService.getLimits(accessToken, function(err, limits) {
+    //     $scope.limits = limits;
+    //   });
+    //
+    //   if (permissions.transaction_history) {
+    //     glideraService.getTransactions(accessToken, function(err, data) {
+    //       $scope.txs = data;
+    //     });
+    //   }
+    //
+    //   if (permissions.view_email_address && opts.fullUpdate) {
+    //     glideraService.getEmail(accessToken, function(err, data) {
+    //       $scope.email = data.email;
+    //     });
+    //   }
+    //   if (permissions.personal_info && opts.fullUpdate) {
+    //     glideraService.getPersonalInfo(accessToken, function(err, data) {
+    //       $scope.personalInfo = data;
+    //     });
+    //   }
+    // };
+    //
+    // this.getBuyPrice = function(token, price) {
+    //   var self = this;
+    //   if (!price || (price && !price.qty && !price.fiat)) {
+    //     this.buyPrice = null;
+    //     return;
+    //   }
+    //   this.gettingBuyPrice = true;
+    //   glideraService.buyPrice(token, price, function(err, buyPrice) {
+    //     self.gettingBuyPrice = false;
+    //     if (err) {
+    //       popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get exchange information. Please, try again'));
+    //       return;
+    //     }
+    //     self.buyPrice = buyPrice;
+    //   });
+    // };
 
     this.get2faCode = function(token) {
       var self = this;
@@ -116,7 +116,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
       }, 100);
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       $scope.token = null;
       $scope.permissions = null;
       $scope.email = null;
@@ -134,7 +134,9 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
         }
         $scope.token = glidera.token;
         $scope.permissions = glidera.permissions;
-        $scope.update({fullUpdate: true});
+        $scope.update({
+          fullUpdate: true
+        });
       });
 
       $scope.wallets = profileService.getWallets({
