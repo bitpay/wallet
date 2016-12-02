@@ -22,10 +22,6 @@ msgstr ""
 msgid "5-star ratings help us get BitPay into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
-#: www/views/bitpayCardIntro.html:23
-msgid "<span translate=\"\">Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible ATM. ATM bank fees may apply.</span>"
-msgstr ""
-
 #: src/js/controllers/feedback/send.js:27
 #: www/views/feedback/complete.html:17
 msgid "A member of the team will review your feedback as soon as possible."
@@ -339,10 +335,8 @@ msgstr ""
 msgid "Browser unsupported"
 msgstr ""
 
-#: www/views/tab-home.html:117
-msgid ""
-"Buy &amp; Sell Bitcoin\n"
-"        <a ui-sref=\"tabs.buyandsell\"><i class=\"icon ion-ios-plus-empty list-add-button\"></i></a>"
+#: www/views/tab-home.html:118
+msgid "Buy &amp; Sell Bitcoin"
 msgstr ""
 
 #: www/views/tab-send.html:15
@@ -657,9 +651,7 @@ msgid "Create new wallet"
 msgstr ""
 
 #: www/views/add.html:22
-msgid ""
-"Create shared wallet\n"
-"        <i class=\"icon bp-arrow-right\"></i>"
+msgid "Create shared wallet"
 msgstr ""
 
 #: www/views/tab-create-shared.html:133
@@ -841,14 +833,7 @@ msgid "Enter the recovery phrase (BIP39)"
 msgstr ""
 
 #: www/views/backup.html:62
-msgid ""
-"Enter your password\n"
-"        <label class=\"item item-input item-stacked-label\">\n"
-"          <div class=\"input-label\" translate=\"\">In order to verify your wallet backup, please type your password.</div>\n"
-"          <input type=\"text\" id=\"passphrase\" ng-model=\"data.passphrase\" autocapitalize=\"off\" spellcheck=\"false\" autofocus>\n"
-"        </label>\n"
-"        <button ng-disabled=\"!data.passphrase\" class=\"button button-standard button-primary\" ng-click=\"goToStep(4);\" translate=\"\">Confirm\n"
-"        </button>"
+msgid "Enter your password"
 msgstr ""
 
 #: www/views/includes/password.html:8
@@ -1110,7 +1095,7 @@ msgstr ""
 msgid "German"
 msgstr ""
 
-#: www/views/bitpayCardIntro.html:24
+#: www/views/bitpayCardIntro.html:23
 msgid "Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible ATM. ATM bank fees may apply."
 msgstr ""
 
@@ -1175,10 +1160,6 @@ msgstr ""
 #: www/views/tab-import-hardware.html:31
 #: www/views/tab-import-phrase.html:31
 msgid "Hide advanced options"
-msgstr ""
-
-#: src/js/controllers/feedback/send.js:62
-msgid "Hmm..."
 msgstr ""
 
 #: src/js/controllers/feedback/send.js:55
@@ -1293,9 +1274,7 @@ msgid "Import backup"
 msgstr ""
 
 #: www/views/add.html:38
-msgid ""
-"Import wallet\n"
-"        <i class=\"icon bp-arrow-right\"></i>"
+msgid "Import wallet"
 msgstr ""
 
 #: src/js/services/onGoingProcess.js:23
@@ -1407,14 +1386,9 @@ msgstr ""
 msgid "Join my {{appName}} Wallet. Here is the invitation code: {{secret}} You can download {{appName}} for your phone or desktop at {{appUrl}}"
 msgstr ""
 
+#: www/views/add.html:30
 #: www/views/join.html:5
 msgid "Join shared wallet"
-msgstr ""
-
-#: www/views/add.html:30
-msgid ""
-"Join shared wallet\n"
-"        <i class=\"icon bp-arrow-right\"></i>"
 msgstr ""
 
 #: src/js/services/onGoingProcess.js:24
@@ -1540,16 +1514,11 @@ msgid "New address could not be generated. Please try again."
 msgstr ""
 
 #: www/views/add.html:14
-msgid ""
-"New personal wallet\n"
-"        <i class=\"icon bp-arrow-right\"></i>"
+msgid "New personal wallet"
 msgstr ""
 
-#: www/views/tab-home.html:145
-msgid ""
-"Next steps\n"
-"        <i class=\"icon bp-arrow-up\" ng-show=\"!hideNextSteps\"></i>\n"
-"        <i class=\"icon bp-arrow-down\" ng-show=\"hideNextSteps\"></i>"
+#: www/views/tab-home.html:146
+msgid "Next steps"
 msgstr ""
 
 #: www/views/onboarding/collectEmail.html:27
@@ -1675,10 +1644,6 @@ msgstr ""
 
 #: www/views/bitpayCardIntro.html:34
 msgid "Order the BitPay Card"
-msgstr ""
-
-#: src/js/controllers/feedback/send.js:54
-msgid "Ouch!"
 msgstr ""
 
 #: www/views/tab-import-file.html:18
@@ -2565,10 +2530,8 @@ msgstr ""
 msgid "Unsent transactions"
 msgstr ""
 
-#: www/views/addresses.html:34
-msgid ""
-"Unused Addresses\n"
-"          <i class=\"icon ion-ios-plus-empty\"></i>"
+#: www/views/addresses.html:35
+msgid "Unused Addresses"
 msgstr ""
 
 #: www/views/addresses.html:41
@@ -2792,20 +2755,8 @@ msgstr ""
 #: src/js/controllers/modals/txpDetails.js:126
 #: src/js/controllers/modals/txpDetails.js:143
 #: src/js/controllers/preferencesDelete.js:10
-msgid "Warning!"
-msgstr ""
-
 #: www/views/preferencesDeleteWallet.html:9
-msgid ""
-"Warning!\n"
-"      <div class=\"padding text-center\">\n"
-"        <p translate=\"\">\n"
-"          Permanently delete this wallet.\n"
-"        </p>\n"
-"        <p translate=\"\">\n"
-"          THIS ACTION CANNOT BE REVERSED\n"
-"        </p>\n"
-"      </div>"
+msgid "Warning!"
 msgstr ""
 
 #: www/views/modals/txp-details.html:47
