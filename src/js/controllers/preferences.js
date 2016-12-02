@@ -10,6 +10,16 @@ angular.module('copayApp.controllers').controller('preferencesController',
       value: walletService.isEncrypted(wallet)
     };
 
+    $scope.hiddenBalanceChange = function() {
+      var opts = {
+        balance: {
+          enabled: $scope.hiddenBalance.value
+        }
+      };
+      profileService.toggleHideBalanceFlag(walletId, function(err) {
+        if (err) $log.error(err);
+      });
+    };
 
     $scope.encryptChange = function() {
       if (!wallet) return;
@@ -75,7 +85,9 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
       var config = configService.getSync();
 
-
+      $scope.hiddenBalance = {
+        value: $scope.wallet.balanceHidden
+      };
 
       if (wallet.isPrivKeyExternal)
         $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
