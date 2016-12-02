@@ -36,6 +36,7 @@ bwcModule.provider("bwcService", function() {
       var bwc = new Client({
         baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
         verbose: opts.verbose,
+        timeout: 100000,
         transports: ['polling'],
       });
       if (walletData)
