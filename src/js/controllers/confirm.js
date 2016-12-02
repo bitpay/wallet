@@ -448,7 +448,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
                 popupService.showAlert(gettextCatalog.getString('Error'), err);
                 return;
               }
-              $scope.success = data;
+              $scope.sendStatus = 'success';
               $timeout(function() {
                 $scope.$digest();
               });
@@ -536,6 +536,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
     var fromBitPayCard = previousView.match(/tabs.bitpayCard/) ? true : false;
     var fromAmazon = previousView.match(/tabs.giftcards.amazon/) ? true : false;
+    var fromGlidera = previousView.match(/tabs.buyandsell.glidera/) ? true : false;
 
     $ionicHistory.nextViewOptions({
       disableAnimate: true
@@ -559,6 +560,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $state.transitionTo('tabs.giftcards.amazon', {
           cardClaimCode: $scope.amazonGiftCard ? $scope.amazonGiftCard.claimCode : null
         });
+      });
+    } else if (fromGlidera) {
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        historyRoot: true
+      });
+      $ionicHistory.clearHistory();
+      $state.go('tabs.home').then(function() {
+        $state.transitionTo('tabs.buyandsell.glidera');
       });
     } else {
       $ionicHistory.nextViewOptions({
