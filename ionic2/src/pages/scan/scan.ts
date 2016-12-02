@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
 import { Logger } from 'angular2-logger/core';
+
+import { IncomingDataService } from '../../services/incoming-data.service';
 import { ScannerService } from '../../services/scanner.service';
 
 @Component({
@@ -34,16 +35,16 @@ export class ScanPage {
   lightActive: boolean = false;
 
   // placeholder for incomingData service for now
-  incomingData: any = {
-    redir: () => {}
-  };
+  // incomingData: any = {
+  //   redir: () => {}
+  // };
 
   constructor(
     public logger: Logger,
     public nav: NavController,
     public navParams: NavParams,
-    public scannerService: ScannerService
-    //public incomingData: IncomingDataService
+    public scannerService: ScannerService,
+    public incomingData: IncomingDataService
   ) {
     this.passthroughMode = this.navParams.data.passthroughMode;
   }

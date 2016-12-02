@@ -12,7 +12,10 @@ export class IncomingDataService {
     getPayProDetails: (url, callback) => {}
   };
 
-  constructor(public logger: Logger, public scannerService: ScannerService) {}
+  constructor(
+    public logger: Logger,
+    public scannerService: ScannerService
+  ) {}
 
   showMenu (data) {
     //$rootScope.$broadcast('incomingDataMenu.showMenu', data);
@@ -24,9 +27,9 @@ export class IncomingDataService {
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
-      $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true}).then(function() {
-        $state.transitionTo('tabs.send.confirm', {paypro: data});
-      });
+      // $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true}).then(function() {
+      //   $state.transitionTo('tabs.send.confirm', {paypro: data});
+      // });
       return true;
     }
 
@@ -36,8 +39,8 @@ export class IncomingDataService {
     if (this.bitcore.URI.isValid(data)) {
       let parsed = new this.bitcore.URI(data);
 
-      let addr = parsed.address ? parsed.address.toString() : '';
-      let message = parsed.message;
+      //let addr = parsed.address ? parsed.address.toString() : '';
+      //let message = parsed.message;
 
       let amount = parsed.amount ?  parsed.amount : '';
 
@@ -46,13 +49,13 @@ export class IncomingDataService {
           this.handlePayPro(details);
         });
       } else {
-        $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true});
+        //$state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true});
         // Timeout is required to enable the "Back" button
         setTimeout(function() {
           if (amount) {
-            $state.transitionTo('tabs.send.confirm', {toAmount: amount, toAddress: addr, description:message});
+            //$state.transitionTo('tabs.send.confirm', {toAmount: amount, toAddress: addr, description:message});
           } else {
-            $state.transitionTo('tabs.send.amount', {toAddress: addr});
+            //$state.transitionTo('tabs.send.amount', {toAddress: addr});
           }
         }, 100);
       }
@@ -71,48 +74,48 @@ export class IncomingDataService {
       });
       // Plain Address
     } else if (this.bitcore.Address.isValid(data, 'livenet') || this.bitcore.Address.isValid(data, 'testnet')) {
-      if($state.includes('tabs.scan')) {
+      //if($state.includes('tabs.scan')) {
         this.showMenu({data: data, type: 'bitcoinAddress'});
-      } else {
-        this.goToAmountPage(data);
-      }
+      // } else {
+      //   this.goToAmountPage(data);
+      // }
     } else if (data && data.indexOf(this.win.appConfig.name + '://glidera') === 0) {
-        return $state.go('uriglidera', {url: data});
+        //return $state.go('uriglidera', {url: data});
     } else if (data && data.indexOf(this.win.appConfig.name + '://coinbase') === 0) {
-        return $state.go('uricoinbase', {url: data});
+        //return $state.go('uricoinbase', {url: data});
 
       // BitPayCard Authentication
     } else if (data && data.indexOf(this.win.appConfig.name + '://') === 0) {
-        let secret = this.getParameterByName('secret', data);
-        let email = this.getParameterByName('email', data);
-        let otp = this.getParameterByName('otp', data);
-        $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
-          $state.transitionTo('tabs.bitpayCardIntro', {
-            secret: secret,
-            email: email,
-            otp: otp
-          });
-        });
+        //let secret = this.getParameterByName('secret', data);
+        //let email = this.getParameterByName('email', data);
+        //let otp = this.getParameterByName('otp', data);
+        // $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
+        //   $state.transitionTo('tabs.bitpayCardIntro', {
+        //     secret: secret,
+        //     email: email,
+        //     otp: otp
+        //   });
+        // });
         return true;
 
     // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
-        $state.transitionTo('tabs.add.join', {url: data});
-      });
+      // $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
+      //   $state.transitionTo('tabs.add.join', {url: data});
+      // });
       return true;
 
     // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
-        $state.transitionTo('tabs.add.join', {url: data});
-      });
+      // $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
+      //   $state.transitionTo('tabs.add.join', {url: data});
+      // });
       return true;
     } else {
 
-      if($state.includes('tabs.scan')) {
+      //if($state.includes('tabs.scan')) {
         this.showMenu({data: data, type: 'text'});
-      }
+      //}
     }
 
     return false;
@@ -146,25 +149,25 @@ export class IncomingDataService {
   }
 
   goToAmountPage(toAddress) {
-    $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true});
+    //$state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true});
     setTimeout(function() {
-      $state.transitionTo('tabs.send.amount', {toAddress: toAddress});
+      //$state.transitionTo('tabs.send.amount', {toAddress: toAddress});
     }, 100);
   }
 
   handlePayPro(payProDetails){
-    let stateParams = {
-      toAmount: payProDetails.amount,
-      toAddress: payProDetails.toAddress,
-      description: payProDetails.memo,
-      paypro: payProDetails
-    };
+    // let stateParams = {
+    //   toAmount: payProDetails.amount,
+    //   toAddress: payProDetails.toAddress,
+    //   description: payProDetails.memo,
+    //   paypro: payProDetails
+    // };
     this.scannerService.pausePreview();
-    $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true}).then(function() {
-      setTimeout(function() {
-        $state.transitionTo('tabs.send.confirm', stateParams);
-      });
-    });
+    // $state.go('tabs.send', {}, {'reload': true, 'notify': $state.current.name == 'tabs.send' ? false : true}).then(function() {
+    //   setTimeout(function() {
+    //     $state.transitionTo('tabs.send.confirm', stateParams);
+    //   });
+    // });
   }
 
 }
