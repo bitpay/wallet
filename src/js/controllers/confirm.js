@@ -519,7 +519,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         });
       });
     } else {
-      $state.go('tabs.send');
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        historyRoot: true
+      });
+      $ionicHistory.clearHistory();
+      $state.go('tabs.send').then(function() {
+        $state.transitionTo('tabs.home');
+      });
     }
   };
 
