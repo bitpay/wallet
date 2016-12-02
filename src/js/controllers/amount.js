@@ -15,8 +15,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isGiftCard = data.stateParams.isGiftCard;
+
+    // Glidera parameters
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
+    $scope.glideraBuy = data.stateParams.glideraBuy;
+    $scope.glideraSell = data.stateParams.glideraSell;
+
     $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView().stateName == 'tabs.send';
     $scope.isWallet = data.stateParams.isWallet;
@@ -337,7 +342,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     } else if ($scope.isGlidera) {
       $state.transitionTo('tabs.buyandsell.glidera.confirm', {
         toAmount: (amount * unitToSatoshi).toFixed(0),
-        glideraBuy: true,
+        glideraBuy: $scope.glideraBuy,
+        glideraSell: $scope.glideraSell,
         glideraAccessToken: $scope.glideraAccessToken
       });
     } else {

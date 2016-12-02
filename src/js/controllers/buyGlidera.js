@@ -69,20 +69,20 @@ angular.module('copayApp.controllers').controller('buyGlideraController',
     //   });
     // };
 
-    this.get2faCode = function(token) {
-      var self = this;
-      ongoingProcess.set('Sending 2FA code...', true);
-      $timeout(function() {
-        glideraService.get2faCode(token, function(err, sent) {
-          ongoingProcess.set('Sending 2FA code...', false);
-          if (err) {
-            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send confirmation code to your phone'));
-            return;
-          }
-          self.show2faCodeInput = sent;
-        });
-      }, 100);
-    };
+    // this.get2faCode = function(token) {
+    //   var self = this;
+    //   ongoingProcess.set('Sending 2FA code...', true);
+    //   $timeout(function() {
+    //     glideraService.get2faCode(token, function(err, sent) {
+    //       ongoingProcess.set('Sending 2FA code...', false);
+    //       if (err) {
+    //         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send confirmation code to your phone'));
+    //         return;
+    //       }
+    //       self.show2faCodeInput = sent;
+    //     });
+    //   }, 100);
+    // };
 
     this.sendRequest = function(token, permissions, twoFaCode) {
       var self = this;
