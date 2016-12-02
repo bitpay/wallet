@@ -47,6 +47,11 @@
         color: #9B9B9B;
       }
     }
+    .buy-price {
+      bottom: 20px;
+      position: absolute;
+      color: $light-gray;
+    }
   }
   .item {
     border-color: $item-border-color;
