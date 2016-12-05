@@ -8,7 +8,7 @@ import bwc from 'bitcore-wallet-client/index';
 export class IncomingDataService {
 
   win: any = window;
-  bitcore: any = this.win.bitcore;
+  bitcore: any = bwc.Bitcore;
 
   payproService: any = {
     getPayProDetails: (url, callback) => {}
