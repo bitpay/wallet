@@ -85,8 +85,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (++index == $scope.wallets.length) {
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
-            if ($scope.useSendMax) $scope.showWalletSelector();
-            else initConfirm();
+            if ($scope.useSendMax) {
+              if ($scope.wallets.length > 1)
+                $scope.showWalletSelector();
+              else {
+                $scope.wallet = $scope.wallets[0];
+                $scope.getSendMaxInfo();
+              }
+            } else initConfirm();
           } else {
             if (!enoughFunds) $scope.insufficientFunds = true;
             $log.warn('No wallet available to make the payment');
@@ -103,7 +109,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if ($scope.paypro) _paymentTimeControl($scope.paypro.expires);
 
     displayValues();
-    $scope.showWalletSelector();
+    if ($scope.wallets.length > 1) $scope.showWalletSelector();
+    else $scope.wallet = $scope.wallets[0];
 
     $timeout(function() {
       $scope.$apply();
