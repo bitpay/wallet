@@ -117,7 +117,7 @@
     </div>
   </ion-content>
   <click-to-accept
-    ng-click="wallet ? approve(statusChangeHandler) : null"
+    ng-click="approve(statusChangeHandler)"
     ng-if="!isCordova && wallets[0] && !insufficientFunds && !noMatchingWallet"
     click-send-status="sendStatus"
     has-wallet-chosen="wallet">
@@ -126,7 +126,7 @@
   <slide-to-accept
     ng-disabled="!wallet"
     ng-if="isCordova && wallets[0] && !insufficientFunds && !noMatchingWallet"
-    slide-on-confirm="wallet ? onConfirm() : null"
+    slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus"
     has-wallet-chosen="wallet">
     Slide to pay
