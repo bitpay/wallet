@@ -120,7 +120,7 @@
             ng-model="formData.derivationPath">
           </label>
 
-          <ion-toggle ng-show="seedSource.id == 'new'" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
+          <ion-toggle ng-show="seedSource.id == 'new' || seedSource.id == 'intelTEE'" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
             Testnet
           </ion-toggle>
 

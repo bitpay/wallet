@@ -579,6 +579,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.preferences.preferencesExternal', {
+        url: '/preferencesExternal',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesExternalController',
+            templateUrl: 'views/preferencesExternal.html'
+          }
+        }
+      })
       .state('tabs.preferences.delete', {
         url: '/delete',
         views: {
