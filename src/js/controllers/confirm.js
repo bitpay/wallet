@@ -450,6 +450,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           var title = gettextCatalog.getString("Please, enter the code below");
           var message = gettextCatalog.getString("A SMS containing a confirmation code was sent to your phone.");
           popupService.showPrompt(title, message, null, function(twoFaCode) {
+            if (typeof twoFaCode == 'undefined') return;
             if ($scope.glideraBuy) {
               $scope.buyRequest(wallet, twoFaCode, function(err, data) {
                 if (err) {
