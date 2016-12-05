@@ -450,7 +450,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           var message = gettextCatalog.getString("A SMS containing a confirmation code was sent to your phone.");
           popupService.showPrompt(title, message, null, function(twoFaCode) {
             if (typeof twoFaCode == 'undefined') return;
-            if ($scope.glideraBuy) {
+            if ($scope.isGlidera == 'buy') {
               $scope.buyRequest(wallet, twoFaCode, function(err, data) {
                 if (err) {
                   popupService.showAlert(gettextCatalog.getString('Error'), err);
@@ -462,7 +462,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
                 });
               })
             }
-            if ($scope.glideraSell) {
+            if ($scope.isGlidera == 'sell') {
               $scope.sellRequest(wallet, twoFaCode, function(err, data) {
                 if (err) {
                   popupService.showAlert(gettextCatalog.getString('Error'), err);
