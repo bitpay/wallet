@@ -43,7 +43,7 @@
           <span translate>Amount</span>
           <span ng-show="isGiftCard">(Purchase Amount is limited to USD 500 per day)</span>
           <div ng-show="isGlidera">
-            <div class="limits" ng-show="limits && glideraBuy">
+            <div class="limits" ng-show="limits && isGlidera == 'buy'">
               <span>Daily buy limit</span>:
               {{limits.dailyBuy|currency:'':2}} {{limits.currency}}
               (remaining {{limits.dailyBuyRemaining|currency:'':2}} {{limits.currency}})
@@ -52,7 +52,7 @@
               {{limits.monthlyBuy|currency:'':2}} {{limits.currency}}
               (remaining {{limits.monthlyBuyRemaining|currency:'':2}} {{limits.currency}})
             </div>
-            <div class="limits" ng-show="limits && glideraSell">
+            <div class="limits" ng-show="limits && isGlidera == 'sell'">
               <span>Daily sell limit</span>:
               {{limits.dailySell|currency:'':2}} {{limits.currency}}
               (remaining {{limits.dailySellRemaining|currency:'':2}} {{limits.currency}})

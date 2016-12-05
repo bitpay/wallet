@@ -889,27 +889,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.buyandsell.glidera.amount', {
-        url: '/amount/:glideraBuy/:glideraSell/:glideraAccessToken',
+        url: '/amount/:isGlidera/:glideraAccessToken',
         views: {
           'tab-home@tabs': {
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
-        },
-        params: {
-          isGlidera: true
         }
       })
       .state('tabs.buyandsell.glidera.confirm', {
-        url: '/confirm/:toAmount/:glideraBuy/:glideraSell/:glideraAccessToken',
+        url: '/confirm/:toAmount/:isGlidera/:glideraAccessToken',
         views: {
           'tab-home@tabs': {
             controller: 'confirmController',
             templateUrl: 'views/confirm.html'
           }
-        },
-        params: {
-          isGlidera: true
         }
       })
       .state('tabs.preferences.glidera', {

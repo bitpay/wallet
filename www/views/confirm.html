@@ -14,8 +14,8 @@
           <img src="img/icon-tx-sent-outline.svg">
           <span translate ng-if="!useSendMax && !isGlidera">Sending</span>
           <span translate ng-if="useSendMax">Sending maximum amount</span>
-          <span ng-if="isGlidera && glideraBuy">Buying</span>
-          <span ng-if="isGlidera && glideraSell">Selling</span>
+          <span ng-if="isGlidera == 'buy'">Buying</span>
+          <span ng-if="isGlidera == 'sell'">Selling</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
@@ -30,7 +30,8 @@
         </div>
         <div class="item">
           <span class="label" ng-if="!isGlidera" translate>To</span>
-          <span class="label" ng-if="isGlidera && glideraBuy">From</span>
+          <span class="label" ng-if="isGlidera == 'buy'">From</span>
+          <span class="label" ng-if="isGlidera == 'sell'">To</span>
           <span class="payment-proposal-to">
             <img ng-if="!cardId && !isGiftCard && !isGlidera" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
@@ -56,8 +57,8 @@
         </div>
         <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
           <span class="label" ng-if="!isGlidera" translate>From</span>
-          <span class="label" ng-if="isGlidera && glideraBuy" translate>To</span>
-          <span class="label" ng-if="isGlidera && glideraSell" translate>From</span>
+          <span class="label" ng-if="isGlidera == 'buy'" translate>To</span>
+          <span class="label" ng-if="isGlidera == 'sell'" translate>From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -79,7 +80,7 @@
             {{fee || '...'}}
           </span>
         </div>
-        <div class="item" ng-show="isGlidera && glideraBuy">
+        <div class="item" ng-show="isGlidera == 'buy'">
           <span class="label">Information</span>
           <div class="glidera-explanation">
             <div class="glidera-description" ng-show="buyPrice.qty">
@@ -93,7 +94,7 @@
             </div>
           </div>
         </div>
-        <div class="item" ng-show="isGlidera && glideraSell">
+        <div class="item" ng-show="isGlidera == 'sell'">
           <span class="label">Information</span>
           <div class="glidera-explanation">
             <div class="glidera-description" ng-show="sellPrice.qty">
@@ -138,10 +139,10 @@
     <span ng-hide="wallet.m > 1">Payment Sent</span>
     <span ng-show="wallet.m > 1">Proposal Created</span>
     <div ng-show="isGlidera" class="glidera-success">
-      <span ng-show="glideraBuy">A transfer has been initiated from your bank account</span>
-      <span ng-show="glideraBuy">your bitcoins should arrive to your wallet in 2-4 business day</span>
-      <span ng-show="glideraSell">A transfer has been initiated to your bank account</span>
-      <span ng-show="glideraSell">should arrive in 4-6 business days</span>
+      <span ng-show="isGlidera == 'buy'">A transfer has been initiated from your bank account</span>
+      <span ng-show="isGlidera == 'buy'">your bitcoins should arrive to your wallet in 2-4 business day</span>
+      <span ng-show="isGlidera == 'sell'">A transfer has been initiated to your bank account</span>
+      <span ng-show="isGlidera == 'sell'">should arrive in 4-6 business days</span>
     </div>
   </slide-to-accept-success>
 

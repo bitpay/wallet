@@ -24,8 +24,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     // Glidera parameters
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
-    $scope.glideraBuy = data.stateParams.glideraBuy;
-    $scope.glideraSell = data.stateParams.glideraSell;
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
@@ -132,8 +130,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txFormatService.formatAlternativeStr(toAmount, function(v) {
       $scope.alternativeAmountStr = v;
     });
-    if ($scope.isGlidera && $scope.glideraBuy) $scope.getBuyPrice();
-    if ($scope.isGlidera && $scope.glideraSell) $scope.getSellPrice();
+    if ($scope.isGlidera == 'buy') $scope.getBuyPrice();
+    if ($scope.isGlidera == 'sell') $scope.getSellPrice();
   };
 
   function resetValues() {
@@ -242,7 +240,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = $scope.glideraBuy ? 'Receive in' : $scope.glideraSell ? 'Sell From' : 'Send from';
+    $scope.walletSelectorTitle = $scope.isGlidera == 'buy' ? 'Receive in' : $scope.isGlidera == 'sell' ? 'Sell From' : 'Send from';
     if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
     $scope.showWallets = true;
   };
