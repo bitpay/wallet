@@ -22,7 +22,7 @@
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
         <span ng-if="!isWallet && !isGiftCard">
-          <gravatar ng-if="!cardId" class="send-gravatar" name="{{toName}}" width="30" email="{{toEmail}}"></gravatar>
+          <gravatar ng-if="!cardId" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
           <i ng-if="cardId" class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
