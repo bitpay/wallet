@@ -9,8 +9,8 @@ angular.module('copayApp.controllers').controller('backupWarningController', fun
   $scope.openPopup = function() {
     $ionicModal.fromTemplateUrl('views/includes/screenshotWarningModal.html', {
       scope: $scope,
-      backdropClickToClose: false,
-      hardwareBackButtonClose: false
+      backdropClickToClose: true,
+      hardwareBackButtonClose: true
     }).then(function(modal) {
       $scope.warningModal = modal;
       $scope.warningModal.show();
