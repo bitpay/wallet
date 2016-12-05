@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('backupService', function backupServiceFactory($log, $timeout, $stateParams, profileService, sjcl) {
+  .factory('backupService', function backupServiceFactory($log, $timeout, $stateParams, profileService, sjcl, $window) {
 
     var root = {};
 
@@ -80,7 +80,7 @@ angular.module('copayApp.services')
 
       var walletName = (wallet.alias || '') + (wallet.alias ? '-' : '') + wallet.credentials.walletName;
       if (opts.noSign) walletName = walletName + '-noSign'
-      var filename = walletName + '-Copaybackup.aes.json';
+      var filename = walletName + '-' + $window.appConfig.nameCase + 'backup.aes.json';
       _download(ew, filename, cb)
     };
     return root;
