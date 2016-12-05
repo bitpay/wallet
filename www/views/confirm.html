@@ -57,6 +57,7 @@
         <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
           <span class="label" ng-if="!isGlidera" translate>From</span>
           <span class="label" ng-if="isGlidera && glideraBuy" translate>To</span>
+          <span class="label" ng-if="isGlidera && glideraSell" translate>From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
