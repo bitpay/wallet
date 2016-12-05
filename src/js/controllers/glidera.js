@@ -18,9 +18,11 @@ angular.module('copayApp.controllers').controller('glideraController',
       $scope.status = null;
       $scope.limits = null;
 
+      $scope.connectingGlidera = true;
       ongoingProcess.set('connectingGlidera', true);
       glideraService.init($scope.token, function(err, glidera) {
         ongoingProcess.set('connectingGlidera');
+        $scope.connectingGlidera = false;
         if (err || !glidera) {
           if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;

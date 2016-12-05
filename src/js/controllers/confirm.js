@@ -133,6 +133,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.alternativeAmountStr = v;
     });
     if ($scope.isGlidera && $scope.glideraBuy) $scope.getBuyPrice();
+    if ($scope.isGlidera && $scope.glideraSell) $scope.getSellPrice();
   };
 
   function resetValues() {
@@ -241,7 +242,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = !$scope.isGlidera && !$scope.buyGlidera ? 'Send From' : 'Receive in';
+    $scope.walletSelectorTitle = $scope.glideraBuy ? 'Receive in' : $scope.glideraSell ? 'Sell From' : 'Send from';
     if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
     $scope.showWallets = true;
   };
@@ -434,6 +435,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return;
     }
 
+    var wallet = $scope.wallet;
+    if (!wallet) {
+      return setSendError(gettextCatalog.getString('No wallet selected'));
+    }
+
     if ($scope.isGlidera) {
       $scope.get2faCode(function(err, sent) {
         if (err) {
@@ -444,25 +450,34 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           var title = gettextCatalog.getString("Please, enter the code below");
           var message = gettextCatalog.getString("A SMS containing a confirmation code was sent to your phone.");
           popupService.showPrompt(title, message, null, function(twoFaCode) {
-            $scope.sendRequest(twoFaCode, function(err, data) {
-              if (err) {
-                popupService.showAlert(gettextCatalog.getString('Error'), err);
-                return;
-              }
-              $scope.sendStatus = 'success';
-              $timeout(function() {
-                $scope.$digest();
-              });
-            })
+            if ($scope.glideraBuy) {
+              $scope.buyRequest(wallet, twoFaCode, function(err, data) {
+                if (err) {
+                  popupService.showAlert(gettextCatalog.getString('Error'), err);
+                  return;
+                }
+                $scope.sendStatus = 'success';
+                $timeout(function() {
+                  $scope.$digest();
+                });
+              })
+            }
+            if ($scope.glideraSell) {
+              $scope.sellRequest(wallet, twoFaCode, function(err, data) {
+                if (err) {
+                  popupService.showAlert(gettextCatalog.getString('Error'), err);
+                  return;
+                }
+                $scope.sendStatus = 'success';
+                $timeout(function() {
+                  $scope.$digest();
+                });
+              })
+            }
           });
         }
       });
       return;
-    }
-
-    var wallet = $scope.wallet;
-    if (!wallet) {
-      return setSendError(gettextCatalog.getString('No wallet selected'));
     }
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
@@ -593,10 +608,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }, 100);
   };
 
-  $scope.sendRequest = function(twoFaCode, cb) {
+  $scope.buyRequest = function(wallet, twoFaCode, cb) {
     ongoingProcess.set('Buying Bitcoin...', true);
     $timeout(function() {
-      walletService.getAddress($scope.wallet, false, function(err, walletAddr) {
+      walletService.getAddress(wallet, false, function(err, walletAddr) {
         if (err) {
           ongoingProcess.set('Buying Bitcoin...', false);
           popupService.showAlert(gettextCatalog.getString('Error'), bwcError.cb(err, 'Could not create address'));
@@ -611,11 +626,106 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         };
         glideraService.buy($scope.glideraAccessToken, twoFaCode, data, function(err, data) {
           ongoingProcess.set('Buying Bitcoin...', false);
-          return cb(err, data)
+          return cb(err, data);
         });
       });
     }, 100);
   };
+
+  $scope.sellRequest = function(wallet, twoFaCode, cb) {
+    var outputs = [];
+    var config = configService.getSync();
+    var configWallet = config.wallet;
+    var walletSettings = configWallet.settings;
+
+    ongoingProcess.set('creatingTx', true);
+    walletService.getAddress(wallet, null, function(err, refundAddress) {
+      if (!refundAddress) {
+        ongoingProcess.clear();
+        popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, 'Could not create address'));
+        return;
+      }
+      glideraService.getSellAddress($scope.glideraAccessToken, function(err, sellAddress) {
+        if (!sellAddress || err) {
+          ongoingProcess.clear();
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get the destination bitcoin address'));
+          return;
+        }
+        var amount = parseInt(($scope.sellPrice.qty * 100000000).toFixed(0));
+        var comment = 'Glidera transaction';
+
+        outputs.push({
+          'toAddress': sellAddress,
+          'amount': amount,
+          'message': comment
+        });
+
+        var txp = {
+          toAddress: sellAddress,
+          amount: amount,
+          outputs: outputs,
+          message: comment,
+          payProUrl: null,
+          excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+          feeLevel: walletSettings.feeLevel || 'normal',
+          customData: {
+            'glideraToken': $scope.glideraAccessToken
+          }
+        };
+
+        walletService.createTx(wallet, txp, function(err, createdTxp) {
+          ongoingProcess.clear();
+          if (err) {
+            popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
+            return;
+          }
+          walletService.prepare(wallet, function(err, password) {
+            if (err) {
+              ongoingProcess.clear();
+              popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
+              return;
+            }
+            ongoingProcess.set('signingTx', true);
+            walletService.publishTx(wallet, createdTxp, function(err, publishedTxp) {
+              if (err) {
+                ongoingProcess.clear();
+                popupService.showAlert(gettextCatalog.getString('Error'), err.message ||  bwcError.msg(err));
+                return;
+              }
+
+              walletService.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
+                if (err) {
+                  ongoingProcess.clear();
+                  popupService.showAlert(gettextCatalog.getString('Error'), err.message ||  bwcError.msg(err));
+                  walletService.removeTx(wallet, signedTxp, function(err) {
+                    if (err) $log.debug(err);
+                  });
+                  return;
+                }
+                var rawTx = signedTxp.raw;
+                var data = {
+                  refundAddress: refundAddress,
+                  signedTransaction: rawTx,
+                  priceUuid: $scope.sellPrice.priceUuid,
+                  useCurrentPrice: $scope.sellPrice.priceUuid ? false : true,
+                  ip: null
+                };
+                ongoingProcess.set('Selling Bitcoin', true);
+                glideraService.sell($scope.glideraAccessToken, twoFaCode, data, function(err, data) {
+                  ongoingProcess.clear();
+                  if (err) {
+                    popupService.showAlert(gettextCatalog.getString('Error'), err.message ||  bwcError.msg(err));
+                    return;
+                  }
+                  return cb(err, data)
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  }
 
   $scope.getBuyPrice = function() {
     var satToBtc = 1 / 100000000;
@@ -627,6 +737,20 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         return;
       }
       $scope.buyPrice = buyPrice;
+    });
+  };
+
+  $scope.getSellPrice = function() {
+    var satToBtc = 1 / 100000000;
+    var price = {};
+    price.qty = (toAmount * satToBtc).toFixed(8);
+
+    glideraService.sellPrice($scope.glideraAccessToken, price, function(err, sellPrice) {
+      if (err) {
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get exchange information. Please, try again'));
+        return;
+      }
+      $scope.sellPrice = sellPrice;
     });
   };
 
