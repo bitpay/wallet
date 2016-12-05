@@ -15,6 +15,7 @@
           <span translate ng-if="!useSendMax && !isGlidera">Sending</span>
           <span translate ng-if="useSendMax">Sending maximum amount</span>
           <span ng-if="isGlidera && glideraBuy">Buying</span>
+          <span ng-if="isGlidera && glideraSell">Selling</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
@@ -77,7 +78,7 @@
             {{fee || '...'}}
           </span>
         </div>
-        <div class="item" ng-show="isGlidera">
+        <div class="item" ng-show="isGlidera && glideraBuy">
           <span class="label">Information</span>
           <div class="glidera-explanation">
             <div class="glidera-description" ng-show="buyPrice.qty">
@@ -88,6 +89,20 @@
             </div>
             <div class="glidera-description">
               The bitcoins will be purchased and deposited to "{{wallet.name || '...' }}" wallet in 2-4 business days.
+            </div>
+          </div>
+        </div>
+        <div class="item" ng-show="isGlidera && glideraSell">
+          <span class="label">Information</span>
+          <div class="glidera-explanation">
+            <div class="glidera-description" ng-show="sellPrice.qty">
+              Sell {{sellPrice.subtotal|currency:'':2}} {{sellPrice.currency}} in Bitcoin at {{sellPrice.price|currency:'':2}} {{sellPrice.currency}}/BTC
+            </div>
+            <div class="glidera-description">
+              Fiat will be deposited in your bank account in 4-6 business days.
+            </div>
+            <div class="glidera-description">
+              Bitcoins will be immediately sent from your "{{wallet.name || '...' }}" wallet to Glidera.
             </div>
           </div>
         </div>
@@ -122,8 +137,10 @@
     <span ng-hide="wallet.m > 1">Payment Sent</span>
     <span ng-show="wallet.m > 1">Proposal Created</span>
     <div ng-show="isGlidera" class="glidera-success">
-    <span>A transfer has been initiated from your bank account</span>
-    <span>Your bitcoins should arrive to your wallet in 2-4 business day</span>
+      <span ng-show="glideraBuy">A transfer has been initiated from your bank account</span>
+      <span ng-show="glideraBuy">your bitcoins should arrive to your wallet in 2-4 business day</span>
+      <span ng-show="glideraSell">A transfer has been initiated to your bank account</span>
+      <span ng-show="glideraSell">should arrive in 4-6 business days</span>
     </div>
   </slide-to-accept-success>
 
