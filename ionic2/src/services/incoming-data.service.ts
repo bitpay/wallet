@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Logger } from 'angular2-logger/core';
-import { ScannerService } from './scanner.service';;
+import { ScannerService } from './scanner.service';
+
+import bwc from 'bitcore-wallet-client/index';
 
 @Injectable()
 export class IncomingDataService {
