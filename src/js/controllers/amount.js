@@ -19,8 +19,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     // Glidera parameters
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
-    $scope.glideraBuy = data.stateParams.glideraBuy;
-    $scope.glideraSell = data.stateParams.glideraSell;
 
     $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView().stateName == 'tabs.send';
@@ -343,8 +341,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.buyandsell.glidera.confirm', {
         toAmount: (amount * unitToSatoshi).toFixed(0),
-        glideraBuy: $scope.glideraBuy,
-        glideraSell: $scope.glideraSell,
+        isGlidera: $scope.isGlidera,
         glideraAccessToken: $scope.glideraAccessToken
       });
     } else {
