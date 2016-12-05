@@ -5,17 +5,17 @@
     <ion-nav-title>Glidera</ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content>
+  <ion-content ng-show="!connectingGlidera">
 
-    <div class="box-notification error m0" ng-show="!network && !connectingGlidera">
+    <div class="box-notification error m0" ng-show="!network">
       Glidera is disabled for this application
     </div>
 
-    <div class="box-notification warning m0" ng-show="network == 'testnet' && !connectingGlidera">
+    <div class="box-notification warning m0" ng-show="network == 'testnet'">
       Testnet wallets only work with Glidera Sandbox Accounts
     </div>
 
-    <div ng-if="!token && !connectingGlidera">
+    <div ng-if="!token">
 
       <div ng-init="showOauthForm = false">
         <div class="text-center m20v">
@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <div ng-if="token && !connectingGlidera">
+    <div ng-if="token">
       <div class="text-center m20v">
         <img src="img/glidera-logo.png" ng-click="update({'fullUpdate': true})" width="200">
       </div>

@@ -426,6 +426,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(onSendStatusChange) {
+
+    var wallet = $scope.wallet;
+    if (!wallet) {
+      return;
+    }
+
     if ($scope.paypro && $scope.paymentExpired.value) {
       popupService.showAlert(null, gettextCatalog.getString('This bitcoin payment request has expired.'));
       $scope.sendStatus = '';
@@ -435,26 +441,21 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return;
     }
 
-    var wallet = $scope.wallet;
-    if (!wallet) {
-      return setSendError(gettextCatalog.getString('No wallet selected'));
-    }
-
     if ($scope.isGlidera) {
       $scope.get2faCode(function(err, sent) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not send confirmation code to your phone'));
+          popupService.showAlert('Error', 'Could not send confirmation code to your phone');
           return;
         }
         if (sent) {
-          var title = gettextCatalog.getString("Please, enter the code below");
-          var message = gettextCatalog.getString("A SMS containing a confirmation code was sent to your phone.");
+          var title = "Please, enter the code below";
+          var message = "A SMS containing a confirmation code was sent to your phone.";
           popupService.showPrompt(title, message, null, function(twoFaCode) {
             if (typeof twoFaCode == 'undefined') return;
             if ($scope.glideraBuy) {
               $scope.buyRequest(wallet, twoFaCode, function(err, data) {
                 if (err) {
-                  popupService.showAlert(gettextCatalog.getString('Error'), err);
+                  popupService.showAlert('Error', err);
                   return;
                 }
                 $scope.sendStatus = 'success';
@@ -466,7 +467,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             if ($scope.glideraSell) {
               $scope.sellRequest(wallet, twoFaCode, function(err, data) {
                 if (err) {
-                  popupService.showAlert(gettextCatalog.getString('Error'), err);
+                  popupService.showAlert('Error', err);
                   return;
                 }
                 $scope.sendStatus = 'success';
@@ -600,22 +601,22 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.get2faCode = function(cb) {
-    ongoingProcess.set('Sending 2FA code...', true);
+    ongoingProcess.set('sending2faCode', true);
     $timeout(function() {
       glideraService.get2faCode($scope.glideraAccessToken, function(err, sent) {
-        ongoingProcess.set('Sending 2FA code...', false);
+        ongoingProcess.set('sending2faCode', false);
         return cb(err, sent);
       });
     }, 100);
   };
 
   $scope.buyRequest = function(wallet, twoFaCode, cb) {
-    ongoingProcess.set('Buying Bitcoin...', true);
+    ongoingProcess.set('buyingBitcoin', true);
     $timeout(function() {
       walletService.getAddress(wallet, false, function(err, walletAddr) {
         if (err) {
-          ongoingProcess.set('Buying Bitcoin...', false);
-          popupService.showAlert(gettextCatalog.getString('Error'), bwcError.cb(err, 'Could not create address'));
+          ongoingProcess.set('buyingBitcoin', false);
+          popupService.showAlert('Error', bwcError.cb(err, 'Could not create address'));
           return;
         }
         var data = {
@@ -626,7 +627,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           ip: null
         };
         glideraService.buy($scope.glideraAccessToken, twoFaCode, data, function(err, data) {
-          ongoingProcess.set('Buying Bitcoin...', false);
+          ongoingProcess.set('buyingBitcoin', false);
           return cb(err, data);
         });
       });
@@ -643,13 +644,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     walletService.getAddress(wallet, null, function(err, refundAddress) {
       if (!refundAddress) {
         ongoingProcess.clear();
-        popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, 'Could not create address'));
+        popupService.showAlert('Error', bwcError.msg(err, 'Could not create address'));
         return;
       }
       glideraService.getSellAddress($scope.glideraAccessToken, function(err, sellAddress) {
         if (!sellAddress || err) {
           ongoingProcess.clear();
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get the destination bitcoin address'));
+          popupService.showAlert('Error', 'Could not get the destination bitcoin address');
           return;
         }
         var amount = parseInt(($scope.sellPrice.qty * 100000000).toFixed(0));
@@ -677,27 +678,27 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         walletService.createTx(wallet, txp, function(err, createdTxp) {
           ongoingProcess.clear();
           if (err) {
-            popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
+            popupService.showAlert('Error', err.message || bwcError.msg(err));
             return;
           }
           walletService.prepare(wallet, function(err, password) {
             if (err) {
               ongoingProcess.clear();
-              popupService.showAlert(gettextCatalog.getString('Error'), err.message || bwcError.msg(err));
+              popupService.showAlert('Error', err.message || bwcError.msg(err));
               return;
             }
             ongoingProcess.set('signingTx', true);
             walletService.publishTx(wallet, createdTxp, function(err, publishedTxp) {
               if (err) {
                 ongoingProcess.clear();
-                popupService.showAlert(gettextCatalog.getString('Error'), err.message ||  bwcError.msg(err));
+                popupService.showAlert('Error', err.message ||  bwcError.msg(err));
                 return;
               }
 
               walletService.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
                 if (err) {
                   ongoingProcess.clear();
-                  popupService.showAlert(gettextCatalog.getString('Error'), err.message ||  bwcError.msg(err));
+                  popupService.showAlert('Error', err.message ||  bwcError.msg(err));
                   walletService.removeTx(wallet, signedTxp, function(err) {
                     if (err) $log.debug(err);
                   });
@@ -711,11 +712,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
                   useCurrentPrice: $scope.sellPrice.priceUuid ? false : true,
                   ip: null
                 };
-                ongoingProcess.set('Selling Bitcoin', true);
+                ongoingProcess.set('sellingBitcoin', true);
                 glideraService.sell($scope.glideraAccessToken, twoFaCode, data, function(err, data) {
                   ongoingProcess.clear();
                   if (err) {
-                    popupService.showAlert(gettextCatalog.getString('Error'), err.message ||  bwcError.msg(err));
+                    popupService.showAlert('Error', err.message ||  bwcError.msg(err));
                     return;
                   }
                   return cb(err, data)
@@ -734,7 +735,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     price.qty = (toAmount * satToBtc).toFixed(8);
     glideraService.buyPrice($scope.glideraAccessToken, price, function(err, buyPrice) {
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get exchange information. Please, try again'));
+        popupService.showAlert('Error', 'Could not get exchange information. Please, try again');
         return;
       }
       $scope.buyPrice = buyPrice;
@@ -748,7 +749,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     glideraService.sellPrice($scope.glideraAccessToken, price, function(err, sellPrice) {
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get exchange information. Please, try again'));
+        popupService.showAlert('Error', 'Could not get exchange information. Please, try again');
         return;
       }
       $scope.sellPrice = sellPrice;
