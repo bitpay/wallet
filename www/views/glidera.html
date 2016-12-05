@@ -27,7 +27,7 @@
           <p class="glidera-text">Connect your Glidera account to get started.</p>
 
           <button class="button button-standard button-primary"
-            ng-click="openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true">
+            ng-click="openExternalLink(getAuthenticateUrl()); showOauthForm = true">
             Connect to Glidera
           </button>
           <div class="m10t">
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div ng-show="showOauthForm">
-          <form class="settings" name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
+          <form class="settings" name="oauthCodeForm" ng-submit="submitOauthCode(code)" novalidate>
             <div class="list settings-input-group">
               <label class="item item-input item-stacked-label">
                 <span class="input-label">OAuth Code</span>
@@ -94,7 +94,7 @@
           Activity
         </div>
         <a ng-repeat="tx in txs"
-          ng-click="glidera.openTxModal(token, tx)"
+          ng-click="openTxModal(token, tx)"
           class="item">
 
           <span class="item-note">
