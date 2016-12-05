@@ -56,7 +56,7 @@
     "bezier-easing": "^2.0.3",
     "bhttp": "^1.2.1",
     "bitauth": "https://github.com/gabrielbazan7/bitauth.git#copay",
-    "bitcore-wallet-client": "5.1.2",
+    "bitcore-wallet-client": "git://github.com/isocolsky/bitcore-wallet-client#369eaede49cd64836015fb9b8a502092ee84dc7c",
     "bower": "^1.7.9",
     "cordova-android": "5.1.1",
     "cordova-custom-config": "^3.0.5",

@@ -44,5 +44,13 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $scope.M = c.m;
       $scope.N = c.n;
       $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
+      $scope.externalSource = null;
+
+      if (wallet.isPrivKeyExternal()) {
+        $scope.externalSource = lodash.find(walletService.externalSource, function(source) {
+          return source.id == wallet.getPrivKeyExternalSourceName();
+        }).name;
+      }
     });
+
   });

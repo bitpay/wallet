@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('importController',
   function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService) {
 
+    var isChromeApp = platformInfo.isChromeApp;
+    var isDevel = platformInfo.isDevel;
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
@@ -25,15 +27,15 @@ angular.module('copayApp.controllers').controller('importController',
 
       if ($scope.isChromeApp) {
         $scope.seedOptions.push({
-          id: 'ledger',
-          label: 'Ledger Hardware Wallet',
+          id: walletService.externalSource.ledger.id,
+          label: walletService.externalSource.ledger.longName,
         });
       }
 
       if ($scope.isChromeApp || $scope.isDevel) {
         $scope.seedOptions.push({
-          id: 'trezor',
-          label: 'Trezor Hardware Wallet',
+          id: walletService.externalSource.trezor.id,
+          label: walletService.externalSource.ledger.longName,
         });
         $scope.formData.seedSource = $scope.seedOptions[0];
       }
@@ -267,7 +269,7 @@ angular.module('copayApp.controllers').controller('importController',
           return;
         }
 
-        lopts.externalSource = 'trezor';
+        lopts.externalSource = walletService.externalSource.trezor.id;
         lopts.bwsurl = $scope.formData.bwsurl;
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
@@ -293,7 +295,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       var account = $scope.formData.account;
 
-      if ($scope.formData.seedSource.id == 'trezor') {
+      if ($scope.formData.seedSource.id == walletService.externalSource.trezor.id) {
         if (account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
@@ -302,11 +304,11 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       switch ($scope.formData.seedSource.id) {
-        case ('ledger'):
+        case (walletService.externalSource.ledger.id):
           ongoingProcess.set('connectingledger', true);
           $scope.importLedger(account);
           break;
-        case ('trezor'):
+        case (walletService.externalSource.trezor.id):
           ongoingProcess.set('connectingtrezor', true);
           $scope.importTrezor(account, $scope.formData.isMultisig);
           break;
@@ -323,7 +325,7 @@ angular.module('copayApp.controllers').controller('importController',
           return;
         }
 
-        lopts.externalSource = 'ledger';
+        lopts.externalSource = lopts.externalSource = walletService.externalSource.ledger.id;
         lopts.bwsurl = $scope.formData.bwsurl;
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
