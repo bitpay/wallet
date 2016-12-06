@@ -1,0 +1,16 @@
+{
+  "name": "copay-plugin-simserver",
+  "description": "A proxy to simulate the strict security policy enforced by Copay on plugins.",
+  "main": "proxy.js",
+  "scripts": {
+    "start": "node proxy.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "chalk": "^1.1.1",
+    "express": "^4.13.4",
+    "proxy-middleware": "^0.15.0"
+  },
+  "private": true
+}
