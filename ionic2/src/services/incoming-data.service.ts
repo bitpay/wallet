@@ -4,6 +4,11 @@ import { ScannerService } from './scanner.service';
 
 import bwc from 'bitcore-wallet-client/index';
 
+interface  IncomingDataType {
+  data: string;
+  type: string;
+}
+
 @Injectable()
 export class IncomingDataService {
 
@@ -18,6 +23,12 @@ export class IncomingDataService {
     public logger: Logger,
     public scannerService: ScannerService
   ) {}
+
+  getDataType(): Promise<IncomingDataType> {
+    return new Promise((resolve, reject) => {
+      resolve({yo: 'maine'});
+    });
+  }
 
   showMenu (data) {
     //$rootScope.$broadcast('incomingDataMenu.showMenu', data);
