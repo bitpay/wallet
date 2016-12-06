@@ -21,8 +21,7 @@ import { COMPONENTS } from '../components/components';
   bootstrap: [IonicApp],
   entryComponents: [
     CopayApp,
-    PAGES//,
-    //COMPONENTS
+    PAGES
   ],
   providers: [
     Logger,

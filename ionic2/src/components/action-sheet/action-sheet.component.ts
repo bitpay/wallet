@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-Component({
+@Component({
   selector: 'action-sheet',
   template: `
   <div
@@ -22,14 +22,14 @@ export class ActionSheetComponent {
   //   }
   // });
   @Input() shown: boolean = false;
+  @Output() onHide: EventEmitter<boolean> = new EventEmitter();
 
   hide() {
     this.shown = false;
-    //$rootScope.$broadcast('incomingDataMenu.menuHidden');
+    this.onHide.emit(true);
   }
   show() {
     this.shown = true
   }
-
 
 }
