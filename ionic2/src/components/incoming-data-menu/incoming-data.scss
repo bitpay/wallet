@@ -7,21 +7,21 @@ incoming-data-menu {
   }
   .incoming-data-menu {
     &__header {
-      padding-bottom: 1rem;
+      padding-bottom: 1.75rem;
       font-size: 16px;
     }
 
     &__item {
       border-top: 1px solid #f7f4f4;
       font-size: 14px;
-      padding: 1rem 1.25rem;
+      padding: 2rem;
       color: #4A4A4A;
       display: flex;
       align-items: center;
 
       &.head {
         display: block;
-        padding-top: 1.5rem;
+        padding-top: 1.75rem;
       }
 
       &:first-child {
@@ -34,7 +34,7 @@ incoming-data-menu {
       }
 
       &__text {
-        padding-left: 2.7rem;
+        padding-left: 4.7rem;
       }
     }
 
@@ -54,12 +54,12 @@ incoming-data-menu {
     }
     &__url {
       background: rgba(203, 203, 203, .13);
-      padding: .5rem;
+      padding: .75rem;
       padding-left: 0;
       border-radius: 4px;
       display: flex;
       align-items: center;
-      margin-bottom: .5rem;
+      //margin-bottom: .5rem;
 
       &__icon {
         padding: 0 9px 0 10px;
@@ -71,10 +71,13 @@ incoming-data-menu {
         color: #4A4A4A;
         font-size: 14px;
         border-left: 1px solid #E4E4E4;
-        padding-left: .7rem;//1rem;
+        padding-left: 1rem;//1rem;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        height: 22px;
+        display: flex;
+        align-items: center;
       }
     }
   }
