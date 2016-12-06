@@ -57,6 +57,9 @@ angular.module('copayApp.controllers').controller('joinController',
       }];
       $scope.seedSource = self.seedOptions[0];
 
+      /*
+
+      Disable Hardware Wallets
 
       if (isChromeApp) {
         self.seedOptions.push({
@@ -71,6 +74,7 @@ angular.module('copayApp.controllers').controller('joinController',
           label: 'Trezor Hardware Wallet',
         });
       }
+      */
     };
 
     this.setSeedSource = function() {

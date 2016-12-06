@@ -75,18 +75,23 @@ angular.module('copayApp.controllers').controller('createController',
 
       $scope.seedSource = seedOptions[0];
 
-      if (n > 1 && isChromeApp)
+      /*
+
+      Disable Hardware Wallets
+
+      if (n > 1 && isChromeApp) {
         seedOptions.push({
           id: 'ledger',
           label: 'Ledger Hardware Wallet',
         });
-
+      }
       if (isChromeApp || isDevel) {
         seedOptions.push({
           id: 'trezor',
           label: 'Trezor Hardware Wallet',
         });
       }
+      */
       $scope.seedOptions = seedOptions;
     };
 
