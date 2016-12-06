@@ -65,7 +65,7 @@ import { Component } from '@angular/core';
       <div class="incoming-data-menu__item head">
         <div class="incoming-data-menu__header">Text</div>
         <div class="incoming-data-menu__url">
-          <div class="incoming-data-menu__url__text" style="border: 0;">
+          <div class="incoming-data-menu__url__text" style="border: 0; padding-left: 1.5rem;">
             {{data}}
           </div>
         </div>

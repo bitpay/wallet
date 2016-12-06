@@ -29,7 +29,7 @@ export class CopayApp {
       Splashscreen.hide();
 
       setTimeout(() => {
-       this.incomingDataMenu.show('https://bitpay.com', 'url');
+       this.incomingDataMenu.show('http://bitpay.com', 'url');
       }, 2000);
     });
   }
