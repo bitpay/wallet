@@ -1,67 +1,67 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'incoming-data-menu',
   template: `
   <action-sheet
-    action-sheet-show="showMenu">
+    [shown]="shown">
 
-    <div ng-if="type === 'url'">
+    <div *ngIf="type === 'url'">
       <div class="incoming-data-menu__item head">
         <div class="incoming-data-menu__header">Website</div>
         <div class="incoming-data-menu__url">
           <div class="incoming-data-menu__url__icon">
-            <img ng-hide="https" src="img/icon-lock-x.svg" style="height: 22px;">
-            <img ng-show="https" src="img/icon-lock-green.svg" style="height: 22px;">
+            <img *ngIf="!https" src="assets/img/icon-lock-x.svg" style="height: 22px;">
+            <img *ngIf="https" src="assets/img/icon-lock-green.svg" style="height: 22px;">
           </div>
           <div class="incoming-data-menu__url__text">
             {{data}}
           </div>
         </div>
       </div>
-      <a class="incoming-data-menu__item item item-icon-right" ng-click="goToUrl(data)">
-        <img src="img/icon-link-external.svg">
+      <a class="incoming-data-menu__item item item-icon-right" (click)="goToUrl(data)">
+        <img src="assets/img/icon-link-external.svg">
         <div class="incoming-data-menu__item__text">Open website</div>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="incoming-data-menu__cancel item" ng-click="hide()">
+      <a class="incoming-data-menu__cancel item" (click)="hide()">
         Cancel
       </a>
     </div>
 
-    <div ng-if="type === 'bitcoinAddress'">
+    <div *ngIf="type === 'bitcoinAddress'">
       <div class="incoming-data-menu__item head">
         <div class="incoming-data-menu__header">Bitcoin Address</div>
         <div class="incoming-data-menu__url">
           <div class="incoming-data-menu__url__icon">
-            <img src="img/icon-bitcoin-small.svg">
+            <img src="assets/img/icon-bitcoin-small.svg">
           </div>
           <div class="incoming-data-menu__url__text">
             {{data}}
           </div>
         </div>
       </div>
-      <a class="incoming-data-menu__item item item-icon-right" ng-click="addToAddressBook(data)">
-        <img src="img/icon-contacts.svg">
+      <a class="incoming-data-menu__item item item-icon-right" (click)="addToAddressBook(data)">
+        <img src="assets/img/icon-contacts.svg">
         <div class="incoming-data-menu__item__text">Add as a contact</div>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="incoming-data-menu__item item item-icon-right" ng-click="sendPaymentToAddress(data)">
-        <img src="img/icon-send-alt.svg">
+      <a class="incoming-data-menu__item item item-icon-right" (click)="sendPaymentToAddress(data)">
+        <img src="assets/img/icon-send-alt.svg">
         <div class="incoming-data-menu__item__text">Send payment to this address</div>
         <i class="icon bp-arrow-right"></i>
       </a>
       <a class="incoming-data-menu__item item item-icon-right" copy-to-clipboard="data">
-        <img src="img/icon-paperclip.svg">
+        <img src="assets/img/icon-paperclip.svg">
         <div class="incoming-data-menu__item__text">Copy to clipboard</div>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="incoming-data-menu__cancel item" ng-click="hide()">
+      <a class="incoming-data-menu__cancel item" (click)="hide()">
         Cancel
       </a>
     </div>
 
-    <div ng-if="type === 'text'">
+    <div *ngIf="type === 'text'">
       <div class="incoming-data-menu__item head">
         <div class="incoming-data-menu__header">Text</div>
         <div class="incoming-data-menu__url">
@@ -71,11 +71,11 @@ import { Component } from '@angular/core';
         </div>
       </div>
       <a class="incoming-data-menu__item item item-icon-right" copy-to-clipboard="data">
-        <img src="img/icon-paperclip.svg">
+        <img src="assets/img/icon-paperclip.svg">
         <div class="incoming-data-menu__item__text">Copy to clipboard</div>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="incoming-data-menu__cancel item" ng-click="hide()">
+      <a class="incoming-data-menu__cancel item" (click)="hide()">
         Cancel
       </a>
     </div>
@@ -84,34 +84,40 @@ import { Component } from '@angular/core';
   `
 })
 export class IncomingDataMenuComponent {
-  // $rootScope.$on('incomingDataMenu.showMenu', function(event, data) {
-  //   $timeout(function() {
-  //     scope.data = data.data;
-  //     scope.type = data.type;
-  //     scope.showMenu = true;
-  //     scope.https = false;
-  //
-  //     if(scope.type === 'url') {
-  //       if(scope.data.indexOf('https://') === 0) {
-  //         scope.https = true;
-  //       }
-  //     }
-  //   });
-  // });
-  showMenu: boolean = false;
+
+  data: any;
+  type: string;
+  shown: boolean = false;
+  https: boolean = false;
+
   externalLinkService: any = {
     show: () => {}
   };
 
+  show(data, type) {
+    this.shown = true;
+    this.data = data;
+    this.type = type;
+    this.handleNewData();
+  }
+
+  handleNewData() {
+    if(this.type === 'url') {
+      if(this.data.indexOf('https://') === 0) {
+        this.https = true;
+      }
+    }
+  }
+
   hide() {
-    this.showMenu = false;
+    this.shown = false;
     //$rootScope.$broadcast('incomingDataMenu.menuHidden');
   }
   goToUrl(url: string) {
     this.externalLinkService.open(url);
   }
   sendPaymentToAddress(bitcoinAddress: string) {
-    this.showMenu = false;
+    this.shown = false;
     // $state.go('tabs.send').then(function() {
     //   $timeout(function() {
     //     $state.transitionTo('tabs.send.amount', {toAddress: bitcoinAddress});
@@ -119,7 +125,7 @@ export class IncomingDataMenuComponent {
     // });
   }
   addToAddressBook(bitcoinAddress) {
-    this.showMenu = false;
+    this.shown = false;
     // $timeout(function() {
     //   $state.go('tabs.send').then(function() {
     //     $timeout(function() {
