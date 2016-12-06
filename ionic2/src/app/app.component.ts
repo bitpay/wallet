@@ -6,9 +6,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { IncomingDataMenuComponent } from '../components/incoming-data-menu/incoming-data-menu.component';
 
-//<action-sheet (onHide)="onActionSheetHide()" [shown]="actionSheetShown"></action-sheet>
-
-
 @Component({
   template: `
   <incoming-data-menu></incoming-data-menu>

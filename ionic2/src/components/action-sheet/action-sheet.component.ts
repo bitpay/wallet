@@ -14,13 +14,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   `
 })
 export class ActionSheetComponent {
-  // scope.$watch('show', function() {
-  //   if(scope.show) {
-  //     $timeout(function() { scope.revealMenu = true; }, 100);
-  //   } else {
-  //     scope.revealMenu = false;
-  //   }
-  // });
+  
   @Input() shown: boolean = false;
   @Output() onHide: EventEmitter<boolean> = new EventEmitter();
 
