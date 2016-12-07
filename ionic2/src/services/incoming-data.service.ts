@@ -5,8 +5,8 @@ import { ScannerService } from './scanner.service';
 import bwc from 'bitcore-wallet-client/index';
 
 interface  IncomingDataType {
-  data: string;
   type: string;
+  parsedData: any;
 }
 
 @Injectable()
@@ -26,67 +26,82 @@ export class IncomingDataService {
     public scannerService: ScannerService
   ) {}
 
+  parseBip21(data) {
+    let parsed = new this.bitcore.URI(data);
+    let addr = parsed.address ? parsed.address.toString() : '';
+    let amount = parsed.amount ? parsed.amount : '';
+    let parsedData = {
+      r: parsed.r,
+      address: addr,
+      amount: amount,
+      message: parsed.message
+    };
+    return parsedData;
+  }
+
+  parseBitpayCardData(data) {
+    let secret = this.getParameterByName('secret', data);
+    let email = this.getParameterByName('email', data);
+    let otp = this.getParameterByName('otp', data);
+    let parsedData = {
+      secret: secret,
+      email: email,
+      otp: otp
+    };
+    return parsedData;
+  }
+
   getDataType(data: string): Promise<IncomingDataType> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Processing incoming data: ' + data);
       // data extensions for Payment Protocol with non-backwards-compatible request
       if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
-        return resolve('paypro');
+        let parsedData = decodeURIComponent(data.replace('bitcoin:?r=', ''));
+        return resolve({type: 'paypro', parsedData: parsedData});
       }
       data = this.sanitizeUri(data);
 
       // BIP21
       if (this.bitcore.URI.isValid(data)) {
-        let parsed = new this.bitcore.URI(data);
-        //let addr = parsed.address ? parsed.address.toString() : '';
-        //let message = parsed.message;
-        let amount = parsed.amount ?  parsed.amount : '';
-        if (parsed.r) {
-          return resolve('paypro');
+        let parsedData = this.parseBip21(data);
+        if (parsedData.r) {
+          this.payproService.getPayProDetails(parsedData.r, function(err, details) {
+            return resolve({type: 'paypro', parsedData: details});
+          });
         } else {
-          if (amount) {
-            return resolve('bitcoinAddressWithAmount');
+          if (parsedData.amount) {
+            return resolve({type: 'bitcoinAddressWithAmount', parsedData: parsedData});
           } else {
-            return resolve('bitcoinAddress');
+            return resolve({type: 'bitcoinAddress', parsedData: parsedData});
           }
         }
       // Plain URL
       } else if (/^https?:\/\//.test(data)) {
         this.payproService.getPayProDetails(data, function(err, details) {
           if(err) {
-            return resolve('url');
+            return resolve({type: 'url', parsedData: data});
           }
-          return resolve('paypro');
+          return resolve({type: 'paypro', parsedData: details});
         });
         // Plain Address
       } else if (this.bitcore.Address.isValid(data, 'livenet') || this.bitcore.Address.isValid(data, 'testnet')) {
-        return resolve('bitcoinAddress');
+        return resolve({type: 'bitcoinAddress', parsedData: data});
       } else if (data && data.indexOf(this.win.appConfig.name + '://glidera') === 0) {
-        return resolve('glidera');
+        return resolve({type: 'glidera', parsedData: data});
       } else if (data && data.indexOf(this.win.appConfig.name + '://coinbase') === 0) {
-        return resolve('coinbase');
+        return resolve({type: 'coinbase', parsedData: data});
         // BitPayCard Authentication
       } else if (data && data.indexOf(this.win.appConfig.name + '://') === 0) {
-          //let secret = this.getParameterByName('secret', data);
-          //let email = this.getParameterByName('email', data);
-          //let otp = this.getParameterByName('otp', data);
-          // $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
-          //   $state.transitionTo('tabs.bitpayCardIntro', {
-          //     secret: secret,
-          //     email: email,
-          //     otp: otp
-          //   });
-          // });
-          // return true;
-        return resolve('bitpayCard');
+        let parsedData = this.parseBitpayCardData(data);
+        return resolve({type: 'bitpayCard', parsedData: parsedData});
       // Join
       } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-        return resolve('join');
+        return resolve({type: 'join', parsedData: data});
       // Old join
       } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-        return resolve('oldJoin');
+        return resolve({type: 'oldJoin', parsedData: data});
       } else {
-        return resolve('text');
+        return resolve({type: 'text', parsedData: data});
       }
     });
   }
