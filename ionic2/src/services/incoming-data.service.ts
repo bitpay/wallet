@@ -16,7 +16,9 @@ export class IncomingDataService {
   bitcore: any = bwc.Bitcore;
 
   payproService: any = {
-    getPayProDetails: (url, callback) => {}
+    getPayProDetails: (url, callback) => {
+      return callback('not paypro');
+    }
   };
 
   constructor(
@@ -24,9 +26,68 @@ export class IncomingDataService {
     public scannerService: ScannerService
   ) {}
 
-  getDataType(): Promise<IncomingDataType> {
+  getDataType(data: string): Promise<IncomingDataType> {
     return new Promise((resolve, reject) => {
-      resolve({yo: 'maine'});
+      this.logger.debug('Processing incoming data: ' + data);
+      // data extensions for Payment Protocol with non-backwards-compatible request
+      if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
+        return resolve('paypro');
+      }
+      data = this.sanitizeUri(data);
+
+      // BIP21
+      if (this.bitcore.URI.isValid(data)) {
+        let parsed = new this.bitcore.URI(data);
+        //let addr = parsed.address ? parsed.address.toString() : '';
+        //let message = parsed.message;
+        let amount = parsed.amount ?  parsed.amount : '';
+        if (parsed.r) {
+          return resolve('paypro');
+        } else {
+          if (amount) {
+            return resolve('bitcoinAddressWithAmount');
+          } else {
+            return resolve('bitcoinAddress');
+          }
+        }
+      // Plain URL
+      } else if (/^https?:\/\//.test(data)) {
+        this.payproService.getPayProDetails(data, function(err, details) {
+          if(err) {
+            return resolve('url');
+          }
+          return resolve('paypro');
+        });
+        // Plain Address
+      } else if (this.bitcore.Address.isValid(data, 'livenet') || this.bitcore.Address.isValid(data, 'testnet')) {
+        return resolve('bitcoinAddress');
+      } else if (data && data.indexOf(this.win.appConfig.name + '://glidera') === 0) {
+        return resolve('glidera');
+      } else if (data && data.indexOf(this.win.appConfig.name + '://coinbase') === 0) {
+        return resolve('coinbase');
+        // BitPayCard Authentication
+      } else if (data && data.indexOf(this.win.appConfig.name + '://') === 0) {
+          //let secret = this.getParameterByName('secret', data);
+          //let email = this.getParameterByName('email', data);
+          //let otp = this.getParameterByName('otp', data);
+          // $state.go('tabs.home', {}, {'reload': true, 'notify': $state.current.name == 'tabs.home' ? false : true}).then(function() {
+          //   $state.transitionTo('tabs.bitpayCardIntro', {
+          //     secret: secret,
+          //     email: email,
+          //     otp: otp
+          //   });
+          // });
+          // return true;
+        return resolve('bitpayCard');
+      // Join
+      } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+        return resolve('join');
+      // Old join
+      } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+        return resolve('oldJoin');
+      } else {
+        return resolve('text');
+      }
     });
   }
 

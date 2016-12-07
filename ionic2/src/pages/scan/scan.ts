@@ -130,7 +130,11 @@ export class ScanPage {
   handleSuccessfulScan(contents){
     this.logger.debug('Scan returned: "' + contents + '"');
     this.scannerService.pausePreview();
-    this.incomingData.redir(contents);
+    console.log('getting type for contents', contents);
+    this.incomingData.getDataType(contents).then((type) => {
+      console.log('type', type);
+    });
+    //this.incomingData.redir(contents);
   }
 
   // $rootScope.$on('incomingDataMenu.menuHidden', () => {

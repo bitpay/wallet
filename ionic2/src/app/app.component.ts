@@ -25,9 +25,9 @@ export class CopayApp {
       StatusBar.styleDefault();
       Splashscreen.hide();
 
-      setTimeout(() => {
-       this.incomingDataMenu.show('http://bitpay.com', 'url');
-      }, 2000);
+      // setTimeout(() => {
+      //  this.incomingDataMenu.show('http://bitpay.com', 'url');
+      // }, 2000);
     });
   }
 
