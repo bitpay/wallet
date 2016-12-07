@@ -6,7 +6,7 @@ import { ActionSheetComponent } from './../action-sheet/action-sheet.component';
   selector: 'incoming-data-menu',
   template: `
   <action-sheet
-    [shown]="shown">
+    [shown]="shown" (onHide)="hide()">
 
     <div *ngIf="type === 'url'">
       <div class="incoming-data-menu__item head">
@@ -103,7 +103,9 @@ export class IncomingDataMenuComponent {
     public zone: NgZone
   ) {
     this.incomingData.actionSheetObservable.subscribe((data) => {
-      this.show(data.parsedData, data.type);
+      if(data.action !== 'hide') {
+        this.show(data.parsedData, data.type);
+      }
     });
   }
 
@@ -128,6 +130,7 @@ export class IncomingDataMenuComponent {
 
   hide() {
     this.shown = false;
+    this.incomingData.menuHidden();
     //$rootScope.$broadcast('incomingDataMenu.menuHidden');
   }
   goToUrl(url: string) {

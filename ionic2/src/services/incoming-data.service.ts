@@ -17,8 +17,8 @@ export class IncomingDataService {
   win: any = window;
   bitcore: any = bwc.Bitcore;
 
-  actionSheetSubject: Subject<IncomingDataType> = new Subject<IncomingDataType>();
-  actionSheetObservable: Observable<IncomingDataType> = this.actionSheetSubject.asObservable();
+  actionSheetSubject: Subject<any> = new Subject<any>();
+  actionSheetObservable: Observable<any> = this.actionSheetSubject.asObservable();
 
   payproService: any = {
     getPayProDetails: (url, callback) => {
@@ -118,6 +118,10 @@ export class IncomingDataService {
   showMenu (data: IncomingDataType) {
     this.actionSheetSubject.next(data);
     //$rootScope.$broadcast('incomingDataMenu.showMenu', data);
+  }
+
+  menuHidden () {
+    this.actionSheetSubject.next({action: 'hide'});
   }
 
   redir(data) {

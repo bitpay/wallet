@@ -47,6 +47,12 @@ export class ScanPage {
     public incomingData: IncomingDataService
   ) {
     this.passthroughMode = this.navParams.data.passthroughMode;
+    this.incomingData.actionSheetObservable.subscribe((data) => {
+      if(data.action === 'hide') {
+        this.scannerService.resumePreview();
+        this.activate();     
+      }
+    });
   }
 
   _updateCapabilities() {
