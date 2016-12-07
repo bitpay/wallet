@@ -7,6 +7,7 @@ angular.module('copayApp.directives')
       templateUrl: 'views/includes/walletSelector.html',
       transclude: true,
       scope: {
+        title: '=walletSelectorTitle',
         show: '=walletSelectorShow',
         wallets: '=walletSelectorWallets',
         selectedWallet: '=walletSelectorSelectedWallet',
