@@ -3,7 +3,7 @@
   ng-class="{'fill-screen': fillScreen}">
 </div>
 
-<div class="slide-success__content">
+<div ng-disabled="wallet" class="slide-success__content">
   <img src="img/onboarding-success.svg" ng-class="{reveal: fillScreen}">
   <div class="slide-success__content__header" ng-class="{reveal: fillScreen}">
     <ng-transclude>Payment Sent</ng-transclude>
