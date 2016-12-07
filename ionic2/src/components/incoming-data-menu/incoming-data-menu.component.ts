@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
+import { IncomingDataService } from '../../services/incoming-data.service';
+import { ActionSheetComponent } from './../action-sheet/action-sheet.component';
 
 @Component({
   selector: 'incoming-data-menu',
@@ -81,7 +83,7 @@ import { Component } from '@angular/core';
     </div>
 
   </action-sheet>
-  `
+  `,
 })
 export class IncomingDataMenuComponent {
 
@@ -94,11 +96,26 @@ export class IncomingDataMenuComponent {
     show: () => {}
   };
 
+  @ViewChild(ActionSheetComponent) actionSheet: ActionSheetComponent;
+
+  constructor(
+    public incomingData: IncomingDataService,
+    public zone: NgZone
+  ) {
+    this.incomingData.actionSheetObservable.subscribe((data) => {
+      this.show(data.parsedData, data.type);
+    });
+  }
+
   show(data, type) {
-    this.shown = true;
     this.data = data;
     this.type = type;
     this.handleNewData();
+    setTimeout(() => {
+      this.zone.run(() => {
+        this.shown = true;
+      });
+    }, 750);
   }
 
   handleNewData() {

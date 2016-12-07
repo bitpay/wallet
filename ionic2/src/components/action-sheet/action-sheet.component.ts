@@ -14,9 +14,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   `
 })
 export class ActionSheetComponent {
-  
+
   @Input() shown: boolean = false;
-  @Output() onHide: EventEmitter<boolean> = new EventEmitter();
+  @Output() onHide: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   hide() {
     this.shown = false;

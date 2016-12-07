@@ -133,6 +133,7 @@ export class ScanPage {
     console.log('getting type for contents', contents);
     this.incomingData.getDataType(contents).then((type) => {
       console.log('type', type);
+      this.incomingData.showMenu(type);
     });
     //this.incomingData.redir(contents);
   }
