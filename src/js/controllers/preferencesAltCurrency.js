@@ -10,10 +10,17 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
     $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
     $scope.listComplete = false;
 
+    var unusedCurrencyList = [{
+      isoCode: 'LTL'
+    }, {
+      isoCode: 'BTC'
+    }];
+
+    var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
+
     rateService.whenAvailable(function() {
-      completeAlternativeList = rateService.listAlternatives();
-      lodash.remove(completeAlternativeList, function(c) {
-        return c.isoCode == 'BTC';
+      completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
+        return idx[c.isoCode];
       });
       $scope.altCurrencyList = completeAlternativeList.slice(0, next);
     });
