@@ -49,7 +49,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     coinbase: {
-      enabled: false, //disable coinbase for this release
+      enabled: true,
       testnet: false
     },
 
@@ -229,10 +229,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       configCache.colorFor = configCache.colorFor || {};
       configCache.aliasFor = configCache.aliasFor || {};
       configCache.emailFor = configCache.emailFor || {};
-
-      // Coinbase
-      // Disabled for testnet
-      configCache.coinbase.testnet = false;
 
       $log.debug('Preferences read:', configCache)
 
