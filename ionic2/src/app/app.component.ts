@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
@@ -12,7 +12,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 })
 export class CopayApp {
   rootPage = TabsPage;
-  actionSheetShown: boolean = false;
 
   constructor(
     public platform: Platform
