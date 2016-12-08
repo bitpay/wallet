@@ -41,9 +41,6 @@ angular.module('copayApp.services')
 
 
     root._detect = function(cb) {
-
-      return cb('en'); //disable auto detection for release;
-
       var userLang, androidLang;
       if (navigator && navigator.globalization) {
 
