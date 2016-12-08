@@ -3,9 +3,8 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Logger } from 'angular2-logger/core';
 
 import { AppConfigService } from './app-config.service';
+import { BwcService } from './bwc.service';
 import { ScannerService } from './scanner.service';
-
-import bwc from 'bitcore-wallet-client/index';
 
 interface  IncomingDataType {
   type: string;
@@ -15,9 +14,7 @@ interface  IncomingDataType {
 @Injectable()
 export class IncomingDataService {
 
-  win: any = window;
-  bitcore: any = bwc.Bitcore;
-  appName: string = 'bitpay';
+  bitcore: any;
 
   actionSheetSubject: Subject<any> = new Subject<any>();
   actionSheetObservable: Observable<any> = this.actionSheetSubject.asObservable();
@@ -31,9 +28,12 @@ export class IncomingDataService {
 
   constructor(
     public appConfig: AppConfigService,
+    public bwcService: BwcService,
     public logger: Logger,
-    public scannerService: ScannerService
-  ) {}
+    public scannerService: ScannerService,
+  ) {
+    this.bitcore = this.bwcService.getBitcore();
+  }
 
   parseBip21(data) {
     let parsed = new this.bitcore.URI(data);
