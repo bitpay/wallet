@@ -34,11 +34,6 @@ export class ScanPage {
   cameraToggleActive: boolean = false;
   lightActive: boolean = false;
 
-  // placeholder for incomingData service for now
-  // incomingData: any = {
-  //   redir: () => {}
-  // };
-
   constructor(
     public logger: Logger,
     public nav: NavController,
@@ -47,12 +42,7 @@ export class ScanPage {
     public incomingData: IncomingDataService
   ) {
     this.passthroughMode = this.navParams.data.passthroughMode;
-    this.incomingData.actionSheetObservable.subscribe((data) => {
-      if(data.action === 'hide') {
-        this.scannerService.resumePreview();
-        this.activate();     
-      }
-    });
+    this.listenForIncomingDataMenuClose();
   }
 
   _updateCapabilities() {
@@ -136,18 +126,19 @@ export class ScanPage {
   handleSuccessfulScan(contents){
     this.logger.debug('Scan returned: "' + contents + '"');
     this.scannerService.pausePreview();
-    console.log('getting type for contents', contents);
     this.incomingData.getDataType(contents).then((type) => {
-      console.log('type', type);
       this.incomingData.showMenu(type);
     });
-    //this.incomingData.redir(contents);
   }
 
-  // $rootScope.$on('incomingDataMenu.menuHidden', () => {
-  //   this.scannerService.resumePreview();
-  //   this.activate();
-  // });
+  listenForIncomingDataMenuClose() {
+    this.incomingData.actionSheetObservable.subscribe((data) => {
+      if(data.action === 'hide') {
+        this.scannerService.resumePreview();
+        this.activate();
+      }
+    });
+  }
 
   openSettings() {
     this.scannerService.openSettings();

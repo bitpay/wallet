@@ -102,8 +102,9 @@ export class IncomingDataMenuComponent {
     public incomingData: IncomingDataService,
     public zone: NgZone
   ) {
-    this.incomingData.actionSheetObservable.subscribe((data) => {
-      if(data.action !== 'hide') {
+    this.incomingData.actionSheetObservable.subscribe((event) => {
+      let data = event.data;
+      if(event.action === 'show') {
         this.show(data.parsedData, data.type);
       }
     });
@@ -131,11 +132,12 @@ export class IncomingDataMenuComponent {
   hide() {
     this.shown = false;
     this.incomingData.menuHidden();
-    //$rootScope.$broadcast('incomingDataMenu.menuHidden');
   }
+
   goToUrl(url: string) {
     this.externalLinkService.open(url);
   }
+
   sendPaymentToAddress(bitcoinAddress: string) {
     this.shown = false;
     // $state.go('tabs.send').then(function() {

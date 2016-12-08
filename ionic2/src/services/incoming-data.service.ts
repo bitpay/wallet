@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs/Rx';
 import { Logger } from 'angular2-logger/core';
+
 import { ScannerService } from './scanner.service';
 
 import bwc from 'bitcore-wallet-client/index';
-
-import {Observable, Subject} from 'rxjs/Rx';
 
 interface  IncomingDataType {
   type: string;
@@ -116,8 +116,7 @@ export class IncomingDataService {
   }
 
   showMenu (data: IncomingDataType) {
-    this.actionSheetSubject.next(data);
-    //$rootScope.$broadcast('incomingDataMenu.showMenu', data);
+    this.actionSheetSubject.next({action: 'show', data: data});
   }
 
   menuHidden () {
