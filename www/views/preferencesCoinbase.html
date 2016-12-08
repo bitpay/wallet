@@ -1,60 +1,62 @@
-<div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Preferences'; goBackToState = 'coinbase'; noColor = true">
-</div>
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Preferences</ion-nav-title>
+  </ion-nav-bar>
 
-<div class="content coinbase-preferences" ng-controller="preferencesCoinbaseController as coinbase">
+  <ion-content>
 
-  <ul ng-if="index.coinbaseAccount && !index.coinbaseError" class="no-bullet m0">
-    <h4 class="title m0">Account</h4>
-    <li>
-    <span>ID</span>
-    <span class="right text-gray enable_text_select">
-      {{index.coinbaseAccount.id}}
-    </span>
-    </li>
-    <li>
-    <span>Name</span>
-    <span class="right text-gray">
-      {{index.coinbaseAccount.name}}
-    </span>
-    </li>
-    <li>
-    <span>Balance</span>
-    <span class="right text-gray">
-      {{index.coinbaseAccount.balance.amount}} {{index.coinbaseAccount.balance.currency}}
-    </span>
-    </li>
-    <li>
-    <span>Native Balance</span>
-    <span class="right text-gray">
-      {{index.coinbaseAccount.native_balance.amount}} {{index.coinbaseAccount.native_balance.currency}}
-    </span>
-    </li>
+    <ul ng-if="coinbaseAccount && !error" class="list">
+      <div class="item item-divider">
+        Account
+      </div>
+      <li class="item">
+        <span>ID</span>
+        <span class="item-note">
+          {{coinbaseAccount.id}}
+        </span>
+      </li>
+      <li class="item">
+        <span>Name</span>
+        <span class="item-note">
+          {{coinbaseAccount.name}}
+        </span>
+      </li>
+      <li class="item">
+        <span>Balance</span>
+        <span class="item-note">
+          {{coinbaseAccount.balance.amount}} {{coinbaseAccount.balance.currency}}
+        </span>
+      </li>
+      <li class="item">
+        <span>Native Balance</span>
+        <span class="item-note">
+          {{coinbaseAccount.native_balance.amount}} {{coinbaseAccount.native_balance.currency}}
+        </span>
+      </li>
 
-    <h4 class="title m0">User Information</h4>
-    <li>
-    <span>ID</span>
-    <span class="right text-gray enable_text_select">
-      {{index.coinbaseUser.id}}
-    </span>
-    </li>
-    <li>
-    <span>Email</span>
-    <span class="right text-gray">
-      {{index.coinbaseUser.email}}
-    </span>
-    </li>
-  </ul>
-  <ul class="no-bullet m0">
-    <h4></h4>
-    <li ng-click="coinbase.revokeToken(index.coinbaseTestnet)">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <span class="text-warning">Log out</span>
-    </li>
-  </ul>
-  <h4></h4>
+      <div class="item item-divider">
+        User Information
+      </div>
+      <li class="item">
+        <span>ID</span>
+        <span class="item-note">
+          {{coinbaseUser.id}}
+        </span>
+      </li>
+      <li class="item">
+        <span>Email</span>
+        <span class="item-note">
+          {{coinbaseUser.email}}
+        </span>
+      </li>
 
-</div>
-<div class="extra-margin-bottom"></div>
+      <div class="item item-divider"></div>
+      <li class="item" ng-click="revokeToken()">
+        <span>Log out</span>
+      </li>
+    </ul>
+
+  </ion-content>
+</ion-view>
