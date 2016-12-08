@@ -66,6 +66,10 @@
 
   <div ng-if="accountId && !error">
 
+    <div class="m20t text-center" ng-show="accountId" ng-click="updateTransactions()">
+      <img src="img/coinbase-logo.png" width="200">
+    </div>
+
     <div class="list card"
          ng-show="accountId">
       <a class="item item-icon-right"
