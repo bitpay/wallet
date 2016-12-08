@@ -177,7 +177,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
                 if (err) return cb(err);
                 _refreshToken(refreshToken, function(err, newToken) {
                   if (err) return cb(err);
-                  return cb(null, {accessToken: newToken, accountId: accountId});
+                  _getMainAccountId(newToken, function(err, accountId) {
+                    if (err) return cb(err);
+                    return cb(null, {accessToken: newToken, accountId: accountId});
+                  });
                 });
               });
             } else {

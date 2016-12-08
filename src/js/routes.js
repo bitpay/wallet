@@ -926,24 +926,25 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-      .state('tabs.buyandsell.coinbase', {
-        url: '/coinbase',
-        views: {
-          'tab-home@tabs': {
-            controller: 'coinbaseController',
-            controllerAs: 'coinbase',
-            templateUrl: 'views/coinbase.html'
-          }
-        }
-      })
-      .state('tabs.buyandsell.coinbase.preferences', {
-        url: '/preferences',
+    .state('tabs.buyandsell.coinbase', {
+      url: '/coinbase',
+      views: {
         'tab-home@tabs': {
-          controller: 'preferencesCoinbaseController',
+          controller: 'coinbaseController',
           controllerAs: 'coinbase',
+          templateUrl: 'views/coinbase.html'
+        }
+      }
+    })
+    .state('tabs.preferences.coinbase', {
+      url: '/coinbase',
+      views: {
+        'tab-settings@tabs': {
+          controller: 'preferencesCoinbaseController',
           templateUrl: 'views/preferencesCoinbase.html'
         }
-      })
+      }
+    })
       .state('tabs.buyandsell.coinbase.buy', {
         url: '/buy',
         'tab-home@tabs': {

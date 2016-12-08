@@ -1,18 +1,42 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesCoinbaseController',
-  function($scope, $timeout, $ionicModal, applicationService, coinbaseService) {
+angular.module('copayApp.controllers').controller('preferencesCoinbaseController', function($scope, $timeout, $state, $ionicHistory, lodash, ongoingProcess, popupService, coinbaseService) {
 
-    this.revokeToken = function(testnet) {
-      $scope.network = testnet ? 'testnet' : 'livenet';
+  $scope.revokeToken = function() {
+    popupService.showConfirm('Coinbase', 'Are you sure you would like to log out of your Coinbase account?', null, null, function(res) {
+      if (res) {
+        coinbaseService.logout(function() {
+          $ionicHistory.clearHistory();
+          $timeout(function() {
+            $state.go('tabs.home');
+          }, 100);
+        });
+      }
+    });
+  };
 
-      $ionicModal.fromTemplateUrl('views/modals/coinbase-confirmation.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.coinbaseConfirmationModal = modal;
-        $scope.coinbaseConfirmationModal.show();
+  $scope.$on("$ionicView.enter", function(event, data){
+    coinbaseService.setCredentials();
+    $scope.network = coinbaseService.getEnvironment();
+    ongoingProcess.set('connectingCoinbase', true);
+    coinbaseService.init($scope.accessToken, function(err, data) {
+      ongoingProcess.set('connectingCoinbase', false);
+      if (err || lodash.isEmpty(data)) {
+        ongoingProcess.set('connectingCoinbase', false);
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+        }
+        return;
+      }
+      var accessToken = data.accessToken;
+      var accountId = data.accountId;
+      coinbaseService.getAccount(accessToken, accountId, function(err, account) {
+        $scope.coinbaseAccount = account.data;
       });
-    };
-
+      coinbaseService.getCurrentUser(accessToken, function(err, user) {
+        $scope.coinbaseUser = user.data;
+      });
+    });
   });
+
+});
