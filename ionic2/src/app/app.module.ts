@@ -6,11 +6,13 @@ import { CoreModule } from './core/core.module'
 import { CopayApp } from './app.component';
 import { PAGES } from '../pages/pages';
 import { SERVICES } from '../services/services';
+import { COMPONENTS } from '../components/components';
 
 @NgModule({
   declarations: [
     CopayApp,
-    PAGES
+    PAGES,
+    COMPONENTS
   ],
   imports: [
     IonicModule.forRoot(CopayApp),

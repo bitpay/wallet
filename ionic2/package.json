@@ -34,6 +34,7 @@
     "@ionic/storage": "1.1.6",
     "@types/cordova-plugin-qrscanner": "^1.0.29",
     "angular2-logger": "^0.5.1",
+    "bitcore-wallet-client": "^4.4.0",
     "cordova-plugin-qrscanner": "^2.4.0",
     "http-server": "^0.9.0",
     "ionic-angular": "2.0.0-rc.3",
@@ -43,7 +44,7 @@
     "zone.js": "0.6.26"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "0.0.45",
+    "@ionic/app-scripts": "0.0.46",
     "@types/jasmine": "2.5.37",
     "angular-cli": "1.0.0-beta.20-1",
     "codelyzer": "~0.0.26",

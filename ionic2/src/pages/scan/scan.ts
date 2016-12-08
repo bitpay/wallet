@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
 import { Logger } from 'angular2-logger/core';
+
+import { IncomingDataService } from '../../services/incoming-data.service';
 import { ScannerService } from '../../services/scanner.service';
 
 @Component({
@@ -33,19 +34,15 @@ export class ScanPage {
   cameraToggleActive: boolean = false;
   lightActive: boolean = false;
 
-  // placeholder for incomingData service for now
-  incomingData: any = {
-    redir: () => {}
-  };
-
   constructor(
     public logger: Logger,
     public nav: NavController,
     public navParams: NavParams,
-    public scannerService: ScannerService
-    //public incomingData: IncomingDataService
+    public scannerService: ScannerService,
+    public incomingData: IncomingDataService
   ) {
     this.passthroughMode = this.navParams.data.passthroughMode;
+    this.listenForIncomingDataMenuClose();
   }
 
   _updateCapabilities() {
@@ -129,13 +126,19 @@ export class ScanPage {
   handleSuccessfulScan(contents){
     this.logger.debug('Scan returned: "' + contents + '"');
     this.scannerService.pausePreview();
-    this.incomingData.redir(contents);
+    this.incomingData.getDataType(contents).then((type) => {
+      this.incomingData.showMenu(type);
+    });
   }
 
-  // $rootScope.$on('incomingDataMenu.menuHidden', () => {
-  //   this.scannerService.resumePreview();
-  //   this.activate();
-  // });
+  listenForIncomingDataMenuClose() {
+    this.incomingData.actionSheetObservable.subscribe((data) => {
+      if(data.action === 'hide') {
+        this.scannerService.resumePreview();
+        this.activate();
+      }
+    });
+  }
 
   openSettings() {
     this.scannerService.openSettings();

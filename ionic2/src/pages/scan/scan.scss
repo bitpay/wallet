@@ -1,8 +1,14 @@
 $scannerBackgroundColor: #060d2d;
 
 page-scan {
-  ion-content.content-md {
-    background-color: transparent;
+  .toolbar-background.toolbar-background-ios {
+    border: 0;
+  }
+  ion-content {
+    &.content-md,
+    &.content-ios {
+      background-color: transparent;
+    }
   }
   color: #fff;
   text-align: center;
@@ -78,6 +84,13 @@ page-scan {
   background-color: $scannerBackgroundColor !important;
 }
 
-ion-app.md {
-  background-color: transparent !important;
+ion-app {
+  &.md,
+  &.ios {
+    background-color: transparent !important;
+
+    .ion-page.show-page ~ .nav-decor {
+      background-color: transparent !important;
+    }
+  }
 }

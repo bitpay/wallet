@@ -1,4 +1,4 @@
-import { CopayApp }                      from './app.component';
+import { CopayApp } from './app.component';
 import { NavMock, PlatformMock } from '../mocks';
 
 let instance: CopayApp = null;
