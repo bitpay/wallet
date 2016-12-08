@@ -16,7 +16,7 @@
     -->
     <div id="wallet-backup-phrase-step-1" class="ng-hide" ng-show="step == 1 && (mnemonicWords || (!credentialsEncrypted && !deleted))">
       <div class="initial-prompt" translate>Please carefully write down this phrase.</div>
-      <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}">
+      <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}" copy-to-clipboard="mnemonicWords">
         <div class="backup-phrase-content">
           <span class="backup-phrase-content-word-readonly" ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
         </div>
