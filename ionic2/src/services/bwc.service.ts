@@ -14,7 +14,7 @@ export class BwcService {
     }
 
     getErrors() {
-      return this.Client.errors
+      return this.Client.errors;
     }
 
     getSJCL() {
