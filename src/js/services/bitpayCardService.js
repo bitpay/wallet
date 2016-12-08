@@ -305,6 +305,15 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     });
   };
 
+  root.getRates = function(currency, cb) {
+    $http(_get('/rates/' + currency)).then(function(data) {
+      $log.info('BitPay Get Rates: SUCCESS');
+      return cb(data.data.error, data.data.data);
+    }, function(data) {
+      return cb(_setError('BitPay Error: Get Rates', data));
+    });
+  };
+
   /*
    * CONSTANTS
    */
