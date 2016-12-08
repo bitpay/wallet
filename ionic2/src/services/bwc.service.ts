@@ -25,7 +25,7 @@ export class BwcService {
       return this.Client.Utils;
     }
 
-    getClient(walletData, opts) {
+    getClient(walletData?, opts?): any {
       opts = opts || {};
 
       let client = new this.Client({

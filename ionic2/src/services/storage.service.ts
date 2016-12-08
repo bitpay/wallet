@@ -15,4 +15,28 @@ export class StorageService {
 
   }
 
+  setBackupFlag(walletId, cb) {}
+
+  getBackupFlag(walletId, cb) {}
+
+  getHideBalanceFlag(walletId, cb) {}
+
+  getProfile(cb) {}
+
+  storeProfile(profile, cb) {}
+
+  clearLastAddress(walletId, cb){}
+
+  removeAllWalletData(walletId, cb) {}
+
+  getAddressbook(network, cb) {}
+
+  setAddressbook(network, addressBook, cb) {}
+
+  setHideBalanceFlag(walletId, balanceHidden, cb) {}
+
+  getCopayDisclaimerFlag(cb) {}
+
+
+
 }

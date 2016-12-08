@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Logger } from 'angular2-logger/core';
+import lodash from 'lodash';
 
 import { BwcService } from './bwc.service';
-import { PlatformInfoService } from './platform-info.service';
+import { ConfigService } from './config.service';
+import { PlatformInfo } from './platform-info.service';
+import { StorageService } from './storage.service';
 
 @Injectable()
 export class ProfileService {
@@ -11,8 +15,11 @@ export class ProfileService {
   isWP: boolean = false;
   isIOS: boolean = false;
 
-  errors = bwcService.getErrors();
-  usePushNotifications = isCordova && !isWP;
+  isBound: boolean = false;
+
+  errors: any;
+
+  usePushNotifications: boolean = false;
 
   UPDATE_PERIOD = 15;
 
@@ -29,20 +36,43 @@ export class ProfileService {
 
   wallet = {}; // decorated version of client
 
+  validationLock: boolean = false;
+  _queue = [];
+
+  pushNotificationsService: any = {
+    init: () => {}
+  }
+
+  gettext: any = () => {};
+
+  gettextCatalog: any = () => {};
+
+  uxLanguage: any = {
+    getCurrentLanguage: () => {}
+  };
+
+  txFormatService: any = {
+    formatAmountStr: () => {}
+  };
 
   constructor(
     public bwcService: BwcService,
-    public platformInfo: PlatformInfoService
+    public configService: ConfigService,
+    public logger: Logger,
+    public platformInfo: PlatformInfo,
+    public storageService: StorageService
   ) {
-    this.isChromeApp = platformInfo.isChromeApp;
-    this.isCordova = platformInfo.isCordova;
-    this.isWP = platformInfo.isWP;
-    this.isIOS = platformInfo.isIOS;
+    this.isChromeApp = this.platformInfo.isChromeApp;
+    this.isCordova = this.platformInfo.isCordova;
+    this.isWP = this.platformInfo.isWP;
+    this.isIOS = this.platformInfo.isIOS;
+    this.errors = this.bwcService.getErrors();
+    this.usePushNotifications = this.isCordova && !this.isWP;
   }
 
-  root.updateWalletSettings = function(wallet) {
-    var defaults = configService.getDefaults();
-    configService.whenAvailable(function(config) {
+  updateWalletSettings(wallet) {
+    let defaults = this.configService.getDefaults();
+    this.configService.whenAvailable(function(config) {
       wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
       wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
       wallet.color = (config.colorFor && config.colorFor[wallet.id]) || '#4A90E2';
@@ -50,15 +80,15 @@ export class ProfileService {
     });
   }
 
-  root.setBackupFlag = function(walletId) {
-    storageService.setBackupFlag(walletId, function(err) {
-      if (err) $log.error(err);
-      $log.debug('Backup flag stored');
-      root.wallet[walletId].needsBackup = false;
+  setBackupFlag(walletId) {
+    this.storageService.setBackupFlag(walletId, function(err) {
+      if (err) this.logger.error(err);
+      this.logger.debug('Backup flag stored');
+      this.wallet[walletId].needsBackup = false;
     });
   };
 
-  function _requiresBackup(wallet) {
+  _requiresBackup(wallet) {
     if (wallet.isPrivKeyExternal()) return false;
     if (!wallet.credentials.mnemonic) return false;
     if (wallet.credentials.network == 'testnet') return false;
@@ -66,73 +96,73 @@ export class ProfileService {
     return true;
   };
 
-  function _needsBackup(wallet, cb) {
-    if (!_requiresBackup(wallet))
+  _needsBackup(wallet, cb) {
+    if (!this._requiresBackup(wallet))
       return cb(false);
 
-    storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
-      if (err) $log.error(err);
+    this.storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
+      if (err) this.logger.error(err);
       if (val) return cb(false);
       return cb(true);
     });
   };
 
-  function _balanceIsHidden(wallet, cb) {
-    storageService.getHideBalanceFlag(wallet.credentials.walletId, function(err, shouldHideBalance) {
-      if (err) $log.error(err);
-      var hideBalance = (shouldHideBalance == 'true') ? true : false;
+  _balanceIsHidden(wallet, cb) {
+    this.storageService.getHideBalanceFlag(wallet.credentials.walletId, function(err, shouldHideBalance) {
+      if (err) this.logger.error(err);
+      let hideBalance = (shouldHideBalance == 'true') ? true : false;
       return cb(hideBalance);
     });
   };
   // Adds a wallet client to profileService
-  root.bindWalletClient = function(wallet, opts) {
-    var opts = opts || {};
-    var walletId = wallet.credentials.walletId;
+  bindWalletClient(wallet, opts?) {
+    opts = opts || {};
+    let walletId = wallet.credentials.walletId;
 
-    if ((root.wallet[walletId] && root.wallet[walletId].started) && !opts.force) {
+    if ((this.wallet[walletId] && this.wallet[walletId].started) && !opts.force) {
       return false;
     }
 
     // INIT WALLET VIEWMODEL
     wallet.id = walletId;
     wallet.started = true;
-    wallet.doNotVerifyPayPro = isChromeApp;
+    wallet.doNotVerifyPayPro = this.isChromeApp;
     wallet.network = wallet.credentials.network;
     wallet.copayerId = wallet.credentials.copayerId;
     wallet.m = wallet.credentials.m;
     wallet.n = wallet.credentials.n;
 
-    root.updateWalletSettings(wallet);
-    root.wallet[walletId] = wallet;
+    this.updateWalletSettings(wallet);
+    this.wallet[walletId] = wallet;
 
-    _needsBackup(wallet, function(val) {
+    this._needsBackup(wallet, function(val) {
       wallet.needsBackup = val;
     });
 
-    _balanceIsHidden(wallet, function(val) {
+    this._balanceIsHidden(wallet, function(val) {
       wallet.balanceHidden = val;
     });
 
     wallet.removeAllListeners();
 
     wallet.on('report', function(n) {
-      $log.info('BWC Report:' + n);
+      this.logger.info('BWC Report:' + n);
     });
 
     wallet.on('notification', function(n) {
 
-      $log.debug('BWC Notification:', n);
+      this.logger.debug('BWC Notification:', n);
 
       if (n.type == "NewBlock" && n.data.network == "testnet") {
-        throttledBwsEvent(n, wallet);
-      } else newBwsEvent(n, wallet);
+        this.throttledBwsEvent(n, wallet);
+      } else this.newBwsEvent(n, wallet);
     });
 
     wallet.on('walletCompleted', function() {
-      $log.debug('Wallet completed');
+      this.logger.debug('Wallet completed');
 
-      root.updateCredentials(JSON.parse(wallet.export()), function() {
-        $rootScope.$emit('Local/WalletCompleted', walletId);
+      this.updateCredentials(JSON.parse(wallet.export()), function() {
+        //$rootScope.$emit('Local/WalletCompleted', walletId);
       });
     });
 
@@ -140,31 +170,36 @@ export class ProfileService {
       notificationIncludeOwn: true,
     }, function(err) {
       if (err) {
-        $log.error('Could not init notifications err:', err);
+        this.logger.error('Could not init notifications err:', err);
         return;
       }
-      wallet.setNotificationsInterval(UPDATE_PERIOD);
+      wallet.setNotificationsInterval(this.UPDATE_PERIOD);
       wallet.openWallet(function(err) {
         if (wallet.status !== true)
-          $log.log('Wallet + ' + walletId + ' status:' + wallet.status)
+          this.logger.log('Wallet + ' + walletId + ' status:' + wallet.status)
       });
     });
 
-    $rootScope.$on('Local/SettingsUpdated', function(e, walletId) {
-      if (!walletId || walletId == wallet.id) {
-        $log.debug('Updating settings for wallet:' + wallet.id);
-        root.updateWalletSettings(wallet);
-      }
-    });
+    // $rootScope.$on('Local/SettingsUpdated', function(e, walletId) {
+    //   if (!walletId || walletId == wallet.id) {
+    //     this.logger.debug('Updating settings for wallet:' + wallet.id);
+    //     this.updateWalletSettings(wallet);
+    //   }
+    // });
 
     return true;
   };
 
-  var throttledBwsEvent = lodash.throttle(function(n, wallet) {
-    newBwsEvent(n, wallet);
-  }, 10000);
+  // let throttledBwsEvent = lodash.throttle(function(n, wallet) {
+  //   newBwsEvent(n, wallet);
+  // }, 10000);
+  throttledBwsEvent(n, wallet) {
+    lodash.throttle(function(n, wallet) {
+      this.newBwsEvent(n, wallet);
+    }, 10000);
+  }
 
-  var newBwsEvent = function(n, wallet) {
+  newBwsEvent(n, wallet) {
     if (wallet.cachedStatus)
       wallet.cachedStatus.isValid = false;
 
@@ -177,93 +212,91 @@ export class ProfileService {
     if (wallet.cachedTxps)
       wallet.cachedTxps.isValid = false;
 
-    $rootScope.$emit('bwsEvent', wallet.id, n.type, n);
+    //$rootScope.$emit('bwsEvent', wallet.id, n.type, n);
   };
 
-  var validationLock = false;
-
-  root.runValidation = function(client, delay, retryDelay) {
+  runValidation(client, delay?, retryDelay?) {
 
     delay = delay || 500;
     retryDelay = retryDelay || 50;
 
-    if (validationLock) {
-      return $timeout(function() {
-        $log.debug('ValidatingWallet Locked: Retrying in: ' + retryDelay);
-        return root.runValidation(client, delay, retryDelay);
+    if (this.validationLock) {
+      return setTimeout(() => {
+        this.logger.debug('ValidatingWallet Locked: Retrying in: ' + retryDelay);
+        return this.runValidation(client, delay, retryDelay);
       }, retryDelay);
     }
-    validationLock = true;
+    this.validationLock = true;
 
     // IOS devices are already checked
-    var skipDeviceValidation = isIOS || root.profile.isDeviceChecked(platformInfo.ua);
-    var walletId = client.credentials.walletId;
+    let skipDeviceValidation = this.isIOS || this.profile.isDeviceChecked(this.platformInfo.ua);
+    let walletId = client.credentials.walletId;
 
-    $log.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
-    $timeout(function() {
+    this.logger.debug('ValidatingWallet: ' + walletId + ' skip Device:' + skipDeviceValidation);
+    setTimeout(() => {
       client.validateKeyDerivation({
         skipDeviceValidation: skipDeviceValidation,
-      }, function(err, isOK) {
-        validationLock = false;
+      }, (err, isOK) => {
+        this.validationLock = false;
 
-        $log.debug('ValidatingWallet End:  ' + walletId + ' isOK:' + isOK);
+        this.logger.debug('ValidatingWallet End:  ' + walletId + ' isOK:' + isOK);
         if (isOK) {
-          root.profile.setChecked(platformInfo.ua, walletId);
+          this.profile.setChecked(this.platformInfo.ua, walletId);
         } else {
-          $log.warn('Key Derivation failed for wallet:' + walletId);
-          storageService.clearLastAddress(walletId, function() {});
+          this.logger.warn('Key Derivation failed for wallet:' + walletId);
+          this.storageService.clearLastAddress(walletId, () => {});
         }
 
-        root.storeProfileIfDirty();
+        this.storeProfileIfDirty();
       });
     }, delay);
   };
 
   // Used when reading wallets from the profile
-  root.bindWallet = function(credentials, cb) {
+  bindWallet(credentials, cb) {
     if (!credentials.walletId || !credentials.m)
       return cb('bindWallet should receive credentials JSON');
 
     // Create the client
-    var getBWSURL = function(walletId) {
-      var config = configService.getSync();
-      var defaults = configService.getDefaults();
+    let getBWSURL = function(walletId) {
+      let config = this.configService.getSync();
+      let defaults = this.configService.getDefaults();
       return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
     };
 
 
-    var client = bwcService.getClient(JSON.stringify(credentials), {
+    let client = this.bwcService.getClient(JSON.stringify(credentials), {
       bwsurl: getBWSURL(credentials.walletId),
     });
 
-    var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
+    let skipKeyValidation = this.profile.isChecked(this.platformInfo.ua, credentials.walletId);
     if (!skipKeyValidation)
-      root.runValidation(client, 500);
+      this.runValidation(client, 500);
 
-    $log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
-    return cb(null, root.bindWalletClient(client));
+    this.logger.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
+    return cb(null, this.bindWalletClient(client));
   };
 
-  root.bindProfile = function(profile, cb) {
-    root.profile = profile;
+  bindProfile(profile, cb) {
+    this.profile = profile;
 
-    configService.get(function(err) {
-      $log.debug('Preferences read');
+    this.configService.get(function(err) {
+      this.logger.debug('Preferences read');
       if (err) return cb(err);
 
       function bindWallets(cb) {
-        var l = root.profile.credentials.length;
-        var i = 0,
+        let l = this.profile.credentials.length;
+        let i = 0,
           totalBound = 0;
 
         if (!l) return cb();
 
-        lodash.each(root.profile.credentials, function(credentials) {
-          root.bindWallet(credentials, function(err, bound) {
+        lodash.each(this.profile.credentials, function(credentials) {
+          this.bindWallet(credentials, function(err, bound) {
             i++;
             totalBound += bound;
             if (i == l) {
-              $log.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
+              this.logger.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
               return cb();
             }
           });
@@ -271,99 +304,98 @@ export class ProfileService {
       }
 
       bindWallets(function() {
-        root.isBound = true;
+        this.isBound = true;
 
-        lodash.each(root._queue, function(x) {
-          $timeout(function() {
+        lodash.each(this._queue, function(x) {
+          setTimeout(() => {
             return x();
           }, 1);
         });
-        root._queue = [];
+        this._queue = [];
 
 
 
-        root.isDisclaimerAccepted(function(val) {
+        this.isDisclaimerAccepted(function(val) {
           if (!val) {
             return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
           }
-          var config = configService.getSync();
-          if (config.pushNotifications.enabled && usePushNotifications)
-            root.pushNotificationsInit();
+          let config = this.configService.getSync();
+          if (config.pushNotifications.enabled && this.usePushNotifications)
+            this.pushNotificationsInit();
           return cb();
         });
       });
     });
   };
 
-  root._queue = [];
-  root.whenAvailable = function(cb) {
-    if (!root.isBound) {
-      root._queue.push(cb);
+  whenAvailable(cb) {
+    if (!this.isBound) {
+      this._queue.push(cb);
       return;
     }
     return cb();
   };
 
-  root.pushNotificationsInit = function() {
-    var defaults = configService.getDefaults();
-    var push = pushNotificationsService.init(root.wallet);
+  pushNotificationsInit() {
+    let defaults = this.configService.getDefaults();
+    let push = this.pushNotificationsService.init(this.wallet);
 
     if (!push) return;
 
     push.on('notification', function(data) {
       if (!data.additionalData.foreground) {
-        $log.debug('Push notification event: ', data.message);
+        this.logger.debug('Push notification event: ', data.message);
 
-        $timeout(function() {
-          var wallets = root.getWallets();
-          var walletToFind = data.additionalData.walletId;
+        setTimeout(() => {
+          let wallets = this.getWallets();
+          let walletToFind = data.additionalData.walletId;
 
-          var walletFound = lodash.find(wallets, function(w) {
-            return (lodash.isEqual(walletToFind, sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(w.id))));
+          let walletFound = lodash.find(wallets, function(w) {
+            return (lodash.isEqual(walletToFind, this.sjcl.codec.hex.fromBits(this.sjcl.hash.sha256.hash(w.id))));
           });
 
-          if (!walletFound) return $log.debug('Wallet not found');
+          if (!walletFound) return this.logger.debug('Wallet not found');
         }, 100);
       }
     });
 
     push.on('error', function(e) {
-      $log.warn('Error with push notifications:' + e.message);
+      this.logger.warn('Error with push notifications:' + e.message);
     });
 
   };
 
-  root.loadAndBindProfile = function(cb) {
-    storageService.getProfile(function(err, profile) {
+  loadAndBindProfile(cb) {
+    this.storageService.getProfile(function(err, profile) {
       if (err) {
-        $rootScope.$emit('Local/DeviceError', err);
+        //$rootScope.$emit('Local/DeviceError', err);
         return cb(err);
       }
       if (!profile) {
         // Migration??
-        storageService.tryToMigrate(function(err, migratedProfile) {
+        this.storageService.tryToMigrate(function(err, migratedProfile) {
           if (err) return cb(err);
           if (!migratedProfile)
             return cb(new Error('NOPROFILE: No profile'));
 
           profile = migratedProfile;
-          return root.bindProfile(profile, cb);
+          return this.bindProfile(profile, cb);
         })
       } else {
-        $log.debug('Profile read');
-        return root.bindProfile(profile, cb);
+        this.logger.debug('Profile read');
+        return this.bindProfile(profile, cb);
       }
     });
   };
 
-  var seedWallet = function(opts, cb) {
+  seedWallet(opts, cb) {
     opts = opts || {};
-    var walletClient = bwcService.getClient(null, opts);
-    var network = opts.networkName || 'livenet';
+    let walletClient = this.bwcService.getClient(null, opts);
+    let network = opts.networkName || 'livenet';
 
     if (opts.mnemonic) {
       try {
-        opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
+        opts.mnemonic = this._normalizeMnemonic(opts.mnemonic);
         walletClient.seedFromMnemonic(opts.mnemonic, {
           network: network,
           passphrase: opts.passphrase,
@@ -372,15 +404,15 @@ export class ProfileService {
         });
 
       } catch (ex) {
-        $log.info(ex);
-        return cb(gettext('Could not create: Invalid wallet recovery phrase'));
+        this.logger.info(ex);
+        return cb(this.gettext('Could not create: Invalid wallet recovery phrase'));
       }
     } else if (opts.extendedPrivateKey) {
       try {
         walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
       } catch (ex) {
-        $log.warn(ex);
-        return cb(gettext('Could not create using the specified extended private key'));
+        this.logger.warn(ex);
+        return cb(this.gettext('Could not create using the specified extended private key'));
       }
     } else if (opts.extendedPublicKey) {
       try {
@@ -389,11 +421,11 @@ export class ProfileService {
           derivationStrategy: opts.derivationStrategy || 'BIP44',
         });
       } catch (ex) {
-        $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
-        return cb(gettext('Could not create using the specified extended public key'));
+        this.logger.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
+        return cb(this.gettext('Could not create using the specified extended public key'));
       }
     } else {
-      var lang = uxLanguage.getCurrentLanguage();
+      let lang = this.uxLanguage.getCurrentLanguage();
       try {
         walletClient.seedFromRandomWithMnemonic({
           network: network,
@@ -402,9 +434,9 @@ export class ProfileService {
           account: 0,
         });
       } catch (e) {
-        $log.info('Error creating recovery phrase: ' + e.message);
+        this.logger.info('Error creating recovery phrase: ' + e.message);
         if (e.message.indexOf('language') > 0) {
-          $log.info('Using default language for recovery phrase');
+          this.logger.info('Using default language for recovery phrase');
           walletClient.seedFromRandomWithMnemonic({
             network: network,
             passphrase: opts.passphrase,
@@ -419,21 +451,21 @@ export class ProfileService {
   };
 
   // Creates a wallet on BWC/BWS
-  var doCreateWallet = function(opts, cb) {
-    $log.debug('Creating Wallet:', opts);
-    $timeout(function() {
-      seedWallet(opts, function(err, walletClient) {
+  doCreateWallet(opts, cb) {
+    this.logger.debug('Creating Wallet:', opts);
+    setTimeout(() => {
+      this.seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
-        var name = opts.name || gettextCatalog.getString('Personal Wallet');
-        var myName = opts.myName || gettextCatalog.getString('me');
+        let name = opts.name || this.gettextCatalog.getString('Personal Wallet');
+        let myName = opts.myName || this.gettextCatalog.getString('me');
 
         walletClient.createWallet(name, myName, opts.m, opts.n, {
           network: opts.networkName,
           singleAddress: opts.singleAddress,
           walletPrivKey: opts.walletPrivKey,
         }, function(err, secret) {
-          if (err) return bwcError.cb(err, gettext('Error creating wallet'), cb);
+          if (err) return this.bwcError.cb(err, this.gettext('Error creating wallet'), cb);
           return cb(null, walletClient, secret);
         });
       });
@@ -441,89 +473,91 @@ export class ProfileService {
   };
 
   // create and store a wallet
-  root.createWallet = function(opts, cb) {
-    doCreateWallet(opts, function(err, walletClient, secret) {
+  createWallet(opts, cb) {
+    this.doCreateWallet(opts, (err, walletClient, secret) => {
       if (err) return cb(err);
 
-      addAndBindWalletClient(walletClient, {
+      this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       }, cb);
     });
   };
 
   // joins and stores a wallet
-  root.joinWallet = function(opts, cb) {
-    var walletClient = bwcService.getClient();
-    $log.debug('Joining Wallet:', opts);
+  joinWallet(opts, cb) {
+    let walletClient = this.bwcService.getClient();
+    this.logger.debug('Joining Wallet:', opts);
+
+    let walletData;
 
     try {
-      var walletData = bwcService.parseSecret(opts.secret);
+      walletData = this.bwcService.parseSecret(opts.secret);
 
       // check if exist
-      if (lodash.find(root.profile.credentials, {
+      if (lodash.find(this.profile.credentials, {
           'walletId': walletData.walletId
         })) {
-        return cb(gettext('Cannot join the same wallet more that once'));
+        return cb(this.gettext('Cannot join the same wallet more that once'));
       }
     } catch (ex) {
-      $log.debug(ex);
-      return cb(gettext('Bad wallet invitation'));
+      this.logger.debug(ex);
+      return cb(this.gettext('Bad wallet invitation'));
     }
     opts.networkName = walletData.network;
-    $log.debug('Joining Wallet:', opts);
+    this.logger.debug('Joining Wallet:', opts);
 
-    seedWallet(opts, function(err, walletClient) {
+    this.seedWallet(opts, function(err, walletClient) {
       if (err) return cb(err);
 
       walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
-        if (err) return bwcError.cb(err, gettext('Could not join wallet'), cb);
-        addAndBindWalletClient(walletClient, {
+        if (err) return this.bwcError.cb(err, this.gettext('Could not join wallet'), cb);
+        this.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl
         }, cb);
       });
     });
   };
 
-  root.getWallet = function(walletId) {
-    return root.wallet[walletId];
+  getWallet(walletId) {
+    return this.wallet[walletId];
   };
 
 
-  root.deleteWalletClient = function(client, cb) {
-    var walletId = client.credentials.walletId;
+  deleteWalletClient(client, cb) {
+    let walletId = client.credentials.walletId;
 
-    pushNotificationsService.unsubscribe(root.getWallet(walletId), function(err) {
-      if (err) $log.warn('Unsubscription error: ' + err.message);
-      else $log.debug('Unsubscribed from push notifications service');
+    this.pushNotificationsService.unsubscribe(this.getWallet(walletId), (err) => {
+      if (err) this.logger.warn('Unsubscription error: ' + err.message);
+      else this.logger.debug('Unsubscribed from push notifications service');
     });
 
-    $log.debug('Deleting Wallet:', client.credentials.walletName);
+    this.logger.debug('Deleting Wallet:', client.credentials.walletName);
     client.removeAllListeners();
 
-    root.profile.deleteWallet(walletId);
+    this.profile.deleteWallet(walletId);
 
-    delete root.wallet[walletId];
+    delete this.wallet[walletId];
 
-    storageService.removeAllWalletData(walletId, function(err) {
-      if (err) $log.warn(err);
+    this.storageService.removeAllWalletData(walletId, (err) => {
+      if (err) this.logger.warn(err);
     });
 
-    storageService.storeProfile(root.profile, function(err) {
+    this.storageService.storeProfile(this.profile, (err) => {
       if (err) return cb(err);
       return cb();
     });
   };
 
-  root.setMetaData = function(walletClient, addressBook, cb) {
-    storageService.getAddressbook(walletClient.credentials.network, function(err, localAddressBook) {
-      var localAddressBook1 = {};
+  setMetaData(walletClient, addressBook, cb) {
+    this.storageService.getAddressbook(walletClient.credentials.network, (err, localAddressBook) => {
+      let localAddressBook1 = {};
       try {
         localAddressBook1 = JSON.parse(localAddressBook);
       } catch (ex) {
-        $log.warn(ex);
+        this.logger.warn(ex);
       }
-      var mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
-      storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), function(err) {
+      let mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
+      this.storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), (err) => {
         if (err) return cb(err);
         return cb(null);
       });
@@ -531,53 +565,53 @@ export class ProfileService {
   }
 
   // Adds and bind a new client to the profile
-  var addAndBindWalletClient = function(client, opts, cb) {
+  addAndBindWalletClient(client, opts, cb) {
     if (!client || !client.credentials)
-      return cb(gettext('Could not access wallet'));
+      return cb(this.gettext('Could not access wallet'));
 
-    var walletId = client.credentials.walletId
+    let walletId = client.credentials.walletId
 
-    if (!root.profile.addWallet(JSON.parse(client.export())))
-      return cb(gettext('Wallet already in Copay'));
+    if (!this.profile.addWallet(JSON.parse(client.export())))
+      return cb(this.gettext('Wallet already in Copay'));
 
 
-    var skipKeyValidation = root.profile.isChecked(platformInfo.ua, walletId);
+    let skipKeyValidation = this.profile.isChecked(this.platformInfo.ua, walletId);
     if (!skipKeyValidation)
-      root.runValidation(client);
+      this.runValidation(client);
 
-    root.bindWalletClient(client);
+    this.bindWalletClient(client);
 
-    var saveBwsUrl = function(cb) {
-      var defaults = configService.getDefaults();
-      var bwsFor = {};
+    let saveBwsUrl = function(cb) {
+      let defaults = this.configService.getDefaults();
+      let bwsFor = {};
       bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
 
       // Dont save the default
       if (bwsFor[walletId] == defaults.bws.url)
         return cb();
 
-      configService.set({
+      this.configService.set({
         bwsFor: bwsFor,
       }, function(err) {
-        if (err) $log.warn(err);
+        if (err) this.logger.warn(err);
         return cb();
       });
     };
 
     saveBwsUrl(function() {
-      storageService.storeProfile(root.profile, function(err) {
-        var config = configService.getSync();
+      this.storageService.storeProfile(this.profile, function(err) {
+        let config = this.configService.getSync();
         if (config.pushNotifications.enabled)
-          pushNotificationsService.enableNotifications(root.wallet);
+          this.pushNotificationsService.enableNotifications(this.wallet);
         return cb(err, client);
       });
     });
   };
 
-  root.storeProfileIfDirty = function(cb) {
-    if (root.profile.dirty) {
-      storageService.storeProfile(root.profile, function(err) {
-        $log.debug('Saved modified Profile');
+  storeProfileIfDirty(cb?) {
+    if (this.profile.dirty) {
+      this.storageService.storeProfile(this.profile, function(err) {
+        this.logger.debug('Saved modified Profile');
         if (cb) return cb(err);
       });
     } else {
@@ -585,17 +619,17 @@ export class ProfileService {
     };
   };
 
-  root.importWallet = function(str, opts, cb) {
+  importWallet(str, opts, cb) {
 
-    var walletClient = bwcService.getClient(null, opts);
+    let walletClient = this.bwcService.getClient(null, opts);
 
-    $log.debug('Importing Wallet:', opts);
+    this.logger.debug('Importing Wallet:', opts);
 
     try {
-      var c = JSON.parse(str);
+      let c = JSON.parse(str);
 
       if (c.xPrivKey && c.xPrivKeyEncrypted) {
-        $log.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
+        this.logger.warn('Found both encrypted and decrypted key. Deleting the encrypted version');
         delete c.xPrivKeyEncrypted;
         delete c.mnemonicEncrypted;
       }
@@ -607,7 +641,7 @@ export class ProfileService {
         password: opts.password
       });
     } catch (err) {
-      return cb(gettext('Could not import. Check input file and spending password'));
+      return cb(this.gettext('Could not import. Check input file and spending password'));
     }
 
     str = JSON.parse(str);
@@ -616,71 +650,71 @@ export class ProfileService {
       return cb("Backup format not recognized. If you are using a Copay Beta backup and version is older than 0.10, please see: https://github.com/bitpay/copay/issues/4730#issuecomment-244522614");
     }
 
-    var addressBook = str.addressBook || {};
+    let addressBook = str.addressBook || {};
 
-    addAndBindWalletClient(walletClient, {
+    this.addAndBindWalletClient(walletClient, {
       bwsurl: opts.bwsurl
     }, function(err, walletId) {
       if (err) return cb(err);
-      root.setMetaData(walletClient, addressBook, function(error) {
-        if (error) $log.warn(error);
+      this.setMetaData(walletClient, addressBook, function(error) {
+        if (error) this.logger.warn(error);
         return cb(err, walletClient);
       });
     });
   };
 
-  root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
-    var walletClient = bwcService.getClient(null, opts);
-    $log.debug('Importing Wallet xPrivKey');
+  importExtendedPrivateKey(xPrivKey, opts, cb) {
+    let walletClient = this.bwcService.getClient(null, opts);
+    this.logger.debug('Importing Wallet xPrivKey');
 
     walletClient.importFromExtendedPrivateKey(xPrivKey, opts, function(err) {
       if (err) {
-        if (err instanceof errors.NOT_AUTHORIZED)
+        if (err instanceof this.errors.NOT_AUTHORIZED)
           return cb(err);
 
-        return bwcError.cb(err, gettext('Could not import'), cb);
+        return this.bwcError.cb(err, this.gettext('Could not import'), cb);
       }
 
-      addAndBindWalletClient(walletClient, {
+      this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       }, cb);
     });
   };
 
-  root._normalizeMnemonic = function(words) {
-    var isJA = words.indexOf('\u3000') > -1;
-    var wordList = words.split(/[\u3000\s]+/);
+  _normalizeMnemonic(words) {
+    let isJA = words.indexOf('\u3000') > -1;
+    let wordList = words.split(/[\u3000\s]+/);
 
     return wordList.join(isJA ? '\u3000' : ' ');
   };
 
-  root.importMnemonic = function(words, opts, cb) {
-    var walletClient = bwcService.getClient(null, opts);
+  importMnemonic(words, opts, cb) {
+    let walletClient = this.bwcService.getClient(null, opts);
 
-    $log.debug('Importing Wallet Mnemonic');
+    this.logger.debug('Importing Wallet Mnemonic');
 
-    words = root._normalizeMnemonic(words);
+    words = this._normalizeMnemonic(words);
     walletClient.importFromMnemonic(words, {
       network: opts.networkName,
       passphrase: opts.passphrase,
       account: opts.account || 0,
     }, function(err) {
       if (err) {
-        if (err instanceof errors.NOT_AUTHORIZED)
+        if (err instanceof this.errors.NOT_AUTHORIZED)
           return cb(err);
 
-        return bwcError.cb(err, gettext('Could not import'), cb);
+        return this.bwcError.cb(err, this.gettext('Could not import'), cb);
       }
 
-      addAndBindWalletClient(walletClient, {
+      this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       }, cb);
     });
   };
 
-  root.importExtendedPublicKey = function(opts, cb) {
-    var walletClient = bwcService.getClient(null, opts);
-    $log.debug('Importing Wallet XPubKey');
+  importExtendedPublicKey(opts, cb) {
+    let walletClient = this.bwcService.getClient(null, opts);
+    this.logger.debug('Importing Wallet XPubKey');
 
     walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
       account: opts.account || 0,
@@ -689,29 +723,29 @@ export class ProfileService {
       if (err) {
 
         // in HW wallets, req key is always the same. They can't addAccess.
-        if (err instanceof errors.NOT_AUTHORIZED)
+        if (err instanceof this.errors.NOT_AUTHORIZED)
           err.name = 'WALLET_DOES_NOT_EXIST';
 
-        return bwcError.cb(err, gettext('Could not import'), cb);
+        return this.bwcError.cb(err, this.gettext('Could not import'), cb);
       }
 
-      addAndBindWalletClient(walletClient, {
+      this.addAndBindWalletClient(walletClient, {
         bwsurl: opts.bwsurl
       }, cb);
     });
   };
 
-  root.createProfile = function(cb) {
-    $log.info('Creating profile');
-    var defaults = configService.getDefaults();
+  createProfile(cb) {
+    this.logger.info('Creating profile');
+    let defaults = this.configService.getDefaults();
 
-    configService.get(function(err) {
-      if (err) $log.debug(err);
+    this.configService.get(function(err) {
+      if (err) this.logger.debug(err);
 
-      var p = Profile.create();
-      storageService.storeNewProfile(p, function(err) {
+      let p = Profile.create();
+      this.storageService.storeNewProfile(p, function(err) {
         if (err) return cb(err);
-        root.bindProfile(p, function(err) {
+        this.bindProfile(p, function(err) {
           // ignore NONAGREEDDISCLAIMER
           if (err && err.toString().match('NONAGREEDDISCLAIMER')) return cb();
           return cb(err);
@@ -720,30 +754,30 @@ export class ProfileService {
     });
   };
 
-  root.createDefaultWallet = function(cb) {
-    var opts = {};
+  createDefaultWallet(cb) {
+    let opts = {};
     opts.m = 1;
     opts.n = 1;
     opts.network = 'livenet';
-    root.createWallet(opts, cb);
+    this.createWallet(opts, cb);
   };
 
-  root.setDisclaimerAccepted = function(cb) {
-    root.profile.disclaimerAccepted = true;
-    storageService.storeProfile(root.profile, function(err) {
+  setDisclaimerAccepted(cb) {
+    this.profile.disclaimerAccepted = true;
+    this.storageService.storeProfile(this.profile, function(err) {
       return cb(err);
     });
   };
 
-  root.isDisclaimerAccepted = function(cb) {
-    var disclaimerAccepted = root.profile && root.profile.disclaimerAccepted;
+  isDisclaimerAccepted(cb) {
+    let disclaimerAccepted = this.profile && this.profile.disclaimerAccepted;
     if (disclaimerAccepted)
       return cb(true);
 
     // OLD flag
-    storageService.getCopayDisclaimerFlag(function(err, val) {
+    this.storageService.getCopayDisclaimerFlag(function(err, val) {
       if (val) {
-        root.profile.disclaimerAccepted = true;
+        this.profile.disclaimerAccepted = true;
         return cb(true);
       } else {
         return cb();
@@ -751,19 +785,19 @@ export class ProfileService {
     });
   };
 
-  root.updateCredentials = function(credentials, cb) {
-    root.profile.updateWallet(credentials);
-    storageService.storeProfile(root.profile, cb);
+  updateCredentials(credentials, cb) {
+    this.profile.updateWallet(credentials);
+    this.storageService.storeProfile(this.profile, cb);
   };
 
-  root.getWallets = function(opts) {
+  getWallets(opts?) {
 
     if (opts && !lodash.isObject(opts))
       throw "bad argument";
 
     opts = opts || {};
 
-    var ret = lodash.values(root.wallet);
+    let ret = lodash.values(this.wallet);
 
     if (opts.network) {
       ret = lodash.filter(ret, function(x) {
@@ -791,26 +825,26 @@ export class ProfileService {
     ]);
   };
 
-  root.toggleHideBalanceFlag = function(walletId, cb) {
-    root.wallet[walletId].balanceHidden = !root.wallet[walletId].balanceHidden;
-    storageService.setHideBalanceFlag(walletId, root.wallet[walletId].balanceHidden.toString(), cb);
+  toggleHideBalanceFlag(walletId, cb) {
+    this.wallet[walletId].balanceHidden = !this.wallet[walletId].balanceHidden;
+    this.storageService.setHideBalanceFlag(walletId, this.wallet[walletId].balanceHidden.toString(), cb);
   };
 
-  root.getNotifications = function(opts, cb) {
+  getNotifications(opts, cb) {
     opts = opts || {};
 
-    var TIME_STAMP = 60 * 60 * 6;
-    var MAX = 100;
+    let TIME_STAMP = 60 * 60 * 6;
+    let MAX = 100;
 
-    var typeFilter = {
+    let typeFilter = {
       'NewOutgoingTx': 1,
       'NewIncomingTx': 1
     };
 
-    var w = root.getWallets();
+    let w = this.getWallets();
     if (lodash.isEmpty(w)) return cb();
 
-    var l = w.length,
+    let l = w.length,
       j = 0,
       notifications = [];
 
@@ -841,7 +875,7 @@ export class ProfileService {
     function process(notifications) {
       if (!notifications) return [];
 
-      var shown = lodash.sortBy(notifications, 'createdOn').reverse();
+      let shown = lodash.sortBy(notifications, 'createdOn').reverse();
 
       shown = shown.splice(0, opts.limit || MAX);
 
@@ -851,7 +885,7 @@ export class ProfileService {
         x.types = [x.type];
 
         if (x.data && x.data.amount)
-          x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+          x.amountStr = this.txFormatService.formatAmountStr(x.data.amount);
 
         x.action = function() {
           // TODO?
@@ -863,9 +897,9 @@ export class ProfileService {
         };
       });
 
-      var finale = shown; // GROUPING DISABLED!
+      let finale = shown; // GROUPING DISABLED!
 
-      var finale = [],
+      let finale = [],
         prev;
 
 
@@ -885,7 +919,7 @@ export class ProfileService {
         }
       });
 
-      var u = bwcService.getUtils();
+      let u = this.bwcService.getUtils();
       lodash.each(finale, function(x) {
         if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
           // TODO TODO TODO => BWC
@@ -900,16 +934,16 @@ export class ProfileService {
       updateNotifications(wallet, function(err) {
         j++;
         if (err) {
-          $log.warn('Error updating notifications:' + err);
+          this.logger.warn('Error updating notifications:' + err);
         } else {
 
-          var n;
+          let n;
 
           n = lodash.filter(wallet.cachedActivity.n, function(x) {
             return typeFilter[x.type];
           });
 
-          var idToName = {};
+          let idToName = {};
           if (wallet.cachedStatus) {
             lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
               idToName[c.id] = c.name;
@@ -935,24 +969,23 @@ export class ProfileService {
   };
 
 
-  root.getTxps = function(opts, cb) {
-    var MAX = 100;
+  getTxps(opts, cb) {
+    let MAX = 100;
     opts = opts || {};
 
-    var w = root.getWallets();
+    let w = this.getWallets();
     if (lodash.isEmpty(w)) return cb();
 
-    var txps = [];
+    let txps = [];
 
     lodash.each(w, function(x) {
       if (x.pendingTxps)
         txps = txps.concat(x.pendingTxps);
     });
-    var n = txps.length;
+    let n = txps.length;
     txps = lodash.sortBy(txps, 'pendingForUs', 'createdOn');
     txps = lodash.compact(lodash.flatten(txps)).slice(0, opts.limit || MAX);
     return cb(null, txps, n);
   };
 
-  return root;
 }

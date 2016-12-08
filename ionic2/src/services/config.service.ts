@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from 'angular2-logger/core';
+import lodash from 'lodash';
 
 import { StorageService } from './storage.service';
 
@@ -183,7 +184,6 @@ export class ConfigService {
     return this.configCache;
   }
 
-  // root._queue = [];
   whenAvailable(cb) {
     if (!this.configCache) {
       this._queue.push(cb);
@@ -251,7 +251,7 @@ export class ConfigService {
           return x(this.configCache);
         }, 1);
       });
-      root._queue = [];
+      this._queue = [];
 
       return cb(err, this.configCache);
     });
