@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Logger } from 'angular2-logger/core';
 
+import { StorageService } from './storage.service';
+
 @Injectable()
 export class ConfigService {
 
-  constructor(public logger: Logger) {}
+  constructor(
+    public logger: Logger,
+    public storageService: StorageService
+  ) {}
 
   defaultConfig: any = {
     // wallet limits
@@ -190,7 +195,7 @@ export class ConfigService {
 
   get(cb) {
 
-    storageService.getConfig(function(err, localConfig) {
+    this.storageService.getConfig(function(err, localConfig) {
       if (localConfig) {
         this.configCache = JSON.parse(localConfig);
 
@@ -254,7 +259,7 @@ export class ConfigService {
 
   set(newOpts, cb) {
     let config = lodash.cloneDeep(this.defaultConfig);
-    storageService.getConfig(function(err, oldOpts) {
+    this.storageService.getConfig(function(err, oldOpts) {
       oldOpts = oldOpts || {};
 
       if (lodash.isString(oldOpts)) {
@@ -270,15 +275,15 @@ export class ConfigService {
       lodash.merge(config, oldOpts, newOpts);
       this.configCache = config;
 
-      $rootScope.$emit('Local/SettingsUpdated');
+      //$rootScope.$emit('Local/SettingsUpdated');
 
-      storageService.storeConfig(JSON.stringify(config), cb);
+      this.storageService.storeConfig(JSON.stringify(config), cb);
     });
   };
 
   reset(cb) {
     this.configCache = lodash.clone(this.defaultConfig);
-    storageService.removeConfig(cb);
+    this.storageService.removeConfig(cb);
   }
 
   getDefaults() {
