@@ -6,7 +6,7 @@ import lodash from 'lodash';
 import { ConfigService } from './config.service';
 import { PlatformInfo } from './platform-info.service';
 
-Injectable()
+@Injectable()
 export class PushNotificationService {
 
   isCordova: boolean = false;
@@ -23,10 +23,10 @@ export class PushNotificationService {
     public logger: Logger,
     public platformInfo: PlatformInfo
   ) {
-    this.isCordova = platformInfo.isCordova;
-    this.isWP = platformInfo.isWP;
-    this.isIOS = platformInfo.isIOS;
-    this.isAndroid = platformInfo.isAndroid;
+    this.isCordova = this.platformInfo.isCordova;
+    this.isWP = this.platformInfo.isWP;
+    this.isIOS = this.platformInfo.isIOS;
+    this.isAndroid = this.platformInfo.isAndroid;
     this.usePushNotifications = this.isCordova && !this.isWP;
   }
 
