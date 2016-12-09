@@ -21,7 +21,7 @@
         <label class="item item-input item-stacked-label">
           <span class="input-label" translate>Your name</span>
           <input type="text"
-            placeholder="{{'Satoshi'|translate}}"
+            placeholder="Satoshi"
             ng-model="formData.myName"
             ng-required="formData.totalCopayers != 1"
             ng-disabled="formData.totalCopayers == 1"
@@ -102,7 +102,7 @@
           </label>
 
           <div class="text-center box-notification error" ng-show="(seedSource.id =='new' || seedSource.id =='set') && encrypt">
-            <strong translate>This password cannot be recovered. If the password is lost, funds can only be recovered with a valid backup.</strong>
+            <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
           </div>
 
           <ion-checkbox ng-model="formData.passwordSaved" class="checkbox-positive" ng-show="encrypt">
