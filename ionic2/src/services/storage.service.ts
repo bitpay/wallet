@@ -25,6 +25,8 @@ export class StorageService {
 
   storeProfile(profile, cb) {}
 
+  storeNewProfile(profile, cb) {}
+
   clearLastAddress(walletId, cb){}
 
   removeAllWalletData(walletId, cb) {}
@@ -37,6 +39,6 @@ export class StorageService {
 
   getCopayDisclaimerFlag(cb) {}
 
-
+  tryToMigrate(cb) {}
 
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from 'angular2-logger/core';
 import lodash from 'lodash';
 
+import { BwcErrorService } from './bwc-error.service';
 import { BwcService } from './bwc.service';
 import { ConfigService } from './config.service';
 import { PlatformInfo } from './platform-info.service';
@@ -26,6 +27,8 @@ export class ProfileService {
   UPDATE_PERIOD = 15;
 
   profile = null;
+
+  sjcl: any;
 
   // Object.defineProperty(root, "focusedClient", {
   //   get: function() {
@@ -58,6 +61,7 @@ export class ProfileService {
   };
 
   constructor(
+    public bwcError: BwcErrorService,
     public bwcService: BwcService,
     public configService: ConfigService,
     public logger: Logger,
@@ -70,11 +74,12 @@ export class ProfileService {
     this.isIOS = this.platformInfo.isIOS;
     this.errors = this.bwcService.getErrors();
     this.usePushNotifications = this.isCordova && !this.isWP;
+    this.sjcl = this.bwcService.getSJCL();
   }
 
   updateWalletSettings(wallet) {
     let defaults = this.configService.getDefaults();
-    this.configService.whenAvailable(function(config) {
+    this.configService.whenAvailable((config) => {
       wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
       wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
       wallet.color = (config.colorFor && config.colorFor[wallet.id]) || '#4A90E2';
@@ -83,7 +88,7 @@ export class ProfileService {
   }
 
   setBackupFlag(walletId) {
-    this.storageService.setBackupFlag(walletId, function(err) {
+    this.storageService.setBackupFlag(walletId, (err) => {
       if (err) this.logger.error(err);
       this.logger.debug('Backup flag stored');
       this.wallet[walletId].needsBackup = false;
@@ -102,7 +107,7 @@ export class ProfileService {
     if (!this._requiresBackup(wallet))
       return cb(false);
 
-    this.storageService.getBackupFlag(wallet.credentials.walletId, function(err, val) {
+    this.storageService.getBackupFlag(wallet.credentials.walletId, (err, val) => {
       if (err) this.logger.error(err);
       if (val) return cb(false);
       return cb(true);
@@ -110,7 +115,7 @@ export class ProfileService {
   };
 
   _balanceIsHidden(wallet, cb) {
-    this.storageService.getHideBalanceFlag(wallet.credentials.walletId, function(err, shouldHideBalance) {
+    this.storageService.getHideBalanceFlag(wallet.credentials.walletId, (err, shouldHideBalance) => {
       if (err) this.logger.error(err);
       let hideBalance = (shouldHideBalance == 'true') ? true : false;
       return cb(hideBalance);
@@ -137,21 +142,21 @@ export class ProfileService {
     this.updateWalletSettings(wallet);
     this.wallet[walletId] = wallet;
 
-    this._needsBackup(wallet, function(val) {
+    this._needsBackup(wallet, (val) => {
       wallet.needsBackup = val;
     });
 
-    this._balanceIsHidden(wallet, function(val) {
+    this._balanceIsHidden(wallet, (val) => {
       wallet.balanceHidden = val;
     });
 
     wallet.removeAllListeners();
 
-    wallet.on('report', function(n) {
+    wallet.on('report', (n) => {
       this.logger.info('BWC Report:' + n);
     });
 
-    wallet.on('notification', function(n) {
+    wallet.on('notification', (n) => {
 
       this.logger.debug('BWC Notification:', n);
 
@@ -160,23 +165,23 @@ export class ProfileService {
       } else this.newBwsEvent(n, wallet);
     });
 
-    wallet.on('walletCompleted', function() {
+    wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
 
-      this.updateCredentials(JSON.parse(wallet.export()), function() {
+      this.updateCredentials(JSON.parse(wallet.export()), () => {
         //$rootScope.$emit('Local/WalletCompleted', walletId);
       });
     });
 
     wallet.initialize({
       notificationIncludeOwn: true,
-    }, function(err) {
+    }, (err) => {
       if (err) {
         this.logger.error('Could not init notifications err:', err);
         return;
       }
       wallet.setNotificationsInterval(this.UPDATE_PERIOD);
-      wallet.openWallet(function(err) {
+      wallet.openWallet((err) => {
         if (wallet.status !== true)
           this.logger.log('Wallet + ' + walletId + ' status:' + wallet.status)
       });
@@ -196,7 +201,7 @@ export class ProfileService {
   //   newBwsEvent(n, wallet);
   // }, 10000);
   throttledBwsEvent(n, wallet) {
-    lodash.throttle(function(n, wallet) {
+    lodash.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
   }
@@ -260,7 +265,7 @@ export class ProfileService {
       return cb('bindWallet should receive credentials JSON');
 
     // Create the client
-    let getBWSURL = function(walletId) {
+    let getBWSURL = (walletId) => {
       let config = this.configService.getSync();
       let defaults = this.configService.getDefaults();
       return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
@@ -282,19 +287,19 @@ export class ProfileService {
   bindProfile(profile, cb) {
     this.profile = profile;
 
-    this.configService.get(function(err) {
+    this.configService.get((err) => {
       this.logger.debug('Preferences read');
       if (err) return cb(err);
 
-      function bindWallets(cb) {
+      let bindWallets = (cb) => {
         let l = this.profile.credentials.length;
         let i = 0,
           totalBound = 0;
 
         if (!l) return cb();
 
-        lodash.each(this.profile.credentials, function(credentials) {
-          this.bindWallet(credentials, function(err, bound) {
+        lodash.each(this.profile.credentials, (credentials) => {
+          this.bindWallet(credentials, (err, bound) => {
             i++;
             totalBound += bound;
             if (i == l) {
@@ -305,10 +310,10 @@ export class ProfileService {
         });
       }
 
-      bindWallets(function() {
+      bindWallets(() => {
         this.isBound = true;
 
-        lodash.each(this._queue, function(x) {
+        lodash.each(this._queue, (x) => {
           setTimeout(() => {
             return x();
           }, 1);
@@ -317,7 +322,7 @@ export class ProfileService {
 
 
 
-        this.isDisclaimerAccepted(function(val) {
+        this.isDisclaimerAccepted((val) => {
           if (!val) {
             return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
           }
@@ -339,12 +344,12 @@ export class ProfileService {
   };
 
   pushNotificationsInit() {
-    let defaults = this.configService.getDefaults();
+    //let defaults = this.configService.getDefaults();
     let push = this.pushNotificationsService.init(this.wallet);
 
     if (!push) return;
 
-    push.on('notification', function(data) {
+    push.on('notification', (data) => {
       if (!data.additionalData.foreground) {
         this.logger.debug('Push notification event: ', data.message);
 
@@ -352,7 +357,7 @@ export class ProfileService {
           let wallets = this.getWallets();
           let walletToFind = data.additionalData.walletId;
 
-          let walletFound = lodash.find(wallets, function(w) {
+          let walletFound = lodash.find(wallets, (w) => {
             return (lodash.isEqual(walletToFind, this.sjcl.codec.hex.fromBits(this.sjcl.hash.sha256.hash(w.id))));
           });
 
@@ -361,21 +366,21 @@ export class ProfileService {
       }
     });
 
-    push.on('error', function(e) {
+    push.on('error', (e) => {
       this.logger.warn('Error with push notifications:' + e.message);
     });
 
   };
 
   loadAndBindProfile(cb) {
-    this.storageService.getProfile(function(err, profile) {
+    this.storageService.getProfile((err, profile) => {
       if (err) {
         //$rootScope.$emit('Local/DeviceError', err);
         return cb(err);
       }
       if (!profile) {
         // Migration??
-        this.storageService.tryToMigrate(function(err, migratedProfile) {
+        this.storageService.tryToMigrate((err, migratedProfile) => {
           if (err) return cb(err);
           if (!migratedProfile)
             return cb(new Error('NOPROFILE: No profile'));
@@ -456,7 +461,7 @@ export class ProfileService {
   doCreateWallet(opts, cb) {
     this.logger.debug('Creating Wallet:', opts);
     setTimeout(() => {
-      this.seedWallet(opts, function(err, walletClient) {
+      this.seedWallet(opts, (err, walletClient) => {
         if (err) return cb(err);
 
         let name = opts.name || this.gettextCatalog.getString('Personal Wallet');
@@ -466,7 +471,7 @@ export class ProfileService {
           network: opts.networkName,
           singleAddress: opts.singleAddress,
           walletPrivKey: opts.walletPrivKey,
-        }, function(err, secret) {
+        }, (err, secret) => {
           if (err) return this.bwcError.cb(err, this.gettext('Error creating wallet'), cb);
           return cb(null, walletClient, secret);
         });
@@ -508,10 +513,10 @@ export class ProfileService {
     opts.networkName = walletData.network;
     this.logger.debug('Joining Wallet:', opts);
 
-    this.seedWallet(opts, function(err, walletClient) {
+    this.seedWallet(opts, (err, walletClient) => {
       if (err) return cb(err);
 
-      walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
+      walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, (err) => {
         if (err) return this.bwcError.cb(err, this.gettext('Could not join wallet'), cb);
         this.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl
@@ -558,7 +563,7 @@ export class ProfileService {
       } catch (ex) {
         this.logger.warn(ex);
       }
-      let mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
+      lodash.merge(addressBook, localAddressBook1);
       this.storageService.setAddressbook(walletClient.credentials.network, JSON.stringify(addressBook), (err) => {
         if (err) return cb(err);
         return cb(null);
@@ -583,7 +588,7 @@ export class ProfileService {
 
     this.bindWalletClient(client);
 
-    let saveBwsUrl = function(cb) {
+    let saveBwsUrl = (cb) => {
       let defaults = this.configService.getDefaults();
       let bwsFor = {};
       bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
@@ -594,14 +599,14 @@ export class ProfileService {
 
       this.configService.set({
         bwsFor: bwsFor,
-      }, function(err) {
+      }, (err) => {
         if (err) this.logger.warn(err);
         return cb();
       });
     };
 
-    saveBwsUrl(function() {
-      this.storageService.storeProfile(this.profile, function(err) {
+    saveBwsUrl(() => {
+      this.storageService.storeProfile(this.profile, (err) => {
         let config = this.configService.getSync();
         if (config.pushNotifications.enabled)
           this.pushNotificationsService.enableNotifications(this.wallet);
@@ -612,7 +617,7 @@ export class ProfileService {
 
   storeProfileIfDirty(cb?) {
     if (this.profile.dirty) {
-      this.storageService.storeProfile(this.profile, function(err) {
+      this.storageService.storeProfile(this.profile, (err) => {
         this.logger.debug('Saved modified Profile');
         if (cb) return cb(err);
       });
@@ -656,9 +661,9 @@ export class ProfileService {
 
     this.addAndBindWalletClient(walletClient, {
       bwsurl: opts.bwsurl
-    }, function(err, walletId) {
+    }, (err, walletId) => {
       if (err) return cb(err);
-      this.setMetaData(walletClient, addressBook, function(error) {
+      this.setMetaData(walletClient, addressBook, (error) => {
         if (error) this.logger.warn(error);
         return cb(err, walletClient);
       });
@@ -669,7 +674,7 @@ export class ProfileService {
     let walletClient = this.bwcService.getClient(null, opts);
     this.logger.debug('Importing Wallet xPrivKey');
 
-    walletClient.importFromExtendedPrivateKey(xPrivKey, opts, function(err) {
+    walletClient.importFromExtendedPrivateKey(xPrivKey, opts, (err) => {
       if (err) {
         if (err instanceof this.errors.NOT_AUTHORIZED)
           return cb(err);
@@ -700,7 +705,7 @@ export class ProfileService {
       network: opts.networkName,
       passphrase: opts.passphrase,
       account: opts.account || 0,
-    }, function(err) {
+    }, (err) => {
       if (err) {
         if (err instanceof this.errors.NOT_AUTHORIZED)
           return cb(err);
@@ -721,7 +726,7 @@ export class ProfileService {
     walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
       account: opts.account || 0,
       derivationStrategy: opts.derivationStrategy || 'BIP44',
-    }, function(err) {
+    }, (err) => {
       if (err) {
 
         // in HW wallets, req key is always the same. They can't addAccess.
@@ -741,13 +746,13 @@ export class ProfileService {
     this.logger.info('Creating profile');
     let defaults = this.configService.getDefaults();
 
-    this.configService.get(function(err) {
+    this.configService.get((err) => {
       if (err) this.logger.debug(err);
 
       let p = new Profile();
-      this.storageService.storeNewProfile(p, function(err) {
+      this.storageService.storeNewProfile(p, (err) => {
         if (err) return cb(err);
-        this.bindProfile(p, function(err) {
+        this.bindProfile(p, (err) => {
           // ignore NONAGREEDDISCLAIMER
           if (err && err.toString().match('NONAGREEDDISCLAIMER')) return cb();
           return cb(err);
@@ -766,7 +771,7 @@ export class ProfileService {
 
   setDisclaimerAccepted(cb) {
     this.profile.disclaimerAccepted = true;
-    this.storageService.storeProfile(this.profile, function(err) {
+    this.storageService.storeProfile(this.profile, (err) => {
       return cb(err);
     });
   };
@@ -777,7 +782,7 @@ export class ProfileService {
       return cb(true);
 
     // OLD flag
-    this.storageService.getCopayDisclaimerFlag(function(err, val) {
+    this.storageService.getCopayDisclaimerFlag((err, val) => {
       if (val) {
         this.profile.disclaimerAccepted = true;
         return cb(true);
@@ -802,26 +807,25 @@ export class ProfileService {
     let ret = lodash.values(this.wallet);
 
     if (opts.network) {
-      ret = lodash.filter(ret, function(x) {
+      ret = lodash.filter(ret, (x) => {
         return (x.credentials.network == opts.network);
       });
     }
 
     if (opts.n) {
-      ret = lodash.filter(ret, function(w) {
+      ret = lodash.filter(ret, (w) => {
         return (w.credentials.n == opts.n);
       });
     }
 
     if (opts.onlyComplete) {
-      ret = lodash.filter(ret, function(w) {
+      ret = lodash.filter(ret, (w) => {
         return w.isComplete();
       });
     } else {}
 
     return lodash.sortBy(ret, [
-
-      function(x) {
+      (x) => {
         return x.isComplete();
       }, 'createdOn'
     ]);
@@ -862,7 +866,7 @@ export class ProfileService {
       wallet.getNotifications({
         timeSpan: TIME_STAMP,
         includeOwn: true,
-      }, function(err, n) {
+      }, (err, n) => {
         if (err) return cb2(err);
 
         wallet.cachedActivity = {
@@ -881,7 +885,7 @@ export class ProfileService {
 
       shown = shown.splice(0, opts.limit || MAX);
 
-      lodash.each(shown, function(x) {
+      lodash.each(shown, (x) => {
         x.txpId = x.data ? x.data.txProposalId : null;
         x.txid = x.data ? x.data.txid : null;
         x.types = [x.type];
@@ -889,7 +893,7 @@ export class ProfileService {
         if (x.data && x.data.amount)
           x.amountStr = this.txFormatService.formatAmountStr(x.data.amount);
 
-        x.action = function() {
+        x.action = () => {
           // TODO?
           // $state.go('tabs.wallet', {
           //   walletId: x.walletId,
@@ -908,7 +912,7 @@ export class ProfileService {
       // Item grouping... DISABLED.
 
       // REMOVE (if we want 1-to-1 notification) ????
-      lodash.each(shown, function(x) {
+      lodash.each(shown, (x) => {
         if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
           prev.types.push(x.type);
           prev.data = lodash.assign(prev.data, x.data);
@@ -922,7 +926,7 @@ export class ProfileService {
       });
 
       let u = this.bwcService.getUtils();
-      lodash.each(finale, function(x) {
+      lodash.each(finale, (x) => {
         if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
           // TODO TODO TODO => BWC
           x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
@@ -932,8 +936,8 @@ export class ProfileService {
       return finale;
     };
 
-    lodash.each(w, function(wallet) {
-      updateNotifications(wallet, function(err) {
+    lodash.each(w, (wallet) => {
+      updateNotifications(wallet, (err) => {
         j++;
         if (err) {
           this.logger.warn('Error updating notifications:' + err);
@@ -941,18 +945,18 @@ export class ProfileService {
 
           let n;
 
-          n = lodash.filter(wallet.cachedActivity.n, function(x) {
+          n = lodash.filter(wallet.cachedActivity.n, (x) => {
             return typeFilter[x.type];
           });
 
           let idToName = {};
           if (wallet.cachedStatus) {
-            lodash.each(wallet.cachedStatus.wallet.copayers, function(c) {
+            lodash.each(wallet.cachedStatus.wallet.copayers, (c) => {
               idToName[c.id] = c.name;
             });
           }
 
-          lodash.each(n, function(x) {
+          lodash.each(n, (x) => {
             x.wallet = wallet;
             if (x.creatorId && wallet.cachedStatus) {
               x.creatorName = idToName[x.creatorId];
@@ -980,7 +984,7 @@ export class ProfileService {
 
     let txps = [];
 
-    lodash.each(w, function(x) {
+    lodash.each(w, (x) => {
       if (x.pendingTxps)
         txps = txps.concat(x.pendingTxps);
     });
