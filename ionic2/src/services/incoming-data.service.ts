@@ -4,6 +4,7 @@ import { Logger } from 'angular2-logger/core';
 
 import { AppConfigService } from './app-config.service';
 import { BwcService } from './bwc.service';
+import { PayproService } from './paypro.service';
 import { ScannerService } from './scanner.service';
 
 interface  IncomingDataType {
@@ -19,17 +20,11 @@ export class IncomingDataService {
   actionSheetSubject: Subject<any> = new Subject<any>();
   actionSheetObservable: Observable<any> = this.actionSheetSubject.asObservable();
 
-  // placeholder for now
-  payproService: any = {
-    getPayProDetails: (url, callback) => {
-      return callback('not paypro');
-    }
-  };
-
   constructor(
     public appConfig: AppConfigService,
     public bwcService: BwcService,
     public logger: Logger,
+    public payproService: PayproService,
     public scannerService: ScannerService,
   ) {
     this.bitcore = this.bwcService.getBitcore();
