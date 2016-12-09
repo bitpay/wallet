@@ -1,0 +1,94 @@
+.wallet-balance {
+
+  &__amount {
+
+    font-size: 16px;
+
+    &--available {
+      color: $mid-gray;
+      font-weight: bold;
+    }
+
+    &--confirming {
+      color: #09C286;
+    }
+
+    &--locked {
+      color: $dark-gray;
+    }
+
+  }
+
+  &__title {
+    flex-grow: 1;
+    color: $dark-gray;
+    overflow: hidden;
+  }
+
+  &__icon {
+    float: left;
+    margin-right: 1rem;
+    color: $light-gray;
+    font-size: 24px;
+  }
+
+  &__list {
+    background: #f5f5f5;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding-left: 1rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    padding-left: 1rem;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 0.6rem 0;
+    padding-right: 1rem;
+    border-bottom: 1px solid rgb(245, 245, 245);
+    overflow: hidden;
+
+    &.no-border {
+      border: 0;
+    }
+  }
+
+  &__amount {
+    white-space: nowrap;
+  }
+
+  &__heading {
+    font-size: 17px;
+    color: #445;
+    margin: 1rem 1rem 0 1rem;
+  }
+
+  &__description {
+    font-size: 15px;
+    color: #667;
+    margin: 1rem;
+  }
+
+}
+
+#wallet-balance {
+
+  ion-content {
+    background: #F5F5F5;
+  }
+
+}

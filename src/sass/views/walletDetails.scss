@@ -168,9 +168,9 @@
     width: 100%;
     text-align: center;
     color: #fff;
-    height: 180px;
+    height: 210px;
     padding-top: 40px;
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
 
@@ -195,6 +195,15 @@
     strong {
       line-height: 100%;
     }
+
+    &__top {
+      margin-top: 45px;
+    }
+
+    &__button-balance {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
   }
   .item.item-footer {
     font-weight: lighter;
@@ -214,7 +223,7 @@
   position: absolute;
   top: inherit;
   left: 10px;
-  bottom: 15px;
+  bottom: 5px;
   font-size: 20px;
   color: #fff;
 }

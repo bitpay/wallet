@@ -166,13 +166,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         cache.lockedBalanceSat = balance.lockedAmount;
         cache.availableBalanceSat = balance.availableAmount;
         cache.totalBytesToSendMax = balance.totalBytesToSendMax;
-        cache.pendingAmount = null;
+        cache.pendingAmount = 0;
+        cache.spendableAmount = balance.totalAmount - balance.lockedAmount;
       } else {
         cache.totalBalanceSat = balance.totalConfirmedAmount;
         cache.lockedBalanceSat = balance.lockedConfirmedAmount;
         cache.availableBalanceSat = balance.availableConfirmedAmount;
         cache.totalBytesToSendMax = balance.totalBytesToSendConfirmedMax;
         cache.pendingAmount = balance.totalAmount - balance.totalConfirmedAmount;
+        cache.spendableAmount = balance.totalConfirmedAmount - balance.lockedAmount;
       }
 
       // Selected unit
@@ -184,13 +186,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
       cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
       cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat + (cache.pendingAmount === null ? 0 : cache.pendingAmount)) + ' ' + cache.unitName;
-
-      if (cache.pendingAmount !== null && cache.pendingAmount !== 0) {
-        cache.pendingAmountStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
-      } else {
-        cache.pendingAmountStr = null;
-      }
+      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + cache.unitName;
+      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
 
       cache.alternativeName = config.settings.alternativeName;
       cache.alternativeIsoCode = config.settings.alternativeIsoCode;
@@ -209,11 +206,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       rateService.whenAvailable(function() {
 
         var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode);
+        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode);
         var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode);
+        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode);
         var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode);
 
         cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
+        cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);
         cache.lockedBalanceAlternative = $filter('formatFiatAmount')(lockedBalanceAlternative);
+        cache.spendableBalanceAlternative = $filter('formatFiatAmount')(spendableBalanceAlternative);
         cache.alternativeConversionRate = $filter('formatFiatAmount')(alternativeConversionRate);
 
         cache.alternativeBalanceAvailable = true;
