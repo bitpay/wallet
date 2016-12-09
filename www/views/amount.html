@@ -14,14 +14,14 @@
 
   <ion-content scroll="false">
 
-    <div ng-if="!customAmount && !isGlidera">
+    <div ng-if="!customAmount && !isGlidera && !isCoinbase">
       <div class="item item-no-bottom-border recipient-label" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':cardId}">
         <i class="icon big-icon-svg" ng-if="isWallet">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
-        <span ng-if="!isWallet && !isGiftCard && !isGlidera">
+        <span ng-if="!isWallet && !isGiftCard">
           <i class="icon big-icon-svg" ng-if="isChromeApp">
             <img src="img/contact-placeholder.svg" class="bg"/>
           </i>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera, 'amount-pane-no-recipient': customAmount || isGlidera}">
+    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera && !isCoinbase, 'amount-pane-no-recipient': customAmount || isGlidera || isCoinbase}">
 
       <div class="amount-bar oh">
         <div class="title">
@@ -64,6 +64,25 @@
               <span>Monthly sell limit</span>:
               {{limits.monthlySell|currency:'':2}} {{limits.currency}}
               (remaining {{limits.monthlySellRemaining|currency:'':2}} {{limits.currency}})
+            </div>
+          </div>
+
+          <div ng-show="isCoinbase">
+            <div class="limits" ng-show="coinbaseBuyPrice && isCoinbase == 'buy'">
+              1 BTC ~ {{coinbaseBuyPrice.amount}} {{coinbaseBuyPrice.currency}}
+            </div>
+            <div class="limits" ng-show="coinbaseSellPrice && isCoinbase == 'sell'">
+              1 BTC ~ {{coinbaseSellPrice.amount}} {{coinbaseSellPrice.currency}}
+            </div>
+            <div class="list">
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Payment Method
+                </div>
+                <select ng-model="coinbaseSelectedPaymentMethod.id"
+                        ng-options="item.id as item.name for item in coinbasePaymentMethods">
+                </select>
+              </label>
             </div>
           </div>
         </div>

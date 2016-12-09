@@ -68,13 +68,13 @@
     <div class="list card"
          ng-show="accountId">
       <a class="item item-icon-right"
-         href ui-sref="tabs.buyandsell.coinbase.buy">
+         href ui-sref="tabs.buyandsell.coinbase.amount({isCoinbase: 'buy'})">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35" class="item-img-buy">
         Buy Bitcoin
         <i class="icon bp-arrow-right"></i>
       </a>
       <a class="item item-icon-right"
-         href ui-sref="tabs.buyandsell.coinbase.sell">
+         href ui-sref="tabs.buyandsell.coinbase.amount({isCoinbase: 'sell'})">
         <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="35" class="item-img-sell">
         Sell Bitcoin
         <i class="icon bp-arrow-right"></i>

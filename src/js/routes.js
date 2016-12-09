@@ -945,6 +945,25 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       }
     })
+    .state('tabs.buyandsell.coinbase.amount', {
+        url: '/amount/:isCoinbase',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        }
+      })
+      .state('tabs.buyandsell.coinbase.confirm', {
+        url: '/confirm/:toAmount/:isCoinbase/:coinbasePaymentMethodId',
+        views: {
+          'tab-home@tabs': {
+            controller: 'confirmController',
+            templateUrl: 'views/confirm.html'
+          }
+        }
+      })
+  /*
       .state('tabs.buyandsell.coinbase.buy', {
         url: '/buy',
         'tab-home@tabs': {
@@ -961,6 +980,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           templateUrl: 'views/sellCoinbase.html'
         }
       })
+  */
 
     /*
      *
