@@ -7,6 +7,8 @@ import { ConfigService } from './config.service';
 import { PlatformInfo } from './platform-info.service';
 import { StorageService } from './storage.service';
 
+import { Profile } from './../models/profile.model';
+
 @Injectable()
 export class ProfileService {
 
@@ -742,7 +744,7 @@ export class ProfileService {
     this.configService.get(function(err) {
       if (err) this.logger.debug(err);
 
-      let p = Profile.create();
+      let p = new Profile();
       this.storageService.storeNewProfile(p, function(err) {
         if (err) return cb(err);
         this.bindProfile(p, function(err) {
@@ -755,7 +757,7 @@ export class ProfileService {
   };
 
   createDefaultWallet(cb) {
-    let opts = {};
+    let opts: any = {};
     opts.m = 1;
     opts.n = 1;
     opts.network = 'livenet';
@@ -897,7 +899,7 @@ export class ProfileService {
         };
       });
 
-      let finale = shown; // GROUPING DISABLED!
+      //let finale = shown; // GROUPING DISABLED!
 
       let finale = [],
         prev;
