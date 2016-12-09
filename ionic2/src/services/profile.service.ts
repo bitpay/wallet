@@ -492,7 +492,7 @@ export class ProfileService {
 
   // joins and stores a wallet
   joinWallet(opts, cb) {
-    let walletClient = this.bwcService.getClient();
+    //let walletClient = this.bwcService.getClient();
     this.logger.debug('Joining Wallet:', opts);
 
     let walletData;
@@ -744,7 +744,7 @@ export class ProfileService {
 
   createProfile(cb) {
     this.logger.info('Creating profile');
-    let defaults = this.configService.getDefaults();
+    //let defaults = this.configService.getDefaults();
 
     this.configService.get((err) => {
       if (err) this.logger.debug(err);
