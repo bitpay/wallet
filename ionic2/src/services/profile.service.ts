@@ -6,6 +6,7 @@ import { BwcErrorService } from './bwc-error.service';
 import { BwcService } from './bwc.service';
 import { ConfigService } from './config.service';
 import { PlatformInfo } from './platform-info.service';
+import { PushNotificationService } from './push-notification.service';
 import { StorageService } from './storage.service';
 
 import { Profile } from './../models/profile.model';
@@ -44,10 +45,6 @@ export class ProfileService {
   validationLock: boolean = false;
   _queue = [];
 
-  pushNotificationsService: any = {
-    init: () => {}
-  }
-
   gettext: any = () => {};
 
   gettextCatalog: any = () => {};
@@ -66,6 +63,7 @@ export class ProfileService {
     public configService: ConfigService,
     public logger: Logger,
     public platformInfo: PlatformInfo,
+    public pushNotificationService: PushNotificationService,
     public storageService: StorageService
   ) {
     this.isChromeApp = this.platformInfo.isChromeApp;
@@ -345,7 +343,7 @@ export class ProfileService {
 
   pushNotificationsInit() {
     //let defaults = this.configService.getDefaults();
-    let push = this.pushNotificationsService.init(this.wallet);
+    let push = this.pushNotificationService.init(this.wallet);
 
     if (!push) return;
 
@@ -533,7 +531,7 @@ export class ProfileService {
   deleteWalletClient(client, cb) {
     let walletId = client.credentials.walletId;
 
-    this.pushNotificationsService.unsubscribe(this.getWallet(walletId), (err) => {
+    this.pushNotificationService.unsubscribe(this.getWallet(walletId), (err) => {
       if (err) this.logger.warn('Unsubscription error: ' + err.message);
       else this.logger.debug('Unsubscribed from push notifications service');
     });
@@ -609,7 +607,7 @@ export class ProfileService {
       this.storageService.storeProfile(this.profile, (err) => {
         let config = this.configService.getSync();
         if (config.pushNotifications.enabled)
-          this.pushNotificationsService.enableNotifications(this.wallet);
+          this.pushNotificationService.enableNotifications(this.wallet);
         return cb(err, client);
       });
     });
