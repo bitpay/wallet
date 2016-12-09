@@ -14,7 +14,7 @@
           <img src="img/icon-tx-sent-outline.svg" ng-if="btx.action === 'sent'">
           <img src="img/icon-tx-received-outline.svg" ng-if="btx.action === 'received'">
           <img src="img/icon-tx-moved-outline.svg" ng-if="btx.action === 'moved'">
-          <span translate>{{btx.action | translate}}</span>
+          <span>{{btx.action | translate}}</span>
         </div>
         <div class="sending-label" ng-if="btx.confirmations === 0">
           <img src="img/icon-confirming.svg">
