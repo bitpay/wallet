@@ -107,6 +107,15 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
+  $scope.openBalanceModal = function() {
+    $ionicModal.fromTemplateUrl('views/modals/wallet-balance.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.walletBalanceModal = modal;
+      $scope.walletBalanceModal.show();
+    });
+  };
+
   $scope.recreate = function() {
     walletService.recreate($scope.wallet, function(err) {
       if (err) return;
@@ -252,16 +261,16 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       return;
     }
     prevPos = pos;
-    var amountHeight = 180 - pos;
+    var amountHeight = 210 - pos;
     if (amountHeight < 80) {
       amountHeight = 80;
     }
     var contentMargin = amountHeight;
-    if (contentMargin > 180) {
-      contentMargin = 180;
+    if (contentMargin > 210) {
+      contentMargin = 210;
     }
 
-    var amountScale = (amountHeight / 180);
+    var amountScale = (amountHeight / 210);
     if (amountScale < 0.5) {
       amountScale = 0.5;
     }
