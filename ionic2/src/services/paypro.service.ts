@@ -30,7 +30,7 @@ export class PayproService {
       onlyComplete: true
     })[0];
 
-    if (!wallet) return cb();
+    if (!wallet) return cb('no wallet');
 
     if (this.platformInfo.isChromeApp) {
       this.popupService.showAlert(this.gettextCatalog.getString('Payment Protocol not supported on Chrome App'));
