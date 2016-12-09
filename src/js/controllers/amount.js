@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService, coinbaseService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -20,6 +20,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
 
+    // Coinbase parameters
+    $scope.isCoinbase = data.stateParams.isCoinbase;
+
     $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
     var isWallet = data.stateParams.isWallet || 'false';
@@ -27,13 +30,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera || !!$scope.isCoinbase;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !data.stateParams.toAddress) {
+    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !$scope.isCoinbase && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -43,6 +46,33 @@ angular.module('copayApp.controllers').controller('amountController', function($
         $scope.limits = limits;
         $timeout(function() {
           $scope.$apply();
+        });
+      });
+    }
+
+    if ($scope.isCoinbase) {
+      var currency = 'USD';
+      coinbaseService.init($scope.coinbaseAccessToken, function(err, data) {
+        if ($scope.isCoinbase == 'buy') {
+          coinbaseService.buyPrice(data.accessToken, currency, function(err, b) {
+            $scope.coinbaseBuyPrice = b.data || null;
+          });
+        } else {
+          coinbaseService.sellPrice(data.accessToken, currency, function(err, b) {
+            $scope.coinbaseSellPrice = b.data || null;
+          });
+        }
+
+        $scope.coinbasePaymentMethods = [];
+        coinbaseService.getPaymentMethods(data.accessToken, function(err, p) {
+          lodash.each(p.data, function(pm) {
+            if (pm.allow_buy) {
+              $scope.coinbasePaymentMethods.push(pm);
+            }
+            if (pm.allow_buy && pm.primary_buy) {
+              $scope.coinbaseSelectedPaymentMethod = pm;
+            }
+          });
         });
       });
     }
@@ -349,6 +379,17 @@ angular.module('copayApp.controllers').controller('amountController', function($
         toAmount: (amount * unitToSatoshi).toFixed(0),
         isGlidera: $scope.isGlidera,
         glideraAccessToken: $scope.glideraAccessToken
+      });
+    } else if ($scope.isCoinbase) {
+      if (lodash.isEmpty($scope.coinbaseSelectedPaymentMethod)) {
+        popupService.showAlert(gettextCatalog.getString('Error'), 'No Payment Method Selected');
+        return;
+      }
+      var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
+      $state.transitionTo('tabs.buyandsell.glidera.confirm', {
+        toAmount: (amount * unitToSatoshi).toFixed(0),
+        isCoinbase: $scope.isCoinbase,
+        coinbasePaymentMethodId: $scope.coinbaseSelectedPaymentMethod.id
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
