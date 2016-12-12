@@ -87,7 +87,7 @@ export class Profile {
     if (!this.hasWallet(credentials.walletId))
       return false;
 
-    this.credentials = this.credentials.map(function(c) {
+    this.credentials = this.credentials.map((c) => {
       if(c.walletId != credentials.walletId ) {
         return c;
       } else {
@@ -103,7 +103,7 @@ export class Profile {
     if (!this.hasWallet(walletId))
       return false;
 
-    this.credentials = this.credentials.filter(function(c) {
+    this.credentials = this.credentials.filter((c) => {
       return c.walletId != walletId;
     });
 

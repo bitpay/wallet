@@ -195,7 +195,7 @@ export class ConfigService {
 
   get(cb) {
 
-    this.storageService.getConfig(function(err, localConfig) {
+    this.storageService.getConfig((err, localConfig) => {
       if (localConfig) {
         this.configCache = JSON.parse(localConfig);
 
@@ -246,8 +246,8 @@ export class ConfigService {
 
       this.logger.debug('Preferences read:', this.configCache)
 
-      lodash.each(this._queue, function(x) {
-        setTimeout(function() {
+      lodash.each(this._queue, (x) => {
+        setTimeout(() => {
           return x(this.configCache);
         }, 1);
       });
@@ -259,7 +259,7 @@ export class ConfigService {
 
   set(newOpts, cb) {
     let config = lodash.cloneDeep(this.defaultConfig);
-    this.storageService.getConfig(function(err, oldOpts) {
+    this.storageService.getConfig((err, oldOpts) => {
       oldOpts = oldOpts || {};
 
       if (lodash.isString(oldOpts)) {
