@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $timeout, $log, $stateParams, $ionicHistory, gettextCatalog, configService, profileService) {
+angular.module('copayApp.controllers').controller('preferencesColorController', function($scope, $timeout, $log, $stateParams, $ionicHistory, configService, profileService) {
   var wallet = profileService.getWallet($stateParams.walletId);
   $scope.wallet = wallet;
   var walletId = wallet.credentials.walletId;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, gettextCatalog, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -322,7 +322,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   });
 
   $scope.$on("$ionicView.beforeLeave", function(event, data) {
-    if($window.StatusBar) {
+    if ($window.StatusBar) {
       $window.StatusBar.backgroundColorByHexString('#1e3186');
     }
   });
@@ -336,13 +336,13 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   function setAndroidStatusBarColor() {
     var SUBTRACT_AMOUNT = 15;
-    if(!$scope.isAndroid) {
+    if (!$scope.isAndroid) {
       return;
     }
     var rgb = hexToRgb($scope.wallet.color);
     var keys = Object.keys(rgb);
     keys.forEach(function(k) {
-      if(rgb[k] - SUBTRACT_AMOUNT < 0) {
+      if (rgb[k] - SUBTRACT_AMOUNT < 0) {
         rgb[k] = 0;
       } else {
         rgb[k] -= SUBTRACT_AMOUNT;
