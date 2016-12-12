@@ -8,6 +8,8 @@ import { ConfigService } from './config.service';
 import { PlatformInfo } from './platform-info.service';
 import { PushNotificationService } from './push-notification.service';
 import { StorageService } from './storage.service';
+import { TextService } from './text.service';
+import { UxLanguageService } from './ux-language.service';
 
 import { Profile } from './../models/profile.model';
 
@@ -45,14 +47,6 @@ export class ProfileService {
   validationLock: boolean = false;
   _queue = [];
 
-  gettext: any = () => {};
-
-  gettextCatalog: any = () => {};
-
-  uxLanguage: any = {
-    getCurrentLanguage: () => {}
-  };
-
   txFormatService: any = {
     formatAmountStr: () => {}
   };
@@ -64,7 +58,9 @@ export class ProfileService {
     public logger: Logger,
     public platformInfo: PlatformInfo,
     public pushNotificationService: PushNotificationService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    public textService: TextService,
+    public uxLanguage: UxLanguageService
   ) {
     this.isChromeApp = this.platformInfo.isChromeApp;
     this.isCordova = this.platformInfo.isCordova;
@@ -410,14 +406,14 @@ export class ProfileService {
 
       } catch (ex) {
         this.logger.info(ex);
-        return cb(this.gettext('Could not create: Invalid wallet recovery phrase'));
+        return cb(this.textService.gettext('Could not create: Invalid wallet recovery phrase'));
       }
     } else if (opts.extendedPrivateKey) {
       try {
         walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
       } catch (ex) {
         this.logger.warn(ex);
-        return cb(this.gettext('Could not create using the specified extended private key'));
+        return cb(this.textService.gettext('Could not create using the specified extended private key'));
       }
     } else if (opts.extendedPublicKey) {
       try {
@@ -427,7 +423,7 @@ export class ProfileService {
         });
       } catch (ex) {
         this.logger.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
-        return cb(this.gettext('Could not create using the specified extended public key'));
+        return cb(this.textService.gettext('Could not create using the specified extended public key'));
       }
     } else {
       let lang = this.uxLanguage.getCurrentLanguage();
@@ -462,15 +458,15 @@ export class ProfileService {
       this.seedWallet(opts, (err, walletClient) => {
         if (err) return cb(err);
 
-        let name = opts.name || this.gettextCatalog.getString('Personal Wallet');
-        let myName = opts.myName || this.gettextCatalog.getString('me');
+        let name = opts.name || this.textService.gettextCatalog.getString('Personal Wallet');
+        let myName = opts.myName || this.textService.gettextCatalog.getString('me');
 
         walletClient.createWallet(name, myName, opts.m, opts.n, {
           network: opts.networkName,
           singleAddress: opts.singleAddress,
           walletPrivKey: opts.walletPrivKey,
         }, (err, secret) => {
-          if (err) return this.bwcError.cb(err, this.gettext('Error creating wallet'), cb);
+          if (err) return this.bwcError.cb(err, this.textService.gettext('Error creating wallet'), cb);
           return cb(null, walletClient, secret);
         });
       });
@@ -502,11 +498,11 @@ export class ProfileService {
       if (lodash.find(this.profile.credentials, {
           'walletId': walletData.walletId
         })) {
-        return cb(this.gettext('Cannot join the same wallet more that once'));
+        return cb(this.textService.gettext('Cannot join the same wallet more that once'));
       }
     } catch (ex) {
       this.logger.debug(ex);
-      return cb(this.gettext('Bad wallet invitation'));
+      return cb(this.textService.gettext('Bad wallet invitation'));
     }
     opts.networkName = walletData.network;
     this.logger.debug('Joining Wallet:', opts);
@@ -515,7 +511,7 @@ export class ProfileService {
       if (err) return cb(err);
 
       walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, (err) => {
-        if (err) return this.bwcError.cb(err, this.gettext('Could not join wallet'), cb);
+        if (err) return this.bwcError.cb(err, this.textService.gettext('Could not join wallet'), cb);
         this.addAndBindWalletClient(walletClient, {
           bwsurl: opts.bwsurl
         }, cb);
@@ -572,12 +568,12 @@ export class ProfileService {
   // Adds and bind a new client to the profile
   addAndBindWalletClient(client, opts, cb) {
     if (!client || !client.credentials)
-      return cb(this.gettext('Could not access wallet'));
+      return cb(this.textService.gettext('Could not access wallet'));
 
     let walletId = client.credentials.walletId
 
     if (!this.profile.addWallet(JSON.parse(client.export())))
-      return cb(this.gettext('Wallet already in Copay'));
+      return cb(this.textService.gettext('Wallet already in Copay'));
 
 
     let skipKeyValidation = this.profile.isChecked(this.platformInfo.ua, walletId);
@@ -646,7 +642,7 @@ export class ProfileService {
         password: opts.password
       });
     } catch (err) {
-      return cb(this.gettext('Could not import. Check input file and spending password'));
+      return cb(this.textService.gettext('Could not import. Check input file and spending password'));
     }
 
     str = JSON.parse(str);
@@ -677,7 +673,7 @@ export class ProfileService {
         if (err instanceof this.errors.NOT_AUTHORIZED)
           return cb(err);
 
-        return this.bwcError.cb(err, this.gettext('Could not import'), cb);
+        return this.bwcError.cb(err, this.textService.gettext('Could not import'), cb);
       }
 
       this.addAndBindWalletClient(walletClient, {
@@ -708,7 +704,7 @@ export class ProfileService {
         if (err instanceof this.errors.NOT_AUTHORIZED)
           return cb(err);
 
-        return this.bwcError.cb(err, this.gettext('Could not import'), cb);
+        return this.bwcError.cb(err, this.textService.gettext('Could not import'), cb);
       }
 
       this.addAndBindWalletClient(walletClient, {
@@ -731,7 +727,7 @@ export class ProfileService {
         if (err instanceof this.errors.NOT_AUTHORIZED)
           err.name = 'WALLET_DOES_NOT_EXIST';
 
-        return this.bwcError.cb(err, this.gettext('Could not import'), cb);
+        return this.bwcError.cb(err, this.textService.gettext('Could not import'), cb);
       }
 
       this.addAndBindWalletClient(walletClient, {

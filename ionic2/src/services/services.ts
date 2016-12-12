@@ -9,6 +9,8 @@ import { ProfileService } from './profile.service';
 import { PushNotificationService } from './push-notification.service';
 import { ScannerService } from './scanner.service';
 import { StorageService } from './storage.service';
+import { TextService } from './text.service';
+import { UxLanguageService } from './ux-language.service';
 
 export const SERVICES = [
   AppConfigService,
@@ -21,5 +23,7 @@ export const SERVICES = [
   ProfileService,
   PushNotificationService,
   ScannerService,
-  StorageService
+  StorageService,
+  TextService,
+  UxLanguageService
 ];
