@@ -55,8 +55,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   function setwallets() {
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
-      network: $scope.network,
-      m: $scope.isGiftCard ? 1 : null
+      network: $scope.network
     });
 
     if (!$scope.wallets || !$scope.wallets.length) {
