@@ -62,8 +62,8 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
     $scope.amazonCardDetailsModal.hide();
   };
 
-  $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
-    externalLinkService.open(url, optIn, title, message, okText, cancelText);
+  $scope.openExternalLink = function(url) {
+    externalLinkService.open(url);
   };
 
 });
