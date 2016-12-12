@@ -90,7 +90,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return;
     }
 
-    if ($scope.isGlidera == 'buy') {
+    if (($scope.isGlidera || $scope.isCoinbase) == 'buy') {
       initConfirm();
       return;
     }
