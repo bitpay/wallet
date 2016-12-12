@@ -1,4 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
+import { ExternalLinkService } from '../../services/external-link.service';
 import { IncomingDataService } from '../../services/incoming-data.service';
 import { ActionSheetComponent } from './../action-sheet/action-sheet.component';
 
@@ -92,13 +93,10 @@ export class IncomingDataMenuComponent {
   shown: boolean = false;
   https: boolean = false;
 
-  externalLinkService: any = {
-    show: () => {}
-  };
-
   @ViewChild(ActionSheetComponent) actionSheet: ActionSheetComponent;
 
   constructor(
+    public externalLinkService: ExternalLinkService,
     public incomingData: IncomingDataService,
     public zone: NgZone
   ) {

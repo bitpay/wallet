@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from 'angular2-logger/core';
 import { PlatformInfo } from './platform-info.service';
+import { PopupService } from './popup.service';
 import { TextService } from './text.service';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class ExternalLinkService {
   constructor(
     public logger: Logger,
     public platformInfo: PlatformInfo,
+    public popupService: PopupService,
     public textService: TextService
   ) {}
 
@@ -21,7 +23,7 @@ export class ExternalLinkService {
     }, 500);
   };
 
-  open(url, optIn, title, message, okText, cancelText) {
+  open(url, optIn?, title?, message?, okText?, cancelText?) {
     var old = this.win.handleOpenURL;
 
     this.win.handleOpenURL = (url) => {
@@ -42,7 +44,7 @@ export class ExternalLinkService {
             if (res) window.open(url, '_system');
             this._restoreHandleOpenURL(old);
           };
-        popupService.showConfirm(title, message, okText, cancelText, openBrowser);
+        this.popupService.showConfirm(title, message, okText, cancelText, openBrowser);
       } else {
         window.open(url, '_system');
         this._restoreHandleOpenURL(old);
