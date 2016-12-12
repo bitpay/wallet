@@ -24,7 +24,7 @@ export class PayproService {
   ) {}
 
   getPayProDetails(uri: string, cb, disableLoader?: boolean) {
-    if (!cb) cb = function() {};
+    if (!cb) cb = () => {};
 
     let wallet = this.profileService.getWallets({
       onlyComplete: true

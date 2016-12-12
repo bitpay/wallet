@@ -47,7 +47,7 @@ export class TxFormatService {
 
     // Async version
     if (cb) {
-      this.rateService.whenAvailable(function() {
+      this.rateService.whenAvailable(() => {
         return cb(val());
       });
     } else {
@@ -69,7 +69,7 @@ export class TxFormatService {
 
     // Async version
     if (cb) {
-      this.rateService.whenAvailable(function() {
+      this.rateService.whenAvailable(() => {
         return cb(val());
       });
     } else {
@@ -92,7 +92,7 @@ export class TxFormatService {
           tx.recipientCount = outputsNr;
           tx.hasMultiplesOutputs = true;
         }
-        tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+        tx.amount = lodash.reduce(tx.outputs, (total, o) => {
           o.amountStr = this.formatAmountStr(o.amount);
           o.alternativeAmountStr = this.formatAlternativeStr(o.amount);
           return total + o.amount;

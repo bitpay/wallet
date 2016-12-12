@@ -59,7 +59,7 @@ export class UxLanguageService {
     var userLang, androidLang;
     if (this.navigator && this.navigator.globalization) {
 
-      this.navigator.globalization.getPreferredLanguage(function(preferedLanguage) {
+      this.navigator.globalization.getPreferredLanguage((preferedLanguage) => {
         // works for iOS and Android 4.x
         userLang = preferedLanguage.value;
         userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
@@ -111,13 +111,13 @@ export class UxLanguageService {
   };
 
   init(cb) {
-    this.configService.whenAvailable(function(config) {
+    this.configService.whenAvailable((config) => {
       var userLang = config.wallet.settings.defaultLanguage;
 
       if (userLang && userLang != this.currentLanguage) {
         this._set(userLang);
       } else {
-        this._detect(function(lang) {
+        this._detect((lang) => {
           this._set(lang);
         });
       }
