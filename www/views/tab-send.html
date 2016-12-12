@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
-  <ion-content>
+  <ion-content ng-show="!checkingBalance">
     <div ng-if="hasFunds == false" class="zero-state">
       <div>
         <i class="icon zero-state-icon">
