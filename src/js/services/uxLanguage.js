@@ -9,34 +9,34 @@ angular.module('copayApp.services')
       name: 'English',
       isoCode: 'en',
     }, {
-      name: 'Český',
-      isoCode: 'cs',
-    }, {
-      name: 'Français',
-      isoCode: 'fr',
-    }, {
-      name: 'Italiano',
-      isoCode: 'it',
-    }, {
-      name: 'Deutsch',
-      isoCode: 'de',
-    }, {
       name: 'Español',
       isoCode: 'es',
     }, {
-      name: '日本語',
-      isoCode: 'ja',
-      useIdeograms: true,
-    }, {
-      name: '中文（简体）',
-      isoCode: 'zh',
-      useIdeograms: true,
-    }, {
-      name: 'Polski',
-      isoCode: 'pl',
-    }, {
-      name: 'Pусский',
-      isoCode: 'ru',
+      name: 'Français',
+      isoCode: 'fr',
+      // }, {
+      //   name: 'Český',
+      //   isoCode: 'cs',
+      // }, {
+      //   name: 'Italiano',
+      //   isoCode: 'it',
+      // }, {
+      //   name: 'Deutsch',
+      //   isoCode: 'de',
+      // }, {
+      //   name: '日本語',
+      //   isoCode: 'ja',
+      //   useIdeograms: true,
+      // }, {
+      //   name: '中文（简体）',
+      //   isoCode: 'zh',
+      //   useIdeograms: true,
+      // }, {
+      //   name: 'Polski',
+      //   isoCode: 'pl',
+      // }, {
+      //   name: 'Pусский',
+      //   isoCode: 'ru',
     }];
 
 
