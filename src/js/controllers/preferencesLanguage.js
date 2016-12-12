@@ -5,8 +5,8 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
 
     $scope.availableLanguages = uxLanguage.getLanguages();
 
-    $scope.openExternalLink = function(url, target) {
-      externalLinkService.open(url, target);
+    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 
     $scope.save = function(newLang) {
@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
       });
     };
 
-    $scope.$on("$ionicView.enter", function(event, data){
+    $scope.$on("$ionicView.enter", function(event, data) {
       $scope.currentLanguage = uxLanguage.getCurrentLanguage();
     });
   });
