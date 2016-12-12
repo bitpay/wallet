@@ -5,8 +5,8 @@ angular.module('copayApp.controllers').controller('amazonController',
 
     $scope.network = amazonService.getEnvironment();
 
-    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
-      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    $scope.openExternalLink = function(url) {
+      externalLinkService.open(url);
     };
 
     var initAmazon = function() {
@@ -20,7 +20,9 @@ angular.module('copayApp.controllers').controller('amazonController',
           $scope.$digest();
         });
         if ($scope.cardClaimCode) {
-          var card = lodash.find($scope.giftCards, { claimCode: $scope.cardClaimCode });
+          var card = lodash.find($scope.giftCards, {
+            claimCode: $scope.cardClaimCode
+          });
           if (lodash.isEmpty(card)) {
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Card not found'));
             return;

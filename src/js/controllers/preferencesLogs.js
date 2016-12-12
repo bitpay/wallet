@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLogs',
-  function($scope, historicLog, gettextCatalog) {
+  function($scope, historicLog) {
 
     $scope.$on("$ionicView.enter", function(event, data) {
       $scope.logs = historicLog.get();
