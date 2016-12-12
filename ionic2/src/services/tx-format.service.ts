@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Logger } from 'angular2-logger/core';
 import lodash from 'lodash';
 
 import { BwcService } from './bwc.service';
