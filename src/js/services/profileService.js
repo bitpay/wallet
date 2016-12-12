@@ -765,6 +765,12 @@ angular.module('copayApp.services')
         });
       }
 
+      if (opts.m) {
+        ret = lodash.filter(ret, function(w) {
+          return (w.credentials.m == opts.m);
+        });
+      }
+
       if (opts.onlyComplete) {
         ret = lodash.filter(ret, function(w) {
           return w.isComplete();
