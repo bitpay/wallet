@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -826,6 +826,23 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $log.debug("Saving new gift card with status: " + newData.status);
         $scope.amazonGiftCard = newData;
       });
+    });
+  };
+
+  $scope.getRates = function() {
+    var config = configService.getSync().wallet.settings;
+    var unitName = config.unitName;
+    var alternativeIsoCode = config.alternativeIsoCode;
+    bitpayCardService.getRates(alternativeIsoCode, function(err, res) {
+      if (err) {
+        $log.warn(err);
+        return;
+      }
+      if (unitName == 'bits') {
+        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + alternativeIsoCode;
+      } else {
+        $scope.exchangeRate = '1 BTC ~ ' + res.rate + ' ' + alternativeIsoCode;
+      }
     });
   };
 });

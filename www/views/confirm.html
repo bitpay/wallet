@@ -19,6 +19,7 @@
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="right size-12" ng-if="cardId" ng-init="getRates()">{{exchangeRate}}</div>
           <div class="alternative">{{alternativeAmountStr || '...'}}</div>
         </div>
       </div>

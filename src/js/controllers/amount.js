@@ -231,6 +231,20 @@ angular.module('copayApp.controllers').controller('amountController', function($
     return result.replace('x', '*');
   };
 
+  $scope.getRates = function() {
+    bitpayCardService.getRates($scope.alternativeIsoCode, function(err, res) {
+      if (err) {
+        $log.warn(err);
+        return;
+      }
+      if ($scope.unitName == 'bits') {
+        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + $scope.alternativeIsoCode;
+      } else {
+        $scope.exchangeRate = '1 BTC ~ ' + res.rate + ' ' + $scope.alternativeIsoCode;
+      }
+    });
+  };
+
   $scope.finish = function() {
     var _amount = evaluate(format($scope.amount));
 
