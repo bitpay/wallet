@@ -7,9 +7,10 @@
             <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
           </i>
           <span class="wallet-name">{{wallet.name || wallet.id}}</span>
-          <span class="item-note m10l">
+          <span class="item-note m10l" ng-if="!wallet.balanceHidden">
             {{wallet.status.availableBalanceStr}}
           </span>
+          <span class="item-note m10l" ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
         </div>
       </div>
     </ion-slide-page>
