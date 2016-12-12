@@ -80,7 +80,6 @@
       padding: 24px 0;
       font-size: 18px;
       .title {
-        float: left;
         padding-top: 10px;
         color: $dark-gray;
         font-weight: bold;
@@ -88,6 +87,9 @@
           margin-top: 10px;
           color: $light-gray;
           font-size: 12px;
+        }
+        .select {
+          margin: 10px 1px;
         }
       }
     }
