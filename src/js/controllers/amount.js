@@ -36,12 +36,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
       throw ('bad params');
     }
 
-    glideraService.getLimits($scope.glideraAccessToken, function(err, limits) {
-      $scope.limits = limits;
-      $timeout(function() {
-        $scope.$apply();
+    if ($scope.isGlidera) {
+      glideraService.getLimits($scope.glideraAccessToken, function(err, limits) {
+        $scope.limits = limits;
+        $timeout(function() {
+          $scope.$apply();
+        });
       });
-    });
+    }
 
     var reNr = /^[1234567890\.]$/;
     var reOp = /^[\*\+\-\/]$/;

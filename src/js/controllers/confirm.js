@@ -70,6 +70,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return;
     }
 
+    if ($scope.isGlidera == 'buy') {
+      initConfirm();
+      return;
+    }
+
     var filteredWallets = [];
     var index = 0;
     var enoughFunds = false;
