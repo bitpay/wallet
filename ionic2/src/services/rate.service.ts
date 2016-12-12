@@ -106,7 +106,7 @@ listAlternatives() {
     return [];
   }
 
-  return lodash.map(this.getAlternatives(), function(item) {
+  return lodash.map(this.getAlternatives(), (item) => {
     return {
       name: item.name,
       isoCode: item.isoCode
