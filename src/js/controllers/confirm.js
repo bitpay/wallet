@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, coinbaseService, bitpayCardService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -24,6 +24,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     // Glidera parameters
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
+
+    // Coinbase parameters
+    $scope.isCoinbase = data.stateParams.isCoinbase;
+    $scope.coinbasePaymentMethodId = data.stateParams.coinbasePaymentMethodId;
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
@@ -50,6 +54,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     $scope.feeLevel = feeService.feeOpts[feeLevel];
     if ($scope.isGlidera) $scope.network = glideraService.getEnvironment();
+    else if ($scope.isCoinbase) $scope.network = coinbaseService.getEnvironment();
     else $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     resetValues();
     setwallets();
@@ -283,7 +288,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = $scope.isGlidera == 'buy' ? 'Receive in' : $scope.isGlidera == 'sell' ? 'Sell From' : gettextCatalog.getString('Send from');
+    $scope.walletSelectorTitle = ($scope.isGlidera || $scope.isCoinbase) == 'buy' ? 'Receive in' : ($scope.isGlidera || $scope.isCoinbase) == 'sell' ? 'Sell From' : gettextCatalog.getString('Send from');
     if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
     $scope.showWallets = true;
   };
@@ -362,7 +367,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.wallet = wallet;
     $scope.fee = $scope.txp = null;
 
-    if ($scope.isGlidera) return;
+    if ($scope.isGlidera || $scope.isCoinbase) return;
     if (stop) {
       $timeout.cancel(stop);
       stop = null;
