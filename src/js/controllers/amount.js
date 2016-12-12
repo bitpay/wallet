@@ -66,11 +66,20 @@ angular.module('copayApp.controllers').controller('amountController', function($
         $scope.coinbasePaymentMethods = [];
         coinbaseService.getPaymentMethods(data.accessToken, function(err, p) {
           lodash.each(p.data, function(pm) {
-            if (pm.allow_buy) {
-              $scope.coinbasePaymentMethods.push(pm);
-            }
-            if (pm.allow_buy && pm.primary_buy) {
-              $scope.coinbaseSelectedPaymentMethod = pm;
+            if ($scope.isCoinbase == 'sell') {
+              if (pm.allow_sell) {
+                $scope.coinbasePaymentMethods.push(pm);
+              }
+              if (pm.allow_sell && pm.primary_sell) {
+                $scope.coinbaseSelectedPaymentMethod = pm;
+              }
+            } else {
+              if (pm.allow_buy) {
+                $scope.coinbasePaymentMethods.push(pm);
+              }
+              if (pm.allow_buy && pm.primary_buy) {
+                $scope.coinbaseSelectedPaymentMethod = pm;
+              }
             }
           });
         });
@@ -386,7 +395,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         return;
       }
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
-      $state.transitionTo('tabs.buyandsell.glidera.confirm', {
+      $state.transitionTo('tabs.buyandsell.coinbase.confirm', {
         toAmount: (amount * unitToSatoshi).toFixed(0),
         isCoinbase: $scope.isCoinbase,
         coinbasePaymentMethodId: $scope.coinbaseSelectedPaymentMethod.id

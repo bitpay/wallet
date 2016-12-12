@@ -43,7 +43,7 @@
 
       <div class="amount-bar oh">
         <div class="title">
-          <span translate>Amount</span>
+          <span ng-show="!isCoinbase" translate>Amount</span>
           <div class="size-12" ng-show="isGiftCard">Purchase Amount is limited to USD 1000 per day</div>
           <div class="size-12" ng-if="cardId" ng-init="getRates()">{{exchangeRate}}</div>
           <div ng-show="isGlidera">
@@ -68,21 +68,22 @@
           </div>
 
           <div ng-show="isCoinbase">
-            <div class="limits" ng-show="coinbaseBuyPrice && isCoinbase == 'buy'">
-              1 BTC ~ {{coinbaseBuyPrice.amount}} {{coinbaseBuyPrice.currency}}
-            </div>
-            <div class="limits" ng-show="coinbaseSellPrice && isCoinbase == 'sell'">
-              1 BTC ~ {{coinbaseSellPrice.amount}} {{coinbaseSellPrice.currency}}
-            </div>
             <div class="list select">
               <label class="item item-input item-select">
                 <div class="input-label">
-                  Payment Method
+                  <span ng-show="isCoinbase == 'buy'">Payment Method</span>
+                  <span ng-show="isCoinbase == 'sell'">Deposit into</span>
                 </div>
                 <select ng-model="coinbaseSelectedPaymentMethod.id"
                         ng-options="item.id as item.name for item in coinbasePaymentMethods">
                 </select>
               </label>
+            </div>
+            <div class="limits" ng-show="coinbaseBuyPrice && isCoinbase == 'buy'">
+              1 BTC ~ {{coinbaseBuyPrice.amount}} {{coinbaseBuyPrice.currency}}
+            </div>
+            <div class="limits" ng-show="coinbaseSellPrice && isCoinbase == 'sell'">
+              1 BTC ~ {{coinbaseSellPrice.amount}} {{coinbaseSellPrice.currency}}
             </div>
           </div>
         </div>
