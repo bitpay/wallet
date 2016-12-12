@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2016-12-12 14:18-0500\n"
+"PO-Revision-Date: 2016-12-12 16:45-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -32,7 +32,7 @@ msgstr "* Una propuesta de pago puede ser eliminada si 1) Ud. es el creador, y n
 msgid "5-star ratings help us get BitPay into more hands, and more users means more resources can be committed to the app!"
 msgstr "Una calificación de 5 estrellas nos ayuda a que BitPay sea más utilizado, y más usuarios significa más razones para seguir comprometidos con esta aplicación!"
 
-#: src/js/controllers/confirm.js:455
+#: src/js/controllers/confirm.js:454
 msgid "A SMS containing a confirmation code was sent to your phone."
 msgstr "Un SMS con el código de confirmación fue enviado a tu teléfono."
 
@@ -41,16 +41,16 @@ msgstr "Un SMS con el código de confirmación fue enviado a tu teléfono."
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "Un miembro del equipo revisará sus comentarios tan pronto como sea posible."
 
-#: src/js/controllers/confirm.js:213
+#: src/js/controllers/confirm.js:212
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "Se excluyeron un total de {{amountAboveMaxSizeStr}}. Fue excedido el tamaño máximo permitido para una transacción."
 
-#: src/js/controllers/confirm.js:207
+#: src/js/controllers/confirm.js:206
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "Se excluyeron un total de {{amountBelowFeeStr}}. Estos fondos provienen del UTXOs más pequeños que la comisión de red suministrada."
 
 #: src/js/controllers/preferencesAbout.js:6
-#: www/views/tab-settings.html:161
+#: www/views/tab-settings.html:159
 msgid "About"
 msgstr "Acerca de"
 
@@ -99,7 +99,7 @@ msgstr "Agregar contacto"
 msgid "Add Funds"
 msgstr "Añadir fondos"
 
-#: www/views/confirm.html:71
+#: www/views/confirm.html:72
 msgid "Add Memo"
 msgstr "Añadir Nota"
 
@@ -122,7 +122,7 @@ msgstr "Agregar una contraseña"
 msgid "Add an optional password to secure the recovery phrase"
 msgstr "Agregar una contraseña opcional para asegurar la frase de recuperación"
 
-#: src/js/controllers/confirm.js:267
+#: src/js/controllers/confirm.js:266
 msgid "Add description"
 msgstr "Añadir Descripción"
 
@@ -150,7 +150,7 @@ msgstr "Tipo de Dirección"
 msgid "Addresses With Balance"
 msgstr "Direcciones con fondos"
 
-#: www/views/tab-settings.html:154
+#: www/views/tab-settings.html:152
 msgid "Advanced"
 msgstr "Avanzado"
 
@@ -183,7 +183,7 @@ msgid "Almost done! Let's review."
 msgstr "¡Casi listo! Vamos a revisar."
 
 #: www/views/preferencesAltCurrency.html:4
-#: www/views/tab-settings.html:83
+#: www/views/tab-settings.html:81
 msgid "Alternative Currency"
 msgstr "Moneda Alternativa"
 
@@ -304,7 +304,7 @@ msgid "Bitcoin Exchanges"
 msgstr "Bitcoin Exchanges"
 
 #: www/views/preferencesFee.html:4
-#: www/views/tab-settings.html:94
+#: www/views/tab-settings.html:92
 msgid "Bitcoin Network Fee Policy"
 msgstr "Política de Comisión de la Red Bitcoin"
 
@@ -312,7 +312,7 @@ msgstr "Política de Comisión de la Red Bitcoin"
 msgid "Bitcoin URI is NOT valid!"
 msgstr "¡Bitcoin URI no es válida!"
 
-#: www/views/tab-settings.html:72
+#: www/views/tab-settings.html:70
 msgid "Bitcoin Unit"
 msgstr "Unidad de Bitcoin"
 
@@ -377,7 +377,7 @@ msgstr "Comprando Bitcoins..."
 msgid "Calculating fee"
 msgstr "Calculando comisión"
 
-#: src/js/controllers/confirm.js:511
+#: src/js/controllers/confirm.js:510
 #: src/js/services/confirmDialog.js:9
 #: src/js/services/popupService.js:58
 #: www/views/addressbook.add.html:10
@@ -409,10 +409,6 @@ msgstr "Tarjetas"
 #: www/views/modals/paypro.html:29
 msgid "Certified by"
 msgstr "Certificado por"
-
-#: www/views/translators.html:18
-msgid "Chinese"
-msgstr "Chino"
 
 #: www/views/tab-import-file.html:4
 msgid "Choose a backup file from your computer"
@@ -447,7 +443,7 @@ msgstr "Color"
 msgid "Commit hash"
 msgstr "Commit hash"
 
-#: src/js/controllers/confirm.js:510
+#: src/js/controllers/confirm.js:509
 #: src/js/controllers/copayers.js:42
 #: src/js/services/confirmDialog.js:10
 #: www/views/backup.html:53
@@ -503,8 +499,8 @@ msgstr "Contactos"
 msgid "Continue"
 msgstr "Continuar"
 
-#: www/views/preferencesLanguage.html:17
-#: www/views/translators.html:25
+#: www/views/preferencesLanguage.html:26
+#: www/views/translators.html:33
 msgid "Contribute Translations"
 msgstr "Contribuir con las traducciones"
 
@@ -591,7 +587,7 @@ msgstr "No se pudo obtener comisión dinámica"
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "No se pudo obtener comisión dinámica: {{feeLevel}}"
 
-#: src/js/controllers/confirm.js:656
+#: src/js/controllers/confirm.js:655
 msgid "Could not get the destination bitcoin address"
 msgstr "No se pudo obtener la dirección bitcoin destino"
 
@@ -622,7 +618,7 @@ msgstr "No se pudo rechazar el pago"
 msgid "Could not remove card"
 msgstr "No se pudo quitar tarjeta"
 
-#: src/js/controllers/confirm.js:450
+#: src/js/controllers/confirm.js:449
 msgid "Could not send confirmation code to your phone"
 msgstr "No se pudo enviar código de confirmación al teléfono"
 
@@ -687,10 +683,6 @@ msgstr "Comisión actual para esta política: <span class=\"fee-rate\">{{fee.fee
 msgid "Custom Amount"
 msgstr "Importe Específico"
 
-#: www/views/translators.html:20
-msgid "Czech"
-msgstr "Checo"
-
 #: www/views/preferencesDeleteWallet.html:21
 msgid "Delete"
 msgstr "Eliminar"
@@ -741,8 +733,8 @@ msgstr "Utilidades de desarrollo"
 msgid "Do not include private key"
 msgstr "No incluir la clave privada"
 
-#: www/views/preferencesLanguage.html:20
-#: www/views/translators.html:29
+#: www/views/preferencesLanguage.html:21
+#: www/views/translators.html:28
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "¿No ve su idioma en Crowdin? Contáctese con el encargado del proyecto! Nos encantaría soportar su idioma."
 
@@ -856,33 +848,33 @@ msgstr "Introduzca la contraseña para enviar"
 #: src/js/controllers/amazon.js:25
 #: src/js/controllers/amazon.js:46
 #: src/js/controllers/amazon.js:66
-#: src/js/controllers/amount.js:251
-#: src/js/controllers/amount.js:258
-#: src/js/controllers/amount.js:266
-#: src/js/controllers/amount.js:295
-#: src/js/controllers/amount.js:308
-#: src/js/controllers/amount.js:315
-#: src/js/controllers/amount.js:324
+#: src/js/controllers/amount.js:265
+#: src/js/controllers/amount.js:272
+#: src/js/controllers/amount.js:280
+#: src/js/controllers/amount.js:309
+#: src/js/controllers/amount.js:322
+#: src/js/controllers/amount.js:329
+#: src/js/controllers/amount.js:338
 #: src/js/controllers/bitpayCard.js:145
 #: src/js/controllers/bitpayCard.js:68
 #: src/js/controllers/bitpayCardIntro.js:27
-#: src/js/controllers/confirm.js:153
-#: src/js/controllers/confirm.js:166
-#: src/js/controllers/confirm.js:172
-#: src/js/controllers/confirm.js:450
-#: src/js/controllers/confirm.js:461
-#: src/js/controllers/confirm.js:473
-#: src/js/controllers/confirm.js:622
-#: src/js/controllers/confirm.js:650
-#: src/js/controllers/confirm.js:656
-#: src/js/controllers/confirm.js:684
-#: src/js/controllers/confirm.js:690
-#: src/js/controllers/confirm.js:697
-#: src/js/controllers/confirm.js:704
-#: src/js/controllers/confirm.js:722
-#: src/js/controllers/confirm.js:741
-#: src/js/controllers/confirm.js:755
-#: src/js/controllers/confirm.js:798
+#: src/js/controllers/confirm.js:152
+#: src/js/controllers/confirm.js:165
+#: src/js/controllers/confirm.js:171
+#: src/js/controllers/confirm.js:449
+#: src/js/controllers/confirm.js:460
+#: src/js/controllers/confirm.js:472
+#: src/js/controllers/confirm.js:621
+#: src/js/controllers/confirm.js:649
+#: src/js/controllers/confirm.js:655
+#: src/js/controllers/confirm.js:683
+#: src/js/controllers/confirm.js:689
+#: src/js/controllers/confirm.js:696
+#: src/js/controllers/confirm.js:703
+#: src/js/controllers/confirm.js:721
+#: src/js/controllers/confirm.js:740
+#: src/js/controllers/confirm.js:754
+#: src/js/controllers/confirm.js:797
 #: src/js/controllers/copayers.js:54
 #: src/js/controllers/create.js:101
 #: src/js/controllers/create.js:129
@@ -942,7 +934,7 @@ msgstr "Introduzca la contraseña para enviar"
 msgid "Error"
 msgstr "Error"
 
-#: src/js/controllers/confirm.js:354
+#: src/js/controllers/confirm.js:353
 msgid "Error at confirm"
 msgstr "Error al confirmar"
 
@@ -966,8 +958,8 @@ msgstr "Se excedió el limite de $500 por usuario"
 msgid "Experimental Features"
 msgstr "Características Experimentales"
 
-#: src/js/controllers/confirm.js:312
-#: www/views/confirm.html:29
+#: src/js/controllers/confirm.js:311
+#: www/views/confirm.html:30
 #: www/views/modals/txp-details.html:114
 msgid "Expired"
 msgstr "Expirada"
@@ -1022,7 +1014,7 @@ msgstr "Fondos para vacaciones en familia"
 msgid "Fee"
 msgstr "Comisión"
 
-#: www/views/confirm.html:78
+#: www/views/confirm.html:79
 msgid "Fee: {{feeLevel}}"
 msgstr "Comisión: {{feeLevel}}"
 
@@ -1062,8 +1054,8 @@ msgstr "Fondos transferidos"
 msgid "French"
 msgstr "Francés"
 
-#: www/views/confirm.html:59
-#: www/views/confirm.html:61
+#: www/views/confirm.html:60
+#: www/views/confirm.html:62
 #: www/views/modals/txp-details.html:74
 #: www/views/tx-details.html:48
 msgid "From"
@@ -1092,10 +1084,6 @@ msgstr "Generando archivo .csv..."
 #: src/js/services/onGoingProcess.js:37
 msgid "Generating new address..."
 msgstr "Generando una nueva dirección..."
-
-#: www/views/translators.html:14
-msgid "German"
-msgstr "Alemán"
 
 #: www/views/bitpayCardIntro.html:23
 msgid "Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible ATM. ATM bank fees may apply."
@@ -1147,8 +1135,8 @@ msgid "Have the OAuth Code?"
 msgstr "¿Tiene el código OAuth?"
 
 #: www/views/tab-settings.html:27
-msgid "Help &amp; Support"
-msgstr "Ayuda &amp; soporte"
+msgid "Help & Support"
+msgstr "Ayuda & Soporte"
 
 #: www/views/addresses.html:29
 msgid "Hide"
@@ -1167,6 +1155,10 @@ msgstr "Balance Oculto"
 #: www/views/tab-import-phrase.html:31
 msgid "Hide advanced options"
 msgstr "Ocultar opciones avanzadas"
+
+#: www/views/tabs.html:3
+msgid "Home"
+msgstr "Inicio"
 
 #: src/js/controllers/feedback/send.js:55
 #: src/js/controllers/feedback/send.js:59
@@ -1281,7 +1273,7 @@ msgstr "Con el fin de verificar la copia de seguridad del monedero, por favor es
 
 #: www/views/includes/walletSelector.html:18
 #: www/views/tab-home.html:79
-#: www/views/tab-settings.html:115
+#: www/views/tab-settings.html:114
 msgid "Incomplete"
 msgstr "Incompleta"
 
@@ -1299,7 +1291,7 @@ msgid "Incorrect code format"
 msgstr "Formato de código incorrecto"
 
 #: src/js/services/bwcError.js:44
-#: www/views/confirm.html:115
+#: www/views/confirm.html:116
 msgid "Insufficient funds"
 msgstr "Fondos insuficientes"
 
@@ -1356,14 +1348,6 @@ msgstr "Es una buena idea evitar rehusar las direcciones- esto protege su privac
 msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
 msgstr "Es importante que usted escriba su frase copia de seguridad correctamente. Si algo le pasa a su monedero, necesitarás de esta para recuperar su dinero. Revise la copia de seguridad y vuelva a intentarlo."
 
-#: www/views/translators.html:17
-msgid "Italian"
-msgstr "Italiano"
-
-#: www/views/translators.html:12
-msgid "Japanese"
-msgstr "Japonés"
-
 #: www/views/join.html:18
 msgid "John"
 msgstr "Juan"
@@ -1394,6 +1378,7 @@ msgid "Key already associated with an existing wallet"
 msgstr "La clave ya esta asociada a un monedero existente"
 
 #: www/views/preferencesLanguage.html:4
+#: www/views/tab-settings.html:60
 msgid "Language"
 msgstr "Idioma"
 
@@ -1543,11 +1528,11 @@ msgstr "No hay transacciones recientes"
 msgid "No transactions yet"
 msgstr "Sin transacciones todavía"
 
-#: src/js/controllers/amount.js:295
+#: src/js/controllers/amount.js:309
 msgid "No wallet found!"
 msgstr "¡No hay monedero!"
 
-#: www/views/confirm.html:112
+#: www/views/confirm.html:113
 msgid "No wallets available"
 msgstr "No hay monederos disponibles"
 
@@ -1563,7 +1548,7 @@ msgstr "Normal"
 msgid "Not authorized"
 msgstr "No autorizado"
 
-#: src/js/controllers/confirm.js:172
+#: src/js/controllers/confirm.js:171
 msgid "Not enough funds for fee"
 msgstr "No hay suficientes fondos para la comisión"
 
@@ -1664,7 +1649,7 @@ msgstr "Pagar A"
 msgid "Payment Accepted"
 msgstr "Pago Aceptado"
 
-#: www/views/confirm.html:27
+#: www/views/confirm.html:28
 msgid "Payment Expires:"
 msgstr "Pago expira:"
 
@@ -1764,17 +1749,13 @@ msgstr "Por favor, pulse cada palabra en el orden correcto."
 msgid "Please upgrade Copay to perform this action"
 msgstr "Por favor actualice Copay para realizar esta acción"
 
-#: src/js/controllers/confirm.js:454
+#: src/js/controllers/confirm.js:453
 msgid "Please, enter the code below"
 msgstr "Por favor, introduzca el código"
 
 #: src/js/controllers/import.js:201
 msgid "Please, select your backup file"
 msgstr "Por favor, seleccione el archivo de copia de seguridad"
-
-#: www/views/translators.html:19
-msgid "Polish"
-msgstr "Polaco"
 
 #: www/views/tab-settings.html:47
 msgid "Preferences"
@@ -1859,6 +1840,7 @@ msgid "Read more"
 msgstr "Leer más"
 
 #: www/views/tab-receive.html:3
+#: www/views/tabs.html:7
 msgid "Receive"
 msgstr "Recibir"
 
@@ -1871,7 +1853,12 @@ msgstr "Recibido"
 msgid "Received Funds"
 msgstr "Fondos recibidos"
 
+#: www/views/walletDetails.html:242
+msgid "Receiving"
+msgstr "Recibiendo"
+
 #: www/views/bitpayCard.html:55
+#: www/views/walletDetails.html:199
 msgid "Recent"
 msgstr "Recientes"
 
@@ -1959,10 +1946,6 @@ msgstr "Recuperando información de las entradas"
 msgid "Retry"
 msgstr "Vuelva a intentarlo"
 
-#: www/views/translators.html:16
-msgid "Russian"
-msgstr "Ruso"
-
 #: www/views/includes/password.html:31
 msgid "SET"
 msgstr "ESTABLECER"
@@ -1976,6 +1959,7 @@ msgid "Save"
 msgstr "Guardar"
 
 #: www/views/tab-scan.html:3
+#: www/views/tabs.html:11
 msgid "Scan"
 msgstr "Escanear"
 
@@ -2039,6 +2023,7 @@ msgstr "Vendiendo Bitcoins..."
 #: www/views/feedback/send.html:13
 #: www/views/feedback/send.html:43
 #: www/views/tab-send.html:3
+#: www/views/tabs.html:15
 msgid "Send"
 msgstr "Enviar"
 
@@ -2064,7 +2049,7 @@ msgstr "Enviar bitcoin"
 msgid "Send by email"
 msgstr "Enviar por correo electrónico"
 
-#: src/js/controllers/confirm.js:248
+#: src/js/controllers/confirm.js:247
 msgid "Send from"
 msgstr "Enviar desde"
 
@@ -2079,6 +2064,7 @@ msgstr "En su lugar, enviar sugerencia"
 #: www/views/confirm.html:15
 #: www/views/includes/txp.html:14
 #: www/views/modals/txp-details.html:19
+#: www/views/walletDetails.html:241
 msgid "Sending"
 msgstr "Enviando"
 
@@ -2098,7 +2084,7 @@ msgstr "Enviando cantidad máxima"
 msgid "Sending transaction"
 msgstr "Enviando transacción"
 
-#: src/js/controllers/confirm.js:506
+#: src/js/controllers/confirm.js:505
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr "Enviando {{amountStr}} desde tu monedero {{name}}"
 
@@ -2133,11 +2119,13 @@ msgid "Set up a spending password"
 msgstr "Configurar contraseña para enviar"
 
 #: www/views/tab-settings.html:3
+#: www/views/tabs.html:19
 msgid "Settings"
 msgstr "Configuración"
 
 #: www/views/customAmount.html:20
 #: www/views/tab-receive.html:70
+#: www/views/tab-settings.html:43
 msgid "Share"
 msgstr "Compartir"
 
@@ -2157,10 +2145,6 @@ msgstr "Comparte la pasión invitando a tus amigos."
 #: www/views/copayers.html:17
 msgid "Share this invitation with your copayers"
 msgstr "Compartir esta invitación con sus copayers"
-
-#: www/views/tab-settings.html:43
-msgid "Share {{appName}}"
-msgstr "Compartir {{appName}}"
 
 #: www/views/tab-import-hardware.html:24
 msgid "Shared Wallet"
@@ -2269,7 +2253,7 @@ msgstr "Tocar y mantener para mostrar"
 msgid "Tap to retry"
 msgstr "Toque para reintentar"
 
-#: www/views/tab-settings.html:144
+#: www/views/tab-settings.html:142
 msgid "Tell a friend"
 msgstr "Recomendar a un amigo"
 
@@ -2397,7 +2381,7 @@ msgstr "¡Esta aplicación es fantástica!"
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr "Esta aplicación almacena su bitcoin con seguridad avanzada."
 
-#: src/js/controllers/confirm.js:439
+#: src/js/controllers/confirm.js:438
 msgid "This bitcoin payment request has expired."
 msgstr "Esta solicitud de pago ha caducado."
 
@@ -2421,8 +2405,8 @@ msgstr "Este monedero no esta registrado en el servidor de Bitcore Wallet Servic
 msgid "Timeline"
 msgstr "Línea de tiempo"
 
-#: www/views/confirm.html:32
-#: www/views/confirm.html:60
+#: www/views/confirm.html:33
+#: www/views/confirm.html:61
 #: www/views/includes/output.html:2
 #: www/views/modals/txp-details.html:104
 #: www/views/modals/txp-details.html:53
@@ -2479,6 +2463,7 @@ msgstr "Transferir a monedero"
 msgid "Translation Credits"
 msgstr "Créditos de traducción"
 
+#: www/views/preferencesAbout.html:35
 #: www/views/translators.html:3
 msgid "Translators"
 msgstr "Traductores"
@@ -2695,6 +2680,7 @@ msgid "Wallet needs backup"
 msgstr "El monedero requiere copia de seguridad"
 
 #: www/views/tab-receive.html:56
+#: www/views/walletDetails.html:145
 msgid "Wallet not backed up"
 msgstr "Monedero sin copia de seguridad"
 
@@ -2722,9 +2708,9 @@ msgstr "Wallet Service no encontrado"
 msgid "Wallets"
 msgstr "Monederos"
 
-#: www/views/tab-settings.html:101
-msgid "Wallets &amp; Integrations"
-msgstr "Monederos &amp; Integraciones"
+#: www/views/tab-settings.html:99
+msgid "Wallets & Integrations"
+msgstr "Monederos & Integraciones"
 
 #: src/js/controllers/modals/txpDetails.js:126
 #: src/js/controllers/modals/txpDetails.js:143
@@ -2754,7 +2740,7 @@ msgid "We're always looking for ways to improve BitPay. How could we improve you
 msgstr "Siempre estamos buscando maneras de mejorar BitPay. ¿Cómo podríamos mejorar su experiencia?"
 
 #: www/views/preferencesLanguage.html:16
-#: www/views/translators.html:24
+#: www/views/translators.html:23
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
 msgstr "¡Siempre estamos buscando aportes de traducción! Puede hacer correcciones o ayudar a hacer esta aplicación disponible en su idioma nativo al unirse a nuestra comunidad en Crowdin."
 
@@ -2877,6 +2863,7 @@ msgid "Your wallet key will be encrypted. The Spending Password cannot be recove
 msgstr "La clave del monedero se cifrará. La contraseña para enviar no puede ser recuperada. Asegúrese de escribirla"
 
 #: www/views/includes/walletSelector.html:23
+#: www/views/includes/wallets.html:13
 #: www/views/tab-home.html:84
 #: www/views/walletDetails.html:127
 #: www/views/walletDetails.html:69
@@ -2907,7 +2894,7 @@ msgstr "preparando..."
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} de la transacción"
 
-#: src/js/controllers/confirm.js:186
+#: src/js/controllers/confirm.js:185
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} se descontará por comisión de la red bitcoin."
 
