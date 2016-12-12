@@ -111,6 +111,12 @@
         font-weight: 300;
         color: $light-gray;
       }
+      &__icon {
+        width: 20px;
+        position: relative;
+        top: 4px;
+        color: $light-gray;
+      }
     }
   }
   .release {
