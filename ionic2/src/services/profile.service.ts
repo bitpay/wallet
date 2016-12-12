@@ -9,6 +9,7 @@ import { PlatformInfo } from './platform-info.service';
 import { PushNotificationService } from './push-notification.service';
 import { StorageService } from './storage.service';
 import { TextService } from './text.service';
+import { TxFormatService } from './tx-format.service';
 import { UxLanguageService } from './ux-language.service';
 
 import { Profile } from './../models/profile.model';
@@ -47,10 +48,6 @@ export class ProfileService {
   validationLock: boolean = false;
   _queue = [];
 
-  txFormatService: any = {
-    formatAmountStr: () => {}
-  };
-
   constructor(
     public bwcError: BwcErrorService,
     public bwcService: BwcService,
@@ -60,6 +57,7 @@ export class ProfileService {
     public pushNotificationService: PushNotificationService,
     public storageService: StorageService,
     public textService: TextService,
+    public txFormatService: TxFormatService,
     public uxLanguage: UxLanguageService
   ) {
     this.isChromeApp = this.platformInfo.isChromeApp;

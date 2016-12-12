@@ -4,6 +4,7 @@ import lodash from 'lodash';
 
 import { BwcService } from './bwc.service';
 import { ConfigService } from './config.service';
+import { RateService } from './rate.service';
 
 @Injectable()
 export class TxFormatService {
@@ -12,7 +13,8 @@ export class TxFormatService {
 
   constructor(
     public bwcService: BwcService,
-    public configService: ConfigService
+    public configService: ConfigService,
+    public rateService: RateService
   ) {
     this.Utils = this.bwcService.getUtils();
   }
@@ -37,7 +39,7 @@ export class TxFormatService {
   formatToUSD(satoshis, cb) {
     if (!satoshis) return;
     let val = () => {
-      let v1 = rateService.toFiat(satoshis, 'USD');
+      let v1 = this.rateService.toFiat(satoshis, 'USD');
       if (!v1) return null;
 
       return v1.toFixed(2);
@@ -45,11 +47,11 @@ export class TxFormatService {
 
     // Async version
     if (cb) {
-      rateService.whenAvailable(function() {
+      this.rateService.whenAvailable(function() {
         return cb(val());
       });
     } else {
-      if (!rateService.isAvailable()) return null;
+      if (!this.rateService.isAvailable()) return null;
       return val();
     };
   };
@@ -59,7 +61,7 @@ export class TxFormatService {
     let config = this.configService.getSync().wallet.settings;
 
     let val = () => {
-      let v1 = rateService.toFiat(satoshis, config.alternativeIsoCode);
+      let v1 = this.rateService.toFiat(satoshis, config.alternativeIsoCode);
       if (!v1) return null;
 
       return v1.toFixed(2) + ' ' + config.alternativeIsoCode;
@@ -67,11 +69,11 @@ export class TxFormatService {
 
     // Async version
     if (cb) {
-      rateService.whenAvailable(function() {
+      this.rateService.whenAvailable(function() {
         return cb(val());
       });
     } else {
-      if (!rateService.isAvailable()) return null;
+      if (!this.rateService.isAvailable()) return null;
       return val();
     };
   };

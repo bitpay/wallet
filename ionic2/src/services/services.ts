@@ -11,6 +11,7 @@ import { RateService } from './rate.service';
 import { ScannerService } from './scanner.service';
 import { StorageService } from './storage.service';
 import { TextService } from './text.service';
+import { TxFormatService } from './tx-format.service';
 import { UxLanguageService } from './ux-language.service';
 
 export const SERVICES = [
@@ -27,5 +28,6 @@ export const SERVICES = [
   ScannerService,
   StorageService,
   TextService,
+  TxFormatService,
   UxLanguageService
 ];
