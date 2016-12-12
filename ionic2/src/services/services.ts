@@ -7,6 +7,7 @@ import { PayproService } from './paypro.service';
 import { PlatformInfo } from './platform-info.service';
 import { ProfileService } from './profile.service';
 import { PushNotificationService } from './push-notification.service';
+import { RateService } from './rate.service';
 import { ScannerService } from './scanner.service';
 import { StorageService } from './storage.service';
 import { TextService } from './text.service';
@@ -22,6 +23,7 @@ export const SERVICES = [
   PlatformInfo,
   ProfileService,
   PushNotificationService,
+  RateService,
   ScannerService,
   StorageService,
   TextService,
