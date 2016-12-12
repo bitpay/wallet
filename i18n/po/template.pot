@@ -22,7 +22,7 @@ msgstr ""
 msgid "5-star ratings help us get BitPay into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
-#: src/js/controllers/confirm.js:450
+#: src/js/controllers/confirm.js:455
 msgid "A SMS containing a confirmation code was sent to your phone."
 msgstr ""
 
@@ -31,11 +31,11 @@ msgstr ""
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr ""
 
-#: src/js/controllers/confirm.js:208
+#: src/js/controllers/confirm.js:213
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr ""
 
-#: src/js/controllers/confirm.js:202
+#: src/js/controllers/confirm.js:207
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Add an optional password to secure the recovery phrase"
 msgstr ""
 
-#: src/js/controllers/confirm.js:262
+#: src/js/controllers/confirm.js:267
 msgid "Add description"
 msgstr ""
 
@@ -196,6 +196,14 @@ msgstr ""
 msgid "An update to this app is available"
 msgstr ""
 
+#: www/views/backupWarning.html:14
+msgid "Anyone with your backup phrase can access or spend your bitcoin."
+msgstr ""
+
+#: www/views/backupWarning.html:10
+msgid "Are you being watched?"
+msgstr ""
+
 #: src/js/controllers/copayers.js:43
 msgid "Are you sure you want to cancel and delete this wallet?"
 msgstr ""
@@ -237,10 +245,6 @@ msgstr ""
 msgid "Average confirmation time: <span class=\"fee-minutes\">{{fee.nbBlocks * 10}} minutes</span>"
 msgstr ""
 
-#: www/views/includes/terms.html:47
-msgid "BINDING AGREEMENT"
-msgstr ""
-
 #: www/views/join.html:118
 #: www/views/tab-create-personal.html:85
 #: www/views/tab-create-shared.html:115
@@ -279,10 +283,6 @@ msgstr ""
 
 #: www/views/includes/confirmBackupPopup.html:7
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr ""
-
-#: www/views/includes/terms.html:8
-msgid "BitPay provides the Software solely on the terms and conditions set forth in this Agreement and on the condition that You accept and comply with them. By using the Software You (a) accept this Agreement and agree that You are legally bound by its terms; and (b) represent and warrant that: (i) You are of legal age to enter into a binding agreement; and (ii) if You are a corporation, governmental organization or other legal entity, You have the right, power and authority to enter into this Agreement on behalf of the corporation, governmental organization or other legal entity and bind them to these terms."
 msgstr ""
 
 #: www/views/addressbook.add.html:38
@@ -363,15 +363,11 @@ msgstr ""
 msgid "Buying Bitcoin..."
 msgstr ""
 
-#: www/views/includes/terms.html:35
-msgid "CHOICE OF LAW"
-msgstr ""
-
 #: src/js/services/onGoingProcess.js:11
 msgid "Calculating fee"
 msgstr ""
 
-#: src/js/controllers/confirm.js:506
+#: src/js/controllers/confirm.js:511
 #: src/js/services/confirmDialog.js:9
 #: src/js/services/popupService.js:58
 #: www/views/addressbook.add.html:10
@@ -441,7 +437,7 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
-#: src/js/controllers/confirm.js:505
+#: src/js/controllers/confirm.js:510
 #: src/js/controllers/copayers.js:42
 #: src/js/services/confirmDialog.js:10
 #: www/views/backup.html:53
@@ -585,7 +581,7 @@ msgstr ""
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr ""
 
-#: src/js/controllers/confirm.js:651
+#: src/js/controllers/confirm.js:656
 msgid "Could not get the destination bitcoin address"
 msgstr ""
 
@@ -616,7 +612,7 @@ msgstr ""
 msgid "Could not remove card"
 msgstr ""
 
-#: src/js/controllers/confirm.js:445
+#: src/js/controllers/confirm.js:450
 msgid "Could not send confirmation code to your phone"
 msgstr ""
 
@@ -685,10 +681,6 @@ msgstr ""
 msgid "Czech"
 msgstr ""
 
-#: www/views/includes/terms.html:20
-msgid "DISCLAIMER"
-msgstr ""
-
 #: www/views/preferencesDeleteWallet.html:21
 msgid "Delete"
 msgstr ""
@@ -749,7 +741,7 @@ msgid "Download"
 msgstr ""
 
 #: www/views/addresses.html:23
-msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time your recive a payment."
+msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr ""
 
 #: src/js/services/feeService.js:10
@@ -854,33 +846,33 @@ msgstr ""
 #: src/js/controllers/amazon.js:25
 #: src/js/controllers/amazon.js:46
 #: src/js/controllers/amazon.js:66
-#: src/js/controllers/amount.js:249
-#: src/js/controllers/amount.js:256
-#: src/js/controllers/amount.js:264
-#: src/js/controllers/amount.js:293
-#: src/js/controllers/amount.js:306
-#: src/js/controllers/amount.js:313
-#: src/js/controllers/amount.js:322
+#: src/js/controllers/amount.js:251
+#: src/js/controllers/amount.js:258
+#: src/js/controllers/amount.js:266
+#: src/js/controllers/amount.js:295
+#: src/js/controllers/amount.js:308
+#: src/js/controllers/amount.js:315
+#: src/js/controllers/amount.js:324
 #: src/js/controllers/bitpayCard.js:145
 #: src/js/controllers/bitpayCard.js:68
 #: src/js/controllers/bitpayCardIntro.js:27
-#: src/js/controllers/confirm.js:148
-#: src/js/controllers/confirm.js:161
-#: src/js/controllers/confirm.js:167
-#: src/js/controllers/confirm.js:445
-#: src/js/controllers/confirm.js:456
-#: src/js/controllers/confirm.js:468
-#: src/js/controllers/confirm.js:617
-#: src/js/controllers/confirm.js:645
-#: src/js/controllers/confirm.js:651
-#: src/js/controllers/confirm.js:679
-#: src/js/controllers/confirm.js:685
-#: src/js/controllers/confirm.js:692
-#: src/js/controllers/confirm.js:699
-#: src/js/controllers/confirm.js:717
-#: src/js/controllers/confirm.js:736
-#: src/js/controllers/confirm.js:750
-#: src/js/controllers/confirm.js:793
+#: src/js/controllers/confirm.js:153
+#: src/js/controllers/confirm.js:166
+#: src/js/controllers/confirm.js:172
+#: src/js/controllers/confirm.js:450
+#: src/js/controllers/confirm.js:461
+#: src/js/controllers/confirm.js:473
+#: src/js/controllers/confirm.js:622
+#: src/js/controllers/confirm.js:650
+#: src/js/controllers/confirm.js:656
+#: src/js/controllers/confirm.js:684
+#: src/js/controllers/confirm.js:690
+#: src/js/controllers/confirm.js:697
+#: src/js/controllers/confirm.js:704
+#: src/js/controllers/confirm.js:722
+#: src/js/controllers/confirm.js:741
+#: src/js/controllers/confirm.js:755
+#: src/js/controllers/confirm.js:798
 #: src/js/controllers/copayers.js:54
 #: src/js/controllers/create.js:101
 #: src/js/controllers/create.js:129
@@ -940,7 +932,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/js/controllers/confirm.js:349
+#: src/js/controllers/confirm.js:354
 msgid "Error at confirm"
 msgstr ""
 
@@ -964,7 +956,7 @@ msgstr ""
 msgid "Experimental Features"
 msgstr ""
 
-#: src/js/controllers/confirm.js:307
+#: src/js/controllers/confirm.js:312
 #: www/views/confirm.html:29
 #: www/views/modals/txp-details.html:114
 msgid "Expired"
@@ -1228,18 +1220,6 @@ msgstr ""
 msgid "I've written it down"
 msgstr ""
 
-#: www/views/includes/terms.html:17
-msgid "IF YOU LOSE ACCESS TO YOUR BITCOIN WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT WALLET WILL BECOME INACCESSIBLE. All transaction requests are irreversible. The authors of the Software, employees and affiliates of BitPay, copyright holders, and BitPay, Inc. cannot retrieve Your private keys or passwords if You lose or forget them and cannot guarantee transaction confirmation as they do not have control over the bitcoin network."
-msgstr ""
-
-#: www/views/includes/terms.html:26
-msgid "IN NO EVENT WILL BITPAY OR ITS AFFILIATES, OR ANY OF ITS OR THEIR RESPECTIVE SERVICE PROVIDERS, BE LIABLE TO YOU OR ANY THIRD PARTY FOR ANY USE, INTERRUPTION, DELAY OR INABILITY TO USE THE SOFTWARE, LOST REVENUES OR PROFITS, DELAYS, INTERRUPTION OR LOSS OF SERVICES, BUSINESS OR GOODWILL, LOSS OR CORRUPTION OF DATA, LOSS RESULTING FROM SYSTEM OR SYSTEM SERVICE FAILURE, MALFUNCTION OR SHUTDOWN, FAILURE TO ACCURATELY TRANSFER, READ OR TRANSMIT INFORMATION, FAILURE TO UPDATE OR PROVIDE CORRECT INFORMATION, SYSTEM INCOMPATIBILITY OR PROVISION OF INCORRECT COMPATIBILITY INFORMATION OR BREACHES IN SYSTEM SECURITY, OR FOR ANY CONSEQUENTIAL, INCIDENTAL, INDIRECT, EXEMPLARY, SPECIAL OR PUNITIVE DAMAGES, WHETHER ARISING OUT OF OR IN CONNECTION WITH THIS AGREEMENT, BREACH OF CONTRACT, TORT (INCLUDING NEGLIGENCE) OR OTHERWISE, REGARDLESS OF WHETHER SUCH DAMAGES WERE FORESEEABLE AND WHETHER OR NOT WE WERE ADVISED OF THE POSSIBILITY OF SUCH DAMAGES."
-msgstr ""
-
-#: www/views/includes/terms.html:29
-msgid "INTELLECTUAL PROPERTY"
-msgstr ""
-
 #: www/views/advancedSettings.html:50
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr ""
@@ -1287,10 +1267,6 @@ msgstr ""
 
 #: www/views/backup.html:65
 msgid "In order to verify your wallet backup, please type your password."
-msgstr ""
-
-#: www/views/includes/terms.html:44
-msgid "In the event any court shall declare any section or sections of this Agreement invalid or void, such declaration shall not invalidate the entire Agreement and all other paragraphs of the Agreement shall remain in full force and effect."
 msgstr ""
 
 #: www/views/includes/walletSelector.html:18
@@ -1557,7 +1533,7 @@ msgstr ""
 msgid "No transactions yet"
 msgstr ""
 
-#: src/js/controllers/amount.js:293
+#: src/js/controllers/amount.js:295
 msgid "No wallet found!"
 msgstr ""
 
@@ -1577,7 +1553,7 @@ msgstr ""
 msgid "Not authorized"
 msgstr ""
 
-#: src/js/controllers/confirm.js:167
+#: src/js/controllers/confirm.js:172
 msgid "Not enough funds for fee"
 msgstr ""
 
@@ -1610,6 +1586,10 @@ msgstr ""
 
 #: www/views/includes/backupNeededPopup.html:8
 msgid "Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
+msgstr ""
+
+#: www/views/backupWarning.html:11
+msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
 msgstr ""
 
 #: src/js/services/popupService.js:15
@@ -1774,7 +1754,7 @@ msgstr ""
 msgid "Please upgrade Copay to perform this action"
 msgstr ""
 
-#: src/js/controllers/confirm.js:449
+#: src/js/controllers/confirm.js:454
 msgid "Please, enter the code below"
 msgstr ""
 
@@ -1849,10 +1829,6 @@ msgstr ""
 
 #: www/views/onboarding/disclaimer.html:13
 msgid "Quick review!"
-msgstr ""
-
-#: www/views/includes/terms.html:5
-msgid "RIGHTS AND OBLIGATIONS"
 msgstr ""
 
 #: src/js/controllers/create.js:70
@@ -1981,10 +1957,6 @@ msgstr ""
 msgid "SET"
 msgstr ""
 
-#: www/views/includes/terms.html:41
-msgid "SEVERABILITY"
-msgstr ""
-
 #: www/views/addressbook.add.html:58
 #: www/views/includes/note.html:9
 #: www/views/preferencesAlias.html:21
@@ -2082,11 +2054,11 @@ msgstr ""
 msgid "Send by email"
 msgstr ""
 
-#: src/js/controllers/confirm.js:243
+#: src/js/controllers/confirm.js:248
 msgid "Send from"
 msgstr ""
 
-#: src/js/controllers/amount.js:95
+#: src/js/controllers/amount.js:97
 msgid "Send max amount"
 msgstr ""
 
@@ -2116,7 +2088,7 @@ msgstr ""
 msgid "Sending transaction"
 msgstr ""
 
-#: src/js/controllers/confirm.js:501
+#: src/js/controllers/confirm.js:506
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr ""
 
@@ -2268,10 +2240,6 @@ msgstr ""
 msgid "Sweeping Wallet..."
 msgstr ""
 
-#: www/views/includes/terms.html:23
-msgid "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OF THE SOFTWARE, EMPLOYEES AND AFFILIATES OF BITPAY, COPYRIGHT HOLDERS, OR BITPAY, INC. BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-msgstr ""
-
 #: www/views/preferencesDeleteWallet.html:14
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
@@ -2376,10 +2344,6 @@ msgstr ""
 msgid "The spend proposal is not pending"
 msgstr ""
 
-#: www/views/includes/terms.html:50
-msgid "The terms and provisions of this Agreement are binding upon Your heirs, successors, assigns, and other representatives. This Agreement may be executed in counterparts, each of which shall be considered to be an original, but both of which constitute the same Agreement."
-msgstr ""
-
 #: www/views/preferencesHistory.html:26
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr ""
@@ -2415,14 +2379,6 @@ msgstr ""
 msgid "These utilities may be unstable. Proceed at your own risk."
 msgstr ""
 
-#: www/views/includes/terms.html:38
-msgid "This Agreement, and its application and interpretation, shall be governed exclusively by the laws of the State of Georgia, without regard to its conflict of law rules. You consent to the exclusive jurisdiction of the federal and state courts located in or near Atlanta, Georgia for any dispute arising under this Agreement."
-msgstr ""
-
-#: www/views/includes/terms.html:11
-msgid "This Software functions as a free, open source, and multi-signature digital wallet. The Software does not constitute an account where We or other third parties serve as financial intermediaries or custodians of Your bitcoin(s)."
-msgstr ""
-
 #: src/js/controllers/feedback/rateCard.js:37
 msgid "This app is fantastic!"
 msgstr ""
@@ -2431,12 +2387,8 @@ msgstr ""
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr ""
 
-#: src/js/controllers/confirm.js:434
+#: src/js/controllers/confirm.js:439
 msgid "This bitcoin payment request has expired."
-msgstr ""
-
-#: www/views/includes/terms.html:2
-msgid "This is a binding Agreement between BitPay, Inc. (&ldquo;BitPay&rdquo; or &ldquo;We&rdquo;) and the person, persons, or entity (&ldquo;You&rdquo; or &ldquo;Your&rdquo;) using the service, Software, or application (&ldquo;Software&rdquo;)."
 msgstr ""
 
 #: www/views/join.html:108
@@ -2775,10 +2727,6 @@ msgstr ""
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr ""
 
-#: www/views/includes/terms.html:32
-msgid "We retain all right, title, and interest in and to the Content and all of BitPay’s brands, logos, and trademarks, including, but not limited to, BitPay, Inc., BitPay, BitPay &ndash; Secure Bitcoin Wallet, BitPay Wallet, BitPay App, Copay, BitPay Prepaid Card, and variations of the wording of the aforementioned brands, logos, and trademarks."
-msgstr ""
-
 #: src/js/controllers/feedback/send.js:63
 msgid "We'd love to do better."
 msgstr ""
@@ -2810,10 +2758,6 @@ msgstr ""
 
 #: www/views/onboarding/collectEmail.html:10
 msgid "Where would you like to receive email notifications about payments?"
-msgstr ""
-
-#: www/views/includes/terms.html:14
-msgid "While the Software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, We cannot guarantee there will not be bugs in the Software. You acknowledge that Your use of this Software is at Your own discretion and in compliance with all applicable laws. You are responsible for safekeeping Your passwords, private key pairs, PINs, and any other codes You use to access the Software."
 msgstr ""
 
 #: www/views/addresses.html:23
@@ -2855,10 +2799,6 @@ msgstr ""
 
 #: src/js/controllers/onboarding/backupRequest.js:18
 msgid "Yes, skip backup"
-msgstr ""
-
-#: www/views/includes/terms.html:53
-msgid "You assume any and all risks associated with the use of the Software. We reserve the right to modify this Agreement from time to time."
 msgstr ""
 
 #: src/js/controllers/onboarding/backupRequest.js:17
@@ -2957,7 +2897,7 @@ msgstr ""
 msgid "{{feeRateStr}} of the transaction"
 msgstr ""
 
-#: src/js/controllers/confirm.js:181
+#: src/js/controllers/confirm.js:186
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr ""
 
