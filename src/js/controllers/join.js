@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -50,10 +50,10 @@ angular.module('copayApp.controllers').controller('joinController',
     var updateSeedSourceSelect = function() {
       self.seedOptions = [{
         id: 'new',
-        label: gettext('Random'),
+        label: gettextCatalog.getString('Random'),
       }, {
         id: 'set',
-        label: gettext('Specify Recovery Phrase...'),
+        label: gettextCatalog.getString('Specify Recovery Phrase...'),
       }];
       $scope.seedSource = self.seedOptions[0];
 
