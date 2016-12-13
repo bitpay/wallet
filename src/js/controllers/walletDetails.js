@@ -284,7 +284,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var scrollWatcherInitialized;
 
   $scope.$on("$ionicView.enter", function(event, data) {
-    setAndroidStatusBarColor();
+    if ($scope.isCordova && $scope.isAndroid) setAndroidStatusBarColor();
     $timeout(function() {
       screenInactive = false;
     }, 200);
@@ -336,9 +336,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   function setAndroidStatusBarColor() {
     var SUBTRACT_AMOUNT = 15;
-    if (!$scope.isAndroid) {
-      return;
-    }
     var rgb = hexToRgb($scope.wallet.color);
     var keys = Object.keys(rgb);
     keys.forEach(function(k) {
@@ -349,7 +346,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       }
     });
     var statusBarColorHexString = rgbToHex(rgb.r, rgb.g, rgb.b);
-    $window.StatusBar.backgroundColorByHexString(statusBarColorHexString);
+    if ($window.StatusBar)
+      $window.StatusBar.backgroundColorByHexString(statusBarColorHexString);
   }
 
   function hexToRgb(hex) {

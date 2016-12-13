@@ -76,7 +76,7 @@
           <i class="icon bp-arrow-right"></i>
         </a>
         <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet && !isGlidera">
-          <span class="label" translate>Fee: {{feeLevel}}</span>
+          <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
           <span class="item-note">
             {{fee || '...'}}
           </span>
