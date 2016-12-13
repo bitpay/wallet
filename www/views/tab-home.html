@@ -84,8 +84,8 @@
             <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
             <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
               {{wallet.m}}-of-{{wallet.n}}
-              <i ng-if="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
             </span>
+            <i ng-if="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
             <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
           </span>
           &nbsp;
