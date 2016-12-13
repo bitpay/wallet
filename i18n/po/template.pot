@@ -192,6 +192,10 @@ msgstr ""
 msgid "Amount below minimum allowed"
 msgstr ""
 
+#: src/js/controllers/confirm.js:382
+msgid "Amount too big"
+msgstr ""
+
 #: www/views/tab-home.html:14
 msgid "An update to this app is available"
 msgstr ""
@@ -456,8 +460,8 @@ msgstr ""
 msgid "Confirm &amp; Finish"
 msgstr ""
 
-#: src/js/services/walletService.js:842
-#: src/js/services/walletService.js:843
+#: src/js/services/walletService.js:840
+#: src/js/services/walletService.js:841
 msgid "Confirm you new spending password"
 msgstr ""
 
@@ -546,6 +550,10 @@ msgstr ""
 msgid "Could not access wallet"
 msgstr ""
 
+#: src/js/controllers/confirm.js:376
+msgid "Could not add message to imported wallet without shared encrypting key"
+msgstr ""
+
 #: src/js/controllers/modals/txpDetails.js:172
 msgid "Could not broadcast payment"
 msgstr ""
@@ -627,10 +635,6 @@ msgstr ""
 
 #: src/js/controllers/tab-home.js:206
 msgid "Could not update"
-msgstr ""
-
-#: src/js/services/walletService.js:147
-msgid "Could not update Wallet"
 msgstr ""
 
 #: www/views/tab-create-personal.html:3
@@ -809,8 +813,8 @@ msgstr ""
 msgid "Enter Amount"
 msgstr ""
 
-#: src/js/services/walletService.js:856
-#: src/js/services/walletService.js:871
+#: src/js/services/walletService.js:854
+#: src/js/services/walletService.js:869
 msgid "Enter Spending Password"
 msgstr ""
 
@@ -818,7 +822,7 @@ msgstr ""
 msgid "Enter Two Factor for BitPay Card"
 msgstr ""
 
-#: src/js/services/walletService.js:839
+#: src/js/services/walletService.js:837
 msgid "Enter new spending password"
 msgstr ""
 
@@ -982,7 +986,7 @@ msgstr ""
 msgid "Export wallet"
 msgstr ""
 
-#: src/js/services/walletService.js:1003
+#: src/js/services/walletService.js:1000
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
 msgstr ""
@@ -2363,7 +2367,7 @@ msgstr ""
 msgid "The password of the recovery phrase (if set)"
 msgstr ""
 
-#: src/js/services/walletService.js:955
+#: src/js/services/walletService.js:952
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr ""
 
