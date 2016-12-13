@@ -5,10 +5,10 @@ angular.module('copayApp.services').factory('feeService', function($log, $stateP
 
   // Constant fee options to translate
   root.feeOpts = {
-    priority: gettextCatalog.getString('Priority'),
-    normal: gettextCatalog.getString('Normal'),
-    economy: gettextCatalog.getString('Economy'),
-    superEconomy: gettextCatalog.getString('Super Economy')
+    priority: gettext('Priority'),
+    normal: gettext('Normal'),
+    economy: gettext('Economy'),
+    superEconomy: gettext('Super Economy')
   };
 
   root.getCurrentFeeLevel = function() {
