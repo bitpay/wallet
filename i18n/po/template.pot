@@ -22,7 +22,7 @@ msgstr ""
 msgid "5-star ratings help us get BitPay into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
-#: src/js/controllers/confirm.js:454
+#: src/js/controllers/confirm.js:455
 msgid "A SMS containing a confirmation code was sent to your phone."
 msgstr ""
 
@@ -31,16 +31,16 @@ msgstr ""
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr ""
 
-#: src/js/controllers/confirm.js:212
+#: src/js/controllers/confirm.js:213
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr ""
 
-#: src/js/controllers/confirm.js:206
+#: src/js/controllers/confirm.js:207
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
 #: src/js/controllers/preferencesAbout.js:6
-#: www/views/tab-settings.html:159
+#: www/views/tab-settings.html:149
 msgid "About"
 msgstr ""
 
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Add an optional password to secure the recovery phrase"
 msgstr ""
 
-#: src/js/controllers/confirm.js:266
+#: src/js/controllers/confirm.js:267
 msgid "Add description"
 msgstr ""
 
@@ -140,7 +140,7 @@ msgstr ""
 msgid "Addresses With Balance"
 msgstr ""
 
-#: www/views/tab-settings.html:152
+#: www/views/tab-settings.html:142
 msgid "Advanced"
 msgstr ""
 
@@ -194,6 +194,10 @@ msgstr ""
 
 #: www/views/tab-home.html:14
 msgid "An update to this app is available"
+msgstr ""
+
+#: src/js/controllers/tab-home.js:133
+msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr ""
 
 #: www/views/backupWarning.html:14
@@ -285,6 +289,10 @@ msgstr ""
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr ""
 
+#: src/js/controllers/tab-settings.js:52
+msgid "BitPay Help Center"
+msgstr ""
+
 #: www/views/addressbook.add.html:38
 msgid "Bitcoin Address"
 msgstr ""
@@ -367,7 +375,7 @@ msgstr ""
 msgid "Calculating fee"
 msgstr ""
 
-#: src/js/controllers/confirm.js:510
+#: src/js/controllers/confirm.js:511
 #: src/js/services/confirmDialog.js:9
 #: src/js/services/popupService.js:58
 #: www/views/addressbook.add.html:10
@@ -387,7 +395,7 @@ msgstr ""
 msgid "Cannot join the same wallet more that once"
 msgstr ""
 
-#: src/js/controllers/amazon.js:25
+#: src/js/controllers/amazon.js:27
 msgid "Card not found"
 msgstr ""
 
@@ -433,7 +441,7 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
-#: src/js/controllers/confirm.js:509
+#: src/js/controllers/confirm.js:510
 #: src/js/controllers/copayers.js:42
 #: src/js/services/confirmDialog.js:10
 #: www/views/backup.html:53
@@ -577,7 +585,7 @@ msgstr ""
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr ""
 
-#: src/js/controllers/confirm.js:655
+#: src/js/controllers/confirm.js:656
 msgid "Could not get the destination bitcoin address"
 msgstr ""
 
@@ -608,7 +616,7 @@ msgstr ""
 msgid "Could not remove card"
 msgstr ""
 
-#: src/js/controllers/confirm.js:449
+#: src/js/controllers/confirm.js:450
 msgid "Could not send confirmation code to your phone"
 msgstr ""
 
@@ -616,7 +624,7 @@ msgstr ""
 msgid "Could not send payment"
 msgstr ""
 
-#: src/js/controllers/tab-home.js:200
+#: src/js/controllers/tab-home.js:206
 msgid "Could not update"
 msgstr ""
 
@@ -835,9 +843,9 @@ msgstr ""
 #: src/js/controllers/addresses.js:84
 #: src/js/controllers/addresses.js:85
 #: src/js/controllers/amazon.js:15
-#: src/js/controllers/amazon.js:25
-#: src/js/controllers/amazon.js:46
-#: src/js/controllers/amazon.js:66
+#: src/js/controllers/amazon.js:27
+#: src/js/controllers/amazon.js:48
+#: src/js/controllers/amazon.js:68
 #: src/js/controllers/amount.js:265
 #: src/js/controllers/amount.js:272
 #: src/js/controllers/amount.js:280
@@ -848,23 +856,23 @@ msgstr ""
 #: src/js/controllers/bitpayCard.js:145
 #: src/js/controllers/bitpayCard.js:68
 #: src/js/controllers/bitpayCardIntro.js:27
-#: src/js/controllers/confirm.js:152
-#: src/js/controllers/confirm.js:165
-#: src/js/controllers/confirm.js:171
-#: src/js/controllers/confirm.js:449
-#: src/js/controllers/confirm.js:460
-#: src/js/controllers/confirm.js:472
-#: src/js/controllers/confirm.js:621
-#: src/js/controllers/confirm.js:649
-#: src/js/controllers/confirm.js:655
-#: src/js/controllers/confirm.js:683
-#: src/js/controllers/confirm.js:689
-#: src/js/controllers/confirm.js:696
-#: src/js/controllers/confirm.js:703
-#: src/js/controllers/confirm.js:721
-#: src/js/controllers/confirm.js:740
-#: src/js/controllers/confirm.js:754
-#: src/js/controllers/confirm.js:797
+#: src/js/controllers/confirm.js:153
+#: src/js/controllers/confirm.js:166
+#: src/js/controllers/confirm.js:172
+#: src/js/controllers/confirm.js:450
+#: src/js/controllers/confirm.js:461
+#: src/js/controllers/confirm.js:473
+#: src/js/controllers/confirm.js:622
+#: src/js/controllers/confirm.js:650
+#: src/js/controllers/confirm.js:656
+#: src/js/controllers/confirm.js:684
+#: src/js/controllers/confirm.js:690
+#: src/js/controllers/confirm.js:697
+#: src/js/controllers/confirm.js:704
+#: src/js/controllers/confirm.js:722
+#: src/js/controllers/confirm.js:741
+#: src/js/controllers/confirm.js:755
+#: src/js/controllers/confirm.js:798
 #: src/js/controllers/copayers.js:54
 #: src/js/controllers/create.js:101
 #: src/js/controllers/create.js:129
@@ -917,14 +925,14 @@ msgstr ""
 #: src/js/controllers/preferencesDelete.js:22
 #: src/js/controllers/preferencesFee.js:9
 #: src/js/controllers/preferencesGlidera.js:60
-#: src/js/controllers/tab-home.js:154
+#: src/js/controllers/tab-home.js:160
 #: src/js/controllers/tab-receive.js:24
 #: src/js/controllers/tabsController.js:7
 #: src/js/controllers/tx-details.js:18
 msgid "Error"
 msgstr ""
 
-#: src/js/controllers/confirm.js:353
+#: src/js/controllers/confirm.js:354
 msgid "Error at confirm"
 msgstr ""
 
@@ -948,7 +956,7 @@ msgstr ""
 msgid "Experimental Features"
 msgstr ""
 
-#: src/js/controllers/confirm.js:311
+#: src/js/controllers/confirm.js:312
 #: www/views/confirm.html:30
 #: www/views/modals/txp-details.html:114
 msgid "Expired"
@@ -1099,6 +1107,16 @@ msgstr ""
 msgid "Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users. To enable this service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business (#31000042625755). Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining Glidera’s service of buying or selling bitcoin."
 msgstr ""
 
+#: src/js/controllers/onboarding/terms.js:23
+#: src/js/controllers/preferencesAbout.js:15
+#: src/js/controllers/preferencesLanguage.js:14
+#: src/js/controllers/tab-home.js:135
+#: src/js/controllers/tab-settings.js:55
+#: src/js/controllers/translators.js:11
+#: src/js/controllers/tx-details.js:128
+msgid "Go Back"
+msgstr ""
+
 #: src/js/controllers/bitpayCardIntro.js:35
 #: src/js/controllers/onboarding/backupRequest.js:13
 #: src/js/controllers/onboarding/backupRequest.js:19
@@ -1126,6 +1144,10 @@ msgstr ""
 
 #: www/views/tab-settings.html:27
 msgid "Help & Support"
+msgstr ""
+
+#: src/js/controllers/tab-settings.js:53
+msgid "Help and support information is available at the BitPay Help Center website. Would you like to go there now?"
 msgstr ""
 
 #: www/views/addresses.html:29
@@ -1538,7 +1560,7 @@ msgstr ""
 msgid "Not authorized"
 msgstr ""
 
-#: src/js/controllers/confirm.js:171
+#: src/js/controllers/confirm.js:172
 msgid "Not enough funds for fee"
 msgstr ""
 
@@ -1600,6 +1622,36 @@ msgstr ""
 
 #: www/views/tab-home.html:29
 msgid "On this screen you can see all your wallets, accounts, and assets."
+msgstr ""
+
+#: src/js/controllers/preferencesLanguage.js:13
+#: src/js/controllers/translators.js:10
+msgid "Open Crowdin"
+msgstr ""
+
+#: src/js/controllers/preferencesAbout.js:14
+msgid "Open GitHub"
+msgstr ""
+
+#: src/js/controllers/preferencesAbout.js:12
+msgid "Open GitHub Project"
+msgstr ""
+
+#: src/js/controllers/tab-settings.js:54
+msgid "Open Help Center"
+msgstr ""
+
+#: src/js/controllers/tx-details.js:127
+msgid "Open Insight"
+msgstr ""
+
+#: src/js/controllers/preferencesLanguage.js:11
+#: src/js/controllers/translators.js:8
+msgid "Open Translation Community"
+msgstr ""
+
+#: src/js/controllers/onboarding/terms.js:22
+msgid "Open Website"
 msgstr ""
 
 #: www/views/tab-receive.html:41
@@ -1739,7 +1791,7 @@ msgstr ""
 msgid "Please upgrade Copay to perform this action"
 msgstr ""
 
-#: src/js/controllers/confirm.js:453
+#: src/js/controllers/confirm.js:454
 msgid "Please, enter the code below"
 msgstr ""
 
@@ -2039,7 +2091,7 @@ msgstr ""
 msgid "Send by email"
 msgstr ""
 
-#: src/js/controllers/confirm.js:247
+#: src/js/controllers/confirm.js:248
 msgid "Send from"
 msgstr ""
 
@@ -2074,7 +2126,7 @@ msgstr ""
 msgid "Sending transaction"
 msgstr ""
 
-#: src/js/controllers/confirm.js:505
+#: src/js/controllers/confirm.js:506
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr ""
 
@@ -2243,10 +2295,6 @@ msgstr ""
 msgid "Tap to retry"
 msgstr ""
 
-#: www/views/tab-settings.html:142
-msgid "Tell a friend"
-msgstr ""
-
 #: www/views/termsOfUse.html:3
 msgid "Terms Of Use"
 msgstr ""
@@ -2295,6 +2343,10 @@ msgstr ""
 
 #: www/views/addresses.html:42
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
+msgstr ""
+
+#: src/js/controllers/onboarding/terms.js:21
+msgid "The official English Terms of Service are available on the BitPay website. Would you like to view them?"
 msgstr ""
 
 #: www/views/tab-import-phrase.html:4
@@ -2371,7 +2423,7 @@ msgstr ""
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr ""
 
-#: src/js/controllers/confirm.js:438
+#: src/js/controllers/confirm.js:439
 msgid "This bitcoin payment request has expired."
 msgstr ""
 
@@ -2440,7 +2492,7 @@ msgid "Transaction already broadcasted"
 msgstr ""
 
 #: src/js/controllers/activity.js:45
-#: src/js/controllers/tab-home.js:154
+#: src/js/controllers/tab-home.js:160
 #: src/js/controllers/tx-details.js:18
 msgid "Transaction not found"
 msgstr ""
@@ -2487,6 +2539,10 @@ msgstr ""
 msgid "Unused Addresses Limit"
 msgstr ""
 
+#: src/js/controllers/tab-home.js:132
+msgid "Update Available"
+msgstr ""
+
 #: www/views/proposals.html:15
 msgid "Updating pending proposals. Please stand by"
 msgstr ""
@@ -2521,6 +2577,18 @@ msgstr ""
 
 #: www/views/addresses.html:66
 msgid "View All Addresses"
+msgstr ""
+
+#: src/js/controllers/onboarding/terms.js:20
+msgid "View Terms of Service"
+msgstr ""
+
+#: src/js/controllers/tx-details.js:125
+msgid "View Transaction on Insight"
+msgstr ""
+
+#: src/js/controllers/tab-home.js:134
+msgid "View Update"
 msgstr ""
 
 #: www/views/tx-details.html:117
@@ -2678,7 +2746,7 @@ msgstr ""
 msgid "Wallet not found"
 msgstr ""
 
-#: src/js/controllers/tab-home.js:199
+#: src/js/controllers/tab-home.js:205
 msgid "Wallet not registered"
 msgstr ""
 
@@ -2770,6 +2838,10 @@ msgstr ""
 msgid "Would you like to receive push notifications about payments?"
 msgstr ""
 
+#: src/js/controllers/tx-details.js:126
+msgid "Would you like to view this transaction on the Insight blockchain explorer?"
+msgstr ""
+
 #: src/js/controllers/import.js:248
 msgid "Wrong number of recovery words:"
 msgstr ""
@@ -2791,8 +2863,17 @@ msgstr ""
 msgid "You can create a backup later from your wallet settings."
 msgstr ""
 
+#: src/js/controllers/preferencesLanguage.js:12
+#: src/js/controllers/translators.js:9
+msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
+msgstr ""
+
 #: www/views/tab-scan.html:16
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
+msgstr ""
+
+#: src/js/controllers/preferencesAbout.js:13
+msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr ""
 
 #: www/views/onboarding/tour.html:14
@@ -2825,6 +2906,10 @@ msgstr ""
 
 #: www/views/tab-home.html:26
 msgid "Your bitcoin wallet is ready!"
+msgstr ""
+
+#: www/views/feedback/send.html:42
+msgid "Your ideas, feedback, or comments"
 msgstr ""
 
 #: www/views/tab-create-shared.html:22
@@ -2876,6 +2961,10 @@ msgstr ""
 msgid "me"
 msgstr ""
 
+#: www/views/addressbook.add.html:32
+msgid "name@example.com"
+msgstr ""
+
 #: www/views/preferencesHistory.html:14
 msgid "preparing..."
 msgstr ""
@@ -2884,7 +2973,7 @@ msgstr ""
 msgid "{{feeRateStr}} of the transaction"
 msgstr ""
 
-#: src/js/controllers/confirm.js:185
+#: src/js/controllers/confirm.js:186
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr ""
 
