@@ -456,7 +456,8 @@ msgstr ""
 msgid "Confirm &amp; Finish"
 msgstr ""
 
-#: src/js/services/walletService.js:839
+#: src/js/services/walletService.js:842
+#: src/js/services/walletService.js:843
 msgid "Confirm you new spending password"
 msgstr ""
 
@@ -808,8 +809,8 @@ msgstr ""
 msgid "Enter Amount"
 msgstr ""
 
-#: src/js/services/walletService.js:852
-#: src/js/services/walletService.js:867
+#: src/js/services/walletService.js:856
+#: src/js/services/walletService.js:871
 msgid "Enter Spending Password"
 msgstr ""
 
@@ -817,7 +818,7 @@ msgstr ""
 msgid "Enter Two Factor for BitPay Card"
 msgstr ""
 
-#: src/js/services/walletService.js:837
+#: src/js/services/walletService.js:839
 msgid "Enter new spending password"
 msgstr ""
 
@@ -981,7 +982,7 @@ msgstr ""
 msgid "Export wallet"
 msgstr ""
 
-#: src/js/services/walletService.js:999
+#: src/js/services/walletService.js:1003
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
 msgstr ""
@@ -2362,7 +2363,7 @@ msgstr ""
 msgid "The password of the recovery phrase (if set)"
 msgstr ""
 
-#: src/js/services/walletService.js:951
+#: src/js/services/walletService.js:955
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr ""
 
