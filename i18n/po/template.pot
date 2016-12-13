@@ -1012,14 +1012,11 @@ msgstr ""
 msgid "Family vacation funds"
 msgstr ""
 
+#: www/views/confirm.html:79
 #: www/views/includes/confirm-tx.html:19
 #: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:71
 msgid "Fee"
-msgstr ""
-
-#: www/views/confirm.html:79
-msgid "Fee: {{feeLevel}}"
 msgstr ""
 
 #: src/js/controllers/feedback/send.js:23
