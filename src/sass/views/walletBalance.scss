@@ -4,17 +4,28 @@
 
     font-size: 16px;
 
-    &--available {
+    &--total {
       color: $mid-gray;
       font-weight: bold;
     }
 
+    &--available {
+      color: #09C286;;
+      font-weight: bold;
+    }
+
     &--confirming {
-      color: #09C286;
+      color: #FF9900;
+      font-weight: bold;
     }
 
     &--locked {
-      color: $dark-gray;
+      color: #FF9900;
+      font-weight: bold;
+    }
+
+    &--alternative {
+      color: $light-gray;
     }
 
   }
@@ -74,18 +85,29 @@
   &__heading {
     font-size: 17px;
     color: #445;
-    margin: 1rem 1rem 0 1rem;
+    margin: 1rem 1rem 1rem 1rem;
   }
 
   &__description {
-    font-size: 15px;
+    font-size: 12.5px;
     color: #667;
-    margin: 1rem;
+    margin: 0.7rem;
+    line-height: 16px;
   }
 
 }
 
 #wallet-balance {
+  .bar-header {
+    border: 0;
+    background: none;
+    .title, .button {
+      color: #fff;
+    }
+    .button {
+      background-color: transparent;
+    }
+  }
 
   ion-content {
     background: #F5F5F5;
