@@ -25,7 +25,7 @@ install:
   # move into ionic2 dir for remainder of build
   - cd ionic2
 
-  - npm install
+  - npm install -g yarn && yarn
 
 script:
   - npm run test-coverage
