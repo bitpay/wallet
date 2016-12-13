@@ -12,23 +12,36 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
       isoCode: 'BTC'
     }];
 
-    var config = configService.getSync();
-    $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+    function init() {
+      var config = configService.getSync();
+      $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
 
-    rateService.whenAvailable(function() {
-      storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
+      rateService.whenAvailable(function() {
+        storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
 
-        $scope.lastUsedAltCurrencyList = JSON.parse(lastUsedAltCurrency) || [];
+          $scope.lastUsedAltCurrencyList = JSON.parse(lastUsedAltCurrency) || [];
 
-        var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
-        var idx2 = lodash.indexBy($scope.lastUsedAltCurrencyList, 'isoCode');
+          var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
+          var idx2 = lodash.indexBy($scope.lastUsedAltCurrencyList, 'isoCode');
 
-        completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
-          return idx[c.isoCode] || idx2[c.isoCode];
+          $scope.completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
+            return idx[c.isoCode] || idx2[c.isoCode];
+          });
+          $scope.altCurrencyList = $scope.completeAlternativeList;
         });
-        $scope.altCurrencyList = completeAlternativeList;
       });
-    });
+    }
+
+    $scope.findCurrency = function(search) {
+      if (!search) init();
+      $scope.altCurrencyList = lodash.filter($scope.completeAlternativeList, function(item) {
+        var val = item.name;
+        return lodash.includes(val.toLowerCase(), search.toLowerCase());
+      });
+      $timeout(function() {
+        $scope.$apply();
+      });
+    };
 
     $scope.save = function(newAltCurrency) {
       var opts = {
@@ -58,4 +71,5 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
       storageService.setLastCurrencyUsed(JSON.stringify($scope.lastUsedAltCurrencyList), function() {});
     };
 
+    init();
   });
