@@ -7,13 +7,15 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <ion-radio ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency.isoCode" ng-model="currentCurrency"
-      ng-click="save(altCurrency)">{{altCurrency.name}}
-    </ion-radio>
-    <ion-infinite-scroll
-      ng-if="!listComplete"
-      on-infinite="loadMore()"
-      distance="1%">
-    </ion-infinite-scroll>
+    <div class="list" ng-if="lastUsedAltCurrencyList[0]">
+      <ion-radio ng-repeat="lastUsedAltCurrency in lastUsedAltCurrencyList" ng-value="lastUsedAltCurrency.isoCode" ng-model="currentCurrency"
+        ng-click="save(lastUsedAltCurrency)">{{lastUsedAltCurrency.name}}
+      </ion-radio>
+    </div>
+    <div class="list">
+      <ion-radio ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency.isoCode" ng-model="currentCurrency"
+        ng-click="save(altCurrency)">{{altCurrency.name}}
+      </ion-radio>
+    </div>
   </ion-content>
 </ion-view>
