@@ -140,7 +140,7 @@
       </div>
     </div> <!-- oh -->
 
-    <a class="wallet-not-backed-up-warning" ng-if="wallet.needsBackup" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet'})">
+    <a class="wallet-not-backed-up-warning" ng-if="wallet.needsBackup" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet'})" translate>
       Wallet not backed up
     </a>
 
@@ -194,7 +194,7 @@
       <div class="wallet-details__list" ng-show="txHistory[0]">
         <div ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
           <div class="wallet-details__group-label" ng-if="isFirstInGroup($index)">
-            <span ng-if="isDateInCurrentMonth(getDate(btx.time))">
+            <span ng-if="isDateInCurrentMonth(getDate(btx.time))" translate>
               Recent
             </span>
             <span ng-if="!isDateInCurrentMonth(getDate(btx.time))">
@@ -236,8 +236,8 @@
 
               <div class="wallet-details__tx-title" ng-if="isUnconfirmed(btx)">
                 <div class="ellipsis" style="color: #B4B4B4;">
-                  <span ng-if="btx.action == 'sent' || btx.action == 'moved'">Sending</span>
-                  <span ng-if="btx.action == 'received'">Receiving</span>
+                  <span ng-if="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
+                  <span ng-if="btx.action == 'received'" translate>Receiving</span>
                 </div>
               </div>
 
