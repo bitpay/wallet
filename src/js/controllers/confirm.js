@@ -45,7 +45,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     var config = configService.getSync().wallet;
-    $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
+    var feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
+    $scope.feeLevel = feeService.feeOpts[feeLevel];
     if ($scope.isGlidera) $scope.network = glideraService.getEnvironment();
     else $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     resetValues();

@@ -834,9 +834,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   root.encrypt = function(wallet, cb) {
-    askPassword(wallet.name, gettext('Enter new spending password'), function(password) {
+    askPassword(wallet.name, gettextCatalog.getString('Enter new spending password'), function(password) {
       if (!password) return cb('no password');
-      askPassword(wallet.name, gettext('Confirm you new spending password'), function(password2) {
+      askPassword(wallet.name, gettextCatalog.getString('Confirm you new spending password'), function(password2) {
         if (!password2 || password != password2)
           return cb('password mismatch');
 
