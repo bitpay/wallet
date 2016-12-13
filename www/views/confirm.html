@@ -19,6 +19,7 @@
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="right size-12" ng-if="cardId" ng-init="getRates()">{{exchangeRate}}</div>
           <div class="alternative">{{alternativeAmountStr || '...'}}</div>
         </div>
       </div>
@@ -75,7 +76,7 @@
           <i class="icon bp-arrow-right"></i>
         </a>
         <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet && !isGlidera">
-          <span class="label" translate>Fee: {{feeLevel}}</span>
+          <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
           <span class="item-note">
             {{fee || '...'}}
           </span>

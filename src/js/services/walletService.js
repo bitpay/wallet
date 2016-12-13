@@ -144,7 +144,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           if (err instanceof errors.NOT_AUTHORIZED) {
             return cb('WALLET_NOT_REGISTERED');
           }
-          return cb(bwcError.msg(err, gettext('Could not update Wallet')));
+          return cb(err);
         }
         return cb(null, ret);
       });
@@ -405,7 +405,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       function getNewTxs(newTxs, skip, cb) {
         getTxsFromServer(wallet, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) {
-            $log.warn('BWS Error:' + err); //TODO
+            $log.warn(bwcError.msg(err, 'BWS Error')); //TODO
             if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
               log.info('Retrying history download in 5 secs...');
               return $timeout(function() {
@@ -835,9 +835,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   root.encrypt = function(wallet, cb) {
-    askPassword(wallet.name, gettext('Enter new spending password'), function(password) {
+    var title = gettextCatalog.getString('Enter new spending password');
+    askPassword(wallet.name, title, function(password) {
       if (!password) return cb('no password');
-      askPassword(wallet.name, gettext('Confirm you new spending password'), function(password2) {
+      title = gettextCatalog.getString('Confirm you new spending password');
+      askPassword(wallet.name, gettextCatalog.getString('Confirm you new spending password'), function(password2) {
         if (!password2 || password != password2)
           return cb('password mismatch');
 
@@ -850,7 +852,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.decrypt = function(wallet, cb) {
     $log.debug('Disabling private key encryption for' + wallet.name);
-    askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
+    askPassword(wallet.name, gettextCatalog.getString('Enter Spending Password'), function(password) {
       if (!password) return cb('no password');
 
       try {
@@ -865,7 +867,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.handleEncryptedWallet = function(wallet, cb) {
     if (!root.isEncrypted(wallet)) return cb();
 
-    askPassword(wallet.name, gettext('Enter Spending Password'), function(password) {
+    askPassword(wallet.name, gettextCatalog.getString('Enter Spending Password'), function(password) {
       if (!password) return cb('No password');
       if (!wallet.checkPassword(password)) return cb('Wrong password');
 
@@ -930,13 +932,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     }
 
     root.prepare(wallet, function(err, password) {
-      if (err) return cb('Prepare error: ' + err);
+      if (err) return cb(bwcError.msg(err));
 
       ongoingProcess.set('sendingTx', true, customStatusHandler);
 
       publishFn(wallet, txp, function(err, publishedTxp) {
         ongoingProcess.set('sendingTx', false, customStatusHandler);
-        if (err) return cb('Send Error: ' + err);
+        if (err) return cb(bwcError.msg(err));
 
         ongoingProcess.set('signingTx', true, customStatusHandler);
         root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
@@ -946,10 +948,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           if (err) {
             $log.warn('sign error:' + err);
-            // TODO?
-            var msg = err.message ?
+            var msg = err && err.message ?
               err.message :
-              gettext('The payment was created but could not be completed. Please try again from home screen');
+              gettextCatalog.getString('The payment was created but could not be completed. Please try again from home screen');
 
             $rootScope.$emit('Local/TxAction', wallet.id);
             return cb(msg);
@@ -959,7 +960,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             ongoingProcess.set('broadcastingTx', true, customStatusHandler);
             root.broadcastTx(wallet, signedTxp, function(err, broadcastedTxp) {
               ongoingProcess.set('broadcastingTx', false, customStatusHandler);
-              if (err) return cb('sign error' + err);
+              if (err) return cb(bwcError.msg(err));
 
               $rootScope.$emit('Local/TxAction', wallet.id);
               var type = root.getViewStatus(wallet, broadcastedTxp);

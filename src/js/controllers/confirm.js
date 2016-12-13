@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -45,7 +45,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     var config = configService.getSync().wallet;
-    $scope.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
+    var feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
+    $scope.feeLevel = feeService.feeOpts[feeLevel];
     if ($scope.isGlidera) $scope.network = glideraService.getEnvironment();
     else $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     resetValues();
@@ -55,8 +56,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   function setwallets() {
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
-      network: $scope.network,
-      n: $scope.isGiftCard ? true : false
+      network: $scope.network
     });
 
     if (!$scope.wallets || !$scope.wallets.length) {
@@ -67,6 +67,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $timeout(function() {
         $scope.$apply();
       });
+      return;
+    }
+
+    if ($scope.isGlidera == 'buy') {
+      initConfirm();
       return;
     }
 
@@ -346,7 +351,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $timeout(function() {
       $scope.$apply();
     });
-    popupService.showAlert(gettextCatalog.getString('Error at confirm'), msg);
+    popupService.showAlert(gettextCatalog.getString('Error at confirm'), bwcError.msg(msg));
   };
 
   function apply(txp) {
@@ -368,13 +373,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     // ToDo: use a credential's (or fc's) function for this
     if (description && !wallet.credentials.sharedEncryptingKey) {
-      var msg = 'Could not add message to imported wallet without shared encrypting key';
+      var msg = gettextCatalog.getString('Could not add message to imported wallet without shared encrypting key');
       $log.warn(msg);
       return setSendError(msg);
     }
 
     if (toAmount > Number.MAX_SAFE_INTEGER) {
-      var msg = 'Amount too big';
+      var msg = gettextCatalog.getString('Amount too big');
       $log.warn(msg);
       return setSendError(msg);
     }
@@ -822,6 +827,23 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $log.debug("Saving new gift card with status: " + newData.status);
         $scope.amazonGiftCard = newData;
       });
+    });
+  };
+
+  $scope.getRates = function() {
+    var config = configService.getSync().wallet.settings;
+    var unitName = config.unitName;
+    var alternativeIsoCode = config.alternativeIsoCode;
+    bitpayCardService.getRates(alternativeIsoCode, function(err, res) {
+      if (err) {
+        $log.warn(err);
+        return;
+      }
+      if (unitName == 'bits') {
+        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + alternativeIsoCode;
+      } else {
+        $scope.exchangeRate = '1 BTC ~ ' + res.rate + ' ' + alternativeIsoCode;
+      }
     });
   };
 });

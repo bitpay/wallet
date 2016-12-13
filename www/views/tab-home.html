@@ -10,7 +10,7 @@
      spinner="ios-small"
      on-refresh="onRefresh()">
    </ion-refresher>
-    <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
+    <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink()">
       <span translate>An update to this app is available</span><span><i class="icon bp-arrow-right"></i></span>
     </div>
     <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div>
@@ -136,7 +136,7 @@
         <i class="icon big-icon-svg">
           <div class="bg icon-amazon"></div>
         </i>
-        <span translate>Amazon.com Gift Cards</span>
+        <span>Amazon.com Gift Cards</span>
         <i class="icon bp-arrow-right"></i>
       </a>
     </div>
