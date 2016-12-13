@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, gettext, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -351,7 +351,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $timeout(function() {
       $scope.$apply();
     });
-    popupService.showAlert(gettextCatalog.getString('Error at confirm'), msg);
+    popupService.showAlert(gettextCatalog.getString('Error at confirm'), bwcError.msg(msg));
   };
 
   function apply(txp) {
@@ -373,13 +373,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     // ToDo: use a credential's (or fc's) function for this
     if (description && !wallet.credentials.sharedEncryptingKey) {
-      var msg = 'Could not add message to imported wallet without shared encrypting key';
+      var msg = gettextCatalog.getString('Could not add message to imported wallet without shared encrypting key');
       $log.warn(msg);
       return setSendError(msg);
     }
 
     if (toAmount > Number.MAX_SAFE_INTEGER) {
-      var msg = 'Amount too big';
+      var msg = gettextCatalog.getString('Amount too big');
       $log.warn(msg);
       return setSendError(msg);
     }
