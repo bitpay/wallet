@@ -107,7 +107,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     }
   }
 
-  var setError = function (err, prefix) {
+  var setError = function(err, prefix) {
     $scope.sendStatus = '';
     $scope.loading = false;
     popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, prefix));
@@ -164,9 +164,9 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.loading = true;
 
     $timeout(function() {
-      ongoingProcess.set('broadcastTx', true);
+      ongoingProcess.set('broadcastingTx', true);
       walletService.broadcastTx($scope.wallet, $scope.tx, function(err, txpb) {
-        ongoingProcess.set('broadcastTx', false);
+        ongoingProcess.set('broadcastingTx', false);
 
         if (err) {
           return setError(err, gettextCatalog.getString('Could not broadcast payment'));
@@ -185,7 +185,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.wallet.getTx($scope.tx.id, function(err, tx) {
       if (err) {
         if (err.message && err.message == 'Transaction proposal not found' &&
-            (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
+          (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
           $scope.tx.removed = true;
           $scope.tx.canBeRemoved = false;
           $scope.tx.pendingForUs = false;
@@ -209,7 +209,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     });
   };
 
-  var bwsEvent =  $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+  var bwsEvent = $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
     lodash.each([
         'TxProposalRejectedBy',
         'TxProposalAcceptedBy',

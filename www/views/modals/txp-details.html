@@ -164,13 +164,15 @@
   <click-to-accept
     ng-click="onConfirm(statusChangeHandler)"
     ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
-    click-send-status="sendStatus">
+    click-send-status="sendStatus"
+    has-wallet-chosen="true">
     Click to accept
   </click-to-accept>
   <slide-to-accept
     ng-if="tx.pendingForUs && canSign && !paymentExpired && !hasClick"
     slide-on-confirm="onConfirm()"
-    slide-send-status="sendStatus">
+    slide-send-status="sendStatus"
+    has-wallet-chosen="true">
     Slide to accept
   </slide-to-accept>
   <slide-to-accept-success

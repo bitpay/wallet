@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
     var showBackupResult = function() {
       if ($scope.backupError) {
-        var title = 'Uh oh...';
+        var title = gettextCatalog.getString('Uh oh...');
         var message = gettextCatalog.getString("It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again.");
         popupService.showAlert(title, message, function() {
           $scope.setFlow(2);

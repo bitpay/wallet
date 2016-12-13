@@ -36,12 +36,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
       throw ('bad params');
     }
 
-    glideraService.getLimits($scope.glideraAccessToken, function(err, limits) {
-      $scope.limits = limits;
-      $timeout(function() {
-        $scope.$apply();
+    if ($scope.isGlidera) {
+      glideraService.getLimits($scope.glideraAccessToken, function(err, limits) {
+        $scope.limits = limits;
+        $timeout(function() {
+          $scope.$apply();
+        });
       });
-    });
+    }
 
     var reNr = /^[1234567890\.]$/;
     var reOp = /^[\*\+\-\/]$/;
@@ -227,6 +229,20 @@ angular.module('copayApp.controllers').controller('amountController', function($
       result = result.slice(0, -1);
 
     return result.replace('x', '*');
+  };
+
+  $scope.getRates = function() {
+    bitpayCardService.getRates($scope.alternativeIsoCode, function(err, res) {
+      if (err) {
+        $log.warn(err);
+        return;
+      }
+      if ($scope.unitName == 'bits') {
+        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + $scope.alternativeIsoCode;
+      } else {
+        $scope.exchangeRate = '1 BTC ~ ' + res.rate + ' ' + $scope.alternativeIsoCode;
+      }
+    });
   };
 
   $scope.finish = function() {

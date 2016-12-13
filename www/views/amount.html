@@ -42,6 +42,7 @@
         <div class="title">
           <span translate>Amount</span>
           <div class="size-12" ng-show="isGiftCard">Purchase Amount is limited to USD 1000 per day</div>
+          <div class="size-12" ng-if="cardId" ng-init="getRates()">{{exchangeRate}}</div>
           <div ng-show="isGlidera">
             <div class="limits" ng-show="limits && isGlidera == 'buy'">
               <span>Daily buy limit</span>:

@@ -198,7 +198,7 @@
               Recent
             </span>
             <span ng-if="!isDateInCurrentMonth(getDate(btx.time))">
-              {{getDate(btx.time) | date:'MMMM'}}
+              {{getDate(btx.time) | amDateFormat:'MMMM'}}
             </span>
           </div>
 
@@ -215,7 +215,7 @@
               <div class="wallet-details__tx-title" ng-if="!isUnconfirmed(btx)">
                 <div ng-show="btx.action == 'received'" class="ellipsis">
                   <div ng-if="btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
-                  <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate> Received</div>
+                  <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate>Received</div>
                 </div>
 
                 <div ng-show="btx.action == 'sent'" class="ellipsis">
@@ -253,7 +253,9 @@
                 </span>
                 <div>
                   <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx.time)">{{btx.time * 1000 | amTimeAgo}}</time>
-                  <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time)">{{btx.time * 1000 | date:'MMMM d, y'}}</time>
+                  <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time)">
+                    {{btx.time * 1000 | amDateFormat:'MMM d, YYYY'}}
+                  </time>
                 </div>
               </span>
             </div>
