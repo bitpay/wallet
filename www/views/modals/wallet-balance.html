@@ -1,22 +1,28 @@
-<ion-modal-view id="wallet-balance" ng-controller="walletBalanceController" ng-init="init()">
-  <ion-header-bar align-title="center" class="bar-royal">
+<ion-modal-view id="wallet-balance">
+  <ion-header-bar align-title="center" ng-style="{'background-color': wallet.color}">
     <button class="button button-clear" ng-click="close()">
       Close
     </button>
     <div class="title" translate>
-      Balance
+      {{wallet.name}}
     </div>
+    <div class="buttons buttons-right header-item">
+      <span class="secondary-buttons">
+        <button class="button button-clear" ng-click="updateAll(true)">
+          <i class="icon ion-ios-refresh-empty"></i>
+        </button>
+    </span>
+  </div>
   </ion-header-bar>
   <ion-content>
     <div class="wallet-balance__heading" translate>All of your bitcoin wallet balance may not be available for immediate spending.</div>
     <div class="wallet-balance__list list">
-      <div class="wallet-balance__description" translate>Total is the total amount of bitcoin stored in this wallet. It is the sum of Available, Confirming, and Locked balances.</div>
       <div class="wallet-balance__item item">
-        <img class="wallet-balance__icon" src="img/icon-sigma.svg" height="18"\>
+        <img class="wallet-balance__icon" src="img/icon-sigma.svg" height="18" width="18"\>
         <div class="wallet-balance__content no-border">
           <div class="wallet-balance__title">Total</div>
           <span class="item-note text-right wallet-balance__amount">
-            <span class="wallet-balance__amount wallet-balance__amount--available">
+            <span class="wallet-balance__amount wallet-balance__amount--total">
               {{status.totalBalanceStr}}
             </span>
             <div>
@@ -27,7 +33,7 @@
           </span>
         </div>
       </div>
-      <div class="wallet-balance__description" translate>Available is the immediatley spendable amount of bitcoin stored in this wallet. It is the Total less Confirming and Locked balances.  If you have enabled Use Unconfirmed Funds setting then the Available amount is the Total less Locked balance.</div>
+      <div class="wallet-balance__description" translate><b>Total</b> is the total amount of bitcoin stored in this wallet. It is the sum of Available, Confirming, and Locked amounts.</div>
       <div class="wallet-balance__item item">
         <i class="wallet-balance__icon icon ion-ios-checkmark-outline"></i>
         <div class="wallet-balance__content no-border">
@@ -44,13 +50,13 @@
           </span>
         </div>
       </div>
-      <div class="wallet-balance__description" translate>Confirming is the amount of bitcoin stored in this wallet with fewer than 3 block chain confirmations.</div>
+      <div class="wallet-balance__description" translate><b>Available</b> is the immediatley spendable amount of bitcoin stored in this wallet. It is the Total less Confirming and Locked amounts.  If you have enabled Use Unconfirmed Funds setting then the Available amount is the Total less Locked amount.</div>
       <div class="wallet-balance__item item">
-        <i class="wallet-balance__icon icon ion-more"></i>
+        <img class="wallet-balance__icon" src="img/icon-confirming-clear.svg" width="18"\>
         <div class="wallet-balance__content no-border">
           <div class="wallet-balance__title">Confirming</div>
           <span class="item-note text-right wallet-balance__amount">
-            <span class="wallet-balance__amount wallet-balance__amount--available">
+            <span class="wallet-balance__amount wallet-balance__amount--confirming">
               {{status.pendingBalanceStr}}
             </span>
             <div>
@@ -61,13 +67,13 @@
           </span>
         </div>
       </div>
-      <div class="wallet-balance__description" translate>Locked is the amount of bitcoin stored in this wallet that is allocated as inputs to pending transaction proposals. This amount is determined using unspent transaction outputs associated with the wallet and may be more than the actual amounts associated with your pending transaction proposals.</div>
+      <div class="wallet-balance__description" translate><b>Confirming</b> is the amount of bitcoin stored in this wallet with fewer than 6 block chain confirmations.</div>
       <div class="wallet-balance__item item">
-        <i class="wallet-balance__icon icon ion-ios-locked-outline"></i>
+        <img class="wallet-balance__icon" src="img/icon-lock.svg" width="18"\>
         <div class="wallet-balance__content no-border">
           <div class="wallet-balance__title">Locked</div>
           <span class="item-note text-right wallet-balance__amount">
-            <span class="wallet-balance__amount wallet-balance__amount--available">
+            <span class="wallet-balance__amount wallet-balance__amount--locked">
               {{status.lockedBalanceStr}}
             </span>
             <div>
@@ -78,6 +84,7 @@
           </span>
         </div>
       </div>
+      <div class="wallet-balance__description" translate><b>Locked</b> is the amount of bitcoin stored in this wallet that is allocated as inputs to pending transaction proposals. This amount is determined using unspent transaction outputs associated with the wallet and may be more than the actual amounts associated with your pending transaction proposals.</div>
     </div>
   </ion-content>
 </ion-modal-view>

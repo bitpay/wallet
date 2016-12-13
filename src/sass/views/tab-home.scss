@@ -111,10 +111,10 @@
         font-weight: 300;
         color: $light-gray;
       }
-      &__icon {
-        width: 15px;
+      &__status-icon {
+        font-size: 18px;
         position: relative;
-        top: 3px;
+        top: 1px;
         color: $light-gray;
       }
     }

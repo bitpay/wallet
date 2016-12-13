@@ -80,8 +80,9 @@
             Incomplete
           </span>
           <span ng-if="wallet.isComplete()">
-            <span ng-if="!wallet.balanceHidden">{{wallet.status.totalBalanceStr}}</span>
-            <img ng-if="!wallet.balanceHidden && (status.totalBalanceSat != status.spendableAmount)" class="tab-home__wallet__icon" src="img/icon-important.svg"/>
+            <span ng-if="!wallet.balanceHidden">{{wallet.status.totalBalanceStr}}
+              <i ng-if="!wallet.balanceHidden && (status.totalBalanceSat != status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
+            </span>
             <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
             <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
               {{wallet.m}}-of-{{wallet.n}}
