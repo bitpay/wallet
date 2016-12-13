@@ -31,14 +31,14 @@
       </a>
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.feedback">
         <i class="icon big-icon-svg">
-          <img src="img/icon-language.svg" class="bg"/>
+          <img src="img/icon-send-feedback.svg" class="bg"/>
         </i>
         <span>{{'Send Feedback' | translate}}</span>
         <i class="icon bp-arrow-right"></i>
       </a>
       <a ng-if="isCordova" class="item item-icon-left item-icon-right" ui-sref="tabs.shareApp({score: 4, skipped: true, fromSettings: true})">
         <i class="icon big-icon-svg">
-          <img src="img/icon-send-feedback.svg" class="bg"/>
+          <img src="img/icon-heart.svg" class="bg"/>
         </i>
         <span>{{'Share'|translate}} {{appName}}</span>
         <i class="icon bp-arrow-right"></i>
@@ -134,16 +134,6 @@
       </a>
 
       <div class="item item-divider"></div>
-
-      <a class="ng-hide item item-icon-left item-icon-right" href ng-hide="true">
-        <i class="icon big-icon-svg">
-          <img src="img/icon-heart.svg" class="bg"/>
-        </i>
-        <span>{{'Tell a friend' | translate}}</span>
-        <i class="icon bp-arrow-right"></i>
-      </a>
-
-      <div class="ng-hide item item-divider" ng-hide="true"></div>
 
       <a class="item item-icon-right item-icon-left" href ui-sref="tabs.advanced">
         <i class="icon big-icon-svg">
