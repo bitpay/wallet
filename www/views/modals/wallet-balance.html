@@ -20,7 +20,7 @@
       <div class="wallet-balance__item item">
         <img class="wallet-balance__icon" src="img/icon-sigma.svg" height="18" width="18"\>
         <div class="wallet-balance__content no-border">
-          <div class="wallet-balance__title">Total</div>
+          <div class="wallet-balance__title" translate>Total</div>
           <span class="item-note text-right wallet-balance__amount">
             <span class="wallet-balance__amount wallet-balance__amount--total">
               {{status.totalBalanceStr}}
@@ -37,7 +37,7 @@
       <div class="wallet-balance__item item">
         <i class="wallet-balance__icon icon ion-ios-checkmark-outline"></i>
         <div class="wallet-balance__content no-border">
-          <div class="wallet-balance__title">Available</div>
+          <div class="wallet-balance__title" translate>Available</div>
           <span class="item-note text-right wallet-balance__amount">
             <span class="wallet-balance__amount wallet-balance__amount--available">
               {{status.spendableBalanceStr}}
@@ -54,7 +54,7 @@
       <div class="wallet-balance__item item">
         <img class="wallet-balance__icon" src="img/icon-confirming-clear.svg" width="18"\>
         <div class="wallet-balance__content no-border">
-          <div class="wallet-balance__title">Confirming</div>
+          <div class="wallet-balance__title" translate>Confirming</div>
           <span class="item-note text-right wallet-balance__amount">
             <span class="wallet-balance__amount wallet-balance__amount--confirming">
               {{status.pendingBalanceStr}}
@@ -71,7 +71,7 @@
       <div class="wallet-balance__item item">
         <img class="wallet-balance__icon" src="img/icon-lock.svg" width="18"\>
         <div class="wallet-balance__content no-border">
-          <div class="wallet-balance__title">Locked</div>
+          <div class="wallet-balance__title" translate>Locked</div>
           <span class="item-note text-right wallet-balance__amount">
             <span class="wallet-balance__amount wallet-balance__amount--locked">
               {{status.lockedBalanceStr}}
