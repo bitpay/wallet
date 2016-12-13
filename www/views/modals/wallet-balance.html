@@ -16,7 +16,7 @@
   </ion-header-bar>
   <ion-content>
     <div class="wallet-balance__heading" translate>All of your bitcoin wallet balance may not be available for immediate spending.</div>
-    <div class="wallet-balance__list list">
+    <div class="wallet-balance__list list card">
       <div class="wallet-balance__item item">
         <img class="wallet-balance__icon" src="img/icon-sigma.svg" height="18" width="18"\>
         <div class="wallet-balance__content no-border">
@@ -33,7 +33,9 @@
           </span>
         </div>
       </div>
-      <div class="wallet-balance__description" translate><b>Total</b> is the total amount of bitcoin stored in this wallet. It is the sum of Available, Confirming, and Locked amounts.</div>
+      <div class="wallet-balance__description" translate><b>Total</b> is the total amount of bitcoin stored in this wallet; the sum of Available, Confirming, and Locked amounts.</div>
+    </div>
+    <div class="wallet-balance__list list card">
       <div class="wallet-balance__item item">
         <i class="wallet-balance__icon icon ion-ios-checkmark-outline"></i>
         <div class="wallet-balance__content no-border">
@@ -50,7 +52,9 @@
           </span>
         </div>
       </div>
-      <div class="wallet-balance__description" translate><b>Available</b> is the immediatley spendable amount of bitcoin stored in this wallet. It is the Total less Confirming and Locked amounts.  If you have enabled Use Unconfirmed Funds setting then the Available amount is the Total less Locked amount.</div>
+      <div class="wallet-balance__description" translate><b>Available</b> is the immediatley spendable amount of bitcoin stored in this wallet; the Total less Confirming and Locked amounts.</div>
+    </div>
+    <div class="wallet-balance__list list card">
       <div class="wallet-balance__item item">
         <img class="wallet-balance__icon" src="img/icon-confirming-clear.svg" width="18"\>
         <div class="wallet-balance__content no-border">
@@ -67,7 +71,9 @@
           </span>
         </div>
       </div>
-      <div class="wallet-balance__description" translate><b>Confirming</b> is the amount of bitcoin stored in this wallet with fewer than 6 block chain confirmations.</div>
+      <div class="wallet-balance__description" translate><b>Confirming</b> is the amount of bitcoin stored in this wallet with less than 1 block chain confirmation.</div>
+    </div>
+    <div class="wallet-balance__list list card">
       <div class="wallet-balance__item item">
         <img class="wallet-balance__icon" src="img/icon-lock.svg" width="18"\>
         <div class="wallet-balance__content no-border">
