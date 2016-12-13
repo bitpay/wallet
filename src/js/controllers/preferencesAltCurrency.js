@@ -1,14 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, $timeout, $ionicHistory, configService, rateService, lodash, profileService, walletService) {
+  function($scope, $log, $timeout, $ionicHistory, configService, rateService, lodash, profileService, walletService, storageService) {
 
     var next = 10;
     var completeAlternativeList;
-
-    var config = configService.getSync();
-    $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
-    $scope.listComplete = false;
 
     var unusedCurrencyList = [{
       isoCode: 'LTL'
@@ -16,23 +12,23 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
       isoCode: 'BTC'
     }];
 
-    var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
+    var config = configService.getSync();
+    $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
 
     rateService.whenAvailable(function() {
-      completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
-        return idx[c.isoCode];
-      });
-      $scope.altCurrencyList = completeAlternativeList.slice(0, next);
-    });
+      storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
 
-    $scope.loadMore = function() {
-      $timeout(function() {
-        $scope.altCurrencyList = completeAlternativeList.slice(0, next);
-        next += 10;
-        $scope.listComplete = $scope.altCurrencyList.length >= completeAlternativeList.length;
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-      }, 100);
-    };
+        $scope.lastUsedAltCurrencyList = JSON.parse(lastUsedAltCurrency) || [];
+
+        var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
+        var idx2 = lodash.indexBy($scope.lastUsedAltCurrencyList, 'isoCode');
+
+        completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
+          return idx[c.isoCode] || idx2[c.isoCode];
+        });
+        $scope.altCurrencyList = completeAlternativeList;
+      });
+    });
 
     $scope.save = function(newAltCurrency) {
       var opts = {
@@ -48,9 +44,18 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
         if (err) $log.warn(err);
 
         $ionicHistory.goBack();
+        saveLastUsed(newAltCurrency);
         walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
           $log.debug('Remote preferences saved');
         });
       });
     };
+
+    function saveLastUsed(newAltCurrency) {
+      $scope.lastUsedAltCurrencyList.unshift(newAltCurrency);
+      $scope.lastUsedAltCurrencyList = $scope.lastUsedAltCurrencyList.slice(0, 5);
+      $scope.lastUsedAltCurrencyList = lodash.uniq($scope.lastUsedAltCurrencyList, 'isoCode');
+      storageService.setLastCurrencyUsed(JSON.stringify($scope.lastUsedAltCurrencyList), function() {});
+    };
+
   });
