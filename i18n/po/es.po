@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2016-12-12 16:45-0500\n"
+"PO-Revision-Date: 2016-12-13 08:01-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"

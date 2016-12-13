@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2016-12-12 16:44-0500\n"
+"PO-Revision-Date: 2016-12-13 08:00-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -1158,7 +1158,7 @@ msgstr "Masquer les options avancées"
 
 #: www/views/tabs.html:3
 msgid "Home"
-msgstr ""
+msgstr "Accueil"
 
 #: src/js/controllers/feedback/send.js:55
 #: src/js/controllers/feedback/send.js:59
@@ -1855,12 +1855,12 @@ msgstr "Fonds reçus"
 
 #: www/views/walletDetails.html:242
 msgid "Receiving"
-msgstr ""
+msgstr "Réception"
 
 #: www/views/bitpayCard.html:55
 #: www/views/walletDetails.html:199
 msgid "Recent"
-msgstr "Récent"
+msgstr "Récentes"
 
 #: www/views/advancedSettings.html:48
 msgid "Recent Transaction Card"
