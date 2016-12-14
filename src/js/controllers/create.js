@@ -43,7 +43,7 @@ angular.module('copayApp.controllers').controller('createController',
     $scope.resizeView = function() {
       $timeout(function() {
         $ionicScrollDelegate.resize();
-      });
+      }, 10);
       checkPasswordFields();
     };
 
