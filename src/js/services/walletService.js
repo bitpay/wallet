@@ -160,16 +160,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       // Address with Balance
       cache.balanceByAddress = balance.byAddress;
 
+      // Total wallet balance is same regardless of 'spend unconfirmed funds' setting.
+      cache.totalBalanceSat = balance.totalAmount;
+
       // Spend unconfirmed funds
       if (config.spendUnconfirmed) {
-        cache.totalBalanceSat = balance.totalAmount;
         cache.lockedBalanceSat = balance.lockedAmount;
         cache.availableBalanceSat = balance.availableAmount;
         cache.totalBytesToSendMax = balance.totalBytesToSendMax;
         cache.pendingAmount = 0;
         cache.spendableAmount = balance.totalAmount - balance.lockedAmount;
       } else {
-        cache.totalBalanceSat = balance.totalConfirmedAmount;
         cache.lockedBalanceSat = balance.lockedConfirmedAmount;
         cache.availableBalanceSat = balance.availableConfirmedAmount;
         cache.totalBytesToSendMax = balance.totalBytesToSendConfirmedMax;
