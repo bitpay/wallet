@@ -34,12 +34,6 @@ export class PopupService {
         ]
       });
       alert.present();
-    // $ionicPopup.alert({
-    //   title: title,
-    //   subTitle: message,
-    //   okType: 'button-clear button-positive',
-    //   okText: buttonName || this.textService.gettextCatalog.getString('OK'),
-    // }).then(cb);
   };
 
   _ionicConfirm(title, message, okText, cancelText, cb) {
@@ -64,29 +58,10 @@ export class PopupService {
         ]
       });
       alert.present();
-    // $ionicPopup.confirm({
-    //   title: title,
-    //   subTitle: message,
-    //   cancelText: cancelText,
-    //   cancelType: 'button-clear button-positive',
-    //   okText: okText,
-    //   okType: 'button-clear button-positive'
-    // }).then(function(res) {
-    //   return cb(res);
-    // });
   };
 
   _ionicPrompt(title, message, opts, cb) {
     opts = opts || {};
-    // $ionicPopup.prompt({
-    //   title: title,
-    //   subTitle: message,
-    //   inputType: opts.inputType,
-    //   inputPlaceholder: opts.inputPlaceholder,
-    //   defaultText: opts.defaultText
-    // }).then(function(res) {
-    //   return cb(res);
-    // });
     let alert = this.alertCtrl.create({
       title: title,
       message: message,
@@ -107,7 +82,7 @@ export class PopupService {
         {
           text: 'OK',
           handler: data => {
-            cb(data);
+            cb(data[0]);
           }
         }
       ]
