@@ -24,5 +24,10 @@
         ng-click="save(altCurrency)">{{altCurrency.name}}
       </ion-radio>
     </div>
+    <ion-infinite-scroll
+     ng-if="!listComplete"
+     on-infinite="loadMore()"
+     distance="50%">
+   </ion-infinite-scroll>
   </ion-content>
 </ion-view>
