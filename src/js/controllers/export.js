@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('exportController',
     $scope.resizeView = function() {
       $timeout(function() {
         $ionicScrollDelegate.resize();
-      });
+      }, 10);
     };
 
     function getPassword(cb) {
