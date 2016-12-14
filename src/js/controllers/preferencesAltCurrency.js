@@ -9,21 +9,17 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
       }, {
         isoCode: 'BTC'
       }];
-      var config = configService.getSync();
+      rateService.whenAvailable(function() {
 
-      $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+        var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
+        var idx2 = lodash.indexBy($scope.lastUsedAltCurrencyList, 'isoCode');
 
-      storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
-        $scope.lastUsedAltCurrencyList = lastUsedAltCurrency ? JSON.parse(lastUsedAltCurrency) : [];
-        rateService.whenAvailable(function() {
-
-          var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
-          var idx2 = lodash.indexBy($scope.lastUsedAltCurrencyList, 'isoCode');
-
-          $scope.completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
-            return idx[c.isoCode] || idx2[c.isoCode];
-          });
-          $scope.altCurrencyList = $scope.completeAlternativeList;
+        $scope.completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
+          return idx[c.isoCode] || idx2[c.isoCode];
+        });
+        $scope.altCurrencyList = $scope.completeAlternativeList;
+        $timeout(function() {
+          $scope.$apply();
         });
       });
     }
@@ -62,12 +58,25 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
     function saveLastUsed(newAltCurrency) {
       $scope.lastUsedAltCurrencyList.unshift(newAltCurrency);
-      $scope.lastUsedAltCurrencyList = $scope.lastUsedAltCurrencyList.slice(0, 3);
       $scope.lastUsedAltCurrencyList = lodash.uniq($scope.lastUsedAltCurrencyList, 'isoCode');
+      $scope.lastUsedAltCurrencyList = $scope.lastUsedAltCurrencyList.slice(0, 3);
       storageService.setLastCurrencyUsed(JSON.stringify($scope.lastUsedAltCurrencyList), function() {});
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-      init();
+      var config = configService.getSync();
+      $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+      storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
+        $scope.lastUsedAltCurrencyList = lastUsedAltCurrency ? JSON.parse(lastUsedAltCurrency) : [];
+        $timeout(function() {
+          $scope.$apply();
+        });
+      });
+    });
+
+    $scope.$on("$ionicView.enter", function(event, data) {
+      $timeout(function() {
+        init();
+      });
     });
   });
