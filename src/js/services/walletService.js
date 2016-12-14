@@ -889,20 +889,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-  root.onlyPublish = function(wallet, txp, cb) {
-    ongoingProcess.set('sendingTx', true);
+  root.onlyPublish = function(wallet, txp, cb, customStatusHandler) {
+    ongoingProcess.set('sendingTx', true, customStatusHandler);
     root.publishTx(wallet, txp, function(err, publishedTxp) {
       root.invalidateCache(wallet);
-
-      ongoingProcess.set('sendingTx', false);
-      if (err) return cb(err);
-
-      var type = root.getViewStatus(wallet, createdTxp);
-      root.openStatusModal(type, createdTxp, function() {
-        $rootScope.$emit('Local/TxAction', wallet.id);
-        return;
-      });
-      return cb(null, publishedTxp);
+      ongoingProcess.set('sendingTx', false, customStatusHandler);
+      if (err) return cb(bwcError.msg(err));
+      $rootScope.$emit('Local/TxAction', wallet.id);
+      return cb();
     });
   };
 

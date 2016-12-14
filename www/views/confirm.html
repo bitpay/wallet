@@ -137,8 +137,9 @@
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()"
     slide-success-hide-on-confirm="true">
-    <span ng-hide="wallet.m > 1">Payment Sent</span>
-    <span ng-show="wallet.m > 1">Proposal Created</span>
+    <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())">Payment Sent</span>
+    <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())">Proposal Created</span>
+    <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()">Transaction created</span>
     <div ng-show="isGlidera" class="glidera-success">
       <span ng-show="isGlidera == 'buy'">A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day</span>
       <span ng-show="isGlidera == 'sell'">A transfer has been initiated to your bank account. Should arrive in 4-6 business days</span>
