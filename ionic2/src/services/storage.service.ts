@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from 'angular2-logger/core';
 import lodash from 'lodash';
 
+import { FileStorageService } from './file-storage.service';
 import { PlatformInfo } from './platform-info.service';
 import { Profile } from './../models/profile.model';
 
@@ -53,12 +54,13 @@ export class StorageService {
   storage: any;
 
   constructor(
+    public fileStorageService: FileStorageService,
     public logger: Logger,
     public platformInfo: PlatformInfo
   ) {
     this.shouldUseFileStorage = this.platformInfo.isCordova && !this.platformInfo.isWP;
-    this.logger.debug('Using file storage:', shouldUseFileStorage);
-    this.storage = this.shouldUseFileStorage ? fileStorageService : localStorageService;
+    this.logger.debug('Using file storage:', this.shouldUseFileStorage);
+    this.storage = this.shouldUseFileStorage ? this.fileStorageService : localStorageService;
   }
 
   getUUID(cb) {

@@ -3,6 +3,7 @@ import { BwcErrorService } from './bwc-error.service';
 import { BwcService } from './bwc.service';
 import { ConfigService } from './config.service';
 import { ExternalLinkService } from './external-link.service';
+import { FileStorageService } from './file-storage.service';
 import { IncomingDataService } from './incoming-data.service';
 import { PayproService } from './paypro.service';
 import { PlatformInfo } from './platform-info.service';
@@ -22,6 +23,7 @@ export const SERVICES = [
   BwcService,
   ConfigService,
   ExternalLinkService,
+  FileStorageService,
   IncomingDataService,
   PayproService,
   PlatformInfo,
