@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Http } from '@angular/http';
 import lodash from 'lodash';
 
@@ -18,7 +18,10 @@ _rates: any;
 _alternatives: any[];
 _queued: any[];
 
-constructor(public http: Http) {
+constructor(
+  public http: Http,
+  public ngZone: NgZone
+) {
 
   this.SAT_TO_BTC = 1 / 1e8;
   this.BTC_TO_SAT = 1e8;
@@ -52,7 +55,9 @@ fetchCurrencies() {
       lodash.each(this._queued, (callback) => {
         setTimeout(callback, 1);
       });
-      setTimeout(retrieve, updateFrequencySeconds * 1000);
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(retrieve, updateFrequencySeconds * 1000);
+      });
     }).catch((err) => {
       //log.debug('Error fetching exchange rates', err);
       setTimeout(() => {

@@ -56,7 +56,7 @@ export class UxLanguageService {
 
     return cb('en'); //disable auto detection for release;
 
-    var userLang, androidLang;
+    var userLang;
     if (this.navigator && this.navigator.globalization) {
 
       this.navigator.globalization.getPreferredLanguage((preferedLanguage) => {
@@ -112,7 +112,7 @@ export class UxLanguageService {
 
   init(cb) {
     this.configService.whenAvailable((config) => {
-      var userLang = config.wallet.settings.defaultLanguage;
+      let userLang = config.wallet.settings.defaultLanguage;
 
       if (userLang && userLang != this.currentLanguage) {
         this._set(userLang);
