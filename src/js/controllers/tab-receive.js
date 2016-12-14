@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.setWallet = function(index) {
     $scope.wallet = $scope.wallets[index];
     $scope.walletIndex = index;
-    if ($scope.walletAddrs[$scope.walletIndex].addr) $scope.addr = $scope.walletAddrs[$scope.walletIndex].addr;
+    if ($scope.walletAddrs[$scope.wallet.id].addr) $scope.addr = $scope.walletAddrs[$scope.walletIndex].addr;
     else $scope.setAddress(false);
   }
 
