@@ -20,7 +20,7 @@ export class PopupService {
   }
 
   _ionicAlert(title, message, cb, buttonName) {
-    if (!cb) cb = function() {};
+    if (!cb) cb = () => {};
     let alert = this.alertCtrl.create({
         title: title,
         message: message,
@@ -45,7 +45,6 @@ export class PopupService {
             text: cancelText,
             role: 'cancel',
             handler: () => {
-              console.log('Cancel clicked');
               cb(false);
             }
           },
@@ -93,12 +92,12 @@ export class PopupService {
   /*************** Cordova ****************/
 
   _cordovaAlert(title, message, cb, buttonName) {
-    if (!cb) cb = function() {};
+    if (!cb) cb = () => {};
     this.navigator.notification.alert(message, cb, title, buttonName);
   };
 
   _cordovaConfirm(title, message, okText, cancelText, cb) {
-    var onConfirm = function(buttonIndex) {
+    let onConfirm = (buttonIndex) => {
       if (buttonIndex == 2) return cb(true);
       else return cb(false);
     }
@@ -108,7 +107,7 @@ export class PopupService {
   };
 
   _cordovaPrompt(title, message, opts, cb) {
-    var onPrompt = function(results) {
+    let onPrompt = (results) => {
       if (results.buttonIndex == 1) return cb(results.input1);
       else return cb();
     }
@@ -124,7 +123,7 @@ export class PopupService {
    */
 
   showAlert(title, msg, cb, buttonName) {
-    var message = (msg && msg.message) ? msg.message : msg;
+    let message = (msg && msg.message) ? msg.message : msg;
     this.logger.warn(title ? (title + ': ' + message) : message);
 
     if (this.isCordova)

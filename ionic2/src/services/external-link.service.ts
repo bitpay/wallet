@@ -40,13 +40,13 @@ export class ExternalLinkService {
           title = this.textService.gettextCatalog.getString(title),
           okText = this.textService.gettextCatalog.getString(okText),
           cancelText = this.textService.gettextCatalog.getString(cancelText),
-          openBrowser = function(res) {
-            if (res) window.open(url, '_system');
+          let openBrowser = (res) => {
+            if (res) this.win.open(url, '_system');
             this._restoreHandleOpenURL(old);
           };
         this.popupService.showConfirm(title, message, okText, cancelText, openBrowser);
       } else {
-        window.open(url, '_system');
+        this.win.open(url, '_system');
         this._restoreHandleOpenURL(old);
       }
     }
