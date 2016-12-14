@@ -187,7 +187,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();
-        }, 100);
+        }, 10);
       })
     };
 
@@ -240,7 +240,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();
-        }, 100);
+        }, 10);
       });
     };
 
@@ -269,7 +269,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
-      }, 100);
+      }, 10);
     };
 
     var bitpayCardCache = function() {

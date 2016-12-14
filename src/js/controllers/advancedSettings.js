@@ -30,22 +30,24 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   };
 
   $scope.global = $rootScope;
-  if(!$scope.global.developmentUtilitiesEnabled){
+  if (!$scope.global.developmentUtilitiesEnabled) {
     $scope.global.developmentUtilitiesEnabled = {
       value: false
     };
   }
 
-  $scope.toggledDevelopmentUtils = function (){
-    if($scope.global.developmentUtilitiesEnabled.value){
+  $scope.toggledDevelopmentUtils = function() {
+    if ($scope.global.developmentUtilitiesEnabled.value) {
       $log.debug('User enabled development utilities.');
-      $ionicScrollDelegate.resize();
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+      }, 10);
     } else {
       $log.debug('User disabled development utilities.');
     }
   }
 
-  $scope.activateFeedbackCard = function () {
+  $scope.activateFeedbackCard = function() {
     $scope.feedbackCardActivating = true;
     storageService.getFeedbackInfo(function(error, info) {
       var feedbackInfo = JSON.parse(info);
@@ -56,10 +58,10 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
         $log.debug('Activated feedback card with: ' + JSON.stringify(feedbackInfo));
         $ionicHistory.clearCache();
-        $timeout(function(){
+        $timeout(function() {
           $scope.feedbackCardActivating = false;
           $scope.feedbackCardActivated = true;
-          $timeout(function(){
+          $timeout(function() {
             $scope.feedbackCardActivated = false;
           }, 10000);
         }, 500);
@@ -67,7 +69,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   }
 
-  $scope.resetActivateFeedbackCard = function(){
+  $scope.resetActivateFeedbackCard = function() {
     $scope.feedbackCardActivated = false;
   }
 

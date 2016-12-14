@@ -360,7 +360,7 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.resizeView = function() {
       $timeout(function() {
         $ionicScrollDelegate.resize();
-      });
+      }, 10);
     };
 
   });
