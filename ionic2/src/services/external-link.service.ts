@@ -40,7 +40,7 @@ export class ExternalLinkService {
           title = this.textService.gettextCatalog.getString(title),
           okText = this.textService.gettextCatalog.getString(okText),
           cancelText = this.textService.gettextCatalog.getString(cancelText),
-          let openBrowser = (res) => {
+          openBrowser = (res) => {
             if (res) this.win.open(url, '_system');
             this._restoreHandleOpenURL(old);
           };
