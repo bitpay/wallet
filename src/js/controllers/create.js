@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService, popupService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, $window) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
@@ -33,7 +33,6 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);
-      updateSeedSourceSelect(tc);
     };
 
     $scope.showAdvChange = function() {
@@ -77,21 +76,25 @@ angular.module('copayApp.controllers').controller('createController',
 
       /*
 
-      Disable Hardware Wallets
+      Disable Hardware Wallets for BitPay distribution
 
-      if (n > 1 && isChromeApp) {
-        seedOptions.push({
-          id: 'ledger',
-          label: 'Ledger Hardware Wallet',
-        });
-      }
-      if (isChromeApp || isDevel) {
-        seedOptions.push({
-          id: 'trezor',
-          label: 'Trezor Hardware Wallet',
-        });
-      }
       */
+
+      if ($window.appConfig.name == 'copay') {
+        if (n > 1 && isChromeApp) {
+          seedOptions.push({
+            id: 'ledger',
+            label: 'Ledger Hardware Wallet',
+          });
+        }
+        if (isChromeApp || isDevel) {
+          seedOptions.push({
+            id: 'trezor',
+            label: 'Trezor Hardware Wallet',
+          });
+        }
+      }
+
       $scope.seedOptions = seedOptions;
     };
 
