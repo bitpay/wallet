@@ -67,6 +67,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         setPendingTxps(status.pendingTxps);
         $scope.status = status;
       }
+      refreshAmountSection();
       $timeout(function() {
         $scope.$apply();
       });
@@ -264,7 +265,12 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       return;
     }
     prevPos = pos;
-    var amountHeight = 210 - pos;
+    refreshAmountSection(pos);
+  };
+
+  function refreshAmountSection(scrollPos) {
+    scrollPos = scrollPos || 0;
+    var amountHeight = 210 - scrollPos;
     if (amountHeight < 80) {
       amountHeight = 80;
     }
@@ -334,7 +340,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
 
     $scope.updateAll();
-    getScrollPosition();
+    refreshAmountSection();
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId) {
