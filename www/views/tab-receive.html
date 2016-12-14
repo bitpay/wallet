@@ -57,7 +57,7 @@
           </div>
         </div>
         <div class="row qr">
-          <div class="text-center col center-block" copy-to-clipboard="addr" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
+          <div class="text-center col center-block" copy-to-clipboard="walletAddrs[wallet.id]" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
             <qrcode ng-if="walletAddrs[wallet.id]" size="220" data="bitcoin:{{walletAddrs[wallet.id]}}" color="#334"></qrcode>
             <div ng-if="!walletAddrs[wallet.id]" style="height:225px; width:220px; margin:auto;padding-top: 25%;position:absolute;left:50%;top:50%;z-index:1;">
               ...
