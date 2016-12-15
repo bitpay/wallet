@@ -21,7 +21,7 @@ export class FileStorageService {
     let onFileSystemSuccess = (fileSystem) => {
       console.log('File system started: ', fileSystem.name, fileSystem.root.name);
       this._fs = fileSystem;
-      this.getDir(function(err, newDir) {
+      this.getDir((err, newDir) => {
         if (err || !newDir.nativeURL) return cb(err);
         this._dir = newDir;
         this.logger.debug('Got main dir:', this._dir.nativeURL);
@@ -39,13 +39,13 @@ export class FileStorageService {
   }
 
   get(k, cb) {
-    this.init(function(err, fs, dir) {
+    this.init((err, fs, dir) => {
       if (err) return cb(err);
       dir.getFile(k, {
         create: false,
-      }, function(fileEntry) {
+      }, (fileEntry) => {
         if (!fileEntry) return cb();
-        fileEntry.file(function(file) {
+        fileEntry.file((file) => {
           var reader = new FileReader();
 
           reader.onloadend = function(e) {
@@ -54,7 +54,7 @@ export class FileStorageService {
 
           reader.readAsText(file);
         });
-      }, function(err) {
+      }, (err) => {
         // Not found
         if (err.code == 1) return cb();
         else return cb(err);
@@ -62,7 +62,7 @@ export class FileStorageService {
     })
   };
 
-  set(k, v, cb, delay) {
+  set(k, v, cb, delay?) {
 
     delay = delay || 100;
 
@@ -85,7 +85,7 @@ export class FileStorageService {
         // Create a FileWriter object for our FileEntry (log.txt).
         fileEntry.createWriter((fileWriter) => {
 
-          fileWriter.onwriteend = function(e) {
+          fileWriter.onwriteend = (e) => {
             this.logger.log('Write completed:' + k);
             this.writelock[k] = false;
             return cb();
@@ -133,13 +133,13 @@ export class FileStorageService {
   };
 
   remove(k, cb) {
-    this.init(function(err, fs, dir) {
+    this.init((err, fs, dir) => {
       if (err) return cb(err);
       dir.getFile(k, {
         create: false,
-      }, function(fileEntry) {
+      }, (fileEntry) => {
         // Create a FileWriter object for our FileEntry (log.txt).
-        fileEntry.remove(function() {
+        fileEntry.remove(() => {
           console.log('File removed.');
           return cb();
         }, cb);
@@ -152,7 +152,7 @@ export class FileStorageService {
    */
   create(name, value, callback) {
     this.get(name,
-      function(err, data) {
+      (err, data) => {
         if (data) {
           return callback('EEXISTS');
         } else {

@@ -5,6 +5,7 @@ import { ConfigService } from './config.service';
 import { ExternalLinkService } from './external-link.service';
 import { FileStorageService } from './file-storage.service';
 import { IncomingDataService } from './incoming-data.service';
+import { LocalStorageService } from './local-storage.service';
 import { PayproService } from './paypro.service';
 import { PlatformInfo } from './platform-info.service';
 import { PopupService } from './popup.service';
@@ -25,6 +26,7 @@ export const SERVICES = [
   ExternalLinkService,
   FileStorageService,
   IncomingDataService,
+  LocalStorageService,
   PayproService,
   PlatformInfo,
   PopupService,

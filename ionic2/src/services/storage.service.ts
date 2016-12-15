@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { Logger } from 'angular2-logger/core';
 import lodash from 'lodash';
 
+import { BwcService } from './bwc.service';
 import { FileStorageService } from './file-storage.service';
+import { LocalStorageService } from './local-storage.service';
 import { PlatformInfo } from './platform-info.service';
 import { Profile } from './../models/profile.model';
 
 @Injectable()
 export class StorageService {
   win: any = this.win;
+  sjcl: any;
 
   // getConfig(cb) {
   //
@@ -18,9 +21,9 @@ export class StorageService {
   //
   // }
   //
-  // removeConfig(cb) {
-  //
-  // }
+  removeConfig(cb) {
+
+  }
   //
   // setBackupFlag(walletId, cb) {}
   //
@@ -54,13 +57,16 @@ export class StorageService {
   storage: any;
 
   constructor(
+    public bwcService: BwcService,
     public fileStorageService: FileStorageService,
+    public localStorageService: LocalStorageService,
     public logger: Logger,
     public platformInfo: PlatformInfo
   ) {
     this.shouldUseFileStorage = this.platformInfo.isCordova && !this.platformInfo.isWP;
     this.logger.debug('Using file storage:', this.shouldUseFileStorage);
     this.storage = this.shouldUseFileStorage ? this.fileStorageService : localStorageService;
+    this.sjcl = this.bwcService.getSJCL();
   }
 
   getUUID(cb) {
@@ -70,7 +76,7 @@ export class StorageService {
       return cb(null);
 
     this.win.plugins.uniqueDeviceID.get(
-      function(uuid) {
+      (uuid) => {
         return cb(uuid);
       }, cb);
   }
@@ -89,7 +95,7 @@ export class StorageService {
         try {
           json = JSON.parse(text);
           this.logger.warn('Worked... saving.');
-          this.storage.set('profile', text, function() {});
+          this.storage.set('profile', text, () => {});
         } catch (e) {
           this.logger.warn('Could not open profile (2nd try):' + e);
         };
@@ -105,7 +111,7 @@ export class StorageService {
     }
 
     this.logger.debug('Profile is encrypted');
-    this.getUUID(function(uuid) {
+    this.getUUID((uuid) => {
       this.logger.debug('Device UUID:' + uuid);
       if (!uuid)
         return cb('Could not decrypt storage: could not get device ID');
@@ -114,14 +120,14 @@ export class StorageService {
         text = this.sjcl.decrypt(uuid, text);
 
         this.logger.info('Migrating to unencrypted profile');
-        return this.storage.set('profile', text, function(err) {
+        return this.storage.set('profile', text, (err) => {
           return cb(err, text);
         });
       } catch (e) {
         this.logger.warn('Decrypt error: ', e);
         return cb('Could not decrypt storage: device ID mismatch');
       };
-      return cb(null, text);
+      //return cb(null, text);
     });
   }
 
