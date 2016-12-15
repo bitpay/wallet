@@ -58,8 +58,8 @@
         </div>
         <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
           <span class="label" ng-if="!isGlidera" translate>From</span>
-          <span class="label" ng-if="isGlidera == 'buy'" translate>To</span>
-          <span class="label" ng-if="isGlidera == 'sell'" translate>From</span>
+          <span class="label" ng-if="isGlidera == 'buy'">To</span>
+          <span class="label" ng-if="isGlidera == 'sell'">From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -123,7 +123,7 @@
     ng-if="!isCordova && wallets[0] && !insufficientFunds && !noMatchingWallet"
     click-send-status="sendStatus"
     has-wallet-chosen="wallet">
-    Click to pay
+    {{'Accept' | translate}}
   </click-to-accept>
   <slide-to-accept
     ng-disabled="!wallet"
@@ -131,14 +131,15 @@
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus"
     has-wallet-chosen="wallet">
-    Slide to pay
+    {{'Accept' | translate}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()"
     slide-success-hide-on-confirm="true">
-    <span ng-hide="wallet.m > 1">Payment Sent</span>
-    <span ng-show="wallet.m > 1">Proposal Created</span>
+    <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
+    <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
+    <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction created</span>
     <div ng-show="isGlidera" class="glidera-success">
       <span ng-show="isGlidera == 'buy'">A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day</span>
       <span ng-show="isGlidera == 'sell'">A transfer has been initiated to your bank account. Should arrive in 4-6 business days</span>

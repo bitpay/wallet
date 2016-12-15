@@ -483,20 +483,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         }
       });
       return;
-    }
-
-    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-      $log.info('No signing proposal: No private key');
-
-      return walletService.onlyPublish(wallet, txp, function(err, txp) {
-        if (err) return setSendError(err);
-      });
-    }
+    } 
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
     createTx(wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
-      if (err) return;
+      if (err) return; 
 
       var config = configService.getSync();
       var spendingPassEnabled = walletService.isEncrypted(wallet);
@@ -539,7 +531,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function statusChangeHandler(processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
-    if ((processName === 'broadcastingTx' || ((processName === 'signingTx') && $scope.wallet.m > 1)) && !isOn) {
+    if (
+      (
+        processName === 'broadcastingTx' || 
+        ((processName === 'signingTx') && $scope.wallet.m > 1) || 
+        (processName == 'sendingTx' && !$scope.wallet.canSign() && !$scope.wallet.isPrivKeyExternal())
+      ) && !isOn) {
       $scope.sendStatus = 'success';
       $scope.$digest();
     } else if (showName) {
@@ -760,6 +757,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function publishAndSign(wallet, txp, onSendStatusChange) {
+
+    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+      $log.info('No signing proposal: No private key');
+
+      return walletService.onlyPublish(wallet, txp, function(err) {
+        if (err) setSendError(err);
+      }, onSendStatusChange);
+    }
+
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
 
