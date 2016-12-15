@@ -36,11 +36,7 @@ export class ExternalLinkService {
       this._restoreHandleOpenURL(old);
     } else {
       if (optIn) {
-        var message = this.textService.gettextCatalog.getString(message),
-          title = this.textService.gettextCatalog.getString(title),
-          okText = this.textService.gettextCatalog.getString(okText),
-          cancelText = this.textService.gettextCatalog.getString(cancelText),
-          openBrowser = (res) => {
+          let openBrowser = (res) => {
             if (res) this.win.open(url, '_system');
             this._restoreHandleOpenURL(old);
           };

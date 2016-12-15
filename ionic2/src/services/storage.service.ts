@@ -176,6 +176,14 @@ export class StorageService {
       }
     });
   }
+
+  setLastCurrencyUsed(lastCurrencyUsed, cb) {
+    this.storage.set('lastCurrencyUsed', lastCurrencyUsed, cb);
+  }
+
+  getLastCurrencyUsed(cb) {
+    this.storage.get('lastCurrencyUsed', cb);
+  }
   //
   ////////////////////////////////////////////////////////////////////////////
 
