@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, $ionicPopover, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError) {
 
   var listeners = [];
+  var MENU_ITEM_HEIGHT = 55;
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
   $scope.walletAddrs = {};
@@ -85,7 +86,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.setWallet = function(index) {
     $scope.wallet = $scope.wallets[index];
     $scope.walletIndex = index;
-    if ($scope.walletAddrs[$scope.walletIndex].addr) $scope.addr = $scope.walletAddrs[$scope.walletIndex].addr;
+    if ($scope.walletAddrs[$scope.wallet.id].addr) $scope.addr = $scope.walletAddrs[$scope.walletIndex].addr;
     else $scope.setAddress(false);
   }
 
@@ -136,6 +137,31 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
         $scope.setAddress();
         $scope.$apply();
       }, 200);
+    });
+  };
+
+  var goRequestAmount = function() {
+    $scope.menu.hide();
+    $state.go('tabs.receive.amount', {
+      customAmount: true,
+      toAddress: $scope.addr
+    });
+  }
+
+  $scope.showMenu = function(allAddresses, $event) {
+    var requestAmountObj = {
+      text: gettextCatalog.getString('Request Specific amount'),
+      action: goRequestAmount,
+    };
+
+    $scope.items = [requestAmountObj];
+    $scope.height = $scope.items.length * MENU_ITEM_HEIGHT;
+
+    $ionicPopover.fromTemplateUrl('views/includes/menu-popover.html', {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.menu = popover;
+      $scope.menu.show($event);
     });
   };
 

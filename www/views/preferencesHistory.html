@@ -6,7 +6,7 @@
   </ion-nav-bar>
   <ion-content>
     <div class="item item-divider" ng-show="!isCordova"></div>
-    <a class="item ng-hide" href ng-show="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="Copay-{{wallet.name}}.csv">
+    <a class="item ng-hide" href ng-show="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="{{appName}}-{{wallet.name}}.csv">
       <span translate>Export to file</span>
     </a>
     <a class="item ng-hide" href ng-show="!csvReady && !isCordova">

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, gettextCatalog, configService, profileService, fingerprintService, walletService) {
+  function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, configService, profileService, fingerprintService, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     var walletId = wallet.credentials.walletId;
     $scope.wallet = wallet;
@@ -10,6 +10,16 @@ angular.module('copayApp.controllers').controller('preferencesController',
       value: walletService.isEncrypted(wallet)
     };
 
+    $scope.hiddenBalanceChange = function() {
+      var opts = {
+        balance: {
+          enabled: $scope.hiddenBalance.value
+        }
+      };
+      profileService.toggleHideBalanceFlag(walletId, function(err) {
+        if (err) $log.error(err);
+      });
+    };
 
     $scope.encryptChange = function() {
       if (!wallet) return;
@@ -75,7 +85,9 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
       var config = configService.getSync();
 
-
+      $scope.hiddenBalance = {
+        value: $scope.wallet.balanceHidden
+      };
 
       if (wallet.isPrivKeyExternal)
         $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';

@@ -9,6 +9,7 @@
 @import "tab-scan";
 @import "tab-send";
 @import "tab-settings";
+@import "walletBalance";
 @import "walletDetails";
 @import "advancedSettings";
 @import "bitpayCard";
@@ -41,3 +42,4 @@
 @import "includes/walletSelector";
 @import "integrations/coinbase";
 @import "integrations/glidera";
+@import "custom-amount";
