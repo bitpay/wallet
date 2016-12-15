@@ -1585,7 +1585,7 @@ msgstr "C'est un bon moment pour sauvegarder votre portefeuille. Si cet appareil
 
 #: www/views/backupWarning.html:11
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
-msgstr "C'est pour le bon moment pour observer autour de vous. Personne aux fenêtres ? Derrière vous ? Aucune caméra cachée ?"
+msgstr "C'est un bon moment pour observer autour de vous. Personne aux fenêtres ? Derrière vous ? Aucune caméra cachée ?"
 
 #: src/js/services/popupService.js:15
 #: src/js/services/popupService.js:57
