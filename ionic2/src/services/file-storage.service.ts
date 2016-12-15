@@ -19,7 +19,7 @@ export class FileStorageService {
     if (this._dir) return cb(null, this._fs, this._dir);
 
     let onFileSystemSuccess = (fileSystem) => {
-      console.log('File system started: ', fileSystem.name, fileSystem.root.name);
+      this.logger.log('File system started: ', fileSystem.name, fileSystem.root.name);
       this._fs = fileSystem;
       this.getDir((err, newDir) => {
         if (err || !newDir.nativeURL) return cb(err);
@@ -68,7 +68,7 @@ export class FileStorageService {
 
     if (this.writelock[k]) {
       return setTimeout(() => {
-        console.log('## Writelock for:' + k + ' Retrying in ' + delay);
+        this.logger.log('## Writelock for:' + k + ' Retrying in ' + delay);
         return this.set(k, v, cb, delay + 100);
       }, delay);
     }
@@ -140,7 +140,7 @@ export class FileStorageService {
       }, (fileEntry) => {
         // Create a FileWriter object for our FileEntry (log.txt).
         fileEntry.remove(() => {
-          console.log('File removed.');
+          this.logger.log('File removed.');
           return cb();
         }, cb);
       }, cb);

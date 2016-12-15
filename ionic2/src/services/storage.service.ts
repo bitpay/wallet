@@ -182,7 +182,7 @@ export class StorageService {
   // IMPORTANT: This function is designed to block execution until it completes.
   // Ideally storage should not be used until it has been verified.
   verify(cb) {
-    this._upgrade(function(err) {
+    this._upgrade((err) =>{
       cb(err);
     });
   }
@@ -200,10 +200,10 @@ export class StorageService {
     var errorMessage = undefined;
     var keys = Object.keys(this._upgraders).sort();
     var networks = ['livenet', 'testnet'];
-    keys.forEach(function(key) {
-      networks.forEach(function(network) {
+    keys.forEach((key) => {
+      networks.forEach((network) => {
         var storagekey = key.split('_')[1];
-        this._upgraders[key](storagekey, network, function(err, msg) {
+        this._upgraders[key](storagekey, network, (err, msg) => {
           if (err) {
             this._handleUpgradeError(storagekey, err);
             errorCount++;
@@ -219,21 +219,21 @@ export class StorageService {
   tryToMigrate(cb) {
     if (!this.shouldUseFileStorage) return cb();
 
-    this.localStorageService.get('profile', function(err, str) {
+    this.localStorageService.get('profile', (err, str) => {
       if (err) return cb(err);
       if (!str) return cb();
 
       this.logger.info('Starting Migration profile to File this.storage...');
 
-      this.fileStorageService.create('profile', str, function(err) {
+      this.fileStorageService.create('profile', str, (err) => {
         if (err) cb(err);
         this.logger.info('Profile Migrated successfully');
 
-        this.localStorageService.get('config', function(err, c) {
+        this.localStorageService.get('config', (err, c) => {
           if (err) return cb(err);
           if (!c) return this.getProfile(cb);
 
-          this.fileStorageService.create('config', c, function(err) {
+          this.fileStorageService.create('config', c, (err) => {
 
             if (err) {
               this.logger.info('Error migrating config: ignoring', err);
@@ -256,11 +256,11 @@ export class StorageService {
   };
 
   getProfile(cb) {
-    this.storage.get('profile', function(err, str) {
+    this.storage.get('profile', (err, str) => {
       if (err || !str)
         return cb(err);
 
-      this.decryptOnMobile(str, function(err, str) {
+      this.decryptOnMobile(str, (err, str) => {
         if (err) return cb(err);
         var p, err;
         try {
@@ -438,7 +438,7 @@ export class StorageService {
     for (var i = 0; i < 1024 * 1024; ++i) {
       block += '12345678901234567890123456789012345678901234567890';
     }
-    this.storage.set('test', block, function(err) {
+    this.storage.set('test', block, (err) => {
       this.logger.error('CheckQuota Return:' + err);
     });
   };
@@ -482,7 +482,7 @@ export class StorageService {
   };
 
   removeBitpayDebitCardHistory(network, card, cb) {
-    this.getBitpayDebitCardsHistory(network, function(err, data) {
+    this.getBitpayDebitCardsHistory(network, (err, data) => {
       if (err) return cb(err);
       if (lodash.isString(data)) {
         data = JSON.parse(data);
@@ -499,7 +499,7 @@ export class StorageService {
     }
     data = data || {};
     if (lodash.isEmpty(data) || !data.email) return cb('No card(s) to set');
-    this.storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
+    this.storage.get('bitpayAccounts-' + network, (err, bitpayAccounts) => {
       if (err) return cb(err);
       if (lodash.isString(bitpayAccounts)) {
         bitpayAccounts = JSON.parse(bitpayAccounts);
@@ -512,13 +512,13 @@ export class StorageService {
   };
 
   getBitpayDebitCards(network, cb) {
-    this.storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
+    this.storage.get('bitpayAccounts-' + network, (err, bitpayAccounts) => {
       if (lodash.isString(bitpayAccounts)) {
         bitpayAccounts = JSON.parse(bitpayAccounts);
       }
       bitpayAccounts = bitpayAccounts || {};
       var cards = [];
-      Object.keys(bitpayAccounts).forEach(function(email) {
+      Object.keys(bitpayAccounts).forEach((email) => {
         // For the UI, add the account email to the card object.
         var acctCards = bitpayAccounts[email]['bitpayDebitCards-' + network].cards;
         for (var i = 0; i < acctCards.length; i++) {
@@ -536,20 +536,20 @@ export class StorageService {
     }
     card = card || {};
     if (lodash.isEmpty(card) || !card.eid) return cb('No card to remove');
-    this.storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
+    this.storage.get('bitpayAccounts-' + network, (err, bitpayAccounts) => {
       if (err) cb(err);
       if (lodash.isString(bitpayAccounts)) {
         bitpayAccounts = JSON.parse(bitpayAccounts);
       }
       bitpayAccounts = bitpayAccounts || {};
-      Object.keys(bitpayAccounts).forEach(function(userId) {
+      Object.keys(bitpayAccounts).forEach((userId) => {
         var data = bitpayAccounts[userId]['bitpayDebitCards-' + network];
         var newCards = lodash.reject(data.cards, {'eid': card.eid});
         data.cards = newCards;
-        this.setBitpayDebitCards(network, data, function(err) {
+        this.setBitpayDebitCards(network, data, (err) => {
           if (err) cb(err);
           // If there are no more cards in storage then re-enable the next step entry.
-          this.getBitpayDebitCards(network, function(err, cards){
+          this.getBitpayDebitCards(network, (err, cards) => {
             if (err) cb(err);
             if (cards.length == 0) {
               this.removeNextStep('BitpayCard', cb);
@@ -575,11 +575,11 @@ export class StorageService {
   };
 
   removeAllWalletData(walletId, cb) {
-    this.clearLastAddress(walletId, function(err) {
+    this.clearLastAddress(walletId, (err) => {
       if (err) return cb(err);
-      this.removeTxHistory(walletId, function(err) {
+      this.removeTxHistory(walletId, (err) => {
         if (err) return cb(err);
-        this.clearBackupFlag(walletId, function(err) {
+        this.clearBackupFlag(walletId, (err) => {
           return cb(err);
         });
       });
