@@ -67,6 +67,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         setPendingTxps(status.pendingTxps);
         $scope.status = status;
       }
+      refreshAmountSection();
       $timeout(function() {
         $scope.$apply();
       });
@@ -105,6 +106,19 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       txid: $scope.btx.txid,
       walletId: $scope.walletId
     });
+  };
+
+  $scope.openBalanceModal = function() {
+    $ionicModal.fromTemplateUrl('views/modals/wallet-balance.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.walletBalanceModal = modal;
+      $scope.walletBalanceModal.show();
+    });
+
+    $scope.close = function() {
+      $scope.walletBalanceModal.hide();
+    };
   };
 
   $scope.recreate = function() {
@@ -234,11 +248,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   var prevPos;
-  var screenInactive = true;
 
   function getScrollPosition() {
     var scrollPosition = $ionicScrollDelegate.getScrollPosition();
-    if (!scrollPosition || screenInactive) {
+    if (!scrollPosition) {
       $window.requestAnimationFrame(function() {
         getScrollPosition();
       });
@@ -252,16 +265,21 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       return;
     }
     prevPos = pos;
-    var amountHeight = 180 - pos;
+    refreshAmountSection(pos);
+  };
+
+  function refreshAmountSection(scrollPos) {
+    scrollPos = scrollPos || 0;
+    var amountHeight = 210 - scrollPos;
     if (amountHeight < 80) {
       amountHeight = 80;
     }
     var contentMargin = amountHeight;
-    if (contentMargin > 180) {
-      contentMargin = 180;
+    if (contentMargin > 210) {
+      contentMargin = 210;
     }
 
-    var amountScale = (amountHeight / 180);
+    var amountScale = (amountHeight / 210);
     if (amountScale < 0.5) {
       amountScale = 0.5;
     }
@@ -271,11 +289,31 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     var s = amountScale;
 
+    // Make space for the balance button when it needs to display.
+    var TOP_NO_BALANCE_BUTTON = 45;
+    var TOP_BALANCE_BUTTON = 10;
+    var top = TOP_NO_BALANCE_BUTTON;
+    $scope.showBalanceButton = ($scope.wallet.status.totalBalanceSat != $scope.wallet.status.spendableAmount);
+    if ($scope.showBalanceButton) {
+      top = TOP_BALANCE_BUTTON;
+      $scope.showBalanceButton = true;
+    }
+
+    var amountTop = ((amountScale - 0.5) / 0.5) * top;
+    if (amountTop < 5) {
+      amountTop = 5;
+    }
+    if (amountTop > top) {
+      amountTop = top;
+    }
+
+    var t = amountTop;
+
     $scope.altAmountOpacity = (amountHeight - 100) / 80;
     $window.requestAnimationFrame(function() {
       $scope.amountHeight = amountHeight + 'px';
       $scope.contentMargin = contentMargin + 'px';
-      $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s + ')';
+      $scope.amountScale = 'scale3d(' + s + ',' + s + ',' + s + ') translateY(' + t + 'px)';
       $scope.$digest();
       getScrollPosition();
     });
@@ -285,16 +323,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   $scope.$on("$ionicView.enter", function(event, data) {
     if ($scope.isCordova && $scope.isAndroid) setAndroidStatusBarColor();
-    $timeout(function() {
-      screenInactive = false;
-    }, 200);
     if (scrollWatcherInitialized || !$scope.amountIsCollapsible) {
       return;
     }
     scrollWatcherInitialized = true;
-    $timeout(function() {
-      getScrollPosition();
-    }, 100);
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -308,6 +340,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
 
     $scope.updateAll();
+    refreshAmountSection();
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId) {
@@ -328,7 +361,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   });
 
   $scope.$on("$ionicView.leave", function(event, data) {
-    screenInactive = true;
     lodash.each(listeners, function(x) {
       x();
     });
