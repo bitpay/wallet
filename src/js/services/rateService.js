@@ -111,18 +111,24 @@ RateService.prototype.fromFiat = function(amount, code) {
   return amount / this.getRate(code) * this.BTC_TO_SAT;
 };
 
-RateService.prototype.listAlternatives = function() {
+RateService.prototype.listAlternatives = function(sort) {
   var self = this;
   if (!this.isAvailable()) {
     return [];
   }
 
-  return self.lodash.map(this.getAlternatives(), function(item) {
+  var alternatives = self.lodash.map(this.getAlternatives(), function(item) {
     return {
       name: item.name,
       isoCode: item.isoCode
     }
   });
+  if (sort) {
+    alternatives.sort(function(a, b) {
+      return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+    });
+  }
+  return self.lodash.uniq(alternatives, 'isoCode');
 };
 
 angular.module('copayApp.services').factory('rateService', function($http, lodash) {
