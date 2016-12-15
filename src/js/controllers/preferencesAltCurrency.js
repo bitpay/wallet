@@ -19,15 +19,12 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
         var idx = lodash.indexBy(unusedCurrencyList, 'isoCode');
         var idx2 = lodash.indexBy($scope.lastUsedAltCurrencyList, 'isoCode');
 
-        completeAlternativeList = lodash.reject(rateService.listAlternatives(), function(c) {
+        completeAlternativeList = lodash.reject(rateService.listAlternatives(true), function(c) {
           return idx[c.isoCode] || idx2[c.isoCode];
         });
 
-        completeAlternativeList = completeAlternativeList.sort(function(a, b) {
-          return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
-        });
-
         $scope.altCurrencyList = completeAlternativeList.slice(0, 10);
+
         $timeout(function() {
           $scope.$apply();
         });
@@ -85,6 +82,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       var config = configService.getSync();
       $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+
       storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
         $scope.lastUsedAltCurrencyList = lastUsedAltCurrency ? JSON.parse(lastUsedAltCurrency) : [];
         init();
