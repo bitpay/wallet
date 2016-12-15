@@ -269,6 +269,16 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   function refreshAmountSection(scrollPos) {
+    $scope.showBalanceButton = false;
+    if ($scope.wallet.status) {
+      $scope.showBalanceButton = ($scope.wallet.status.totalBalanceSat != $scope.wallet.status.spendableAmount);
+    }
+    if (!$scope.amountIsCollapsible) {
+      var t = ($scope.showBalanceButton ? 15 : 45);
+      $scope.amountScale = 'translateY(' + t + 'px)';
+      return;
+    }
+
     scrollPos = scrollPos || 0;
     var amountHeight = 210 - scrollPos;
     if (amountHeight < 80) {
@@ -290,18 +300,16 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     var s = amountScale;
 
     // Make space for the balance button when it needs to display.
-    var TOP_NO_BALANCE_BUTTON = 45;
-    var TOP_BALANCE_BUTTON = 10;
+    var TOP_NO_BALANCE_BUTTON = 115;
+    var TOP_BALANCE_BUTTON = 30;
     var top = TOP_NO_BALANCE_BUTTON;
-    $scope.showBalanceButton = ($scope.wallet.status.totalBalanceSat != $scope.wallet.status.spendableAmount);
     if ($scope.showBalanceButton) {
       top = TOP_BALANCE_BUTTON;
-      $scope.showBalanceButton = true;
     }
 
-    var amountTop = ((amountScale - 0.5) / 0.5) * top;
-    if (amountTop < 5) {
-      amountTop = 5;
+    var amountTop = ((amountScale - 0.7) / 0.7) * top;
+    if (amountTop < -10) {
+      amountTop = -10;
     }
     if (amountTop > top) {
       amountTop = top;
