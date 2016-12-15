@@ -6,26 +6,23 @@
 
     &--total {
       color: $mid-gray;
-      font-weight: bold;
     }
 
     &--available {
       color: #09C286;;
-      font-weight: bold;
     }
 
     &--confirming {
       color: #FF9900;
-      font-weight: bold;
     }
 
     &--locked {
       color: #FF9900;
-      font-weight: bold;
     }
 
     &--alternative {
       color: $light-gray;
+      font-size: 14px;
     }
 
   }
