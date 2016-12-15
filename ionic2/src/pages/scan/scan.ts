@@ -13,7 +13,7 @@ export class ScanPage {
 
   passthroughMode: boolean = false;
 
-  scannerStates:any = {
+  scannerStates: any = {
     unauthorized: 'unauthorized',
     denied: 'denied',
     unavailable: 'unavailable',
@@ -90,7 +90,7 @@ export class ScanPage {
     this.scannerService.resumePreview();
   }
 
-  activate(){
+  activate() {
     this.scannerService.activate(() => {
       this._updateCapabilities();
       this._handleCapabilities();
@@ -113,7 +113,7 @@ export class ScanPage {
     });
   }
 
-  authorize(){
+  authorize() {
     this.scannerService.initialize(() => {
       this._refreshScanView();
     });
@@ -148,13 +148,13 @@ export class ScanPage {
     this.scannerService.reinitialize();
   }
 
-  toggleLight(){
+  toggleLight() {
     this.scannerService.toggleLight((lightEnabled) => {
       this.lightActive = lightEnabled;
     });
   }
 
-  toggleCamera(){
+  toggleCamera() {
     this.cameraToggleActive = true;
     this.scannerService.toggleCamera((status) => {
     // (a short delay for the user to see the visual feedback)
@@ -165,11 +165,11 @@ export class ScanPage {
     });
   }
 
-  canGoBack(){
+  canGoBack() {
     return this.passthroughMode;
   }
 
-  goBack(){
+  goBack() {
     this.nav.pop();
   }
 }
