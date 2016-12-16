@@ -68,7 +68,7 @@
   }
  .settings-list {
     margin-top: -2rem;
-    
+
     ion-item-divider {
      color: #667;
      padding-bottom: .5rem;
@@ -97,6 +97,13 @@
       }
       .icon {
         color: $light-gray;
+      }
+
+      ion-icon {
+        margin-right: 15px;
+      }
+      .item-inner {
+        margin-left: 0;
       }
     }
     .item-note {
