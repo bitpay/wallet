@@ -144,7 +144,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           if (err instanceof errors.NOT_AUTHORIZED) {
             return cb('WALLET_NOT_REGISTERED');
           }
-          return cb(err);
+          if (err instanceof errors.CONNECTION_ERROR)
+            return cb('CONNECTION_ERROR');
+
+          if (err instanceof errors.NOT_FOUND)
+            return cb('NOT_FOUND');
         }
         return cb(null, ret);
       });
