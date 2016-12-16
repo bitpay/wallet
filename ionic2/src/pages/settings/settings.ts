@@ -8,8 +8,10 @@ import { NavController } from 'ionic-angular';
 })
 export class SettingsPage {
 
+  unitName: string = 'BTC';
+
   constructor(public navCtrl: NavController) {
 
-  } 
+  }
 
 }
