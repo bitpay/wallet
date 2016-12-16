@@ -13,8 +13,8 @@ angular.module('copayApp.directives')
             scope.showMenu = true;
             scope.https = false;
 
-            if(scope.type === 'url') {
-              if(scope.data.indexOf('https://') === 0) {
+            if (scope.type === 'url') {
+              if (scope.data.indexOf('https://') === 0) {
                 scope.https = true;
               }
             }
@@ -24,14 +24,16 @@ angular.module('copayApp.directives')
           scope.showMenu = false;
           $rootScope.$broadcast('incomingDataMenu.menuHidden');
         };
-        scope.goToUrl = function(url){
+        scope.goToUrl = function(url) {
           externalLinkService.open(url);
         };
         scope.sendPaymentToAddress = function(bitcoinAddress) {
           scope.showMenu = false;
           $state.go('tabs.send').then(function() {
             $timeout(function() {
-              $state.transitionTo('tabs.send.amount', {toAddress: bitcoinAddress});
+              $state.transitionTo('tabs.send.amount', {
+                toAddress: bitcoinAddress
+              });
             }, 50);
           });
         };
@@ -40,10 +42,22 @@ angular.module('copayApp.directives')
           $timeout(function() {
             $state.go('tabs.send').then(function() {
               $timeout(function() {
-                $state.transitionTo('tabs.send.addressbook', {addressbookEntry: bitcoinAddress});
+                $state.transitionTo('tabs.send.addressbook', {
+                  addressbookEntry: bitcoinAddress
+                });
               });
             });
           }, 100);
+        };
+        scope.scanPaperWallet = function(privateKey) {
+          scope.showMenu = false;
+          $state.go('tabs.home').then(function() {
+            $timeout(function() {
+              $state.transitionTo('tabs.home.paperWallet', {
+                privateKey: privateKey
+              });
+            }, 50);
+          });
         };
       }
     };

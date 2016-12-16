@@ -192,8 +192,13 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   root.get2faCode = function(token, cb) {
-    if (!token) return cb('Invalid Token');
+    if (!token) {
+      $log.error('Glidera Sent 2FA code by SMS: ERROR Invalid Token');
+      return cb('Invalid Token');
+    }
+
     $http(_get('/authentication/get2faCode', token)).then(function(data) {
+
       $log.info('Glidera Sent 2FA code by SMS: SUCCESS');
       return cb(null, data.status == 200 ? true : false);
     }, function(data) {

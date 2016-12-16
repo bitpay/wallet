@@ -104,14 +104,14 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     $timeout(function() {
       $scope.showInfo = !$scope.showInfo;
       $ionicScrollDelegate.resize();
-    });
+    }, 10);
   };
 
   $scope.readMore = function() {
     $timeout(function() {
       $scope.showMore = !$scope.showMore;
       $ionicScrollDelegate.resize();
-    });
+    }, 10);
   };
 
   $scope.showMenu = function(allAddresses, $event) {

@@ -18,9 +18,11 @@ angular.module('copayApp.controllers').controller('glideraController',
       $scope.status = null;
       $scope.limits = null;
 
+      $scope.connectingGlidera = true;
       ongoingProcess.set('connectingGlidera', true);
       glideraService.init($scope.token, function(err, glidera) {
         ongoingProcess.set('connectingGlidera');
+        $scope.connectingGlidera = false;
         if (err || !glidera) {
           if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
@@ -67,11 +69,11 @@ angular.module('copayApp.controllers').controller('glideraController',
       }
     };
 
-    this.getAuthenticateUrl = function() {
+    $scope.getAuthenticateUrl = function() {
       return glideraService.getOauthCodeUrl();
     };
 
-    this.submitOauthCode = function(code) {
+    $scope.submitOauthCode = function(code) {
       ongoingProcess.set('connectingGlidera', true);
       $timeout(function() {
         glideraService.getToken(code, function(err, data) {
@@ -90,10 +92,7 @@ angular.module('copayApp.controllers').controller('glideraController',
       }, 100);
     };
 
-    this.openTxModal = function(token, tx) {
-      var self = this;
-
-      $scope.self = self;
+    $scope.openTxModal = function(token, tx) {
       $scope.tx = tx;
 
       glideraService.getTransaction(token, tx.transactionUuid, function(err, tx) {

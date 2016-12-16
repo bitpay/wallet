@@ -34,7 +34,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     $ionicPopup.prompt({
       title: title,
       subTitle: message,
-      inputType: opts.inputType,
+      template: '<input ng-model="data.response" type="' + opts.inputType + '" autofocus>',
       inputPlaceholder: opts.inputPlaceholder,
       defaultText: opts.defaultText
     }).then(function(res) {
@@ -118,7 +118,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   this.showPrompt = function(title, message, opts, cb) {
     $log.warn(title ? (title + ': ' + message) : message);
 
-    opts = opts || {};
+    opts = opts ||  {};
 
     if (isCordova && !opts.forceHTMLPrompt)
       _cordovaPrompt(title, message, opts, cb);

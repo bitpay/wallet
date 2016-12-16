@@ -126,7 +126,19 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     });
 
-    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+    $scope.createdWithinPastDay = function(time) {
+      var now = new Date();
+      var date = new Date(time * 1000);
+      return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+    };
+
+    $scope.openExternalLink = function() {
+      var url = 'https://github.com/bitpay/copay/releases/latest';
+      var optIn = true;
+      var title = gettextCatalog.getString('Update Available');
+      var message = gettextCatalog.getString('An update to this app is available. For your security, please update to the latest version.');
+      var okText = gettextCatalog.getString('View Update');
+      var cancelText = gettextCatalog.getString('Go Back');
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 
@@ -181,7 +193,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();
-        }, 100);
+        }, 10);
       })
     };
 
@@ -234,7 +246,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();
-        }, 100);
+        }, 10);
       });
     };
 
@@ -263,7 +275,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
-      }, 100);
+      }, 10);
     };
 
     var bitpayCardCache = function() {

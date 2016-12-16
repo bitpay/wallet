@@ -130,7 +130,7 @@
   ion-content {
 
     &.collapsible {
-      margin-top: 180px;
+      margin-top: 210px;
     }
 
     padding-top: 0;
@@ -168,9 +168,9 @@
     width: 100%;
     text-align: center;
     color: #fff;
-    height: 180px;
+    height: 210px;
     padding-top: 40px;
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
 
@@ -179,8 +179,7 @@
     }
 
     &__balance {
-      transform: scale3d(1, 1, 1);
-      margin-top: 5px;
+      transform: scale3d(1, 1, 1) translateY(45px);
     }
 
     &__updating {
@@ -192,9 +191,11 @@
       line-height: 36px;
     }
 
-    strong {
-      line-height: 100%;
+    &__button-balance {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
     }
+
   }
   .item.item-footer {
     font-weight: lighter;
@@ -214,7 +215,7 @@
   position: absolute;
   top: inherit;
   left: 10px;
-  bottom: 15px;
+  bottom: 5px;
   font-size: 20px;
   color: #fff;
 }

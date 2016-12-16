@@ -11,24 +11,24 @@
         <div class="phrase-unavailable" translate>Wallet recovery phrase not available.</div>
         <div class="phrase-unavailable-instructions" translate>You can still export it from Advanced &gt; Export.</div>
     </div>
-  <!--
-    ## STEP 1
-  -->
-  <div id="wallet-backup-phrase-step-1" class="ng-hide" ng-show="step == 1 && (mnemonicWords || (!credentialsEncrypted && !deleted))">
-    <div class="initial-prompt" translate>Please carefully write down this phrase.</div>
-    <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}">
-      <div class="backup-phrase-content">
-        <span class="backup-phrase-content-word-readonly" ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
+    <!--
+      ## STEP 1
+    -->
+    <div id="wallet-backup-phrase-step-1" class="ng-hide" ng-show="step == 1 && (mnemonicWords || (!credentialsEncrypted && !deleted))">
+      <div class="initial-prompt" translate>Please carefully write down this phrase.</div>
+      <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}">
+        <div class="backup-phrase-content">
+          <span class="backup-phrase-content-word-readonly" ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
+        </div>
+      </div>
+      <div class="password-required" ng-show="mnemonicHasPassphrase" translate>
+        This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
+      </div>
+      <div class="cta-buttons">
+        <div class="tldr-prompt" translate>We'll confirm on the next screen.</div>
+        <button ng-show="!deleted" ng-disabled="credentialsEncrypted || error" class="button button-standard button-primary" ng-click="goToStep(2);" translate>I've written it down</button>
       </div>
     </div>
-    <div class="password-required" ng-show="mnemonicHasPassphrase" translate>
-          This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
-    </div>
-    <div class="cta-buttons">
-      <div class="tldr-prompt" translate>We'll confirm on the next screen.</div>
-      <button ng-show="!deleted" ng-disabled="credentialsEncrypted || error" class="button button-standard button-primary" ng-click="goToStep(2);" translate>I've written it down</button>
-    </div>
-  </div>
     <!--
       ## STEP 2
     -->
@@ -50,22 +50,26 @@
             ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
             </button>
           </span>
-        <button ng-show="selectComplete" class="button button-standard button-primary" ng-click="goToStep(3);" translate>Confirm</button>
-        <button ng-show="selectComplete" class="button button-standard button-secondary button-clear" ng-click="setFlow(2);" translate>Clear</button>
+          <button ng-show="selectComplete" class="button button-standard button-primary" ng-click="goToStep(3);" translate>Confirm</button>
+          <button ng-show="selectComplete" class="button button-standard button-secondary button-clear" ng-click="setFlow(2);" translate>Clear</button>
+        </div>
       </div>
     </div>
-  </div>
     <!--
       ## STEP 3
     -->
     <div id="wallet-backup-phrase-step-3" class="ng-hide" ng-show="step == 3">
-      <div class="password-prompt" translate>Enter your password</h5>
-        <label class="item item-input item-stacked-label">
-          <div class="input-label" translate>In order to verify your wallet backup, please type your password.</div>
-          <input type="text" id="passphrase" ng-model="data.passphrase" autocapitalize="off" spellcheck="false" autofocus/>
-        </label>
-        <button ng-disabled="!data.passphrase" class="button button-standard button-primary" ng-click="goToStep(4);" translate>Confirm
-        </button>
+      <h3 translate>Enter your password</h3>
+      <div class="password-prompt">
+        <div class="explanation">
+          <div class="description" translate>In order to verify your wallet backup, please type your password.</div>
+          <div class="input">
+            <input type="password" id="passphrase" ng-model="data.passphrase" autocapitalize="off" spellcheck="false" autofocus/>
+          </div>
+        </div>
+      </div>
+      <div class="button-confirm">
+        <button ng-disabled="!data.passphrase" class="button button-standard button-primary" ng-click="goToStep(4);" translate>Confirm</button>
       </div>
     </div>
   </ion-content>
