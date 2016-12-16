@@ -1,3 +1,18 @@
+.item {
+  border-color: #f2f2f2;
+  background-color: #ffffff;
+  color: #445;
+  position: relative;
+  z-index: 2;
+  //display: block;
+  margin: -1px;
+  padding: 16px;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 16px;
+  padding-right: 0;
+}
+
 .settings {
   //@extend .deflash-blue;
   .icon-bitpay-card {
@@ -7,6 +22,10 @@
   .item {
     color: $dark-gray;
     border-color: rgba(221, 221, 221, 0.3);
+
+    .item-inner {
+      border: 0 !important;
+    }
   }
   &-explanation, &-button-group {
     padding: 0 1rem;
@@ -48,6 +67,19 @@
     }
   }
  .settings-list {
+    ion-item-divider {
+     color: #667;
+     padding-bottom: .5rem;
+     background-color: #f5f5f5;
+
+     > .item-inner {
+       font-size: 15px;
+
+       ion-label {
+         margin-bottom: .5rem;
+       }
+     }
+    }
     .item {
       color: $dark-gray;
       padding-top: 1.3rem;
