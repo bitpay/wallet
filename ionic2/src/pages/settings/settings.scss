@@ -4,7 +4,6 @@
   color: #445;
   position: relative;
   z-index: 2;
-  //display: block;
   margin: -1px;
   padding: 16px;
   border-width: 1px;
@@ -21,8 +20,18 @@
     background-size: 14px 14px;
 }
 
+a.item-external-link {
+  &.item-ios:not([detail-none]) .item-inner {
+    background-image: url('../assets/img/icon-link.svg');
+    padding-right: 32px;
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px 14px;
+  }
+}
+
+
 .settings {
-  //@extend .deflash-blue;
   .icon-bitpay-card {
     background-image: url('../assets/img/icon-card.svg');
     background-color: #1e3186;
