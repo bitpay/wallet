@@ -16,14 +16,14 @@
           <img src="assets/img/icon-exchange.svg"/>
         </ion-icon>
         <span>{{'Bitcoin Exchanges'}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a> -->
       <a ion-item ui-sref="tabs.addressbook">
         <ion-icon item-left>
           <img src="assets/img/icon-address-book.svg" class="bg"/>
         </ion-icon>
         <span>{{'Address Book'}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
       <a ion-item ng-click="openExternalLink()">
         <ion-icon item-left>
@@ -39,14 +39,12 @@
           <img src="assets/img/icon-send-feedback.svg" class="bg"/>
         </ion-icon>
         <span>{{'Send Feedback'}}</span>
-        <i class="icon bp-arrow-right"></i>
       </a>
       <a ion-item ng-if="isCordova" ui-sref="tabs.shareApp({score: 4, skipped: true, fromSettings: true})">
         <ion-icon item-left>
           <img src="assets/img/icon-heart.svg" class="bg"/>
         </ion-icon>
         <span>{{'Share'}} {{appName}}</span>
-        <i class="icon bp-arrow-right"></i>
       </a>
     </ion-item-group>
 
@@ -58,7 +56,6 @@
           <img src="assets/img/icon-notifications.svg" class="bg"/>
         </ion-icon>
         <span>{{'Notifications'}}</span>
-        <i class="icon bp-arrow-right"></i>
       </a>
       <a ion-item ui-sref="tabs.language">
        <ion-icon item-left>
@@ -68,7 +65,6 @@
        <span class="item-note">
          {{currentLanguageName}}
        </span>
-       <i class="icon bp-arrow-right"></i>
      </a>
       <a ion-item class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.unit">
         <ion-icon item-left>
@@ -78,7 +74,6 @@
         <p class="setting-value">
           {{unitName}}
         </p>
-        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a ion-item class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
@@ -89,7 +84,6 @@
         <span class="setting-value" *ngIf="selectedAlternative">
           {{selectedAlternative.name}}
         </span>
-        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a ion-item class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.fee">
@@ -100,7 +94,6 @@
         <span class="setting-value" *ngIf="feeOpts">
           {{feeOpts[currentFeeLevel]}}
         </span>
-        <i class="icon bp-arrow-right"></i>
       </a>
     </ion-item-group>
 
@@ -122,7 +115,6 @@
         <span class="right text-light assertive" ng-show="!item.isComplete()">
           {{'Incomplete'}}
         </span>
-        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a ion-item class=" item item-icon-left item-icon-right"
@@ -132,14 +124,12 @@
           <div class="bg icon-bitpay-card"></div>
         </i>
         <span>BitPay Visa&reg; Card</span>
-        <i class="icon bp-arrow-right"></i>
       </a>
 
       <a ion-item class="item item-icon-right"
          ng-if="glideraEnabled && glideraToken"
          ui-sref="tabs.preferences.glidera">
         <img src="assets/img/glidera-logo.png" width="90"/>
-        <i class="icon bp-arrow-right"></i>
       </a>
 
       <div class="item item-divider"></div>
@@ -149,14 +139,12 @@
           <img src="assets/img/icon-advanced.svg" class="bg"/>
         </i>
         <span>{{'Advanced'}}</span>
-        <i class="icon bp-arrow-right"></i>
       </a>
       <a ion-item href ui-sref="tabs.about">
         <i class="icon big-icon-svg">
           <img src="assets/img/icon-about.svg" class="bg"/>
         </i>
         <span>{{'About'}}</span> {{appName}}
-        <i class="icon bp-arrow-right"></i>
       </a>
     </ion-item-group>
   </div>
@@ -177,14 +165,14 @@
           <img src="assets/img/icon-exchange.svg" class="bg"/>
         </i>
         <span>{{'Bitcoin Exchanges'}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
       <a ion-item ui-sref="tabs.addressbook">
         <i class="icon big-icon-svg">
           <img src="assets/img/icon-address-book.svg" class="bg"/>
         </i>
         <span>{{'Address Book'}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
       <a ion-item ng-click="openExternalLink()">
         <i class="icon big-icon-svg">
@@ -200,14 +188,14 @@
           <img src="assets/img/icon-send-feedback.svg" class="bg"/>
         </i>
         <span>{{'Send Feedback'}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
       <a ion-item ng-if="isCordova" ui-sref="tabs.shareApp({score: 4, skipped: true, fromSettings: true})">
         <i class="icon big-icon-svg">
           <img src="assets/img/icon-heart.svg" class="bg"/>
         </i>
         <span>{{'Share'}} {{appName}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
 
       <div class="item item-divider">{{'Preferences'}}</div>
@@ -217,7 +205,7 @@
           <img src="assets/img/icon-notifications.svg" class="bg"/>
         </i>
         <span>{{'Notifications'}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
       <a ion-item ui-sref="tabs.language">
        <i class="icon big-icon-svg">
@@ -227,7 +215,7 @@
        <span class="item-note">
          {{currentLanguageName}}
        </span>
-       <i class="icon bp-arrow-right"></i>
+
      </a>
       <a ion-item class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.unit">
         <i class="icon big-icon-svg">
@@ -237,7 +225,7 @@
         <span class="setting-value">
           {{unitName}}
         </span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
 
       <a ion-item class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
@@ -248,7 +236,7 @@
         <span class="setting-value">
           {{selectedAlternative.name}}
         </span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
 
       <a ion-item class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.fee">
@@ -259,7 +247,7 @@
         <span class="setting-value">
           {{feeOpts[currentFeeLevel]}}
         </span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
 
       <div class="item item-divider" ng-show="wallets[0]">{{'Wallets & Integrations'}}</div>
@@ -279,7 +267,7 @@
         <span class="right text-light assertive" ng-show="!item.isComplete()">
           {{'Incomplete'}}
         </span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
 
       <a ion-item class=" item item-icon-left item-icon-right"
@@ -289,14 +277,14 @@
           <div class="bg icon-bitpay-card"></div>
         </i>
         <span>BitPay Visa&reg; Card</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
 
       <a ion-item class="item item-icon-right"
          ng-if="glideraEnabled && glideraToken"
          ui-sref="tabs.preferences.glidera">
         <img src="assets/img/glidera-logo.png" width="90"/>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
 
       <div class="item item-divider"></div>
@@ -306,14 +294,14 @@
           <img src="assets/img/icon-advanced.svg" class="bg"/>
         </i>
         <span>{{'Advanced'}}</span>
-        <i class="icon bp-arrow-right"></i>
+
       </a>
       <a ion-item href ui-sref="tabs.about">
         <i class="icon big-icon-svg">
           <img src="assets/img/icon-about.svg" class="bg"/>
         </i>
         <span>{{'About'}}</span> {{appName}}
-        <i class="icon bp-arrow-right"></i>
+
       </a>
       <div class="item item-divider"></div>
     </div>
