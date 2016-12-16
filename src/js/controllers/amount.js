@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView().stateName == 'tabs.send';
-    $scope.isWallet = data.stateParams.isWallet;
+    $scope.isWallet = (data.stateParams.isWallet.trim().toLowerCase() == 'true' ? true : false);
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;

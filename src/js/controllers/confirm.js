@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
-    $scope.isWallet = data.stateParams.isWallet;
+    $scope.isWallet = (data.stateParams.isWallet.trim().toLowerCase() == 'true' ? true : false);
     $scope.cardId = data.stateParams.cardId;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
