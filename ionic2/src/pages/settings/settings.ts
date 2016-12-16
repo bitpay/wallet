@@ -10,6 +10,6 @@ export class SettingsPage {
 
   constructor(public navCtrl: NavController) {
 
-  }
+  } 
 
 }
