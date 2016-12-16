@@ -104,6 +104,8 @@ export class IncomingDataService {
       // Old join
       } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
         return resolve({type: 'oldJoin', parsedData: data});
+      } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
+        return resolve({type: 'privateKey', parsedData: data});
       } else {
         return resolve({type: 'text', parsedData: data});
       }
@@ -142,6 +144,15 @@ export class IncomingDataService {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+  checkPrivateKey(privateKey) {
+    try {
+      new this.bitcore.PrivateKey(privateKey, 'livenet');
+    } catch (err) {
+      return false;
+    }
+    return true;
   }
 
 }

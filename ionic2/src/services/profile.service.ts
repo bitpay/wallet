@@ -810,6 +810,12 @@ export class ProfileService {
       });
     }
 
+    if (opts.m) {
+      ret = lodash.filter(ret, (w) => {
+        return (w.credentials.m == opts.m);
+      });
+    }
+
     if (opts.onlyComplete) {
       ret = lodash.filter(ret, (w) => {
         return w.isComplete();

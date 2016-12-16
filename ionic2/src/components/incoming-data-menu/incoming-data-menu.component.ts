@@ -1,4 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
+import { ExternalLinkService } from '../../services/external-link.service';
 import { IncomingDataService } from '../../services/incoming-data.service';
 import { ActionSheetComponent } from './../action-sheet/action-sheet.component';
 
@@ -82,6 +83,30 @@ import { ActionSheetComponent } from './../action-sheet/action-sheet.component';
       </a>
     </div>
 
+    <div *ngIf="type === 'privateKey'">
+      <div class="incoming-data-menu__item head">
+        <div class="incoming-data-menu__header">Private Key</div>
+        <div class="incoming-data-menu__url">
+          <div class="incoming-data-menu__url__text" style="border: 0; padding-left: 1.5rem;">
+            {{data}}
+          </div>
+        </div>
+      </div>
+      <a class="incoming-data-menu__item item item-icon-right" (click)="scanPaperWallet(data)">
+        <img src="img/icon-activity.svg">
+        <div class="incoming-data-menu__item__text">Sweep paper wallet</div>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+      <a class="incoming-data-menu__item item item-icon-right" copy-to-clipboard="data">
+        <img src="img/icon-paperclip.svg">
+        <div class="incoming-data-menu__item__text">Copy to clipboard</div>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+      <a class="incoming-data-menu__cancel item" (click)="hide()">
+        Cancel
+      </a>
+    </div>
+
   </action-sheet>
   `,
 })
@@ -92,13 +117,10 @@ export class IncomingDataMenuComponent {
   shown: boolean = false;
   https: boolean = false;
 
-  externalLinkService: any = {
-    show: () => {}
-  };
-
   @ViewChild(ActionSheetComponent) actionSheet: ActionSheetComponent;
 
   constructor(
+    public externalLinkService: ExternalLinkService,
     public incomingData: IncomingDataService,
     public zone: NgZone
   ) {
@@ -155,5 +177,16 @@ export class IncomingDataMenuComponent {
     //     });
     //   });
     // }, 100);
+  };
+
+  scanPaperWallet(privateKey) {
+    this.shown = false;
+    // $state.go('tabs.home').then(function() {
+    //   $timeout(function() {
+    //     $state.transitionTo('tabs.home.paperWallet', {
+    //       privateKey: privateKey
+    //     });
+    //   }, 50);
+    // });
   };
 }
