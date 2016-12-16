@@ -13,10 +13,18 @@
   padding-right: 0;
 }
 
+.item-ios[detail-push] .item-inner, button.item-ios:not([detail-none]) .item-inner, a.item-ios:not([detail-none]) .item-inner {
+    background-image: url('../assets/img/right.svg');
+    padding-right: 32px;
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px 14px;
+}
+
 .settings {
   //@extend .deflash-blue;
   .icon-bitpay-card {
-    background-image: url("../assets/img/icon-card.svg");
+    background-image: url('../assets/img/icon-card.svg');
     background-color: #1e3186;
   }
   .item {
@@ -67,12 +75,15 @@
     }
   }
  .settings-list {
-    margin-top: -2rem;
 
     ion-item-divider {
      color: #667;
      padding-bottom: .5rem;
      background-color: #f5f5f5;
+
+     &.placeholder-divider {
+       height: 3rem;
+     }
 
      > .item-inner {
        font-size: 15px;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="9px" height="17px" viewBox="0 0 9 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>icon/right</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="List/Item" transform="translate(-342.000000, -19.000000)" fill="#9B9B9B">
+            <g id="Items/Nested-w-icon">
+                <g id="Icons/right" transform="translate(342.000000, 19.000000)">
+                    <g id="Group">
+                        <path d="M0.557128906,17 C0.640136719,17 0.71484375,16.9667969 0.772949219,16.9086914 L8.66699219,8.70751953 C8.71679688,8.65771484 8.75,8.58300781 8.75,8.5 C8.75,8.41699219 8.71679688,8.34228516 8.66699219,8.29248047 L0.772949219,0.0913085938 C0.71484375,0.033203125 0.640136719,0 0.557128906,0 C0.3828125,0 0.25,0.1328125 0.25,0.298828125 C0.25,0.381835938 0.283203125,0.456542969 0.333007812,0.514648438 L8.02783203,8.5 L0.333007812,16.4853516 C0.283203125,16.543457 0.25,16.6098633 0.25,16.6928711 C0.25,16.8671875 0.3828125,17 0.557128906,17 L0.557128906,17 Z" id="right"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

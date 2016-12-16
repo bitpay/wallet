@@ -10,7 +10,7 @@
   <div class="settings-list list">
 
     <ion-item-group>
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider color="light" class="placeholder-divider"></ion-item-divider>
       <!-- <a ion-item class="ng-hide item item-icon-left item-icon-right" ng-hide="true">
         <ion-icon item-left>
           <img src="assets/img/icon-exchange.svg"/>
@@ -100,12 +100,14 @@
     <ion-item-group>
       <ion-item-divider color="light">Wallets & Integrations</ion-item-divider>
 
-      <a ion-item href
-           ui-sref="tabs.preferences({'walletId': item.id})"
+      <a ion-item
            ng-repeat="item in wallets track by $index">
-         <i class="icon big-icon-svg circle">
+         <!-- <i class="icon big-icon-svg circle">
           <img src="assets/img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
-         </i>
+         </i> -->
+         <ion-icon item-left *ngIf="item">
+           <img src="assets/img/icon-wallet.svg" [ngStyle]="{'background-color': item.color}" class="bg"/>
+         </ion-icon>
         <span *ngIf="item">
           {{item.name || item.id}}
           <span class="size-12 text-light" ng-show="item.n > 1">
@@ -131,8 +133,9 @@
          ui-sref="tabs.preferences.glidera">
         <img src="assets/img/glidera-logo.png" width="90"/>
       </a>
-
-      <div class="item item-divider"></div>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider color="light" class="placeholder-divider"></ion-item-divider>
 
       <a ion-item>
         <ion-icon item-left>
@@ -147,6 +150,7 @@
         <span>{{'About'}}</span> {{appName}}
       </a>
     </ion-item-group>
+
   </div>
 
 </ion-content>
