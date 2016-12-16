@@ -15,59 +15,59 @@
         <ion-icon item-left>
           <img src="assets/img/icon-exchange.svg"/>
         </ion-icon>
-        <span>{{'Bitcoin Exchanges'}}</span>
+        <span>Bitcoin Exchanges</span>
 
       </a> -->
-      <a ion-item ui-sref="tabs.addressbook">
+      <a ion-item>
         <ion-icon item-left>
           <img src="assets/img/icon-address-book.svg"/>
         </ion-icon>
-        <span>{{'Address Book'}}</span>
+        <span>Address Book</span>
 
       </a>
       <a ion-item ng-click="openExternalLink()" class="item-external-link">
         <ion-icon item-left>
           <img src="assets/img/icon-help-support.svg"/>
         </ion-icon>
-        <span>{{'Help & Support' }}</span>
+        <span>Help & Support</span>
       </a>
-      <a ion-item ui-sref="tabs.feedback">
+      <a ion-item>
         <ion-icon item-left>
           <img src="assets/img/icon-send-feedback.svg"/>
         </ion-icon>
-        <span>{{'Send Feedback'}}</span>
+        <span>Send Feedback</span>
       </a>
       <a ion-item *ngIf="isCordova">
         <ion-icon item-left>
           <img src="assets/img/icon-heart.svg"/>
         </ion-icon>
-        <span>{{'Share'}} {{appName}}</span>
+        <span>Share {{appName}}</span>
       </a>
     </ion-item-group>
 
     <ion-item-group>
       <ion-item-divider color="light">Preferences</ion-item-divider>
 
-      <a ion-item ui-sref="tabs.notifications">
+      <a ion-item>
         <ion-icon item-left>
           <img src="assets/img/icon-notifications.svg"/>
         </ion-icon>
-        <span>{{'Notifications'}}</span>
+        <span>Notifications</span>
       </a>
-      <a ion-item ui-sref="tabs.language">
+      <a ion-item>
        <ion-icon item-left>
          <img src="assets/img/icon-language.svg"/>
        </ion-icon>
-       <span>{{'Language'}}</span>
+       <span>Language</span>
        <span class="item-note">
          {{currentLanguageName}}
        </span>
      </a>
-      <a ion-item ui-sref="tabs.unit">
+      <a ion-item>
         <ion-icon item-left>
           <img src="assets/img/icon-unit.svg"/>
         </ion-icon>
-        <span class="setting-title">{{'Bitcoin Unit'}}</span>
+        <span class="setting-title">Bitcoin Unit</span>
         <p class="setting-value">
           {{unitName}}
         </p>
@@ -77,7 +77,7 @@
         <ion-icon item-left>
           <img src="assets/img/icon-alternative-currency.svg"/>
         </ion-icon>
-        <span class="setting-title">{{'Alternative Currency'}}</span>
+        <span class="setting-title">Alternative Currency</span>
         <span class="setting-value" *ngIf="selectedAlternative">
           {{selectedAlternative.name}}
         </span>
@@ -87,7 +87,7 @@
         <ion-icon item-left>
           <img src="assets/img/icon-network.svg">
         </ion-icon>
-        <span class="setting-title">{{'Bitcoin Network Fee Policy'}}</span>
+        <span class="setting-title">Bitcoin Network Fee Policy</span>
         <span class="setting-value" *ngIf="feeOpts">
           {{feeOpts[currentFeeLevel]}}
         </span>
@@ -112,7 +112,7 @@
           </span>
         </span>
         <span ng-show="!item.isComplete()">
-          {{'Incomplete'}}
+          Incomplete
         </span>
       </a>
 
@@ -134,13 +134,13 @@
         <ion-icon item-left>
           <img src="assets/img/icon-advanced.svg"/>
         </ion-icon>
-        <span>{{'Advanced'}}</span>
+        <span>Advanced</span>
       </a>
       <a ion-item>
         <ion-icon item-left>
           <img src="assets/img/icon-about.svg"/>
         </ion-icon>
-        <span>{{'About'}}</span> {{appName}}
+        <span>About</span> {{appName}}
       </a>
     </ion-item-group>
 
