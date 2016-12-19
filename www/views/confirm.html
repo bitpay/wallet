@@ -116,6 +116,17 @@
             </div>
           </div>
         </div>
+        <div class="size-12 m10" ng-show="isCoinbase == 'buy'">
+          <div>
+            Subtotal: {{coinbaseBuyRequest.subtotal.amount}} {{coinbaseBuyRequest.subtotal.currency}}
+          </div>
+          <div>
+            Total: {{coinbaseBuyRequest.total.amount}} {{coinbaseBuyRequest.total.currency}}
+          </div>
+          <div>
+            Payout at: {{coinbaseBuyRequest.payout_at | amCalendar}}
+          </div>
+        </div>
         <div class="text-center" ng-show="noMatchingWallet">
           <span class="badge badge-energized" translate>No wallets available</span>
         </div>
@@ -147,15 +158,25 @@
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()"
     slide-success-hide-on-confirm="true">
-    <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
-    <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
-    <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction created</span>
+    <span ng-show="isCoinbase == 'buy'">Bought</span>
+    <div ng-show="!isCoinbase">
+      <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
+      <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
+      <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction created</span>
+    </div>
     <div ng-show="isGlidera" class="glidera-success">
       <span ng-show="isGlidera == 'buy'">A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day</span>
       <span ng-show="isGlidera == 'sell'">A transfer has been initiated to your bank account. Should arrive in 4-6 business days</span>
     </div>
     <div ng-show="isCoinbase" class="glidera-success">
-      <span ng-show="isCoinbase == 'buy'">Bitcoin purchase completed. Coinbase has queued the transfer to your selected Copay wallet</span>
+      <span ng-show="isCoinbase == 'buy'">
+        <span ng-show="coinbaseBuySuccess">
+          Bitcoin purchase completed. Coinbase has queued the transfer to your selected Copay wallet
+        </span>
+        <span ng-show="coinbaseReceiveInfo">
+          Buy confirmed. Funds will be send soon to your selected wallet
+        </span>
+      </span>
       <span ng-show="isCoinbase == 'sell'">Sale initiated</span>
     </div>
   </slide-to-accept-success>

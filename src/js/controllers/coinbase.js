@@ -6,8 +6,8 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
 
   var init = function() {
     ongoingProcess.set('connectingCoinbase', true);
-    coinbaseService.init($scope.accessToken, function(err, data) {
-console.log('[coinbase.js:9]',data); //TODO)
+    coinbaseService.init(function(err, data) {
+console.log('[coinbase.js:9]',err, data); //TODO)
       ongoingProcess.set('connectingCoinbase', false);
       if (err || lodash.isEmpty(data)) {
         if (err) {
@@ -28,7 +28,7 @@ console.log('[coinbase.js:9]',data); //TODO)
   $scope.updateTransactions = function() {
     $log.debug('Checking for transactions...');
     coinbaseService.getPendingTransactions($scope.accessToken, $scope.accountId, function(err, txs) {
-console.log('[coinbase.js:43]',txs); //TODO)
+console.log('[coinbase.js:43]',txs); //TODO
       $scope.pendingTransactions = txs;
     });
 

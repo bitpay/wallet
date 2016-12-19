@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     if ($scope.isCoinbase) {
       var currency = 'USD';
-      coinbaseService.init($scope.coinbaseAccessToken, function(err, data) {
+      coinbaseService.init(function(err, data) {
         if ($scope.isCoinbase == 'buy') {
           coinbaseService.buyPrice(data.accessToken, currency, function(err, b) {
             $scope.coinbaseBuyPrice = b.data || null;
@@ -394,11 +394,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
         popupService.showAlert(gettextCatalog.getString('Error'), 'No Payment Method Selected');
         return;
       }
+      var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.buyandsell.coinbase.confirm', {
         toAmount: (amount * unitToSatoshi).toFixed(0),
         isCoinbase: $scope.isCoinbase,
-        coinbasePaymentMethodId: $scope.coinbaseSelectedPaymentMethod.id
+        coinbasePaymentMethodId: $scope.coinbaseSelectedPaymentMethod.id,
+        coinbaseAmount: amountUSD,
+        coinbaseAmountCurrency: 'USD'
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;

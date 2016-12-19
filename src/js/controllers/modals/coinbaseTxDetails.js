@@ -7,11 +7,11 @@ angular.module('copayApp.controllers').controller('coinbaseTxDetailsController',
       remove: true
     }, function(err) {
       $rootScope.$emit('Local/CoinbaseTx');
-      $scope.cancel();
+      $scope.close();
     });
   };
 
-  $scope.cancel = function() {
+  $scope.close = function() {
     $scope.coinbaseTxDetailsModal.hide();
   };
 
