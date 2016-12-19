@@ -87,7 +87,7 @@
 
           <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'new' && encrypt">
             <span class="input-label" translate>Add a Password</span>
-            <input type="text"
+            <input type="password"
             placeholder="{{'Add an optional password to secure the recovery phrase'|translate}}"
             autocapitalize="off"
             ng-model="formData.createPassphrase">
@@ -95,7 +95,7 @@
 
           <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set' && encrypt">
             <span class="input-label" translate>Add a Password</span>
-            <input type="text"
+            <input type="password"
             placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
             autocapitalize="off"
             ng-model="formData.passphrase">
