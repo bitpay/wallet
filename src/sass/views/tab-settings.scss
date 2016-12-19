@@ -8,6 +8,14 @@
     color: $dark-gray;
     border-color: rgba(221, 221, 221, 0.3);
   }
+  .has-comment {
+    border-bottom: 0 none;
+  }
+  .comment {
+    padding: 15px;
+    background-color: #fff;
+    color: $mid-gray;
+  }
   &-explanation, &-button-group {
     padding: 0 1rem;
     margin: 1rem 0;
