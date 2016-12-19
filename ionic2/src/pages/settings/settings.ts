@@ -8,6 +8,11 @@ import { NavController } from 'ionic-angular';
 })
 export class SettingsPage {
 
+  unitName: string = 'BTC';
+  selectedAlternative: any =  { name: 'US Dollar' };
+  currentFeeLevel: string = 'normal'
+  feeOpts: any = { 'normal': 'Normal' };
+
   constructor(public navCtrl: NavController) {
 
   }
