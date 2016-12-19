@@ -146,6 +146,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           }
           return cb(err);
         }
+
         return cb(null, ret);
       });
     };
