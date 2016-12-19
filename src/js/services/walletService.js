@@ -140,18 +140,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       wallet.getStatus({
         twoStep: true
       }, function(err, ret) {
-        if (err) {
-          if (err instanceof errors.NOT_AUTHORIZED)
-            return cb('WALLET_NOT_REGISTERED');
-
-          if (err instanceof errors.CONNECTION_ERROR)
-            return cb('CONNECTION_ERROR');
-
-          if (err instanceof errors.NOT_FOUND)
-            return cb('NOT_FOUND');
-
-          return cb(err);
-        }
+        if (err) return cb(err);
         return cb(null, ret);
       });
     };
