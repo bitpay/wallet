@@ -955,7 +955,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.buyandsell.coinbase.confirm', {
-        url: '/confirm/:toAmount/:isCoinbase/:coinbasePaymentMethodId',
+        url: '/confirm/:toAmount/:isCoinbase/:coinbasePaymentMethodId/:coinbaseAmount/:coinbaseAmountCurrency',
         views: {
           'tab-home@tabs': {
             controller: 'confirmController',
