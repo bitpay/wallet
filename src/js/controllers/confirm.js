@@ -223,13 +223,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   function setSendMaxValues(data) {
     resetValues();
     var config = configService.getSync().wallet;
-    var unitName = config.settings.unitName;
     var unitToSatoshi = config.settings.unitToSatoshi;
     var satToUnit = 1 / unitToSatoshi;
     var unitDecimals = config.settings.unitDecimals;
 
-    $scope.displayAmount = txFormatService.formatAmount(data.amount, true);
-    $scope.displayUnit = unitName;
+    $scope.amountStr = txFormatService.formatAmountStr(data.amount, true);
+    $scope.displayAmount = getDisplayAmount($scope.amountStr);
+    $scope.displayUnit = getDisplayUnit($scope.amountStr);
     $scope.fee = txFormatService.formatAmountStr(data.fee);
     toAmount = parseFloat((data.amount * satToUnit).toFixed(unitDecimals));
     txFormatService.formatAlternativeStr(data.amount, function(v) {
@@ -483,12 +483,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         }
       });
       return;
-    } 
+    }
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
     createTx(wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
-      if (err) return; 
+      if (err) return;
 
       var config = configService.getSync();
       var spendingPassEnabled = walletService.isEncrypted(wallet);
@@ -533,8 +533,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
     if (
       (
-        processName === 'broadcastingTx' || 
-        ((processName === 'signingTx') && $scope.wallet.m > 1) || 
+        processName === 'broadcastingTx' ||
+        ((processName === 'signingTx') && $scope.wallet.m > 1) ||
         (processName == 'sendingTx' && !$scope.wallet.canSign() && !$scope.wallet.isPrivKeyExternal())
       ) && !isOn) {
       $scope.sendStatus = 'success';
