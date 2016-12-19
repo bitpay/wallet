@@ -133,6 +133,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
         ++index;
+        if (index == wallets.length) $scope.checkingBalance = false;
         if (err || !status) {
           $log.error(err);
           return;
@@ -144,7 +145,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         }
 
         if (index == wallets.length) {
-          $scope.checkingBalance = false;
           if ($scope.hasFunds != true) {
             $ionicScrollDelegate.freezeScroll(true);
           }
