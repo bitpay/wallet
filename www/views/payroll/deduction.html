@@ -1,0 +1,72 @@
+<ion-view id="payroll-deduction" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Payroll Deduction'|translate}}
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list">
+      <div class="item head">
+        <div class="deduction-label">
+          <img src="img/icon-bitcoin-small.svg">
+          <span translate>Deduction</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{depositAmount || '...'}}</div>
+          <div class="right size-12">
+            <div class="exchange-rate">{{exchangeRate}}</div>
+            <div class="exchange-rate-info" translate>* Today's rate.</div>
+            <div class="exchange-rate-info" translate>Transaction rate might be different.</div>
+          </div>
+          <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} <span class="unit">{{btcDisplayUnit}}</span></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="item">
+          <span class="label" translate>Deposit Address</span>
+
+          <span class="deposit-to"> 
+            <div class="verification" ng-class="verified ? 'verified' : (unverifiedAddressAccepted ? 'verified' : 'not-verified')" ng-click="showVerification()">
+              <i class="icon ion-ios-checkmark-empty verification-icon" ng-if="verified"></i>
+              <i class="icon ion-alert-circled verification-icon" ng-if="!verified"></i>
+              <span ng-show="!unverifiedAddressAccepted">bitpay</span>
+              <span ng-show="unverifiedAddressAccepted">OK</span>
+            </div>
+            <div copy-to-clipboard="address" class="address-clipboard ellipsis">
+              <span class="size-14 address ellipsis">
+                {{address}}
+              </span>
+            </div>
+          </span>
+
+        </div>
+        <div class="item item-icon-right" ng-if="wallet">
+          <span class="label">Wallet</span>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+            <div>{{wallet.name}}</div>
+          </div>
+        </div>
+        <div class="item item-icon-right" ng-if="!wallet">
+          <span class="label">Wallet</span>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-unknown.svg" class="bg wallet-unknown"/>
+            </i>
+            <div>Wallet Unknown</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button class="button button-standard button-primary" ng-click="editDeduction()">
+        <span class="">Edit</span>
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

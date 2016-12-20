@@ -1,0 +1,40 @@
+
+<ion-view id="payroll-intro" class="onboarding" hide-tabs>
+  <ion-nav-bar>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title></ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button button-clear" ng-click="payrollInfo()">
+        <i class="icon ion-ios-information-outline payroll__info"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false">
+    <div class="payroll__illustration">
+      <img class="payroll__illustration__img" src="img/payroll-intro.svg">
+    </div>
+    <ion-slide-box>
+      <ion-slide>
+        <p class="slider__text" translate>
+        Receive bitcoin as a portion of your pay.
+        </p>
+      </ion-slide>
+      <ion-slide>
+        <p class="slider__text" translate>
+        Secure delivery of bitcoin directly to your wallet.
+        </p>
+      </ion-slide>
+      <ion-slide>
+        <p class="slider__text" translate>
+        Pay 0% fees to receive bitcoin deposits.
+        </p>
+      </ion-slide>
+    </ion-slide-box>
+    <div class="cta-button">
+      <button class="button button-standard button-primary" ng-click="setupPayroll()" translate>
+        Get Started
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

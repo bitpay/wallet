@@ -1067,6 +1067,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
+        },
+        params: {
+          showRate: true
         }
       })
       .state('tabs.bitpayCard.topup', {
@@ -1086,7 +1089,64 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/preferencesBitpayServices.html'
           }
         }
-      });
+      })
+
+    /*
+     *
+     * Payroll service
+     *
+     */
+
+    .state('tabs.payroll', {
+      url: '/payroll',
+      views: {
+        'tab-settings@tabs': {
+          templateUrl: 'views/payroll/intro.html',
+          controller: 'payrollIntroController'
+        }
+      }
+    })
+    .state('tabs.payroll.depositAddress', {
+      url: '/payroll/deposit-address',
+      views: {
+        'tab-settings@tabs': {
+          templateUrl: 'views/payroll/deposit-address.html',
+          controller: 'payrollDepositAddressController'
+        }
+      }
+    })
+    .state('tabs.payroll.depositAmount', {
+      url: '/payroll/amount/:isWallet/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel',
+      views: {
+        'tab-settings@tabs': {
+          templateUrl: 'views/amount.html',
+          controller: 'amountController'
+        }
+      },
+      params: {
+        isPayroll: true,
+        showRate: true,
+        alternativeExact: true
+      }
+    })
+    .state('tabs.payroll.confirm', {
+      url: '/payroll/confirm/:isWallet/:toAddress/:toName/:depositAmount',
+      views: {
+        'tab-settings@tabs': {
+          templateUrl: 'views/payroll/confirm.html',
+          controller: 'payrollConfirmController'
+        }
+      }
+    })
+    .state('tabs.payroll.deduction', {
+      url: '/payroll/deduction',
+      views: {
+        'tab-settings@tabs': {
+          templateUrl: 'views/payroll/deduction.html',
+          controller: 'payrollDeductionController'
+        }
+      }
+    });
   })
   .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 

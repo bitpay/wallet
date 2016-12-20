@@ -15,6 +15,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    // Default values
+    var showRate = data.stateParams.showRate || 'false';
+    var alternativeExact = data.stateParams.alternativeExact || 'false';
+
+    $scope.viewTitle = data.stateParams.viewTitle || gettextCatalog.getString('Enter Amount');
+    $scope.recipientLabel = data.stateParams.recipientLabel || gettextCatalog.getString('Recipient');
+    $scope.amountLabel = data.stateParams.amountLabel || gettextCatalog.getString('Amount');
+    $scope.showRate = (showRate.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.alternativeExact = (alternativeExact.toString().trim().toLowerCase() == 'true' ? true : false);
 
     // Go to...
     _cardId = data.stateParams.id; // Optional (BitPay Card ID)
@@ -217,6 +226,20 @@ angular.module('copayApp.controllers').controller('amountController', function($
     return result.replace('x', '*');
   };
 
+  $scope.getRates = function() {
+    bitpayCardService.getRates($scope.alternativeIsoCode, function(err, res) {
+      if (err) {
+        $log.warn(err);
+        return;
+      }
+      if ($scope.unitName == 'bits') {
+        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate.toFixed(2) + ' ' + $scope.alternativeIsoCode;
+      } else {
+        $scope.exchangeRate = '1 BTC ~ ' + res.rate.toFixed(2) + ' ' + $scope.alternativeIsoCode;
+      }
+    });
+  };
+
   $scope.finish = function() {
     var _amount = evaluate(format($scope.amount));
 
@@ -226,6 +249,18 @@ angular.module('copayApp.controllers').controller('amountController', function($
         amount: _amount,
         currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : ''
       });
+    } else if ($scope.isPayroll) {
+      // Capture the alternative amount, not the btc amount.
+      var amount = _amount;
+      if (!$scope.showAlternativeAmount) {
+        amount = toFiat(_amount);
+      }
+      $state.transitionTo('tabs.payroll.confirm', {
+        recipientType: $scope.recipientType,
+        toAddress: $scope.toAddress,
+        toName: $scope.toName,
+        depositAmount: amount,
+    });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       if ($scope.customAmount) {

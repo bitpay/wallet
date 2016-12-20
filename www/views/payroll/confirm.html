@@ -1,0 +1,81 @@
+<ion-view id="payroll-confirm" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Confirm Payroll Deduction'|translate}}
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list">
+      <div class="item head">
+        <div class="deduction-label">
+          <img src="img/icon-bitcoin-small.svg">
+          <span translate>Deduction</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{depositAmount || '...'}}</div>
+          <div class="right size-12">
+            <div class="exchange-rate">{{exchangeRate}}</div>
+            <div class="exchange-rate-info" translate>* Today's rate.</div>
+            <div class="exchange-rate-info" translate>Transaction rate might be different.</div>
+          </div>
+          <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} <span class="unit">{{btcDisplayUnit}}</span></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="item">
+          <span class="label" translate>Deposit Address</span>
+          <span class="deposit-to">
+            <img src="img/icon-bitcoin-small.svg">
+
+            <div copy-to-clipboard="address" class="ellipsis">
+              <span class="size-14">{{address}}</span>
+            </div>
+          </span>
+        </div>
+
+        <a class="item item-icon-right" ng-click="showWalletSelector()">
+          <span class="label">Wallet</span>
+          <div class="wallet" ng-if="isWallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+            <div>{{wallet.name}}</div>
+          </div>
+          <div class="wallet" ng-if="!isWallet">
+<!--
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+-->
+            <div>Choose a wallet instead</div>
+          </div>
+
+          <i class="icon bp-arrow-right"></i>
+        </a>
+
+        <div class="item single-line">
+          <span class="label" translate>Effective date</span>
+          <span class="item-note">
+            {{effectiveDate}}
+          </span>
+        </div>
+
+      </div>
+    </div>
+    <div>
+      <button class="button button-standard button-primary" ng-click="confirmDeduction()">
+        <span class="">Confirm</span>
+      </button>
+    </div>
+  </ion-content>
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
+</ion-view>

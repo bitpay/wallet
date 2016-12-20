@@ -179,7 +179,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.wallet.settings.unitCode) {
           configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
-
+        
         if (!configCache.hideNextSteps) {
           configCache.hideNextSteps = defaultConfig.hideNextSteps;
         }
