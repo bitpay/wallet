@@ -17,6 +17,10 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     // Default values
     var showRate = data.stateParams.showRate || 'false';
+<<<<<<< HEAD
+=======
+    var isWallet = data.stateParams.isWallet || 'false';
+>>>>>>> WIP, payroll implementation.
     var alternativeExact = data.stateParams.alternativeExact || 'false';
 
     $scope.viewTitle = data.stateParams.viewTitle || gettextCatalog.getString('Enter Amount');
@@ -25,6 +29,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.showRate = (showRate.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.alternativeExact = (alternativeExact.toString().trim().toLowerCase() == 'true' ? true : false);
 
+<<<<<<< HEAD
     // Go to...
     _cardId = data.stateParams.id; // Optional (BitPay Card ID)
     $scope.nextStep = data.stateParams.nextStep;
@@ -37,12 +42,35 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
     $scope.showAlternativeAmount = !!$scope.nextStep;
+=======
+    // Gift card parameters
+    $scope.isGiftCard = data.stateParams.isGiftCard;
+
+    // Glidera parameters
+    $scope.isGlidera = data.stateParams.isGlidera;
+    $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
+
+    // Payroll parameters
+    $scope.isPayroll = data.stateParams.isPayroll;
+
+    $scope.cardId = data.stateParams.cardId;
+    $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
+    $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.toAddress = data.stateParams.toAddress;
+    $scope.toName = data.stateParams.toName;
+    $scope.toEmail = data.stateParams.toEmail;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera || !!$scope.isPayroll;
+>>>>>>> WIP, payroll implementation.
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
+<<<<<<< HEAD
     if (!$scope.nextStep && !data.stateParams.toAddress) {
+=======
+    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !$scope.isPayroll && !data.stateParams.toAddress) {
+>>>>>>> WIP, payroll implementation.
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -256,7 +284,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
         amount = toFiat(_amount);
       }
       $state.transitionTo('tabs.payroll.confirm', {
+<<<<<<< HEAD
         recipientType: $scope.recipientType,
+=======
+        isWallet: $scope.isWallet,
+>>>>>>> WIP, payroll implementation.
         toAddress: $scope.toAddress,
         toName: $scope.toName,
         depositAmount: amount,

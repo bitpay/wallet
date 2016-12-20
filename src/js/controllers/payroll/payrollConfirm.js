@@ -69,7 +69,7 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     });
   };
 
-  function getCurrentRateStr() {    
+  function getCurrentRateStr() {
     var str = '';
     var config = configService.getSync().wallet.settings;
     var rate = rateService.getRate(config.alternativeIsoCode);
