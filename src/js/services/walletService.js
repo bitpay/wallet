@@ -827,7 +827,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   var askPassword = function(name, title, cb) {
     var opts = {
       inputType: 'password',
-      forceHTMLPrompt: true
+      forceHTMLPrompt: true,
+      class: 'text-warn'
     };
     popupService.showPrompt(title, name, opts, function(res) {
       if (!res) return cb();
@@ -838,10 +839,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.encrypt = function(wallet, cb) {
     var title = gettextCatalog.getString('Enter new spending password');
-    askPassword(wallet.name, title, function(password) {
+    var warnMsg = gettextCatalog.getString('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
+    askPassword(warnMsg, title, function(password) {
       if (!password) return cb('no password');
       title = gettextCatalog.getString('Confirm you new spending password');
-      askPassword(wallet.name, gettextCatalog.getString('Confirm you new spending password'), function(password2) {
+      askPassword(warnMsg, gettextCatalog.getString('Confirm you new spending password'), function(password2) {
         if (!password2 || password != password2)
           return cb('password mismatch');
 
@@ -854,7 +856,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.decrypt = function(wallet, cb) {
     $log.debug('Disabling private key encryption for' + wallet.name);
-    askPassword(wallet.name, gettextCatalog.getString('Enter Spending Password'), function(password) {
+    askPassword(null, gettextCatalog.getString('Enter Spending Password'), function(password) {
       if (!password) return cb('no password');
 
       try {
