@@ -5,7 +5,7 @@
 #define MyAppVersion "*VERSION*"
 #define MyAppPublisher "BitPay"
 #define MyAppURL "*URL*"
-#define MyAppExeName "*PACKAGENAME*.exe"
+#define MyAppExeName "*USERVISIBLENAME*.exe"
 #define AppId "*WINDOWSAPPID*"
 
 [Setup]
@@ -19,7 +19,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=*PACKAGENAME*-win
+OutputBaseFilename=*USERVISIBLENAME*-win
 OutputDir=./
 Compression=lzma
 SolidCompression=yes
@@ -33,9 +33,9 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "*PACKAGENAME*\win64\*PACKAGENAME*.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "*PACKAGENAME*\win64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../www/img/icons/favicon.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
+Source: "*USERVISIBLENAME*\win64\*USERVISIBLENAME*.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "*USERVISIBLENAME*\win64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../www/img/app/favicon.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
