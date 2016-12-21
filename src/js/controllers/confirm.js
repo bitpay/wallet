@@ -121,8 +121,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     displayValues();
     if ($scope.wallets.length > 1) $scope.showWalletSelector();
-    else $scope.wallet = $scope.wallets[0];
-
+    else setWallet($scope.wallets[0]);
     $timeout(function() {
       $scope.$apply();
     });
