@@ -1,8 +1,11 @@
 
 <ion-view id="payroll-intro" class="onboarding" hide-tabs>
   <ion-nav-bar>
-    <ion-nav-back-button>
-    </ion-nav-back-button>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="goBackToSettings()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
     <ion-nav-title></ion-nav-title>
     <ion-nav-buttons side="secondary">
       <button class="button button-clear" ng-click="payrollInfo()">
@@ -12,7 +15,7 @@
   </ion-nav-bar>
   <ion-content scroll="false">
     <div class="payroll__illustration">
-      <img class="payroll__illustration__img" src="img/payroll-intro.svg">
+      <img class="payroll__illustration__img" src="img/onboarding-payroll.svg">
     </div>
     <ion-slide-box>
       <ion-slide>

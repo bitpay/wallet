@@ -36,10 +36,9 @@
         <span>{{'Share'|translate}} {{appName}}</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-
       <div class="item item-divider">{{'Services' | translate}}</div>
 
-      <a class="item item-icon-left item-icon-right" ui-sref="tabs.payroll">
+      <a class="item item-icon-left item-icon-right" ui-sref="{{payrollStart}}" ng-if="payrollEnabled">
         <i class="icon big-icon-svg">
           <img src="img/icon-bitcoin-small.svg" class="bg"/>
         </i>

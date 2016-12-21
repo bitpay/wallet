@@ -1,8 +1,16 @@
-<ion-view id="payroll-deposit-address">
+<ion-view id="payroll-deposit-address" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Deposit Address' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
+    <div class="item item-heading deposit-address-heading" translate>Deposit to Address</div>
+    <div class="item item-icon-left item-icon-right input">
+      <i class="icon icon-svg left"><img src="img/icon-bitcoin-symbol.svg"></i>
+      <input type="text" placeholder="{{'Enter bitcoin address' | translate}}" ng-model="formData.depositAddress" ng-model-onblur ng-change="onAddressEntry(formData.depositAddress)">
+      <i class="icon icon-svg qr" on-tap="openScanner()"><img src="img/scan-ico.svg"/></i>
+    </div>
     <div class="card" ng-if="hasWallets">
       <div class="list">
         <div class="item item-heading">
@@ -17,14 +25,5 @@
         </a>
       </div>
     </div>
-
-    <div class="item item-heading deposit-address-heading" translate>Deposit to Address</div>
-
-    <div class="item item-icon-left item-icon-right input">
-      <i class="icon icon-svg left"><img src="img/icon-bitcoin-symbol.svg"></i>
-      <input type="text" placeholder="{{'Enter bitcoin address' | translate}}" ng-model="formData.depositAddress" ng-model-onblur ng-change="onAddressEntry(formData.depositAddress)">
-      <i class="icon icon-svg qr" on-tap="openScanner()"><img src="img/scan-ico.svg"/></i>
-    </div>
-
   </ion-content>
 </ion-view>

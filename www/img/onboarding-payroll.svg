@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="247px" height="248px" viewBox="0 0 247 248" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="89.4673583%" id="linearGradient-1">
+            <stop stop-color="#3950B5" offset="0%"></stop>
+            <stop stop-color="#162360" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-2" x="0" y="0" width="123" height="34"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="onboarding-push-notifications" transform="translate(0.000000, 1.000000)">
+            <g id="Onboarding">
+                <g id="0.4---Allow-Push-Notifications">
+                    <g id="Group-7">
+                        <path d="M123.5,247 C191.707167,247 247,191.707167 247,123.5 C247,55.2928334 191.707167,1.42108547e-14 123.5,1.42108547e-14 C55.2928334,1.42108547e-14 1.42108547e-14,55.2928334 1.42108547e-14,123.5 C1.42108547e-14,191.707167 55.2928334,247 123.5,247 Z" id="Oval-2" fill="url(#linearGradient-1)" opacity="0.300000012"></path>
+                        <g id="Phone" transform="translate(62.000000, 0.000000)" stroke="#647CE8" stroke-width="2">
+                            <rect id="Combined-Shape" fill="#253377" x="0" y="0" width="122.16932" height="220.464844" rx="8"></rect>
+                            <path d="M0.636298539,187 L121.533021,187" id="Line"></path>
+                            <path d="M50.2675846,203 L73.174332,203" id="Line"></path>
+                        </g>
+                        <g id="Group-3" transform="translate(61.000000, 108.000000)">
+                            <path d="M12.8147337,19.5 L50.9050318,19.5" id="Line" stroke="#12E5B6" stroke-width="3"></path>
+                            <path d="M22.14,10.4166666 L43.3551214,10.4166666" id="Line" stroke="#12E5B6" stroke-width="3"></path>
+                            <g id="Rectangle-3-Clipped">
+                                <mask id="mask-3" fill="white">
+                                    <use xlink:href="#path-2"></use>
+                                </mask>
+                                <g id="path-2"></g>
+                                <g id="Rectangle-3" mask="url(#mask-3)" stroke="#677AE7" stroke-width="2">
+                                    <rect id="path-2" x="0" y="0" width="123" height="34"></rect>
+                                </g>
+                            </g>
+                        </g>
+                        <rect id="Rectangle" fill="#253377" x="115" y="107" width="68" height="3"></rect>
+                        <g id="B-circle" transform="translate(103.000000, 34.000000)">
+                            <ellipse id="Oval-2" stroke="#647CE8" stroke-width="2" fill-opacity="0.41907269" fill="#5462B1" opacity="0.945615695" cx="47" cy="44.4884375" rx="47" ry="44.4884375"></ellipse>
+                            <g id="B" transform="translate(28.000000, 17.000000)" stroke="#FFFFFF" stroke-width="5" opacity="0.899286685">
+                                <g id="shopping-48px-outline_bitcoin" transform="translate(0.666667, 0.180606)">
+                                    <g id="Group" transform="translate(0.619048, 0.627502)">
+                                        <path d="M12,0 L12,7.5300202" id="Shape"></path>
+                                        <path d="M19,0 L19,7.5300202" id="Shape"></path>
+                                        <path d="M12,47.6901279 L12,55.2201481" id="Shape"></path>
+                                        <path d="M19,47.6901279 L19,55.2201481" id="Shape"></path>
+                                        <path d="M0,47.691892 L7.42857143,47.691892" id="Shape-Copy"></path>
+                                        <path d="M0,7.531892 L7.42857143,7.531892" id="Shape-Copy-2"></path>
+                                        <path d="M7.42857143,25.1000673 L7.42857143,7.5300202 L21.8042328,7.5300202 C26.9010582,7.5300202 30.952381,11.4205306 30.952381,16.3150438 C30.952381,21.2095569 26.9010582,25.1000673 21.8042328,25.1000673" id="Shape"></path>
+                                        <path d="M7.42857143,47.6901279 L7.42857143,25.1000673 L23.6785714,25.1000673 C29.0952381,25.1000673 33.4285714,30.1200808 33.4285714,36.3950976 C33.4285714,42.6701145 29.0952381,47.6901279 23.6785714,47.6901279 L7.42857143,47.6901279 Z" id="Shape"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                        <g id="Arrow" transform="translate(52.792893, 77.500000) rotate(-135.000000) translate(-52.792893, -77.500000) translate(16.792893, 41.500000)" stroke="#647CE8" stroke-width="5" stroke-linecap="square">
+                            <path d="M4.5,67.5 L71.6751442,0.324855787" id="Line"></path>
+                            <path d="M3.70710678,69.6262266 L23.7071068,69.6262266" id="Line"></path>
+                            <path d="M3.20710678,49 L3.20710678,69" id="Line"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

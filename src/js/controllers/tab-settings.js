@@ -35,6 +35,11 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
           $rootScope.$apply();
         }, 10);
       });
+
+      $scope.payrollStart = 'tabs.payroll';
+      if (configService.getSync().payroll.settings != {}) {
+        $scope.payrollStart = 'tabs.payroll.deduction';
+      }
     });
   };
 

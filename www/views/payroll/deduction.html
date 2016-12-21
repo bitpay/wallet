@@ -1,10 +1,13 @@
-<ion-view id="payroll-deduction" hide-tabs>
+<ion-view id="payroll-deduction">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Payroll Deduction'|translate}}
     </ion-nav-title>
-    <ion-nav-back-button>
-    </ion-nav-back-button>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="goBackToSettings()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
@@ -15,25 +18,24 @@
           <span translate>Deduction</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{depositAmount || '...'}}</div>
+          <div class="amount">{{depositAmount || '...'}} <span class="unit">{{depositDisplayUnit}}<span></div>
           <div class="right size-12">
             <div class="exchange-rate">{{exchangeRate}}</div>
             <div class="exchange-rate-info" translate>* Today's rate.</div>
             <div class="exchange-rate-info" translate>Transaction rate might be different.</div>
           </div>
-          <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} <span class="unit">{{btcDisplayUnit}}</span></div>
+          <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} {{btcDisplayUnit}}</div>
         </div>
       </div>
       <div class="info">
         <div class="item">
           <span class="label" translate>Deposit Address</span>
-
           <span class="deposit-to"> 
             <div class="verification" ng-class="verified ? 'verified' : (unverifiedAddressAccepted ? 'verified' : 'not-verified')" ng-click="showVerification()">
-              <i class="icon ion-ios-checkmark-empty verification-icon" ng-if="verified"></i>
-              <i class="icon ion-alert-circled verification-icon" ng-if="!verified"></i>
-              <span ng-show="!unverifiedAddressAccepted">bitpay</span>
-              <span ng-show="unverifiedAddressAccepted">OK</span>
+              <i class="icon ion-ios-checkmark-empty verification-icon" ng-if="verified || unverifiedAddressAccepted"></i>
+              <i class="icon ion-alert-circled verification-icon" ng-if="!verified && !unverifiedAddressAccepted"></i>
+              <span ng-show="!unverifiedAddressAccepted" class="certifier" translate>bitpay</span>
+              <span ng-show="unverifiedAddressAccepted" class="certifier" translate>OK</span>
             </div>
             <div copy-to-clipboard="address" class="address-clipboard ellipsis">
               <span class="size-14 address ellipsis">
@@ -41,10 +43,9 @@
               </span>
             </div>
           </span>
-
         </div>
         <div class="item item-icon-right" ng-if="wallet">
-          <span class="label">Wallet</span>
+          <span class="label" translate>Wallet</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -53,19 +54,22 @@
           </div>
         </div>
         <div class="item item-icon-right" ng-if="!wallet">
-          <span class="label">Wallet</span>
+          <span class="label" translate>Wallet</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
-              <img src="img/icon-unknown.svg" class="bg wallet-unknown"/>
+              <img src="img/icon-wallet-external.svg" class="bg wallet-external"/>
             </i>
-            <div>Wallet Unknown</div>
+            <div>{{externalWalletName}}</div>
           </div>
         </div>
       </div>
     </div>
     <div>
       <button class="button button-standard button-primary" ng-click="editDeduction()">
-        <span class="">Edit</span>
+        <span translate>Change</span>
+      </button>
+      <button class="button button-standard button-secondary button-clear" ng-click="cancelDeduction()">
+        <span translate>Cancel Payroll Deduction</span>
       </button>
     </div>
   </ion-content>

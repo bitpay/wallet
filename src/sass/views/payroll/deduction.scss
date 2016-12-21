@@ -100,7 +100,7 @@
     .deposit-to {
       width: 100%;
       display: inline-block;
-      padding: 8px 13px 8px 6px;
+      padding: 4px 6px 4px 6px;
       background-color: rgba(203, 203, 203, .13);
       margin-top: 10px;
       margin-bottom: 5px;
@@ -112,8 +112,8 @@
         font-size: 12px;
         border: 1px solid;
         border-radius: 3px;
-        padding: 2px 6px 2px 3px;
-        position: absolute;
+        padding: 2px 10px 2px 2px;
+        position: relative;
 
         .verification-icon {
           color: inherit;
@@ -145,10 +145,10 @@
       }
 
       .address-clipboard {
-        margin-left: 65px;
+        margin-left: 5px;
       }
 
-      span {
+      .certifier {
       	margin-left: 18px;
       }
 
@@ -176,7 +176,7 @@
         top: 14px;
       }
 
-      .wallet-unknown {
+      .wallet-external {
         background-color: $light-gray
       }
 

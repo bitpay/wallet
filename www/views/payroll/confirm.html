@@ -15,13 +15,13 @@
           <span translate>Deduction</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{depositAmount || '...'}}</div>
+          <div class="amount">{{depositAmount || '...'}}  <span class="unit">{{depositDisplayUnit}}<span></div>
           <div class="right size-12">
             <div class="exchange-rate">{{exchangeRate}}</div>
             <div class="exchange-rate-info" translate>* Today's rate.</div>
             <div class="exchange-rate-info" translate>Transaction rate might be different.</div>
           </div>
-          <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} <span class="unit">{{btcDisplayUnit}}</span></div>
+          <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} {{btcDisplayUnit}}</div>
         </div>
       </div>
       <div class="info">
@@ -35,39 +35,37 @@
             </div>
           </span>
         </div>
-
-        <a class="item item-icon-right" ng-click="showWalletSelector()">
-          <span class="label">Wallet</span>
-          <div class="wallet" ng-if="isWallet">
+        <a class="item item-icon-right" ng-if="wallet" ng-click="showWalletSelector()">
+          <span class="label" translate>Wallet</span>
+          <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
             </i>
             <div>{{wallet.name}}</div>
           </div>
-          <div class="wallet" ng-if="!isWallet">
-<!--
-            <i class="icon big-icon-svg">
-              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
-            </i>
--->
-            <div>Choose a wallet instead</div>
-          </div>
-
           <i class="icon bp-arrow-right"></i>
         </a>
-
+        <div class="item item-icon-right" ng-if="!wallet" ng-click="renameExternalWallet()">
+          <span class="label" translate>Wallet</span>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet-external.svg" class="bg wallet-external"/>
+            </i>
+            <div>{{externalWalletName}}</div>
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </div>
         <div class="item single-line">
-          <span class="label" translate>Effective date</span>
+          <span class="label" translate>Next effective pay date</span>
           <span class="item-note">
             {{effectiveDate}}
           </span>
         </div>
-
       </div>
     </div>
     <div>
       <button class="button button-standard button-primary" ng-click="confirmDeduction()">
-        <span class="">Confirm</span>
+        <span translate>Confirm</span>
       </button>
     </div>
   </ion-content>
