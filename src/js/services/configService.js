@@ -65,7 +65,17 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     payroll: {
       enabled: true,
-      unverifiedAddressAccepted: false
+      deductionCacheValid: false,
+      deductionCache: {
+        // active
+        // address
+        // walletId
+        // amount
+        // currencyCode
+        // effectiveDate
+        // externalWalletName
+        // unverifiedAddressAccepted
+      }
     },
 
     //Experimental Features
