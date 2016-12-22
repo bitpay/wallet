@@ -82,7 +82,8 @@ angular.module('copayApp.controllers').controller('amazonController',
                     $scope.giftCards = lodash.isEmpty(gcds) ? null : gcds;
                     $timeout(function() {
                       $scope.$digest();
-                    });
+                      $ionicScrollDelegate.resize();
+                    }, 10);
                   });
                 });
               } else $log.debug("pending gift card not available yet");
@@ -107,9 +108,6 @@ angular.module('copayApp.controllers').controller('amazonController',
 
       $scope.$on('modal.hidden', function() {
         $scope.updatePendingGiftCards();
-        $timeout(function() {
-          $ionicScrollDelegate.resize();
-        }, 10);
       });
     };
 
