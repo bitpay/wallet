@@ -3,7 +3,6 @@
 angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, $ionicPopover, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError) {
 
   var listeners = [];
-  var MENU_ITEM_HEIGHT = 55;
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
   $scope.walletAddrs = {};
