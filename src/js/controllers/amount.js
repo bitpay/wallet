@@ -51,15 +51,23 @@ angular.module('copayApp.controllers').controller('amountController', function($
     }
 
     if ($scope.isCoinbase) {
-      var currency = 'USD';
+      var currency = 'USD'; 
+
       coinbaseService.init(function(err, data) {
         if ($scope.isCoinbase == 'buy') {
           coinbaseService.buyPrice(data.accessToken, currency, function(err, b) {
             $scope.coinbaseBuyPrice = b.data || null;
           });
         } else {
-          coinbaseService.sellPrice(data.accessToken, currency, function(err, b) {
-            $scope.coinbaseSellPrice = b.data || null;
+          coinbaseService.sellPrice(data.accessToken, currency, function(err, s) {
+            $scope.coinbaseSellPrice = s.data || null;
+          });
+
+          var dataSrc = {
+            name: 'Received from ' + $window.appConfig.nameCase
+          };
+          coinbaseService.createAddress(data.accessToken, data.accountId, dataSrc, function(err, data) {
+            $scope.toAddress = data.data.address;
           });
         }
 
@@ -394,10 +402,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
         popupService.showAlert(gettextCatalog.getString('Error'), 'No Payment Method Selected');
         return;
       }
+      if ($scope.isCoinbase == 'sell' && lodash.isEmpty($scope.toAddress)) {
+        popupService.showAlert(gettextCatalog.getString('Error'), 'No Destination Address');
+        return;
+      }
       var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.buyandsell.coinbase.confirm', {
         toAmount: (amount * unitToSatoshi).toFixed(0),
+        toAddress: $scope.toAddress,
         isCoinbase: $scope.isCoinbase,
         coinbasePaymentMethodId: $scope.coinbaseSelectedPaymentMethod.id,
         coinbaseAmount: amountUSD,

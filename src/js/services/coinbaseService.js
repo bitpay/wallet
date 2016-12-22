@@ -6,9 +6,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var isCordova = platformInfo.isCordova;
   var isNW = platformInfo.isNW;
 
-  // FAKE DATA
-  var isFake = true;
-
   root.priceSensitivity = [
     {
       value: 0.5,
@@ -271,13 +268,23 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.getTransaction = function(token, accountId, transactionId, cb) {
-    if (isFake) return cb(null, get_transaction);
     if (!token) return cb('Invalid Token');
     $http(_get('/accounts/' + accountId + '/transactions/' + transactionId, token)).then(function(data) {
       $log.info('Coinbase Transaction: SUCCESS');
       return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Transaction: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
+  root.getAddressTransactions = function(token, accountId, addressId, cb) {
+    if (!token) return cb('Invalid Token');
+    $http(_get('/accounts/' + accountId + '/addresses/' + addressId + '/transactions', token)).then(function(data) {
+      $log.info('Coinbase Address s Transactions: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Coinbase Address s Transactions: ERROR ' + data.statusText);
       return cb(data.data);
     });
   };
@@ -325,7 +332,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.getPaymentMethods = function(token, cb) {
-    if (isFake) return cb(null, payment_methods);
     $http(_get('/payment-methods', token)).then(function(data) {
       $log.info('Coinbase Get Payment Methods: SUCCESS');
       return cb(null, data.data);
@@ -385,7 +391,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.buyRequest = function(token, accountId, data, cb) {
-    if (isFake) return cb(null, buy_request);
     var data = {
       amount: data.amount,
       currency: data.currency,
@@ -402,7 +407,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.buyCommit = function(token, accountId, buyId, cb) {
-    if (isFake) return cb(null, buy_commit);
     $http(_post('/accounts/' + accountId + '/buys/' + buyId + '/commit', token)).then(function(data) {
       $log.info('Coinbase Buy Commit: SUCCESS');
       return cb(null, data.data);
@@ -426,7 +430,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.sendTo = function(token, accountId, data, cb) {
-    if (isFake) return cb(null, send_to_copay);
     var data = {
       type: 'send',
       to: data.to,
@@ -485,7 +488,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
           (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) 
           return cb(null, coinbasePendingTransactions);
         root.getTransaction(accessToken, accountId, txId, function(err, tx) {
-          if (err) {
+          if (err || lodash.isEmpty(tx)) {
             _savePendingTransaction(dataFromStorage, {
               status: 'error',
               error: err
@@ -631,208 +634,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
         return cb();
       });
     });
-  };
-
-  var buy_request = {
-    "data" : {
-      "id": "a333743d-184a-5b5b-abe8-11612fc44ab5",
-      "status": "created",
-      "payment_method": {
-        "id": "83562370-3e5c-51db-87da-752af5ab9559",
-        "resource": "payment_method",
-        "resource_path": "/v2/payment-methods/83562370-3e5c-51db-87da-752af5ab9559"
-      },
-      "transaction": {
-        "id": "763d1401-fd17-5a18-852a-9cca5ac2f9c0",
-        "resource": "transaction",
-        "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/441b9494-b3f0-5b98-b9b0-4d82c21c252a"
-      },
-      "amount": {
-        "amount": "10.00000000",
-        "currency": "BTC"
-      },
-      "total": {
-        "amount": "102.01",
-        "currency": "USD"
-      },
-      "subtotal": {
-        "amount": "101.00",
-        "currency": "USD"
-      },
-      "created_at": "2015-04-01T18:43:37-07:00",
-      "updated_at": "2015-04-01T18:43:37-07:00",
-      "resource": "buy",
-      "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/buys/a333743d-184a-5b5b-abe8-11612fc44ab5",
-      "committed": false,
-      "instant": false,
-      "fee": {
-        "amount": "1.01",
-        "currency": "USD"
-      },
-      "payout_at": "2015-04-07T18:43:37-07:00"
-    }
-  };
-
-  var payment_methods = {
-    "pagination": {
-      "ending_before": null,
-      "starting_after": null,
-      "limit": 25,
-      "order": "desc",
-      "previous_uri": null,
-      "next_uri": null
-    },
-    "data": [
-      {
-        "id": "127b4d76-a1a0-5de7-8185-3657d7b526ec",
-        "type": "fiat_account",
-        "name": "USD Wallet",
-        "currency": "USD",
-        "primary_buy": false,
-        "primary_sell": false,
-        "allow_buy": true,
-        "allow_sell": true,
-        "allow_deposit": true,
-        "allow_withdraw": true,
-        "instant_buy": true,
-        "instant_sell": true,
-        "created_at": "2015-02-24T14:30:30-08:00",
-        "updated_at": "2015-02-24T14:30:30-08:00",
-        "resource": "payment_method",
-        "resource_path": "/v2/payment-methods/127b4d76-a1a0-5de7-8185-3657d7b526ec",
-        "fiat_account": {
-          "id": "a077fff9-312b-559b-af98-146c33e27388",
-          "resource": "account",
-          "resource_path": "/v2/accounts/a077fff9-312b-559b-af98-146c33e27388"
-        }
-      },
-      {
-        "id": "83562370-3e5c-51db-87da-752af5ab9559",
-        "type": "ach_bank_account",
-        "name": "International Bank *****1111",
-        "currency": "USD",
-        "primary_buy": true,
-        "primary_sell": true,
-        "allow_buy": true,
-        "allow_sell": true,
-        "allow_deposit": true,
-        "allow_withdraw": true,
-        "instant_buy": false,
-        "instant_sell": false,
-        "created_at": "2015-01-31T20:49:02Z",
-        "updated_at": "2015-02-11T16:53:57-08:00",
-        "resource": "payment_method",
-        "resource_path": "/v2/payment-methods/83562370-3e5c-51db-87da-752af5ab9559"
-      }
-    ]
-  };
-
-  var get_transaction = {
-    "data" : {
-      "id": "57ffb4ae-0c59-5430-bcd3-3f98f797a66c",
-      "type": "send",
-      "status": "completed",
-      "amount": {
-        "amount": "-0.00100000",
-        "currency": "BTC"
-      },
-      "native_amount": {
-        "amount": "-0.01",
-        "currency": "USD"
-      },
-      "description": null,
-      "created_at": "2015-03-11T13:13:35-07:00",
-      "updated_at": "2015-03-26T15:55:43-07:00",
-      "resource": "transaction",
-      "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/57ffb4ae-0c59-5430-bcd3-3f98f797a66c",
-      "network": {
-        "status": "off_blockchain",
-        "name": "bitcoin"
-      },
-      "to": {
-        "id": "a6b4c2df-a62c-5d68-822a-dd4e2102e703",
-        "resource": "user",
-        "resource_path": "/v2/users/a6b4c2df-a62c-5d68-822a-dd4e2102e703"
-      },
-      "details": {
-        "title": "Send bitcoin",
-        "subtitle": "to User 2"
-      }
-    }
-  };
-
-  var buy_commit = {
-    "data" : {
-      "id": "a333743d-184a-5b5b-abe8-11612fc44ab5",
-      "status": "created",
-      "payment_method": {
-        "id": "83562370-3e5c-51db-87da-752af5ab9559",
-        "resource": "payment_method",
-        "resource_path": "/v2/payment-methods/83562370-3e5c-51db-87da-752af5ab9559"
-      },
-      "transaction": {
-        "id": "763d1401-fd17-5a18-852a-9cca5ac2f9c0",
-        "resource": "transaction",
-        "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/441b9494-b3f0-5b98-b9b0-4d82c21c252a"
-      },
-      "amount": {
-        "amount": "10.00000000",
-        "currency": "BTC"
-      },
-      "total": {
-        "amount": "102.01",
-        "currency": "USD"
-      },
-      "subtotal": {
-        "amount": "101.00",
-        "currency": "USD"
-      },
-      "created_at": "2015-04-01T18:43:37-07:00",
-      "updated_at": "2015-04-01T18:43:37-07:00",
-      "resource": "buy",
-      "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/buys/a333743d-184a-5b5b-abe8-11612fc44ab5",
-      "committed": true,
-      "instant": false,
-      "fee": {
-        "amount": "1.01",
-        "currency": "USD"
-      },
-      "payout_at": "2015-04-07T18:43:37-07:00"
-    }
-  };
-
-  var send_to_copay = {
-    "data" : {
-      "id": "3c04e35e-8e5a-5ff1-9155-00675db4ac02",
-      "type": "send",
-      "status": "pending",
-      "amount": {
-        "amount": "-0.10000000",
-        "currency": "BTC"
-      },
-      "native_amount": {
-        "amount": "-1.00",
-        "currency": "USD"
-      },
-      "description": null,
-      "created_at": "2015-01-31T20:49:02Z",
-      "updated_at": "2015-03-31T17:25:29-07:00",
-      "resource": "transaction",
-      "resource_path": "/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/3c04e35e-8e5a-5ff1-9155-00675db4ac02",
-      "network": {
-        "status": "unconfirmed",
-        "hash": "463397c87beddd9a61ade61359a13adc9efea26062191fe07147037bce7f33ed",
-        "name": "bitcoin"
-      },
-      "to": {
-        "resource": "bitcoin_address",
-        "address": "1AUJ8z5RuHRTqD1eikyfUUetzGmdWLGkpT"
-      },
-      "details": {
-        "title": "Send bitcoin",
-        "subtitle": "to User 2"
-      }
-    }
   };
 
   return root;
