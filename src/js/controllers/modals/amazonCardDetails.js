@@ -1,18 +1,22 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $log, $timeout, bwcError, amazonService, lodash, ongoingProcess, popupService, gettextCatalog, externalLinkService) {
+angular.module('copayApp.controllers').controller('amazonCardDetailsController', function($scope, $log, $timeout, $ionicScrollDelegate, bwcError, amazonService, lodash, ongoingProcess, popupService, externalLinkService) {
 
   $scope.cancelGiftCard = function() {
-    ongoingProcess.set('Canceling gift card...', true);
+    ongoingProcess.set('cancelGiftCard', true);
     amazonService.cancelGiftCard($scope.card, function(err, data) {
-      ongoingProcess.set('Canceling gift card...', false);
+      ongoingProcess.set('cancelGiftCard', false);
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+        popupService.showAlert('Error', bwcError.msg(err));
         return;
       }
       $scope.card.cardStatus = data.cardStatus;
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+        $ionicScrollDelegate.scrollTop();
+      }, 10);
       amazonService.savePendingGiftCard($scope.card, null, function(err) {
-        $scope.$emit('UpdateAmazonList');
+        $scope.refreshGiftCard();
       });
     });
   };
@@ -21,23 +25,34 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
     amazonService.savePendingGiftCard($scope.card, {
       remove: true
     }, function(err) {
-      $scope.$emit('UpdateAmazonList');
       $scope.cancel();
     });
   };
 
   $scope.refreshGiftCard = function() {
+    ongoingProcess.set('updateGiftCard', true);
     amazonService.getPendingGiftCards(function(err, gcds) {
+      if (lodash.isEmpty(gcds)) {
+        $timeout(function() {
+          ongoingProcess.set('updateGiftCard', false);
+        }, 1000);
+      }
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), err);
+        popupService.showAlert('Error', err);
         return;
       }
+      var index = 0;
       lodash.forEach(gcds, function(dataFromStorage) {
+        if (++index == Object.keys(gcds).length) {
+          $timeout(function() {
+            ongoingProcess.set('updateGiftCard', false);
+          }, 1000);
+        }
         if (dataFromStorage.status == 'PENDING' && dataFromStorage.invoiceId == $scope.card.invoiceId) {
           $log.debug("creating gift card");
           amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
             if (err) {
-              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+              popupService.showAlert('Error', bwcError.msg(err));
               return;
             }
             if (!lodash.isEmpty(giftCard)) {
@@ -46,7 +61,6 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
               amazonService.savePendingGiftCard(newData, null, function(err) {
                 $log.debug("Saving new gift card");
                 $scope.card = newData;
-                $scope.$emit('UpdateAmazonList');
                 $timeout(function() {
                   $scope.$digest();
                 });

@@ -12,23 +12,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   var errors = bwcService.getErrors();
 
-  // UI Related
-  root.openStatusModal = function(type, txp, cb) {
-    var scope = $rootScope.$new(true);
-    scope.type = type;
-    scope.tx = txFormatService.processTx(txp);
-    scope.color = txp.color;
-    scope.cb = cb;
-
-    $ionicModal.fromTemplateUrl('views/modals/tx-status.html', {
-      scope: scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      scope.txStatusModal = modal;
-      scope.txStatusModal.show();
-    });
-  };
-
   var _signWithLedger = function(wallet, txp, cb) {
     $log.info('Requesting Ledger Chrome app to sign the transaction');
 
@@ -961,23 +944,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
               if (err) return cb(bwcError.msg(err));
 
               $rootScope.$emit('Local/TxAction', wallet.id);
-              var type = root.getViewStatus(wallet, broadcastedTxp);
-
-              if (!customStatusHandler) {
-                root.openStatusModal(type, broadcastedTxp, function() {});
-              }
-
               return cb(null, broadcastedTxp);
             });
           } else {
             $rootScope.$emit('Local/TxAction', wallet.id);
-
-            var type = root.getViewStatus(wallet, signedTxp);
-
-            if (!customStatusHandler) {
-              root.openStatusModal(type, signedTxp, function() {});
-            }
-
             return cb(null, signedTxp);
           }
         });
@@ -1052,38 +1022,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return wallet.getKeys(password);
     } catch (e) {}
   }
-
-  root.getViewStatus = function(wallet, txp) {
-    var status = txp.status;
-    var type;
-    var INMEDIATE_SECS = 10;
-
-    if (status == 'broadcasted') {
-      type = 'broadcasted';
-    } else {
-
-      var n = txp.actions.length;
-      var action = lodash.find(txp.actions, {
-        copayerId: wallet.credentials.copayerId
-      });
-
-      if (!action) {
-        type = 'created';
-      } else if (action.type == 'accept') {
-        // created and accepted at the same time?
-        if (n == 1 && action.createdOn - txp.createdOn < INMEDIATE_SECS) {
-          type = 'created';
-        } else {
-          type = 'accepted';
-        }
-      } else if (action.type == 'reject') {
-        type = 'rejected';
-      } else {
-        throw new Error('Unknown type:' + type);
-      }
-    }
-    return type;
-  };
 
   root.getSendMaxInfo = function(wallet, opts, cb) {
     opts = opts || {};

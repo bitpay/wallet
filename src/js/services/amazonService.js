@@ -8,7 +8,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
      * Development: 'testnet'
      * Production: 'livenet'
      */
-    credentials.NETWORK = 'livenet';
+    credentials.NETWORK = 'testnet';
 
     if (credentials.NETWORK == 'testnet') {
       credentials.BITPAY_API_URL = "https://test.bitpay.com";

@@ -39,7 +39,11 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'sendingByEmail': gettext('Preparing addresses...'),
     'sending2faCode': gettext('Sending 2FA code...'),
     'buyingBitcoin': gettext('Buying Bitcoin...'),
-    'sellingBitcoin': gettext('Selling Bitcoin...')
+    'sellingBitcoin': gettext('Selling Bitcoin...'),
+    'updateGiftCards': gettext('Updating Gift Cards...'),
+    'updateGiftCard': gettext('Updating Gift Card...'),
+    'cancelGiftCard': gettext('Canceling Gift Card...'),
+    'createGiftCard': gettext('Creating Gift Card...')
   };
 
   root.clear = function() {
