@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettext, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, $state) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, $state) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -361,14 +361,14 @@ angular.module('copayApp.services')
 
         } catch (ex) {
           $log.info(ex);
-          return cb(gettext('Could not create: Invalid wallet recovery phrase'));
+          return cb(gettextCatalog.getString('Could not create: Invalid wallet recovery phrase'));
         }
       } else if (opts.extendedPrivateKey) {
         try {
           walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
         } catch (ex) {
           $log.warn(ex);
-          return cb(gettext('Could not create using the specified extended private key'));
+          return cb(gettextCatalog.getString('Could not create using the specified extended private key'));
         }
       } else if (opts.extendedPublicKey) {
         try {
@@ -378,7 +378,7 @@ angular.module('copayApp.services')
           });
         } catch (ex) {
           $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
-          return cb(gettext('Could not create using the specified extended public key'));
+          return cb(gettextCatalog.getString('Could not create using the specified extended public key'));
         }
       } else {
         var lang = uxLanguage.getCurrentLanguage();
@@ -421,7 +421,7 @@ angular.module('copayApp.services')
             singleAddress: opts.singleAddress,
             walletPrivKey: opts.walletPrivKey,
           }, function(err, secret) {
-            if (err) return bwcError.cb(err, gettext('Error creating wallet'), cb);
+            if (err) return bwcError.cb(err, gettextCatalog.getString('Error creating wallet'), cb);
             return cb(null, walletClient, secret);
           });
         });
@@ -451,11 +451,11 @@ angular.module('copayApp.services')
         if (lodash.find(root.profile.credentials, {
             'walletId': walletData.walletId
           })) {
-          return cb(gettext('Cannot join the same wallet more that once'));
+          return cb(gettextCatalog.getString('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
         $log.debug(ex);
-        return cb(gettext('Bad wallet invitation'));
+        return cb(gettextCatalog.getString('Bad wallet invitation'));
       }
       opts.networkName = walletData.network;
       $log.debug('Joining Wallet:', opts);
@@ -464,7 +464,7 @@ angular.module('copayApp.services')
         if (err) return cb(err);
 
         walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
-          if (err) return bwcError.cb(err, gettext('Could not join wallet'), cb);
+          if (err) return bwcError.cb(err, gettextCatalog.getString('Could not join wallet'), cb);
           addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
           }, cb);
@@ -521,12 +521,12 @@ angular.module('copayApp.services')
     // Adds and bind a new client to the profile
     var addAndBindWalletClient = function(client, opts, cb) {
       if (!client || !client.credentials)
-        return cb(gettext('Could not access wallet'));
+        return cb(gettextCatalog.getString('Could not access wallet'));
 
       var walletId = client.credentials.walletId
 
       if (!root.profile.addWallet(JSON.parse(client.export())))
-        return cb(gettext('Wallet already in Copay'));
+        return cb(gettextCatalog.getString('Wallet already in Copay'));
 
 
       var skipKeyValidation = root.profile.isChecked(platformInfo.ua, walletId);
@@ -595,15 +595,7 @@ angular.module('copayApp.services')
           password: opts.password
         });
       } catch (err) {
-        return cb(gettext('Could not import. Check input file and spending password'));
-      }
-
-      if (walletClient.hasPrivKeyEncrypted()) {
-        try {
-          walletClient.disablePrivateKeyEncryption();
-        } catch (e) {
-          $log.warn(e);
-        }
+        return cb(gettextCatalog.getString('Could not import. Check input file and spending password'));
       }
 
       str = JSON.parse(str);
@@ -634,7 +626,7 @@ angular.module('copayApp.services')
           if (err instanceof errors.NOT_AUTHORIZED)
             return cb(err);
 
-          return bwcError.cb(err, gettext('Could not import'), cb);
+          return bwcError.cb(err, gettextCatalog.getString('Could not import'), cb);
         }
 
         addAndBindWalletClient(walletClient, {
@@ -665,7 +657,7 @@ angular.module('copayApp.services')
           if (err instanceof errors.NOT_AUTHORIZED)
             return cb(err);
 
-          return bwcError.cb(err, gettext('Could not import'), cb);
+          return bwcError.cb(err, gettextCatalog.getString('Could not import'), cb);
         }
 
         addAndBindWalletClient(walletClient, {
@@ -688,7 +680,7 @@ angular.module('copayApp.services')
           if (err instanceof errors.NOT_AUTHORIZED)
             err.name = 'WALLET_DOES_NOT_EXIST';
 
-          return bwcError.cb(err, gettext('Could not import'), cb);
+          return bwcError.cb(err, gettextCatalog.getString('Could not import'), cb);
         }
 
         addAndBindWalletClient(walletClient, {
@@ -773,6 +765,12 @@ angular.module('copayApp.services')
         });
       }
 
+      if (opts.m) {
+        ret = lodash.filter(ret, function(w) {
+          return (w.credentials.m == opts.m);
+        });
+      }
+
       if (opts.onlyComplete) {
         ret = lodash.filter(ret, function(w) {
           return w.isComplete();
@@ -795,7 +793,7 @@ angular.module('copayApp.services')
     root.getNotifications = function(opts, cb) {
       opts = opts || {};
 
-      var TIME_STAMP = 60 * 60 * 24 * 7;
+      var TIME_STAMP = 60 * 60 * 6;
       var MAX = 100;
 
       var typeFilter = {
@@ -861,26 +859,25 @@ angular.module('copayApp.services')
 
         var finale = shown; // GROUPING DISABLED!
 
-        // var finale = [],
-        // prev;
-        //
-        //
-        // // Item grouping... DISABLED.
-        //
-        // // REMOVE (if we want 1-to-1 notification) ????
-        // lodash.each(shown, function(x) {
-        //   if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
-        //     prev.types.push(x.type);
-        //     prev.data = lodash.assign(prev.data, x.data);
-        //     prev.txid = prev.txid || x.txid;
-        //     prev.amountStr = prev.amountStr || x.amountStr;
-        //     prev.creatorName = prev.creatorName || x.creatorName;
-        //   } else {
-        //     finale.push(x);
-        //     prev = x;
-        //   }
-        // });
-        //
+        var finale = [],
+          prev;
+
+
+        // Item grouping... DISABLED.
+
+        // REMOVE (if we want 1-to-1 notification) ????
+        lodash.each(shown, function(x) {
+          if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
+            prev.types.push(x.type);
+            prev.data = lodash.assign(prev.data, x.data);
+            prev.txid = prev.txid || x.txid;
+            prev.amountStr = prev.amountStr || x.amountStr;
+            prev.creatorName = prev.creatorName || x.creatorName;
+          } else {
+            finale.push(x);
+            prev = x;
+          }
+        });
 
         var u = bwcService.getUtils();
         lodash.each(finale, function(x) {

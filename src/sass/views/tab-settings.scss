@@ -1,7 +1,20 @@
 .settings {
+  @extend .deflash-blue;
+  .icon-bitpay-card {
+    background-image: url("../img/icon-card.svg");
+    background-color: #1e3186;
+  }
   .item {
     color: $dark-gray;
     border-color: rgba(221, 221, 221, 0.3);
+  }
+  .has-comment {
+    border-bottom: 0 none;
+  }
+  .comment {
+    padding: 15px;
+    background-color: #fff;
+    color: $mid-gray;
   }
   &-explanation, &-button-group {
     padding: 0 1rem;
@@ -62,6 +75,13 @@
     }
     .item-note {
       color: $light-gray;
+    }
+    .item-toggle .toggle,
+    .item-button-right > .button {
+      top: 16px;
+    }
+    .item-button-right > .button {
+      font-size: 16px;
     }
  }
 }
@@ -126,7 +146,6 @@
   }
   .fee-policies {
     border-color: #fff;
-    border-width: 2px 0;
     border-style: solid;
   }
 }

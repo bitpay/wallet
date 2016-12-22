@@ -70,7 +70,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
 
     // Show pending task from the UI
-    storageService.setNextStep('AmazonGiftCards', true, function(err) {});
+    storageService.setNextStep('AmazonGiftCards', 'true', function(err) {});
   };
 
   root.getPendingGiftCards = function(cb) {

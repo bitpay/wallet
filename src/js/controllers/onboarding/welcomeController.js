@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('welcomeController', function($scope, $state, $timeout, $ionicConfig, $log, profileService, startupService) {
+angular.module('copayApp.controllers').controller('welcomeController', function($scope, $state, $timeout, $ionicConfig, $log, profileService, startupService, storageService) {
 
   $ionicConfig.views.swipeBackEnabled(false);
 

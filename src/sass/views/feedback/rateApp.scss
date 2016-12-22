@@ -1,0 +1,38 @@
+#rate-app {
+  background-color: #ffffff;
+  text-align: center;
+  .skip-rating {
+    color: $dark-gray;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    padding: 15px;
+  }
+  .icon-svg > img {
+    width: 80px;
+    height: 80px;
+    margin-top: 15px;
+  }
+  .feedback-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: $dark-gray;
+    margin: 80px 50px 10px;
+    text-align: center;
+  }
+  .share-the-love-illustration {
+    width: 5rem;
+    margin: 1rem;
+  }
+  .subtitle {
+    padding: 10px 30px 20px 40px;
+    color: #667;
+  }
+  .rate-buttons {
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+    background-color: $subtle-gray;
+    padding: 30px 0 15px;
+  }
+}

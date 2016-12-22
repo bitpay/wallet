@@ -30,6 +30,17 @@
   }
 }
 
+.text-warn {
+  .popup-sub-title {
+    margin-top: 15px;
+    color: #e42112 !important;
+  }
+}
+
+.item-toggle, .item {
+  white-space: normal;
+}
+
 .input-label {
   max-width: none;
   width: inherit;
@@ -436,4 +447,8 @@ input[type=file] {
 
  .keyboard-open .has-tabs {
    bottom: 0;
+}
+
+.white-space-initial {
+  white-space: initial;
 }

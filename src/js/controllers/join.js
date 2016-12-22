@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettext, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, $window) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('joinController',
     $scope.resizeView = function() {
       $timeout(function() {
         $ionicScrollDelegate.resize();
-      });
+      }, 10);
       checkPasswordFields();
     };
 
@@ -50,26 +50,33 @@ angular.module('copayApp.controllers').controller('joinController',
     var updateSeedSourceSelect = function() {
       self.seedOptions = [{
         id: 'new',
-        label: gettext('Random'),
+        label: gettextCatalog.getString('Random'),
       }, {
         id: 'set',
-        label: gettext('Specify Recovery Phrase...'),
+        label: gettextCatalog.getString('Specify Recovery Phrase...'),
       }];
       $scope.seedSource = self.seedOptions[0];
 
+      /*
 
-      if (isChromeApp) {
-        self.seedOptions.push({
-          id: 'ledger',
-          label: 'Ledger Hardware Wallet',
-        });
-      }
+      Disable Hardware Wallets
 
-      if (isChromeApp || isDevel) {
-        self.seedOptions.push({
-          id: 'trezor',
-          label: 'Trezor Hardware Wallet',
-        });
+      */
+
+      if ($window.appConfig.name == 'copay') {
+        if (isChromeApp) {
+          self.seedOptions.push({
+            id: 'ledger',
+            label: 'Ledger Hardware Wallet',
+          });
+        }
+
+        if (isChromeApp || isDevel) {
+          self.seedOptions.push({
+            id: 'trezor',
+            label: 'Trezor Hardware Wallet',
+          });
+        }
       }
     };
 

@@ -18,7 +18,7 @@
 
     <div ng-if="!giftCards" class="m20t padding text-center">
 
-      <button class="button button-standard button-primary" ui-sref="tabs.giftcards.amazon.buy">
+      <button class="button button-standard button-primary" ui-sref="tabs.giftcards.amazon.amount">
         Buy now
       </button>
 
@@ -29,12 +29,25 @@
     </div>
 
     <div class="m20t" ng-if="giftCards">
-      <div class="list">
-        <a class="item item-icon-left item-icon-right" href ui-sref="tabs.giftcards.amazon.buy">
+      <div class="card list">
+        <a class="item item-icon-left item-icon-right" href
+          ui-sref="tabs.giftcards.amazon.amount">
           <i class="icon ion-bag"></i>
           Buy Gift Card
           <i class="icon bp-arrow-right"></i>
         </a>
+      </div>
+
+      <div class="size-12 p15h">
+        * <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion.
+          Except as required by law, <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>
+          Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of
+          eligible goods at <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its
+          affiliated websites. For complete terms and conditions, see
+          <a ng-click="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>.
+          GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP
+          of <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates.
+          No expiration date or service fees.
       </div>
 
       <div class="card">

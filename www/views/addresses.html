@@ -1,0 +1,72 @@
+<ion-view hide-tabs id="addresses" class="addr">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Wallet Addresses' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="showMenu(false, $event)">
+        <i class="icon ion-ios-more"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="text-center banner-icon">
+      <i class="icon zero-state-icon">
+        <img src="img/tab-icons/ico-receive-selected.svg"/>
+      </i>
+    </div>
+
+    <div class="addr-list">
+      <div class="addr-explanation">
+        <div class="addr-description">
+          <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.</span>&nbsp<a ng-click="showInformation()" ng-if="!showInfo" translate>Why?</a>
+        </div>
+      </div>
+
+      <div class="addr-explanation" ng-if="showInfo">
+        <div class="addr-description">
+          <span translate>It's a good idea to avoid reusing addresses-this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>&nbsp<a ng-click="showInformation()" translate>Hide</a>
+        </div>
+      </div>
+
+      <div class="list">
+        <div class="item item-divider item-icon-right" ng-click="newAddress()">
+          <span translate>Unused Addresses</span>
+          <i class="icon ion-ios-plus-empty"></i>
+        </div>
+
+        <div ng-if="latestUnused[0]">
+          <div class="box-error" ng-if="gapReached">
+            <h5 translate>Unused Addresses Limit</h5>
+            <p><span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab.</span>&nbsp<a ng-click="readMore()" ng-if="!showMore" translate>Read more</a></p>
+            <p ng-if="showMore"><span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated.</span>&nbsp<a ng-click="readMore()" translate>Read less</a></p>
+          </div>
+
+          <div class="item" ng-repeat="u in latestUnused track by $index" copy-to-clipboard="u.address">
+            {{u.address}}
+            <div class="addr-path">
+              {{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="latestWithBalance[0]">
+          <div class="item item-divider" translate>
+            Addresses With Balance
+          </div>
+
+          <div class="item" ng-repeat="w in latestWithBalance track by $index" copy-to-clipboard="w.address">
+            {{w.address}}
+            <div class="addr-balance">{{w.balanceStr}}</div>
+          </div>
+        </div>
+
+        <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="viewAllAddresses()">
+          <span translate>View All Addresses</span>
+          <i class="icon ion-ios-arrow-thin-right"></i>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

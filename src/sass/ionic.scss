@@ -6,9 +6,6 @@
 /* Ionic Overrides and Workarounds */
 // Please include a description of the problem solved by the workaround.
 
-// class to dynamically hide the ion-nav-bar for v1 Amazon flow
-ion-nav-bar.hide { display: block !important; }
-
 // the ion tabs element never needs it's own background (backgrounds are
 // rendered by the tabs), and the default background would cover the scanner
 ion-tabs.ion-tabs-transparent {
@@ -39,4 +36,21 @@ $placeholder-icon-padding: 10px;
 // we'd like to diverge from the standard ionic formula for left-right card margins
 .card {
   margin: ($content-padding * 2) 14px;
+}
+
+// A somewhat dirty solution to the nav-bar "flashing" during page transitions.
+// Since the old nav-bar is hidden before the new one is shown, this pseudo
+// element fills the space with the proper background color.
+ion-view.deflash-blue:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $bar-height;
+  background-color: $royal;
+}
+.platform-ios.platform-cordova:not(.fullscreen) ion-view.deflash-blue:before {
+  height: $bar-height + $ios-statusbar-height;
 }

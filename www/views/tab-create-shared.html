@@ -21,7 +21,7 @@
         <label class="item item-input item-stacked-label">
           <span class="input-label" translate>Your name</span>
           <input type="text"
-            placeholder="{{'Satoshi'|translate}}"
+            placeholder="Satoshi"
             ng-model="formData.myName"
             ng-required="formData.totalCopayers != 1"
             ng-disabled="formData.totalCopayers == 1"
@@ -81,28 +81,30 @@
             ng-model="formData.privateKey">
           </label>
 
-          <ion-toggle ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()" ng-show="seedSource.id == 'new' || seedSource.id == 'set'">
-            <span translate>Encrypt with a Password</span>
+          <ion-toggle class="has-comment" ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()" ng-show="seedSource.id == 'new' || seedSource.id == 'set'">
+            <span class="toggle-label" translate>Add a password</span> 
           </ion-toggle>
+          <div class="comment">
+            <span ng-show="seedSource.id == 'new'" translate>Add an optional password to secure the recovery phrase</span>
+            <span ng-show="seedSource.id == 'set'" translate>The recovery phrase could require a password to be imported</span>
+          </div>
 
-          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'new' && encrypt">
-            <span class="input-label" translate>Add a Password</span>
-            <input type="text"
-            placeholder="{{'Add an optional password to secure the recovery phrase'|translate}}"
-            autocapitalize="off"
-            ng-model="formData.createPassphrase">
-          </label>
+          <div class="item item-input" ng-show="encrypt">
+            <input ng-show="seedSource.id == 'new'" 
+                   placeholder="{{'Password'|translate}}"
+                   type="password"
+                   autocapitalize="off"
+                   ng-model="formData.createPassphrase">
 
-          <label class="item item-input item-stacked-label" ng-show="seedSource.id == 'set' && encrypt">
-            <span class="input-label" translate>Add a Password</span>
-            <input type="text"
-            placeholder="{{'The recovery phrase could require a password to be imported'|translate}}"
-            autocapitalize="off"
-            ng-model="formData.passphrase">
-          </label>
+            <input ng-show="seedSource.id == 'set'" 
+                   placeholder="{{'Password'|translate}}"
+                   type="password"
+                   autocapitalize="off"
+                   ng-model="formData.passphrase">
+          </div>
 
           <div class="text-center box-notification error" ng-show="(seedSource.id =='new' || seedSource.id =='set') && encrypt">
-            <strong translate>This password cannot be recovered. If the password is lost, funds can only be recovered with a valid backup.</strong>
+            <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
           </div>
 
           <ion-checkbox ng-model="formData.passwordSaved" class="checkbox-positive" ng-show="encrypt">

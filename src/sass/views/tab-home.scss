@@ -1,4 +1,5 @@
 #tab-home {
+  @extend .deflash-blue;
   .icon-create-wallet {
     background-color: #4A90E2; // default wallet color
   }
@@ -52,6 +53,15 @@
       }
     }
   }
+  .wallet-details__item.item {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .wallet-details__tx-icon {
+      background: #fff;
+      border-radius: 50px;
+    }
+  }
   .next-step.item {
     padding-top: 27px;
     padding-bottom: 27px;
@@ -101,6 +111,13 @@
         font-weight: 300;
         color: $light-gray;
       }
+      &__status-icon {
+        font-size: 18px;
+        margin-left: 5px;
+        position: relative;
+        top: 1px;
+        color: $light-gray;
+      }
     }
   }
   .release {
@@ -116,6 +133,6 @@
     font-size: 20px;
     margin-left: 10px;
     position: absolute;
-  }
+    }
   }
 }

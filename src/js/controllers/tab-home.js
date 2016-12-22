@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService, feedbackService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -13,29 +13,132 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
     $scope.isNW = platformInfo.isNW;
+    $scope.showRateCard = {};
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
     });
 
-    if (!$scope.homeTip) {
-      storageService.getHomeTipAccepted(function(error, value) {
-        $scope.homeTip = (value == 'accepted') ? false : true;
-      });
-    }
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      if (!$scope.homeTip) {
+        storageService.getHomeTipAccepted(function(error, value) {
+          $scope.homeTip = (value == 'accepted') ? false : true;
+        });
+      }
 
-    if ($scope.isNW) {
-      latestReleaseService.checkLatestRelease(function(err, newRelease) {
-        if (err) {
-          $log.warn(err);
-          return;
+      if ($scope.isNW) {
+        latestReleaseService.checkLatestRelease(function(err, newRelease) {
+          if (err) {
+            $log.warn(err);
+            return;
+          }
+
+          if (newRelease) $scope.newRelease = true;
+        });
+      }
+
+      storageService.getFeedbackInfo(function(error, info) {
+        if (!info) {
+          initFeedBackInfo();
+        } else {
+          var feedbackInfo = JSON.parse(info);
+          //Check if current version is greater than saved version
+          var currentVersion = window.version;
+          var savedVersion = feedbackInfo.version;
+          var isVersionUpdated = feedbackService.isVersionUpdated(currentVersion, savedVersion);
+          if (!isVersionUpdated) {
+            initFeedBackInfo();
+            return;
+          }
+          var now = moment().unix();
+          var timeExceeded = (now - feedbackInfo.time) >= 24 * 7 * 60 * 60;
+          $scope.showRateCard.value = timeExceeded && !feedbackInfo.sent;
+          $timeout(function() {
+            $scope.$apply();
+          });
         }
-
-        if (newRelease) $scope.newRelease = true;
       });
-    }
 
-    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
+      function initFeedBackInfo() {
+        var feedbackInfo = {};
+        feedbackInfo.time = moment().unix();
+        feedbackInfo.version = window.version;
+        feedbackInfo.sent = false;
+        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
+          $scope.showRateCard.value = false;
+        });
+      };
+    });
+
+    $scope.$on("$ionicView.enter", function(event, data) {
+      updateAllWallets();
+
+      addressbookService.list(function(err, ab) {
+        if (err) $log.error(err);
+        $scope.addressbook = ab || {};
+      });
+
+      listeners = [
+        $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+          var wallet = profileService.getWallet(walletId);
+          updateWallet(wallet);
+          if ($scope.recentTransactionsEnabled) getNotifications();
+        }),
+        $rootScope.$on('Local/TxAction', function(e, walletId) {
+          $log.debug('Got action for wallet ' + walletId);
+          var wallet = profileService.getWallet(walletId);
+          updateWallet(wallet);
+          if ($scope.recentTransactionsEnabled) getNotifications();
+        })
+      ];
+
+      configService.whenAvailable(function() {
+        nextStep(function() {
+          var config = configService.getSync();
+          var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+
+          $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+          $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+          $scope.amazonEnabled = config.amazon.enabled;
+          $scope.bitpayCardEnabled = config.bitpayCard.enabled;
+
+          var buyAndSellEnabled = !$scope.externalServices.BuyAndSell && ($scope.glideraEnabled || $scope.coinbaseEnabled);
+          var amazonEnabled = !$scope.externalServices.AmazonGiftCards && $scope.amazonEnabled;
+          var bitpayCardEnabled = !$scope.externalServices.BitpayCard && $scope.bitpayCardEnabled;
+
+          $scope.nextStepEnabled = buyAndSellEnabled || amazonEnabled || bitpayCardEnabled;
+          $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
+
+          if ($scope.recentTransactionsEnabled) getNotifications();
+
+          if ($scope.bitpayCardEnabled) bitpayCardCache();
+          $timeout(function() {
+            $ionicScrollDelegate.resize();
+            $scope.$apply();
+          }, 10);
+        });
+      });
+    });
+
+    $scope.$on("$ionicView.leave", function(event, data) {
+      lodash.each(listeners, function(x) {
+        x();
+      });
+    });
+
+    $scope.createdWithinPastDay = function(time) {
+      var now = new Date();
+      var date = new Date(time * 1000);
+      return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+    };
+
+    $scope.openExternalLink = function() {
+      var url = 'https://github.com/bitpay/copay/releases/latest';
+      var optIn = true;
+      var title = gettextCatalog.getString('Update Available');
+      var message = gettextCatalog.getString('An update to this app is available. For your security, please update to the latest version.');
+      var okText = gettextCatalog.getString('View Update');
+      var cancelText = gettextCatalog.getString('Go Back');
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 
@@ -43,7 +146,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       wallet = profileService.getWallet(n.walletId);
 
       if (n.txid) {
-        openTxModal(n);
+        $state.transitionTo('tabs.wallet.tx-details', {
+          txid: n.txid,
+          walletId: n.walletId
+        });
       } else {
         var txp = lodash.find($scope.txps, {
           id: n.txpId
@@ -63,37 +169,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           });
         }
       }
-    };
-
-    var openTxModal = function(n) {
-      wallet = profileService.getWallet(n.walletId);
-
-      ongoingProcess.set('loadingTxInfo', true);
-      walletService.getTx(wallet, n.txid, function(err, tx) {
-        ongoingProcess.set('loadingTxInfo', false);
-
-        if (err) {
-          $log.error(err);
-          return popupService.showAlert(gettextCatalog.getString('Error'), err);
-        }
-
-        if (!tx) {
-          $log.warn('No tx found');
-          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
-        }
-
-        $scope.wallet = wallet;
-        $scope.btx = lodash.cloneDeep(tx);
-        $state.transitionTo('tabs.wallet.tx-details', {
-          txid: $scope.btx.txid,
-          walletId: $scope.walletId
-        });
-
-        walletService.getTxNote(wallet, n.txid, function(err, note) {
-          if (err) $log.warn('Could not fetch transaction note: ' + err);
-          $scope.btx.note = note;
-        });
-      });
     };
 
     $scope.openWallet = function(wallet) {
@@ -117,7 +192,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.txpsN = n;
         $timeout(function() {
           $ionicScrollDelegate.resize();
-        }, 100);
+          $scope.$apply();
+        }, 10);
       })
     };
 
@@ -132,8 +208,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
+            if (err === 'WALLET_NOT_REGISTERED') wallet.error = gettextCatalog.getString('Wallet not registered');
+            else wallet.error = gettextCatalog.getString('Could not update');;
             $log.error(err);
           } else {
+            wallet.error = null;
             wallet.status = status;
           }
           if (++j == i) {
@@ -141,25 +220,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           }
         });
       });
-
-      if (!$scope.recentTransactionsEnabled) return;
-      $scope.fetchingNotifications = true;
-      profileService.getNotifications({
-        limit: 3
-      }, function(err, n) {
-        if (err) {
-          $log.error(err);
-          return;
-        }
-        $scope.fetchingNotifications = false;
-        $scope.notifications = n;
-
-        $timeout(function() {
-          $ionicScrollDelegate.resize();
-          $scope.$apply();
-        }, 100);
-
-      })
     };
 
     var updateWallet = function(wallet) {
@@ -171,20 +231,22 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
         wallet.status = status;
         updateTxps();
+      });
+    };
 
-        if (!$scope.recentTransactionsEnabled) return;
-
-        $scope.fetchingNotifications = true;
-        profileService.getNotifications({
-          limit: 3
-        }, function(err, notifications) {
-          $scope.fetchingNotifications = false;
-          if (err) {
-            $log.error(err);
-            return;
-          }
-          $scope.notifications = notifications;
-        });
+    var getNotifications = function() {
+      profileService.getNotifications({
+        limit: 3
+      }, function(err, n) {
+        if (err) {
+          $log.error(err);
+          return;
+        }
+        $scope.notifications = n;
+        $timeout(function() {
+          $ionicScrollDelegate.resize();
+          $scope.$apply();
+        }, 10);
       });
     };
 
@@ -202,7 +264,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       var services = ['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'];
       lodash.each(services, function(service) {
         storageService.getNextStep(service, function(err, value) {
-          $scope.externalServices[service] = value ? true : false;
+          $scope.externalServices[service] = value == 'true' ? true : false;
           if (++i == services.length) return cb();
         });
       });
@@ -213,7 +275,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
-      }, 100);
+      }, 10);
     };
 
     var bitpayCardCache = function() {
@@ -241,57 +303,4 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       }, 300);
       updateAllWallets();
     };
-
-    $scope.$on("$ionicView.enter", function(event, data) {
-      updateAllWallets();
-
-      addressbookService.list(function(err, ab) {
-        if (err) $log.error(err);
-        $scope.addressbook = ab || {};
-      });
-
-      listeners = [
-        $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-          var wallet = profileService.getWallet(walletId);
-          updateWallet(wallet);
-        }),
-        $rootScope.$on('Local/TxAction', function(e, walletId) {
-          $log.debug('Got action for wallet ' + walletId);
-          var wallet = profileService.getWallet(walletId);
-          updateWallet(wallet);
-        })
-      ];
-
-      configService.whenAvailable(function() {
-        nextStep(function() {
-          var config = configService.getSync();
-          var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
-
-          $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-          $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
-          $scope.amazonEnabled = config.amazon.enabled;
-          $scope.bitpayCardEnabled = config.bitpayCard.enabled;
-
-          var buyAndSellEnabled = !$scope.externalServices.BuyAndSell && ($scope.glideraEnabled || $scope.coinbaseEnabled);
-          var amazonEnabled = !$scope.externalServices.AmazonGiftCards && $scope.amazonEnabled;
-          var bitpayCardEnabled = !$scope.externalServices.BitpayCard && $scope.bitpayCardEnabled;
-
-          $scope.nextStepEnabled = buyAndSellEnabled || amazonEnabled || bitpayCardEnabled;
-          $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
-
-          if ($scope.bitpayCardEnabled) bitpayCardCache();
-          $timeout(function() {
-            $ionicScrollDelegate.resize();
-            $scope.$apply();
-          }, 10);
-        });
-      });
-    });
-
-    $scope.$on("$ionicView.leave", function(event, data) {
-      lodash.each(listeners, function(x) {
-        x();
-      });
-    });
-
   });

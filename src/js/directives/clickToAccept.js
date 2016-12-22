@@ -8,10 +8,11 @@ angular.module('copayApp.directives')
       transclude: true,
       scope: {
         sendStatus: '=clickSendStatus',
+        wallet: '=hasWalletChosen'
       },
       link: function(scope, element, attrs) {
         scope.$watch('sendStatus', function() {
-          if(scope.sendStatus !== 'success') {
+          if (scope.sendStatus !== 'success') {
             scope.displaySendStatus = scope.sendStatus;
           }
         });

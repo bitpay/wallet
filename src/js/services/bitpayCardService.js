@@ -7,7 +7,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
 
   var _setError = function(msg, e) {
     $log.error(msg);
-    var error = e.data ? e.data.error : msg;
+    var error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
   };
 
@@ -104,7 +104,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   root.bitAuthPair = function(obj, cb) {
-    var deviceName = 'Unknow device';
+    var deviceName = 'Unknown device';
     if (platformInfo.isNW) {
       deviceName = require('os').platform();
     } else if (platformInfo.isCordova) {
@@ -143,7 +143,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       root.getBitpayDebitCards(function(err, data) {
         if (err) return cb(err);
         var card = lodash.find(data, {id : cardId});
-        if (!card) return cb(_setError('Not card found'));
+        if (!card) return cb(_setError('Card not found'));
         // Get invoices
         $http(_post('/api/v2/' + card.token, json, appIdentity)).then(function(data) {
           $log.info('BitPay Get Invoices: SUCCESS');
@@ -180,7 +180,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       root.getBitpayDebitCards(function(err, data) {
         if (err) return cb(err);
         var card = lodash.find(data, {id : cardId});
-        if (!card) return cb(_setError('Not card found'));
+        if (!card) return cb(_setError('Card not found'));
         $http(_post('/api/v2/' + card.token, json, appIdentity)).then(function(data) {
           $log.info('BitPay TopUp: SUCCESS');
           if(data.data.error) {
@@ -258,10 +258,27 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
 
   root.remove = function(card, cb) {
     storageService.removeBitpayDebitCard(BITPAY_CARD_NETWORK, card, function(err) {
+      if (err) {
+        $log.error('Error removing BitPay debit card: ' + err);
+        // Continue, try to remove/cleanup card history
+      }
       storageService.removeBitpayDebitCardHistory(BITPAY_CARD_NETWORK, card, function(err) {
-        $log.info('BitPay Debit Card(s) Removed: SUCCESS');
+        if (err) {
+        $log.error('Error removing BitPay debit card transaction history: ' + err);
+          return cb(err);
+        }
+        $log.info('Successfully removed BitPay debit card');
         return cb();
       });
+    });
+  };
+
+  root.getRates = function(currency, cb) {
+    $http(_get('/rates/' + currency)).then(function(data) {
+      $log.info('BitPay Get Rates: SUCCESS');
+      return cb(data.data.error, data.data.data);
+    }, function(data) {
+      return cb(_setError('BitPay Error: Get Rates', data));
     });
   };
 

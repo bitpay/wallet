@@ -3,14 +3,9 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>Glidera</ion-nav-title>
-    <ion-nav-buttons side="secondary">
-      <button class="button no-border" ui-sref="tabs.buyandsell.glidera.preferences">
-        <i class="icon ion-ios-settings"></i>
-      </button>
-    </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content>
+  <ion-content ng-show="!connectingGlidera">
 
     <div class="box-notification error m0" ng-show="!network">
       Glidera is disabled for this application
@@ -32,21 +27,21 @@
           <p class="glidera-text">Connect your Glidera account to get started.</p>
 
           <button class="button button-standard button-primary"
-            ng-click="openExternalLink(glidera.getAuthenticateUrl()); showOauthForm = true">
+            ng-click="openExternalLink(getAuthenticateUrl()); showOauthForm = true">
             Connect to Glidera
           </button>
           <div class="m10t">
-            <a href ng-click="showOauthForm = true" class="button button-standard button-secondary buttion-clear" translate>
+            <a href ng-click="showOauthForm = true" class="button button-standard button-secondary buttion-clear">
               Have the OAuth Code?
             </a>
           </div>
           <div class="disclosure">
-            <p translate>Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users. To enable this service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business (#31000042625755). Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining Glidera’s service of buying or selling bitcoin.</p>
-            <p>Service is available in the U.S. and Canada. In the U.S. – AZ, CA, CO, DE, GA, IL, KS, MA, MD, ME, MN, MO, MT, NJ, NV, PA, SC, TN, TX, UT, WI. In Canada – AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, SK, YT.</p>
+            <p>Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users. To enable this service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business (#31000042625755). Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining Glidera’s service of buying or selling bitcoin.</p>
+            <p>Service is available in the U.S. and Canada.</p>
           </div>
         </div>
         <div ng-show="showOauthForm">
-          <form class="settings" name="oauthCodeForm" ng-submit="glidera.submitOauthCode(code)" novalidate>
+          <form class="settings" name="oauthCodeForm" ng-submit="submitOauthCode(code)" novalidate>
             <div class="list settings-input-group">
               <label class="item item-input item-stacked-label">
                 <span class="input-label">OAuth Code</span>
@@ -80,14 +75,14 @@
         ng-show="status && status.userCanTransact">
         <a ng-show="status.userCanBuy"
             class="item item-icon-right"
-            href ui-sref="tabs.buyandsell.glidera.buy">
+            href ui-sref="tabs.buyandsell.glidera.amount({isGlidera: 'buy', glideraAccessToken: token})">
           <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="45" class="item-img-buy">
           Buy Bitcoin
           <i class="icon bp-arrow-right"></i>
         </a>
         <a class="item item-icon-right"
             ng-show="status.userCanSell"
-            href ui-sref="tabs.buyandsell.glidera.sell">
+            href ui-sref="tabs.buyandsell.glidera.amount({isGlidera: 'sell', glideraAccessToken: token})">
           <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="45" class="item-img-sell">
           Sell Bitcoin
           <i class="icon bp-arrow-right"></i>
@@ -99,7 +94,7 @@
           Activity
         </div>
         <a ng-repeat="tx in txs"
-          ng-click="glidera.openTxModal(token, tx)"
+          ng-click="openTxModal(token, tx)"
           class="item">
 
           <span class="item-note">

@@ -1,4 +1,31 @@
 #wallet-backup-phrase {
+  h3 {
+    padding: 15px;
+  }
+  .button-confirm {
+    margin-top: 1rem;
+  }
+  .password-required {
+    padding: 1rem;
+  }
+  .password-prompt {
+    background-color: $subtle-gray;
+    padding: 2rem;
+    .explanation {
+      padding: 0 1rem;
+      margin: 1rem 0;
+    }
+    .description {
+      text-align: center;
+      font-size: 15px;
+      color: #000;
+      margin: 1rem 0;
+    }
+    input {
+      width: 100%;
+      padding: 1rem;
+    }
+  }
   .bar.bar-royal .title {
       font-size: 1rem;
   }

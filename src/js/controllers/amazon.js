@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, bwcError, amazonService, platformInfo, externalLinkService, popupService) {
+  function($scope, $timeout, $ionicModal, $log, lodash, amazonService, platformInfo, externalLinkService, popupService, gettextCatalog) {
 
     $scope.network = amazonService.getEnvironment();
 
-    $scope.openExternalLink = function(url, optIn, title, message, okText, cancelText) {
-      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    $scope.openExternalLink = function(url) {
+      externalLinkService.open(url);
     };
 
     var initAmazon = function() {
@@ -19,6 +19,16 @@ angular.module('copayApp.controllers').controller('amazonController',
         $timeout(function() {
           $scope.$digest();
         });
+        if ($scope.cardClaimCode) {
+          var card = lodash.find($scope.giftCards, {
+            claimCode: $scope.cardClaimCode
+          });
+          if (lodash.isEmpty(card)) {
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Card not found'));
+            return;
+          }
+          $scope.openCardModal(card);
+        }
       });
       $scope.updatePendingGiftCards();
     };
@@ -26,12 +36,16 @@ angular.module('copayApp.controllers').controller('amazonController',
     $scope.updatePendingGiftCards = lodash.debounce(function() {
 
       amazonService.getPendingGiftCards(function(err, gcds) {
+        $timeout(function() {
+          $scope.giftCards = gcds;
+          $scope.$digest();
+        });
         lodash.forEach(gcds, function(dataFromStorage) {
           if (dataFromStorage.status == 'PENDING') {
             $log.debug("creating gift card");
             amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
               if (err) {
-                popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+                popupService.showAlert(gettextCatalog.getString('Error'), err);
                 return;
               }
               if (giftCard.status != 'PENDING') {
@@ -84,6 +98,7 @@ angular.module('copayApp.controllers').controller('amazonController',
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      $scope.cardClaimCode = data.stateParams.cardClaimCode;
       initAmazon();
     });
   });

@@ -29,6 +29,11 @@
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
+
+      <ion-toggle ng-model="hiddenBalance.value" toggle-class="toggle-balanced" ng-change="hiddenBalanceChange()">
+        <span class="toggle-label" translate>Hide Balance</span>
+      </ion-toggle>
+
       <div class="item item-divider" translate>
         Security
       </div>

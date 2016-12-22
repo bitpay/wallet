@@ -81,7 +81,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     $http(req).then(function(data) {
       $log.info('Glidera Authorization Access Token: SUCCESS');
       // Show pending task from the UI
-      storageService.setNextStep('BuyAndSell', true, function(err) {});
+      storageService.setNextStep('BuyAndSell', 'true', function(err) {});
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Authorization Access Token: ERROR ' + data.statusText);
@@ -192,8 +192,13 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   root.get2faCode = function(token, cb) {
-    if (!token) return cb('Invalid Token');
+    if (!token) {
+      $log.error('Glidera Sent 2FA code by SMS: ERROR Invalid Token');
+      return cb('Invalid Token');
+    }
+
     $http(_get('/authentication/get2faCode', token)).then(function(data) {
+
       $log.info('Glidera Sent 2FA code by SMS: SUCCESS');
       return cb(null, data.status == 200 ? true : false);
     }, function(data) {

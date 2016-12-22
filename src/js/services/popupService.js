@@ -34,7 +34,8 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     $ionicPopup.prompt({
       title: title,
       subTitle: message,
-      inputType: opts.inputType,
+      cssClass: opts.class,
+      template: '<input ng-model="data.response" type="' + opts.inputType + '" autofocus>',
       inputPlaceholder: opts.inputPlaceholder,
       defaultText: opts.defaultText
     }).then(function(res) {
@@ -51,12 +52,12 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
   var _cordovaConfirm = function(title, message, okText, cancelText, cb) {
     var onConfirm = function(buttonIndex) {
-      if (buttonIndex == 1) return cb(true);
+      if (buttonIndex == 2) return cb(true);
       else return cb(false);
     }
     okText = okText || gettextCatalog.getString('OK');
     cancelText = cancelText || gettextCatalog.getString('Cancel');
-    navigator.notification.confirm(message, onConfirm, title, [okText, cancelText]);
+    navigator.notification.confirm(message, onConfirm, title, [cancelText, okText]);
   };
 
   var _cordovaPrompt = function(title, message, opts, cb) {
@@ -118,7 +119,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
   this.showPrompt = function(title, message, opts, cb) {
     $log.warn(title ? (title + ': ' + message) : message);
 
-    opts = opts || {};
+    opts = opts ||  {};
 
     if (isCordova && !opts.forceHTMLPrompt)
       _cordovaPrompt(title, message, opts, cb);

@@ -11,11 +11,11 @@
     </button>
   </ion-header-bar>
 
-  <ion-content ng-init="updateCopayerList()" ng-class="{'slide-to-pay': tx.pendingForUs && canSign && !hasClick}">
+  <ion-content ng-init="updateCopayerList()" ng-class="{'add-bottom-for-cta': tx.pendingForUs && canSign}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
-          <img src="img/sending-icon.svg">
+          <img src="img/icon-tx-sent-outline.svg">
           <span translate>Sending</span>
         </div>
         <div class="amount-label">
@@ -27,7 +27,7 @@
           The payment was removed by creator
         </div>
 
-        <div class="text-center m10t" ng-show="tx.status != 'pending'">
+        <div class="text-center m10t white-space-initial" ng-show="tx.status != 'pending'">
           <div ng-show="tx.status == 'accepted' && !tx.isGlidera">
             <div class="m10b positive" translate>Payment accepted, but not yet broadcasted</div>
 
@@ -86,7 +86,7 @@
           </span>
         </div>
         <div class="item single-line" ng-show="tx.message">
-          <span class="label" translate>{{'Memo'|translate}}</span>
+          <span class="label" translate>Memo</span>
           <span class="item-note">
             {{tx.message}}
           </span>
@@ -150,12 +150,6 @@
       </div>
     </div>
 
-    <click-to-accept
-      ng-click="onConfirm(statusChangeHandler)"
-      ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
-      click-send-status="sendStatus">
-      Click to accept
-    </click-to-accept>
     <div class="m30t text-center" ng-if="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
       <div class="size-12 padding proposal-deletion-help" ng-show="!tx.isGlidera && isShared" translate>
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created.
@@ -167,16 +161,24 @@
     </div>
   </ion-content>
 
+  <click-to-accept
+    ng-click="onConfirm(statusChangeHandler)"
+    ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
+    click-send-status="sendStatus"
+    has-wallet-chosen="true">
+    {{'Accept'| translate}}
+  </click-to-accept>
   <slide-to-accept
     ng-if="tx.pendingForUs && canSign && !paymentExpired && !hasClick"
     slide-on-confirm="onConfirm()"
-    slide-send-status="sendStatus">
-    Slide to accept
+    slide-send-status="sendStatus"
+    has-wallet-chosen="true">
+    {{'Accept'| translate}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()"
     >
-    Payment Sent
+    {{'Payment Sent' | translate}}
   </slide-to-accept-success>
 </ion-modal-view>

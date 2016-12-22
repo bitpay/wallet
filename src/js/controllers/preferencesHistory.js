@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, gettextCatalog, storageService, platformInfo, profileService, lodash) {
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, $window) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
     $scope.isCordova = platformInfo.isCordova;
+    $scope.appName = $window.appConfig.nameCase;
 
     $scope.csvHistory = function(cb) {
       var allTxs = [];
@@ -31,8 +32,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           if (err) {
             $log.warn('Failed to generate CSV:', err);
             $scope.err = err;
-          }
-          else {
+          } else {
             $log.warn('Failed to generate CSV: no transactions');
             $scope.err = 'no transactions';
           }
@@ -45,7 +45,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         var data = txs;
         var satToBtc = 1 / 100000000;
         $scope.csvContent = [];
-        $scope.csvFilename = 'Copay-' + $scope.wallet.name + '.csv';
+        $scope.csvFilename = $scope.appName + '-' + $scope.wallet.name + '.csv';
         $scope.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
 
         var _amount, _note, _copayers, _creator, _comment;
