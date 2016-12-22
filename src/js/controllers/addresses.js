@@ -100,6 +100,13 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     });
   };
 
+  $scope.requestSpecificAmount = function() {
+    $state.go('tabs.receive.amount', {
+      customAmount: true,
+      toAddress: $stateParams.toAddress
+    });
+  }
+
   $scope.showInformation = function() {
     $timeout(function() {
       $scope.showInfo = !$scope.showInfo;
