@@ -1192,5 +1192,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           $window.StatusBar.show();
         }
       }
+      //Solves Ionic back button issue
+      if (!$rootScope.viewBack) $rootScope.viewBack = {};
+      if ($ionicHistory.viewHistory() && $ionicHistory.viewHistory().backView != null)
+        $rootScope.viewBack[fromState.name] = $ionicHistory.viewHistory().backView;
     });
   });

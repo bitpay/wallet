@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, addressbookService, lodash, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('addressbookListController', function($rootScope, $scope, $log, $timeout, $ionicHistory, addressbookService, lodash, popupService, gettextCatalog) {
 
   var contacts;
 
@@ -57,6 +57,8 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      data.enableBack = true;
     initAddressbook();
   });
 
