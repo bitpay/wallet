@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>Wallet Service URL</ion-nav-title>
     <ion-nav-back-button>
@@ -6,14 +6,20 @@
   </ion-nav-bar>
   <ion-content>
 
-    <div class="list">
-      <label class="item item-input item-stacked-label no-border">
+    <div class="list settings-list settings-input-group">
+      <label class="item item-input item-stacked-label">
         <span class="input-label">Wallet Service URL</span>
         <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl.value">
         <a class="postfix" on-tap="resetDefaultUrl()">
           <i class="icon ion-ios-reload"></i>
         </a>
       </label>
+    </div>
+    <div class="settings-explanation">
+      <div class="settings-description" translate>
+        {{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization.
+        The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance).
+      </div>
     </div>
     <button class="button button-standard button-primary" ng-click="save()" translate>Save</button>
   </ion-content>

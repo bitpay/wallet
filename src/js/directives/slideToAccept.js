@@ -8,7 +8,8 @@ angular.module('copayApp.directives')
       transclude: true,
       scope: {
         sendStatus: '=slideSendStatus',
-        onConfirm: '&slideOnConfirm'
+        onConfirm: '&slideOnConfirm',
+        wallet: '=hasWalletChosen'
       },
       link: function(scope, element, attrs) {
 
@@ -33,9 +34,9 @@ angular.module('copayApp.directives')
         scope.displaySendStatus = '';
 
         scope.$watch('sendStatus', function() {
-          if(!scope.sendStatus) {
+          if (!scope.sendStatus) {
             reset();
-          } else if(scope.sendStatus === 'success') {
+          } else if (scope.sendStatus === 'success') {
             scope.displaySendStatus = '';
             $timeout(function() {
               reset();
@@ -51,19 +52,20 @@ angular.module('copayApp.directives')
           var startTime = currentEaseStartTime;
           var initialPct = fromPct;
           var distance = pct - fromPct;
+
           function ease() {
-            if(startTime !== currentEaseStartTime) {
+            if (startTime !== currentEaseStartTime) {
               return;
             }
             $window.requestAnimationFrame(function() {
               var now = Date.now();
               var elapsed = now - startTime;
-              var normalizedElapsedTime = elapsed/duration;
+              var normalizedElapsedTime = elapsed / duration;
               var newVal = easeFx(normalizedElapsedTime);
-              var newPct = newVal*distance + initialPct;
+              var newPct = newVal * distance + initialPct;
               animateFx(newPct);
               scope.$digest();
-              if(elapsed < duration) {
+              if (elapsed < duration) {
                 ease();
               } else {
                 deferred.resolve();
@@ -93,31 +95,33 @@ angular.module('copayApp.directives')
         function setNewSliderStyle(pct) {
           var knobWidthPct = getKnobWidthPercentage();
           var translatePct = pct - knobWidthPct;
-          if(isSliding) {
-            translatePct += 0.35*pct;
+          if (isSliding) {
+            translatePct += 0.35 * pct;
           }
           scope.sliderStyle = getTransformStyle(translatePct);
           curSliderPct = pct;
         }
 
         function setNewBitcoinStyle(pct) {
-          var translatePct = -2.25*pct;
+          var translatePct = -2.25 * pct;
           scope.bitcoinStyle = getTransformStyle(translatePct);
           curBitcoinPct = pct;
         }
 
         function setNewTextStyle(pct) {
-          var translatePct = -0.1*pct;
+          var translatePct = -0.1 * pct;
           scope.textStyle = getTransformStyle(translatePct);
           curTextPct = pct;
         }
 
         function getTransformStyle(translatePct) {
-          return {'transform': 'translateX(' + translatePct + '%)'};
+          return {
+            'transform': 'translateX(' + translatePct + '%)'
+          };
         }
 
-        function getKnobWidthPercentage()  {
-          var knobWidthPct = (KNOB_WIDTH/elm.clientWidth)*100;
+        function getKnobWidthPercentage() {
+          var knobWidthPct = (KNOB_WIDTH / elm.clientWidth) * 100;
           return knobWidthPct;
         }
 
@@ -175,8 +179,8 @@ angular.module('copayApp.directives')
 
         function getTouchXPosition($event) {
           var x;
-          if($event.touches || $event.changedTouches) {
-            if($event.touches.length) {
+          if ($event.touches || $event.changedTouches) {
+            if ($event.touches.length) {
               x = $event.touches[0].clientX;
             } else {
               x = $event.changedTouches[0].clientX;
@@ -190,18 +194,18 @@ angular.module('copayApp.directives')
         function getSlidPercentage($event) {
           var x = getTouchXPosition($event);
           var width = elm.clientWidth;
-          var pct = (x/width)*100;
-          if(x >= width) {
+          var pct = (x / width) * 100;
+          if (x >= width) {
             pct = 100;
           }
           return pct;
         }
 
         scope.onTouchstart = function($event) {
-          if(scope.isSlidFully) {
+          if (scope.isSlidFully) {
             return;
           }
-          if(!isSliding) {
+          if (!isSliding) {
             var pct = getSlidPercentage($event);
             if (pct > MAX_SLIDE_START_PERCENTAGE) {
               jiggleSlider();
@@ -209,7 +213,7 @@ angular.module('copayApp.directives')
             } else {
               isSliding = true;
               var knobWidthPct = getKnobWidthPercentage();
-              if(pct < knobWidthPct) {
+              if (pct < knobWidthPct) {
                 pct = knobWidthPct;
               }
               pct += PERCENTAGE_BUMP;
@@ -219,12 +223,12 @@ angular.module('copayApp.directives')
         };
 
         scope.onTouchmove = function($event) {
-          if(!isSliding || scope.isSlidFully) {
+          if (!isSliding || scope.isSlidFully) {
             return;
           }
           var pct = getSlidPercentage($event);
           var knobWidthPct = getKnobWidthPercentage();
-          if(pct < knobWidthPct) {
+          if (pct < knobWidthPct) {
             pct = knobWidthPct;
           }
           pct += PERCENTAGE_BUMP;
@@ -233,11 +237,11 @@ angular.module('copayApp.directives')
         };
 
         scope.onTouchend = function($event) {
-          if(scope.isSlidFully) {
+          if (scope.isSlidFully) {
             return;
           }
           var pct = getSlidPercentage($event);
-          if(isSliding && pct > FULLY_SLID_PERCENTAGE) {
+          if (isSliding && pct > FULLY_SLID_PERCENTAGE) {
             pct = 100;
             setSliderPosition(pct);
             alertSlidFully();

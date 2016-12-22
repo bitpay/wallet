@@ -6,7 +6,7 @@
       font-weight: bold;
     }
     &--received {
-      color: #30af6c;
+      color: #09C286;
     }
     &--sent {
       color: $dark-gray;
@@ -14,18 +14,106 @@
   }
   &__tx-time {
     color: $light-gray;
+    font-size: 12.5px;
   }
   &__tx-title {
-    padding-top: 10px;
+    flex-grow: 1;
     color: $dark-gray;
+    overflow: hidden;
   }
   &__tx-icon {
     float: left;
-    margin-right: 10px;
+    margin-right: 25px;
+  }
+  &__tx-message {
+    margin-right: 1rem;
+  }
+
+  &__list {
+
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding-left: 1rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    padding-left: 1rem;
+
+    &.proposal {
+      position: relative;
+    }
+
+    &__marker {
+      position: absolute;
+      height: 100%;
+      width: 3px;
+      background: #F5A623;
+      left: 0;
+    }
+  }
+
+  &__tx-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 1rem 0;
+    padding-right: 1rem;
+    border-bottom: 1px solid rgb(245, 245, 245);
+    overflow: hidden;
+
+    &.no-border {
+      border: 0;
+    }
+  }
+
+  &__tx-amount {
+    white-space: nowrap;
+  }
+
+  &__group-label {
+    font-size: 14px;
+    font-weight: 300;
+    color: #727272;
+    padding: 2px 1rem;
+    background: #f8f8f9;
   }
 }
 
 #walletDetails {
+  background: #F8F8F9;
+
+  .scroll-refresher {
+    z-index: 1;
+    margin-top: 3.5rem;
+  }
+
+  .ionic-refresher-content {
+    color: white !important;
+
+    .spinner svg {
+      stroke: white;
+      fill: white;
+    }
+  }
+
+  .bp-content {
+    position: relative;
+    height: 100%;
+
+    &.status-bar {
+      margin-top: 20px;
+    }
+  }
   .bar-header {
     border: 0;
     background: none;
@@ -39,21 +127,75 @@
   .nav-bar-block, .bar {
   background-color: inherit !important;
   }
+  ion-content {
+
+    &.collapsible {
+      margin-top: 210px;
+    }
+
+    padding-top: 0;
+    top: 0;
+    .scroll {
+      background: rgb(248, 248, 249);
+      min-height: 300px;
+    }
+  }
+  .amount-wrapper {
+    position: relative;
+    overflow: visible;
+
+    .amount-bg {
+      content: '';
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      height: 500px;
+      transform: translateY(-499px);
+
+      &.collapsible {
+        top: initial;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 200px;
+        transform: translateY(100px);
+      }
+    }
+  }
   .amount {
     width: 100%;
     text-align: center;
-    padding: 2rem 1rem 1.5rem 1rem;
     color: #fff;
-    height: 140px;
-    margin-bottom: 10px;
+    height: 210px;
+    padding-top: 40px;
+    display: block;
+    align-items: center;
+    justify-content: center;
+
+    &.collapsible {
+      margin-bottom: 10px;
+    }
+
+    &__balance {
+      transform: scale3d(1, 1, 1) translateY(45px);
+    }
+
+    &__updating {
+      z-index: 999;
+      margin-top: -2.1rem;
+    }
 
     &-alternative {
       line-height: 36px;
     }
 
-    strong {
-      line-height: 100%;
+    &__button-balance {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
     }
+
   }
   .item.item-footer {
     font-weight: lighter;
@@ -73,7 +215,22 @@
   position: absolute;
   top: inherit;
   left: 10px;
-  bottom: 15px;
+  bottom: 5px;
   font-size: 20px;
   color: #fff;
+}
+
+.wallet-not-backed-up-warning {
+  background: orange;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  display: block;
+  text-decoration: none;
+  z-index: 9999;
+  position: relative;
+}
+
+a.item {
+  cursor: pointer;
 }

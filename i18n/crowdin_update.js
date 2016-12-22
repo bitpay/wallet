@@ -40,10 +40,10 @@ var local_file3 = fs.createReadStream(local_file_name3)
 
 // obtain the crowdin api key
 var crowdin_api_key = fs.readFileSync(path.join(__dirname, 'crowdin_api_key.txt'))
-//console.log('api key: ' + crowdin_api_key);
+  //console.log('api key: ' + crowdin_api_key);
 
 if (crowdin_api_key != '') {
-  
+
   var payload = {
     'files[template.pot]': local_file1,
     'files[appstore/appstore_en.txt]': local_file2,
@@ -51,8 +51,9 @@ if (crowdin_api_key != '') {
   };
 
   bhttp.post('https://api.crowdin.com/api/project/' + crowdin_identifier + '/update-file?key=' + crowdin_api_key, payload, {}, function(err, response) {
-    console.log('\nResponse from update file call:\n', response.body.toString());
-    
+    if (!err) console.log('\nResponse from update file call:\n', response.body.toString());
+    else console.log('\nError from update file call:\n', err.toString());
+
     // This call will tell the server to generate a new zip file for you based on most recent translations.
     https.get('https://api.crowdin.com/api/project/' + crowdin_identifier + '/export?key=' + crowdin_api_key, function(res) {
       console.log('Export Got response: ' + res.statusCode);

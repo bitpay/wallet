@@ -1,17 +1,18 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService, storageService, $stateParams, startupService) {
+angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService, storageService, $stateParams, startupService, $rootScope) {
 
   $scope.$on("$ionicView.afterEnter", function() {
     startupService.ready();
   });
-
   $scope.init = function() {
     $scope.lang = uxLanguage.currentLanguage;
     $scope.terms = {};
-    $scope.accept1 = $scope.accept2 = $scope.accept3 = false;
+    $scope.accepted = {};
+    $scope.accepted.first = $scope.accepted.second = $scope.accepted.third = false;
     $scope.backedUp = $stateParams.backedUp;
     $scope.resume = $stateParams.resume;
+    $scope.shrinkView = false;
     $timeout(function() {
       $scope.$apply();
     }, 1);
@@ -32,14 +33,9 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
     externalLinkService.open(url, target);
   };
 
-  $scope.openTermsModal = function() {
-    $ionicModal.fromTemplateUrl('views/modals/terms.html', {
-      scope: $scope
-    }).then(function(modal) {
-      $scope.termsModal = modal;
-      $scope.termsModal.show();
-    });
-  };
+  $scope.openTerms = function() {
+    $scope.shrinkView = !$scope.shrinkView;
+  }
 
   $scope.goBack = function() {
     $state.go('onboarding.backupRequest', {

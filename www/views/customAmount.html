@@ -1,0 +1,39 @@
+<ion-view id="custom-amount" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Custom Amount' | translate}}
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button no-border" ng-click="finish()" translate>
+        Finish
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false">
+    <div class="item head text-center">
+      <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
+      <div class="row text-center share" ng-if="isCordova">
+        <div class="item item-icon-left" ng-click="shareAddress('bitcoin:' + address + '?amount=' + amountBtc)" ng-show="true">
+          <i class="icon ion-ios-upload-outline"></i>
+          <span translate>Share</span>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <div class="item single-line">
+        <span class="label" translate>Address</span>
+        <span class="item-note ellipsis">
+          {{address}}
+        </span>
+      </div>
+      <div class="item single-line">
+        <span class="label" translate>Amount</span>
+        <span class="item-note">
+          {{amountStr}} - {{altAmountStr}}
+        </span>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

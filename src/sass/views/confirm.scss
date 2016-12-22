@@ -1,3 +1,9 @@
 #view-confirm {
-
+  @extend .deflash-blue;
+  .icon-amazon {
+    background-image: url("../img/icon-amazon.svg");
+  }
+  .tx-details-content > .scroll {
+    padding-bottom: .25rem;
+  }
 }

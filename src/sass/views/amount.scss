@@ -1,4 +1,5 @@
 #view-amount {
+  @extend .deflash-blue;
   .recipient-label {
     font-size: 14px;
     padding-bottom: 0;
@@ -9,6 +10,9 @@
   }
   .icon-bitpay-card {
     background-image: url("../img/icon-bitpay.svg");
+  }
+  .icon-amazon {
+    background-image: url("../img/icon-amazon.svg");
   }
   @media(max-width: 480px) {
     .bitcoin-address {
@@ -33,7 +37,7 @@
     position: absolute;
     top: 10px;
   }
-  .amount-pane {
+  .amount-pane-recipient {
     position: absolute;
     top: 95px;
     bottom: 0;
@@ -49,6 +53,42 @@
         padding-top: 10px;
         color: $dark-gray;
         font-weight: bold;
+      }
+    }
+    .amount {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      position: absolute;
+      bottom: 254px;
+      top: 66px;
+      .light {
+        color: $light-gray;
+      }
+    }
+  }
+  .amount-pane-no-recipient {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 0 16px;
+
+    .amount-bar {
+      padding: 24px 0;
+      font-size: 18px;
+      .title {
+        float: left;
+        padding-top: 10px;
+        color: $dark-gray;
+        font-weight: bold;
+        .limits {
+          margin-top: 10px;
+          color: $light-gray;
+          font-size: 12px;
+        }
       }
     }
     .amount {

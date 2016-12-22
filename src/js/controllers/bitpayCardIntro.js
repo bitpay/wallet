@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
           popupService.showConfirm(title, msg, ok, cancel, function(res) {
             if (res) {
               // Set flag for nextStep
-              storageService.setNextStep('BitpayCard', true, function(err) {});
+              storageService.setNextStep('BitpayCard', 'true', function(err) {});
               // Save data
               bitpayCardService.setBitpayDebitCards(data, function(err) {
                 if (err) return;

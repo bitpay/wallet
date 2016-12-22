@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
-  <ion-content>
+  <ion-content ng-show="!checkingBalance">
     <div ng-if="hasFunds == false" class="zero-state">
       <div>
         <i class="icon zero-state-icon">
@@ -18,19 +18,15 @@
         </div>
       </div>
     </div>
-    <div ng-if="hasFunds" class="has-funds">
+    <div ng-if="hasFunds">
       <div class="item item-heading send-heading" translate>Recipient</div>
-      <div>
-        <label class="item item-input bitcoin-address">
-          <i class="icon icon-svg placeholder-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
-            <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>
-        </label>
-        <div class="qr-scan-icon">
-          <a on-tap="openScanner()" ng-style="{'top': '55px'}">
-            <i class="icon ion-qr-scanner"></i>
-          </a>
-        </div>
+
+      <div class="item item-icon-left item-icon-right input">
+        <i class="icon icon-svg left"><img src="img/icon-bitcoin-symbol.svg"></i>
+        <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>
+        <i class="icon icon-svg qr" on-tap="openScanner()"><img src="img/scan-ico.svg"/></i>
       </div>
+
       <div class="card">
         <div class="item item-icon-right item-heading">
           <span translate>Contacts</span>
@@ -41,7 +37,7 @@
         <div class="list">
           <a class="item item-icon-left item-icon-right" ng-if="!hasContacts" ui-sref="tabs.send.addressbook">
             <i class="icon big-icon-svg">
-              <gravatar class="send-gravatar" name="" width="30" email=""></gravatar>
+              <img src="img/contact-placeholder.svg" class="bg"/>
             </i>
             <span translate>Add a Contact</span>
             <i class="icon bp-arrow-right"></i>

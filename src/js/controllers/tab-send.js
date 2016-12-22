@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, $rootScope) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -55,7 +55,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
-      });
+      }, 10);
     });
   };
 
@@ -128,10 +128,12 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       });
     }
 
+    $scope.checkingBalance = true;
     var index = 0;
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
         ++index;
+        if (index == wallets.length) $scope.checkingBalance = false;
         if (err || !status) {
           $log.error(err);
           return;
@@ -143,15 +145,15 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         }
 
         if (index == wallets.length) {
+          if ($scope.hasFunds != true) {
+            $ionicScrollDelegate.freezeScroll(true);
+          }
           $timeout(function() {
             $scope.$apply();
           });
         }
       });
     });
-    if ($scope.hasFunds != true) {
-      $ionicScrollDelegate.freezeScroll(true);
-    }
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {

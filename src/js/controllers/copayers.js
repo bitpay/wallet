@@ -79,8 +79,8 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     $scope.goHome = function() {
-      $ionicHistory.removeBackView();
       $state.go('tabs.home');
+      $ionicHistory.clearHistory();
     };
 
   });

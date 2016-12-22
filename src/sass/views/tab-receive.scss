@@ -1,36 +1,54 @@
 #tab-receive {
-  ion-header-bar{
-    button{
-      i{
+  @extend .deflash-blue;
+  ion-header-bar {
+    button {
+      i {
         color:#fff;
         font-size: 1.1rem;
       }
     }
   }
-  .border-top{
+  .border-top {
     border-top:1px solid rgb(228,228,228);
   }
-  .scroll{height:100%;}
+  .scroll {
+    height:100%;
+  }
   #address {
     background: #fff;
-    height: calc(100vh - 33vh);
+    height: 66vh;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     flex-flow: column;
-    @media(max-height: 600px){
-      height: calc(100vh - 36vh);
+    @media(max-height: 600px) {
+      height: 68vh;
     }
-    article{
+    @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2) {
+      height: 64vh;
+    }
+    &-info {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+    article {
       flex:1;
       width: 100%;
     }
-    #bit-address{
-      position: absolute;
-      bottom:0;
-      width:100%;
-      #next-address{
+    #bit-address {
+      width: 100%;
+      align-self: flex-end;
+      margin-top: auto;
+      justify-content: center;
+      align-content: center;
+      position: relative;
+      min-height: 40px;
+      #next-address {
         color:$light-gray;
       }
     }
@@ -52,35 +70,111 @@
     .item {
       border: none;
       font-size: .8rem;
+      z-index: 0;
       i {
         font-size: 1.3rem;
       }
     }
+    #qr-options {
+      .item {
+        font-size:.7rem;
+        @media(min-width:350px) {
+          font-size:.9rem;
+        }
+        @media(min-width:450px) {
+          font-size:1rem;
+        }
+      }
+    }
     .bit-address {
       font-size: .8rem;
+      // left:10%;
+      cursor: pointer;
+      cursor: hand;
+      position: absolute;
+      transition: all .15s ease;
+      width:100%;
+      height: 100%;
+      z-index: 0;
+      position: absolute;
+      top:50%;
+      &, &.next {
+        left:100%;
+        transform: translate(100%, -40%);
+      }
+      &.next, &.prev {
+        z-index:2;
+      }
+      &.current,
+      &.prev {
+        left:50%;
+      }
+      &.current {
+        transform: translate(-50%, -40%);
+        z-index: 3;
+      }
+      &.prev {
+        transform: translate(-150%, -40%);
+      }
       .item {
         padding-top: 5px;
         padding-bottom: 5px;
-        display: inline-block;
         font-size: .7rem;
+        @media(min-width:350px) {
+          font-size:.9rem;
+        }
+        @media(min-width:450px) {
+          font-size:1rem;
+        }
+        color:$light-gray;
       }
     }
     .qr {
-      padding: calc(100vh - 85vh) 0 calc(100vh - 96vh);
-      @media(max-height: 700px){
-        padding: calc(100vh - 90vh) 0 calc(100vh - 96vh);
+      padding: 15vh 0 4vh;
+      align-self: center;
+      margin-top: auto;
+      height: 220px;
+      position: relative;
+      justify-content: center;
+      flex: 1;
+      z-index: 1;
+      div {
+        transition: all .4s ease;
+        &.current,
+        &.prev,
+        &.next {
+          position: absolute;
+          top:50%;
+        }
+        &.current,
+        &.prev {
+          left:50%;
+        }
+        &.current {
+          transform: translate(-50%, -40%);
+        }
+        &.prev {
+          transform: translate(-150%, -40%);
+        }
+        &.next {
+          left:100%;
+          transform: translate(100%, -40%);
+        }
       }
-      div{
+      @media(max-height: 700px) {
+        padding: 10vh 0 4vh;
+      }
+      div {
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+        min-height: 220px;
       }
     }
-    #qr-options{
-      display: flex;
-      flex-direction: row;
+    #qr-options {
       justify-content: center;
-      align-content: center;
+      align-self: flex-end;
       .item{
         i{left:25px;}
       }
@@ -90,20 +184,24 @@
       color: #fff;
       position: absolute;
       top: 0;
+      left:0;
+      z-index: 2;
       i {
         padding: 10px;
       }
     }
-    @media (max-height: 600px){
-      &{
-        .qr{
+    @media (max-height: 600px) {
+      & {
+        .qr {
           padding:6vh 0 0;
-          div{
+          div {
             -webkit-transform: scale(.7);
             transform: scale(.7);
           }
         }
-        #bit-address{position: realtive;}
+        #bit-address {
+          position: relative;
+        }
       }
     }
   }
@@ -122,7 +220,7 @@
       left: 50%;
       -webkit-transform: translateX(-50%);
       transform: translateX(-50%);
-      z-index: 2;
+      z-index: 4;
     }
   }
   #first-time-tip {
@@ -165,18 +263,57 @@
     border-right: 1px solid rgb(228, 228, 228);
     padding-right: 10px;
   }
-  .wallets{
+  #wallets {
+    #sidebar-wallet{
+      display: none;
+    }
+  }
+  .wallets {
     position: relative;
-    height: calc(100vh - 83vh);
+    height: calc(27vh - 62px);
+    z-index: 5;
     .slides {
-      .swiper-container{
+      .swiper-container {
         position: absolute;
         left: 50%;
         top: 50%;
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
-        @media (max-height: 600px){
-          &{
+        max-width: 450px;
+        .swiper-wrapper {
+          height: auto;
+          top: 10%;
+          position:relative;
+          @media(max-height: 600px) {
+            padding-top:.2rem
+          }
+          @media(min-height: 900px) {
+            top:30%;
+          }
+        }
+        .swiper-slide {
+          text-align: center;
+          .card{
+            margin-top: 1vh;
+            display: inline-block;
+            width:80%;
+            @media(min-height: 1000px) and (max-width: 699px) {
+              .item {
+                padding: 2vh 3vw 2vh 3vw;
+              }
+            }
+          }
+          @media(max-width: 500px) {
+            &-next {
+              left:-25%;
+            }
+            &-prev {
+              left:25%;
+            }
+          }
+        }
+        @media (max-height: 600px) {
+          & {
             -webkit-transform: translate(-50%, -58%);
             transform: translate(-50%, -58%);
           }
@@ -184,25 +321,154 @@
       }
     }
   }
-  // @media(min-width: 700px) and (min-height: 700px){
-  //   .wallets{display: none;}
-  //   #address{
-  //     height:90vh;
-  //     width:75%;
-  //     .qr{
-  //       height: 70%;
-  //       div{
-  //         transform: scale(1.5);
-  //       }
-  //     }
-  //     #bit-address{
-  //       height: 10%;
-  //       padding: calc(100vh - 99vh);
-  //     }
-  //   }
-  // }
+  @media(min-width: 700px) and (min-height: 700px) {
+    .wallets {
+      display: none;
+    }
+    #address {
+      float:left;
+      height:100%;
+      width:calc(100% - 410px);
+      @media(max-width: 1000px){
+        width:65%;
+      }
+      &-info {
+        height: 100%;
+      }
+      #qr-options {
+        .item{
+          font-size:1rem;
+        }
+      }
+      .qr {
+        height: 70%;
+        div {
+          opacity: 0;
+          transition: none;
+          &.current {
+            opacity: 1;
+          }
+        }
+      }
+      .bit-address {
+        opacity: 0;
+        transition: none;
+        &.current {
+          opacity: 1;
+        }
+      }
+      .backup,
+      #bit-address {
+        left:0;
+      }
+      #bit-address {
+        height: 10%;
+        padding: 1vh;
+        .bit-address {
+          .item{
+            top: 40%;
+            transform: translateY(-40%);
+            font-size:1rem;
+          }
+        }
+      }
+    }
+    #wallets {
+      float:left;
+      width:35%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+      max-width: 410px;
+      @media(max-height: 600px) {
+        padding-top:.55rem;
+      }
+      @media(max-width: 1000px) {
+        max-width: none;
+      }
+      #sidebar-wallet {
+        display: block;
+      }
+      .list {
+        height: 100%;overflow: visible;
+      }
+      #wallet-list {
+        position: absolute;
+        width: 110%;
+        overflow-y: auto;
+        height: 100%;
+        left: -6%;
+      }
+      .wallet {
+        &.current {
+          position: relative;
+          .card {
+            opacity: 1;
+            transform: scale(1);
+          }
+          &:before {
+          	right: 93%;
+          	top: 50%;
+          	border: solid transparent;
+          	content: " ";
+          	height: 0;
+          	width: 0;
+          	position: absolute;
+          	pointer-events: none;
+            border-right-color: #f2f2f2;
+            border-width: 20px;
+            margin-top: -20px;
+          }
+        }
+      }
+      .card {
+        max-width: 350px;
+        box-shadow: 0 1px 36px rgba(0, 0, 0, 0.07);
+        padding:0;
+        border-radius: 6px;
+        padding:2px;
+        width: 80%;
+        position: relative;
+        margin: 1.5rem auto 0;
+        position: relative;
+        opacity: .5;
+        transform:scale(.85);
+        transition:transform .2s ease;
+        .item {
+          padding: 6% 10% 6% 8%;
+          span {
+            clear: both;
+            width: 100%;
+            display: inline-block;
+            &.wallet-name {
+              font-size:16px;
+              width: 79%;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              font-weight: 600;
+            }
+            &.wallet-number {
+              visibility: hidden;
+            }
+            &.visible {
+              visibility: visible !important;
+            }
+          }
+          .big-icon-svg {
+            padding: 0;
+            & > .bg {
+              padding:.3rem;
+              width: 40px;
+              height:40px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
-
 @keyframes fadeIn {
   0% {
     opacity: 0;

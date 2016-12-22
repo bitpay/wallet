@@ -10,7 +10,7 @@
       <div class="item item-divider" translate>Enabled Integrations</div>
 
       <ion-toggle ng-show="!isWP" ng-model="bitpayCardEnabled.value" toggle-class="toggle-balanced" ng-change="bitpayCardChange()">
-        <span class="toggle-label" translate>Enable Bitpay Card Integration</span>
+        <span class="toggle-label" translate>Enable BitPay Card Integration</span>
       </ion-toggle>
 
       <ion-toggle ng-show="!isWP" ng-model="amazonEnabled.value" toggle-class="toggle-balanced" ng-change="amazonChange()">
@@ -33,8 +33,8 @@
       <ion-toggle class="has-comment" ng-model="spendUnconfirmed.value" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
         <span class="toggle-label" translate>Use Unconfirmed Funds</span>
       </ion-toggle>
-      <div class="comment">
-        <span translate>If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.</span>
+      <div class="comment" translate>
+        If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.
       </div>
 
       <div class="item item-divider" translate>Experimental Features</div>
@@ -47,8 +47,15 @@
       <ion-toggle class="has-comment" ng-show="!isWP" ng-model="recentTransactionsEnabled.value" toggle-class="toggle-balanced" ng-change="recentTransactionsChange()">
         <span class="toggle-label" translate>Recent Transaction Card</span>
       </ion-toggle>
-      <div class="comment">
-        <span transaction>If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.</span>
+      <div class="comment" translate>
+        If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.
+      </div>
+
+      <ion-toggle class="has-comment" ng-model="global.developmentUtilitiesEnabled.value" toggle-class="toggle-balanced" ng-change="toggledDevelopmentUtils()">
+        <span class="toggle-label" translate>Development Utilities</span>
+      </ion-toggle>
+      <div class="comment" translate>
+        These features make it easier to test complex functionality on all devices. They may be unstable.
       </div>
 
       <!-- disable frequently used for this release -->
@@ -59,6 +66,31 @@
       <div ng-style="{'padding':'15px', 'background-color': '#fff', 'color': 'rgba(74, 74, 74, 0.8)'}">
         <span transaction>If enabled, the Frequently Used card - a list of the most commonly chosen recipients - will appear in the Send tab.</span>
       </div> -->
+
+      <div ng-show="global.developmentUtilitiesEnabled.value">
+        <div class="item item-divider" translate>Development Utilities</div>
+        <div class="settings-explanation">
+          <div class="settings-description" translate>
+            These utilities may be unstable. Proceed at your own risk.
+          </div>
+        </div>
+
+        <div class="item has-comment item-button-right">
+          Feedback Card
+          <button class="button button-secondary" ng-click="activateFeedbackCard()" ng-show="!feedbackCardActivating && !feedbackCardActivated">
+            Activate
+          </button>
+          <button class="button button-secondary button-clear" disabled ng-show="feedbackCardActivating">
+            <ion-spinner></ion-spinner>
+          </button>
+          <button class="button button-secondary button-clear" ng-show="feedbackCardActivated" ng-click="resetActivateFeedbackCard()">
+            Activated
+          </button>
+        </div>
+        <div class="comment">
+          <span transaction>The feedback card is displayed on the Home tab at certain times. You can activate it immediately here.</span>
+        </div>
+      </div>
 
     </div>
   </ion-content>

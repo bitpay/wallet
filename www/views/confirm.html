@@ -7,16 +7,20 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-class="{'slide-to-pay': isCordova && !insuffientFunds && !noMatchingWallet}">
+  <ion-content ng-class="{'add-bottom-for-cta': !insufficientFunds && !noMatchingWallet}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
-          <img src="img/sending-icon.svg">
-          <span translate>Sending</span>
+          <img src="img/icon-tx-sent-outline.svg">
+          <span translate ng-if="!useSendMax && !isGlidera">Sending</span>
+          <span translate ng-if="useSendMax">Sending maximum amount</span>
+          <span ng-if="isGlidera == 'buy'">Buying</span>
+          <span ng-if="isGlidera == 'sell'">Selling</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
-          <div class="alternative">{{alternativeAmountStr}}</div>
+          <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="right size-12" ng-if="cardId" ng-init="getRates()">{{exchangeRate}}</div>
+          <div class="alternative">{{alternativeAmountStr || '...'}}</div>
         </div>
       </div>
       <div class="info">
@@ -26,10 +30,16 @@
           <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
         <div class="item">
-          <span class="label" translate>To</span>
+          <span class="label" ng-if="!isGlidera" translate>To</span>
+          <span class="label" ng-if="isGlidera == 'buy'">From</span>
+          <span class="label" ng-if="isGlidera == 'sell'">To</span>
           <span class="payment-proposal-to">
-            <img ng-if="!cardId" src="img/icon-bitcoin-small.svg">
+            <img ng-if="!cardId && !isGiftCard && !isGlidera" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
+            <i ng-if="isGiftCard" class="icon big-icon-svg">
+              <div class="bg icon-amazon"></div>
+            </i>
+            <img ng-if="isGlidera" src="img/glidera-logo.png" width="90"/>
 
             <div copy-to-clipboard="toAddress" ng-if="!paypro" class="ellipsis">
               <contact ng-if="!toName" address="{{toAddress}}"></contact>
@@ -46,14 +56,10 @@
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
           </span>
         </div>
-        <div class="text-center" ng-show="noMatchingWallet">
-          <span class="badge badge-energized" translate>No wallets available</span>
-        </div>
-        <div class="text-center" ng-show="insuffientFunds">
-          <span class="badge badge-energized" translate>Insufficient funds</span>
-        </div>
-        <a class="item item-icon-right" ng-hide="insuffientFunds || noMatchingWallet" ng-click="showWalletSelector()">
-          <span class="label" translate>From</span>
+        <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
+          <span class="label" ng-if="!isGlidera" translate>From</span>
+          <span class="label" ng-if="isGlidera == 'buy'">To</span>
+          <span class="label" ng-if="isGlidera == 'sell'">From</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -62,43 +68,86 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-hide="insuffientFunds || noMatchingWallet" ng-click="showDescriptionPopup()">
+        <a class="item single-line item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet && !isGlidera" ng-click="showDescriptionPopup()">
           <span class="label" translate>Add Memo</span>
           <span class="item-note m10l">
             {{description}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-hide="insuffientFunds || noMatchingWallet">
-          <span class="label" translate>Fee: {{feeLevel}}</span>
+        <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet && !isGlidera">
+          <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
           <span class="item-note">
             {{fee || '...'}}
           </span>
         </div>
+        <div class="item" ng-show="isGlidera == 'buy'">
+          <span class="label">Information</span>
+          <div class="glidera-explanation">
+            <div class="glidera-description" ng-show="buyPrice.qty">
+              Buy {{buyPrice.subtotal|currency:'':2}} {{buyPrice.currency}} in Bitcoin at  {{buyPrice.price}} {{buyPrice.currency}}/BTC
+            </div>
+            <div class="glidera-description">
+              Fiat will be immediately withdrawn from your bank account.
+            </div>
+            <div class="glidera-description">
+              The bitcoins will be purchased and deposited to "{{wallet.name || '...' }}" wallet in 2-4 business days.
+            </div>
+          </div>
+        </div>
+        <div class="item" ng-show="isGlidera == 'sell'">
+          <span class="label">Information</span>
+          <div class="glidera-explanation">
+            <div class="glidera-description" ng-show="sellPrice.qty">
+              Sell {{sellPrice.subtotal|currency:'':2}} {{sellPrice.currency}} in Bitcoin at {{sellPrice.price|currency:'':2}} {{sellPrice.currency}}/BTC
+            </div>
+            <div class="glidera-description">
+              Fiat will be deposited in your bank account in 4-6 business days.
+            </div>
+            <div class="glidera-description">
+              Bitcoins will be immediately sent from your "{{wallet.name || '...' }}" wallet to Glidera.
+            </div>
+          </div>
+        </div>
+        <div class="text-center" ng-show="noMatchingWallet">
+          <span class="badge badge-energized" translate>No wallets available</span>
+        </div>
+        <div class="text-center" ng-show="insufficientFunds">
+          <span class="badge badge-energized" translate>Insufficient funds</span>
+        </div>
       </div>
     </div>
-    <click-to-accept
-      ng-click="approve(statusChangeHandler)"
-      ng-if="!isCordova && wallets[0]"
-      click-send-status="sendStatus">
-      Click to pay
-    </click-to-accept>
   </ion-content>
+  <click-to-accept
+    ng-click="approve(statusChangeHandler)"
+    ng-if="!isCordova && wallets[0] && !insufficientFunds && !noMatchingWallet"
+    click-send-status="sendStatus"
+    has-wallet-chosen="wallet">
+    {{'Accept' | translate}}
+  </click-to-accept>
   <slide-to-accept
-    ng-if="isCordova && wallets[0]"
+    ng-disabled="!wallet"
+    ng-if="isCordova && wallets[0] && !insufficientFunds && !noMatchingWallet"
     slide-on-confirm="onConfirm()"
-    slide-send-status="sendStatus">
-    Slide to pay
+    slide-send-status="sendStatus"
+    has-wallet-chosen="wallet">
+    {{'Accept' | translate}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()"
     slide-success-hide-on-confirm="true">
-    <span ng-hide="wallet.m > 1">Payment Sent</span>
-    <span ng-show="wallet.m > 1">Proposal Created</span>
+    <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
+    <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
+    <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction created</span>
+    <div ng-show="isGlidera" class="glidera-success">
+      <span ng-show="isGlidera == 'buy'">A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day</span>
+      <span ng-show="isGlidera == 'sell'">A transfer has been initiated to your bank account. Should arrive in 4-6 business days</span>
+    </div>
   </slide-to-accept-success>
 
   <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
     wallet-selector-wallets="wallets"
     wallet-selector-selected-wallet="wallet"
     wallet-selector-show="showWallets"

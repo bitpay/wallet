@@ -10,9 +10,10 @@
      spinner="ios-small"
      on-refresh="onRefresh()">
    </ion-refresher>
-    <div class="release" ng-show="newRelease" ng-click="openExternalLink('https://github.com/bitpay/copay/releases/latest', true, 'Update Available', 'An update to this app is available. For your security, please update to the latest version.', 'View Update', 'Go Back')">
+    <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink()">
       <span translate>An update to this app is available</span><span><i class="icon bp-arrow-right"></i></span>
     </div>
+    <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div>
     <div class="list card homeTip" ng-if="homeTip">
       <div class="item item-icon-right item-heading">
         <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
@@ -37,9 +38,9 @@
         <span class="badge badge-assertive m5t m10r" ng-show="txpsN>3"> {{txpsN}}</span>
       </a>
 
-      <a ng-repeat="tx in txps" class="item item-sub" ng-click="openTxpModal(tx)">
-        <span ng-include="'views/includes/txp.html'"></span>
-      </a>
+      <div ng-repeat="tx in txps" ng-click="openTxpModal(tx)">
+        <a class="wallet-details__item item item-sub" ng-include="'views/includes/txp.html'"></a>
+      </div>
     </div>
 
     <div class="list card" ng-if="notifications[0] && recentTransactionsEnabled">
@@ -47,10 +48,6 @@
         <span translate>Recent Transactions</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <span ng-if="fetchingNotifications" class="item text-center">
-        <ion-spinner icon="lines"></ion-spinner>
-        <div translate>Updating activity...</div>
-      </span>
       <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
         <span ng-include="'views/includes/walletActivity.html'"></span>
       </a>
@@ -83,11 +80,13 @@
             Incomplete
           </span>
           <span ng-if="wallet.isComplete()">
-            <span ng-if="!wallet.balanceHidden">{{wallet.status.pendingBalanceStr}}</span>
+            <span ng-if="!wallet.balanceHidden">{{wallet.status.totalBalanceStr}}</span>
             <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
             <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
               {{wallet.m}}-of-{{wallet.n}}
             </span>
+            <i ng-if="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
+            <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
           </span>
           &nbsp;
           </p>
@@ -116,8 +115,8 @@
     </div>
 
     <div class="list card" ng-if="wallets[0] && externalServices.BuyAndSell && (glideraEnabled || coinbaseEnabled)">
-      <div class="item item-sub item-icon-right item-heading" translate>
-        Buy &amp; Sell Bitcoin
+      <div class="item item-sub item-icon-right item-heading">
+        <span translate>Buy &amp; Sell Bitcoin</span>
         <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <div>
@@ -137,15 +136,15 @@
         <i class="icon big-icon-svg">
           <div class="bg icon-amazon"></div>
         </i>
-        <span translate>Amazon.com Gift Cards</span>
+        <span>Amazon.com Gift Cards</span>
         <i class="icon bp-arrow-right"></i>
       </a>
     </div>
 
     <div class="list card"
          ng-show="nextStepEnabled && wallets[0]">
-      <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()" translate>
-        Next steps
+      <div class="item item-icon-right item-heading" ng-click="shouldHideNextSteps()">
+        <span translate>Next steps</span>
         <i class="icon bp-arrow-up" ng-show="!hideNextSteps"></i>
         <i class="icon bp-arrow-down" ng-show="hideNextSteps"></i>
       </div>

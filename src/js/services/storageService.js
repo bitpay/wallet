@@ -77,23 +77,23 @@ angular.module('copayApp.services')
     ////////////////////////////////////////////////////////////////////////////
     //
     // UPGRADING STORAGE
-    // 
+    //
     // 1. Write a function to upgrade the desired storage key(s).  The function should have the protocol:
-    // 
+    //
     //    _upgrade_x(key, network, cb), where:
-    //    
+    //
     //    `x` is the name of the storage key
-    //    `key` is the name of the storage key being upgraded 
+    //    `key` is the name of the storage key being upgraded
     //    `network` is one of 'livenet', 'testnet'
     //
     // 2. Add the storage key to `_upgraders` object using the name of the key as the `_upgrader` object key
     //    with the value being the name of the upgrade function (e.g., _upgrade_x).  In order to avoid conflicts
     //    when a storage key is involved in multiple upgraders as well as predicte the order in which upgrades
-    //    occur the `_upgrader` object key should be prefixed with '##_' (e.g., '01_') to create a unique and 
+    //    occur the `_upgrader` object key should be prefixed with '##_' (e.g., '01_') to create a unique and
     //    sortable name. This format is interpreted by the _upgrade() function.
-    // 
+    //
     // Upgraders are executed in numerical order per the '##_' object key prefix.
-    // 
+    //
     var _upgraders = {
       '00_bitpayDebitCards'      : _upgrade_bitpayDebitCards,      // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
       '01_bitpayCardCredentials' : _upgrade_bitpayCardCredentials  // 2016-11: Upgrade bitpayCardCredentials-x to appIdentity-x
@@ -244,6 +244,14 @@ angular.module('copayApp.services')
       storage.remove('profile', cb);
     };
 
+    root.setFeedbackInfo = function(feedbackValues, cb) {
+      storage.set('feedback', feedbackValues, cb);
+    };
+
+    root.getFeedbackInfo = function(cb) {
+      storage.get('feedback', cb);
+    };
+
     root.storeFocusedWalletId = function(id, cb) {
       storage.set('focusedWalletId', id || '', cb);
     };
@@ -390,6 +398,14 @@ angular.module('copayApp.services')
       storage.remove('nextStep-' + service, cb);
     };
 
+    root.setLastCurrencyUsed = function(lastCurrencyUsed, cb) {
+      storage.set('lastCurrencyUsed', lastCurrencyUsed, cb)
+    };
+
+    root.getLastCurrencyUsed = function(cb) {
+      storage.get('lastCurrencyUsed', cb)
+    };
+
     root.checkQuota = function() {
       var block = '';
       // 50MB
@@ -459,7 +475,10 @@ angular.module('copayApp.services')
       if (lodash.isEmpty(data) || !data.email) return cb('No card(s) to set');
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
-        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
         bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
         bitpayAccounts[data.email]['bitpayDebitCards-' + network] = data;
         storage.set('bitpayAccounts-' + network, JSON.stringify(bitpayAccounts), cb);
@@ -468,7 +487,10 @@ angular.module('copayApp.services')
 
     root.getBitpayDebitCards = function(network, cb) {
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
-        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
         var cards = [];
         Object.keys(bitpayAccounts).forEach(function(email) {
           // For the UI, add the account email to the card object.
@@ -490,15 +512,20 @@ angular.module('copayApp.services')
       if (lodash.isEmpty(card) || !card.eid) return cb('No card to remove');
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
-        bitpayAccounts = JSON.parse(bitpayAccounts) || {};
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
         Object.keys(bitpayAccounts).forEach(function(userId) {
           var data = bitpayAccounts[userId]['bitpayDebitCards-' + network];
-          var newCards = lodash.reject(data.cards, {'eid': card.eid});
+          var newCards = lodash.reject(data.cards, {
+            'eid': card.eid
+          });
           data.cards = newCards;
           root.setBitpayDebitCards(network, data, function(err) {
             if (err) cb(err);
             // If there are no more cards in storage then re-enable the next step entry.
-            root.getBitpayDebitCards(network, function(err, cards){
+            root.getBitpayDebitCards(network, function(err, cards) {
               if (err) cb(err);
               if (cards.length == 0) {
                 root.removeNextStep('BitpayCard', cb);
