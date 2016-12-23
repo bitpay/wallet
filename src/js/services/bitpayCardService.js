@@ -1,72 +1,12 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($http, $log, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService) {
   var root = {};
-  var BITPAY_CARD_NETWORK = 'livenet';
-  var BITPAY_CARD_API_URL = BITPAY_CARD_NETWORK == 'livenet' ? 'https://bitpay.com' : 'https://test.bitpay.com';
 
   var _setError = function(msg, e) {
     $log.error(msg);
     var error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
-  };
-
-  var _get = function(endpoint) {
-    return {
-      method: 'GET',
-      url: BITPAY_CARD_API_URL + endpoint,
-      headers: {
-        'content-type': 'application/json'
-      }
-    };
-  };
-
-  var _post = function(endpoint, json, appIdentity) {
-    var dataToSign = BITPAY_CARD_API_URL + endpoint + JSON.stringify(json);
-    var signedData = bitauthService.sign(dataToSign, appIdentity.priv);
-
-    return {
-      method: 'POST',
-      url: BITPAY_CARD_API_URL + endpoint,
-      headers: {
-        'content-type': 'application/json',
-        'x-identity': appIdentity.pub,
-        'x-signature': signedData
-      },
-      data: json
-    };
-  };
-
-  var _postAuth = function(endpoint, json, appIdentity) {
-    json['params'].signature = bitauthService.sign(JSON.stringify(json.params), appIdentity.priv);
-    json['params'].pubkey = appIdentity.pub;
-    json['params'] = JSON.stringify(json.params);
-
-    var ret = {
-      method: 'POST',
-      url: BITPAY_CARD_API_URL + endpoint,
-      headers: {
-        'content-type': 'application/json'
-      },
-      data: json
-    };
-
-    $log.debug('post auth:' + JSON.stringify(ret));
-    return ret;
-  };
-
-  var _afterBitAuthSuccess = function(token, obj, appIdentity, cb) {
-    var json = {
-      method: 'getDebitCards'
-    };
-    // Get Debit Cards
-    $http(_post('/api/v2/' + token, json, appIdentity)).then(function(data) {
-      if (data && data.data.error) return cb(data.data.error);
-      $log.info('BitPay Get Debit Cards: SUCCESS');
-      return cb(data.data.error, {token: token, cards: data.data.data, email: obj.email});
-    }, function(data) {
-      return cb(_setError('BitPay Card Error: Get Debit Cards', data));
-    });
   };
 
   var _processTransactions = function(invoices, history) {
@@ -99,35 +39,17 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
     return history;
   };
 
-  root.getEnvironment = function() {
-    return BITPAY_CARD_NETWORK;
-  };
-
-  root.bitAuthPair = function(obj, cb) {
-    var deviceName = 'Unknown device';
-    if (platformInfo.isNW) {
-      deviceName = require('os').platform();
-    } else if (platformInfo.isCordova) {
-      deviceName = device.model;
-    }
+  root.fetchBitpayDebitCards = function(apiContext, cb) {
     var json = {
-      method: 'createToken',
-      params: {
-        secret: obj.secret,
-        version: 2,
-        deviceName: deviceName,
-        code: obj.otp
-      }
+      method: 'getDebitCards'
     };
-    appIdentityService.getIdentity(root.getEnvironment(), function(err, appIdentity) {
-      if (err) return cb(err);
-      $http(_postAuth('/api/v2/', json, appIdentity)).then(function(data) {
-        if (data && data.data.error) return cb(data.data.error);
-        $log.info('BitPay Card BitAuth Create Token: SUCCESS');
-        _afterBitAuthSuccess(data.data.data, obj, appIdentity, cb);
-      }, function(data) {
-        return cb(_setError('BitPay Card Error Create Token: BitAuth', data));
-      });
+    // Get Debit Cards
+    bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
+      if (data && data.data.error) return cb(data.data.error);
+      $log.info('BitPay Get Debit Cards: SUCCESS');
+      return cb(data.data.error, {token: apiContext.token, cards: data.data.data, email: apiContext.pairData.email});
+    }, function(data) {
+      return cb(_setError('BitPay Card Error: Get Debit Cards', data));
     });
   };
 
@@ -138,14 +60,14 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       method: 'getInvoiceHistory',
       params: JSON.stringify(params)
     };
-    appIdentityService.getIdentity(root.getEnvironment(), function(err, appIdentity) {
+    appIdentityService.getIdentity(bitpayService.getEnvironment(), function(err, appIdentity) {
       if (err) return cb(err);
       root.getBitpayDebitCards(function(err, data) {
         if (err) return cb(err);
         var card = lodash.find(data, {id : cardId});
         if (!card) return cb(_setError('Card not found'));
         // Get invoices
-        $http(_post('/api/v2/' + card.token, json, appIdentity)).then(function(data) {
+        bitpayService.post('/api/v2/' + card.token, json, function(data) {
           $log.info('BitPay Get Invoices: SUCCESS');
           invoices = data.data.data || [];
           if (lodash.isEmpty(invoices)) $log.info('No invoices');
@@ -154,7 +76,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
             params: JSON.stringify(params)
           };
           // Get transactions list
-          $http(_post('/api/v2/' + card.token, json, appIdentity)).then(function(data) {
+          bitpayService.post('/api/v2/' + card.token, json, function(data) {
             $log.info('BitPay Get Transactions: SUCCESS');
             transactions = data.data.data || {};
             transactions['txs'] = _processTransactions(invoices, transactions.transactionList);
@@ -163,7 +85,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
             return cb(_setError('BitPay Card Error: Get Transactions', data));
           });
         }, function(data) {
-          return cb(_setError('BitPay Card Error: Get Invoices', data));
+          return cb(_setError('BitPay Card Error: Get Invoices', data));          
         });
       });
     });
@@ -175,13 +97,13 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       method: 'generateTopUpInvoice',
       params: JSON.stringify(params)
     };
-    appIdentityService.getIdentity(root.getEnvironment(), function(err, appIdentity) {
+    appIdentityService.getIdentity(bitpayService.getEnvironment(), function(err, appIdentity) {
       if (err) return cb(err);
       root.getBitpayDebitCards(function(err, data) {
         if (err) return cb(err);
         var card = lodash.find(data, {id : cardId});
         if (!card) return cb(_setError('Card not found'));
-        $http(_post('/api/v2/' + card.token, json, appIdentity)).then(function(data) {
+        bitpayService.post('/api/v2/' + card.token, json, function(data) {
           $log.info('BitPay TopUp: SUCCESS');
           if(data.data.error) {
             return cb(data.data.error);
@@ -196,7 +118,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   root.getInvoice = function(id, cb) {
-    $http(_get('/invoices/' + id)).then(function(data) {
+    bitpayService.get('/invoices/' + id, function(data) {
       $log.info('BitPay Get Invoice: SUCCESS');
       return cb(data.data.error, data.data.data);
     }, function(data) {
@@ -205,7 +127,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   root.getBitpayDebitCards = function(cb) {
-    storageService.getBitpayDebitCards(BITPAY_CARD_NETWORK, function(err, data) {
+    storageService.getBitpayDebitCards(bitpayService.getEnvironment(), function(err, data) {
       if (err) return cb(err);
       if (lodash.isString(data)) {
         data = JSON.parse(data);
@@ -217,14 +139,14 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
 
   root.setBitpayDebitCards = function(data, cb) {
     data = JSON.stringify(data);
-    storageService.setBitpayDebitCards(BITPAY_CARD_NETWORK, data, function(err) {
+    storageService.setBitpayDebitCards(bitpayService.getEnvironment(), data, function(err) {
       if (err) return cb(err);
       return cb();
     });
   };
 
   root.getBitpayDebitCardsHistory = function(cardId, cb) {
-    storageService.getBitpayDebitCardsHistory(BITPAY_CARD_NETWORK, function(err, data) {
+    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment(), function(err, data) {
       if (err) return cb(err);
       if (lodash.isString(data)) {
         data = JSON.parse(data);
@@ -236,7 +158,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   root.setBitpayDebitCardsHistory = function(cardId, data, opts, cb) {
-    storageService.getBitpayDebitCardsHistory(BITPAY_CARD_NETWORK, function(err, oldData) {
+    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment(), function(err, oldData) {
       if (lodash.isString(oldData)) {
         oldData = JSON.parse(oldData);
       }
@@ -250,19 +172,19 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
       }
       inv = JSON.stringify(inv);
 
-      storageService.setBitpayDebitCardsHistory(BITPAY_CARD_NETWORK, inv, function(err) {
+      storageService.setBitpayDebitCardsHistory(bitpayService.getEnvironment(), inv, function(err) {
         return cb(err);
       });
     });
   };
 
   root.remove = function(card, cb) {
-    storageService.removeBitpayDebitCard(BITPAY_CARD_NETWORK, card, function(err) {
+    storageService.removeBitpayDebitCard(bitpayService.getEnvironment(), card, function(err) {
       if (err) {
         $log.error('Error removing BitPay debit card: ' + err);
         // Continue, try to remove/cleanup card history
       }
-      storageService.removeBitpayDebitCardHistory(BITPAY_CARD_NETWORK, card, function(err) {
+      storageService.removeBitpayDebitCardHistory(bitpayService.getEnvironment(), card, function(err) {
         if (err) {
         $log.error('Error removing BitPay debit card transaction history: ' + err);
           return cb(err);
@@ -274,7 +196,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($http,
   };
 
   root.getRates = function(currency, cb) {
-    $http(_get('/rates/' + currency)).then(function(data) {
+    bitpayService.get('/rates/' + currency, function(data) {
       $log.info('BitPay Get Rates: SUCCESS');
       return cb(data.data.error, data.data.data);
     }, function(data) {

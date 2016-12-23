@@ -1,64 +1,48 @@
 'use strict';
-angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService, appIdentityService) {
-
-  var checkOtp = function(obj, cb) {
-    if (obj.otp) {
-      var msg = gettextCatalog.getString('Enter Two Factor for BitPay Card');
-      popupService.showPrompt(null, msg, null, function(res) {
-        cb(res);
-      });
-    } else {
-      cb();
-    }
-  };
+angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService, appIdentityService, bitpayService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-
     if (data.stateParams && data.stateParams.secret) {
-      var obj = {
+      var pairData = {
         secret: data.stateParams.secret,
         email: data.stateParams.email,
         otp: data.stateParams.otp
       };
-      checkOtp(obj, function(otp) {
-        obj.otp = otp;
-        bitpayCardService.bitAuthPair(obj, function(err, data) {
-          if (err) {
-            popupService.showAlert(gettextCatalog.getString('Error'), err);
-            return;
-          }
-          var title = gettextCatalog.getString('Add BitPay Card Account?');
-          var msg = gettextCatalog.getString('Would you like to add this account ({{email}}) to your wallet?', {
-            email: obj.email
-          });
-          var ok = gettextCatalog.getString('Add Account');
-          var cancel = gettextCatalog.getString('Go back');
-          popupService.showConfirm(title, msg, ok, cancel, function(res) {
-            if (res) {
-              // Set flag for nextStep
-              storageService.setNextStep('BitpayCard', 'true', function(err) {});
-              // Save data
-              bitpayCardService.setBitpayDebitCards(data, function(err) {
-                if (err) return;
-                $ionicHistory.nextViewOptions({
-                  disableAnimate: true
-                });
-                $state.go('tabs.home').then(function() {
-                  if (data.cards[0]) {
-                    $state.transitionTo('tabs.bitpayCard', {
-                      id: data.cards[0].id
-                    });
-                  }
-                });
-              });
+      var pairingReason = gettextCatalog.getString('add your BitPay Visa<sup>&reg;</sup> card(s)');
+      bitpayService.pair(pairData, pairingReason, function(err, paired, apiContext) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+        if (paired) {
+          bitpayCardService.fetchBitpayDebitCards(apiContext, function(err, data) {
+            if (err) {
+              popupService.showAlert(gettextCatalog.getString('Error'), err);
+              return;
             }
+            // Set flag for nextStep
+            storageService.setNextStep('BitpayCard', 'true', function(err) {});
+            // Save data
+            bitpayCardService.setBitpayDebitCards(data, function(err) {
+              if (err) return;
+              $ionicHistory.nextViewOptions({
+                disableAnimate: true
+              });
+              $state.go('tabs.home').then(function() {
+                if (data.cards[0]) {
+                  $state.transitionTo('tabs.bitpayCard', {
+                    id: data.cards[0].id
+                  });
+                }
+              });
+            });
           });
-        });
+        }
       });
     } else {
-      appIdentityService.getIdentity(bitpayCardService.getEnvironment(), function(err, appIdentity) {
+      appIdentityService.getIdentity(bitpayService.getEnvironment(), function(err, appIdentity) {
         if (err) popupService.showAlert(null, err);
-        else $log.info('App identity: Ok.');
+        else $log.info('App identity: OK');
       });
     }
   });
