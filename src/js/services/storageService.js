@@ -161,14 +161,14 @@ angular.module('copayApp.services')
         var upgraded = '';
         Object.keys(data).forEach(function(key) {
           // Keys are account emails
-          if (!data[key]['bitpayApi-' + network].token) {
+          if (!data[key]['bitpayApi-' + network]) {
             // Needs upgrade
             upgraded += ' ' + key;
             var acctData = {
               token: data[key]['bitpayDebitCards-' + network].token,
               email: key
             };
-            _02_setBitpayAccount(network, data, function(err) {
+            _02_setBitpayAccount(network, acctData, function(err) {
               if (err) return cb(err);
 
               _02_setBitpayDebitCards(network, data[key]['bitpayDebitCards-' + network], function(err) {
@@ -236,7 +236,7 @@ angular.module('copayApp.services')
         data = JSON.parse(data);
       }
       data = data || {};
-      if (lodash.isEmpty(data) || !data.email) return cb('No card(s) to set');
+      if (lodash.isEmpty(data) || !data.email) return cb('Cannot set cards: no account to set');
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
@@ -588,7 +588,7 @@ angular.module('copayApp.services')
         data = JSON.parse(data);
       }
       data = data || {};
-      if (lodash.isEmpty(data) || !data.email) return cb('No card(s) to set');
+      if (lodash.isEmpty(data) || !data.email) return cb('Cannot set cards: no account to set');
       storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
