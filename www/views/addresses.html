@@ -26,11 +26,19 @@
 
       <div class="addr-explanation" ng-if="showInfo">
         <div class="addr-description">
-          <span translate>It's a good idea to avoid reusing addresses-this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>&nbsp<a ng-click="showInformation()" translate>Hide</a>
+          <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>&nbsp<a ng-click="showInformation()" translate>Hide</a>
         </div>
       </div>
 
       <div class="list">
+        <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="requestSpecificAmount()">
+          <span translate>Request Specific amount</span>
+          <i class="icon ion-ios-arrow-thin-right"></i>
+        </div>
+        <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="viewAllAddresses()">
+          <span translate>View All Addresses</span>
+          <i class="icon ion-ios-arrow-thin-right"></i>
+        </div>
         <div class="item item-divider item-icon-right" ng-click="newAddress()">
           <span translate>Unused Addresses</span>
           <i class="icon ion-ios-plus-empty"></i>
@@ -60,11 +68,6 @@
             {{w.address}}
             <div class="addr-balance">{{w.balanceStr}}</div>
           </div>
-        </div>
-
-        <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="viewAllAddresses()">
-          <span translate>View All Addresses</span>
-          <i class="icon ion-ios-arrow-thin-right"></i>
         </div>
       </div>
     </div>

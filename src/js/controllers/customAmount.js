@@ -18,8 +18,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
   $scope.finish = function() {
     $ionicHistory.nextViewOptions({
-      disableAnimate: false,
-      historyRoot: true
+      disableAnimate: false
     });
     $ionicHistory.goBack(-2);
   };

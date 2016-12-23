@@ -1,11 +1,6 @@
 <ion-view id="tab-receive">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Receive' | translate}}</ion-nav-title>
-    <ion-nav-buttons side="secondary">
-      <button ng-disabled="generatingAddress" class="button back-button" ng-click="showMenu(false, $event)">
-        <i class="icon ion-ios-more"></i>
-      </button>
-    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
     <article class="list card padding text-center" ng-if="!wallets[0]">
