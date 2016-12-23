@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function(bwcService, rateService, configService, lodash) {
+angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, lodash) {
   var root = {};
 
   root.Utils = bwcService.getUtils();
@@ -48,10 +48,11 @@ angular.module('copayApp.services').factory('txFormatService', function(bwcServi
     var config = configService.getSync().wallet.settings;
 
     var val = function() {
-      var v1 = rateService.toFiat(satoshis, config.alternativeIsoCode);
+      var v1 = parseFloat((rateService.toFiat(satoshis, config.alternativeIsoCode)).toFixed(2), 10);
+      v1 = $filter('formatFiatAmount')(v1);
       if (!v1) return null;
 
-      return v1.toFixed(2) + ' ' + config.alternativeIsoCode;
+      return v1 + ' ' + config.alternativeIsoCode;
     };
 
     // Async version
