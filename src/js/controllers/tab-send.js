@@ -136,6 +136,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         if (index == wallets.length) $scope.checkingBalance = false;
         if (err || !status) {
           $log.error(err);
+          $scope.$apply();
           return;
         }
 
