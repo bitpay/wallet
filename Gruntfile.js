@@ -61,10 +61,10 @@ module.exports = function(grunt) {
         stdin: true,
       },
       desktopsign: {
-        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-win.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>-win.exe'
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.dmg.sig --detach-sig webkitbuilds/<%= pkg.title %>.dmg ; gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-win.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>-win.exe'
       },
       desktopverify: {
-        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>-win.exe.sig webkitbuilds/<%= pkg.title %>-win.exe'
+        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>.dmg.sig webkitbuilds/<%= pkg.title %>.dmg ; gpg --verify webkitbuilds/<%= pkg.title %>-win.exe.sig webkitbuilds/<%= pkg.title %>-win.exe'
       },
     },
     watch: {
