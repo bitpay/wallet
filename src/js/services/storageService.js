@@ -138,10 +138,6 @@ angular.module('copayApp.services')
         if (err) return cb(err);
         if (data != null) {
           // Needs upgrade
-          if (lodash.isString(data)) {
-            data = JSON.parse(data);
-          }
-          data = data || {};
           _01_setAppIdentity(network, data, function(err) {
             if (err) return cb(err);
             storage.remove(key, function() {
