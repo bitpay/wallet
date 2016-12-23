@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
 
     $scope.cardId = data.stateParams.cardId;
-    $scope.showMenu = $ionicHistory.backView().stateName == 'tabs.send';
+    $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
     var isWallet = data.stateParams.isWallet || 'false';
     $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.toAddress = data.stateParams.toAddress;
