@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService) {
 
   var self = this;
   var runningBalance;
   $scope.dateRange = {
     value: 'last30Days'
   };
-  $scope.network = bitpayCardService.getEnvironment();
+  $scope.network = bitpayService.getEnvironment();
 
   var updateHistoryFromCache = function(cb) {
     bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {
