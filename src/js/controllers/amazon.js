@@ -34,11 +34,11 @@ angular.module('copayApp.controllers').controller('amazonController',
     };
 
     $scope.updatePendingGiftCards = lodash.debounce(function() {
-      ongoingProcess.set('updateGiftCards', true);
+      ongoingProcess.set('updatingGiftCards', true);
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (lodash.isEmpty(gcds)) {
           $timeout(function() {
-            ongoingProcess.set('updateGiftCards', false);
+            ongoingProcess.set('updatingGiftCards', false);
           }, 1000);
         }
         $timeout(function() {
@@ -49,7 +49,7 @@ angular.module('copayApp.controllers').controller('amazonController',
         lodash.forEach(gcds, function(dataFromStorage) {
           if (++index == Object.keys(gcds).length) {
             $timeout(function() {
-              ongoingProcess.set('updateGiftCards', false);
+              ongoingProcess.set('updatingGiftCards', false);
             }, 1000);
           }
           if (dataFromStorage.status == 'PENDING') {
