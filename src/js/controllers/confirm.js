@@ -783,7 +783,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           invoiceUrl: $scope.paypro.url,
           invoiceTime: giftCardInvoiceTime
         };
-        ongoingProcess.set('createGiftCard', true);
+        ongoingProcess.set('creatingGiftCard', true);
         debounceCreate(count, dataSrc, onSendStatusChange);
       }
     }, onSendStatusChange);
@@ -830,7 +830,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       }
 
       amazonService.savePendingGiftCard(newData, null, function(err) {
-        ongoingProcess.set('createGiftCard', false);
+        ongoingProcess.set('creatingGiftCard', false);
         $log.debug("Saving new gift card with status: " + newData.status);
         $scope.amazonGiftCard = newData;
       });
