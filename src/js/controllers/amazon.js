@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, lodash, amazonService, platformInfo, externalLinkService, popupService, gettextCatalog) {
+  function($scope, $timeout, $ionicModal, $log, $ionicScrollDelegate, lodash, amazonService, platformInfo, externalLinkService, popupService, ongoingProcess) {
 
     $scope.network = amazonService.getEnvironment();
 
@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('amazonController',
     var initAmazon = function() {
       amazonService.getPendingGiftCards(function(err, gcds) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          popupService.showAlert('Error', err);
           return;
         }
         $scope.giftCards = lodash.isEmpty(gcds) ? null : gcds;
@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('amazonController',
             claimCode: $scope.cardClaimCode
           });
           if (lodash.isEmpty(card)) {
-            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Card not found'));
+            popupService.showAlert('Error', 'Card not found');
             return;
           }
           $scope.openCardModal(card);
@@ -34,18 +34,29 @@ angular.module('copayApp.controllers').controller('amazonController',
     };
 
     $scope.updatePendingGiftCards = lodash.debounce(function() {
-
+      ongoingProcess.set('updatingGiftCards', true);
       amazonService.getPendingGiftCards(function(err, gcds) {
+        if (lodash.isEmpty(gcds)) {
+          $timeout(function() {
+            ongoingProcess.set('updatingGiftCards', false);
+          }, 1000);
+        }
         $timeout(function() {
-          $scope.giftCards = gcds;
+          $scope.giftCards = lodash.isEmpty(gcds) ? null : gcds;
           $scope.$digest();
         });
+        var index = 0;
         lodash.forEach(gcds, function(dataFromStorage) {
+          if (++index == Object.keys(gcds).length) {
+            $timeout(function() {
+              ongoingProcess.set('updatingGiftCards', false);
+            }, 1000);
+          }
           if (dataFromStorage.status == 'PENDING') {
             $log.debug("creating gift card");
             amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
               if (err) {
-                popupService.showAlert(gettextCatalog.getString('Error'), err);
+                popupService.showAlert('Error', err);
                 return;
               }
               if (giftCard.status != 'PENDING') {
@@ -65,13 +76,14 @@ angular.module('copayApp.controllers').controller('amazonController',
                   $log.debug("Saving new gift card");
                   amazonService.getPendingGiftCards(function(err, gcds) {
                     if (err) {
-                      popupService.showAlert(gettextCatalog.getString('Error'), err);
+                      popupService.showAlert('Error', err);
                       return;
                     }
-                    $scope.giftCards = gcds;
+                    $scope.giftCards = lodash.isEmpty(gcds) ? null : gcds;
                     $timeout(function() {
                       $scope.$digest();
-                    });
+                      $ionicScrollDelegate.resize();
+                    }, 10);
                   });
                 });
               } else $log.debug("pending gift card not available yet");
@@ -80,7 +92,9 @@ angular.module('copayApp.controllers').controller('amazonController',
         });
       });
 
-    }, 1000);
+    }, 1000, {
+      'leading': true
+    });
 
     $scope.openCardModal = function(card) {
       $scope.card = card;
@@ -92,8 +106,8 @@ angular.module('copayApp.controllers').controller('amazonController',
         $scope.amazonCardDetailsModal.show();
       });
 
-      $scope.$on('UpdateAmazonList', function(event) {
-        initAmazon();
+      $scope.$on('modal.hidden', function() {
+        $scope.updatePendingGiftCards();
       });
     };
 
