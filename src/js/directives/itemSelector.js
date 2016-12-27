@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('sendMax', function($timeout) {
+  .directive('itemSelector', function($timeout) {
     return {
       restrict: 'E',
-      templateUrl: 'views/includes/sendMax.html',
+      templateUrl: 'views/includes/itemSelector.html',
       transclude: true,
       scope: {
-        show: '=sendMaxShow',
-        onSelect: '=sendMaxOnSelect'
+        show: '=itemSelectorShow',
+        onSelect: '=itemSelectorOnSelect'
       },
       link: function(scope, element, attrs) {
         scope.hide = function() {

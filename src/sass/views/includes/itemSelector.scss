@@ -1,4 +1,4 @@
-send-max-selector {
+item-selector {
 
   $border-color: #EFEFEF;
 
@@ -7,18 +7,18 @@ send-max-selector {
     padding-right: .75rem;
   }
 
-  .send-max-selector {
+  .item-selector {
     .option {
       border: 0;
       padding-right: 0;
       padding-top: 0;
-      padding-left: 65px;
       padding-bottom: 0;
       margin-bottom: 1px;
       overflow: visible;
 
       > i {
-        padding: 0;
+        color: #647ce8;
+        padding: 0 0 5px 0;
         margin-left: -5px;
 
         > img {
@@ -28,7 +28,7 @@ send-max-selector {
         }
       }
     }
-    .send-max-inner {
+    .item-selector-inner {
       display: flex;
       position: relative;
       padding-top: 16px;
@@ -49,10 +49,10 @@ send-max-selector {
         padding: 0 1.2rem;
       }
     }
-    .send-max-details {
+    .item-selector-details {
       flex-grow: 1;
 
-      .send-max-name {
+      .item-selector-name {
         padding-bottom: 5px;
       }
     }
