@@ -8,8 +8,20 @@
     padding: 0 10px;
     font-size: 24px;
     cursor: pointer;
-  }
-  .qr-icon {
     line-height: 45px;
+  }
+  .item-stacked-label .icon {
+    padding: 0px;
+    margin: 0px;
+  }
+  .icon {
+    &.valid {
+      padding-top: 3px;
+      color: #13E5B6;
+    }
+    &.invalid {
+      padding-top: 3px;
+      color: #DF2121;
+    }
   }
 }
