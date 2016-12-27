@@ -14,9 +14,43 @@
     padding: 0 10px;
     font-size: 24px;
     cursor: pointer;
+    line-height: 155px;
   }
-  .qr-icon {
-    line-height: 45px;
+  .icon {
+    &.valid {
+      padding-top: 3px;
+      color: #13E5B6;
+    }
+    &.invalid {
+      padding-top: 3px;
+      color: #DF2121;
+    }
+  }
+  .add-address-input-group {
+    background-color: #fff;
+    .item-stacked-label {
+      padding: 1rem;
+    }
+    .input-label {
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+  .add-address-list {
+    .item {
+      color: $dark-gray;
+      padding-top: 1.3rem;
+      padding-bottom: 1.3rem;
+      &.item-divider {
+        color: $mid-gray;
+        padding-bottom: .5rem;
+        font-size: .9rem;
+      }
+    }
+    .item-note {
+      color: $light-gray;
+    }
   }
 }
 #view-address-book {
