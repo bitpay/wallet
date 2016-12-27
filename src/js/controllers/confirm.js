@@ -31,6 +31,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var isWallet = data.stateParams.isWallet || 'false';
     $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.cardId = data.stateParams.cardId;
+    $scope.cardAmountUSD = data.stateParams.cardAmountUSD;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
@@ -132,9 +133,13 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.amountStr = txFormatService.formatAmountStr(toAmount);
     $scope.displayAmount = getDisplayAmount($scope.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
-    txFormatService.formatAlternativeStr(toAmount, function(v) {
-      $scope.alternativeAmountStr = v;
-    });
+    if ($scope.cardAmountUSD) {
+      $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.cardAmountUSD) + ' USD';
+    } else {
+      txFormatService.formatAlternativeStr(toAmount, function(v) {
+        $scope.alternativeAmountStr = v;
+      });
+    }
     if ($scope.isGlidera == 'buy') $scope.getBuyPrice();
     if ($scope.isGlidera == 'sell') $scope.getSellPrice();
   };
