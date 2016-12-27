@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, $ionicPopover, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
   var satToBtc;
   var SMALL_FONT_SIZE_LIMIT = 10;
   var LENGTH_EXPRESSION_LIMIT = 19;
-  var MENU_ITEM_HEIGHT = 55;
 
   $scope.$on('$ionicView.leave', function() {
     angular.element($window).off('keydown');
@@ -29,6 +28,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toEmail = data.stateParams.toEmail;
     $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera;
     $scope.toColor = data.stateParams.toColor;
+    $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
@@ -93,25 +93,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
     }, 10);
   });
 
-  $scope.showSendMaxMenu = function($event) {
-    var sendMaxObj = {
-      text: gettextCatalog.getString('Send max amount'),
-      action: setSendMax,
-    };
-
-    $scope.items = [sendMaxObj];
-    $scope.height = $scope.items.length * MENU_ITEM_HEIGHT;
-
-    $ionicPopover.fromTemplateUrl('views/includes/menu-popover.html', {
-      scope: $scope
-    }).then(function(popover) {
-      $scope.menu = popover;
-      $scope.menu.show($event);
-    });
+  $scope.showSendMaxMenu = function() {
+    $scope.showSendMax = true;
   };
 
-  function setSendMax() {
-    $scope.menu.hide();
+  $scope.sendMax = function() {
     $state.transitionTo('tabs.send.confirm', {
       isWallet: $scope.isWallet,
       toAmount: null,
@@ -205,11 +191,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   function fromFiat(val) {
-    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals), 10);
+    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals));
   };
 
   function toFiat(val) {
-    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2), 10);
+    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2));
   };
 
   function evaluate(val) {
