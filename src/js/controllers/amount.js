@@ -283,6 +283,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
               }
               var stateParams = {
                 cardId: $scope.cardId,
+                cardAmountUSD: amountUSD,
                 toName: $scope.toName,
                 toAmount: payProDetails.amount,
                 toAddress: payProDetails.toAddress,
