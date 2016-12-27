@@ -12,6 +12,8 @@ ion-tabs.ion-tabs-transparent {
   background: none transparent;
 }
 
+ion-nav-bar.hide { display: block !important; }
+
 // .placeholder-icon padding cannot be modified by a variable
 $placeholder-icon-padding: 10px;
 .placeholder-icon {
