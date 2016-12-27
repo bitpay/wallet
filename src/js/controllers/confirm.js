@@ -135,6 +135,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
     if ($scope.cardAmountUSD) {
       $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.cardAmountUSD) + ' USD';
+    } else if ($scope.giftCardAmountUSD) {
+      $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.giftCardAmountUSD) + ' USD';
     } else {
       txFormatService.formatAlternativeStr(toAmount, function(v) {
         $scope.alternativeAmountStr = v;
