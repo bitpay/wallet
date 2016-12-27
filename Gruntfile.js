@@ -74,13 +74,9 @@ module.exports = function(grunt) {
           grunt.log.writeln('Waiting for more changes...');
         },
       },
-      css: {
-        files: ['src/css/*.css'],
-        tasks: ['concat:css']
-      },
       sass: {
         files: ['src/sass/**/**/*.scss'],
-        tasks: ['sass', 'concat:css']
+        tasks: ['sass']
       },
       main: {
         files: [
@@ -104,8 +100,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
+          flatten: true,
           src: ['src/sass/main.scss'],
-          dest: './',
+          dest: 'www/css/',
           ext: '.css'
         }]
       }
@@ -132,7 +129,7 @@ module.exports = function(grunt) {
           'angular-bitauth/angular-bitauth.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
-        dest: 'www/lib/angular.js'
+        dest: 'www/lib/angular-components.js'
       },
       js: {
         src: [
@@ -152,11 +149,7 @@ module.exports = function(grunt) {
           'node_modules/bezier-easing/dist/bezier-easing.min.js',
           'node_modules/cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js'
         ],
-        dest: 'www/js/copay.js'
-      },
-      css: {
-        src: ['src/sass/*.css', 'src/css/*.css'],
-        dest: 'www/css/copay.css'
+        dest: 'www/js/app.js'
       }
     },
     uglify: {
@@ -165,8 +158,8 @@ module.exports = function(grunt) {
       },
       prod: {
         files: {
-          'www/js/copay.js': ['www/js/copay.js'],
-          'www/lib/angular.js': ['www/lib/angular.js']
+          'www/js/app.js': ['www/js/app.js'],
+          'www/lib/angular-components.js': ['www/lib/angular-components.js']
         }
       }
     },
