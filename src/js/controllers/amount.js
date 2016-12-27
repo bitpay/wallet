@@ -98,6 +98,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.sendMax = function() {
+    $scope.showSendMax = false;
     $state.transitionTo('tabs.send.confirm', {
       isWallet: $scope.isWallet,
       toAmount: null,
