@@ -1,14 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService) {
-    console.log(appConfigService.version);
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService) {
     var wallet;
     var listeners = [];
     var notifications = [];
     $scope.externalServices = {};
     $scope.openTxpModal = txpModalService.open;
-    $scope.version = appConfigService;
+    $scope.version = $window.version;
     $scope.name = appConfigService.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
@@ -44,7 +43,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         } else {
           var feedbackInfo = JSON.parse(info);
           //Check if current version is greater than saved version
-          var currentVersion = window.version;
+          var currentVersion = $scope.version;
           var savedVersion = feedbackInfo.version;
           var isVersionUpdated = feedbackService.isVersionUpdated(currentVersion, savedVersion);
           if (!isVersionUpdated) {
@@ -63,7 +62,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       function initFeedBackInfo() {
         var feedbackInfo = {};
         feedbackInfo.time = moment().unix();
-        feedbackInfo.version = window.version;
+        feedbackInfo.version = $scope.version;
         feedbackInfo.sent = false;
         storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
           $scope.showRateCard.value = false;
