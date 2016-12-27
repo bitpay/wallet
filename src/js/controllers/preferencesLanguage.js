@@ -36,6 +36,8 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+        data.enableBack = true;
       $scope.currentLanguage = uxLanguage.getCurrentLanguage();
     });
   });

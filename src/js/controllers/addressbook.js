@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookListController', function($rootScope, $scope, $log, $timeout, $ionicHistory, addressbookService, lodash, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, $ionicHistory, addressbookService, lodash, popupService, gettextCatalog) {
 
   var contacts;
 

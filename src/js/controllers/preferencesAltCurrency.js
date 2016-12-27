@@ -80,6 +80,8 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+        data.enableBack = true;
       var config = configService.getSync();
       $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
 

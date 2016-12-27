@@ -42,5 +42,4 @@ angular.module('copayApp.controllers').controller('notificationsController', fun
       });
     });
   };
-
 });
