@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('preferencesAbout',
   function($scope, $window, appConfigService, gettextCatalog, externalLinkService) {
 
     $scope.title = gettextCatalog.getString('About') + ' ' + appConfigService.nameCase;
-    $scope.version = appConfigService.version;
+    $scope.version = $window.version;
     $scope.commitHash = $window.commitHash;
 
     $scope.openExternalLink = function() {
