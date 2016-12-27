@@ -435,6 +435,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
+  $scope.cancel = function() {
+    $scope.payproModal.hide();
+  };
+
   $scope.approve = function(onSendStatusChange) {
 
     var wallet = $scope.wallet;
