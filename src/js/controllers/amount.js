@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
-    $scope.alternativeIsoCode = config.alternativeIsoCode;
+    $scope.alternativeIsoCode = !!$scope.cardId || !!$scope.isGiftCard ? 'USD' : config.alternativeIsoCode;
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;
     unitToSatoshi = config.unitToSatoshi;
@@ -304,7 +304,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       try {
         uuid = profileService.getWallets({
           onlyComplete: true,
-          network: 'livenet',
+          network: amazonService.getEnvironment(),
         })[0].id;
       } catch (err) {
         ongoingProcess.set('Preparing transaction...', false);
