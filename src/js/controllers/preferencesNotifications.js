@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesNotificationsController', function($scope, $log, $timeout, $window, lodash, configService, platformInfo, pushNotificationsService, profileService, emailService) {
+angular.module('copayApp.controllers').controller('preferencesNotificationsController', function($scope, $log, $timeout, appConfigService, lodash, configService, platformInfo, pushNotificationsService, profileService, emailService) {
   var updateConfig = function() {
     var config = configService.getSync();
-    $scope.appName = $window.appConfig.nameCase;
+    $scope.appName = appConfigService.nameCase;
     $scope.PNEnabledByUser = true;
     $scope.usePushNotifications = platformInfo.isCordova && !platformInfo.isWP;
     $scope.isIOSApp = platformInfo.isIOS && platformInfo.isCordova;

@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, $window, bitpayCardService, startupService, addressbookService, feedbackService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService) {
+    console.log(appConfigService.version);
     var wallet;
     var listeners = [];
     var notifications = [];
     $scope.externalServices = {};
     $scope.openTxpModal = txpModalService.open;
-    $scope.version = $window.version;
-    $scope.name = $window.appConfig.nameCase;
+    $scope.version = appConfigService;
+    $scope.name = appConfigService.nameCase;
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-  function($scope, $timeout, $log, $ionicHistory, $ionicScrollDelegate, backupService, walletService, storageService, profileService, platformInfo, gettextCatalog, $state, $stateParams, popupService, $window) {
+  function($scope, $timeout, $log, $ionicHistory, $ionicScrollDelegate, backupService, walletService, storageService, profileService, platformInfo, gettextCatalog, $state, $stateParams, popupService, appConfigService) {
     var wallet = profileService.getWallet($stateParams.walletId);
 
     $scope.showAdvChange = function() {
@@ -191,7 +191,7 @@ angular.module('copayApp.controllers').controller('exportController',
         if ($scope.formData.noSignEnabled)
           name = name + '(No Private Key)';
 
-        var subject = $window.appConfig.nameCase + ' Wallet Backup: ' + name;
+        var subject = appConfigService.nameCase + ' Wallet Backup: ' + name;
         var body = 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}';
         window.plugins.socialsharing.shareViaEmail(
           body,

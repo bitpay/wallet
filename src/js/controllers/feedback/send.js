@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, appConfigService, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo) {
 
   $scope.sendFeedback = function(feedback, goHome) {
 
@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
       "Email": lodash.values(config.emailFor)[0] || ' ',
       "Feedback": goHome ? ' ' : feedback,
       "Score": $stateParams.score || ' ',
-      "AppVersion": $window.version,
+      "AppVersion": appConfigService.version,
       "Platform": ionic.Platform.platform(),
       "DeviceVersion": ionic.Platform.version()
     };
