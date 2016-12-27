@@ -37,6 +37,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.toEmail = data.stateParams.toEmail;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
+    console.log($scope.paypro);
     $scope.insufficientFunds = false;
     $scope.noMatchingWallet = false;
     $scope.paymentExpired = {
@@ -431,6 +432,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.payproModal = modal;
       $scope.payproModal.show();
     });
+  };
+
+  $scope.cancel = function() {
+    $scope.payproModal.hide();
   };
 
   $scope.approve = function(onSendStatusChange) {
