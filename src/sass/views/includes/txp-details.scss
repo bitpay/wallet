@@ -86,6 +86,11 @@
           flex-grow: 1;
         }
       }
+      &.double-line {
+        .item-note {
+          width: 100%;
+        }
+      }
     }
     .item-divider {
       padding-top: 1.2rem;
