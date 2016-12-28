@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "*PACKAGENAME*",
-  "description": "*PACKAGEDESCRIPTION*",
+  "description": "*DESCRIPTION*",
   "version": "*VERSION*",
   "permissions": [
     "storage",
