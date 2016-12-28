@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, $rootScope, payproService, scannerService) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, bitcore, $rootScope, payproService, scannerService, appConfigService) {
 
   var root = {};
 
