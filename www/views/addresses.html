@@ -3,11 +3,6 @@
     <ion-nav-title>{{'Wallet Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-buttons side="secondary">
-      <button class="button back-button" ng-click="showMenu(false, $event)">
-        <i class="icon ion-ios-more"></i>
-      </button>
-    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
@@ -38,6 +33,9 @@
         <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="viewAllAddresses()">
           <span translate>View All Addresses</span>
           <i class="icon ion-ios-arrow-thin-right"></i>
+        </div>
+        <div class="item view-all" ng-show="latestWithBalance[0]" ng-click="scan()">
+          <span translate>Scan addresses for funds</span>
         </div>
         <div class="item item-divider item-icon-right" ng-click="newAddress()">
           <span translate>Unused Addresses</span>
