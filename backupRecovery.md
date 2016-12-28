@@ -42,15 +42,15 @@ Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the
       - Go to 'Create Wallet', and enter the WS at 'Advanced Options'. Select a new name for the restored wallet. Total and required number of copayers should be set to 1.
       - Wallet should be recreated and access to funds should be restored.
       
-    (Using WD)
-    - Enter the WD at 'Import Wallet'
+    (Using WB)
+    - Enter the WB at 'Import Wallet'
     - Wallet should be recreated and access to funds should be restored.
  
 
 ### Multisig wallets
 
-  Case 1: From both WS and WD, full recovery is possible.
-    - Enter WS or WD at 'Import wallet' in a new device.
+  Case 1: From both WS and WB, full recovery is possible.
+    - Enter WS or WB at 'Import wallet' in a new device.
     - Wallet access should be restored.
    
   Case 2: Basic recovery is possible using the device where the wallet is installed, pointing the the new server (Recreate Wallet feature).
@@ -66,12 +66,12 @@ Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the
       - Ask other copayers to join the wallet using the given invitation code. All copayers need to enter their WS at Join (at -> Advanced Options -> Wallet Seed).
       - Wallet should be recreated and access to funds should be restored.
     
-    B) One WD and a quorum of WS of the other members.
-      - Using the WD, import the wallet.
+    B) One WB and a quorum of WS of the other members.
+      - Using the WB, import the wallet.
       - Ask other copayers to import the wallet using their WS.
       - Wallet should be recreated and funds should be accesable 
       
-      In this case, Copayers will not be able to decrypt the 'notes' field on the new Spend Proposals, because the shared secret stored at the WD is not longer known by other copayers.
+      In this case, Copayers will not be able to decrypt the 'notes' field on the new Spend Proposals, because the shared secret stored at the WB is not longer known by other copayers.
 
 
 ### Hardware wallets
