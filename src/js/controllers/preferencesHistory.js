@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, $window) {
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
     $scope.isCordova = platformInfo.isCordova;
-    $scope.appName = $window.appConfig.nameCase;
+    $scope.appName = appConfigService.nameCase;
 
     $scope.csvHistory = function(cb) {
       var allTxs = [];

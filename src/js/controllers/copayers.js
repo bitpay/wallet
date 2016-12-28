@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, $window, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
+  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
 
-    var appName = $window.appConfig.userVisibleName;
-    var appUrl = $window.appConfig.url;
+    var appName = appConfigService.userVisibleName;
+    var appUrl = appConfigService.url;
 
     $scope.isCordova = platformInfo.isCordova;
     $scope.$on("$ionicView.beforeEnter", function(event, data) {

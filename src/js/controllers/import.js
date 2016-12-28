@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, $window) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.formData.account = 1;
       $scope.importErr = false;
-      $scope.showHardwareWallet = $window.appConfig.name == 'copay';
+      $scope.showHardwareWallet = appConfigService.name == 'copay';
 
       if ($stateParams.code)
         $scope.processWalletInfo($stateParams.code);
