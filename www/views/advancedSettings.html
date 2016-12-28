@@ -67,31 +67,6 @@
         <span transaction>If enabled, the Frequently Used card - a list of the most commonly chosen recipients - will appear in the Send tab.</span>
       </div> -->
 
-      <div ng-show="global.developmentUtilitiesEnabled.value">
-        <div class="item item-divider" translate>Development Utilities</div>
-        <div class="settings-explanation">
-          <div class="settings-description" translate>
-            These utilities may be unstable. Proceed at your own risk.
-          </div>
-        </div>
-
-        <div class="item has-comment item-button-right">
-          Feedback Card
-          <button class="button button-secondary" ng-click="activateFeedbackCard()" ng-show="!feedbackCardActivating && !feedbackCardActivated">
-            Activate
-          </button>
-          <button class="button button-secondary button-clear" disabled ng-show="feedbackCardActivating">
-            <ion-spinner></ion-spinner>
-          </button>
-          <button class="button button-secondary button-clear" ng-show="feedbackCardActivated" ng-click="resetActivateFeedbackCard()">
-            Activated
-          </button>
-        </div>
-        <div class="comment">
-          <span transaction>The feedback card is displayed on the Home tab at certain times. You can activate it immediately here.</span>
-        </div>
-      </div>
-
     </div>
   </ion-content>
 </ion-view>
