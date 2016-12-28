@@ -15,6 +15,7 @@ var templates = {
   '.desktop': 'webkitbuilds/',
   'setup-win.iss': 'webkitbuilds/',
   'build-macos.sh': 'webkitbuilds/',
+  'manifest.json': 'chrome-app/',
   //  'bower.json': '/',
 };
 var configDir = process.argv[2] || 'copay';
