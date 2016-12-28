@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     var url = 'https://help.bitpay.com/bitpay-app';
     var optIn = true;
     var title = gettextCatalog.getString('BitPay Help Center');
-    var message = gettextCatalog.getString('Help and support information is available at the BitPay Help Center website. Would you like to go there now?');
+    var message = gettextCatalog.getString('Help and support information is available at the BitPay Help Center website.');
     var okText = gettextCatalog.getString('Open Help Center');
     var cancelText = gettextCatalog.getString('Go Back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
