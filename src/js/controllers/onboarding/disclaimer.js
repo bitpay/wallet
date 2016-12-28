@@ -5,7 +5,8 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
   $scope.$on("$ionicView.afterEnter", function() {
     startupService.ready();
   });
-  $scope.init = function() {
+
+  $scope.$on("$ionicView.beforeEnter", function() {
     $scope.lang = uxLanguage.currentLanguage;
     $scope.terms = {};
     $scope.accepted = {};
@@ -13,10 +14,7 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
     $scope.backedUp = $stateParams.backedUp;
     $scope.resume = $stateParams.resume;
     $scope.shrinkView = false;
-    $timeout(function() {
-      $scope.$apply();
-    }, 1);
-  };
+  });
 
   $scope.confirm = function() {
     profileService.setDisclaimerAccepted(function(err) {
