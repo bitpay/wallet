@@ -24,17 +24,19 @@ angular.module('copayApp.controllers').controller('importController',
 
       $scope.seedOptions = [];
 
-      if (isChromeApp || isDevel) {
+      if (isChromeApp) {
         $scope.seedOptions.push({
           id: 'ledger',
           label: 'Ledger Hardware Wallet',
         });
+      }
 
+      if (isChromeApp || isDevel) {
         $scope.seedOptions.push({
           id: 'trezor',
           label: 'Trezor Hardware Wallet',
         });
-        $scope.seedSource = $scope.seedOptions[0];
+        $scope.formData.seedSource = $scope.seedOptions[0];
       }
     };
 
@@ -288,7 +290,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       var account = $scope.formData.account;
 
-      if ($scope.seedSource.id == 'trezor') {
+      if ($scope.formData.seedSource.id == 'trezor') {
         if (account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
@@ -296,7 +298,7 @@ angular.module('copayApp.controllers').controller('importController',
         account = account - 1;
       }
 
-      switch ($scope.seedSource.id) {
+      switch ($scope.formData.seedSource.id) {
         case ('ledger'):
           ongoingProcess.set('connectingledger', true);
           $scope.importLedger(account);
