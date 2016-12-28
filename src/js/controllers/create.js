@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, $window) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('createController',
 
       */
 
-      if ($window.appConfig.name == 'copay') {
+      if (appConfigService.name == 'copay') {
         if (n > 1 && isChromeApp) {
           seedOptions.push({
             id: 'ledger',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $window, $timeout, bitcore, $rootScope, payproService, scannerService) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, bitcore, $rootScope, payproService, scannerService, appConfigService) {
 
   var root = {};
 
@@ -121,17 +121,17 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       } else {
         goToAmountPage(data);
       }
-    } else if (data && data.indexOf($window.appConfig.name + '://glidera') === 0) {
+    } else if (data && data.indexOf(appConfigService.name + '://glidera') === 0) {
       return $state.go('uriglidera', {
         url: data
       });
-    } else if (data && data.indexOf($window.appConfig.name + '://coinbase') === 0) {
+    } else if (data && data.indexOf(appConfigService.name + '://coinbase') === 0) {
       return $state.go('uricoinbase', {
         url: data
       });
 
       // BitPayCard Authentication
-    } else if (data && data.indexOf($window.appConfig.name + '://') === 0) {
+    } else if (data && data.indexOf(appConfigService.name + '://') === 0) {
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);

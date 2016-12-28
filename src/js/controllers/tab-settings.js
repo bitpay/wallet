@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $window, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, gettextCatalog) {
 
   var updateConfig = function() {
     var isCordova = platformInfo.isCordova;
@@ -10,13 +10,13 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.usePushNotifications = isCordova && !isWP;
     $scope.isCordova = isCordova;
 
-    $scope.appName = $window.appConfig.nameCase;
+    $scope.appName = appConfigService.nameCase;
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
-    
+
     $scope.wallets = profileService.getWallets();
-    
+
     configService.whenAvailable(function(config) {
       $scope.unitName = config.wallet.settings.unitName;
       $scope.selectedAlternative = {
@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
           if (!lodash.isEmpty(data)) {
             $scope.bitpayCards = true;
           }
-        });  
+        });
       }
 
       if ($scope.glideraEnabled) {
