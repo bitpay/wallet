@@ -45,8 +45,8 @@ msgid "About"
 msgstr ""
 
 #: src/js/services/confirmDialog.js:8
+#: www/views/confirm.html:126
 #: www/views/confirm.html:134
-#: www/views/confirm.html:144
 #: www/views/modals/txp-details.html:169
 #: www/views/modals/txp-details.html:176
 msgid "Accept"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Add Funds"
 msgstr ""
 
-#: www/views/confirm.html:78
+#: www/views/confirm.html:72
 msgid "Add Memo"
 msgstr ""
 
@@ -155,10 +155,6 @@ msgstr ""
 
 #: www/views/allAddresses.html:3
 msgid "All Addresses"
-msgstr ""
-
-#: www/views/backupWarning.html:15
-msgid "All clear, let's do this"
 msgstr ""
 
 #: www/views/modals/wallet-balance.html:18
@@ -394,6 +390,7 @@ msgstr ""
 #: www/views/feedback/send.html:5
 #: www/views/includes/confirm-tx.html:30
 #: www/views/includes/note.html:6
+#: www/views/includes/password.html:22
 #: www/views/modals/confirmation.html:13
 msgid "Cancel"
 msgstr ""
@@ -644,11 +641,8 @@ msgstr ""
 msgid "Create Shared Wallet"
 msgstr ""
 
-#: www/views/tab-home.html:66
-msgid "Create a bitcoin wallet"
-msgstr ""
-
 #: www/views/onboarding/tour.html:46
+#: www/views/tab-home.html:66
 #: www/views/tab-send.html:16
 msgid "Create bitcoin wallet"
 msgstr ""
@@ -832,6 +826,10 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
+#: www/views/includes/password.html:8
+msgid "Enter your spending password"
+msgstr ""
+
 #. Trying to import a malformed wallet export QR code
 #: src/js/controllers/activity.js:45
 #: src/js/controllers/addressbook.js:50
@@ -997,7 +995,7 @@ msgstr ""
 msgid "Family vacation funds"
 msgstr ""
 
-#: www/views/confirm.html:85
+#: www/views/confirm.html:79
 #: www/views/includes/confirm-tx.html:19
 #: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:73
@@ -1110,7 +1108,7 @@ msgstr ""
 msgid "Go back"
 msgstr ""
 
-#: www/views/includes/backupWarningPopup.html:4
+#: www/views/backupWarning.html:15
 #: www/views/includes/confirmBackupPopup.html:8
 msgid "Got it"
 msgstr ""
@@ -1276,7 +1274,7 @@ msgid "Incorrect code format"
 msgstr ""
 
 #: src/js/services/bwcError.js:44
-#: www/views/confirm.html:122
+#: www/views/confirm.html:116
 msgid "Insufficient funds"
 msgstr ""
 
@@ -1526,7 +1524,7 @@ msgstr ""
 msgid "No wallet found!"
 msgstr ""
 
-#: www/views/confirm.html:119
+#: www/views/confirm.html:113
 msgid "No wallets available"
 msgstr ""
 
@@ -1716,7 +1714,7 @@ msgstr ""
 msgid "Payment Rejected"
 msgstr ""
 
-#: www/views/confirm.html:150
+#: www/views/confirm.html:140
 #: www/views/includes/walletActivity.html:11
 #: www/views/modals/txp-details.html:182
 #: www/views/modals/txp-details.html:42
@@ -1827,7 +1825,7 @@ msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:38
 #: src/js/controllers/tx-details.js:64
-#: www/views/confirm.html:151
+#: www/views/confirm.html:141
 msgid "Proposal Created"
 msgstr ""
 
@@ -1952,6 +1950,10 @@ msgstr ""
 msgid "Repeat the password"
 msgstr ""
 
+#: www/views/includes/password.html:5
+msgid "Repeat the spending password"
+msgstr ""
+
 #: www/views/preferences.html:51
 msgid "Request Fingerprint"
 msgstr ""
@@ -1982,6 +1984,10 @@ msgstr ""
 
 #: www/views/tab-scan.html:23
 msgid "Retry Camera"
+msgstr ""
+
+#: www/views/includes/password.html:31
+msgid "SET"
 msgstr ""
 
 #: www/views/addressbook.add.html:56
@@ -2017,7 +2023,6 @@ msgstr ""
 msgid "Scanning Wallet funds..."
 msgstr ""
 
-#: www/views/includes/backupWarningPopup.html:2
 #: www/views/includes/screenshotWarningModal.html:7
 msgid "Screenshots are not secure"
 msgstr ""
@@ -2151,6 +2156,10 @@ msgstr ""
 
 #: www/views/tab-export-file.html:10
 msgid "Set up a password"
+msgstr ""
+
+#: www/views/includes/password.html:4
+msgid "Set up a spending password"
 msgstr ""
 
 #: www/views/tab-settings.html:3
@@ -2499,7 +2508,7 @@ msgstr ""
 msgid "Transaction already broadcasted"
 msgstr ""
 
-#: www/views/confirm.html:152
+#: www/views/confirm.html:142
 msgid "Transaction created"
 msgstr ""
 
@@ -2929,8 +2938,16 @@ msgstr ""
 msgid "Your password"
 msgstr ""
 
+#: www/views/includes/password.html:12
+msgid "Your spending password"
+msgstr ""
+
 #: www/views/onboarding/backupRequest.html:10
 msgid "Your wallet is never saved to cloud storage or standard device backups."
+msgstr ""
+
+#: www/views/includes/password.html:39
+msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down"
 msgstr ""
 
 #: src/js/services/walletService.js:825
@@ -2947,10 +2964,6 @@ msgstr ""
 
 #: www/views/tab-receive.html:43
 msgid "address not yet available"
-msgstr ""
-
-#: www/views/includes/backupWarningPopup.html:3
-msgid "if you take a screenshot, your backup may be viewed by others apps. You can make a safe backup with paper and a pen."
 msgstr ""
 
 #: www/views/includes/available-balance.html:8
