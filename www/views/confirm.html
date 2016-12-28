@@ -60,11 +60,17 @@
           <span class="label" ng-if="!isGlidera" translate>From</span>
           <span class="label" ng-if="isGlidera == 'buy'">To</span>
           <span class="label" ng-if="isGlidera == 'sell'">From</span>
-          <div class="wallet">
+          <div class="wallet" ng-if="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
             </i>
             <div>{{wallet.name}}</div>
+          </div>
+          <div class="wallet" ng-if="!wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': 'grey'}" class="bg"/>
+            </i>
+            <div>...</div>
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
