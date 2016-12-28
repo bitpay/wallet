@@ -63,9 +63,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (!$scope.wallets || !$scope.wallets.length) {
       $scope.noMatchingWallet = true;
-      if ($scope.paypro) {
-        displayValues();
-      }
+      displayValues();
+      $log.warn('No ' + $scope.network + ' wallets to make the payment');
       $timeout(function() {
         $scope.$apply();
       });
@@ -107,6 +106,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             } else initConfirm();
           } else {
             if (!enoughFunds) $scope.insufficientFunds = true;
+            displayValues();
             $log.warn('No wallet available to make the payment');
           }
           $timeout(function() {
