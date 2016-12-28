@@ -122,8 +122,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     var btx = $scope.btx;
     var url = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid;
     var optIn = true;
-    var title = gettextCatalog.getString('View Transaction on Insight');
-    var message = gettextCatalog.getString('Would you like to view this transaction on the Insight blockchain explorer?');
+    var title = null;
+    var message = gettextCatalog.getString('View Transaction on Insight');
     var okText = gettextCatalog.getString('Open Insight');
     var cancelText = gettextCatalog.getString('Go Back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
