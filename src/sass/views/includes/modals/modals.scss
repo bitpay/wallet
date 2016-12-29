@@ -17,7 +17,7 @@
     &-warning {
       background: $warning-orange;
     }
-    padding: 2rem;
+    padding: 1rem;
     border-radius: $unmistakable-radius $unmistakable-radius 0 0;
     min-height: 120px;
     &-img{
@@ -41,7 +41,7 @@
     }
   }
   &-content {
-    padding: 1rem 2rem;
+    padding: 0rem 1rem;
   }
   &-heading {
     margin:0 0 1rem;
