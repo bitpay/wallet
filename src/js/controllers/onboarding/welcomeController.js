@@ -8,13 +8,6 @@ angular.module('copayApp.controllers').controller('welcomeController', function(
     startupService.ready();
   });
 
-  $scope.goImport = function(code) {
-    $state.go('onboarding.import', {
-      fromOnboarding: true,
-      code: code
-    });
-  };
-
   $scope.createProfile = function() {
     $log.debug('Creating profile');
     profileService.createProfile(function(err) {
