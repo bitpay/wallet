@@ -10,13 +10,6 @@
     margin: 20px auto 5px;
     height: 10vh;
   }
-  @media (min-width: 570px){
-    #backup-description {
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
   #arrow-down {
     font-size: 4.2rem;
     color: $soft-blue;
@@ -24,8 +17,27 @@
   #backup-tldr {
     font-size: 16px;
   }
+  #backup-description {
+    max-width: 500px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
   .cta-buttons {
     @extend %cta-buttons;
     padding-bottom: 4vw;
+  }
+  @media (max-height: 480px) {
+    #warning {
+      display: block;
+    }
+    #backup-description {
+      font-size: 14px;
+    }
+    #backup-tldr {
+      font-size: 14px;
+    }
+    #arrow-down {
+      display: none;
+    }
   }
 }
