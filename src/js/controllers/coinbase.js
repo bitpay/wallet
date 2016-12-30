@@ -26,10 +26,8 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
 
   $scope.updateTransactions = function() {
     $log.debug('Getting transactions...');
-    coinbaseService.getPendingTransactions($scope.accessToken, $scope.accountId, function(err, txs) {
-      $scope.pendingTransactions = txs;
-    });
-
+    $scope.pendingTransactions = { data: {} };
+    coinbaseService.getPendingTransactions($scope.pendingTransactions);
   };
 
   this.openAuthenticateWindow = function() {

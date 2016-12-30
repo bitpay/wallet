@@ -86,8 +86,8 @@
         Activity
       </div>
       <a class="item"
-         ng-if="pendingTransactions && !error"
-         ng-repeat="(id, tx) in pendingTransactions | orderObjectBy:'updated_at':true track by $index"
+         ng-if="pendingTransactions.data && !error"
+         ng-repeat="(id, tx) in pendingTransactions.data | orderObjectBy:'updated_at':true track by $index"
          ng-click="coinbase.openTxModal(tx)">
 
         <span class="item-note">

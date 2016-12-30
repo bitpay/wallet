@@ -40,11 +40,9 @@
       </div>
     </div>
 
-    <div class="box-notification error" ng-show="tx.error">
-      <ul class="card list">
-        <li class="item" ng-repeat="err in tx.error.errors" ng-bind-html="err.message"></li>
-      </ul>
-    </div>
+    <ul class="card list" ng-show="tx.error">
+      <li class="item" ng-repeat="err in tx.error.errors" ng-bind-html="err.message"></li>
+    </ul>
 
     <ul class="list">
       <li ng-show="tx.details && tx.status != 'pending'" class="item">
