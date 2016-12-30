@@ -46,19 +46,18 @@
             will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one
             hour).
           </div>
-          <div>
-            <div>
-              Estimated sale value: 
-              <span ng-if="coinbaseSellPrice">
-                {{coinbaseSellPrice.amount * coinbaseAmountBTC | currency : 'USD ' : 2}}
-              </span>
-            </div>
-            Still sell if price fall until: 
-            <span ng-if="coinbaseSellPrice">
-              {{(coinbaseSellPrice.amount - (selectedPriceSensitivity.data.value / 100) *
-              coinbaseSellPrice.amount) * coinbaseAmountBTC | currency : 'USD ' : 2}}
-            </span>
-          </div>
+          <span class="label" ng-if="coinbaseSellPrice">Estimated sale value: 
+            {{coinbaseSellPrice.amount * coinbaseAmountBTC | currency : 'USD ' : 2}}
+          </span>
+          <span class="label" ng-if="coinbaseSellPrice">Still sell if price fall until: 
+            {{(coinbaseSellPrice.amount - (selectedPriceSensitivity.data.value / 100) *
+            coinbaseSellPrice.amount) * coinbaseAmountBTC | currency : 'USD ' : 2}}
+          </span>
+        </div>
+        <div class="item single-line" ng-if="isCoinbase && coinbasePaymentMethodInfo">
+          <span class="label" ng-show="isCoinbase == 'buy'">Payment Method</span>
+          <span class="label" ng-show="isCoinbase == 'sell'">Deposit into</span>
+          <span class="item-note">{{coinbasePaymentMethodInfo.name}}</span>
         </div>
         <div class="item">
           <span class="label" ng-if="!(isGlidera || isCoinbase)" translate>To</span>
@@ -147,15 +146,19 @@
             </div>
           </div>
         </div>
-        <div class="size-12 m10" ng-show="isCoinbase == 'buy'">
-          <div>
-            Subtotal: {{coinbaseBuyRequest.subtotal.amount}} {{coinbaseBuyRequest.subtotal.currency}}
+        <div ng-show="isCoinbase == 'buy'">
+          <div class="item single-line">
+            <span class="label">Subtotal</span>
+            <span class="item-note">{{coinbaseBuyRequest.subtotal.amount}}
+              {{coinbaseBuyRequest.subtotal.currency}}</span>
           </div>
-          <div>
-            Total: {{coinbaseBuyRequest.total.amount}} {{coinbaseBuyRequest.total.currency}}
+          <div class="item single-line">
+            <span class="label">Total</span>
+            <span class="item-note">{{coinbaseBuyRequest.total.amount}} {{coinbaseBuyRequest.total.currency}}</span>
           </div>
-          <div>
-            Payout at: {{coinbaseBuyRequest.payout_at | amCalendar}}
+          <div class="item single-line">
+            <span class="label">Payout at</span>
+            <span class="item-note">{{coinbaseBuyRequest.payout_at | amCalendar}}</span>
           </div>
         </div>
         <div class="text-center" ng-show="noMatchingWallet">
@@ -191,7 +194,6 @@
     slide-success-hide-on-confirm="true">
     <span ng-show="isCoinbase == 'buy'">Bought</span>
     <span ng-show="isCoinbase == 'sell' && coinbaseSendInfo">Funds sent to Coinbase Account</span>
-    <span ng-show="isCoinbase == 'sell' && coinbaseSellRequest">Sale initiated</span>
     <div ng-show="!isCoinbase">
       <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
       <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
@@ -204,18 +206,12 @@
     <div ng-show="isCoinbase" class="glidera-success">
       <span ng-show="isCoinbase == 'buy'">
         <span ng-show="coinbaseBuySuccess">
-          Bitcoin purchase completed. Coinbase has queued the transfer to your selected Copay wallet
-        </span>
-        <span ng-show="coinbaseReceiveInfo">
-          Buy confirmed. Funds will be send soon to your selected wallet
+          Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet
         </span>
       </span>
       <span ng-show="isCoinbase == 'sell'">
         <span ng-show="coinbaseSendInfo">
-          The transaction is not yet confirmed, and will show as "Processing" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase.
-        </span>
-        <span ng-show="coinbaseSellRequest">
-          A transfer has been initiated to your bank account and should arrive at {{coinbaseSellRequest.payout_at | amCalendar}}.
+          The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase.
         </span>
       </span>
     </div>

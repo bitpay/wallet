@@ -72,6 +72,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         }
 
         $scope.coinbasePaymentMethods = [];
+        $scope.coinbaseSelectedPaymentMethodId = { value : null };
         coinbaseService.getPaymentMethods(data.accessToken, function(err, p) {
           lodash.each(p.data, function(pm) {
             if ($scope.isCoinbase == 'sell') {
@@ -79,14 +80,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
                 $scope.coinbasePaymentMethods.push(pm);
               }
               if (pm.allow_sell && pm.primary_sell) {
-                $scope.coinbaseSelectedPaymentMethod = pm;
+                $scope.coinbaseSelectedPaymentMethodId.value = pm.id;
               }
             } else {
               if (pm.allow_buy) {
                 $scope.coinbasePaymentMethods.push(pm);
               }
               if (pm.allow_buy && pm.primary_buy) {
-                $scope.coinbaseSelectedPaymentMethod = pm;
+                $scope.coinbaseSelectedPaymentMethodId.value = pm.id;
               }
             }
           });
@@ -398,7 +399,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         glideraAccessToken: $scope.glideraAccessToken
       });
     } else if ($scope.isCoinbase) {
-      if (lodash.isEmpty($scope.coinbaseSelectedPaymentMethod)) {
+      if (lodash.isEmpty($scope.coinbaseSelectedPaymentMethodId.value)) {
         popupService.showAlert(gettextCatalog.getString('Error'), 'No Payment Method Selected');
         return;
       }
@@ -407,12 +408,17 @@ angular.module('copayApp.controllers').controller('amountController', function($
         return;
       }
       var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
+      if (amountUSD < 1) {
+        popupService.showAlert(gettextCatalog.getString('Error'), 'Amount must be at least 1.00 USD');
+        return;
+      }
+
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.buyandsell.coinbase.confirm', {
         toAmount: (amount * unitToSatoshi).toFixed(0),
         toAddress: $scope.toAddress,
         isCoinbase: $scope.isCoinbase,
-        coinbasePaymentMethodId: $scope.coinbaseSelectedPaymentMethod.id,
+        coinbasePaymentMethodId: $scope.coinbaseSelectedPaymentMethodId.value,
         coinbaseAmount: amountUSD,
         coinbaseAmountCurrency: 'USD'
       });

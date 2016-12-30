@@ -74,7 +74,7 @@
                   <span ng-show="isCoinbase == 'buy'">Payment Method</span>
                   <span ng-show="isCoinbase == 'sell'">Deposit into</span>
                 </div>
-                <select ng-model="coinbaseSelectedPaymentMethod.id"
+                <select ng-model="coinbaseSelectedPaymentMethodId.value"
                         ng-options="item.id as item.name for item in coinbasePaymentMethods">
                 </select>
               </label>
