@@ -238,6 +238,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       if (!words) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the recovery phrase'));
+        return;
       } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
         return _importExtendedPrivateKey(words, opts);
       } else if (words.indexOf('xpub') == 0 || words.indexOf('tpuv') == 0) {
