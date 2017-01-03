@@ -33,9 +33,6 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
 
   this.openAuthenticateWindow = function() {
     var oauthUrl = this.getAuthenticateUrl();
-    externalLinkService.open(oauthUrl);
-    /*
-     * Not working (NW bug)
     if (!isNW) {
       externalLinkService.open(oauthUrl);
     } else {
@@ -44,18 +41,19 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
       gui.Window.open(oauthUrl, {
         focus: true,
         position: 'center'
-      }, function(win) {
-        win.on('loaded', function() {
-          var title = win.title;
-          if (title.indexOf('Coinbase') == -1) {
-            $scope.code = title;
-            self.submitOauthCode(title);
-            win.close();
-          }
+      }, function(new_win) {
+        new_win.on('loaded', function() {
+          var title = new_win.window.document.title;
+          $timeout(function() {
+            if (title.indexOf('Coinbase') == -1) {
+              $scope.code = title;
+              self.submitOauthCode($scope.code);
+              new_win.close();
+            }
+          }, 100);
         });
       });
     }
-    */
   }
 
   this.getAuthenticateUrl = function() {
