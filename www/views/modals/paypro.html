@@ -1,56 +1,61 @@
-<ion-modal-view ng-controller="payproController">
-  <ion-header-bar align-title="center" class="bar-royal" ng-style="{'background-color': color, 'border-color': color}">
-    <button class="button button-clear" ng-click="cancel()">
+<ion-modal-view id="view-confirm">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button button-back button-clear" ng-click="cancel()">
       {{'Close' | translate}}
     </button>
-    <div class="title" translate>
-      Payment request
-    </div>
+    <h1 class="title" translate>Payment request</h1>
   </ion-header-bar>
-
   <ion-content>
-    <div class="header-modal text-center size-42">
-      {{amountStr}}
-    </div>
-
     <div class="list">
-      <div class="item item-divider" translate>
-        Details
+      <div class="item head">
+        <div class="amount-label">
+          <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="alternative">{{alternativeAmountStr || '...'}}</div>
+        </div>
       </div>
-      <div class="item">
-        {{'Pay To'|translate}}
-        <span class="item-note">{{paypro.domain}}</span>
-      </div>
-      <div class="item" ng-if="paypro.toAddress">
-        {{'Address'|translate}}
-        <span class="item-note">{{paypro.toAddress}}</span>
-      </div>
-      <div class="item">
-        {{'Certified by'|translate}}
-        <span class="item-note">
-          <span ng-show="paypro.caTrusted">
-            <i class="ion-locked" style="color:green"></i>
-            {{paypro.caName}}<br>
-            <span translate>(Trusted)</span>
+      <div class="info">
+        <div class="item single-line" ng-if="paypro.domain">
+          <span class="label">{{'Pay To'|translate}}</span>
+          <span class="item-note">
+            {{paypro.domain}}
           </span>
-          <span ng-show="!paypro.caTrusted">
-            <span ng-show="paypro.selfSigned">
-              <i class="ion-unlocked" style="color:red"></i> <span translate>Self-signed Certificate</span>
+        </div>
+        <div class="item single-line" ng-if="paypro.toAddress">
+          <span class="label">{{'Address'|translate}}</span>
+          <span class="item-note m10l ellipsis">
+            {{paypro.toAddress}}
+          </span>
+        </div>
+        <div class="item">
+          <span class="label">{{'Certified by'|translate}}</span>
+          <span class="item-note w100p">
+            <span ng-show="paypro.caTrusted">
+              <i class="ion-locked" style="color:green"></i>
+              {{paypro.caName}} {{'(Trusted)' | translate}}</span>
             </span>
-            <span ng-show="!paypro.selfSigned">
-              <i class="ion-locked" style="color:yellow"></i>{{paypro.caName}}<br>
-              <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+            <span ng-show="!paypro.caTrusted">
+              <span ng-show="paypro.selfSigned">
+                <i class="ion-unlocked" style="color:red"></i> <span translate>Self-signed Certificate</span>
+              </span>
+              <span ng-show="!paypro.selfSigned">
+                <i class="ion-locked" style="color:yellow"></i>{{paypro.caName}}<br>
+                <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
+              </span>
             </span>
           </span>
-        </span>
-      </div>
-      <div class="item" ng-if="paypro.memo">
-        {{'Memo'|translate}}
-        <span class="item-note wrapword">{{paypro.memo}}</span>
-      </div>
-      <div class="item" ng-if="paypro.expires">
-        {{'Expires'|translate}}
-        <span class="item-note">{{paypro.expires * 1000 | amTimeAgo }}</span>
+        </div>
+        <div class="item" ng-if="paypro.memo">
+          <span class="label">{{'Memo'|translate}}</span>
+          <span class="item-note w100p">
+            {{paypro.memo}}
+          </span>
+        </div>
+        <div class="item single-line" ng-if="paypro.expires">
+          <span class="label">{{'Expires'|translate}}</span>
+          <span class="item-note">
+            {{paypro.expires * 1000 | amTimeAgo }}
+          </span>
+        </div>
       </div>
     </div>
   </ion-content>

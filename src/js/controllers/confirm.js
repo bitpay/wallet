@@ -31,6 +31,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var isWallet = data.stateParams.isWallet || 'false';
     $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.cardId = data.stateParams.cardId;
+    $scope.cardAmountUSD = data.stateParams.cardAmountUSD;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
@@ -62,9 +63,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (!$scope.wallets || !$scope.wallets.length) {
       $scope.noMatchingWallet = true;
-      if ($scope.paypro) {
-        displayValues();
-      }
+      displayValues();
+      $log.warn('No ' + $scope.network + ' wallets to make the payment');
       $timeout(function() {
         $scope.$apply();
       });
@@ -106,6 +106,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             } else initConfirm();
           } else {
             if (!enoughFunds) $scope.insufficientFunds = true;
+            displayValues();
             $log.warn('No wallet available to make the payment');
           }
           $timeout(function() {
@@ -132,9 +133,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.amountStr = txFormatService.formatAmountStr(toAmount);
     $scope.displayAmount = getDisplayAmount($scope.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
-    txFormatService.formatAlternativeStr(toAmount, function(v) {
-      $scope.alternativeAmountStr = v;
-    });
+    if ($scope.cardAmountUSD) {
+      $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.cardAmountUSD) + ' USD';
+    } else if ($scope.giftCardAmountUSD) {
+      $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.giftCardAmountUSD) + ' USD';
+    } else {
+      txFormatService.formatAlternativeStr(toAmount, function(v) {
+        $scope.alternativeAmountStr = v;
+      });
+    }
     if ($scope.isGlidera == 'buy') $scope.getBuyPrice();
     if ($scope.isGlidera == 'sell') $scope.getSellPrice();
   };
@@ -426,6 +433,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.payproModal = modal;
       $scope.payproModal.show();
     });
+  };
+
+  $scope.cancel = function() {
+    $scope.payproModal.hide();
   };
 
   $scope.approve = function(onSendStatusChange) {
@@ -783,6 +794,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           invoiceUrl: $scope.paypro.url,
           invoiceTime: giftCardInvoiceTime
         };
+        ongoingProcess.set('creatingGiftCard', true);
         debounceCreate(count, dataSrc, onSendStatusChange);
       }
     }, onSendStatusChange);
@@ -795,7 +807,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   var debounceCreateGiftCard = function(count, dataSrc, onSendStatusChange) {
-
     amazonService.createGiftCard(dataSrc, function(err, giftCard) {
       $log.debug("creating gift card " + count);
       if (err) {
@@ -830,6 +841,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       }
 
       amazonService.savePendingGiftCard(newData, null, function(err) {
+        ongoingProcess.set('creatingGiftCard', false);
         $log.debug("Saving new gift card with status: " + newData.status);
         $scope.amazonGiftCard = newData;
       });

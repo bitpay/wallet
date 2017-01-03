@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, $window) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
 
     var isChromeApp = platformInfo.isChromeApp;
     var isDevel = platformInfo.isDevel;
@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('joinController',
       }
     };
 
-    this.onQrCodeScanned = function(data) {
+    this.onQrCodeScannedJoin = function(data) {
       $scope.secret = data;
       if ($scope.joinForm) {
         $scope.joinForm.secret.$setViewValue(data);
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('joinController',
     if ($stateParams.url) {
       var data = $stateParams.url;
       data = data.replace('copay:', '');
-      this.onQrCodeScanned(data);
+      this.onQrCodeScannedJoin(data);
     }
 
     var updateSeedSourceSelect = function() {
@@ -63,7 +63,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
       */
 
-      if ($window.appConfig.name == 'copay') {
+      if (appConfigService.name == 'copay') {
         if (isChromeApp) {
           self.seedOptions.push({
             id: 'ledger',

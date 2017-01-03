@@ -25,10 +25,8 @@
           <label class="item item-input item-stacked-label no-border">
             <span class="input-label" translate>Wallet Invitation</span>
             <div class="input-notification">
-              <i class="icon ion-checkmark-circled balanced"
-                 ng-show="!joinForm.secret.$invalid"></i>
-              <i class="icon ion-close-circled assertive"
-                 ng-show="joinForm.secret.$invalid && secret"></i>
+              <i ng-show="!joinForm.secret.$invalid" class="icon ion-checkmark-circled valid"></i>
+              <i ng-show="joinForm.secret.$invalid && secret" class="icon ion-close-circled invalid"></i>
             </div>
             <input id="secret"
                    type="text"
@@ -38,7 +36,7 @@
                    wallet-secret required>
           </label>
           <div class="qr-scan-icon">
-            <qr-scanner class="qr-icon size-24" on-scan="join.onQrCodeScanned(data)"></qr-scanner>
+            <qr-scanner class="qr-icon size-24" on-scan="join.onQrCodeScannedJoin(data)"></qr-scanner>
           </div>
         </div>
         <div class="item item-divider"></div>
@@ -91,14 +89,14 @@
           </div>
 
           <div class="item item-input" ng-show="encrypt">
-            <input ng-show="join.seedSourceId == 'new'" 
+            <input ng-show="join.seedSourceId == 'new'"
                    placeholder="{{'Password'|translate}}"
                    type="password"
                    autocapitalize="off"
                    name="createPassphrase"
                    ng-model="createPassphrase">
 
-            <input ng-show="join.seedSourceId == 'set'" 
+            <input ng-show="join.seedSourceId == 'set'"
                    placeholder="{{'Password'|translate}}"
                    type="password"
                    autocapitalize="off"
