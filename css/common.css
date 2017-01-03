@@ -1,0 +1,323 @@
+body {
+}
+
+h1 {
+  font-weight: 300;
+  font-size: 30px;
+}
+
+h2 {
+  font-weight:700;
+  color: #535A6C;
+  font-size: 30px;
+}
+
+p {
+  font-weight: 300;
+  color: #95A5A6;
+  font-size: 1.2rem;
+}
+
+.panel.radius p {
+  font-size: 1rem;
+}
+
+.download p {
+  font-weight: 300;
+}
+
+
+#licenceModal p {
+  color: #153536;
+}
+
+
+
+.reveal-modal.line-dashed-v {
+  border-right: 1px dashed #E3E3E3;
+}
+
+.line-dashed {
+  padding-top: 2rem;
+  border-bottom: 1px dashed #E3E3E3
+}
+
+.line-mobile {
+  border-bottom: 1px solid #EAEDF0;
+  margin-bottom: 3rem;
+}
+
+.text-warning {
+  color: #C0392A;
+}
+
+.text-green {
+  color: #1ABC9C;
+}
+
+.text-yellow {
+  color: #F5A623;
+}
+
+
+.ubuntulight
+{font-family: ubuntulight;}
+.ubunturegular
+{font-family: ubunturegular;}
+.ubuntumedium
+{font-family: ubuntumedium;}
+.ubuntubold
+{font-family: ubuntubold;}
+
+.size-10 { font-size: 10px; }  
+.size-11 { font-size: 12px; }  
+.size-12 { font-size: 12px; }      
+.size-14 { font-size: 14px; }
+.size-16 { font-size: 16px; }
+.size-18 { font-size: 18px; }
+.size-21 { font-size: 21px; }
+.size-24 { font-size: 24px; }
+.size-30 { font-size: 30px; }
+.size-36 { font-size: 36px; }
+.size-48 { font-size: 48px; }
+.size-60 { font-size: 60px; }
+.size-72 { font-size: 72px; }
+
+.m5r {margin-right: 5px;}
+.m5t {margin-top: 5px;}
+.p5h {padding: 0 5rem;}
+.m2r {margin-right: 2rem;}
+.m1r {margin-right: 1rem;}
+.p2r {padding-right: 2rem;}
+.m4b {margin-bottom: 4rem;}
+.p3t {padding-top: 3rem;}
+.m3b {margin-bottom: 3rem;}
+.p5t {padding-top: 5rem;}
+.p5b {padding-bottom: 5rem;}
+.m10t {margin-top: 10px;}
+.p20t {padding-top: 20px !important;}
+.p1l {padding-left: 1rem;}
+.p1b {padding-bottom: 1rem;}
+.p1tb {padding: 1rem 0;}
+.p0m0 {padding: 0; margin: 0}
+.db {display: block;}
+.m0 {margin: 0;}
+
+.row {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 62.5rem; 
+}
+
+.right {float: right;}
+
+
+button small {
+  font-weight: 100;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.70);
+}
+
+.center-img img
+{ display: block;
+      margin-left: auto;
+    margin-right: auto}
+
+.white
+{color: #FFFFFF;}
+
+
+
+header {
+    width: 100%;
+    overflow: visible;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  background-color: #00BD9C;
+  padding-top: 1em;
+  padding-bottom: 1em;
+ }
+
+
+.f-dropdown {
+  z-index: 1000;
+  max-width: 240px; 
+}
+
+.header{
+  background-color: #00BD9C;
+  }
+
+.header a.white:hover {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.header-logo, .header-logo-small {
+  position: relative;
+  }
+
+.header-logo-small {
+  width: 210px;
+  }  
+
+
+
+.copay-version, .copay-version-small {
+  color: #FFFFFF;
+  position: absolute;
+}
+
+
+.copay-version {
+  left: 100px; 
+  bottom: 0; 
+}
+
+   .copay-version-small {
+  right: 40%; 
+   bottom: 5px; 
+  }
+
+ .btn-dwnld {
+  background-color: #109F83;
+
+    }
+
+a:hover.btn-dwnld {
+  background-color: #066D59;
+
+    }  
+
+#drop1 li i {
+  font-size: 28px;
+  margin-right: 10px;
+  color: #9B9B9B;
+}
+
+#drop1 li, #drop2 li {
+    border-bottom: 1px solid #E7E7EB;  
+    }
+
+#drop2 li:last-child{
+   border-bottom:none;
+}
+
+
+
+
+
+
+.f-dropdown li{ line-height: 0.9em;
+      }   
+
+
+ a.browser-ext,  a.web-ver, a.android-ver   {
+   background-repeat: no-repeat;
+   background-color: #FFFFFF;
+
+    }
+
+ a.browser-ext  {
+   background-image: url('../img/browser-icon-off.svg');
+      background-position: 7px 10px;
+
+    }
+
+ a:hover.browser-ext  {
+   background-image: url('../img/browser-icon-on.svg');
+   background-repeat: no-repeat;
+   color: #109F83;
+    }
+
+ a.web-ver  {
+   background-image: url('../img/web-icon-off.svg');
+      background-position: 7px 10px;
+    }
+
+ a:hover.web-ver  {
+   background-image: url('../img/web-icon-on.svg');
+   background-repeat: no-repeat;
+   color: #109F83;
+    }
+
+ a.android-ver {
+   background-image: url('../img/and-icon-off.svg');
+      background-position: 8px 10px;
+    }
+
+ a:hover.android-ver {
+   background-image: url('../img/and-icon-on.svg');
+   color: #109F83;
+    }    
+    
+
+.slogan-small{
+  padding: 11em 0 1em 0;
+    }
+
+.slogan-large{
+  padding: 9em 0 1em 0;
+    }
+
+.subheader{
+  background-color: #EAEDF0;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.subheader a {
+  padding: 2.6em 0;
+}
+
+.subheader a:hover {
+  background: #F6F8FA;
+}
+
+.uses {
+  padding-top: 2em;
+  border-bottom: 1px solid #D8DDE2;
+  }
+
+.uses p{
+   
+    color: #2B3D51;
+  }
+
+.uses-large p{
+   padding-top: 10%;
+    }
+
+
+.strong-points {
+  padding: 10em 0 ;
+  }
+
+.strong-points h2 {
+  margin-top: 3rem;
+}
+
+.bg-gray {
+background-color:#EAEDF0; 
+} 
+
+#bank, #signature, #opensource, #family, #business, #friends{
+    visibility: hidden;
+  } 
+
+
+footer {
+  padding: 2em 0;
+  background-color: #2C3E50;
+  overflow: hidden;
+      }
+
+.sub-footer {
+  background: #fff;
+  overflow: hidden;
+}
+
+.visbg { background-color: #D0021B !important;
+      }
+
