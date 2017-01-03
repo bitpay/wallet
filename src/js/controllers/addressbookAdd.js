@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
     'email': ''
   };
 
-  $scope.onQrCodeScanned = function(data, addressbookForm) {
+  $scope.onQrCodeScannedAddressBook = function(data, addressbookForm) {
     $timeout(function() {
       var form = addressbookForm;
       if (data && form) {
