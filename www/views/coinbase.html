@@ -7,16 +7,10 @@
 
   <ion-content>
 
-    <div class="box-notification warning m0" ng-show="network == 'testnet'">
-      Testnet wallets only work with Coinbase Sandbox Accounts
-    </div>
-
-    <div class="text-center" ng-show="error">
-      <div class="m20b box-notification" ng-show="error">
-        <ul class="no-bullet m0 size-12">
-          <li ng-repeat="err in error.errors" ng-bind-html="err.message"></li>
-        </ul>
-      </div>
+    <div class="box-notification error" ng-show="error">
+      <ul class="no-bullet m0 size-12">
+        <li ng-repeat="err in error.errors" ng-bind-html="err.message"></li>
+      </ul>
     </div>
 
     <div ng-if="!accountId && !error" ng-init="showOauthForm = false">
@@ -28,7 +22,7 @@
         <p class="m20t text-gray size-12">Connect your Coinbase account to get started</p>
 
         <button class="button button-standard button-primary"
-          ng-click="coinbase.openAuthenticateWindow(); showOauthForm = true">
+          ng-click="coinbase.openAuthenticateWindow()">
           Connect to Coinbase
         </button>
         <div class="m20t">

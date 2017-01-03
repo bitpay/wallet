@@ -19,8 +19,7 @@ angular.module('copayApp.controllers').controller('preferencesCoinbaseController
     coinbaseService.setCredentials();
     $scope.network = coinbaseService.getEnvironment();
     ongoingProcess.set('connectingCoinbase', true);
-    coinbaseService.init($scope.accessToken, function(err, data) {
-      ongoingProcess.set('connectingCoinbase', false);
+    coinbaseService.init(function(err, data) {
       if (err || lodash.isEmpty(data)) {
         ongoingProcess.set('connectingCoinbase', false);
         if (err) {
@@ -31,6 +30,7 @@ angular.module('copayApp.controllers').controller('preferencesCoinbaseController
       var accessToken = data.accessToken;
       var accountId = data.accountId;
       coinbaseService.getAccount(accessToken, accountId, function(err, account) {
+        ongoingProcess.set('connectingCoinbase', false);
         $scope.coinbaseAccount = account.data;
       });
       coinbaseService.getCurrentUser(accessToken, function(err, user) {

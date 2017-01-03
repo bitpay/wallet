@@ -142,10 +142,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         controller: 'glideraUriController',
         templateUrl: 'views/glideraUri.html'
       })
-      .state('uricoinbase', {
-        url: '/uri-coinbase/:url',
-        templateUrl: 'views/coinbaseUri.html'
-      })
 
     /*
      *
@@ -927,7 +923,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.buyandsell.coinbase', {
-      url: '/coinbase',
+      url: '/coinbase/:code',
       views: {
         'tab-home@tabs': {
           controller: 'coinbaseController',

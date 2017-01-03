@@ -61,7 +61,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + 'wallet:payment-methods:read';
 
     // NW has a bug with Window Object
-    if (isCordova && isNW) {
+    if (isCordova || isNW) {
       credentials.REDIRECT_URI = coinbase.redirect_uri.mobile;
     } else {
       credentials.REDIRECT_URI = coinbase.redirect_uri.desktop;
