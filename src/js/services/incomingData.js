@@ -126,9 +126,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         url: data
       });
     } else if (data && data.indexOf(appConfigService.name + '://coinbase') === 0) {
-      return $state.go('uricoinbase', {
-        url: data
+      var code = getParameterByName('code', data); 
+      $state.go('tabs.home', {}, {
+        'reload': true,
+        'notify': $state.current.name == 'tabs.home' ? false : true
+      }).then(function() {
+        $state.transitionTo('tabs.buyandsell.coinbase', {
+          code: code
+        });
       });
+      return true;
 
       // BitPayCard Authentication
     } else if (data && data.indexOf(appConfigService.name + '://') === 0) {

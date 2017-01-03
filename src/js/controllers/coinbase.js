@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('coinbaseController', function($rootScope, $scope, $timeout, $ionicModal, $log, profileService, configService, storageService, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, gettextCatalog, externalLinkService) {
 
   var isNW = platformInfo.isNW;
+  var isCordova = platformInfo.isCordova;
 
   var init = function() {
     ongoingProcess.set('connectingCoinbase', true);
@@ -58,6 +59,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   }
 
   this.getAuthenticateUrl = function() {
+    $scope.showOauthForm = isCordova || isNW ? false : true;
     return coinbaseService.getOauthCodeUrl();
   };
 
@@ -90,9 +92,13 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
     });
   };
 
+  var self = this;
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     coinbaseService.setCredentials();
-    $scope.network = coinbaseService.getEnvironment();
-    init();
+    if (data.stateParams && data.stateParams.code) {
+      self.submitOauthCode(data.stateParams.code);
+    } else {
+      init();
+    }
   });
 });
