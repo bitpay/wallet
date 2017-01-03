@@ -19,8 +19,11 @@
   }
   #backup-description {
     max-width: 500px;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin: auto;
+    padding: 1rem 0.5rem 0 1rem;
+    @media (max-height: 480px) {
+      padding-top: 40px;
+    }
   }
   .cta-buttons {
     @extend %cta-buttons;
