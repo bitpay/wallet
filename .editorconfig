@@ -1,0 +1,30 @@
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs
+# http://editorconfig.org
+
+## Plugins
+# Atom (https://github.com/sindresorhus/atom-editorconfig)
+# Vim (https://github.com/editorconfig/editorconfig-vim)
+# Sublime (https://github.com/sindresorhus/editorconfig-sublime)
+;
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[Makefile]
+indent_style = tab
+
+[**.html]
+max_char = 78
+brace_style = expand
+
