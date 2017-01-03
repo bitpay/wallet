@@ -16,8 +16,8 @@
 
     <form name="addressbookForm" no-validate>
 
-      <div class="list">
-        <label class="item item-input item-stacked-label">
+      <div class="list add-address-list add-address-input-group">
+        <label class="item item-input item-stacked-label no-border">
           <span class="input-label" translate>Name</span>
           <input type="text"
                  id="name"
@@ -37,10 +37,8 @@
           <label class="item item-input item-stacked-label">
             <span class="input-label" translate>Bitcoin Address</span>
             <div class="input-notification">
-              <i class="icon ion-checkmark-circled balanced"
-                 ng-show="!addressbookForm.address.$invalid"></i>
-              <i class="icon ion-close-circled assertive"
-                 ng-show="addressbookForm.address.$invalid && addressbookEntry.address"></i>
+              <i ng-show="!addressbookForm.address.$invalid" class="icon ion-checkmark-circled valid"></i>
+              <i ng-show="addressbookForm.address.$invalid && addressbookEntry.address" class="icon ion-close-circled invalid"></i>
             </div>
             <input type="text"
                    id="address"
@@ -49,7 +47,7 @@
                    valid-address required>
           </label>
           <div class="qr-scan-icon">
-            <qr-scanner on-scan="onQrCodeScanned(data, addressbookForm)"></qr-scanner>
+            <qr-scanner on-scan="onQrCodeScannedAddressBook(data, addressbookForm)"></qr-scanner>
           </div>
         </div>
       </div>

@@ -140,7 +140,7 @@
             </button>
           </div>
 
-          <div ng-show="!updateStatusError && wallet.balanceHidden" on-hold="hideToggle()">
+          <div ng-show="!updateStatusError && wallet.balanceHidden" ng-style="{'transform': amountScale}" on-hold="hideToggle()">
             <strong class="size-24" translate>[Balance Hidden]</strong>
             <div class="size-14" translate>
               Tap and hold to show
@@ -273,7 +273,7 @@
                 <div>
                   <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx.time)">{{btx.time * 1000 | amTimeAgo}}</time>
                   <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time)">
-                    {{btx.time * 1000 | amDateFormat:'MMM d, YYYY'}}
+                    {{btx.time * 1000 | amDateFormat:'MMM D, YYYY'}}
                   </time>
                 </div>
               </span>

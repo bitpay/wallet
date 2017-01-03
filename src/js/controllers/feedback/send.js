@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo) {
 
   $scope.sendFeedback = function(feedback, goHome) {
 
@@ -42,6 +42,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isCordova = platformInfo.isCordova;
     $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.feedback = {};
 

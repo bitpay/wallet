@@ -61,10 +61,10 @@ module.exports = function(grunt) {
         stdin: true,
       },
       desktopsign: {
-        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-win.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>-win.exe'
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.dmg.sig --detach-sig webkitbuilds/<%= pkg.title %>.dmg ; gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-win.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>-win.exe'
       },
       desktopverify: {
-        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>-win.exe.sig webkitbuilds/<%= pkg.title %>-win.exe'
+        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>.dmg.sig webkitbuilds/<%= pkg.title %>.dmg ; gpg --verify webkitbuilds/<%= pkg.title %>-win.exe.sig webkitbuilds/<%= pkg.title %>-win.exe'
       },
     },
     watch: {
@@ -74,13 +74,9 @@ module.exports = function(grunt) {
           grunt.log.writeln('Waiting for more changes...');
         },
       },
-      css: {
-        files: ['src/css/*.css'],
-        tasks: ['concat:css']
-      },
       sass: {
         files: ['src/sass/**/**/*.scss'],
-        tasks: ['sass', 'concat:css']
+        tasks: ['sass']
       },
       main: {
         files: [
@@ -104,8 +100,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
+          flatten: true,
           src: ['src/sass/main.scss'],
-          dest: './',
+          dest: 'www/css/',
           ext: '.css'
         }]
       }
@@ -118,6 +115,7 @@ module.exports = function(grunt) {
       angular: {
         src: [
           'bower_components/qrcode-generator/js/qrcode.js',
+          'bower_components/qrcode-generator/js/qrcode_UTF8.js',
           'bower_components/moment/min/moment-with-locales.js',
           'bower_components/angular-moment/angular-moment.js',
           'bower_components/ng-lodash/build/ng-lodash.js',
@@ -132,7 +130,7 @@ module.exports = function(grunt) {
           'angular-bitauth/angular-bitauth.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
-        dest: 'www/lib/angular.js'
+        dest: 'www/lib/angular-components.js'
       },
       js: {
         src: [
@@ -152,11 +150,7 @@ module.exports = function(grunt) {
           'node_modules/bezier-easing/dist/bezier-easing.min.js',
           'node_modules/cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js'
         ],
-        dest: 'www/js/copay.js'
-      },
-      css: {
-        src: ['src/sass/*.css', 'src/css/*.css'],
-        dest: 'www/css/copay.css'
+        dest: 'www/js/app.js'
       }
     },
     uglify: {
@@ -165,8 +159,8 @@ module.exports = function(grunt) {
       },
       prod: {
         files: {
-          'www/js/copay.js': ['www/js/copay.js'],
-          'www/lib/angular.js': ['www/lib/angular.js']
+          'www/js/app.js': ['www/js/app.js'],
+          'www/lib/angular-components.js': ['www/lib/angular-components.js']
         }
       }
     },
@@ -228,8 +222,8 @@ module.exports = function(grunt) {
         macPlist: {
           'CFBundleURLTypes': [
             {
-              'CFBundleURLName' : 'URI Handler',
-              'CFBundleURLSchemes' : ['bitcoin', '<%= pkg.name %>']
+              'CFBundleURLName': 'URI Handler',
+              'CFBundleURLSchemes': ['bitcoin', '<%= pkg.name %>']
             }
           ]
         }

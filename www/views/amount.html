@@ -6,7 +6,7 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-buttons side="secondary">
-      <button class="button back-button" ng-click="showSendMaxMenu($event)" ng-if="showMenu">
+      <button class="button back-button" ng-click="showSendMaxMenu()" ng-if="showMenu">
         <i class="icon ion-ios-more"></i>
       </button>
     </ion-nav-buttons>
@@ -120,4 +120,8 @@
       </div>
     </div>
   </ion-content>
+  <item-selector
+    item-selector-show="showSendMax"
+    item-selector-on-select="sendMax">
+  </item-selector>
 </ion-view>
