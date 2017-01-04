@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2016-12-29 07:42-0500\n"
+"PO-Revision-Date: 2017-01-04 12:05-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -55,8 +55,8 @@ msgid "About"
 msgstr "À propos"
 
 #: src/js/services/confirmDialog.js:8
-#: www/views/confirm.html:126
 #: www/views/confirm.html:134
+#: www/views/confirm.html:144
 #: www/views/modals/txp-details.html:169
 #: www/views/modals/txp-details.html:176
 msgid "Accept"
@@ -103,7 +103,7 @@ msgstr "Ajouter un contact"
 msgid "Add Funds"
 msgstr "Ajouter des fonds"
 
-#: www/views/confirm.html:72
+#: www/views/confirm.html:78
 msgid "Add Memo"
 msgstr "Ajouter une note"
 
@@ -375,7 +375,7 @@ msgstr "Acheter des bitcoins"
 
 #: www/views/tab-home.html:170
 msgid "Buy an Amazon Gift Card"
-msgstr "Acheter une carte cadeau Amazon"
+msgstr "Acheter une Amazon Gift Card"
 
 #: www/views/buyandsell.html:5
 msgid "Buy and sell"
@@ -400,7 +400,6 @@ msgstr "Calcul des frais"
 #: www/views/feedback/send.html:5
 #: www/views/includes/confirm-tx.html:30
 #: www/views/includes/note.html:6
-#: www/views/includes/password.html:22
 #: www/views/modals/confirmation.html:13
 msgid "Cancel"
 msgstr "Annuler"
@@ -836,10 +835,6 @@ msgstr "Saisissez la phrase de récupération (BIP39)"
 msgid "Enter your password"
 msgstr "Écrivez votre mot de passe"
 
-#: www/views/includes/password.html:8
-msgid "Enter your spending password"
-msgstr "Saisissez votre code de dépenses"
-
 #. Trying to import a malformed wallet export QR code
 #: src/js/controllers/activity.js:45
 #: src/js/controllers/addressbook.js:50
@@ -901,13 +896,13 @@ msgstr "Saisissez votre code de dépenses"
 #: src/js/controllers/import.js:217
 #: src/js/controllers/import.js:229
 #: src/js/controllers/import.js:240
-#: src/js/controllers/import.js:249
-#: src/js/controllers/import.js:262
-#: src/js/controllers/import.js:274
-#: src/js/controllers/import.js:284
-#: src/js/controllers/import.js:294
-#: src/js/controllers/import.js:318
-#: src/js/controllers/import.js:330
+#: src/js/controllers/import.js:250
+#: src/js/controllers/import.js:263
+#: src/js/controllers/import.js:275
+#: src/js/controllers/import.js:285
+#: src/js/controllers/import.js:295
+#: src/js/controllers/import.js:319
+#: src/js/controllers/import.js:331
 #: src/js/controllers/import.js:51
 #: src/js/controllers/import.js:64
 #: src/js/controllers/import.js:85
@@ -1005,7 +1000,7 @@ msgstr "Impossible d'exporter"
 msgid "Family vacation funds"
 msgstr "Fonds pour les vacances familiales"
 
-#: www/views/confirm.html:79
+#: www/views/confirm.html:85
 #: www/views/includes/confirm-tx.html:19
 #: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:73
@@ -1040,10 +1035,6 @@ msgstr "Terminer"
 msgid "For audit purposes"
 msgstr "À des fins de vérification"
 
-#: www/views/paperWallet.html:34
-msgid "Founds transferred"
-msgstr "Fonds transférés"
-
 #: www/views/translators.html:13
 msgid "French"
 msgstr "Français"
@@ -1066,6 +1057,10 @@ msgstr "Les fonds sont verrouillés par des propositions de dépenses en attente
 msgid "Funds found:"
 msgstr "Fonds trouvés :"
 
+#: www/views/paperWallet.html:34
+msgid "Funds transferred"
+msgstr "Fonds transférés"
+
 #: www/views/paperWallet.html:23
 msgid "Funds will be transferred to"
 msgstr "Les fonds seront transférés à"
@@ -1086,7 +1081,7 @@ msgstr "Retirez de l'argent partout où vous allez, depuis n'importe quel distri
 msgid "Get news and updates from BitPay"
 msgstr "Obtenir les actualités et mises à jour de BitPay"
 
-#: www/views/onboarding/welcome.html:9
+#: www/views/onboarding/welcome.html:8
 msgid "Get started"
 msgstr "Commencer"
 
@@ -1120,12 +1115,9 @@ msgstr "Retour"
 
 #: www/views/backupWarning.html:15
 #: www/views/includes/confirmBackupPopup.html:8
+#: www/views/onboarding/tour.html:18
 msgid "Got it"
 msgstr "J'ai compris"
-
-#: www/views/onboarding/tour.html:18
-msgid "Got it &rarr;"
-msgstr "J'ai compris &rarr;"
 
 #: www/views/preferences.html:20
 #: www/views/preferencesInformation.html:47
@@ -1284,7 +1276,7 @@ msgid "Incorrect code format"
 msgstr "Format du code incorrect"
 
 #: src/js/services/bwcError.js:44
-#: www/views/confirm.html:116
+#: www/views/confirm.html:122
 msgid "Insufficient funds"
 msgstr "Fonds insuffisants"
 
@@ -1298,7 +1290,7 @@ msgid "Invalid"
 msgstr "Invalide"
 
 #: src/js/controllers/create.js:157
-#: src/js/controllers/import.js:294
+#: src/js/controllers/import.js:295
 #: src/js/controllers/join.js:136
 msgid "Invalid account number"
 msgstr "Numéro de compte invalide"
@@ -1404,8 +1396,8 @@ msgid "Make a payment to"
 msgstr "Faire un paiement à"
 
 #: www/views/onboarding/tour.html:33
-msgid "Makes sense &rarr;"
-msgstr "C’est logique &rarr;"
+msgid "Makes sense"
+msgstr "C'est logique"
 
 #: src/js/controllers/modals/search.js:61
 msgid "Matches:"
@@ -1534,7 +1526,7 @@ msgstr "Aucune transaction"
 msgid "No wallet found!"
 msgstr "Aucun portefeuille trouvé !"
 
-#: www/views/confirm.html:113
+#: www/views/confirm.html:119
 msgid "No wallets available"
 msgstr "Aucun portefeuille disponible"
 
@@ -1724,7 +1716,7 @@ msgstr "Paiement reçu"
 msgid "Payment Rejected"
 msgstr "Paiement rejeté"
 
-#: www/views/confirm.html:140
+#: www/views/confirm.html:150
 #: www/views/includes/walletActivity.html:11
 #: www/views/modals/txp-details.html:182
 #: www/views/modals/txp-details.html:42
@@ -1835,7 +1827,7 @@ msgstr "Proposition acceptée"
 
 #: src/js/controllers/modals/txpDetails.js:38
 #: src/js/controllers/tx-details.js:64
-#: www/views/confirm.html:141
+#: www/views/confirm.html:151
 msgid "Proposal Created"
 msgstr "Proposition créée"
 
@@ -1960,10 +1952,6 @@ msgstr "Confirmez le mot de passe"
 msgid "Repeat the password"
 msgstr "Confirmez le mot de passe"
 
-#: www/views/includes/password.html:5
-msgid "Repeat the spending password"
-msgstr "Confirmez le code de dépenses"
-
 #: www/views/preferences.html:51
 msgid "Request Fingerprint"
 msgstr "Demander l'empreinte digitale"
@@ -1980,7 +1968,7 @@ msgstr "Demander un code de dépenses"
 msgid "Required number of signatures"
 msgstr "Nombre requis de signatures"
 
-#: www/views/onboarding/welcome.html:10
+#: www/views/onboarding/welcome.html:9
 msgid "Restore from backup"
 msgstr "Restaurer à partir d'une sauvegarde"
 
@@ -1995,10 +1983,6 @@ msgstr "Rééssayer"
 #: www/views/tab-scan.html:23
 msgid "Retry Camera"
 msgstr "Réessayer la caméra"
-
-#: www/views/includes/password.html:31
-msgid "SET"
-msgstr "DÉFINIR"
 
 #: www/views/addressbook.add.html:56
 #: www/views/includes/note.html:9
@@ -2168,10 +2152,6 @@ msgstr "Journal de session"
 msgid "Set up a password"
 msgstr "Spécifiez un mot de passe"
 
-#: www/views/includes/password.html:4
-msgid "Set up a spending password"
-msgstr "Configurer un code de dépenses"
-
 #: www/views/tab-settings.html:3
 #: www/views/tabs.html:19
 msgid "Settings"
@@ -2292,7 +2272,7 @@ msgstr "Balayage du portefeuille..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE"
 
-#: www/views/onboarding/welcome.html:6
+#: www/views/onboarding/welcome.html:5
 msgid "Take control of your money,<br>get started with bitcoin."
 msgstr "Prenez le contrôle de votre argent,<br>commencez avec bitcoin."
 
@@ -2422,7 +2402,7 @@ msgstr "Il n'y a pas de portefeuilles pour faire ce paiement"
 
 #: src/js/controllers/import.js:193
 #: src/js/controllers/import.js:217
-#: src/js/controllers/import.js:284
+#: src/js/controllers/import.js:285
 msgid "There is an error in the form"
 msgstr "Il y a une erreur dans la forme"
 
@@ -2518,7 +2498,7 @@ msgstr "Historique des transactions"
 msgid "Transaction already broadcasted"
 msgstr "Transaction déjà diffusée"
 
-#: www/views/confirm.html:142
+#: www/views/confirm.html:152
 msgid "Transaction created"
 msgstr "Transaction créée"
 
@@ -2869,7 +2849,7 @@ msgstr "Souhaitez-vous ajouter ce compte ({{email}}) à votre portefeuille ?"
 msgid "Would you like to receive push notifications about payments?"
 msgstr "Souhaitez-vous recevoir des notifications relatives aux paiements ?"
 
-#: src/js/controllers/import.js:249
+#: src/js/controllers/import.js:250
 msgid "Wrong number of recovery words:"
 msgstr "Nombre incorrect de mots de récupération :"
 
@@ -2948,16 +2928,11 @@ msgstr "Votre surnom"
 msgid "Your password"
 msgstr "Votre mot de passe"
 
-#: www/views/includes/password.html:12
-msgid "Your spending password"
-msgstr "Votre code de dépenses"
-
 #: www/views/onboarding/backupRequest.html:10
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Votre portefeuille n’est jamais enregistré en dehors de votre appareil ou dans des sauvegardes qui lui sont propres."
 
 #: src/js/services/walletService.js:825
-#: www/views/includes/password.html:39
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
 msgstr "La clé de votre portefeuille sera chiffrée. Le code de dépenses ne peut pas être récupéré. N'oubliez pas de l'écrire."
 
