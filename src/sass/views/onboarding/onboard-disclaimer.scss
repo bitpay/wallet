@@ -1,4 +1,14 @@
 #onboarding-disclaimer {
+  .checkbox input, .checkbox-icon {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: block;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
   color: #fff;
   height: 100%;
   transition: transform 2.5s ease;
@@ -7,12 +17,13 @@
   }
   &-container {
     max-width: 450px;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
-    height: calc(100vh - 160px);
+    padding-top: 3rem;
+    @media(max-height: 480px) {
+      padding-top: 1.5rem;
+    }
   }
   .has-header > &-container {
     height: calc(100vh - 210px);
@@ -22,6 +33,9 @@
   }
   #disclaimer-description {
     margin: 1rem 1rem 2rem;
+    @media(max-height: 480px) {
+      font-size: 14px;
+    }
   }
   ion-content {
     height: 101%;
@@ -44,6 +58,9 @@
     .item{
       &:first-child{
         padding-top: 0;
+      }
+      @media(max-height: 480px) {
+        font-size: 14px;
       }
     }
   }
@@ -162,14 +179,17 @@
   .checkbox input:checked + .checkbox-icon:before {
     border-color: rgb(19, 229, 182);
   }
-  button{
-    margin-top:1.5rem;
+  button {
+    margin-top: 1.5rem;
     position: relative;
   }
+  @media (max-height:480px) {
+    padding: 0.5rem;
+  }
 }
-@media (max-height:460px){
-    #agree-to-terms{
-      position: relative;
-      float:left;
-    }
+@media (max-height:460px) {
+  #agree-to-terms{
+    position: relative;
+    float:left;
+  }
 }

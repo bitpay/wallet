@@ -33,6 +33,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     $ionicConfigProvider.backButton.icon('icon ion-ios-arrow-thin-left').text('');
     $ionicConfigProvider.backButton.previousTitleText(false);
 
+    // CHECKBOX CIRCLE
+    $ionicConfigProvider.form.checkbox('circle');
+
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
       function($delegate, platformInfo) {
