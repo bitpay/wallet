@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2017-01-03 09:18-0500\n"
+"PO-Revision-Date: 2017-01-04 12:05-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -375,7 +375,7 @@ msgstr "Comprar Bitcoin"
 
 #: www/views/tab-home.html:170
 msgid "Buy an Amazon Gift Card"
-msgstr "Comprar Amazon Gift Card"
+msgstr "Comprar una Amazon Gift Card"
 
 #: www/views/buyandsell.html:5
 msgid "Buy and sell"
@@ -2984,3 +2984,4 @@ msgstr "{{updatingTxHistoryProgress}} transacciones descargadas"
 #: www/views/includes/walletInfo.html:2
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-de-{{wallet.n}}"
+
