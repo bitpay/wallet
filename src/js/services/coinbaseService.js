@@ -181,7 +181,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     if (lodash.isEmpty(credentials.CLIENT_ID)) {
       return cb('Coinbase is Disabled');
     }
-    $log.debug('Init Token...');
+    $log.debug('Trying to initialise Coinbase...');
 
     storageService.getCoinbaseToken(credentials.NETWORK, function(err, accessToken) {
       if (err || !accessToken) return cb();
@@ -478,6 +478,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   root.getPendingTransactions = function(coinbasePendingTransactions) {
     root.init(function(err, data) {
+      if (err || lodash.isEmpty(data)) {
+        if (err) $log.error(err);
+        return;
+      }
       var accessToken = data.accessToken;
       var accountId = data.accountId;
       storageService.getCoinbaseTxs(credentials.NETWORK, function(err, txs) {
@@ -549,6 +553,13 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       });
     });
   };
+
+  root.updatePendingTransactions = lodash.throttle(function() {
+    $log.debug('Updating pending transactions...');
+    root.setCredentials();
+    var pendingTransactions = { data: {} };
+    root.getPendingTransactions(pendingTransactions); 
+  }, 20000);
 
   var _updateTxs = function(coinbasePendingTransactions) {
     storageService.getCoinbaseTxs(credentials.NETWORK, function(err, txs) {
