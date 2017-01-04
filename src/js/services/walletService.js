@@ -392,7 +392,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           if (err) {
             $log.warn(bwcError.msg(err, 'BWS Error')); //TODO
             if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
-              log.info('Retrying history download in 5 secs...');
+              $log.info('Retrying history download in 5 secs...');
               return $timeout(function() {
                 return getNewTxs(newTxs, skip, cb);
               }, 5000);
