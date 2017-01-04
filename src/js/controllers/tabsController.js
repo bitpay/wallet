@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabsController', function($rootScope, $log, $scope, $state, $stateParams, $timeout, incomingData, lodash, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabsController', function($rootScope, $ionicHistory, $timeout, $log, $scope, $state, $stateParams, incomingData, lodash, popupService, gettextCatalog) {
 
   $scope.onScan = function(data) {
     if (!incomingData.redir(data)) {
@@ -23,7 +23,8 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      $ionicHistory.viewHistory().backView = $rootScope.viewBack[data.stateName];
     $rootScope.hideTabs = '';
   });
-
 });

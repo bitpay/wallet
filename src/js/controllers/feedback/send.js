@@ -27,8 +27,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         popupService.showAlert(gettextCatalog.getString('Thank you!'), gettextCatalog.getString('A member of the team will review your feedback as soon as possible.'), function() {
           $scope.feedback.value = '';
           $ionicHistory.nextViewOptions({
-            disableAnimate: false,
-            historyRoot: true
+            disableAnimate: false
           });
           $ionicHistory.goBack();
         }, gettextCatalog.getString('Finish'));
@@ -42,6 +41,8 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      data.enableBack = true;
     $scope.isCordova = platformInfo.isCordova;
     $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.feedback = {};
@@ -84,8 +85,7 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
 
   $scope.goBack = function() {
     $ionicHistory.nextViewOptions({
-      disableAnimate: false,
-      historyRoot: true
+      disableAnimate: false
     });
     $ionicHistory.goBack();
   };

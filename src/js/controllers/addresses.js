@@ -164,6 +164,8 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      data.enableBack = true;
     $scope.allAddressesView = data.stateName == 'tabs.receive.allAddresses' ? true : false;
     $timeout(function() {
       $scope.$apply();

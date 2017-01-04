@@ -570,7 +570,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $ionicHistory.nextViewOptions({
       disableAnimate: true
     });
-    $ionicHistory.removeBackView();
     $scope.sendStatus = '';
 
     if (fromBitPayCard) {
@@ -580,31 +579,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         });
       }, 100);
     } else if (fromAmazon) {
-      $ionicHistory.nextViewOptions({
-        disableAnimate: true,
-        historyRoot: true
-      });
-      $ionicHistory.clearHistory();
       $state.go('tabs.home').then(function() {
         $state.transitionTo('tabs.giftcards.amazon', {
           cardClaimCode: $scope.amazonGiftCard ? $scope.amazonGiftCard.claimCode : null
         });
       });
     } else if (fromGlidera) {
-      $ionicHistory.nextViewOptions({
-        disableAnimate: true,
-        historyRoot: true
-      });
-      $ionicHistory.clearHistory();
       $state.go('tabs.home').then(function() {
         $state.transitionTo('tabs.buyandsell.glidera');
       });
     } else {
-      $ionicHistory.nextViewOptions({
-        disableAnimate: true,
-        historyRoot: true
-      });
-      $ionicHistory.clearHistory();
       $state.go('tabs.send').then(function() {
         $state.transitionTo('tabs.home');
       });

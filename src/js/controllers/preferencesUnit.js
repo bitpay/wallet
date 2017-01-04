@@ -39,7 +39,12 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
     });
   };
 
-  $scope.$on("$ionicView.enter", function(event, data){
+  $scope.$on("$ionicView.enter", function(event, data) {
     $scope.currentUnit = config.wallet.settings.unitCode;
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      data.enableBack = true;
   });
 });

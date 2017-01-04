@@ -13,6 +13,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      data.enableBack = true;
     $scope.isGiftCard = data.stateParams.isGiftCard;
 
     // Glidera parameters

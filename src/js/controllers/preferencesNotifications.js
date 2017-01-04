@@ -94,4 +94,9 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
   $scope.$on("$ionicView.enter", function(event, data) {
     updateConfig();
   });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      data.enableBack = true;
+  });
 });

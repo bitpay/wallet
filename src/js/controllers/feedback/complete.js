@@ -121,8 +121,7 @@ angular.module('copayApp.controllers').controller('completeController', function
 
   $scope.close = function() {
     $ionicHistory.nextViewOptions({
-      disableAnimate: false,
-      historyRoot: true
+      disableAnimate: false
     });
     if ($scope.score == 5) $ionicHistory.goBack(-3);
     else $ionicHistory.goBack(-2);

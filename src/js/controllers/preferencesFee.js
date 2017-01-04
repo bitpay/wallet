@@ -35,4 +35,9 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
   });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+      data.enableBack = true;
+  });
 });

@@ -78,6 +78,8 @@ angular.module('copayApp.controllers').controller('preferencesController',
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      if ($ionicHistory.viewHistory() && !$ionicHistory.viewHistory().backView)
+        data.enableBack = true;
       $scope.externalSource = null;
 
       if (!wallet)
