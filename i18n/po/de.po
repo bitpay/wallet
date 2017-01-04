@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2017-01-04 10:51-0500\n"
+"PO-Revision-Date: 2017-01-04 12:05-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -375,7 +375,7 @@ msgstr "Kaufe Bitcoins"
 
 #: www/views/tab-home.html:170
 msgid "Buy an Amazon Gift Card"
-msgstr "Kaufe einen Amazon Gutschein"
+msgstr "Kaufe einen Amazon Gift Card"
 
 #: www/views/buyandsell.html:5
 msgid "Buy and sell"
