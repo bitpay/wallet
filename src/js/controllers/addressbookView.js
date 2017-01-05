@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory) {
-
+angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory, platformInfo) {
+  $scope.isChromeApp = platformInfo.isChromeApp;
   $scope.addressbookEntry = {};
   $scope.addressbookEntry.name = $stateParams.name;
   $scope.addressbookEntry.email = $stateParams.email;

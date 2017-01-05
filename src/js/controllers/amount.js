@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var satToBtc;
   var SMALL_FONT_SIZE_LIMIT = 10;
   var LENGTH_EXPRESSION_LIMIT = 19;
+  $scope.isChromeApp = platformInfo.isChromeApp;
 
   $scope.$on('$ionicView.leave', function() {
     angular.element($window).off('keydown');

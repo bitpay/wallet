@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
   var currentContactsPage;
-
+  $scope.isChromeApp = platformInfo.isChromeApp;
 
   var updateList = function() {
     CONTACTS_SHOW_LIMIT = 10;
