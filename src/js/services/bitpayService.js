@@ -111,7 +111,7 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
   };
 
   root.post = function(endpoint, json, successCallback, errorCallback) {
-    appIdentityService.getIdentity(NETWORK, function(err, appIdentity) {
+    appIdentityService.getIdentity(root.getEnvironment().network, function(err, appIdentity) {
       if (err) return errorCallback(err);
       $http(_post(endpoint, json, appIdentity)).then(function(data) {
         successCallback(data);
