@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, coinbaseService, bitpayCardService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, coinbaseService, bitpayCardService, appConfigService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -1017,7 +1017,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             ctx['price_sensitivity'] = $scope.selectedPriceSensitivity.data;
             ctx['sell_price_amount'] = $scope.coinbaseSellPrice ? $scope.coinbaseSellPrice.amount : '';
             ctx['sell_price_currency'] = $scope.coinbaseSellPrice ? $scope.coinbaseSellPrice.currency : 'USD';
-            ctx['description'] = $window.appConfig.nameCase + ' Wallet: ' + $scope.wallet.name;
+            ctx['description'] = appConfigService.nameCase + ' Wallet: ' + $scope.wallet.name;
             coinbaseService.savePendingTransaction(ctx, null, function(err) {
               ongoingProcess.set('sellingBitcoin', false, onSendStatusChange); 
               if (err) $log.debug(err);

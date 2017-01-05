@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, platformInfo, lodash, storageService, configService) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, platformInfo, lodash, storageService, configService, appConfigService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -608,11 +608,12 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   var _sendToWallet = function(tx, accessToken, accountId, coinbasePendingTransactions) {
     if (!tx) return;
+    var desc = 'To ' + appConfigService.nameCase + ' Wallet';
     var data = {
       to: tx.toAddr,
       amount: tx.amount.amount,
       currency: tx.amount.currency,
-      description: 'To Wallet'
+      description: desc
     };
     root.sendTo(accessToken, accountId, data, function(err, res) {
 console.log('[coinbaseService.js:591] SEND TO COPAY',err, res); //TODO
