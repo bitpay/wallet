@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService, coinbaseService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService, coinbaseService, appConfigService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
           });
 
           var dataSrc = {
-            name: 'Received from ' + $window.appConfig.nameCase
+            name: 'Received from ' + appConfigService.nameCase
           };
           coinbaseService.createAddress(data.accessToken, data.accountId, dataSrc, function(err, data) {
             $scope.toAddress = data.data.address;
