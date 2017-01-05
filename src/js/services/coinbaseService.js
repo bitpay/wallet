@@ -172,7 +172,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
           return cb(null, data[i].id);
         }
       }
-      coinbaseService.logout(function() {});
+      root.logout(function() {});
       return cb('Your primary account should be a WALLET. Set your wallet account as primary and try again');
     });
   };
