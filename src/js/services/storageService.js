@@ -728,7 +728,13 @@ angular.module('copayApp.services')
     };
 
     root.getAppIdentity = function(network, cb) {
-      storage.get('appIdentity-' + network, cb);
+      storage.get('appIdentity-' + network, function(err, data) {
+        if (err) return cb(err);
+        if (lodash.isString(data)) {
+          data = JSON.parse(data);
+        }
+        cb(err, data);
+      });
     };
 
     root.removeAppIdentity = function(network, cb) {
