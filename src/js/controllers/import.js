@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('importController',
           id: 'trezor',
           label: 'Trezor Hardware Wallet',
         });
-        $scope.seedSource = $scope.seedOptions[0];
+        $scope.formData.seedSource = $scope.seedOptions[0];
       }
     };
 
@@ -281,16 +281,16 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importHW = function(form) {
-      if (form.$invalid || $scope.formData.ccount < 0) {
+      if (form.$invalid || $scope.formData.account < 0) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('There is an error in the form'));
         return;
       }
 
       $scope.importErr = false;
 
-      var account = $scope.formData.ccount;
+      var account = $scope.formData.account;
 
-      if ($scope.seedSource.id == 'trezor') {
+      if ($scope.formData.seedSource.id == 'trezor') {
         if (account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
@@ -298,7 +298,7 @@ angular.module('copayApp.controllers').controller('importController',
         account = account - 1;
       }
 
-      switch ($scope.seedSource.id) {
+      switch ($scope.formData.seedSource.id) {
         case ('ledger'):
           ongoingProcess.set('connectingledger', true);
           $scope.importLedger(account);

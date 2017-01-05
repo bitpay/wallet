@@ -19,7 +19,11 @@ angular.module('copayApp.services')
 
     root.getXPubKey = function(path, callback) {
       $log.debug('TREZOR deriving xPub path:', path);
-      TrezorConnect.getXPubKey(path, callback);
+      try {
+        TrezorConnect.getXPubKey(path, callback);
+      } catch (e) {
+        callback('Error connecting Trezor');
+      }
     };
 
 

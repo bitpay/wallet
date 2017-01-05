@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, addressbookService, lodash, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, addressbookService, lodash, popupService, gettextCatalog, platformInfo) {
 
   var contacts;
+  $scope.isChromeApp = platformInfo.isChromeApp;
 
   var initAddressbook = function() {
     addressbookService.list(function(err, ab) {

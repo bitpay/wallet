@@ -636,6 +636,7 @@ angular.module('copayApp.services')
     };
 
     root._normalizeMnemonic = function(words) {
+      if (!words || !words.indexOf) return words;
       var isJA = words.indexOf('\u3000') > -1;
       var wordList = words.split(/[\u3000\s]+/);
 
