@@ -105,7 +105,7 @@
 
         <h2>
           <span ng-show="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
-          <span ng-show="tx.type == 'buy' && tx.status == 'completed'">Bought</span>
+          <span ng-show="tx.type == 'send' && tx.to && tx.status == 'completed'">Bought</span>
         </h2>
         <p>
           <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}

@@ -98,7 +98,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.getOauthCodeUrl = function() {
-    // TODO CHANGE LIMIT BACK TO 1000 *************************************************
     return credentials.HOST
       + '/oauth/authorize?response_type=code&client_id='
       + credentials.CLIENT_ID
@@ -106,7 +105,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       + credentials.REDIRECT_URI
       + '&state=SECURE_RANDOM&scope='
       + credentials.SCOPE
-      + '&meta[send_limit_amount]=1&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
+      + '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
   };
 
   root.getToken = function(code, cb) {
@@ -486,7 +485,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       var accountId = data.accountId;
       storageService.getCoinbaseTxs(credentials.NETWORK, function(err, txs) {
         txs = txs ? JSON.parse(txs) : {};
-  console.log('[coinbaseService.js:484] getCoinbaseTxs',err, txs); //TODO
         coinbasePendingTransactions.data = lodash.isEmpty(txs) ? null : txs;
 
         lodash.forEach(coinbasePendingTransactions.data, function(dataFromStorage, txId) {
@@ -496,7 +494,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
             (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) 
             return;
           root.getTransaction(accessToken, accountId, txId, function(err, tx) {
-  console.log('[coinbaseService.js:494] getTransaction to UPDATE from Coinbase',err, tx); //TODO
             if (err || lodash.isEmpty(tx) || (tx.data && tx.data.error)) {
               _savePendingTransaction(dataFromStorage, {
                 status: 'error',
@@ -608,7 +605,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   var _sendToWallet = function(tx, accessToken, accountId, coinbasePendingTransactions) {
     if (!tx) return;
-    var desc = 'To ' + appConfigService.nameCase + ' Wallet';
+    var desc = appConfigService.nameCase + ' Wallet';
     var data = {
       to: tx.toAddr,
       amount: tx.amount.amount,
@@ -616,7 +613,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       description: desc
     };
     root.sendTo(accessToken, accountId, data, function(err, res) {
-console.log('[coinbaseService.js:591] SEND TO COPAY',err, res); //TODO
       if (err) {
         _savePendingTransaction(tx, {
           status: 'error',
@@ -637,7 +633,6 @@ console.log('[coinbaseService.js:591] SEND TO COPAY',err, res); //TODO
           return;
         }
         root.getTransaction(accessToken, accountId, res.data.id, function(err, sendTx) {
-console.log('[coinbaseService.js:633] GET UPDATED TX', err, sendTx); //TODO
           _savePendingTransaction(tx, {
             remove: true
           }, function(err) {
