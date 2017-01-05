@@ -177,11 +177,14 @@ angular.module('copayApp.services')
             });
           }
         });
-        if (upgraded.length > 0) {
-          cb(null, 'upgraded \'bitpayAccounts\':' + upgraded);
-        } else {
-          cb();
-        }
+        // Remove obsolete key.
+        storage.remove('bitpayAccounts-' + network, function() {
+          if (upgraded.length > 0) {
+            cb(null, 'upgraded to \'bitpayAccounts-v2-' + network + '\':' + upgraded);
+          } else {
+            cb();
+          }          
+        });
       });
     };
     //
@@ -277,11 +280,11 @@ angular.module('copayApp.services')
           var storagekey = key.split('_')[1];
           _upgraders[key](storagekey, network, function(err, msg) {
             if (err) {
-              _handleUpgradeError(storagekey, err);
+              _handleUpgradeError(storagekey + '-' + network, err);
               errorCount++;
               errorMessage = errorCount + ' storage upgrade failures';
             }
-            if (msg) _handleUpgradeSuccess(storagekey, msg);
+            if (msg) _handleUpgradeSuccess(storagekey + '-' + network, msg);
           });
         });
       });
