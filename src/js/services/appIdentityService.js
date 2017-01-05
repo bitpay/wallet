@@ -7,9 +7,6 @@ angular.module('copayApp.services').factory('appIdentityService', function($log,
     var pubkey, sin, isNew;
     storageService.getAppIdentity(network, function(err, data) {
       if (err) return cb(err);
-      if (lodash.isString(data)) {
-        data = JSON.parse(data);
-      }
       var appIdentity = data || {};
       if (lodash.isEmpty(appIdentity) || (appIdentity && !appIdentity.priv)) {
         isNew = true;

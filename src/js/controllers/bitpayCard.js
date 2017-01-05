@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   $scope.dateRange = {
     value: 'last30Days'
   };
-  $scope.network = bitpayService.getEnvironment();
+  $scope.network = bitpayService.getEnvironment().network;
 
   var updateHistoryFromCache = function(cb) {
     bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {

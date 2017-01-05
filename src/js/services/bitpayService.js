@@ -7,7 +7,9 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
   var BITPAY_API_URL = NETWORK == 'livenet' ? 'https://bitpay.com' : 'https://test.bitpay.com';
 
   root.getEnvironment = function() {
-    return NETWORK;
+    return {
+      network: NETWORK
+    };
   };
 
   /*
@@ -58,7 +60,7 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
 	        code: pairData.otp
 	      }
 	    };
-	    appIdentityService.getIdentity(root.getEnvironment(), function(err, appIdentity) {
+	    appIdentityService.getIdentity(root.getEnvironment().network, function(err, appIdentity) {
 	      if (err) return cb(err);
 	      $http(_postAuth('/api/v2/', json, appIdentity)).then(function(data) {
 	        if (data && data.data.error) return cb(data.data.error);
@@ -132,7 +134,7 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
 
   var setBitpayAccount = function(accountData, cb) {
     var data = JSON.stringify(accountData);
-    storageService.setBitpayAccount(root.getEnvironment(), data, function(err) {
+    storageService.setBitpayAccount(root.getEnvironment().network, data, function(err) {
       if (err) return cb(err);
       return cb();
     });

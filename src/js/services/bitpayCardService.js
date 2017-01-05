@@ -60,7 +60,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       method: 'getInvoiceHistory',
       params: JSON.stringify(params)
     };
-    appIdentityService.getIdentity(bitpayService.getEnvironment(), function(err, appIdentity) {
+    appIdentityService.getIdentity(bitpayService.getEnvironment().network, function(err, appIdentity) {
       if (err) return cb(err);
       root.getBitpayDebitCards(function(err, data) {
         if (err) return cb(err);
@@ -97,7 +97,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       method: 'generateTopUpInvoice',
       params: JSON.stringify(params)
     };
-    appIdentityService.getIdentity(bitpayService.getEnvironment(), function(err, appIdentity) {
+    appIdentityService.getIdentity(bitpayService.getEnvironment().network, function(err, appIdentity) {
       if (err) return cb(err);
       root.getBitpayDebitCards(function(err, data) {
         if (err) return cb(err);
@@ -127,7 +127,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   };
 
   root.getBitpayDebitCards = function(cb) {
-    storageService.getBitpayDebitCards(bitpayService.getEnvironment(), function(err, data) {
+    storageService.getBitpayDebitCards(bitpayService.getEnvironment().network, function(err, data) {
       if (err) return cb(err);
       if (lodash.isString(data)) {
         data = JSON.parse(data);
@@ -139,14 +139,14 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
 
   root.setBitpayDebitCards = function(data, cb) {
     data = JSON.stringify(data);
-    storageService.setBitpayDebitCards(bitpayService.getEnvironment(), data, function(err) {
+    storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, data, function(err) {
       if (err) return cb(err);
       return cb();
     });
   };
 
   root.getBitpayDebitCardsHistory = function(cardId, cb) {
-    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment(), function(err, data) {
+    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment().network, function(err, data) {
       if (err) return cb(err);
       if (lodash.isString(data)) {
         data = JSON.parse(data);
@@ -158,7 +158,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   };
 
   root.setBitpayDebitCardsHistory = function(cardId, data, opts, cb) {
-    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment(), function(err, oldData) {
+    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment().network, function(err, oldData) {
       if (lodash.isString(oldData)) {
         oldData = JSON.parse(oldData);
       }
@@ -172,19 +172,19 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       }
       inv = JSON.stringify(inv);
 
-      storageService.setBitpayDebitCardsHistory(bitpayService.getEnvironment(), inv, function(err) {
+      storageService.setBitpayDebitCardsHistory(bitpayService.getEnvironment().network, inv, function(err) {
         return cb(err);
       });
     });
   };
 
   root.remove = function(card, cb) {
-    storageService.removeBitpayDebitCard(bitpayService.getEnvironment(), card, function(err) {
+    storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, card, function(err) {
       if (err) {
         $log.error('Error removing BitPay debit card: ' + err);
         // Continue, try to remove/cleanup card history
       }
-      storageService.removeBitpayDebitCardHistory(bitpayService.getEnvironment(), card, function(err) {
+      storageService.removeBitpayDebitCardHistory(bitpayService.getEnvironment().network, card, function(err) {
         if (err) {
         $log.error('Error removing BitPay debit card transaction history: ' + err);
           return cb(err);
