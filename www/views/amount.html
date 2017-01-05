@@ -22,7 +22,10 @@
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
         <span ng-if="!isWallet && !isGiftCard && !isGlidera">
-          <gravatar ng-if="!cardId" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
+          <i class="icon big-icon-svg" ng-if="isChromeApp">
+            <img src="img/contact-placeholder.svg" class="bg"/>
+          </i>
+          <gravatar ng-if="!cardId && !isChromeApp" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
           <i ng-if="cardId" class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>

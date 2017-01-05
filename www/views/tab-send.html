@@ -44,7 +44,8 @@
           </a>
           <a class="item item-icon-left item-icon-right" ng-repeat="item in list" ng-if="hasContacts && !item.isWallet" ng-click="goToAmount(item)">
             <i class="icon big-icon-svg">
-              <gravatar class="send-gravatar" name="{{item.name}}" width="30" email="{{item.email}}"></gravatar>
+              <img src="img/contact-placeholder.svg" class="bg"/ ng-if="isChromeApp">
+              <gravatar class="send-gravatar" name="{{item.name}}" width="30" email="{{item.email}}" ng-if="!isChromeApp"></gravatar>
             </i>
             {{item.name}}
             <i class="icon bp-arrow-right"></i>
