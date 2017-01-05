@@ -93,7 +93,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     }
   };
 
-  root.getEnvironment = function() {
+  root.getNetwork = function() {
     return credentials.NETWORK;
   };
 

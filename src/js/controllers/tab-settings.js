@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
       if ($scope.coinbaseEnabled) {
         coinbaseService.setCredentials();
-        storageService.getCoinbaseToken(coinbaseService.getEnvironment(), function(err, token) {
+        storageService.getCoinbaseToken(coinbaseService.getNetwork(), function(err, token) {
           if (err) $log.error(err);
           $scope.coinbaseToken = token;
         });
