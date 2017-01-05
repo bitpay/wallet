@@ -78,9 +78,6 @@ angular.module('copayApp.services')
     //
     // UPGRADING STORAGE
     //
-    // TODO: prior to upgrading storage a backup of all storage should be captured and made available
-    // for export for recovery/debugging.
-    //
     // Upgraders are executed in numerical order per the '##_' object key prefix. Each upgrader will run.
     // Each upgrader should detect storage configuraton and fail-safe; no upgrader should damage the ability
     // of another to function properly (in order). Each upgrader should upgrade storage incrementally; storage
