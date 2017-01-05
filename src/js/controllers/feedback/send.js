@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo, externalServicesList) {
 
   $scope.sendFeedback = function(feedback, goHome) {
 
@@ -9,6 +9,8 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
     var dataSrc = {
       "Email": lodash.values(config.emailFor)[0] || ' ',
       "Feedback": goHome ? ' ' : feedback,
+      "EnabledServices": getServices(),
+      "CheckedServices": getServices(true),
       "Score": $stateParams.score || ' ',
       "AppVersion": $window.version,
       "Platform": ionic.Platform.platform(),
@@ -39,6 +41,21 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
       });
     });
     if (goHome) $state.go('tabs.home');
+
+
+    function getServices(checked) {
+      checked = checked || false;
+      var services = '';
+      for (var i = 0; i < $scope.services.length; i++) {
+        if (checked && $scope.services[i].checked || !checked) {
+          if (services.length > 0) {
+            services += ',';
+          }
+          services += $scope.services[i].name;
+        }
+      }
+      return services;
+    };
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -76,6 +93,8 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay. How could we improve your experience?");
         break;
     }
+
+    $scope.services = externalServicesList.get();
   });
 
   $scope.$on("$ionicView.afterEnter", function() {

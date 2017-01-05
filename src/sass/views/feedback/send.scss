@@ -21,7 +21,7 @@
     padding-right: 15px;
   }
   .comment {
-    padding: 0 20px 20px;
+    padding: 0 20px;
     font-size: 1rem;
     line-height: 1.5em;
     font-weight: 300;
@@ -45,6 +45,45 @@
     animation-duration: .5s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in;
+  }
+  .list {
+
+    .comment {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 14px;
+    color: $light-gray;
+    }
+
+    .item.item-checkbox {
+      padding: 5px 20px 5px 45px;
+      border-color: transparent;
+
+      .checkbox {
+        padding: 11px 11px;
+      }
+
+      .checkbox-icon {
+        width: 18px;
+        height: 18px;
+
+        &:after {
+          transform: rotate(-45deg) scale(0.85);
+          top: 20%;
+          left: 15%;
+        }
+
+      }
+
+      .item-content {
+        font-size: 14px;
+
+        .right {
+          float:right;
+          color: $light-gray;
+        }
+      }
+    }
   }
 }
 
