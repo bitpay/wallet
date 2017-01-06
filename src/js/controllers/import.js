@@ -364,7 +364,7 @@ angular.module('copayApp.controllers').controller('importController',
       }, 10);
     };
 
-    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.$on("$ionicView.afterEnter", function(event, data) {
       $scope.init();
     });
 

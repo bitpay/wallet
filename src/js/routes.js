@@ -336,7 +336,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/import',
         views: {
           'tab-home@tabs': {
-            templateUrl: 'views/import.html'
+            templateUrl: 'views/import.html',
+            controller: 'importController'
           },
         },
       })
@@ -787,7 +788,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/import',
         views: {
           'onboarding': {
-            templateUrl: 'views/import.html'
+            templateUrl: 'views/import.html',
+            controller: 'importController'
           },
         },
         params: {

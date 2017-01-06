@@ -20,11 +20,16 @@ angular.module('copayApp.directives')
           $state.go('scanner', { passthroughMode: 1 });
         };
 
-        $rootScope.$on('$ionicView.afterEnter', function() {
+        var afterEnter = $rootScope.$on('$ionicView.afterEnter', function() {
           if($rootScope.scanResult) {
             scope.onScan({ data: $rootScope.scanResult });
             $rootScope.scanResult = null;
           }
+        });
+
+        // Destroy event
+        scope.$on('$destroy', function(){
+          afterEnter();
         });
       }
     }
