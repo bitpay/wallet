@@ -28,11 +28,9 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
       $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
 
       if ($scope.bitpayCardEnabled) {
-        bitpayCardService.getBitpayDebitCards(function(err, data) {
+        bitpayCardService.getBitpayDebitCards(function(err, cards) {
           if (err) $log.error(err);
-          if (!lodash.isEmpty(data)) {
-            $scope.bitpayCards = true;
-          }
+          $scope.bitpayCards = cards && cards.length > 0;
         });
       }
 
