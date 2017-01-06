@@ -135,15 +135,22 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
+      var reason = getParameterByName('r', data);
+
       $state.go('tabs.home', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.home' ? false : true
       }).then(function() {
-        $state.transitionTo('tabs.bitpayCardIntro', {
-          secret: secret,
-          email: email,
-          otp: otp
-        });
+        switch (reason) {
+          default:
+          case '0': /* For BitPay card binding */
+            $state.transitionTo('tabs.bitpayCardIntro', {
+              secret: secret,
+              email: email,
+              otp: otp
+            });
+            break;
+        }
       });
       return true;
 

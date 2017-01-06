@@ -4,7 +4,9 @@ angular.module('copayApp.controllers').controller('preferencesBitpayCardControll
   function($scope, $state, $timeout, $ionicHistory, bitpayCardService, popupService, gettextCatalog) {
 
     $scope.remove = function(card) {
-      var msg = gettextCatalog.getString('Are you sure you would like to remove your BitPay Card account from this device?');
+      var msg = gettextCatalog.getString('Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?', {
+        lastFourDigits: card.lastFourDigits
+      });
       popupService.showConfirm(null, msg, null, null, function(res) {
         if (res) remove(card);
       });
