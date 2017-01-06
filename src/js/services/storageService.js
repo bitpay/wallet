@@ -102,9 +102,10 @@ angular.module('copayApp.services')
     //    match the upgrader key.
     //
     var _upgraders = {
-      '00_bitpayDebitCards'      : _upgrade_bitpayDebitCards,      // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
-      '01_bitpayCardCredentials' : _upgrade_bitpayCardCredentials, // 2016-11: Upgrade bitpayCardCredentials-x to appIdentity-x
-      '02_bitpayAccounts'        : _upgrade_bitpayAccounts         // 2016-12: Upgrade tpayAccounts-x to bitpayAccounts-v2-x
+      '00_bitpayDebitCards'      : _upgrade_bitpayDebitCards,         // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
+      '01_bitpayCardCredentials' : _upgrade_bitpayCardCredentials,    // 2016-11: Upgrade bitpayCardCredentials-x to appIdentity-x
+      '02_bitpayAccounts'        : _upgrade_bitpayAccounts,           // 2016-12: Upgrade bitpayAccounts-x to bitpayAccounts-v2-x
+      '03_bitpayAccounts'        : _upgrade_bitpayAccounts_basicInfo  // 2017-01: Upgrade bitpayAccounts-v2-x to bitpayAccounts-v3-x
     };
 
     function _upgrade_bitpayDebitCards(key, network, cb) {
@@ -184,6 +185,44 @@ angular.module('copayApp.services')
         });
       });
     };
+
+    function _upgrade_bitpayAccounts_basicInfo(key, network, cb) {
+      key += '-' + network;
+      storage.get(key, function(err, data) {
+        if (err) return cb(err);
+        if (lodash.isString(data)) {
+          data = JSON.parse(data);
+        }
+        data = data || {};
+        var upgraded = '';
+        Object.keys(data).forEach(function(key) {
+          // Keys are account emails
+          if (!data[key]['basicInfo-' + network]) {
+            // Needs upgrade
+            upgraded += ' ' + key;
+            var acctData = {
+              email: key,
+              basicInfo: {
+                givenName: key,  // Just set the first name to the account email
+                familyName: ''
+              }
+            };
+            _03_setBitpayAccount(network, acctData, function(err) {
+              if (err) return cb(err);
+            });
+          }
+        });
+        // Remove obsolete key.
+        storage.remove('bitpayAccounts-v2-' + network, function() {
+          if (upgraded.length > 0) {
+            cb(null, 'upgraded to \'bitpayAccounts-v3-' + network + '\':' + upgraded);
+          } else {
+            cb();
+          }
+        });
+      });
+    };
+
     //
     ////////////////////////////////////////////////////////////////////////////
     //
@@ -246,6 +285,24 @@ angular.module('copayApp.services')
         bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
         bitpayAccounts[data.email]['bitpayDebitCards-' + network] = data.cards;
         storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
+      });
+    };
+
+    var _03_setBitpayAccount = function(network, data, cb) {
+      if (lodash.isString(data)) {
+        data = JSON.parse(data);
+      }
+      data = data || {};
+      if (lodash.isEmpty(data) || !data.email) return cb('No account to set');
+      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
+        if (err) return cb(err);
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
+        bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
+        bitpayAccounts[data.email]['basicInfo-' + network] = data.basicInfo;
+        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
       });
     };
     //
@@ -589,7 +646,7 @@ angular.module('copayApp.services')
       }
       data = data || {};
       if (lodash.isEmpty(data) || !data.email) return cb('Cannot set cards: no account to set');
-      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
@@ -597,7 +654,7 @@ angular.module('copayApp.services')
         bitpayAccounts = bitpayAccounts || {};
         bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
         bitpayAccounts[data.email]['bitpayDebitCards-' + network] = data.cards;
-        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
+        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
       });
     };
 
@@ -610,7 +667,7 @@ angular.module('copayApp.services')
     //   email: account email
     // ]
     root.getBitpayDebitCards = function(network, cb) {
-      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
@@ -640,7 +697,7 @@ angular.module('copayApp.services')
       }
       card = card || {};
       if (lodash.isEmpty(card) || !card.eid) return cb('No card to remove');
-      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
@@ -655,16 +712,7 @@ angular.module('copayApp.services')
           data.cards = newCards;
           data.email = email;
           root.setBitpayDebitCards(network, data, function(err) {
-            if (err) cb(err);
-            // If there are no more cards in storage then re-enable the next step entry.
-            root.getBitpayDebitCards(network, function(err, cards) {
-              if (err) cb(err);
-              if (cards.length == 0) {
-                root.removeNextStep('BitpayCard', cb);
-              } else {
-                cb();
-              }
-            });
+            cb(err);
           });
         });
       });
@@ -680,7 +728,7 @@ angular.module('copayApp.services')
       }
       data = data || {};
       if (lodash.isEmpty(data) || !data.email) return cb('No account to set');
-      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
@@ -689,7 +737,11 @@ angular.module('copayApp.services')
         bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
         bitpayAccounts[data.email]['bitpayApi-' + network] = bitpayAccounts[data.email]['bitpayApi-' + network] || {};
         bitpayAccounts[data.email]['bitpayApi-' + network].token = data.token;
-        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
+
+        bitpayAccounts[data.email]['basicInfo-' + network] = bitpayAccounts[data.email]['basicInfo-' + network] || {};
+        bitpayAccounts[data.email]['basicInfo-' + network].givenName = data.givenName;
+        bitpayAccounts[data.email]['basicInfo-' + network].familyName = data.familyName;
+        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
       });
     };
 
@@ -714,12 +766,34 @@ angular.module('copayApp.services')
     //   }
     // }
     root.getBitpayAccounts = function(network, cb) {
-      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         cb(err, bitpayAccounts);
+      });
+    };
+
+    // account: {
+    //   email: account email
+    //   apiContext: the context needed for making future api calls
+    //   bitpayDebitCards: an array of cards
+    // }
+    root.removeBitpayAccount = function(network, account, cb) {
+      if (lodash.isString(account)) {
+        account = JSON.parse(account);
+      }
+      account = account || {};
+      if (lodash.isEmpty(account)) return cb('No account to remove');
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+        if (err) cb(err);
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
+        delete bitpayAccounts[account.email];
+        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
       });
     };
 

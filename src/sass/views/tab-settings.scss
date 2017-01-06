@@ -1,8 +1,7 @@
 .settings {
   @extend .deflash-blue;
-  .icon-bitpay-card {
-    background-image: url("../img/icon-card.svg");
-    background-color: #1e3186;
+  .icon-bitpay {
+    background-image: url("../img/icon-bitpay.svg");
   }
   .item {
     color: $dark-gray;

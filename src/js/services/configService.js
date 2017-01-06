@@ -220,6 +220,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;
         }
+        if (!configCache.bitpayAccount) {
+          configCache.bitpayAccount = defaultConfig.bitpayAccount;
+        }
 
       } else {
         configCache = lodash.clone(defaultConfig);

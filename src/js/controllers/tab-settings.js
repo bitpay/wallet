@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog) {
 
   var updateConfig = function() {
     var isCordova = platformInfo.isCordova;
@@ -26,6 +26,11 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
       $scope.bitpayCardEnabled = config.bitpayCard.enabled;
       $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+
+      bitpayAccountService.getAccounts(function(err, data) {
+        if (err) $log.error(err);
+        $scope.bitpayAccounts = !lodash.isEmpty(data);
+      });
 
       if ($scope.bitpayCardEnabled) {
         bitpayCardService.getBitpayDebitCards(function(err, cards) {
