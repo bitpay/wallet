@@ -1,4 +1,5 @@
 #bitpayCard-intro {
+  @extend .deflash-blue;
   background: url(../img/onboarding-welcome-bg.png), linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
   background-position: top center;
   background-size: contain;

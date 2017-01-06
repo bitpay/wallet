@@ -1,4 +1,4 @@
-#bitpayCardPreferences {
+#bitpayServicesPreferences {
   .item {
 	  .item-title {
 	    display: block;
@@ -14,9 +14,13 @@
 	  &.item-icon-right {
 		  .icon-hotspot {
 				right: 0px;
-				padding-left: 11px;
-				padding-right: 11px;
-		  }
+    		padding-left: 50px;
+ 		  }
+	  }
+	  .icon-unlink {
+	    background-image: url("../img/icon-unlink.svg");
+	    background-repeat: no-repeat;
+	    background-position: center;
 	  }
   }
 }
