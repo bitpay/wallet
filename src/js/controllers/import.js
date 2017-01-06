@@ -358,7 +358,9 @@ angular.module('copayApp.controllers').controller('importController',
 
     $scope.showAdvChange = function() {
       $scope.showAdv = !$scope.showAdv;
-      $scope.resizeView();
+      $timeout(function() {
+        $scope.resizeView();
+      }, 100);
     };
 
     $scope.resizeView = function() {
@@ -368,6 +370,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.$on("$ionicView.afterEnter", function(event, data) {
+      $scope.showAdv = false;
       $scope.init();
     });
 
