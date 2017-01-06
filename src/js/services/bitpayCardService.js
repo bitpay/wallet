@@ -47,7 +47,14 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Get Debit Cards: SUCCESS');
-      return cb(data.data.error, {token: apiContext.token, cards: data.data.data, email: apiContext.pairData.email});
+      // Cache card data in storage
+      var cardData = {
+        cards: data.data.data,
+        email: apiContext.pairData.email
+      }
+      root.setBitpayDebitCards(cardData, function(err) {
+        return cb(err, {token: apiContext.token, cards: data.data.data, email: apiContext.pairData.email});
+      });
     }, function(data) {
       return cb(_setError('BitPay Card Error: Get Debit Cards', data));
     });
@@ -178,12 +185,24 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     });
   };
 
-  root.remove = function(card, cb) {
+  root.removeCard = function(card, cb) {
     storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, card, function(err) {
       if (err) {
         $log.error('Error removing BitPay debit card: ' + err);
-        // Continue, try to remove/cleanup card history
+        // Continue, try to remove/cleanup next step and card history
       }
+      // Next two items in parallel
+      // 
+      // If there are no more cards in storage then re-enable the next step entry
+      storageService.getBitpayDebitCards(bitpayService.getEnvironment().network, function(err, cards) {
+        if (err) {
+          $log.error('Error getting BitPay debit cards after remove: ' + err);
+          // Continue, try to remove next step if necessary
+        }
+        if (cards.length == 0) {
+          storageService.removeNextStep('BitpayCard', cb);
+        }
+      });
       storageService.removeBitpayDebitCardHistory(bitpayService.getEnvironment().network, card, function(err) {
         if (err) {
         $log.error('Error removing BitPay debit card transaction history: ' + err);
