@@ -88,6 +88,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       time: $scope.btx.time,
       description: actionDescriptions['broadcasted'],
     });
+
+    $timeout(function() {
+      $scope.actionList.reverse();
+    }, 10);
   }
 
   $scope.showCommentPopup = function() {
