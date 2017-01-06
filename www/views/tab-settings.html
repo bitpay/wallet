@@ -117,12 +117,12 @@
       </a>
 
       <a class=" item item-icon-left item-icon-right"
-         ng-if="bitpayCards"
-         ui-sref="tabs.preferences.bitpayCard">
+         ng-if="bitpayAccounts || (bitpayCardEnabled && bitpayCards)"
+         ui-sref="tabs.preferences.bitpayServices">
         <i class="icon big-icon-svg circle">
-          <div class="bg icon-bitpay-card"></div>
+          <div class="bg icon-bitpay"></div>
         </i>
-        <span>BitPay Visa&reg; Card</span>
+        <span>BitPay</span>
         <i class="icon bp-arrow-right"></i>
       </a>
 
