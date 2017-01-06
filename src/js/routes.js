@@ -430,8 +430,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/termsOfUse',
         views: {
           'tab-settings@tabs': {
-            controller: 'termOfUseController',
-            templateUrl: 'views/termsOfUse.html',
+            templateUrl: 'views/termsOfUse.html'
           }
         }
       })
