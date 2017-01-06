@@ -1,11 +1,11 @@
-<ion-view id="import" ng-controller="tabsController" ng-init="importInit()" class="settings">
+<ion-view id="import" class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Import Wallet' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-controller="importController" ng-init="phrase = true; init()">
+  <ion-content ng-init="phrase = true">
     <div class="row text-center top-tabs">
       <div class="col" ng-click="phrase = true; file = hardware = false; showAdv = false" ng-style="phrase &&
         {'border-bottom-style': 'solid'}">
