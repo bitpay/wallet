@@ -3,41 +3,44 @@
 angular.module('copayApp.controllers').controller('importController',
   function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService) {
 
-    var isChromeApp = platformInfo.isChromeApp;
-    var isDevel = platformInfo.isDevel;
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
 
     $scope.init = function() {
-      $scope.isSafari = platformInfo.isSafari;
+      $scope.isDevel = platformInfo.isDevel;
+      $scope.isChromeApp = platformInfo.isChromeApp;
       $scope.isCordova = platformInfo.isCordova;
       $scope.formData = {};
       $scope.formData.bwsurl = defaults.bws.url;
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.formData.account = 1;
       $scope.importErr = false;
-      $scope.showHardwareWallet = appConfigService.name == 'copay';
+      $scope.isCopay = appConfigService.name == 'copay';
 
       if ($stateParams.code)
         $scope.processWalletInfo($stateParams.code);
 
       $scope.seedOptions = [];
 
-      if (isChromeApp) {
+      if ($scope.isChromeApp) {
         $scope.seedOptions.push({
           id: 'ledger',
           label: 'Ledger Hardware Wallet',
         });
       }
 
-      if (isChromeApp || isDevel) {
+      if ($scope.isChromeApp || $scope.isDevel) {
         $scope.seedOptions.push({
           id: 'trezor',
           label: 'Trezor Hardware Wallet',
         });
         $scope.formData.seedSource = $scope.seedOptions[0];
       }
+
+      $timeout(function() {
+        $scope.$apply();
+      });
     };
 
     $scope.processWalletInfo = function(code) {
