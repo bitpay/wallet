@@ -31,7 +31,8 @@ angular.module('copayApp.controllers').controller('searchController', function($
         var message = tx.message ? tx.message : '';
         var comment = tx.note ? tx.note.body : '';
         var addressTo = tx.addressTo ? tx.addressTo : '';
-        return ((tx.amountStr + message + addressTo + addrbook + searchableDate + comment).toString()).toLowerCase();
+        var txid = tx.txid ? tx.txid : '';
+        return ((tx.amountStr + message + addressTo + addrbook + searchableDate + comment + txid).toString()).toLowerCase();
       }
 
       function computeSearchableDate(date) {
@@ -56,9 +57,12 @@ angular.module('copayApp.controllers').controller('searchController', function($
 
       return $scope.filteredTxHistory;
     };
+
     $scope.txHistorySearchResults = filter(search).slice(0, HISTORY_SHOW_LIMIT);
+
     if (isCordova)
       window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + $scope.filteredTxHistory.length));
+
     $timeout(function() {
       $rootScope.$apply();
     });
