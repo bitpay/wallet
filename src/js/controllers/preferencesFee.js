@@ -38,6 +38,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   });
 
   var updateCurrentValues = function() {
+    if (lodash.isEmpty($scope.feeLevels) || lodash.isEmpty($scope.currentFeeLevel)) return;
     var feeLevelValue = lodash.find($scope.feeLevels['livenet'], {
       level: $scope.currentFeeLevel
     });
