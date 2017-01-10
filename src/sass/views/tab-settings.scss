@@ -138,11 +138,10 @@
   .estimates {
     font-size: 15px;
     color: $dark-gray;
+    margin-bottom: .5rem;
   }
   .fee-minutes, .fee-rate {
     font-weight: bold;
-    display: block;
-    margin-bottom: .5rem;
   }
   .fee-policies {
     border-color: #fff;

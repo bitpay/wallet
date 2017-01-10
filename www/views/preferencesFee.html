@@ -10,16 +10,22 @@
     <div class="settings-explanation">
       <div class="settings-heading" translate>Bitcoin transactions include a fee collected by miners on the network.</div>
       <div class="settings-description" translate>The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.</div>
-      <div class="estimates" ng-repeat="fee in feeLevels.livenet" ng-if="fee.level == currentFeeLevel">
-        <div ng-show="fee.nbBlocks">
-          <span translate>Average confirmation time: <span class="fee-minutes">{{fee.nbBlocks * 10}} minutes</span></span>
+      <div class="estimates">
+        <div>
+          <span translate>Average confirmation time</span>: 
+          <span class="fee-minutes" ng-if="avgConfirmationTime">{{avgConfirmationTime | amDurationFormat: 'minute'}}</span>
+          <span ng-if="loadingFee">...</span>
         </div>
-        <span translate>Current fee rate for this policy: <span class="fee-rate">{{fee.feePerKBUnit}}/kiB</span></span>
+        <div>
+          <span translate>Current fee rate for this policy</span>: 
+          <span class="fee-rate" ng-if="feePerKBUnit">{{feePerKBUnit}}/kiB</span>
+          <span ng-if="loadingFee">...</span>
+        </div>
       </div>
     </div>
     <div class="fee-policies">
-      <ion-radio ng-repeat="fee in feeLevels.livenet" ng-value="fee.level" ng-model="currentFeeLevel" ng-click="save(fee)">
-        {{feeOpts[fee.level]|translate}}
+      <ion-radio ng-repeat="(fee, level) in feeOpts" ng-value="fee" ng-model="currentFeeLevel" ng-click="save(fee)">
+        {{level|translate}}
       </ion-radio>
     </div>
   </ion-content>
