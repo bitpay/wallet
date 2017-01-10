@@ -56,6 +56,10 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         by: action.copayerName
       });
     });
+
+    $timeout(function() {
+      $scope.actionList.reverse();
+    }, 10);
   };
 
   function checkPaypro() {
