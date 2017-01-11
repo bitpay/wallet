@@ -1,0 +1,96 @@
+<ion-view id="coinbase" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Buy bitcoin</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <!-- BUY -->
+    <div class="list" ng-show="!buySuccess">
+      <div class="item item-divider">
+        Purchase Info
+      </div>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Payment Method
+        </div>
+        <select ng-model="selectedPaymentMethodId.value"
+                ng-options="item.id as item.name for item in paymentMethods"
+                ng-change="buyRequest()">
+        </select>
+      </label>
+
+      <div ng-if="buyRequestInfo">
+        <div class="item">
+          Amount
+          <span class="item-note">
+            {{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}
+          </span>
+        </div>
+        <div class="item">
+          Payout at
+          <span class="item-note">
+            {{buyRequestInfo.payout_at | amCalendar}}
+          </span>
+        </div>
+        <div class="item" ng-click="showWalletSelector()">
+          <span>Receive in</span>
+          <span class="item-note">{{wallet ? wallet.name : '...'}}</span>
+        </div>
+
+        <div class="item item-divider">
+          Fees
+        </div>
+        <div class="item" ng-repeat="fee in buyRequestInfo.fees">
+          {{fee.type}}
+          <span class="item-note">
+            {{fee.amount.amount}} {{fee.amount.currency}}
+          </span>
+        </div>
+
+        <div class="item item-divider">
+          Total
+        </div>
+        <div class="item">
+          Subtotal
+          <span class="item-note">
+            {{buyRequestInfo.subtotal.amount}} {{buyRequestInfo.subtotal.currency}}
+          </span>
+        </div>
+        <div class="item">
+          Total
+          <span class="item-note">
+            {{buyRequestInfo.total.amount}} {{buyRequestInfo.total.currency}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <button 
+                ng-show="buyRequestInfo && !buySuccess"
+                ng-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet"
+                class="button button-standard button-primary" 
+                ng-click="buyConfirm()">
+      Confirm
+    </button>
+
+    <div ng-show="buySuccess">
+      <div class="p20">
+        Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet
+      </div>
+      <button 
+           class="button button-standard button-primary" 
+           ng-click="goBackHome()">
+        Done
+      </button>
+    </div>
+  </ion-content>
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
+</ion-view>
