@@ -857,6 +857,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $log.warn(err);
         return;
       }
+      if (lodash.isEmpty(res)) return;
       if (unitName == 'bits') {
         $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + alternativeIsoCode;
       } else {
