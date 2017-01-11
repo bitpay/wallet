@@ -942,41 +942,32 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     })
     .state('tabs.buyandsell.coinbase.amount', {
-        url: '/amount/:isCoinbase',
-        views: {
-          'tab-home@tabs': {
-            controller: 'amountController',
-            templateUrl: 'views/amount.html'
-          }
+      url: '/amount/:coinbase/:currency',
+      views: {
+        'tab-home@tabs': {
+          controller: 'amountController',
+          templateUrl: 'views/amount.html'
         }
-      })
-      .state('tabs.buyandsell.coinbase.confirm', {
-        url: '/confirm/:toAmount/:toAddress/:isCoinbase/:coinbasePaymentMethodId/:coinbaseAmount/:coinbaseAmountCurrency',
-        views: {
-          'tab-home@tabs': {
-            controller: 'confirmController',
-            templateUrl: 'views/confirm.html'
-          }
-        }
-      })
-  /*
-      .state('tabs.buyandsell.coinbase.buy', {
-        url: '/buy',
+      }
+    })
+    .state('tabs.buyandsell.coinbase.buy', {
+      url: '/buy/:amount/:currency',
+      views: {
         'tab-home@tabs': {
           controller: 'buyCoinbaseController',
-          controllerAs: 'buy',
           templateUrl: 'views/buyCoinbase.html'
         }
-      })
-      .state('tabs.buyandsell.coinbase.sell', {
-        url: '/sell',
+      }
+    })
+    .state('tabs.buyandsell.coinbase.sell', {
+      url: '/sell/:amount/:currency',
+      views: {
         'tab-home@tabs': {
           controller: 'sellCoinbaseController',
-          controllerAs: 'sell',
           templateUrl: 'views/sellCoinbase.html'
         }
-      })
-  */
+      }
+    })
 
     /*
      *

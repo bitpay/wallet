@@ -6,6 +6,8 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   var isCordova = platformInfo.isCordova;
 
   var init = function() {
+    var config = configService.getSync().wallet.settings;
+    $scope.currency = getCurrency(config.alternativeIsoCode);
     ongoingProcess.set('connectingCoinbase', true);
     coinbaseService.init(function(err, data) {
       ongoingProcess.set('connectingCoinbase', false);
@@ -15,6 +17,15 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
         }
         return;
       }
+
+      // Show rates
+      coinbaseService.buyPrice(data.accessToken, $scope.currency, function(err, b) {
+        $scope.buyPrice = b.data || null;
+      });
+      coinbaseService.sellPrice(data.accessToken, $scope.currency, function(err, s) {
+        $scope.sellPrice = s.data || null;
+      });
+
       // Updating accessToken and accountId
       $timeout(function() {
         $scope.accessToken = data.accessToken;
@@ -23,6 +34,14 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
         $scope.$apply();
       }, 100);
     });
+  };
+
+  var getCurrency = function(code) {
+    // ONLY "USD" and "EUR"
+    switch(code) {
+      case 'EUR' : return 'EUR';
+      default : return 'USD'
+    };
   };
 
   $scope.updateTransactions = function() {
