@@ -15,7 +15,7 @@
   "title": "*USERVISIBLENAME*",
   "window": {
     "title": "*USERVISIBLENAME* - *PURPOSELINE*",
-    "icon": "www/img/icons/logo.ico",
+    "icon": "www/img/app/icon.png",
     "toolbar": false,
     "show": true,
     "visible": true,
