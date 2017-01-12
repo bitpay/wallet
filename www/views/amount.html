@@ -1,7 +1,7 @@
 <ion-view id="view-amount" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
-      {{coinbase ? (coinbase == 'buy' ? 'Buy bitcoin' : 'Sell bitcoin') : ('Enter Amount' | translate)}}
+      {{'Enter Amount' | translate}}
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -14,7 +14,7 @@
 
   <ion-content scroll="false">
 
-    <div ng-if="!customAmount && !isGlidera && !coinbase">
+    <div ng-if="!customAmount && !isGlidera && !nextStep">
       <div class="item item-no-bottom-border recipient-label" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':cardId}">
@@ -39,8 +39,8 @@
       </div>
     </div>
 
-    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera && !coinbase,
-      'amount-pane-no-recipient': customAmount || isGlidera || coinbase}">
+    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera && !nextStep,
+      'amount-pane-no-recipient': customAmount || isGlidera || nextStep}">
 
       <div class="amount-bar oh">
         <div class="title">
