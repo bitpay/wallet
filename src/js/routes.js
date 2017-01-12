@@ -942,7 +942,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     })
     .state('tabs.buyandsell.coinbase.amount', {
-      url: '/amount/:coinbase/:currency',
+      url: '/amount/:nextStep/:currency',
       views: {
         'tab-home@tabs': {
           controller: 'amountController',

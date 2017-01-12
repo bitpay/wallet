@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService, coinbaseService, appConfigService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService, appConfigService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -20,8 +20,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
 
-    // Coinbase
-    $scope.coinbase = data.stateParams.coinbase;
+    // Go to...
+    $scope.nextStep = data.stateParams.nextStep;
 
     $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
@@ -30,13 +30,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera || !!$scope.coinbase;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera || !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !$scope.coinbase && !data.stateParams.toAddress) {
+    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -357,15 +357,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
         isGlidera: $scope.isGlidera,
         glideraAccessToken: $scope.glideraAccessToken
       });
-    } else if ($scope.coinbase) {
+    } else if ($scope.nextStep) {
       var amountAlternative = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
-      if (amountAlternative < 1) {
-        popupService.showAlert(gettextCatalog.getString('Error'), 'Amount must be at least 1.00 ' + $scope.alternativeIsoCode);
-        return;
-      }
-
-      var goTo = 'tabs.buyandsell.coinbase.' + $scope.coinbase;
-      $state.transitionTo(goTo, {
+      $state.transitionTo($scope.nextStep, {
         amount: amountAlternative,
         currency: $scope.alternativeIsoCode
       });
