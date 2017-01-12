@@ -57,8 +57,10 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
 
   $scope.$on("$ionicView.afterEnter", function() {
     // try initializing and refreshing status any time the view is entered
-    scannerService.gentleInitialize();
-    scannerService.resumePreview();
+    if(!scannerService.isInitialized()){
+      scannerService.gentleInitialize();
+    }
+    activate();
   });
 
   function activate(){

@@ -8,8 +8,9 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
   var backCamera = true; // the plugin defaults to the back camera
 
   // Initalize known capabilities
-  var isAvailable = isDesktop? false: true; // assume camera exists on mobile
-  var hasPermission = isDesktop? true: false; // assume desktop has permission
+  // Assume camera is available. If init fails, we'll set this to false.
+  var isAvailable = true;
+  var hasPermission = false;
   var isDenied = false;
   var isRestricted = false;
   var canEnableLight = false;
@@ -67,7 +68,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
    * The `status` of QRScanner is returned to the callback.
    */
   this.gentleInitialize = function(callback) {
-    if(initializeStarted){
+    if(initializeStarted && !isDesktop){
       QRScanner.getStatus(function(status){
         _completeInitialization(status, callback);
       });
@@ -87,8 +88,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
         }
       });
     } else {
-      $log.debug('Camera permission assumed on desktop.');
-      initialize(callback);
+      $log.debug('To avoid flashing the privacy light, we do not pre-initialize the camera on desktop.');
     }
   };
 
@@ -96,14 +96,13 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
     $log.debug('Initializing scanner...');
     QRScanner.prepare(function(err, status){
       if(err){
+        isAvailable = false;
         $log.error(err);
         // does not return `status` if there is an error
         QRScanner.getStatus(function(status){
           _completeInitialization(status, callback);
-
         });
       } else {
-        isAvailable = true;
         _completeInitialization(status, callback);
       }
     });
@@ -130,8 +129,8 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
 
   var nextHide = null;
   var nextDestroy = null;
-  var hideAfterSeconds = 10;
-  var destroyAfterSeconds = 5 * 60;
+  var hideAfterSeconds = 7;
+  var destroyAfterSeconds = 60;
 
   /**
    * (Re)activate the QRScanner, and cancel the timeouts if present.
@@ -142,6 +141,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
   this.activate = function(callback) {
     $log.debug('Activating scanner...');
       QRScanner.show(function(status){
+        initializeCompleted = true;
         _checkCapabilities(status);
         if(typeof callback === "function"){
           callback(status);
