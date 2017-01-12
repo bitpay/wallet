@@ -119,6 +119,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
           $log.debug('Could not save tx comment ' + err);
         }
       });
+      $scope.$apply();
     });
   };
 
