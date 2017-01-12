@@ -91,7 +91,7 @@
          ng-click="coinbase.openTxModal(tx)">
 
         <span class="item-note">
-          <div ng-show="tx.error">
+          <div class="assertive" ng-show="tx.error || tx.status == 'error'">
             Error
           </div>
           <div ng-show="!tx.error">

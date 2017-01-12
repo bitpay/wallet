@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService) {
+angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService) {
 
   var amount;
   var currency;
@@ -13,6 +13,8 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    coinbaseService.setCredentials();
+
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
 
@@ -140,6 +142,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
                   ongoingProcess.set('buyingBitcoin', false);
                   $scope.buySuccess = updatedTx.data;
                   $timeout(function() {
+                    $ionicScrollDelegate.resize();
                     $scope.$apply();
                   });
                 });
@@ -152,7 +155,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   };
 
   $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = ($scope.action) == 'buy' ? 'Receive in' : 'Sell From';
+    $scope.walletSelectorTitle = 'Receive in';
     $scope.showWallets = true;
   };
 
