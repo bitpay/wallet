@@ -141,7 +141,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
 
     ongoingProcess.set('sendingByEmail', true);
     $timeout(function() {
-      var body = 'Copay Wallet "' + $scope.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
+      var body = 'Copay Wallet "' + $scope.wallet.name + '" Addresses\n  Only Main Addresses are  shown.\n\n';
       body += "\n";
       body += $scope.allAddresses.map(function(v) {
         return ('* ' + v.address + ' ' + 'xpub' + v.path.substring(1) + ' ' + formatDate(v.createdOn));
