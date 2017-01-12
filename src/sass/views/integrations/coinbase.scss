@@ -1,21 +1,7 @@
-.coinbase-preferences {
-  ul {
-    font-size: 14px;
-    background: white;
-    li {
-      padding: 16px 10px 16px 16px;
-      border-bottom: 1px solid #E9E9EC;
-    }
+#coinbase {
+  @extend .deflash-blue;
+  
+  .add-bottom-for-cta {
+    bottom: 92px;
   }
-}
-
-.coinbase-last-transactions-content {
-  background: #fff;
-  padding: 0.8rem 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid #E4E8EC;
-}
-
-.coinbase-pointer {
-  cursor: pointer;
 }
