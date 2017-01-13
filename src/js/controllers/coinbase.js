@@ -12,7 +12,9 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
       $scope.accessToken = at;
       
       // Update Access Token if necessary
+      $scope.loading = true;
       coinbaseService.init(function(err, data) {
+        $scope.loading = false;
         if (err || lodash.isEmpty(data)) {
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);

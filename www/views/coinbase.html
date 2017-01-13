@@ -86,7 +86,7 @@
     <div class="list card">
       <div class="item item-heading" ng-click="updateTransactions()">
         Activity
-      </div>
+      </div> 
       <a class="item"
          ng-if="pendingTransactions.data && !error"
          ng-repeat="(id, tx) in pendingTransactions.data | orderObjectBy:'updated_at':true track by $index"
@@ -120,6 +120,9 @@
           {{tx.amount.currency}}
         </p>
       </a>
+    </div>
+    <div class="m10t text-center" ng-if="loading">
+      <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
     </div>
 
   </div>
