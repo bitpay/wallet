@@ -7,21 +7,42 @@
 
   <ion-content class="add-bottom-for-cta">
     <!-- SELL -->
-    <div class="list">
-      <div class="item item-divider">
-        Sale Info
-      </div>
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Deposit into
-        </div>
-        <select ng-model="selectedPaymentMethodId.value"
-                ng-options="item.id as item.name for item in paymentMethods"
-                ng-change="sellRequest()">
-        </select>
-      </label>
+    <div class="list" ng-if="sellRequestInfo">
 
-      <div ng-if="sellRequestInfo">
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="35" class="item-img-sell">
+          <span>Selling</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{sellRequestInfo.amount.amount}} {{sellRequestInfo.amount.currency}}</div>
+          <div class="alternative">{{sellRequestInfo.subtotal.amount}} {{sellRequestInfo.subtotal.currency}}</div>
+        </div>
+      </div> 
+
+      <div class="info">
+
+        <div class="item item-icon-right" ng-click="showWalletSelector()">
+          <div class="label">From</div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
+            </i>
+            {{wallet ? wallet.name : '...'}}
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </div>
+
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Deposit into
+          </div>
+          <select ng-model="selectedPaymentMethodId.value"
+                  ng-options="item.id as item.name for item in paymentMethods"
+                  ng-change="sellRequest()">
+          </select>
+        </label>
+
         <div class="item item-divider">
           At what percentage lower price would you accept to sell?
         </div>
@@ -54,36 +75,15 @@
         </div>
 
         <div class="item item-divider">
-          Sell from
-        </div>
-        <div class="item" ng-click="showWalletSelector()">
-          <span>Wallet</span>
-          <span class="item-note">{{wallet ? wallet.name : '...'}}</span>
-        </div>
-        <div class="item">
-          Amount
-          <span class="item-note">
-            {{sellRequestInfo.amount.amount}} {{sellRequestInfo.amount.currency}}
-          </span>
-        </div> 
-
-        <div class="item item-divider">
-          Fees
+          Total to receive
         </div>
         <div class="item" ng-repeat="fee in sellRequestInfo.fees">
-          {{fee.type}}
-          <span class="item-note">
-            {{fee.amount.amount}} {{fee.amount.currency}}
+          <span class="capitalized">
+            {{fee.type}}
           </span>
-        </div>
-
-        <div class="item item-divider">
-          Total
-        </div>
-        <div class="item">
-          Subtotal
           <span class="item-note">
-            {{sellRequestInfo.subtotal.amount}} {{sellRequestInfo.subtotal.currency}}
+            <span ng-if="fee.amount.amount != '0.00'">-</span>
+            {{fee.amount.amount}} {{fee.amount.currency}}
           </span>
         </div>
         <div class="item">
