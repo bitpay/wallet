@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $window, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog) {
 
   var updateConfig = function() {
     var isCordova = platformInfo.isCordova;
@@ -44,9 +44,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
       if ($scope.coinbaseEnabled) {
         coinbaseService.setCredentials();
-        storageService.getCoinbaseToken(coinbaseService.getNetwork(), function(err, token) {
-          if (err) $log.error(err);
-          $scope.coinbaseToken = token;
+        coinbaseService.getStoredToken(function(at) {
+          $scope.coinbaseToken = at;
         });
       }
 
