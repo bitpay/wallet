@@ -8,31 +8,34 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   var init = function() {
     var config = configService.getSync().wallet.settings;
     $scope.currency = getCurrency(config.alternativeIsoCode);
-    ongoingProcess.set('connectingCoinbase', true);
-    coinbaseService.init(function(err, data) {
-      ongoingProcess.set('connectingCoinbase', false);
-      if (err || lodash.isEmpty(data)) {
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
+    coinbaseService.getStoredToken(function(at) {
+      $scope.accessToken = at;
+      
+      // Update Access Token if necessary
+      coinbaseService.init(function(err, data) {
+        if (err || lodash.isEmpty(data)) {
+          if (err) {
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
+          }
+          return;
         }
-        return;
-      }
 
-      // Show rates
-      coinbaseService.buyPrice(data.accessToken, $scope.currency, function(err, b) {
-        $scope.buyPrice = b.data || null;
-      });
-      coinbaseService.sellPrice(data.accessToken, $scope.currency, function(err, s) {
-        $scope.sellPrice = s.data || null;
-      });
+        // Show rates
+        coinbaseService.buyPrice(data.accessToken, $scope.currency, function(err, b) {
+          $scope.buyPrice = b.data || null;
+        });
+        coinbaseService.sellPrice(data.accessToken, $scope.currency, function(err, s) {
+          $scope.sellPrice = s.data || null;
+        });
 
-      // Updating accessToken and accountId
-      $timeout(function() {
-        $scope.accessToken = data.accessToken;
-        $scope.accountId = data.accountId;
-        $scope.updateTransactions();
-        $scope.$apply();
-      }, 100);
+        // Updating accessToken and accountId
+        $timeout(function() {
+          $scope.accessToken = data.accessToken;
+          $scope.accountId = data.accountId;
+          $scope.updateTransactions();
+          $scope.$apply();
+        }, 100);
+      });
     });
   };
 
@@ -104,8 +107,8 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
-      $scope.coinbaseTxDetailsModal = modal;
-      $scope.coinbaseTxDetailsModal.show();
+      $scope.modal = modal;
+      $scope.modal.show();
     });
   };
 

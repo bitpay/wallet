@@ -79,18 +79,10 @@
         <span ng-show="tx.to && tx.type == 'send'">Receive bitcoin in</span>
         <span class="item-note">{{tx.description}}</span>
       </li>
+      <div ng-show="tx.status == 'error'" class="item item-divider"></div>
+      <div ng-show="tx.status == 'error'" class="item assertive" ng-click="remove()">
+        Remove transaction
+      </div>
     </ul>
-
-    <div class="list" ng-show="tx.status == 'error'">
-      <div class="item item-divider">
-        This action will remove the transaction.
-      </div>
-      <div class="item">
-        <a ng-click="remove()">
-          Remove
-        </a>
-      </div>
-    </div>
-
   </ion-content>
 </ion-modal-view>
