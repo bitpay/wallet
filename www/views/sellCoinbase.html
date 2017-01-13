@@ -17,7 +17,7 @@
         </div>
         <select ng-model="selectedPaymentMethodId.value"
                 ng-options="item.id as item.name for item in paymentMethods"
-                ng-change="sellRequest({quote: true})">
+                ng-change="sellRequest()">
         </select>
       </label>
 
