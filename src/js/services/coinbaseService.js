@@ -395,7 +395,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       amount: data.amount,
       currency: data.currency,
       payment_method: data.payment_method || null,
-      commit: data.commit || false
+      commit: data.commit || false,
+      quote: data.quote || false
     };
     $http(_post('/accounts/' + accountId + '/buys', token, data)).then(function(data) {
       $log.info('Coinbase Buy Request: SUCCESS');

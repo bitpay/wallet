@@ -5,11 +5,32 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   var amount;
   var currency;
 
-  var initError = function(err) {
+  var showErrorAndBack = function(err) {
+    $scope.sendStatus = '';
     $log.error(err);
-    popupService.showAlert('Error', 'Could not connect to Coinbase', function() {
+    err = err.errors ? err.errors[0].message : err;
+    popupService.showAlert('Error', err, function() {
       $ionicHistory.goBack();
     });
+  };
+
+  var showError = function(err) {
+    $scope.sendStatus = '';
+    $log.error(err);
+    err = err.errors ? err.errors[0].message : err;
+    popupService.showAlert('Error', err);
+  };
+
+  var statusChangeHandler = function (processName, showName, isOn) {
+    $log.debug('statusChangeHandler: ', processName, showName, isOn);
+    if ( processName == 'buyingBitcoin' && !isOn) {
+      $scope.sendStatus = 'success';
+      $timeout(function() {
+        $scope.$digest();
+      }, 100);
+    } else if (showName) {
+      $scope.sendStatus = showName;
+    }
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -19,9 +40,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
     currency = data.stateParams.currency;
 
     if (amount < 1) {
-      popupService.showAlert('Error', 'Amount must be at least 1.00 ' + currency, function() {
-        $ionicHistory.goBack();
-      });
+      showErrorAndBack('Amount must be at least 1.00 ' + currency);
       return;
     }
     
@@ -36,7 +55,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
     coinbaseService.init(function(err, res) {
       if (err) {
         ongoingProcess.set('connectingCoinbase', false);
-        initError(err);
+        showErrorAndBack(err);
         return;
       }
       var accessToken = res.accessToken;
@@ -46,18 +65,29 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
       coinbaseService.getPaymentMethods(accessToken, function(err, p) {
         if (err) {
           ongoingProcess.set('connectingCoinbase', false);
-          initError(err);
+          showErrorAndBack(err);
           return;
         }
-        lodash.each(p.data, function(pm) {
+
+        var hasPrimary;
+        var pm;
+        for(var i = 0; i < p.data.length; i++) {
+          pm = p.data[i];
           if (pm.allow_buy) {
             $scope.paymentMethods.push(pm);
           }
           if (pm.allow_buy && pm.primary_buy) {
+            hasPrimary = true;
             $scope.selectedPaymentMethodId.value = pm.id;
-            $scope.buyRequest();
           }
-        });
+        }
+        if (lodash.isEmpty($scope.paymentMethods)) {
+          ongoingProcess.set('connectingCoinbase', false);
+          showErrorAndBack('No payment method available to buy');
+          return;
+        }
+        if (!hasPrimary) $scope.selectedPaymentMethodId.value = $scope.paymentMethods[0].id;
+        $scope.buyRequest();
       });
     });
   });
@@ -67,7 +97,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
     coinbaseService.init(function(err, res) {
       if (err) {
         ongoingProcess.set('connectingCoinbase', false);
-        initError(err);
+        showErrorAndBack(err);
         return;
       }
       var accessToken = res.accessToken;
@@ -75,18 +105,19 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
       var dataSrc = {
         amount: amount,
         currency: currency,
-        payment_method: $scope.selectedPaymentMethodId.value
+        payment_method: $scope.selectedPaymentMethodId.value,
+        quote: true
       };
       coinbaseService.buyRequest(accessToken, accountId, dataSrc, function(err, data) {
         ongoingProcess.set('connectingCoinbase', false);
         if (err) {
-          $log.error(err);
-          popupService.showAlert('Error', 'Could not create a buy request', function() {
-            $ionicHistory.goBack();
-          });
+          showErrorAndBack(err);
           return;
         }
         $scope.buyRequestInfo = data.data;
+        $timeout(function() {
+          $scope.$apply();
+        }, 100);
       });
     });
   };
@@ -98,39 +129,45 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {
       if (!ok) return;
         
-      ongoingProcess.set('buyingBitcoin', true);
+      ongoingProcess.set('buyingBitcoin', true, statusChangeHandler);
       coinbaseService.init(function(err, res) {
         if (err) {
-          ongoingProcess.set('buyingBitcoin', false);
-          initError(err);
+          ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+          showError(err);
           return;
         }
         var accessToken = res.accessToken;
         var accountId = res.accountId;
-        coinbaseService.buyCommit(accessToken, accountId, $scope.buyRequestInfo.id, function(err, b) {
+        var dataSrc = {
+          amount: amount,
+          currency: currency,
+          payment_method: $scope.selectedPaymentMethodId.value,
+          commit: true
+        };
+        coinbaseService.buyRequest(accessToken, accountId, dataSrc, function(err, b) {
           if (err) {
-            ongoingProcess.set('buyingBitcoin', false);
-            popupService.showAlert('Error', 'Could not complete purchase');
+            ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+            showError(err);
             return;
           }
-          var tx = b.data.transaction;
+          var tx = b.data ? b.data.transaction : null;
           if (!tx) {
-            ongoingProcess.set('buyingBitcoin', false);
-            popupService.showAlert('Error', 'Transaction not found');
+            ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+            showError('Transaction not found');
             return;
           }
 
           $timeout(function() {
             coinbaseService.getTransaction(accessToken, accountId, tx.id, function(err, updatedTx) {
               if (err) {
-                ongoingProcess.set('buyingBitcoin', false);
-                popupService.showAlert('Error', 'Transaction error');
+                ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+                showError(err);
                 return;
               }
               walletService.getAddress($scope.wallet, false, function(err, walletAddr) {
                 if (err) {
-                  ongoingProcess.set('buyingBitcoin', false);
-                  popupService.showAlert('Error', err);
+                  ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+                  showError(err);
                   return;
                 }
                 updatedTx.data['toAddr'] = walletAddr;
@@ -138,13 +175,8 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
 
                 $log.debug('Saving transaction to process later...');
                 coinbaseService.savePendingTransaction(updatedTx.data, {}, function(err) {
+                  ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
                   if (err) $log.debug(err);
-                  ongoingProcess.set('buyingBitcoin', false);
-                  $scope.buySuccess = updatedTx.data;
-                  $timeout(function() {
-                    $ionicScrollDelegate.resize();
-                    $scope.$apply();
-                  });
                 });
               });
             });
@@ -164,6 +196,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   };
 
   $scope.goBackHome = function() {
+    $scope.sendStatus = '';
     $ionicHistory.nextViewOptions({
       disableAnimate: true,
       historyRoot: true
