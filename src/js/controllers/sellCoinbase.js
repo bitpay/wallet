@@ -173,13 +173,12 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
           return;
         }
         if (!hasPrimary) $scope.selectedPaymentMethodId.value = $scope.paymentMethods[0].id;
-        $scope.sellRequest({ quote: true });
+        $scope.sellRequest();
       });
     });   
   });
 
-  $scope.sellRequest = function(opts) {
-    opts = opts || {};
+  $scope.sellRequest = function() {
     ongoingProcess.set('connectingCoinbase', true);
     coinbaseService.init(function(err, res) {
       if (err) {
@@ -193,8 +192,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
         amount: amount,
         currency: currency,
         payment_method: $scope.selectedPaymentMethodId.value,
-        commit: opts.commit,
-        quote: opts.quote
+        quote: true
       };
       coinbaseService.sellRequest(accessToken, accountId, dataSrc, function(err, data) {
         ongoingProcess.set('connectingCoinbase', false);
