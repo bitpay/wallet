@@ -7,49 +7,50 @@
 
   <ion-content class="add-bottom-for-cta">
     <!-- BUY -->
-    <div class="list">
-      <div class="item item-divider">
-        Purchase Info
-      </div>
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Payment Method
-        </div>
-        <select ng-model="selectedPaymentMethodId.value"
-                ng-options="item.id as item.name for item in paymentMethods"
-                ng-change="buyRequest()">
-        </select>
-      </label>
+    <div class="list" ng-if="buyRequestInfo">
 
-      <div ng-if="buyRequestInfo">
-        <div class="item">
-          Amount
-          <span class="item-note">
-            {{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}
-          </span>
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35" class="item-img-buy">
+          <span>Buying</span>
         </div>
-        <div class="item" ng-click="showWalletSelector()">
-          <span>Receive in</span>
-          <span class="item-note">{{wallet ? wallet.name : '...'}}</span>
+        <div class="amount-label">
+          <div class="amount">{{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}</div>
+          <div class="alternative">{{buyRequestInfo.subtotal.amount}} {{buyRequestInfo.subtotal.currency}}</div>
+        </div>
+      </div>
+
+      <div class="info">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Payment Method
+          </div>
+          <select ng-model="selectedPaymentMethodId.value"
+                  ng-options="item.id as item.name for item in paymentMethods"
+                  ng-change="buyRequest()">
+          </select>
+        </label>
+
+        <div class="item item-icon-right" ng-click="showWalletSelector()">
+          <div class="label">Receive in</div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
+            </i>
+            {{wallet ? wallet.name : '...'}}
+          </div>
+          <i class="icon bp-arrow-right"></i>
         </div>
 
         <div class="item item-divider">
-          Fees
+          Total to pay
         </div>
         <div class="item" ng-repeat="fee in buyRequestInfo.fees">
-          {{fee.type}}
+          <span class="capitalized">
+            {{fee.type}}
+          </span>
           <span class="item-note">
             {{fee.amount.amount}} {{fee.amount.currency}}
-          </span>
-        </div>
-
-        <div class="item item-divider">
-          Total
-        </div>
-        <div class="item">
-          Subtotal
-          <span class="item-note">
-            {{buyRequestInfo.subtotal.amount}} {{buyRequestInfo.subtotal.currency}}
           </span>
         </div>
         <div class="item">
