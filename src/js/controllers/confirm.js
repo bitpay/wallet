@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService, appConfigService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -527,8 +527,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         }
       });
       return;
-    } 
-    
+    }
+ 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
     createTx(wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
@@ -579,14 +579,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       (
         processName === 'broadcastingTx' || 
         ((processName === 'signingTx') && $scope.wallet.m > 1) || 
-        (processName == 'sendingTx' && !$scope.wallet.canSign() && !$scope.wallet.isPrivKeyExternal()) ||
-        (processName == 'buyingBitcoin') || 
-        (processName == 'sellingBitcoin')
+        (processName == 'sendingTx' && !$scope.wallet.canSign() && !$scope.wallet.isPrivKeyExternal())
       ) && !isOn) {
       $scope.sendStatus = 'success';
       $timeout(function() {
         $scope.$digest();
-      }, 100)
+      }, 100);
     } else if (showName) {
       $scope.sendStatus = showName;
     }
@@ -804,26 +802,18 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  function publishAndSign(wallet, txp, onSendStatusChange, cb) {
+  function publishAndSign(wallet, txp, onSendStatusChange) {
 
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       $log.info('No signing proposal: No private key');
 
-      walletService.onlyPublish(wallet, txp, function(err) {
-        if (err) { 
-          if (cb) return cb(err);
-          else return setSendError(err);
-        }
-        if (cb) return cb();
-        else return;
+      return walletService.onlyPublish(wallet, txp, function(err) {
+        if (err) setSendError(err);
       }, onSendStatusChange);
     }
 
     walletService.publishAndSign(wallet, txp, function(err, txp) {
-      if (err) {
-        if (cb) return cb(err);
-        else return setSendError(err);
-      }
+      if (err) return setSendError(err);
 
       var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
       var fromAmazon = previousView.match(/tabs.giftcards.amazon/) ? true : false;
@@ -842,7 +832,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         ongoingProcess.set('creatingGiftCard', true);
         debounceCreate(count, dataSrc, onSendStatusChange);
       }
-      if (cb) return cb();
     }, onSendStatusChange);
   };
 
@@ -905,9 +894,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       }
       if (lodash.isEmpty(res)) return;
       if (unitName == 'bits') {
-        $scope.exchangeRate = '1,000,000 bits ~ ' + res.data.rate + ' ' + alternativeIsoCode;
+        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + alternativeIsoCode;
       } else {
-        $scope.exchangeRate = '1 BTC ~ ' + res.data.rate + ' ' + alternativeIsoCode;
+        $scope.exchangeRate = '1 BTC ~ ' + res.rate + ' ' + alternativeIsoCode;
       }
     });
   };
