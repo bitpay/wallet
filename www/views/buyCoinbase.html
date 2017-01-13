@@ -5,9 +5,9 @@
     <ion-nav-title>Buy bitcoin</ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content>
+  <ion-content class="add-bottom-for-cta">
     <!-- BUY -->
-    <div class="list" ng-show="!buySuccess">
+    <div class="list">
       <div class="item item-divider">
         Purchase Info
       </div>
@@ -26,12 +26,6 @@
           Amount
           <span class="item-note">
             {{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}
-          </span>
-        </div>
-        <div class="item">
-          Payout at
-          <span class="item-note">
-            {{buyRequestInfo.payout_at | amCalendar}}
           </span>
         </div>
         <div class="item" ng-click="showWalletSelector()">
@@ -67,26 +61,38 @@
       </div>
     </div>
 
-    <button 
-                ng-show="buyRequestInfo && !buySuccess"
-                ng-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet"
-                class="button button-standard button-primary" 
-                ng-click="buyConfirm()">
-      Confirm
-    </button>
-
-    <div ng-show="buySuccess">
-      <div class="p20">
-        <h1 class="text-center">Bought</h1>
-        Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet
-      </div>
-      <button 
-           class="button button-standard button-primary" 
-           ng-click="goBackHome()">
-        Done
-      </button>
-    </div>
   </ion-content>
+
+  <click-to-accept
+    ng-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet"
+    ng-click="buyConfirm()"
+    ng-if="!isCordova && buyRequestInfo"
+    click-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="!selectedPaymentMethodId.value"
+    no-matching-wallet="!buyRequestInfo">
+    Confirm purchase
+  </click-to-accept>
+  <slide-to-accept
+    ng-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet"
+    ng-if="isCordova && buyRequestInfo"
+    slide-on-confirm="buyConfirm()"
+    slide-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="!selectedPaymentMethodId.value"
+    no-matching-wallet="!buyRequestInfo">
+    Slide to buy
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="goBackHome()"
+    slide-success-hide-on-confirm="true">
+    <span>Bought</span>
+    <div class="m10 size-14">
+      Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet
+    </div>
+  </slide-to-accept-success>
+
   <wallet-selector
     wallet-selector-title="walletSelectorTitle"
     wallet-selector-wallets="wallets"

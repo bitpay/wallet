@@ -199,7 +199,6 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
       coinbaseService.sellRequest(accessToken, accountId, dataSrc, function(err, data) {
         ongoingProcess.set('connectingCoinbase', false);
         if (err) {
-          ongoingProcess.set('connectingCoinbase', false);
           showErrorAndBack(err);
           return;
         }
