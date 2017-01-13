@@ -97,6 +97,13 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     return credentials.NETWORK;
   };
 
+  root.getStoredToken = function(cb) {
+    storageService.getCoinbaseToken(credentials.NETWORK, function(err, accessToken) {
+      if (err || !accessToken) return cb();
+      return cb(accessToken);
+    });
+  };
+
   root.getOauthCodeUrl = function() {
     return credentials.HOST
       + '/oauth/authorize?response_type=code&client_id='
@@ -478,16 +485,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.getPendingTransactions = function(coinbasePendingTransactions) {
-    root.init(function(err, data) {
-      if (err || lodash.isEmpty(data)) {
-        if (err) $log.error(err);
-        return;
-      }
-      var accessToken = data.accessToken;
-      var accountId = data.accountId;
-      storageService.getCoinbaseTxs(credentials.NETWORK, function(err, txs) {
-        txs = txs ? JSON.parse(txs) : {};
-        coinbasePendingTransactions.data = lodash.isEmpty(txs) ? null : txs;
+    storageService.getCoinbaseTxs(credentials.NETWORK, function(err, txs) {
+      txs = txs ? JSON.parse(txs) : {};
+      coinbasePendingTransactions.data = lodash.isEmpty(txs) ? null : txs;
+    
+      root.init(function(err, data) {
+        if (err || lodash.isEmpty(data)) {
+          if (err) $log.error(err);
+          return;
+        }
+        var accessToken = data.accessToken;
+        var accountId = data.accountId;
 
         lodash.forEach(coinbasePendingTransactions.data, function(dataFromStorage, txId) {
           if ((dataFromStorage.type == 'sell' && dataFromStorage.status == 'completed') ||

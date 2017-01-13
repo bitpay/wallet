@@ -13,7 +13,7 @@
       </ul>
     </div>
 
-    <div ng-if="!accountId && !error" ng-init="showOauthForm = false">
+    <div ng-if="!accessToken && !error" ng-init="showOauthForm = false">
       <div class="text-center m20v">
         <img src="img/coinbase-logo.png" width="200">
       </div>
@@ -53,20 +53,22 @@
       </div>
     </div>
 
-  <div ng-if="accountId && !error">
+  <div ng-if="accessToken && !error">
 
-    <div class="m20t text-center" ng-show="accountId" ng-click="updateTransactions()">
+    <div class="m20t text-center" ng-click="updateTransactions()">
       <img src="img/coinbase-logo.png" width="200">
     </div>
 
-    <div class="m10t size-12 text-center text-gray" ng-if="buyPrice && sellPrice">
-      {{buyPrice.amount}} {{buyPrice.currency}}
-       | 
-      {{sellPrice.amount}} {{sellPrice.currency}}
+    <div class="m10t size-12 text-center text-gray">
+      <span ng-show="!buyPrice || !sellPrice"> ... | ... </span>
+      <span ng-show="buyPrice && sellPrice">
+        {{buyPrice.amount}} {{buyPrice.currency}}
+         | 
+        {{sellPrice.amount}} {{sellPrice.currency}}
+      </span>
     </div>
 
-    <div class="list card"
-         ng-show="accountId">
+    <div class="list card">
       <a class="item item-icon-right"
          href ui-sref="tabs.buyandsell.coinbase.amount({nextStep: 'tabs.buyandsell.coinbase.buy', currency: currency})">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35" class="item-img-buy">
