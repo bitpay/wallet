@@ -12,10 +12,10 @@
       <div class="item head">
         <div class="sending-label">
           <img src="img/icon-tx-sent-outline.svg">
-          <span translate ng-if="!useSendMax && !(isGlidera || isCoinbase)">Sending</span>
+          <span translate ng-if="!useSendMax && !isGlidera">Sending</span>
           <span translate ng-if="useSendMax">Sending maximum amount</span>
-          <span ng-if="(isGlidera || isCoinbase) == 'buy'">Buying</span>
-          <span ng-if="(isGlidera || isCoinbase) == 'sell'">Selling</span>
+          <span ng-if="isGlidera == 'buy'">Buying</span>
+          <span ng-if="isGlidera == 'sell'">Selling</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
@@ -30,47 +30,17 @@
           <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
  
-        <div class="item single-line" ng-if="isCoinbase == 'sell'">
-          At what percentage lower price would you accept to sell?
-        </div>
-        <label class="item item-input item-select" ng-if="isCoinbase == 'sell' && priceSensitivity">
-          <span class="label">Price Sensitivity</span>
-          <select
-               ng-model="selectedPriceSensitivity.data"
-               ng-options="item as item.name for item in priceSensitivity track by item.value">
-          </select>
-        </label>
-        <div class="item" ng-if="isCoinbase == 'sell' && selectedPriceSensitivity">
-          <div class="m10b size-12">
-            Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds
-            will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one
-            hour).
-          </div>
-          <span class="label" ng-if="coinbaseSellPrice">Estimated sale value: 
-            {{coinbaseSellPrice.amount * coinbaseAmountBTC | currency : 'USD ' : 2}}
-          </span>
-          <span class="label" ng-if="coinbaseSellPrice">Still sell if price fall until: 
-            {{(coinbaseSellPrice.amount - (selectedPriceSensitivity.data.value / 100) *
-            coinbaseSellPrice.amount) * coinbaseAmountBTC | currency : 'USD ' : 2}}
-          </span>
-        </div>
-        <div class="item single-line" ng-if="isCoinbase && coinbasePaymentMethodInfo">
-          <span class="label" ng-show="isCoinbase == 'buy'">Payment Method</span>
-          <span class="label" ng-show="isCoinbase == 'sell'">Deposit into</span>
-          <span class="item-note">{{coinbasePaymentMethodInfo.name}}</span>
-        </div>
         <div class="item">
-          <span class="label" ng-if="!(isGlidera || isCoinbase)" translate>To</span>
-          <span class="label" ng-if="(isGlidera || isCoinbase) == 'buy'">From</span>
-          <span class="label" ng-if="(isGlidera || isCoinbase) == 'sell'">To</span>
+          <span class="label" ng-if="!isGlidera" translate>To</span>
+          <span class="label" ng-if="isGlidera == 'buy'">From</span>
+          <span class="label" ng-if="isGlidera == 'sell'">To</span>
           <span class="payment-proposal-to">
-            <img ng-if="!cardId && !isGiftCard && !isGlidera && !isCoinbase" src="img/icon-bitcoin-small.svg">
+            <img ng-if="!cardId && !isGiftCard && !isGlidera" src="img/icon-bitcoin-small.svg">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
             <i ng-if="isGiftCard" class="icon big-icon-svg">
               <div class="bg icon-amazon"></div>
             </i>
             <img ng-if="isGlidera" src="img/glidera-logo.png" width="90"/>
-            <img ng-if="isCoinbase" src="img/coinbase-logo.png" width="90"/>
 
             <div copy-to-clipboard="toAddress" ng-if="!paypro" class="ellipsis">
               <contact ng-if="!toName" address="{{toAddress}}"></contact>
@@ -88,9 +58,9 @@
           </span>
         </div>
         <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
-          <span class="label" ng-if="!(isGlidera || isCoinbase)" translate>From</span>
-          <span class="label" ng-if="(isGlidera || isCoinbase) == 'buy'">To</span>
-          <span class="label" ng-if="(isGlidera || isCoinbase) == 'sell'">From</span>
+          <span class="label" ng-if="!isGlidera" translate>From</span>
+          <span class="label" ng-if="isGlidera == 'buy'">To</span>
+          <span class="label" ng-if="isGlidera == 'sell'">From</span>
           <div class="wallet" ng-if="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
@@ -105,14 +75,14 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet && !(isGlidera || isCoinbase == 'buy')" ng-click="showDescriptionPopup()">
+        <a class="item single-line item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet && !isGlidera" ng-click="showDescriptionPopup()">
           <span class="label" translate>Add Memo</span>
           <span class="item-note m10l">
             {{description}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet && !(isGlidera || isCoinbase == 'buy')">
+        <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet && !isGlidera">
           <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
           <span class="item-note">
             {{fee || '...'}}
@@ -146,21 +116,6 @@
             </div>
           </div>
         </div>
-        <div ng-show="isCoinbase == 'buy'">
-          <div class="item single-line">
-            <span class="label">Subtotal</span>
-            <span class="item-note">{{coinbaseBuyRequest.subtotal.amount}}
-              {{coinbaseBuyRequest.subtotal.currency}}</span>
-          </div>
-          <div class="item single-line">
-            <span class="label">Total</span>
-            <span class="item-note">{{coinbaseBuyRequest.total.amount}} {{coinbaseBuyRequest.total.currency}}</span>
-          </div>
-          <div class="item single-line">
-            <span class="label">Payout at</span>
-            <span class="item-note">{{coinbaseBuyRequest.payout_at | amCalendar}}</span>
-          </div>
-        </div>
         <div class="text-center" ng-show="noMatchingWallet">
           <span class="badge badge-energized" translate>No wallets available</span>
         </div>
@@ -192,28 +147,12 @@
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()"
     slide-success-hide-on-confirm="true">
-    <span ng-show="isCoinbase == 'buy'">Bought</span>
-    <span ng-show="isCoinbase == 'sell' && coinbaseSendInfo">Funds sent to Coinbase Account</span>
-    <div ng-show="!isCoinbase">
-      <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
-      <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
-      <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction created</span>
-    </div>
+    <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
+    <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
+    <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction created</span>
     <div ng-show="isGlidera" class="glidera-success">
       <span ng-show="isGlidera == 'buy'">A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day</span>
       <span ng-show="isGlidera == 'sell'">A transfer has been initiated to your bank account. Should arrive in 4-6 business days</span>
-    </div>
-    <div ng-show="isCoinbase" class="glidera-success">
-      <span ng-show="isCoinbase == 'buy'">
-        <span ng-show="coinbaseBuySuccess">
-          Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet
-        </span>
-      </span>
-      <span ng-show="isCoinbase == 'sell'">
-        <span ng-show="coinbaseSendInfo">
-          The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase.
-        </span>
-      </span>
     </div>
   </slide-to-accept-success>
 
