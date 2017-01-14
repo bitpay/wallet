@@ -79,7 +79,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
       customHandler(processName, showName, isOn);
     } else if (root.onGoingProcessName) {
       if (isCordova) {
-        window.plugins.spinnerDialog.show(null, showName, true);
+        window.plugins.spinnerDialog.show(null, showName, root.clear);
       } else {
 
         var tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
