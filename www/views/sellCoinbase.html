@@ -15,8 +15,10 @@
           <span>Selling</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{sellRequestInfo.amount.amount}} {{sellRequestInfo.amount.currency}}</div>
-          <div class="alternative">{{sellRequestInfo.subtotal.amount}} {{sellRequestInfo.subtotal.currency}}</div>
+          <div class="amount">{{amountUnitStr}}</div>
+          <div class="alternative" ng-if="sellPrice">
+            @ ${{sellPrice.amount}} per BTC
+          </div>
         </div>
       </div> 
 
@@ -75,11 +77,17 @@
         </div>
 
         <div class="item item-divider">
-          Total to receive
+          Transaction details
+        </div>
+        <div class="item">
+          Amount
+          <span class="item-note">
+            {{sellRequestInfo.subtotal.amount}} {{sellRequestInfo.subtotal.currency}}
+          </span>
         </div>
         <div class="item" ng-repeat="fee in sellRequestInfo.fees">
           <span class="capitalized">
-            {{fee.type}}
+            {{fee.type}} fee
           </span>
           <span class="item-note">
             <span ng-if="fee.amount.amount != '0.00'">-</span>
@@ -87,8 +95,8 @@
           </span>
         </div>
         <div class="item">
-          Total
-          <span class="item-note">
+          Total to receive
+          <span class="item-note total-amount">
             {{sellRequestInfo.total.amount}} {{sellRequestInfo.total.currency}}
           </span>
         </div>

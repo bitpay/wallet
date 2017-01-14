@@ -358,10 +358,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
         glideraAccessToken: $scope.glideraAccessToken
       });
     } else if ($scope.nextStep) {
-      var amountAlternative = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
       $state.transitionTo($scope.nextStep, {
-        amount: amountAlternative,
-        currency: $scope.alternativeIsoCode
+        amount: _amount,
+        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : ''
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;

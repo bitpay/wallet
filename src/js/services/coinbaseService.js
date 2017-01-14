@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, platformInfo, lodash, storageService, configService, appConfigService) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -102,6 +102,35 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       if (err || !accessToken) return cb();
       return cb(accessToken);
     });
+  };
+
+  root.getAvailableCurrency = function() {
+    var config = configService.getSync().wallet.settings;
+    // ONLY "USD" and "EUR"
+    switch(config.alternativeIsoCode) {
+      case 'EUR' : return 'EUR';
+      default : return 'USD'
+    };
+  };
+
+  root.parseAmount = function(amount, currency) {
+    var config = configService.getSync().wallet.settings;
+    var satToBtc = 1 / 100000000;
+    var unitToSatoshi = config.unitToSatoshi;
+    var amountUnitStr;
+    
+    // IF 'USD'
+    if (currency) {
+      amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
+    } else {
+      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+      amountUnitStr = txFormatService.formatAmountStr(amountSat);
+      // convert unit to BTC
+      amount = (amountSat * satToBtc).toFixed(8);
+      currency = 'BTC';
+    }
+    
+    return [amount, currency, amountUnitStr];
   };
 
   root.getOauthCodeUrl = function() {
