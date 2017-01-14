@@ -49,7 +49,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
       var accountId = res.accountId; 
       var sellPrice = null;
         
-      coinbaseService.sellPrice(accessToken, currency, function(err, sell) {
+      coinbaseService.sellPrice(accessToken, coinbaseService.getAvailableCurrency(), function(err, sell) {
         if (err) {
           $log.debug(err);
           checkTransaction(count, txp);
@@ -119,14 +119,10 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     coinbaseService.setCredentials();
 
-    amount = data.stateParams.amount;
-    currency = data.stateParams.currency;
+    [amount, currency, $scope.amountUnitStr] = coinbaseService.parseAmount(
+      data.stateParams.amount, 
+      data.stateParams.currency);
 
-    if (amount < 1) {
-      showErrorAndBack('Amount must be at least 1.00 ' + currency);
-      return;
-    }
-    
     $scope.priceSensitivity = coinbaseService.priceSensitivity;
     $scope.selectedPriceSensitivity = { data: coinbaseService.selectedPriceSensitivity };
     
@@ -146,6 +142,10 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
         return;
       }
       var accessToken = res.accessToken;
+
+      coinbaseService.sellPrice(accessToken, coinbaseService.getAvailableCurrency(), function(err, s) {
+        $scope.sellPrice = s.data || null;
+      });
 
       $scope.paymentMethods = [];
       $scope.selectedPaymentMethodId = { value : null };

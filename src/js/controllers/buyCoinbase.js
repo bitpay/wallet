@@ -36,14 +36,10 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     coinbaseService.setCredentials();
 
-    amount = data.stateParams.amount;
-    currency = data.stateParams.currency;
+    [amount, currency, $scope.amountUnitStr] = coinbaseService.parseAmount(
+      data.stateParams.amount, 
+      data.stateParams.currency);
 
-    if (amount < 1) {
-      showErrorAndBack('Amount must be at least 1.00 ' + currency);
-      return;
-    }
-    
     $scope.network = coinbaseService.getNetwork();
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
@@ -59,6 +55,10 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
         return;
       }
       var accessToken = res.accessToken;
+
+      coinbaseService.buyPrice(accessToken, coinbaseService.getAvailableCurrency(), function(err, b) {
+        $scope.buyPrice = b.data || null;
+      });
 
       $scope.paymentMethods = [];
       $scope.selectedPaymentMethodId = { value : null };

@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('coinbaseController', function($rootScope, $scope, $timeout, $ionicModal, $log, profileService, configService, storageService, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, gettextCatalog, externalLinkService) {
+angular.module('copayApp.controllers').controller('coinbaseController', function($scope, $timeout, $ionicModal, $log, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, externalLinkService) {
 
   var isNW = platformInfo.isNW;
   var isCordova = platformInfo.isCordova;
 
   var init = function() {
-    var config = configService.getSync().wallet.settings;
-    $scope.currency = getCurrency(config.alternativeIsoCode);
+    $scope.currency = coinbaseService.getAvailableCurrency();
     coinbaseService.getStoredToken(function(at) {
       $scope.accessToken = at;
       
@@ -17,7 +16,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
         $scope.loading = false;
         if (err || lodash.isEmpty(data)) {
           if (err) {
-            popupService.showAlert(gettextCatalog.getString('Error'), err);
+            popupService.showAlert('Error', err);
           }
           return;
         }
@@ -39,14 +38,6 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
         }, 100);
       });
     });
-  };
-
-  var getCurrency = function(code) {
-    // ONLY "USD" and "EUR"
-    switch(code) {
-      case 'EUR' : return 'EUR';
-      default : return 'USD'
-    };
   };
 
   $scope.updateTransactions = function() {
@@ -93,7 +84,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
       coinbaseService.getToken(code, function(err, accessToken) {
         ongoingProcess.set('connectingCoinbase', false);
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          popupService.showAlert('Error', err);
           return;
         }
         $scope.accessToken = accessToken;
