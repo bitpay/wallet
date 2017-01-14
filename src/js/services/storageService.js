@@ -417,13 +417,13 @@ angular.module('copayApp.services')
     };
 
     // cb(err, cards)
-    // cards: [
+    // cards: [{
+    //   token: card token
+    //   email: account email
     //   eid: card id
     //   id: card id
     //   lastFourDigits: card number
-    //   token: card token
-    //   email: account email
-    // ]
+    // }]
     root.getBitpayDebitCards = function(network, cb) {
       root.getBitpayAccounts(network, function(err, allAccounts) {
         if (err) return cb(err);
@@ -457,6 +457,138 @@ angular.module('copayApp.services')
         });
 
         storage.set('bitpayAccounts-v2-' + network, allAccounts, cb);
+      });
+    };
+
+    // data: {
+    //   token: account token
+    //   email: account email
+    //   records: [{
+    //     token: record token,
+    //     eid: record id,
+    //     id: record id,
+    //     employer: {
+    //       eid: employer id,
+    //       id: employer id,
+    //       name,
+    //       iconUrl,
+    //       imageUrl,
+    //       nextEffectiveDate,
+    //       payCycle,
+    //       about: {
+    //         html
+    //       }
+    //     },
+    //     employee: {
+    //       label,
+    //       email
+    //     },
+    //     deduction: {
+    //       active,
+    //       address,
+    //       walletId,
+    //       amount,
+    //       currency,
+    //       externalWalletName,
+    //       unverifiedAddressAccepted
+    //     }
+    //   }]
+    // }
+    root.setPayrollRecords = function(network, data, cb) {
+      data = data || {};
+      if (lodash.isEmpty(data) || !data.email) return cb('Cannot set payroll records: no account to set');
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+        if (err) return cb(err);
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
+        bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
+        bitpayAccounts[data.email]['payrollRecords-' + network] = data.records;
+        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
+      });
+    };
+
+    // cb(err, records)
+    // records: [...]
+    root.getPayrollRecords = function(network, cb) {
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
+        var records = [];
+        Object.keys(bitpayAccounts).forEach(function(email) {
+          // For the UI, add the account email to the record object.
+          var acctRecords = bitpayAccounts[email]['payrollRecords-' + network] || [];
+          for (var i = 0; i < acctRecords.length; i++) {
+            acctRecords[i].email = email;
+          }
+          records = records.concat(acctRecords);
+        });
+        cb(err, records);
+      });
+    };
+
+    // record: {...}
+    root.removePayrollRecord = function(network, record, cb) {
+      if (lodash.isString(record)) {
+        record = JSON.parse(record);
+      }
+      record = record || {};
+      if (lodash.isEmpty(record) || !record.eid) return cb('No payroll record to remove');
+      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+        if (err) cb(err);
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
+        Object.keys(bitpayAccounts).forEach(function(email) {
+          var data = bitpayAccounts[email]['payrollRecords-' + network];
+          var newRecords = lodash.reject(data, {
+            'eid': record.eid
+          });
+          data = {};
+          data.records = newRecords;
+          data.email = email;
+          root.setPayrollRecords(network, data, function(err) {
+            cb(err);
+          });
+        });
+      });
+    };
+
+    // data: {
+    //   'eid': {  // payroll record id
+    //     transactions: [{
+    //       uniqueId,
+    //       timestamp,
+    //       amount,
+    //       currency,
+    //       rate,
+    //       btc,
+    //       status,
+    //       address,
+    //     }]
+    //   }
+    // }
+    root.setPayrollRecordsHistory = function(network, data, cb) {
+      storage.set('payrollRecordsHistory-' + network, JSON.stringify(data), cb);
+    };
+
+    root.getPayrollRecordsHistory = function(network, cb) {
+      storage.get('payrollRecordsHistory-' + network, cb);
+    };
+
+    root.removePayrollRecordHistory = function(network, record, cb) {
+      root.getPayrollRecordsHistory(network, function(err, data) {
+        if (err) return cb(err);
+        if (lodash.isString(data)) {
+          data = JSON.parse(data);
+        }
+        data = data || {};
+        delete data[record.eid];
+        root.setPayrollRecordsHistory(network, JSON.stringify(data), cb);
       });
     };
 

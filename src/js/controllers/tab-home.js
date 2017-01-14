@@ -267,7 +267,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
-
     $scope.onRefresh = function() {
       $timeout(function() {
         $scope.$broadcast('scroll.refreshComplete');

@@ -10,6 +10,12 @@
     background-image: url("../img/icon-card.svg");
     background-color: #1e3186;
   }
+  .icon-payroll {
+    background-image: url("../img/icon-payroll.svg");
+    background-color: #1e8644;
+    background-position: center;
+    background-size: 60%;
+  }
   .icon-gift {
     background-image: url("../img/icon-gift.svg");
   }
@@ -98,6 +104,21 @@
   .icon.close-home-tip {
     color: #666;
     font-size: 38px;
+  }
+  .icon.status-dot {
+    position: initial;
+    font-size: 10px;
+
+    &:before {
+      width: 14px;
+      text-align: left;
+    }
+    &.status-active {
+      color: #63c563;
+    }
+    &.status-paused {
+      color: #c56363;
+    }
   }
   .tab-home {
     &__logo {

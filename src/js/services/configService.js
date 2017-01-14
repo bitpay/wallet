@@ -43,44 +43,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     // External services
-<<<<<<< HEAD
-=======
-    glidera: {
-      enabled: true,
-      testnet: false
-    },
-
-    coinbase: {
-      enabled: false, //disable coinbase for this release
-      testnet: false
-    },
-
-    bitpayCard: {
-      enabled: true
-    },
-
-    amazon: {
-      enabled: true
-    },
-
-    payroll: {
-      enabled: true,
-      deductionCacheValid: false,
-      deductionCache: {
-        // active
-        // address
-        // walletId
-        // amount
-        // currencyCode
-        // effectiveDate
-        // externalWalletName
-        // unverifiedAddressAccepted
-      }
-    },
-
-    //Experimental Features
-
->>>>>>> WIP, payroll implementation.
     recentTransactions: {
       enabled: true,
     },
@@ -217,26 +179,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.wallet.settings.unitCode) {
           configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
-<<<<<<< HEAD
         
         if (!configCache.hideNextSteps) {
           configCache.hideNextSteps = defaultConfig.hideNextSteps;
-=======
-        if (!configCache.glidera) {
-          configCache.glidera = defaultConfig.glidera;
-        }
-        if (!configCache.coinbase) {
-          configCache.coinbase = defaultConfig.coinbase;
-        }
-        if (!configCache.amazon) {
-          configCache.amazon = defaultConfig.amazon;
-        }
-        if (!configCache.payroll) {
-          configCache.payroll = defaultConfig.payroll;
-        }
-        if (!configCache.bitpayCard) {
-          configCache.bitpayCard = defaultConfig.bitpayCard;
->>>>>>> WIP, payroll implementation.
         }
 
         if (!configCache.recentTransactions) {

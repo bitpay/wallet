@@ -68,7 +68,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       method: 'getDebitCards'
     };
     // Get Debit Cards
-    bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
+    bitpayService.post(apiContext.token, json, function(data) {
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Get Debit Cards: SUCCESS');
 
@@ -121,7 +121,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
           return cb(_setError('Card not found'));
 
         // Get invoices
-        bitpayService.post('/api/v2/' + card.token, json, function(data) {
+        bitpayService.post(card.token, json, function(data) {
           $log.info('BitPay Get Invoices: SUCCESS');
           invoices = data.data.data || [];
 
@@ -133,7 +133,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
             params: JSON.stringify(opts)
           };
           // Get transactions list
-          bitpayService.post('/api/v2/' + card.token, json, function(data) {
+          bitpayService.post(card.token, json, function(data) {
             $log.info('BitPay Get Transactions: SUCCESS');
             transactions = data.data.data || {};
             transactions['txs'] = _processTransactions(invoices, transactions.transactionList);

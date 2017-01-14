@@ -1,0 +1,66 @@
+#payroll-about {
+
+  .section {
+    padding: 16px;
+
+    .title {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    &.footer {
+      margin-bottom: 16px;
+    }
+
+    .centered {
+      text-align: center;
+    }
+
+  	.name {
+      margin-top: 16px;
+	    font-family: "Roboto-Light";
+	    font-size: 24px;
+    }
+
+  	.description {
+      margin-top: 16px;
+    }
+
+    .icon {
+
+    	.employee {
+    		width: 72px;
+    	}
+
+    }
+
+  }
+
+  .about {
+
+    &__heading {
+      font-weight: bold;
+      color: $dark-gray;
+    }
+
+  }
+
+  ion-content {
+    color: $dark-gray;
+
+    p {
+    	font-size: 14px;
+      padding: 0 2.5%;
+      margin: 1rem auto;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+    }
+
+  }
+
+}

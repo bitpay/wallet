@@ -1,0 +1,23 @@
+<ion-view id="payroll-eligible" class="settings" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Eligibility' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+    <div class="explanation" translate>
+        Please enter your eligible employer provided email address.
+    </div>
+    <form name="eligibleForm" ng-submit="checkIfEligible()" novalidate>
+      <div class="list settings-input-group">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" translate>Email Address</span>
+          <input type="email" id="email" name="email" ng-model="qualifyingData.email" required></input>
+        </label>
+      </div>
+      <button type="submit" class="button button-standard button-primary" ng-disabled="eligibleForm.$invalid" translate>
+        Continue
+      </button>
+    </form>
+  </ion-content>
+</ion-view>

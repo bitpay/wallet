@@ -1,6 +1,6 @@
 <ion-view id="payroll-deposit-address" hide-tabs>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-title>{{'Deposit Address' | translate}}</ion-nav-title>
+    <ion-nav-title>{{'Deposit address' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
@@ -8,7 +8,7 @@
     <div class="item item-heading deposit-address-heading" translate>Deposit to Address</div>
     <div class="item item-icon-left item-icon-right input">
       <i class="icon icon-svg left"><img src="img/icon-bitcoin-symbol.svg"></i>
-      <input type="text" placeholder="{{'Enter bitcoin address' | translate}}" ng-model="formData.depositAddress" ng-model-onblur ng-change="onAddressEntry(formData.depositAddress)">
+      <input type="text" placeholder="{{'Enter bitcoin address' | translate}}" ng-model="address.value" ng-model-onblur ng-change="onAddressEntry(address.value)">
       <i class="icon icon-svg qr" on-tap="openScanner()"><img src="img/scan-ico.svg"/></i>
     </div>
     <div class="card" ng-if="hasWallets">
@@ -16,7 +16,7 @@
         <div class="item item-heading">
           <span translate>Deposit to Wallet</span>
         </div>
-        <a class="item item-icon-left item-icon-right" ng-repeat="wallet in list" ng-if="hasWallets" ng-click="onWalletSelect(wallet)">
+        <a class="item item-icon-left item-icon-right" ng-repeat="wallet in wallets" ng-if="hasWallets" ng-click="onWalletSelect(wallet)">
           <i class="icon big-icon-svg">
             <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
           </i>

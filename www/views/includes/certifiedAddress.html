@@ -1,0 +1,11 @@
+<div class="verification" ng-class="(verified ? 'verified' : (unverifiedAccepted ? 'verified' : 'not-verified')) + ' ' + (showVerification ? 'has-link' : '')" ng-click="showVerification()">
+  <i class="icon ion-ios-checkmark-empty verification-icon" ng-if="verified || unverifiedAccepted"></i>
+  <i class="icon ion-alert-circled verification-icon" ng-if="!verified && !unverifiedAccepted"></i>
+  <span ng-if="!unverifiedAccepted" class="certifier" translate>BitPay</span>
+  <span ng-if="unverifiedAccepted" class="certifier" translate>OK</span>
+</div>
+<div copy-to-clipboard="address" class="address-clipboard ellipsis">
+  <span class="size-14 address ellipsis">
+		{{address}}
+  </span>
+</div>

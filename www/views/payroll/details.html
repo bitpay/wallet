@@ -1,7 +1,7 @@
-<ion-view id="payroll-confirm" hide-tabs>
+<ion-view id="payroll-details">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
-      {{'Confirm payroll deduction' | translate}}
+      {{'Payroll details' | translate}}
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -15,7 +15,7 @@
           <span translate>Deduction</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{depositAmount || '...'}}  <span class="unit">{{depositDisplayUnit}}<span></div>
+          <div class="amount">{{payrollRecord.deduction.amount.toFixed(2) || '...'}} <span class="unit">{{payrollRecord.deduction.currency}}<span></div>
           <div class="right size-12">
             <div class="exchange-rate">{{exchangeRate}}</div>
             <div class="exchange-rate-info" translate>* Today's rate.</div>
@@ -27,15 +27,13 @@
       <div class="info">
         <div class="item">
           <span class="label" translate>Deposit Address</span>
-          <span class="deposit-to">
-            <img src="img/icon-bitcoin-small.svg">
-
-            <div copy-to-clipboard="address" class="ellipsis">
-              <span class="size-14">{{address}}</span>
-            </div>
-          </span>
+          <certified-address address="payrollRecord.deduction.address"
+            verified="payrollRecord.deduction.addressVerification.verified"
+            unverified-accepted="payrollRecord.deduction.unverifiedAddressAccepted"
+            show-verification="showVerification">
+          </certified-address>
         </div>
-        <a class="item item-icon-right" ng-if="wallet" ng-click="showWalletSelector()">
+        <div class="item item-icon-right" ng-if="wallet">
           <span class="label" translate>Wallet</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
@@ -43,37 +41,28 @@
             </i>
             <div>{{wallet.name}}</div>
           </div>
-          <i class="icon bp-arrow-right"></i>
-        </a>
-        <div class="item item-icon-right" ng-if="!wallet" ng-click="renameExternalWallet()">
+        </div>
+        <div class="item item-icon-right" ng-if="!wallet">
           <span class="label" translate>Wallet</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet-external.svg" class="bg wallet-external"/>
             </i>
-            <div>{{externalWalletName}}</div>
+            <div>{{payrollRecord.deduction.externalWalletName}}</div>
           </div>
-          <i class="icon bp-arrow-right"></i>
-        </div>
-        <div class="item single-line">
-          <span class="label" translate>Next effective pay date</span>
-          <span class="item-note">
-            {{effectiveDate}}
-          </span>
         </div>
       </div>
     </div>
     <div>
-      <button class="button button-standard button-primary" ng-click="startPayroll()">
-        <span translate>Confirm</span>
+      <button class="button button-standard button-primary" ng-click="changePayroll()">
+        <span translate>Change</span>
+      </button>
+      <button class="button button-standard button-secondary" ng-click="togglePausePayroll()">
+        <span>{{payrollStateButtonText}}</span>
+      </button>
+      <button class="button button-standard button-assertive button-clear" ng-click="stopPayroll()">
+        <span translate>Cancel</span>
       </button>
     </div>
   </ion-content>
-  <wallet-selector
-    wallet-selector-title="walletSelectorTitle"
-    wallet-selector-wallets="wallets"
-    wallet-selector-selected-wallet="wallet"
-    wallet-selector-show="showWallets"
-    wallet-selector-on-select="onWalletSelect">
-  </wallet-selector>
 </ion-view>

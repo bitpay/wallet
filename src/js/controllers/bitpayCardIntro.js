@@ -65,8 +65,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
   };
 
   var startPairBitPayAccount = function() {
-    var url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
-    externalLinkService.open(url);          
+    bitpayAccountService.startPairBitPayAccount('card');
   };
 
   var showAccountSelector = function() {

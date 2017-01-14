@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBitpayServicesController',
-  function($rootScope, $scope, $state, $timeout, $ionicHistory, bitpayAccountService, bitpayCardService, popupService, gettextCatalog) {
+  function($rootScope, $scope, $state, $timeout, $ionicHistory, bitpayAccountService, bitpayCardService, bitpayPayrollService, popupService, gettextCatalog) {
 
     $scope.removeAccount = function(account) {
       var title = gettextCatalog.getString('Remove BitPay Account?');
@@ -27,10 +27,22 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
       });
     };
 
+    $scope.removePayrollRecord = function(record) {
+      var title = gettextCatalog.getString('Remove Payroll Record?');
+      var msg = gettextCatalog.getString('Are you sure you would like to remove this payroll record ({{employerName}}) from this device?', {
+        employerName: record.employer.name
+      });
+      popupService.showConfirm(title, msg, null, null, function(res) {
+        if (res) {
+          removePayrollRecord(record);
+        }
+      });
+    };
+
     var removeAccount = function(account) {
       bitpayAccountService.removeAccount(account, function(err) {
         if (err) {
-          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not remove account'));
+          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not remove account.'));
         }
         setScope(function() {
           // If there are no paired accounts then change views.
@@ -47,7 +59,16 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
     var removeCard = function(card) {
       bitpayCardService.remove(card.id, function(err) {
         if (err) {
-          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not remove card'));
+          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not remove card.'));
+        }
+        setScope();
+      });
+    };
+
+    var removePayrollRecord = function(record) {
+      bitpayPayrollService.removePayrollRecord(record, function(err) {
+        if (err) {
+          return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not remove payroll settings.'));
         }
         setScope();
       });
@@ -68,7 +89,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
             $rootScope.$apply();
           }, 10);
         });
-      });
+      });        
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {

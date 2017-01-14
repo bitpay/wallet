@@ -1,0 +1,84 @@
+certified-address {
+
+  width: 100%;
+  display: inline-block;
+  padding: 4px 6px 4px 6px;
+  background-color: rgba(203, 203, 203, .13);
+  margin-top: 10px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+
+  .verification {
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid;
+    border-radius: 3px;
+    padding: 1px 5px 2px 2px;        
+    position: relative;
+    display: flex;
+
+    .has-link {
+      cursor: pointer;
+    },
+
+    &.verified {
+      color: #FFFFFF;
+      background-color: green;
+      border-color: transparent;
+
+      .verification-icon {
+        font-size: 32px;
+        height: 20px;
+        color: inherit;
+        float: left;
+        padding: 0px 3px 0 3px;
+        top: -4px;
+      }
+
+    }
+
+    &.not-verified {
+      color: #FFFFFF;
+      background-color: orange;
+      border-color: transparent;
+
+      .verification-icon {
+        font-size: 15px;
+        color: inherit;
+        float: left;
+        padding: 0px 3px 0 3px;
+        top: 0px;
+      }
+      
+    }
+
+  }
+
+  .address {
+    margin-left: 0px;
+  }
+
+  .address-clipboard {
+    margin-left: 5px;
+  }
+
+  .certifier {
+  }
+
+  img {
+    padding: .2rem;
+    padding-left: 0;
+    border-right: 1px solid #e4e4e4;
+    padding-right: 12px;
+  }
+
+  i {
+    color: grey;
+    position: inherit;
+    padding: 0 10px;
+    float: right;
+  }
+
+}

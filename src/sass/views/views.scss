@@ -44,8 +44,13 @@
 @import "includes/walletSelector";
 @import "includes/accountSelector";
 @import "integrations/integrations";
+@import "includes/certifiedAddress";
 @import "custom-amount";
 @import "payroll/intro";
+@import "payroll/eligible";
 @import "payroll/deposit-address";
 @import "payroll/confirm";
-@import "payroll/deduction";
+@import "payroll/details";
+@import "payroll/summary";
+@import "payroll/history";
+@import "payroll/about";

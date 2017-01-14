@@ -6,6 +6,30 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
   var config = configService.getSync().wallet.settings;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    if (data.stateParams && data.stateParams.id) {
+      bitpayPayrollService.getPayrollRecords(function(err, records) {
+        if (err) {
+          return showError(err);
+        }
+
+        $scope.payrollRecord = lodash.find(records, function(r) {
+          return r.id == data.stateParams.id;
+        });
+
+        if (!$scope.payrollRecord) {
+          return showError(
+            'No payroll record found when loading payrollConfirmController',
+            gettextCatalog.getString('Error'),
+            gettextCatalog.getString('No payroll settings specified.'));
+        }
+      });
+    } else {
+      return showError(
+        'No payroll record id specified when loading payrollConfirmController',
+        gettextCatalog.getString('Error'),
+        gettextCatalog.getString('No payroll settings specified.'));
+    }
+
   	// Deposit amount is in fiat (alternative) currency.
     var depositAmount = parseFloat(data.stateParams.depositAmount);
     var btcEstimate = rateService.fromFiat(depositAmount, config.alternativeIsoCode);
@@ -37,10 +61,49 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
       $scope.exchangeRate = getCurrentRateStr();
     });
 
-    bitpayPayrollService.fetchEffectiveDate(function(err, date) {
-      $scope.effectiveDate = getEffectiveDateStr(date);
-    });
+    $scope.effectiveDate = formatDate($scope.payrollRecord.employer.nextEffectiveDate);
   });
+
+
+  $scope.showWalletSelector = function() {
+    $scope.walletSelectorTitle = gettextCatalog.getString('Deposit to');
+    $scope.showWallets = true;
+  };
+
+  $scope.onWalletSelect = function(wallet) {
+    setWallet(wallet);
+  };
+
+  $scope.renameExternalWallet = function() {
+    var opts = {
+      defaultText: $scope.externalWalletName
+    };
+    popupService.showPrompt(gettextCatalog.getString('External Wallet Name'), null, opts, function(str) {
+      if (typeof str != 'undefined') {
+        $scope.externalWalletName = str;
+      }
+    });    
+  };
+
+  $scope.startPayroll = function() {
+    // Store what we show the user ($scope).
+    $scope.payrollRecord.deduction = {
+      address: $scope.address,
+      amount: parseFloat($scope.depositAmount),
+      currency: $scope.depositDisplayUnit,
+      walletId: ($scope.wallet ? $scope.wallet.id : ''),
+      externalWalletName: $scope.externalWalletName
+    };
+
+    bitpayPayrollService.startPayroll($scope.payrollRecord, function(err, record) {
+      if (err) {
+        return showError(err);
+      }
+      $state.transitionTo('tabs.payroll.details', {
+        id: $scope.payrollRecord.id
+      });
+    });
+  };
 
   function getDisplayAmount(amountStr) {
     return amountStr.split(' ')[0];
@@ -82,60 +145,15 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     return str;
   };
 
-  function getEffectiveDateStr(date) {
+  function formatDate(date) {
     return moment(date).format('D MMMM YYYY');
   };
 
-  function showError(title, message) {
+  function showError(err, title, message) {
     var title = title || gettextCatalog.getString('Error');
-    var message = message || gettextCatalog.getString('Failed to save your deduction.');
+    var message = message || gettextCatalog.getString('Could not save payroll settings.');
+    $log.error(err);
     return popupService.showAlert(title, message);
-  };
-
-  $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = gettextCatalog.getString('Deposit to');
-    $scope.showWallets = true;
-  };
-
-  $scope.onWalletSelect = function(wallet) {
-    setWallet(wallet);
-  };
-
-  $scope.renameExternalWallet = function() {
-    var opts = {
-      defaultText: $scope.externalWalletName
-    };
-    popupService.showPrompt(gettextCatalog.getString('External Wallet Name'), null, opts, function(str) {
-      if (typeof str != 'undefined') {
-        $scope.externalWalletName = str;
-      }
-    });    
-  };
-
-  $scope.confirmDeduction = function() {
-    // Store what we show the user ($scope).
-  	var deduction = {
-      active: true,
-      address: $scope.address,
-    	amount: parseFloat($scope.depositAmount),
-    	currencyCode: $scope.depositDisplayUnit,
-      walletId: ($scope.wallet ? $scope.wallet.id : ''),
-      externalWalletName: $scope.externalWalletName
-    };
-
-    bitpayPayrollService.startDeduction(deduction, function(err, deduction) {
-      if (err) {
-        $log.error(err);
-        return showError();
-      }
-      $log.info('Payroll deduction: ' +
-        deduction.amount.toFixed(2) + ' ' +
-        deduction.currencyCode + ' -> ' +
-        deduction.address +
-        ' (active: ' + deduction.active + ')');
-
-      $state.transitionTo('tabs.payroll.deduction');
-    });
   };
 
 });

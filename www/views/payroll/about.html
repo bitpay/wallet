@@ -1,0 +1,32 @@
+<ion-view id="payroll-about">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'About payroll' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list card" ng-if="payrollRecord.employee">
+      <div class="section">
+        <div class="centered">
+					<i class="icon big-icon-svg">
+      			<img src="img/contact-placeholder.svg" class="employee">
+   				</i>
+            <div class="name">
+		      	{{payrollRecord.employee.firstName}} {{payrollRecord.employee.lastName}}
+          </div>
+          <div class="description">
+		      	{{payrollRecord.employee.email}}
+          </div>
+        </div>
+      </div>
+   </div>
+
+    <div class="list">
+      <div class="item item-text-wrap">
+				<div id="about" ng-bind-html="payrollRecord.employer.about.html">
+				</div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -19,6 +19,22 @@
         <div class="icon icon-unlink icon-hotspot" ng-click="removeCard(card)"></div>
       </div>
     </div>
+
+    <div class="list" ng-if="payrollRecords.length > 0">
+      <div class="item item-divider" translate>
+        Payroll
+      </div>
+      <div class="item item-icon-right" ng-repeat="record in payrollRecords">
+        <span class="item-title">
+          {{record.employer.name}}
+        </span>
+        <span class="item-subtitle">
+          {{record.email}}
+        </span>
+        <div class="icon icon-unlink icon-hotspot" ng-click="removePayrollRecord(record)"></div>
+      </div>
+    </div>
+
     <div class="list">
       <div class="item item-divider" translate>
         Accounts

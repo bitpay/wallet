@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, bitpayAccountService) {
 
   var root = {};
 
@@ -163,27 +163,33 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       });
       return true;
 
-      // BitPayCard Authentication
+      // BitPay Account Authentication
     } else if (data && data.indexOf(appConfigService.name + '://') === 0) {
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
-      var reason = getParameterByName('r', data);
+      var reason = bitpayAccountService.getPairingReason();
 
       $state.go('tabs.home', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.home' ? false : true
       }).then(function() {
-        switch (reason) {
+        switch (reason.id) {
           default:
-            case '0':
-            /* For BitPay card binding */
+          case 'card':
             $state.transitionTo('tabs.bitpayCardIntro', {
               secret: secret,
               email: email,
               otp: otp
             });
-          break;
+            break;
+          case 'payroll':
+            $state.transitionTo('tabs.payroll', {
+              secret: secret,
+              email: email,
+              otp: otp
+            });
+            break;
         }
       });
       return true;

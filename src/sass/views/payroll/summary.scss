@@ -1,0 +1,162 @@
+#payroll-summary {
+
+  .card {
+    color: $mid-gray;
+
+  	.title {
+	    font-size: 16px;
+  	}
+
+  	.message {
+	    font-size: 14px;
+    	padding: 10px;
+    	border: 1px solid $subtle-gray;
+  	}
+
+    .amount {
+      font-size: 38px;
+      margin-bottom: .5rem;
+      text-align: center;
+
+      > .unit {
+        font-family: "Roboto-Light";
+      }
+
+      > .cycle {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 10px 0;
+      }
+
+    }
+
+    .bitcoin-analysis {
+
+      .price {
+        font-size: 38px;
+        position: relative;      
+        top: 5px;
+        margin-bottom: .5rem;
+
+        > .unit {
+          font-family: "Roboto-Light";
+        }
+
+      }
+
+    }
+
+    .icon {
+
+      &.eligible {
+        font-size: 72px;
+        color: $light-gray;
+      }
+
+      &.verified {
+        font-size: 72px;
+        color: green;
+      }
+
+      &.status-dot {
+        position: initial;
+        font-size: 10px;
+
+        &:before {
+          width: 14px;
+          text-align: left;
+        }
+
+        &.status-active {
+          color: #63c563;
+        }
+
+        &.status-paused {
+          color: #c56363;
+        }
+
+      }
+
+    }
+
+    .section {
+      padding: 16px;
+
+      .title {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      &.footer {
+        margin-bottom: 16px;
+      }
+
+      .centered {
+        text-align: center;
+      }
+
+    	.description {
+        margin-top: 16px;
+      }
+
+      .active {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: green;
+      }
+
+      .paused {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: orange;
+      }
+
+      .action {
+        font-size: 12px;
+        text-transform: uppercase;
+        padding-right: 25px;
+        color: $soft-blue;
+        float: left;
+      }
+
+      &.statistics {
+
+        .label {
+          font-size: 12px;
+          text-align: center;
+        }
+
+        .value {
+          font-size: 14px;
+
+          .highlight-up {
+            color: green;
+          }
+
+          .highlight-down {
+            color: red;
+          }
+
+        }
+
+      }
+
+    }
+
+    .wallet {
+      border-top: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
+
+      .wallet-external {
+        background-color: $light-gray;
+        border: none;
+      }
+
+    }
+
+  }
+
+}

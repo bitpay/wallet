@@ -1098,27 +1098,63 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.payroll', {
-      url: '/payroll',
+      url: '/payroll/:secret/:email/:otp',
       views: {
-        'tab-settings@tabs': {
+        'tab-home@tabs': {
           templateUrl: 'views/payroll/intro.html',
           controller: 'payrollIntroController'
         }
       }
     })
-    .state('tabs.payroll.depositAddress', {
-      url: '/payroll/deposit-address',
+    .state('tabs.payroll.eligible', {
+      url: '/payroll/eligible',
       views: {
-        'tab-settings@tabs': {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/eligible.html',
+          controller: 'payrollEligibleController'
+        }
+      }
+    })
+    .state('tabs.payroll.summary', {
+      url: '/payroll/summary',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/summary.html',
+          controller: 'payrollSummaryController'
+        }
+      }
+    })
+    .state('tabs.payroll.history', {
+      url: '/payroll/history/:id',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/history.html',
+          controller: 'payrollHistoryController'
+        }
+      }
+    })
+    .state('tabs.payroll.about', {
+      url: '/payroll/about/:id',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/about.html',
+          controller: 'payrollAboutController'
+        }
+      }
+    })
+    .state('tabs.payroll.depositAddress', {
+      url: '/payroll/deposit-address/:id',
+      views: {
+        'tab-home@tabs': {
           templateUrl: 'views/payroll/deposit-address.html',
           controller: 'payrollDepositAddressController'
         }
       }
     })
     .state('tabs.payroll.depositAmount', {
-      url: '/payroll/amount/:isWallet/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel',
+      url: '/payroll/amount/:payrollRecordId/:isWallet/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel',
       views: {
-        'tab-settings@tabs': {
+        'tab-home@tabs': {
           templateUrl: 'views/amount.html',
           controller: 'amountController'
         }
@@ -1130,20 +1166,20 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     })
     .state('tabs.payroll.confirm', {
-      url: '/payroll/confirm/:isWallet/:toAddress/:toName/:depositAmount',
+      url: '/payroll/confirm/:id/:isWallet/:toAddress/:toName/:depositAmount',
       views: {
-        'tab-settings@tabs': {
+        'tab-home@tabs': {
           templateUrl: 'views/payroll/confirm.html',
           controller: 'payrollConfirmController'
         }
       }
     })
-    .state('tabs.payroll.deduction', {
-      url: '/payroll/deduction',
+    .state('tabs.payroll.details', {
+      url: '/payroll/details/:id',
       views: {
-        'tab-settings@tabs': {
-          templateUrl: 'views/payroll/deduction.html',
-          controller: 'payrollDeductionController'
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/details.html',
+          controller: 'payrollDetailsController'
         }
       }
     });

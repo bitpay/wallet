@@ -3,6 +3,36 @@
 angular.module('copayApp.services').factory('bitpayAccountService', function($log, lodash, platformInfo, appIdentityService, bitpayService, bitpayCardService, storageService, gettextCatalog, popupService) {
   var root = {};
 
+  // A list of reasons why bitpay account pairing is being requested. The reason faciliates this apps
+  // response when the pairing data is received from the server so that the user is automatically put
+  // into the correct context for completing the desired function (see incomingData service).
+  var pairFor = {
+    card: {
+      id: 'card',
+      text: 'add your BitPay Visa<sup>&reg;</sup> card(s)'
+    },
+    payroll: {
+      id: 'payroll',
+      text: 'start payroll deduction for receiving bitcoin deposits'
+    }
+  };
+
+  var pairingReason = undefined;
+
+  root.getPairingReason = function() {
+    return pairingReason;
+  };
+
+  root.startPairBitPayAccount = function(reasonId) {
+    if (!reasonId || !pairFor[reasonId]) {
+      return $log.error('Started account pairing failed, unknown reasonId: ' + reasonId);
+    }
+    pairingReason = pairFor[reasonId];
+    var url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
+    externalLinkService.open(url);          
+    $log.info('Started account pairing process for ' + pairingReason.id);
+  };
+
   /*
    * Pair this app with the bitpay server using the specified pairing data.
    * An app identity will be created if one does not already exist.
@@ -14,10 +44,6 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
    *   email: email address associated with bitpay account
    *   otp: two-factor one-time use password
    * }
-   * 
-   * pairingReason - text string to be embedded into popup message.  If `null` then the reason
-   * message is not shown to the UI.
-   *   "To {{reason}} you must pair this app with your BitPay account ({{email}})."
    * 
    * cb - callback after completion
    *   callback(err, paired, apiContext)
@@ -33,7 +59,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
    *     appIdentity: the identity of this app
    *   }
    */
-  root.pair = function(pairData, pairingReason, cb) {
+  root.pair = function(pairData, cb) {
     checkOtp(pairData, function(otp) {
       pairData.otp = otp;
 	    var deviceName = 'Unknown device';
@@ -84,7 +110,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
                 givenName: basicInfo.givenName,
                 familyName: basicInfo.familyName
               };
-  						setBitpayAccount(acctData, function(err) {
+  						setAccount(acctData, function(err) {
   			        return cb(err, true, apiContext);
   						});
           	} else {
@@ -115,7 +141,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
       method: 'getBasicInfo'
     };
     // Get basic account information
-    bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
+    bitpayService.post(apiContext.token, json, function(data) {
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Account Get Basic Info: SUCCESS');
       return cb(null, data.data.data);

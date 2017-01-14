@@ -1,0 +1,201 @@
+<ion-view id="payroll-summary">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Payroll summary' | translate}}</ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="goBackToHome()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+      <button class="button button-clear" ng-click="goToPayrollIntro()">
+        <i class="icon ion-android-add"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content>
+
+    <!-- Bitcoin analysis -->
+    <div class="list card">
+      <div class="item item-icon-right item-heading" ng-click="shouldHideBitcoinAnalysis()">
+        <div class="bitcoin-analysis">
+          <div class="price">
+            830.23 
+            <span class="unit">
+              USD
+            </span>
+          </div>
+        </div>
+        <i class="icon bp-arrow-up" ng-show="!hideBitcoinAnalysis"></i>
+        <i class="icon bp-arrow-down" ng-show="hideBitcoinAnalysis"></i>
+      </div>
+      <div ng-show="!hideBitcoinAnalysis">
+        <div class="section">
+          <img class="full-image" ng-src="http://www.mrgeek.me/wp-content/uploads/2013/03/Chart-JS.png">
+        </div>
+
+        <div class="section statistics columns large-2 medium-2 small-2">
+          <div class="row">        
+            <div class="col label">
+              Today's open <div class="value">$802.83</div>
+            </div>
+            <div class="col label">
+              Change <div class="value" ng-class="changeUp ? 'highlight-up' : 'highlight-down'">$19.90</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col label">
+              Today's high <div class="value">$829.82</div>
+            </div>
+            <div class="col label">
+              Market cap <div class="value">$13,246,303,023</div>
+            </div>
+          </div>
+          <div class="row">        
+            <div class="col label">
+              Today's low <div class="value">$774.36</div>
+            </div>
+            <div class="col label">
+              Total bitcoins <div class="value">16,100,400</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section footer">
+          <div class="action" ng-click="showBitcoinStatistics()">
+            <div translate>About</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list card" ng-repeat="record in payrollRecords">
+
+      <!-- Eligible but not yet verified -->
+      <div ng-if="record.eligibility">
+        <div class="section">
+          <img class="full-image" ng-src="{{record.employer.imageUrl}}">
+        </div>
+        <div class="section" translate>
+          <div class="centered">
+            <i class="icon ion-ios-email-outline eligible"></i>
+            <div class="description">
+              An email has been sent to<br/>{{record.eligibility.qualifyingData.email}}<br/><br/>Please check and follow the directions in your email to continue payroll setup.
+            </div>
+          </div>
+        </div>
+        <div class="section footer">
+          <div class="action" ng-click="recheckEligibility(record)">
+            <div translate>Resend email</div>
+          </div>
+          <div class="action" ng-click="stopPayroll(record)">
+            <div translate>Cancel</div>
+          </div>
+          <div class="action" ng-click="goToPayrollAbout(record)" translate>
+            About
+          </div>
+        </div>
+      </div>
+
+      <!-- Verified but not yet setup -->
+      <div ng-if="!record.eligibility && !record.deduction">
+        <div class="section">
+          <img class="full-image" ng-src="{{record.employer.imageUrl}}">
+        </div>
+        <div class="section" translate>
+          <div class="centered">
+            <i class="icon ion-checkmark-circled verified"></i>
+            <div class="description">
+              We have verified your information.<br/>Time to setup bitcoin payroll!
+            </div>
+          </div>
+        </div>
+        <div class="section footer">
+          <div class="action" ng-click="setupPayroll(record)">
+            <div translate>Setup</div>
+          </div>
+          <div class="action" ng-click="stopPayroll(record)">
+            <div translate>Cancel</div>
+          </div>
+          <div class="action" ng-click="goToPayrollAbout(record)" translate>
+            About
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed payroll record -->
+      <div ng-if="record.deduction">
+        <div class="section">
+          <img class="full-image" ng-src="{{record.employer.imageUrl}}">
+        </div>
+        <div class="section">
+          <div class="amount">
+            {{record.deduction.amount.toFixed(2)}} 
+            <span class="unit">
+              {{record.deduction.currency}}
+            </span>
+            <div class="cycle">
+              <i class="icon ion-record status-dot status-active" ng-class="record.deduction.active ? 'status-active' : 'status-paused'"></i>
+              {{record.employer.payCycle}}
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="!record.deduction.wallet.isExternal">
+          <a class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet" ng-click="openWallet(record.deduction.wallet)">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+            </i>
+            <span>
+              {{record.deduction.wallet.name || record.deduction.wallet.id}}
+            </span>
+            <p>
+            <span>
+              <span ng-if="!record.deduction.wallet.balanceHidden">{{record.deduction.wallet.status.totalBalanceStr}}</span>
+              <span ng-if="record.deduction.wallet.balanceHidden" translate>[Balance Hidden]</span>
+              <span class="tab-home__wallet__multisig-number" ng-if="record.deduction.wallet.n > 1">
+                {{record.deduction.wallet.m}}-of-{{record.deduction.wallet.n}}
+              </span>
+              <span class="assertive" ng-if="record.deduction.wallet.error">{{record.deduction.wallet.error}}</span>
+            </span>
+            &nbsp;
+            </p>
+            <i class="icon bp-arrow-right"></i>
+          </a>
+        </div>
+
+        <div ng-if="record.deduction.wallet.isExternal">
+          <a class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet" ng-click="viewOnBlockchain(record.deduction.address)">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" class="bg wallet wallet-external"/>
+            </i>
+            <span>
+              {{record.deduction.wallet.name}}
+            </span>
+            <p>
+            <span>
+              <span>{{record.deduction.wallet.status.totalBalanceStr}}</span>
+            </span>
+            &nbsp;
+            </p>
+            <i class="icon big-icon-svg">
+              <img src="img/icon-link.svg" class="just-a-hint"/>
+            </i>
+          </a>
+        </div>
+
+        <div class="section footer">
+          <div class="action" ng-click="viewPayrollDetails(record)" translate>
+            Details
+          </div>
+          <div class="action" ng-click="viewPayrollHistory(record)" translate>
+            History
+          </div>
+          <div class="action" ng-click="goToPayrollAbout(record)" translate>
+            About
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>
