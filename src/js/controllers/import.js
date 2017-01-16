@@ -340,9 +340,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     var finish = function(wallet) {
-      walletService.updateRemotePreferences(wallet, {}, function() {
-        $log.debug('Remote preferences saved for:' + wallet.credentials.walletId)
-      });
+      walletService.updateRemotePreferences(wallet);
 
       profileService.setBackupFlag(wallet.credentials.walletId);
       if ($stateParams.fromOnboarding) {

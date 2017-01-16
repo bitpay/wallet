@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, platformInfo, gettextCatalog, ongoingProcess) {
+  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, bwcError, platformInfo, gettextCatalog, ongoingProcess) {
 
     var appName = appConfigService.userVisibleName;
     var appUrl = appConfigService.url;
@@ -20,8 +20,7 @@ angular.module('copayApp.controllers').controller('copayersController',
       $log.debug('Updating wallet:' + $scope.wallet.name)
       walletService.getStatus($scope.wallet, {}, function(err, status) {
         if (err) {
-          $log.error(err); //TODO
-          return;
+          return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
         }
         $scope.wallet.status = status;
         $scope.copayers = $scope.wallet.status.wallet.copayers;

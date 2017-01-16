@@ -79,12 +79,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var filteredWallets = [];
     var index = 0;
     var enoughFunds = false;
+    var walletsUpdated = 0;
 
     lodash.each($scope.wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
         if (err || !status) {
           $log.error(err);
         } else {
+          walletsUpdated++;
           w.status = status;
           if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
           if (status.availableBalanceSat > toAmount) {
@@ -94,6 +96,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         }
 
         if (++index == $scope.wallets.length) {
+
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
             if ($scope.useSendMax) {
@@ -105,9 +108,23 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               }
             } else initConfirm();
           } else {
-            if (!enoughFunds) $scope.insufficientFunds = true;
-            displayValues();
-            $log.warn('No wallet available to make the payment');
+
+            // Were we able to update any wallet?
+            if (walletsUpdated) {
+              if (!enoughFunds) $scope.insufficientFunds = true;
+              displayValues();
+              $log.warn('No wallet available to make the payment');
+            } else {
+              popupService.showAlert(gettextCatalog.getString('Could not update wallets'), bwcError.msg(err), function() {
+                $ionicHistory.nextViewOptions({
+                  disableAnimate: true,
+                  historyRoot: true
+                });
+                $ionicHistory.clearHistory();
+                $state.go('tabs.send');
+              });
+            }
+
           }
           $timeout(function() {
             $scope.$apply();
