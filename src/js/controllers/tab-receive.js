@@ -20,7 +20,12 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.generatingAddress = true;
     walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
       $scope.generatingAddress = false;
-      if (err) popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
+
+      if (err)  {
+        //Error is already formated
+        return popupService.showAlert(err);
+      }
+
       $scope.addr = addr;
       if ($scope.walletAddrs[$scope.wallet.id]) $scope.walletAddrs[$scope.wallet.id] = addr;
       $timeout(function() {
@@ -129,7 +134,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.updateCurrentWallet = function() {
     walletService.getStatus($scope.wallet, {}, function(err, status) {
       if (err) {
-        $log.error(err);
+        return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
       }
       $timeout(function() {
         $scope.wallet = profileService.getWallet($scope.wallet.id);

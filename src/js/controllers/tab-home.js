@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService, bwcError) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -208,8 +208,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       lodash.each($scope.wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
-            if (err === 'WALLET_NOT_REGISTERED') wallet.error = gettextCatalog.getString('Wallet not registered');
-            else wallet.error = gettextCatalog.getString('Could not update');;
+
+            wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') :  bwcError.msg(err);
+
             $log.error(err);
           } else {
             wallet.error = null;

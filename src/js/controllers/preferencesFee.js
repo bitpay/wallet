@@ -28,7 +28,8 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     feeService.getFeeLevels(function(err, levels) {
       $scope.loadingFee = false;
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), err);
+        //Error is already formatted
+        popupService.showAlert(err);
         return;
       }
       $scope.feeLevels = levels;

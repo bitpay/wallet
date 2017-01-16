@@ -40,7 +40,7 @@
           <div class="col col-90 center-block bit-address text-center">
             <div class="item item-icon-left">
               <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
-              <span class="bit-address-gen-address" ng-if="!generatingAddress" translate>address not yet available</span>
+              <span class="bit-address-gen-address" translate>address not yet available</span>
             </div>
           </div>
         </div>
@@ -54,9 +54,6 @@
         <div class="row qr">
           <div class="text-center col center-block" copy-to-clipboard="addr" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
             <qrcode ng-if="walletAddrs[wallet.id]" size="220" data="bitcoin:{{walletAddrs[wallet.id]}}" color="#334"></qrcode>
-            <div ng-if="!walletAddrs[wallet.id]" style="height:225px; width:220px; margin:auto;padding-top: 25%;position:absolute;left:50%;top:50%;z-index:1;">
-              ...
-            </div>
           </div>
         </div>
         <div id="qr-options" class="row text-center">
@@ -69,8 +66,8 @@
           <div class="center-block bit-address text-center" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
             <div class="item item-icon-left item-icon-right">
               <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
-              <span class="bit-address-gen-address" ng-if="generatingAddress">...</span>
-              <span class="bit-address-gen-address" ng-if="!generatingAddress" class="ellipsis">{{walletAddrs[wallet.id]}}</span>
+              <span class="bit-address-gen-address" ng-show="!generatingAddress" class="ellipsis">{{walletAddrs[wallet.id]}}</span>
+              <span class="bit-address-gen-address" ng-show="!generatingAddress && !walletAddrs[wallet.id]" translate>address not available</span>
               <i class="icon ion-ios-arrow-right"></i>
             </div>
           </div>

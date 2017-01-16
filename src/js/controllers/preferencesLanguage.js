@@ -27,9 +27,7 @@ angular.module('copayApp.controllers').controller('preferencesLanguageController
       uxLanguage._set(newLang);
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
-        walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
-          $log.debug('Remote preferences saved');
-        });
+        walletService.updateRemotePreferences(profileService.getWallets());
       });
 
       $ionicHistory.goBack();
