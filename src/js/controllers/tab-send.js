@@ -94,8 +94,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     $timeout(function() {
       item.getAddress(function(err, addr) {
         if (err || !addr) {
-          $log.error(err);
-          return;
+          //Error is already formated
+          return popupService.showAlert(err);
         }
         $log.debug('Got toAddress:' + addr + ' | ' + item.name);
         return $state.transitionTo('tabs.send.amount', {
@@ -108,6 +108,10 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       });
     });
   };
+
+
+  // THIS is ONLY to show the 'buy bitcoins' message
+  // does not has any other function.
 
   var updateHasFunds = function() {
 
@@ -128,20 +132,18 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       });
     }
 
-    $scope.checkingBalanceError = false;
     $scope.checkingBalance = true;
-    var index = 0,
-      errorShown = 0;
+    var index = 0;
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
 
         ++index;
         if (err && !status) {
           $log.error(err);
-          if (!errorShown++) popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
-          $scope.checkingBalanceError = true;
-          return;
-
+          // error updating the wallet. Probably a network error, do not show
+          // the 'buy bitcoins' message.
+          
+          $scope.hasFunds = true;
         } else if (status.availableBalanceSat > 0) {
           $scope.hasFunds = true;
           $rootScope.everHasFunds = true;
