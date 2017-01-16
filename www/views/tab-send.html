@@ -2,14 +2,6 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
-  <ion-content ng-show="checkingBalanceError">
-      <div class="list card">
-        <div class="item item-icon-left"> 
-          <i class="ion-alert-circled icon"></i>
-          <span translate>Could not update wallets</span>
-        </div>
-      </div>
-  </ion-content >
   <ion-content ng-show="!checkingBalance">
     <div ng-if="hasFunds == false" class="zero-state">
       <div>
