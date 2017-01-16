@@ -129,7 +129,13 @@ npm run final:desktop
 
 ### Google Chrome App
 
-- Run `npm run-script chrome`
+> cd chrome-app/
+
+```sh
+npm run apply:copay
+grunt
+make
+```
 
 On success, the Chrome extension will be located at: `browser-extensions/chrome/copay-chrome-extension`.  To install it go to `chrome://extensions/` in your browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
 
