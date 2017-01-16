@@ -17,6 +17,7 @@
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative" ng-if="buyPrice">
+            <span ng-show="isFiat">{{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}</span> 
             @ ${{buyPrice.amount}} per BTC
           </div>
         </div>
