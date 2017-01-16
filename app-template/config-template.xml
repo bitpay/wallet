@@ -20,7 +20,6 @@
     <!-- <preference name="KeyboardDisplayRequiresUserAction" value="false" /> -->
     <preference name="StatusBarBackgroundColor" value="#1e3186" />
     <preference name="BackupWebStorage" value="none"/>
-    <preference name="windows-target-version" value="8.1"/>
     <preference name="Orientation" value="default" />
     <preference name="cordova-custom-config-stoponerror" value="true" />
 
@@ -34,8 +33,8 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
 
     <!-- Plugins -->
-    <plugin name="cordova-plugin-device" spec="~1.1.3"/>
     <plugin name="cordova-plugin-globalization" spec="~1.0.4" />
+    <plugin name="cordova-plugin-device" spec="~1.1.3"/>
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />
     <plugin name="cordova-plugin-statusbar" spec="~2.2.0" />
     <plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />
@@ -57,23 +56,23 @@
     <plugin name="cordova-plugin-whitelist" spec="~1.3.0" />
     <plugin name="cordova-plugin-wkwebview-engine" spec="https://github.com/driftyco/cordova-plugin-wkwebview-engine.git" />
     <plugin name="cordova-plugin-qrscanner" spec="~2.4.0" />
-    <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/cmgustavo/Custom-URL-scheme.git">
-      <variable name="URL_SCHEME" value="bitcoin" />
-      <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
-    </plugin>
     <plugin name="phonegap-plugin-push" spec="~1.8.2">
       <variable name="SENDER_ID" value="*PUSHSENDERID*"/>
     </plugin>
-    <plugin name="cordova-custom-config" spec="~3.0.5" />
     <plugin name="cordova-plugin-queries-schemes" spec="~0.1.5" />
+    <plugin name="cordova-custom-config" spec="~3.0.5" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
     <engine name="android" spec="~5.2.2" />
-    <!-- <engine name="windows" spec="~4.4.2" /> -->
+    <engine name="windows" spec="~4.4.2" />
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
+      <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/cmgustavo/Custom-URL-scheme.git">
+        <variable name="URL_SCHEME" value="bitcoin" />
+        <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
+      </plugin>
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
       <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance"><false/></config-file>
       <config-file target="*-Info.plist" parent="ITSAppUsesNonExemptEncryption"><false/></config-file>
@@ -107,6 +106,10 @@
     </platform>
 
     <platform name="android">
+      <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/cmgustavo/Custom-URL-scheme.git">
+        <variable name="URL_SCHEME" value="bitcoin" />
+        <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
+      </plugin>
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <icon src="resources/*PACKAGENAME*/android/icon/drawable-ldpi-icon.png" density="ldpi" />
@@ -129,6 +132,13 @@
       <splash src="resources/*PACKAGENAME*/android/splash/drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
       <splash src="resources/*PACKAGENAME*/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
       <splash src="resources/*PACKAGENAME*/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+    </platform>
+
+    <platform name="wp8">
+	    <hook type="after_build" src="hooks/fix-svg.sh" />
+      <splash src="resources/*PACKAGENAME*/wp8/SplashScreenImage.jpg" width="768" height="1280" />
+      <icon src="resources/*PACKAGENAME*/wp8/ApplicationIcon.png" width="99" height="99" />
+      <icon src="resources/*PACKAGENAME*/wp8/Background.png" width="159" height="159" />
     </platform>
 
     <platform name="windows">
