@@ -73,7 +73,7 @@
       </div>
       <div class="wallet-balance__description" translate>The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation.</div>
     </div>
-    <div class="wallet-balance__list list card">
+    <div class="wallet-balance__list list card" ng-show="status.lockedBalanceSat!=0">
       <div class="wallet-balance__item item">
         <img class="wallet-balance__icon" src="img/icon-lock.svg" width="18"\>
         <div class="wallet-balance__content no-border">
