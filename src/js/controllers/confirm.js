@@ -283,7 +283,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     } else
       setWallet(wallet);
 
-    applyButtonText(wallet.credentials.n > 1);
+    applyButtonText(wallet.credentials.m > 1);
   };
 
   $scope.showDescriptionPopup = function() {
