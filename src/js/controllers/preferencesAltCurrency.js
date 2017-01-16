@@ -66,9 +66,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
         $ionicHistory.goBack();
         saveLastUsed(newAltCurrency);
-        walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
-          $log.debug('Remote preferences saved');
-        });
+        walletService.updateRemotePreferences(profileService.getWallets());
       });
     };
 

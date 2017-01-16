@@ -390,7 +390,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       function getNewTxs(newTxs, skip, cb) {
         getTxsFromServer(wallet, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) {
-            $log.warn(bwcError.msg(err, 'BWS Error')); //TODO
+            $log.warn(bwcError.msg(err, 'Server Error')); //TODO
             if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
               $log.info('Retrying history download in 5 secs...');
               return $timeout(function() {
@@ -654,20 +654,24 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.updateRemotePreferences = function(clients, prefs, cb) {
     prefs = prefs || {};
+    cb = cb || function() {};
 
     if (!lodash.isArray(clients))
       clients = [clients];
 
-    function updateRemotePreferencesFor(clients, prefs, cb) {
+    function updateRemotePreferencesFor(clients, prefs, next) {
       var wallet = clients.shift();
-      if (!wallet) return cb();
+      if (!wallet) return next();
       $log.debug('Saving remote preferences', wallet.credentials.walletName, prefs);
 
       wallet.savePreferences(prefs, function(err) {
-        // we ignore errors here
-        if (err) $log.warn(err);
 
-        updateRemotePreferencesFor(clients, prefs, cb);
+        if (err) {
+          popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not save preferences on the server')));
+          return next(err);
+        }
+
+        updateRemotePreferencesFor(clients, prefs, next);
       });
     };
 
@@ -678,8 +682,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     prefs.language = uxLanguage.getCurrentLanguage();
     prefs.unit = config.unitCode;
 
-    updateRemotePreferencesFor(clients, prefs, function(err) {
+    updateRemotePreferencesFor(lodash.clone(clients), prefs, function(err) {
       if (err) return cb(err);
+
+      $log.debug('Remote preferences saved for' + lodash.map(clients, function(x) {
+        return x.credentials.walletId;
+      }).join(','));
 
       lodash.each(clients, function(c) {
         c.preferences = lodash.assign(prefs, c.preferences);
