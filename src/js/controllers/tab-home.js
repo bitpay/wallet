@@ -133,8 +133,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     $scope.openExternalLink = function() {
-      var config = configService.getSync();
-      var url = config.release.url;
+      var config = configService.getDefaults();
+      var url = config.update.url;
       var optIn = true;
       var title = gettextCatalog.getString('Update Available');
       var message = gettextCatalog.getString('An update to this app is available. For your security, please update to the latest version.');
