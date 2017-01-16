@@ -106,9 +106,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   root.getAvailableCurrency = function() {
     var config = configService.getSync().wallet.settings;
-    // ONLY "USD" and "EUR"
+    // ONLY "USD"
     switch(config.alternativeIsoCode) {
-      case 'EUR' : return 'EUR';
       default : return 'USD'
     };
   };
