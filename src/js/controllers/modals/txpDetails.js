@@ -19,15 +19,29 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
     initActionList();
     checkPaypro();
-  }
+    applyButtonText();
+  };
+
+  function applyButtonText() {
+    $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
+
+    var lastSigner = lodash.filter($scope.tx.actions, {
+      type: 'accept'
+    }).length == $scope.tx.requiredSignatures - 1;
+
+    if (lastSigner)
+      $scope.buttonText += gettextCatalog.getString('to send');
+    else
+      $scope.buttonText += gettextCatalog.getString('to accept');
+  };
 
   function getDisplayAmount(amountStr) {
     return amountStr.split(' ')[0];
-  }
+  };
 
   function getDisplayUnit(amountStr) {
     return amountStr.split(' ')[1];
-  }
+  };
 
   function initActionList() {
     $scope.actionList = [];
