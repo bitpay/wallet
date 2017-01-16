@@ -53,7 +53,21 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     else $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     resetValues();
     setwallets();
+    applyButtonText();
   });
+
+  function applyButtonText(multisig) {
+    $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
+
+    if ($scope.isGlidera || $scope.isGiftCard || $scope.cardId) {
+      $scope.buttonText += gettextCatalog.getString('to complete');
+    } else if ($scope.paypro) {
+      $scope.buttonText += gettextCatalog.getString('to pay');
+    } else if (multisig) {
+      $scope.buttonText += gettextCatalog.getString('to accept');
+    } else
+      $scope.buttonText += gettextCatalog.getString('to send');
+  };
 
   function setwallets() {
     $scope.wallets = profileService.getWallets({
@@ -285,6 +299,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.getSendMaxInfo();
     } else
       setWallet(wallet);
+
+    applyButtonText(wallet.credentials.m > 1);
   };
 
   $scope.showDescriptionPopup = function() {
