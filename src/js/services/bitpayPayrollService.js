@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayPayrollService', function($log, lodash, configService, storageService, bitpayService, bwcService, profileService, gettextCatalog) {
+angular.module('copayApp.services').factory('bitpayPayrollService', function($log, lodash, configService, storageService, bitpayService, bwcService, profileService, walletService, gettextCatalog) {
 
   var root = {};
 
@@ -189,7 +189,15 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     delete record.eligibility;
     record.deduction.active = true;
     record.deduction.unverifiedAddressAccepted = false;
-    root.updatePayroll(record, cb);
+
+    // Restrict the wallet from being deleted while payroll is bound.
+    // Prevent payroll from starting unless this restriction is in place.
+    walletService.setRestrictions(wallet.id, ['delete:payroll-deposits'], function(err) {
+      if (err) {
+        return cb(_setError('Error starting payroll: ' + err));
+      }
+      root.updatePayroll(record, cb);
+    });
   };
 
   root.pausePayroll = function(record, cb) {
@@ -201,12 +209,19 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     if (!record || !record.eid) {
       return cb(_setError('Error stopping payroll: payroll record malformed'));
     }
-    deletePayrollRecord(record, cb);
-  };
 
-  root.manuallyVerifyAddress = function(record, cb) {
-    record.deduction.unverifiedAddressAccepted = true;
-    root.updatePayroll(record, cb);
+    deletePayrollRecord(record, function(err) {
+      if (err) {
+        return cb(_setError('Error starting payroll: ' + err));
+      }
+      // Remove restriction to delete the wallet.
+      walletService.removeRestrictions(wallet.id, ['delete:payroll-deposits'], function(err) {
+        if (err) {
+          return cb(_setError('Error removing wallet restriction (payroll): ' + err));
+        }
+        cb();
+      });
+    });
   };
 
   root.updatePayroll = function(record, cb) {
@@ -214,6 +229,11 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
       return cb(_setError('Error updating payroll: payroll record malformed'));
     }
     postPayrollRecord(record, cb);
+  };
+
+  root.manuallyVerifyAddress = function(record, cb) {
+    record.deduction.unverifiedAddressAccepted = true;
+    root.updatePayroll(record, cb);
   };
 
   // Return payroll records from local cache. Looks across all paired accounts.

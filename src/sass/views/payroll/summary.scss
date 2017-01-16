@@ -50,13 +50,13 @@
     .icon {
 
       &.eligible {
-        font-size: 72px;
-        color: $light-gray;
+        font-size: 120px;
+        color: $soft-blue;
       }
 
       &.verified {
-        font-size: 72px;
-        color: green;
+        font-size: 120px;
+        color: $success-green;
       }
 
       &.status-dot {
@@ -133,7 +133,7 @@
           font-size: 14px;
 
           .highlight-up {
-            color: green;
+            color: $success-green;
           }
 
           .highlight-down {

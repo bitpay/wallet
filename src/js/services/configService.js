@@ -202,6 +202,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       configCache.colorFor = configCache.colorFor || {};
       configCache.aliasFor = configCache.aliasFor || {};
       configCache.emailFor = configCache.emailFor || {};
+      configCache.restrictionsFor = configCache.restrictionsFor || {};
 
       $log.debug('Preferences read:', configCache)
 
