@@ -166,19 +166,18 @@
     ng-if="tx.pendingForUs && canSign && !paymentExpired && hasClick"
     click-send-status="sendStatus"
     has-wallet-chosen="true">
-    {{'Accept'| translate}}
+    {{buttonText}}
   </click-to-accept>
   <slide-to-accept
     ng-if="tx.pendingForUs && canSign && !paymentExpired && !hasClick"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus"
     has-wallet-chosen="true">
-    {{'Accept'| translate}}
+    {{buttonText}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
-    slide-success-on-confirm="onSuccessConfirm()"
-    >
+    slide-success-on-confirm="onSuccessConfirm()">
     {{'Payment Sent' | translate}}
   </slide-to-accept-success>
 </ion-modal-view>

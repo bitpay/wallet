@@ -19,15 +19,37 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
     initActionList();
     checkPaypro();
-  }
+    applyButtonText();
+  };
+
+  function applyButtonText(multisig) {
+    $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
+
+    if ($scope.paypro) {
+      $scope.buttonText += gettextCatalog.getString('to pay');
+      return;
+    }
+
+    if ($scope.isGlidera || $scope.isGiftCard || $scope.cardId) {
+      $scope.buttonText += gettextCatalog.getString('to complete');
+      return;
+    }
+
+    if (multisig) {
+      $scope.buttonText += gettextCatalog.getString('to accept');
+      return;
+    }
+
+    $scope.buttonText += gettextCatalog.getString('to send');
+  };
 
   function getDisplayAmount(amountStr) {
     return amountStr.split(' ')[0];
-  }
+  };
 
   function getDisplayUnit(amountStr) {
     return amountStr.split(' ')[1];
-  }
+  };
 
   function initActionList() {
     $scope.actionList = [];

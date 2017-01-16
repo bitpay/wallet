@@ -131,17 +131,16 @@
     has-wallet-chosen="wallet"
     insufficient-funds="insufficientFunds"
     no-matching-wallet="noMatchingWallet">
-    {{'Accept' | translate}}
+    {{buttonText}}
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!wallet"
-    ng-if="isCordova"
+    ng-if="isCordova && (wallet && !insufficientFunds && !noMatchingWallet)"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus"
     has-wallet-chosen="wallet"
     insufficient-funds="insufficientFunds"
     no-matching-wallet="noMatchingWallet">
-    {{'Accept' | translate}}
+    {{buttonText}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
