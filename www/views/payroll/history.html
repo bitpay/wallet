@@ -28,7 +28,7 @@
           <option value="all" translate>All</option>
         </select>
       </label>
-      <div ng-repeat="tx in transactions | orderBy: ['-timestamp']" class="item row">
+      <div copy-to-clipboard="tx.address" class="item row" ng-repeat="tx in transactions | orderBy: ['-timestamp']">
         <div class="col col-10 text-center">
           <div class="tu size-12">{{tx.timestamp | amDateFormat:'MMM'}}</div>
           <div class="text-light">{{tx.timestamp | amDateFormat:'DD'}}</div>
@@ -39,8 +39,9 @@
         </div>
 
         <div class="col col-50">
-          <div class="size-12 text-bold">
-            {{tx.status}}
+          <div class="size-12 inline">
+            <span class="text-bold">{{tx.status}}</span>
+            <span class="ellipsis">&nbsp;-&nbsp;{{tx.address}}</span>
           </div>
           <div class="size-12 text-gray">
             <span>{{formatRate(tx.rate)}}</span>
