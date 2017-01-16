@@ -75,6 +75,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://insight.bitpay.com:443/api/rates',
     },
 
+    update: {
+      url: 'https://github.com/bitpay/copay/releases/latest',
+    },
+
     release: {
       url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
     },
