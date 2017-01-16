@@ -33,9 +33,7 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
       if (err) $log.warn(err);
 
       $ionicHistory.goBack();
-      walletService.updateRemotePreferences(profileService.getWallets(), {}, function() {
-        $log.debug('Remote preferences saved');
-      });
+      walletService.updateRemotePreferences(profileService.getWallets())
     });
   };
 

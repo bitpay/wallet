@@ -169,9 +169,7 @@ angular.module('copayApp.controllers').controller('joinController',
             return;
           }
 
-          walletService.updateRemotePreferences(client, {}, function() {
-            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
-          });
+          walletService.updateRemotePreferences(client);
           $ionicHistory.removeBackView();
 
           if (!client.isComplete()) {

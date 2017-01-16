@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicHistory, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, platformInfo) {
+angular.module('copayApp.controllers').controller('addressesController', function($scope, $stateParams, $state, $timeout, $ionicHistory, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, bwcError, platformInfo) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
   var config;
@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     walletService.getMainAddresses($scope.wallet, {}, function(err, addresses) {
       if (err) {
         ongoingProcess.set('gettingAddresses', false);
-        return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
       }
 
       var allAddresses = addresses;
@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       walletService.getBalance($scope.wallet, {}, function(err, resp) {
         ongoingProcess.set('gettingAddresses', false);
         if (err) {
-          return popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
         }
 
         withBalance = resp.byAddress;

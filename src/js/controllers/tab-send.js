@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -128,13 +128,20 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       });
     }
 
+    $scope.checkingBalanceError = false;
     $scope.checkingBalance = true;
-    var index = 0;
+    var index = 0,
+      errorShown = 0;
     lodash.each(wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
+
         ++index;
         if (err && !status) {
           $log.error(err);
+          if (!errorShown++) popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
+          $scope.checkingBalanceError = true;
+          return;
+
         } else if (status.availableBalanceSat > 0) {
           $scope.hasFunds = true;
           $rootScope.everHasFunds = true;

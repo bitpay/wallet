@@ -191,9 +191,7 @@ angular.module('copayApp.controllers').controller('createController',
             return;
           }
 
-          walletService.updateRemotePreferences(client, {}, function() {
-            $log.debug('Remote preferences saved for:' + client.credentials.walletId)
-          });
+          walletService.updateRemotePreferences(client);
 
           if ($scope.seedSource.id == 'set') {
             profileService.setBackupFlag(client.credentials.walletId);

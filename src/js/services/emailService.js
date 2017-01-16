@@ -11,12 +11,8 @@ angular.module('copayApp.services').factory('emailService', function($log, confi
       return w.credentials.walletId;
     });
 
-    lodash.each(wallets, function(w) {
-      walletService.updateRemotePreferences(w, {
-        email: opts.enabled ? opts.email : null
-      }, function(err) {
-        if (err) $log.warn(err);
-      });
+    walletService.updateRemotePreferences(wallets, {
+      email: opts.enabled ? opts.email : null
     });
 
     var config = configService.getSync();
