@@ -22,25 +22,17 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     applyButtonText();
   };
 
-  function applyButtonText(multisig) {
+  function applyButtonText() {
     $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
 
-    if ($scope.paypro) {
-      $scope.buttonText += gettextCatalog.getString('to pay');
-      return;
-    }
+    var lastSigner = lodash.filter($scope.tx.actions, {
+      type: 'accept'
+    }).length == $scope.tx.requiredSignatures - 1;
 
-    if ($scope.isGlidera || $scope.isGiftCard || $scope.cardId) {
-      $scope.buttonText += gettextCatalog.getString('to complete');
-      return;
-    }
-
-    if (multisig) {
+    if (lastSigner)
+      $scope.buttonText += gettextCatalog.getString('to send');
+    else
       $scope.buttonText += gettextCatalog.getString('to accept');
-      return;
-    }
-
-    $scope.buttonText += gettextCatalog.getString('to send');
   };
 
   function getDisplayAmount(amountStr) {
