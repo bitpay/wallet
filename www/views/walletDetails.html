@@ -28,7 +28,7 @@
 
         <div ng-show="updateStatusError">
           <span class="size-12 db m10">{{updateStatusError}}</span>
-          <a class="button button-outline button-light button-small" ng-click='update()' translate>Tap to retry</a>
+          <a class="button button-outline button-light button-small" ng-click='updateAll(true)' translate>Tap to retry</a>
         </div>
 
         <div ng-show="walletNotRegistered">
@@ -36,14 +36,9 @@
           <a class="button button-outline button-light button-small" ng-click='recreate()' translate>Recreate</a>
         </div>
 
-        <div ng-show="wallet.walletScanStatus == 'error'" ng-click='retryScan()'>
-          <span translate>Scan status finished with error</span>
-          <br><span translate>Tap to retry</span>
-        </div>
-
         <div
           ng-click='updateAll(true)'
-          ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && !wallet.balanceHidden"
+          ng-show="!updateStatusError && !wallet.balanceHidden"
           on-hold="hideToggle()"
           ng-style="{'transform': amountScale}"
           ng-class="{amount__balance: amountIsCollapsible}">
@@ -59,7 +54,7 @@
 
         <div ng-style="{'transform': amountScale}"
         class="amount__balance"
-        ng-show="!updateStatusError && wallet.walletScanStatus != 'error' && wallet.balanceHidden"
+        ng-show="!updateStatusError && wallet.balanceHidden"
         on-hold="hideToggle()">
           <strong class="size-24" translate>[Balance Hidden]</strong>
           <div ng-style="{opacity: altAmountOpacity}" class="size-14 amount-alternative" translate>

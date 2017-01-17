@@ -352,7 +352,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId) {
-        if (walletId == $scope.wallet.id)
+        if (walletId == $scope.wallet.id && e.type!='NewAddress')
           $scope.updateAll();
       }),
       $rootScope.$on('Local/TxAction', function(e, walletId) {
