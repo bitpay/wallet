@@ -29,6 +29,7 @@
           <span class="item-note" ng-if="!paymentExpired.value">{{remainingTimeStr.value}}</span>
           <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
+ 
         <div class="item">
           <span class="label" ng-if="!isGlidera" translate>To</span>
           <span class="label" ng-if="isGlidera == 'buy'">From</span>
