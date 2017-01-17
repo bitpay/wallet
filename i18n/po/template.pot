@@ -10,7 +10,7 @@ msgstr ""
 
 #: www/views/includes/txp.html:27
 #: www/views/modals/search.html:27
-#: www/views/walletDetails.html:266
+#: www/views/walletDetails.html:269
 msgid "(possible double spend)"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?"
 msgstr ""
 
-#: www/views/includes/walletInfo.html:2
+#: www/views/includes/walletInfo.html:5
 msgid "Auditable"
 msgstr ""
 
@@ -630,6 +630,10 @@ msgstr ""
 msgid "Could not send payment"
 msgstr ""
 
+#: www/views/walletDetails.html:197
+msgid "Could not update transaction history"
+msgstr ""
+
 #: src/js/controllers/addresses.js:23
 #: src/js/controllers/addresses.js:31
 #: src/js/controllers/copayers.js:23
@@ -727,10 +731,6 @@ msgstr ""
 
 #: www/views/modals/coinbase-tx-details.html:9
 msgid "Details"
-msgstr ""
-
-#: www/views/advancedSettings.html:55
-msgid "Development Utilities"
 msgstr ""
 
 #: www/views/includes/backupNeededPopup.html:10
@@ -940,10 +940,6 @@ msgstr ""
 
 #: src/js/services/bwcError.js:143
 msgid "Exceeded daily limit of $500 per user"
-msgstr ""
-
-#: www/views/advancedSettings.html:40
-msgid "Experimental Features"
 msgstr ""
 
 #: src/js/controllers/confirm.js:352
@@ -1203,7 +1199,7 @@ msgstr ""
 msgid "I've written it down"
 msgstr ""
 
-#: www/views/advancedSettings.html:50
+#: www/views/advancedSettings.html:43
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr ""
 
@@ -1277,7 +1273,7 @@ msgid "Insufficient funds for fee"
 msgstr ""
 
 #: www/views/modals/search.html:70
-#: www/views/walletDetails.html:253
+#: www/views/walletDetails.html:256
 msgid "Invalid"
 msgstr ""
 
@@ -1434,7 +1430,7 @@ msgstr ""
 
 #: www/views/modals/search.html:67
 #: www/views/tx-details.html:19
-#: www/views/walletDetails.html:251
+#: www/views/walletDetails.html:254
 msgid "Moved"
 msgstr ""
 
@@ -1510,7 +1506,7 @@ msgstr ""
 msgid "No recent transactions"
 msgstr ""
 
-#: www/views/walletDetails.html:196
+#: www/views/walletDetails.html:191
 msgid "No transactions yet"
 msgstr ""
 
@@ -1830,7 +1826,7 @@ msgstr ""
 msgid "Proposal Rejected"
 msgstr ""
 
-#: www/views/walletDetails.html:181
+#: www/views/walletDetails.html:176
 msgid "Proposals"
 msgstr ""
 
@@ -1874,7 +1870,7 @@ msgstr ""
 
 #: www/views/modals/search.html:51
 #: www/views/tx-details.html:18
-#: www/views/walletDetails.html:237
+#: www/views/walletDetails.html:240
 msgid "Received"
 msgstr ""
 
@@ -1882,16 +1878,16 @@ msgstr ""
 msgid "Received Funds"
 msgstr ""
 
-#: www/views/walletDetails.html:259
+#: www/views/walletDetails.html:262
 msgid "Receiving"
 msgstr ""
 
 #: www/views/bitpayCard.html:55
-#: www/views/walletDetails.html:216
+#: www/views/walletDetails.html:219
 msgid "Recent"
 msgstr ""
 
-#: www/views/advancedSettings.html:48
+#: www/views/advancedSettings.html:41
 msgid "Recent Transaction Card"
 msgstr ""
 
@@ -1913,7 +1909,7 @@ msgstr ""
 msgid "Recovery phrase"
 msgstr ""
 
-#: www/views/walletDetails.html:122
+#: www/views/walletDetails.html:117
 #: www/views/walletDetails.html:36
 msgid "Recreate"
 msgstr ""
@@ -1994,10 +1990,6 @@ msgstr ""
 
 #: www/views/addresses.html:38
 msgid "Scan addresses for funds"
-msgstr ""
-
-#: www/views/walletDetails.html:40
-msgid "Scan status finished with error"
 msgstr ""
 
 #: src/js/services/fingerprintService.js:56
@@ -2092,7 +2084,7 @@ msgstr ""
 #: www/views/confirm.html:15
 #: www/views/includes/txp.html:14
 #: www/views/modals/txp-details.html:19
-#: www/views/walletDetails.html:258
+#: www/views/walletDetails.html:261
 msgid "Sending"
 msgstr ""
 
@@ -2119,7 +2111,7 @@ msgstr ""
 #: www/views/modals/search.html:60
 #: www/views/modals/tx-status.html:9
 #: www/views/tx-details.html:17
-#: www/views/walletDetails.html:246
+#: www/views/walletDetails.html:249
 msgid "Sent"
 msgstr ""
 
@@ -2268,14 +2260,13 @@ msgstr ""
 msgid "Take control of your money,<br>get started with bitcoin."
 msgstr ""
 
-#: www/views/walletDetails.html:145
-#: www/views/walletDetails.html:65
+#: www/views/walletDetails.html:140
+#: www/views/walletDetails.html:60
 msgid "Tap and hold to show"
 msgstr ""
 
-#: www/views/walletDetails.html:117
+#: www/views/walletDetails.html:112
 #: www/views/walletDetails.html:31
-#: www/views/walletDetails.html:41
 msgid "Tap to retry"
 msgstr ""
 
@@ -2403,14 +2394,6 @@ msgstr ""
 msgid "There's obviously something we're doing wrong."
 msgstr ""
 
-#: www/views/advancedSettings.html:42
-msgid "These features aren't quite ready for primetime. They may change, stop working, or disappear at any time."
-msgstr ""
-
-#: www/views/advancedSettings.html:57
-msgid "These features make it easier to test complex functionality on all devices. They may be unstable."
-msgstr ""
-
 #: src/js/controllers/feedback/rateCard.js:37
 msgid "This app is fantastic!"
 msgstr ""
@@ -2433,7 +2416,7 @@ msgstr ""
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
 msgstr ""
 
-#: www/views/walletDetails.html:121
+#: www/views/walletDetails.html:116
 #: www/views/walletDetails.html:35
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr ""
@@ -2464,7 +2447,7 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: www/views/walletDetails.html:188
+#: www/views/walletDetails.html:183
 msgid "Total Locked Balance"
 msgstr ""
 
@@ -2530,7 +2513,7 @@ msgstr ""
 msgid "Unit"
 msgstr ""
 
-#: www/views/walletDetails.html:182
+#: www/views/walletDetails.html:177
 msgid "Unsent transactions"
 msgstr ""
 
@@ -2550,7 +2533,7 @@ msgstr ""
 msgid "Updating pending proposals. Please stand by"
 msgstr ""
 
-#: www/views/walletDetails.html:206
+#: www/views/walletDetails.html:209
 msgid "Updating transaction history. Please stand by."
 msgstr ""
 
@@ -2598,7 +2581,7 @@ msgstr ""
 msgid "View on blockchain"
 msgstr ""
 
-#: www/views/walletDetails.html:170
+#: www/views/walletDetails.html:165
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr ""
 
@@ -2741,7 +2724,7 @@ msgid "Wallet needs backup"
 msgstr ""
 
 #: www/views/tab-receive.html:51
-#: www/views/walletDetails.html:162
+#: www/views/walletDetails.html:157
 msgid "Wallet not backed up"
 msgstr ""
 
@@ -2923,8 +2906,8 @@ msgstr ""
 #: www/views/includes/walletSelector.html:23
 #: www/views/includes/wallets.html:13
 #: www/views/tab-home.html:84
-#: www/views/walletDetails.html:144
-#: www/views/walletDetails.html:64
+#: www/views/walletDetails.html:139
+#: www/views/walletDetails.html:59
 msgid "[Balance Hidden]"
 msgstr ""
 
@@ -2986,11 +2969,11 @@ msgstr ""
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr ""
 
-#: www/views/walletDetails.html:209
+#: www/views/walletDetails.html:210
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr ""
 
 #: www/views/copayers.html:46
-#: www/views/includes/walletInfo.html:8
+#: www/views/includes/walletInfo.html:11
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr ""
