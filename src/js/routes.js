@@ -142,10 +142,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         controller: 'glideraUriController',
         templateUrl: 'views/glideraUri.html'
       })
-      .state('uricoinbase', {
-        url: '/uri-coinbase/:url',
-        templateUrl: 'views/coinbaseUri.html'
-      })
 
     /*
      *
@@ -926,22 +922,52 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      *
      */
 
-    .state('coinbase', {
-        url: '/coinbase',
-        templateUrl: 'views/coinbase.html'
-      })
-      .state('preferencesCoinbase', {
-        url: '/preferencesCoinbase',
-        templateUrl: 'views/preferencesCoinbase.html'
-      })
-      .state('buyCoinbase', {
-        url: '/buycoinbase',
-        templateUrl: 'views/buyCoinbase.html'
-      })
-      .state('sellCoinbase', {
-        url: '/sellcoinbase',
-        templateUrl: 'views/sellCoinbase.html'
-      })
+    .state('tabs.buyandsell.coinbase', {
+      url: '/coinbase/:code',
+      views: {
+        'tab-home@tabs': {
+          controller: 'coinbaseController',
+          controllerAs: 'coinbase',
+          templateUrl: 'views/coinbase.html'
+        }
+      }
+    })
+    .state('tabs.preferences.coinbase', {
+      url: '/coinbase',
+      views: {
+        'tab-settings@tabs': {
+          controller: 'preferencesCoinbaseController',
+          templateUrl: 'views/preferencesCoinbase.html'
+        }
+      }
+    })
+    .state('tabs.buyandsell.coinbase.amount', {
+      url: '/amount/:nextStep/:currency',
+      views: {
+        'tab-home@tabs': {
+          controller: 'amountController',
+          templateUrl: 'views/amount.html'
+        }
+      }
+    })
+    .state('tabs.buyandsell.coinbase.buy', {
+      url: '/buy/:amount/:currency',
+      views: {
+        'tab-home@tabs': {
+          controller: 'buyCoinbaseController',
+          templateUrl: 'views/buyCoinbase.html'
+        }
+      }
+    })
+    .state('tabs.buyandsell.coinbase.sell', {
+      url: '/sell/:amount/:currency',
+      views: {
+        'tab-home@tabs': {
+          controller: 'sellCoinbaseController',
+          templateUrl: 'views/sellCoinbase.html'
+        }
+      }
+    })
 
     /*
      *

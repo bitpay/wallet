@@ -20,6 +20,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
 
+    // Go to...
+    $scope.nextStep = data.stateParams.nextStep;
+
     $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
     var isWallet = data.stateParams.isWallet || 'false';
@@ -27,13 +30,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera || !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !data.stateParams.toAddress) {
+    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -72,7 +75,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     var config = configService.getSync().wallet.settings;
     $scope.unitName = config.unitName;
-    $scope.alternativeIsoCode = !!$scope.cardId || !!$scope.isGiftCard ? 'USD' : config.alternativeIsoCode;
+    if (data.stateParams.currency) {
+      $scope.alternativeIsoCode = data.stateParams.currency;
+    } else {
+      $scope.alternativeIsoCode = !!$scope.cardId || !!$scope.isGiftCard ? 'USD' : config.alternativeIsoCode;
+    }
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;
     unitToSatoshi = config.unitToSatoshi;
@@ -349,6 +356,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
         toAmount: (amount * unitToSatoshi).toFixed(0),
         isGlidera: $scope.isGlidera,
         glideraAccessToken: $scope.glideraAccessToken
+      });
+    } else if ($scope.nextStep) {
+      $state.transitionTo($scope.nextStep, {
+        amount: _amount,
+        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : ''
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;

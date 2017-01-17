@@ -133,6 +133,13 @@
         <i class="icon bp-arrow-right"></i>
       </a>
 
+      <a class="item item-icon-right"
+         ng-if="coinbaseEnabled && coinbaseToken"
+         ui-sref="tabs.preferences.coinbase">
+        <img src="img/coinbase-logo.png" width="90"/>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+
       <div class="item item-divider"></div>
 
       <a class="item item-icon-right item-icon-left" href ui-sref="tabs.advanced">

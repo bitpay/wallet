@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService, bwcError) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService, bwcError, coinbaseService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -83,6 +83,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           var wallet = profileService.getWallet(walletId);
           updateWallet(wallet);
           if ($scope.recentTransactionsEnabled) getNotifications();
+          if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+            // Update Coinbase
+            coinbaseService.updatePendingTransactions();
+          }
         }),
         $rootScope.$on('Local/TxAction', function(e, walletId) {
           $log.debug('Got action for wallet ' + walletId);

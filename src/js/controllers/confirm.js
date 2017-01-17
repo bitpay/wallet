@@ -528,7 +528,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
       return;
     }
-
+ 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
     createTx(wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
@@ -577,12 +577,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
     if (
       (
-        processName === 'broadcastingTx' ||
-        ((processName === 'signingTx') && $scope.wallet.m > 1) ||
+        processName === 'broadcastingTx' || 
+        ((processName === 'signingTx') && $scope.wallet.m > 1) || 
         (processName == 'sendingTx' && !$scope.wallet.canSign() && !$scope.wallet.isPrivKeyExternal())
       ) && !isOn) {
       $scope.sendStatus = 'success';
-      $scope.$digest();
+      $timeout(function() {
+        $scope.$digest();
+      }, 100);
     } else if (showName) {
       $scope.sendStatus = showName;
     }
@@ -831,7 +833,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         debounceCreate(count, dataSrc, onSendStatusChange);
       }
     }, onSendStatusChange);
-  }
+  };
 
   var debounceCreate = lodash.throttle(function(count, dataSrc) {
     debounceCreateGiftCard(count, dataSrc);

@@ -14,14 +14,14 @@
 
   <ion-content scroll="false">
 
-    <div ng-if="!customAmount && !isGlidera">
+    <div ng-if="!customAmount && !isGlidera && !nextStep">
       <div class="item item-no-bottom-border recipient-label" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':cardId}">
         <i class="icon big-icon-svg" ng-if="isWallet">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
-        <span ng-if="!isWallet && !isGiftCard && !isGlidera">
+        <span ng-if="!isWallet && !isGiftCard">
           <i class="icon big-icon-svg" ng-if="isChromeApp">
             <img src="img/contact-placeholder.svg" class="bg"/>
           </i>
@@ -39,7 +39,8 @@
       </div>
     </div>
 
-    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera, 'amount-pane-no-recipient': customAmount || isGlidera}">
+    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera && !nextStep,
+      'amount-pane-no-recipient': customAmount || isGlidera || nextStep}">
 
       <div class="amount-bar oh">
         <div class="title">
