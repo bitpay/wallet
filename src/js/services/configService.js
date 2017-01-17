@@ -61,14 +61,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       enabled: true
     },
 
-    //Experimental Features
 
     recentTransactions: {
-      enabled: false //disabled by default
-    },
-
-    frequentlyUsed: {
-      enabled: true
+      enabled: true,
     },
 
     rates: {
@@ -213,9 +208,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         }
         if (!configCache.recentTransactions) {
           configCache.recentTransactions = defaultConfig.recentTransactions;
-        }
-        if (!configCache.frequentlyUsed) {
-          configCache.frequentlyUsed = defaultConfig.frequentlyUsed;
         }
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;
