@@ -218,6 +218,7 @@
   bottom: 5px;
   font-size: 20px;
   color: #fff;
+  width:95%;
 }
 
 .wallet-not-backed-up-warning {
@@ -233,4 +234,16 @@
 
 a.item {
   cursor: pointer;
+}
+
+.recent svg {
+  margin-left:5px;
+  width:0.7em; 
+  height:0.7em;
+  stroke: #eee;
+}
+
+.updatingHistory {
+  color: #445;
+  font-size:0.9em;
 }
