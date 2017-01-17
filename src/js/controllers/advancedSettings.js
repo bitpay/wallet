@@ -95,17 +95,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.frequentlyUsedChange = function() {
-    var opts = {
-      frequentlyUsed: {
-        enabled: $scope.frequentlyUsedEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     updateConfig();
   });
