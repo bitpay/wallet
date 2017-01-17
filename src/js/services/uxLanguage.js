@@ -17,27 +17,31 @@ angular.module('copayApp.services')
         }, {
       name: 'Deutsch',
       isoCode: 'de',
-      // }, {
-      //   name: 'Český',
-      //   isoCode: 'cs',
-      // }, {
-      //   name: 'Italiano',
-      //   isoCode: 'it',
-      //   name: '日本語',
-      //   isoCode: 'ja',
-      //   useIdeograms: true,
-      // }, {
-      //   name: '中文（简体）',
-      //   isoCode: 'zh',
-      //   useIdeograms: true,
-      // }, {
-      //   name: 'Polski',
-      //   isoCode: 'pl',
-      // }, {
-      //   name: 'Pусский',
-      //   isoCode: 'ru',
+       }, {
+      name: '中文（简体）',
+      isoCode: 'zh',
+      useIdeograms: true,
       }];
 
+    // }, {
+    //   name: 'Český',
+    //   isoCode: 'cs',
+    // }, {
+    //   name: 'Italiano',
+    //   isoCode: 'it',
+    //   name: '日本語',
+    //   isoCode: 'ja',
+    //   useIdeograms: true,
+    // }, {
+    //   name: '中文（简体）',
+    //   isoCode: 'zh',
+    //   useIdeograms: true,
+    // }, {
+    //   name: 'Polski',
+    //   isoCode: 'pl',
+    // }, {
+    //   name: 'Pусский',
+    //   isoCode: 'ru',
 
     root._detect = function(cb) {
       var userLang, androidLang;
