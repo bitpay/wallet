@@ -796,8 +796,8 @@ angular.module('copayApp.services')
     root.getNotifications = function(opts, cb) {
       opts = opts || {};
 
-      var TIME_STAMP = 60 * 60 * 6;
-      var MAX = 100;
+      var TIME_STAMP = 60 * 60 * 6; 
+      var MAX = 30;
 
       var typeFilter = {
         'NewOutgoingTx': 1,
@@ -925,7 +925,8 @@ angular.module('copayApp.services')
           if (j == l) {
             notifications = lodash.sortBy(notifications, 'createdOn');
             notifications = lodash.compact(lodash.flatten(notifications)).slice(0, MAX);
-            return cb(null, process(notifications));
+            var total = notifications.length;
+            return cb(null, process(notifications), total);
           };
         });
       });
