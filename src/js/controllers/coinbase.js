@@ -16,7 +16,9 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
         $scope.loading = false;
         if (err || lodash.isEmpty(data)) {
           if (err) {
-            popupService.showAlert('Error', err);
+            $log.error(err);
+            err = err.errors ? err.errors[0].message : err;
+            popupService.showAlert('Error connecting to Coinbase', err);
           }
           return;
         }
@@ -79,18 +81,15 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   this.submitOauthCode = function(code) {
     var self = this;
     ongoingProcess.set('connectingCoinbase', true);
-    $scope.error = null;
-    $timeout(function() {
-      coinbaseService.getToken(code, function(err, accessToken) {
-        ongoingProcess.set('connectingCoinbase', false);
-        if (err) {
-          popupService.showAlert('Error', err);
-          return;
-        }
-        $scope.accessToken = accessToken;
-        init();
-      });
-    }, 100);
+    coinbaseService.getToken(code, function(err, accessToken) {
+      ongoingProcess.set('connectingCoinbase', false);
+      if (err) {
+        popupService.showAlert('Error connecting to Coinbase', err);
+        return;
+      }
+      $scope.accessToken = accessToken;
+      init();
+    });
   };
 
   this.openTxModal = function(tx) {
@@ -109,7 +108,9 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     coinbaseService.setCredentials();
     if (data.stateParams && data.stateParams.code) {
-      self.submitOauthCode(data.stateParams.code);
+      coinbaseService.getStoredToken(function(at) {
+        if (!at) self.submitOauthCode(data.stateParams.code);
+      });
     } else {
       init();
     }

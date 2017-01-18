@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, bitcore, $rootScope, payproService, scannerService, appConfigService) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService) {
 
   var root = {};
 
@@ -127,10 +127,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       });
     } else if (data && data.indexOf(appConfigService.name + '://coinbase') === 0) {
       var code = getParameterByName('code', data); 
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true
+      });
       $state.go('tabs.home', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.home' ? false : true
       }).then(function() {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true
+        });
         $state.transitionTo('tabs.buyandsell.coinbase', {
           code: code
         });
