@@ -27,8 +27,9 @@
           <strong class="size-36">...</strong>
         </div>
       </div>
+
       <div class="wallet-details-wallet-info">
-        <img style="height:0.6em"  ng-show="loadingHistory" src="img/icon-sync-white.svg">
+        <ion-spinner class="spinner-dark recent right" icon="crescent" ng-show="loadingHistory"  ></ion-spinner>
       </div>
     </div>
 
@@ -58,7 +59,7 @@
         </select>
       </label>
       <div ng-if="bitpayCard.bitpayCardTransactionHistory[0]"
-        ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory | orderBy: ['pending','-timestamp']"
+        ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory"
         class="item row">
         <div class="col col-10 text-center">
           <div class="tu size-12">{{tx.timestamp | amDateFormat:'MMM'}}</div>
