@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
           if (err) {
             $log.error(err);
             err = err.errors ? err.errors[0].message : err;
-            popupService.showAlert('Error', err);
+            popupService.showAlert('Error connecting to Coinbase', err);
           }
           return;
         }
@@ -84,7 +84,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
     coinbaseService.getToken(code, function(err, accessToken) {
       ongoingProcess.set('connectingCoinbase', false);
       if (err) {
-        popupService.showAlert('Error', err);
+        popupService.showAlert('Error connecting to Coinbase', err);
         return;
       }
       $scope.accessToken = accessToken;
