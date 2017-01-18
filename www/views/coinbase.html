@@ -7,13 +7,7 @@
 
   <ion-content>
 
-    <div class="box-notification error" ng-show="error">
-      <ul class="no-bullet m0 size-12">
-        <li ng-repeat="err in error.errors" ng-bind-html="err.message"></li>
-      </ul>
-    </div>
-
-    <div ng-if="!accessToken && !error" ng-init="showOauthForm = false">
+    <div ng-if="!accessToken" ng-init="showOauthForm = false">
       <div class="text-center m20v">
         <img src="img/coinbase-logo.png" width="200">
       </div>
@@ -32,11 +26,6 @@
         </div>
       </div>
       <div ng-show="showOauthForm">
-        <div class="text-left box-notification" ng-show="coinbase.error">
-          <ul class="no-bullet m0 text-warning size-12">
-            <li ng-repeat="err in coinbase.error.errors" ng-bind-html="err.message"></li>
-          </ul>
-        </div>
         <form name="oauthCodeForm" ng-submit="coinbase.submitOauthCode(code)" novalidate>
           <div class="list settings-input-group">
             <label class="item item-input item-stacked-label">
@@ -53,14 +42,14 @@
       </div>
     </div>
 
-  <div ng-if="accessToken && !error">
+  <div ng-if="accessToken">
 
     <div class="m20t text-center" ng-click="updateTransactions()">
       <img src="img/coinbase-logo.png" width="200">
     </div>
 
     <div class="m10t size-12 text-center text-gray">
-      <span ng-show="!buyPrice || !sellPrice">...</span>
+      <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice || !sellPrice"></ion-spinner>
       <span ng-show="buyPrice && sellPrice">
         {{buyPrice.amount}} {{buyPrice.currency}}
          | 
@@ -122,9 +111,6 @@
           {{tx.amount.currency}}
         </p>
       </a>
-    </div>
-    <div class="m10t text-center" ng-if="loading">
-      <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
     </div>
 
   </div>
