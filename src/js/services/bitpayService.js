@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayService', function($log, $http, platformInfo, appIdentityService, bitauthService, storageService, gettextCatalog, popupService) {
+angular.module('copayApp.services').factory('bitpayService', function($log, $http, platformInfo, appIdentityService, bitauthService, storageService, gettextCatalog, popupService, ongoingProcess) {
   var root = {};
 
   var NETWORK = 'livenet';
@@ -62,20 +62,23 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
 	    };
 	    appIdentityService.getIdentity(root.getEnvironment().network, function(err, appIdentity) {
 	      if (err) return cb(err);
+        ongoingProcess.set('fetchingBitPayAccount', true);
 	      $http(_postAuth('/api/v2/', json, appIdentity)).then(function(data) {
+          ongoingProcess.set('fetchingBitPayAccount', false);
+
 	        if (data && data.data.error) return cb(data.data.error);
 	        $log.info('BitPay service BitAuth create token: SUCCESS');
-	        var title = gettextCatalog.getString('Add BitPay Account?');
-	        var msgDetail = 'Add this BitPay account ({{email}})?';
+	        var title = gettextCatalog.getString('Link BitPay Account?');
+	        var msgDetail = 'Link BitPay account ({{email}})?';
 	        if (pairingReason) {
-		        msgDetail = 'To {{reason}} you must first add your BitPay account.<br/><br/>{{email}}';
+		        msgDetail = 'To add your {{reason}} please link your BitPay account {{email}}';
 		      }
 	        var msg = gettextCatalog.getString(msgDetail, {
 	        	reason: pairingReason,
 	          email: pairData.email
 	        });
-	        var ok = gettextCatalog.getString('Add Account');
-	        var cancel = gettextCatalog.getString('Go back');
+	        var ok = gettextCatalog.getString('Confirm');
+	        var cancel = gettextCatalog.getString('Cancel');
 	        popupService.showConfirm(title, msg, ok, cancel, function(res) {
 	        	if (res) {
 			        var acctData = {
