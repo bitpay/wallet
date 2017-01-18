@@ -6,7 +6,11 @@
   </ion-nav-bar>
   <ion-content>
 
+    <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
+
     <div class="list settings-list settings-input-group">
+
+
       <label class="item item-input item-stacked-label">
         <span class="input-label">Wallet Service URL</span>
         <input type="text" id="bwsurl" type="text" name="bwsurl" ng-model="bwsurl.value">
