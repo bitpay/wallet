@@ -558,7 +558,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     storageService.removeTxHistory(wallet.id, function(err) {
       if (err) {
         $log.error(err);
-        return cb();
+        return cb(err);
       }
       return cb();
     });
