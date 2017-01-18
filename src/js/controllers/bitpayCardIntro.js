@@ -8,16 +8,20 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
         email: data.stateParams.email,
         otp: data.stateParams.otp
       };
-      var pairingReason = gettextCatalog.getString('add your BitPay Visa<sup>&reg;</sup> card(s)');
+
+      var pairingReason = gettextCatalog.getString('BitPay Visa card');
+
       bitpayService.pair(pairData, pairingReason, function(err, paired, apiContext) {
+
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          popupService.showAlert(gettextCatalog.getString('Error pairing Bitpay Account'), err);
           return;
         }
         if (paired) {
           bitpayCardService.fetchBitpayDebitCards(apiContext, function(err, data) {
+
             if (err) {
-              popupService.showAlert(gettextCatalog.getString('Error'), err);
+              popupService.showAlert(gettextCatalog.getString('Error fetching Debit Cards'), err);
               return;
             }
             // Set flag for nextStep
