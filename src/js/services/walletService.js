@@ -551,6 +551,21 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
   };
 
+
+  root.clearTxHistory = function(wallet, cb) {
+    root.invalidateCache(wallet);
+
+    storageService.removeTxHistory(wallet.id, function(err) {
+      if (err) {
+        $log.error(err);
+        return cb();
+      }
+      return cb();
+    });
+  };
+
+ 
+
   root.getTxHistory = function(wallet, opts, cb) {
     opts = opts || {};
 
