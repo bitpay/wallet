@@ -5,6 +5,8 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
     $scope.success = null;
 
     var wallet = profileService.getWallet($stateParams.walletId);
+    $scope.wallet = wallet;
+
     var walletId = wallet.credentials.walletId;
     var defaults = configService.getDefaults();
     var config = configService.getSync();

@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService) {
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService, walletService) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
     $scope.isCordova = platformInfo.isCordova;
     $scope.appName = appConfigService.nameCase;
 
+
+    // TODO : move this to walletService.
     $scope.csvHistory = function(cb) {
       var allTxs = [];
 
@@ -123,11 +125,16 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
     };
 
     $scope.clearTransactionHistory = function() {
-      storageService.removeTxHistory($scope.wallet.id, function(err) {
+      $log.info('Removing Transaction history ' + $scope.wallet.id);
+
+      walletService.clearTxHistory($scope.wallet, function(err) {
+
         if (err) {
           $log.error(err);
           return;
         }
+
+        $log.info('Transaction history cleared for :' + $scope.wallet.id);
 
         $ionicHistory.removeBackView();
         $state.go('tabs.home');
