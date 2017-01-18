@@ -700,7 +700,9 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.logout = function(cb) {
     storageService.removeCoinbaseToken(credentials.NETWORK, function() {
       storageService.removeCoinbaseRefreshToken(credentials.NETWORK, function() {
-        return cb();
+        storageService.removeCoinbaseTxs(credentials.NETWORK, function() {
+          return cb();
+        });
       });
     });
   };
