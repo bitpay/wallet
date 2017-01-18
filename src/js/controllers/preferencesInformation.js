@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('preferencesInformation',
   function($scope, $log, $ionicHistory, platformInfo, lodash, profileService, configService, $stateParams, $state) {
     var wallet = profileService.getWallet($stateParams.walletId);
+    $scope.wallet = wallet;
+
     var walletId = wallet.id;
     var config = configService.getSync();
     var colorCounter = 1;
