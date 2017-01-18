@@ -242,12 +242,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     var getNotifications = function() {
       profileService.getNotifications({
         limit: 3
-      }, function(err, n) {
+      }, function(err, notifications, total) {
         if (err) {
           $log.error(err);
           return;
         }
-        $scope.notifications = n;
+        $scope.notifications = notifications;
+        $scope.notificationsN = total;
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();
