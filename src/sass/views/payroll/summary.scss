@@ -31,22 +31,6 @@
 
     }
 
-    .bitcoin-analysis {
-
-      .price {
-        font-size: 38px;
-        position: relative;      
-        top: 5px;
-        margin-bottom: .5rem;
-
-        > .unit {
-          font-family: "Roboto-Light";
-        }
-
-      }
-
-    }
-
     .icon {
 
       &.eligible {
@@ -120,28 +104,6 @@
         padding-right: 25px;
         color: $soft-blue;
         float: left;
-      }
-
-      &.statistics {
-
-        .label {
-          font-size: 12px;
-          text-align: center;
-        }
-
-        .value {
-          font-size: 14px;
-
-          .highlight-up {
-            color: $success-green;
-          }
-
-          .highlight-down {
-            color: red;
-          }
-
-        }
-
       }
 
     }

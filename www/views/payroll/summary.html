@@ -13,61 +13,6 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content>
-
-    <!-- Bitcoin analysis -->
-    <div class="list card">
-      <div class="item item-icon-right item-heading" ng-click="shouldHideBitcoinAnalysis()">
-        <div class="bitcoin-analysis">
-          <div class="price">
-            830.23 
-            <span class="unit">
-              USD
-            </span>
-          </div>
-        </div>
-        <i class="icon bp-arrow-up" ng-show="!hideBitcoinAnalysis"></i>
-        <i class="icon bp-arrow-down" ng-show="hideBitcoinAnalysis"></i>
-      </div>
-      <div ng-show="!hideBitcoinAnalysis">
-        <div class="section">
-          <img class="full-image" ng-src="http://www.mrgeek.me/wp-content/uploads/2013/03/Chart-JS.png">
-        </div>
-
-        <div class="section statistics columns large-2 medium-2 small-2">
-          <div class="row">        
-            <div class="col label">
-              Today's open <div class="value">$802.83</div>
-            </div>
-            <div class="col label">
-              Change <div class="value" ng-class="changeUp ? 'highlight-up' : 'highlight-down'">$19.90</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col label">
-              Today's high <div class="value">$829.82</div>
-            </div>
-            <div class="col label">
-              Market cap <div class="value">$13,246,303,023</div>
-            </div>
-          </div>
-          <div class="row">        
-            <div class="col label">
-              Today's low <div class="value">$774.36</div>
-            </div>
-            <div class="col label">
-              Total bitcoins <div class="value">16,100,400</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section footer">
-          <div class="action" ng-click="showBitcoinStatistics()">
-            <div translate>About</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="list card" ng-repeat="record in payrollRecords">
 
       <!-- Eligible but not yet verified -->
