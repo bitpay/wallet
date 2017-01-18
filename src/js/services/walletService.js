@@ -347,14 +347,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return ret;
   };
 
-  var updateLocalTxHistory = function(wallet, progressFn, cb) {
+  var updateLocalTxHistory = function(wallet, opts, cb) {
     var FIRST_LIMIT = 5;
     var LIMIT = 50;
     var requestLimit = FIRST_LIMIT;
     var walletId = wallet.credentials.walletId;
     var config = configService.getSync().wallet.settings;
 
-    progressFn = progressFn || function() {};
+    var opts = opts || {};
+    var progressFn = opts.progressFn || function() {};
+    var foundLimitTx = false;
 
     var fixTxsUnit = function(txs) {
       if (!txs || !txs[0] || !txs[0].amountStr) return;
@@ -387,17 +389,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       progressFn(txsFromLocal, 0);
       wallet.completeHistory = txsFromLocal;
 
-      function getNewTxs(newTxs, skip, cb) {
+      function getNewTxs(newTxs, skip, next) {
         getTxsFromServer(wallet, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) {
             $log.warn(bwcError.msg(err, 'Server Error')); //TODO
             if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
               $log.info('Retrying history download in 5 secs...');
               return $timeout(function() {
-                return getNewTxs(newTxs, skip, cb);
+                return getNewTxs(newTxs, skip, next);
               }, 5000);
             };
-            return cb(err);
+            return next(err);
           }
 
           newTxs = newTxs.concat(processNewTxs(wallet, lodash.compact(res)));
@@ -408,13 +410,29 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           $log.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' EndingTxid:', endingTxid, ' Continue:', shouldContinue);
 
+          // TODO Dirty <HACK>
+          // do not sync all history, just looking for a single TX.
+          if (opts.limitTx) {
+
+            foundLimitTx = lodash.find(newTxs, {
+              txid: opts.limitTx,
+            });
+
+            if (foundLimitTx) {
+              $log.debug('Found limitTX: ' + opts.limitTx);
+              return next(null, newTxs);
+            }
+          }
+          // </HACK>
+
+
           if (!shouldContinue) {
             $log.debug('Finished Sync: New / soft confirmed Txs: ' + newTxs.length);
-            return cb(null, newTxs);
+            return next(null, newTxs);
           }
 
           requestLimit = LIMIT;
-          getNewTxs(newTxs, skip, cb);
+          getNewTxs(newTxs, skip, next);
         });
       };
 
@@ -451,6 +469,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         }
 
         updateNotes(function() {
+
+          // <HACK>
+          if (foundLimitTx) {
+            $log.debug('Tx history read until limitTx: ' + opts.limitTx);
+            return cb(null, newHistory);
+          }
+          // </HACK>
+
           var historyToSave = JSON.stringify(newHistory);
 
           lodash.each(txs, function(tx) {
@@ -506,7 +532,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       finish();
     } else {
-      root.getTxHistory(wallet, {}, function(err, txHistory) {
+      root.getTxHistory(wallet, {
+        limitTx: txid
+      }, function(err, txHistory) {
         if (err) return cb(err);
 
         tx = lodash.find(txHistory, {
@@ -538,8 +566,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     $log.debug('Updating Transaction History');
 
-    updateLocalTxHistory(wallet, opts.progressFn, function(err) {
+    updateLocalTxHistory(wallet, opts, function(err, txs) {
       if (err) return cb(err);
+
+      if (opts.limitTx) {
+        return cb(err, txs);
+      }
 
       wallet.completeHistory.isValid = true;
       return cb(err, wallet.completeHistory);
