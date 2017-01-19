@@ -866,6 +866,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       url: '/buyandsell',
       views: {
         'tab-home': {
+          controller: 'buyandsellController',
           templateUrl: 'views/buyandsell.html'
         }
       }

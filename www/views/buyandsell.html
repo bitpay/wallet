@@ -5,15 +5,17 @@
     <ion-nav-title translate>Buy and sell</ion-nav-title>
   </ion-nav-bar>
   <ion-content>
-    <ion-list>
-      <ion-item class="item item-icon-right" ui-sref="tabs.buyandsell.coinbase">
+    <div class="list">
+      <div class="item item-divider"></div>
+
+      <div class="item item-icon-right" ui-sref="tabs.buyandsell.coinbase" ng-show="isCoinbaseEnabled">
         <img src="img/coinbase-logo.png" width="90">
         <i class="icon bp-arrow-right"></i>
-      </ion-item>
-      <ion-item class="item item-icon-right" ui-sref="tabs.buyandsell.glidera">
+      </div>
+      <div class="item item-icon-right" ui-sref="tabs.buyandsell.glidera" ng-show="isGlideraEnabled">
         <img src="img/glidera-logo.png" width="90">
         <i class="icon bp-arrow-right"></i>
-      </ion-item>
-    </ion-list>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
