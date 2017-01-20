@@ -129,7 +129,7 @@ angular.module('copayApp.services').service('scannerService', function($log, $ti
 
   var nextHide = null;
   var nextDestroy = null;
-  var hideAfterSeconds = 7;
+  var hideAfterSeconds = 5;
   var destroyAfterSeconds = 60;
 
   /**

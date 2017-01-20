@@ -81,6 +81,8 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
             handleSuccessfulScan(contents);
           }
           });
+          // resume preview if paused
+          scannerService.resumePreview();
         });
     });
   }
@@ -103,7 +105,6 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
   }
 
   $rootScope.$on('incomingDataMenu.menuHidden', function() {
-    scannerService.resumePreview();
     activate();
   });
 
