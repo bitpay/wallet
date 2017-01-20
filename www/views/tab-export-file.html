@@ -8,12 +8,14 @@
     <div class="list">
       <label class="item item-input item-stacked-label">
         <span class="input-label" translate>Set up a password</span>
-        <input type="password" placeholder="{{'Your password'|translate}}" ng-model="formData.password">
+        <input type="password" placeholder="{{'Your password'|translate}}" ng-model="formData.password" ng-change="checkPassword(formData.password, formData.repeatpassword)"
+          ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
       </label>
 
       <label class="item item-input item-stacked-label">
         <span class="input-label" translate>Repeat the password</span>
-        <input type="password" placeholder="{{'Repeat password'|translate}}" ng-model="formData.repeatpassword">
+        <input type="password" placeholder="{{'Repeat password'|translate}}" ng-model="formData.repeatpassword" ng-change="checkPassword(formData.repeatpassword, formData.password)"
+          ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
       </label>
 
       <div ng-show="canSign">
