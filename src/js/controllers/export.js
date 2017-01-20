@@ -16,6 +16,17 @@ angular.module('copayApp.controllers').controller('exportController',
       }, 10);
     };
 
+    $scope.checkPassword = function(pw1, pw2) {
+      if (pw1.length > 0) {
+        if (pw2.length > 0) {
+          if (pw1 == pw2) $scope.result = 'correct';
+          else $scope.result = 'incorrect';
+        } else
+          $scope.result = null;
+      } else
+        $scope.result = null;
+    };
+
     function getPassword(cb) {
       if ($scope.password) return cb(null, $scope.password);
 
@@ -57,6 +68,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
     var init = function() {
       $scope.formData = {};
+      $scope.formData.password = $scope.formData.repeatpassword = '';
       $scope.isEncrypted = wallet.isPrivKeyEncrypted();
       $scope.isCordova = platformInfo.isCordova;
       $scope.isSafari = platformInfo.isSafari;
@@ -214,6 +226,7 @@ angular.module('copayApp.controllers').controller('exportController',
       };
       $scope.formData.exportWalletInfo = null;
       $scope.password = null;
+      $scope.result = null;
     });
 
   });
