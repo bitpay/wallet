@@ -5,9 +5,9 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
+    <div class="list" ng-show="wallet">
+      <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
 
-    <div class="padding">
       <h1 class="text-center assertive" translate>Warning!</h1>
       <div class="padding text-center">
         <p translate>
@@ -17,8 +17,6 @@
           THIS ACTION CANNOT BE REVERSED
         </p>
       </div>
-    </div>
-    <div class="padding">
       <button class="button button-standard button-assertive" ng-click="showDeletePopup()">
         {{'Delete'|translate}} <span ng-show="alias">{{alias}}</span>{{walletName}}
       </button>

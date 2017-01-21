@@ -1,12 +1,19 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
-  function($scope, $stateParams, $ionicHistory, gettextCatalog, lodash, profileService, $state, ongoingProcess, popupService) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    $scope.wallet = wallet;
-
-    $scope.alias = lodash.isEqual(wallet.name, wallet.credentials.walletName) ? null : wallet.name + ' ';
-    $scope.walletName = wallet.credentials.walletName;
+  function($scope, $ionicHistory, gettextCatalog, lodash, profileService, $state, ongoingProcess, popupService) {
+    
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      if (!data.stateParams || !data.stateParams.walletId) {
+        popupService.showAlert(null, gettextCatalog.getString('Bad param'), function() {
+          $ionicHistory.goBack();
+        });
+        return;
+      }
+      $scope.wallet = profileService.getWallet(data.stateParams.walletId);
+      $scope.alias = lodash.isEqual($scope.wallet.name, $scope.wallet.credentials.walletName) ? null : $scope.wallet.name + ' ';
+      $scope.walletName = $scope.wallet.credentials.walletName;
+    });
 
     $scope.showDeletePopup = function() {
       var title = gettextCatalog.getString('Warning!');
@@ -18,14 +25,19 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
 
     function deleteWallet() {
       ongoingProcess.set('deletingWallet', true);
-      profileService.deleteWalletClient(wallet, function(err) {
+      profileService.deleteWalletClient($scope.wallet, function(err) {
         ongoingProcess.set('deletingWallet', false);
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err.message || err);
         } else {
+          $ionicHistory.nextViewOptions({
+            disableAnimate: true,
+            historyRoot: true
+          });
           $ionicHistory.clearHistory();
-          $ionicHistory.clearCache();
-          $state.go('tabs.home');
+          $state.go('tabs.settings').then(function() {
+            $state.transitionTo('tabs.home');
+          });
         }
       });
     };
