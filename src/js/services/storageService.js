@@ -156,7 +156,7 @@ angular.module('copayApp.services')
         }
         data = data || {};
         var upgraded = '';
-        Object.keys(data).forEach(function(key) {
+          Object.asyncEach(data, function(key, callback) {
           // Keys are account emails
           if (!data[key]['bitpayApi-' + network]) {
             // Needs upgrade
@@ -170,17 +170,20 @@ angular.module('copayApp.services')
 
               _02_setBitpayDebitCards(network, data[key]['bitpayDebitCards-' + network], function(err) {
                 if (err) return cb(err);
+                callback();
               });
             });
           }
-        });
-        // Remove obsolete key.
-        storage.remove('bitpayAccounts-' + network, function() {
-          if (upgraded.length > 0) {
-            cb(null, 'upgraded to \'bitpayAccounts-v2-' + network + '\':' + upgraded);
-          } else {
-            cb();
-          }          
+        }, function() {
+          // done
+          // Remove obsolete key.
+          storage.remove('bitpayAccounts-' + network, function() {
+            if (upgraded.length > 0) {
+              cb(null, 'upgraded to \'bitpayAccounts-v2-' + network + '\':' + upgraded);
+            } else {
+              cb();
+            }          
+          });
         });
       });
     };
@@ -267,12 +270,14 @@ angular.module('copayApp.services')
       $log.info('Storage upgraded for \'' + key + '\': ' + msg);
     };
 
+    // IMPORTANT: This function is designed to block execution until it completes.
+    // Ideally storage should not be used until it has been verified.
     function _upgrade(cb) {
       var errorCount = 0;
       var errorMessage = undefined;
       var keys = Object.keys(_upgraders).sort();
       var networks = ['livenet', 'testnet'];
-      keys.forEach(function(key) {
+      Object.asyncEach(keys, function(key, callback) {
         networks.forEach(function(network) {
           var storagekey = key.split('_')[1];
           _upgraders[key](storagekey, network, function(err, msg) {
@@ -282,10 +287,31 @@ angular.module('copayApp.services')
               errorMessage = errorCount + ' storage upgrade failures';
             }
             if (msg) _handleUpgradeSuccess(storagekey + '-' + network, msg);
+            callback();
           });
         });
+      }, function() {
+        //done
+        cb(errorMessage);
       });
-      cb(errorMessage);
+    };
+
+    Object.asyncEach = function(iterableList, callback, done) {
+      var i = -1;
+      var length = iterableList.length;
+
+      function loop() {
+        i++;
+        if (i === length) {
+          done(); 
+          return;
+        } else if (i < length) {
+          callback(iterableList[i], loop);
+        } else {
+          return;
+        }
+      } 
+      loop();
     };
 
     root.tryToMigrate = function(cb) {
