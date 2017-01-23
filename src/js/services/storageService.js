@@ -104,7 +104,8 @@ angular.module('copayApp.services')
     var _upgraders = {
       '00_bitpayDebitCards'      : _upgrade_bitpayDebitCards,      // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
       '01_bitpayCardCredentials' : _upgrade_bitpayCardCredentials, // 2016-11: Upgrade bitpayCardCredentials-x to appIdentity-x
-      '02_bitpayAccounts'        : _upgrade_bitpayAccounts         // 2016-12: Upgrade tpayAccounts-x to bitpayAccounts-v2-x
+      '02_bitpayAccounts'        : _upgrade_bitpayAccounts,        // 2016-12: Upgrade bitpayAccounts-x to bitpayAccounts-v2-x
+      '03_bitpayAccounts-v2'     : _validate_bitpayAccounts_v2     // 2017-01: Validate keys on bitpayAccounts-v2-x, remove if not valid
     };
 
     function _upgrade_bitpayDebitCards(key, network, cb) {
@@ -156,7 +157,7 @@ angular.module('copayApp.services')
         }
         data = data || {};
         var upgraded = '';
-          _asyncEach(data, function(key, callback) {
+        _asyncEach(data, function(key, callback) {
           // Keys are account emails
           if (!data[key]['bitpayApi-' + network]) {
             // Needs upgrade
@@ -184,6 +185,46 @@ angular.module('copayApp.services')
               cb();
             }          
           });
+        });
+      });
+    };
+
+    function _validate_bitpayAccounts_v2(key, network, cb) {
+      key += '-' + network;
+      storage.get(key, function(err, data) {
+        if (err) return cb(err);
+        if (lodash.isString(data)) {
+          data = JSON.parse(data);
+        }
+        data = data || {};
+        var verified = '';
+        var toRemove = [];
+        _asyncEach(Object.keys(data), function(key, callback) {
+          if (!data[key]['bitpayApi-' + network] ||
+            !data[key]['bitpayDebitCards-' + network]) {
+            // Invalid entry - 'bitpayApi-' key missing
+            // Invalid entry - 'bitpayDebitCards-' key missing
+            toRemove.push(key);
+          } else {
+            verified += ' ' + key;
+          };
+          return callback();
+        }, function() {
+          // done, remove invalid account entrys
+          if (toRemove.length > 0) {
+            var removed = '';
+            for (var i = 0; i < toRemove.length; i++) {
+              removed += ' ' + toRemove[i];
+              delete data[toRemove[i]];
+            }
+            storage.set('bitpayAccounts-v2-' + network, JSON.stringify(data), function(err) {
+              if (err) return cb(err);
+              cb(null, 'removed invalid account records, please re-pair cards for these accounts:' + removed + '; ' +
+                'the following accounts validated OK: ' + (verified.length > 0 ? verified : 'none'));
+            });
+          } else {
+            cb(null, (verified.length > 0 ? 'accounts OK: ' + verified : ''));
+          }
         });
       });
     };
