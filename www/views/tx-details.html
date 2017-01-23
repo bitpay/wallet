@@ -20,8 +20,8 @@
         </div>
         <div class="sending-label" ng-if="btx.confirmations === 0">
           <img src="img/icon-confirming.svg">
-          <span ng-if="btx.action == 'sent' || btx.action == 'moved'">Sending</span>
-          <span ng-if="btx.action == 'received'">Receiving</span>
+          <span ng-if="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
+          <span ng-if="btx.action == 'received'" translate>Receiving</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
