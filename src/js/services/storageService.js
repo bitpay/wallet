@@ -156,7 +156,7 @@ angular.module('copayApp.services')
         }
         data = data || {};
         var upgraded = '';
-          Object.asyncEach(data, function(key, callback) {
+          _asyncEach(data, function(key, callback) {
           // Keys are account emails
           if (!data[key]['bitpayApi-' + network]) {
             // Needs upgrade
@@ -277,7 +277,7 @@ angular.module('copayApp.services')
       var errorMessage = undefined;
       var keys = Object.keys(_upgraders).sort();
       var networks = ['livenet', 'testnet'];
-      Object.asyncEach(keys, function(key, callback) {
+      _asyncEach(keys, function(key, callback) {
         networks.forEach(function(network) {
           var storagekey = key.split('_')[1];
           _upgraders[key](storagekey, network, function(err, msg) {
@@ -296,7 +296,7 @@ angular.module('copayApp.services')
       });
     };
 
-    Object.asyncEach = function(iterableList, callback, done) {
+    function _asyncEach(iterableList, callback, done) {
       var i = -1;
       var length = iterableList.length;
 
