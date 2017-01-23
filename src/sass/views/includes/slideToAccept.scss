@@ -83,6 +83,11 @@ slide-to-accept {
       font-weight: 600;
       letter-spacing: .03rem;
       z-index: 1;
+
+      .justify {
+        width: 50%;
+        text-align: center;
+      }
     }
 
     &__status-text {
