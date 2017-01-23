@@ -24,9 +24,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.recentTransactionsEnabled = {
       value: config.recentTransactions.enabled
     };
-    // $scope.frequentlyUsedEnabled = {
-    //   value: config.frequentlyUsed.enabled
-    // };
   };
 
   $scope.spendUnconfirmedChange = function() {
