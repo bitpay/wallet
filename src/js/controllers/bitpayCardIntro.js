@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
         }
       });
     } else {
-      appIdentityService.getIdentity(bitpayService.getEnvironment(), function(err, appIdentity) {
+      appIdentityService.getIdentity(bitpayService.getEnvironment().network, function(err, appIdentity) {
         if (err) popupService.showAlert(null, err);
         else $log.info('App identity: OK');
       });
