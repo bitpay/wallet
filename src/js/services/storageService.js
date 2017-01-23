@@ -200,14 +200,27 @@ angular.module('copayApp.services')
         var verified = '';
         var toRemove = [];
         _asyncEach(Object.keys(data), function(key, callback) {
+          // Verify account API data
           if (!data[key]['bitpayApi-' + network] ||
-            !data[key]['bitpayDebitCards-' + network]) {
-            // Invalid entry - 'bitpayApi-' key missing
-            // Invalid entry - 'bitpayDebitCards-' key missing
+            !data[key]['bitpayApi-' + network].token) {
+            // Invalid entry - one or more keys are missing
             toRemove.push(key);
-          } else {
-            verified += ' ' + key;
-          };
+            return callback();
+          }
+          // Verify debit cards
+          if (Array.isArray(data[key]['bitpayDebitCards-' + network])) {
+            for (var i = 0; i < data[key]['bitpayDebitCards-' + network].length; i++) {
+              if (!data[key]['bitpayDebitCards-' + network][i].token ||
+                !data[key]['bitpayDebitCards-' + network][i].eid ||
+                !data[key]['bitpayDebitCards-' + network][i].id ||
+                !data[key]['bitpayDebitCards-' + network][i].lastFourDigits) {
+                // Invalid entry - one or more keys are missing
+                toRemove.push(key);
+                return callback();
+              }
+            }
+          }
+          verified += ' ' + key;
           return callback();
         }, function() {
           // done, remove invalid account entrys
