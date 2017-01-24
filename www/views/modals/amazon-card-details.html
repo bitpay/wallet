@@ -45,6 +45,9 @@
             <span class="text-bold" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
               FAILURE
             </span>
+            <span class="text-bold" ng-show="card.status == 'expired'">
+              EXPIRED
+            </span>
           </div>
         </div>
         <div class="m10t text-center">
@@ -96,7 +99,7 @@
           <span class="assertive">Cancel</span>
         </a>
         <a class="item" ng-show="card.status == 'FAILURE' || card.cardStatus == 'Canceled'
-          || card.cardStatus == 'Expired'" ng-click="remove()">
+          || card.cardStatus == 'Expired' || card.status == 'expired'" ng-click="remove()">
           <span class="assertive">Remove</span>
         </a>
       </div>

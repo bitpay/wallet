@@ -14,14 +14,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isGiftCard = data.stateParams.isGiftCard;
-
     // Glidera parameters
     $scope.isGlidera = data.stateParams.isGlidera;
     $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
 
     // Go to...
     $scope.nextStep = data.stateParams.nextStep;
+    $scope.currency = data.stateParams.currency;
+    $scope.forceCurrency = data.stateParams.forceCurrency;
 
     $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
@@ -30,13 +30,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGiftCard || !!$scope.isGlidera || !!$scope.nextStep;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGlidera || !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !$scope.isGiftCard && !$scope.isGlidera && !$scope.nextStep && !data.stateParams.toAddress) {
+    if (!$scope.cardId && !$scope.isGlidera && !$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -78,7 +78,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
     } else {
-      $scope.alternativeIsoCode = !!$scope.cardId || !!$scope.isGiftCard ? 'USD' : config.alternativeIsoCode;
+      $scope.alternativeIsoCode = !!$scope.cardId ? 'USD' : config.alternativeIsoCode;
     }
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;
@@ -118,6 +118,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.toggleAlternative = function() {
+    if ($scope.forceCurrency) return;
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
 
     if ($scope.amount && isExpression($scope.amount)) {
@@ -292,64 +293,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       });
 
-    } else if ($scope.isGiftCard) {
-      ongoingProcess.set('Preparing transaction...', true);
-      // Get first wallet as UUID
-      var uuid;
-      try {
-        uuid = profileService.getWallets({
-          onlyComplete: true,
-          network: amazonService.getEnvironment(),
-        })[0].id;
-      } catch (err) {
-        ongoingProcess.set('Preparing transaction...', false);
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('No wallet found!'));
-        return;
-      };
-      var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
-      var dataSrc = {
-        currency: 'USD',
-        amount: amountUSD,
-        uuid: uuid
-      };
-
-      amazonService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
-        if (err) {
-          ongoingProcess.set('Preparing transaction...', false);
-          popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-          return;
-        }
-
-        amazonService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
-          if (err) {
-            ongoingProcess.set('Preparing transaction...', false);
-            popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-            return;
-          }
-
-          var payProUrl = invoice.paymentUrls.BIP73;
-
-          payproService.getPayProDetails(payProUrl, function(err, payProDetails) {
-            ongoingProcess.set('Preparing transaction...', false);
-            if (err) {
-              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-              return;
-            }
-            var stateParams = {
-              giftCardAmountUSD: amountUSD,
-              giftCardAccessKey: dataInvoice.accessKey,
-              giftCardInvoiceTime: invoice.invoiceTime,
-              giftCardUUID: dataSrc.uuid,
-              toAmount: payProDetails.amount,
-              toAddress: payProDetails.toAddress,
-              description: payProDetails.memo,
-              paypro: payProDetails
-            };
-
-            $state.transitionTo('tabs.giftcards.amazon.confirm', stateParams);
-          }, true);
-        });
-      });
     } else if ($scope.isGlidera) {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.buyandsell.glidera.confirm', {

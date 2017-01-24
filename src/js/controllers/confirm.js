@@ -1,25 +1,15 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, amazonService, glideraService, bwcError, bitpayCardService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, glideraService, bwcError, bitpayCardService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
   var countDown = null;
-  var giftCardAmountUSD;
-  var giftCardAccessKey;
-  var giftCardInvoiceTime;
-  var giftCardUUID;
   var cachedSendMax = {};
   $scope.isCordova = platformInfo.isCordova;
   $ionicConfig.views.swipeBackEnabled(false);
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    // Amazon.com Gift Card parameters
-    $scope.isGiftCard = data.stateParams.isGiftCard;
-    giftCardAmountUSD = data.stateParams.giftCardAmountUSD;
-    giftCardAccessKey = data.stateParams.giftCardAccessKey;
-    giftCardInvoiceTime = data.stateParams.giftCardInvoiceTime;
-    giftCardUUID = data.stateParams.giftCardUUID;
 
     // Glidera parameters
     $scope.isGlidera = data.stateParams.isGlidera;
@@ -59,7 +49,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   function applyButtonText(multisig) {
     $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
 
-    if ($scope.isGlidera || $scope.isGiftCard || $scope.cardId) {
+    if ($scope.isGlidera || $scope.cardId) {
       $scope.buttonText += gettextCatalog.getString('to complete');
     } else if ($scope.paypro) {
       $scope.buttonText += gettextCatalog.getString('to pay');
@@ -166,8 +156,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
     if ($scope.cardAmountUSD) {
       $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.cardAmountUSD) + ' USD';
-    } else if ($scope.giftCardAmountUSD) {
-      $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.giftCardAmountUSD) + ' USD';
     } else {
       txFormatService.formatAlternativeStr(toAmount, function(v) {
         $scope.alternativeAmountStr = v;
@@ -599,7 +587,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.onSuccessConfirm = function() {
     var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
     var fromBitPayCard = previousView.match(/tabs.bitpayCard/) ? true : false;
-    var fromAmazon = previousView.match(/tabs.giftcards.amazon/) ? true : false;
     var fromGlidera = previousView.match(/tabs.buyandsell.glidera/) ? true : false;
 
     $ionicHistory.nextViewOptions({
@@ -614,17 +601,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           id: $stateParams.cardId
         });
       }, 100);
-    } else if (fromAmazon) {
-      $ionicHistory.nextViewOptions({
-        disableAnimate: true,
-        historyRoot: true
-      });
-      $ionicHistory.clearHistory();
-      $state.go('tabs.home').then(function() {
-        $state.transitionTo('tabs.giftcards.amazon', {
-          cardClaimCode: $scope.amazonGiftCard ? $scope.amazonGiftCard.claimCode : null
-        });
-      });
     } else if (fromGlidera) {
       $ionicHistory.nextViewOptions({
         disableAnimate: true,
@@ -814,73 +790,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
-
-      var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
-      var fromAmazon = previousView.match(/tabs.giftcards.amazon/) ? true : false;
-      if (fromAmazon) {
-        var count = 0;
-        var invoiceId = JSON.parse($scope.paypro.merchant_data).invoiceId;
-        var dataSrc = {
-          currency: 'USD',
-          amount: giftCardAmountUSD,
-          uuid: giftCardUUID,
-          accessKey: giftCardAccessKey,
-          invoiceId: invoiceId,
-          invoiceUrl: $scope.paypro.url,
-          invoiceTime: giftCardInvoiceTime
-        };
-        ongoingProcess.set('creatingGiftCard', true);
-        debounceCreate(count, dataSrc, onSendStatusChange);
-      }
     }, onSendStatusChange);
-  };
-
-  var debounceCreate = lodash.throttle(function(count, dataSrc) {
-    debounceCreateGiftCard(count, dataSrc);
-  }, 8000, {
-    'leading': true
-  });
-
-  var debounceCreateGiftCard = function(count, dataSrc, onSendStatusChange) {
-    amazonService.createGiftCard(dataSrc, function(err, giftCard) {
-      $log.debug("creating gift card " + count);
-      if (err) {
-        giftCard = {};
-        giftCard.status = 'FAILURE';
-        popupService.showAlert(gettextCatalog.getString('Error'), err);
-      }
-
-      if (giftCard.status == 'PENDING' && count < 3) {
-        $log.debug("pending gift card not available yet");
-        debounceCreate(count + 1, dataSrc);
-        return;
-      }
-
-      var now = moment().unix() * 1000;
-
-      var newData = giftCard;
-      newData['invoiceId'] = dataSrc.invoiceId;
-      newData['accessKey'] = dataSrc.accessKey;
-      newData['invoiceUrl'] = dataSrc.invoiceUrl;
-      newData['amount'] = dataSrc.amount;
-      newData['date'] = dataSrc.invoiceTime || now;
-      newData['uuid'] = dataSrc.uuid;
-
-      if (newData.status == 'expired') {
-        amazonService.savePendingGiftCard(newData, {
-          remove: true
-        }, function(err) {
-          $log.error(err);
-          return;
-        });
-      }
-
-      amazonService.savePendingGiftCard(newData, null, function(err) {
-        ongoingProcess.set('creatingGiftCard', false);
-        $log.debug("Saving new gift card with status: " + newData.status);
-        $scope.amazonGiftCard = newData;
-      });
-    });
   };
 
   $scope.getRates = function() {
