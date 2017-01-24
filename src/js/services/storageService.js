@@ -104,7 +104,8 @@ angular.module('copayApp.services')
     var _upgraders = {
       '00_bitpayDebitCards'      : _upgrade_bitpayDebitCards,      // 2016-11: Upgrade bitpayDebitCards-x to bitpayAccounts-x
       '01_bitpayCardCredentials' : _upgrade_bitpayCardCredentials, // 2016-11: Upgrade bitpayCardCredentials-x to appIdentity-x
-      '02_bitpayAccounts'        : _upgrade_bitpayAccounts         // 2016-12: Upgrade tpayAccounts-x to bitpayAccounts-v2-x
+      '02_bitpayAccounts'        : _upgrade_bitpayAccounts,        // 2016-12: Upgrade bitpayAccounts-x to bitpayAccounts-v2-x
+      '03_bitpayAccounts-v2'     : _validate_bitpayAccounts_v2     // 2017-01: Validate keys on bitpayAccounts-v2-x, remove if not valid
     };
 
     function _upgrade_bitpayDebitCards(key, network, cb) {
@@ -156,12 +157,13 @@ angular.module('copayApp.services')
         }
         data = data || {};
         var upgraded = '';
-        Object.keys(data).forEach(function(key) {
+        _asyncEach(Object.keys(data), function(key, callback) {
           // Keys are account emails
           if (!data[key]['bitpayApi-' + network]) {
             // Needs upgrade
             upgraded += ' ' + key;
             var acctData = {
+              acct: data[key],
               token: data[key]['bitpayDebitCards-' + network].token,
               email: key
             };
@@ -170,17 +172,73 @@ angular.module('copayApp.services')
 
               _02_setBitpayDebitCards(network, data[key]['bitpayDebitCards-' + network], function(err) {
                 if (err) return cb(err);
+                callback();
               });
             });
           }
+        }, function() {
+          // done
+          // Remove obsolete key.
+          storage.remove('bitpayAccounts-' + network, function() {
+            if (upgraded.length > 0) {
+              cb(null, 'upgraded to \'bitpayAccounts-v2-' + network + '\':' + upgraded);
+            } else {
+              cb();
+            }          
+          });
         });
-        // Remove obsolete key.
-        storage.remove('bitpayAccounts-' + network, function() {
-          if (upgraded.length > 0) {
-            cb(null, 'upgraded to \'bitpayAccounts-v2-' + network + '\':' + upgraded);
+      });
+    };
+
+    function _validate_bitpayAccounts_v2(key, network, cb) {
+      key += '-' + network;
+      storage.get(key, function(err, data) {
+        if (err) return cb(err);
+        if (lodash.isString(data)) {
+          data = JSON.parse(data);
+        }
+        data = data || {};
+        var verified = '';
+        var toRemove = [];
+        _asyncEach(Object.keys(data), function(key, callback) {
+          // Verify account API data
+          if (!data[key]['bitpayApi-' + network] ||
+            !data[key]['bitpayApi-' + network].token) {
+            // Invalid entry - one or more keys are missing
+            toRemove.push(key);
+            return callback();
+          }
+          // Verify debit cards
+          if (Array.isArray(data[key]['bitpayDebitCards-' + network])) {
+            for (var i = 0; i < data[key]['bitpayDebitCards-' + network].length; i++) {
+              if (!data[key]['bitpayDebitCards-' + network][i].token ||
+                !data[key]['bitpayDebitCards-' + network][i].eid ||
+                !data[key]['bitpayDebitCards-' + network][i].id ||
+                !data[key]['bitpayDebitCards-' + network][i].lastFourDigits) {
+                // Invalid entry - one or more keys are missing
+                toRemove.push(key);
+                return callback();
+              }
+            }
+          }
+          verified += ' ' + key;
+          return callback();
+        }, function() {
+          // done, remove invalid account entrys
+          if (toRemove.length > 0) {
+            var removed = '';
+            for (var i = 0; i < toRemove.length; i++) {
+              removed += ' ' + toRemove[i];
+              delete data[toRemove[i]];
+            }
+            storage.set('bitpayAccounts-v2-' + network, JSON.stringify(data), function(err) {
+              if (err) return cb(err);
+              cb(null, 'removed invalid account records, please re-pair cards for these accounts:' + removed + '; ' +
+                'the following accounts validated OK: ' + (verified.length > 0 ? verified : 'none'));
+            });
           } else {
-            cb();
-          }          
+            cb(null, (verified.length > 0 ? 'accounts OK: ' + verified : ''));
+          }
         });
       });
     };
@@ -217,15 +275,15 @@ angular.module('copayApp.services')
         data = JSON.parse(data);
       }
       data = data || {};
-      if (lodash.isEmpty(data) || !data.email) return cb('No account to set');
-      storage.get('bitpayAccounts-' + network, function(err, bitpayAccounts) {
+      if (lodash.isEmpty(data) || !data.email || !data.acct) return cb('No account to set');
+      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
-        bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
-        bitpayAccounts[data.email]['bitpayApi-' + network] = bitpayAccounts[data.email]['bitpayApi-' + network] || {};
+        bitpayAccounts[data.email] = data.acct;
+        bitpayAccounts[data.email]['bitpayApi-' + network] = {};
         bitpayAccounts[data.email]['bitpayApi-' + network].token = data.token;
         storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
       });
@@ -267,12 +325,14 @@ angular.module('copayApp.services')
       $log.info('Storage upgraded for \'' + key + '\': ' + msg);
     };
 
+    // IMPORTANT: This function is designed to block execution until it completes.
+    // Ideally storage should not be used until it has been verified.
     function _upgrade(cb) {
       var errorCount = 0;
       var errorMessage = undefined;
       var keys = Object.keys(_upgraders).sort();
       var networks = ['livenet', 'testnet'];
-      keys.forEach(function(key) {
+      _asyncEach(keys, function(key, callback) {
         networks.forEach(function(network) {
           var storagekey = key.split('_')[1];
           _upgraders[key](storagekey, network, function(err, msg) {
@@ -282,10 +342,31 @@ angular.module('copayApp.services')
               errorMessage = errorCount + ' storage upgrade failures';
             }
             if (msg) _handleUpgradeSuccess(storagekey + '-' + network, msg);
+            callback();
           });
         });
+      }, function() {
+        //done
+        cb(errorMessage);
       });
-      cb(errorMessage);
+    };
+
+    function _asyncEach(iterableList, callback, done) {
+      var i = -1;
+      var length = iterableList.length;
+
+      function loop() {
+        i++;
+        if (i === length) {
+          done(); 
+          return;
+        } else if (i < length) {
+          callback(iterableList[i], loop);
+        } else {
+          return;
+        }
+      } 
+      loop();
     };
 
     root.tryToMigrate = function(cb) {
