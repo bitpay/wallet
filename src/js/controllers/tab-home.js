@@ -289,8 +289,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         if (err) return;
         if (lodash.isEmpty(data)) {
           $scope.bitpayCards = null;
-          // Ensure next step for cards is visible
-          storageService.setNextStep('BitpayCard', 'false', function(err) {});
           return;
         }
         $scope.bitpayCards = data;
