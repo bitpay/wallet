@@ -233,6 +233,13 @@ angular.module('copayApp.services')
             }
             storage.set('bitpayAccounts-v2-' + network, JSON.stringify(data), function(err) {
               if (err) return cb(err);
+              // Ensure next step for cards is visible
+              storage.get('bitpayAccounts-v2-' + network, function(err, data) {
+                if (err) return cb(err);
+                if (lodash.isEmpty(data)) {
+                  root.removeNextStep('BitpayCard', function(err) {});
+                }
+              });
               cb(null, 'removed invalid account records, please re-pair cards for these accounts:' + removed + '; ' +
                 'the following accounts validated OK: ' + (verified.length > 0 ? verified : 'none'));
             });
