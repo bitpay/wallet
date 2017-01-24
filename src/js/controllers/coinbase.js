@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('coinbaseController', function($scope, $timeout, $ionicModal, $log, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, externalLinkService) {
+angular.module('copayApp.controllers').controller('coinbaseController', function($scope, $timeout, $ionicModal, $ionicHistory, $log, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, externalLinkService) {
 
   var isNW = platformInfo.isNW;
   var isCordova = platformInfo.isCordova;
@@ -17,8 +17,14 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
         if (err || lodash.isEmpty(data)) {
           if (err) {
             $log.error(err);
+            var errorId = err.errors ? err.errors[0].id : null;
             err = err.errors ? err.errors[0].message : err;
-            popupService.showAlert('Error connecting to Coinbase', err);
+            popupService.showAlert('Error connecting to Coinbase', err, function() {
+              if (errorId == 'revoked_token') {
+                coinbaseService.logout(function() {});
+              }
+              $ionicHistory.goBack();
+            });
           }
           return;
         }
