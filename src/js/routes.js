@@ -988,44 +988,49 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.giftcards.amazon', {
-        url: '/amazon',
-        views: {
-          'tab-home@tabs': {
-            controller: 'amazonController',
-            templateUrl: 'views/amazon.html'
-          }
-        },
-        params: {
-          cardClaimCode: null
+      url: '/amazon',
+      views: {
+        'tab-home@tabs': {
+          controller: 'amazonController',
+          templateUrl: 'views/amazon.html'
         }
-      })
-      .state('tabs.giftcards.amazon.amount', {
-        url: '/amount',
-        views: {
-          'tab-home@tabs': {
-            controller: 'amountController',
-            templateUrl: 'views/amount.html'
-          }
-        },
-        params: {
-          isGiftCard: true,
-          toName: 'Amazon.com Gift Card'
+      }
+    })
+    .state('tabs.giftcards.amazon.cards', {
+      url: '/cards',
+      views: {
+        'tab-home@tabs': {
+          controller: 'amazonCardsController',
+          templateUrl: 'views/amazonCards.html'
         }
-      })
-      .state('tabs.giftcards.amazon.confirm', {
-        url: '/confirm/:toAmount/:toAddress/:description/:giftCardAmountUSD/:giftCardAccessKey/:giftCardInvoiceTime/:giftCardUUID',
-        views: {
-          'tab-home@tabs': {
-            controller: 'confirmController',
-            templateUrl: 'views/confirm.html'
-          }
-        },
-        params: {
-          isGiftCard: true,
-          toName: 'Amazon.com Gift Card',
-          paypro: null
+      },
+      params: {
+        cardClaimCode: null
+      }
+    })
+    .state('tabs.giftcards.amazon.amount', {
+      url: '/amount',
+      views: {
+        'tab-home@tabs': {
+          controller: 'amountController',
+          templateUrl: 'views/amount.html'
         }
-      })
+      },
+      params: {
+        nextStep: 'tabs.giftcards.amazon.buy',
+        currency: 'USD',
+        forceCurrency: true
+      }
+    })
+    .state('tabs.giftcards.amazon.buy', {
+      url: '/buy/:amount/:currency',
+      views: {
+        'tab-home@tabs': {
+          controller: 'buyAmazonController',
+          templateUrl: 'views/buyAmazon.html'
+        }
+      }
+    })
 
     /*
      *
