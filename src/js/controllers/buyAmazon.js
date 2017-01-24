@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService) {
+angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo) {
 
   var amount;
   var currency;
+  $scope.isCordova = platformInfo.isCordova;
 
   $scope.openExternalLink = function(url) {
     externalLinkService.open(url);
