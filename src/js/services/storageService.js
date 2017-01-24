@@ -157,7 +157,7 @@ angular.module('copayApp.services')
         }
         data = data || {};
         var upgraded = '';
-        _asyncEach(data, function(key, callback) {
+        _asyncEach(Object.keys(data), function(key, callback) {
           // Keys are account emails
           if (!data[key]['bitpayApi-' + network]) {
             // Needs upgrade
