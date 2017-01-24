@@ -121,18 +121,24 @@
     }
   }
   .release {
-  cursor: pointer;
-  cursor: hand;
-  background-color: #E9E9EC;
-  padding-top: 30px;
-  padding-bottom: 20px;
-  text-align: center;
-  color: #444;
-  i {
-    margin-top: 1px;
-    font-size: 20px;
-    margin-left: 10px;
-    position: absolute;
+    text-align: center;
+    .item {
+      width: 100%;
+    }
+    .title {
+      font-weight: 700;
+      color: #444;
+    }
+    .button {
+      width: 100%;
+      border: none;
+    }
+    .big-icon-svg {
+      > .bg {
+        box-shadow: none;
+      }
+      padding-top: 2rem;
+      padding-bottom: 0;
     }
   }
 

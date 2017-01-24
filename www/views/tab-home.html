@@ -10,9 +10,18 @@
      spinner="ios-small"
      on-refresh="onRefresh()">
    </ion-refresher>
-    <div class="release ng-hide" ng-show="newRelease" ng-click="openExternalLink()">
-      <span translate>An update to this app is available</span><span><i class="icon bp-arrow-right"></i></span>
+    <div class="list card release ng-hide" ng-show="newRelease">
+      <i class="item icon big-icon-svg">
+        <img src="img/icon-update.svg" class="bg"/>
+      </i>
+
+      <div class="item title" translate>Update available</div>
+
+      <div class="button" ng-click="openExternalLink()">
+        <span translate>Download</span>
+      </div>
     </div>
+
     <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div>
     <div class="list card homeTip" ng-if="homeTip">
       <div class="item item-icon-right item-heading">
