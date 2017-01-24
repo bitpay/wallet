@@ -280,11 +280,12 @@ angular.module('copayApp.services')
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
-        bitpayAccounts = bitpayAccounts || {};
-        bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
-        bitpayAccounts[data.email]['bitpayApi-' + network] = bitpayAccounts[data.email]['bitpayApi-' + network] || {};
-        bitpayAccounts[data.email]['bitpayApi-' + network].token = data.token;
-        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
+        // Ensure only the specified account is set (data.email)
+        var upgradedBitpayAccount = {};
+        upgradedBitpayAccount[data.email] = bitpayAccounts[data.email] || {};
+        upgradedBitpayAccount[data.email]['bitpayApi-' + network] = {};
+        upgradedBitpayAccount[data.email]['bitpayApi-' + network].token = data.token;
+        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(upgradedBitpayAccount), cb);
       });
     };
 
