@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesCoinbaseController', function($scope, $timeout, $state, $ionicHistory, lodash, ongoingProcess, popupService, coinbaseService) {
+angular.module('copayApp.controllers').controller('preferencesCoinbaseController', function($scope, $timeout, $log, $state, $ionicHistory, lodash, ongoingProcess, popupService, coinbaseService) {
 
   $scope.revokeToken = function() {
     popupService.showConfirm('Coinbase', 'Are you sure you would like to log out of your Coinbase account?', null, null, function(res) {
@@ -22,7 +22,15 @@ angular.module('copayApp.controllers').controller('preferencesCoinbaseController
       if (err || lodash.isEmpty(data)) {
         ongoingProcess.set('connectingCoinbase', false);
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          $log.error(err);
+          var errorId = err.errors ? err.errors[0].id : null;
+          err = err.errors ? err.errors[0].message : err;
+          popupService.showAlert('Error connecting to Coinbase', err, function() {
+            if (errorId == 'revoked_token') {
+              coinbaseService.logout(function() {});
+              $ionicHistory.goBack();
+            }
+          });
         }
         return;
       }
