@@ -54,6 +54,7 @@ angular.module('copayApp.controllers').controller('completeController', function
 
     if (!$scope.fromSettings) {
       $ionicConfig.views.swipeBackEnabled(false);
+      $ionicNavBarDelegate.showBackButton(false);
     } else {
       $ionicNavBarDelegate.showBackButton(true);
       $ionicConfig.views.swipeBackEnabled(true);
