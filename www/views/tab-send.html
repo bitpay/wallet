@@ -3,7 +3,7 @@
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
   <ion-content ng-show="!checkingBalance">
-    <div ng-if="hasFunds == false" class="zero-state">
+    <div ng-if="!hasFunds" class="zero-state">
       <div>
         <i class="icon zero-state-icon">
           <img src="img/tab-icons/ico-send-selected.svg"/>
@@ -56,17 +56,16 @@
         </div>
       </div>
 
-      <div class="card" ng-if="hasWallets && !oneWallet">
+      <div class="card" ng-if="showTransferCard">
         <div class="list">
           <div class="item item-heading">
             <span translate>Transfer to Wallet</span>
           </div>
-          <a class="item item-icon-left item-icon-right" ng-repeat="item in list" ng-if="hasWallets && item.isWallet" ng-click="goToAmount(item)">
-            <!-- <i ng-show="item.isWallet" class="icon ion-briefcase size-21" ng-style="{'color':item.color}"></i> -->
-            <i class="icon big-icon-svg" ng-if="item.isWallet">
-              <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
+          <a class="item item-icon-left item-icon-right" ng-repeat="wallet in wallets" ng-click="goToAmount(wallet)">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
             </i>
-            {{item.name}}
+            {{wallet.name}}
             <i class="icon bp-arrow-right"></i>
           </a>
         </div>

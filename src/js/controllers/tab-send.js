@@ -12,14 +12,23 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     currentContactsPage = 0;
     originalList = [];
 
-    var wallets = profileService.getWallets({
+    $scope.wallets = profileService.getWallets({
       onlyComplete: true
     });
-    $scope.hasWallets = lodash.isEmpty(wallets) ? false : true;
-    $scope.oneWallet = wallets.length == 1;
 
-    if (!$scope.oneWallet) {
-      lodash.each(wallets, function(v) {
+    $scope.hasWallets = lodash.isEmpty($scope.wallets) ? false : true;
+    var networkResult = lodash.map($scope.wallets, 'network');
+    var livenetResult = lodash.remove(networkResult, function(n) {
+      return n == 'testnet';
+    });
+    var testnetResult = lodash.remove(networkResult, function(n) {
+      return n == 'livenet';
+    });
+
+    $scope.showTransferCard = $scope.hasWallets && (livenetResult.length > 1 || testnetResult.length > 1);
+
+    if (!$scope.showTransferCard) {
+      lodash.each($scope.wallets, function(v) {
         originalList.push({
           color: v.color,
           name: v.name,
@@ -122,19 +131,16 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
     $scope.hasFunds = false;
 
-    var wallets = profileService.getWallets({
-      onlyComplete: true,
-    });
-
-    if (!wallets || !wallets.length) {
-      return $timeout(function() {
+    if (!$scope.wallets || $scope.wallets.length == 0) {
+      $timeout(function() {
         $scope.$apply();
       });
+      return;
     }
 
     $scope.checkingBalance = true;
     var index = 0;
-    lodash.each(wallets, function(w) {
+    lodash.each($scope.wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
 
         ++index;
@@ -142,14 +148,14 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           $log.error(err);
           // error updating the wallet. Probably a network error, do not show
           // the 'buy bitcoins' message.
-          
+
           $scope.hasFunds = true;
         } else if (status.availableBalanceSat > 0) {
           $scope.hasFunds = true;
           $rootScope.everHasFunds = true;
         }
 
-        if (index == wallets.length) {
+        if (index == $scope.wallets.length) {
           if ($scope.hasFunds != true) {
             $ionicScrollDelegate.freezeScroll(true);
           }
