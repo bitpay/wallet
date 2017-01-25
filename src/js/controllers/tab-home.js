@@ -32,8 +32,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             $log.warn(err);
             return;
           }
-
-          if (newRelease) $scope.newRelease = true;
+          if (newRelease) {
+            $scope.newRelease = true;
+            $scope.updateText = gettextCatalog.getString('There is a new version of ') + $scope.name + gettextCatalog.getString(' available');
+          }
         });
       }
 
@@ -213,7 +215,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
 
-            wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') :  bwcError.msg(err);
+            wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') : bwcError.msg(err);
 
             $log.error(err);
           } else {
