@@ -48,10 +48,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       testnet: false
     },
 
-    coinbase: {
-      enabled: true,
-      testnet: false
-    },
+    coinbaseV2: true,
 
     bitpayCard: {
       enabled: true
@@ -197,8 +194,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.glidera) {
           configCache.glidera = defaultConfig.glidera;
         }
-        if (!configCache.coinbase) {
-          configCache.coinbase = defaultConfig.coinbase;
+        if (!configCache.coinbaseV2) {
+          configCache.coinbaseV2 = defaultConfig.coinbaseV2;
         }
         if (!configCache.amazon) {
           configCache.amazon = defaultConfig.amazon;
