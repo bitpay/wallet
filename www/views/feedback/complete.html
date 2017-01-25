@@ -3,9 +3,13 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>{{'Share BitPay' | translate}}</ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button ng-show="!fromSettings" class="button no-border" ng-click="close()" translate>
+        Finish
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false" has-header="fromSettings">
-    <a class="close-button ng-hide" ng-show="!fromSettings" ng-click="close()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
     <div class="complete-layout">
       <div class="complete-layout__expand" ng-class="{'fade-in': !animate || socialsharing}">
         <div ng-show="fromSettings">
