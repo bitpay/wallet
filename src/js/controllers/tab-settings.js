@@ -26,7 +26,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
       $scope.bitpayCardEnabled = config.bitpayCard.enabled;
       $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-      $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
+      $scope.coinbaseEnabled = config.coinbaseV2 && !isWindowsPhoneApp;
 
       if ($scope.bitpayCardEnabled) {
         bitpayCardService.getBitpayDebitCards(function(err, cards) {

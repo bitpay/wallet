@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('buyandsellController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     configService.whenAvailable(function(config) {
-      $scope.isCoinbaseEnabled = config.coinbase.enabled;
+      $scope.isCoinbaseEnabled = config.coinbaseV2;
       $scope.isGlideraEnabled = config.glidera.enabled;
 
       if (!$scope.isCoinbaseEnabled && !$scope.isGlideraEnabled)
