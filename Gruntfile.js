@@ -216,7 +216,7 @@ module.exports = function(grunt) {
         appName: '<%= pkg.title %>',
         platforms: ['win64', 'osx64', 'linux64'],
         buildDir: './webkitbuilds',
-        version: '0.16.0',
+        version: '0.19.5',
         macIcns: './resources/<%= pkg.name %>/mac/app.icns',
         exeIco: './www/img/app/logo.ico',
         macPlist: {
