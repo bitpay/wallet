@@ -12,4 +12,19 @@
     border-bottom-width: 2px;
     border-bottom-color: #172565;
   }
+  input[type="password"] {
+    border: none;
+    margin-left: -5px;
+    padding-left: 4px;
+    &.incorrect {
+      padding-left: 3px;
+      border: 1px solid;
+      color: #C90505;
+    }
+    &.correct {
+      padding-left: 3px;
+      border: 1px solid;
+      color: #00901B;
+    }
+  }
 }
