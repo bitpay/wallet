@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       value: config.glidera.enabled
     };
     $scope.coinbaseEnabled = {
-      value: config.coinbase.enabled
+      value: config.coinbaseV2
     };
     $scope.recentTransactionsEnabled = {
       value: config.recentTransactions.enabled
@@ -72,9 +72,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
 
   $scope.coinbaseChange = function() {
     var opts = {
-      coinbase: {
-        enabled: $scope.coinbaseEnabled.value
-      }
+      coinbaseV2: $scope.coinbaseEnabled.value
     };
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
