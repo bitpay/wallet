@@ -11,14 +11,15 @@
       Sandbox version. Only for testing purpose
     </div>
 
-    <div class="m20t text-center" ng-click="updatePendingGiftCards()">
+    <div class="m20t text-center">
       <img src="img/GCs-logo-cllb.png" alt="Amazon.com Gift Card" width="200">
       <div class="size-12 m10t"><b>Only</b> redeemable on www.amazon.com (USA website)</div>
     </div>
 
     <div ng-if="!giftCards" class="m20t padding text-center">
 
-      <button class="button button-standard button-primary" ui-sref="tabs.giftcards.amazon.amount">
+      <button class="button button-standard button-primary" 
+              ui-sref="tabs.giftcards.amazon.amount">
         Buy now
       </button>
 
@@ -29,11 +30,18 @@
     </div>
 
     <div class="m20t" ng-if="giftCards">
-      <div class="card list">
+      <div class="list card">
         <a class="item item-icon-left item-icon-right" href
           ui-sref="tabs.giftcards.amazon.amount">
-          <i class="icon ion-bag"></i>
+          <i class="icon ion-ios-pricetags-outline"></i>
           Buy Gift Card
+          <i class="icon bp-arrow-right"></i>
+        </a>
+
+        <a class="item item-icon-right item-icon-left"
+           ui-sref="tabs.giftcards.amazon.cards">
+          <i class="icon ion-ios-folder-outline"></i>
+          Your cards
           <i class="icon bp-arrow-right"></i>
         </a>
       </div>
@@ -48,29 +56,6 @@
           GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP
           of <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates.
           No expiration date or service fees.
-      </div>
-
-      <div class="card">
-        <div class="item item-heading">
-          Your cards
-        </div>
-        <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
-             ng-click="openCardModal(item)"
-             class="item item-avatar">
-          <img src="img/a-smile_color_btn.png" alt="{{id}}" width="40">
-          <h2 ng-if="item.claimCode">
-            {{item.amount | currency : '$ ' : 2}}
-          </h2>
-          <h2 ng-if="!item.claimCode">
-            -
-          </h2>
-          <p>
-            <span class="text-warning" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
-            <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
-            <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
-            <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Fulfilled'">{{item.date | amTimeAgo}}</span>
-          </p>
-        </div>
       </div>
     </div>
   </ion-content>

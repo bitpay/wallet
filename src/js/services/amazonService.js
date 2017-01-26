@@ -40,13 +40,13 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     };
   };
 
-  root.getEnvironment = function() {
+  root.getNetwork = function() {
     _setCredentials();
     return credentials.NETWORK;
   };
 
   root.savePendingGiftCard = function(gc, opts, cb) {
-    var network = root.getEnvironment();
+    var network = root.getNetwork();
     storageService.getAmazonGiftCards(network, function(err, oldGiftCards) {
       if (lodash.isString(oldGiftCards)) {
         oldGiftCards = JSON.parse(oldGiftCards);
@@ -74,7 +74,7 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   root.getPendingGiftCards = function(cb) {
-    var network = root.getEnvironment();
+    var network = root.getNetwork();
     storageService.getAmazonGiftCards(network, function(err, giftCards) {
       var _gcds = giftCards ? JSON.parse(giftCards) : null;
       return cb(err, _gcds);
