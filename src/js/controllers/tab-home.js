@@ -34,7 +34,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           }
           if (newRelease) {
             $scope.newRelease = true;
-            $scope.updateText = gettextCatalog.getString('There is a new version of ') + $scope.name + gettextCatalog.getString(' available');
+            $scope.updateText = gettextCatalog.getString('There is a new version of {{appName}} available', {
+              appName: $scope.name
+            });
           }
         });
       }
