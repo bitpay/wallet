@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
     amazonService.cancelGiftCard($scope.card, function(err, data) {
       ongoingProcess.set('cancelingGiftCard', false);
       if (err) {
-        popupService.showAlert('Error', bwcError.msg(err));
+        popupService.showAlert('Error canceling gift card', bwcError.msg(err));
         return;
       }
       $scope.card.cardStatus = data.cardStatus;
