@@ -2,15 +2,15 @@
 
 angular.module('copayApp.controllers').controller('backupController',
   function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, bwcService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    $scope.viewTitle = wallet.name || wallet.credentials.walletName;
-    $scope.n = wallet.n;
+    $scope.wallet = profileService.getWallet($stateParams.walletId);
+    $scope.viewTitle = $scope.wallet.name || $scope.wallet.credentials.walletName;
+    $scope.n = $scope.wallet.n;
     var keys;
 
-    $scope.credentialsEncrypted = wallet.isPrivKeyEncrypted();
+    $scope.credentialsEncrypted = $scope.wallet.isPrivKeyEncrypted();
 
     var isDeletedSeed = function() {
-      if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted)
+      if (!$scope.wallet.credentials.mnemonic && !$scope.wallet.credentials.mnemonicEncrypted)
         return true;
 
       return false;
@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('backupController',
 
       $scope.mnemonicWords = words.split(/[\u3000\s]+/);
       $scope.shuffledMnemonicWords = shuffledWords($scope.mnemonicWords);
-      $scope.mnemonicHasPassphrase = wallet.mnemonicHasPassphrase();
+      $scope.mnemonicHasPassphrase = $scope.wallet.mnemonicHasPassphrase();
       $scope.useIdeograms = words.indexOf("\u3000") >= 0;
       $scope.data.passphrase = null;
       $scope.customWords = [];
@@ -115,9 +115,9 @@ angular.module('copayApp.controllers').controller('backupController',
 
           try {
             walletClient.seedFromMnemonic(customSentence, {
-              network: wallet.credentials.network,
+              network: $scope.wallet.credentials.network,
               passphrase: passphrase,
-              account: wallet.credentials.account
+              account: $scope.wallet.credentials.account
             });
           } catch (err) {
             walletClient.credentials.xPrivKey = lodash.repeat('x', 64);
@@ -130,7 +130,7 @@ angular.module('copayApp.controllers').controller('backupController',
           }
         }
 
-        profileService.setBackupFlag(wallet.credentials.walletId);
+        profileService.setBackupFlag($scope.wallet.credentials.walletId);
         return cb();
       }, 1);
     };
@@ -195,7 +195,7 @@ angular.module('copayApp.controllers').controller('backupController',
         return;
       }
 
-      walletService.getKeys(wallet, function(err, k) {
+      walletService.getKeys($scope.wallet, function(err, k) {
         if (err || !k) {
           $log.error('Could not get keys: ', err);
           $ionicHistory.goBack();
