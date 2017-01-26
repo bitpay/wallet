@@ -17,15 +17,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
 
     $scope.hasWallets = lodash.isEmpty($scope.wallets) ? false : true;
-    var networkResult = lodash.map($scope.wallets, 'network');
-    var livenetResult = lodash.remove(networkResult, function(n) {
-      return n == 'testnet';
-    });
-    var testnetResult = lodash.remove(networkResult, function(n) {
-      return n == 'livenet';
-    });
+    var networkResult = lodash.countBy($scope.wallets, 'network');
 
-    $scope.showTransferCard = $scope.hasWallets && (livenetResult.length > 1 || testnetResult.length > 1);
+    $scope.showTransferCard = $scope.hasWallets && (networkResult.livenet > 1 || networkResult.testnet > 1);
 
     if (!$scope.showTransferCard) {
       lodash.each($scope.wallets, function(v) {
