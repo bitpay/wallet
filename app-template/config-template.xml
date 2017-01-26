@@ -105,6 +105,7 @@
       <splash src="resources/*PACKAGENAME*/ios/splash/Default-667h.png" width="750" height="1334"/>
       <splash src="resources/*PACKAGENAME*/ios/splash/Default-736h.png" width="1242" height="2208"/>
       <splash src="resources/*PACKAGENAME*/ios/splash/Default-Landscape-736h.png" width="2208" height="1242"/>
+      <allow-navigation href="*" />
     </platform>
 
     <platform name="android">
