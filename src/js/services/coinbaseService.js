@@ -211,7 +211,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
-  root.init = function(cb) {
+  root.init = lodash.throttle(function(cb) {
     if (lodash.isEmpty(credentials.CLIENT_ID)) {
       return cb('Coinbase is Disabled');
     }
@@ -243,7 +243,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
         });
       }
     });
-  };
+  }, 10000);
 
   var _get = function(endpoint, token) {
     return {
