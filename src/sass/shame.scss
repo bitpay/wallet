@@ -2,6 +2,13 @@
  * Our goal is to delete this file. Search the regex: /class=".*CLASS.*?"/
  */
 
+ .enable_text_select {
+   -webkit-user-select: auto;
+   -moz-user-select: auto;
+   -ms-user-select: auto;
+   user-select: auto;
+ }
+
 .box-notification {
   padding: 0.5rem;
   border: 1px solid;
