@@ -298,7 +298,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.bitpayCards = data;
         $timeout(function() {
           $scope.$digest();
-        }, 100);
+        });
       });
       bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
         if (err) return;
@@ -307,6 +307,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
         $scope.cardsHistory = data;
+        $timeout(function() {
+          $scope.$digest();
+        });
       });
     };
 
