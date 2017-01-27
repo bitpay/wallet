@@ -33,8 +33,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
           if (err) $log.error(err);
           $scope.bitpayCards = cards && cards.length > 0;
           $timeout(function() {
-            $scope.$apply();
-          }, 100);
+            $scope.$digest();
+          });
         });
       }
 
@@ -43,8 +43,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
           if (err) $log.error(err);
           $scope.glideraToken = token;
           $timeout(function() {
-            $scope.$apply();
-          }, 100);
+            $scope.$digest();
+          });
         });
       }
 
@@ -53,8 +53,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         coinbaseService.getStoredToken(function(at) {
           $scope.coinbaseToken = at;
           $timeout(function() {
-            $scope.$apply();
-          }, 100);
+            $scope.$digest();
+          });
         });
       } 
 
