@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
       $scope.coinbaseEnabled = config.coinbaseV2 && !isWindowsPhoneApp;
 
       if ($scope.bitpayCardEnabled) {
-        bitpayCardService.getBitpayDebitCards(function(err, cards) {
+        bitpayCardService.getCards(function(err, cards) {
           if (err) $log.error(err);
           $scope.bitpayCards = cards && cards.length > 0;
         });

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService, appIdentityService, bitpayService) {
+angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService, appIdentityService, bitpayService, lodash) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.secret) {
@@ -18,27 +18,23 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
           return;
         }
         if (paired) {
-          bitpayCardService.fetchBitpayDebitCards(apiContext, function(err, data) {
-
+          bitpayCardService.sync(apiContext, function(err, cards) {
             if (err) {
-              popupService.showAlert(gettextCatalog.getString('Error fetching Debit Cards'), err);
+              popupService.showAlert(gettextCatalog.getString('Error updating Debit Cards'), err);
               return;
             }
             // Set flag for nextStep
             storageService.setNextStep('BitpayCard', 'true', function(err) {});
-            // Save data
-            bitpayCardService.setBitpayDebitCards(data, function(err) {
-              if (err) return;
-              $ionicHistory.nextViewOptions({
-                disableAnimate: true
-              });
-              $state.go('tabs.home').then(function() {
-                if (data.cards[0]) {
-                  $state.transitionTo('tabs.bitpayCard', {
-                    id: data.cards[0].id
-                  });
-                }
-              });
+
+            $ionicHistory.nextViewOptions({
+              disableAnimate: true
+            });
+            $state.go('tabs.home').then(function() {
+              if (cards[0]) {
+                $state.transitionTo('tabs.bitpayCard', {
+                  id: cards[0].id
+                });
+              }
             });
           });
         }

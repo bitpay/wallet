@@ -10,7 +10,11 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   $scope.network = bitpayService.getEnvironment().network;
 
   var updateHistoryFromCache = function(cb) {
-    bitpayCardService.getBitpayDebitCardsHistory($scope.cardId, function(err, data) {
+    // TODO no cache for now
+    $log.warn ('TODO: cache');
+    return cb();
+
+    bitpayCardService.getHistory($scope.cardId, function(err, data) {
       if (err ||  lodash.isEmpty(data)) return cb();
       $scope.historyCached = true;
       self.bitpayCardTransactionHistory = data.transactions;
@@ -86,15 +90,18 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         self.bitpayCardCurrentBalance = history.currentCardBalance;
 
         if ($scope.dateRange.value == 'last30Days') {
-          $log.debug('BitPay Card: store cache history');
-          var cacheHistory = {
-            balance: history.currentCardBalance,
-            transactions: history.txs
-          };
-          bitpayCardService.setBitpayDebitCardsHistory($scope.cardId, cacheHistory, {}, function(err) {
-            if (err) $log.error(err);
-            $scope.historyCached = true;
-          });
+
+          // TODO CACHE
+          //
+          // $log.debug('BitPay Card: store cache history');
+          // var cacheHistory = {
+          //   balance: history.currentCardBalance,
+          //   transactions: history.txs
+          // };
+          // bitpayCardService.setHistory($scope.cardId, cacheHistory, {}, function(err) {
+          //   if (err) $log.error(err);
+          //   $scope.historyCached = true;
+          // });
         }
         $timeout(function() {
           $scope.$apply();
@@ -147,7 +154,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       updateHistoryFromCache(function() {
         self.update();
       });
-      bitpayCardService.getBitpayDebitCards(function(err, cards) {
+      bitpayCardService.getCards(function(err, cards) {
         if (err) return;
         $scope.card = lodash.find(cards, function(card) {
           return card.eid == $scope.cardId;
