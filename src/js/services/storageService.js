@@ -203,16 +203,18 @@ angular.module('copayApp.services')
         var toRemove = [];
         _asyncEach(Object.keys(data), function(key, callback) {
           // Verify account API data
-          if (!data[key]['bitpayApi-' + network] ||
+          if (!data[key] ||
+            !data[key]['bitpayApi-' + network] ||
             !data[key]['bitpayApi-' + network].token) {
             // Invalid entry - one or more keys are missing
             toRemove.push(key);
             return callback();
           }
           // Verify debit cards
-          if (Array.isArray(data[key]['bitpayDebitCards-' + network])) {
+          if (data[key]['bitpayDebitCards-' + network] && Array.isArray(data[key]['bitpayDebitCards-' + network])) {
             for (var i = 0; i < data[key]['bitpayDebitCards-' + network].length; i++) {
-              if (!data[key]['bitpayDebitCards-' + network][i].token ||
+              if (!data[key]['bitpayDebitCards-' + network][i] ||
+                !data[key]['bitpayDebitCards-' + network][i].token ||
                 !data[key]['bitpayDebitCards-' + network][i].eid ||
                 !data[key]['bitpayDebitCards-' + network][i].id ||
                 !data[key]['bitpayDebitCards-' + network][i].lastFourDigits) {
