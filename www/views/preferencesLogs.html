@@ -4,7 +4,7 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content>
+  <ion-content overflow-scroll="true">
     <div class="settings-button-group">
       <button class="button button-standard button-primary" style="margin-top: 1rem" copy-to-clipboard="prepare()">
         <i class="icon ion-clipboard"></i>
@@ -16,7 +16,7 @@
       </button>
     </div>
     <div class="list">
-      <div class="item item-text-wrap">
+      <div class="item item-text-wrap enable_text_select">
         <ul>
           <li ng-repeat="l in logs">
             <span ng-class="{'energized': l.level=='warn', 'dark': l.level=='debug', 'positive': l.level=='info', 'assertive': l.level=='error' }">
