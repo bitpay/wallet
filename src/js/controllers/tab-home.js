@@ -285,7 +285,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     var bitpayCardCache = function() {
-      bitpayCardService.getBitpayDebitCards(function(err, data) {
+      bitpayCardService.getCards(function(err, data) {
         if (err) return;
         if (lodash.isEmpty(data)) {
           $scope.bitpayCards = null;
@@ -296,14 +296,16 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           $scope.$digest();
         }, 100);
       });
-      bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
-        if (err) return;
-        if (lodash.isEmpty(data)) {
-          $scope.cardsHistory = null;
-          return;
-        }
-        $scope.cardsHistory = data;
-      });
+
+      // TODO
+      // bitpayCardService.getCardsHistoryCache(function(err, data) {
+      //   if (err) return;
+      //   if (lodash.isEmpty(data)) {
+      //     $scope.cardsHistory = null;
+      //     return;
+      //   }
+      //   $scope.cardsHistory = data;
+      // });
     };
 
     $scope.onRefresh = function() {

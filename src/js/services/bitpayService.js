@@ -136,12 +136,9 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
   };
 
   var setBitpayAccount = function(accountData, cb) {
-    var data = JSON.stringify(accountData);
-    storageService.setBitpayAccount(root.getEnvironment().network, data, function(err) {
-      if (err) return cb(err);
-      return cb();
-    });
+    storageService.setBitpayAccount(root.getEnvironment().network, accountData, cb);
   };
+
 
   var _get = function(endpoint) {
     return {
