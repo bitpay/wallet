@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, $timeout, appConfigService, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog) {
 
   var updateConfig = function() {
     var isCordova = platformInfo.isCordova;
@@ -32,6 +32,9 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         bitpayCardService.getBitpayDebitCards(function(err, cards) {
           if (err) $log.error(err);
           $scope.bitpayCards = cards && cards.length > 0;
+          $timeout(function() {
+            $scope.$apply();
+          }, 100);
         });
       }
 
@@ -39,6 +42,9 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         storageService.getGlideraToken(glideraService.getEnvironment(), function(err, token) {
           if (err) $log.error(err);
           $scope.glideraToken = token;
+          $timeout(function() {
+            $scope.$apply();
+          }, 100);
         });
       }
 
@@ -46,8 +52,11 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         coinbaseService.setCredentials();
         coinbaseService.getStoredToken(function(at) {
           $scope.coinbaseToken = at;
+          $timeout(function() {
+            $scope.$apply();
+          }, 100);
         });
-      }
+      } 
 
     });
   };
