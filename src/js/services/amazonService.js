@@ -1,14 +1,15 @@
 'use strict';
-angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo, nextStepsService) {
+angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo, nextStepsService, homeIntegrationsService) {
   var root = {};
   var credentials = {};
 
-  var _setCredentials = function() {
+  var setCredentials = function() {
     /*
      * Development: 'testnet'
      * Production: 'livenet'
      */
-    credentials.NETWORK = 'livenet';
+    //credentials.NETWORK = 'livenet';
+    credentials.NETWORK = 'testnet';
 
     if (credentials.NETWORK == 'testnet') {
       credentials.BITPAY_API_URL = "https://test.bitpay.com";
@@ -18,7 +19,6 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   var _getBitPay = function(endpoint) {
-    _setCredentials();
     return {
       method: 'GET',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -29,7 +29,6 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   var _postBitPay = function(endpoint, data) {
-    _setCredentials();
     return {
       method: 'POST',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -41,7 +40,6 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   root.getNetwork = function() {
-    _setCredentials();
     return credentials.NETWORK;
   };
 
@@ -68,10 +66,6 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
         return cb(err);
       });
     });
-
-    // TODO
-    // Show pending task from the UI
-    // storageService.setNextStep('AmazonGiftCards', 'true', function(err) {});
   };
 
   root.getPendingGiftCards = function(cb) {
@@ -146,14 +140,26 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   var register = function () {
-    nextStepsService.register({
-      name: 'amazon',
-      title: 'Buy a gift card',
-      icon: 'icon-amazon',
-      sref: 'tabs.giftcards.amazon',
+    storageService.getAmazonGiftCards(root.getNetwork(), function(err, giftCards) {
+      if (giftCards) {
+        homeIntegrationsService.register({
+          name: 'amazon',
+          title: 'Amazon Gift Cards',
+          icon: 'icon-amazon',
+          sref: 'tabs.giftcards.amazon',
+        });
+      } else {
+        nextStepsService.register({
+          name: 'amazon',
+          title: 'Buy a gift card',
+          icon: 'icon-amazon',
+          sref: 'tabs.giftcards.amazon',
+        });
+      }
     });
   };
 
+  setCredentials();
   register();
 
   return root;

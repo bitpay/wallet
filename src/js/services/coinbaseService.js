@@ -79,6 +79,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     if (data && data.access_token && data.refresh_token) {
       storageService.setCoinbaseToken(credentials.NETWORK, data.access_token, function() {
         storageService.setCoinbaseRefreshToken(credentials.NETWORK, data.refresh_token, function() {
+          buyAndSellService.updateLink('coinbase', true);
           return cb(null, data.access_token);
         });
       });
@@ -712,6 +713,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   root.logout = function(cb) {
     storageService.removeCoinbaseToken(credentials.NETWORK, function() {
+      buyAndSellService.updateLink('coinbase', false);
       storageService.removeCoinbaseRefreshToken(credentials.NETWORK, function() {
         storageService.removeCoinbaseTxs(credentials.NETWORK, function() {
           return cb();
@@ -726,9 +728,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       if (err) return;
 
       buyAndSellService.register({
-        name: 'Coinbase',
+        name: 'coinbase',
         logo: 'img/coinbase-logo.png',
         sref: 'tabs.buyandsell.coinbase',
+        configSref: 'tabs.preferences.coinbase',
         linked: isActive,
       });
     });
