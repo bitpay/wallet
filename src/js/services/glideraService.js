@@ -17,7 +17,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
      * Development: 'testnet'
      * Production: 'livenet'
      */
-//    credentials.NETWORK = 'livenet';
+    //    credentials.NETWORK = 'livenet';
     credentials.NETWORK = 'testnet';
 
     if (credentials.NETWORK == 'testnet') {
@@ -55,6 +55,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
 
   root.removeToken = function(cb) {
     storageService.removeGlideraToken(credentials.NETWORK, function() {
+      buyAndSellService.updateLink('glidera', false);
       return cb();
     });
   };
@@ -299,6 +300,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     getToken(function(err, accessToken) {
       if (err || !accessToken) return cb();
       else {
+        buyAndSellService.updateLink('glidera', true);
+
         root.getAccessTokenPermissions(accessToken, function(err, p) {
           if (err) {
             return cb(err);
@@ -319,13 +322,13 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     storageService.getGlideraToken(credentials.NETWORK, function(err, token) {
       if (err) return cb(err);
 
-console.log('[glideraService.js.326:token:]',token); //TODO
-    buyAndSellService.register({
-        name: 'Glidera',
+      buyAndSellService.register({
+        name: 'glidera',
         logo: 'img/glidera-logo.png',
         sref: 'tabs.buyandsell.glidera',
+        configSref: 'tabs.preferences.glidera',
         linked: !!token,
-    });
+      });
     });
   };
 

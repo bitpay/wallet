@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -96,8 +96,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
       $scope.nextStepsItems = nextStepsService.get();
       $scope.buyAndSellItems = buyAndSellService.getLinked();
-
-console.log('[tab-home.js.99]', $scope.buyAndSellItems); //TODO
+      $scope.homeIntegrations = homeIntegrationsService.get();
 
       configService.whenAvailable(function() {
         var config = configService.getSync();

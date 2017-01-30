@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog, buyAndSellService) {
 
   var updateConfig = function() {
     var isCordova = platformInfo.isCordova;
@@ -16,6 +16,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
 
     $scope.wallets = profileService.getWallets();
+    $scope.buyAndSellServices = buyAndSellService.getLinked();
 
     configService.whenAvailable(function(config) {
       $scope.unitName = config.wallet.settings.unitName;
@@ -25,27 +26,11 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
       };
 
       $scope.bitpayCardEnabled = config.bitpayCard.enabled;
-      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-      $scope.coinbaseEnabled = config.coinbaseV2 && !isWindowsPhoneApp;
 
       if ($scope.bitpayCardEnabled) {
         bitpayCardService.getCards(function(err, cards) {
           if (err) $log.error(err);
           $scope.bitpayCards = cards && cards.length > 0;
-        });
-      }
-
-      if ($scope.glideraEnabled) {
-        storageService.getGlideraToken(glideraService.getEnvironment(), function(err, token) {
-          if (err) $log.error(err);
-          $scope.glideraToken = token;
-        });
-      }
-
-      if ($scope.coinbaseEnabled) {
-        coinbaseService.setCredentials();
-        coinbaseService.getStoredToken(function(at) {
-          $scope.coinbaseToken = at;
         });
       }
 

@@ -5,46 +5,59 @@ angular.module('copayApp.services').factory('buyAndSellService', function($log, 
   var services = [];
   var linkedServices = [];
 
-  root.updateNextSteps = function() {
+  root.update = function() {
 
     var newLinked = lodash.filter(services, function(x) {
       return x.linked;
     });
 
-
     // This is to preserve linkedServices pointer
-    while(linkedServices.length)
+    while (linkedServices.length)
       linkedServices.pop();
 
-    while(newLinked.length)
+    while (newLinked.length)
       linkedServices.push(newLinked.pop());
     //
 
-console.log('[buyAndSellService.js.10:linkedServices:]',linkedServices); //TODO
-
-    $log.debug('buyAndSell Service, updating nextSteps. linked/total: ' + linkedServices.length + '/'+  services.length);
+    $log.debug('buyAndSell Service, updating nextSteps. linked/total: ' + linkedServices.length + '/' + services.length);
 
     if (linkedServices.length == 0) {
       nextStepsService.register({
-        name: 'Buy and Sell',
+        title: 'Buy and Sell',
+        name: 'buyandsell',
         icon: 'icon-buy-bitcoin',
         sref: 'tabs.buyandsell',
       });
+    } else {
+      nextStepsService.unregister({
+        name: 'buyandsell',
+      });
     };
-
 
     $timeout(function() {
       $ionicScrollDelegate.resize();
     }, 10);
   };
 
-  var updateNextStepsDebunced = lodash.debounce(root.updateNextSteps, 1000);
+  var updateNextStepsDebunced = lodash.debounce(root.update, 1000);
 
   root.register = function(serviceInfo) {
     services.push(serviceInfo);
     $log.info('Adding Buy and Sell service:' + serviceInfo.name + ' linked:' + serviceInfo.linked);
     updateNextStepsDebunced();
   };
+
+
+  root.updateLink = function(name, linked) {
+    var service = lodash.find(services, function(x) {
+      return x.name == name;
+    });
+    $log.info('Updating Buy and Sell service:' + name + ' linked:' + linked);
+    service.linked = linked
+
+    root.update();
+  };
+
 
   root.get = function() {
     return services;
