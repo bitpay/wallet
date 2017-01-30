@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, platformInfo, storageService) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, platformInfo, storageService, buyAndSellService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
 
-  var _setCredentials = function() {
+  var setCredentials = function() {
     if (!$window.externalServices || !$window.externalServices.glidera) {
       return;
     }
@@ -16,7 +17,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
      * Development: 'testnet'
      * Production: 'livenet'
      */
-    credentials.NETWORK = 'livenet';
+//    credentials.NETWORK = 'livenet';
+    credentials.NETWORK = 'testnet';
 
     if (credentials.NETWORK == 'testnet') {
       credentials.HOST = glidera.sandbox.host;
@@ -44,24 +46,20 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   root.getEnvironment = function() {
-    _setCredentials();
     return credentials.NETWORK;
   };
 
   root.getOauthCodeUrl = function() {
-    _setCredentials();
     return credentials.HOST + '/oauth2/auth?response_type=code&client_id=' + credentials.CLIENT_ID + '&redirect_uri=' + credentials.REDIRECT_URI;
   };
 
   root.removeToken = function(cb) {
-    _setCredentials();
     storageService.removeGlideraToken(credentials.NETWORK, function() {
       return cb();
     });
   };
 
   root.getToken = function(code, cb) {
-    _setCredentials();
     var req = {
       method: 'POST',
       url: credentials.HOST + '/api/v1/oauth/token',
@@ -90,7 +88,6 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   var _get = function(endpoint, token) {
-    _setCredentials();
     return {
       method: 'GET',
       url: credentials.HOST + '/api/v1' + endpoint,
@@ -208,7 +205,6 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   var _post = function(endpoint, token, twoFaCode, data) {
-    _setCredentials();
     return {
       method: 'POST',
       url: credentials.HOST + '/api/v1' + endpoint,
@@ -285,7 +281,6 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   root.init = function(accessToken, cb) {
-    _setCredentials();
     $log.debug('Init Glidera...');
 
     var glidera = {
@@ -317,6 +312,24 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     });
   };
 
-  return root;
 
+  var register = function() {
+    if (isWindowsPhoneApp) return;
+
+    storageService.getGlideraToken(credentials.NETWORK, function(err, token) {
+      if (err) return cb(err);
+
+console.log('[glideraService.js.326:token:]',token); //TODO
+    buyAndSellService.register({
+        name: 'Glidera',
+        logo: 'img/glidera-logo.png',
+        sref: 'tabs.buyandsell.glidera',
+        linked: !!token,
+    });
+    });
+  };
+
+  setCredentials();
+  register();
+  return root;
 });

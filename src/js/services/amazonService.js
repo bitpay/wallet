@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo) {
+angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo, nextStepsService) {
   var root = {};
   var credentials = {};
 
@@ -69,8 +69,9 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       });
     });
 
+    // TODO
     // Show pending task from the UI
-    storageService.setNextStep('AmazonGiftCards', 'true', function(err) {});
+    // storageService.setNextStep('AmazonGiftCards', 'true', function(err) {});
   };
 
   root.getPendingGiftCards = function(cb) {
@@ -144,6 +145,16 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
   };
 
-  return root;
+  var register = function () {
+    nextStepsService.register({
+      name: 'amazon',
+      title: 'Buy a gift card',
+      icon: 'icon-amazon',
+      sref: 'tabs.giftcards.amazon',
+    });
+  };
 
+  register();
+
+  return root;
 });
