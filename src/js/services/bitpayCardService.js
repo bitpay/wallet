@@ -209,7 +209,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         return cb(err);
       }
       register();
-      storageService.removeBitpayDebitCardHistory(cardId, cb);
+      storageService.removeBalanceCache(cardId, cb);
     });
   };
 
