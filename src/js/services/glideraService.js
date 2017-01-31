@@ -17,8 +17,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
      * Development: 'testnet'
      * Production: 'livenet'
      */
-    //    credentials.NETWORK = 'livenet';
-    credentials.NETWORK = 'testnet';
+    credentials.NETWORK = 'livenet';
+    //credentials.NETWORK = 'testnet';
 
     if (credentials.NETWORK == 'testnet') {
       credentials.HOST = glidera.sandbox.host;
