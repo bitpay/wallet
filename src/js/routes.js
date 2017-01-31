@@ -1088,7 +1088,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 
     uxLanguage.init();
 

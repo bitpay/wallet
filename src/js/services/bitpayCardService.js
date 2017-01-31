@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService) {
   var root = {};
 
   var _setError = function(msg, e) {
@@ -66,6 +66,8 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       });
 
       storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, apiContext.pairData.email, cards, function(err) {
+        register();
+
         return cb(err, cards);
       });
     }, function(data) {
@@ -193,6 +195,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         $log.error('Error removing BitPay debit card: ' + err);
         return cb(err);
       }
+      register();
       storageService.removeBitpayDebitCardHistory(cardId, cb);
     });
   };
@@ -1244,6 +1247,26 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     'bp002': 'default'
   };
 
+  var nextStepItem = {
+    name: 'bitpaycard',
+    title: 'Add Bitpay VISA Card',
+    icon: 'icon-bitpay-card',
+    sref: 'tabs.bitpayCardIntro',
+  };
+
+
+  var register = function() {
+    root.getCards(function(err, cards) {
+      if (lodash.isEmpty(cards)) {
+        nextStepsService.register(nextStepItem);
+      } else {
+        nextStepsService.unregister(nextStepItem);
+        // homeIntegrationsService.register(homeItem);
+      }
+    });
+  };
+
+  register();
   return root;
 
 });
