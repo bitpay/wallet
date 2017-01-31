@@ -106,7 +106,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
         if ($scope.recentTransactionsEnabled) getNotifications();
 
-        if (!config.hideNextSteps.enabled) {
+        if (config.hideNextSteps.enabled) {
+          $scope.nextStepsItems = null;
+        } else {
           $scope.nextStepsItems = nextStepsService.get();
         }
 
