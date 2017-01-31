@@ -1,21 +1,30 @@
-<ion-view>
+<ion-view id="buy-and-sell">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title translate>Buy and sell</ion-nav-title>
+    <ion-nav-title translate>Buy &amp; Sell Bitcoin</ion-nav-title>
   </ion-nav-bar>
   <ion-content>
     <div class="list">
+      <div class="explain">
+        <i class="icon buy-and-sell-icon">
+          <img src="/img/icon-bitcoin.svg"/>
+        </i>
+        <div class="explain-heading" translate>Connect an Exchange</div>
+        <div class="explain-description" translate>Buy and sell bitcoin directly from your wallet by connecting an exchange account.</div>
+      </div>
       <div class="item item-divider"></div>
 
-      <div class="item item-icon-right" ui-sref="tabs.buyandsell.coinbase" ng-show="isCoinbaseEnabled">
+      <a class="item item-icon-right" ui-sref="tabs.buyandsell.coinbase" ng-show="isCoinbaseEnabled">
         <img src="img/coinbase-logo.png" width="90">
+        <span class="item-note" translate>International</span>
         <i class="icon bp-arrow-right"></i>
-      </div>
-      <div class="item item-icon-right" ui-sref="tabs.buyandsell.glidera" ng-show="isGlideraEnabled">
+      </a>
+      <a class="item item-icon-right" ui-sref="tabs.buyandsell.glidera" ng-show="isGlideraEnabled">
         <img src="img/glidera-logo.png" width="90">
+        <span class="item-note" translate>US Only</span>
         <i class="icon bp-arrow-right"></i>
-      </div>
+      </a>
     </div>
   </ion-content>
 </ion-view>
