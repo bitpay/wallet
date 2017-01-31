@@ -1,37 +1,32 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
   var isNW = platformInfo.isNW;
+  var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
 
-  root.priceSensitivity = [
-    {
-      value: 0.5,
-      name: '0.5%'
-    },
-    {
-      value: 1,
-      name: '1%'
-    },
-    {
-      value: 2,
-      name: '2%'
-    },
-    {
-      value: 5,
-      name: '5%'
-    },
-    {
-      value: 10,
-      name: '10%'
-    }
-  ];
-  
+  root.priceSensitivity = [{
+    value: 0.5,
+    name: '0.5%'
+  }, {
+    value: 1,
+    name: '1%'
+  }, {
+    value: 2,
+    name: '2%'
+  }, {
+    value: 5,
+    name: '5%'
+  }, {
+    value: 10,
+    name: '10%'
+  }];
+
   root.selectedPriceSensitivity = root.priceSensitivity[1];
 
-  root.setCredentials = function() {
+  var setCredentials = function() {
 
     if (!$window.externalServices || !$window.externalServices.coinbase) {
       return;
@@ -46,19 +41,19 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     credentials.NETWORK = 'livenet';
 
     // Coinbase permissions
-    credentials.SCOPE = ''
-      + 'wallet:accounts:read,'
-      + 'wallet:addresses:read,'
-      + 'wallet:addresses:create,'
-      + 'wallet:user:read,'
-      + 'wallet:user:email,'
-      + 'wallet:buys:read,'
-      + 'wallet:buys:create,'
-      + 'wallet:sells:read,'
-      + 'wallet:sells:create,'
-      + 'wallet:transactions:read,'
-      + 'wallet:transactions:send,'
-      + 'wallet:payment-methods:read';
+    credentials.SCOPE = '' +
+      'wallet:accounts:read,' +
+      'wallet:addresses:read,' +
+      'wallet:addresses:create,' +
+      'wallet:user:read,' +
+      'wallet:user:email,' +
+      'wallet:buys:read,' +
+      'wallet:buys:create,' +
+      'wallet:sells:read,' +
+      'wallet:sells:create,' +
+      'wallet:transactions:read,' +
+      'wallet:transactions:send,' +
+      'wallet:payment-methods:read';
 
     // NW has a bug with Window Object
     if (isCordova) {
@@ -72,8 +67,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       credentials.API = coinbase.sandbox.api;
       credentials.CLIENT_ID = coinbase.sandbox.client_id;
       credentials.CLIENT_SECRET = coinbase.sandbox.client_secret;
-    }
-    else {
+    } else {
       credentials.HOST = coinbase.production.host;
       credentials.API = coinbase.production.api;
       credentials.CLIENT_ID = coinbase.production.client_id;
@@ -85,6 +79,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     if (data && data.access_token && data.refresh_token) {
       storageService.setCoinbaseToken(credentials.NETWORK, data.access_token, function() {
         storageService.setCoinbaseRefreshToken(credentials.NETWORK, data.refresh_token, function() {
+          buyAndSellService.updateLink('coinbase', true);
           return cb(null, data.access_token);
         });
       });
@@ -107,8 +102,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   root.getAvailableCurrency = function() {
     var config = configService.getSync().wallet.settings;
     // ONLY "USD"
-    switch(config.alternativeIsoCode) {
-      default : return 'USD'
+    switch (config.alternativeIsoCode) {
+      default: return 'USD'
     };
   };
 
@@ -117,7 +112,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = config.unitToSatoshi;
     var amountUnitStr;
-    
+
     // IF 'USD'
     if (currency) {
       amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
@@ -128,19 +123,19 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       amount = (amountSat * satToBtc).toFixed(8);
       currency = 'BTC';
     }
-    
+
     return [amount, currency, amountUnitStr];
   };
 
   root.getOauthCodeUrl = function() {
-    return credentials.HOST
-      + '/oauth/authorize?response_type=code&client_id='
-      + credentials.CLIENT_ID
-      + '&redirect_uri='
-      + credentials.REDIRECT_URI
-      + '&state=SECURE_RANDOM&scope='
-      + credentials.SCOPE
-      + '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
+    return credentials.HOST +
+      '/oauth/authorize?response_type=code&client_id=' +
+      credentials.CLIENT_ID +
+      '&redirect_uri=' +
+      credentials.REDIRECT_URI +
+      '&state=SECURE_RANDOM&scope=' +
+      credentials.SCOPE +
+      '&meta[send_limit_amount]=1000&meta[send_limit_currency]=USD&meta[send_limit_period]=day';
   };
 
   root.getToken = function(code, cb) {
@@ -152,9 +147,9 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
         'Accept': 'application/json'
       },
       data: {
-        grant_type : 'authorization_code',
+        grant_type: 'authorization_code',
         code: code,
-        client_id : credentials.CLIENT_ID,
+        client_id: credentials.CLIENT_ID,
         client_secret: credentials.CLIENT_SECRET,
         redirect_uri: credentials.REDIRECT_URI
       }
@@ -163,7 +158,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     $http(req).then(function(data) {
       $log.info('Coinbase Authorization Access Token: SUCCESS');
       // Show pending task from the UI
-      storageService.setNextStep('BuyAndSell', 'true', function(err) {});
       _afterTokenReceived(data.data, cb);
     }, function(data) {
       $log.error('Coinbase Authorization Access Token: ERROR ' + data.statusText);
@@ -180,8 +174,8 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
         'Accept': 'application/json'
       },
       data: {
-        grant_type : 'refresh_token',
-        client_id : credentials.CLIENT_ID,
+        grant_type: 'refresh_token',
+        client_id: credentials.CLIENT_ID,
         client_secret: credentials.CLIENT_SECRET,
         redirect_uri: credentials.REDIRECT_URI,
         refresh_token: refreshToken
@@ -211,6 +205,19 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
+  root.isActive = function(cb) {
+
+    if (isWindowsPhoneApp) 
+      return cb();
+
+    if (lodash.isEmpty(credentials.CLIENT_ID))
+      return cb();
+
+    storageService.getCoinbaseToken(credentials.NETWORK, function(err, accessToken) {
+      return cb(err, !!accessToken);
+    });
+  }
+
   root.init = lodash.throttle(function(cb) {
     if (lodash.isEmpty(credentials.CLIENT_ID)) {
       return cb('Coinbase is Disabled');
@@ -230,7 +237,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
                   if (err) return cb(err);
                   _getMainAccountId(newToken, function(err, accountId) {
                     if (err) return cb(err);
-                    return cb(null, {accessToken: newToken, accountId: accountId});
+                    return cb(null, {
+                      accessToken: newToken,
+                      accountId: accountId
+                    });
                   });
                 });
               });
@@ -238,7 +248,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
               return cb(err);
             }
           } else {
-            return cb(null, {accessToken: accessToken, accountId: accountId});
+            return cb(null, {
+              accessToken: accessToken,
+              accountId: accountId
+            });
           }
         });
       }
@@ -402,7 +415,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var data = {
       amount: data.amount,
       currency: data.currency,
-      payment_method: data.payment_method || null,
+      payment_method: data.payment_method ||  null,
       commit: data.commit || false,
       quote: data.quote || false
     };
@@ -483,7 +496,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   // Pending transactions
-  
+
   root.savePendingTransaction = function(ctx, opts, cb) {
     _savePendingTransaction(ctx, opts, cb);
   };
@@ -516,7 +529,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     storageService.getCoinbaseTxs(credentials.NETWORK, function(err, txs) {
       txs = txs ? JSON.parse(txs) : {};
       coinbasePendingTransactions.data = lodash.isEmpty(txs) ? null : txs;
-    
+
       root.init(function(err, data) {
         if (err || lodash.isEmpty(data)) {
           if (err) $log.error(err);
@@ -529,7 +542,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
           if ((dataFromStorage.type == 'sell' && dataFromStorage.status == 'completed') ||
             (dataFromStorage.type == 'buy' && dataFromStorage.status == 'completed') ||
             dataFromStorage.status == 'error' ||
-            (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) 
+            (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed'))
             return;
           root.getTransaction(accessToken, accountId, txId, function(err, tx) {
             if (err || lodash.isEmpty(tx) || (tx.data && tx.data.error)) {
@@ -590,10 +603,11 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.updatePendingTransactions = lodash.throttle(function() {
-    $log.debug('Updating pending transactions...');
-    root.setCredentials();
-    var pendingTransactions = { data: {} };
-    root.getPendingTransactions(pendingTransactions); 
+    $log.debug('Updating coinbase pending transactions...');
+    var pendingTransactions = {
+      data: {}
+    };
+    root.getPendingTransactions(pendingTransactions);
   }, 20000);
 
   var _updateTxs = function(coinbasePendingTransactions) {
@@ -699,6 +713,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   root.logout = function(cb) {
     storageService.removeCoinbaseToken(credentials.NETWORK, function() {
+      buyAndSellService.updateLink('coinbase', false);
       storageService.removeCoinbaseRefreshToken(credentials.NETWORK, function() {
         storageService.removeCoinbaseTxs(credentials.NETWORK, function() {
           return cb();
@@ -707,6 +722,32 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
-  return root;
+  var register = function() {
 
+    root.isActive(function(err, isActive){
+      if (err) return;
+
+      buyAndSellService.register({
+        name: 'coinbase',
+        logo: 'img/coinbase-logo.png',
+        sref: 'tabs.buyandsell.coinbase',
+        configSref: 'tabs.preferences.coinbase',
+        linked: isActive,
+      });
+    });
+  };
+
+  setCredentials();
+  register();
+
+  $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+    if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+      root.isActive(function(err,isActive){
+        // Update Coinbase
+        if (isActive)
+          root.updatePendingTransactions();
+      });
+    }
+  });
+  return root;
 });
