@@ -5,7 +5,7 @@
       <i class="icon bp-arrow-down" ng-show="hide"></i>
     </div>
     <div ng-show="!hide">
-      <div ng-repeat="service in services">
+      <div ng-repeat="service in services track by $index">
         <a ui-sref="{{service.sref}}" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
           <i class="icon big-icon-svg">
             <div class="bg {{service.icon}}"></div>

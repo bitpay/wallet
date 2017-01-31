@@ -5,7 +5,7 @@
       <i class="icon bp-arrow-down" ng-show="hide"></i>
     </div>
     <div ng-show="!hide">
-      <div ng-repeat="service in services">
+      <div ng-repeat="service in services track by $index">
         <a ui-sref="{{service.sref}}" class="item item-sub item-icon-left item-big-icon-left item-icon-right next-step">
           <i class="icon big-icon-svg">
             <div class="bg {{service.icon}}"></div>
@@ -16,14 +16,4 @@
       </div>
     </div>
   </div>
-
-      <!--  -->
-      <!-- <a ui&#45;sref="tabs.bitpayCardIntro" ng&#45;if="!externalServices.BitpayCard &#38;&#38; bitpayCardEnabled" class="item item&#45;sub item&#45;icon&#45;left item&#45;big&#45;icon&#45;left item&#45;icon&#45;right next&#45;step"> -->
-      <!--   <i class="icon big&#45;icon&#45;svg"> -->
-      <!--     <div class="bg icon&#45;bitpay&#45;card"></div> -->
-      <!--   </i> -->
-      <!--   <span translate>Add BitPay Visa&#38;reg; Card</span> -->
-      <!--   <i class="icon bp&#45;arrow&#45;right"></i> -->
-      <!-- </a> -->
-      <!-- </a> -->
 
