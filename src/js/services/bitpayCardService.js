@@ -115,11 +115,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
             transactions = data.data.data || {};
             transactions['txs'] = _processTransactions(invoices, transactions.transactionList);
 
-            // TODO CACHE?
-            // update cache?
-            // if (lodash.isEmpty(opts)) {
-            //   root.setHistoryCache(cardId, transactions, function() {});
-            // }
+            root.setLastKnownBalance(cardId, transactions.currentCardBalance, function() {});
 
             return cb(data.data.error, transactions);
           }, function(data) {
@@ -179,15 +175,32 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     storageService.getBitpayDebitCards(bitpayService.getEnvironment().network, cb);
   };
 
-  // TODO??
-  // root.getHistoryCache = function(cardId, cb) {
-  //   storageService.getBitpayDebitCardHistory(cardId, cb);
-  // };
-  //
-  // root.setHistoryCache = function(cardId, data, cb) {
-  //   storageService.setBitpayDebitCardHistory(cardId, data, cb);
-  // };
-  //
+  root.getLastKnownBalance = function(cardId, cb) {
+     storageService.getBalanceCache(cardId, cb);
+  };
+
+  root.addLastKnownBalance = function(card, cb) {
+    var now =  Math.floor(Date.now()/1000);
+    var showRange = 600 ; // 10min;
+    
+    root.getLastKnownBalance(card.eid, function(err, data){
+      if (data) {
+        data = JSON.parse(data);
+        card.balance = data.balance;
+        card.updatedOn = ( data.updatedOn < now - showRange) ? data.updatedOn : null;
+      }
+      return cb();
+    });
+  };
+
+  root.setLastKnownBalance = function(cardId, balance, cb) {
+
+    storageService.setBalanceCache(cardId, {
+      balance: balance,
+      updatedOn: Math.floor(Date.now()/1000),
+    }, cb);
+  };
+
 
   root.remove = function(cardId, cb) {
     storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, cardId, function(err) {
@@ -211,25 +224,33 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   };
 
 
-  root.get = function(cb) {
+  root.get = function(opts, cb) {
     root.getCards(function(err, cards) {
       if (err) return;
+
       if (lodash.isEmpty(cards)) {
         return cb();
       }
-        // TODO
-        // bitpayCardService.getCardsHistoryCache(function(err, data) {
-        //   if (err) return;
-        //   if (lodash.isEmpty(data)) {
-        //     $scope.cardsHistory = null;
-        //     return;
-        //   }
-        //   $scope.cardsHistory = data;
-        // });
+
+      // Async, no problem
+      lodash.each(cards, function(x){
+
+        if (opts.cardId) {
+          if (opts.cardId != x.eid) return;
+        }
+
+        root.addLastKnownBalance(x, function() {});
+
+        if (!opts.noRefresh) {
+          root.getHistory(x.id, {}, function(err, data) {
+            if (err) return;
+            root.addLastKnownBalance(x, function() {});
+          });
+        }
+      });
 
       return cb(null, cards);
     });
-
   };
 
   /*
@@ -1282,8 +1303,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       if (lodash.isEmpty(cards)) {
         nextStepsService.register(nextStepItem);
       } else {
-        nextStepsService.unregister(nextStepItem);
-        // homeIntegrationsService.register(homeItem);
+        nextStepsService.unregister(nextStepItem.name);
       }
     });
   };

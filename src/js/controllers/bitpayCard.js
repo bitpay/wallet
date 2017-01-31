@@ -9,20 +9,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
   $scope.network = bitpayService.getEnvironment().network;
 
-  var updateHistoryFromCache = function(cb) {
-    // TODO no cache for now
-    $log.warn ('TODO: cache');
-    return cb();
-
-    bitpayCardService.getHistory($scope.cardId, function(err, data) {
-      if (err ||  lodash.isEmpty(data)) return cb();
-      $scope.historyCached = true;
-      self.bitpayCardTransactionHistory = data.transactions;
-      self.bitpayCardCurrentBalance = data.balance;
-      return cb();
-    });
-  };
-
   var setDateRange = function(preset) {
     var startDate, endDate;
     preset = preset ||  'last30Days';
@@ -49,13 +35,19 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   var setGetStarted = function(history, cb) {
-    if (lodash.isEmpty(history.transactionList)) {
-      var dateRange = setDateRange('all');
-      bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
-        if (lodash.isEmpty(history.transactionList)) return cb(true);
-        return cb(false);
-      });
-    } else return cb(false);
+
+    // Is the card new?
+    if (!lodash.isEmpty(history.transactionList)) 
+      return cb();
+
+    var dateRange = setDateRange('all');
+    bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
+
+      if (!err && lodash.isEmpty(history.transactionList)) 
+        self.getStated=true;
+        
+      return cb();
+    });
   };
 
   this.update = function() {
@@ -63,18 +55,18 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
     $scope.loadingHistory = true;
     bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
+
       $scope.loadingHistory = false;
 
       if (err) {
         $log.error(err);
         self.bitpayCardTransactionHistory = null;
-        self.bitpayCardCurrentBalance = null;
+        self.balance = null;
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get transactions'));
         return;
       }
 
-      setGetStarted(history, function(getStarted) {
-        self.getStarted = getStarted;
+      setGetStarted(history, function() {
 
         var txs = lodash.clone(history.txs);
         runningBalance = parseFloat(history.endingBalance);
@@ -87,13 +79,13 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           _runningBalance(txs[i]);
         }
         self.bitpayCardTransactionHistory = txs;
-        self.bitpayCardCurrentBalance = history.currentCardBalance;
+        self.balance = history.currentCardBalance;
+        self.updatedOn = null;
 
         if ($scope.dateRange.value == 'last30Days') {
 
-          // TODO CACHE
-          //
-          // $log.debug('BitPay Card: store cache history');
+          // TODO?
+          // $log.debug('BitPay Card: storing cache history');
           // var cacheHistory = {
           //   balance: history.currentCardBalance,
           //   transactions: history.txs
@@ -143,24 +135,25 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.cardId = data.stateParams.id;
+
     if (!$scope.cardId) {
-      var msg = gettextCatalog.getString('Bad param');
       $ionicHistory.nextViewOptions({
         disableAnimate: true
       });
       $state.go('tabs.home');
-      popupService.showAlert(gettextCatalog.getString('Error'), msg);
-    } else {
-      updateHistoryFromCache(function() {
-        self.update();
-      });
-      bitpayCardService.getCards(function(err, cards) {
-        if (err) return;
-        $scope.card = lodash.find(cards, function(card) {
-          return card.eid == $scope.cardId;
-        });
-      });
     }
-  });
 
+    bitpayCardService.get({
+      cardId: $scope.cardId,
+      noRefresh: true,
+    }, function(err, cards) {
+
+      if (cards && cards[0]) {
+        self.lastFourDigits = cards[0].lastFourDigits;
+        self.balance = cards[0].balance;
+        self.updatedOn = cards[0].updatedOn;
+      }
+      self.update();
+    });
+  });
 });
