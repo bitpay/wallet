@@ -14,17 +14,21 @@
    };
 
    root.unregister = function(serviceName) {
+
+     var newS = lodash.filter(services, function(x) {
+       return x.name != serviceName;
+     });
+
+     // Found?
+     if (newS.length == services.length) return;
+
      $log.info('Removing NextSteps entry:' + serviceName);
-    var newS = lodash.filter(services, function(x) {
-      return x.name!=serviceName;
-    });
+     // This is to preserve services pointer
+     while (services.length)
+       services.pop();
 
-    // This is to preserve services pointer
-    while(services.length)
-      services.pop();
-
-    while(newS.length)
-      services.push(newS.pop());
+     while (newS.length)
+       services.push(newS.pop());
    };
 
    root.get = function() {
