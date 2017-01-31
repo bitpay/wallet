@@ -94,7 +94,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       ];
 
 
-      $scope.nextStepsItems = nextStepsService.get();
       $scope.buyAndSellItems = buyAndSellService.getLinked();
       $scope.homeIntegrations = homeIntegrationsService.get();
 
@@ -107,7 +106,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
         if ($scope.recentTransactionsEnabled) getNotifications();
 
-        if ($scope.bitpayCardEnabled) bitpayCardCache();
+        if (!config.hideNextSteps.enabled) {
+          $scope.nextStepsItems = nextStepsService.get();
+        }
+
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();
