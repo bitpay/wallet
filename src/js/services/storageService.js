@@ -345,15 +345,15 @@ angular.module('copayApp.services')
     };
 
     root.setBalanceCache = function(cardId, data, cb) {
-      storage.set('bitpayDebitCardBalance-' + cardId, data, cb);
+      storage.set('balanceCache-' + cardId, data, cb);
     };
 
     root.getBalanceCache = function(cardId, cb) {
-      storage.get('bitpayDebitCardBalance-' + cardId, cb);
+      storage.get('balanceCache-' + cardId, cb);
     };
 
-    root.removeBitpayDebitCardHistory = function(cardId, cb) {
-      storage.remove('bitpayDebitCardHistory-' + cardId, cb);
+    root.removeBalanceCache = function(cardId, cb) {
+      storage.remove('balanceCache-' + cardId, cb);
     };
 
     //   cards: [
@@ -452,17 +452,34 @@ angular.module('copayApp.services')
           allAccounts = JSON.parse(allAccountsStr);
         } catch (e) {};
 
+        var anyMigration;
+
         lodash.each(allAccounts, function(account, email) {
 
           // Migrate old `'bitpayApi-' + network` key, if exists
           if (!account.token && account['bitpayApi-' + network].token) {
+
             $log.info('Migrating all bitpayApi-network branch');
-            account = account['bitpayApi-' + network];
+            account.token = account['bitpayApi-' + network].token;
+            account.cards = lodash.clone(account['bitpayApi-' + network].cards);
+            if (!account.cards) {
+              account.cards = lodash.clone(account['bitpayDebitCards-' + network]);
+            }
+
+            delete account['bitpayDebitCards-' + network];
             delete account['bitpayApi-' + network];
+            anyMigration = true;
+
           }
         });
 
-        return cb(err, allAccounts);
+        if (anyMigration) {
+          storage.set('bitpayAccounts-v2-' + network, allAccounts, function(){
+            return cb(err, allAccounts);
+          });
+        } else 
+          return cb(err, allAccounts);
+
       });
     };
 
