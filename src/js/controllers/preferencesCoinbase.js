@@ -16,7 +16,6 @@ angular.module('copayApp.controllers').controller('preferencesCoinbaseController
   };
 
   $scope.$on("$ionicView.enter", function(event, data){
-    coinbaseService.setCredentials();
     ongoingProcess.set('connectingCoinbase', true);
     coinbaseService.init(function(err, data) {
       if (err || lodash.isEmpty(data)) {

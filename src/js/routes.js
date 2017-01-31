@@ -1088,7 +1088,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 
     uxLanguage.init();
 
@@ -1153,50 +1153,40 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         });
       }
 
-      $log.info('Verifying storage...');
-      storageService.verify(function(err) {
+      $log.info('Init profile...');
+      // Try to open local profile
+      profileService.loadAndBindProfile(function(err) {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true
+        });
         if (err) {
-          $log.error('Storage failed to verify: ' + err);
-          // TODO - what next?
-        } else {
-          $log.info('Storage OK');
-        }
-
-        $log.info('Init profile...');
-        // Try to open local profile
-        profileService.loadAndBindProfile(function(err) {
-          $ionicHistory.nextViewOptions({
-            disableAnimate: true
-          });
-          if (err) {
-            if (err.message && err.message.match('NOPROFILE')) {
-              $log.debug('No profile... redirecting');
+          if (err.message && err.message.match('NOPROFILE')) {
+            $log.debug('No profile... redirecting');
+            $state.go('onboarding.welcome');
+          } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
+            if (lodash.isEmpty(profileService.getWallets())) {
+              $log.debug('No wallets and no disclaimer... redirecting');
               $state.go('onboarding.welcome');
-            } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
-              if (lodash.isEmpty(profileService.getWallets())) {
-                $log.debug('No wallets and no disclaimer... redirecting');
-                $state.go('onboarding.welcome');
-              } else {
-                $log.debug('Display disclaimer... redirecting');
-                $state.go('onboarding.disclaimer', {
-                  resume: true
-                });
-              }
             } else {
-              throw new Error(err); // TODO
+              $log.debug('Display disclaimer... redirecting');
+              $state.go('onboarding.disclaimer', {
+                resume: true
+              });
             }
           } else {
-            profileService.storeProfileIfDirty();
-            $log.debug('Profile loaded ... Starting UX.');
-            scannerService.gentleInitialize();
-            $state.go('tabs.home');
+            throw new Error(err); // TODO
           }
+        } else {
+          profileService.storeProfileIfDirty();
+          $log.debug('Profile loaded ... Starting UX.');
+          scannerService.gentleInitialize();
+          $state.go('tabs.home');
+        }
 
-          // After everything have been loaded, initialize handler URL
-          $timeout(function() {
-            openURLService.init();
-          }, 1000);
-        });
+        // After everything have been loaded, initialize handler URL
+        $timeout(function() {
+          openURLService.init();
+        }, 1000);
       });
     });
 
