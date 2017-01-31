@@ -3,19 +3,31 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   var root = {};
   var credentials = {};
 
-  var setCredentials = function() {
-    /*
-     * Development: 'testnet'
-     * Production: 'livenet'
-     */
-    //credentials.NETWORK = 'livenet';
-    credentials.NETWORK = 'testnet';
+  /*
+   * Development: 'testnet'
+   * Production: 'livenet'
+   */
+  //credentials.NETWORK = 'livenet';
+  credentials.NETWORK = 'testnet';
 
-    if (credentials.NETWORK == 'testnet') {
-      credentials.BITPAY_API_URL = "https://test.bitpay.com";
-    } else {
-      credentials.BITPAY_API_URL = "https://bitpay.com";
-    };
+  if (credentials.NETWORK == 'testnet') {
+    credentials.BITPAY_API_URL = "https://test.bitpay.com";
+  } else {
+    credentials.BITPAY_API_URL = "https://bitpay.com";
+  };
+
+  var homeItem = {
+    name: 'amazon',
+    title: 'Amazon Gift Cards',
+    icon: 'icon-amazon',
+    sref: 'tabs.giftcards.amazon',
+  };
+
+  var nextStepItem = {
+    name: 'amazon',
+    title: 'Buy a gift card',
+    icon: 'icon-amazon',
+    sref: 'tabs.giftcards.amazon',
   };
 
   var _getBitPay = function(endpoint) {
@@ -63,6 +75,9 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       inv = JSON.stringify(inv);
 
       storageService.setAmazonGiftCards(network, inv, function(err) {
+
+        homeIntegrationsService.register(homeItem);
+        nextStepsService.unregister(nextStepItem.name);
         return cb(err);
       });
     });
@@ -139,28 +154,16 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
   };
 
-  var register = function () {
+  var register = function() {
     storageService.getAmazonGiftCards(root.getNetwork(), function(err, giftCards) {
       if (giftCards) {
-        homeIntegrationsService.register({
-          name: 'amazon',
-          title: 'Amazon Gift Cards',
-          icon: 'icon-amazon',
-          sref: 'tabs.giftcards.amazon',
-        });
+        homeIntegrationsService.register(homeItem);
       } else {
-        nextStepsService.register({
-          name: 'amazon',
-          title: 'Buy a gift card',
-          icon: 'icon-amazon',
-          sref: 'tabs.giftcards.amazon',
-        });
+        nextStepsService.register(nextStepItem);
       }
     });
   };
 
-  setCredentials();
   register();
-
   return root;
 });

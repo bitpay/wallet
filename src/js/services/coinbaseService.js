@@ -603,7 +603,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.updatePendingTransactions = lodash.throttle(function() {
-    $log.debug('Updating pending transactions...');
+    $log.debug('Updating coinbase pending transactions...');
     var pendingTransactions = {
       data: {}
     };

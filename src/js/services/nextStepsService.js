@@ -14,7 +14,7 @@
    };
 
    root.unregister = function(serviceName) {
-console.log('[nextStepsService.js.16:serviceName:] UNR',serviceName); //TODO
+     $log.info('Removing NextSteps entry:' + serviceName);
     var newS = lodash.filter(services, function(x) {
       return x.name!=serviceName;
     });
@@ -25,7 +25,6 @@ console.log('[nextStepsService.js.16:serviceName:] UNR',serviceName); //TODO
 
     while(newS.length)
       services.push(newS.pop());
-console.log('[nextStepsService.js.26:services:]',services); //TODO
    };
 
    root.get = function() {
