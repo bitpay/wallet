@@ -60,8 +60,8 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
 
         n.eid = x.eid;
         n.id = x.id;
-        n.lastFourDigits =  x.lastFourDigits;
-        n.token =  x.token;
+        n.lastFourDigits = x.lastFourDigits;
+        n.token = x.token;
         cards.push(n);
       });
 
@@ -188,7 +188,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   //   storageService.setBitpayDebitCardHistory(cardId, data, cb);
   // };
   //
-  
+
   root.remove = function(cardId, cb) {
     storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, cardId, function(err) {
       if (err) {
@@ -208,6 +208,28 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     }, function(data) {
       return cb(_setError('BitPay Error: Get Rates', data));
     });
+  };
+
+
+  root.get = function(cb) {
+    root.getCards(function(err, cards) {
+      if (err) return;
+      if (lodash.isEmpty(cards)) {
+        return cb();
+      }
+        // TODO
+        // bitpayCardService.getCardsHistoryCache(function(err, data) {
+        //   if (err) return;
+        //   if (lodash.isEmpty(data)) {
+        //     $scope.cardsHistory = null;
+        //     return;
+        //   }
+        //   $scope.cardsHistory = data;
+        // });
+
+      return cb(null, cards);
+    });
+
   };
 
   /*
