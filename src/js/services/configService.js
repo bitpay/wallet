@@ -43,24 +43,12 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     // External services
-    glidera: {
-      enabled: true,
-      testnet: false
-    },
-
-    coinbaseV2: true,
-
-    bitpayCard: {
-      enabled: true
-    },
-
-    amazon: {
-      enabled: true
-    },
-
-
     recentTransactions: {
       enabled: true,
+    },
+
+    hideNextSteps: {
+      enabled: false,
     },
 
     rates: {

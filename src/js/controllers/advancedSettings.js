@@ -3,26 +3,17 @@
 angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $timeout, $ionicScrollDelegate) {
 
   var updateConfig = function() {
-
     var config = configService.getSync();
 
     $scope.spendUnconfirmed = {
       value: config.wallet.spendUnconfirmed
     };
-    $scope.bitpayCardEnabled = {
-      value: config.bitpayCard.enabled
-    };
-    $scope.amazonEnabled = {
-      value: config.amazon.enabled
-    };
-    $scope.glideraEnabled = {
-      value: config.glidera.enabled
-    };
-    $scope.coinbaseEnabled = {
-      value: config.coinbaseV2
-    };
     $scope.recentTransactionsEnabled = {
       value: config.recentTransactions.enabled
+    };
+
+    $scope.hideNextSteps = {
+      value: config.hideNextSteps.enabled
     };
   };
 
@@ -37,42 +28,11 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.bitpayCardChange = function() {
+  $scope.nextStepsChange = function() {
     var opts = {
-      bitpayCard: {
-        enabled: $scope.bitpayCardEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.amazonChange = function() {
-    var opts = {
-      amazon: {
-        enabled: $scope.amazonEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.glideraChange = function() {
-    var opts = {
-      glidera: {
-        enabled: $scope.glideraEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.coinbaseChange = function() {
-    var opts = {
-      coinbaseV2: $scope.coinbaseEnabled.value
+      hideNextSteps: {
+        enabled:  $scope.hideNextSteps.value
+      },
     };
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
