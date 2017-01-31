@@ -98,7 +98,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.buyAndSellItems = buyAndSellService.getLinked();
       $scope.homeIntegrations = homeIntegrationsService.get();
 
-      bitpayCardService.get(function(err, cards) {
+      bitpayCardService.get({}, function(err, cards) {
         $scope.bitpayCardItems = cards;
       });
 
@@ -210,6 +210,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           } else {
             wallet.error = null;
             wallet.status = status;
+
+            // TODO service refactor? not in profile service
+            profileService.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr, function() {});
           }
           if (++j == i) {
             updateTxps();

@@ -25,6 +25,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         isoCode: config.wallet.settings.alternativeIsoCode
       };
 
+      // TODO Move this to a generic service, like buyAndSell.
       $scope.bitpayCardEnabled = config.bitpayCard.enabled;
 
       if ($scope.bitpayCardEnabled) {

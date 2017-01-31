@@ -747,6 +747,31 @@ angular.module('copayApp.services')
       storageService.storeProfile(root.profile, cb);
     };
 
+    root.getLastKnownBalance = function(wid, cb) {
+      storageService.getBalanceCache(wid, cb);
+    };
+
+    root.addLastKnownBalance = function(wallet, cb) {
+      var now = Math.floor(Date.now() / 1000);
+      var showRange = 600; // 10min;
+
+      root.getLastKnownBalance(wallet.id, function(err, data) {
+        if (data) {
+          data = JSON.parse(data);
+          wallet.cachedBalance = data.balance;
+          wallet.cachedBalanceUpdatedOn = (data.updatedOn < now - showRange) ? data.updatedOn : null;
+        }
+        return cb();
+      });
+    };
+
+    root.setLastKnownBalance = function(wid, balance, cb) {
+      storageService.setBalanceCache(wid, {
+        balance: balance,
+        updatedOn: Math.floor(Date.now() / 1000),
+      }, cb);
+    };
+
     root.getWallets = function(opts) {
 
       if (opts && !lodash.isObject(opts))
@@ -780,6 +805,12 @@ angular.module('copayApp.services')
         });
       } else {}
 
+      // Add cached balance async
+      lodash.each(ret, function(x) {
+        root.addLastKnownBalance(x, function() {});
+      });
+
+
       return lodash.sortBy(ret, [
 
         function(x) {
@@ -796,7 +827,7 @@ angular.module('copayApp.services')
     root.getNotifications = function(opts, cb) {
       opts = opts || {};
 
-      var TIME_STAMP = 60 * 60 * 6; 
+      var TIME_STAMP = 60 * 60 * 6;
       var MAX = 30;
 
       var typeFilter = {
