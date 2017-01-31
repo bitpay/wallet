@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -97,6 +97,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.nextStepsItems = nextStepsService.get();
       $scope.buyAndSellItems = buyAndSellService.getLinked();
       $scope.homeIntegrations = homeIntegrationsService.get();
+
+      bitpayCardService.get(function(err, cards) {
+        $scope.bitpayCardItems = cards;
+      });
 
       configService.whenAvailable(function() {
         var config = configService.getSync();
@@ -252,29 +256,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
-    var bitpayCardCache = function() {
-      bitpayCardService.getCards(function(err, data) {
-        if (err) return;
-        if (lodash.isEmpty(data)) {
-          $scope.bitpayCards = null;
-          return;
-        }
-        $scope.bitpayCards = data;
-        $timeout(function() {
-          $scope.$digest();
-        }, 100);
-      });
-
-      // TODO
-      // bitpayCardService.getCardsHistoryCache(function(err, data) {
-      //   if (err) return;
-      //   if (lodash.isEmpty(data)) {
-      //     $scope.cardsHistory = null;
-      //     return;
-      //   }
-      //   $scope.cardsHistory = data;
-      // });
-    };
 
     $scope.onRefresh = function() {
       $timeout(function() {

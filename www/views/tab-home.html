@@ -95,27 +95,7 @@
         </a>
       </div>
     </div>
-
-    <div class="list card" ng-if="bitpayCardEnabled && bitpayCards[0] && externalServices.BitpayCard">
-      <div class="item item-icon-right item-heading">
-        <span translate>Cards</span>
-        <a ui-sref="tabs.bitpayCardIntro"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
-      </div>
-      <div>
-        <a ng-repeat="card in bitpayCards"
-           ui-sref="tabs.bitpayCard({id:card.id})"
-           class="item item-sub item-icon-left item-big-icon-left item-icon-right">
-          <i class="icon big-icon-svg">
-            <div class="bg icon-bitpay-card"></div>
-          </i>
-          <span>BitPay Visa&reg; Card ({{card.lastFourDigits}})</span>
-          <p>{{cardsHistory[card.id].balance ? '$' + cardsHistory[card.id].balance : 'Add funds to get started'|translate}}</p>
-          <i class="icon bp-arrow-right"></i>
-        </a>
-      </div>
-    </div>
-
-
+    <div class="ng-hide" ng-show="wallets[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
     <div class="ng-hide" ng-show="wallets[0] && buyAndSellItems.length>0" ng-include="'views/includes/buyAndSellCard.html'"></div>
     <div class="ng-hide" ng-show="homeIntegrations.length>0" ng-include="'views/includes/homeIntegrations.html'"></div>
     <div class="ng-hide" ng-show="nextStepsItems.length>0" ng-include="'views/includes/nextSteps.html'"></div>
