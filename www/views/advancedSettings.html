@@ -7,24 +7,6 @@
 
   <ion-content>
     <div class="settings-list list">
-      <div class="item item-divider" translate>Enabled Integrations</div>
-
-      <ion-toggle ng-show="!isWP" ng-model="bitpayCardEnabled.value" toggle-class="toggle-balanced" ng-change="bitpayCardChange()">
-        <span class="toggle-label" translate>Enable BitPay Card Integration</span>
-      </ion-toggle>
-
-      <ion-toggle ng-show="!isWP" ng-model="amazonEnabled.value" toggle-class="toggle-balanced" ng-change="amazonChange()">
-        <span class="toggle-label" translate>Enable Amazon Integration</span>
-      </ion-toggle>
-
-      <ion-toggle ng-show="!isWP" ng-model="glideraEnabled.value" toggle-class="toggle-balanced" ng-change="glideraChange()">
-        <span class="toggle-label" translate>Enable Glidera Service</span>
-      </ion-toggle>
-
-      <ion-toggle ng-show="!isWP" ng-model="coinbaseEnabled.value" toggle-class="toggle-balanced" ng-change="coinbaseChange()">
-        <span class="toggle-label" translate>Enable Coinbase Service</span>
-      </ion-toggle>
-
       <div class="item item-divider" translate>Wallet Operation</div>
 
       <ion-toggle class="has-comment" ng-model="spendUnconfirmed.value" toggle-class="toggle-balanced" ng-change="spendUnconfirmedChange()">
@@ -40,6 +22,13 @@
       <div class="comment" translate>
         If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.
       </div>
+
+
+      <ion-toggle ng-model="hideNextSteps.value" toggle-class="toggle-balanced" ng-change="nextStepsChange()">
+        <span class="toggle-label" translate>Hide Next Steps Card</span>
+      </ion-toggle>
+
+
 
     </div>
   </ion-content>
