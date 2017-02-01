@@ -114,7 +114,40 @@ angular.module('copayApp.controllers').controller('glideraController',
       });
     };
 
+    $scope.openAuthenticateWindow = function() {
+      $scope.openExternalLink($scope.getAuthenticateUrl());
+      $scope.showOauthForm = true
+    }
+
+    $scope.openLoginWindow = function() {
+      var glideraUrl = ($scope.network === 'testnet') ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login';
+      $scope.openExternalLink(glideraUrl);
+    }
+
+    $scope.openSupportWindow = function() {
+      var url = glideraService.getSupportUrl();
+      var optIn = true;
+      var title = gettextCatalog.getString('Glidera Support');
+      var message = gettextCatalog.getString('You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.');
+      var okText = gettextCatalog.getString('Tweet @GlideraInc');
+      var cancelText = gettextCatalog.getString('Go Back');
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    }
+
+    $scope.retry = function() {
+      $scope.connectingGlidera = true;
+      $scope.update({'fullUpdate': true});
+      $timeout(function(){
+        $scope.connectingGlidera = false;
+      }, 300);
+    }
+
+    $scope.toggleOauthForm = function() {
+      $scope.showOauthForm = !$scope.showOauthForm;
+    }
+
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      $scope.showOauthForm = false;
       initGlidera();
     });
 

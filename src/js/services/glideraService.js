@@ -48,6 +48,14 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     return credentials.NETWORK;
   };
 
+  root.getSignupUrl = function() {
+    return credentials.HOST + '/register';
+  }
+
+  root.getSupportUrl = function() {
+    return 'https://twitter.com/GlideraInc';
+  }
+
   root.getOauthCodeUrl = function() {
     _setCredentials();
     return credentials.HOST + '/oauth2/auth?response_type=code&client_id=' + credentials.CLIENT_ID + '&redirect_uri=' + credentials.REDIRECT_URI;

@@ -2,6 +2,12 @@
 @import "glidera";
 @import "amazon";
 
+#coinbase, #glidera {
+  .button-small {
+    font-size: 13px;
+  }
+}
+
 .integration-onboarding {
   height: 100%;
   display: flex;
