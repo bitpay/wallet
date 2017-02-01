@@ -1295,7 +1295,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
 
   var nextStepItem = {
     name: 'bitpaycard',
-    title: 'Add Bitpay VISA Card',
+    title: 'Add BitPay Visa® Card',
     icon: 'icon-bitpay-card',
     sref: 'tabs.bitpayCardIntro',
   };
