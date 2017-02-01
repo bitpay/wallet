@@ -28,7 +28,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       name: '10%'
     }
   ];
-  
+
   root.selectedPriceSensitivity = root.priceSensitivity[1];
 
   root.setCredentials = function() {
@@ -117,7 +117,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = config.unitToSatoshi;
     var amountUnitStr;
-    
+
     // IF 'USD'
     if (currency) {
       amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
@@ -128,9 +128,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       amount = (amountSat * satToBtc).toFixed(8);
       currency = 'BTC';
     }
-    
+
     return [amount, currency, amountUnitStr];
   };
+
+  root.getSignupUrl = function() {
+    return credentials.HOST + '/signup';
+  }
+
+  root.getSupportUrl = function() {
+    return 'https://support.coinbase.com/';
+  }
 
   root.getOauthCodeUrl = function() {
     return credentials.HOST
@@ -483,7 +491,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   // Pending transactions
-  
+
   root.savePendingTransaction = function(ctx, opts, cb) {
     _savePendingTransaction(ctx, opts, cb);
   };
@@ -516,7 +524,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     storageService.getCoinbaseTxs(credentials.NETWORK, function(err, txs) {
       txs = txs ? JSON.parse(txs) : {};
       coinbasePendingTransactions.data = lodash.isEmpty(txs) ? null : txs;
-    
+
       root.init(function(err, data) {
         if (err || lodash.isEmpty(data)) {
           if (err) $log.error(err);
@@ -529,7 +537,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
           if ((dataFromStorage.type == 'sell' && dataFromStorage.status == 'completed') ||
             (dataFromStorage.type == 'buy' && dataFromStorage.status == 'completed') ||
             dataFromStorage.status == 'error' ||
-            (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed')) 
+            (dataFromStorage.type == 'send' && dataFromStorage.status == 'completed'))
             return;
           root.getTransaction(accessToken, accountId, txId, function(err, tx) {
             if (err || lodash.isEmpty(tx) || (tx.data && tx.data.error)) {
@@ -593,7 +601,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     $log.debug('Updating pending transactions...');
     root.setCredentials();
     var pendingTransactions = { data: {} };
-    root.getPendingTransactions(pendingTransactions); 
+    root.getPendingTransactions(pendingTransactions);
   }, 20000);
 
   var _updateTxs = function(coinbasePendingTransactions) {
