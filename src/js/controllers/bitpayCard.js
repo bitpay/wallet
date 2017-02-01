@@ -143,6 +143,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       $state.go('tabs.home');
     }
 
+    
     bitpayCardService.get({
       cardId: $scope.cardId,
       noRefresh: true,
