@@ -5,7 +5,7 @@
     <ion-nav-title>Coinbase</ion-nav-title>
   </ion-nav-bar>
   <ion-nav-buttons side="secondary">
-    <button class="button button-clear ng-hide" ng-show="!accessToken" ng-click="coinbase.toggleOauthForm()">
+    <button class="button button-clear button-small ng-hide" ng-show="!accessToken" ng-click="coinbase.toggleOauthForm()">
       <span ng-hide="showOauthForm" translate>Enter Code</span>
       <span ng-show="showOauthForm" translate>Restart</span>
     </button>
@@ -35,7 +35,7 @@
           <input
             class="button button-standard button-primary"
             type="submit" value="Connect Coinbase Account" ng-disabled="oauthCodeForm.$invalid">
-          <button type="button" class="button button-standard button-secondary" ng-click="coinbase.openSignupWindow()" translate>Coinbase Support &rarr;</button>
+          <button type="button" class="button button-standard button-secondary" ng-click="coinbase.openSupportWindow()" translate>Coinbase Support &rarr;</button>
         </form>
       </div>
     </div>
