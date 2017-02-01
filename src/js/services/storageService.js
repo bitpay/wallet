@@ -391,12 +391,12 @@ angular.module('copayApp.services')
 
         var allCards = [];
 
-        lodash.each(allAccounts, function(account) {
+        lodash.each(allAccounts, function(account, email) {
 
+          // Add account's email to card list, for convenience
           var cards = lodash.clone(account.cards);
-
-          lodash.each(allAccounts, function(x) {
-            x.email = account.email;
+          lodash.each(cards, function(x) {
+            x.email = email;
           });
 
           allCards = allCards.concat(cards);
