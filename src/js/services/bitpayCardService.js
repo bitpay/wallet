@@ -176,18 +176,18 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   };
 
   root.getLastKnownBalance = function(cardId, cb) {
-     storageService.getBalanceCache(cardId, cb);
+    storageService.getBalanceCache(cardId, cb);
   };
 
   root.addLastKnownBalance = function(card, cb) {
-    var now =  Math.floor(Date.now()/1000);
-    var showRange = 600 ; // 10min;
-    
-    root.getLastKnownBalance(card.eid, function(err, data){
+    var now = Math.floor(Date.now() / 1000);
+    var showRange = 600; // 10min;
+
+    root.getLastKnownBalance(card.eid, function(err, data) {
       if (data) {
         data = JSON.parse(data);
         card.balance = data.balance;
-        card.updatedOn = ( data.updatedOn < now - showRange) ? data.updatedOn : null;
+        card.updatedOn = (data.updatedOn < now - showRange) ? data.updatedOn : null;
       }
       return cb();
     });
@@ -197,7 +197,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
 
     storageService.setBalanceCache(cardId, {
       balance: balance,
-      updatedOn: Math.floor(Date.now()/1000),
+      updatedOn: Math.floor(Date.now() / 1000),
     }, cb);
   };
 
@@ -232,15 +232,18 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         return cb();
       }
 
-      // Async, no problem
-      lodash.each(cards, function(x){
+      if (opts.cardId) {
+        cards = lodash.filter(cards, function(x) {
+          return opts.cardId == x.eid;
+        });
+      }
 
-        if (opts.cardId) {
-          if (opts.cardId != x.eid) return;
-        }
+      // Async, no problem
+      lodash.each(cards, function(x) {
 
         root.addLastKnownBalance(x, function() {});
 
+        // async refresh
         if (!opts.noRefresh) {
           root.getHistory(x.id, {}, function(err, data) {
             if (err) return;
