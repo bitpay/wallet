@@ -137,7 +137,6 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   var self = this;
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.showOauthForm = false;
-    coinbaseService.setCredentials();
     if (data.stateParams && data.stateParams.code) {
       coinbaseService.getStoredToken(function(at) {
         if (!at) self.submitOauthCode(data.stateParams.code);

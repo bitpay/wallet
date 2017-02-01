@@ -44,7 +44,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Insufficient funds');
             break;
           case 'CONNECTION_ERROR':
-            body = gettextCatalog.getString('Network connection error');
+            body = gettextCatalog.getString('Network error');
             break;
           case 'NOT_FOUND':
             body = gettextCatalog.getString('Wallet service not found');

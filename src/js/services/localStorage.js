@@ -43,15 +43,16 @@ angular.module('copayApp.services')
     };
 
     root.set = function(k, v, cb) {
+
+      if (lodash.isObject(v)) {
+        v = JSON.stringify(v);
+      }
+      if (v && !lodash.isString(v)) {
+        v = v.toString();
+      }
+
       if (isChromeApp || isNW) {
         var obj = {};
-
-        if (lodash.isObject(v)) {
-          v = JSON.stringify(v);
-        }
-        if (!lodash.isString(v)) {
-          v = v.toString();
-        }
 
         obj[k] = v;
 
@@ -60,7 +61,6 @@ angular.module('copayApp.services')
         ls.setItem(k, v);
         return cb();
       }
-
     };
 
     root.remove = function(k, cb) {
