@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('coinbaseController', function($scope, $timeout, $ionicModal, $ionicHistory, $log, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, externalLinkService) {
+angular.module('copayApp.controllers').controller('coinbaseController', function($scope, $timeout, $ionicModal, $ionicHistory, $log, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, externalLinkService, gettextCatalog) {
 
   var isNW = platformInfo.isNW;
   var isCordova = platformInfo.isCordova;
@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
     $scope.currency = coinbaseService.getAvailableCurrency();
     coinbaseService.getStoredToken(function(at) {
       $scope.accessToken = at;
-      
+
       // Update Access Token if necessary
       $scope.loading = true;
       coinbaseService.init(function(err, data) {
@@ -79,10 +79,34 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
     }
   }
 
+  this.openSignupWindow = function() {
+    var url = coinbaseService.getSignupUrl();
+    var optIn = true;
+    var title = gettextCatalog.getString('Create Account');
+    var message = gettextCatalog.getString('This will open Coinbase.com, where you can create an account.');
+    var okText = gettextCatalog.getString('Go to Coinbase');
+    var cancelText = gettextCatalog.getString('Back');
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
+  }
+
+  this.openSupportWindow = function() {
+    var url = coinbaseService.getSupportUrl();
+    var optIn = true;
+    var title = gettextCatalog.getString('Coinbase Support');
+    var message = gettextCatalog.getString('Help and support for the Coinbase service is available on their website.');
+    var okText = gettextCatalog.getString('Open Help Center');
+    var cancelText = gettextCatalog.getString('Go Back');
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
+  }
+
   this.getAuthenticateUrl = function() {
     $scope.showOauthForm = isCordova || isNW ? false : true;
     return coinbaseService.getOauthCodeUrl();
   };
+
+  this.toggleOauthForm = function() {
+    $scope.showOauthForm = !$scope.showOauthForm;
+  }
 
   this.submitOauthCode = function(code) {
     var self = this;
@@ -112,6 +136,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
 
   var self = this;
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.showOauthForm = false;
     coinbaseService.setCredentials();
     if (data.stateParams && data.stateParams.code) {
       coinbaseService.getStoredToken(function(at) {
