@@ -34,7 +34,6 @@
     position: absolute;
     bottom: 5vh;
     width: 100%;
-    max-width: 350px;
   }
   &-oauthform {
     .item {
@@ -42,8 +41,8 @@
     }
     .item-floating-label {
       padding-left: 0;
-      margin-left: 1em;
-      margin-right: 1em;
+      margin-left: 2em;
+      margin-right: 2em;
     }
     input {
       border-bottom: 2px solid $light-gray;
