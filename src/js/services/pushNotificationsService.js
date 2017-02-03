@@ -98,10 +98,9 @@ angular.module('copayApp.services').factory('pushNotificationsService', function
     FCMPlugin.onNotification(function(data) {
       if (!_token) return;
       $log.debug('New Event Push onNotification: ' + JSON.stringify(data));
-      var walletId, copayerId;
       if(data.wasTapped) {
         // Notification was received on device tray and tapped by the user. 
-        var walletId = data ? data.walletId : null;
+        var walletId = data.walletId;
         if (!walletId) return;
         $ionicHistory.nextViewOptions({
           disableAnimate: true,
