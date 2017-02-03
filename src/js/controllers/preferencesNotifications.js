@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
     $scope.isIOSApp = platformInfo.isIOS && platformInfo.isCordova;
 
     $scope.pushNotifications = {
-      value: config.pushNotifications.enabled
+      value: config.pushNotificationsEnabled
     };
 
     $scope.latestEmail = {
@@ -31,16 +31,14 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
   $scope.pushNotificationsChange = function() {
     if (!$scope.pushNotifications) return;
     var opts = {
-      pushNotifications: {
-        enabled: $scope.pushNotifications.value
-      }
+      pushNotificationsEnabled: $scope.pushNotifications.value
     };
     configService.set(opts, function(err) {
-      if (opts.pushNotifications.enabled)
-        profileService.pushNotificationsInit();
-      else
-        pushNotificationsService.disableNotifications(profileService.getWallets());
       if (err) $log.debug(err);
+      if (opts.pushNotificationsEnabled)
+        pushNotificationsService.init();
+      else
+        pushNotificationsService.disable();
     });
   };
 
