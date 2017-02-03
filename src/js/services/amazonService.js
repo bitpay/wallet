@@ -18,14 +18,14 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
 
   var homeItem = {
     name: 'amazon',
-    title: 'Amazon Gift Cards',
+    title: 'Amazon.com Gift Cards',
     icon: 'icon-amazon',
     sref: 'tabs.giftcards.amazon',
   };
 
   var nextStepItem = {
     name: 'amazon',
-    title: 'Buy a gift card',
+    title: 'Buy Amazon.com Gift Cards',
     icon: 'icon-amazon',
     sref: 'tabs.giftcards.amazon',
   };
