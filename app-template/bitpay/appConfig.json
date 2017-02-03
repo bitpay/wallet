@@ -1,6 +1,7 @@
 {
   "packageName": "bitpay",
   "packageDescription": "Secure Bitcoin Wallet",
+  "packageNameId": "com.bitpay.wallet",
   "userVisibleName": "BitPay",
   "purposeLine": "Secure Bitcoin Wallet",
   "bundleName": "wallet",

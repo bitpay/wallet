@@ -1,6 +1,7 @@
 {
   "packageName": "copay",
   "packageDescription": "Copay Bitcoin Wallet",
+  "packageNameId": "com.bitpay.copay",
   "userVisibleName": "Copay",
   "purposeLine": "Copay Bitcoin Wallet",
   "bundleName": "copay",
