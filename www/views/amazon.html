@@ -5,28 +5,29 @@
     <ion-nav-title>Amazon.com Gift Cards</ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content>
-
+  <ion-content scroll="false" class="ng-hide" ng-show="!giftCards">
     <div class="box-notification warning" ng-show="network == 'testnet'">
-      Sandbox version. Only for testing purpose
+      Sandbox version. Only for testing purpose.
+    </div>
+    <div class="integration-onboarding">
+      <div class="integration-onboarding-logo">
+        <img src="img/GCs-logo-cllb.png">
+      </div>
+      <div class="integration-onboarding-description" translate>Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions of items.</div>
+      <div class="integration-onboarding-cta" ng-show="!showOauthForm">
+        <button class="button button-standard button-primary" ui-sref="tabs.giftcards.amazon.amount" translate>Buy a Gift Card</button>
+        <button class="button button-standard button-secondary" ng-click="openExternalLink('https://www.amazon.com')" translate>Visit Amazon.com &rarr;</button>
+      </div>
+    </div>
+  </ion-content>
+  <ion-content class="ng-hide" ng-show="giftCards">
+    <div class="box-notification warning" ng-show="network == 'testnet'">
+      Sandbox version. Only for testing purpose.
     </div>
 
     <div class="m20t text-center">
       <img src="img/GCs-logo-cllb.png" alt="Amazon.com Gift Card" width="200">
-      <div class="size-12 m10t"><b>Only</b> redeemable on www.amazon.com (USA website)</div>
-    </div>
-
-    <div ng-if="!giftCards" class="m20t padding text-center">
-
-      <button class="button button-standard button-primary" 
-              ui-sref="tabs.giftcards.amazon.amount">
-        Buy now
-      </button>
-
-      <div class="text-left m30v size-12">
-        Amazon.com Gift Cards never expire and can be redeemed towards millions of items at
-        <a ng-click="openExternalLink('https://www.amazon.com')">www.amazon.com</a>
-      </div>
+      <div class="size-12 m10t"><b>Only</b> redeemable on www.amazon.com (US website).</div>
     </div>
 
     <div class="m20t" ng-if="giftCards">
