@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.services').factory('pushNotificationsService', function pushNotificationsService($log, $state, $ionicHistory, platformInfo, lodash, appConfigService, profileService, configService) {
+angular.module('copayApp.services').factory('pushNotificationsService', function pushNotificationsService($log, $state, $ionicHistory, sjcl, platformInfo, lodash, appConfigService, profileService, configService) {
   var root = {};
   var isIOS = platformInfo.isIOS;
   var isAndroid = platformInfo.isAndroid;
@@ -72,17 +72,22 @@ angular.module('copayApp.services').factory('pushNotificationsService', function
     });
   };
 
-  var _openWallet = function(walletId) {
-    var wallet = profileService.getWallet(walletId);
+  var _openWallet = function(walletIdHashed) {
+    var wallets = profileService.getWallets();
+    var wallet = lodash.find(wallets, function(w) {
+      return (lodash.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(w.id))));
+    });
+
     if (!wallet) return;
+    
     if (!wallet.isComplete()) {
       return $state.go('tabs.copayers', {
-        walletId: walletId
+        walletId: wallet.id 
       });
     }
 
     $state.go('tabs.wallet', {
-      walletId: walletId
+      walletId: wallet.id
     });
   };
 
@@ -100,15 +105,15 @@ angular.module('copayApp.services').factory('pushNotificationsService', function
       $log.debug('New Event Push onNotification: ' + JSON.stringify(data));
       if(data.wasTapped) {
         // Notification was received on device tray and tapped by the user. 
-        var walletId = data.walletId;
-        if (!walletId) return;
+        var walletIdHashed = data.walletId;
+        if (!walletIdHashed) return;
         $ionicHistory.nextViewOptions({
           disableAnimate: true,
           historyRoot: true
         });
         $ionicHistory.clearHistory();
         $state.go('tabs.home').then(function() {
-          _openWallet(walletId);
+          _openWallet(walletIdHashed);
         });
       } else {
         // TODO
