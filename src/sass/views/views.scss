@@ -15,6 +15,7 @@
 @import "bitpayCard";
 @import "bitpayCardIntro";
 @import "bitpayCardPreferences";
+@import "buyandsell";
 @import "address-book";
 @import "addresses";
 @import "wallet-backup-phrase";
@@ -41,7 +42,5 @@
 @import "includes/tx-status";
 @import "includes/itemSelector";
 @import "includes/walletSelector";
-@import "integrations/coinbase";
-@import "integrations/glidera";
-@import "integrations/amazon";
+@import "integrations/integrations";
 @import "custom-amount";

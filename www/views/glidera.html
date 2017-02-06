@@ -3,72 +3,68 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>Glidera</ion-nav-title>
-  </ion-nav-bar>
-
-  <ion-content ng-show="!connectingGlidera">
-
-    <div class="box-notification error m0" ng-show="!network">
-      Glidera is disabled for this application
-    </div>
-
-    <div class="box-notification warning m0" ng-show="network == 'testnet'">
-      Testnet wallets only work with Glidera Sandbox Accounts
-    </div>
-
-    <div ng-if="!token">
-
-      <div ng-init="showOauthForm = false">
-        <div class="text-center m20v">
-          <img src="img/glidera-logo.png" ng-click="update({'fullUpdate': true})" width="200">
+    <ion-nav-buttons side="secondary">
+      <button class="button button-clear button-small ng-hide" ng-show="!token && !connectingGlidera" ng-click="toggleOauthForm()">
+        <span ng-hide="showOauthForm" translate>Enter Code</span>
+        <span ng-show="showOauthForm" translate>Restart</span>
+      </button>
+      <button class="button button-clear button-small ng-hide" ng-show="token && !connectingGlidera && status && !status.userCanTransact" ng-click="retry()" translate>
+        Refresh
+      </button>
+    </ion-nav-buttons>
+    <ion-content scroll="false" class="ng-hide" ng-show="!token && !connectingGlidera">
+      <div class="box-notification error m0" ng-show="!network">
+        The Glidera integration is currently disabled.
+      </div>
+      <div class="box-notification warning m0" ng-show="network == 'testnet'">
+        Testnet wallets only work with Glidera Sandbox Accounts.
+      </div>
+      <div class="integration-onboarding">
+        <div class="integration-onboarding-logo">
+          <img src="img/glidera-logo.png">
         </div>
-        <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
-          <p class="glidera-lead">You can buy and sell Bitcoin with a US bank account directly in this app.</p>
-
-          <p class="glidera-text">Connect your Glidera account to get started.</p>
-
-          <button class="button button-standard button-primary"
-            ng-click="openExternalLink(getAuthenticateUrl()); showOauthForm = true">
-            Connect to Glidera
-          </button>
-          <div class="m10t">
-            <a href ng-click="showOauthForm = true" class="button button-standard button-secondary buttion-clear">
-              Have the OAuth Code?
-            </a>
-          </div>
-          <div class="disclosure">
-            <p>Glidera Inc. (Glidera) is providing the service of buying or selling bitcoin to BitPay users. To enable this service, Glidera has registered with US Treasury Department’s FinCEN as a Money Service Business (#31000042625755). Users of BitPay must agree to the service agreement presented by Glidera prior to obtaining Glidera’s service of buying or selling bitcoin.</p>
-            <p>Service is available in the U.S. and Canada.</p>
-          </div>
+        <div class="integration-onboarding-description" ng-hide="showOauthForm" translate>Glidera's exchange service is available in the United States, and can take 1-2 weeks to buy or sell bitcoin.</div>
+        <div class="integration-onboarding-description" ng-show="showOauthForm" translate>If you have trouble, contact Glidera support for direct assistance.</div>
+        <div class="integration-onboarding-cta" ng-show="!showOauthForm">
+          <button class="button button-standard button-primary" ng-click="openAuthenticateWindow()" translate>Connect to Glidera</button>
+          <button type="button" class="button button-standard button-secondary" ng-click="openSupportWindow()" translate>Glidera Support &rarr;</button>
         </div>
-        <div ng-show="showOauthForm">
-          <form class="settings" name="oauthCodeForm" ng-submit="submitOauthCode(code)" novalidate>
-            <div class="list settings-input-group">
-              <label class="item item-input item-stacked-label">
+
+        <div ng-show="showOauthForm" class="integration-onboarding-oauthform">
+          <form name="oauthCodeForm" ng-submit="submitOauthCode(code)" novalidate>
+            <div class="list">
+              <label class="item item-input item-floating-label">
                 <span class="input-label">OAuth Code</span>
                 <input type="text"
                        ng-model="code"
-                       ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
+                       placeholder="{{'Enter OAuth Code'}}" required>
               </label>
             </div>
-            <input class="button button-standard button-primary" type="submit" value="Connect Glidera Account" ng-disabled="oauthCodeForm.$invalid">
+            <input
+              class="button button-standard button-primary"
+              type="submit" value="Connect Glidera Account" ng-disabled="oauthCodeForm.$invalid">
+            <button type="button" class="button button-standard button-secondary" ng-click="openSupportWindow()" translate>Glidera Support &rarr;</button>
           </form>
         </div>
       </div>
-    </div>
+    </ion-content>
 
-    <div ng-if="token">
-      <div class="text-center m20v">
-        <img src="img/glidera-logo.png" ng-click="update({'fullUpdate': true})" width="200">
+    <ion-content scroll="false" class="ng-hide" ng-show="token && !connectingGlidera && status && !status.userCanTransact">
+      <div class="integration-onboarding">
+        <div class="integration-onboarding-logo">
+          <img src="img/glidera-logo.png">
+        </div>
+        <div class="integration-onboarding-description" translate>Please complete your account verification on Glidera's website. If you have trouble, contact Glidera's support for direct assistance.</div>
+        <div class="integration-onboarding-cta">
+          <button class="button button-standard button-primary" ng-click="openLoginWindow()" translate>Complete Glidera Setup</button>
+          <button type="button" class="button button-standard button-secondary" ng-click="openSupportWindow()" translate>Glidera Support &rarr;</button>
+        </div>
       </div>
-      <div class="text-center m30v size-12"
-           ng-show="status && !status.userCanTransact">
-        <h4 class="text-bold">Complete Setup</h4>
-        <div>Your Glidera account is not ready to transact. Please, verify it at <b>Glidera.io</b></div>
-        <a class="button"
-           ng-init="glideraUrl = network == 'testnet' ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login'"
-           ng-click="openExternalLink(glideraUrl)">
-          Go to Glidera
-        </a>
+    </ion-content>
+
+  <ion-content class="ng-hide" ng-show="token && !connectingGlidera && status && status.userCanTransact">
+      <div class="text-center m20v">
+        <img src="img/glidera-logo.png" width="170">
       </div>
 
       <div class="list card"

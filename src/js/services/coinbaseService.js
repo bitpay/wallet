@@ -127,6 +127,14 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     return [amount, currency, amountUnitStr];
   };
 
+  root.getSignupUrl = function() {
+    return credentials.HOST + '/signup';
+  }
+
+  root.getSupportUrl = function() {
+    return 'https://support.coinbase.com/';
+  }
+
   root.getOauthCodeUrl = function() {
     return credentials.HOST +
       '/oauth/authorize?response_type=code&client_id=' +
@@ -207,7 +215,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   root.isActive = function(cb) {
 
-    if (isWindowsPhoneApp) 
+    if (isWindowsPhoneApp)
       return cb();
 
     if (lodash.isEmpty(credentials.CLIENT_ID))
@@ -730,6 +738,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       buyAndSellService.register({
         name: 'coinbase',
         logo: 'img/coinbase-logo.png',
+        location: '33 Countries',
         sref: 'tabs.buyandsell.coinbase',
         configSref: 'tabs.preferences.coinbase',
         linked: isActive,

@@ -4,45 +4,46 @@
     </ion-nav-back-button>
     <ion-nav-title>Coinbase</ion-nav-title>
   </ion-nav-bar>
-
-  <ion-content>
-
-    <div ng-if="!accessToken" ng-init="showOauthForm = false">
-      <div class="text-center m20v">
-        <img src="img/coinbase-logo.png" width="200">
+  <ion-nav-buttons side="secondary">
+    <button class="button button-clear button-small ng-hide" ng-show="!accessToken" ng-click="coinbase.toggleOauthForm()">
+      <span ng-hide="showOauthForm" translate>Enter Code</span>
+      <span ng-show="showOauthForm" translate>Restart</span>
+    </button>
+  </ion-nav-buttons>
+  <ion-content scroll="false" class="ng-hide" ng-show="!accessToken">
+    <div class="integration-onboarding">
+      <div class="integration-onboarding-logo">
+        <img src="img/coinbase-logo.png">
       </div>
-      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
-
-        <p class="m20t text-gray size-12">Connect your Coinbase account to get started</p>
-
-        <button class="button button-standard button-primary"
-          ng-click="coinbase.openAuthenticateWindow()">
-          Connect to Coinbase
-        </button>
-        <div class="m20t">
-          <a href ng-click="showOauthForm = true" class="text-gray size-12">
-            Do you already have the Oauth Code?
-          </a>
-        </div>
+      <div class="integration-onboarding-description" ng-hide="showOauthForm" translate>Coinbase's exchange service is available in 33 countries, and can take 3-5 days to buy or sell bitcoin.</div>
+      <div class="integration-onboarding-description" ng-show="showOauthForm" translate>If you have trouble, contact Coinbase support for direct assistance.</div>
+      <div class="integration-onboarding-cta" ng-show="!showOauthForm">
+        <button class="button button-standard button-primary" ng-click="coinbase.openAuthenticateWindow()" translate>Connect Coinbase Account</button>
+        <button class="button button-standard button-secondary" ng-click="coinbase.openSignupWindow()" translate>Sign Up for Coinbase</button>
       </div>
-      <div ng-show="showOauthForm">
+
+      <div ng-show="showOauthForm" class="integration-onboarding-oauthform">
         <form name="oauthCodeForm" ng-submit="coinbase.submitOauthCode(code)" novalidate>
-          <div class="list settings-input-group">
-            <label class="item item-input item-stacked-label">
+          <div class="list">
+            <label class="item item-input item-floating-label">
               <span class="input-label">OAuth Code</span>
               <input type="text"
                      ng-model="code"
-                     ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
+                     placeholder="{{'Enter OAuth Code'}}" required>
             </label>
           </div>
           <input
             class="button button-standard button-primary"
             type="submit" value="Connect Coinbase Account" ng-disabled="oauthCodeForm.$invalid">
+          <button type="button" class="button button-standard button-secondary" ng-click="coinbase.openSupportWindow()" translate>Coinbase Support &rarr;</button>
         </form>
       </div>
     </div>
+  </ion-content>
 
-  <div ng-if="accessToken">
+  <ion-content class="ng-hide" ng-show="accessToken">
+
+  <div>
 
     <div class="m20t text-center" ng-click="updateTransactions()">
       <img src="img/coinbase-logo.png" width="200">
@@ -52,7 +53,7 @@
       <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice || !sellPrice"></ion-spinner>
       <span ng-show="buyPrice && sellPrice">
         {{buyPrice.amount}} {{buyPrice.currency}}
-         | 
+         |
         {{sellPrice.amount}} {{sellPrice.currency}}
       </span>
     </div>
@@ -77,7 +78,7 @@
     <div class="list card">
       <div class="item item-heading" ng-click="updateTransactions()">
         Activity
-      </div> 
+      </div>
       <a class="item"
          ng-if="pendingTransactions.data && !error"
          ng-repeat="(id, tx) in pendingTransactions.data | orderObjectBy:'updated_at':true track by $index"

@@ -49,6 +49,14 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     return credentials.NETWORK;
   };
 
+  root.getSignupUrl = function() {
+    return credentials.HOST + '/register';
+  }
+
+  root.getSupportUrl = function() {
+    return 'https://twitter.com/GlideraInc';
+  }
+
   root.getOauthCodeUrl = function() {
     return credentials.HOST + '/oauth2/auth?response_type=code&client_id=' + credentials.CLIENT_ID + '&redirect_uri=' + credentials.REDIRECT_URI;
   };
@@ -325,6 +333,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       buyAndSellService.register({
         name: 'glidera',
         logo: 'img/glidera-logo.png',
+        location: 'US Only',
         sref: 'tabs.buyandsell.glidera',
         configSref: 'tabs.preferences.glidera',
         linked: !!token,
