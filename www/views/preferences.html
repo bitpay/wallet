@@ -41,6 +41,9 @@
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.backupWarning({from: 'tabs.preferences'})" ng-hide="wallet.isPrivKeyExternal()">
         <span translate>Backup</span>
+        <span class="right text-light assertive" ng-show="wallet.needsBackup">
+          {{'Backup needed' | translate}}
+        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
       <div ng-show="wallet.canSign()">
