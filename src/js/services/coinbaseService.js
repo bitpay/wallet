@@ -124,7 +124,11 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       currency = 'BTC';
     }
 
-    return [amount, currency, amountUnitStr];
+    return {
+      amount: amount, 
+      currency: currency, 
+      amountUnitStr: amountUnitStr
+    };
   };
 
   root.getSignupUrl = function() {
