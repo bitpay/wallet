@@ -347,9 +347,6 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $scope.addressbook = ab || {};
     });
 
-    $scope.updateAll();
-    refreshAmountSection();
-
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId) {
         if (walletId == $scope.wallet.id && e.type != 'NewAddress')
@@ -360,6 +357,11 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
           $scope.updateAll();
       }),
     ];
+  });
+
+  $scope.$on("$ionicView.afterEnter", function(event, data) {
+    $scope.updateAll();
+    refreshAmountSection();
   });
 
   $scope.$on("$ionicView.beforeLeave", function(event, data) {
