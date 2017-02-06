@@ -270,7 +270,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   function refreshAmountSection(scrollPos) {
     $scope.showBalanceButton = false;
-    if ($scope.wallet.status) {
+    if ($scope.status) {
       $scope.showBalanceButton = ($scope.status.totalBalanceSat != $scope.status.spendableAmount);
     }
     if (!$scope.amountIsCollapsible) {
