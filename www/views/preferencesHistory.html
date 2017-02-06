@@ -5,7 +5,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
+    <div ng-include="'views/includes/walletItem.html'"></div>
 
     <a class="item ng-hide" href ng-show="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="{{appName}}-{{wallet.name}}.csv">
       <span translate>Export to file</span>
