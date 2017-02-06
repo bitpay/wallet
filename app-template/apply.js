@@ -7,11 +7,11 @@
 var templates = {
   'package-template.json': '/',
   'index.html': 'www/',
-  'Makefile': 'cordova/',
-  'ProjectMakefile': 'cordova/',
   'config-template.xml': '/',
   'ionic.config.json': '/',
   'Package.appxmanifest': 'cordova/wp/',
+  'MainPage.xaml': 'cordova/wp/',
+  'WMAppManifest.xml': 'cordova/wp/Properties/',
   '.desktop': 'webkitbuilds/',
   'setup-win.iss': 'webkitbuilds/',
   'build-macos.sh': 'webkitbuilds/',

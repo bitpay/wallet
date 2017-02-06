@@ -8,6 +8,9 @@ plugins
 platforms
 cordova/project-*/*
 cordova/*.keystore
+cordova/wp/MainPage.xaml
+cordova/wp/Package.appxmanifest
+cordova/wp/Properties/WMAppManifest.xml
 
 # node-webkit
 cache
