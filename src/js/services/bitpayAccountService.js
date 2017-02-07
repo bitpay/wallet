@@ -143,21 +143,17 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
 
         var accountsArray = [];
         lodash.forEach(Object.keys(accounts), function(key) {
-          accounts[key].bitpayDebitCards = accounts[key]['bitpayDebitCards-' + bitpayService.getEnvironment().network];
+          accounts[key].bitpayDebitCards = accounts[key].cards;
           accounts[key].email = key;
-          accounts[key].firstName = accounts[key]['basicInfo-' + bitpayService.getEnvironment().network].givenName;
-          accounts[key].lastName = accounts[key]['basicInfo-' + bitpayService.getEnvironment().network].familyName;
+          accounts[key].firstName = accounts[key].givenName || '';
+          accounts[key].lastName = accounts[key].familyName || '';
           accounts[key].apiContext = {
-            token: accounts[key]['bitpayApi-' + bitpayService.getEnvironment().network].token,
+            token: accounts[key].token,
             pairData: {
               email: key
             },
             appIdentity: appIdentity
           };
-
-          // Remove environment keyed attributes.
-          delete accounts[key]['bitpayApi-' + bitpayService.getEnvironment().network];
-          delete accounts[key]['bitpayDebitCards-' + bitpayService.getEnvironment().network];
 
           accountsArray.push(accounts[key]);
         });
@@ -167,8 +163,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
   };
 
   var setBitpayAccount = function(account, cb) {
-    var data = JSON.stringify(account);
-    storageService.setBitpayAccount(bitpayService.getEnvironment().network, data, function(err) {
+    storageService.setBitpayAccount(bitpayService.getEnvironment().network, account, function(err) {
       if (err) {
         return cb(err);
       }

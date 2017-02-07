@@ -356,6 +356,7 @@ angular.module('copayApp.services')
       storage.remove('balanceCache-' + cardId, cb);
     };
 
+    // data: {
     //   cards: [
     //     eid: card id
     //     id: card id
@@ -371,16 +372,17 @@ angular.module('copayApp.services')
       }
       data = data || {};
       if (lodash.isEmpty(data) || !data.email) return cb('Cannot set cards: no account to set');
-      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+
+      root.getBitpayAccounts(network, function(err, allAccounts) {
         if (err) return cb(err);
 
-        if (!allAccounts[email]) {
-          return cb('Cannot set cards for unknown account ' + email);
+        allAccounts = allAccounts || {};
+        if (!allAccounts[data.email]) {
+          return cb('Cannot set cards for unknown account ' + data.email);
         }
-        bitpayAccounts = bitpayAccounts || {};
-        bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
-        bitpayAccounts[data.email]['bitpayDebitCards-' + network] = data.cards;
-        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
+        allAccounts[data.email] = allAccounts[data.email] || {};
+        allAccounts[data.email]['bitpayDebitCards-' + network] = data.cards;
+        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(allAccounts), cb);
       });
     };
 
@@ -400,13 +402,15 @@ angular.module('copayApp.services')
 
         lodash.each(allAccounts, function(account, email) {
 
-          // Add account's email to card list, for convenience
-          var cards = lodash.clone(account.cards);
-          lodash.each(cards, function(x) {
-            x.email = email;
-          });
+          if (account.cards) {
+            // Add account's email to card list, for convenience
+            var cards = lodash.clone(account.cards);
+            lodash.each(cards, function(x) {
+              x.email = email;
+            });
 
-          allCards = allCards.concat(cards);
+            allCards = allCards.concat(cards);
+          }
         });
 
         return cb(null, allCards);
@@ -494,25 +498,25 @@ angular.module('copayApp.services')
     // data: {
     //   email: account email
     //   token: account token
+    //   familyName: account family (last) name
+    //   givenName: account given (first) name
     // }
     root.setBitpayAccount = function(network, data, cb) {
-
       if (!lodash.isObject(data) || !data.email || !data.token)
         return cb('No account to set');
-
-      var email = data.email;
-      var token = data.token;
-
 
       root.getBitpayAccounts(network, function(err, allAccounts) {
         if (err) return cb(err);
 
-        var account = allAccounts[email] || {};
-        account.token = token;
+        allAccounts = allAccounts || {};
+        var account = allAccounts[data.email] || {};
+        account.token = data.token;
+        account.familyName = data.familyName;
+        account.givenName = data.givenName;
 
-        allAccounts[email] = account;
+        allAccounts[data.email] = account;
 
-        $log.info('Storing BitPay accounts with new account:' + email);
+        $log.info('Storing BitPay accounts with new account:' + data.email);
         storage.set('bitpayAccounts-v2-' + network, allAccounts, cb);
       });
     };
