@@ -20,7 +20,7 @@
     <!-- <preference name="KeyboardDisplayRequiresUserAction" value="false" /> -->
     <preference name="StatusBarBackgroundColor" value="#1e3186" />
     <preference name="BackupWebStorage" value="none"/>
-    <preference name="windows-target-version" value="8.1"/>
+    <preference name="windows-target-version" value="10.0"/>
     <preference name="Orientation" value="default" />
     <preference name="cordova-custom-config-stoponerror" value="true" />
 
@@ -35,7 +35,6 @@
 
     <!-- Plugins -->
     <plugin name="cordova-plugin-device" spec="~1.1.3"/>
-    <plugin name="cordova-plugin-globalization" spec="~1.0.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />
     <plugin name="cordova-plugin-statusbar" spec="~2.2.0" />
     <plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />
@@ -63,16 +62,17 @@
     </plugin>
     <plugin name="cordova-custom-config" spec="~3.0.5" />
     <plugin name="cordova-plugin-queries-schemes" spec="~0.1.5" />
-
     <plugin name="cordova-plugin-fcm" spec="2.1.1" />
+    <plugin name="cordova-plugin-winstore-jscompat" spec="https://github.com/gabrielbazan7/cordova-plugin-winstore-jscompat" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
     <engine name="android" spec="~5.2.2" />
-    <!-- <engine name="windows" spec="~4.4.2" /> -->
+    <engine name="windows" spec="~4.4.3" />
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
+      <plugin name="cordova-plugin-globalization" spec="~1.0.4" />
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
       <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance"><false/></config-file>
       <config-file target="*-Info.plist" parent="ITSAppUsesNonExemptEncryption"><false/></config-file>
@@ -108,6 +108,7 @@
     </platform>
 
     <platform name="android">
+      <plugin name="cordova-plugin-globalization" spec="~1.0.4" />
       <preference name="android-manifest/application/@android:allowBackup" value="false" />
 
       <icon src="resources/*PACKAGENAME*/android/icon/drawable-ldpi-icon.png" density="ldpi" />
