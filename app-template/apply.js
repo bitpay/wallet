@@ -139,5 +139,7 @@ function copyDir(from, to, cb) {
 
 
 copyDir(configDir + '/img/', '../www/img/app/', function() {
-  console.log("apply.js finished. \n\n");
+  copyDir(configDir + '/sass/', '../src/sass/brand/', function() {
+    console.log("apply.js finished. \n\n");
+  });
 });
