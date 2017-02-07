@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
           return;
         }
         if (paired) {
-          bitpayCardService.sync(apiContext, function(err, cards) {
+          bitpayCardService.sync(apiContext, function(err, data) {
             if (err) {
               popupService.showAlert(gettextCatalog.getString('Error updating Debit Cards'), err);
               return;

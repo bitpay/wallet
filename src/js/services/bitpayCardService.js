@@ -52,7 +52,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         cards: data.data.data,
         email: apiContext.pairData.email
       }
-      root.setBitpayDebitCards(cardData, function(err) {
+      storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, cardData, function(err) {
         return cb(err, {token: apiContext.token, cards: data.data.data, email: apiContext.pairData.email});
       });
     }, function(data) {
