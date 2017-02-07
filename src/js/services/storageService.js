@@ -447,6 +447,9 @@ angular.module('copayApp.services')
       storage.get('bitpayAccounts-v2-' + network, function(err, allAccountsStr) {
         if (err) return cb(err);
 
+        if (!allAccountsStr) 
+          return cb(null, {});
+
         var allAccounts = {};
         try {
           allAccounts = JSON.parse(allAccountsStr);
