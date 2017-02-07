@@ -1100,7 +1100,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       if (screen.width < 768 && platformInfo.isCordova)
         screen.lockOrientation('portrait');
 
-      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard && !platformInfo.isWP) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
         cordova.plugins.Keyboard.disableScroll(true);
       }
