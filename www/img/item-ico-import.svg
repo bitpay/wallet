@@ -8,7 +8,7 @@
         <g id="Wallet/Icon/Import" transform="translate(0.000000, -1.000000)">
             <g id="arrows-24px-outline-2_square-download" transform="translate(-1.000000, 0.000000)">
                 <g id="Group" transform="translate(0.500000, 0.500000)">
-                    <ellipse id="Oval-87" fill="#647CE8" cx="25.6597034" cy="25.694296" rx="25.1597034" ry="25.194296"></ellipse>
+                    <ellipse id="Oval-87" fill="none" cx="25.6597034" cy="25.694296" rx="25.1597034" ry="25.194296"></ellipse>
                     <path d="M16,29 L16,32 C16,33.6568542 17.343312,35 18.9942021,35 L33.0057979,35 C34.6594501,35 36,33.6534829 36,32 L36,29" id="Shape" stroke="#FFFFFF"></path>
                     <path d="M26,15 L26,30" id="Shape" stroke="#FFFFFF"></path>
                     <polyline id="Shape" stroke="#FFFFFF" points="20 24 26 30 32 24"></polyline>
