@@ -105,7 +105,9 @@ try {
 fs.writeFileSync('../externalServices.json', externalServices, 'utf8');
 
 function copyDir(from, to, cb) {
-  console.log('Copying dir ' + from + ' to');
+  console.log('Copying dir ' + from + ' to ' + to);
+  if (fs.existsSync(to)) fs.removeSync(to); // remove previous app directory
+  if (!fs.existsSync(from)) return; // nothing to do
   var files = [];
   fs.walk(from)
     .on('data', function(item) {
