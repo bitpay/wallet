@@ -121,10 +121,10 @@ function copyDir(from, to, cb) {
         // console.log('[apply.js.78]', to); //TODO
         console.log('[apply.js.78]', item.path); //TODO
         console.log('[apply.js.78]', tmp.indexOf(from)); //TODO
-      }
-      if (item.path.indexOf('DS_Store') >= 0) return;
 
-      files.push(item.path)
+        if (item.path.indexOf('DS_Store') >= 0) return;
+        files.push(item.path)
+      }
     })
     .on('end', function() {
       files.forEach(function(i) {
@@ -138,7 +138,7 @@ function copyDir(from, to, cb) {
 }
 
 
-copyDir(configDir + '/img/', '../www/img/app/', function() {
+copyDir(configDir + '/img/', '../www/img/', function() {
   copyDir(configDir + '/sass/', '../src/sass/brand/', function() {
     console.log("apply.js finished. \n\n");
   });
