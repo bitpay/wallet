@@ -107,7 +107,7 @@ src/js/externalServices.js
 chrome-app/manifest.json
 www/img/app
 www/index.html
-src/sass/brand
+src/sass/app
 
 cordova/android/res/
 cordova/wp/Assets/
