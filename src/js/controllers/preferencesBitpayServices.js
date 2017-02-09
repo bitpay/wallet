@@ -45,7 +45,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
     };
 
     var removeCard = function(card) {
-      bitpayCardService.removeCard(card, function(err) {
+      bitpayCardService.remove(card.id, function(err) {
         if (err) {
           return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not remove card'));
         }
@@ -54,13 +54,13 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
     };
 
     var setScope = function(cb) {
-      bitpayAccountService.getAccounts(function(err, data) {
+      bitpayAccountService.getAccounts(function(err, accounts) {
         if (err) return;
-        $scope.bitpayAccounts = data;
+        $scope.bitpayAccounts = accounts;
 
-        bitpayCardService.getBitpayDebitCards(function(err, data) {
+        bitpayCardService.getCards(function(err, cards) {
           if (err) return;
-          $scope.bitpayCards = data;
+          $scope.bitpayCards = cards;
           if (cb) {
             cb();
           }

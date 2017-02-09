@@ -133,7 +133,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
   // from the server for each account (apiContext).
   root.getAccounts = function(cb) {
     root.getAccountsAsStored(function(err, accounts) {
-      if (err || !accounts) {
+      if (err || lodash.isEmpty(accounts)) {
         return cb(err, []);
       }
       appIdentityService.getIdentity(bitpayService.getEnvironment().network, function(err, appIdentity) {
@@ -143,10 +143,10 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
 
         var accountsArray = [];
         lodash.forEach(Object.keys(accounts), function(key) {
-          accounts[key].bitpayDebitCards = accounts[key].cards;
+          accounts[key].cards = accounts[key].cards;
           accounts[key].email = key;
-          accounts[key].firstName = accounts[key].givenName || '';
-          accounts[key].lastName = accounts[key].familyName || '';
+          accounts[key].givenName = accounts[key].givenName || '';
+          accounts[key].familyName = accounts[key].familyName || '';
           accounts[key].apiContext = {
             token: accounts[key].token,
             pairData: {
@@ -164,29 +164,14 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
 
   var setBitpayAccount = function(account, cb) {
     storageService.setBitpayAccount(bitpayService.getEnvironment().network, account, function(err) {
-      if (err) {
-        return cb(err);
-      }
-      return cb();
+      return cb(err);
     });
   };
 
   root.removeAccount = function(account, cb) {
     storageService.removeBitpayAccount(bitpayService.getEnvironment().network, account, function(err) {
-      if (err) {
-        $log.error('Error removing BitPay account: ' + err);
-        // Continue, try to remove next step if necessary
-      }
-      storageService.getBitpayDebitCards(bitpayService.getEnvironment().network, function(err, cards) {
-        if (err) {
-          $log.error('Error attempting to get BitPay debit cards after account removal: ' + err);
-        }
-        if (cards.length == 0) {
-          storageService.removeNextStep('BitpayCard', cb);
-        } else {
-          cb();
-        }
-      });
+      bitpayCardService.registerNextStep();
+      cb(err);
     });
   };
 

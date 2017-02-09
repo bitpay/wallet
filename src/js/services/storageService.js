@@ -356,33 +356,22 @@ angular.module('copayApp.services')
       storage.remove('balanceCache-' + cardId, cb);
     };
 
-    // data: {
-    //   cards: [
-    //     eid: card id
-    //     id: card id
-    //     lastFourDigits: card number
-    //     token: card token
-    //   ]
-    //   email: account email
-    //   token: account token
-    // }
-    root.setBitpayDebitCards = function(network, data, cb) {
-      if (lodash.isString(data)) {
-        data = JSON.parse(data);
-      }
-      data = data || {};
-      if (lodash.isEmpty(data) || !data.email) return cb('Cannot set cards: no account to set');
-
+    // cards: [
+    //   eid: card id
+    //   id: card id
+    //   lastFourDigits: card number
+    //   token: card token
+    // ]
+    root.setBitpayDebitCards = function(network, email, cards, cb) {
       root.getBitpayAccounts(network, function(err, allAccounts) {
         if (err) return cb(err);
 
-        allAccounts = allAccounts || {};
-        if (!allAccounts[data.email]) {
-          return cb('Cannot set cards for unknown account ' + data.email);
+        if (!allAccounts[email]) {
+          return cb('Cannot set cards for unknown account ' + email);
         }
-        allAccounts[data.email] = allAccounts[data.email] || {};
-        allAccounts[data.email]['bitpayDebitCards-' + network] = data.cards;
-        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(allAccounts), cb);
+
+        allAccounts[email].cards = cards;
+        storage.set('bitpayAccounts-v2-' + network, allAccounts, cb);
       });
     };
 
@@ -403,7 +392,7 @@ angular.module('copayApp.services')
         lodash.each(allAccounts, function(account, email) {
 
           if (account.cards) {
-            // Add account's email to card list, for convenience
+            // Add account's email to each card
             var cards = lodash.clone(account.cards);
             lodash.each(cards, function(x) {
               x.email = email;
@@ -417,14 +406,7 @@ angular.module('copayApp.services')
       });
     };
 
-    // card: {
-    //   eid: card id
-    //   id: card id
-    //   lastFourDigits: card number
-    //   token: card token
-    // }
     root.removeBitpayDebitCard = function(network, cardEid, cb) {
-
       root.getBitpayAccounts(network, function(err, allAccounts) {
 
         lodash.each(allAccounts, function(account) {
@@ -500,7 +482,6 @@ angular.module('copayApp.services')
       });
     };
 
-
     // data: {
     //   email: account email
     //   token: account token
@@ -530,7 +511,7 @@ angular.module('copayApp.services')
     // account: {
     //   email: account email
     //   apiContext: the context needed for making future api calls
-    //   bitpayDebitCards: an array of cards
+    //   cards: an array of cards
     // }
     root.removeBitpayAccount = function(network, account, cb) {
       if (lodash.isString(account)) {
@@ -538,36 +519,14 @@ angular.module('copayApp.services')
       }
       account = account || {};
       if (lodash.isEmpty(account)) return cb('No account to remove');
-      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
         delete bitpayAccounts[account.email];
-        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
-      });
-    };
-
-    // account: {
-    //   email: account email
-    //   apiContext: the context needed for making future api calls
-    //   bitpayDebitCards: an array of cards
-    // }
-    root.removeBitpayAccount = function(network, account, cb) {
-      if (lodash.isString(account)) {
-        account = JSON.parse(account);
-      }
-      account = account || {};
-      if (lodash.isEmpty(account)) return cb('No account to remove');
-      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
-        if (err) cb(err);
-        if (lodash.isString(bitpayAccounts)) {
-          bitpayAccounts = JSON.parse(bitpayAccounts);
-        }
-        bitpayAccounts = bitpayAccounts || {};
-        delete bitpayAccounts[account.email];
-        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
+        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
       });
     };
 
