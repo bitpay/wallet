@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
           return;
         }
         if (paired) {
-          bitpayCardService.sync(apiContext, function(err, data) {
+          bitpayCardService.sync(apiContext, function(err, cards) {
             if (err) {
               popupService.showAlert(gettextCatalog.getString('Error updating Debit Cards'), err);
               return;
@@ -26,9 +26,9 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
               disableAnimate: true
             });
             $state.go('tabs.home').then(function() {
-              if (data.cards[0]) {
+              if (cards[0]) {
                 $state.transitionTo('tabs.bitpayCard', {
-                  id: data.cards[0].id
+                  id: cards[0].id
                 });
               }
             });
@@ -78,7 +78,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
     if (account == undefined) {
       startPairBitPayAccount();
     } else {
-      bitpayCardService.fetchBitpayDebitCards(account.apiContext, function(err, data) {
+      bitpayCardService.sync(account.apiContext, function(err, data) {
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;

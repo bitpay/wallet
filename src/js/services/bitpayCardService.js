@@ -47,13 +47,27 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Get Debit Cards: SUCCESS');
-      // Cache card data in storage
-      var cardData = {
-        cards: data.data.data,
-        email: apiContext.pairData.email
-      }
-      storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, cardData, function(err) {
-        return cb(err, {token: apiContext.token, cards: data.data.data, email: apiContext.pairData.email});
+
+      var cards = [];
+
+      lodash.each(data.data.data, function(x) {
+        var n = {};
+
+        if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
+          $log.warn('BAD data from Bitpay card' + JSON.stringify(x));
+          return;
+        }
+
+        n.eid = x.eid;
+        n.id = x.id;
+        n.lastFourDigits = x.lastFourDigits;
+        n.token = x.token;
+        cards.push(n);
+      });
+
+      storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, apiContext.pairData.email, cards, function(err) {
+        root.registerNextStep();
+        return cb(err, cards);
       });
     }, function(data) {
       return cb(_setError('BitPay Card Error: Get Debit Cards', data));
@@ -186,35 +200,16 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     }, cb);
   };
 
-  root.removeCard = function(card, cb) {
-    storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, card, function(err) {
+  root.remove = function(cardId, cb) {
+    storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, cardId, function(err) {
       if (err) {
         $log.error('Error removing BitPay debit card: ' + err);
-        // Continue, try to remove/cleanup next step and card history
+        return cb(err);
       }
-      // Next two items in parallel
-      // 
-      // If there are no more cards in storage then re-enable the next step entry
-      storageService.getBitpayDebitCards(bitpayService.getEnvironment().network, function(err, cards) {
-        if (err) {
-          $log.error('Error getting BitPay debit cards after remove: ' + err);
-          // Continue, try to remove next step if necessary
-        }
-        if (cards.length == 0) {
-          storageService.removeNextStep('BitpayCard', cb);
-        }
-      });
-      storageService.removeBitpayDebitCardHistory(bitpayService.getEnvironment().network, card, function(err) {
-        if (err) {
-        $log.error('Error removing BitPay debit card transaction history: ' + err);
-          return cb(err);
-        }
-        $log.info('Successfully removed BitPay debit card');
-        return cb();
-      });
+      root.registerNextStep();
+      storageService.removeBalanceCache(cardId, cb);
     });
   };
-
 
   root.getRates = function(currency, cb) {
     bitpayService.get('/rates/' + currency, function(data) {
@@ -1303,7 +1298,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   };
 
 
-  var register = function() {
+  root.registerNextStep = function() {
     root.getCards(function(err, cards) {
       if (lodash.isEmpty(cards)) {
         nextStepsService.register(nextStepItem);
@@ -1313,7 +1308,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     });
   };
 
-  register();
+  root.registerNextStep();
   return root;
 
 });
