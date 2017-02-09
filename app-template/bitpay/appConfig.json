@@ -21,8 +21,8 @@
   "windowsAppId": "2d1002d7-ee34-4f60-bd29-0c871ba0c195",
   "pushSenderId": "1036948132229",
   "description": "Secure Bitcoin Wallet",
-  "version": "1.3.5",
-  "androidVersion": "135000",
+  "version": "1.3.6",
+  "androidVersion": "136000",
   "_extraCSS": null,
   "_enabledExtensions": {
     "coinbase": true,

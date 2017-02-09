@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, platformInfo, lodash, profileService, incomingData) {
+angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, platformInfo, lodash, profileService, incomingData, appConfigService) {
   var root = {};
 
   var handleOpenURL = function(args) {
@@ -61,10 +61,10 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
           handleOpenURL({
             url: pathData.substring(pathData.indexOf('bitcoin:'))
           });
-        } else if (pathData.indexOf('copay:') != -1) {
-          $log.debug('Copay URL found');
+        } else if (pathData.indexOf(appConfigService.name + '://') != -1) {
+          $log.debug(appConfigService.name + ' URL found');
           handleOpenURL({
-            url: pathData.substring(pathData.indexOf('copay:'))
+            url: pathData.substring(pathData.indexOf(appConfigService.name + '://'))
           });
         }
       });
