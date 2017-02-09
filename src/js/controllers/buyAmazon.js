@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
   var showError = function(msg, err) {
     $scope.sendStatus = '';
     $log.error(err);
-    err = err && err.errors ? err.errors[0].message : err;
+    err = err && err.errors ? err.errors[0].message : (err || '');
     popupService.showAlert(msg, err);
   };
 
