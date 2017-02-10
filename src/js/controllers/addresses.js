@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressesController', function($scope, $log, $stateParams, $state, $timeout, $ionicHistory, $ionicScrollDelegate, configService, popupService, gettextCatalog, lodash, profileService, walletService, bwcError, platformInfo) {
+angular.module('copayApp.controllers').controller('addressesController', function($scope, $log, $stateParams, $state, $timeout, $ionicHistory, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, bwcError, platformInfo, appConfigService) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
   var config = configService.getSync().wallet.settings;
@@ -156,16 +156,17 @@ angular.module('copayApp.controllers').controller('addressesController', functio
 
     ongoingProcess.set('sendingByEmail', true);
     $timeout(function() {
-      var body = 'Copay Wallet "' + $scope.wallet.name + '" Addresses\n  Only Main Addresses are  shown.\n\n';
+      var appName = appConfigService.nameCase;
+      var body = appName + ' Wallet "' + $scope.wallet.name + '" Addresses\n  Only Main Addresses are  shown.\n\n';
       body += "\n";
       body += $scope.allAddresses.map(function(v) {
-        return ('* ' + v.address + ' ' + 'xpub' + v.path.substring(1) + ' ' + formatDate(v.createdOn));
+        return ('* ' + v.address + ' xpub' + v.path.substring(1) + ' ' + formatDate(v.createdOn));
       }).join("\n");
       ongoingProcess.set('sendingByEmail', false);
 
       window.plugins.socialsharing.shareViaEmail(
         body,
-        'Copay Addresses',
+        appName + ' Addresses',
         null, // TO: must be null or an array
         null, // CC: must be null or an array
         null, // BCC: must be null or an array
