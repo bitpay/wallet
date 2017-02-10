@@ -183,7 +183,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     else return false;
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+  $scope.$on("$ionicView.afterEnter", function(event, data) {
     $scope.allAddressesView = data.stateName == 'tabs.receive.allAddresses' ? true : false;
     if (!isCachedWallet($stateParams.walletId)) $scope.init();
     else $log.debug('Addresses cached for Wallet:', $stateParams.walletId);
