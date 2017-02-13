@@ -53,7 +53,7 @@
       ng-click="downloadWalletBackup()"
       class="button button-standard button-primary"
       ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
-      ng-style="{'background-color':wallet.color}"
+      ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}"
       ng-show="!isSafari && !isCordova">
       <i class="fi-download"></i>
       <span translate>Download</span>
@@ -63,7 +63,7 @@
       ng-click="viewWalletBackup()"
       class="button button-standard button-primary"
       ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
-      ng-style="{'background-color':wallet.color}"
+      ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}"
       ng-show="isSafari && !isCordova">
       <i class="fi-eye"></i>
       <span translate>View</span>
@@ -72,12 +72,12 @@
     <div ng-show="isCordova">
       <button class="button button-standard button-primary"
         ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
-        ng-style="{'background-color':wallet.color}"
+        ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}"
         ng-click="copyWalletBackup()">
         <i class="fi-clipboard-pencil"></i>
         <span translate>Copy to clipboard</span></button>
       <button class="button button-standard button-primary" ng-disabled="(!formData.password || formData.password != formData.repeatpassword)"
-        ng-style="{'background-color':wallet.color}"
+        ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}"
         ng-click="sendWalletBackup()"><i class="fi-mail"></i>
         <span translate>Send by email</span></button>
     </div>

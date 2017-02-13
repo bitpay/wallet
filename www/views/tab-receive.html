@@ -81,7 +81,7 @@
             <div class="card">
               <div class="item item-icon-left text-right" ng-class="{'noBalance': !wallet.status.availableBalanceStr}">
                 <i class="icon big-icon-svg">
-                  <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+                  <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
                 </i>
                 <span class="wallet-name">{{wallet.name || wallet.id}}</span>
                 <span class="item-note m10l">

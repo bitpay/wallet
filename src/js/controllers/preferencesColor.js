@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('preferencesColorController', 
   function setCurrentColorIndex() {
     // Wait for DOM to render
     $timeout(function() {
-      $scope.currentColorIndex = colorToIndex(config.colorFor[walletId] || '#4A90E2');
+      $scope.currentColorIndex = colorToIndex(config.colorFor[walletId]);
       if (!$scope.currentColorIndex) {
         setCurrentColorIndex();
       }

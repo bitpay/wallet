@@ -95,7 +95,7 @@
            ui-sref="tabs.preferences({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
          <i class="icon big-icon-svg circle">
-          <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
+          <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !item.color}" ng-style="{'background-color': item.color}" class="bg"/>
         </i>
         <span>
           {{item.name || item.id}}
