@@ -1,0 +1,662 @@
+/*
+ * Color and palettes
+ */
+
+$color-palettes: (
+  copay: (
+    primary:        #192c3a,
+    secondary:      #31465b,
+    tertiary:       #748598,
+    ctrl-primary:   #2c3e50,
+    ctrl-secondary: #a5b2bf,
+    ctrl-tertiary:  #f1f3f5,
+    text-light:     #c2c9d1,
+    text-dark:      #495f76,
+    text-link:      #498fe2,
+    success:        #3fbc9c,
+    alert:          #ed4a43
+  )
+);
+
+/*
+ * Variables
+ */
+
+$selected-palette: copay;
+$palette: map-get($color-palettes, $selected-palette);
+
+/* Set colors based on the selected palette */
+$app-primary:                      map-get($palette, primary);
+$app-secondary:                    map-get($palette, secondary);
+$app-tertiary:                     map-get($palette, tertiary);
+
+$ctrl-primary:                     map-get($palette, ctrl-primary);
+$ctrl-secondary:                   map-get($palette, ctrl-secondary);
+$ctrl-tertiary:                    map-get($palette, ctrl-tertiary);
+
+$text-dark-color:                  map-get($palette, text-dark);
+$text-light-color:                 map-get($palette, text-light);
+$text-link-color:                  map-get($palette, text-link);
+
+$alert-color:                      map-get($palette, alert);
+$success-color:                    map-get($palette, success);
+
+/* Set element colors */
+$icon-color:                       $app-primary;
+
+$primary-button-color:             $ctrl-primary;
+$primary-button-activated-color:   $ctrl-secondary;
+$primary-button-text-color:        $ctrl-tertiary;
+
+$secondary-button-color:           $ctrl-secondary;
+$secondary-button-activated-color: $ctrl-tertiary;
+$secondary-button-text-color:      $ctrl-primary;
+
+$check-button-color:               $ctrl-secondary;
+$toggle-button-color:              $ctrl-secondary;
+
+$primary-background-color:         $app-primary;
+$secondary-background-color:       $app-secondary;
+$tertiary-background-color:        $app-tertiary;
+
+$gradient-bg-top-color:            none;
+$gradient-bg-bottom-color:         none;
+
+/*
+ * Third-party brand specific colors
+ */
+$bitpay-primary-button-color:           $soft-blue;
+$bitpay-primary-button-activated-color: #4E69E5;
+$bitpay-button-text-color:              #FFFFFF;
+
+/* 
+ * Global styles
+ */
+
+a {
+  color: $app-primary;
+}
+
+/* 
+ * Main header bar
+ */
+
+.bar.bar-header,
+.bar.bar-royal {
+  background: $primary-background-color;
+  background-image: -webkit-linear-gradient(top, $gradient-bg-top-color 0%,$gradient-bg-bottom-color 100%);
+  background-image: linear-gradient(to bottom, $gradient-bg-top-color 0%,$gradient-bg-bottom-color 100%);
+  border-color: $secondary-background-color;
+
+ .button {
+    background-color: transparent;
+    .icon:before {
+      color: $primary-button-color;
+    }
+  }
+
+ .title {
+    color: $text-dark-color;
+  }
+}
+
+/* 
+ * Main tab icons
+ */
+
+.tabs .tab-item {
+  .icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 6px 0 2px;
+    &.ico-home {
+      background-image: url('../img/app/tab-icons/ico-home.svg');
+    }
+    &.ico-home-selected {
+      background-image: url('../img/app/tab-icons/ico-home-selected.svg');
+    }
+    &.ico-receive {
+      background-image: url('../img/app/tab-icons/ico-receive.svg');
+    }
+    &.ico-receive-selected {
+      background-image: url('../img/app/tab-icons/ico-receive-selected.svg');
+    }
+    &.ico-settings {
+      background-image: url('../img/app/tab-icons/ico-settings.svg');
+    }
+    &.ico-settings-selected {
+      background-image: url('../img/app/tab-icons/ico-settings-selected.svg');
+    }
+    &.ico-scan {
+      background-image: url('../img/app/tab-icons/ico-scan.svg');
+    }
+    &.ico-scan-selected {
+      background-image: url('../img/app/tab-icons/ico-scan-selected.svg');
+    }
+    &.ico-send {
+      background-image: url('../img/app/tab-icons/ico-send.svg');
+    }
+    &.ico-send-selected {
+      background-image: url('../img/app/tab-icons/ico-send-selected.svg');
+    }
+  }
+}
+
+ion-tabs.tabs-color-active-positive {
+  .tab-item.tab-item-active,
+  .tab-item.activated {
+    color: $app-secondary;
+  }
+}
+
+/*
+ * Tob tabs
+ */
+.top-tabs .col {
+  border-bottom-color: $app-secondary !important;
+}
+
+/*
+ * Buttons
+ */
+
+/* Primary */
+.button.button-primary {
+  background-color: $primary-button-color;
+  color: $primary-button-text-color !important;
+}
+
+.button.button-primary.activated {
+  background-color: $primary-button-activated-color;
+}
+
+/* Secondary */
+.button.button-secondary {
+  background-color: $secondary-button-color;
+  color: $secondary-button-text-color !important;
+}
+
+.button.button-secondary.activated {
+  background-color: $secondary-button-activated-color;
+}
+
+.button.button-clear {
+  color: $primary-button-color !important;
+}
+
+.button.button-clear.activated {
+  color: $primary-button-activated-color;
+}
+
+ /* Use bitpay colors for these views */
+#bitpayCard-intro {
+  .button.button-primary {
+    background-color: $bitpay-primary-button-color;
+    color: $bitpay-button-text-color;
+  }
+
+  .button.button-primary.activated {
+    background-color: $bitpay-primary-button-activated-color;
+  }
+}
+
+/*
+ * Toggle buttons
+ */
+
+.toggle.toggle-balanced,
+.toggle.toggle-positive {
+  input:checked + .track {
+    border-color: $toggle-button-color;
+    background-color: $toggle-button-color;
+  }
+}
+
+/*
+ * Check buttons
+ */
+
+.checkbox-positive,
+.checkbox-balanced {
+  input:checked:before,
+  input:checked + .checkbox-icon:before {
+    background: $check-button-color;
+    border-color: $check-button-color;
+  }
+
+  input:before,
+  .checkbox-icon:before {
+    border-color: $check-button-color;
+  }
+}
+
+.checkbox input:checked:before,
+.checkbox input:checked + .checkbox-icon:before {
+  background: $check-button-color;
+  border-color: $check-button-color;
+}
+
+/*
+ * Popup modals
+ */
+
+.popup-modal-header-success {
+  background: $success-color;
+}
+
+.popup-modal-header-warning {
+  background: $alert-color;
+}
+
+.popup-modal-content-warning {
+  .button {
+    color: $alert-color !important;
+  }
+}
+
+/*
+ * Onboarding views
+ */
+
+#onboard-welcome {
+  &.onboarding {
+    color: $text-light-color;
+    background: $primary-background-color;
+    background-image: linear-gradient(to bottom, $gradient-bg-top-color 0%, $gradient-bg-bottom-color 100%);
+  }
+
+  > ion-content {
+    background: none;
+  }
+
+  img {
+    background: url(/img/app/logo.svg);
+    width: 0;
+    height: 0;
+    padding: 50vw;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .button.button-primary {
+    background-color: $primary-button-color;
+    color: $primary-button-text-color !important;
+  }
+
+  .button.button-primary.activated {
+    background-color: $primary-button-activated-color;
+  }
+}
+
+#onboarding-tour {
+  &.onboarding {
+    color: $text-light-color;
+    background: $primary-background-color;
+    background-image: linear-gradient(to bottom, $gradient-bg-top-color 0%, $gradient-bg-bottom-color 100%);
+  }
+
+  .onboarding-description {
+    color: $text-light-color;
+    opacity: 0.5;
+  }
+
+  .button.button-primary {
+    background-color: $primary-button-color;
+    color: $primary-button-text-color !important;
+  }
+
+  .button.button-primary.activated {
+    background-color: $primary-button-activated-color;
+  }
+
+  .button.button-secondary {
+    background-color: $primary-button-color;
+    color: $primary-button-text-color !important;
+  }
+
+  .button.button-secondary.activated {
+    background-color: $primary-button-activated-color;
+  }
+
+  .button.button-clear {
+    color: $primary-button-color !important;
+  }
+
+  .button.button-clear.activated {
+    color: $primary-button-activated-color;
+  }
+
+  .swiper-pagination-bullet {
+    background: $ctrl-primary;
+  }
+}
+
+#onboarding-backup-request {
+  &.onboarding {
+    color: $text-light-color;
+    background: $primary-background-color;
+    background-image: linear-gradient(to bottom, $gradient-bg-top-color 0%, $gradient-bg-bottom-color 100%);
+  }
+
+  .onboarding-description {
+    color: $text-light-color;
+    opacity: 0.5;
+  }
+
+  .button.button-primary {
+    background-color: $primary-button-color;
+    color: $primary-button-text-color !important;
+  }
+
+  .button.button-primary.activated {
+    background-color: $primary-button-activated-color;
+  }
+
+  .button.button-secondary {
+    background-color: $secondary-button-color;
+    color: $secondary-button-text-color !important;
+  }
+
+  .button.button-secondary.activated {
+    background-color: $secondary-button-activated-color;
+  }
+
+  img {
+    background: url(/img/app/onboarding/warning.svg);
+    width: 0;
+    height: 0;
+    padding: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100px;
+  }
+
+  #arrow-down {
+    color: $alert-color;
+  }
+}
+
+#onboarding-disclaimer {
+  &.onboarding {
+    color: $text-light-color;
+    background: $primary-background-color;
+    background-image: linear-gradient(to bottom, $gradient-bg-top-color 0%, $gradient-bg-bottom-color 100%);
+  }
+
+  .onboarding-description {
+    color: $text-light-color;
+    opacity: 0.5;
+  }
+
+  .item {
+    color: $text-dark-color;
+
+    .checkbox input:before,
+    .checkbox .checkbox-icon:before {
+      background: url('../img/app/onboarding/checkbox-unchecked.svg') top center no-repeat;
+    }
+
+    .checkbox input:checked:before,
+    .checkbox input:checked + .checkbox-icon:before {
+      background: url('../img/app/onboarding/checkbox-checked.svg') top center no-repeat;
+    }
+  }
+}
+
+#agree-to-terms {
+  background: $secondary-background-color;
+
+  p {
+    color: $text-dark-color;
+  }
+
+  a {
+    color: $text-link-color;
+  }
+
+  .item {
+    background: transparent;
+  }
+
+  .checkbox input:before,
+  .checkbox .checkbox-icon:before {
+    border-color: $ctrl-secondary;
+    background: transparent;
+  }
+
+  .checkbox {
+    input:checked + .checkbox-icon:before {
+      border-color: $success-color;
+    }
+
+    .checkbox-icon:after {
+      border-color: $success-color;
+    }
+  }
+
+  .button.button-positive {
+    background-color: $primary-button-color;
+    color: $primary-button-text-color !important;
+  }
+
+  .button.button-positive.activated {
+    background-color: $primary-button-activated-color;
+    border-color: transparent;
+  }  
+}
+
+/*
+ * Backup views
+ */
+
+#backup-warning {
+  &.onboarding {
+    color: $text-light-color;
+    background: $primary-background-color;
+    background-image: linear-gradient(to bottom, $gradient-bg-top-color 0%, $gradient-bg-bottom-color 100%);
+  }
+
+  .onboarding-description {
+    color: $text-light-color;
+    opacity: 0.5;
+  }
+
+  .onboarding-illustration-backup-warning {
+    background-image: url(/img/app/backup-warning.svg);
+  }
+
+  .button.button-primary {
+    background-color: $primary-button-color;
+    color: $primary-button-text-color !important;
+  }
+
+  .button.button-primary.activated {
+    background-color: $primary-button-activated-color;
+  }
+}
+
+#wallet-backup-phrase {
+  > ion-content {
+    background: $primary-background-color;
+    background-image: linear-gradient(to bottom, $gradient-bg-top-color 0%, $gradient-bg-bottom-color 100%);
+  }
+
+  #wallet-backup-phrase-step-1 {
+    color: $text-light-color;
+  }
+
+  .backup-phrase {
+    background-color: $secondary-background-color;
+    border-color: $tertiary-background-color;
+    color: $text-dark-color;
+  }
+
+  #wallet-backup-phrase-step-2 {
+    color: $text-light-color;
+
+    #select-phrase {
+      background: $tertiary-background-color;
+    }
+
+    .tldr-prompt {
+      color: $text-dark-color;
+    }
+
+    .select-word {
+      background: $alert-color;
+      color: $text-light-color;
+    }
+  }
+
+  .button.button-primary {
+    background-color: $primary-button-color;
+    color: $primary-button-text-color !important;
+  }
+
+  .button.button-primary.activated {
+    background-color: $primary-button-activated-color;
+  }
+}
+
+/*
+ * Other views
+ */
+
+#tab-home {
+  .big-icon-svg > .bg.green {
+    background: $success-color;
+  }
+}
+
+#view-add {
+  .bg {
+    background-color: $icon-color;
+  }
+}
+
+#addresses {
+  .addr-list .item.view-all span {
+    color: $app-primary;
+  }
+
+  .addr-list .item.view-all i {
+    color: $app-primary;
+  } 
+
+  img {
+    background: url(/img/app/tab-icons/ico-receive-selected.svg);
+    width: 0;
+    height: 0;
+    background-size: auto;
+    padding: 12px;
+    background-repeat: no-repeat;
+  }
+} 
+
+#tab-scan {
+  img {
+    background: url(/img/app/qr/qr-scan-guides.svg);
+    width: 0 !important;
+    height: 0;
+    padding: 50vw;
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+#tab-send {
+  img {
+    background: url(/img/app/tab-icons/ico-send-selected.svg);
+    width: 0;
+    height: 0;
+    background-size: auto;
+    padding: 12px;
+    background-repeat: no-repeat;
+  }
+}
+
+#view-amount {
+  item-selector .item-selector .option > i {
+    color: $app-secondary;
+  }
+
+  .keypad .operator-send {
+    background-color: $primary-button-color;
+  }
+}
+
+#view-address-book {
+  img {
+    background: url(/img/app/ab/address-book-add.svg);
+    width: 0;
+    height: 0;
+    background-size: auto;
+    padding: 12px;
+    background-repeat: no-repeat;
+  }
+} 
+
+/*
+ * Miscellaneous
+ */
+
+#tab-receive #address .backup,
+.wallet-not-backed-up-warning {
+  background: $alert-color;
+}
+
+.box-notification.error {
+  background-color: $alert-color;
+  border-color: $alert-color;
+  color: $text-dark-color;
+}
+
+/*
+ * tab home
+ */
+
+#tab-home {
+  ion-content {
+    .list.card {
+      i > img {
+        border-radius: 3px;
+      }
+    }
+  }
+}
+
+/*
+ * User selectable wallet colors
+ */
+
+$wallet-color-map: (
+   0: (color: #DD4B39, name: 'Cinnabar'),
+   1: (color: #F38F12, name: 'Carrot Orange'),
+   2: (color: #FAA77F, name: 'Light Salmon'),
+   3: (color: #D0B136, name: 'Metallic Gold'),
+   4: (color: #9EDD72, name: 'Feijoa'),
+   5: (color: #29BB9C, name: 'Shamrock'),
+   6: (color: #019477, name: 'Observatory'),
+   7: (color: #77DADA, name: 'Turquoise Blue'),
+   8: (color: #4A90E2, name: 'Cornflower Blue'),
+   9: (color: #484ED3, name: 'Free Speech Blue'),
+  10: (color: #9B59B6, name: 'Deep Lilac'),
+  11: (color: #E856EF, name: 'Free Speech Magenta'),
+  12: (color: #FF599E, name: 'Brilliant Rose'),
+  13: (color: #7A8C9E, name: 'Light Slate Grey'),
+);
+
+.wallet-color-count {
+  content: '14';
+}
+
+@each $id, $map in $wallet-color-map {
+  .wallet-color-#{$id} {
+    background: map-get($map, color);
+  }
+  .wallet-color-#{$id}:before {
+    content: map-get($map, name);
+    margin-left: 2.4rem;
+  }
+}

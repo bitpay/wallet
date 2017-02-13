@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Send_Icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     viewBox="0 0 27 24" style="enable-background:new 0 0 27 24;" xml:space="preserve">
+<style type="text/css">
+    .st0{fill:#400000;fill-opacity:0.4;stroke:#400000;stroke-width:1.4;}
+    .st1{fill:#F0AEAE;fill-opacity:0.7145;stroke:#400000;stroke-width:1.4;}
+</style>
+<g>
+    <polyline class="st0" points="25.5,1.5 6.3,11.7 4.9,19.3 9.8,15.3   "/>
+    <polygon class="st1" points="1.5,6.4 25.5,1.5 17.1,22.5     "/>
+</g>
+</svg>
