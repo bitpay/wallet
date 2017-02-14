@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, platformInfo, storageService, buyAndSellService, lodash) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, $filter, platformInfo, storageService, buyAndSellService, lodash, configService, txFormatService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -47,6 +47,34 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
 
   root.getNetwork = function() {
     return credentials.NETWORK;
+  };
+
+  root.getCurrency = function() {
+    return 'USD';
+  };
+
+  root.parseAmount = function(amount, currency) {
+    var config = configService.getSync().wallet.settings;
+    var satToBtc = 1 / 100000000;
+    var unitToSatoshi = config.unitToSatoshi;
+    var amountUnitStr;
+
+    // IF 'USD'
+    if (currency) {
+      amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
+    } else {
+      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+      amountUnitStr = txFormatService.formatAmountStr(amountSat);
+      // convert unit to BTC
+      amount = (amountSat * satToBtc).toFixed(8);
+      currency = 'BTC';
+    }
+
+    return {
+      amount: amount, 
+      currency: currency, 
+      amountUnitStr: amountUnitStr
+    };
   };
 
   root.getSignupUrl = function() {
@@ -225,18 +253,13 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   };
 
   root.get2faCode = function(token, cb) {
-    if (!token) {
-      $log.error('Glidera Sent 2FA code by SMS: ERROR Invalid Token');
-      return cb('Invalid Token');
-    }
-
+    if (!token) return cb('Invalid Token');
     $http(_get('/authentication/get2faCode', token)).then(function(data) {
-
-      $log.info('Glidera Sent 2FA code by SMS: SUCCESS');
-      return cb(null, data.status == 200 ? true : false);
+      $log.info('Glidera 2FA code: SUCCESS');
+      return cb(null, data.data);
     }, function(data) {
-      $log.error('Glidera Sent 2FA code by SMS: ERROR ' + data.statusText);
-      return cb('Glidera Sent 2FA code by SMS: ERROR ' + data.statusText);
+      $log.error('Glidera 2FA code: ERROR ' + data.statusText);
+      return cb('Glidera 2FA code: ERROR ' + data.statusText);
     });
   };
 
@@ -248,7 +271,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + token,
-        '2FA_CODE': twoFaCode
+        'X-2FA-CODE': twoFaCode
       },
       data: data
     };
@@ -308,6 +331,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       ip: data.ip
     };
     $http(_post('/buy', token, twoFaCode, data)).then(function(data) {
+console.log('[glideraService.js:333]',data); //TODO
       $log.info('Glidera Buy: SUCCESS');
       return cb(null, data.data);
     }, function(data) {

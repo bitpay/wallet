@@ -92,20 +92,13 @@ angular.module('copayApp.controllers').controller('glideraController',
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
     }
 
-    $scope.retry = function() {
-      $scope.connectingGlidera = true;
-      $scope.update({'fullUpdate': true});
-      $timeout(function(){
-        $scope.connectingGlidera = false;
-      }, 300);
-    }
-
     $scope.toggleOauthForm = function() {
       $scope.showOauthForm = !$scope.showOauthForm;
     }
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.network = glideraService.getNetwork();
+      $scope.currency = glideraService.getCurrency();
       $scope.showOauthForm = false;
       $scope.account = {};
       if (data.stateParams && data.stateParams.code) {
