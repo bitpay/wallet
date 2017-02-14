@@ -137,11 +137,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/uri-payment/:url',
         templateUrl: 'views/paymentUri.html'
       })
-      .state('uriglidera', {
-        url: '/uri-glidera/:url',
-        controller: 'glideraUriController',
-        templateUrl: 'views/glideraUri.html'
-      })
 
     /*
      *
@@ -880,7 +875,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.buyandsell.glidera', {
-        url: '/glidera',
+        url: '/glidera/:code',
         views: {
           'tab-home@tabs': {
             controller: 'glideraController',

@@ -108,7 +108,11 @@ angular.module('copayApp.controllers').controller('glideraController',
       $scope.network = glideraService.getNetwork();
       $scope.showOauthForm = false;
       $scope.account = {};
-      init();
+      if (data.stateParams && data.stateParams.code) {
+        $scope.submitOauthCode(data.stateParams.code);
+      } else {
+        init();
+      }
     });
 
   });
