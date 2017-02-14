@@ -64,7 +64,7 @@
     height: 70%;
     color: $dark-gray;
     .initial-prompt {
-      padding: 3rem;
+      padding: 2.3rem;
       @media(max-height: 480px) {
         padding: 2rem;
       }
@@ -75,6 +75,9 @@
         height: 30%;
         padding-bottom: 1rem;
         font-size: 14px;
+      }
+      @media(max-height: 550px) {
+        padding-bottom: 1rem;
       }
     }
   }
