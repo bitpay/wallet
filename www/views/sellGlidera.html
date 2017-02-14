@@ -1,0 +1,104 @@
+<ion-view id="glidera" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Sell bitcoin</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content class="add-bottom-for-cta">
+    <!-- SELL -->
+    <div class="list" ng-if="sellInfo">
+
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="35" class="item-img-sell">
+          <span>Selling</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{amountUnitStr}}</div>
+          <div class="alternative">
+            <span ng-show="!isFiat">{{sellInfo.subtotal}} {{sellInfo.currency}}</span> 
+            <span ng-show="isFiat">{{sellInfo.qty}} BTC</span>
+            @ ${{sellInfo.price}} per BTC
+          </div>
+        </div>
+      </div> 
+
+      <div class="info">
+
+        <div class="item item-icon-right" ng-click="showWalletSelector()">
+          <div class="label">From</div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
+            </i>
+            {{wallet ? wallet.name : '...'}}
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </div>
+
+        <div class="item item-divider">
+          Transaction details
+        </div>
+        <div class="item">
+          Expires
+          <span class="item-note">
+            {{sellInfo.expires | amCalendar}}
+          </span>
+        </div>
+        <div class="item">
+          Fees
+          <span class="item-note">
+            {{sellInfo.fees}} {{sellInfo.currency}}
+          </span>
+        </div>
+        <div class="item">
+          Total to receive
+          <span class="item-note total-amount">
+            {{sellInfo.total}} {{sellInfo.currency}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <click-to-accept
+    ng-disabled="!sellInfo || !wallet"
+    ng-click="sellConfirm()"
+    ng-if="!isCordova && sellInfo"
+    click-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="false"
+    no-matching-wallet="!sellInfo">
+    Confirm sale
+  </click-to-accept>
+  <slide-to-accept
+    ng-disabled="!sellInfo || !wallet"
+    ng-if="isCordova && sellInfo"
+    slide-on-confirm="sellConfirm()"
+    slide-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="false"
+    no-matching-wallet="!sellInfo">
+    Slide to sell
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="goBackHome()"
+    slide-success-hide-on-confirm="true">
+    <span>Funds sent to Glidera Account</span>
+    <div class="m10 size-14">
+      The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be
+      completed automatically once it is confirmed by Glidera.
+    </div>
+  </slide-to-accept-success>
+
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
+</ion-view>

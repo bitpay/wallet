@@ -8,7 +8,8 @@
         <span ng-hide="showOauthForm">Enter Code</span>
         <span ng-show="showOauthForm">Restart</span>
       </button>
-      <button class="button button-clear button-small ng-hide" ng-show="account.token && account.status && !account.status.userCanTransact" ng-click="retry()">
+      <button class="button button-clear button-small ng-hide" ng-show="account.token && account.status &&
+        !account.status.userCanTransact" ng-click="update()">
         Refresh
       </button>
     </ion-nav-buttons>
@@ -58,13 +59,13 @@
 
     <ion-content class="ng-hide" ng-show="account.token && account.status && account.status.userCanTransact">
       <div class="text-center m20v">
-        <img src="img/glidera-logo.png" width="170">
+        <img src="img/glidera-logo.png" width="170" ng-click="update()">
       </div>
 
       <div class="list card">
         <a ng-show="account.status.userCanBuy"
             class="item item-icon-right"
-            href ui-sref="tabs.buyandsell.glidera.amount({isGlidera: 'buy', glideraAccessToken: account.token})">
+            href ui-sref="tabs.buyandsell.glidera.amount({nextStep: 'tabs.buyandsell.glidera.buy', currency: currency})">
           <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="25" class="item-img-buy">
           Buy Bitcoin
           <span class="item-note" ng-show="account.price.buy">
@@ -74,7 +75,7 @@
         </a>
         <a class="item item-icon-right"
             ng-show="account.status.userCanSell"
-            href ui-sref="tabs.buyandsell.glidera.amount({isGlidera: 'sell', glideraAccessToken: account.token})">
+            href ui-sref="tabs.buyandsell.glidera.amount({nextStep: 'tabs.buyandsell.glidera.sell', currency: currency})">
           <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="25" class="item-img-sell">
           Sell Bitcoin
           <span class="item-note" ng-show="account.price.sell">
