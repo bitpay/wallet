@@ -271,6 +271,18 @@ angular.module('copayApp.services')
       storage.remove('glideraStatus-' + network, cb);
     };
 
+    root.setGlideraTxs = function(network, txs, cb) {
+      storage.set('glideraTxs-' + network, txs, cb);
+    };
+
+    root.getGlideraTxs = function(network, cb) {
+      storage.get('glideraTxs-' + network, cb);
+    };
+
+    root.removeGlideraTxs = function(network, cb) {
+      storage.remove('glideraTxs-' + network, cb);
+    };
+
     root.setCoinbaseRefreshToken = function(network, token, cb) {
       storage.set('coinbaseRefreshToken-' + network, token, cb);
     };

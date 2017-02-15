@@ -353,11 +353,15 @@ console.log('[glideraService.js:333]',data); //TODO
         if (lodash.isString(permissions)) permissions = JSON.parse(permissions);
         storageService.getGlideraStatus(credentials.NETWORK, function(err, status) {
           if (lodash.isString(status)) status = JSON.parse(status);
-          buyAndSellService.updateLink('glidera', true);
-          return cb(null, {
-            token: accessToken,
-            permissions: permissions,
-            status: status
+          storageService.getGlideraTxs(credentials.NETWORK, function(err, txs) {
+            if (lodash.isString(txs)) txs = JSON.parse(txs);
+            buyAndSellService.updateLink('glidera', true);
+            return cb(null, {
+              token: accessToken,
+              permissions: permissions,
+              status: status,
+              txs: txs
+            });
           });
         });
       });
@@ -371,31 +375,41 @@ console.log('[glideraService.js:333]',data); //TODO
         if (err) return;
         storageService.setGlideraPermissions(credentials.NETWORK, JSON.stringify(permissions), function() {});
         data.permissions = permissions;
+
+        data.price = {};
+        root.buyPrice(accessToken, {qty: 1}, function(err, buy) {
+          data.price['buy'] = buy.price;
+        });
+        root.sellPrice(accessToken, {qty: 1}, function(err, sell) {
+          data.price['sell'] = sell.price;
+        });
+
         root.getStatus(accessToken, function(err, status) {
           data.status = status;
           storageService.setGlideraStatus(credentials.NETWORK, JSON.stringify(status), function() {});
-          
-          root.getLimits(accessToken, function(err, limits) {
-            data.limits = limits;
-            
-            if (permissions.transaction_history) {
-              root.getTransactions(accessToken, function(err, txs) {
-                data.txs = txs;
-              });
-            }
-
-            if (permissions.view_email_address) {
-              root.getEmail(accessToken, function(err, email) {
-                data.email = email;
-              });
-            }
-            if (permissions.personal_info) {
-              root.getPersonalInfo(accessToken, function(err, info) {
-                data.personalInfo = info;
-              });
-            }
-          }); 
         }); 
+          
+        root.getLimits(accessToken, function(err, limits) {
+          data.limits = limits;
+        }); 
+            
+        if (permissions.transaction_history) {
+          root.getTransactions(accessToken, function(err, txs) {
+            storageService.setGlideraTxs(credentials.NETWORK, JSON.stringify(txs), function() {});
+            data.txs = txs;
+          });
+        }
+
+        if (permissions.view_email_address) {
+          root.getEmail(accessToken, function(err, email) {
+            data.email = email;
+          });
+        }
+        if (permissions.personal_info) {
+          root.getPersonalInfo(accessToken, function(err, info) {
+            data.personalInfo = info;
+          });
+        }
       }); 
     }); 
   };

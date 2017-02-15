@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sellGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, configService) {
+angular.module('copayApp.controllers').controller('sellGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, configService, platformInfo) {
 
   var amount;
   var currency;
+
+  $scope.isCordova = platformInfo.isCordova;
 
   var showErrorAndBack = function(err) {
     $scope.sendStatus = '';
