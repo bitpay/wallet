@@ -13,14 +13,7 @@ angular.module('copayApp.controllers').controller('glideraController',
 
         $scope.account['token'] = data.token;
         $scope.account['status'] = data.status;
-        $scope.account['price'] = {};
-
-        glideraService.buyPrice($scope.account.token, {qty: 1}, function(err, buy) {
-          $scope.account.price['buy'] = buy.price;
-        });
-        glideraService.sellPrice($scope.account.token, {qty: 1}, function(err, sell) {
-          $scope.account.price['sell'] = sell.price;
-        });
+        $scope.account['txs'] = data.txs; 
 
         $timeout(function() {
           $scope.$digest();
@@ -46,6 +39,8 @@ angular.module('copayApp.controllers').controller('glideraController',
           popupService.showAlert('Authorisation error', err);
           return;
         }
+        $scope.account['token'] = data.token;
+        $scope.account['status'] = data.status;
         init();
       });
     };
