@@ -36,6 +36,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     // CHECKBOX CIRCLE
     $ionicConfigProvider.form.checkbox('circle');
 
+    // USE NATIVE SCROLLING
+    $ionicConfigProvider.scrolling.jsScrolling(false);
+
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
       function($delegate, platformInfo) {
