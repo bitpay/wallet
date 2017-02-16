@@ -122,7 +122,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Authorization Access Token: ERROR ' + data.statusText);
-      return cb('Glidera Authorization Access Token: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -170,7 +171,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Access Token Permissions: ERROR ' + data.statusText);
-      return cb('Glidera Access Token Permissions: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -181,7 +183,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Get Email: ERROR ' + data.statusText);
-      return cb('Glidera Get Email: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -192,7 +195,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Get Personal Info: ERROR ' + data.statusText);
-      return cb('Glidera Get Personal Info: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -203,7 +207,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera User Status: ERROR ' + data.statusText);
-      return cb('Glidera User Status: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -214,7 +219,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Transaction Limits: ERROR ' + data.statusText);
-      return cb('Glidera Transaction Limits: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -225,7 +231,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data.transactions);
     }, function(data) {
       $log.error('Glidera Transactions: ERROR ' + data.statusText);
-      return cb('Glidera Transactions: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -237,7 +244,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Transaction: ERROR ' + data.statusText);
-      return cb('Glidera Transaction: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -248,7 +256,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data.sellAddress);
     }, function(data) {
       $log.error('Glidera Create Sell Address: ERROR ' + data.statusText);
-      return cb('Glidera Create Sell Address: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -259,7 +268,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera 2FA code: ERROR ' + data.statusText);
-      return cb('Glidera 2FA code: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -287,7 +297,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Sell Price: ERROR ' + data.statusText);
-      return cb('Glidera Sell Price: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -304,7 +315,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Sell Request: ERROR ' + data.statusText);
-      return cb('Glidera Sell Request: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -318,7 +330,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Buy Price: ERROR ' + data.statusText);
-      return cb('Glidera Buy Price: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -331,12 +344,12 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       ip: data.ip
     };
     $http(_post('/buy', token, twoFaCode, data)).then(function(data) {
-console.log('[glideraService.js:333]',data); //TODO
       $log.info('Glidera Buy: SUCCESS');
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Buy Request: ERROR ' + data.statusText);
-      return cb('Glidera Buy Request: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
