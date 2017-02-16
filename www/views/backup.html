@@ -6,7 +6,7 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content overflow-scroll="true">
+  <ion-content>
     <div class="ng-hide" ng-show="deleted">
         <div class="phrase-unavailable" translate>Wallet recovery phrase not available.</div>
         <div class="phrase-unavailable-instructions" translate>You can still export it from Advanced &gt; Export.</div>
@@ -16,7 +16,7 @@
     -->
     <div id="wallet-backup-phrase-step-1" class="ng-hide" ng-show="step == 1 && (mnemonicWords || (!credentialsEncrypted && !deleted))">
       <div class="initial-prompt" translate>Please carefully write down this phrase.</div>
-      <div class="backup-phrase" ng-class="{'enable_text_select': wallet.network == 'testnet'}">
+      <div class="backup-phrase" copy-to-clipboard="copyRecoveryPhrase()">
         <div class="backup-phrase-content">
           <span class="backup-phrase-content-word-readonly" ng-repeat="word in mnemonicWords track by $index"><span style="white-space:nowrap">{{word}}</span><span ng-show="useIdeograms">&#x3000;</span> </span>
         </div>
