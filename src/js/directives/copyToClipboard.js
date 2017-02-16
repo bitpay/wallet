@@ -18,6 +18,8 @@ angular.module('copayApp.directives')
         var msg = gettextCatalog.getString('Copied to clipboard');
         elem.bind('click', function() {
           var data = scope.copyToClipboard;
+          if (!data) return;
+
           if (isCordova) {
             window.cordova.plugins.clipboard.copy(data);
             window.plugins.toast.showShortCenter(msg);
@@ -36,4 +38,3 @@ angular.module('copayApp.directives')
       }
     }
   });
-
