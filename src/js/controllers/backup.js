@@ -97,6 +97,12 @@ angular.module('copayApp.controllers').controller('backupController',
       });
     };
 
+    $scope.copyRecoveryPhrase = function() {
+      if ($scope.wallet.network == 'livenet') return null;
+      else if (!$scope.wallet.credentials.mnemonic) return null;
+      else return $scope.wallet.credentials.mnemonic;
+    };
+
     var confirm = function(cb) {
       $scope.backupError = false;
 
