@@ -23,7 +23,7 @@
 
           <a class="button button-primary button-small m5t size-14"
             style="padding: 0.5em 1em;"
-            ui-sref="tabs.bitpayCard.amount({'cardId': cardId, 'toName': 'BitPay Card'})">
+            ui-sref="tabs.bitpayCard.amount({nextStep: 'tabs.bitpayCard.topup'})">
             <i class="icon ion-plus m10r" style="vertical-align: baseline;"></i>
             {{'Add Funds'|translate}}
           </a>

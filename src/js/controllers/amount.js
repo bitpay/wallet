@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService) {
+  var _cardId;
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -16,6 +17,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     // Go to...
+    _cardId = data.stateParams.id; // Optional (BitPay Card ID)
     $scope.nextStep = data.stateParams.nextStep;
     $scope.currency = data.stateParams.currency;
     $scope.forceCurrency = data.stateParams.forceCurrency;
@@ -283,6 +285,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     } else if ($scope.nextStep) {
       $state.transitionTo($scope.nextStep, {
+        id: _cardId,
         amount: _amount,
         currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : ''
       });
