@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService) {
   var _cardId;
   var unitToSatoshi;
   var satToUnit;
@@ -22,20 +22,19 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.currency = data.stateParams.currency;
     $scope.forceCurrency = data.stateParams.forceCurrency;
 
-    $scope.cardId = data.stateParams.cardId;
     $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
     var isWallet = data.stateParams.isWallet || 'false';
     $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.nextStep;
+    $scope.showAlternativeAmount = !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !$scope.nextStep && !data.stateParams.toAddress) {
+    if (!$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
     }
@@ -67,8 +66,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.unitName = config.unitName;
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
-    } else {
-      $scope.alternativeIsoCode = !!$scope.cardId ? 'USD' : config.alternativeIsoCode;
     }
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;
@@ -218,72 +215,10 @@ angular.module('copayApp.controllers').controller('amountController', function($
     return result.replace('x', '*');
   };
 
-  $scope.getRates = function() {
-    bitpayCardService.getRates($scope.alternativeIsoCode, function(err, res) {
-      if (err) {
-        $log.warn(err);
-        return;
-      }
-      if ($scope.unitName == 'bits') {
-        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + $scope.alternativeIsoCode;
-      } else {
-        $scope.exchangeRate = '1 BTC ~ ' + res.rate + ' ' + $scope.alternativeIsoCode;
-      }
-    });
-  };
-
   $scope.finish = function() {
     var _amount = evaluate(format($scope.amount));
 
-    if ($scope.cardId) {
-      var amountUSD = $scope.showAlternativeAmount ? _amount : $filter('formatFiatAmount')(toFiat(_amount));
-
-      var dataSrc = {
-        amount: amountUSD,
-        currency: 'USD'
-      };
-
-      ongoingProcess.set('Preparing transaction...', true);
-      $timeout(function() {
-
-        bitpayCardService.topUp($scope.cardId, dataSrc, function(err, invoiceId) {
-          if (err) {
-            ongoingProcess.set('Preparing transaction...', false);
-            popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-            return;
-          }
-
-          bitpayCardService.getInvoice(invoiceId, function(err, data) {
-            if (err) {
-              ongoingProcess.set('Preparing transaction...', false);
-              popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-              return;
-            }
-            var payProUrl = data.paymentUrls.BIP73;
-
-            payproService.getPayProDetails(payProUrl, function(err, payProDetails) {
-              ongoingProcess.set('Preparing transaction...', false);
-              if (err) {
-                popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err));
-                return;
-              }
-              var stateParams = {
-                cardId: $scope.cardId,
-                cardAmountUSD: amountUSD,
-                toName: $scope.toName,
-                toAmount: payProDetails.amount,
-                toAddress: payProDetails.toAddress,
-                description: payProDetails.memo,
-                paypro: payProDetails
-              };
-
-              $state.transitionTo('tabs.bitpayCard.confirm', stateParams);
-            }, true);
-          });
-        });
-      });
-
-    } else if ($scope.nextStep) {
+    if ($scope.nextStep) {
       $state.transitionTo($scope.nextStep, {
         id: _cardId,
         amount: _amount,

@@ -17,7 +17,6 @@
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
-          <div class="right size-12" ng-if="cardId" ng-init="getRates()">{{exchangeRate}}</div>
           <div class="alternative">{{alternativeAmountStr || '...'}}</div>
         </div>
       </div>
@@ -31,11 +30,7 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to">
-            <img ng-if="!cardId && !isGiftCard" src="img/icon-bitcoin-small.svg">
-            <img ng-if="cardId" src="img/icon-card.svg" width="34">
-            <i ng-if="isGiftCard" class="icon big-icon-svg">
-              <div class="bg icon-amazon"></div>
-            </i>
+            <img src="img/icon-bitcoin-small.svg">
 
             <div copy-to-clipboard="toAddress" ng-if="!paypro" class="ellipsis">
               <contact ng-if="!toName" address="{{toAddress}}"></contact>
