@@ -17,7 +17,7 @@
     <div ng-if="!customAmount && !isGlidera && !nextStep">
       <div class="item item-no-bottom-border recipient-label" translate>Recipient</div>
 
-      <div class="item item-text-wrap item-icon-left bitcoin-address" ng-class="{'item-big-icon-left':cardId}">
+      <div class="item item-text-wrap item-icon-left bitcoin-address">
         <i class="icon big-icon-svg" ng-if="isWallet">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
@@ -25,10 +25,7 @@
           <i class="icon big-icon-svg" ng-if="isChromeApp">
             <img src="img/contact-placeholder.svg" class="bg"/>
           </i>
-          <gravatar ng-if="!cardId && !isChromeApp" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
-          <i ng-if="cardId" class="icon big-icon-svg">
-            <div class="bg icon-bitpay-card"></div>
-          </i>
+          <gravatar ng-if="!isChromeApp" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
         </span>
         <span class="m10l">{{toName || toAddress}}</span>
       </div>
@@ -40,7 +37,6 @@
       <div class="amount-bar oh">
         <div class="title">
           <span translate>Amount</span>
-          <div class="size-12" ng-if="cardId" ng-init="getRates()">{{exchangeRate}}</div>
           <div ng-show="isGlidera">
             <div class="limits" ng-show="limits && isGlidera == 'buy'">
               <span>Daily buy limit</span>:
