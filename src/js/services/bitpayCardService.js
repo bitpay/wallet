@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, configService, txFormatService) {
   var root = {};
 
   var _setError = function(msg, e) {
@@ -37,6 +37,30 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       }
     }
     return history;
+  };
+
+  root.parseAmount = function(amount, currency) {
+    var config = configService.getSync().wallet.settings;
+    var satToBtc = 1 / 100000000;
+    var unitToSatoshi = config.unitToSatoshi;
+    var amountUnitStr;
+
+    // IF 'USD'
+    if (currency) {
+      amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
+    } else {
+      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+      amountUnitStr = txFormatService.formatAmountStr(amountSat);
+      // convert unit to BTC
+      amount = (amountSat * satToBtc).toFixed(8);
+      currency = 'BTC';
+    }
+
+    return {
+      amount: amount, 
+      currency: currency, 
+      amountUnitStr: amountUnitStr
+    };
   };
 
   root.sync = function(apiContext, cb) {
