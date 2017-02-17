@@ -8,7 +8,7 @@ clean:
 	rm -Rf $(WORKDIR)*
 
 wp-init: config.xml
-	cordova create $(WORKDIR)$@ com.bitpay.*BUNDLENAME* "*USERVISIBLENAME*" || echo "Project Path Existed"
+	cordova create $(WORKDIR)$@ *BUNDLEPATH**BUNDLENAME* "*USERVISIBLENAME*" || echo "Project Path Existed"
 	cp ProjectMakefile $(WORKDIR)$@/Makefile
 	mkdir -p $(WORKDIR)$@/www
 	cp -Rf ../www/* $(WORKDIR)$@/www

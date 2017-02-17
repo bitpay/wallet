@@ -3,6 +3,7 @@
   "packageDescription": "Copay Bitcoin Wallet",
   "userVisibleName": "Copay",
   "purposeLine": "Copay Bitcoin Wallet",
+  "bundlePath": "com.bitpay.",
   "bundleName": "copay",
   "appUri": "copay",
   "name": "copay",
