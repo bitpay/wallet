@@ -57,7 +57,7 @@
           </div>
         </div>
         <div id="qr-options" class="row text-center">
-          <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova && addr">
+          <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova">
             <i class="icon ion-ios-upload-outline"></i>
             <span translate>Share</span>
           </div>
@@ -66,8 +66,8 @@
           <div class="center-block bit-address text-center" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
             <div class="item item-icon-left item-icon-right">
               <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
-              <span class="bit-address-gen-address" ng-show="!generatingAddress" class="ellipsis">{{walletAddrs[wallet.id]}}</span>
-              <span class="bit-address-gen-address" ng-show="!generatingAddress && !walletAddrs[wallet.id]" translate>address not available</span>
+              <span class="bit-address-gen-address" class="ellipsis">{{walletAddrs[wallet.id]}}</span>
+              <span class="bit-address-gen-address" ng-show="!walletAddrs[wallet.id]" translate>address not available</span>
               <i class="icon ion-ios-arrow-right"></i>
             </div>
           </div>
