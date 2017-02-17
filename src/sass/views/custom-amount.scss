@@ -1,0 +1,16 @@
+#custom-amount {
+  .share {
+    justify-content: center;
+  }
+  .info {
+    .single-line {
+      display: flex;
+      align-items: center;
+      padding-top: 17px;
+      padding-bottom: 17px;
+      .item-note {
+        margin-left: 10px;
+      }
+    }
+  }
+}

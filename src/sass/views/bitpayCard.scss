@@ -1,0 +1,87 @@
+#bitpayCard {
+  background: white;
+  .bar-header {
+    border: 0;
+    background: #1e3186;
+    .title, .button {
+      color: #fff;
+    }
+    .button {
+      background-color: transparent;
+    }
+  }
+  .amount-wrapper {
+    position: relative;
+    overflow: visible;
+
+    .amount-bg {
+      content: '';
+      top: -1000px;
+      left: 0;
+      position: absolute;
+      height: 1000px;
+      width: 100%;
+      background-color: #1e3186;
+    }
+  }
+  .amount {
+    width: 100%;
+    text-align: center;
+    padding: 2rem 1rem 1.5rem 1rem;
+    height: 160px;
+    border-color: #172565;
+    background-color: #1e3186;
+    background-image: linear-gradient(0deg, #172565, #172565 0%, transparent 0%);
+    color: #fff;
+
+    &__balance {
+      margin-bottom: 25px;
+      font-weight: 600;
+      font-size: 34px;
+    }
+  }
+  .wallet-details-wallet-info {
+    bottom: 5px;
+  }
+  strong {
+    line-height: 100%;
+  }
+  .select-style {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  .item-select select {
+    color: #667;
+  }
+
+  .get-started {
+
+    margin-top: 20px;
+
+    &__arrow {
+      font-size: 56px;
+      opacity: .2;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #4A4A4A;
+    }
+
+    &__text {
+      font-weight: 300;
+      color: #8e8e8e;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+  .spinner svg {
+    stroke: white;
+    fill: white;
+  }
+}

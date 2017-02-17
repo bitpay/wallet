@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardConfirmationController', function($scope, $timeout, go, bitpayCardService) {
+angular.module('copayApp.controllers').controller('bitpayCardConfirmationController', function($scope, $timeout, $state, bitpayCardService) {
 
   $scope.ok = function() {
     bitpayCardService.logout(function() {
-      go.path('bitpayCard');
+      $state.go('bitpayCard.main');
     });
     $scope.cancel();
   };

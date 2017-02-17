@@ -1,0 +1,42 @@
+<ion-view hide-tabs id="addresses" class="addr">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'All Addresses' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="addr-list list">
+      <div class="item item-divider"></div>
+
+      <div ng-if="loading" class="updating">
+        <div class="row">
+          <ion-spinner class="spinner-dark" icon="crescent"></ion-spinner>
+        </div>
+        <div class="row">
+          <div class="col">
+            <span translate>Loading addresses...</span>
+          </div>
+        </div>
+      </div>
+
+      <div ng-show="isCordova && allAddresses[0]">
+        <div class="item view-all" ng-click="sendByEmail()">
+          <span translate>Send addresses by email</span>
+        </div>
+
+        <div class="item item-divider"></div>
+      </div>
+
+      <div class="item" ng-repeat="a in allAddresses track by $index" copy-to-clipboard="a.address">
+        {{a.address}}
+        <div class="addr-path" ng-if="!a.balanceStr">
+          {{a.path}} {{a.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}
+        </div>
+        <div class="addr-balance" ng-if="a.balanceStr">{{a.balanceStr}}</div>
+      </div>
+
+      <div class="item item-divider"></div>
+    </div>
+  </ion-content>
+</ion-view>

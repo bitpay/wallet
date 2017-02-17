@@ -1,0 +1,66 @@
+<ion-view id="add-address" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      <span translate>Add Contact</span>
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="goHome()" ng-if="fromSendTab">
+        {{'Cancel' | translate}}
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+
+  <ion-content>
+
+    <form name="addressbookForm" no-validate>
+
+      <div class="list add-address-list add-address-input-group">
+        <label class="item item-input item-stacked-label no-border">
+          <span class="input-label" translate>Name</span>
+          <input type="text"
+                 id="name"
+                 name="name"
+                 ng-model="addressbookEntry.name"
+                 required>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" translate>Email</span>
+          <input type="text"
+                 id="email"
+                 placeholder="{{'name@example.com' | translate}}"
+                 name="email"
+                 ng-model="addressbookEntry.email">
+        </label>
+        <div>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" translate>Bitcoin Address</span>
+            <div class="input-notification">
+              <i ng-show="!addressbookForm.address.$invalid" class="icon ion-checkmark-circled valid"></i>
+              <i ng-show="addressbookForm.address.$invalid && addressbookEntry.address" class="icon ion-close-circled invalid"></i>
+            </div>
+            <input type="text"
+                   id="address"
+                   name="address"
+                   ng-model="addressbookEntry.address"
+                   valid-address required>
+          </label>
+          <div class="qr-scan-icon">
+            <qr-scanner on-scan="onQrCodeScannedAddressBook(data, addressbookForm)"></qr-scanner>
+          </div>
+        </div>
+      </div>
+
+      <div class="padding">
+        <button type="submit"
+                class="button button-standard button-primary"
+                ng-click="add(addressbookEntry)"
+                ng-disabled="!addressbookForm.$valid" translate>
+          Save
+        </button>
+      </div>
+
+    </form>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,34 @@
+<ion-view id="address-book-view" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>
+      <span>{{addressbookEntry.name}}</span>
+    </ion-nav-title>
+  </ion-nav-bar>
+  <ion-content scroll="false">
+    <div class="gravatar-content">
+      <i class="icon big-icon-svg" ng-if="isChromeApp">
+        <img src="img/contact-placeholder.svg" class="bg"/>
+      </i>
+      <gravatar name="{{addressbookEntry.name}}" width="80" email="{{addressbookEntry.email}}" ng-if="!isChromeApp"></gravatar>
+    </div>
+    <div class="list">
+      <div class="item item-text-wrap">
+        <span class="address-book-field-label" translate>Name</span>
+        <span>{{addressbookEntry.name}}</span>
+      </div>
+      <div class="item item-text-wrap" ng-show="addressbookEntry.email">
+        <span class="address-book-field-label" translate>Email</span>
+        <span>{{addressbookEntry.email}}</span>
+      </div>
+      <div class="item item-text-wrap">
+        <span class="address-book-field-label" translate>Address</span>
+        <span>{{addressbookEntry.address}}</span>
+      </div>
+    </div>
+    <button class="button button-standard button-primary" ng-click="sendTo()" translate>
+      Send Money
+    </button>
+  </ion-content>
+</ion-view>

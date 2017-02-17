@@ -7,30 +7,44 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
   var ongoingProcess = {};
 
   var processNames = {
-    'scanning': gettext('Scanning Wallet funds...'),
-    'recreating': gettext('Recreating Wallet...'),
-    'generatingCSV': gettext('Generating .csv file...'),
-    'creatingTx': gettext('Creating transaction'),
-    'sendingTx': gettext('Sending transaction'),
-    'signingTx': gettext('Signing transaction'),
     'broadcastingTx': gettext('Broadcasting transaction'),
-    'rejectTx': gettext('Rejecting payment proposal'),
-    'removeTx': gettext('Deleting payment proposal'),
-    'fetchingPayPro': gettext('Fetching Payment Information'),
     'calculatingFee': gettext('Calculating fee'),
-    'joiningWallet': gettext('Joining Wallet...'),
-    'retrivingInputs': gettext('Retrieving inputs information'),
-    'creatingWallet': gettext('Creating Wallet...'),
-    'validatingWallet': gettext('Validating wallet integrity...'),
-    'connectingledger': gettext('Waiting for Ledger...'),
-    'connectingtrezor': gettext('Waiting for Trezor...'),
-    'validatingWords': gettext('Validating recovery phrase...'),
     'connectingCoinbase': gettext('Connecting to Coinbase...'),
     'connectingGlidera': gettext('Connecting to Glidera...'),
-    'importingWallet': gettext('Importing Wallet...'),
-    'sweepingWallet': gettext('Sweeping Wallet...'),
+    'connectingledger': gettext('Waiting for Ledger...'),
+    'connectingtrezor': gettext('Waiting for Trezor...'),
+    'creatingTx': gettext('Creating transaction'),
+    'creatingWallet': gettext('Creating Wallet...'),
     'deletingWallet': gettext('Deleting Wallet...'),
     'extractingWalletInfo': gettext('Extracting Wallet Information...'),
+    'fetchingPayPro': gettext('Fetching Payment Information'),
+    'generatingCSV': gettext('Generating .csv file...'),
+    'gettingFeeLevels': gettext('Getting fee levels...'),
+    'importingWallet': gettext('Importing Wallet...'),
+    'joiningWallet': gettext('Joining Wallet...'),
+    'recreating': gettext('Recreating Wallet...'),
+    'rejectTx': gettext('Rejecting payment proposal'),
+    'removeTx': gettext('Deleting payment proposal'),
+    'retrievingInputs': gettext('Retrieving inputs information'),
+    'scanning': gettext('Scanning Wallet funds...'),
+    'sendingTx': gettext('Sending transaction'),
+    'signingTx': gettext('Signing transaction'),
+    'sweepingWallet': gettext('Sweeping Wallet...'),
+    'validatingWallet': gettext('Validating wallet integrity...'),
+    'validatingWords': gettext('Validating recovery phrase...'),
+    'loadingTxInfo': gettext('Loading transaction info...'),
+    'sendingFeedback': gettext('Sending feedback...'),
+    'generatingNewAddress': gettext('Generating new address...'),
+    'sendingByEmail': gettext('Preparing addresses...'),
+    'sending2faCode': gettext('Sending 2FA code...'),
+    'buyingBitcoin': gettext('Buying Bitcoin...'),
+    'sellingBitcoin': gettext('Selling Bitcoin...'),
+    'fetchingBitPayAccount': gettext('Fetching BitPay Account...'),
+    'updatingGiftCards': 'Updating Gift Cards...',
+    'updatingGiftCard': 'Updating Gift Card...',
+    'cancelingGiftCard': 'Canceling Gift Card...',
+    'creatingGiftCard': 'Creating Gift Card...',
+    'buyingGiftCard': 'Buying Gift Card...'
   };
 
   root.clear = function() {
@@ -46,7 +60,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     return ongoingProcess[processName];
   };
 
-  root.set = function(processName, isOn) {
+  root.set = function(processName, isOn, customHandler) {
     $log.debug('ongoingProcess', processName, isOn);
     root[processName] = isOn;
     ongoingProcess[processName] = isOn;
@@ -62,12 +76,14 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
 
     var showName = $filter('translate')(processNames[name] || name);
 
-    if (root.onGoingProcessName) {
+    if (customHandler) {
+      customHandler(processName, showName, isOn);
+    } else if (root.onGoingProcessName) {
       if (isCordova) {
-        window.plugins.spinnerDialog.show(null, showName, true);
+        window.plugins.spinnerDialog.show(null, showName, root.clear);
       } else {
 
-        var tmpl = '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner>' + showName;
+        var tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
         $ionicLoading.show({
           template: tmpl
         });

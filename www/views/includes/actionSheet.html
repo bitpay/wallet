@@ -1,0 +1,8 @@
+<div
+  class="bp-action-sheet__backdrop"
+  ng-class="{'fade-in': revealMenu}"
+  ng-click="hide()">
+</div>
+<div class="bp-action-sheet__sheet" ng-class="{'slide-up': revealMenu}">
+  <ng-transclude></ng-transclude>
+</div>

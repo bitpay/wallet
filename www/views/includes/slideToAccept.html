@@ -1,0 +1,24 @@
+<div class="slide__listener"
+  ng-touchstart="onTouchstart($event)"
+  ng-touchmove="onTouchmove($event)"
+  ng-touchend="onTouchend($event)"
+  ng-mousedown="onTouchstart($event)"
+  ng-mousemove="onTouchmove($event)"
+  ng-mouseup="onTouchend($event)">
+  <div class="slide__slider" ng-style="sliderStyle">
+    <div class="slide__slider__tip"></div>
+  </div>
+  <div class="slide__bitcoin" ng-style="bitcoinStyle">
+    <img src="img/icon-bitcoin-white.svg">
+  </div>
+  <div class="slide__button-text" ng-style="textStyle">
+    <ng-transclude class="justify"></ng-transclude>
+  </div>
+  <div class="slide__status-text" ng-class="{enter: isSlidFully}" ng-hide="sendStatus === 'success'">
+    <img src="img/spinner.png">
+    {{displaySendStatus}}
+  </div>
+  <div class="slide__arrow">
+    <img src="img/icon-arrow-right.svg">
+  </div>
+</div>

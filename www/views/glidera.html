@@ -1,0 +1,122 @@
+<ion-view id="glidera">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Glidera</ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button button-clear button-small ng-hide" ng-show="!token && !connectingGlidera" ng-click="toggleOauthForm()">
+        <span ng-hide="showOauthForm" translate>Enter Code</span>
+        <span ng-show="showOauthForm" translate>Restart</span>
+      </button>
+      <button class="button button-clear button-small ng-hide" ng-show="token && !connectingGlidera && status && !status.userCanTransact" ng-click="retry()" translate>
+        Refresh
+      </button>
+    </ion-nav-buttons>
+    <ion-content scroll="false" class="ng-hide" ng-show="!token && !connectingGlidera">
+      <div class="box-notification error m0" ng-show="!network">
+        The Glidera integration is currently disabled.
+      </div>
+      <div class="box-notification warning m0" ng-show="network == 'testnet'">
+        Testnet wallets only work with Glidera Sandbox Accounts.
+      </div>
+      <div class="integration-onboarding">
+        <div class="integration-onboarding-logo">
+          <img src="img/glidera-logo.png">
+        </div>
+        <div class="integration-onboarding-description" ng-hide="showOauthForm" translate>Glidera's exchange service is available in the United States, and can take 1-2 weeks to buy or sell bitcoin.</div>
+        <div class="integration-onboarding-description" ng-show="showOauthForm" translate>If you have trouble, contact Glidera support for direct assistance.</div>
+        <div class="integration-onboarding-cta" ng-show="!showOauthForm">
+          <button class="button button-standard button-primary" ng-click="openAuthenticateWindow()" translate>Connect to Glidera</button>
+          <button type="button" class="button button-standard button-secondary" ng-click="openSupportWindow()" translate>Glidera Support &rarr;</button>
+        </div>
+
+        <div ng-show="showOauthForm" class="integration-onboarding-oauthform">
+          <form name="oauthCodeForm" ng-submit="submitOauthCode(code)" novalidate>
+            <div class="list">
+              <label class="item item-input item-floating-label">
+                <span class="input-label">OAuth Code</span>
+                <input type="text"
+                       ng-model="code"
+                       placeholder="{{'Enter OAuth Code'}}" required>
+              </label>
+            </div>
+            <input
+              class="button button-standard button-primary"
+              type="submit" value="Connect Glidera Account" ng-disabled="oauthCodeForm.$invalid">
+            <button type="button" class="button button-standard button-secondary" ng-click="openSupportWindow()" translate>Glidera Support &rarr;</button>
+          </form>
+        </div>
+      </div>
+    </ion-content>
+
+    <ion-content scroll="false" class="ng-hide" ng-show="token && !connectingGlidera && status && !status.userCanTransact">
+      <div class="integration-onboarding">
+        <div class="integration-onboarding-logo">
+          <img src="img/glidera-logo.png">
+        </div>
+        <div class="integration-onboarding-description" translate>Please complete your account verification on Glidera's website. If you have trouble, contact Glidera's support for direct assistance.</div>
+        <div class="integration-onboarding-cta">
+          <button class="button button-standard button-primary" ng-click="openLoginWindow()" translate>Complete Glidera Setup</button>
+          <button type="button" class="button button-standard button-secondary" ng-click="openSupportWindow()" translate>Glidera Support &rarr;</button>
+        </div>
+      </div>
+    </ion-content>
+
+  <ion-content class="ng-hide" ng-show="token && !connectingGlidera && status && status.userCanTransact">
+      <div class="text-center m20v">
+        <img src="img/glidera-logo.png" width="170">
+      </div>
+
+      <div class="list card"
+        ng-show="status && status.userCanTransact">
+        <a ng-show="status.userCanBuy"
+            class="item item-icon-right"
+            href ui-sref="tabs.buyandsell.glidera.amount({isGlidera: 'buy', glideraAccessToken: token})">
+          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="45" class="item-img-buy">
+          Buy Bitcoin
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <a class="item item-icon-right"
+            ng-show="status.userCanSell"
+            href ui-sref="tabs.buyandsell.glidera.amount({isGlidera: 'sell', glideraAccessToken: token})">
+          <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="45" class="item-img-sell">
+          Sell Bitcoin
+          <i class="icon bp-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="list card" ng-show="permissions && permissions.transaction_history && txs.length > 0">
+        <div class="item item-heading">
+          Activity
+        </div>
+        <a ng-repeat="tx in txs"
+          ng-click="openTxModal(token, tx)"
+          class="item">
+
+          <span class="item-note">
+            <div ng-show="tx.status == 'COMPLETE'">
+              <time ng-if="tx.transactionDate">{{tx.transactionDate | amTimeAgo}}</time>
+            </div>
+            <div ng-show="tx.status == 'PROCESSING'">
+              <span ng-if="tx.status == 'PROCESSING'">Processing</span>
+            </div>
+          </span>
+
+          <img class="left m10r" src="img/bought.svg" alt="bought" width="39" ng-show="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+          <img class="left m10r" src="img/bought-pending.svg" alt="bought" width="33" ng-show="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+          <img class="left m10r" src="img/sold.svg" alt="bought" width="39" ng-show="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+          <img class="left m10r" src="img/sold-pending.svg" alt="bought" width="33" ng-show="tx.type == 'SELL' && tx.status == 'PROCESSING'">
+
+          <h2>
+            <span ng-show="tx.type == 'BUY'">Bought</span>
+            <span ng-show="tx.type == 'SELL'">Sold</span>
+            <b>{{tx.qty}}</b> BTC
+          </h2>
+          <p>
+            {{tx.subtotal|currency:'':2}} {{tx.currency}}
+          </p>
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

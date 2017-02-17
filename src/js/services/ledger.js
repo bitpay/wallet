@@ -17,7 +17,7 @@ angular.module('copayApp.services')
         if (!data.success)
           return callback(hwWallet._err(data));
 
-        return callback(null,  hwWallet.pubKeyToEntropySource(data.xpubkey));
+        return callback(null, hwWallet.pubKeyToEntropySource(data.xpubkey));
       });
     };
 
@@ -27,21 +27,18 @@ angular.module('copayApp.services')
       root._messageAfterSession({
         command: "get_xpubkey",
         path: path
-      })
+      });
     };
 
-
     root.getInfoForNewWallet = function(isMultisig, account, callback) {
-      var opts = {};
       root.getEntropySource(isMultisig, account, function(err, entropySource) {
         if (err) return callback(err);
 
-        opts.entropySource = entropySource;
         root.getXPubKey(hwWallet.getAddressPath('ledger', isMultisig, account), function(data) {
-          if (!data.success) {
-            $log.warn(data.message);
-            return callback(data);
-          }
+          if (!data.success) return callback(data);
+
+          var opts = {};
+          opts.entropySource = entropySource;
           opts.extendedPublicKey = data.xpubkey;
           opts.externalSource = 'ledger';
           opts.account = account;
@@ -130,7 +127,7 @@ angular.module('copayApp.services')
           root._should_poll_session = false;
         } else if (typeof root.callbacks[data.command] == "function") {
           root.callbacks[data.command](data);
-        }
+        } else {}
       } else {
         root._should_poll_session = false;
         Object.keys(root.callbacks).forEach(function(key) {

@@ -1,0 +1,31 @@
+#advanced-settings {
+  .list {
+    .item {
+      &:before {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: rgba(221, 221, 221, 0.3);
+        top: 0;
+        right: 0;
+        content: '';
+      }
+      &.item-divider {
+        color: $dark-gray;
+      }
+      .item-note {
+        color: $dark-gray;
+      }
+    }
+    .has-comment {
+      border-bottom: 0 none;
+    }
+    .comment {
+      padding: 15px;
+      background-color: #fff;
+      color: $mid-gray;
+      font-size:0.9em; 
+    }
+  }
+}

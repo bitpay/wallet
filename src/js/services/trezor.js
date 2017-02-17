@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('trezor', function($log, $timeout, gettext, lodash, bitcore, hwWallet) {
+  .factory('trezor', function($log, $timeout, lodash, bitcore, hwWallet) {
     var root = {};
 
     var SETTLE_TIME = 3000;
@@ -19,7 +19,11 @@ angular.module('copayApp.services')
 
     root.getXPubKey = function(path, callback) {
       $log.debug('TREZOR deriving xPub path:', path);
-      TrezorConnect.getXPubKey(path, callback);
+      try {
+        TrezorConnect.getXPubKey(path, callback);
+      } catch (e) {
+        callback('Error connecting Trezor');
+      }
     };
 
 
@@ -82,7 +86,7 @@ angular.module('copayApp.services')
         if (txp.outputs.length > 1)
           return callback('Only single output TXPs are supported in TREZOR');
       } else {
-          return callback('Unknown TXP at TREZOR');
+        return callback('Unknown TXP at TREZOR');
       }
 
       if (txp.outputs) {

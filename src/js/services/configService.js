@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log) {
+angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout, $rootScope) {
   var root = {};
 
   var defaultConfig = {
@@ -15,6 +15,16 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://bws.bitpay.com/bws/api',
     },
 
+    download: {
+      url: 'https://bitpay.com/wallet',
+    },
+
+    rateApp: {
+      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+      android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+      wp: ''
+    },
+
     // wallet default config
     wallet: {
       requiredCopayers: 2,
@@ -23,24 +33,22 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       reconnectDelay: 5000,
       idleDurationMin: 4,
       settings: {
-        unitName: 'bits',
-        unitToSatoshi: 100,
-        unitDecimals: 2,
-        unitCode: 'bit',
+        unitName: 'BTC',
+        unitToSatoshi: 100000000,
+        unitDecimals: 8,
+        unitCode: 'btc',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
       }
     },
 
     // External services
-    glidera: {
+    recentTransactions: {
       enabled: true,
-      testnet: false
     },
 
-    coinbase: {
-      enabled: true,
-      testnet: false
+    hideNextSteps: {
+      enabled: false,
     },
 
     rates: {
@@ -67,10 +75,76 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         windows: {},
       }
     },
+
+    emailNotifications: {
+      enabled: false,
+    },
   };
 
   var configCache = null;
 
+  var colorList = [
+    {
+      color: "#DD4B39",
+      name: "Cinnabar"
+  },
+    {
+      color: "#F38F12",
+      name: "Carrot Orange"
+  },
+    {
+      color: "#FAA77F",
+      name: "Light Salmon"
+  },
+    {
+      color: "#D0B136",
+      name: "Metallic Gold"
+  },
+    {
+      color: "#9EDD72",
+      name: "Feijoa"
+  },
+    {
+      color: "#29BB9C",
+      name: "Shamrock"
+  },
+    {
+      color: "#019477",
+      name: "Observatory"
+  },
+    {
+      color: "#77DADA",
+      name: "Turquoise Blue"
+  },
+    {
+      color: "#4A90E2",
+      name: "Cornflower Blue"
+  },
+    {
+      color: "#484ED3",
+      name: "Free Speech Blue"
+  },
+    {
+      color: "#9B59B6",
+      name: "Deep Lilac"
+  },
+    {
+      color: "#E856EF",
+      name: "Free Speech Magenta"
+  },
+    {
+      color: "#FF599E",
+      name: "Brilliant Rose"
+  },
+    {
+      color: "#7A8C9E",
+      name: "Light Slate Grey"
+  }
+    ];
+
+  root.getColorList = function() {
+    return colorList;
+  };
 
   root.getSync = function() {
     if (!configCache)
@@ -78,6 +152,16 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     return configCache;
   };
+
+  root._queue = [];
+  root.whenAvailable = function(cb) {
+    if (!configCache) {
+      root._queue.push(cb);
+      return;
+    }
+    return cb(configCache);
+  };
+
 
   root.get = function(cb) {
 
@@ -95,11 +179,13 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.wallet.settings.unitCode) {
           configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
-        if (!configCache.glidera) {
-          configCache.glidera = defaultConfig.glidera;
+
+        if (!configCache.hideNextSteps) {
+          configCache.hideNextSteps = defaultConfig.hideNextSteps;
         }
-        if (!configCache.coinbase) {
-          configCache.coinbase = defaultConfig.coinbase;
+
+        if (!configCache.recentTransactions) {
+          configCache.recentTransactions = defaultConfig.recentTransactions;
         }
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;
@@ -109,15 +195,20 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         configCache = lodash.clone(defaultConfig);
       };
 
-      // Glidera
-      // Disabled for testnet
-      configCache.glidera.testnet = false;
-
-      // Coinbase
-      // Disabled for testnet
-      configCache.coinbase.testnet = false;
+      configCache.bwsFor = configCache.bwsFor || {};
+      configCache.colorFor = configCache.colorFor || {};
+      configCache.aliasFor = configCache.aliasFor || {};
+      configCache.emailFor = configCache.emailFor || {};
 
       $log.debug('Preferences read:', configCache)
+
+      lodash.each(root._queue, function(x) {
+        $timeout(function() {
+          return x(configCache);
+        }, 1);
+      });
+      root._queue = [];
+
       return cb(err, configCache);
     });
   };
@@ -139,6 +230,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
       lodash.merge(config, oldOpts, newOpts);
       configCache = config;
+
+      $rootScope.$emit('Local/SettingsUpdated');
 
       storageService.storeConfig(JSON.stringify(config), cb);
     });

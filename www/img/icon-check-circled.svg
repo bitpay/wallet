@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Transaction/Complete" transform="translate(-8.000000, -8.000000)">
+            <g id="Icons/Send">
+                <g id="Group" transform="translate(8.000000, 8.000000)">
+                    <path d="M16.5,33 C25.6126984,33 33,25.6126984 33,16.5 C33,7.38730163 25.6126984,0 16.5,0 C7.38730163,0 0,7.38730163 0,16.5 C0,25.6126984 7.38730163,33 16.5,33 Z" id="Oval-204" fill="#F2FEF7"></path>
+                    <polyline id="Shape" stroke="#12E5B6" stroke-width="2" points="8 17 15 24 25.5 10"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

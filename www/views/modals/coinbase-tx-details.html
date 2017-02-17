@@ -1,0 +1,88 @@
+<ion-modal-view ng-controller="coinbaseTxDetailsController">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button button-clear" ng-click="close()">
+      Close
+    </button>
+    <div class="title">
+      Details
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <div class="text-center m20v">
+      <div>
+        <img src="img/bought.svg" alt="bought" width="65" ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'completed'">
+        <img src="img/bought-pending.svg" alt="bought" width="65"
+        ng-show="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status != 'completed'">
+        <img src="img/sold.svg" alt="bought" width="65" ng-show="tx.type == 'sell' && tx.status == 'completed'">
+        <img src="img/sold-pending.svg" alt="bought" width="65"
+          ng-show="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
+      </div>
+      <div ng-show="tx.status == 'completed'">
+        <span ng-show="tx.type == 'buy' || tx.type == 'send'">Bought</span>
+        <span ng-show="tx.type == 'sell'">Sold</span>
+      </div>
+      <div ng-show="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
+        <span ng-show="tx.to">Receiving purchased bitcoin</span>
+        <span ng-show="tx.from">Sending bitcoin to sell</span>
+      </div>
+      <div ng-show="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
+        <span ng-show="tx.type == 'buy'">Buying bitcoin</span>
+        <span ng-show="tx.type == 'sell'">Selling bitcoin</span>
+      </div>
+      <div class="size-24 text-bold">
+        <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
+        {{tx.amount.currency}}
+      </div>
+      <div class="size-12">
+        <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}}
+        {{tx.native_amount.currency}}
+      </div>
+    </div>
+
+    <ul class="card list" ng-show="tx.error">
+      <li class="item" ng-repeat="err in tx.error.errors" ng-bind-html="err.message"></li>
+    </ul>
+
+    <ul class="list">
+      <li ng-show="tx.details && tx.status != 'pending'" class="item">
+        {{tx.details.title}}
+        <span class="item-note">{{tx.details.subtitle}}</span>
+      </li>
+
+      <li class="item">
+        Status
+        <span class="item-note">
+          <span class="balanced" ng-if="tx.status == 'completed'">Completed</span>
+          <span class="dark" ng-if="tx.status == 'pending'">Pending</span>
+          <span class="assertive" ng-if="tx.status == 'error'">Error</span>
+        </span>
+      </li>
+
+      <li ng-show="tx.created_at" class="item">
+        Date
+        <span class="item-note">{{tx.created_at | amCalendar}}</span>
+      </li>
+
+      <li ng-show="tx.price_sensitivity" class="item">
+        Price Sensitivity
+        <span class="item-note">{{tx.price_sensitivity.name}}</span>
+      </li>
+
+      <li ng-show="tx.sell_price_amount" class="item">
+        Sell Price
+        <span class="item-note">{{tx.sell_price_amount}} {{tx.sell_price_currency}}</span>
+      </li>
+
+      <li ng-show="tx.description" class="item">
+        <span ng-show="tx.from && tx.type == 'send'">Sent bitcoin from</span>
+        <span ng-show="tx.to && tx.type == 'send'">Receive bitcoin in</span>
+        <span class="item-note">{{tx.description}}</span>
+      </li>
+      <div ng-show="tx.status == 'error'" class="item item-divider"></div>
+      <div ng-show="tx.status == 'error'" class="item assertive" ng-click="remove()">
+        Remove transaction
+      </div>
+    </ul>
+  </ion-content>
+</ion-modal-view>

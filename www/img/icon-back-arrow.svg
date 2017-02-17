@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="15px" viewBox="0 0 22 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>controls-ico-back</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Header/Controls/Back-(Dark)" transform="translate(-20.000000, -35.000000)" stroke-width="2" stroke="#4D4D4D">
+            <g id="controls-ico-back" transform="translate(21.000000, 36.000000)">
+                <g id="Icons/Back-Arrow/Light">
+                    <g id="Back-arrow-(White)">
+                        <path d="M12.1129878,12.8087726 L19.6825617,6.27049696 M11.9604103,0.0270404646 L19.7044837,6.19072819 M0.25515308,6.21111111 L19.5439223,6.21111111" id="Line" transform="translate(9.979818, 6.417907) scale(-1, 1) translate(-9.979818, -6.417907) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
