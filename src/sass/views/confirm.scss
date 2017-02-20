@@ -7,4 +7,11 @@
   .tx-details-content > .scroll {
     padding-bottom: .25rem;
   }
+  .gravatar-contact {
+    display: flex;
+    margin-left: -3px;
+    span {
+      margin: 5px 0 0 8px;
+    }
+  }
 }
