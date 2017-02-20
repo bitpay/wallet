@@ -49,21 +49,16 @@
       <img src="img/coinbase-logo.png" width="200">
     </div>
 
-    <div class="m10t size-12 text-center text-gray">
-      <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice || !sellPrice"></ion-spinner>
-      <span ng-show="buyPrice && sellPrice">
-        {{buyPrice.amount}} {{buyPrice.currency}}
-         |
-        {{sellPrice.amount}} {{sellPrice.currency}}
-      </span>
-    </div>
-
     <div class="list card">
       <a class="item item-icon-right"
          href ui-sref="tabs.buyandsell.coinbase.amount({nextStep: 'tabs.buyandsell.coinbase.buy', currency: currency})">
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30" class="item-img-buy" style="vertical-align:
         text-bottom;">
         Buy Bitcoin
+        <span class="item-note">
+          <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice"></ion-spinner>
+          <span ng-show="buyPrice">{{buyPrice.amount|currency:'$':2}} {{buyPrice.currency}}/BTC</span>
+        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
       <a class="item item-icon-right"
@@ -71,6 +66,10 @@
         <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="30" class="item-img-sell" style="vertical-align:
         text-bottom;">
         Sell Bitcoin
+        <span class="item-note">
+          <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!sellPrice"></ion-spinner>
+          <span ng-show="sellPrice">{{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/BTC</span>
+        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
     </div>
