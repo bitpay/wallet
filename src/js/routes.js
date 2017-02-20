@@ -1158,42 +1158,42 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $ionicPlatform.on('menubutton', function() {
         window.location = '#/preferences';
       });
-    });
 
-    $log.info('Init profile...');
-    // Try to open local profile
-    profileService.loadAndBindProfile(function(err) {
-      $ionicHistory.nextViewOptions({
-        disableAnimate: true
-      });
-      if (err) {
-        if (err.message && err.message.match('NOPROFILE')) {
-          $log.debug('No profile... redirecting');
-          $state.go('onboarding.welcome');
-        } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
-          if (lodash.isEmpty(profileService.getWallets())) {
-            $log.debug('No wallets and no disclaimer... redirecting');
+      $log.info('Init profile...');
+      // Try to open local profile
+      profileService.loadAndBindProfile(function(err) {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true
+        });
+        if (err) {
+          if (err.message && err.message.match('NOPROFILE')) {
+            $log.debug('No profile... redirecting');
             $state.go('onboarding.welcome');
+          } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
+            if (lodash.isEmpty(profileService.getWallets())) {
+              $log.debug('No wallets and no disclaimer... redirecting');
+              $state.go('onboarding.welcome');
+            } else {
+              $log.debug('Display disclaimer... redirecting');
+              $state.go('onboarding.disclaimer', {
+                resume: true
+              });
+            }
           } else {
-            $log.debug('Display disclaimer... redirecting');
-            $state.go('onboarding.disclaimer', {
-              resume: true
-            });
+            throw new Error(err); // TODO
           }
         } else {
-          throw new Error(err); // TODO
+          profileService.storeProfileIfDirty();
+          $log.debug('Profile loaded ... Starting UX.');
+          scannerService.gentleInitialize();
+          $state.go('tabs.home');
         }
-      } else {
-        profileService.storeProfileIfDirty();
-        $log.debug('Profile loaded ... Starting UX.');
-        scannerService.gentleInitialize();
-        $state.go('tabs.home');
-      }
 
-      // After everything have been loaded, initialize handler URL
-      $timeout(function() {
-        openURLService.init();
-      }, 1000);
+        // After everything have been loaded, initialize handler URL
+        $timeout(function() {
+          openURLService.init();
+        }, 1000);
+      });
     });
 
     if (platformInfo.isNW) {
