@@ -14,7 +14,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
     $scope.color = $scope.wallet.color;
     $scope.data = {};
-    $scope.hasClick = platformInfo.hasClick;
     $scope.displayAmount = getDisplayAmount($scope.tx.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
     initActionList();
