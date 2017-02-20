@@ -39,21 +39,5 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
   ret.isChromeApp = $window.chrome && chrome.runtime && chrome.runtime.id && !ret.isNW;
   ret.isDevel = !ret.isMobile && !ret.isChromeApp && !ret.isNW;
 
-  ret.hasClick = false;
-
-  if ($window.sessionStorage.getItem('hasClick')) {
-    ret.hasClick = true;
-  }
-
-  $window.addEventListener('mousedown', function() {
-    ret.hasClick = true;
-    $window.sessionStorage.setItem('hasClick', 'true');
-  });
-
-  $window.addEventListener('touchstart', function() {
-    ret.hasClick = false;
-    $window.sessionStorage.removeItem('hasClick');
-  });
-
   return ret;
 });
