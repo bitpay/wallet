@@ -44,7 +44,8 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'updatingGiftCard': 'Updating Gift Card...',
     'cancelingGiftCard': 'Canceling Gift Card...',
     'creatingGiftCard': 'Creating Gift Card...',
-    'buyingGiftCard': 'Buying Gift Card...'
+    'buyingGiftCard': 'Buying Gift Card...',
+    'topup': 'Top up in progress...'
   };
 
   root.clear = function() {

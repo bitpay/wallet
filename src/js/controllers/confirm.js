@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, bitpayCardService) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -16,8 +16,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
     var isWallet = data.stateParams.isWallet || 'false';
     $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
-    $scope.cardId = data.stateParams.cardId;
-    $scope.cardAmountUSD = data.stateParams.cardAmountUSD;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
@@ -44,9 +42,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   function applyButtonText(multisig) {
     $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
 
-    if ($scope.cardId) {
-      $scope.buttonText += gettextCatalog.getString('to complete');
-    } else if ($scope.paypro) {
+    if ($scope.paypro) {
       $scope.buttonText += gettextCatalog.getString('to pay');
     } else if (multisig) {
       $scope.buttonText += gettextCatalog.getString('to accept');
@@ -144,13 +140,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.amountStr = txFormatService.formatAmountStr(toAmount);
     $scope.displayAmount = getDisplayAmount($scope.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
-    if ($scope.cardAmountUSD) {
-      $scope.alternativeAmountStr = $filter('formatFiatAmount')($scope.cardAmountUSD) + ' USD';
-    } else {
-      txFormatService.formatAlternativeStr(toAmount, function(v) {
-        $scope.alternativeAmountStr = v;
-      });
-    }
+    txFormatService.formatAlternativeStr(toAmount, function(v) {
+      $scope.alternativeAmountStr = v;
+    });
   };
 
   function resetValues() {
@@ -532,7 +524,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.onSuccessConfirm = function() {
     var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
-    var fromBitPayCard = previousView.match(/tabs.bitpayCard/) ? true : false;
 
     $ionicHistory.nextViewOptions({
       disableAnimate: true
@@ -540,22 +531,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $ionicHistory.removeBackView();
     $scope.sendStatus = '';
 
-    if (fromBitPayCard) {
-      $timeout(function() {
-        $state.transitionTo('tabs.bitpayCard', {
-          id: $stateParams.cardId
-        });
-      }, 100);
-    } else {
-      $ionicHistory.nextViewOptions({
-        disableAnimate: true,
-        historyRoot: true
-      });
-      $ionicHistory.clearHistory();
-      $state.go('tabs.send').then(function() {
-        $state.transitionTo('tabs.home');
-      });
-    }
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      historyRoot: true
+    });
+    $ionicHistory.clearHistory();
+    $state.go('tabs.send').then(function() {
+      $state.transitionTo('tabs.home');
+    });
   };
 
   function publishAndSign(wallet, txp, onSendStatusChange) {
@@ -571,23 +554,5 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     walletService.publishAndSign(wallet, txp, function(err, txp) {
       if (err) return setSendError(err);
     }, onSendStatusChange);
-  };
-
-  $scope.getRates = function() {
-    var config = configService.getSync().wallet.settings;
-    var unitName = config.unitName;
-    var alternativeIsoCode = config.alternativeIsoCode;
-    bitpayCardService.getRates(alternativeIsoCode, function(err, res) {
-      if (err) {
-        $log.warn(err);
-        return;
-      }
-      if (lodash.isEmpty(res)) return;
-      if (unitName == 'bits') {
-        $scope.exchangeRate = '1,000,000 bits ~ ' + res.rate + ' ' + alternativeIsoCode;
-      } else {
-        $scope.exchangeRate = '1 BTC ~ ' + res.rate + ' ' + alternativeIsoCode;
-      }
-    });
   };
 });

@@ -1055,17 +1055,22 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.bitpayCard', {
-        url: '/bitpay-card/:id',
+        url: '/bitpay-card',
         views: {
           'tab-home@tabs': {
             controller: 'bitpayCardController',
             controllerAs: 'bitpayCard',
             templateUrl: 'views/bitpayCard.html'
           }
+        },
+        params: {
+          id: null,
+          currency: 'USD',
+          forceCurrency: true
         }
       })
       .state('tabs.bitpayCard.amount', {
-        url: '/amount/:cardId/:toName',
+        url: '/amount/:nextStep',
         views: {
           'tab-home@tabs': {
             controller: 'amountController',
@@ -1073,16 +1078,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.bitpayCard.confirm', {
-        url: '/confirm/:cardId/:cardAmountUSD/:toAddress/:toName/:toAmount/:toEmail/:description',
+      .state('tabs.bitpayCard.topup', {
+        url: '/topup/:amount',
         views: {
           'tab-home@tabs': {
-            controller: 'confirmController',
-            templateUrl: 'views/confirm.html'
+            controller: 'topUpController',
+            templateUrl: 'views/topup.html'
           }
-        },
-        params: {
-          paypro: null
         }
       })
       .state('tabs.preferences.bitpayCard', {
