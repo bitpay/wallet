@@ -1,72 +1,30 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController',
-  function($scope, $timeout, $ionicModal, $log, storageService, glideraService, ongoingProcess, platformInfo, externalLinkService, popupService, gettextCatalog) {
-
-    $scope.network = glideraService.getEnvironment();
+  function($scope, $timeout, $ionicModal, $log, storageService, glideraService, ongoingProcess, platformInfo, externalLinkService, popupService, lodash) {
 
     $scope.openExternalLink = function(url) {
       externalLinkService.open(url);
     };
 
-    var initGlidera = function(accessToken) {
-      $scope.token = accessToken;
-      $scope.permissions = null;
-      $scope.email = null;
-      $scope.personalInfo = null;
-      $scope.txs = null;
-      $scope.status = null;
-      $scope.limits = null;
+    var init = function() {
+      glideraService.init(function(err, data) {
+        if (err || lodash.isEmpty(data)) return;
 
-      $scope.connectingGlidera = true;
-      ongoingProcess.set('connectingGlidera', true);
-      glideraService.init($scope.token, function(err, glidera) {
-        ongoingProcess.set('connectingGlidera');
-        $scope.connectingGlidera = false;
-        if (err || !glidera) {
-          if (err) popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return;
-        }
-        $scope.token = glidera.token;
-        $scope.permissions = glidera.permissions;
-        $scope.update({
-          fullUpdate: true
+        $scope.account['token'] = data.token;
+        $scope.account['status'] = data.status;
+        $scope.account['txs'] = data.txs; 
+
+        $timeout(function() {
+          $scope.$digest();
+          $scope.update();
         });
       });
     };
 
     $scope.update = function(opts) {
-      if (!$scope.token || !$scope.permissions) return;
-      $log.debug('Updating Glidera Account...');
-      var accessToken = $scope.token;
-      var permissions = $scope.permissions;
-
-      opts = opts || {};
-
-      glideraService.getStatus(accessToken, function(err, data) {
-        $scope.status = data;
-      });
-
-      glideraService.getLimits(accessToken, function(err, limits) {
-        $scope.limits = limits;
-      });
-
-      if (permissions.transaction_history) {
-        glideraService.getTransactions(accessToken, function(err, data) {
-          $scope.txs = data;
-        });
-      }
-
-      if (permissions.view_email_address && opts.fullUpdate) {
-        glideraService.getEmail(accessToken, function(err, data) {
-          $scope.email = data.email;
-        });
-      }
-      if (permissions.personal_info && opts.fullUpdate) {
-        glideraService.getPersonalInfo(accessToken, function(err, data) {
-          $scope.personalInfo = data;
-        });
-      }
+      $log.debug('Updating Glidera...');
+      glideraService.updateStatus($scope.account);
     };
 
     $scope.getAuthenticateUrl = function() {
@@ -75,29 +33,24 @@ angular.module('copayApp.controllers').controller('glideraController',
 
     $scope.submitOauthCode = function(code) {
       ongoingProcess.set('connectingGlidera', true);
-      $timeout(function() {
-        glideraService.getToken(code, function(err, data) {
-          ongoingProcess.set('connectingGlidera', false);
-          if (err) {
-            popupService.showAlert(gettextCatalog.getString('Error'), err);
-          } else if (data && data.access_token) {
-            storageService.setGlideraToken($scope.network, data.access_token, function() {
-              initGlidera(data.access_token);
-              $timeout(function() {
-                $scope.$apply();
-              }, 100);
-            });
-          }
-        });
-      }, 100);
+      glideraService.authorize(code, function(err, data) {
+        ongoingProcess.set('connectingGlidera', false);
+        if (err) {
+          popupService.showAlert('Authorisation error', err);
+          return;
+        }
+        $scope.account['token'] = data.token;
+        $scope.account['status'] = data.status;
+        init();
+      });
     };
 
-    $scope.openTxModal = function(token, tx) {
+    $scope.openTxModal = function(tx) {
       $scope.tx = tx;
 
-      glideraService.getTransaction(token, tx.transactionUuid, function(err, tx) {
+      glideraService.getTransaction($scope.account.token, tx.transactionUuid, function(err, tx) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get transactions'));
+          popupService.showAlert('Error getting transaction', 'Could not get transactions');
           return;
         }
         $scope.tx = tx;
@@ -127,19 +80,11 @@ angular.module('copayApp.controllers').controller('glideraController',
     $scope.openSupportWindow = function() {
       var url = glideraService.getSupportUrl();
       var optIn = true;
-      var title = gettextCatalog.getString('Glidera Support');
-      var message = gettextCatalog.getString('You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.');
-      var okText = gettextCatalog.getString('Tweet @GlideraInc');
-      var cancelText = gettextCatalog.getString('Go Back');
+      var title = 'Glidera Support';
+      var message = 'You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.';
+      var okText = 'Tweet @GlideraInc';
+      var cancelText = 'Go Back';
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
-    }
-
-    $scope.retry = function() {
-      $scope.connectingGlidera = true;
-      $scope.update({'fullUpdate': true});
-      $timeout(function(){
-        $scope.connectingGlidera = false;
-      }, 300);
     }
 
     $scope.toggleOauthForm = function() {
@@ -147,8 +92,15 @@ angular.module('copayApp.controllers').controller('glideraController',
     }
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      $scope.network = glideraService.getNetwork();
+      $scope.currency = glideraService.getCurrency();
       $scope.showOauthForm = false;
-      initGlidera();
+      $scope.account = {};
+      if (data.stateParams && data.stateParams.code) {
+        $scope.submitOauthCode(data.stateParams.code);
+      } else {
+        init();
+      }
     });
 
   });
