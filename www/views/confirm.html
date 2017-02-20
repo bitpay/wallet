@@ -26,10 +26,10 @@
           <span class="item-note" ng-if="!paymentExpired.value">{{remainingTimeStr.value}}</span>
           <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
- 
+
         <div class="item">
           <span class="label" translate>To</span>
-          <span class="payment-proposal-to">
+          <span class="payment-proposal-to" ng-if="!recipientType">
             <img src="img/icon-bitcoin-small.svg">
 
             <div copy-to-clipboard="toAddress" ng-if="!paypro" class="ellipsis">
@@ -46,6 +46,19 @@
             <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{toAddress}}"></contact>
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
           </span>
+          <div class="wallet" ng-if="recipientType == 'wallet'">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
+            </i>
+            <div copy-to-clipboard="toAddress" class="ellipsis">
+              <contact ng-if="!toName" address="{{toAddress}}"></contact>
+              <span ng-if="toName" class="wallet-name">{{toName}}</span>
+            </div>
+          </div>
+          <div ng-if="recipientType == 'contact' && !isChromeApp" class="gravatar-contact">
+            <gravatar class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
+            <span ng-if="toName">{{toName}}</span>
+          </div>
         </div>
         <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>

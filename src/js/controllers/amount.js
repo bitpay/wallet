@@ -23,8 +23,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.forceCurrency = data.stateParams.forceCurrency;
 
     $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
-    var isWallet = data.stateParams.isWallet || 'false';
-    $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.recipientType = data.stateParams.recipientType || null;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
@@ -95,11 +94,12 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.sendMax = function() {
     $scope.showSendMax = false;
     $state.transitionTo('tabs.send.confirm', {
-      isWallet: $scope.isWallet,
+      recipientType: $scope.recipientType,
       toAmount: null,
       toAddress: $scope.toAddress,
       toName: $scope.toName,
       toEmail: $scope.toEmail,
+      toColor: $scope.toColor,
       useSendMax: true,
     });
   };
@@ -233,11 +233,12 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       } else {
         $state.transitionTo('tabs.send.confirm', {
-          isWallet: $scope.isWallet,
+          recipientType: $scope.recipientType,
           toAmount: (amount * unitToSatoshi).toFixed(0),
           toAddress: $scope.toAddress,
           toName: $scope.toName,
-          toEmail: $scope.toEmail
+          toEmail: $scope.toEmail,
+          toColor: $scope.toColor,
         });
       }
     }
