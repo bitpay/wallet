@@ -1,0 +1,103 @@
+<ion-view id="glidera" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Buy bitcoin</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content class="add-bottom-for-cta">
+    <!-- BUY -->
+    <div class="list" ng-if="buyInfo">
+
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35" class="item-img-buy">
+          <span>Buying</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{amountUnitStr}}</div>
+          <div class="alternative">
+            <span ng-show="!isFiat">{{buyInfo.subtotal}} {{buyInfo.currency}}</span> 
+            <span ng-show="isFiat">{{buyInfo.qty}} BTC</span> 
+            @ ${{buyInfo.price}} per BTC
+          </div>
+        </div>
+      </div>
+
+      <div class="info">
+
+        <div class="item item-icon-right" ng-click="showWalletSelector()">
+          <div class="label">Receive in</div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
+            </i>
+            {{wallet ? wallet.name : '...'}}
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </div>
+
+        <div class="item item-divider">
+          Transaction details
+        </div>
+        <div class="item">
+          Expires
+          <span class="item-note">
+            {{buyInfo.expires | amCalendar}}
+          </span>
+        </div>
+        <div class="item">
+          Fees
+          <span class="item-note">
+            {{buyInfo.fees}} {{buyInfo.currency}}
+          </span>
+        </div>
+        <div class="item">
+          Total to pay
+          <span class="item-note total-amount">
+            {{buyInfo.total}} {{buyInfo.currency}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <click-to-accept
+    ng-disabled="!buyInfo || !wallet"
+    ng-click="buyConfirm()"
+    ng-if="!isCordova && buyInfo"
+    click-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="false"
+    no-matching-wallet="!buyInfo">
+    Confirm purchase
+  </click-to-accept>
+  <slide-to-accept
+    ng-disabled="!buyInfo || !wallet"
+    ng-if="isCordova && buyInfo"
+    slide-on-confirm="buyConfirm()"
+    slide-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="false"
+    no-matching-wallet="!buyInfo">
+    Slide to buy
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="goBackHome()"
+    slide-success-hide-on-confirm="true">
+    <span>Bought</span>
+    <div class="m10 size-14">
+      A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day
+    </div>
+  </slide-to-accept-success>
+
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
+</ion-view>

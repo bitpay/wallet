@@ -122,9 +122,23 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         goToAmountPage(data);
       }
     } else if (data && data.indexOf(appConfigService.name + '://glidera') === 0) {
-      return $state.go('uriglidera', {
-        url: data
+      var code = getParameterByName('code', data);
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true
       });
+      $state.go('tabs.home', {}, {
+        'reload': true,
+        'notify': $state.current.name == 'tabs.home' ? false : true
+      }).then(function() {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true
+        });
+        $state.transitionTo('tabs.buyandsell.glidera', {
+          code: code
+        });
+      });
+      return true;
+
     } else if (data && data.indexOf(appConfigService.name + '://coinbase') === 0) {
       var code = getParameterByName('code', data); 
       $ionicHistory.nextViewOptions({

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService, glideraService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, bitpayCardService, popupService, bwcError, payproService, profileService, bitcore, amazonService) {
   var unitToSatoshi;
   var satToUnit;
   var unitDecimals;
@@ -14,9 +14,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    // Glidera parameters
-    $scope.isGlidera = data.stateParams.isGlidera;
-    $scope.glideraAccessToken = data.stateParams.glideraAccessToken;
 
     // Go to...
     $scope.nextStep = data.stateParams.nextStep;
@@ -30,24 +27,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.isGlidera || !!$scope.nextStep;
+    $scope.showAlternativeAmount = !!$scope.cardId || !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
 
-    if (!$scope.cardId && !$scope.isGlidera && !$scope.nextStep && !data.stateParams.toAddress) {
+    if (!$scope.cardId && !$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
-    }
-
-    if ($scope.isGlidera) {
-      glideraService.getLimits($scope.glideraAccessToken, function(err, limits) {
-        $scope.limits = limits;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      });
     }
 
     var reNr = /^[1234567890\.]$/;
@@ -293,13 +281,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       });
 
-    } else if ($scope.isGlidera) {
-      var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
-      $state.transitionTo('tabs.buyandsell.glidera.confirm', {
-        toAmount: (amount * unitToSatoshi).toFixed(0),
-        isGlidera: $scope.isGlidera,
-        glideraAccessToken: $scope.glideraAccessToken
-      });
     } else if ($scope.nextStep) {
       $state.transitionTo($scope.nextStep, {
         amount: _amount,

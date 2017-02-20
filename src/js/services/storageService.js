@@ -247,6 +247,42 @@ angular.module('copayApp.services')
       storage.remove('glideraToken-' + network, cb);
     };
 
+    root.setGlideraPermissions = function(network, p, cb) {
+      storage.set('glideraPermissions-' + network, p, cb);
+    };
+
+    root.getGlideraPermissions = function(network, cb) {
+      storage.get('glideraPermissions-' + network, cb);
+    };
+
+    root.removeGlideraPermissions = function(network, cb) {
+      storage.remove('glideraPermissions-' + network, cb);
+    };
+
+    root.setGlideraStatus = function(network, status, cb) {
+      storage.set('glideraStatus-' + network, status, cb);
+    };
+
+    root.getGlideraStatus = function(network, cb) {
+      storage.get('glideraStatus-' + network, cb);
+    };
+
+    root.removeGlideraStatus = function(network, cb) {
+      storage.remove('glideraStatus-' + network, cb);
+    };
+
+    root.setGlideraTxs = function(network, txs, cb) {
+      storage.set('glideraTxs-' + network, txs, cb);
+    };
+
+    root.getGlideraTxs = function(network, cb) {
+      storage.get('glideraTxs-' + network, cb);
+    };
+
+    root.removeGlideraTxs = function(network, cb) {
+      storage.remove('glideraTxs-' + network, cb);
+    };
+
     root.setCoinbaseRefreshToken = function(network, token, cb) {
       storage.set('coinbaseRefreshToken-' + network, token, cb);
     };

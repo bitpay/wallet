@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, platformInfo, storageService, buyAndSellService) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, $filter, platformInfo, storageService, buyAndSellService, lodash, configService, txFormatService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -45,8 +45,36 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     };
   };
 
-  root.getEnvironment = function() {
+  root.getNetwork = function() {
     return credentials.NETWORK;
+  };
+
+  root.getCurrency = function() {
+    return 'USD';
+  };
+
+  root.parseAmount = function(amount, currency) {
+    var config = configService.getSync().wallet.settings;
+    var satToBtc = 1 / 100000000;
+    var unitToSatoshi = config.unitToSatoshi;
+    var amountUnitStr;
+
+    // IF 'USD'
+    if (currency) {
+      amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
+    } else {
+      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+      amountUnitStr = txFormatService.formatAmountStr(amountSat);
+      // convert unit to BTC
+      amount = (amountSat * satToBtc).toFixed(8);
+      currency = 'BTC';
+    }
+
+    return {
+      amount: amount, 
+      currency: currency, 
+      amountUnitStr: amountUnitStr
+    };
   };
 
   root.getSignupUrl = function() {
@@ -61,10 +89,14 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     return credentials.HOST + '/oauth2/auth?response_type=code&client_id=' + credentials.CLIENT_ID + '&redirect_uri=' + credentials.REDIRECT_URI;
   };
 
-  root.removeToken = function(cb) {
+  root.remove = function(cb) {
     storageService.removeGlideraToken(credentials.NETWORK, function() {
-      buyAndSellService.updateLink('glidera', false);
-      return cb();
+      storageService.removeGlideraPermissions(credentials.NETWORK, function() {
+        storageService.removeGlideraStatus(credentials.NETWORK, function() {
+          buyAndSellService.updateLink('glidera', false);
+          return cb();
+        });
+      });
     });
   };
 
@@ -87,13 +119,37 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
 
     $http(req).then(function(data) {
       $log.info('Glidera Authorization Access Token: SUCCESS');
-      // Show pending task from the UI
-      storageService.setNextStep('BuyAndSell', 'true', function(err) {});
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Authorization Access Token: ERROR ' + data.statusText);
-      return cb('Glidera Authorization Access Token: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
+  };
+
+  root.authorize = function(code, cb) {
+    root.getToken(code, function(err, data) {
+      if (err) return cb(err);
+      if (data && !data.access_token) return cb('No access token');
+      var accessToken = data.access_token;
+      root.getAccessTokenPermissions(accessToken, function(err, p) {
+        if (err) return cb(err);
+        root.getStatus(accessToken, function(err, status) {
+          if (err) $log.error(err);
+          storageService.setGlideraToken(credentials.NETWORK, accessToken, function() {
+            storageService.setGlideraPermissions(credentials.NETWORK, JSON.stringify(p), function() {
+              storageService.setGlideraStatus(credentials.NETWORK, JSON.stringify(status), function() {
+                return cb(null, {
+                  token: accessToken,
+                  permissions: p,
+                  status: status
+                });
+              });
+            });
+          });
+        });
+      });
+    }); 
   };
 
   var _get = function(endpoint, token) {
@@ -115,7 +171,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Access Token Permissions: ERROR ' + data.statusText);
-      return cb('Glidera Access Token Permissions: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -126,7 +183,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Get Email: ERROR ' + data.statusText);
-      return cb('Glidera Get Email: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -137,7 +195,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Get Personal Info: ERROR ' + data.statusText);
-      return cb('Glidera Get Personal Info: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -148,7 +207,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera User Status: ERROR ' + data.statusText);
-      return cb('Glidera User Status: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -159,7 +219,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Transaction Limits: ERROR ' + data.statusText);
-      return cb('Glidera Transaction Limits: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -170,7 +231,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data.transactions);
     }, function(data) {
       $log.error('Glidera Transactions: ERROR ' + data.statusText);
-      return cb('Glidera Transactions: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -182,7 +244,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Transaction: ERROR ' + data.statusText);
-      return cb('Glidera Transaction: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -193,23 +256,20 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data.sellAddress);
     }, function(data) {
       $log.error('Glidera Create Sell Address: ERROR ' + data.statusText);
-      return cb('Glidera Create Sell Address: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
   root.get2faCode = function(token, cb) {
-    if (!token) {
-      $log.error('Glidera Sent 2FA code by SMS: ERROR Invalid Token');
-      return cb('Invalid Token');
-    }
-
+    if (!token) return cb('Invalid Token');
     $http(_get('/authentication/get2faCode', token)).then(function(data) {
-
-      $log.info('Glidera Sent 2FA code by SMS: SUCCESS');
-      return cb(null, data.status == 200 ? true : false);
+      $log.info('Glidera 2FA code: SUCCESS');
+      return cb(null, data.data);
     }, function(data) {
-      $log.error('Glidera Sent 2FA code by SMS: ERROR ' + data.statusText);
-      return cb('Glidera Sent 2FA code by SMS: ERROR ' + data.statusText);
+      $log.error('Glidera 2FA code: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -221,7 +281,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + token,
-        '2FA_CODE': twoFaCode
+        'X-2FA-CODE': twoFaCode
       },
       data: data
     };
@@ -237,7 +297,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Sell Price: ERROR ' + data.statusText);
-      return cb('Glidera Sell Price: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -254,7 +315,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Sell Request: ERROR ' + data.statusText);
-      return cb('Glidera Sell Request: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -268,7 +330,8 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Buy Price: ERROR ' + data.statusText);
-      return cb('Glidera Buy Price: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
@@ -285,44 +348,84 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
       return cb(null, data.data);
     }, function(data) {
       $log.error('Glidera Buy Request: ERROR ' + data.statusText);
-      return cb('Glidera Buy Request: ERROR ' + data.statusText);
+      var message = data.data && data.data.message ? data.data.message : data.statusText;
+      return cb(message);
     });
   };
 
-  root.init = function(accessToken, cb) {
-    $log.debug('Init Glidera...');
-
-    var glidera = {
-      token: null,
-      permissions: null
+  root.init = function(cb) {
+    if (lodash.isEmpty(credentials.CLIENT_ID)) {
+      return cb('Glidera is Disabled');
     }
+    $log.debug('Trying to initialise Glidera...');
 
-    var getToken = function(cb) {
-      if (accessToken) {
-        cb(null, accessToken);
-      } else {
-        storageService.getGlideraToken(credentials.NETWORK, cb);
-      }
-    };
-
-    getToken(function(err, accessToken) {
-      if (err || !accessToken) return cb();
-      else {
-        buyAndSellService.updateLink('glidera', true);
-
-        root.getAccessTokenPermissions(accessToken, function(err, p) {
-          if (err) {
-            return cb(err);
-          } else {
-            glidera.token = accessToken;
-            glidera.permissions = p;
-            return cb(null, glidera);
-          }
+    storageService.getGlideraToken(credentials.NETWORK, function(err, accessToken) {
+      if (err || lodash.isEmpty(accessToken)) return cb();
+        
+      storageService.getGlideraPermissions(credentials.NETWORK, function(err, permissions) {
+        if (lodash.isString(permissions)) permissions = JSON.parse(permissions);
+        storageService.getGlideraStatus(credentials.NETWORK, function(err, status) {
+          if (lodash.isString(status)) status = JSON.parse(status);
+          storageService.getGlideraTxs(credentials.NETWORK, function(err, txs) {
+            if (lodash.isString(txs)) txs = JSON.parse(txs);
+            buyAndSellService.updateLink('glidera', true);
+            return cb(null, {
+              token: accessToken,
+              permissions: permissions,
+              status: status,
+              txs: txs
+            });
+          });
         });
-      }
+      });
     });
   };
 
+  root.updateStatus = function(data) {
+    storageService.getGlideraToken(credentials.NETWORK, function(err, accessToken) {
+      if (err) return;
+      root.getAccessTokenPermissions(accessToken, function(err, permissions) {
+        if (err) return;
+        storageService.setGlideraPermissions(credentials.NETWORK, JSON.stringify(permissions), function() {});
+        data.permissions = permissions;
+
+        data.price = {};
+        root.buyPrice(accessToken, {qty: 1}, function(err, buy) {
+          data.price['buy'] = buy.price;
+        });
+        root.sellPrice(accessToken, {qty: 1}, function(err, sell) {
+          data.price['sell'] = sell.price;
+        });
+
+        root.getStatus(accessToken, function(err, status) {
+          data.status = status;
+          storageService.setGlideraStatus(credentials.NETWORK, JSON.stringify(status), function() {});
+        }); 
+          
+        root.getLimits(accessToken, function(err, limits) {
+          data.limits = limits;
+        }); 
+            
+        if (permissions.transaction_history) {
+          root.getTransactions(accessToken, function(err, txs) {
+            storageService.setGlideraTxs(credentials.NETWORK, JSON.stringify(txs), function() {});
+            data.txs = txs;
+          });
+        }
+
+        if (permissions.view_email_address) {
+          root.getEmail(accessToken, function(err, email) {
+            data.email = email;
+          });
+        }
+        if (permissions.personal_info) {
+          root.getPersonalInfo(accessToken, function(err, info) {
+            data.personalInfo = info;
+          });
+        }
+      }); 
+    }); 
+  };
 
   var register = function() {
     if (isWindowsPhoneApp) return;
