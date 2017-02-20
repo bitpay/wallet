@@ -65,6 +65,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.unitName = config.unitName;
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
+    } else {
+      $scope.alternativeIsoCode = config.alternativeIsoCode || 'USD';
     }
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;
