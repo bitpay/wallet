@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         originalList.push({
           color: v.color,
           name: v.name,
-          isWallet: true,
+          recipientType: 'wallet',
           getAddress: function(cb) {
             walletService.getAddress(v, false, cb);
           },
@@ -41,6 +41,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           name: lodash.isObject(v) ? v.name : v,
           address: k,
           email: lodash.isObject(v) ? v.email : null,
+          recipientType: 'contact',
           getAddress: function(cb) {
             return cb(null, k);
           },
@@ -99,7 +100,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         }
         $log.debug('Got toAddress:' + addr + ' | ' + item.name);
         return $state.transitionTo('tabs.send.amount', {
-          isWallet: item.isWallet,
+          recipientType: item.recipientType,
           toAddress: addr,
           toName: item.name,
           toEmail: item.email,
@@ -142,7 +143,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           $log.error(err);
           // error updating the wallet. Probably a network error, do not show
           // the 'buy bitcoins' message.
-          
+
           $scope.hasFunds = true;
         } else if (status.availableBalanceSat > 0) {
           $scope.hasFunds = true;
