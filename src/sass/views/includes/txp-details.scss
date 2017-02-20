@@ -50,6 +50,9 @@
   }
   .item {
     border-color: $item-border-color;
+    &-note {
+      word-break: keep-all;
+    }
   }
   .info {
     span {
