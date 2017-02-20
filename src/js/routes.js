@@ -927,51 +927,51 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.buyandsell.coinbase', {
-      url: '/coinbase/:code',
-      views: {
-        'tab-home@tabs': {
-          controller: 'coinbaseController',
-          controllerAs: 'coinbase',
-          templateUrl: 'views/coinbase.html'
+        url: '/coinbase/:code',
+        views: {
+          'tab-home@tabs': {
+            controller: 'coinbaseController',
+            controllerAs: 'coinbase',
+            templateUrl: 'views/coinbase.html'
+          }
         }
-      }
-    })
-    .state('tabs.preferences.coinbase', {
-      url: '/coinbase',
-      views: {
-        'tab-settings@tabs': {
-          controller: 'preferencesCoinbaseController',
-          templateUrl: 'views/preferencesCoinbase.html'
+      })
+      .state('tabs.preferences.coinbase', {
+        url: '/coinbase',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesCoinbaseController',
+            templateUrl: 'views/preferencesCoinbase.html'
+          }
         }
-      }
-    })
-    .state('tabs.buyandsell.coinbase.amount', {
-      url: '/amount/:nextStep/:currency',
-      views: {
-        'tab-home@tabs': {
-          controller: 'amountController',
-          templateUrl: 'views/amount.html'
+      })
+      .state('tabs.buyandsell.coinbase.amount', {
+        url: '/amount/:nextStep/:currency',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
         }
-      }
-    })
-    .state('tabs.buyandsell.coinbase.buy', {
-      url: '/buy/:amount/:currency',
-      views: {
-        'tab-home@tabs': {
-          controller: 'buyCoinbaseController',
-          templateUrl: 'views/buyCoinbase.html'
+      })
+      .state('tabs.buyandsell.coinbase.buy', {
+        url: '/buy/:amount/:currency',
+        views: {
+          'tab-home@tabs': {
+            controller: 'buyCoinbaseController',
+            templateUrl: 'views/buyCoinbase.html'
+          }
         }
-      }
-    })
-    .state('tabs.buyandsell.coinbase.sell', {
-      url: '/sell/:amount/:currency',
-      views: {
-        'tab-home@tabs': {
-          controller: 'sellCoinbaseController',
-          templateUrl: 'views/sellCoinbase.html'
+      })
+      .state('tabs.buyandsell.coinbase.sell', {
+        url: '/sell/:amount/:currency',
+        views: {
+          'tab-home@tabs': {
+            controller: 'sellCoinbaseController',
+            templateUrl: 'views/sellCoinbase.html'
+          }
         }
-      }
-    })
+      })
 
     /*
      *
@@ -991,49 +991,49 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.giftcards.amazon', {
-      url: '/amazon',
-      views: {
-        'tab-home@tabs': {
-          controller: 'amazonController',
-          templateUrl: 'views/amazon.html'
+        url: '/amazon',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amazonController',
+            templateUrl: 'views/amazon.html'
+          }
         }
-      }
-    })
-    .state('tabs.giftcards.amazon.cards', {
-      url: '/cards',
-      views: {
-        'tab-home@tabs': {
-          controller: 'amazonCardsController',
-          templateUrl: 'views/amazonCards.html'
+      })
+      .state('tabs.giftcards.amazon.cards', {
+        url: '/cards',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amazonCardsController',
+            templateUrl: 'views/amazonCards.html'
+          }
+        },
+        params: {
+          cardClaimCode: null
         }
-      },
-      params: {
-        cardClaimCode: null
-      }
-    })
-    .state('tabs.giftcards.amazon.amount', {
-      url: '/amount',
-      views: {
-        'tab-home@tabs': {
-          controller: 'amountController',
-          templateUrl: 'views/amount.html'
+      })
+      .state('tabs.giftcards.amazon.amount', {
+        url: '/amount',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        },
+        params: {
+          nextStep: 'tabs.giftcards.amazon.buy',
+          currency: 'USD',
+          forceCurrency: true
         }
-      },
-      params: {
-        nextStep: 'tabs.giftcards.amazon.buy',
-        currency: 'USD',
-        forceCurrency: true
-      }
-    })
-    .state('tabs.giftcards.amazon.buy', {
-      url: '/buy/:amount/:currency',
-      views: {
-        'tab-home@tabs': {
-          controller: 'buyAmazonController',
-          templateUrl: 'views/buyAmazon.html'
+      })
+      .state('tabs.giftcards.amazon.buy', {
+        url: '/buy/:amount/:currency',
+        views: {
+          'tab-home@tabs': {
+            controller: 'buyAmazonController',
+            templateUrl: 'views/buyAmazon.html'
+          }
         }
-      }
-    })
+      })
 
     /*
      *
@@ -1096,7 +1096,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     uxLanguage.init();
 
     $ionicPlatform.ready(function() {
-      if (screen.width < 768)
+      if (screen.width < 768 && platformInfo.isCordova)
         screen.lockOrientation('portrait');
 
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
