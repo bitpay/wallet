@@ -274,7 +274,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.send.amount', {
-        url: '/amount/:isWallet/:toAddress/:toName/:toEmail/:toColor',
+        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
@@ -283,7 +283,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.send.confirm', {
-        url: '/confirm/:isWallet/:toAddress/:toName/:toAmount/:toEmail/:toColor/:description/:useSendMax',
+        url: '/confirm/:recipientType/:toAddress/:toName/:toAmount/:toEmail/:toColor/:description/:useSendMax',
         views: {
           'tab-send@tabs': {
             controller: 'confirmController',
