@@ -1096,7 +1096,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
     uxLanguage.init();
 
     $ionicPlatform.ready(function() {
-      if (screen.width < 768)
+      if (screen.width < 768 && platformInfo.isCordova)
         screen.lockOrientation('portrait');
 
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
