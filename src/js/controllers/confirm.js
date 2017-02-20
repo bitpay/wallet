@@ -14,11 +14,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
-    var isWallet = data.stateParams.isWallet || 'false';
-    $scope.isWallet = (isWallet.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.isWallet = data.stateParams.isWallet == 'true' ? true : false;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
+    $scope.toColor = data.stateParams.toColor;
     $scope.description = data.stateParams.description;
     $scope.paypro = data.stateParams.paypro;
     $scope.insufficientFunds = false;
@@ -503,8 +503,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
     if (
       (
-        processName === 'broadcastingTx' || 
-        ((processName === 'signingTx') && $scope.wallet.m > 1) || 
+        processName === 'broadcastingTx' ||
+        ((processName === 'signingTx') && $scope.wallet.m > 1) ||
         (processName == 'sendingTx' && !$scope.wallet.canSign() && !$scope.wallet.isPrivKeyExternal())
       ) && !isOn) {
       $scope.sendStatus = 'success';

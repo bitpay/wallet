@@ -100,6 +100,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       toAddress: $scope.toAddress,
       toName: $scope.toName,
       toEmail: $scope.toEmail,
+      toColor: $scope.toColor,
       useSendMax: true,
     });
   };
@@ -237,7 +238,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
           toAmount: (amount * unitToSatoshi).toFixed(0),
           toAddress: $scope.toAddress,
           toName: $scope.toName,
-          toEmail: $scope.toEmail
+          toEmail: $scope.toEmail,
+          toColor: $scope.toColor,
         });
       }
     }
