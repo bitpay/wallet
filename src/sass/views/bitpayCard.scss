@@ -1,5 +1,149 @@
 #bitpayCard {
+
+  $item-lateral-padding: 20px;
+  $item-vertical-padding: 10px;
+  $item-border-color: #EFEFEF;
+  $item-label-color: #6C6C6E;
+  @extend .deflash-blue;
   background: white;
+
+  .spinner svg {
+    stroke: #0067c8;
+    fill: #0067c8;
+  }
+
+  .add-bottom-for-cta {
+    bottom: 92px;
+  }
+  .head {
+    padding: 30px $item-lateral-padding 4rem;
+    border-top: 0;
+
+    .sending-label {
+      display: flex;
+      font-size: 18px;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      img {
+        margin-right: 1rem;
+        height: 35px;
+        width: 35px;
+      }
+
+      span {
+        text-transform: capitalize;
+      }
+    }
+    .amount-label{
+      line-height: 30px;
+      .amount-final{
+        font-size: 38px;
+        margin-bottom: .5rem;
+
+        > .unit {
+          font-family: "Roboto-Light";
+        }
+      }
+      .alternative {
+        font-size: 16px;
+        font-family: "Roboto-Light";
+        color: #9B9B9B;
+      }
+    }
+  }
+  .item {
+    border-color: $item-border-color;
+  }
+  .info {
+    .badge {
+      border-radius: 0;
+      padding: .5rem;
+    }
+    .item {
+      color: #4A4A4A;
+      padding-top: $item-vertical-padding;
+      padding-bottom: $item-vertical-padding;
+      padding-left: $item-lateral-padding;
+
+      &:not(.item-icon-right) {
+        padding-right: $item-lateral-padding;
+      }
+
+      .label {
+        font-size: 14px;
+        color: $item-label-color;
+        margin-bottom: 8px;
+      }
+
+      .capitalized {
+        text-transform: capitalize;
+      }
+
+      .wallet .big-icon-svg > .bg {
+        height: 24px;
+        width: 24px;
+        padding: 2px;
+        box-shadow: none;
+        vertical-align: middle;
+      }
+
+      .total-amount {
+        font-weight: bold;
+      }
+
+      &.single-line {
+        display: flex;
+        align-items: center;
+        padding-top: 17px;
+        padding-bottom: 17px;
+
+        .label {
+          margin: 0;
+          flex-grow: 1;
+        }
+      }
+    }
+    .item-divider {
+      padding-top: 1.2rem;
+      color: $item-label-color;
+      font-size: 15px;
+    }
+    .wallet {
+      display: flex;
+      align-items: center;
+      padding: .2rem 0;
+      margin-bottom: 5px;
+
+      ~ .bp-arrow-right {
+        top: 14px;
+      }
+
+      > i {
+        padding: 0;
+        position: static;
+
+        > img {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+          margin-right: .7rem;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  .disclosure {
+    color: $light-gray;
+    font-size: 12px;
+    text-align: left;
+    margin: 1rem;
+  }
+
+  .icon-bitpay-card {
+    background-image: url("../img/icon-bitpay.svg");
+  }
+
   .bar-header {
     border: 0;
     background: #1e3186;

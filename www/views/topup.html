@@ -1,0 +1,97 @@
+<ion-view id="bitpayCard" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Add funds</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content class="add-bottom-for-cta">
+    <!-- SELL -->
+    <div class="list" ng-if="cardInfo">
+
+      <div class="item head">
+        <div class="sending-label">
+          <i class="icon big-icon-svg">
+            <div class="bg icon-bitpay-card"></div>
+          </i>
+          <span>BitPay Card - Visa &reg; Prepaid Debit</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount-final">{{amountUnitStr}}</div>
+          <div class="alternative" ng-show="isFiat && rate">
+            @ {{rate | currency:'$':2}} per BTC
+          </div>
+        </div>
+      </div> 
+
+      <div class="info">
+
+        <div class="item item-icon-right" ng-click="showWalletSelector()">
+          <div class="label">From</div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg">
+            </i>
+            {{wallet ? wallet.name : '...'}}
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </div>
+
+        <div class="item item-divider">
+          Deposit into
+        </div>
+        <div class="item">
+          Card
+          <span class="item-note">
+            xxxx-xxxx-xxxx-{{cardInfo.lastFourDigits}}
+          </span>
+        </div>
+        <div class="item">
+          Account
+          <span class="item-note">
+            {{cardInfo.email}}
+          </span>
+        </div> 
+      </div>
+    </div>
+
+  </ion-content>
+
+  <click-to-accept
+    ng-disabled="!cardInfo || !wallet"
+    ng-click="topUpConfirm()"
+    ng-if="!isCordova && cardInfo"
+    click-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="false"
+    no-matching-wallet="!cardInfo">
+    Add funds
+  </click-to-accept>
+  <slide-to-accept
+    ng-disabled="!cardInfo || !wallet"
+    ng-if="isCordova && cardInfo"
+    slide-on-confirm="topUpConfirm()"
+    slide-send-status="sendStatus"
+    has-wallet-chosen="wallet"
+    insufficient-funds="false"
+    no-matching-wallet="!cardInfo">
+    Slide to confirm
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="goBackHome()"
+    slide-success-hide-on-confirm="true">
+    <span>Sent</span>
+    <div class="m10 size-14">
+      Funds were added to debit card
+    </div>
+  </slide-to-accept-success>
+
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
+</ion-view>
