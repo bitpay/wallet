@@ -3,13 +3,15 @@
 angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, addressbookService, lodash, popupService, gettextCatalog, platformInfo) {
 
   var contacts;
-  $scope.isChromeApp = platformInfo.isChromeApp;
 
   var initAddressbook = function() {
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);
 
       $scope.isEmptyList = lodash.isEmpty(ab);
+
+      if (!$scope.isEmptyList) $scope.showAddIcon = true;
+      else $scope.showAddIcon = false;
 
       contacts = [];
       lodash.each(ab, function(v, k) {
@@ -23,7 +25,7 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
       $scope.addressbook = lodash.clone(contacts);
       $timeout(function() {
         $scope.$apply();
-      }, 100);
+      });
     });
   };
 
@@ -58,6 +60,8 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isChromeApp = platformInfo.isChromeApp;
+    $scope.showAddIcon = false;
     initAddressbook();
   });
 
