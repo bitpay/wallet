@@ -58,6 +58,35 @@
     color: #387ef5;
     font-weight: bold;
   }
+  .sendTip {
+    text-align: center;
+    & > .item-heading {
+      margin-top: 10px;
+      background: 0 none;
+    }
+    .item {
+      border-style: none;
+    }
+    & > .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: $dark-gray;
+      margin: 20px 10px;
+    }
+    & > .subtitle {
+      font-size: 1rem;
+      line-height: 1.5em;
+      font-weight: 300;
+      color: $dark-gray;
+      margin: 20px 1em 2.5em;
+    }
+    .big-icon-svg{
+      .bg.green{
+        padding: 0 10px;
+        box-shadow: none;
+      }
+    }
+  }
   .list {
     .item {
       color: #444;
