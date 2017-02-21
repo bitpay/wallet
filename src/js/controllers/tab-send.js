@@ -7,19 +7,70 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var currentContactsPage;
   $scope.isChromeApp = platformInfo.isChromeApp;
 
-  var updateList = function() {
-    CONTACTS_SHOW_LIMIT = 10;
-    currentContactsPage = 0;
-    originalList = [];
 
-    var wallets = profileService.getWallets({
+  var hasWallets = function() {
+    $scope.wallets = profileService.getWallets({
       onlyComplete: true
     });
-    $scope.hasWallets = lodash.isEmpty(wallets) ? false : true;
-    $scope.oneWallet = wallets.length == 1;
+    $scope.hasWallets = lodash.isEmpty($scope.wallets) ? false : true;
+  };
 
-    if (!$scope.oneWallet) {
-      lodash.each(wallets, function(v) {
+  // THIS is ONLY to show the 'buy bitcoins' message
+  // does not has any other function.
+
+  var updateHasFunds = function() {
+
+    if ($rootScope.everHasFunds) {
+      $scope.hasFunds = true;
+      return;
+    }
+
+    $scope.hasFunds = false;
+    var index = 0;
+    lodash.each($scope.wallets, function(w) {
+      walletService.getStatus(w, {}, function(err, status) {
+
+        ++index;
+        if (err && !status) {
+          $log.error(err);
+          // error updating the wallet. Probably a network error, do not show
+          // the 'buy bitcoins' message.
+
+          $scope.hasFunds = true;
+        } else if (status.availableBalanceSat > 0) {
+          $scope.hasFunds = true;
+          $rootScope.everHasFunds = true;
+        }
+
+        if (index == $scope.wallets.length) {
+          $scope.checkingBalance = false;
+          $timeout(function() {
+            $scope.$apply();
+          });
+        }
+      });
+    });
+  };
+
+  var updateWalletsList = function() {
+
+    var networkResult = lodash.countBy($scope.wallets, 'network');
+
+    $scope.showTransferCard = $scope.hasWallets && (networkResult.livenet > 1 || networkResult.testnet > 1);
+
+    if ($scope.showTransferCard) {
+      var walletsToTransfer = $scope.wallets;
+      if (!(networkResult.livenet > 1)) {
+        walletsToTransfer = lodash.filter(walletsToTransfer, function(item) {
+          return item.network == 'testnet';
+        });
+      }
+      if (!(networkResult.testnet > 1)) {
+        walletsToTransfer = lodash.filter(walletsToTransfer, function(item) {
+          return item.network == 'livenet';
+        });
+      }
+      lodash.each(walletsToTransfer, function(v) {
         originalList.push({
           color: v.color,
           name: v.name,
@@ -29,12 +80,17 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           },
         });
       });
+      $scope.updateList(originalList);
     }
+  }
 
+  var updateContactsList = function() {
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);
 
       $scope.hasContacts = lodash.isEmpty(ab) ? false : true;
+      if (!$scope.hasContacts) return;
+
       var completeContacts = [];
       lodash.each(ab, function(v, k) {
         completeContacts.push({
@@ -47,17 +103,19 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           },
         });
       });
-
       var contacts = completeContacts.slice(0, (currentContactsPage + 1) * CONTACTS_SHOW_LIMIT);
       $scope.contactsShowMore = completeContacts.length > contacts.length;
       originalList = originalList.concat(contacts);
-      $scope.list = lodash.clone(originalList);
-
-      $timeout(function() {
-        $ionicScrollDelegate.resize();
-        $scope.$apply();
-      }, 10);
+      $scope.updateList();
     });
+  };
+
+  $scope.updateList = function() {
+    $scope.list = lodash.clone(originalList);
+    $timeout(function() {
+      $ionicScrollDelegate.resize();
+      $scope.$apply();
+    }, 10);
   };
 
   $scope.openScanner = function() {
@@ -66,7 +124,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
   $scope.showMore = function() {
     currentContactsPage++;
-    updateList();
+    updateWalletsList();
   };
 
   $scope.findContact = function(search) {
@@ -110,67 +168,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
-
-  // THIS is ONLY to show the 'buy bitcoins' message
-  // does not has any other function.
-
-  var updateHasFunds = function() {
-
-    if ($rootScope.everHasFunds) {
-      $scope.hasFunds = true;
-      return;
-    }
-
-    $scope.hasFunds = false;
-
-    var wallets = profileService.getWallets({
-      onlyComplete: true,
-    });
-
-    if (!wallets || !wallets.length) {
-      return $timeout(function() {
-        $scope.$apply();
-      });
-    }
-
-    $scope.checkingBalance = true;
-    var index = 0;
-    lodash.each(wallets, function(w) {
-      walletService.getStatus(w, {}, function(err, status) {
-
-        ++index;
-        if (err && !status) {
-          $log.error(err);
-          // error updating the wallet. Probably a network error, do not show
-          // the 'buy bitcoins' message.
-
-          $scope.hasFunds = true;
-        } else if (status.availableBalanceSat > 0) {
-          $scope.hasFunds = true;
-          $rootScope.everHasFunds = true;
-        }
-
-        if (index == wallets.length) {
-          if ($scope.hasFunds != true) {
-            $ionicScrollDelegate.freezeScroll(true);
-          }
-          $scope.checkingBalance = false;
-          $timeout(function() {
-            $scope.$apply();
-          });
-        }
-      });
-    });
-  };
-
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.formData = {
-      search: null
-    };
-    updateList();
-    updateHasFunds();
-  });
-
   // This could probably be enhanced refactoring the routes abstract states
   $scope.createWallet = function() {
     $state.go('tabs.home').then(function() {
@@ -180,8 +177,28 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
   $scope.buyBitcoin = function() {
     $state.go('tabs.home').then(function() {
-      $state.go('tabs.buyandsell.glidera');
+      $state.go('tabs.buyandsell');
     });
   };
 
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.checkingBalance = true;
+    $scope.formData = {
+      search: null
+    };
+    originalList = [];
+    CONTACTS_SHOW_LIMIT = 10;
+    currentContactsPage = 0;
+    hasWallets();
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    if (!$scope.hasWallets) {
+      $scope.checkingBalance = false;
+      return;
+    }
+    updateHasFunds();
+    updateWalletsList();
+    updateContactsList();
+  });
 });
