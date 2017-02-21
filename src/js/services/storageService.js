@@ -3,14 +3,19 @@ angular.module('copayApp.services')
   .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, platformInfo, $timeout) {
 
     var root = {};
+    var storage;
 
     // File storage is not supported for writing according to
     // https://github.com/apache/cordova-plugin-file/#supported-platforms
     var shouldUseFileStorage = platformInfo.isCordova && !platformInfo.isWP;
-    $log.debug('Using file storage:', shouldUseFileStorage);
 
-
-    var storage = shouldUseFileStorage ? fileStorageService : localStorageService;
+    if (shouldUseFileStorage) {
+      $log.debug('Using: FileStorage');
+      storage = fileStorageService;
+    } else {
+      $log.debug('Using: LocalStorage');
+      storage = localStorageService;
+    }
 
     var getUUID = function(cb) {
       // TO SIMULATE MOBILE
@@ -483,7 +488,7 @@ angular.module('copayApp.services')
       storage.get('bitpayAccounts-v2-' + network, function(err, allAccountsStr) {
         if (err) return cb(err);
 
-        if (!allAccountsStr) 
+        if (!allAccountsStr)
           return cb(null, {});
 
         var allAccounts = {};
