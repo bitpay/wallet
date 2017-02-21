@@ -6,12 +6,12 @@
       <span translate>Address Book</span>
     </ion-nav-title>
     <ion-nav-buttons side="secondary">
-      <button class="button button-back button-clear ng-hide" ng-show="!isEmptyList" ui-sref="tabs.addressbook.add">
+      <button class="button button-back button-clear ng-hide" ng-show="showAddIcon" ui-sref="tabs.addressbook.add">
         <i class="icon ion-ios-plus-empty"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content scroll="false" id="add-address" class="ng-hide" ng-show="isEmptyList">
+  <ion-content scroll="false" id="add-address" ng-show="isEmptyList">
     <div class="zero-state">
       <i class="icon zero-state-icon">
         <img src="img/address-book-add.svg"/>
@@ -23,8 +23,8 @@
       </div>
     </div>
   </ion-content>
-  <ion-content class="ng-hide" ng-show="!isEmptyList">
-    <div class="bar bar-header item-input-inset" ng-show="!isEmptyList && addressbook.length >= 5">
+  <ion-content ng-show="!isEmptyList">
+    <div class="bar bar-header item-input-inset" ng-show="addressbook.length >= 5">
       <label class="item-input-wrapper">
         <i class="icon ion-ios-search placeholder-icon"></i>
         <input type="search"
