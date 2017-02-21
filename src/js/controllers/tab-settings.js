@@ -3,18 +3,9 @@
 angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog, buyAndSellService) {
 
   var updateConfig = function() {
-    var isCordova = platformInfo.isCordova;
-    var isWP = platformInfo.isWP;
-    var isWindowsPhoneApp = platformInfo.isWP && isCordova;
-
-    $scope.usePushNotifications = isCordova && !isWP;
-    $scope.isCordova = isCordova;
-
-    $scope.appName = appConfigService.nameCase;
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
-
     $scope.wallets = profileService.getWallets();
     $scope.buyAndSellServices = buyAndSellService.getLinked();
 
@@ -45,6 +36,11 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isCordova = platformInfo.isCordova;
+    $scope.appName = appConfigService.nameCase;
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
     updateConfig();
   });
 
