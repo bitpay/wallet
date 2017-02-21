@@ -75,7 +75,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.$on("$ionicView.enter", function(event, data) {
-      updateAllWallets();
+
+      $timeout(function() {
+        updateAllWallets();
+      });
 
       addressbookService.list(function(err, ab) {
         if (err) $log.error(err);
