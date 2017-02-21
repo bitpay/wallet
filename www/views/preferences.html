@@ -41,12 +41,18 @@
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.backupWarning({from: 'tabs.preferences'})" ng-hide="wallet.isPrivKeyExternal()">
         <span translate>Backup</span>
+        <span class="right text-light assertive" ng-show="wallet.needsBackup">
+          {{'Backup needed' | translate}}
+        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
       <div ng-show="wallet.canSign()">
-        <ion-toggle ng-model="encryptEnabled.value" toggle-class="toggle-balanced" ng-change="encryptChange()">
+        <ion-toggle ng-model="encryptEnabled.value" toggle-class="toggle-balanced" ng-change="encryptChange()" ng-disabled="wallet.needsBackup">
           <span class="toggle-label" translate>Request Spending Password</span>
         </ion-toggle>
+        <div class="comment" translate>
+          If enabled, all sensitive information (private key and mnemonics) and actions (spending and exporting) associated with this wallet will be protected.
+        </div>
       </div>
       <div ng-show="wallet.canSign() && touchIdAvailable">
         <ion-toggle  ng-model="touchIdEnabled.value" toggle-class="toggle-balanced" ng-change="touchIdChange()">
