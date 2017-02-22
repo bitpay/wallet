@@ -46,6 +46,26 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       return true;
     }
 
+    function goSend(addr, amount, message) {
+      $state.go('tabs.send', {}, {
+        'reload': true,
+        'notify': $state.current.name == 'tabs.send' ? false : true
+      });
+      // Timeout is required to enable the "Back" button
+      $timeout(function() {
+        if (amount) {
+          $state.transitionTo('tabs.send.confirm', {
+            toAmount: amount,
+            toAddress: addr,
+            description: message
+          });
+        } else {
+          $state.transitionTo('tabs.send.amount', {
+            toAddress: addr
+          });
+        }
+      }, 100);
+    }
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
@@ -73,27 +93,13 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
       if (parsed.r) {
         payproService.getPayProDetails(parsed.r, function(err, details) {
+          if (err && addr && amount) {
+            goSend(addr, amount, message);
+          }
           handlePayPro(details);
         });
       } else {
-        $state.go('tabs.send', {}, {
-          'reload': true,
-          'notify': $state.current.name == 'tabs.send' ? false : true
-        });
-        // Timeout is required to enable the "Back" button
-        $timeout(function() {
-          if (amount) {
-            $state.transitionTo('tabs.send.confirm', {
-              toAmount: amount,
-              toAddress: addr,
-              description: message
-            });
-          } else {
-            $state.transitionTo('tabs.send.amount', {
-              toAddress: addr
-            });
-          }
-        }, 100);
+        goSend(addr, amount, message);
       }
       return true;
 
@@ -140,7 +146,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       return true;
 
     } else if (data && data.indexOf(appConfigService.name + '://coinbase') === 0) {
-      var code = getParameterByName('code', data); 
+      var code = getParameterByName('code', data);
       $ionicHistory.nextViewOptions({
         disableAnimate: true
       });
@@ -170,13 +176,14 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       }).then(function() {
         switch (reason) {
           default:
-          case '0': /* For BitPay card binding */
+            case '0':
+            /* For BitPay card binding */
             $state.transitionTo('tabs.bitpayCardIntro', {
               secret: secret,
               email: email,
               otp: otp
             });
-            break;
+          break;
         }
       });
       return true;
