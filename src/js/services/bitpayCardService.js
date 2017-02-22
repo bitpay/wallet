@@ -90,8 +90,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       });
 
       storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, apiContext.pairData.email, cards, function(err) {
-        register();
-
+        root.registerNextStep();
         return cb(err, cards);
       });
     }, function(data) {
@@ -225,18 +224,16 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     }, cb);
   };
 
-
   root.remove = function(cardId, cb) {
     storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, cardId, function(err) {
       if (err) {
         $log.error('Error removing BitPay debit card: ' + err);
         return cb(err);
       }
-      register();
+      root.registerNextStep();
       storageService.removeBalanceCache(cardId, cb);
     });
   };
-
 
   root.getRates = function(currency, cb) {
     bitpayService.get('/rates/' + currency, function(data) {
@@ -1325,7 +1322,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   };
 
 
-  var register = function() {
+  root.registerNextStep = function() {
     root.getCards(function(err, cards) {
       if (lodash.isEmpty(cards)) {
         nextStepsService.register(nextStepItem);
@@ -1335,7 +1332,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     });
   };
 
-  register();
+  root.registerNextStep();
   return root;
 
 });

@@ -1087,12 +1087,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.preferences.bitpayCard', {
-        url: '/bitpay-card',
+      .state('tabs.preferences.bitpayServices', {
+        url: '/bitpay-services',
         views: {
           'tab-settings@tabs': {
-            controller: 'preferencesBitpayCardController',
-            templateUrl: 'views/preferencesBitpayCard.html'
+            controller: 'preferencesBitpayServicesController',
+            templateUrl: 'views/preferencesBitpayServices.html'
           }
         }
       });

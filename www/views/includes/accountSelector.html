@@ -1,0 +1,34 @@
+<action-sheet action-sheet-show="show" class="account-selector">
+  <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()">
+  <div class="header">{{title}}</div>
+  <a ng-repeat="a in accounts track by $index"
+    class="item item-icon-left item-big-icon-left item-icon-right account" ng-click="selectAccount(a)">
+    <i class="icon big-icon-svg">
+      <img src="img/icon-account.svg" class="bg">
+    </i>
+    <div class="account-inner">
+      <div class="account-details">
+        <div class="account-name">
+          {{a.givenName}} {{a.familyName}}
+        </div>
+        <p class="account-email" ng-if="a.email">
+          <span>{{a.email}}</span>
+        &nbsp;
+        </p>
+      </div>
+    </div>
+  </a>
+  <a class="item item-icon-left item-big-icon-left item-icon-right account" ng-click="selectAccount()">
+    <i class="icon big-icon-svg">
+      <img src="img/icon-account-add.svg" class="bg icon-add">
+    </i>
+    <div class="account-inner">
+      <div class="account-details">
+        <div class="account-add" translate>
+          Add account
+        </div>
+      </div>
+    </div>
+  </a>
+
+</action-sheet>
