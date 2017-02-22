@@ -85,9 +85,8 @@
         </a>
         <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet">
           <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
-          <span class="item-note">
-            {{fee || '...'}}
-          </span>
+          <span ng-if="!showFeeFiat" class="item-note" ng-click="toggleFeeValue()">{{fee || '...'}}</span>
+          <span ng-if="showFeeFiat" class="item-note" ng-click="toggleFeeValue()">{{feeFiat || '...'}}</span>
         </div>
         <div class="text-center" ng-show="noMatchingWallet">
           <span class="badge badge-energized" translate>No wallets available</span>
