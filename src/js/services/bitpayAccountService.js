@@ -68,7 +68,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
           var title = gettextCatalog.getString('Add BitPay Account?');
           var msgDetail = 'Add this BitPay account ({{email}})?';
           if (pairingReason) {
-  	        msgDetail = 'To {{reason}} you must first add your BitPay account.<br/><br/>{{email}}';
+  	        msgDetail = 'To {{reason}} you must first add your BitPay account - {{email}}';
   	      }
           var msg = gettextCatalog.getString(msgDetail, {
           	reason: pairingReason,
