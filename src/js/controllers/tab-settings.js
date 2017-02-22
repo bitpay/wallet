@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayCardService, storageService, glideraService, coinbaseService, gettextCatalog, buyAndSellService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog, buyAndSellService) {
 
   var updateConfig = function() {
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
@@ -16,12 +16,27 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         isoCode: config.wallet.settings.alternativeIsoCode
       };
 
-      // TODO move this to a generic service
-      bitpayCardService.getCards(function(err, cards) {
+      $scope.bitpayCardEnabled = config.bitpayCard.enabled;
+      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
+
+      bitpayAccountService.getAccounts(function(err, data) {
         if (err) $log.error(err);
-        $scope.bitpayCards = cards && cards.length > 0;
+        $scope.bitpayAccounts = !lodash.isEmpty(data);
       });
 
+      if ($scope.bitpayCardEnabled) {
+        bitpayCardService.getCards(function(err, cards) {
+          if (err) $log.error(err);
+          $scope.bitpayCards = cards && cards.length > 0;
+        });
+      }
+
+      if ($scope.glideraEnabled) {
+        storageService.getGlideraToken(glideraService.getEnvironment(), function(err, token) {
+          if (err) $log.error(err);
+          $scope.glideraToken = token;
+        });
+      }
     });
   };
 
