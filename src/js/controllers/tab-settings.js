@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSettingsController', function($scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog, buyAndSellService) {
+angular.module('copayApp.controllers').controller('tabSettingsController', function($rootScope, $timeout, $scope, appConfigService, $ionicModal, $log, lodash, uxLanguage, platformInfo, profileService, feeService, configService, externalLinkService, bitpayAccountService, bitpayCardService, storageService, glideraService, gettextCatalog, buyAndSellService) {
 
   var updateConfig = function() {
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
@@ -16,27 +16,25 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         isoCode: config.wallet.settings.alternativeIsoCode
       };
 
-      $scope.bitpayCardEnabled = config.bitpayCard.enabled;
-      $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-
+      // TODO move this to a generic service
       bitpayAccountService.getAccounts(function(err, data) {
         if (err) $log.error(err);
         $scope.bitpayAccounts = !lodash.isEmpty(data);
+
+        $timeout(function() {
+          $rootScope.$apply();
+        }, 10);
       });
 
-      if ($scope.bitpayCardEnabled) {
-        bitpayCardService.getCards(function(err, cards) {
-          if (err) $log.error(err);
-          $scope.bitpayCards = cards && cards.length > 0;
-        });
-      }
+      // TODO move this to a generic service
+      bitpayCardService.getCards(function(err, cards) {
+        if (err) $log.error(err);
+        $scope.bitpayCards = cards && cards.length > 0;
 
-      if ($scope.glideraEnabled) {
-        storageService.getGlideraToken(glideraService.getEnvironment(), function(err, token) {
-          if (err) $log.error(err);
-          $scope.glideraToken = token;
-        });
-      }
+        $timeout(function() {
+          $rootScope.$apply();
+        }, 10);
+      });
     });
   };
 
