@@ -25,11 +25,12 @@
     margin: 1rem 0;
   }
   &-description {
-    font-size: 15px;
     color: $mid-gray;
     margin: 1rem 0;
+    font-size: 0.9em;
   }
   &-description-disabled {
+    font-size: 0.9em;
     color: cadetblue;
     text-decoration: none;
   }
