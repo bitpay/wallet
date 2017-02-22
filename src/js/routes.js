@@ -429,15 +429,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.about.translators', {
-        url: '/translators',
-        views: {
-          'tab-settings@tabs': {
-            controller: 'translatorsController',
-            templateUrl: 'views/translators.html'
-          }
-        }
-      })
       .state('tabs.advanced', {
         url: '/advanced',
         views: {
