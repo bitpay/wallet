@@ -19,7 +19,7 @@
         {{err | translate}}
       </span>
     </a>
-    <div class="item item-divider"></div>
+    <div ng-show="!isCordova" class="item item-divider"></div>
     <a class="item" ng-click="clearTransactionHistory()">
       <span translate>Clear cache</span>
     </a>
