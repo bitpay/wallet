@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
+    $scope.showFeeFiat = false;
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
     $scope.recipientType = data.stateParams.recipientType || null;
     $scope.toAddress = data.stateParams.toAddress;
@@ -124,6 +125,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
+  $scope.toggleFeeValue = function() {
+    $scope.showFeeFiat = !$scope.showFeeFiat;
+  };
+
   var initConfirm = function() {
     if ($scope.paypro) _paymentTimeControl($scope.paypro.expires);
 
@@ -147,6 +152,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function resetValues() {
     $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
+    $scope.showFeeFiat = false;
   };
 
   $scope.getSendMaxInfo = function() {
@@ -363,6 +369,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function apply(txp) {
     $scope.fee = txFormatService.formatAmountStr(txp.fee);
+    txFormatService.formatAlternativeStr(txp.fee, function(v) {
+      $scope.feeFiat = v;
+    });
     $scope.txp = txp;
     $timeout(function() {
       $scope.$apply();
