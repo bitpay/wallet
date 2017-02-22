@@ -1,12 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesNotificationsController', function($scope, $log, $timeout, appConfigService, lodash, configService, platformInfo, pushNotificationsService, profileService, emailService) {
+angular.module('copayApp.controllers').controller('preferencesNotificationsController', function($scope, $log, $timeout, lodash, configService, platformInfo, pushNotificationsService, profileService, emailService) {
+
   var updateConfig = function() {
     var config = configService.getSync();
-    $scope.appName = appConfigService.nameCase;
-    $scope.PNEnabledByUser = true;
-    $scope.usePushNotifications = platformInfo.isCordova && !platformInfo.isWP;
-    $scope.isIOSApp = platformInfo.isIOS && platformInfo.isCordova;
 
     $scope.pushNotifications = {
       value: config.pushNotifications.enabled
@@ -22,7 +19,6 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
     $scope.emailNotifications = {
       value: isEmailEnabled && $scope.newEmail.value ? true : false
     };
-
     $timeout(function() {
       $scope.$apply();
     });
@@ -90,6 +86,10 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
     var config = configService.getSync();
     return config.emailFor ? lodash.values(config.emailFor)[0] : null;
   };
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.usePushNotifications = platformInfo.isCordova && !platformInfo.isWP;
+  });
 
   $scope.$on("$ionicView.enter", function(event, data) {
     updateConfig();
