@@ -46,7 +46,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       return true;
     }
 
-    function setForm(addr, amount, message) {
+    function goSend(addr, amount, message) {
       $state.go('tabs.send', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.send' ? false : true
@@ -94,12 +94,12 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       if (parsed.r) {
         payproService.getPayProDetails(parsed.r, function(err, details) {
           if (err && addr && amount) {
-            setForm(addr, amount, message);
+            goSend(addr, amount, message);
           }
           handlePayPro(details);
         });
       } else {
-        setForm(addr, amount, message);
+        goSend(addr, amount, message);
       }
       return true;
 
