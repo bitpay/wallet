@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
 
     $scope.removeAccount = function(account) {
       var title = gettextCatalog.getString('Remove BitPay Account?');
-      var msg = gettextCatalog.getString('Removing your BitPay account will remove all associated BitPay account data from this device.<br/><br/>Are you sure you would like to remove your BitPay Account ({{email}}) from this device?', {
+      var msg = gettextCatalog.getString('Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account ({{email}}) from this device?', {
         email: account.email
       });
       popupService.showConfirm(title, msg, null, null, function(res) {
@@ -64,6 +64,9 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
           if (cb) {
             cb();
           }
+          $timeout(function(){
+            $rootScope.$apply();
+          }, 10);
         });
       });
     };
