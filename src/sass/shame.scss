@@ -149,18 +149,23 @@ input[type=number] {
 
 .postfix {
   position: absolute;
+  font-size: 20px;
   right: 10px;
   background-color: $subtle-gray;
   color: $dark-gray;
   border-radius: 4px;
   padding: 2px 10px;
   cursor: pointer;
+  top: 21px;
+  z-index: 10;
   label &{
     top: 38px;
     padding: 0 5px;
   }
 }
-
+.postfix:active {
+  opacity: 0.2;
+}
 #qr-canvas {
   display: none;
 }
