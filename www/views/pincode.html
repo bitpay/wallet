@@ -1,0 +1,69 @@
+<ion-view hide-tabs>
+  <div class="content">
+    <div class="block-code">
+      <div class="row">
+        <div class="col">
+            {{passcode.substring(0, 1)}}
+        </div>
+        <div class="col">
+            {{passcode.substring(1, 2)}}
+        </div>
+        <div class="col">
+            {{passcode.substring(2, 3)}}
+        </div>
+        <div class="col">
+            {{passcode.substring(3, 4)}}
+        </div>
+      </div>
+    </div>
+    <div class="block-buttons">
+      <div class="row">
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('1')">1</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('2')">2</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('3')">3</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('4')">4</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('5')">5</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('6')">6</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('7')">7</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('8')">8</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('9')">9</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="button button-light button-stretch"></button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="add('0')">0</button>
+        </div>
+        <div class="col">
+          <button class="button icon ion-arrow-left-a button-light button-stretch" ng-click="delete()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="parent">
+    <div class="child">I'm centered!</div>
+  </div> -->
+</ion-view>
