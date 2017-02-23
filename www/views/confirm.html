@@ -55,9 +55,10 @@
               <span ng-if="toName" class="wallet-name">{{toName}}</span>
             </div>
           </div>
-          <div ng-if="recipientType == 'contact' && !isChromeApp" class="gravatar-contact">
+          <div ng-if="recipientType == 'contact' && !isChromeApp" class="gravatar-contact toggle" ng-click="toggleAddress()">
             <gravatar class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
-            <span ng-if="toName">{{toName}}</span>
+            <span ng-if="toName && !showAddress">{{toName}}</span>
+            <span ng-if="toName && showAddress">{{toAddress}}</span>
           </div>
         </div>
         <a class="item item-icon-right" ng-hide="!useSendMax && (insufficientFunds || noMatchingWallet)" ng-click="showWalletSelector()">
@@ -83,7 +84,7 @@
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-if="!insufficientFunds && !noMatchingWallet">
+        <div class="item single-line toggle" ng-if="!insufficientFunds && !noMatchingWallet">
           <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
           <span ng-if="!showFeeFiat" class="item-note" ng-click="toggleFeeValue()">{{fee || '...'}}</span>
           <span ng-if="showFeeFiat" class="item-note" ng-click="toggleFeeValue()">{{feeFiat || '...'}}</span>
