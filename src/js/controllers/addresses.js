@@ -174,8 +174,6 @@ angular.module('copayApp.controllers').controller('addressesController', functio
         function() {},
         function() {}
       );
-
-      $scope.menu.hide();
     });
   };
 
