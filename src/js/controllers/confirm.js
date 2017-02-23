@@ -7,9 +7,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var countDown = null;
   var cachedSendMax = {};
   $scope.isCordova = platformInfo.isCordova;
-  $ionicConfig.views.swipeBackEnabled(false);
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+
+    $ionicConfig.views.swipeBackEnabled(false);
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};

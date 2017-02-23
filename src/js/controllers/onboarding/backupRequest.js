@@ -2,8 +2,15 @@
 
 angular.module('copayApp.controllers').controller('backupRequestController', function($scope, $state, $stateParams, $ionicConfig, popupService, gettextCatalog) {
 
-  $ionicConfig.views.swipeBackEnabled(false);
   $scope.walletId = $stateParams.walletId;
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
 
   $scope.openPopup = function() {
 

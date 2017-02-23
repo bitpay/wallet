@@ -46,6 +46,10 @@ angular.module('copayApp.controllers').controller('completeController', function
     });
   };
 
+  $scope.$on("$ionicView.beforeLeave", function() {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.skipped = (data.stateParams && data.stateParams.skipped) ? true : false;

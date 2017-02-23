@@ -2,7 +2,14 @@
 
 angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, walletService, platformInfo) {
 
-  $ionicConfig.views.swipeBackEnabled(false);
+  $scope.$on("$ionicView.beforeLeave", function() {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function() {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
+
   var isCordova = platformInfo.isCordova;
   var isWP = platformInfo.isWP;
   var usePushNotifications = isCordova && !isWP;
@@ -34,8 +41,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
       $state.go('onboarding.backupRequest', {
         walletId: walletId
       });
-    }
-    else if (requiresOptIn) {
+    } else if (requiresOptIn) {
       $state.go('onboarding.notifications', {
         walletId: walletId
       });

@@ -2,7 +2,14 @@
 
 angular.module('copayApp.controllers').controller('notificationsController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, $interval) {
 
-  $ionicConfig.views.swipeBackEnabled(false);
+  $scope.$on("$ionicView.beforeEnter", function() {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
+
+  $scope.$on("$ionicView.beforeLeave", function() {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
   $scope.walletId = $stateParams.walletId;
 
   $scope.allowNotif = function() {
