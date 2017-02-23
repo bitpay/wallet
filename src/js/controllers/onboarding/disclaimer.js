@@ -12,8 +12,13 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
     $scope.accepted = {};
     $scope.accepted.first = $scope.accepted.second = $scope.accepted.third = false;
     $scope.backedUp = $stateParams.backedUp;
-    $scope.resume = $stateParams.resume;
+    $scope.resume = $stateParams.resume || false;
+    if ($scope.backedUp || $scope.resume) $ionicConfig.views.swipeBackEnabled(false);
     $scope.shrinkView = false;
+  });
+
+  $scope.$on("$ionicView.beforeLeave", function() {
+    $ionicConfig.views.swipeBackEnabled(true);
   });
 
   $scope.confirm = function() {
