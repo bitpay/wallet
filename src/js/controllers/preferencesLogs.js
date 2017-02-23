@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLogs',
-  function($scope, historicLog) {
+  function($scope, historicLog, platformInfo) {
+
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      $scope.isCordova = platformInfo.isCordova;
+    });
 
     $scope.$on("$ionicView.enter", function(event, data) {
       $scope.logs = historicLog.get();
