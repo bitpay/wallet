@@ -1183,9 +1183,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             'notify': $state.current.name == 'starting' ? false : true
           }).then(function() {
             $ionicHistory.nextViewOptions({
-              disableAnimate: true
+              disableAnimate: true,
+              historyRoot: true
             });
-            $state.transitionTo('tabs.home');
+            $state.transitionTo('tabs.home').then(function() {
+              // Clear history
+              $ionicHistory.clearHistory();
+            });
           });
         }
 
