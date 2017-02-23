@@ -25,7 +25,7 @@
     </ion-content>
   </ion-view>
   <div id="terms-of-use" ng-class="{'slideUp': shrinkView}">
-    <ion-nav-bar class="bar-ligt">
+    <ion-nav-bar>
       <ion-nav-title>{{'Terms of Use' | translate}}</ion-nav-title>
       <ion-nav-buttons side="primary">
         <button class="button no-border" ng-click="openTerms()">
@@ -37,12 +37,11 @@
       <div ng-include="'views/includes/terms.html'" direction="y"></div>
     </div>
   </div>
-</div>
   <div id="agree-to-terms" ng-if="accepted.first && accepted.second" ng-class="{'header-present': backedUp == 'false'}">
     <div id="agree-to-terms-content" class="center-block">
       <ion-checkbox ng-model="terms.accepted"></ion-checkbox>
       <p translate>I have read, understood, and agree to the <a ng-click="openTerms()" translate>Terms of Use</a>.</p>
-      <button ng-disabled="!accepted.first || !accepted.second || !terms.accepted" class="button button-block button-positive" ng-click="confirm()" translate>Confirm &amp; Finish</button>
+      <button ng-disabled="!accepted.first || !accepted.second || !terms.accepted" class="button button-block button-primary" ng-click="confirm()" translate>Confirm &amp; Finish</button>
     </div>
   </div>
 </ion-pane>

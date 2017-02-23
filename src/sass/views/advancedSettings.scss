@@ -12,10 +12,10 @@
         content: '';
       }
       &.item-divider {
-        color: $dark-gray;
+        color: $v-dark-gray;
       }
       .item-note {
-        color: $dark-gray;
+        color: $v-dark-gray;
       }
     }
     .has-comment {
@@ -24,7 +24,7 @@
     .comment {
       padding: 15px;
       background-color: #fff;
-      color: $mid-gray;
+      color: $v-mid-gray;
       font-size:0.9em; 
     }
   }

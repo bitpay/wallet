@@ -4,7 +4,8 @@
     background-color: #4A90E2; // default wallet color
   }
   .icon-buy-bitcoin {
-    background-image: url("../img/icon-bitcoin.svg");
+    background-image: $v-bitcoin-icon;
+    background-color: $v-bitcoin-orange;
   }
   .icon-bitpay-card {
     background-image: url("../img/icon-card.svg");
@@ -78,14 +79,14 @@
     & > .title {
       font-size: 20px;
       font-weight: bold;
-      color: $dark-gray;
+      color: $v-dark-gray;
       margin: 20px 10px;
     }
     & > .subtitle {
       font-size: 1rem;
       line-height: 1.5em;
       font-weight: 300;
-      color: $dark-gray;
+      color: $v-dark-gray;
       margin: 20px 3em 2.5em;
     }
     .big-icon-svg{
@@ -109,14 +110,14 @@
       &__multisig-number {
         font-size: .8rem;
         font-weight: 300;
-        color: $light-gray;
+        color: $v-light-gray;
       }
       &__status-icon {
         font-size: 18px;
         margin-left: 5px;
         position: relative;
         top: 1px;
-        color: $light-gray;
+        color: $v-light-gray;
       }
     }
   }

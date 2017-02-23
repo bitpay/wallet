@@ -2,24 +2,26 @@
   .terms {
     &__heading {
       font-weight: bold;
-      color: $dark-gray;
+      color: $v-dark-gray;
     }
   }
 }
 
 #terms-of-use {
   ion-header-bar {
-    background: #fff;
-    box-shadow: $subtle-box-shadow;
+    background: $bar-royal-bg;
+    box-shadow: $v-subtle-box-shadow;
+    color: $bar-royal-text;
     .primary-buttons{
       .button{
+        color: $bar-royal-text;
         font-size: 2rem;
       }
     }
   }
   ion-content{
     padding-top: 1.5rem;
-    color: $dark-gray;
+    color: $v-dark-gray;
     margin-bottom: 210px;
     p {
       padding: 0 2.5%;
@@ -27,65 +29,6 @@
       &:first-child {
         margin-top: 0;
       }
-    }
-  }
-  #agree-to-terms {
-    background: #fff;
-    padding: 1rem;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    .text-center {
-      text-align: center;
-    }
-    .checkbox input:before,
-    .checkbox .checkbox-icon:before {
-      border-radius: 50% !important;
-      background: none;
-      border-width: 2px;
-      padding: .9rem;
-      position: relative;
-      left: -7px;
-      top: -8px;
-    }
-    .checkbox input:checked:before,
-    .checkbox input:checked + .checkbox-icon:before {
-      border-color: $light-green;
-    }
-    .checkbox input:checked:after,
-    input:checked + .checkbox-icon:after {
-      border-color: $light-green;
-      top: 20%;
-      left: 11%;
-    }
-    .item {
-      color: $dark-gray;
-      padding-bottom: 1.2rem;
-      padding-bottom: 2.5rem;
-      float: left;
-      border: none;
-      width: 10%;
-      position: relative;
-      padding-right: 0;
-      padding-left: 50px;
-      .item-content {
-        white-space: normal;
-      }
-    }
-    p {
-      color: $dark-gray;
-    }
-    .checkbox input:before,
-    .checkbox .checkbox-icon:before {
-      border-color: $soft-blue;
-    }
-    .checkbox input:checked:before,
-    .checkbox input:checked + .checkbox-icon:before {
-      border-color: $light-green;
-    }
-    button {
-      margin-top: 1.5rem;
-      position: relative;
     }
   }
 }

@@ -7,7 +7,7 @@
     ng-click="selectWallet(w)"
   >
       <i class="icon big-icon-svg">
-        <img src="img/icon-wallet.svg" ng-style="{'background-color': w.color}" class="bg">
+        <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !w.color}" ng-style="{'background-color': w.color}" class="bg">
       </i>
       <div class="wallet-inner">
         <div class="wallet-details">

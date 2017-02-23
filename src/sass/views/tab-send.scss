@@ -64,20 +64,23 @@
       margin-top: 10px;
       background: 0 none;
     }
+    img {
+      content: $v-tab-send-selected-icon;
+    }
     .item {
       border-style: none;
     }
     & > .title {
       font-size: 20px;
       font-weight: bold;
-      color: $dark-gray;
+      color: $v-dark-gray;
       margin: 20px 10px;
     }
     & > .subtitle {
       font-size: 1rem;
       line-height: 1.5em;
       font-weight: 300;
-      color: $dark-gray;
+      color: $v-dark-gray;
       margin: 20px 1em 2.5em;
     }
     .big-icon-svg{

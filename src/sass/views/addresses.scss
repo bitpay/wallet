@@ -7,7 +7,7 @@
     &-description {
       text-align: center;
       font-size: 0.9em;
-      color: $mid-gray;
+      color: $v-mid-gray;
       margin: 1rem 0;
       a {
         font-weight: bold;
@@ -28,13 +28,16 @@
   .banner-icon {
     margin-top: 25px;
     i {
-      box-shadow: $hovering-box-shadow;
+      box-shadow: $v-hovering-box-shadow;
+      img {
+        content: $v-tab-receive-selected-icon;
+      }
     }
   }
 
   .addr-list {
     .item {
-      color: $dark-gray;
+      color: $v-dark-gray;
       padding-top: 1.3rem;
       padding-bottom: 1.3rem;
       &.has-addr-value {
@@ -42,7 +45,7 @@
         padding-bottom: .65rem;
       }
       &.item-divider {
-        color: $mid-gray;
+        color: $v-mid-gray;
         padding-bottom: .5rem;
         font-size: .9rem;
       }
@@ -52,10 +55,10 @@
         i {
           font-size: 35px;
           margin-right: 5px;
-          color: #647ce8;
+          color: $link-color;
         }
         span {
-          color: #647ce8;
+          color: $link-color;
           font-weight: bold;
         }
       }
@@ -82,7 +85,7 @@
       }
     }
     .item-note {
-      color: $light-gray;
+      color: $v-light-gray;
     }
   }
 }

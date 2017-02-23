@@ -41,20 +41,20 @@ $relish-success: 1.3s;
     }
   }
   .heading {
-    color: $dark-gray;
+    color: $v-dark-gray;
     font-size: 1.2rem;
     font-weight: bold;
     margin: 3rem 0 1rem;
   }
   .prompt {
     margin: 1rem 1.5rem;
-    color: $mid-gray;
+    color: $v-mid-gray;
   }
   #email-form {
     margin: 0 1.5rem 1rem;
   }
   #email-label {
-    border-radius: $visible-radius;
+    border-radius: $v-visible-radius;
     background: rgba(200, 200, 200, 0.20);
     height: 3rem;
     margin-top:0;
@@ -102,12 +102,12 @@ $relish-success: 1.3s;
     }
     .checkbox input:checked:after,
     input:checked + .checkbox-icon:after {
-      border-color: rgb(19, 229, 182);
+      border-color: $v-onboarding-checkbox-on-border;
       top: 4px;
       left: 6px;
     }
     .item-content {
-      color: $mid-gray;
+      color: $v-mid-gray;
       text-align: left;
       margin-left: 75px;
       white-space: initial;
@@ -122,11 +122,11 @@ $relish-success: 1.3s;
   }
   .checkbox input:before,
   .checkbox .checkbox-icon:before{
-    border-color: $soft-blue;
+    border-color: $v-onboarding-checkbox-on-border;
   }
   .checkbox input:checked:before,
   .checkbox input:checked + .checkbox-icon:before {
-    border-color: rgb(19, 229, 182);
+    border-color: $v-onboarding-checkbox-on-border;
   }
 }
 

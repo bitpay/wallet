@@ -17,7 +17,7 @@
   .icon {
     &.valid {
       padding-top: 3px;
-      color: #13E5B6;
+      color: $v-success-color;
     }
     &.invalid {
       padding-top: 3px;
