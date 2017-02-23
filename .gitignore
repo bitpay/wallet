@@ -85,6 +85,7 @@ Session.vim
 # SASS
 src/sass/*.css
 .sass-cache
+src/sass/app
 
 # copay www
 www/css/*
