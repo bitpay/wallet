@@ -57,7 +57,7 @@
 
   <p class="wallet-activity-note">
 <!-- {{notification.types}} -->
-    <i class="icon ion-record wallet-activity-note-child" ng-style="{'color':notification.wallet.color}"></i>
+    <i class="icon ion-record wallet-activity-note-child" ng-class="{'wallet-color-default': !notification.wallet.color}" ng-style="{'color':notification.wallet.color}"></i>
     <span ng-if="notification.creatorName" class="wallet-activity-note-child">{{ notification.creatorName}}@</span>
     <span class="wallet-activity-note-child">{{notification.wallet.name}}</span>
     <time class="wallet-activity-note-child">{{ notification.createdOn * 1000 | amTimeAgo}}</time>

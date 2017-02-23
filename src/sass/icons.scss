@@ -37,10 +37,10 @@
 .big-icon-svg {
   padding: 0 7px;
   > .bg {
-    border-radius: 50%;
+    border-radius: $v-icon-border-radius;
     width: 40px;
     height: 40px;
-    box-shadow: $hovering-box-shadow;
+    box-shadow: $v-hovering-box-shadow;
     background-repeat:no-repeat;
     background-clip: padding-box;
     background-size: 103%;
@@ -61,12 +61,12 @@
     &.circle{
       left:8px;
       .bg {
-        border-radius: 50%;
+        border-radius: $v-icon-border-radius;
         width: 70px;
         height: 70px;
         padding:.1rem;
         margin: 0.2rem;
-        box-shadow: 0px 1px 5px rgba($mid-gray, .1);
+        box-shadow: 0px 1px 5px rgba($v-mid-gray, .1);
         display:flex;
         margin:auto;
       }

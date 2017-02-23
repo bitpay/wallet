@@ -1,5 +1,3 @@
-$scannerBackgroundColor: #060d2d;
-
 #tab-scan {
   color: #fff;
   text-align: center;
@@ -7,12 +5,15 @@ $scannerBackgroundColor: #060d2d;
   .bar-header {
     opacity: .9;
   }
+  svg#QR-scanner-guides path.st1 {
+    stroke: $v-scanner-guide-color;
+  }
   .zero-state-cta {
     padding-bottom: 6vh;
   }
   &-has-problems,
   &-loading-camera {
-    background-color: $scannerBackgroundColor;
+    background-color: $v-scanner-background-color;
   }
   &-loading-camera {
     height: 100%;
@@ -72,5 +73,5 @@ $scannerBackgroundColor: #060d2d;
 }
 
 #cordova-plugin-qrscanner-still, #cordova-plugin-qrscanner-video-preview {
-  background-color: $scannerBackgroundColor !important;
+  background-color: $v-scanner-background-color !important;
 }

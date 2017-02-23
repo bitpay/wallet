@@ -1,15 +1,15 @@
 .onboarding {
-  background: #1e3186;
-  color: #fff;
-  background-image: linear-gradient(to bottom, #1e3186 0%, #111b49 100%);
+  background: $v-onboarding-gradient-top-color;
+  color: $v-onboarding-color;
+  background-image: linear-gradient(to bottom, $v-onboarding-gradient-top-color 0%, $v-onboarding-gradient-bottom-color 100%);
   height: 100%;
   text-align: center;
   .bar.bar-header {
     background: none;
     border: 0 none transparent;
-    color: #fff;
+    color: $v-onboarding-bar-header-color;
     button {
-      color: #fff;
+      color: $v-onboarding-bar-header-button-color;
     }
   }
   .onboarding-topic,
@@ -50,6 +50,18 @@
       font-size: 14px;
     }
   }
+
+  svg#alert-icon g {
+    stroke: $v-onboarding-backup-alert-icon-color;
+  }
+
+  #arrow-down {
+    color: $v-onboarding-backup-alert-icon-color !important;
+  }
+
+  .back-button .icon:before {
+    color: $v-onboarding-button-back-color;
+  }
 }
 
 %cta-buttons {
@@ -60,7 +72,7 @@
 }
 
 .pane-onboarding{
-  background: #0B1E4F;
+  background: $v-onboarding-pane-bg;
 }
 
 @import "terms-of-use";
@@ -101,23 +113,23 @@
 
 .onboarding-illustration {
   &-secure {
-      @extend %onboarding-illustration;
-      background-image: url(../img/onboarding-tour-phone.svg);
+    @extend %onboarding-illustration;
+      background-image: $v-onboarding-tour-phone-bg;
   }
   &-currency {
     @extend %onboarding-illustration;
-      background-image: url(../img/onboarding-tour-currency-bg.svg);
+      background-image: $v-onboarding-tour-currency-bg;
   }
   &-control {
     @extend %onboarding-illustration;
-      background-image: url(../img/onboarding-tour-control.svg);
+      background-image: $v-onboarding-tour-control-bg;
   }
   &-notifications {
     @extend %onboarding-illustration;
-      background-image: url(../img/onboarding-push-notifications.svg);
+      background-image: $v-onboarding-push-notification-bg;
   }
   &-backup-warning {
     @extend %onboarding-illustration;
-      background-image: url(../img/backup-warning.svg);
+      background-image: $v-onboarding-backup-warning-bg;
   }
 }

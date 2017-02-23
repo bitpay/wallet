@@ -1,0 +1,29 @@
+/*
+ * Generate wallet colors from color map
+ */
+
+.wallet-color-count {
+  content: '' + length($v-wallet-color-map);
+}
+
+/* background-color and color defaults should be the same */
+$default-wallet-color: map-get( map-get($v-wallet-color-map, $v-default-wallet-color-index) , color);
+
+.wallet-background-color-default {
+  background-color: $default-wallet-color;
+}
+
+.wallet-color-default {
+  color: $default-wallet-color;
+}
+
+/* generate classes for all colors */
+@each $id, $map in $v-wallet-color-map {
+  .wallet-color-#{$id} {
+    background: map-get($map, color);
+  }
+  .wallet-color-#{$id}:before {
+    content: map-get($map, name);
+    margin-left: 2.4rem;
+  }
+}
