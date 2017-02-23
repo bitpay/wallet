@@ -1177,7 +1177,20 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           profileService.storeProfileIfDirty();
           $log.debug('Profile loaded ... Starting UX.');
           scannerService.gentleInitialize();
-          $state.go('tabs.home');
+          // Reload tab-home if necessary (from root path: starting)
+          $state.go('starting', {}, {
+            'reload': true,
+            'notify': $state.current.name == 'starting' ? false : true
+          }).then(function() {
+            $ionicHistory.nextViewOptions({
+              disableAnimate: true,
+              historyRoot: true
+            });
+            $state.transitionTo('tabs.home').then(function() {
+              // Clear history
+              $ionicHistory.clearHistory();
+            });
+          });
         }
 
         // After everything have been loaded, initialize handler URL
