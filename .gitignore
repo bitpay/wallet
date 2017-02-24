@@ -4,8 +4,8 @@ i18n/crowdin_api_key.txt
 src/js/translations.js
 
 # cordova
-plugins
-platforms
+/plugins/
+/platforms/
 cordova/project-*/*
 cordova/*.keystore
 

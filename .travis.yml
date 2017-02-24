@@ -3,10 +3,35 @@ dist: trusty
 language: node_js
 node_js:
   - '6'
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+      - google-chrome
+    packages:
+      - google-chrome-stable
+      - lib32stdc++6
+      - lib32z1
+
 before_install:
+  - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+
 install:
   - npm run apply:bitpay
-# after_success:
-#   - npm run exec:coveralls
+
+  # move into ionic2 dir for remainder of build
+  - cd ionic2
+
+  - npm install
+
+script:
+  - npm run test-coverage
+  - npm run ionic:build
+  - npm run travis-serve &
+  - npm run e2e
+
+after_success:
+  - npm run send-coverage

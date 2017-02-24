@@ -1,0 +1,60 @@
+action-sheet {
+  .bp-action-sheet {
+    $border-color: #EFEFEF;
+
+    &__sheet {
+      background: #fff;
+      width: calc(100% + 1px);
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      -webkit-transform: translateY(100%) translateX(-50%);
+      transform: translateY(100%) translateX(-50%);
+      transition: transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+      z-index: 100;
+      padding-top: 1.75rem;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      color: #2f2f2f;
+      padding-bottom: 3.5rem;
+      max-width: 550px;
+      max-height: 100vh;
+      overflow: scroll;
+
+      &.slide-up {
+        -webkit-transform: translateY(0) translateX(-50%);
+        transform: translateY(0) translateX(-50%);
+        box-shadow: 0px 2px 13px 3px rgba(0, 0, 0, .3);
+      }
+
+      .back-arrow {
+        padding-bottom: 1.25rem;
+        cursor: pointer;
+      }
+
+      .header {
+        font-weight: 600;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid $border-color;
+        margin-bottom: 1px;
+      }
+    }
+
+    &__backdrop {
+      height: 100%;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0);
+      transition: background 250ms cubic-bezier(0.4, 0.0, 0.2, 1);;
+      pointer-events: none;
+      z-index: 99;
+
+      &.fade-in {
+        background: rgba(0, 0, 0, .4);
+        pointer-events: all;
+      }
+    }
+  }
+}
