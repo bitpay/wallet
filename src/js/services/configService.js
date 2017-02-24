@@ -53,6 +53,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       }
     },
 
+    pincode: {
+      value: null,
+    },
+
     // External services
     recentTransactions: {
       enabled: true,

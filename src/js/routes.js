@@ -674,22 +674,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
-       * Pin Code
-       *
-       */
-
-      .state('tabs.home.pincode', {
-        url: '/pincode',
-        views: {
-          'tab-home@tabs': {
-            templateUrl: 'views/pincode.html',
-            controller: 'pincodeController'
-          }
-        }
-      })
-
-      /*
-       *
        * Paper Wallet
        *
        */

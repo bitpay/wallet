@@ -1,18 +1,18 @@
-<ion-view hide-tabs>
+<ion-modal-view id="pin-code" ng-controller="pincodeController">
   <div class="content">
     <div class="block-code">
       <div class="row">
         <div class="col">
-            {{passcode.substring(0, 1)}}
+            {{pincode.substring(0, 1)}}
         </div>
         <div class="col">
-            {{passcode.substring(1, 2)}}
+            {{pincode.substring(1, 2)}}
         </div>
         <div class="col">
-            {{passcode.substring(2, 3)}}
+            {{pincode.substring(2, 3)}}
         </div>
         <div class="col">
-            {{passcode.substring(3, 4)}}
+            {{pincode.substring(3, 4)}}
         </div>
       </div>
     </div>
@@ -63,7 +63,4 @@
       </div>
     </div>
   </div>
-  <!-- <div class="parent">
-    <div class="child">I'm centered!</div>
-  </div> -->
-</ion-view>
+</ion-modal-view>

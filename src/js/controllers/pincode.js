@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pincodeController', function($timeout, $scope, $log, $window) {
+angular.module('copayApp.controllers').controller('pincodeController', function($timeout, $scope, $log, $window, configService) {
+  $scope.pincode = '';
 
   angular.element($window).on('keydown', function(e) {
     if (e.which === 8) { // you can add others here inside brackets.
@@ -11,34 +12,39 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
     if (e.key && e.key.match(/^[0-9]$/))
       $scope.add(e.key);
     else if (e.key && e.key == 'Enter')
-      console.log('DONE');
-  });
-
-  $scope.$on('$ionicView.beforeEnter', function(event, data) {
-    $scope.passcode = "";
+      checkPasscode();
   });
 
   $scope.add = function(value) {
-    if (isComplete()) $log.debug("The four digit code was entered");
+    if (isComplete()) checkPasscode();
     else updatePassCode(value);
   };
 
   $scope.delete = function() {
-    if ($scope.passcode.length > 0) {
-      $scope.passcode = $scope.passcode.substring(0, $scope.passcode.length - 1);
+    if ($scope.pincode.length > 0) {
+      $scope.pincode = $scope.pincode.substring(0, $scope.pincode.length - 1);
       updatePassCode();
     }
   };
 
   function isComplete() {
-    if ($scope.passcode.length < 4) return false;
+    if ($scope.pincode.length < 4) return false;
     else return true;
   };
 
   function updatePassCode(value) {
-    if (value) $scope.passcode = $scope.passcode + value;
+    if (value) $scope.pincode = $scope.pincode + value;
     $timeout(function() {
+      checkPasscode();
       $scope.$apply();
+    });
+  };
+
+  function checkPasscode() {
+    configService.whenAvailable(function(config) {
+      var value = '1234';
+      if (value != $scope.pincode) return;
+      console.log('MATCH');
     });
   };
 });
