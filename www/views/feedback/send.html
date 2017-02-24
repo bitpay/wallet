@@ -39,6 +39,25 @@
       <span>{{comment}}</span>
     </div>
     <div ng-if="showForm" class="form-fade-in">
+      <div class="card">
+        <ion-list class="disable-user-behavior">
+          <div class="comment">
+            <span translate>Service(s) for which your feedback applies:</span>
+          </div>
+          <ion-scroll style="max-height: 225px">
+            <label class="item item-checkbox" ng-if="s.enabled" ng-repeat="s in services">
+              <div class="checkbox checkbox-input-hidden disable-pointer-events checkbox-circle">
+                <input type="checkbox" ng-model="s.checked" value="on"/>
+                <i class="checkbox-icon"></i>
+              </div>
+              <div class="item-content disable-pointer-events">
+                <span translate>{{s.name}}</span>
+                <span class="right" translate>{{s.hint}}</span>
+             </div>
+            </label>
+          </ion-scroll>
+        </ion-list>
+      </div>
       <textarea class="user-feedback" ng-model="feedback.value" rows="5" placeholder="{{'Your ideas, feedback, or comments' | translate}}" autofocus></textarea>
       <button ng-show="!isCordova" ng-disabled="!feedback.value" type="submit" class="button button-standard button-primary" ng-click="sendFeedback(feedback.value)" translate>
         Send
