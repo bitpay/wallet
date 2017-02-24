@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayAccountService', function($log, lodash, platformInfo, appIdentityService, bitpayService, bitpayCardService, storageService, gettextCatalog, popupService) {
+angular.module('copayApp.services').factory('bitpayAccountService', function($log, lodash, platformInfo, appIdentityService, bitpayService, bitpayCardService, storageService, gettextCatalog, popupService, externalLinkService) {
   var root = {};
 
   // A list of reasons why bitpay account pairing is being requested. The reason faciliates this apps
@@ -97,7 +97,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
   	        msgDetail = 'To {{reason}} you must first add your BitPay account - {{email}}';
   	      }
           var msg = gettextCatalog.getString(msgDetail, {
-          	reason: pairingReason,
+          	reason: pairingReason.text,
             email: pairData.email
           });
           var ok = gettextCatalog.getString('Add Account');
@@ -188,7 +188,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
     });
   };
 
-  var setBitpayAccount = function(account, cb) {
+  var setAccount = function(account, cb) {
     storageService.setBitpayAccount(bitpayService.getEnvironment().network, account, function(err) {
       return cb(err);
     });
