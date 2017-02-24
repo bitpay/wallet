@@ -6,10 +6,9 @@
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
-  <ion-content>
-    <ion-radio ng-repeat="c in colorList" ng-value="c.color" ng-model="currentColor" ng-click="save(c.color)">
-      <span ng-style="{'background-color': c.color, 'color' : c.color}" class="settings-color-block"></span>
-      <span class="settings-color-name"> {{c.name}}</span>
+  <ion-content class="wallet-color-count">
+    <ion-radio ng-repeat="i in [] | range:colorCount" ng-value="i" ng-model="currentColorIndex" ng-click="save(i)">
+      <span class="settings-color-block wallet-color-{{i}}"></span>
     </ion-radio>
   </ion-content>
 </ion-view>
