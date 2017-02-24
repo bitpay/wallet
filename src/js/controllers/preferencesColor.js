@@ -37,10 +37,7 @@ angular.module('copayApp.controllers').controller('preferencesColorController', 
 
   function setCurrentColorIndex() {
     try {
-      $scope.currentColorIndex = colorToIndex(config.colorFor[walletId]);
-      if ($scope.currentColorIndex == undefined) {
-        $scope.currentColorIndex = colorToIndex(getColorDefault());
-      }
+      $scope.currentColorIndex = colorToIndex(config.colorFor[walletId] || getColorDefault());
     } catch(e) {
       // Wait for DOM to render and try again.
       $timeout(function() {
@@ -54,7 +51,7 @@ angular.module('copayApp.controllers').controller('preferencesColorController', 
 
   function colorToIndex(color) {
     for (var i = 0; i < $scope.colorCount; i++) {
-      if (indexToColor(i) == color) {
+      if (indexToColor(i) == color.toLowerCase()) {
         return i;
       }
     }
