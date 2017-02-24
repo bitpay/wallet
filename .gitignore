@@ -84,6 +84,7 @@ Session.vim
 
 # SASS
 src/sass/*.css
+src/sass/app
 .sass-cache
 
 # copay www
@@ -107,7 +108,7 @@ src/js/externalServices.js
 chrome-app/manifest.json
 www/img/app
 www/index.html
-
+src/sass/app
 
 cordova/android/res/
 cordova/wp/Assets/

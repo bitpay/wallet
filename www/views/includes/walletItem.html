@@ -1,6 +1,6 @@
 <div class="wallet-item">
     <i class="icon big-icon-svg circle">
-    <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+    <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
   </i>
   <div class="name">
     {{wallet.name || wallet.id}}
