@@ -31,7 +31,7 @@
       </button>
     </div>
     <div class="half-row left">
-      <button ng-click="accept()" class="round expand" ng-style="{'background-color': color}" autofocus>
+      <button ng-click="accept()" class="round expand" ng-class="{'wallet-background-color-default': !color}" ng-style="{'background-color': color}" autofocus>
         <span class="size-12" translate>Confirm</span>
       </button>
     </div>

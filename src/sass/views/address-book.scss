@@ -19,7 +19,7 @@
   .icon {
     &.valid {
       padding-top: 3px;
-      color: #13E5B6;
+      color: $v-success-color;
     }
     &.invalid {
       padding-top: 3px;
@@ -39,17 +39,17 @@
   }
   .add-address-list {
     .item {
-      color: $dark-gray;
+      color: $v-dark-gray;
       padding-top: 1.3rem;
       padding-bottom: 1.3rem;
       &.item-divider {
-        color: $mid-gray;
+        color: $v-mid-gray;
         padding-bottom: .5rem;
         font-size: .9rem;
       }
     }
     .item-note {
-      color: $light-gray;
+      color: $v-light-gray;
     }
   }
 }
@@ -57,6 +57,9 @@
   @extend .deflash-blue;
   .scroll {
     height:100%;
+  }
+  i.icon>svg#Add_Contact path.st0 {
+    stroke: $v-icon-negative-color;
   }
   .list {
     .item {
@@ -94,7 +97,7 @@
       .big-icon-svg {
         padding: 0 7px;
         > .bg {
-          border-radius: 50%;
+          border-radius: $v-icon-border-radius;
           width: 40px;
           height: 40px;
           box-shadow: none;
@@ -128,16 +131,16 @@
     font-weight: bold;
     font-size: 12px;
     display: block;
-    color: $mid-gray;
+    color: $v-mid-gray;
   }
   .big-icon-svg {
     padding: 0 7px;
     > .bg {
       background-color: #f2f2f2;
-      border-radius: 50%;
+      border-radius: $v-icon-border-radius;
       width: 70px;
       height: 70px;
-      box-shadow: 0px 1px 5px rgba($mid-gray, .1);
+      box-shadow: 0px 1px 5px rgba($v-mid-gray, .1);
       background-repeat: no-repeat;
       background-clip: padding-box;
       background-size: 103%;

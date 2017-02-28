@@ -27,7 +27,9 @@
       <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
         <span translate>Color</span>
         <span class="item-note">
-          <span class="settings-color-block" ng-style="{'background-color': wallet.color, 'color': wallet.color}"></span>
+          <span class="settings-color-block"
+          ng-class="{'wallet-background-color-default': !wallet.color, 'wallet-color-default': !wallet.color}"
+          ng-style="{'background-color': wallet.color, 'color': wallet.color}"></span>
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>

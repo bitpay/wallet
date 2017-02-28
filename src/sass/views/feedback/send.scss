@@ -14,7 +14,7 @@
     padding-left: 10px;
     font-size: 20px;
     font-weight: bold;
-    color: $dark-gray;
+    color: $v-dark-gray;
   }
   .rating {
     text-align: right;
@@ -25,11 +25,11 @@
     font-size: 1rem;
     line-height: 1.5em;
     font-weight: 300;
-    color: $dark-gray;
+    color: $v-dark-gray;
   }
   .user-feedback {
-    border-top: 1px solid $subtle-gray;
-    border-bottom: 1px solid $subtle-gray;
+    border-top: 1px solid $v-subtle-gray;
+    border-bottom: 1px solid $v-subtle-gray;
     padding: 20px;
     width: 100%;
     margin-bottom: 20px;

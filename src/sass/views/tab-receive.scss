@@ -49,7 +49,7 @@
       position: relative;
       min-height: 40px;
       #next-address {
-        color:$light-gray;
+        color:$v-light-gray;
       }
     }
     .incomplete {
@@ -127,7 +127,7 @@
         @media(min-width:450px) {
           font-size:1rem;
         }
-        color:$light-gray;
+        color:$v-light-gray;
       }
     }
     .qr {

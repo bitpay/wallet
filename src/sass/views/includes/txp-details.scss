@@ -202,8 +202,8 @@
         }
 
         > div {
-          border: 3px solid #13e5b6;
-          border-radius: 50%;
+          border: 3px solid $v-success-color;
+          border-radius: $v-icon-border-radius;
           display: flex;
           height: 26px;
           width: 26px;
@@ -212,7 +212,7 @@
           justify-content: center;
           font-weight: 600;
           vertical-align: middle;
-          color: #13e5b6;
+          color: $v-success-color;
 
           &.rejected {
             background: #E15061;
@@ -263,6 +263,6 @@
   .glidera-description {
     text-align: center;
     font-size: 12px;
-    color: $mid-gray;
+    color: $v-mid-gray;
   }
 }

@@ -27,7 +27,7 @@
     color: #fff;
     &.warning-red{
       border-color: #EB475A;
-      background-color: $warning-red;
+      background-color: $v-warning-color;
     }
   }
   &.error {
@@ -151,8 +151,8 @@ input[type=number] {
   position: absolute;
   font-size: 20px;
   right: 10px;
-  background-color: $subtle-gray;
-  color: $dark-gray;
+  background-color: $v-subtle-gray;
+  color: $v-dark-gray;
   border-radius: 4px;
   padding: 2px 10px;
   cursor: pointer;
