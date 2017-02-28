@@ -2,7 +2,7 @@
   background-color: #ffffff;
   text-align: center;
   .skip-rating {
-    color: $dark-gray;
+    color: $v-dark-gray;
     position: absolute;
     top: 5px;
     right: 10px;
@@ -16,7 +16,7 @@
   .feedback-title {
     font-size: 20px;
     font-weight: bold;
-    color: $dark-gray;
+    color: $v-dark-gray;
     margin: 80px 50px 10px;
     text-align: center;
   }
@@ -26,13 +26,13 @@
   }
   .subtitle {
     padding: 10px 30px 20px 40px;
-    color: #667;
+    color: $v-mid-gray;
   }
   .rate-buttons {
     bottom: 0;
     width: 100%;
     position: absolute;
-    background-color: $subtle-gray;
+    background-color: $v-subtle-gray;
     padding: 30px 0 15px;
   }
 }

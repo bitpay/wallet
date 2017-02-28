@@ -32,7 +32,7 @@
           <li class="panel" ng-repeat="w in wallets">
           <a ng-click="payment.selectWallet(w.id)">
             <div class="avatar-wallet"
-              ng-style="{'background-color':w.color}">
+              ng-class="{'wallet-background-color-default': !w.color}" ng-style="{'background-color':w.color}">
               <i class="icon-wallet size-21"></i>
             </div>
             <div class="ellipsis">{{w.name || w.id}}</div>

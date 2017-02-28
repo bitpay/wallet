@@ -1,6 +1,6 @@
 <ion-view id="walletDetails">
 
-  <ion-nav-bar ng-style="{'background-color': wallet.color}">
+  <ion-nav-bar ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}">
     <ion-nav-title>{{wallet.name}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -13,16 +13,16 @@
 
   <div class="bp-content" ng-class="{'status-bar': isCordova && isIOS}">
 
-  <div class="amount-wrapper" ng-show="wallet && wallet.isComplete() && amountIsCollapsible" ng-style="{'background-color':wallet.color}">
+  <div class="amount-wrapper" ng-show="wallet && wallet.isComplete() && amountIsCollapsible" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}">
     <div
       class="amount-bg"
       ng-style="{'background-color':wallet.color}"
-      ng-class="{collapsible: amountIsCollapsible}"
+      ng-class="{collapsible: amountIsCollapsible, 'wallet-background-color-default': !wallet.color}"
     ></div>
     <div
       ng-style="{'background-color':wallet.color, 'height': amountHeight}"
       class="amount"
-      ng-class="{collapsible: amountIsCollapsible}"
+      ng-class="{collapsible: amountIsCollapsible, 'wallet-background-color-default': !wallet.color}"
     >
       <div ng-if="!notAuthorized && !updatingStatus">
 
@@ -98,12 +98,12 @@
     <div class="amount-wrapper" ng-if="wallet && wallet.isComplete() && !amountIsCollapsible">
       <div
         class="amount-bg"
-        ng-style="{'background-color':wallet.color}"
+        ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}"
       ></div>
       <div
         ng-style="{'background-color':wallet.color}"
         class="amount"
-        ng-class="{'collapsible': amountIsCollapsible}"
+        ng-class="{'collapsible': amountIsCollapsible, 'wallet-background-color-default': !wallet.color}" 
       >
         <div ng-if="!updatingStatus">
 

@@ -19,7 +19,7 @@
 
       <div class="item item-text-wrap item-icon-left bitcoin-address">
         <i class="icon big-icon-svg" ng-if="recipientType == 'wallet'">
-          <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
+          <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
         <span ng-if="recipientType == 'contact'">
           <i class="icon big-icon-svg" ng-if="isChromeApp">

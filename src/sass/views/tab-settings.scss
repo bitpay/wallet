@@ -4,7 +4,7 @@
     background-image: url("../img/icon-bitpay.svg");
   }
   .item {
-    color: $dark-gray;
+    color: $v-dark-gray;
     border-color: rgba(221, 221, 221, 0.3);
   }
   .has-comment {
@@ -13,8 +13,8 @@
   .comment {
     padding: 15px;
     background-color: #fff;
-    color: $mid-gray;
     font-size:0.9em;
+    color: $v-mid-gray;
   }
   &-explanation, &-button-group {
     padding: 0 1rem;
@@ -22,11 +22,11 @@
   }
   &-heading {
     font-size: 17px;
-    color: $dark-gray;
+    color: $v-dark-gray;
     margin: 1rem 0;
   }
   &-description {
-    color: $mid-gray;
+    color: $v-mid-gray;
     margin: 1rem 0;
     font-size: 0.9em;
   }
@@ -42,7 +42,7 @@
     white-space: nowrap;
   }
   .setting-value {
-    color: $light-gray;
+    color: $v-light-gray;
     font-size: 14px;
   }
   .settings-input-group {
@@ -58,7 +58,7 @@
   }
  .settings-list {
     .item {
-      color: $dark-gray;
+      color: $v-dark-gray;
       padding-top: 1.3rem;
       padding-bottom: 1.3rem;
       &.has-setting-value {
@@ -66,16 +66,16 @@
         padding-bottom: .65rem;
       }
       &.item-divider {
-        color: $mid-gray;
+        color: $v-mid-gray;
         padding-bottom: .5rem;
         font-size: .9rem;
       }
       .icon {
-        color: $light-gray;
+        color: $v-light-gray;
       }
     }
     .item-note {
-      color: $light-gray;
+      color: $v-light-gray;
     }
     .item-toggle .toggle,
     .item-button-right > .button {
@@ -100,11 +100,11 @@
        &.circle{
           left:8px;
           .bg {
-            border-radius: 50%;
+            border-radius: $v-icon-border-radius;
             width: 25px;
             height: 25px;
             padding:.1rem;
-            box-shadow: 0px 1px 5px rgba($mid-gray, .1);
+            box-shadow: 0px 1px 5px rgba($v-mid-gray, .1);
           }
         }
       }
@@ -138,7 +138,7 @@
 #settings-fee {
   .estimates {
     font-size: 15px;
-    color: $dark-gray;
+    color: $v-dark-gray;
     margin-bottom: .5rem;
   }
   .fee-minutes, .fee-rate {

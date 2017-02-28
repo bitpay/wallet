@@ -35,7 +35,7 @@
         <li class="line-b" ng-repeat="w in wallets">
         <a ng-click="selectWallet(w.id)" class="db oh">
           <div class="avatar-wallet"
-            ng-style="{'background-color':w.color}">
+            ng-class="{'wallet-background-color-default': !w.color}" ng-style="{'background-color':w.color}">
             <i class="icon-wallet size-21"></i>
           </div>
           <div class="ellipsis name-wallet text-bold">

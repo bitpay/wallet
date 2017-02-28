@@ -2,23 +2,23 @@
   &__tx-amount {
     font-size: 16px;
     &--recent {
-      color: $mid-gray;
+      color: $v-mid-gray;
       font-weight: bold;
     }
     &--received {
       color: #09C286;
     }
     &--sent {
-      color: $dark-gray;
+      color: $v-dark-gray;
     }
   }
   &__tx-time {
-    color: $light-gray;
+    color: $v-light-gray;
     font-size: 12.5px;
   }
   &__tx-title {
     flex-grow: 1;
-    color: $dark-gray;
+    color: $v-dark-gray;
     overflow: hidden;
   }
   &__tx-icon {
@@ -207,7 +207,7 @@
     background-color: #f2f2f2;
     text-align: center;
     font-size: 13px;
-    color: $mid-gray;
+    color: $v-mid-gray;
   }
 }
 
@@ -244,6 +244,6 @@ a.item {
 }
 
 .updatingHistory {
-  color: #445;
+  color: $v-dark-gray;
   font-size:0.9em;
 }
