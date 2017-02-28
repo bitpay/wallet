@@ -54,6 +54,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     pincode: {
+      enabled: false,
       value: null,
     },
 

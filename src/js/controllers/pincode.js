@@ -41,10 +41,16 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
   };
 
   function checkPasscode() {
+    console.log('Checking');
     configService.whenAvailable(function(config) {
       var value = '1234';
       if (value != $scope.pincode) return;
       console.log('MATCH');
     });
+  };
+
+  $scope.cancel = function() {
+    $scope.savePincodeChanges(false);
+    $scope.pincodeModal.hide();
   };
 });
