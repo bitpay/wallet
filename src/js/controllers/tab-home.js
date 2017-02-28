@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.pincodeModal.show();
       });
     };
-    openPincodeModal();
+    // openPincodeModal();
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
     });

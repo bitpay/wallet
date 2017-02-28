@@ -13,7 +13,7 @@
       <div class="comment" translate>
         If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.
       </div>
-      
+
       <div class="item item-divider"></div>
 
       <ion-toggle class="has-comment" ng-show="!isWP" ng-model="recentTransactionsEnabled.value" toggle-class="toggle-balanced" ng-change="recentTransactionsChange()">
@@ -27,6 +27,12 @@
 
       <ion-toggle ng-model="hideNextSteps.value" toggle-class="toggle-balanced" ng-change="nextStepsChange()">
         <span class="toggle-label" translate>Hide Next Steps Card</span>
+      </ion-toggle>
+
+      <div class="item item-divider"></div>
+
+      <ion-toggle ng-model="usePincode.value" toggle-class="toggle-balanced" ng-change="showPincodeModal()">
+        <span class="toggle-label" translate>Use pin to lock/unlock the app</span>
       </ion-toggle>
     </div>
   </ion-content>

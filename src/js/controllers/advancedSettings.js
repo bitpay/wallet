@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, profileService, feeService, storageService, $ionicHistory, $timeout, $ionicScrollDelegate) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, $ionicModal, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $timeout, $ionicScrollDelegate) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -11,9 +11,11 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.recentTransactionsEnabled = {
       value: config.recentTransactions.enabled
     };
-
     $scope.hideNextSteps = {
       value: config.hideNextSteps.enabled
+    };
+    $scope.usePincode = {
+      value: config.pincode ? config.pincode.enabled : false
     };
   };
 
@@ -31,7 +33,24 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   $scope.nextStepsChange = function() {
     var opts = {
       hideNextSteps: {
-        enabled:  $scope.hideNextSteps.value
+        enabled: $scope.hideNextSteps.value
+      },
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
+    });
+  };
+
+  $scope.savePincodeChanges = function(val) {
+    if (!val || val.length < 4) {
+      $scope.usePincode = {
+        value: false
+      }
+      return;
+    }
+    var opts = {
+      usePincode: {
+        enabled: $scope.usePincode.enabled
       },
     };
     configService.set(opts, function(err) {
@@ -47,6 +66,18 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     };
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
+    });
+  };
+
+  $scope.showPincodeModal = function() {
+    $scope.fromSettings = true;
+    $ionicModal.fromTemplateUrl('views/modals/pincode.html', {
+      scope: $scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false
+    }).then(function(modal) {
+      $scope.pincodeModal = modal;
+      $scope.pincodeModal.show();
     });
   };
 
