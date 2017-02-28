@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
   function($scope, $log, $timeout, $ionicHistory, configService, rateService, lodash, profileService, walletService, storageService) {
 
     var next = 10;
-    var completeAlternativeList;
+    var completeAlternativeList = [];
 
     function init() {
       var unusedCurrencyList = [{
