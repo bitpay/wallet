@@ -1,5 +1,5 @@
 <ion-modal-view id="pin-code" ng-controller="pincodeController">
-  <div ng-if="fromSettings" ng-click="cancel()" class="close" translate>Close</div>
+  <div ng-if="from == 'settings'" ng-click="close()" class="close" translate>Close</div>
   <div class="content">
     <div class="block-code">
       <div class="row">
@@ -53,7 +53,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <button class="button button-light button-stretch icon ion-checkmark" ng-click="save()"></button>
+          <button class="button button-light button-stretch icon ion-checkmark" ng-click="save()" ng-disabled=""></button>
         </div>
         <div class="col">
           <button class="button button-light button-stretch" ng-click="add('0')">0</button>

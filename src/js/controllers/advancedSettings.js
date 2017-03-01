@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, $ionicModal, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $timeout, $ionicScrollDelegate) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, $ionicModal, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $ionicScrollDelegate, pincodeService) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       value: config.hideNextSteps.enabled
     };
     $scope.usePincode = {
-      value: config.pincode ? config.pincode.enabled : false
+      enabled: config.pincode ? config.pincode.enabled : false
     };
   };
 
@@ -41,23 +41,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.savePincodeChanges = function(val) {
-    if (!val || val.length < 4) {
-      $scope.usePincode = {
-        value: false
-      }
-      return;
-    }
-    var opts = {
-      usePincode: {
-        enabled: $scope.usePincode.enabled
-      },
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
   $scope.recentTransactionsChange = function() {
     var opts = {
       recentTransactions: {
@@ -69,15 +52,20 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.showPincodeModal = function() {
-    $scope.fromSettings = true;
-    $ionicModal.fromTemplateUrl('views/modals/pincode.html', {
-      scope: $scope,
-      backdropClickToClose: false,
-      hardwareBackButtonClose: false
-    }).then(function(modal) {
-      $scope.pincodeModal = modal;
-      $scope.pincodeModal.show();
+  $scope.usePincodeChange = function() {
+    var opts = {};
+    opts.enabled = $scope.usePincode.enabled;
+    opts.from = 'settings';
+
+    pincodeService.lockChange(opts, function(err) {
+      if (err) {
+        $log.warn(err);
+
+        // ToDo show error?
+        $scope.usePincode.enabled = false;
+        $scope.$apply();
+        return;
+      }
     });
   };
 
