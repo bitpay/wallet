@@ -14,7 +14,7 @@
 
   <ion-content scroll="false">
 
-    <div ng-if="!customAmount && !isGlidera && !nextStep">
+    <div ng-if="!customAmount && !nextStep">
       <div class="item item-no-bottom-border recipient-label" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address">
@@ -36,32 +36,12 @@
       </div>
     </div>
 
-    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera && !nextStep,
-      'amount-pane-no-recipient': customAmount || isGlidera || nextStep}">
+    <div ng-class="{'amount-pane-recipient': !customAmount && !nextStep,
+      'amount-pane-no-recipient': customAmount || nextStep}">
 
       <div class="amount-bar oh">
         <div class="title">
           <span translate>Amount</span>
-          <div ng-show="isGlidera">
-            <div class="limits" ng-show="limits && isGlidera == 'buy'">
-              <span>Daily buy limit</span>:
-              {{limits.dailyBuy|currency:'':2}} {{limits.currency}}
-              (remaining {{limits.dailyBuyRemaining|currency:'':2}} {{limits.currency}})
-              <br>
-              <span>Monthly buy limit</span>:
-              {{limits.monthlyBuy|currency:'':2}} {{limits.currency}}
-              (remaining {{limits.monthlyBuyRemaining|currency:'':2}} {{limits.currency}})
-            </div>
-            <div class="limits" ng-show="limits && isGlidera == 'sell'">
-              <span>Daily sell limit</span>:
-              {{limits.dailySell|currency:'':2}} {{limits.currency}}
-              (remaining {{limits.dailySellRemaining|currency:'':2}} {{limits.currency}})
-              <br>
-              <span>Monthly sell limit</span>:
-              {{limits.monthlySell|currency:'':2}} {{limits.currency}}
-              (remaining {{limits.monthlySellRemaining|currency:'':2}} {{limits.currency}})
-            </div>
-          </div>
         </div>
       </div>
 
