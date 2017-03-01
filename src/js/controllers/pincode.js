@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('pincodeController', function($timeout, $scope, $log, $window, configService) {
-  $scope.pincode = '';
+  var config = configService.getSync();
+  $scope.currentPincode = config.pincode ? config.pincode.value : null;
+  $scope.pincode = $scope.pc1 = $scope.pc2 = '';
+
+  console.log('#######', $scope.from, $scope.enabled);
 
   angular.element($window).on('keydown', function(e) {
     if (e.which === 8) { // you can add others here inside brackets.
@@ -9,15 +13,16 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
       $scope.delete();
     }
 
-    if (e.key && e.key.match(/^[0-9]$/))
+    if (e && e.key.match(/^[0-9]$/))
       $scope.add(e.key);
-    else if (e.key && e.key == 'Enter')
-      checkPasscode();
+    else if (e && e.keyCode == 27)
+      $scope.close(false);
+    else if (e && e.keyCode == 13)
+      $scope.save();
   });
 
   $scope.add = function(value) {
-    if (isComplete()) checkPasscode();
-    else updatePassCode(value);
+    updatePassCode(value);
   };
 
   $scope.delete = function() {
@@ -33,24 +38,36 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
   };
 
   function updatePassCode(value) {
-    if (value) $scope.pincode = $scope.pincode + value;
+    if (value && $scope.pincode.length < 4)
+      $scope.pincode = $scope.pincode + value;
     $timeout(function() {
-      checkPasscode();
       $scope.$apply();
     });
   };
 
-  function checkPasscode() {
-    console.log('Checking');
-    configService.whenAvailable(function(config) {
-      var value = '1234';
-      if (value != $scope.pincode) return;
-      console.log('MATCH');
-    });
+  $scope.save = function() {
+    if (!$scope.pc1) {
+      console.log('No pc 1');
+      $scope.pc1 = $scope.pincode;
+      console.log('$scope.pc1', $scope.pc1);
+      $scope.pincode = '';
+      $timeout(function() {
+        $scope.$apply();
+      });
+      return;
+    } else {
+      $scope.pc2 = $scope.pincode;
+      console.log('$scope.pc2', $scope.pc2);
+    }
+
+    if ($scope.pc1 == $scope.pc2) {
+      $scope.close($scope.pc1);
+    } else {
+      $scope.enabled ? pincodeService.lockApp() : pincodeService.unlockApp();
+    }
   };
 
-  $scope.cancel = function() {
-    $scope.savePincodeChanges(false);
+  $scope.close = function() {
     $scope.pincodeModal.hide();
   };
 });
