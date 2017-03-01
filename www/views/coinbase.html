@@ -6,8 +6,8 @@
   </ion-nav-bar>
   <ion-nav-buttons side="secondary">
     <button class="button button-clear button-small ng-hide" ng-show="!accessToken" ng-click="coinbase.toggleOauthForm()">
-      <span ng-hide="showOauthForm" translate>Enter Code</span>
-      <span ng-show="showOauthForm" translate>Restart</span>
+      <span ng-hide="showOauthForm">Enter Code</span>
+      <span ng-show="showOauthForm">Restart</span>
     </button>
   </ion-nav-buttons>
   <ion-content scroll="false" class="ng-hide" ng-show="!accessToken">
@@ -15,11 +15,11 @@
       <div class="integration-onboarding-logo">
         <img src="img/coinbase-logo.png">
       </div>
-      <div class="integration-onboarding-description" ng-hide="showOauthForm" translate>Coinbase's exchange service is available in 33 countries, and can take 3-5 days to buy or sell bitcoin.</div>
-      <div class="integration-onboarding-description" ng-show="showOauthForm" translate>If you have trouble, contact Coinbase support for direct assistance.</div>
+      <div class="integration-onboarding-description" ng-hide="showOauthForm">Coinbase's exchange service is available in 33 countries, and can take 3-5 days to buy or sell bitcoin.</div>
+      <div class="integration-onboarding-description" ng-show="showOauthForm">If you have trouble, contact Coinbase support for direct assistance.</div>
       <div class="integration-onboarding-cta" ng-show="!showOauthForm">
-        <button class="button button-standard button-primary" ng-click="coinbase.openAuthenticateWindow()" translate>Connect Coinbase Account</button>
-        <button class="button button-standard button-secondary" ng-click="coinbase.openSignupWindow()" translate>Sign Up for Coinbase</button>
+        <button class="button button-standard button-primary" ng-click="coinbase.openAuthenticateWindow()">Connect Coinbase Account</button>
+        <button class="button button-standard button-secondary" ng-click="coinbase.openSignupWindow()">Sign Up for Coinbase</button>
       </div>
 
       <div ng-show="showOauthForm" class="integration-onboarding-oauthform">
@@ -35,7 +35,7 @@
           <input
             class="button button-standard button-primary"
             type="submit" value="Connect Coinbase Account" ng-disabled="oauthCodeForm.$invalid">
-          <button type="button" class="button button-standard button-secondary" ng-click="coinbase.openSupportWindow()" translate>Coinbase Support &rarr;</button>
+          <button type="button" class="button button-standard button-secondary" ng-click="coinbase.openSupportWindow()">Coinbase Support &rarr;</button>
         </form>
       </div>
     </div>
