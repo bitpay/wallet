@@ -1091,11 +1091,20 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, pincodeService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 
     uxLanguage.init();
 
     $ionicPlatform.ready(function() {
+      configService.whenAvailable(function(config) {
+        if (config.pincode && config.pincode.enabled) {
+          pincodeService.lockChange({
+            fromSettings: false,
+            locking: false,
+          });
+        }
+      });
+
       if (screen.width < 768 && platformInfo.isCordova)
         screen.lockOrientation('portrait');
 
