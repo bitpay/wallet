@@ -46,7 +46,15 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
     var config = configService.getSync();
     var match = config.pincode.value == $scope.currentPincode ? true : false;
 
-    if (!$scope.locking && !match) return;
+    if (!$scope.fromSettings && match) {
+      $scope.currentPincode = '';
+      $scope.close();
+      return;
+    }
+    if (!$scope.locking) {
+      if (!match) return;
+      saveSettings($scope.locking, '');
+    }
     checkCodes();
   };
 
@@ -79,6 +87,6 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
 
   $scope.close = function() {
     $rootScope.$emit('updatePincodeOption');
-    $scope.pincodeModal.hide();
+    $scope.pincodeModal.remove();
   };
 });
