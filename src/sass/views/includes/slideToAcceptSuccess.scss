@@ -1,5 +1,4 @@
 slide-to-accept-success {
-  $success-bg-color: #11D1A6;
   height: 100%;
   width: 100%;
   position: fixed;
@@ -28,7 +27,7 @@ slide-to-accept-success {
       &.fill-screen {
         -webkit-transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
         transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
-        background: $success-bg-color;
+        background: $v-success-bg-color;
       }
     }
 
