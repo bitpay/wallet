@@ -8,37 +8,34 @@ angular.module('copayApp.services')
     root.availableLanguages = [{
       name: 'English',
       isoCode: 'en',
-        }, {
+      }, {
       name: 'Español',
       isoCode: 'es',
-        }, {
+      }, {
       name: 'Français',
       isoCode: 'fr',
-        }, {
+      }, {
       name: 'Deutsch',
       isoCode: 'de',
-       }, {
+      }, {
       name: '中文（简体）',
       isoCode: 'zh',
       useIdeograms: true,
-      }];
+      }, {
+      name: 'Italiano',
+      isoCode: 'it',
+    }, {
+      name: 'Polski',
+      isoCode: 'pl',
+    }];
 
     // }, {
     //   name: 'Český',
     //   isoCode: 'cs',
     // }, {
-    //   name: 'Italiano',
-    //   isoCode: 'it',
     //   name: '日本語',
     //   isoCode: 'ja',
     //   useIdeograms: true,
-    // }, {
-    //   name: '中文（简体）',
-    //   isoCode: 'zh',
-    //   useIdeograms: true,
-    // }, {
-    //   name: 'Polski',
-    //   isoCode: 'pl',
     // }, {
     //   name: 'Pусский',
     //   isoCode: 'ru',
