@@ -1,14 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pincodeController', function($timeout, $scope, $log, $window, configService) {
+angular.module('copayApp.controllers').controller('pincodeController', function($rootScope, $timeout, $scope, $log, $window, configService) {
   var config = configService.getSync();
   $scope.currentPincode = config.pincode ? config.pincode.value : null;
-  $scope.pincode = $scope.pc1 = $scope.pc2 = '';
-
-  console.log('#######', $scope.from, $scope.enabled);
+  $scope.pincode = $scope.pc1 = $scope.pc2 = null;
 
   angular.element($window).on('keydown', function(e) {
-    if (e.which === 8) { // you can add others here inside brackets.
+    if (e.which === 8) {
       e.preventDefault();
       $scope.delete();
     }
@@ -16,7 +14,7 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
     if (e && e.key.match(/^[0-9]$/))
       $scope.add(e.key);
     else if (e && e.keyCode == 27)
-      $scope.close(false);
+      $scope.cancel();
     else if (e && e.keyCode == 13)
       $scope.save();
   });
@@ -69,5 +67,10 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
 
   $scope.close = function() {
     $scope.pincodeModal.hide();
+  };
+
+  $scope.cancel = function() {
+    $rootScope.$emit('updatePincodeOption', false);
+    $scope.close();
   };
 });
