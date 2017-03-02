@@ -17,7 +17,7 @@ angular.module('copayApp.services').factory('pincodeService', function($log, $ro
     });
   };
 
-  root.lockChange = function(opts, cb) {
+  root.lockChange = function(opts) {
     if (opts.enabled) console.log('Locking app from service');
     else console.log('Unlocking app from service');
     openPincodeModal(opts);
