@@ -54,7 +54,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
 
   $scope.usePincodeChange = function() {
     pincodeService.lockChange({
-      from: 'settings',
+      fromSettings: true,
       locking: $scope.usePincode.enabled
     });
   };

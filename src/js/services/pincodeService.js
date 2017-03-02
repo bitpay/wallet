@@ -5,7 +5,7 @@ angular.module('copayApp.services').factory('pincodeService', function($log, $ro
 
   root.lockChange = function(opts) {
     var scope = $rootScope.$new(true);
-    scope.from = opts.from;
+    scope.fromSettings = opts.fromSettings;
     scope.locking = opts.locking;
     $ionicModal.fromTemplateUrl('views/modals/pincode.html', {
       scope: scope,

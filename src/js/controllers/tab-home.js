@@ -15,17 +15,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
 
-    function openPincodeModal() {
-      $ionicModal.fromTemplateUrl('views/modals/pincode.html', {
-        scope: $scope,
-        backdropClickToClose: false,
-        hardwareBackButtonClose: false
-      }).then(function(modal) {
-        $scope.pincodeModal = modal;
-        $scope.pincodeModal.show();
-      });
-    };
-    // openPincodeModal();
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
     });
