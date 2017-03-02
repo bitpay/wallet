@@ -54,18 +54,19 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
 
   $scope.usePincodeChange = function() {
     pincodeService.lockChange({
-      enabled: $scope.usePincode.enabled,
-      from: 'settings'
+      from: 'settings',
+      locking: $scope.usePincode.enabled
     });
   };
 
   $rootScope.$on('updatePincodeOption', function(event) {
-    console.log('ON');
-    var config = configService.getSync();
-    $scope.usePincode = {
-      enabled: config.pincode ? config.pincode.enabled : false
-    };
-    $scope.$apply();
+    $timeout(function() {
+      var config = configService.getSync();
+      $scope.usePincode = {
+        enabled: config.pincode ? config.pincode.enabled : false
+      };
+      $scope.$apply();
+    });
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
