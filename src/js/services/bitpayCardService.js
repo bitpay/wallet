@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, configService, txFormatService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, configService, txFormatService, appConfigService) {
   var root = {};
 
   var _setError = function(msg, e) {
@@ -1323,6 +1323,8 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
 
 
   root.registerNextStep = function() {
+    // Disable BitPay Card
+    if (!appConfigService._enabledExtensions.debitcard) return;
     root.getCards(function(err, cards) {
       if (lodash.isEmpty(cards)) {
         nextStepsService.register(nextStepItem);
