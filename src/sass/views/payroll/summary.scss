@@ -1,7 +1,7 @@
 #payroll-summary {
 
   .card {
-    color: $mid-gray;
+    color: $v-mid-gray;
 
   	.title {
 	    font-size: 16px;
@@ -10,7 +10,7 @@
   	.message {
 	    font-size: 14px;
     	padding: 10px;
-    	border: 1px solid $subtle-gray;
+    	border: 1px solid $v-subtle-gray;
   	}
 
     .amount {
@@ -35,12 +35,12 @@
 
       &.eligible {
         font-size: 120px;
-        color: $soft-blue;
+        color: $v-accent-color;
       }
 
       &.verified {
         font-size: 120px;
-        color: $success-green;
+        color: $v-success-color;
       }
 
       &.status-dot {
@@ -102,7 +102,7 @@
         font-size: 12px;
         text-transform: uppercase;
         padding-right: 25px;
-        color: $soft-blue;
+        color: $v-accent-color;
         float: left;
       }
 
@@ -113,7 +113,7 @@
       border-bottom: 1px solid #f2f2f2;
 
       .wallet-external {
-        background-color: $light-gray;
+        background-color: $v-light-gray;
         border: none;
       }
 
