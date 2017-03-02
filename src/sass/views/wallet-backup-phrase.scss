@@ -9,7 +9,7 @@
     padding: 1rem;
   }
   .password-prompt {
-    background-color: $subtle-gray;
+    background-color: $v-subtle-gray;
     padding: 2rem;
     .explanation {
       padding: 0 1rem;
@@ -29,14 +29,14 @@
   .bar.bar-royal .title {
       font-size: 1rem;
   }
-  background: #fff;
+  background: $v-wallet-backup-bg;
   text-align: center;
   .backup-phrase {
-    background-color: $subtle-gray;
+    background: $v-wallet-backup-phrase-bg;
     margin: auto;
-    border: 2px dashed darken($subtle-gray, 10%);
-    border-radius: $subtle-radius;
-    color: #2b2b2b;
+    border: 2px dashed darken($v-subtle-gray, 10%);
+    border-radius: $v-subtle-radius;
+    color: $v-wallet-backup-phrase-color;
     text-align: center;
     max-width: 500px;
     min-height: 9rem;
@@ -62,7 +62,7 @@
   }
   &-step-1 {
     height: 70%;
-    color: $dark-gray;
+    color: $v-dark-gray;
     .initial-prompt {
       padding: 2.3rem;
       @media(max-height: 480px) {
@@ -94,13 +94,13 @@
       }
     }
     #select-phrase {
-      background: $subtle-gray;
+      background: $v-wallet-backup-select-phrase-color;
       .select-word {
         &.button[disabled] {
           background: transparent !important;
           box-shadow: none !important;
           color: transparent;
-          border: 1px solid rgb(211, 211, 211);
+          border: 1px solid $v-wallet-backup-select-word-disabled-color;
         }
       }
       &-content {
@@ -121,8 +121,9 @@
       }
     }
     .select-word {
-      background: #fff;
-      box-shadow: $subtle-box-shadow;
+      background: $v-wallet-backup-select-word-bg;
+      color: $v-wallet-backup-select-word-color;
+      box-shadow: $v-subtle-box-shadow;
       display: inline-block;
       margin: 3px 0;
       min-height: 35px;

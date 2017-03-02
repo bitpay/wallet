@@ -1,6 +1,4 @@
 slide-to-accept-success {
-  $slider-bg-color: #5063B9;
-  $success-bg-color: #11D1A6;
   height: 100%;
   width: 100%;
   position: fixed;
@@ -19,7 +17,7 @@ slide-to-accept-success {
       $scale-factor: 20;
       height: 10vmax;
       width: 10vmax;
-      background: $slider-bg-color;
+      background: $v-slider-bg-color;
       bottom: 0;
       position: absolute;
       left: calc(50% - 5vmax);
@@ -29,7 +27,7 @@ slide-to-accept-success {
       &.fill-screen {
         -webkit-transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
         transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
-        background: $success-bg-color;
+        background: $v-success-bg-color;
       }
     }
 

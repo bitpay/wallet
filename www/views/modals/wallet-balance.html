@@ -1,5 +1,5 @@
 <ion-modal-view id="wallet-balance">
-  <ion-header-bar align-title="center" ng-style="{'background-color': wallet.color}">
+  <ion-header-bar align-title="center" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}">
     <button class="button button-clear" ng-click="close()" translate>
       Close
     </button>

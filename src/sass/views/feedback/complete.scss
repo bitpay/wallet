@@ -29,14 +29,14 @@
   .feedback-title {
     font-size: 20px;
     font-weight: bold;
-    color: $dark-gray;
+    color: $v-dark-gray;
     margin: 20px 10px;
     text-align: center;
   }
   .subtitle {
     padding: 10px 30px 20px;
     text-align: center;
-    color: $mid-gray;
+    color: $v-mid-gray;
   }
   .icon-svg > img {
     height: 16rem;
@@ -54,7 +54,7 @@
   }
   .share-buttons {
     padding: 50px 10px 30px;
-    background-color: $subtle-gray;
+    background-color: $v-subtle-gray;
     text-align: center;
     transform: translateY(100%);
     opacity: 0;
@@ -66,7 +66,7 @@
   }
   .share-buttons__action {
     display: inline-block;
-    color: #667;
+    color: $v-mid-gray;
     font-size: .9rem;
     width: 90px;
     height: 90px;

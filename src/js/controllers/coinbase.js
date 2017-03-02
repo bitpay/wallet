@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('coinbaseController', function($scope, $timeout, $ionicModal, $ionicHistory, $log, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, externalLinkService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('coinbaseController', function($scope, $timeout, $ionicModal, $ionicHistory, $log, coinbaseService, lodash, platformInfo, ongoingProcess, popupService, externalLinkService) {
 
   var isNW = platformInfo.isNW;
   var isCordova = platformInfo.isCordova;
@@ -82,20 +82,20 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   this.openSignupWindow = function() {
     var url = coinbaseService.getSignupUrl();
     var optIn = true;
-    var title = gettextCatalog.getString('Sign Up for Coinbase');
-    var message = gettextCatalog.getString('This will open Coinbase.com, where you can create an account.');
-    var okText = gettextCatalog.getString('Go to Coinbase');
-    var cancelText = gettextCatalog.getString('Back');
+    var title = 'Sign Up for Coinbase';
+    var message = 'This will open Coinbase.com, where you can create an account.';
+    var okText = 'Go to Coinbase';
+    var cancelText = 'Back';
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   }
 
   this.openSupportWindow = function() {
     var url = coinbaseService.getSupportUrl();
     var optIn = true;
-    var title = gettextCatalog.getString('Coinbase Support');
-    var message = gettextCatalog.getString('You can email support@coinbase.com for direct support, or you can view their help center.');
-    var okText = gettextCatalog.getString('Open Help Center');
-    var cancelText = gettextCatalog.getString('Go Back');
+    var title = 'Coinbase Support';
+    var message = 'You can email support@coinbase.com for direct support, or you can view their help center.';
+    var okText = 'Open Help Center';
+    var cancelText = 'Go Back';
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   }
 
