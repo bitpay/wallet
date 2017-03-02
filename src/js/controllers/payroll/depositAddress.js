@@ -1,9 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollDepositAddressController', function($scope, $log, $timeout, $state, $ionicScrollDelegate, lodash, profileService, walletService, bitcore, gettextCatalog, configService, bitpayPayrollService) {
+angular.module('copayApp.controllers').controller('payrollDepositAddressController', function($scope, $log, $timeout, $state, $ionicScrollDelegate, $ionicHistory, lodash, profileService, walletService, bitcore, gettextCatalog, configService, bitpayPayrollService, addressbookService) {
 
   var config = configService.getSync().wallet.settings;
-  var walletList;
+
+  var CONTACTS_SHOW_LIMIT;
+  var currentContactsPage;
+  var list;
 
   var amountViewAmountLabel = gettextCatalog.getString('Deduction');
   var amountViewRecipientLabel = gettextCatalog.getString('Deposit to');
@@ -33,72 +36,143 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
         gettextCatalog.getString('Error'),
         gettextCatalog.getString('No payroll settings specified.'));
     }
-       
-    walletList = [];
-    var wallets = profileService.getWallets({
-      onlyComplete: true,
-      network: 'livenet'
-    });
 
-    lodash.each(wallets, function(w) {
-      walletList.push({
-        color: w.color,
-        name: w.name,
-        isWallet: true,
-        getAddress: function(cb) {
-          walletService.getAddress(w, false, cb);
-        },
-      });
-    });
+    CONTACTS_SHOW_LIMIT = 10;
+    currentContactsPage = 0;
+    updateList();
 
-    $scope.wallets = lodash.clone(walletList);
-    $scope.hasWallets = lodash.isEmpty(wallets) ? false : true;
-    $scope.address = {
+    $scope.entry = {
       value: null
     };
 
     // User may have changed alternative currency so init on each view entry.
     amountViewTitle = gettextCatalog.getString('Enter {{alternativeIsoCode}} Deduction', {alternativeIsoCode: config.alternativeIsoCode});
-
-    $timeout(function() {
-      $ionicScrollDelegate.resize();
-      $scope.$apply();
-    }, 10);
   });
 
-  $scope.onAddressEntry = function(address) {
-    if (bitcore.Address.isValid(address, 'livenet')) {
-	    return $state.transitionTo('tabs.payroll.depositAmount', {
-        payrollRecordId: $scope.payrollRecord.id,
-        isWallet: false,
-        toAddress: address,
-        toName: null,
-        toColor: null,
-        viewTitle: amountViewTitle,
-        recipientLabel: amountRecipientLabel,
-        amountLabel: amountLabel
-	    });
-    }
+  var updateList = function() {
+    list = [];
+    getWallets(function(wallets) {
+      if (wallets) {
+        list = list.concat(wallets);
+      }
+
+      getContacts(function(contacts) {
+        if (contacts) {
+          list = list.concat(contacts);
+        }
+
+        $scope.list = list;
+        $timeout(function() {
+          $ionicScrollDelegate.resize();
+          $scope.$apply();
+        }, 10);
+      });
+    });
   };
 
-  $scope.onWalletSelect = function(wallet) {
-    $timeout(function() {
-      wallet.getAddress(function(err, address) {
-        if (err || !address) {
-          $log.error(err);
-          return;
-        }
-        $log.debug('Got payroll deposit address:' + address + ' | ' + wallet.name);
-        return $state.transitionTo('tabs.payroll.depositAmount', {
-          payrollRecordId: $scope.payrollRecord.id,
-          isWallet: true,
-          toAddress: address,
-          toName: wallet.name,
-          toColor: wallet.color,
-          viewTitle: amountViewTitle,
-          recipientLabel: amountViewRecipientLabel,
-          amountLabel: amountViewAmountLabel
+  var getWallets = function(cb) {
+    var wallets = profileService.getWallets({
+      onlyComplete: true,
+      network: 'livenet'
+    });
+
+    $scope.hasWallets = lodash.isEmpty(wallets) ? false : true;
+
+    var walletList = [];
+    lodash.each(wallets, function(w) {
+      walletList.push({
+        color: w.color,
+        name: w.name,
+        recipientType: 'wallet',
+        getAddress: function(cb) {
+          walletService.getAddress(w, false, cb);
+        },
+      });
+    });
+    cb(lodash.clone(walletList));
+  };
+
+  var getContacts = function(cb) {
+    addressbookService.list(function(err, ab) {
+      if (err) $log.error(err);
+
+      $scope.hasContacts = lodash.isEmpty(ab) ? false : true;
+      var allContacts = [];
+      lodash.each(ab, function(v, k) {
+        allContacts.push({
+          name: lodash.isObject(v) ? v.name : v,
+          address: k,
+          email: lodash.isObject(v) ? v.email : null,
+          recipientType: 'contact',
+          getAddress: function(cb) {
+            return cb(null, k);
+          },
         });
+      });
+      var contactList = allContacts.slice(0, (currentContactsPage + 1) * CONTACTS_SHOW_LIMIT);
+      $scope.contactsShowMore = allContacts.length > contactList.length;
+      cb(lodash.clone(contactList));
+    });
+  };
+
+  $scope.showMore = function() {
+    currentContactsPage++;
+    updateList();
+  };
+
+  $scope.processInput = function(value) {
+    if (bitcore.Address.isValid(value, 'livenet')) {
+      return onAddressEntry(value);
+    }
+
+    if (!value || value.length < 2) {
+      $scope.list = list;
+      $timeout(function() {
+        $scope.$apply();
+      });
+      return;
+    }
+
+    var filteredList = lodash.filter(list, function(item) {
+      return lodash.includes(item.name.toLowerCase(), value.toLowerCase());
+    });
+    $scope.list = filteredList;
+  };
+
+  $scope.onAddressScan = function(data) {
+    // Remove the bitcoin protocol if present.
+    onAddressEntry(data.replace(/^.*:/, ''));
+  };
+
+  function onAddressEntry(address) {
+    $state.transitionTo('tabs.payroll.depositAmount', {
+      recipientType: 'address',
+      id: $scope.payrollRecord.id,
+      toAddress: address,
+      toName: null,
+      toColor: null,
+      viewTitle: amountViewTitle,
+      recipientLabel: amountViewRecipientLabel,
+      amountLabel: amountViewAmountLabel
+    });
+  };
+
+  $scope.onItemSelect = function(item) {
+    item.getAddress(function(err, address) {
+      if (err || !address) {
+        $log.error(err);
+        return;
+      }
+      $log.debug('Got payroll deposit address:' + address + ' | ' + item.name);
+      $state.transitionTo('tabs.payroll.depositAmount', {
+        recipientType: item.recipientType,
+        id: $scope.payrollRecord.id,
+        toAddress: address,
+        toName: item.name,
+        toColor: item.color,
+        viewTitle: amountViewTitle,
+        recipientLabel: amountViewRecipientLabel,
+        amountLabel: amountViewAmountLabel
       });
     });
   };

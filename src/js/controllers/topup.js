@@ -74,7 +74,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     });
     $scope.wallet = $scope.wallets[0]; // Default first wallet
 
-    bitpayCardService.getRates(currency, function(err, data) {
+    rateService.getRate(currency, function(err, data) {
       if (err) $log.error(err);
       $scope.rate = data.rate;
     });

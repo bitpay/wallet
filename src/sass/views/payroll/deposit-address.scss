@@ -1,5 +1,12 @@
 #payroll-deposit-address {
   @extend .deflash-blue;
+  .card {
+    .item {
+      &.item-heading {
+        font-weight: bold;
+      }
+    }
+  }
   .input {
     input {
       width: 100%;
@@ -23,8 +30,7 @@
   .qr-scan-icon {
     cursor: pointer;
     cursor: hand;
-    border-left: 1px solid rgb(228, 228, 228);
-    padding-left: 10px;
+    float: right;
   }
   .qr-icon {
     line-height: 20px;
@@ -67,7 +73,7 @@
       padding-bottom: 1.5rem;
       .big-icon-svg {
         left:5px;
-       & > .bg{
+        & > .bg {
         width:30px;
         height:30px;
         box-shadow: none;

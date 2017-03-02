@@ -885,6 +885,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
+        },
+        params: {
+          showAlternativeAmount: true
         }
       })
       .state('tabs.buyandsell.glidera.buy', {
@@ -947,6 +950,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
+        },
+        params: {
+          showAlternativeAmount: true
         }
       })
       .state('tabs.buyandsell.coinbase.buy', {
@@ -1017,7 +1023,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           nextStep: 'tabs.giftcards.amazon.buy',
           currency: 'USD',
-          forceCurrency: true
+          askForAlternative: true,
+          showAlternativeAmount: true,
+          disallowCurrencyToggle: true
         }
       })
       .state('tabs.giftcards.amazon.buy', {
@@ -1069,6 +1077,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         },
         params: {
+          showAlternativeAmount: true,
           showRate: true
         }
       })
@@ -1152,7 +1161,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     })
     .state('tabs.payroll.depositAmount', {
-      url: '/payroll/amount/:payrollRecordId/:isWallet/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel',
+      url: '/payroll/amount/:recipientType/:id/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel',
       views: {
         'tab-home@tabs': {
           templateUrl: 'views/amount.html',
@@ -1160,13 +1169,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       },
       params: {
-        isPayroll: true,
-        showRate: true,
-        alternativeExact: true
+        nextStep: 'tabs.payroll.confirm',
+        showAlternativeAmount: true,
+        askForAlternative: true,
+        showRecipient: true,
+        showRate: true
       }
     })
     .state('tabs.payroll.confirm', {
-      url: '/payroll/confirm/:id/:isWallet/:toAddress/:toName/:depositAmount',
+      url: '/payroll/confirm/:recipientType/:id/:toAddress/:toName/:amount',
       views: {
         'tab-home@tabs': {
           templateUrl: 'views/payroll/confirm.html',
@@ -1184,7 +1195,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService, bitpayPayrollService) {
 
     uxLanguage.init();
 

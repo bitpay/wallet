@@ -188,6 +188,23 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
     });
   };
 
+  // Convenience function returns the specified account.
+  root.getAccount = function(email, cb) {
+    root.getAccounts(function(err, accounts) {
+      if (err) {
+        return cb(err);
+      }
+      var account = lodash.find(accounts, function(account) {
+        return account.email == email;
+      });
+      if (!account) {
+        cb('Account not found: ' + email);
+      } else {
+        cb(null, account);
+      }
+    });
+  };
+
   var setAccount = function(account, cb) {
     storageService.setBitpayAccount(bitpayService.getEnvironment().network, account, function(err) {
       return cb(err);

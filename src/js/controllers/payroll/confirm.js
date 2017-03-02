@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     }
 
   	// Deposit amount is in fiat (alternative) currency.
-    var depositAmount = parseFloat(data.stateParams.depositAmount);
+    var depositAmount = parseFloat(data.stateParams.amount);
     var btcEstimate = rateService.fromFiat(depositAmount, config.alternativeIsoCode);
     var btcEstimateStr = txFormatService.formatAmountStr(btcEstimate);
 
@@ -46,8 +46,7 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
       network: 'livenet'
     });
 
-    var isWallet = (data.stateParams.isWallet.trim().toLowerCase() == 'true' ? true : false);
-    if (isWallet) {
+    if (data.stateParams.recipientType.includes('wallet')) {
 	    var wallet = lodash.find($scope.wallets, function(w) {
 	    	return w.name == data.stateParams.toName;
 	    });
@@ -78,7 +77,9 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     var opts = {
       defaultText: $scope.externalWalletName
     };
-    popupService.showPrompt(gettextCatalog.getString('External Wallet Name'), null, opts, function(str) {
+    var title = gettextCatalog.getString('External Wallet Name');
+    var message = gettextCatalog.getString('Enter a name for the bitcoin address you have entered. This name is used only to remind you of your bitcoin deposit destination.');
+    popupService.showPrompt(title, message, opts, function(str) {
       if (typeof str != 'undefined') {
         $scope.externalWalletName = str;
       }

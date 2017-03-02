@@ -5,22 +5,47 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="item item-heading deposit-address-heading" translate>Deposit to Address</div>
+    <div class="item item-heading deposit-address-heading" translate>Address</div>
     <div class="item item-icon-left item-icon-right input">
       <i class="icon icon-svg left"><img src="img/icon-bitcoin-symbol.svg"></i>
-      <input type="text" placeholder="{{'Enter bitcoin address' | translate}}" ng-model="address.value" ng-model-onblur ng-change="onAddressEntry(address.value)">
-      <i class="icon icon-svg qr" on-tap="openScanner()"><img src="img/scan-ico.svg"/></i>
+      <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="entry.value" ng-change="processInput(entry.value)" ng-model-onblur>
+      <div class="qr-scan-icon">
+        <qr-scanner on-scan="onAddressScan(data)"></qr-scanner>
+      </div>
     </div>
-    <div class="card" ng-if="hasWallets">
+
+    <div class="card">
+      <div class="item item-icon-right item-heading">
+        <span translate>Contacts</span>
+        <a ng-if="hasContacts" ui-sref="tabs.send.addressbook">
+          <i class="icon ion-ios-plus-empty list-add-button"></i>
+        </a>
+      </div>
       <div class="list">
-        <div class="item item-heading">
-          <span translate>Deposit to Wallet</span>
-        </div>
-        <a class="item item-icon-left item-icon-right" ng-repeat="wallet in wallets" ng-if="hasWallets" ng-click="onWalletSelect(wallet)">
+        <a class="item item-icon-left item-icon-right" ng-repeat="item in list" ng-if="item.recipientType == 'contact'" ng-click="onItemSelect(item)">
           <i class="icon big-icon-svg">
-            <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+            <img src="img/contact-placeholder.svg" class="bg" ng-if="isChromeApp">
+            <gravatar class="send-gravatar" name="{{item.name}}" width="30" email="{{item.email}}" ng-if="!isChromeApp"></gravatar>
           </i>
-          {{wallet.name}}
+          {{item.name}}
+          <i class="icon bp-arrow-right"></i>
+        </a>
+      </div>
+      <div class="show-more" ng-if="contactsShowMore" ng-click="showMore()" translate>
+        Show more
+      </div>
+    </div>
+
+    <div class="card" ng-if="hasWallets">
+      <div class="item item-heading">
+        <span translate>Wallets</span>
+      </div>
+      <div class="list">
+        <a class="item item-icon-left item-icon-right" ng-repeat="item in list" ng-if="item.recipientType == 'wallet'" ng-click="onItemSelect(item)">
+          <i class="icon big-icon-svg">
+            <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
+          </i>
+          {{item.name}}
           <i class="icon bp-arrow-right"></i>
         </a>
       </div>

@@ -1,6 +1,5 @@
 'use strict';
-
-angular.module('copayApp.services').factory('bitpayPayrollService', function($log, lodash, configService, storageService, bitpayService, bwcService, profileService, walletService, gettextCatalog) {
+angular.module('copayApp.services').factory('bitpayPayrollService', function($log, lodash, configService, storageService, bitpayService, bwcService, profileService, walletService, gettextCatalog, homeIntegrationsService) {
 
   var root = {};
 
@@ -10,6 +9,20 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
   var ADDRESS_NOT_VERIFIED_WALLET_EXTERNAL = gettextCatalog.getString('We are unable to verify this deposit address.<br/><br/>The specified address does not belong to any wallet in this app.<br/><br/>' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
   var ADDRESS_VERIFIED                     = gettextCatalog.getString('This deposit address was verified automatically to be owned by you and associated with the specified wallet.');
   var ADDRESS_VERIFIED_MANUALLY            = gettextCatalog.getString('This deposit address was manually verified by you to be correct.<br/><br/>' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
+
+  var homeItem = {
+    name: 'payroll',
+    title: 'Payroll',
+    icon: 'icon-payroll',
+    sref: 'tabs.payroll.summary',
+  };
+
+  var nextStepItem = {
+    name: 'payroll',
+    title: 'Receive bitcoin in your pay',
+    icon: 'icon-payroll',
+    sref: 'tabs.payroll',
+  };
 
   // During payroll setup the bitpayAccount defines the environment for submission of payroll records.
   var bitpayAccount = undefined;
@@ -192,7 +205,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
 
     // Restrict the wallet from being deleted while payroll is bound.
     // Prevent payroll from starting unless this restriction is in place.
-    walletService.setRestrictions(wallet.id, ['delete:payroll-deposits'], function(err) {
+    walletService.setRestrictions(record.deduction.walletId, ['delete:payroll-deposits'], function(err) {
       if (err) {
         return cb(_setError('Error starting payroll: ' + err));
       }
@@ -215,7 +228,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
         return cb(_setError('Error starting payroll: ' + err));
       }
       // Remove restriction to delete the wallet.
-      walletService.removeRestrictions(wallet.id, ['delete:payroll-deposits'], function(err) {
+      walletService.removeRestrictions(record.deduction.walletId, ['delete:payroll-deposits'], function(err) {
         if (err) {
           return cb(_setError('Error removing wallet restriction (payroll): ' + err));
         }
@@ -643,6 +656,17 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     return error;
   };
 
+  var register = function() {
+    storageService.getPayrollRecords(bitpayService.getEnvironment().network, function(err, records) {
+      if (records) {
+        homeIntegrationsService.register(homeItem);
+      } else {
+        nextStepsService.register(nextStepItem);
+      }
+    });
+  };
+
+  register();
   return root;
 
 });

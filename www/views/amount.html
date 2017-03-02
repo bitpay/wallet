@@ -14,12 +14,15 @@
 
   <ion-content scroll="false">
 
-    <div ng-if="!customAmount && !isGlidera && !nextStep">
+    <div ng-if="showRecipient">
       <div class="item item-no-bottom-border recipient-label">{{recipientLabel}}</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address">
         <i class="icon big-icon-svg" ng-if="recipientType == 'wallet'">
           <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
+        </i>
+        <i class="icon big-icon-svg" ng-if="recipientType == 'address'">
+          <img src="img/icon-bitcoin-symbol.svg" class="bg"/>
         </i>
         <span ng-if="recipientType == 'contact'">
           <i class="icon big-icon-svg" ng-if="isChromeApp">
@@ -36,13 +39,13 @@
       </div>
     </div>
 
-    <div ng-class="{'amount-pane-recipient': !customAmount && !isGlidera && !nextStep,
-      'amount-pane-no-recipient': customAmount || isGlidera || nextStep}">
+    <div ng-class="{'amount-pane-recipient': showRecipient,
+      'amount-pane-no-recipient': !showRecipient}">
 
       <div class="amount-bar oh">
         <div class="title">
           <span>{{amountLabel}}</span>
-          <div class="size-12" ng-if="showRate" ng-init="getRates()">{{exchangeRate}}</div>
+          <div class="size-12" ng-if="showRate" ng-init="setExchangeRateStr()">{{exchangeRate}}</div>
           <div ng-show="isGlidera">
             <div class="limits" ng-show="limits && isGlidera == 'buy'">
               <span>Daily buy limit</span>:
@@ -68,17 +71,17 @@
 
       <div class="amount">
         <div class="amount__editable" ng-class="{'amount__editable--minimize': smallFont, 'amount__editable--standard': !smallFont, 'amount__editable--placeholder': !amount}">
-          <span class="amount__number"><span ng-show="alternativeExact && !showAlternativeAmount">&asymp; </span>{{amount || "0.00" }}</span>
+          <span class="amount__number"><span ng-show="askForAlternative && !showAlternativeAmount">&asymp; </span>{{amount || "0.00" }}</span>
           <a class="amount__currency-toggle" ng-click="toggleAlternative()" ng-show="showAlternativeAmount">{{alternativeIsoCode}}</a>
           <a class="amount__currency-toggle" ng-click="toggleAlternative()" ng-show="!showAlternativeAmount">{{unitName}}</a>
         </div>
         <div ng-class="{'amount__results--minimize': smallFont, 'amount__results--standard': !smallFont, 'amount__results--placeholder': !amountResult}" ng-show="!showAlternativeAmount">
           <div class="amount__result" ng-show="globalResult">{{globalResult}} {{unitName}}</div>
-          <div class="amount__result-equiv"><span ng-show="!alternativeExact">&asymp; </span>{{amountResult || '0.00'}} {{alternativeIsoCode}}</div>
+          <div class="amount__result-equiv"><span ng-show="!askForAlternative">&asymp; </span>{{amountResult || '0.00'}} {{alternativeIsoCode}}</div>
         </div>
         <div ng-class="{'amount__results--minimize': smallFont, 'amount__results--standard': !smallFont, 'amount__results--placeholder': !amountResult}" ng-show="showAlternativeAmount">
           <div class="amount__result" ng-show="globalResult">{{globalResult}} {{alternativeIsoCode}}</div>
-          <div class="amount__result-equiv"><span ng-show="alternativeExact">&asymp; </span>{{alternativeResult || '0.00'}} {{unitName}}</div>
+          <div class="amount__result-equiv"><span ng-show="askForAlternative">&asymp; </span>{{alternativeResult || '0.00'}} {{unitName}}</div>
         </div>
       </div>
     </div>

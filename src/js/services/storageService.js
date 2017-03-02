@@ -497,22 +497,22 @@ angular.module('copayApp.services')
     root.setPayrollRecords = function(network, data, cb) {
       data = data || {};
       if (lodash.isEmpty(data) || !data.email) return cb('Cannot set payroll records: no account to set');
-      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
         bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
-        bitpayAccounts[data.email]['payrollRecords-' + network] = data.records;
-        storage.set('bitpayAccounts-v3-' + network, JSON.stringify(bitpayAccounts), cb);
+        bitpayAccounts[data.email]['payrollRecords'] = data.records;
+        storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
       });
     };
 
     // cb(err, records)
     // records: [...]
     root.getPayrollRecords = function(network, cb) {
-      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
@@ -520,7 +520,7 @@ angular.module('copayApp.services')
         var records = [];
         Object.keys(bitpayAccounts).forEach(function(email) {
           // For the UI, add the account email to the record object.
-          var acctRecords = bitpayAccounts[email]['payrollRecords-' + network] || [];
+          var acctRecords = bitpayAccounts[email]['payrollRecords'] || [];
           for (var i = 0; i < acctRecords.length; i++) {
             acctRecords[i].email = email;
           }
@@ -537,14 +537,14 @@ angular.module('copayApp.services')
       }
       record = record || {};
       if (lodash.isEmpty(record) || !record.eid) return cb('No payroll record to remove');
-      storage.get('bitpayAccounts-v3-' + network, function(err, bitpayAccounts) {
+      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
         Object.keys(bitpayAccounts).forEach(function(email) {
-          var data = bitpayAccounts[email]['payrollRecords-' + network];
+          var data = bitpayAccounts[email]['payrollRecords'];
           var newRecords = lodash.reject(data, {
             'eid': record.eid
           });
