@@ -165,6 +165,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
       // BitPayCard Authentication
     } else if (data && data.indexOf(appConfigService.name + '://') === 0) {
+
+      // Disable BitPay Card
+      if (!appConfigService._enabledExtensions.debitcard) return false;
+
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
