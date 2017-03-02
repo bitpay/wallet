@@ -3,10 +3,10 @@
 angular.module('copayApp.services').factory('pincodeService', function($log, $rootScope, $ionicModal, configService) {
   var root = {};
 
-  var openPincodeModal = function(opts) {
+  root.lockChange = function(opts) {
     var scope = $rootScope.$new(true);
     scope.from = opts.from;
-    scope.enabled = opts.enabled;
+    scope.locking = opts.locking;
     $ionicModal.fromTemplateUrl('views/modals/pincode.html', {
       scope: scope,
       backdropClickToClose: false,
@@ -15,12 +15,6 @@ angular.module('copayApp.services').factory('pincodeService', function($log, $ro
       scope.pincodeModal = modal;
       scope.pincodeModal.show();
     });
-  };
-
-  root.lockChange = function(opts) {
-    if (opts.enabled) console.log('Locking app from service');
-    else console.log('Unlocking app from service');
-    openPincodeModal(opts);
   };
 
   root.isLocked = function() {
