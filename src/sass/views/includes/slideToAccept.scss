@@ -1,12 +1,9 @@
 slide-to-accept {
-  $slide-bg-color: #647CE8;
-  $slider-bg-color: #5063B9;
-  $slide-text-color: #FFFFFF;
   position: fixed;
   bottom: 0;
   height: 92px;
   width: 100%;
-  background: $slide-bg-color;
+  background: $v-slide-bg-color;
 
   @mixin center-vertically {
     display: flex;
@@ -26,7 +23,7 @@ slide-to-accept {
       @include center-vertically;
       height: 100%;
       width: 100%;
-      background: $slider-bg-color;
+      background: $v-slider-bg-color;
       -webkit-transform: translateX(0);
       transform: translateX(0);
       margin-left: -100%;
@@ -37,7 +34,7 @@ slide-to-accept {
         content: '';
         width: 10000px;
         left: -10000px + 1;
-        background: $slider-bg-color;
+        background: $v-slider-bg-color;
       }
 
       &::after {
@@ -45,14 +42,14 @@ slide-to-accept {
         content: '';
         width: 15px;
         right: -10px;
-        background: $slider-bg-color;
+        background: $v-slider-bg-color;
       }
 
       &__tip {
         @include center-vertically;
         width: 124px;
         height: 116px;
-        background: $slider-bg-color;
+        background: $v-slider-bg-color;
         right: -71px;
         border-radius: 50%;
         top: 50%;
@@ -78,7 +75,7 @@ slide-to-accept {
       top: 0;
       left: 0;
       width: 100%;
-      color: $slide-text-color;
+      color: $v-slide-text-color;
       font-size: 18px;
       font-weight: 600;
       letter-spacing: .03rem;
@@ -93,7 +90,7 @@ slide-to-accept {
     &__status-text {
       @include center-vertically;
       justify-content: center;
-      color: $slide-text-color;
+      color: $v-slide-text-color;
       z-index: 4;
       width: 100%;
       font-size: 17px;
