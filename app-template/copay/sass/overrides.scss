@@ -39,6 +39,12 @@ $v-button-secondary-outline-color:                   $v-accent-color;
 $v-button-secondary-outline-active-bg:               darken($v-accent-color, 10%);
 $v-button-secondary-outline-active-color:            $v-accent-color;
 
+/* Slide */
+
+$v-slide-bg-color:                                   $v-accent-color;
+$v-slider-bg-color:                                  #069074;
+$v-slide-text-color:                                 #FFFFFF;
+
 /* Onboarding */
 $v-onboarding-welcome-bg:                            none;
 $v-onboarding-color:                                 $v-text-secondary-color;
