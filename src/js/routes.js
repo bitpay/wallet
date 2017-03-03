@@ -121,6 +121,18 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
+       * Pin code
+       *
+       */
+
+      .state('pincode', {
+        url: '/pincode/:fromSettings/:locking',
+        controller: 'pincodeController',
+        templateUrl: 'views/pincode.html'
+      })
+
+      /*
+       *
        * URI
        *
        */
@@ -436,6 +448,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-settings@tabs': {
             controller: 'advancedSettingsController',
             templateUrl: 'views/advancedSettings.html'
+          }
+        }
+      })
+      .state('tabs.pincode', {
+        url: '/pincode/:fromSettings/:locking',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'pincodeController',
+            templateUrl: 'views/pincode.html',
           }
         }
       })
@@ -1091,20 +1112,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, pincodeService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 
     uxLanguage.init();
 
     $ionicPlatform.ready(function() {
-      configService.whenAvailable(function(config) {
-        if (config.pincode && config.pincode.enabled) {
-          pincodeService.lockChange({
-            fromSettings: false,
-            locking: false,
-          });
-        }
-      });
-
       if (screen.width < 768 && platformInfo.isCordova)
         screen.lockOrientation('portrait');
 
@@ -1205,9 +1217,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-            $state.transitionTo('tabs.home').then(function() {
-              // Clear history
-              $ionicHistory.clearHistory();
+            configService.whenAvailable(function(config) {
+              console.log('### CONFIG', config.pincode);
+              if (config.pincode && config.pincode.enabled) {
+                $state.go('pincode', {
+                  fromSettings: false,
+                  locking: false
+                });
+              } else {
+                $state.transitionTo('tabs.home').then(function() {
+                  // Clear history
+                  $ionicHistory.clearHistory();
+                });
+              }
             });
           });
         }
