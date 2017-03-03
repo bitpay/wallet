@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('notificationsController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, $interval) {
 
-  $scope.$on("$ionicView.beforeEnter", function() {
+  $scope.$on("$ionicView.enter", function() {
     $ionicConfig.views.swipeBackEnabled(false);
   });
 

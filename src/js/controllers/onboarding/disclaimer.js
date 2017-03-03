@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, profileService, uxLanguage, externalLinkService, storageService, $stateParams, startupService, $rootScope) {
+angular.module('copayApp.controllers').controller('disclaimerController', function($scope, $timeout, $state, $log, $ionicModal, $ionicConfig, profileService, uxLanguage, externalLinkService, storageService, $stateParams, startupService, $rootScope) {
 
   $scope.$on("$ionicView.afterEnter", function() {
     startupService.ready();
@@ -11,10 +11,13 @@ angular.module('copayApp.controllers').controller('disclaimerController', functi
     $scope.terms = {};
     $scope.accepted = {};
     $scope.accepted.first = $scope.accepted.second = $scope.accepted.third = false;
-    $scope.backedUp = $stateParams.backedUp;
+    $scope.backedUp = $stateParams.backedUp == 'false' ? false : true;
     $scope.resume = $stateParams.resume || false;
-    if ($scope.backedUp || $scope.resume) $ionicConfig.views.swipeBackEnabled(false);
     $scope.shrinkView = false;
+  });
+
+  $scope.$on("$ionicView.enter", function() {
+    if ($scope.backedUp || $scope.resume) $ionicConfig.views.swipeBackEnabled(false);
   });
 
   $scope.$on("$ionicView.beforeLeave", function() {

@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
     $ionicConfig.views.swipeBackEnabled(true);
   });
 
-  $scope.$on("$ionicView.beforeEnter", function() {
+  $scope.$on("$ionicView.enter", function() {
     $ionicConfig.views.swipeBackEnabled(false);
   });
 

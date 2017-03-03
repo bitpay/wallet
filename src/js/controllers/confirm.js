@@ -12,9 +12,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $ionicConfig.views.swipeBackEnabled(true);
   });
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-
+  $scope.$on("$ionicView.enter", function(event, data) {
     $ionicConfig.views.swipeBackEnabled(false);
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
