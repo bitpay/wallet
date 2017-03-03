@@ -50,6 +50,11 @@ angular.module('copayApp.controllers').controller('completeController', function
     $ionicConfig.views.swipeBackEnabled(true);
   });
 
+  $scope.$on("$ionicView.enter", function() {
+    if (!$scope.fromSettings)
+      $ionicConfig.views.swipeBackEnabled(false);
+  });
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.skipped = (data.stateParams && data.stateParams.skipped) ? true : false;
@@ -57,11 +62,9 @@ angular.module('copayApp.controllers').controller('completeController', function
     $scope.fromSettings = (data.stateParams && data.stateParams.fromSettings) ? true : false;
 
     if (!$scope.fromSettings) {
-      $ionicConfig.views.swipeBackEnabled(false);
       $ionicNavBarDelegate.showBackButton(false);
     } else {
       $ionicNavBarDelegate.showBackButton(true);
-      $ionicConfig.views.swipeBackEnabled(true);
     }
 
     storageService.getFeedbackInfo(function(error, info) {

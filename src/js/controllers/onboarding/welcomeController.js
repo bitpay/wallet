@@ -2,11 +2,11 @@
 
 angular.module('copayApp.controllers').controller('welcomeController', function($scope, $state, $timeout, $ionicConfig, $log, profileService, startupService, storageService) {
 
-  $scope.$parent.$on("$ionicView.afterEnter", function() {
+  $scope.$on("$ionicView.afterEnter", function() {
     startupService.ready();
   });
 
-  $scope.$on("$ionicView.beforeEnter", function() {
+  $scope.$on("$ionicView.enter", function() {
     $ionicConfig.views.swipeBackEnabled(false);
   });
 
