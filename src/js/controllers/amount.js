@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.customAmount = data.stateParams.customAmount;
 
     showRecipient = (showRecipient.toString().trim().toLowerCase() == 'true' ? true : false);
-    $scope.showRecipient = showRecipient || (!customAmount && !nextStep);
+    $scope.showRecipient = showRecipient || (!$scope.customAmount && !$scope.nextStep);
 
     $scope.showMenu = $ionicHistory.backView() && $ionicHistory.backView().stateName == 'tabs.send';
     $scope.recipientType = data.stateParams.recipientType || null;

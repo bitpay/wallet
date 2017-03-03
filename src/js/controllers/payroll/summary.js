@@ -10,11 +10,11 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
         return showError(err);
       }
 
-      if (!records) {
+      if (records.length == 0) {
         return showError(
           'No payroll records found when loading payrollSummaryController',
           gettextCatalog.getString('Error'),
-          gettextCatalog.getString('No payroll settings specified.'));
+          gettextCatalog.getString('No payroll records found.'));
       }
 
       $scope.payrollRecords = [];
@@ -57,7 +57,7 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
         // Should not happen, but just in case.
         return popupService.showAlert(
           gettextCatalog.getString('No Longer Eligible'),
-          gettextCatalog.getString('The email address provided ({email}) is no longer eligible for bitcoin payroll.<br/><br/>Please contact your employer and ask them to offer bitcoin payroll through BitPay.'), {
+          gettextCatalog.getString('The email address provided ({email}) is no longer eligible for bitcoin payroll. Please contact your employer and ask them to offer bitcoin payroll through BitPay.'), {
             email: record.eligibility.qualifyingData.email
           }, function() {
             returnToState('tabs.home');
@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
       } else {
         return popupService.showAlert(
           gettextCatalog.getString('Email Sent'),
-          gettextCatalog.getString('An email has been sent to {{email}}.<br/><br/>Please check and follow the directions in your email to complete payroll setup.', {
+          gettextCatalog.getString('An email has been sent to {{email}}. Please check and follow the directions in your email to complete payroll setup.', {
             email: record.eligibility.qualifyingData.email
           })
         );
@@ -141,14 +141,6 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
     var okText = gettextCatalog.getString('Open Insight');
     var cancelText = gettextCatalog.getString('Go Back');
     externalLinkService.open(url, true, null, message, okText, cancelText);
-  };
-
-  $scope.shouldHideBitcoinAnalysis = function() {
-    $scope.hideBitcoinAnalysis = !$scope.hideBitcoinAnalysis;
-    $timeout(function() {
-      $ionicScrollDelegate.resize();
-      $scope.$apply();
-    }, 10);
   };
 
   $scope.goBackToHome = function() {

@@ -15,7 +15,7 @@
           <span translate>Deduction</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{depositAmount || '...'}}  <span class="unit">{{depositDisplayUnit}}<span></div>
+          <div class="amount">{{depositAmount || '...'}} <span class="unit">{{depositDisplayUnit}}<span></div>
           <div class="right size-12">
             <div class="exchange-rate">{{exchangeRate}}</div>
             <div class="exchange-rate-info" translate>* Today's rate.</div>
@@ -39,7 +39,7 @@
           <span class="label" translate>Wallet</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
-              <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
             </i>
             <div>{{wallet.name}}</div>
           </div>

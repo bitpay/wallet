@@ -22,6 +22,8 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
             gettextCatalog.getString('Error'),
             gettextCatalog.getString('No payroll settings specified.'));
         }
+
+        $scope.effectiveDate = formatDate($scope.payrollRecord.employer.nextEffectiveDate);
       });
     } else {
       return showError(
@@ -59,8 +61,6 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     rateService.whenAvailable(function() {
       $scope.exchangeRate = getCurrentRateStr();
     });
-
-    $scope.effectiveDate = formatDate($scope.payrollRecord.employer.nextEffectiveDate);
   });
 
 

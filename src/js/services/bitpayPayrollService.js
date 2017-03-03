@@ -1,20 +1,21 @@
 'use strict';
-angular.module('copayApp.services').factory('bitpayPayrollService', function($log, lodash, configService, storageService, bitpayService, bwcService, profileService, walletService, gettextCatalog, homeIntegrationsService) {
+angular.module('copayApp.services').factory('bitpayPayrollService', function($log, lodash, configService, storageService, bitpayService, bwcService, profileService, walletService, gettextCatalog, homeIntegrationsService, nextStepsService) {
 
   var root = {};
 
   var ADDRESS_NOT_VERIFIED_RECOMMENDATION  = gettextCatalog.getString('If you cannot manually verify that your deposit address is correct then you should change your deposit wallet/address immediately.');
-  var ADDRESS_NOT_VERIFIED_ADDRESS_UNKNOWN = gettextCatalog.getString('We are unable to verify this deposit address.<br/><br/>' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
-  var ADDRESS_NOT_VERIFIED_NOT_IN_WALLET   = gettextCatalog.getString('We are unable to verify this deposit address.<br/><br/>The address is not associated with the specified wallet.<br/><br/>' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
-  var ADDRESS_NOT_VERIFIED_WALLET_EXTERNAL = gettextCatalog.getString('We are unable to verify this deposit address.<br/><br/>The specified address does not belong to any wallet in this app.<br/><br/>' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
+  var ADDRESS_NOT_VERIFIED_ADDRESS_UNKNOWN = gettextCatalog.getString('We are unable to verify this deposit address. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
+  var ADDRESS_NOT_VERIFIED_NOT_IN_WALLET   = gettextCatalog.getString('We are unable to verify this deposit address. The address is not associated with the specified wallet. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
+  var ADDRESS_NOT_VERIFIED_WALLET_EXTERNAL = gettextCatalog.getString('We are unable to verify this deposit address. The specified address does not belong to any wallet in this app. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
   var ADDRESS_VERIFIED                     = gettextCatalog.getString('This deposit address was verified automatically to be owned by you and associated with the specified wallet.');
-  var ADDRESS_VERIFIED_MANUALLY            = gettextCatalog.getString('This deposit address was manually verified by you to be correct.<br/><br/>' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
+  var ADDRESS_VERIFIED_MANUALLY            = gettextCatalog.getString('This deposit address was manually verified by you to be correct. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
 
   var homeItem = {
     name: 'payroll',
     title: 'Payroll',
     icon: 'icon-payroll',
     sref: 'tabs.payroll.summary',
+    devMode: true
   };
 
   var nextStepItem = {
@@ -22,10 +23,23 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     title: 'Receive bitcoin in your pay',
     icon: 'icon-payroll',
     sref: 'tabs.payroll',
+    devMode: true
   };
 
   // During payroll setup the bitpayAccount defines the environment for submission of payroll records.
   var bitpayAccount = undefined;
+
+  root.register = function() {
+    root.getPayrollRecords(function(err, records) {
+      if (records.length > 0) {
+        nextStepsService.unregister(nextStepItem);
+        homeIntegrationsService.register(homeItem);
+      } else {
+        homeIntegrationsService.unregister(homeItem);
+        nextStepsService.register(nextStepItem);
+      }
+    });
+  };
 
   root.bindToBitPayAccount = function(account) {
     bitpayAccount = account;
@@ -263,7 +277,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
         $log.error('Error removing payroll record: ' + err);
       }
       // If there are no more cards in storage then re-enable the next step entry
-      storageService.getPayrollRecords(bitpayService.getEnvironment().network, function(err, records) {
+        root.getPayrollRecords(function(err, records) {
         if (err) {
           $log.error('Error getting payroll records after remove: ' + err);
           // Continue, try to remove next step if necessary
@@ -656,17 +670,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     return error;
   };
 
-  var register = function() {
-    storageService.getPayrollRecords(bitpayService.getEnvironment().network, function(err, records) {
-      if (records) {
-        homeIntegrationsService.register(homeItem);
-      } else {
-        nextStepsService.register(nextStepItem);
-      }
-    });
-  };
-
-  register();
+  root.register();
   return root;
 
 });

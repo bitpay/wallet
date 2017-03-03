@@ -56,6 +56,16 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
     bitpayAccountService.startPairBitPayAccount('payroll');
   };
 
+  var startPayrollSetup = function(email) {
+    root.getAccount(email, function(err, account) {
+      if (err) {
+        return popupService.showAlert(gettextCatalog.getString('Error'), err);
+      }
+      bitpayPayrollService.bindToBitPayAccount(account);
+      $state.transitionTo('tabs.payroll.eligible');
+    });
+  };
+
   var showAccountSelector = function(dest) {
     accountSelectDest = dest;
     $scope.showAccounts = ($scope.accounts != undefined);
@@ -72,9 +82,7 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
               popupService.showAlert(gettextCatalog.getString('Error'), err);
               return;
             }
-            storageService.setNextStep('Payroll', 'true', function(err) {
-              $state.go('tabs.home');
-            });
+            bitpayPayrollService.register();
           });
           break;
         case 'setup':
