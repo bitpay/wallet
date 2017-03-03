@@ -59,10 +59,10 @@
     </div>
 
     <div class="card" ng-if="showTransferCard && hasFunds">
+      <div class="item item-heading">
+        <span translate>Transfer to Wallet</span>
+      </div>
       <div class="list">
-        <div class="item item-heading">
-          <span translate>Transfer to Wallet</span>
-        </div>
         <a class="item item-icon-left item-icon-right" ng-repeat="item in list" ng-if="hasWallets && item.recipientType == 'wallet'" ng-click="goToAmount(item)">
           <i class="icon big-icon-svg" ng-if="item.recipientType == 'wallet'">
             <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !item.color}" ng-style="{'background-color': item.color}" class="bg"/>
