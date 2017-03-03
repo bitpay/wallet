@@ -1,7 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pincodeController', function($rootScope, $timeout, $scope, $log, $window, configService) {
-  $scope.currentPincode = $scope.newPincode = '';
+angular.module('copayApp.controllers').controller('pincodeController', function($rootScope, $state, $timeout, $scope, $log, $window, configService) {
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.currentPincode = $scope.newPincode = '';
+    $scope.fromSettings = data.stateParams.fromSettings == 'true' ? true : false;
+    $scope.locking = data.stateParams.locking == 'true' ? true : false;
+    console.log('### From Settings:', $scope.fromSettings, 'Locking:', $scope.locking);
+  });
 
   angular.element($window).on('keydown', function(e) {
     if (e.which === 8) {
@@ -87,6 +93,7 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
 
   $scope.close = function() {
     $rootScope.$emit('updatePincodeOption');
-    $scope.pincodeModal.remove();
+    if ($scope.fromSettings) $state.go('tabs.advanced');
+    else $state.go('tabs.home');
   };
 });
