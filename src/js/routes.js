@@ -1160,6 +1160,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       }
     })
+    .state('tabs.payroll.addressbook', {
+      url: '/addressbook/add',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/addressbook.add.html',
+          controller: 'addressbookAddController'
+        }
+      }
+    })
     .state('tabs.payroll.depositAmount', {
       url: '/payroll/amount/:recipientType/:id/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel',
       views: {

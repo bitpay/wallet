@@ -21,7 +21,7 @@
           <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}" class="bg"/>
         </i>
         <i class="icon big-icon-svg" ng-if="recipientType == 'address'">
-          <img src="img/icon-bitcoin-symbol.svg" class="bg"/>
+          <img src="img/icon-wallet-external.svg" class="bg address"/>
         </i>
         <span ng-if="recipientType == 'contact'">
           <i class="icon big-icon-svg" ng-if="isChromeApp">
@@ -31,7 +31,7 @@
         </span>
         <span ng-if="!recipientType">
           <i class="icon big-icon-svg">
-            <img src="img/contact-placeholder.svg" class="bg"/>
+            <img src="img/icon-wallet-external.svg" class="bg address"/>
           </i>
         </span>
         <span class="m10l">{{toName || toAddress}}</span>

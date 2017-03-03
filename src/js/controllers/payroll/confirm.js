@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollConfirmController', function($scope, $log, $state, $timeout, $ionicScrollDelegate, lodash, bitpayPayrollService, txFormatService, profileService, configService, walletService, gettextCatalog, rateService, popupService, moment) {
+angular.module('copayApp.controllers').controller('payrollConfirmController', function($scope, $log, $state, $timeout, $ionicScrollDelegate, lodash, bitpayPayrollService, txFormatService, profileService, configService, walletService, gettextCatalog, rateService, popupService, moment, addressbookService, platformInfo) {
 
   var BITPAY_API_URL = 'https://bitpay.com';
   var config = configService.getSync().wallet.settings;
+
+  $scope.isChromeApp = platformInfo.isChromeApp;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.id) {
@@ -43,19 +45,25 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     $scope.btcDisplayUnit = getDisplayUnit(btcEstimateStr);
     $scope.externalWalletName = gettextCatalog.getString('My External Wallet');
 
-    $scope.wallets = profileService.getWallets({
-      onlyComplete: true,
-      network: 'livenet'
-    });
+    $scope.recipientType = data.stateParams.recipientType;
+    switch ($scope.recipientType) {
+      case 'address':
+        setRecipientAddress(data.stateParams.toAddress);
+        break;
+      case 'contact':
+        setRecipientContact(data.stateParams.toAddress);
+        break;
+      case 'wallet':
+        $scope.wallets = profileService.getWallets({
+          onlyComplete: true,
+          network: 'livenet'
+        });
 
-    if (data.stateParams.recipientType.includes('wallet')) {
-	    var wallet = lodash.find($scope.wallets, function(w) {
-	    	return w.name == data.stateParams.toName;
-	    });
-	    setWallet(wallet);
-    } else {
-    	// User provided an address, not a wallet.
-	    $scope.address = data.stateParams.toAddress;
+        var wallet = lodash.find($scope.wallets, function(w) {
+          return w.name == data.stateParams.toName;
+        });
+        setRecipientWallet(wallet);
+        break;
     }
 
     rateService.whenAvailable(function() {
@@ -63,6 +71,14 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     });
   });
 
+  $scope.showContactSelector = function() {
+    $scope.contactSelectorTitle = gettextCatalog.getString('Deposit to');
+    $scope.showContacts = true;
+  };
+
+  $scope.onContactSelect = function(contact) {
+    setRecipientContact(contact.address);
+  };
 
   $scope.showWalletSelector = function() {
     $scope.walletSelectorTitle = gettextCatalog.getString('Deposit to');
@@ -70,7 +86,7 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
   };
 
   $scope.onWalletSelect = function(wallet) {
-    setWallet(wallet);
+    setRecipientWallet(wallet);
   };
 
   $scope.renameExternalWallet = function() {
@@ -114,7 +130,22 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     return amountStr.split(' ')[1];
   };
 
-  function setWallet(wallet) {
+  function setRecipientAddress(address) {
+    $scope.address = address;
+  };
+
+  function setRecipientContact(address) {
+    $scope.address = address;
+    addressbookService.get(address, function(err, contact) {
+      if (err || !contact) {
+        $log.error(err);
+        return;
+      }      
+      $scope.contact = contact;
+    });
+  };
+
+  function setRecipientWallet(wallet) {
     $scope.address = '';
     $scope.wallet = wallet;
 

@@ -35,17 +35,8 @@
             </div>
           </span>
         </div>
-        <a class="item item-icon-right" ng-if="wallet" ng-click="showWalletSelector()">
-          <span class="label" translate>Wallet</span>
-          <div class="wallet">
-            <i class="icon big-icon-svg">
-              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
-            </i>
-            <div>{{wallet.name}}</div>
-          </div>
-          <i class="icon bp-arrow-right"></i>
-        </a>
-        <div class="item item-icon-right" ng-if="!wallet" ng-click="renameExternalWallet()">
+        <!-- Address (external wallet) -->
+        <div class="item item-icon-right" ng-if="recipientType == 'address'" ng-click="renameExternalWallet()">
           <span class="label" translate>Wallet</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
@@ -55,6 +46,29 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </div>
+        <!-- Contact -->
+        <a class="item item-icon-right" ng-if="recipientType == 'contact'" ng-click="showContactSelector()">
+          <span class="label" translate>Contact</span>
+          <div class="contact">
+            <i class="icon big-icon-svg">
+              <img src="img/contact-placeholder.svg" class="bg" ng-if="isChromeApp">
+              <gravatar class="gravatar" name="{{contact.name}}" width="30" email="{{contact.email}}" ng-if="!isChromeApp"></gravatar>
+            </i>
+            <div>{{contact.name}}</div>
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <!-- Wallet -->
+        <a class="item item-icon-right" ng-if="recipientType == 'wallet'" ng-click="showWalletSelector()">
+          <span class="label" translate>Wallet</span>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+            <div>{{wallet.name}}</div>
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </a>
         <div class="item single-line">
           <span class="label" translate>Next effective pay date</span>
           <span class="item-note">
@@ -69,6 +83,12 @@
       </button>
     </div>
   </ion-content>
+  <contact-selector
+    contact-selector-title="contactSelectorTitle"
+    contact-selector-selected-contact="contact"
+    contact-selector-show="showContacts"
+    contact-selector-on-select="onContactSelect">
+  </contact-selector>
   <wallet-selector
     wallet-selector-title="walletSelectorTitle"
     wallet-selector-wallets="wallets"

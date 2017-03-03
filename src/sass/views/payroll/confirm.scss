@@ -130,6 +130,7 @@
         float: right;
       }
     }
+    .contact,
     .wallet {
       display: flex;
       align-items: center;
@@ -149,6 +150,14 @@
         position: static;
 
         > img {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+          margin-right: .7rem;
+          box-shadow: none;
+        }
+
+        .gravatar {
           height: 24px;
           width: 24px;
           padding: 2px;

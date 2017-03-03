@@ -26,6 +26,10 @@
           width:30px;
           height:30px;
           box-shadow: none;
+
+          &.address {
+            background-color: $v-light-gray;
+          }
         }
       }
       font-size: 13px;
