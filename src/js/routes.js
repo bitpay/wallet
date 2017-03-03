@@ -699,7 +699,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/welcome',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/welcome.html'
+            templateUrl: 'views/onboarding/welcome.html',
+            controller: 'welcomeController'
           }
         }
       })
@@ -707,7 +708,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/tour',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/tour.html'
+            templateUrl: 'views/onboarding/tour.html',
+            controller: 'tourController'
           }
         }
       })
@@ -715,7 +717,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/collectEmail/:walletId',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/collectEmail.html'
+            templateUrl: 'views/onboarding/collectEmail.html',
+            controller: 'collectEmailController'
           }
         }
       })
@@ -723,7 +726,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/notifications/:walletId',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/notifications.html'
+            templateUrl: 'views/onboarding/notifications.html',
+            controller: 'notificationsController'
           }
         }
       })
@@ -731,7 +735,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/backupRequest/:walletId',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/backupRequest.html'
+            templateUrl: 'views/onboarding/backupRequest.html',
+            controller: 'backupRequestController'
           }
         }
       })
@@ -739,7 +744,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/backupWarning/:from/:walletId',
         views: {
           'onboarding': {
-            templateUrl: 'views/backupWarning.html'
+            templateUrl: 'views/backupWarning.html',
+            controller: 'backupWarningController'
           }
         }
       })
@@ -765,7 +771,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/terms',
         views: {
           'onboarding': {
-            templateUrl: 'views/onboarding/terms.html'
+            templateUrl: 'views/onboarding/terms.html',
+            controller: 'termsController'
           }
         }
       })

@@ -41,14 +41,19 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
     if (goHome) $state.go('tabs.home');
   };
 
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    if ($scope.score)
+      $ionicConfig.views.swipeBackEnabled(false);
+  });
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isCordova = platformInfo.isCordova;
     $scope.score = (data.stateParams && data.stateParams.score) ? parseInt(data.stateParams.score) : null;
     $scope.feedback = {};
-
-    if ($scope.score) {
-      $ionicConfig.views.swipeBackEnabled(false);
-    }
 
     switch ($scope.score) {
       case 1:
