@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess, txFormatService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.title = gettextCatalog.getString('Transaction');
@@ -17,7 +17,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $ionicHistory.goBack();
         return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
       }
-      $scope.btx = tx;
+
+      $scope.btx = txFormatService.processTx(tx);
+
       if ($scope.btx.action != 'invalid') {
         if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
         if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
