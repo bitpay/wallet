@@ -8,8 +8,14 @@ angular.module('copayApp.controllers').controller('glideraController',
     };
 
     var init = function() {
+      ongoingProcess.set('connectingGlidera', true);
       glideraService.init(function(err, data) {
-        if (err || lodash.isEmpty(data)) return;
+        ongoingProcess.set('connectingGlidera', false);
+        if (err) {
+          popupService.showAlert('Error connecting Glidera', err + '. Please re-connect to Glidera');
+          return;
+        }
+        if (!data || (data && !data.token)) return;
 
         $scope.account['token'] = data.token;
         $scope.account['status'] = data.status;
@@ -91,7 +97,7 @@ angular.module('copayApp.controllers').controller('glideraController',
       $scope.showOauthForm = !$scope.showOauthForm;
     }
 
-    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.$on("$ionicView.afterEnter", function(event, data) {
       $scope.network = glideraService.getNetwork();
       $scope.currency = glideraService.getCurrency();
       $scope.showOauthForm = false;
