@@ -18,6 +18,10 @@ angular.module('copayApp.services')
       name: 'Deutsch',
       isoCode: 'de',
        }, {
+      name: '日本語',
+      isoCode: 'ja',
+      useIdeograms: true,
+       }, {
       name: '中文（简体）',
       isoCode: 'zh',
       useIdeograms: true,
@@ -29,13 +33,6 @@ angular.module('copayApp.services')
     // }, {
     //   name: 'Italiano',
     //   isoCode: 'it',
-    //   name: '日本語',
-    //   isoCode: 'ja',
-    //   useIdeograms: true,
-    // }, {
-    //   name: '中文（简体）',
-    //   isoCode: 'zh',
-    //   useIdeograms: true,
     // }, {
     //   name: 'Polski',
     //   isoCode: 'pl',
