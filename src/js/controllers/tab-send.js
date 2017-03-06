@@ -70,8 +70,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           return item.network == 'livenet';
         });
       }
+      var walletList = [];
       lodash.each(walletsToTransfer, function(v) {
-        originalList.push({
+        walletList.push({
           color: v.color,
           name: v.name,
           recipientType: 'wallet',
@@ -80,16 +81,16 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           },
         });
       });
-      $scope.updateList(originalList);
+      originalList = originalList.concat(walletList);
     }
   }
 
-  var updateContactsList = function() {
+  var updateContactsList = function(cb) {
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);
 
       $scope.hasContacts = lodash.isEmpty(ab) ? false : true;
-      if (!$scope.hasContacts) return;
+      if (!$scope.hasContacts) return cb();
 
       var completeContacts = [];
       lodash.each(ab, function(v, k) {
@@ -106,11 +107,11 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       var contacts = completeContacts.slice(0, (currentContactsPage + 1) * CONTACTS_SHOW_LIMIT);
       $scope.contactsShowMore = completeContacts.length > contacts.length;
       originalList = originalList.concat(contacts);
-      $scope.updateList();
+      return cb();
     });
   };
 
-  $scope.updateList = function() {
+  var updateList = function() {
     $scope.list = lodash.clone(originalList);
     $timeout(function() {
       $ionicScrollDelegate.resize();
@@ -199,6 +200,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     }
     updateHasFunds();
     updateWalletsList();
-    updateContactsList();
+    updateContactsList(function() {
+      updateList();
+    });
   });
 });
