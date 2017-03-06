@@ -43,6 +43,11 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     var feeLevelValue = lodash.find($scope.feeLevels['livenet'], {
       level: $scope.currentFeeLevel
     });
+    if (lodash.isEmpty(feeLevelValue)) {
+      $scope.feePerKBUnit = null;
+      $scope.avgConfirmationTime = null; 
+      return;
+    }
     $scope.feePerKBUnit = feeLevelValue.feePerKBUnit;
     $scope.avgConfirmationTime = feeLevelValue.nbBlocks * 10;
   };
