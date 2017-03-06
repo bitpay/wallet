@@ -126,9 +126,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('pincode', {
-        url: '/pincode/:fromSettings/:locking',
+        url: '/pincode/',
         controller: 'pincodeController',
-        templateUrl: 'views/pincode.html'
+        templateUrl: 'views/pincode.html',
       })
 
       /*
@@ -457,6 +457,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-settings@tabs': {
             controller: 'pincodeController',
             templateUrl: 'views/pincode.html',
+            cache: false
           }
         }
       })
@@ -1112,7 +1113,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, startupService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 
     uxLanguage.init();
 
@@ -1218,11 +1219,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               historyRoot: true
             });
             configService.whenAvailable(function(config) {
-              console.log('### CONFIG', config.pincode);
-              if (config.pincode && config.pincode.enabled) {
-                $state.go('pincode', {
-                  fromSettings: false,
-                  locking: false
+              startupService.ready();
+              if (platformInfo.isCordova && config.pincode && config.pincode.enabled) {
+                $state.transitionTo('pincode').then(function() {
+                  // Clear history
+                  $ionicHistory.clearHistory();
                 });
               } else {
                 $state.transitionTo('tabs.home').then(function() {

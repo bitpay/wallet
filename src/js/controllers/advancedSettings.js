@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $timeout, $state, $log, $window, $ionicModal, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $ionicScrollDelegate, pincodeService) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $timeout, $state, $log, $window, $ionicModal, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $ionicScrollDelegate, pincodeService) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -53,27 +53,22 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   };
 
   $scope.usePincodeChange = function() {
-    // pincodeService.lockChange({
-    //   fromSettings: true,
-    //   locking: $scope.usePincode.enabled
-    // });
     $state.go('tabs.pincode', {
       fromSettings: true,
       locking: $scope.usePincode.enabled
     });
   };
 
-  $rootScope.$on('updatePincodeOption', function(event) {
-    $timeout(function() {
-      var config = configService.getSync();
-      $scope.usePincode = {
-        enabled: config.pincode ? config.pincode.enabled : false
-      };
-      $scope.$apply();
-    });
+  $scope.$on('updatePincodeOption', function(event) {
+    var config = configService.getSync();
+    $scope.usePincode = {
+      enabled: config.pincode ? config.pincode.enabled : false
+    };
+    $scope.$apply();
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isCordova = platformInfo.isCordova;
     updateConfig();
   });
 

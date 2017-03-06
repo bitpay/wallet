@@ -1,4 +1,9 @@
-<ion-modal-view id="pin-code" ng-controller="pincodeController" hide-tabs>
+<ion-view id="pin-code" ng-controller="pincodeController" hide-tabs hide-back-button="!fromSettings">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Pin Code' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
   <div ng-if="fromSettings" ng-click="close()" class="close" translate>Close</div>
   <div class="content">
     <div class="block-code">
@@ -20,35 +25,35 @@
     <div class="block-buttons">
       <div class="row">
         <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('1')">1</button>
+          <button class="button button-light button-stretch" ng-click="updatePinCode('1')">1</button>
         </div>
         <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('2')">2</button>
+          <button class="button button-light button-stretch" ng-click="updatePinCode('2')">2</button>
         </div>
         <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('3')">3</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('4')">4</button>
-        </div>
-        <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('5')">5</button>
-        </div>
-        <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('6')">6</button>
+          <button class="button button-light button-stretch" ng-click="updatePinCode('3')">3</button>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('7')">7</button>
+          <button class="button button-light button-stretch" ng-click="updatePinCode('4')">4</button>
         </div>
         <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('8')">8</button>
+          <button class="button button-light button-stretch" ng-click="updatePinCode('5')">5</button>
         </div>
         <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('9')">9</button>
+          <button class="button button-light button-stretch" ng-click="updatePinCode('6')">6</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="updatePinCode('7')">7</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="updatePinCode('8')">8</button>
+        </div>
+        <div class="col">
+          <button class="button button-light button-stretch" ng-click="updatePinCode('9')">9</button>
         </div>
       </div>
       <div class="row">
@@ -56,7 +61,7 @@
           <button class="button button-light button-stretch icon ion-checkmark" ng-click="save()" ng-disabled=""></button>
         </div>
         <div class="col">
-          <button class="button button-light button-stretch" ng-click="add('0')">0</button>
+          <button class="button button-light button-stretch" ng-click="updatePinCode('0')">0</button>
         </div>
         <div class="col">
           <button class="button button-light button-stretch icon ion-arrow-left-a" ng-click="delete()"></button>
@@ -64,4 +69,4 @@
       </div>
     </div>
   </div>
-</ion-modal-view>
+</ion-view>

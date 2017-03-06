@@ -1,36 +1,17 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pincodeController', function($rootScope, $state, $timeout, $scope, $log, $window, configService) {
+angular.module('copayApp.controllers').controller('pincodeController', function($state, $stateParams, $timeout, $scope, $log, $window, configService) {
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event) {
     $scope.currentPincode = $scope.newPincode = '';
-    $scope.fromSettings = data.stateParams.fromSettings == 'true' ? true : false;
-    $scope.locking = data.stateParams.locking == 'true' ? true : false;
-    console.log('### From Settings:', $scope.fromSettings, 'Locking:', $scope.locking);
+    $scope.fromSettings = $stateParams.fromSettings == 'true' ? true : false;
+    $scope.locking = $stateParams.locking == 'true' ? true : false;
   });
-
-  angular.element($window).on('keydown', function(e) {
-    if (e.which === 8) {
-      e.preventDefault();
-      $scope.delete();
-    }
-
-    if (e && e.key.match(/^[0-9]$/))
-      $scope.add(e.key);
-    else if (e && e.keyCode == 27)
-      $scope.close();
-    else if (e && e.keyCode == 13)
-      $scope.save();
-  });
-
-  $scope.add = function(value) {
-    updatePassCode(value);
-  };
 
   $scope.delete = function() {
     if ($scope.currentPincode.length > 0) {
       $scope.currentPincode = $scope.currentPincode.substring(0, $scope.currentPincode.length - 1);
-      updatePassCode();
+      $scope.updatePinCode();
     }
   };
 
@@ -39,12 +20,18 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
     else return true;
   };
 
-  function updatePassCode(value) {
-    if (value && $scope.currentPincode.length < 4)
+  $scope.updatePinCode = function(value) {
+    if (value && !isComplete()) {
       $scope.currentPincode = $scope.currentPincode + value;
+    }
     $timeout(function() {
       $scope.$apply();
     });
+    if (!$scope.locking && isComplete()) {
+      $timeout(function() {
+        $scope.save();
+      });
+    }
   };
 
   $scope.save = function() {
@@ -52,29 +39,27 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
     var config = configService.getSync();
     var match = config.pincode.value == $scope.currentPincode ? true : false;
 
-    if (!$scope.fromSettings && match) {
-      $scope.currentPincode = '';
-      $scope.close();
-      return;
-    }
     if (!$scope.locking) {
-      if (!match) return;
-      saveSettings($scope.locking, '');
+      if (match) {
+        $scope.fromSettings ? saveSettings($scope.locking, '') : $scope.close();
+        return;
+      }
+    } else {
+      checkCodes();
     }
-    checkCodes();
   };
 
   function checkCodes() {
     if (!$scope.newPincode) {
       $scope.newPincode = $scope.currentPincode;
       $scope.currentPincode = '';
+      $timeout(function() {
+        $scope.$apply();
+      });
     } else {
       if ($scope.newPincode == $scope.currentPincode)
         saveSettings($scope.locking, $scope.newPincode);
     }
-    $timeout(function() {
-      $scope.$apply();
-    });
   };
 
   function saveSettings(enabled, value) {
@@ -92,7 +77,7 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
   };
 
   $scope.close = function() {
-    $rootScope.$emit('updatePincodeOption');
+    $scope.$emit('updatePincodeOption');
     if ($scope.fromSettings) $state.go('tabs.advanced');
     else $state.go('tabs.home');
   };
