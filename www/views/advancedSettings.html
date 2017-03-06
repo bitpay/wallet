@@ -31,7 +31,7 @@
 
       <div class="item item-divider"></div>
 
-      <ion-toggle ng-model="usePincode.enabled" toggle-class="toggle-balanced" ng-change="usePincodeChange()">
+      <ion-toggle ng-if="isCordova" ng-model="usePincode.enabled" toggle-class="toggle-balanced" ng-change="usePincodeChange()">
         <span class="toggle-label" translate>Use pin to lock/unlock the app</span>
       </ion-toggle>
     </div>
