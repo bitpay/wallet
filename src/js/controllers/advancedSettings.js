@@ -59,14 +59,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.$on('updatePincodeOption', function(event) {
-    var config = configService.getSync();
-    $scope.usePincode = {
-      enabled: config.pincode ? config.pincode.enabled : false
-    };
-    $scope.$apply();
-  });
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isCordova = platformInfo.isCordova;
     updateConfig();

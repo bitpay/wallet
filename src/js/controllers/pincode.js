@@ -77,7 +77,6 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
   };
 
   $scope.close = function() {
-    $scope.$emit('updatePincodeOption');
     if ($scope.fromSettings) $state.go('tabs.advanced');
     else $state.go('tabs.home');
   };
