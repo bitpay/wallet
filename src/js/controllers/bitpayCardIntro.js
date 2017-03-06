@@ -20,8 +20,6 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
               popupService.showAlert(gettextCatalog.getString('Error updating Debit Cards'), err);
               return;
             }
-            // Set flag for nextStep
-            storageService.setNextStep('BitpayCard', 'true', function(err) {});
             $ionicHistory.nextViewOptions({
               disableAnimate: true
             });
@@ -83,9 +81,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
           popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
-        storageService.setNextStep('BitpayCard', 'true', function(err) {
-          $state.go('tabs.home');
-        });
+        $state.go('tabs.home');
       });
     }
   };
