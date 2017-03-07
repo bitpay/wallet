@@ -5,6 +5,11 @@
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-show="btx" ng-click="updateTx()">
+        <i class="icon ion-ios-refresh-empty"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content class="tx-details-content" ng-show="btx">
@@ -84,7 +89,7 @@
             <span ng-show="toggleFeeFiat">{{feeFiatStr}}</span>
           </span>
         </div>
-        <div class="item single-line" ng-click="updateTx()">
+        <div class="item single-line">
           <span class="label" translate>Confirmations</span>
           <span class="item-note">
             <span ng-show="!btx.confirmations || btx.confirmations == 0" translate>
