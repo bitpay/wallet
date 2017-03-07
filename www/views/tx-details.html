@@ -77,10 +77,11 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line">
+        <div class="item single-line" ng-click="toggleFeeFiat = !toggleFeeFiat">
           <span class="label" translate>Fee</span>
           <span class="item-note">
-            {{btx.feeStr}}
+            <span ng-show="!toggleFeeFiat">{{btx.feeStr}}</span>
+            <span ng-show="toggleFeeFiat">{{feeFiatStr}}</span>
           </span>
         </div>
         <div class="item single-line" ng-click="updateTx()">
