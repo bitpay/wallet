@@ -34,7 +34,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
       });
       popupService.showConfirm(title, msg, null, null, function(res) {
         if (res) {
-          removePayrollRecord(record);
+          removePayrollRecord(record.id);
         }
       });
     };
@@ -65,8 +65,8 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
       });
     };
 
-    var removePayrollRecord = function(record) {
-      bitpayPayrollService.removePayrollRecord(record, function(err) {
+    var removePayrollRecord = function(id) {
+      bitpayPayrollService.removePayrollRecord(id, function(err) {
         if (err) {
           return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not remove payroll settings.'));
         }

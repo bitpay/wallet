@@ -460,57 +460,19 @@ angular.module('copayApp.services')
       });
     };
 
-    // data: {
-    //   token: account token
-    //   email: account email
-    //   records: [{
-    //     token: record token,
-    //     eid: record id,
-    //     id: record id,
-    //     employer: {
-    //       eid: employer id,
-    //       id: employer id,
-    //       name,
-    //       iconUrl,
-    //       imageUrl,
-    //       nextEffectiveDate,
-    //       payCycle,
-    //       about: {
-    //         html
-    //       }
-    //     },
-    //     employee: {
-    //       label,
-    //       email
-    //     },
-    //     deduction: {
-    //       active,
-    //       address,
-    //       walletId,
-    //       amount,
-    //       currency,
-    //       externalWalletName,
-    //       unverifiedAddressAccepted
-    //     }
-    //   }]
-    // }
-    root.setPayrollRecords = function(network, data, cb) {
-      data = data || {};
-      if (lodash.isEmpty(data) || !data.email) return cb('Cannot set payroll records: no account to set');
+    root.setPayrollRecords = function(network, email, records, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
-        bitpayAccounts[data.email] = bitpayAccounts[data.email] || {};
-        bitpayAccounts[data.email]['payrollRecords'] = data.records;
+        bitpayAccounts[email] = bitpayAccounts[email] || {};
+        bitpayAccounts[email]['payrollRecords'] = records;
         storage.set('bitpayAccounts-v2-' + network, JSON.stringify(bitpayAccounts), cb);
       });
     };
 
-    // cb(err, records)
-    // records: [...]
     root.getPayrollRecords = function(network, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (lodash.isString(bitpayAccounts)) {
@@ -530,13 +492,7 @@ angular.module('copayApp.services')
       });
     };
 
-    // record: {...}
-    root.removePayrollRecord = function(network, record, cb) {
-      if (lodash.isString(record)) {
-        record = JSON.parse(record);
-      }
-      record = record || {};
-      if (lodash.isEmpty(record) || !record.eid) return cb('No payroll record to remove');
+    root.removePayrollRecord = function(network, id, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
         if (lodash.isString(bitpayAccounts)) {
@@ -546,7 +502,7 @@ angular.module('copayApp.services')
         Object.keys(bitpayAccounts).forEach(function(email) {
           var data = bitpayAccounts[email]['payrollRecords'];
           var newRecords = lodash.reject(data, {
-            'eid': record.eid
+            'eid': id
           });
           data = {};
           data.records = newRecords;
@@ -558,20 +514,44 @@ angular.module('copayApp.services')
       });
     };
 
-    // data: {
-    //   'eid': {  // payroll record id
-    //     transactions: [{
-    //       uniqueId,
-    //       timestamp,
-    //       amount,
-    //       currency,
-    //       rate,
-    //       btc,
-    //       status,
-    //       address,
-    //     }]
-    //   }
-    // }
+    root.addPayrollEligibilityRecord = function(network, record, cb) {
+      record = record || {};
+      if (lodash.isEmpty(record)) return cb('Cannot add payroll eligibility record: no record content');
+      storage.get('payrollEligibility-' + network, function(err, records) {
+        if (err) return cb(err);
+        if (lodash.isString(records)) {
+          records = JSON.parse(records);
+        }
+        records = records || [];
+        records.push(record);
+        storage.set('payrollEligibility-' + network, JSON.stringify(records), cb);
+      });
+    };
+
+    root.getPayrollEligibilityRecords = function(network, cb) {
+      storage.get('payrollEligibility-' + network, function(err, records) {
+        if (lodash.isString(records)) {
+          records = JSON.parse(records);
+        }
+        records = records || [];
+        cb(err, records);
+      });
+    };
+
+    root.removePayrollEligibilityRecord = function(network, email, cb) {
+      storage.get('payrollEligibility-' + network, function(err, records) {
+        if (err) cb(err);
+        if (lodash.isString(records)) {
+          records = JSON.parse(records);
+        }
+        records = records || [];
+        records = lodash.reject(records, function(r) {
+          return r.eligibility.qualifyingData.email == email;
+        });
+        storage.set('payrollEligibility-' + network, JSON.stringify(records), cb);
+      });
+    };
+
     root.setPayrollRecordsHistory = function(network, data, cb) {
       storage.set('payrollRecordsHistory-' + network, JSON.stringify(data), cb);
     };
@@ -580,14 +560,14 @@ angular.module('copayApp.services')
       storage.get('payrollRecordsHistory-' + network, cb);
     };
 
-    root.removePayrollRecordHistory = function(network, record, cb) {
+    root.removePayrollRecordHistory = function(network, id, cb) {
       root.getPayrollRecordsHistory(network, function(err, data) {
         if (err) return cb(err);
         if (lodash.isString(data)) {
           data = JSON.parse(data);
         }
         data = data || {};
-        delete data[record.eid];
+        delete data[id];
         root.setPayrollRecordsHistory(network, JSON.stringify(data), cb);
       });
     };

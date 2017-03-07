@@ -1,26 +1,31 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollAboutController', function($scope, $state, bitpayPayrollService, lodash, uxLanguage, externalLinkService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('payrollAboutController', function($scope, $state, $log, bitpayPayrollService, lodash, uxLanguage, externalLinkService, gettextCatalog) {
 
   $scope.lang = uxLanguage.currentLanguage;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    bitpayPayrollService.getPayrollRecords(function(err, records) {
-      if (err) {
-        return showError(err);
-      }
+    if (data.stateParams && data.stateParams.id) {
+      bitpayPayrollService.getPayrollRecordById(data.stateParams.id, function(err, record) {
+        if (err) {
+          return showError(err);
+        }
 
-      var record = $scope.payrollRecord = lodash.find(records, function(r) {
-        return r.id == data.stateParams.id;
+        if (!record) {
+          return showError(
+            'No payroll record found when loading payrollAboutController',
+            gettextCatalog.getString('Error'),
+            gettextCatalog.getString('No payroll settings specified.'));
+        }
+
+        $scope.payrollRecord = record;
       });
-
-      if (!$scope.payrollRecord) {
-        return showError(
-          'No payroll record found when loading payrollConfirmController',
-          gettextCatalog.getString('Error'),
-          gettextCatalog.getString('No payroll settings specified.'));
-      }
-    });
+    } else {
+      return showError(
+        'No payroll record id specified when loading payrollAboutController',
+        gettextCatalog.getString('Error'),
+        gettextCatalog.getString('No payroll settings specified.'));
+    }
   });
 
   $scope.viewBitPayTerms = function() {
@@ -31,6 +36,13 @@ angular.module('copayApp.controllers').controller('payrollAboutController', func
     var okText = gettextCatalog.getString('Open Website');
     var cancelText = gettextCatalog.getString('Go Back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
+  };
+
+  function showError(err, title, message) {
+    var title = title || gettextCatalog.getString('Error');
+    var message = message || gettextCatalog.getString('Could not save find payroll settings.');
+    $log.error(err);
+    return popupService.showAlert(title, message);
   };
 
 });

@@ -16,7 +16,7 @@
     <div class="list card" ng-repeat="record in payrollRecords">
 
       <!-- Eligible but not yet verified -->
-      <div ng-if="record.eligibility">
+      <div ng-if="record.eligibility && !record.eligibility.verified">
         <div class="section">
           <img class="full-image" ng-src="{{record.employer.imageUrl}}">
         </div>
@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="section footer">
-          <div class="action" ng-click="recheckEligibility(record)">
+          <div class="action" ng-click="userRecheckEligibility(record.eligibility.qualifyingData)">
             <div translate>Resend email</div>
           </div>
           <div class="action" ng-click="stopPayroll(record)">
@@ -42,7 +42,7 @@
       </div>
 
       <!-- Verified but not yet setup -->
-      <div ng-if="!record.eligibility && !record.deduction">
+      <div ng-if="record.eligibility && record.eligibility.verified">
         <div class="section">
           <img class="full-image" ng-src="{{record.employer.imageUrl}}">
         </div>

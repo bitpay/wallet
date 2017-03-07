@@ -5,23 +5,28 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
   var config = configService.getSync().wallet.settings;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    setScope();
+  });
+
+  var setScope = function(cb) {
+    cb = cb || function(){};
+    $scope.payrollRecords = [];
+
     bitpayPayrollService.getPayrollRecords(function(err, records) {
       if (err) {
         return showError(err);
       }
 
-      if (records.length == 0) {
-        return showError(
-          'No payroll records found when loading payrollSummaryController',
-          gettextCatalog.getString('Error'),
-          gettextCatalog.getString('No payroll records found.'));
-      }
-
-      $scope.payrollRecords = [];
-
       asyncEach(records,
         function(record, callback) {
-          if (record.deduction) {
+
+          if (record.eligibility) {
+            recheckEligibility(record.eligibility.qualifyingData, function(err, record) {
+              $scope.payrollRecords.push(record);
+              return callback();
+            });
+
+          } else if (record.deduction) {
             if (record.deduction.externalWalletName.length > 0) {
               getAddressBalanceStr(record.deduction.address, function(balanceStr) {
                 record.deduction.wallet = {
@@ -34,22 +39,27 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
                 $scope.payrollRecords.push(record);
                 return callback();
               });
-              return;
             } else {
               record.deduction.wallet = profileService.getWallet(record.deduction.walletId);
             }
           }
-          $scope.payrollRecords.push(record);
           return callback();
         }, function() {
           // done
+          cb();
         }
       );
     });
-  });
+  };
 
-  $scope.recheckEligibility = function(record) {
-    bitpayPayrollService.checkIfEligible(record.eligibility.qualifyingData, function(err, record) {
+  var recheckEligibility = function(qualifyingData, cb) {
+    bitpayPayrollService.checkIfEligible(qualifyingData, function(err, record) {
+      cb(err, record);
+    });
+  };
+
+  $scope.userRecheckEligibility = function(qualifyingData) {
+    recheckEligibility(qualifyingData, function(err, record) {
       if (err) {
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
@@ -96,7 +106,13 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
             if (err) {
               return showError(err);
             }
-            returnToState('tabs.home');
+
+            // Go to home if no more payroll records.
+            setScope(function() {
+              if ($scope.payrollRecords.length == 0) {
+                returnToState('tabs.home');
+              }
+            });
           });
         }
       });

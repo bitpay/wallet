@@ -6,8 +6,27 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="list card" ng-if="payrollRecord.employee">
+    <div class="list card">
       <div class="section">
+        <div class="centered">
+          <i class="icon big-icon-svg">
+            <img src="{{payrollRecord.employer.imageUrl}}" class="employer">
+          </i>
+            <div class="name">
+            {{payrollRecord.employer.name}}
+          </div>
+          <div class="description">
+            {{payrollRecord.employer.about.message}}
+          </div>
+          <div class="description">
+            {{payrollRecord.employer.about.terms}}
+          </div>
+          <div class="description">
+            <a href="{{payrollRecord.employer.about.utl}}">Learn more</a>
+          </div>
+        </div>
+      </div>
+      <div class="section" ng-if="payrollRecord.employee">
         <div class="centered">
 					<i class="icon big-icon-svg">
       			<img src="img/contact-placeholder.svg" class="employee">
@@ -22,11 +41,5 @@
       </div>
    </div>
 
-    <div class="list">
-      <div class="item item-text-wrap">
-				<div id="about" ng-bind-html="payrollRecord.employer.about.html">
-				</div>
-      </div>
-    </div>
   </ion-content>
 </ion-view>

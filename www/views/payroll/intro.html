@@ -38,7 +38,7 @@
       <button class="button button-standard button-primary" ng-click="setupPayroll()" translate>
         Setup Payroll
       </button>
-      <button class="button button-standard button-secondary button-clear" ng-click="connectPayroll()" translate>
+      <button ng-if="hasAccount" class="button button-standard button-secondary button-clear" ng-click="connectPayroll()" translate>
         Connect my Payroll
       </button>
     </div>

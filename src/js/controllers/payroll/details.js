@@ -19,22 +19,19 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.id) {
-
-      bitpayPayrollService.getPayrollRecords(function(err, records) {
+      bitpayPayrollService.getPayrollRecordById(function(err, record) {
         if (err) {
           return showError(err);
         }
 
-        var record = $scope.payrollRecord = lodash.find(records, function(r) {
-          return r.id == data.stateParams.id;
-        });
-
-        if (!$scope.payrollRecord) {
+        if (!record) {
           return showError(
             'No payroll record found when loading payrollConfirmController',
             gettextCatalog.getString('Error'),
             gettextCatalog.getString('No payroll settings specified.'));
         }
+
+        $scope.payrollRecord = record;
 
         var btcEstimate = rateService.fromFiat(parseFloat(record.deduction.amount), config.alternativeIsoCode);
         var btcEstimateStr = txFormatService.formatAmountStr(btcEstimate);

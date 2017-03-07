@@ -23,9 +23,7 @@ angular.module('copayApp.controllers').controller('payrollEligibleController', f
             email: $scope.qualifyingData.email
           }));
       } else {
-        $state.go('tabs.payroll.summary', {
-          id: record.id
-        });
+        $state.go('tabs.payroll.summary');
       }
     });
   };

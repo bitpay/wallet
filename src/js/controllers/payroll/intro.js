@@ -26,6 +26,7 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
       $scope.accounts = accounts;
+      $scope.hasAccount = (accounts.length > 0);
     });
   });
 
@@ -36,7 +37,9 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
   $scope.setupPayroll = function() {
     if ($scope.accounts.length == 0) {
-      startPairBitPayAccount();
+      // If no accounts then move to eligibility step to input an email address; we'll try to find account (or create one) later.
+      $state.transitionTo('tabs.payroll.eligible');
+//      startPairBitPayAccount();
     } else {
       $scope.accountSelectorTitle = gettextCatalog.getString('On BitPay account');
       showAccountSelector('setup');
