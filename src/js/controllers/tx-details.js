@@ -84,6 +84,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       }
 
       $scope.btx = txFormatService.processTx(tx);
+      txFormatService.formatAlternativeStr(tx.fees, function(v) {
+        $scope.feeFiatStr = v;
+      });
 
       if ($scope.btx.action != 'invalid') {
         if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
