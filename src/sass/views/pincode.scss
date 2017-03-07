@@ -3,6 +3,9 @@
   .bar.bar-clear {
     background-color: transparent;
     border: none;
+    .back-button .icon:before {
+      color: #2d3f50;
+    }
   }
   .content {
     text-align: center;
@@ -62,7 +65,7 @@
   	box-shadow: 0 0 1px 0px rgb( 255, 255, 255);
   	width: 5px;
   	height: 5px;
-  	transition: background-color .5s ease-in-out;
+  	transition: background-color .1s ease-in-out;
   }
   .filled {
   	background-color: #666666;

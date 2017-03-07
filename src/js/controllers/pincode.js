@@ -28,9 +28,7 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
       $scope.$apply();
     });
     if (!$scope.locking && isComplete()) {
-      $timeout(function() {
-        $scope.save();
-      });
+      $scope.save();
     }
   };
 
@@ -72,7 +70,9 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
-      $scope.close();
+      $timeout(function() {
+        $scope.close();
+      });
     });
   };
 
