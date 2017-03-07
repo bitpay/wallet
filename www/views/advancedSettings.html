@@ -29,11 +29,13 @@
         <span class="toggle-label" translate>Hide Next Steps Card</span>
       </ion-toggle>
 
-      <div class="item item-divider"></div>
+      <div ng-if="isCordova">
+        <div class="item item-divider"></div>
 
-      <ion-toggle ng-if="isCordova" ng-model="usePincode.enabled" toggle-class="toggle-balanced" ng-change="usePincodeChange()">
-        <span class="toggle-label" translate>Use pin to lock/unlock the app</span>
-      </ion-toggle>
+        <ion-toggle ng-model="usePincode.enabled" toggle-class="toggle-balanced" ng-change="usePincodeChange()">
+          <span class="toggle-label" translate>Use pin to lock/unlock the app</span>
+        </ion-toggle>
+      </div>
     </div>
   </ion-content>
 </ion-view>
