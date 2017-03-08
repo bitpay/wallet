@@ -98,7 +98,7 @@
     "open:android":           "open -a open -a /Applications/Android\\ Studio.app platforms/android",
     "final:www":              "npm run build:www-release",
     "final:ios":              "npm run final:www && npm run build:ios-release && npm run open:ios",
-    "final:android":          "npm run final:www && npm run build:android-release && npm run run:android-release",
+    "final:android":          "npm run final:www && npm run build:android-release && npm run sign:android && npm run run:android-release",
     "final:desktop":          "npm run build:desktop && npm run build:macos",
     "run:android":            "cordova run android --device",
     "run:android-release":            "cordova run android --device --release",
