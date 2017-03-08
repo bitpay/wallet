@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pincodeController', function($state, $stateParams, $timeout, $scope, $log, $window, configService) {
+angular.module('copayApp.controllers').controller('pincodeController', function($state, $stateParams, $ionicHistory, $timeout, $scope, $log, $window, configService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     $scope.currentPincode = $scope.newPincode = '';
@@ -39,8 +39,7 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
 
     if (!$scope.locking) {
       if (match) {
-        $scope.fromSettings ? saveSettings($scope.locking, '') : $scope.close();
-        return;
+        $scope.fromSettings ? saveSettings($scope.locking, '') : $scope.close(150);
       }
     } else {
       checkCodes();
@@ -70,14 +69,13 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
-      $timeout(function() {
-        $scope.close();
-      });
+      $scope.close();
     });
   };
 
-  $scope.close = function() {
-    if ($scope.fromSettings) $state.go('tabs.advanced');
-    else $state.go('tabs.home');
+  $scope.close = function(delay) {
+    $timeout(function() {
+      $ionicHistory.viewHistory().backView ? $ionicHistory.goBack() : $state.go('tabs.home');
+    }, delay || 1);
   };
 });

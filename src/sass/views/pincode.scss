@@ -11,10 +11,6 @@
     text-align: center;
     width: 100%;
     height: 100%;
-    .row .col {
-      margin: 10px;
-      height: 25px;
-    }
     .app-icon {
       margin-top: -55px;
       .big-icon-svg {
@@ -38,18 +34,15 @@
       }
     }
     .block-code {
-      width: 300px;
+      width: 120px;
       margin: auto;
-      padding: 0 50px 0 50px;
+      .row {
+        height: 35px;
+      }
     }
     .block-buttons {
-      .row {
-        padding: 3%;
-      }
-      @media (max-height: 480px) {
-        .row {
-          padding: 2%;
-        }
+      .col {
+        padding: 5%;
       }
       cursor: pointer;
       position: absolute;
@@ -63,9 +56,8 @@
   	border-radius: 50%;
   	opacity: 0.6;
   	box-shadow: 0 0 1px 0px rgb( 255, 255, 255);
-  	width: 5px;
-  	height: 5px;
-  	transition: background-color .1s ease-in-out;
+  	margin: 2px;
+  	transition: background-color .2s ease-in-out;
   }
   .filled {
   	background-color: #666666;
