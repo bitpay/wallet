@@ -19,14 +19,14 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.id) {
-      bitpayPayrollService.getPayrollRecordById(function(err, record) {
+      bitpayPayrollService.getPayrollRecordById(data.stateParams.id, function(err, record) {
         if (err) {
           return showError(err);
         }
 
         if (!record) {
           return showError(
-            'No payroll record found when loading payrollConfirmController',
+            'No payroll record found when loading payrollDetailsController',
             gettextCatalog.getString('Error'),
             gettextCatalog.getString('No payroll settings specified.'));
         }

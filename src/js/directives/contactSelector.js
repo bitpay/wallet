@@ -7,10 +7,10 @@ angular.module('copayApp.directives')
       templateUrl: 'views/includes/contactSelector.html',
       transclude: true,
       scope: {
-        title: '=contactSelectorTitle',
-        show: '=contactSelectorShow',
-        selectedContact: '=contactSelectorSelectedContact',
-        onSelect: '=contactSelectorOnSelect'
+        title: '=',
+        show: '=',
+        selectedContact: '=',
+        onSelect: '='
       },
       link: function(scope, element, attrs) {
         addressbookService.list(function(err, contacts) {

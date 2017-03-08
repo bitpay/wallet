@@ -7,13 +7,15 @@ angular.module('copayApp.directives')
       templateUrl: 'views/includes/accountSelector.html',
       transclude: true,
       scope: {
-        title: '=accountSelectorTitle',
-        show: '=accountSelectorShow',
-        accounts: '=accountSelectorAccounts',
-        selectedAccount: '=accountSelectorSelectedAccount',
-        onSelect: '=accountSelectorOnSelect'
+        title: '=',
+        itemLabel: '@?',
+        show: '=',
+        accounts: '=',
+        selectedAccount: '=',
+        onSelect: '='
       },
       link: function(scope, element, attrs) {
+        scope.itemLabel = scope.itemLabel || 'Add account';
         scope.hide = function() {
           scope.show = false;
         };

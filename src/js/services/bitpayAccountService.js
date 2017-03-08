@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('copayApp.services').factory('bitpayAccountService', function($log, lodash, platformInfo, appIdentityService, bitpayService, bitpayCardService, storageService, gettextCatalog, popupService, externalLinkService) {
+
   var root = {};
+  var BITPAY_ACCOUNT_START_URL = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
 
   // A list of reasons why bitpay account pairing is being requested. The reason faciliates this apps
   // response when the pairing data is received from the server so that the user is automatically put
@@ -28,7 +30,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
       return $log.error('Started account pairing failed, unknown reasonId: ' + reasonId);
     }
     pairingReason = pairFor[reasonId];
-    var url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
+    var url = BITPAY_ACCOUNT_START_URL;
     externalLinkService.open(url);          
     $log.info('Started account pairing process for ' + pairingReason.id);
   };

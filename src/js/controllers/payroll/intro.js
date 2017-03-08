@@ -36,14 +36,8 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
   };
 
   $scope.setupPayroll = function() {
-    if ($scope.accounts.length == 0) {
-      // If no accounts then move to eligibility step to input an email address; we'll try to find account (or create one) later.
-      $state.transitionTo('tabs.payroll.eligible');
-//      startPairBitPayAccount();
-    } else {
-      $scope.accountSelectorTitle = gettextCatalog.getString('On BitPay account');
-      showAccountSelector('setup');
-    }
+    $scope.accountSelectorTitle = gettextCatalog.getString('On BitPay account');
+    showAccountSelector('setup');
   };
 
   $scope.connectPayroll = function() {
@@ -76,8 +70,12 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
   $scope.onAccountSelect = function(account) {
     if (account == undefined) {
-      startPairBitPayAccount();
+      // 'Add account' selected.
+      // A new account will be created later using the verified email address.
+      $state.transitionTo('tabs.payroll.eligible');
+
     } else {
+
       switch (accountSelectDest) {
         case 'connect':
           bitpayPayrollService.fetchPayrollRecords(account.apiContext, function(err, data) {
@@ -85,7 +83,6 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
               popupService.showAlert(gettextCatalog.getString('Error'), err);
               return;
             }
-            bitpayPayrollService.register();
           });
           break;
         case 'setup':
