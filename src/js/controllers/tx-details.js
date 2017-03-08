@@ -93,9 +93,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     walletService.getTx($scope.wallet, txId, function(err, tx) {
       ongoingProcess.set('loadingTxInfo', false);
       if (err) {
-        $log.warn('Could not get tx');
+        $log.warn('Error getting transaction' + err);
         $ionicHistory.goBack();
-        return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
+        return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not available at this time'));
       }
 
       $scope.btx = txFormatService.processTx(tx);
