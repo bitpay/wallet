@@ -1175,7 +1175,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       });
 
       $ionicPlatform.on('resume', function() {
-        // Nothing to do
+        configService.whenAvailable(function(config) {
+          if (platformInfo.isCordova && config.pincode && config.pincode.enabled) {
+            $state.go('pincode');
+          }
+        });
       });
 
       $ionicPlatform.on('menubutton', function() {
