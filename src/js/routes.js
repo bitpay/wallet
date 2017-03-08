@@ -328,7 +328,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.add.import', {
-        url: '/import',
+        url: '/import/:code',
         views: {
           'tab-home@tabs': {
             templateUrl: 'views/import.html',
