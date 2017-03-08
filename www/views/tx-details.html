@@ -5,9 +5,14 @@
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-show="btx" ng-click="updateTx()">
+        <i class="icon ion-ios-refresh-empty"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
-  <ion-content class="tx-details-content">
+  <ion-content class="tx-details-content" ng-show="btx">
     <div class="list">
       <div class="item head">
         <div class="sending-label" ng-if="btx.confirmations > 0">
@@ -25,11 +30,13 @@
         </div>
         <div class="amount-label">
           <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
-          <div class="alternative" ng-click="getFiatRate(); showRate = !showRate">
+          <div class="alternative" ng-click="showRate = !showRate">
             <span ng-show="!showRate">{{btx.alternativeAmountStr}}</span>
             <span ng-show="showRate">
-              <span ng-show="!loadingRate">{{rateStr}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})</span>
-              <span ng-show="loadingRate">...</span>
+              <span ng-show="!rate">...</span>
+              <span ng-show="rate">
+                {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
+              </span>
             </span>
           </div>
         </div>
@@ -56,10 +63,16 @@
             <div>{{wallet.name}}</div>
           </div>
         </div>
-        <div class="item single-line" ng-if="btx.action != 'received'">
+        <div class="item single-line" ng-if="btx.action != 'received' && isShared">
           <span class="label" translate>Created by</span>
           <span class="item-note">
-            {{btx.creatorName}} <time>{{ (btx.ts || btx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+            {{btx.creatorName}}
+          </span>
+        </div>
+        <div class="item single-line" ng-if="btx.ts || btx.createdOn || btx.time">
+          <span class="label" translate>Date</span>
+          <span class="item-note">
+            <time>{{ (btx.ts || btx.createdOn || btx.time) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
           </span>
         </div>
         <a class="item item-icon-right" ng-class="{'single-line': !btx.note.body && !btx.message}" ng-click="showCommentPopup()">
@@ -69,10 +82,11 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line">
+        <div class="item single-line" ng-click="toggleFeeFiat = !toggleFeeFiat">
           <span class="label" translate>Fee</span>
           <span class="item-note">
-            {{btx.feeStr}}
+            <span ng-show="!toggleFeeFiat">{{btx.feeStr}}</span>
+            <span ng-show="toggleFeeFiat">{{feeFiatStr}}</span>
           </span>
         </div>
         <div class="item single-line">
