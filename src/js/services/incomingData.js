@@ -220,8 +220,15 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         data: data,
         type: 'privateKey'
       });
-    } else {
+    } else if (data && ((data.substring(0, 2) == '1|') || (data.substring(0, 2) == '2|') || (data.substring(0, 2) == '3|'))) {
+      $state.go('tabs.home').then(function() {
+        $state.transitionTo('tabs.add.import', {
+          code: data
+        });
+      });
+      return true;
 
+    } else {
       if ($state.includes('tabs.scan')) {
         root.showMenu({
           data: data,
