@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess, txFormatService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess, txFormatService) {
 
   var txId;
+  var listeners = [];
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     txId = data.stateParams.txid;
@@ -11,7 +12,21 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
-    $scope.updateTx();
+    updateTx();
+
+    listeners = [
+      $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+        if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+          updateTx();
+        }
+      })
+    ];
+  });
+
+  $scope.$on("$ionicView.leave", function(event, data) {
+    lodash.each(listeners, function(x) {
+      x();
+    });
   });
 
   function getDisplayAmount(amountStr) {
@@ -73,7 +88,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     }, 10);
   }
 
-  $scope.updateTx = function() {
+  var updateTx = function() {
     ongoingProcess.set('loadingTxInfo', true);
     walletService.getTx($scope.wallet, txId, function(err, tx) {
       ongoingProcess.set('loadingTxInfo', false);
