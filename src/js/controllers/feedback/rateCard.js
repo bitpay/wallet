@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('rateCardController', function($scope, $state, $timeout, $log, gettextCatalog, platformInfo, storageService) {
+angular.module('copayApp.controllers').controller('rateCardController', function($scope, $state, $timeout, $log, gettextCatalog, platformInfo, storageService, appConfigService) {
 
   $scope.isCordova = platformInfo.isCordova;
   $scope.score = 0;
+  $scope.appName = appConfigService.nameCase;
 
   $scope.goFeedbackFlow = function() {
     $scope.hideCard();
