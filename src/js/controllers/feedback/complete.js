@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('completeController', function
   });
 
   var defaults = configService.getDefaults();
+  var downloadUrl = appConfigService.name == 'copay' ? defaults.download.copay.url : defaults.download.bitpay.url;
 
   function quickFeedback(cb) {
     window.plugins.spinnerDialog.show();
@@ -16,37 +17,37 @@ angular.module('copayApp.controllers').controller('completeController', function
 
   $scope.shareFacebook = function() {
     quickFeedback(function() {
-      window.plugins.socialsharing.shareVia($scope.shareFacebookVia, null, null, null, defaults.download.url);
+      window.plugins.socialsharing.shareVia($scope.shareFacebookVia, null, null, null, downloadUrl);
     });
   };
 
   $scope.shareTwitter = function() {
     quickFeedback(function() {
-      window.plugins.socialsharing.shareVia($scope.shareTwitterVia, null, null, null, defaults.download.url);
+      window.plugins.socialsharing.shareVia($scope.shareTwitterVia, null, null, null, downloadUrl);
     });
   };
 
   $scope.shareGooglePlus = function() {
     quickFeedback(function() {
-      window.plugins.socialsharing.shareVia($scope.shareGooglePlusVia, defaults.download.url);
+      window.plugins.socialsharing.shareVia($scope.shareGooglePlusVia, downloadUrl);
     });
   };
 
   $scope.shareEmail = function() {
     quickFeedback(function() {
-      window.plugins.socialsharing.shareViaEmail(defaults.download.url);
+      window.plugins.socialsharing.shareViaEmail(downloadUrl);
     });
   };
 
   $scope.shareWhatsapp = function() {
     quickFeedback(function() {
-      window.plugins.socialsharing.shareViaWhatsApp(defaults.download.url);
+      window.plugins.socialsharing.shareViaWhatsApp(downloadUrl);
     });
   };
 
   $scope.shareMessage = function() {
     quickFeedback(function() {
-      window.plugins.socialsharing.shareViaSMS(defaults.download.url);
+      window.plugins.socialsharing.shareViaSMS(downloadUrl);
     });
   };
 

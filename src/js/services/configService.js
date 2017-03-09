@@ -16,7 +16,12 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     download: {
-      url: 'https://bitpay.com/wallet',
+      bitpay: {
+        url: 'https://bitpay.com/wallet'
+      },
+      copay: {
+        url: 'https://copay.io/#download'
+      }
     },
 
     rateApp: {
