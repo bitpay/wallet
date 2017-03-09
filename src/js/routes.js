@@ -837,9 +837,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'completeController',
             templateUrl: 'views/feedback/complete.html'
           }
-        },
-        customConfig: {
-          hideStatusBar: true
         }
       })
       .state('tabs.rate.rateApp', {
@@ -849,9 +846,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'rateAppController',
             templateUrl: 'views/feedback/rateApp.html'
           }
-        },
-        customConfig: {
-          hideStatusBar: true
         }
       })
 
@@ -1123,6 +1117,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         var matchScan = $ionicHistory.currentStateName() == 'tabs.scan' ? true : false;
         var matchSend = $ionicHistory.currentStateName() == 'tabs.send' ? true : false;
         var matchSettings = $ionicHistory.currentStateName() == 'tabs.settings' ? true : false;
+
         var fromTabs = matchHome | matchReceive | matchScan | matchSend | matchSettings;
 
         //onboarding with no back views
@@ -1130,10 +1125,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         var matchCollectEmail = $ionicHistory.currentStateName() == 'onboarding.collectEmail' ? true : false;
         var matchBackupRequest = $ionicHistory.currentStateName() == 'onboarding.backupRequest' ? true : false;
         var matchNotifications = $ionicHistory.currentStateName() == 'onboarding.notifications' ? true : false;
+        var backedUp = $ionicHistory.backView().stateName == 'onboarding.backup' ? true : false;
+        var noBackView = $ionicHistory.backView().stateName == 'starting' ? true : false;
+        var matchDisclaimer = $ionicHistory.currentStateName() == 'onboarding.disclaimer' && (backedUp || noBackView) ? true : false;
 
-        var fromOnboarding = matchCollectEmail | matchBackupRequest | matchNotifications | matchWelcome;
+        var fromOnboarding = matchCollectEmail | matchBackupRequest | matchNotifications | matchWelcome | matchDisclaimer;
 
-        if ($ionicHistory.backView() && !fromTabs && !fromOnboarding) {
+        //views with disable backbutton
+        var matchComplete = $ionicHistory.currentStateName() == 'tabs.rate.complete' ? true : false;
+
+        if ($ionicHistory.backView() && !fromTabs && !fromOnboarding && !matchComplete) {
           $ionicHistory.goBack();
         } else
         if ($rootScope.backButtonPressedOnceToExit) {
@@ -1228,15 +1229,5 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
-    });
-
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-      if ($window.StatusBar) {
-        if (toState.customConfig && toState.customConfig.hideStatusBar) {
-          $window.StatusBar.hide();
-        } else {
-          $window.StatusBar.show();
-        }
-      }
     });
   });
