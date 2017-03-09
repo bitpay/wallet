@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
     cb = cb || function(){};
     $scope.payrollRecords = [];
 
-    bitpayPayrollService.getPayrollRecords(function(err, records) {
+    bitpayPayrollService.getPayrollRecords(null, function(err, records) {
       if (err) {
         return showError(err);
       }
@@ -41,9 +41,9 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
               });
             } else {
               record.deduction.wallet = profileService.getWallet(record.deduction.walletId);
+              return callback();
             }
           }
-          return callback();
         }, function() {
           // done
           cb();

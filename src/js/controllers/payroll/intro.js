@@ -78,7 +78,7 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
       switch (accountSelectDest) {
         case 'connect':
-          bitpayPayrollService.fetchPayrollRecords(account.apiContext, function(err, data) {
+          bitpayPayrollService.getPayrollRecords(account.apiContext, function(err, data) {
             if (err) {
               popupService.showAlert(gettextCatalog.getString('Error'), err);
               return;

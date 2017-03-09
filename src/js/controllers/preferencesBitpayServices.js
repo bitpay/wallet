@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
         }
         setScope(function() {
           // If there are no paired accounts then change views.
-          if ($scope.bitpayAccounts.length == 0) {
+          if ($scope.accounts.length == 0) {
             $state.go('tabs.settings').then(function() {
               $ionicHistory.clearHistory();
               $state.go('tabs.home');
@@ -75,21 +75,17 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
     };
 
     var setScope = function(cb) {
-      bitpayAccountService.getAccounts(function(err, accounts) {
-        if (err) return;
-        $scope.bitpayAccounts = accounts;
+      bitpayCardService.getCards(function(err, cards) {
+        $scope.cards = cards;
+      });
 
-        bitpayCardService.getCards(function(err, cards) {
-          if (err) return;
-          $scope.bitpayCards = cards;
-          if (cb) {
-            cb();
-          }
-          $timeout(function(){
-            $rootScope.$apply();
-          }, 10);
-        });
-      });        
+      bitpayPayrollService.getPayrollRecords(null, function(err, records) {
+        $scope.payrollRecords = records;
+      });
+
+      bitpayAccountService.getAccounts(function(err, accounts) {
+        $scope.accounts = accounts;
+      });
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {

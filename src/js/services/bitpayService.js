@@ -51,20 +51,23 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
   };
 
   var _get = function(endpoint) {
-    return {
+    var ret = {
       method: 'GET',
       url: BITPAY_API_URL + endpoint,
       headers: {
         'content-type': 'application/json'
       }
     };
+
+    $log.debug('get:' + JSON.stringify(ret));
+    return ret;
   };
 
   var _post = function(endpoint, json, appIdentity) {
     var dataToSign = BITPAY_API_URL + endpoint + JSON.stringify(json);
     var signedData = bitauthService.sign(dataToSign, appIdentity.priv);
 
-    return {
+    var ret = {
       method: 'POST',
       url: BITPAY_API_URL + endpoint,
       headers: {
@@ -74,6 +77,9 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
       },
       data: json
     };
+
+    $log.debug('post:' + JSON.stringify(ret));
+    return ret;
   };
 
   var _postAuth = function(endpoint, json, appIdentity) {

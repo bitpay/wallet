@@ -12,10 +12,17 @@ angular.module('copayApp.controllers').controller('payrollHistoryController', fu
         value: 'last30Days'
       };
 
-      updateHistoryFromCache(function() {
-        $scope.update();
+      // Try to cache history from server.
+      $scope.update(function(updateErr) {
+        if (updateErr) {
+          // Try to get cached history.
+          updateHistoryFromCache(function(cacheErr) {
+            if (!$scope.transactions && updateErr) {
+              showError(updateErr);
+            }
+          });
+        }
       });
-
     } else {
       return showError(
         'No payroll record id specified when loading payrollHistoryController',
@@ -24,34 +31,8 @@ angular.module('copayApp.controllers').controller('payrollHistoryController', fu
     }
   });
 
-  $scope.update = function() {
-    var dateRange = setDateRange($scope.dateRange.value);
-    $scope.loadingHistory = true;
-
-    bitpayPayrollService.fetchPayrollRecordHistory($scope.payrollRecordId, dateRange, function(err, transactions) {
-      $scope.loadingHistory = false;
-      if (err) {
-        $scope.transactions = null;
-        showError(err);
-        return;
-      }
-
-      if ($scope.dateRange.value == 'last30Days') {
-        $log.debug('Payroll record: store cache history');
-        bitpayPayrollService.setPayrollRecordHistory($scope.payrollRecordId, transactions, {}, function(err) {
-          if (err) $log.error(err);
-          $scope.historyCached = true;
-        });
-      }
-      $timeout(function() {
-        $scope.$apply();
-      });
-    });
-  };
-
   $scope.formatRate = function(rate) {
     var str = '';
-
     if (config.unitName == 'bits') {
       str = '1,000,000 bits = ' + rate + ' ' + config.alternativeIsoCode;
     } else {
@@ -60,12 +41,21 @@ angular.module('copayApp.controllers').controller('payrollHistoryController', fu
     return str;
   };
 
-  var updateHistoryFromCache = function(cb) {
-    bitpayPayrollService.getPayrollRecordHistory($scope.payrollRecordId, function(err, data) {
-      if (err ||  lodash.isEmpty(data)) return cb();
-      $scope.historyCached = true;
-      $scope.transactions = data[$scope.payrollRecordId].transactions;
-      return cb();
+  $scope.update = function(cb) {
+    var dateRange = setDateRange($scope.dateRange.value);
+    $scope.loadingHistory = true;
+
+    bitpayPayrollService.getPayrollRecordHistory($scope.payrollRecordId, dateRange, function(err, history) {
+      $scope.loadingHistory = false;
+      $scope.transactions = history.transactionList;
+      cb(err);
+    });
+  };
+
+  var updateFromCache = function(cb) {
+    bitpayPayrollService.getPayrollRecordHistory($scope.payrollRecordId, function(err, history) {
+      $scope.transactions = history.transactionList;
+      return cb(err);
     });
   };
 

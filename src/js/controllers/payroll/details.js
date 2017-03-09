@@ -4,18 +4,27 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
 
   var config = configService.getSync().wallet.settings;
 
-  var ADDRESS_NOT_VERIFIED_TITLE = gettextCatalog.getString('Address Not Verified');
-  var ADDRESS_VERIFIED_TITLE     = gettextCatalog.getString('Address Verified');
-  var BUTTON_ACCEPT_UNVERIFIED   = gettextCatalog.getString('Use My Address');
-  var BUTTON_OK                  = gettextCatalog.getString('Go Back');
-  var BUTTON_NO                  = gettextCatalog.getString('No');
-  var BUTTON_YES                 = gettextCatalog.getString('Yes');
-  var BUTTON_PAUSE               = gettextCatalog.getString('Pause');
-  var BUTTON_RESUME              = gettextCatalog.getString('Resume');
-  var PAUSE_PAYROLL_TITLE        = gettextCatalog.getString('Pause Payroll');
-  var PAUSE_PAYROLL_MESSAGE      = gettextCatalog.getString('Are you sure you want to pause your bitcoin payroll? You can resume payroll with the same settings later.');
-  var STOP_PAYROLL_TITLE         = gettextCatalog.getString('Cancel Payroll');
-  var STOP_PAYROLL_MESSAGE       = gettextCatalog.getString('Are you sure you want to cancel your bitcoin payroll?');
+  var ADDRESS_NOT_VERIFIED_TITLE           = gettextCatalog.getString('Address Not Verified');
+  var ADDRESS_VERIFIED_TITLE               = gettextCatalog.getString('Address Verified');
+  var BUTTON_ACCEPT_UNVERIFIED             = gettextCatalog.getString('Use My Address');
+  var BUTTON_OK                            = gettextCatalog.getString('Go Back');
+  var BUTTON_NO                            = gettextCatalog.getString('No');
+  var BUTTON_YES                           = gettextCatalog.getString('Yes');
+  var BUTTON_PAUSE                         = gettextCatalog.getString('Pause');
+  var BUTTON_RESUME                        = gettextCatalog.getString('Resume');
+  var PAUSE_PAYROLL_TITLE                  = gettextCatalog.getString('Pause Payroll');
+  var PAUSE_PAYROLL_MESSAGE                = gettextCatalog.getString('Are you sure you want to pause your bitcoin payroll? You can resume payroll with the same settings later.');
+  var STOP_PAYROLL_TITLE                   = gettextCatalog.getString('Cancel Payroll');
+  var STOP_PAYROLL_MESSAGE                 = gettextCatalog.getString('Are you sure you want to cancel your bitcoin payroll?');
+  var ADDRESS_NOT_VERIFIED_RECOMMENDATION  = gettextCatalog.getString('If you cannot manually verify that your deposit address is correct then you should change your deposit wallet/address immediately.');
+
+  var addressVerificationMessage = {
+    'accepted': gettextCatalog.getString('This deposit address was manually verified by you to be correct. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION),
+    'auto': gettextCatalog.getString('This deposit address was verified automatically to be owned by you and associated with the specified wallet.'),
+    'not-found': gettextCatalog.getString('We are unable to verify this deposit address. The specified address does not belong to any wallet in this app. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION),
+    'not-in-wallet': gettextCatalog.getString('We are unable to verify this deposit address. The address is not associated with the specified wallet. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION),
+    'unknown': gettextCatalog.getString('We are unable to verify this deposit address. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION)
+  };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.id) {
@@ -56,12 +65,15 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
 
   $scope.showVerification = function() {
     var verification = $scope.payrollRecord.deduction.addressVerification;
+    var message = addressVerificationMessage[verification.reason];
     if (verification.verified) {
-      return popupService.showAlert(ADDRESS_VERIFIED_TITLE, verification.message);
+      return popupService.showAlert(ADDRESS_VERIFIED_TITLE, message);
+    } else if (verification.accepted) {
+      return popupService.showAlert(ADDRESS_VERIFIED_TITLE, addressVerificationMessage['accepted']);
     } else {
-      return popupService.showConfirm(ADDRESS_NOT_VERIFIED_TITLE, verification.message, BUTTON_ACCEPT_UNVERIFIED, BUTTON_OK, function(res) {
+      return popupService.showConfirm(ADDRESS_NOT_VERIFIED_TITLE, message, BUTTON_ACCEPT_UNVERIFIED, BUTTON_OK, function(res) {
         if (res) {
-          bitpayPayrollService.manuallyVerifyAddress($scope.payrollRecord, function(err, record) {
+          bitpayPayrollService.acceptUnverifiedAddress($scope.payrollRecord, function(err, record) {
             if (err) {
               return showError(err);
             }

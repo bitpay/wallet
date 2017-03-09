@@ -5,11 +5,13 @@
     <ion-nav-title>BitPay</ion-nav-title>
   </ion-nav-bar>
   <ion-content>
-    <div class="list" ng-if="bitpayCards.length > 0">
+
+    <!-- Cards -->
+    <div class="list" ng-if="cards.length > 0">
       <div class="item item-divider" translate>
         BitPay Visa&reg; Cards
       </div>
-      <div class="item item-icon-right" ng-repeat="card in bitpayCards">
+      <div class="item item-icon-right" ng-repeat="card in cards">
         <span class="item-title">
           xxxx-xxxx-xxxx-{{card.lastFourDigits}}
         </span>
@@ -20,6 +22,7 @@
       </div>
     </div>
 
+    <!-- Payroll records -->
     <div class="list" ng-if="payrollRecords.length > 0">
       <div class="item item-divider" translate>
         Payroll
@@ -35,11 +38,12 @@
       </div>
     </div>
 
+    <!-- Accounts -->
     <div class="list">
       <div class="item item-divider" translate>
         Accounts
       </div>
-      <div class="item item-icon-right" ng-repeat="account in bitpayAccounts">
+      <div class="item item-icon-right" ng-repeat="account in accounts">
         <span class="item-title">
           {{account.givenName}} {{account.familyName}}
         </span>

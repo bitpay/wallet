@@ -504,10 +504,7 @@ angular.module('copayApp.services')
           var newRecords = lodash.reject(data, {
             'eid': id
           });
-          data = {};
-          data.records = newRecords;
-          data.email = email;
-          root.setPayrollRecords(network, data, function(err) {
+          root.setPayrollRecords(network, email, newRecords, function(err) {
             cb(err);
           });
         });

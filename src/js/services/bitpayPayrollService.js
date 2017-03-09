@@ -3,12 +3,12 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
 
   var root = {};
 
-  var ADDRESS_NOT_VERIFIED_RECOMMENDATION  = gettextCatalog.getString('If you cannot manually verify that your deposit address is correct then you should change your deposit wallet/address immediately.');
-  var ADDRESS_NOT_VERIFIED_ADDRESS_UNKNOWN = gettextCatalog.getString('We are unable to verify this deposit address. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
-  var ADDRESS_NOT_VERIFIED_NOT_IN_WALLET   = gettextCatalog.getString('We are unable to verify this deposit address. The address is not associated with the specified wallet. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
-  var ADDRESS_NOT_VERIFIED_WALLET_EXTERNAL = gettextCatalog.getString('We are unable to verify this deposit address. The specified address does not belong to any wallet in this app. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
-  var ADDRESS_VERIFIED                     = gettextCatalog.getString('This deposit address was verified automatically to be owned by you and associated with the specified wallet.');
-  var ADDRESS_VERIFIED_MANUALLY            = gettextCatalog.getString('This deposit address was manually verified by you to be correct. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION);
+  var addressVerification = {
+    auto:        { verified: true,  reason: 'auto' },
+    notInWallet: { verified: false, reason: 'not-in-wallet' },
+    notFound:    { verified: false, reason: 'not-found' },
+    unknown:     { verified: false, reason: 'unknown' }
+  };
 
   var homeItem = {
     name: 'payroll',
@@ -66,9 +66,17 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
       cb(err, record);
     };
 
+    // Identify the account to which payroll should eventually be bound.
+    var account = {
+      email: (bitpayAccount ? bitpayAccount.email : qualifyingData.email)
+    }
+
     var json = {
       method: 'checkPayrollEligible',
-      params: JSON.stringify(qualifyingData)
+      params: JSON.stringify({
+        qualifyingData: qualifyingData,
+        account: account
+      })
     };
 
     bitpayService__post('', json, function(data) { // TODO
@@ -79,18 +87,8 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
       if (record && record.eligibility) {
         // If there is an account context then fetch any payroll records created on the account.
         if (bitpayAccount) {
-          root.fetchPayrollRecords(bitpayAccount.apiContext, function(err, records) {
+          root.getPayrollRecords(bitpayAccount.apiContext, function(err, records) {
             if (err) return cb(err);
-/*
-            var createdRecord = lodash.find(records, function(r) {
-              return r.eid == record.eid;
-            });
-
-            if (!createdRecord) {
-              return cb(_setError('Could not find payroll record after server create: ' + record.eid));
-            }
-            registerAndCallback(null, createdRecord);
-*/
             // If there exists a payroll record that matches the qualifying data then dump the eligibility
             // record.
             var payrollRecord = lodash.find(records, function(r) {
@@ -149,14 +147,18 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
   //     amount: float,
   //     currency: string,
   //     externalWalletName: string,
-  //     unverifiedAddressAccepted: boolean
+  //     addressVerification: {
+  //       verified: boolean,
+  //       reason: string,
+  //       accepted: boolean
+  //     }
   //   }
   // }
   root.startPayroll = function(record, cb) {
     // Delete the eligibility data when we start.
     delete record.eligibility;
     record.deduction.active = true;
-    record.deduction.unverifiedAddressAccepted = false;
+    record.deduction.addressVerification = { accepted: false };
 
     // Restrict the wallet from being deleted while payroll is bound.
     // Prevent payroll from starting unless this restriction is in place.
@@ -184,7 +186,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
       register(); // Update home view.
     } else {
       // Payroll setup started, record was created at the server; delete from the server.
-      deletePayrollRecord(record, function(err) {
+      deletePayrollRecord(record.id, function(err) {
         if (err) {
           return cb(_setError('Error starting payroll: ' + err));
         }
@@ -200,30 +202,16 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
   };
 
   root.updatePayroll = function(record, cb) {
-    if (!record || !record.eid) {
-      return cb(_setError('Error updating payroll: payroll record malformed'));
-    }
     postPayrollRecord(record, cb);
   };
 
-  root.manuallyVerifyAddress = function(record, cb) {
-    record.deduction.unverifiedAddressAccepted = true;
+  root.acceptUnverifiedAddress = function(record, cb) {
+    record.deduction.addressVerification.accepted = true;
     root.updatePayroll(record, cb);
   };
 
-  // Return payroll records from local cache. Looks across all paired accounts, includes eligibility records.
-  root.getPayrollRecords = function(cb) {
-    storageService.getPayrollRecords(bitpayService.getEnvironment().network, function(err, pRecords) {
-      if (err) return cb(err);
-      storageService.getPayrollEligibilityRecords(bitpayService.getEnvironment().network, function(err, eRecords) {
-        if (err) return cb(err);
-        return cb(null, eRecords.concat(pRecords) || []);
-      });
-    });
-  };
-
   root.getPayrollRecordById = function(id, cb) {
-    root.getPayrollRecords(function(err, records) {
+    getRecordCache(function(err, records) {
       if (err) return cb(err);
       var record = lodash.find(records, function(r) {
         return r.id == id;
@@ -232,33 +220,30 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     });
   };
 
-  root.removePayrollRecord = function(id, cb) {
-    storageService.removePayrollRecord(bitpayService.getEnvironment().network, id, function(err) {
-      if (err) {
-        $log.error('Error removing payroll record: ' + err);
-      }
-      // If there are no more cards in storage then re-enable the next step entry
-        root.getPayrollRecords(function(err, records) {
-        if (err) {
-          $log.error('Error getting payroll records after remove: ' + err);
-          // Continue
-        }
-        if (records.length == 0) {
-          register(); // Update home view.
-        }
-        return cb();
+  // Retrieve payroll records from the server and cache locally.  If the server is not able to be
+  // reached then try to return cache values.  By not providing an apiContext the cache value is
+  // automatically returned.
+  root.getPayrollRecords = function(apiContext, cb) {
+    // When no api context is specified then return only the local cache.
+    if (!apiContext) {
+      return getRecordCache(function(err, records) {
+        if (err) return cb(data.data.error);
+        return cb(null, records);
       });
-    });
-  };
+    }
 
-  // Retrieve payroll records from the server and cache locally.
-  root.fetchPayrollRecords = function(apiContext, cb) {
     var json = {
       method: 'getPayrollRecords'
     };
     // Get payroll records
     bitpayService__post(apiContext.token, json, function(data) { // TODO
-      if (data && data.data.error) return cb(data.data.error);
+      if (data && data.data.error) {
+        // Could not get records from server, try to return local cache.
+        getRecordCache(function(err, records) {
+          if (err) return cb(data.data.error);
+          return cb(null, records);
+        });
+      }
       $log.info('BitPay Account Get Payroll Records: SUCCESS');
       // Cache payroll records in storage.
       var records = data.data.data;
@@ -275,33 +260,21 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     });
   };
 
-  root.getPayrollRecordHistory = function(recordId, cb) {
-    storageService.getPayrollRecordsHistory(bitpayService.getEnvironment().network, function(err, data) {
-      if (err) return cb(err);
-      if (lodash.isString(data)) {
-        data = JSON.parse(data);
+  root.removePayrollRecord = function(id, cb) {
+    storageService.removePayrollRecord(bitpayService.getEnvironment().network, id, function(err) {
+      if (err) {
+        $log.error('Error removing payroll record: ' + err);
       }
-      data = data || {};
-      if (recordId) data = data[recordId];
-      return cb(null, data);
-    });
-  };
-
-  root.setPayrollRecordHistory = function(recordId, data, opts, cb) {
-    storageService.getPayrollRecordsHistory(bitpayService.getEnvironment().network, function(err, oldData) {
-      if (lodash.isString(oldData)) {
-        oldData = JSON.parse(oldData);
-      }
-      if (lodash.isString(data)) {
-        data = JSON.parse(data);
-      }
-      var hist = oldData || {};
-      hist[recordId] = data;
-      if (opts && opts.remove) {
-        delete(hist[recordId]);
-      }
-      storageService.setPayrollRecordsHistory(bitpayService.getEnvironment().network, hist, function(err) {
-        return cb(err);
+      // If there are no more records in storage then re-register our service.
+        root.getPayrollRecords(null, function(err, records) {
+        if (err) {
+          $log.error('Error getting payroll records after remove: ' + err);
+          // Continue
+        }
+        if (records.length == 0) {
+          register(); // Update home view.
+        }
+        return cb();
       });
     });
   };
@@ -322,7 +295,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
   //     }]
   //   }
   // }
-  root.fetchPayrollRecordHistory = function(recordId, dateRange, cb) {
+  root.getPayrollRecordHistory = function(recordId, dateRange, cb) {
     var json = {
       method: 'getPayrollTransactions',
       params: JSON.stringify({
@@ -332,7 +305,13 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     };
     // Get payroll transactions
     bitpayService__post(bitpayAccount.apiContext.token, json, function(data) { // TODO
-      if (data && data.data.error) return cb(data.data.error);
+      if (data && data.data.error) {
+        // Could not get history from server, try to return local cache.
+        getHistoryCache(recordId, function(err, history) {
+          if (err) return cb(data.data.error);
+          return cb(null, history);
+        });
+      }
       $log.info('BitPay Account Get Payroll Transactions: SUCCESS');
       // Cache payroll records in storage.
       var txData = data.data.data;
@@ -341,6 +320,29 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
       });
     }, function(data) {
       return cb(_setError('BitPay Account Error: Get Payroll Transactions', data));
+    });
+  };
+
+  // Return payroll records from local cache. Looks across all paired accounts, includes eligibility records.
+  var getRecordCache = function(cb) {
+    storageService.getPayrollRecords(bitpayService.getEnvironment().network, function(err, pRecords) {
+      if (err) return cb(err);
+      storageService.getPayrollEligibilityRecords(bitpayService.getEnvironment().network, function(err, eRecords) {
+        if (err) return cb(err);
+        return cb(null, eRecords.concat(pRecords) || []);
+      });
+    });
+  };
+
+  var getHistoryCache = function(recordId, cb) {
+    storageService.getPayrollRecordsHistory(bitpayService.getEnvironment().network, function(err, data) {
+      if (err) return cb(err);
+      if (lodash.isString(data)) {
+        data = JSON.parse(data);
+      }
+      data = data || {};
+      if (recordId) data = data[recordId];
+      return cb(null, data);
     });
   };
 
@@ -367,7 +369,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
         data = JSON.parse(data);
       }
       data = data || {};
-      data[recordId] = txData[recordId].transactions;
+      data[recordId] = txData;
       storageService.setPayrollRecordsHistory(bitpayService.getEnvironment().network, data, function(err) {
         if (err) return cb(err);
         return cb();
@@ -392,65 +394,46 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
 
           if (wallet) {
             // Verify that the address is contained in the specified wallet.
-            // var addressObj = bwcService.getClient().getAddressFromWallet(records[i].deduction.walletId, address);
+            // var addressObj = bwcService.getClient().getAddressFromWallet(records[i].deduction.walletId, address); // TODO
             var addressObj = {};
 
             if (addressObj) {
-              records[i].deduction.addressVerification = {
-                verified: true,
-                message: ADDRESS_VERIFIED
-              };
+              lodash.merge(records[i].deduction.addressVerification, addressVerification.auto);
               $log.warn('Payroll deposit address not in specified wallet; address: ' + records[i].deduction.address + ',  wallet: ' + records[i].deduction.walletId);
             } else {
               // The specified address is not in the wallet we found.
-              $records[i].deduction.addressVerification = {
-                verified: false,
-                message: ADDRESS_NOT_VERIFIED_NOT_IN_WALLET
-              };
+              lodash.merge($records[i].deduction.addressVerification, addressVerification.notInWallet);
               $log.warn('Payroll deposit address not in specified wallet; address: ' + records[i].deduction.address + ',  wallet: ' + records[i].deduction.walletId);
             }
           } else {
             // No wallet found locally for a specified wallet id.
-            records[i].deduction.addressVerification = {
-              verified: false,
-              message: ADDRESS_NOT_VERIFIED_WALLET_EXTERNAL
-            };
+            lodash.merge(records[i].deduction.addressVerification, addressVerification.notFound);
             $log.warn('Payroll deposit wallet is external; walletId: ' + records[i].deduction.walletId + ' address: ' + records[i].deduction.address);
           }
         } else {
           // User provided an address only, not a wallet.
-          records[i].deduction.addressVerification = {
-            verified: false,
-            message: ADDRESS_NOT_VERIFIED_ADDRESS_UNKNOWN
-          };
+          lodash.merge(records[i].deduction.addressVerification, addressVerification.unknown);
           $log.warn('Payroll deposit address could not be verified:' + records[i].deduction.address);
-        }
-
-        if (records[i].deduction.unverifiedAddressAccepted) {
-          records[i].deduction.addressVerification = {
-            verified: true,
-            message: ADDRESS_VERIFIED_MANUALLY
-          };
-          $log.info('User previously accepted unverified payroll address: ' + records[i].deduction.address);
         }
       }
     }
     cb(null, records);
   };
-
+  
   var postPayrollRecord = function(record, cb) {
     var json = {
       method: 'setPayrollRecord',
-      params: JSON.stringify(record)
+      params: JSON.stringify({
+        record: record
+      })
     };
-    $log.debug('Posting payroll: ' + json.params);
 
     bitpayService__post(bitpayAccount.apiContext.token, json, function(data) { // TODO
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Account Set Payroll Record: SUCCESS');
 
       // Re-cache payroll records after the server updates.
-      root.fetchPayrollRecords(bitpayAccount.apiContext, function(err, records) {
+      root.getPayrollRecords(bitpayAccount.apiContext, function(err, records) {
         if (err) return cb(err);
         var updatedRecord = lodash.find(records, function(r) {
           return r.eid == record.eid;
@@ -466,19 +449,20 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     });
   };
 
-  var deletePayrollRecord = function(record, cb) {
+  var deletePayrollRecord = function(recordId, cb) {
     var json = {
       method: 'deletePayrollRecord',
-      params: JSON.stringify(record)
+      params: JSON.stringify({
+        recordId: recordId
+      })
     };
-    $log.debug('Deleting payroll: ' + json.params);
 
     bitpayService__post(bitpayAccount.apiContext.token, json, function(data) { // TODO
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Account Delete Payroll Record: SUCCESS');
 
       // Re-cache payroll records after the server updates.
-      root.fetchPayrollRecords(bitpayAccount.apiContext, function(err, records) {
+      root.getPayrollRecords(bitpayAccount.apiContext, function(err, records) {
         return cb(err);
       });
     }, function(data) {
@@ -487,7 +471,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
   };
 
   var register = function() {
-    root.getPayrollRecords(function(err, records) {
+    root.getPayrollRecords(null, function(err, records) {
       if (records.length > 0) {
         nextStepsService.unregister(nextStepItem.name);
         homeIntegrationsService.register(homeItem);
@@ -510,7 +494,9 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
   //
   // TODO: FOR TESTING ONLY -- to be removed when server is functional
   // 
-  var bitpayService__post = function(token, json, cb) {
+  var bitpayService__post = function(endpoint, json, cb) {
+    // Simulate the POST.
+    $log.debug('post: https://bitpay.com/api/v2/' + endpoint + ' data=' + JSON.stringify(json));
     //
     //
     var test_employers = [{
@@ -588,13 +574,17 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
       //walletId: '13f68a06-4299-4ed6-8fe6-323298759b16',
       walletId: '4b4e6038-7325-4a71-b500-a2e1c5d80d64',
       externalWalletName: 'Andy\'s Paper Wallet',
-      unverifiedAddressAccepted: true
+      addressVerification: {
+        verified: false,
+        reason: 'unknown',
+        accepted: true
+      }
     }];
     //
     //
     var test_tx = {
       't0001': {
-        transactions: [
+        transactionList: [
           {
             uniqueId: '1abcdefghij',
             timestamp: 'Fri Jan 13 2017 23:20:20 GMT-0500 (EST)',
@@ -649,14 +639,24 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
     //
     //
 
+    var params;
+    if (json.params) {
+      params = JSON.parse(json.params);
+    }
+
     var res = {
       data: {}
     };
 
     switch (json.method) {
-      // PUBLIC facade
       case 'checkPayrollEligible':
-        var qualifyingData = JSON.parse(json.params);
+        // PUBLIC facade
+        // Does not return any id/eid/token -- informational repsonse only
+
+        // Params
+        var qualifyingData = params.qualifyingData;
+        var account = params.account;
+        
         var eligibilityRecord = {};
         var employer = lodash.find(test_employers, function(r) {
           var employee = lodash.find(r.employeePool, function(e) {
@@ -666,7 +666,6 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
         });
 
         if (employer) {
-          var ts = Date.now();
           eligibilityRecord = {
             email: qualifyingData.email,
             employer: employer.data,
@@ -685,13 +684,17 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
         res.data.data = eligibilityRecord;
         break;
 
-      // PAYROLL-USER facade
       case 'getPayrollRecords':
+        // PAYROLL-USER facade
         // Return a set of payroll records for the account; for testing we don't care what the account id is.
+        // Returns id/eid/token
+
+        // No params
+
         var records = [];
 
         // Hard code a test token.
-        token = 'token-employee-ap';
+        var token = 'token-employee-ap';
         var id = (lodash.find(test_tokenMap, function(m) {return m.token == token})).id;
         var employerRecord = lodash.find(test_employers, function(r) {
           var employee = lodash.find(r.employeePool, function(e) {
@@ -719,19 +722,34 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($lo
         res.data.data = records;
         break;
 
-      // PAYROLL-USER facade
       case 'getPayrollTransactions':
+        // PAYROLL-USER facade
+
+        // Params
+        var id = params.recordId;
+        var dateRange = params.dateRange;
+
         res.data.error = null;
-        res.data.data = test_tx;
+        res.data.data = test_tx[id];
         break;
 
-      // PAYROLL-USER facade
       case 'setPayrollRecord':
+        // PAYROLL-USER facade
+        // Is an update if an id/eid/token is provided (error if attrs not known).
+        // Is a create if no id/eid/token is provided (not an error if employer has `n` records with same email).
+
+        // Params
+        var record = params.record;
+
         res.data.error = 'No server implementation';
         break;
 
-      // PAYROLL-USER facade
       case 'deletePayrollRecord':
+        // PAYROLL-USER facade
+
+        // Params
+        var id = params.recordId;
+
         res.data.error = 'No server implementation';
         break;
     }
