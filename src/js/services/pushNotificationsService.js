@@ -112,7 +112,10 @@ angular.module('copayApp.services').factory('pushNotificationsService', function
           historyRoot: true
         });
         $ionicHistory.clearHistory();
-        $state.go('tabs.home').then(function() {
+        $state.go('tabs.home', {}, {
+          'reload': true,
+          'notify': $state.current.name == 'tabs.home' ? false : true
+        }).then(function() {
           _openWallet(walletIdHashed);
         });
       } else {
