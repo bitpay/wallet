@@ -39,9 +39,9 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
   };
 
   $scope.openExternalLink = function() {
-    var url = 'https://help.bitpay.com/bitpay-app';
-    var optIn = true;
     var appName = appConfigService.name;
+    var url = appName == 'copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
+    var optIn = true;
     var title = gettextCatalog.getString('{{msg}}', {
       msg: appName == 'copay' ? 'Copay Github Issues' : 'BitPay Help Center'
     });
