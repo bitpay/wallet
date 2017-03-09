@@ -19,12 +19,17 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://bitpay.com/wallet',
     },
 
-    rateApp: {
+    rateBitPay: {
       ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
       android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
       wp: ''
     },
 
+    rateCopay: {
+      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+      android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
+      wp: ''
+    },
     // wallet default config
     wallet: {
       requiredCopayers: 2,
