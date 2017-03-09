@@ -1,37 +1,31 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess, txFormatService) {
+
+  var txId;
+  var listeners = [];
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    txId = data.stateParams.txid;
     $scope.title = gettextCatalog.getString('Transaction');
     $scope.wallet = profileService.getWallet(data.stateParams.walletId);
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
+    updateTx();
 
-    ongoingProcess.set('loadingTxInfo', true);
-    walletService.getTx($scope.wallet, data.stateParams.txid, function(err, tx) {
-      ongoingProcess.set('loadingTxInfo', false);
-      if (err) {
-        $log.warn('Could not get tx');
-        $ionicHistory.goBack();
-        return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
-      }
-      $scope.btx = tx;
-      if ($scope.btx.action != 'invalid') {
-        if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
-        if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
-        if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
-      }
+    listeners = [
+      $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+        if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+          updateTx();
+        }
+      })
+    ];
+  });
 
-      $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
-      $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
-
-      updateMemo();
-      initActionList();
-      $timeout(function() {
-        $scope.$apply();
-      });
+  $scope.$on("$ionicView.leave", function(event, data) {
+    lodash.each(listeners, function(x) {
+      x();
     });
   });
 
@@ -94,6 +88,39 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     }, 10);
   }
 
+  var updateTx = function() {
+    ongoingProcess.set('loadingTxInfo', true);
+    walletService.getTx($scope.wallet, txId, function(err, tx) {
+      ongoingProcess.set('loadingTxInfo', false);
+      if (err) {
+        $log.warn('Error getting transaction' + err);
+        $ionicHistory.goBack();
+        return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not available at this time'));
+      }
+
+      $scope.btx = txFormatService.processTx(tx);
+      txFormatService.formatAlternativeStr(tx.fees, function(v) {
+        $scope.feeFiatStr = v;
+      });
+
+      if ($scope.btx.action != 'invalid') {
+        if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
+        if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
+        if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
+      }
+
+      $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
+      $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
+
+      updateMemo();
+      initActionList();
+      getFiatRate();
+      $timeout(function() {
+        $scope.$apply();
+      });
+    });
+  };
+  
   $scope.showCommentPopup = function() {
     var opts = {};
     if ($scope.btx.message) {
@@ -138,29 +165,21 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     return n.substring(0, 4);
   };
 
-  $scope.getFiatRate = function() {
-    if ($scope.rateDate) return;
-    var alternativeIsoCode = $scope.wallet.status.alternativeIsoCode;
-    $scope.loadingRate = true;
+  var getFiatRate = function() {
+    $scope.alternativeIsoCode = $scope.wallet.status.alternativeIsoCode;
     $scope.wallet.getFiatRate({
-      code: alternativeIsoCode,
+      code: $scope.alternativeIsoCode,
       ts: $scope.btx.time * 1000
     }, function(err, res) {
-      $scope.loadingRate = false;
       if (err) {
         $log.debug('Could not get historic rate');
         return;
       }
       if (res && res.rate) {
         $scope.rateDate = res.fetchedOn;
-        $scope.rateStr = res.rate + ' ' + alternativeIsoCode;
-        $scope.$apply();
+        $scope.rate = res.rate;
       }
     });
-  };
-
-  $scope.cancel = function() {
-    $scope.txDetailsModal.hide();
   };
 
 });

@@ -523,32 +523,27 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getTx = function(wallet, txid, cb) {
-    var tx;
 
-    if (wallet.completeHistory && wallet.completeHistory.isValid) {
-      tx = lodash.find(wallet.completeHistory, {
-        txid: txid
+    function finish(list){
+      var tx = lodash.find(list, {
+          txid: txid
       });
 
-      finish();
+      if (!tx) return cb('Could not get transaction');
+      return cb(null, tx);
+    };
+
+    if (wallet.completeHistory && wallet.completeHistory.isValid) {
+      finish(wallet.completeHistory);
     } else {
       root.getTxHistory(wallet, {
         limitTx: txid
       }, function(err, txHistory) {
         if (err) return cb(err);
 
-        tx = lodash.find(txHistory, {
-          txid: txid
-        });
-
-        finish();
+        finish(txHistory);
       });
     }
-
-    function finish() {
-      if (tx) return cb(null, tx);
-      else return cb();
-    };
   };
 
 
