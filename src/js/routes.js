@@ -1199,7 +1199,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         configService.whenAvailable(function(config) {
           var nextView;
           var lockapp = config.lockapp;
-          if (fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
+          if (platformInfo.isCordova && fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
             fingerprintService.check('unlockingApp', function(err) {
               if (err) nextView = 'deadview';
               else nextView = $ionicHistory.currentStateName();
@@ -1259,7 +1259,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             configService.whenAvailable(function(config) {
               var lockapp = config.lockapp;
               startupService.ready();
-              if (fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
+              if (platformInfo.isCordova && fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
                 fingerprintService.check('unlockingApp', function(err) {
                   if (err) goTo('deadview');
                   else goTo('tabs.home');
