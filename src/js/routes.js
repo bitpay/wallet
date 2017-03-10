@@ -133,6 +133,18 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
+       * Dead state - locked
+       *
+       */
+
+      .state('deadview', {
+        url: '/deadview/',
+        controller: 'deadviewController',
+        templateUrl: 'views/deadview.html',
+      })
+
+      /*
+       *
        * URI
        *
        */
@@ -1122,7 +1134,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, startupService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 
     uxLanguage.init();
 
@@ -1185,9 +1197,22 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       $ionicPlatform.on('resume', function() {
         configService.whenAvailable(function(config) {
-          if (platformInfo.isCordova && config.pincode && config.pincode.enabled) {
-            $state.go('pincode');
-          }
+          var nextView;
+          var lockapp = config.lockapp;
+          if (fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
+            fingerprintService.check('unlockingApp', function(err) {
+              if (err) nextView = 'deadview';
+              else nextView = $ionicHistory.currentStateName();
+              goTo(nextView);
+            });
+          } else if (platformInfo.isCordova && lockapp.pincode && lockapp.pincode.enabled) {
+            goTo('pincode');
+          } else
+            goTo('tabs.home');
+
+          function goTo(nextView) {
+            $state.go(nextView);
+          };
         });
       });
 
@@ -1232,16 +1257,23 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               historyRoot: true
             });
             configService.whenAvailable(function(config) {
+              var lockapp = config.lockapp;
               startupService.ready();
-              if (platformInfo.isCordova && config.lockapp.pincode && config.lockapp.pincode.enabled) {
-                $state.transitionTo('pincode').then(function() {
+              if (fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
+                fingerprintService.check('unlockingApp', function(err) {
+                  if (err) goTo('deadview');
+                  else goTo('tabs.home');
+                });
+              } else if (platformInfo.isCordova && lockapp.pincode && lockapp.pincode.enabled) {
+                goTo('pincode');
+              } else
+                goTo('tabs.home');
+
+              function goTo(nextView) {
+                $state.transitionTo(nextView).then(function() {
                   $ionicHistory.clearHistory();
                 });
-              } else {
-                $state.transitionTo('tabs.home').then(function() {
-                  $ionicHistory.clearHistory();
-                });
-              }
+              };
             });
           });
         }
