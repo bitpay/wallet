@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('lockappController', function($state, $scope, $log, configService, popupService, gettextCatalog, appConfigService) {
+angular.module('copayApp.controllers').controller('lockappController', function($state, $scope, $timeout, $log, configService, popupService, gettextCatalog, appConfigService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     var config = configService.getSync();
@@ -34,6 +34,9 @@ angular.module('copayApp.controllers').controller('lockappController', function(
           $scope.useFingerprint = {
             enabled: false
           };
+          $timeout(function() {
+            $scope.$apply();
+          });
           return;
         }
         saveConfig();
@@ -45,6 +48,9 @@ angular.module('copayApp.controllers').controller('lockappController', function(
       $scope.usePincode = {
         enabled: false
       };
+      $timeout(function() {
+        $scope.$apply();
+      });
       var opts = {
         lockapp: {
           pincode: {
