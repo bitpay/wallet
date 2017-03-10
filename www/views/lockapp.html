@@ -1,0 +1,19 @@
+<ion-view class="settings">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Lock App' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <ion-toggle ng-model="usePincode.enabled" toggle-class="toggle-balanced" ng-change="usePincodeChange()">
+      <span class="toggle-label" translate>Enable Pin Code</span>
+    </ion-toggle>
+
+    <div ng-show="fingerprintAvailable">
+      <ion-toggle ng-model="useFingerprint.enabled" toggle-class="toggle-balanced" ng-change="useFingerprintChange()">
+        <span class="toggle-label" translate>Enable Fingerprint</span>
+      </ion-toggle>
+    </div>
+  </ion-content>
+</ion-view>

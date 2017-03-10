@@ -451,11 +451,20 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.pincode', {
+      .state('tabs.lockapp', {
+        url: '/lockapp',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'lockappController',
+            templateUrl: 'views/lockapp.html',
+          }
+        }
+      })
+      .state('tabs.lockapp.pincode', {
         url: '/pincode/:fromSettings/:locking',
         views: {
           'tab-settings@tabs': {
-            controller: 'pincodeController',
+            controller: 'lockappController',
             templateUrl: 'views/pincode.html',
             cache: false
           }
@@ -1224,14 +1233,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             });
             configService.whenAvailable(function(config) {
               startupService.ready();
-              if (platformInfo.isCordova && config.pincode && config.pincode.enabled) {
+              if (platformInfo.isCordova && config.lockapp.pincode && config.lockapp.pincode.enabled) {
                 $state.transitionTo('pincode').then(function() {
-                  // Clear history
                   $ionicHistory.clearHistory();
                 });
               } else {
                 $state.transitionTo('tabs.home').then(function() {
-                  // Clear history
                   $ionicHistory.clearHistory();
                 });
               }
