@@ -38,9 +38,6 @@
 
 #tab-home, #tab-send {
   .card, .list {
-    .icon {
-      color: $v-light-gray;
-    }
     & > .item-heading {
       font-weight: 700;
       .icon {
