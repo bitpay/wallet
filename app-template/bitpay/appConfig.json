@@ -4,6 +4,7 @@
   "packageNameId": "com.bitpay.wallet",
   "userVisibleName": "BitPay",
   "purposeLine": "Secure Bitcoin Wallet",
+  "bundlePath": "com.bitpay.",
   "bundleName": "wallet",
   "appUri": "bitpay",
   "name": "bitpay",

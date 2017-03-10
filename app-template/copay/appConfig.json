@@ -4,6 +4,7 @@
   "packageNameId": "com.bitpay.copay",
   "userVisibleName": "Copay",
   "purposeLine": "Copay Bitcoin Wallet",
+  "bundlePath": "com.bitpay.",
   "bundleName": "copay",
   "appUri": "copay",
   "name": "copay",
