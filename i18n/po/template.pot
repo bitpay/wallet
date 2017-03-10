@@ -279,10 +279,6 @@ msgstr ""
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr ""
 
-#: src/js/controllers/tab-settings.js:45
-msgid "BitPay Help Center"
-msgstr ""
-
 #: www/views/preferencesBitpayServices.html:9
 msgid "BitPay Visa&reg; Cards"
 msgstr ""
@@ -472,10 +468,6 @@ msgstr ""
 
 #: www/views/preferencesLanguage.html:26
 msgid "Contribute Translations"
-msgstr ""
-
-#: src/js/controllers/tab-settings.js:45
-msgid "Copay Github Issues"
 msgstr ""
 
 #: src/js/services/bwcError.js:62
@@ -1036,7 +1028,7 @@ msgstr ""
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
 #: src/js/controllers/tab-home.js:144
-#: src/js/controllers/tab-settings.js:50
+#: src/js/controllers/tab-settings.js:48
 #: src/js/controllers/tx-details.js:159
 msgid "Go Back"
 msgstr ""
@@ -1067,7 +1059,7 @@ msgid "Help & Support"
 msgstr ""
 
 #: src/js/controllers/tab-settings.js:46
-msgid "Help and support information is available at the {{msg}} website."
+msgid "Help and support information is available at the website."
 msgstr ""
 
 #: www/views/addresses.html:29
@@ -1556,7 +1548,7 @@ msgstr ""
 msgid "On this screen you can see all your wallets, accounts, and assets."
 msgstr ""
 
-#: src/js/controllers/tab-settings.js:49
+#: src/js/controllers/tab-settings.js:47
 msgid "Open"
 msgstr ""
 
