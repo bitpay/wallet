@@ -78,13 +78,19 @@
             </i>
             <div>{{wallet.name}}</div>
           </div>
-        </div>
-        <div class="item single-line">
+        </div> 
+        <div class="item single-line" ng-if="isShared">
           <span class="label" translate>Created by</span>
           <span class="item-note">
-            {{tx.creatorName}} <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+            {{tx.creatorName}}
           </span>
         </div>
+        <div class="item single-line" ng-if="tx.ts || tx.createdOn">
+          <span class="label" translate>Date</span>
+          <span class="item-note">
+            <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+          </span>
+        </div> 
         <div class="item single-line" ng-show="tx.message">
           <span class="label" translate>Memo</span>
           <span class="item-note">
