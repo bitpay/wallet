@@ -7,8 +7,8 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content class="tx-details-content" ng-show="btx">
-    <div class="list">
+  <ion-content class="tx-details-content">
+    <div class="list" ng-if="btx">
       <div class="item head">
         <div class="sending-label" ng-if="btx.confirmations > 0">
           <img src="img/icon-tx-sent-outline.svg" ng-if="btx.action === 'sent'">
@@ -26,10 +26,10 @@
         <div class="amount-label">
           <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
           <div class="alternative" ng-click="showRate = !showRate">
-            <span ng-show="!showRate">{{btx.alternativeAmountStr}}</span>
-            <span ng-show="showRate">
-              <span ng-show="!rate">...</span>
-              <span ng-show="rate">
+            <span ng-if="!showRate">{{btx.alternativeAmountStr}}</span>
+            <span ng-if="showRate">
+              <span ng-if="!rate">...</span>
+              <span ng-if="rate">
                 {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
               </span>
             </span>
@@ -80,20 +80,20 @@
         <div class="item single-line" ng-click="toggleFeeFiat = !toggleFeeFiat">
           <span class="label" translate>Fee</span>
           <span class="item-note">
-            <span ng-show="!toggleFeeFiat">{{btx.feeStr}}</span>
-            <span ng-show="toggleFeeFiat">{{feeFiatStr}}</span>
+            <span ng-if="!toggleFeeFiat">{{btx.feeStr}}</span>
+            <span ng-if="toggleFeeFiat">{{feeFiatStr}}</span>
           </span>
         </div>
         <div class="item single-line">
           <span class="label" translate>Confirmations</span>
           <span class="item-note">
-            <span ng-show="!btx.confirmations || btx.confirmations == 0" translate>
+            <span ng-if="!btx.confirmations || btx.confirmations == 0" translate>
               Unconfirmed
             </span>
-            <span ng-show="btx.confirmations>0 && !btx.safeConfirmed">
+            <span ng-if="btx.confirmations>0 && !btx.safeConfirmed">
               {{btx.confirmations}}
             </span>
-            <span ng-show="btx.safeConfirmed">
+            <span ng-if="btx.safeConfirmed">
               {{btx.safeConfirmed}}
             </span>
           </span>
@@ -125,7 +125,7 @@
 
     </div>
 
-    <button class="view-on-blockchain-btn button button-standard button-primary" ng-click="viewOnBlockchain()" translate>
+    <button ng-if="btx" class="view-on-blockchain-btn button button-standard button-primary" ng-click="viewOnBlockchain()" translate>
       View on blockchain
     </button>
 
