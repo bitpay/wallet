@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2017-03-06 07:38-0500\n"
+"PO-Revision-Date: 2017-03-10 13:32-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -28,7 +28,7 @@ msgid "* A payment proposal can be deleted if 1) you are the creator, and no oth
 msgstr "* 送金の提案の取下げは①他のウォレット参加者に署名されていなかった場合、提案者に提案を取り下げることができます。②提案の起案から24時間が経っても解決しなかった場合、全員に取り下げることができます。"
 
 #: www/views/feedback/rateApp.html:7
-msgid "5-star ratings help us get BitPay into more hands, and more users means more resources can be committed to the app!"
+msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
 msgstr "5つ星の評価をいただけると、もっとたくさんの人にこのアプリを届けることができます。そして、ユーザーが増えればこのアプリの改善に当てられる人員やリソースも増えます。"
 
 #: src/js/controllers/feedback/send.js:27
@@ -36,11 +36,11 @@ msgstr "5つ星の評価をいただけると、もっとたくさんの人に�
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "ただちに開発メンバーでいただいた評価を拝読し参考にさせていただきます。"
 
-#: src/js/controllers/confirm.js:230
+#: src/js/controllers/confirm.js:237
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "注意：合計{{amountAboveMaxSizeStr}} を除外しました。取引に許可される最大サイズを超えました"
 
-#: src/js/controllers/confirm.js:224
+#: src/js/controllers/confirm.js:231
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "注意：合計 {{amountBelowFeeStr}} を除外しました。これらのビットコインは手数料よりも低い額となるため除外しました。"
 
@@ -50,7 +50,7 @@ msgid "About"
 msgstr "このアプリについて"
 
 #: src/js/controllers/modals/txpDetails.js:52
-#: src/js/controllers/tx-details.js:65
+#: src/js/controllers/tx-details.js:59
 msgid "Accepted"
 msgstr "承諾済"
 
@@ -110,7 +110,7 @@ msgstr "アカウントを追加"
 msgid "Add an optional password to secure the recovery phrase"
 msgstr "フレーズを守るために任意のパスワードをかけて下さい"
 
-#: src/js/controllers/confirm.js:286
+#: src/js/controllers/confirm.js:293
 msgid "Add description"
 msgstr "詳細を追加"
 
@@ -190,7 +190,7 @@ msgstr "金額"
 msgid "Amount below minimum allowed"
 msgstr "送金可能最少額を下回っています"
 
-#: src/js/controllers/confirm.js:403
+#: src/js/controllers/confirm.js:410
 msgid "Amount too big"
 msgstr "金額が大きすぎます"
 
@@ -224,7 +224,7 @@ msgstr "この取引を却下してもよろしいですか?"
 msgid "Are you sure you want to remove this transaction?"
 msgstr "この取引を破棄してもよろしいですか?"
 
-#: src/js/controllers/onboarding/backupRequest.js:16
+#: src/js/controllers/onboarding/backupRequest.js:23
 msgid "Are you sure you want to skip it?"
 msgstr "本当にバックアップの手順を飛ばしても良いですか？"
 
@@ -290,10 +290,6 @@ msgstr "アドレスごとの残高"
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "書き留めた復元フレーズは金庫など、安全な場所にて保管して下さい。このアプリが削除されたら、復元フレーズが必須になってきます。"
 
-#: src/js/controllers/tab-settings.js:44
-msgid "BitPay Help Center"
-msgstr "BitPayヘルプセンター"
-
 #: www/views/preferencesBitpayServices.html:9
 msgid "BitPay Visa&reg; Cards"
 msgstr "BitPayのVISA&reg; カード"
@@ -336,7 +332,7 @@ msgid "Broadcast Payment"
 msgstr "取引送信"
 
 #: src/js/controllers/modals/txpDetails.js:54
-#: src/js/controllers/tx-details.js:67
+#: src/js/controllers/tx-details.js:61
 msgid "Broadcasted"
 msgstr "送信済み"
 
@@ -364,7 +360,7 @@ msgstr "ビットコインを購入中..."
 msgid "Calculating fee"
 msgstr "手数料計算中..."
 
-#: src/js/controllers/confirm.js:487
+#: src/js/controllers/confirm.js:494
 #: src/js/services/popupService.js:59
 #: www/views/addressbook.add.html:10
 #: www/views/feedback/send.html:5
@@ -410,7 +406,7 @@ msgstr "やり直し"
 msgid "Clear cache"
 msgstr "キャッシュを消去"
 
-#: src/js/controllers/confirm.js:45
+#: src/js/controllers/confirm.js:52
 #: src/js/controllers/modals/txpDetails.js:25
 msgid "Click"
 msgstr "クリックして"
@@ -430,7 +426,7 @@ msgstr "色"
 msgid "Commit hash"
 msgstr "コミットのハッシュ値"
 
-#: src/js/controllers/confirm.js:486
+#: src/js/controllers/confirm.js:493
 #: src/js/controllers/copayers.js:41
 #: www/views/backup.html:53
 #: www/views/backup.html:72
@@ -444,12 +440,12 @@ msgstr "確認"
 msgid "Confirm &amp; Finish"
 msgstr "承諾して終了する"
 
-#: src/js/services/walletService.js:883
-#: src/js/services/walletService.js:884
+#: src/js/services/walletService.js:878
+#: src/js/services/walletService.js:879
 msgid "Confirm you new spending password"
 msgstr "新しい送金時パスワードを確認してください"
 
-#: www/views/tx-details.html:79
+#: www/views/tx-details.html:88
 msgid "Confirmations"
 msgstr "承認回数"
 
@@ -528,7 +524,7 @@ msgstr "サーバーにてウォレットの確認ができませんでした。
 msgid "Could not access wallet"
 msgstr "ウォレットにアクセスできませんでした。"
 
-#: src/js/controllers/confirm.js:397
+#: src/js/controllers/confirm.js:404
 msgid "Could not add message to imported wallet without shared encrypting key"
 msgstr "共有キー無しでインポートされたウォレットへのメッセージの追加ができません"
 
@@ -540,7 +536,7 @@ msgstr "送金を配信できませんでした。"
 msgid "Could not build transaction"
 msgstr "取引を作成できませんでした。"
 
-#: src/js/services/walletService.js:796
+#: src/js/services/walletService.js:791
 msgid "Could not create address"
 msgstr "アドレスを生成できませんでした。"
 
@@ -603,7 +599,7 @@ msgstr "アカウントを削除できませんでした。"
 msgid "Could not remove card"
 msgstr "カードを削除できませんでした。"
 
-#: src/js/services/walletService.js:717
+#: src/js/services/walletService.js:712
 msgid "Could not save preferences on the server"
 msgstr "設定をサーバーと同期できませんでした。"
 
@@ -623,7 +619,7 @@ msgstr "取引履歴を更新できませんでした。"
 msgid "Could not update wallet"
 msgstr "ウォレットが更新できませんでした。"
 
-#: src/js/controllers/confirm.js:110
+#: src/js/controllers/confirm.js:117
 msgid "Could not update wallets"
 msgstr "ウォレットが更新できませんでした。"
 
@@ -654,7 +650,7 @@ msgid "Create {{formData.requiredCopayers}}-of-{{formData.totalCopayers}} wallet
 msgstr "{{formData.requiredCopayers}}-of-{{formData.totalCopayers}} ウォレットを作成"
 
 #: www/views/modals/txp-details.html:83
-#: www/views/tx-details.html:60
+#: www/views/tx-details.html:62
 msgid "Created by"
 msgstr "作成者"
 
@@ -673,6 +669,10 @@ msgstr "この設定の現在の手数料レート"
 #: www/views/customAmount.html:4
 msgid "Custom Amount"
 msgstr "金額を入力"
+
+#: www/views/tx-details.html:68
+msgid "Date"
+msgstr "日付"
 
 #: www/views/preferencesDeleteWallet.html:21
 msgid "Delete"
@@ -741,7 +741,7 @@ msgstr "節約"
 msgid "Email"
 msgstr "電子メール"
 
-#: www/views/preferencesNotifications.html:38
+#: www/views/preferencesNotifications.html:36
 msgid "Email Address"
 msgstr "メールアドレス"
 
@@ -757,11 +757,11 @@ msgstr "未使用アドレスを生成しすぎたため、これ以上アドレ
 msgid "Enable camera access in your device settings to get started."
 msgstr "端末の設定でカメラの使用許可をしないとスキャンができません。"
 
-#: www/views/preferencesNotifications.html:25
+#: www/views/preferencesNotifications.html:23
 msgid "Enable email notifications"
 msgstr "メール通知を有効化"
 
-#: www/views/preferencesNotifications.html:14
+#: www/views/preferencesNotifications.html:12
 msgid "Enable push notifications"
 msgstr "プッシュ通知を有効化"
 
@@ -773,8 +773,8 @@ msgstr "始めるためにカメラを有効にして下さい。"
 msgid "Enter Amount"
 msgstr "金額を入力"
 
-#: src/js/services/walletService.js:897
-#: src/js/services/walletService.js:912
+#: src/js/services/walletService.js:892
+#: src/js/services/walletService.js:907
 msgid "Enter Spending Password"
 msgstr "送金時のパスワード入力して下さい。"
 
@@ -782,7 +782,7 @@ msgstr "送金時のパスワード入力して下さい。"
 msgid "Enter Two Factor for your BitPay account"
 msgstr "BitPay アカウントの2段階認証コードを入力して下さい"
 
-#: src/js/services/walletService.js:879
+#: src/js/services/walletService.js:874
 msgid "Enter new spending password"
 msgstr "新しい送金時パスワードを入力してください"
 
@@ -803,11 +803,11 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/addresses.js:98
 #: src/js/controllers/addresses.js:99
 #: src/js/controllers/bitpayCard.js:65
-#: src/js/controllers/bitpayCardIntro.js:42
-#: src/js/controllers/bitpayCardIntro.js:83
-#: src/js/controllers/confirm.js:170
-#: src/js/controllers/confirm.js:183
-#: src/js/controllers/confirm.js:189
+#: src/js/controllers/bitpayCardIntro.js:40
+#: src/js/controllers/bitpayCardIntro.js:81
+#: src/js/controllers/confirm.js:177
+#: src/js/controllers/confirm.js:190
+#: src/js/controllers/confirm.js:196
 #: src/js/controllers/copayers.js:53
 #: src/js/controllers/create.js:109
 #: src/js/controllers/create.js:137
@@ -855,11 +855,11 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/preferencesDelete.js:37
 #: src/js/controllers/tab-home.js:169
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/tx-details.js:18
+#: src/js/controllers/tx-details.js:98
 msgid "Error"
 msgstr "エラー"
 
-#: src/js/controllers/confirm.js:372
+#: src/js/controllers/confirm.js:379
 msgid "Error at confirm"
 msgstr "確認のエラー"
 
@@ -887,7 +887,7 @@ msgstr "デビットカードの更新エラー"
 msgid "Exceeded daily limit of $500 per user"
 msgstr "ユーザーの1日当たりの制限 500 米ドルを超えました"
 
-#: src/js/controllers/confirm.js:331
+#: src/js/controllers/confirm.js:338
 #: www/views/confirm.html:27
 #: www/views/modals/txp-details.html:114
 msgid "Expired"
@@ -911,7 +911,7 @@ msgstr "ファイルへのエクスポート"
 msgid "Export wallet"
 msgstr "ウォレットをエクスポート"
 
-#: src/js/services/walletService.js:1024
+#: src/js/services/walletService.js:1019
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
 msgstr "このウォレットはQRによるエクスポートに対応していません"
@@ -940,7 +940,7 @@ msgstr "家族旅行貯金"
 #: www/views/confirm.html:88
 #: www/views/includes/confirm-tx.html:19
 #: www/views/modals/txp-details.html:95
-#: www/views/tx-details.html:73
+#: www/views/tx-details.html:81
 msgid "Fee"
 msgstr "手数料"
 
@@ -979,11 +979,11 @@ msgstr "監査用機能"
 
 #: www/views/confirm.html:65
 #: www/views/modals/txp-details.html:74
-#: www/views/tx-details.html:50
+#: www/views/tx-details.html:52
 msgid "From"
 msgstr "送信者"
 
-#: src/js/controllers/bitpayCardIntro.js:73
+#: src/js/controllers/bitpayCardIntro.js:71
 msgid "From BitPay account"
 msgstr " BitPayアカウントから"
 
@@ -1039,13 +1039,13 @@ msgstr "手数料レベルを取得しています…"
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
 #: src/js/controllers/tab-home.js:144
-#: src/js/controllers/tab-settings.js:47
-#: src/js/controllers/tx-details.js:132
+#: src/js/controllers/tab-settings.js:48
+#: src/js/controllers/tx-details.js:159
 msgid "Go Back"
 msgstr "戻る"
 
-#: src/js/controllers/onboarding/backupRequest.js:13
-#: src/js/controllers/onboarding/backupRequest.js:19
+#: src/js/controllers/onboarding/backupRequest.js:20
+#: src/js/controllers/onboarding/backupRequest.js:26
 #: src/js/services/bitpayAccountService.js:78
 msgid "Go back"
 msgstr "戻る"
@@ -1069,9 +1069,9 @@ msgstr "ハードウェアウォレット"
 msgid "Help & Support"
 msgstr "ヘルプ＆サポート"
 
-#: src/js/controllers/tab-settings.js:45
-msgid "Help and support information is available at the BitPay Help Center website."
-msgstr "サポートに関する情報はBitPayヘルプセンターのウェブサイトに掲載しております。"
+#: src/js/controllers/tab-settings.js:46
+msgid "Help and support information is available at the website."
+msgstr "サポートに関する情報はウェブサイトに掲載しております。"
 
 #: www/views/addresses.html:29
 msgid "Hide"
@@ -1099,17 +1099,17 @@ msgstr "詳細設定を非表示"
 msgid "Home"
 msgstr "ホーム"
 
-#: src/js/controllers/feedback/send.js:56
-#: src/js/controllers/feedback/send.js:60
-#: src/js/controllers/feedback/send.js:64
+#: src/js/controllers/feedback/send.js:61
+#: src/js/controllers/feedback/send.js:65
+#: src/js/controllers/feedback/send.js:69
 msgid "How could we improve your experience?"
 msgstr "このアプリを改善するためにご意見下さい。"
 
 #: www/views/feedback/rateCard.html:3
-msgid "How do you like BitPay?"
+msgid "How do you like {{appName}}?"
 msgstr "このアプリを使用してみて、どのようにお感じですか?"
 
-#: src/js/controllers/feedback/rateCard.js:28
+#: src/js/controllers/feedback/rateCard.js:29
 msgid "I don't like it"
 msgstr "好きではない"
 
@@ -1127,15 +1127,15 @@ msgstr "利用規約をよく読み、理解し、同意します。"
 msgid "I have written it down"
 msgstr "紙に書き留めました"
 
-#: src/js/controllers/feedback/rateCard.js:34
+#: src/js/controllers/feedback/rateCard.js:35
 msgid "I like the app"
 msgstr "このアプリが好き"
 
-#: src/js/controllers/feedback/rateCard.js:25
+#: src/js/controllers/feedback/rateCard.js:26
 msgid "I think this app is terrible."
 msgstr "このアプリは最悪です!"
 
-#: src/js/controllers/onboarding/backupRequest.js:12
+#: src/js/controllers/onboarding/backupRequest.js:19
 #: www/views/includes/screenshotWarningModal.html:9
 msgid "I understand"
 msgstr "承知しました"
@@ -1164,7 +1164,7 @@ msgstr "有効にした場合、「最近の取引」カードがホームのメ
 msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
 msgstr "有効にした場合、ウォレットは未承認ビットコインも送金時の候補に含めます。これを有効にした場合、承認に時間がかかることがあります。"
 
-#: src/js/controllers/onboarding/backupRequest.js:11
+#: src/js/controllers/onboarding/backupRequest.js:18
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr "この端末の機種変更をしたり、アプリを削除したりした場合、端末のバックアップを取っていてもビットコインは復元されません。BitPayは復元フレーズを知らないため、お金を失ったことになります。なので、絶対に復元フレーズを書き留めて安全な場所に保管して下さい。"
 
@@ -1259,7 +1259,7 @@ msgstr "無効な派生パス"
 msgid "Invitation to share a {{appName}} Wallet"
 msgstr "{{appName}} 共有ウォレットへの招待"
 
-#: src/js/controllers/feedback/send.js:72
+#: src/js/controllers/feedback/send.js:79
 msgid "Is there anything we could do better?"
 msgstr "もっと頑張って欲しいところはありますか？"
 
@@ -1359,14 +1359,14 @@ msgstr "結果:"
 msgid "Me"
 msgstr "自分"
 
-#: src/js/controllers/feedback/rateCard.js:31
+#: src/js/controllers/feedback/rateCard.js:32
 msgid "Meh - it's alright"
 msgstr "まあまあです"
 
-#: src/js/controllers/tx-details.js:104
+#: src/js/controllers/tx-details.js:131
 #: www/views/modals/paypro.html:48
 #: www/views/modals/txp-details.html:89
-#: www/views/tx-details.html:66
+#: www/views/tx-details.html:74
 msgid "Memo"
 msgstr "メモ"
 
@@ -1397,7 +1397,7 @@ msgstr "その他オプション"
 msgid "Moved"
 msgstr "移動済"
 
-#: src/js/controllers/tx-details.js:24
+#: src/js/controllers/tx-details.js:109
 msgid "Moved Funds"
 msgstr "資金を移動済み"
 
@@ -1497,7 +1497,7 @@ msgstr "通常"
 msgid "Not authorized"
 msgstr "権限がありません。"
 
-#: src/js/controllers/confirm.js:189
+#: src/js/controllers/confirm.js:196
 msgid "Not enough funds for fee"
 msgstr "手数料含めたら残高が不足しています。"
 
@@ -1551,13 +1551,17 @@ msgstr "OK"
 msgid "Official English Disclaimer"
 msgstr "公式免責事項 (英語)"
 
-#: src/js/controllers/feedback/send.js:59
+#: src/js/controllers/feedback/send.js:64
 msgid "Oh no!"
 msgstr "おっと!"
 
 #: www/views/tab-home.html:38
 msgid "On this screen you can see all your wallets, accounts, and assets."
 msgstr "この画面では、全てのウォレット、アカウント、資産が閲覧できます。"
+
+#: src/js/controllers/tab-settings.js:47
+msgid "Open"
+msgstr "開く"
 
 #: src/js/controllers/preferencesLanguage.js:13
 msgid "Open Crowdin"
@@ -1571,11 +1575,7 @@ msgstr "GitHubを開く"
 msgid "Open GitHub Project"
 msgstr "GitHub のプロジェクトを開く"
 
-#: src/js/controllers/tab-settings.js:46
-msgid "Open Help Center"
-msgstr "ヘルプセンターを開く"
-
-#: src/js/controllers/tx-details.js:131
+#: src/js/controllers/tx-details.js:158
 msgid "Open Insight"
 msgstr "Insightを開く"
 
@@ -1752,7 +1752,7 @@ msgstr "アドレスを処理中…"
 msgid "Preparing backup..."
 msgstr "バックアップを準備中..."
 
-#: src/js/routes.js:1133
+#: src/js/routes.js:1143
 msgid "Press again to exit"
 msgstr "もう一度押して終了"
 
@@ -1773,7 +1773,7 @@ msgid "Proposal Accepted"
 msgstr "提案が承諾されました"
 
 #: src/js/controllers/modals/txpDetails.js:51
-#: src/js/controllers/tx-details.js:64
+#: src/js/controllers/tx-details.js:58
 #: www/views/confirm.html:124
 msgid "Proposal Created"
 msgstr "提案が作成されました"
@@ -1794,7 +1794,7 @@ msgstr "提案"
 msgid "Push Notifications"
 msgstr "プッシュ通知"
 
-#: www/views/preferencesNotifications.html:19
+#: www/views/preferencesNotifications.html:17
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
 msgstr "{{appName}}のプッシュ通知は現在無効です。アプリ設定で有効にします。"
 
@@ -1834,7 +1834,7 @@ msgstr "受取"
 msgid "Received"
 msgstr "受取済み"
 
-#: src/js/controllers/tx-details.js:23
+#: src/js/controllers/tx-details.js:108
 msgid "Received Funds"
 msgstr "受領した資金"
 
@@ -1880,7 +1880,7 @@ msgid "Recreating Wallet..."
 msgstr "ウォレットを再作成中…"
 
 #: src/js/controllers/modals/txpDetails.js:53
-#: src/js/controllers/tx-details.js:66
+#: src/js/controllers/tx-details.js:60
 msgid "Rejected"
 msgstr "却下済み"
 
@@ -1948,7 +1948,7 @@ msgstr "カメラを再試行"
 #: www/views/includes/note.html:9
 #: www/views/preferencesAlias.html:21
 #: www/views/preferencesBwsUrl.html:25
-#: www/views/preferencesNotifications.html:42
+#: www/views/preferencesNotifications.html:40
 msgid "Save"
 msgstr "保存"
 
@@ -2042,7 +2042,7 @@ msgstr "ビットコインを送金"
 msgid "Send by email"
 msgstr "メールで送信"
 
-#: src/js/controllers/confirm.js:265
+#: src/js/controllers/confirm.js:272
 msgid "Send from"
 msgstr "ここから送金"
 
@@ -2078,7 +2078,7 @@ msgstr "全残高を送金"
 msgid "Sending transaction"
 msgstr "取引送信中"
 
-#: src/js/controllers/confirm.js:482
+#: src/js/controllers/confirm.js:489
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr "ウォレット {{name}} から {{amountStr}} の送金を行います。"
 
@@ -2089,7 +2089,7 @@ msgstr "ウォレット {{name}} から {{amountStr}} の送金を行います�
 msgid "Sent"
 msgstr "送金済み"
 
-#: src/js/controllers/tx-details.js:22
+#: src/js/controllers/tx-details.js:107
 msgid "Sent Funds"
 msgstr "資金を送金済み"
 
@@ -2124,10 +2124,6 @@ msgstr "設定"
 msgid "Share"
 msgstr "共有"
 
-#: www/views/feedback/complete.html:5
-msgid "Share BitPay"
-msgstr "BitPayを共有"
-
 #: www/views/copayers.html:36
 msgid "Share invitation"
 msgstr "招待コードを共有"
@@ -2142,6 +2138,10 @@ msgid "Share this invitation with your copayers"
 msgstr "ウォレット参加者に\n"
 "この招待コードを\n"
 "送って下さい。"
+
+#: src/js/controllers/feedback/complete.js:5
+msgid "Share {{appName}}"
+msgstr "{{appName}}を共有"
 
 #: www/views/tab-import-hardware.html:24
 msgid "Shared Wallet"
@@ -2186,7 +2186,7 @@ msgstr "単一アドレスウォレット"
 msgid "Skip"
 msgstr "スキップ"
 
-#: src/js/controllers/confirm.js:45
+#: src/js/controllers/confirm.js:52
 #: src/js/controllers/modals/txpDetails.js:25
 msgid "Slide"
 msgstr "スライドして"
@@ -2266,17 +2266,17 @@ msgid "Testnet"
 msgstr "テスト用ネットワーク"
 
 #: src/js/controllers/feedback/send.js:27
-#: src/js/controllers/feedback/send.js:71
+#: src/js/controllers/feedback/send.js:76
 #: www/views/feedback/complete.html:20
 #: www/views/feedback/rateApp.html:4
 msgid "Thank you!"
 msgstr "ありがとうございます!"
 
-#: src/js/controllers/feedback/send.js:67
+#: src/js/controllers/feedback/send.js:72
 msgid "Thanks!"
 msgstr "ありがとうございます。"
 
-#: src/js/controllers/feedback/send.js:68
+#: src/js/controllers/feedback/send.js:73
 msgid "That's exciting to hear. We'd love to earn that fifth star from you – how could we improve your experience?"
 msgstr "嬉しい限りです！是非5つ星のアプリを目指したいため、このアプリの改善するにはどうしたら良いと思いますか？"
 
@@ -2320,7 +2320,7 @@ msgstr "英語公式の規約は BitPay のウェブサイトにてご覧いた�
 msgid "The password of the recovery phrase (if set)"
 msgstr "復元フレーズ用のパスワード(設定してある場合のみ)"
 
-#: src/js/services/walletService.js:989
+#: src/js/services/walletService.js:984
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "送金の提案は作成されましたが完了できませんでした。ホーム画面からやり直して下さい。"
 
@@ -2373,12 +2373,12 @@ msgstr "{{appName}} の新しいバージョンがあります。"
 msgid "There is an error in the form"
 msgstr "フォームにエラーがありました"
 
-#: src/js/controllers/feedback/send.js:56
-#: src/js/controllers/feedback/send.js:60
+#: src/js/controllers/feedback/send.js:61
+#: src/js/controllers/feedback/send.js:65
 msgid "There's obviously something we're doing wrong."
 msgstr "このアプリで何か間違ったことをやっているようです。"
 
-#: src/js/controllers/feedback/rateCard.js:37
+#: src/js/controllers/feedback/rateCard.js:38
 msgid "This app is fantastic!"
 msgstr "このアプリは素晴らしいです!"
 
@@ -2386,7 +2386,7 @@ msgstr "このアプリは素晴らしいです!"
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr "このアプリは、最先端のセキュリティであなたのビットコインをお守りします。"
 
-#: src/js/controllers/confirm.js:464
+#: src/js/controllers/confirm.js:471
 msgid "This bitcoin payment request has expired."
 msgstr "ビットコインペイメントの請求期限が切れています。"
 
@@ -2406,7 +2406,7 @@ msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). 
 msgstr "現在設定中のBitcore Wallet Service (BWS) サーバーにて、このウォレットの登録がありません。再登録を行うこともできます。"
 
 #: www/views/modals/txp-details.html:131
-#: www/views/tx-details.html:93
+#: www/views/tx-details.html:102
 msgid "Timeline"
 msgstr "履歴"
 
@@ -2414,8 +2414,8 @@ msgstr "履歴"
 #: www/views/includes/output.html:2
 #: www/views/modals/txp-details.html:104
 #: www/views/modals/txp-details.html:53
-#: www/views/tx-details.html:39
-#: www/views/tx-details.html:51
+#: www/views/tx-details.html:41
+#: www/views/tx-details.html:53
 msgid "To"
 msgstr "宛先"
 
@@ -2444,7 +2444,7 @@ msgstr "参加人数を選択して下さい。"
 msgid "Touch ID Failed"
 msgstr "Touch ID が失敗しました。"
 
-#: src/js/controllers/tx-details.js:6
+#: src/js/controllers/tx-details.js:10
 msgid "Transaction"
 msgstr "取引"
 
@@ -2461,13 +2461,16 @@ msgstr "取引は既に配信されました。"
 msgid "Transaction created"
 msgstr "取引情報を作成しました"
 
+#: src/js/controllers/tx-details.js:98
+msgid "Transaction not available at this time"
+msgstr "現在この取引はご覧いただけません。"
+
 #: src/js/controllers/activity.js:45
 #: src/js/controllers/tab-home.js:169
-#: src/js/controllers/tx-details.js:18
 msgid "Transaction not found"
 msgstr "取引は見つかりません"
 
-#: www/views/tab-send.html:64
+#: www/views/tab-send.html:63
 msgid "Transfer to Wallet"
 msgstr "ウォレットに移動"
 
@@ -2484,7 +2487,7 @@ msgid "Uh oh..."
 msgstr "あら…"
 
 #: www/views/modals/search.html:36
-#: www/views/tx-details.html:81
+#: www/views/tx-details.html:90
 msgid "Unconfirmed"
 msgstr "未承認"
 
@@ -2548,7 +2551,7 @@ msgstr "全アドレスを表示"
 msgid "View Terms of Service"
 msgstr "サービス利用規約を表示"
 
-#: src/js/controllers/tx-details.js:130
+#: src/js/controllers/tx-details.js:157
 msgid "View Transaction on Insight"
 msgstr "Insightにて取引を表示"
 
@@ -2556,7 +2559,7 @@ msgstr "Insightにて取引を表示"
 msgid "View Update"
 msgstr "更新情報を表示"
 
-#: www/views/tx-details.html:119
+#: www/views/tx-details.html:128
 msgid "View on blockchain"
 msgstr "ブロックチェーンで詳細を閲覧"
 
@@ -2742,11 +2745,11 @@ msgstr "注意！"
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr "注意: この取引は未承認資金が含まれており、承認されるまで商品等をお渡しするのを待つことをお勧めします。"
 
-#: src/js/controllers/onboarding/backupRequest.js:10
+#: src/js/controllers/onboarding/backupRequest.js:17
 msgid "Watch out!"
 msgstr "注意して下さい！"
 
-#: src/js/controllers/feedback/send.js:64
+#: src/js/controllers/feedback/send.js:69
 msgid "We'd love to do better."
 msgstr "サービスを改善していきます"
 
@@ -2754,13 +2757,13 @@ msgstr "サービスを改善していきます"
 msgid "We'll confirm on the next screen."
 msgstr "次の画面で確認作業を行います。"
 
-#: src/js/controllers/feedback/send.js:72
-msgid "We're always looking for ways to improve BitPay."
-msgstr "弊社では、BitPay を改善する方法を常に探しています。"
+#: src/js/controllers/feedback/send.js:77
+msgid "We're always looking for ways to improve {{appName}}."
+msgstr "弊社では、{{appName}} を改善する方法を常に探しています。"
 
-#: src/js/controllers/feedback/send.js:76
-msgid "We're always looking for ways to improve BitPay. How could we improve your experience?"
-msgstr "常にBitPayを改善したく思っております。どのようにしたら改善できると思いますか？"
+#: src/js/controllers/feedback/send.js:83
+msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
+msgstr "常に{{appName}}を改善したく思っております。どのようにしたら改善できると思いますか？"
 
 #: www/views/preferencesLanguage.html:16
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
@@ -2783,7 +2786,7 @@ msgid "Why?"
 msgstr "なぜ？"
 
 #: www/views/feedback/rateApp.html:10
-msgid "Would you be willing to rate BitPay in the app store?"
+msgid "Would you be willing to rate {{appName}} in the app store?"
 msgstr "アプリケーションストアにレビューを書いてみませんか？"
 
 #: www/views/onboarding/notifications.html:4
@@ -2803,11 +2806,11 @@ msgstr "不正なパスワード"
 msgid "Yes"
 msgstr "はい"
 
-#: src/js/controllers/onboarding/backupRequest.js:18
+#: src/js/controllers/onboarding/backupRequest.js:25
 msgid "Yes, skip"
 msgstr "はい、飛ばします。"
 
-#: src/js/controllers/onboarding/backupRequest.js:17
+#: src/js/controllers/onboarding/backupRequest.js:24
 msgid "You can create a backup later from your wallet settings."
 msgstr "ウォレットの設定から、後でバックアップを作成できます。"
 
@@ -2839,7 +2842,7 @@ msgstr "米ドル、ユーロ、ポンドなど他の通貨との取引ができ
 msgid "You control your bitcoin."
 msgstr "あなたのビットコインはあなたがコントロールします。"
 
-#: www/views/preferencesNotifications.html:30
+#: www/views/preferencesNotifications.html:28
 msgid "You'll receive email notifications about payments sent and received from your wallets."
 msgstr "メールアドレスにウォレットへの入金や出金に関する通知が送られます。"
 
@@ -2872,7 +2875,7 @@ msgstr "パスワード"
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "ウォレットは一度もクラウドへ保存されたりすることはありませんし、携帯電話などに付いている標準バックアップ機能ではバックアップされません！！！！"
 
-#: src/js/services/walletService.js:880
+#: src/js/services/walletService.js:875
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
 msgstr "ウォレットの鍵が暗号化されます。Copayでは送金時のパスワードをリセットしてくれる機能がありませんので、パスワードを忘れないよう、控えておいて下さい。"
 
@@ -2912,16 +2915,16 @@ msgstr "name@example.com"
 msgid "preparing..."
 msgstr "準備中..."
 
-#: src/js/controllers/confirm.js:50
+#: src/js/controllers/confirm.js:57
 #: src/js/controllers/modals/txpDetails.js:34
 msgid "to accept"
 msgstr "承諾する"
 
-#: src/js/controllers/confirm.js:48
+#: src/js/controllers/confirm.js:55
 msgid "to pay"
 msgstr "支払う"
 
-#: src/js/controllers/confirm.js:52
+#: src/js/controllers/confirm.js:59
 #: src/js/controllers/modals/txpDetails.js:32
 msgid "to send"
 msgstr "送金する"
@@ -2934,7 +2937,7 @@ msgstr "{{appName}}はブロックチェーンの情報を取得したり参加�
 msgid "{{feeRateStr}} of the transaction"
 msgstr "{{feeRateStr}} のレート"
 
-#: src/js/controllers/confirm.js:203
+#: src/js/controllers/confirm.js:210
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} のビットコインネットワーク手数料が差し引かれます。"
 
