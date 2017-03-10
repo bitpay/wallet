@@ -19,7 +19,7 @@ msgid "* A payment proposal can be deleted if 1) you are the creator, and no oth
 msgstr ""
 
 #: www/views/feedback/rateApp.html:7
-msgid "5-star ratings help us get BitPay into more hands, and more users means more resources can be committed to the app!"
+msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
 msgstr ""
 
 #: src/js/controllers/feedback/send.js:27
@@ -27,11 +27,11 @@ msgstr ""
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr ""
 
-#: src/js/controllers/confirm.js:230
+#: src/js/controllers/confirm.js:237
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr ""
 
-#: src/js/controllers/confirm.js:224
+#: src/js/controllers/confirm.js:231
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
@@ -41,7 +41,7 @@ msgid "About"
 msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:52
-#: src/js/controllers/tx-details.js:65
+#: src/js/controllers/tx-details.js:59
 msgid "Accepted"
 msgstr ""
 
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Add an optional password to secure the recovery phrase"
 msgstr ""
 
-#: src/js/controllers/confirm.js:286
+#: src/js/controllers/confirm.js:293
 msgid "Add description"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgstr ""
 msgid "Amount below minimum allowed"
 msgstr ""
 
-#: src/js/controllers/confirm.js:403
+#: src/js/controllers/confirm.js:410
 msgid "Amount too big"
 msgstr ""
 
@@ -213,7 +213,7 @@ msgstr ""
 msgid "Are you sure you want to remove this transaction?"
 msgstr ""
 
-#: src/js/controllers/onboarding/backupRequest.js:16
+#: src/js/controllers/onboarding/backupRequest.js:23
 msgid "Are you sure you want to skip it?"
 msgstr ""
 
@@ -279,7 +279,7 @@ msgstr ""
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr ""
 
-#: src/js/controllers/tab-settings.js:44
+#: src/js/controllers/tab-settings.js:45
 msgid "BitPay Help Center"
 msgstr ""
 
@@ -325,7 +325,7 @@ msgid "Broadcast Payment"
 msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:54
-#: src/js/controllers/tx-details.js:67
+#: src/js/controllers/tx-details.js:61
 msgid "Broadcasted"
 msgstr ""
 
@@ -353,7 +353,7 @@ msgstr ""
 msgid "Calculating fee"
 msgstr ""
 
-#: src/js/controllers/confirm.js:487
+#: src/js/controllers/confirm.js:494
 #: src/js/services/popupService.js:59
 #: www/views/addressbook.add.html:10
 #: www/views/feedback/send.html:5
@@ -399,7 +399,7 @@ msgstr ""
 msgid "Clear cache"
 msgstr ""
 
-#: src/js/controllers/confirm.js:45
+#: src/js/controllers/confirm.js:52
 #: src/js/controllers/modals/txpDetails.js:25
 msgid "Click"
 msgstr ""
@@ -419,7 +419,7 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
-#: src/js/controllers/confirm.js:486
+#: src/js/controllers/confirm.js:493
 #: src/js/controllers/copayers.js:41
 #: www/views/backup.html:53
 #: www/views/backup.html:72
@@ -433,12 +433,12 @@ msgstr ""
 msgid "Confirm &amp; Finish"
 msgstr ""
 
-#: src/js/services/walletService.js:883
-#: src/js/services/walletService.js:884
+#: src/js/services/walletService.js:878
+#: src/js/services/walletService.js:879
 msgid "Confirm you new spending password"
 msgstr ""
 
-#: www/views/tx-details.html:79
+#: www/views/tx-details.html:88
 msgid "Confirmations"
 msgstr ""
 
@@ -472,6 +472,10 @@ msgstr ""
 
 #: www/views/preferencesLanguage.html:26
 msgid "Contribute Translations"
+msgstr ""
+
+#: src/js/controllers/tab-settings.js:45
+msgid "Copay Github Issues"
 msgstr ""
 
 #: src/js/services/bwcError.js:62
@@ -517,7 +521,7 @@ msgstr ""
 msgid "Could not access wallet"
 msgstr ""
 
-#: src/js/controllers/confirm.js:397
+#: src/js/controllers/confirm.js:404
 msgid "Could not add message to imported wallet without shared encrypting key"
 msgstr ""
 
@@ -529,7 +533,7 @@ msgstr ""
 msgid "Could not build transaction"
 msgstr ""
 
-#: src/js/services/walletService.js:796
+#: src/js/services/walletService.js:791
 msgid "Could not create address"
 msgstr ""
 
@@ -592,7 +596,7 @@ msgstr ""
 msgid "Could not remove card"
 msgstr ""
 
-#: src/js/services/walletService.js:717
+#: src/js/services/walletService.js:712
 msgid "Could not save preferences on the server"
 msgstr ""
 
@@ -612,7 +616,7 @@ msgstr ""
 msgid "Could not update wallet"
 msgstr ""
 
-#: src/js/controllers/confirm.js:110
+#: src/js/controllers/confirm.js:117
 msgid "Could not update wallets"
 msgstr ""
 
@@ -643,7 +647,7 @@ msgid "Create {{formData.requiredCopayers}}-of-{{formData.totalCopayers}} wallet
 msgstr ""
 
 #: www/views/modals/txp-details.html:83
-#: www/views/tx-details.html:60
+#: www/views/tx-details.html:62
 msgid "Created by"
 msgstr ""
 
@@ -661,6 +665,10 @@ msgstr ""
 
 #: www/views/customAmount.html:4
 msgid "Custom Amount"
+msgstr ""
+
+#: www/views/tx-details.html:68
+msgid "Date"
 msgstr ""
 
 #: www/views/preferencesDeleteWallet.html:21
@@ -730,7 +738,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: www/views/preferencesNotifications.html:38
+#: www/views/preferencesNotifications.html:36
 msgid "Email Address"
 msgstr ""
 
@@ -746,11 +754,11 @@ msgstr ""
 msgid "Enable camera access in your device settings to get started."
 msgstr ""
 
-#: www/views/preferencesNotifications.html:25
+#: www/views/preferencesNotifications.html:23
 msgid "Enable email notifications"
 msgstr ""
 
-#: www/views/preferencesNotifications.html:14
+#: www/views/preferencesNotifications.html:12
 msgid "Enable push notifications"
 msgstr ""
 
@@ -762,8 +770,8 @@ msgstr ""
 msgid "Enter Amount"
 msgstr ""
 
-#: src/js/services/walletService.js:897
-#: src/js/services/walletService.js:912
+#: src/js/services/walletService.js:892
+#: src/js/services/walletService.js:907
 msgid "Enter Spending Password"
 msgstr ""
 
@@ -771,7 +779,7 @@ msgstr ""
 msgid "Enter Two Factor for your BitPay account"
 msgstr ""
 
-#: src/js/services/walletService.js:879
+#: src/js/services/walletService.js:874
 msgid "Enter new spending password"
 msgstr ""
 
@@ -792,11 +800,11 @@ msgstr ""
 #: src/js/controllers/addresses.js:98
 #: src/js/controllers/addresses.js:99
 #: src/js/controllers/bitpayCard.js:65
-#: src/js/controllers/bitpayCardIntro.js:42
-#: src/js/controllers/bitpayCardIntro.js:83
-#: src/js/controllers/confirm.js:170
-#: src/js/controllers/confirm.js:183
-#: src/js/controllers/confirm.js:189
+#: src/js/controllers/bitpayCardIntro.js:40
+#: src/js/controllers/bitpayCardIntro.js:81
+#: src/js/controllers/confirm.js:177
+#: src/js/controllers/confirm.js:190
+#: src/js/controllers/confirm.js:196
 #: src/js/controllers/copayers.js:53
 #: src/js/controllers/create.js:109
 #: src/js/controllers/create.js:137
@@ -844,11 +852,11 @@ msgstr ""
 #: src/js/controllers/preferencesDelete.js:37
 #: src/js/controllers/tab-home.js:169
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/tx-details.js:18
+#: src/js/controllers/tx-details.js:98
 msgid "Error"
 msgstr ""
 
-#: src/js/controllers/confirm.js:372
+#: src/js/controllers/confirm.js:379
 msgid "Error at confirm"
 msgstr ""
 
@@ -876,7 +884,7 @@ msgstr ""
 msgid "Exceeded daily limit of $500 per user"
 msgstr ""
 
-#: src/js/controllers/confirm.js:331
+#: src/js/controllers/confirm.js:338
 #: www/views/confirm.html:27
 #: www/views/modals/txp-details.html:114
 msgid "Expired"
@@ -900,7 +908,7 @@ msgstr ""
 msgid "Export wallet"
 msgstr ""
 
-#: src/js/services/walletService.js:1024
+#: src/js/services/walletService.js:1019
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
 msgstr ""
@@ -929,7 +937,7 @@ msgstr ""
 #: www/views/confirm.html:88
 #: www/views/includes/confirm-tx.html:19
 #: www/views/modals/txp-details.html:95
-#: www/views/tx-details.html:73
+#: www/views/tx-details.html:81
 msgid "Fee"
 msgstr ""
 
@@ -968,11 +976,11 @@ msgstr ""
 
 #: www/views/confirm.html:65
 #: www/views/modals/txp-details.html:74
-#: www/views/tx-details.html:50
+#: www/views/tx-details.html:52
 msgid "From"
 msgstr ""
 
-#: src/js/controllers/bitpayCardIntro.js:73
+#: src/js/controllers/bitpayCardIntro.js:71
 msgid "From BitPay account"
 msgstr ""
 
@@ -1028,13 +1036,13 @@ msgstr ""
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
 #: src/js/controllers/tab-home.js:144
-#: src/js/controllers/tab-settings.js:47
-#: src/js/controllers/tx-details.js:132
+#: src/js/controllers/tab-settings.js:50
+#: src/js/controllers/tx-details.js:159
 msgid "Go Back"
 msgstr ""
 
-#: src/js/controllers/onboarding/backupRequest.js:13
-#: src/js/controllers/onboarding/backupRequest.js:19
+#: src/js/controllers/onboarding/backupRequest.js:20
+#: src/js/controllers/onboarding/backupRequest.js:26
 #: src/js/services/bitpayAccountService.js:78
 msgid "Go back"
 msgstr ""
@@ -1058,8 +1066,8 @@ msgstr ""
 msgid "Help & Support"
 msgstr ""
 
-#: src/js/controllers/tab-settings.js:45
-msgid "Help and support information is available at the BitPay Help Center website."
+#: src/js/controllers/tab-settings.js:46
+msgid "Help and support information is available at the {{msg}} website."
 msgstr ""
 
 #: www/views/addresses.html:29
@@ -1088,17 +1096,17 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:56
-#: src/js/controllers/feedback/send.js:60
-#: src/js/controllers/feedback/send.js:64
+#: src/js/controllers/feedback/send.js:61
+#: src/js/controllers/feedback/send.js:65
+#: src/js/controllers/feedback/send.js:69
 msgid "How could we improve your experience?"
 msgstr ""
 
 #: www/views/feedback/rateCard.html:3
-msgid "How do you like BitPay?"
+msgid "How do you like {{appName}}?"
 msgstr ""
 
-#: src/js/controllers/feedback/rateCard.js:28
+#: src/js/controllers/feedback/rateCard.js:29
 msgid "I don't like it"
 msgstr ""
 
@@ -1116,15 +1124,15 @@ msgstr ""
 msgid "I have written it down"
 msgstr ""
 
-#: src/js/controllers/feedback/rateCard.js:34
+#: src/js/controllers/feedback/rateCard.js:35
 msgid "I like the app"
 msgstr ""
 
-#: src/js/controllers/feedback/rateCard.js:25
+#: src/js/controllers/feedback/rateCard.js:26
 msgid "I think this app is terrible."
 msgstr ""
 
-#: src/js/controllers/onboarding/backupRequest.js:12
+#: src/js/controllers/onboarding/backupRequest.js:19
 #: www/views/includes/screenshotWarningModal.html:9
 msgid "I understand"
 msgstr ""
@@ -1153,7 +1161,7 @@ msgstr ""
 msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
 msgstr ""
 
-#: src/js/controllers/onboarding/backupRequest.js:11
+#: src/js/controllers/onboarding/backupRequest.js:18
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
 msgstr ""
 
@@ -1248,7 +1256,7 @@ msgstr ""
 msgid "Invitation to share a {{appName}} Wallet"
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:72
+#: src/js/controllers/feedback/send.js:79
 msgid "Is there anything we could do better?"
 msgstr ""
 
@@ -1348,14 +1356,14 @@ msgstr ""
 msgid "Me"
 msgstr ""
 
-#: src/js/controllers/feedback/rateCard.js:31
+#: src/js/controllers/feedback/rateCard.js:32
 msgid "Meh - it's alright"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:104
+#: src/js/controllers/tx-details.js:131
 #: www/views/modals/paypro.html:48
 #: www/views/modals/txp-details.html:89
-#: www/views/tx-details.html:66
+#: www/views/tx-details.html:74
 msgid "Memo"
 msgstr ""
 
@@ -1386,7 +1394,7 @@ msgstr ""
 msgid "Moved"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:24
+#: src/js/controllers/tx-details.js:109
 msgid "Moved Funds"
 msgstr ""
 
@@ -1486,7 +1494,7 @@ msgstr ""
 msgid "Not authorized"
 msgstr ""
 
-#: src/js/controllers/confirm.js:189
+#: src/js/controllers/confirm.js:196
 msgid "Not enough funds for fee"
 msgstr ""
 
@@ -1540,12 +1548,16 @@ msgstr ""
 msgid "Official English Disclaimer"
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:59
+#: src/js/controllers/feedback/send.js:64
 msgid "Oh no!"
 msgstr ""
 
 #: www/views/tab-home.html:38
 msgid "On this screen you can see all your wallets, accounts, and assets."
+msgstr ""
+
+#: src/js/controllers/tab-settings.js:49
+msgid "Open"
 msgstr ""
 
 #: src/js/controllers/preferencesLanguage.js:13
@@ -1560,11 +1572,7 @@ msgstr ""
 msgid "Open GitHub Project"
 msgstr ""
 
-#: src/js/controllers/tab-settings.js:46
-msgid "Open Help Center"
-msgstr ""
-
-#: src/js/controllers/tx-details.js:131
+#: src/js/controllers/tx-details.js:158
 msgid "Open Insight"
 msgstr ""
 
@@ -1741,7 +1749,7 @@ msgstr ""
 msgid "Preparing backup..."
 msgstr ""
 
-#: src/js/routes.js:1133
+#: src/js/routes.js:1143
 msgid "Press again to exit"
 msgstr ""
 
@@ -1762,7 +1770,7 @@ msgid "Proposal Accepted"
 msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:51
-#: src/js/controllers/tx-details.js:64
+#: src/js/controllers/tx-details.js:58
 #: www/views/confirm.html:124
 msgid "Proposal Created"
 msgstr ""
@@ -1783,7 +1791,7 @@ msgstr ""
 msgid "Push Notifications"
 msgstr ""
 
-#: www/views/preferencesNotifications.html:19
+#: www/views/preferencesNotifications.html:17
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
 msgstr ""
 
@@ -1823,7 +1831,7 @@ msgstr ""
 msgid "Received"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:23
+#: src/js/controllers/tx-details.js:108
 msgid "Received Funds"
 msgstr ""
 
@@ -1869,7 +1877,7 @@ msgid "Recreating Wallet..."
 msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:53
-#: src/js/controllers/tx-details.js:66
+#: src/js/controllers/tx-details.js:60
 msgid "Rejected"
 msgstr ""
 
@@ -1937,7 +1945,7 @@ msgstr ""
 #: www/views/includes/note.html:9
 #: www/views/preferencesAlias.html:21
 #: www/views/preferencesBwsUrl.html:25
-#: www/views/preferencesNotifications.html:42
+#: www/views/preferencesNotifications.html:40
 msgid "Save"
 msgstr ""
 
@@ -2031,7 +2039,7 @@ msgstr ""
 msgid "Send by email"
 msgstr ""
 
-#: src/js/controllers/confirm.js:265
+#: src/js/controllers/confirm.js:272
 msgid "Send from"
 msgstr ""
 
@@ -2067,7 +2075,7 @@ msgstr ""
 msgid "Sending transaction"
 msgstr ""
 
-#: src/js/controllers/confirm.js:482
+#: src/js/controllers/confirm.js:489
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr ""
 
@@ -2078,7 +2086,7 @@ msgstr ""
 msgid "Sent"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:22
+#: src/js/controllers/tx-details.js:107
 msgid "Sent Funds"
 msgstr ""
 
@@ -2113,10 +2121,6 @@ msgstr ""
 msgid "Share"
 msgstr ""
 
-#: www/views/feedback/complete.html:5
-msgid "Share BitPay"
-msgstr ""
-
 #: www/views/copayers.html:36
 msgid "Share invitation"
 msgstr ""
@@ -2128,6 +2132,10 @@ msgstr ""
 
 #: www/views/copayers.html:17
 msgid "Share this invitation with your copayers"
+msgstr ""
+
+#: src/js/controllers/feedback/complete.js:5
+msgid "Share {{appName}}"
 msgstr ""
 
 #: www/views/tab-import-hardware.html:24
@@ -2173,7 +2181,7 @@ msgstr ""
 msgid "Skip"
 msgstr ""
 
-#: src/js/controllers/confirm.js:45
+#: src/js/controllers/confirm.js:52
 #: src/js/controllers/modals/txpDetails.js:25
 msgid "Slide"
 msgstr ""
@@ -2253,17 +2261,17 @@ msgid "Testnet"
 msgstr ""
 
 #: src/js/controllers/feedback/send.js:27
-#: src/js/controllers/feedback/send.js:71
+#: src/js/controllers/feedback/send.js:76
 #: www/views/feedback/complete.html:20
 #: www/views/feedback/rateApp.html:4
 msgid "Thank you!"
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:67
+#: src/js/controllers/feedback/send.js:72
 msgid "Thanks!"
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:68
+#: src/js/controllers/feedback/send.js:73
 msgid "That's exciting to hear. We'd love to earn that fifth star from you – how could we improve your experience?"
 msgstr ""
 
@@ -2307,7 +2315,7 @@ msgstr ""
 msgid "The password of the recovery phrase (if set)"
 msgstr ""
 
-#: src/js/services/walletService.js:989
+#: src/js/services/walletService.js:984
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr ""
 
@@ -2360,12 +2368,12 @@ msgstr ""
 msgid "There is an error in the form"
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:56
-#: src/js/controllers/feedback/send.js:60
+#: src/js/controllers/feedback/send.js:61
+#: src/js/controllers/feedback/send.js:65
 msgid "There's obviously something we're doing wrong."
 msgstr ""
 
-#: src/js/controllers/feedback/rateCard.js:37
+#: src/js/controllers/feedback/rateCard.js:38
 msgid "This app is fantastic!"
 msgstr ""
 
@@ -2373,7 +2381,7 @@ msgstr ""
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr ""
 
-#: src/js/controllers/confirm.js:464
+#: src/js/controllers/confirm.js:471
 msgid "This bitcoin payment request has expired."
 msgstr ""
 
@@ -2393,7 +2401,7 @@ msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). 
 msgstr ""
 
 #: www/views/modals/txp-details.html:131
-#: www/views/tx-details.html:93
+#: www/views/tx-details.html:102
 msgid "Timeline"
 msgstr ""
 
@@ -2401,8 +2409,8 @@ msgstr ""
 #: www/views/includes/output.html:2
 #: www/views/modals/txp-details.html:104
 #: www/views/modals/txp-details.html:53
-#: www/views/tx-details.html:39
-#: www/views/tx-details.html:51
+#: www/views/tx-details.html:41
+#: www/views/tx-details.html:53
 msgid "To"
 msgstr ""
 
@@ -2431,7 +2439,7 @@ msgstr ""
 msgid "Touch ID Failed"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:6
+#: src/js/controllers/tx-details.js:10
 msgid "Transaction"
 msgstr ""
 
@@ -2448,13 +2456,16 @@ msgstr ""
 msgid "Transaction created"
 msgstr ""
 
+#: src/js/controllers/tx-details.js:98
+msgid "Transaction not available at this time"
+msgstr ""
+
 #: src/js/controllers/activity.js:45
 #: src/js/controllers/tab-home.js:169
-#: src/js/controllers/tx-details.js:18
 msgid "Transaction not found"
 msgstr ""
 
-#: www/views/tab-send.html:64
+#: www/views/tab-send.html:63
 msgid "Transfer to Wallet"
 msgstr ""
 
@@ -2471,7 +2482,7 @@ msgid "Uh oh..."
 msgstr ""
 
 #: www/views/modals/search.html:36
-#: www/views/tx-details.html:81
+#: www/views/tx-details.html:90
 msgid "Unconfirmed"
 msgstr ""
 
@@ -2535,7 +2546,7 @@ msgstr ""
 msgid "View Terms of Service"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:130
+#: src/js/controllers/tx-details.js:157
 msgid "View Transaction on Insight"
 msgstr ""
 
@@ -2543,7 +2554,7 @@ msgstr ""
 msgid "View Update"
 msgstr ""
 
-#: www/views/tx-details.html:119
+#: www/views/tx-details.html:128
 msgid "View on blockchain"
 msgstr ""
 
@@ -2729,11 +2740,11 @@ msgstr ""
 msgid "Warning: this transaction has unconfirmed inputs"
 msgstr ""
 
-#: src/js/controllers/onboarding/backupRequest.js:10
+#: src/js/controllers/onboarding/backupRequest.js:17
 msgid "Watch out!"
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:64
+#: src/js/controllers/feedback/send.js:69
 msgid "We'd love to do better."
 msgstr ""
 
@@ -2741,12 +2752,12 @@ msgstr ""
 msgid "We'll confirm on the next screen."
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:72
-msgid "We're always looking for ways to improve BitPay."
+#: src/js/controllers/feedback/send.js:77
+msgid "We're always looking for ways to improve {{appName}}."
 msgstr ""
 
-#: src/js/controllers/feedback/send.js:76
-msgid "We're always looking for ways to improve BitPay. How could we improve your experience?"
+#: src/js/controllers/feedback/send.js:83
+msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
 msgstr ""
 
 #: www/views/preferencesLanguage.html:16
@@ -2770,7 +2781,7 @@ msgid "Why?"
 msgstr ""
 
 #: www/views/feedback/rateApp.html:10
-msgid "Would you be willing to rate BitPay in the app store?"
+msgid "Would you be willing to rate {{appName}} in the app store?"
 msgstr ""
 
 #: www/views/onboarding/notifications.html:4
@@ -2790,11 +2801,11 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: src/js/controllers/onboarding/backupRequest.js:18
+#: src/js/controllers/onboarding/backupRequest.js:25
 msgid "Yes, skip"
 msgstr ""
 
-#: src/js/controllers/onboarding/backupRequest.js:17
+#: src/js/controllers/onboarding/backupRequest.js:24
 msgid "You can create a backup later from your wallet settings."
 msgstr ""
 
@@ -2826,7 +2837,7 @@ msgstr ""
 msgid "You control your bitcoin."
 msgstr ""
 
-#: www/views/preferencesNotifications.html:30
+#: www/views/preferencesNotifications.html:28
 msgid "You'll receive email notifications about payments sent and received from your wallets."
 msgstr ""
 
@@ -2859,7 +2870,7 @@ msgstr ""
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr ""
 
-#: src/js/services/walletService.js:880
+#: src/js/services/walletService.js:875
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
 msgstr ""
 
@@ -2899,16 +2910,16 @@ msgstr ""
 msgid "preparing..."
 msgstr ""
 
-#: src/js/controllers/confirm.js:50
+#: src/js/controllers/confirm.js:57
 #: src/js/controllers/modals/txpDetails.js:34
 msgid "to accept"
 msgstr ""
 
-#: src/js/controllers/confirm.js:48
+#: src/js/controllers/confirm.js:55
 msgid "to pay"
 msgstr ""
 
-#: src/js/controllers/confirm.js:52
+#: src/js/controllers/confirm.js:59
 #: src/js/controllers/modals/txpDetails.js:32
 msgid "to send"
 msgstr ""
@@ -2921,7 +2932,7 @@ msgstr ""
 msgid "{{feeRateStr}} of the transaction"
 msgstr ""
 
-#: src/js/controllers/confirm.js:203
+#: src/js/controllers/confirm.js:210
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr ""
 
