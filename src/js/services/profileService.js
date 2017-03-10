@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, $state) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, $state) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -274,9 +274,6 @@ angular.module('copayApp.services')
             if (!val) {
               return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
             }
-            var config = configService.getSync();
-            if (config.pushNotifications.enabled && usePushNotifications)
-              root.pushNotificationsInit();
             return cb();
           });
         });
@@ -290,35 +287,6 @@ angular.module('copayApp.services')
         return;
       }
       return cb();
-    };
-
-    root.pushNotificationsInit = function() {
-      var defaults = configService.getDefaults();
-      var push = pushNotificationsService.init(root.wallet);
-
-      if (!push) return;
-
-      push.on('notification', function(data) {
-        if (!data.additionalData.foreground) {
-          $log.debug('Push notification event: ', data.message);
-
-          $timeout(function() {
-            var wallets = root.getWallets();
-            var walletToFind = data.additionalData.walletId;
-
-            var walletFound = lodash.find(wallets, function(w) {
-              return (lodash.isEqual(walletToFind, sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(w.id))));
-            });
-
-            if (!walletFound) return $log.debug('Wallet not found');
-          }, 100);
-        }
-      });
-
-      push.on('error', function(e) {
-        $log.warn('Error with push notifications:' + e.message);
-      });
-
     };
 
     root.loadAndBindProfile = function(cb) {
@@ -481,11 +449,6 @@ angular.module('copayApp.services')
       var walletId = client.credentials.walletId;
 
       var config = configService.getSync();
-      if (config.pushNotifications.enabled)
-        pushNotificationsService.unsubscribe(root.getWallet(walletId), function(err) {
-          if (err) $log.warn('Unsubscription error: ' + err.message);
-          else $log.debug('Unsubscribed from push notifications service');
-        });
 
       $log.debug('Deleting Wallet:', client.credentials.walletName);
       client.removeAllListeners();
@@ -556,9 +519,6 @@ angular.module('copayApp.services')
 
       saveBwsUrl(function() {
         storageService.storeProfile(root.profile, function(err) {
-          var config = configService.getSync();
-          if (config.pushNotifications.enabled)
-            pushNotificationsService.enableNotifications(root.wallet);
           return cb(err, client);
         });
       });

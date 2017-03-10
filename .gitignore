@@ -118,3 +118,7 @@ cordova/ios/splash/
 cordova/ios/icons/
 cordova/project/
 
+## Firebase
+GoogleService-Info.plist
+google-services.json
+
