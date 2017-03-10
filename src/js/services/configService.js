@@ -70,22 +70,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
     },
 
-    pushNotifications: {
-      enabled: true,
-      config: {
-        android: {
-          senderID: '1036948132229',
-          icon: 'push',
-          iconColor: '#2F4053'
-        },
-        ios: {
-          alert: 'true',
-          badge: 'true',
-          sound: 'true',
-        },
-        windows: {},
-      }
-    },
+    pushNotificationsEnabled: true,
 
     emailNotifications: {
       enabled: false,
