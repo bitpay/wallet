@@ -16,7 +16,7 @@ angular.module('copayApp.services').factory('pushNotificationsService', function
 
       //Keep in mind the function will return null if the token has not been established yet.
       FCMPlugin.getToken(function(token) {
-        $log.debug('Get token for push notifications...');
+        $log.debug('Get token for push notifications: ' + token);
         _token = token;
         root.enable();
       }); 
