@@ -39,9 +39,7 @@ angular.module('copayApp.services')
     // }, {
     //   name: 'Český',
     //   isoCode: 'cs',
-    // }, {
-    //   name: 'Pусский',
-    //   isoCode: 'ru',
+    // }
 
     root._detect = function(cb) {
       var userLang, androidLang;
