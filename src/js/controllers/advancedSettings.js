@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $timeout, $state, $log, $window, $ionicModal, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $ionicScrollDelegate) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService, platformInfo) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -49,13 +49,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     };
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
-    });
-  };
-
-  $scope.usePincodeChange = function() {
-    $state.go('tabs.pincode', {
-      fromSettings: true,
-      locking: $scope.usePincode.enabled
     });
   };
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pincodeController', function($state, $stateParams, $ionicHistory, $timeout, $scope, $log, $window, configService) {
+angular.module('copayApp.controllers').controller('pincodeController', function($state, $stateParams, $ionicHistory, $timeout, $scope, $log, configService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     $scope.currentPincode = $scope.newPincode = '';
@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
   $scope.save = function() {
     if (!isComplete()) return;
     var config = configService.getSync();
-    var match = config.pincode.value == $scope.currentPincode ? true : false;
+    var match = config.lockapp.pincode.value == $scope.currentPincode ? true : false;
 
     if (!$scope.locking) {
       if (match) {
@@ -61,9 +61,14 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
 
   function saveSettings(enabled, value) {
     var opts = {
-      pincode: {
-        enabled: enabled,
-        value: value
+      lockapp: {
+        pincode: {
+          enabled: enabled,
+          value: value
+        },
+        fingerprint: {
+          enabled: false
+        }
       }
     };
 
