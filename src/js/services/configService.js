@@ -16,15 +16,26 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     download: {
-      url: 'https://bitpay.com/wallet',
+      bitpay: {
+        url: 'https://bitpay.com/wallet'
+      },
+      copay: {
+        url: 'https://copay.io/#download'
+      }
     },
 
     rateApp: {
-      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
-      android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
-      wp: ''
+      bitpay: {
+        ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+        android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+        wp: ''
+      },
+      copay: {
+        ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+        android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
+        wp: ''
+      }
     },
-
     // wallet default config
     wallet: {
       requiredCopayers: 2,
@@ -59,22 +70,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
     },
 
-    pushNotifications: {
-      enabled: true,
-      config: {
-        android: {
-          senderID: '1036948132229',
-          icon: 'push',
-          iconColor: '#2F4053'
-        },
-        ios: {
-          alert: 'true',
-          badge: 'true',
-          sound: 'true',
-        },
-        windows: {},
-      }
-    },
+    pushNotificationsEnabled: true,
 
     emailNotifications: {
       enabled: false,

@@ -39,11 +39,12 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
   };
 
   $scope.openExternalLink = function() {
-    var url = 'https://help.bitpay.com/bitpay-app';
+    var appName = appConfigService.name;
+    var url = appName == 'copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
     var optIn = true;
-    var title = gettextCatalog.getString('BitPay Help Center');
-    var message = gettextCatalog.getString('Help and support information is available at the BitPay Help Center website.');
-    var okText = gettextCatalog.getString('Open Help Center');
+    var title = null;
+    var message = gettextCatalog.getString('Help and support information is available at the website.');
+    var okText = gettextCatalog.getString('Open');
     var cancelText = gettextCatalog.getString('Go Back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };

@@ -31,14 +31,15 @@ angular.module('copayApp.services')
       name: '中文（简体）',
       isoCode: 'zh',
       useIdeograms: true,
+    }, {
+      name: 'Pусский',
+      isoCode: 'ru',
     }];
 
     // }, {
     //   name: 'Český',
     //   isoCode: 'cs',
-    // }, {
-    //   name: 'Pусский',
-    //   isoCode: 'ru',
+    // }
 
     root._detect = function(cb) {
       var userLang, androidLang;

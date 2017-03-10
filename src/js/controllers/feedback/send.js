@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo) {
+angular.module('copayApp.controllers').controller('sendController', function($scope, $state, $log, $timeout, $stateParams, $ionicNavBarDelegate, $ionicHistory, $ionicConfig, $window, gettextCatalog, popupService, configService, lodash, feedbackService, ongoingProcess, platformInfo, appConfigService) {
 
   $scope.sendFeedback = function(feedback, goHome) {
 
@@ -74,11 +74,15 @@ angular.module('copayApp.controllers').controller('sendController', function($sc
         break;
       case 5:
         $scope.reaction = gettextCatalog.getString("Thank you!");
-        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay.") + ' ' + gettextCatalog.getString("Is there anything we could do better?");
+        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve {{appName}}.", {
+          appName: appConfigService.nameCase
+        }) + ' ' + gettextCatalog.getString("Is there anything we could do better?");
         break;
       default:
         $scope.justFeedback = true;
-        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve BitPay. How could we improve your experience?");
+        $scope.comment = gettextCatalog.getString("We're always looking for ways to improve {{appName}}. How could we improve your experience?", {
+          appName: appConfigService.nameCase
+        });
         break;
     }
   });

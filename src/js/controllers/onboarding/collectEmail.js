@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, walletService, platformInfo) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, walletService, platformInfo, pushNotificationsService) {
 
   $scope.$on("$ionicView.beforeLeave", function() {
     $ionicConfig.views.swipeBackEnabled(true);
@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
         walletId: walletId
       });
     } else {
-      profileService.pushNotificationsInit();
+      pushNotificationsService.init();
       $state.go('onboarding.backupRequest', {
         walletId: walletId
       });
