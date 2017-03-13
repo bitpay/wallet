@@ -875,8 +875,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var warnMsg = gettextCatalog.getString('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
     askPassword(warnMsg, title, function(password) {
       if (!password) return cb('no password');
-      title = gettextCatalog.getString('Confirm you new spending password');
-      askPassword(warnMsg, gettextCatalog.getString('Confirm you new spending password'), function(password2) {
+      title = gettextCatalog.getString('Confirm your new spending password');
+      askPassword(warnMsg, title, function(password2) {
         if (!password2 || password != password2)
           return cb('password mismatch');
 
