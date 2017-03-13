@@ -3,6 +3,9 @@
   .icon-bitpay {
     background-image: url("../img/icon-bitpay.svg");
   }
+  .disabled {
+    color: $v-light-gray;
+  }
   .item {
     color: $v-dark-gray;
     border-color: rgba(221, 221, 221, 0.3);
