@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollAboutController', function($scope, $state, $log, bitpayPayrollService, lodash, uxLanguage, externalLinkService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('payrollAboutController', function($scope, $state, $log, bitpayPayrollService, lodash, uxLanguage, externalLinkService, gettextCatalog, popupService) {
 
   $scope.lang = uxLanguage.currentLanguage;
 
