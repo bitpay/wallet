@@ -104,6 +104,6 @@ www/img/app
 www/index.html
 
 ## Firebase
-GoogleService-Info.plist
-google-services.json
+/GoogleService-Info.plist
+/google-services.json
 
