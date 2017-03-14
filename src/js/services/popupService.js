@@ -35,7 +35,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
       title: title,
       subTitle: message,
       cssClass: opts.class,
-      template: '<input ng-model="data.response" type="' + opts.inputType + '" autofocus>',
+      template: '<input ng-model="data.response" type="' + opts.inputType + '" value ="" autocomplete="off" autofocus>',
       inputPlaceholder: opts.inputPlaceholder,
       defaultText: opts.defaultText
     }).then(function(res) {
