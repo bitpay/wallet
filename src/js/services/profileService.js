@@ -207,8 +207,8 @@ angular.module('copayApp.services')
       }, delay);
     };
 
-    var shouldSkipValidation = function() {
-      return root.profile.isChecked(platformInfo.ua, credentials.walletId) || isIOS || isWP;
+    var shouldSkipValidation = function(walletId) {
+      return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWP;
     }
     // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
@@ -227,7 +227,7 @@ angular.module('copayApp.services')
         bwsurl: getBWSURL(credentials.walletId),
       });
 
-      var skipKeyValidation = shouldSkipValidation();
+      var skipKeyValidation = shouldSkipValidation(credentials.walletId);
       if (!skipKeyValidation)
         root.runValidation(client, 500);
 
@@ -497,7 +497,7 @@ angular.module('copayApp.services')
         return cb(gettextCatalog.getString('Wallet already in Copay'));
 
 
-      var skipKeyValidation = shouldSkipValidation();
+      var skipKeyValidation = shouldSkipValidation(walletId);
       if (!skipKeyValidation)
         root.runValidation(client);
 
