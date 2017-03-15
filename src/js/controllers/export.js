@@ -49,7 +49,10 @@ angular.module('copayApp.controllers').controller('exportController',
         }
 
         walletService.getEncodedWalletInfo(wallet, password, function(err, code) {
-          if (err) return cb(err);
+          if (err) {
+            popupService.showAlert(gettextCatalog.getString('Error'), err);
+            return;
+          }
 
           if (!code)
             $scope.formData.supported = false;
