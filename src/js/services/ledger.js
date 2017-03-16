@@ -6,7 +6,7 @@ angular.module('copayApp.services')
     var LEDGER_CHROME_ID = "kkdpmhnladdopljabkgpacgpliggeeaf";
 
     root.description = {
-      supports: platformInfo.supportsLedger,
+      supported: platformInfo.supportsLedger,
       id: 'ledger',
       name: 'Ledger',
       longName: 'Ledger Hardware Wallet'
