@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2017-03-16 09:48-0400\n"
+"PO-Revision-Date: 2017-03-16 10:17-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -1074,7 +1074,7 @@ msgstr "Ayuda & Soporte"
 
 #: src/js/controllers/tab-settings.js:46
 msgid "Help and support information is available at the website."
-msgstr "La ayuda y el soporte está disponible en el sitio web."
+msgstr "La ayuda está disponible en el sitio web."
 
 #: www/views/addresses.html:29
 msgid "Hide"
