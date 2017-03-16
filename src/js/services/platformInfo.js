@@ -38,10 +38,11 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
   ret.isMobile = ret.isAndroid || ret.isIOS || ret.isWP;
   ret.isChromeApp = $window.chrome && chrome.runtime && chrome.runtime.id && !ret.isNW;
   ret.isDevel = !ret.isMobile && !ret.isChromeApp && !ret.isNW;
+  ret.isWindows = navigator.platform.indexOf('Win') > -1;
 
   ret.supportsLedger = ret.isChromeApp;
   ret.supportsTrezor = ret.isChromeApp || ret.isDevel;
-  ret.supportsIntelTEE = false;
+  ret.supportsIntelTEE = ret.isWindows; // TODO need to detect specific chip set for TEE support
 
   return ret;
 });
