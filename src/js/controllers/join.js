@@ -1,10 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
-
-    var isChromeApp = platformInfo.isChromeApp;
-    var isDevel = platformInfo.isDevel;
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -64,14 +61,14 @@ angular.module('copayApp.controllers').controller('joinController',
       */
 
       if (appConfigService.name == 'copay') {
-        if (isChromeApp) {
+        if (walletService.externalSource.ledger.supported) {
           self.seedOptions.push({
             id: walletService.externalSource.ledger.id,
             label: walletService.externalSource.ledger.longName,
           });
         }
 
-        if (isChromeApp || isDevel) {
+        if (walletService.externalSource.trezor.supported) {
           self.seedOptions.push({
             id: walletService.externalSource.trezor.id,
             label: walletService.externalSource.trezor.longName,
