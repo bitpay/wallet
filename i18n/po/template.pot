@@ -14,7 +14,7 @@ msgstr ""
 msgid "(possible double spend)"
 msgstr ""
 
-#: www/views/modals/txp-details.html:154
+#: www/views/modals/txp-details.html:160
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Amount too big"
 msgstr ""
 
-#: src/js/controllers/tab-home.js:142
+#: src/js/controllers/tab-home.js:143
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr ""
 
@@ -267,7 +267,7 @@ msgstr ""
 msgid "Backup wallet"
 msgstr ""
 
-#: src/js/services/profileService.js:458
+#: src/js/services/profileService.js:429
 msgid "Bad wallet invitation"
 msgstr ""
 
@@ -341,7 +341,7 @@ msgstr ""
 msgid "Buy Bitcoin"
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:40
+#: src/js/services/onGoingProcess.js:39
 msgid "Buying Bitcoin..."
 msgstr ""
 
@@ -363,7 +363,7 @@ msgstr ""
 msgid "Cannot Create Wallet"
 msgstr ""
 
-#: src/js/services/profileService.js:454
+#: src/js/services/profileService.js:425
 msgid "Cannot join the same wallet more that once"
 msgstr ""
 
@@ -415,6 +415,10 @@ msgstr ""
 msgid "Commit hash"
 msgstr ""
 
+#: www/views/preferences.html:59
+msgid "Complete the backup process to use this option"
+msgstr ""
+
 #: src/js/controllers/confirm.js:493
 #: src/js/controllers/copayers.js:41
 #: www/views/backup.html:53
@@ -430,8 +434,7 @@ msgid "Confirm &amp; Finish"
 msgstr ""
 
 #: src/js/services/walletService.js:878
-#: src/js/services/walletService.js:879
-msgid "Confirm you new spending password"
+msgid "Confirm your new spending password"
 msgstr ""
 
 #: www/views/tx-details.html:88
@@ -491,7 +494,7 @@ msgid "Copayer {{$index}}"
 msgstr ""
 
 #: src/js/controllers/copayers.js:63
-#: src/js/controllers/export.js:190
+#: src/js/controllers/export.js:193
 #: www/views/includes/copyToClipboard.html:4
 msgid "Copied to clipboard"
 msgstr ""
@@ -509,7 +512,7 @@ msgstr ""
 msgid "Could not access the wallet at the server. Please check:"
 msgstr ""
 
-#: src/js/services/profileService.js:526
+#: src/js/services/profileService.js:492
 msgid "Could not access wallet"
 msgstr ""
 
@@ -529,15 +532,15 @@ msgstr ""
 msgid "Could not create address"
 msgstr ""
 
-#: src/js/services/profileService.js:371
+#: src/js/services/profileService.js:342
 msgid "Could not create using the specified extended private key"
 msgstr ""
 
-#: src/js/services/profileService.js:381
+#: src/js/services/profileService.js:352
 msgid "Could not create using the specified extended public key"
 msgstr ""
 
-#: src/js/services/profileService.js:364
+#: src/js/services/profileService.js:335
 msgid "Could not create: Invalid wallet recovery phrase"
 msgstr ""
 
@@ -549,11 +552,11 @@ msgstr ""
 msgid "Could not delete payment proposal"
 msgstr ""
 
-#: src/js/services/feeService.js:51
+#: src/js/services/feeService.js:52
 msgid "Could not get dynamic fee"
 msgstr ""
 
-#: src/js/services/feeService.js:31
+#: src/js/services/feeService.js:32
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr ""
 
@@ -561,17 +564,17 @@ msgstr ""
 msgid "Could not get transactions"
 msgstr ""
 
-#: src/js/services/profileService.js:631
-#: src/js/services/profileService.js:663
-#: src/js/services/profileService.js:686
+#: src/js/services/profileService.js:594
+#: src/js/services/profileService.js:626
+#: src/js/services/profileService.js:649
 msgid "Could not import"
 msgstr ""
 
-#: src/js/services/profileService.js:600
+#: src/js/services/profileService.js:563
 msgid "Could not import. Check input file and spending password"
 msgstr ""
 
-#: src/js/services/profileService.js:467
+#: src/js/services/profileService.js:438
 msgid "Could not join wallet"
 msgstr ""
 
@@ -659,6 +662,7 @@ msgstr ""
 msgid "Custom Amount"
 msgstr ""
 
+#: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
 msgstr ""
@@ -667,7 +671,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: www/views/modals/txp-details.html:159
+#: www/views/modals/txp-details.html:165
 msgid "Delete Payment Proposal"
 msgstr ""
 
@@ -721,7 +725,7 @@ msgstr ""
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr ""
 
-#: src/js/services/feeService.js:10
+#: src/js/services/feeService.js:11
 msgid "Economy"
 msgstr ""
 
@@ -804,13 +808,14 @@ msgstr ""
 #: src/js/controllers/create.js:157
 #: src/js/controllers/create.js:172
 #: src/js/controllers/create.js:190
-#: src/js/controllers/export.js:106
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:151
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:109
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:154
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: src/js/controllers/export.js:47
+#: src/js/controllers/export.js:53
 #: src/js/controllers/feedback/send.js:23
 #: src/js/controllers/import.js:100
 #: src/js/controllers/import.js:118
@@ -842,9 +847,9 @@ msgstr ""
 #: src/js/controllers/preferencesBitpayServices.js:33
 #: src/js/controllers/preferencesBitpayServices.js:50
 #: src/js/controllers/preferencesDelete.js:37
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Error"
 msgstr ""
 
@@ -852,7 +857,7 @@ msgstr ""
 msgid "Error at confirm"
 msgstr ""
 
-#: src/js/services/profileService.js:424
+#: src/js/services/profileService.js:395
 msgid "Error creating wallet"
 msgstr ""
 
@@ -878,12 +883,12 @@ msgstr ""
 
 #: src/js/controllers/confirm.js:338
 #: www/views/confirm.html:27
-#: www/views/modals/txp-details.html:114
+#: www/views/modals/txp-details.html:120
 msgid "Expired"
 msgstr ""
 
 #: www/views/modals/paypro.html:54
-#: www/views/modals/txp-details.html:120
+#: www/views/modals/txp-details.html:126
 msgid "Expires"
 msgstr ""
 
@@ -913,10 +918,10 @@ msgstr ""
 msgid "Extracting Wallet Information..."
 msgstr ""
 
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: www/views/tab-export-file.html:4
 msgid "Failed to export"
 msgstr ""
@@ -928,7 +933,7 @@ msgstr ""
 
 #: www/views/confirm.html:88
 #: www/views/includes/confirm-tx.html:19
-#: www/views/modals/txp-details.html:95
+#: www/views/modals/txp-details.html:101
 #: www/views/tx-details.html:81
 msgid "Fee"
 msgstr ""
@@ -937,7 +942,7 @@ msgstr ""
 msgid "Feedback could not be submitted. Please try again later."
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:42
+#: src/js/services/onGoingProcess.js:41
 msgid "Fetching BitPay Account..."
 msgstr ""
 
@@ -1000,7 +1005,7 @@ msgstr ""
 msgid "Generating .csv file..."
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:37
+#: src/js/services/onGoingProcess.js:36
 msgid "Generating new address..."
 msgstr ""
 
@@ -1027,9 +1032,9 @@ msgstr ""
 #: src/js/controllers/onboarding/terms.js:23
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
-#: src/js/controllers/tab-home.js:144
+#: src/js/controllers/tab-home.js:145
 #: src/js/controllers/tab-settings.js:48
-#: src/js/controllers/tx-details.js:159
+#: src/js/controllers/tx-details.js:160
 msgid "Go Back"
 msgstr ""
 
@@ -1141,7 +1146,7 @@ msgstr ""
 msgid "I've written it down"
 msgstr ""
 
-#: www/views/preferences.html:55
+#: www/views/preferences.html:56
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
 msgstr ""
 
@@ -1315,7 +1320,7 @@ msgstr ""
 msgid "Loading addresses..."
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:35
+#: src/js/services/onGoingProcess.js:34
 msgid "Loading transaction info..."
 msgstr ""
 
@@ -1352,14 +1357,14 @@ msgstr ""
 msgid "Meh - it's alright"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:131
+#: src/js/controllers/tx-details.js:132
 #: www/views/modals/paypro.html:48
-#: www/views/modals/txp-details.html:89
+#: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
 msgid "Memo"
 msgstr ""
 
-#: www/views/modals/txp-details.html:126
+#: www/views/modals/txp-details.html:132
 msgid "Merchant Message"
 msgstr ""
 
@@ -1375,7 +1380,7 @@ msgstr ""
 msgid "Missing private keys to sign"
 msgstr ""
 
-#: www/views/preferences.html:66
+#: www/views/preferences.html:71
 #: www/views/preferencesAdvanced.html:3
 msgid "More Options"
 msgstr ""
@@ -1386,7 +1391,7 @@ msgstr ""
 msgid "Moved"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:109
+#: src/js/controllers/tx-details.js:110
 msgid "Moved Funds"
 msgstr ""
 
@@ -1478,7 +1483,7 @@ msgstr ""
 msgid "No wallets available to receive funds"
 msgstr ""
 
-#: src/js/services/feeService.js:9
+#: src/js/services/feeService.js:10
 msgid "Normal"
 msgstr ""
 
@@ -1564,7 +1569,7 @@ msgstr ""
 msgid "Open GitHub Project"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:158
+#: src/js/controllers/tx-details.js:159
 msgid "Open Insight"
 msgstr ""
 
@@ -1658,7 +1663,7 @@ msgstr ""
 
 #: www/views/confirm.html:123
 #: www/views/includes/walletActivity.html:11
-#: www/views/modals/txp-details.html:181
+#: www/views/modals/txp-details.html:187
 #: www/views/modals/txp-details.html:42
 msgid "Payment Sent"
 msgstr ""
@@ -1671,7 +1676,7 @@ msgstr ""
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr ""
 
-#: www/views/modals/txp-details.html:102
+#: www/views/modals/txp-details.html:108
 msgid "Payment details"
 msgstr ""
 
@@ -1691,7 +1696,7 @@ msgstr ""
 msgid "Permanently delete this wallet."
 msgstr ""
 
-#: src/js/services/profileService.js:416
+#: src/js/services/profileService.js:387
 msgid "Personal Wallet"
 msgstr ""
 
@@ -1733,19 +1738,19 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:38
+#: src/js/services/onGoingProcess.js:37
 msgid "Preparing addresses..."
 msgstr ""
 
-#: src/js/controllers/export.js:195
+#: src/js/controllers/export.js:198
 msgid "Preparing backup..."
 msgstr ""
 
-#: src/js/routes.js:1143
+#: src/js/routes.js:1144
 msgid "Press again to exit"
 msgstr ""
 
-#: src/js/services/feeService.js:8
+#: src/js/services/feeService.js:9
 msgid "Priority"
 msgstr ""
 
@@ -1823,7 +1828,7 @@ msgstr ""
 msgid "Received"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:108
+#: src/js/controllers/tx-details.js:109
 msgid "Received Funds"
 msgstr ""
 
@@ -1901,7 +1906,7 @@ msgstr ""
 msgid "Repeat the password"
 msgstr ""
 
-#: www/views/preferences.html:61
+#: www/views/preferences.html:66
 msgid "Request Fingerprint"
 msgstr ""
 
@@ -1998,7 +2003,7 @@ msgstr ""
 msgid "Self-signed Certificate"
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:41
+#: src/js/services/onGoingProcess.js:40
 msgid "Selling Bitcoin..."
 msgstr ""
 
@@ -2051,11 +2056,11 @@ msgstr ""
 msgid "Sending"
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:39
+#: src/js/services/onGoingProcess.js:38
 msgid "Sending 2FA code..."
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:36
+#: src/js/services/onGoingProcess.js:35
 msgid "Sending feedback..."
 msgstr ""
 
@@ -2078,7 +2083,7 @@ msgstr ""
 msgid "Sent"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:107
+#: src/js/controllers/tx-details.js:108
 msgid "Sent Funds"
 msgstr ""
 
@@ -2203,7 +2208,7 @@ msgstr ""
 msgid "Starting..."
 msgstr ""
 
-#: src/js/services/feeService.js:11
+#: src/js/services/feeService.js:12
 msgid "Super Economy"
 msgstr ""
 
@@ -2392,14 +2397,14 @@ msgstr ""
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr ""
 
-#: www/views/modals/txp-details.html:131
+#: www/views/modals/txp-details.html:137
 #: www/views/tx-details.html:102
 msgid "Timeline"
 msgstr ""
 
 #: www/views/confirm.html:31
 #: www/views/includes/output.html:2
-#: www/views/modals/txp-details.html:104
+#: www/views/modals/txp-details.html:110
 #: www/views/modals/txp-details.html:53
 #: www/views/tx-details.html:41
 #: www/views/tx-details.html:53
@@ -2448,12 +2453,12 @@ msgstr ""
 msgid "Transaction created"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Transaction not available at this time"
 msgstr ""
 
 #: src/js/controllers/activity.js:45
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 msgid "Transaction not found"
 msgstr ""
 
@@ -2494,7 +2499,7 @@ msgstr ""
 msgid "Unused Addresses Limit"
 msgstr ""
 
-#: src/js/controllers/tab-home.js:141
+#: src/js/controllers/tab-home.js:142
 msgid "Update Available"
 msgstr ""
 
@@ -2510,16 +2515,16 @@ msgstr ""
 msgid "Updating... Please stand by"
 msgstr ""
 
+#: src/js/services/feeService.js:8
+msgid "Urgent"
+msgstr ""
+
 #: www/views/advancedSettings.html:11
 msgid "Use Unconfirmed Funds"
 msgstr ""
 
-#: src/js/services/onGoingProcess.js:34
-msgid "Validating recovery phrase..."
-msgstr ""
-
 #: src/js/services/onGoingProcess.js:33
-msgid "Validating wallet integrity..."
+msgid "Validating recovery phrase..."
 msgstr ""
 
 #: www/views/preferencesAbout.html:14
@@ -2538,11 +2543,11 @@ msgstr ""
 msgid "View Terms of Service"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:157
+#: src/js/controllers/tx-details.js:158
 msgid "View Transaction on Insight"
 msgstr ""
 
-#: src/js/controllers/tab-home.js:143
+#: src/js/controllers/tab-home.js:144
 msgid "View Update"
 msgstr ""
 
@@ -2655,7 +2660,7 @@ msgstr ""
 msgid "Wallet already exists"
 msgstr ""
 
-#: src/js/services/profileService.js:531
+#: src/js/services/profileService.js:497
 msgid "Wallet already in Copay"
 msgstr ""
 
@@ -2697,7 +2702,7 @@ msgstr ""
 msgid "Wallet not found"
 msgstr ""
 
-#: src/js/controllers/tab-home.js:215
+#: src/js/controllers/tab-home.js:216
 msgid "Wallet not registered"
 msgstr ""
 
@@ -2890,7 +2895,7 @@ msgstr ""
 msgid "locked by pending payments"
 msgstr ""
 
-#: src/js/services/profileService.js:417
+#: src/js/services/profileService.js:388
 msgid "me"
 msgstr ""
 
