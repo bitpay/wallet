@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2017-03-16 08:32-0400\n"
+"PO-Revision-Date: 2017-03-16 10:24-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -428,7 +428,7 @@ msgstr "コミットのハッシュ値"
 
 #: www/views/preferences.html:59
 msgid "Complete the backup process to use this option"
-msgstr ""
+msgstr "この機能をご利用いただくにはバックアップを行う必要があります"
 
 #: src/js/controllers/confirm.js:493
 #: src/js/controllers/copayers.js:41
@@ -446,7 +446,7 @@ msgstr "承諾して終了する"
 
 #: src/js/services/walletService.js:878
 msgid "Confirm your new spending password"
-msgstr ""
+msgstr "新しい送金時パスワードを確認してください"
 
 #: www/views/tx-details.html:88
 msgid "Confirmations"
@@ -2530,7 +2530,7 @@ msgstr "更新中... お待ち下さい"
 
 #: src/js/services/feeService.js:8
 msgid "Urgent"
-msgstr ""
+msgstr "緊急"
 
 #: www/views/advancedSettings.html:11
 msgid "Use Unconfirmed Funds"
