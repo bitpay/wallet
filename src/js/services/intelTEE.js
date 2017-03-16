@@ -5,19 +5,20 @@ angular.module('copayApp.services')
 
     var root = {};
 
-    if (!platformInfo.isIntelTEE) {
-      return root;
-    }
-
-    var IntelWallet = require('intelWalletCon');
-    var TEE_APP_ID = '63279de1b6cb4dcf8c206716bd318092f8c206716bd31809263279de1b6cb4dc';
-
     root.description = {
+      supports: platformInfo.supportsIntelTEE,
       id: 'intelTEE',
       name: 'Intel TEE',
       longName: 'Intel TEE Hardware Wallet',
       derivationStrategy: 'BIP44'
     };
+
+    if (!root.description.isAvailable) {
+      return root;
+    }
+
+    var IntelWallet = require('intelWalletCon');
+    var TEE_APP_ID = '63279de1b6cb4dcf8c206716bd318092f8c206716bd31809263279de1b6cb4dc';
 
     root.walletEnclave = new IntelWallet.Wallet();
     var walletEnclaveStatus = root.walletEnclave.initializeEnclave();

@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('trezor', function($log, $timeout, lodash, bitcore, hwWallet) {
+  .factory('trezor', function($log, $timeout, lodash, bitcore, hwWallet, platformInfo) {
     var root = {};
 
     var SETTLE_TIME = 3000;
     root.callbacks = {};
 
     root.description = {
+      supported: platformInfo.supportsTrezor,
       id: 'trezor',
       name: 'Trezor',
       longName: 'Trezor Hardware Wallet',
