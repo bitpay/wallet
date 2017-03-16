@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2017-03-10 13:32-0500\n"
+"PO-Revision-Date: 2017-03-16 08:32-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -23,7 +23,7 @@ msgstr "(信頼済み)"
 msgid "(possible double spend)"
 msgstr "(二重払い可能性あり)"
 
-#: www/views/modals/txp-details.html:154
+#: www/views/modals/txp-details.html:160
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr "* 送金の提案の取下げは①他のウォレット参加者に署名されていなかった場合、提案者に提案を取り下げることができます。②提案の起案から24時間が経っても解決しなかった場合、全員に取り下げることができます。"
 
@@ -194,7 +194,7 @@ msgstr "送金可能最少額を下回っています"
 msgid "Amount too big"
 msgstr "金額が大きすぎます"
 
-#: src/js/controllers/tab-home.js:142
+#: src/js/controllers/tab-home.js:143
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "このアプリのアップデートがあります。セキュリティーを保持するために最新版にアップデートして下さい。"
 
@@ -278,7 +278,7 @@ msgstr "今すぐバックアップ"
 msgid "Backup wallet"
 msgstr "ウォレットをバックアップ"
 
-#: src/js/services/profileService.js:458
+#: src/js/services/profileService.js:429
 msgid "Bad wallet invitation"
 msgstr "不正なウォレット招待コード"
 
@@ -352,7 +352,7 @@ msgstr "ビットコインの購入&amp;売却"
 msgid "Buy Bitcoin"
 msgstr "ビットコインを購入"
 
-#: src/js/services/onGoingProcess.js:40
+#: src/js/services/onGoingProcess.js:39
 msgid "Buying Bitcoin..."
 msgstr "ビットコインを購入中..."
 
@@ -374,7 +374,7 @@ msgstr "キャンセル"
 msgid "Cannot Create Wallet"
 msgstr "ウォレットを作成できません。"
 
-#: src/js/services/profileService.js:454
+#: src/js/services/profileService.js:425
 msgid "Cannot join the same wallet more that once"
 msgstr "同じ端末で同じウォレットに複数回参加することができません。"
 
@@ -426,6 +426,10 @@ msgstr "色"
 msgid "Commit hash"
 msgstr "コミットのハッシュ値"
 
+#: www/views/preferences.html:59
+msgid "Complete the backup process to use this option"
+msgstr ""
+
 #: src/js/controllers/confirm.js:493
 #: src/js/controllers/copayers.js:41
 #: www/views/backup.html:53
@@ -441,9 +445,8 @@ msgid "Confirm &amp; Finish"
 msgstr "承諾して終了する"
 
 #: src/js/services/walletService.js:878
-#: src/js/services/walletService.js:879
-msgid "Confirm you new spending password"
-msgstr "新しい送金時パスワードを確認してください"
+msgid "Confirm your new spending password"
+msgstr ""
 
 #: www/views/tx-details.html:88
 msgid "Confirmations"
@@ -502,7 +505,7 @@ msgid "Copayer {{$index}}"
 msgstr "ウォレット参加者 {{$index}}"
 
 #: src/js/controllers/copayers.js:63
-#: src/js/controllers/export.js:190
+#: src/js/controllers/export.js:193
 #: www/views/includes/copyToClipboard.html:4
 msgid "Copied to clipboard"
 msgstr "クリップボードにコピーしました"
@@ -520,7 +523,7 @@ msgstr "クリップボードへコピー"
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "サーバーにてウォレットの確認ができませんでした。こちらをご確認下さい:"
 
-#: src/js/services/profileService.js:526
+#: src/js/services/profileService.js:492
 msgid "Could not access wallet"
 msgstr "ウォレットにアクセスできませんでした。"
 
@@ -540,15 +543,15 @@ msgstr "取引を作成できませんでした。"
 msgid "Could not create address"
 msgstr "アドレスを生成できませんでした。"
 
-#: src/js/services/profileService.js:371
+#: src/js/services/profileService.js:342
 msgid "Could not create using the specified extended private key"
 msgstr "指定された拡張秘密鍵で作成できませんでした。"
 
-#: src/js/services/profileService.js:381
+#: src/js/services/profileService.js:352
 msgid "Could not create using the specified extended public key"
 msgstr "指定された拡張公開鍵で作成できませんでした。"
 
-#: src/js/services/profileService.js:364
+#: src/js/services/profileService.js:335
 msgid "Could not create: Invalid wallet recovery phrase"
 msgstr "作成できません：ウォレットの復元フレーズが不正です。"
 
@@ -560,11 +563,11 @@ msgstr "複合化できませんでした。パスワードが正しいかご確
 msgid "Could not delete payment proposal"
 msgstr "送金の提案を削除できませんでした"
 
-#: src/js/services/feeService.js:51
+#: src/js/services/feeService.js:52
 msgid "Could not get dynamic fee"
 msgstr "手数料の金額を取得できませんでした。"
 
-#: src/js/services/feeService.js:31
+#: src/js/services/feeService.js:32
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "次の手数料レートを取得できませんでした: {{feeLevel}}"
 
@@ -572,17 +575,17 @@ msgstr "次の手数料レートを取得できませんでした: {{feeLevel}}"
 msgid "Could not get transactions"
 msgstr "取引を取得できませんでした。"
 
-#: src/js/services/profileService.js:631
-#: src/js/services/profileService.js:663
-#: src/js/services/profileService.js:686
+#: src/js/services/profileService.js:594
+#: src/js/services/profileService.js:626
+#: src/js/services/profileService.js:649
 msgid "Could not import"
 msgstr "インポートできませんでした。"
 
-#: src/js/services/profileService.js:600
+#: src/js/services/profileService.js:563
 msgid "Could not import. Check input file and spending password"
 msgstr "インポートできませんでした。入力ファイルとパスワードが正しいかご確認下さい。"
 
-#: src/js/services/profileService.js:467
+#: src/js/services/profileService.js:438
 msgid "Could not join wallet"
 msgstr "ウォレットに参加できませんでした。"
 
@@ -670,6 +673,7 @@ msgstr "この設定の現在の手数料レート"
 msgid "Custom Amount"
 msgstr "金額を入力"
 
+#: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
 msgstr "日付"
@@ -678,7 +682,7 @@ msgstr "日付"
 msgid "Delete"
 msgstr "削除する"
 
-#: www/views/modals/txp-details.html:159
+#: www/views/modals/txp-details.html:165
 msgid "Delete Payment Proposal"
 msgstr "送金の提案を削除"
 
@@ -732,7 +736,7 @@ msgstr "ダウンロード"
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "12個の単語から無限大のアドレスを生成することができ、それをビットコインウォレットと呼びます。送金を受け取る度に新しいアドレスを生成して受取画面でお見せします。"
 
-#: src/js/services/feeService.js:10
+#: src/js/services/feeService.js:11
 msgid "Economy"
 msgstr "節約"
 
@@ -815,13 +819,14 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/create.js:157
 #: src/js/controllers/create.js:172
 #: src/js/controllers/create.js:190
-#: src/js/controllers/export.js:106
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:151
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:109
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:154
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: src/js/controllers/export.js:47
+#: src/js/controllers/export.js:53
 #: src/js/controllers/feedback/send.js:23
 #: src/js/controllers/import.js:100
 #: src/js/controllers/import.js:118
@@ -853,9 +858,9 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/preferencesBitpayServices.js:33
 #: src/js/controllers/preferencesBitpayServices.js:50
 #: src/js/controllers/preferencesDelete.js:37
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Error"
 msgstr "エラー"
 
@@ -863,7 +868,7 @@ msgstr "エラー"
 msgid "Error at confirm"
 msgstr "確認のエラー"
 
-#: src/js/services/profileService.js:424
+#: src/js/services/profileService.js:395
 msgid "Error creating wallet"
 msgstr "ウォレット作成時にエラー"
 
@@ -889,12 +894,12 @@ msgstr "ユーザーの1日当たりの制限 500 米ドルを超えました"
 
 #: src/js/controllers/confirm.js:338
 #: www/views/confirm.html:27
-#: www/views/modals/txp-details.html:114
+#: www/views/modals/txp-details.html:120
 msgid "Expired"
 msgstr "期限切れ"
 
 #: www/views/modals/paypro.html:54
-#: www/views/modals/txp-details.html:120
+#: www/views/modals/txp-details.html:126
 msgid "Expires"
 msgstr "有効期限："
 
@@ -924,10 +929,10 @@ msgstr "拡張公開鍵"
 msgid "Extracting Wallet Information..."
 msgstr "ウォレット情報を抽出中…"
 
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: www/views/tab-export-file.html:4
 msgid "Failed to export"
 msgstr "エクスポートに失敗しました。"
@@ -939,7 +944,7 @@ msgstr "家族旅行貯金"
 
 #: www/views/confirm.html:88
 #: www/views/includes/confirm-tx.html:19
-#: www/views/modals/txp-details.html:95
+#: www/views/modals/txp-details.html:101
 #: www/views/tx-details.html:81
 msgid "Fee"
 msgstr "手数料"
@@ -948,7 +953,7 @@ msgstr "手数料"
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "フォームを送信する事ができませんでした。時間をおいて再試行ください。"
 
-#: src/js/services/onGoingProcess.js:42
+#: src/js/services/onGoingProcess.js:41
 msgid "Fetching BitPay Account..."
 msgstr "BitPay アカウントを取得..."
 
@@ -1011,7 +1016,7 @@ msgstr "送金先"
 msgid "Generating .csv file..."
 msgstr "CSVファイル作成中…"
 
-#: src/js/services/onGoingProcess.js:37
+#: src/js/services/onGoingProcess.js:36
 msgid "Generating new address..."
 msgstr "新規アドレスを生成中..."
 
@@ -1038,9 +1043,9 @@ msgstr "手数料レベルを取得しています…"
 #: src/js/controllers/onboarding/terms.js:23
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
-#: src/js/controllers/tab-home.js:144
+#: src/js/controllers/tab-home.js:145
 #: src/js/controllers/tab-settings.js:48
-#: src/js/controllers/tx-details.js:159
+#: src/js/controllers/tx-details.js:160
 msgid "Go Back"
 msgstr "戻る"
 
@@ -1152,7 +1157,7 @@ msgstr "自分のビットコインがこの端末に入っていて、外部の
 msgid "I've written it down"
 msgstr "紙に書き留めました"
 
-#: www/views/preferences.html:55
+#: www/views/preferences.html:56
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
 msgstr "有効にした場合は、このウォレットに関連する全ての秘密情報(秘密鍵と復元フレーズ)と履歴情報(送金やエクスポート)は守られます。"
 
@@ -1326,7 +1331,7 @@ msgstr "復元フレーズを確認しましょう。"
 msgid "Loading addresses..."
 msgstr "アドレスを読み込んでいます..."
 
-#: src/js/services/onGoingProcess.js:35
+#: src/js/services/onGoingProcess.js:34
 msgid "Loading transaction info..."
 msgstr "取引情報の読み込み中..."
 
@@ -1363,14 +1368,14 @@ msgstr "自分"
 msgid "Meh - it's alright"
 msgstr "まあまあです"
 
-#: src/js/controllers/tx-details.js:131
+#: src/js/controllers/tx-details.js:132
 #: www/views/modals/paypro.html:48
-#: www/views/modals/txp-details.html:89
+#: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
 msgid "Memo"
 msgstr "メモ"
 
-#: www/views/modals/txp-details.html:126
+#: www/views/modals/txp-details.html:132
 msgid "Merchant Message"
 msgstr "お店からのメッセージ："
 
@@ -1386,7 +1391,7 @@ msgstr "不足しているパラメータ"
 msgid "Missing private keys to sign"
 msgstr "署名するための秘密鍵がありません。"
 
-#: www/views/preferences.html:66
+#: www/views/preferences.html:71
 #: www/views/preferencesAdvanced.html:3
 msgid "More Options"
 msgstr "その他オプション"
@@ -1397,7 +1402,7 @@ msgstr "その他オプション"
 msgid "Moved"
 msgstr "移動済"
 
-#: src/js/controllers/tx-details.js:109
+#: src/js/controllers/tx-details.js:110
 msgid "Moved Funds"
 msgstr "資金を移動済み"
 
@@ -1489,7 +1494,7 @@ msgstr "利用可能なウォレットがありません"
 msgid "No wallets available to receive funds"
 msgstr "ペーパーウォレットの出金を受け取るためのウォレットが入っていません。"
 
-#: src/js/services/feeService.js:9
+#: src/js/services/feeService.js:10
 msgid "Normal"
 msgstr "通常"
 
@@ -1575,7 +1580,7 @@ msgstr "GitHubを開く"
 msgid "Open GitHub Project"
 msgstr "GitHub のプロジェクトを開く"
 
-#: src/js/controllers/tx-details.js:158
+#: src/js/controllers/tx-details.js:159
 msgid "Open Insight"
 msgstr "Insightを開く"
 
@@ -1669,7 +1674,7 @@ msgstr "送金が却下されました"
 
 #: www/views/confirm.html:123
 #: www/views/includes/walletActivity.html:11
-#: www/views/modals/txp-details.html:181
+#: www/views/modals/txp-details.html:187
 #: www/views/modals/txp-details.html:42
 msgid "Payment Sent"
 msgstr "送金が完了しました"
@@ -1682,7 +1687,7 @@ msgstr "取引が承認されましたが、まだ送信していません。"
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "取引が承認されました。Glideraより送信されます。問題があった場合、送金命令を出す６時間以内に取り消すことができます。"
 
-#: www/views/modals/txp-details.html:102
+#: www/views/modals/txp-details.html:108
 msgid "Payment details"
 msgstr "支払いの詳細"
 
@@ -1702,7 +1707,7 @@ msgstr "保留中の提案"
 msgid "Permanently delete this wallet."
 msgstr "ウォレットを完全に削除する"
 
-#: src/js/services/profileService.js:416
+#: src/js/services/profileService.js:387
 msgid "Personal Wallet"
 msgstr "個人用ウォレット"
 
@@ -1744,19 +1749,19 @@ msgstr "バックアップファイルを選択"
 msgid "Preferences"
 msgstr "設定"
 
-#: src/js/services/onGoingProcess.js:38
+#: src/js/services/onGoingProcess.js:37
 msgid "Preparing addresses..."
 msgstr "アドレスを処理中…"
 
-#: src/js/controllers/export.js:195
+#: src/js/controllers/export.js:198
 msgid "Preparing backup..."
 msgstr "バックアップを準備中..."
 
-#: src/js/routes.js:1143
+#: src/js/routes.js:1144
 msgid "Press again to exit"
 msgstr "もう一度押して終了"
 
-#: src/js/services/feeService.js:8
+#: src/js/services/feeService.js:9
 msgid "Priority"
 msgstr "優先"
 
@@ -1834,7 +1839,7 @@ msgstr "受取"
 msgid "Received"
 msgstr "受取済み"
 
-#: src/js/controllers/tx-details.js:108
+#: src/js/controllers/tx-details.js:109
 msgid "Received Funds"
 msgstr "受領した資金"
 
@@ -1912,7 +1917,7 @@ msgstr "パスワードを再入力"
 msgid "Repeat the password"
 msgstr "パスワードの再入力"
 
-#: www/views/preferences.html:61
+#: www/views/preferences.html:66
 msgid "Request Fingerprint"
 msgstr "指紋を要求"
 
@@ -2009,7 +2014,7 @@ msgstr "ウォレットを選択"
 msgid "Self-signed Certificate"
 msgstr "自己署名証明書"
 
-#: src/js/services/onGoingProcess.js:41
+#: src/js/services/onGoingProcess.js:40
 msgid "Selling Bitcoin..."
 msgstr "ビットコインを売却中..."
 
@@ -2062,11 +2067,11 @@ msgstr "代わりにフィードバックを送信"
 msgid "Sending"
 msgstr "送信中"
 
-#: src/js/services/onGoingProcess.js:39
+#: src/js/services/onGoingProcess.js:38
 msgid "Sending 2FA code..."
 msgstr "2段階認証コードを送信中…"
 
-#: src/js/services/onGoingProcess.js:36
+#: src/js/services/onGoingProcess.js:35
 msgid "Sending feedback..."
 msgstr "フィードバックを送信中..."
 
@@ -2089,7 +2094,7 @@ msgstr "ウォレット {{name}} から {{amountStr}} の送金を行います�
 msgid "Sent"
 msgstr "送金済み"
 
-#: src/js/controllers/tx-details.js:107
+#: src/js/controllers/tx-details.js:108
 msgid "Sent Funds"
 msgstr "資金を送金済み"
 
@@ -2216,7 +2221,7 @@ msgstr "ビットコインの送金を始めましょう"
 msgid "Starting..."
 msgstr "開始中..."
 
-#: src/js/services/feeService.js:11
+#: src/js/services/feeService.js:12
 msgid "Super Economy"
 msgstr "超節約"
 
@@ -2405,14 +2410,14 @@ msgstr "この復元フレーズにパスワードがかかっています。こ
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "現在設定中のBitcore Wallet Service (BWS) サーバーにて、このウォレットの登録がありません。再登録を行うこともできます。"
 
-#: www/views/modals/txp-details.html:131
+#: www/views/modals/txp-details.html:137
 #: www/views/tx-details.html:102
 msgid "Timeline"
 msgstr "履歴"
 
 #: www/views/confirm.html:31
 #: www/views/includes/output.html:2
-#: www/views/modals/txp-details.html:104
+#: www/views/modals/txp-details.html:110
 #: www/views/modals/txp-details.html:53
 #: www/views/tx-details.html:41
 #: www/views/tx-details.html:53
@@ -2461,12 +2466,12 @@ msgstr "取引は既に配信されました。"
 msgid "Transaction created"
 msgstr "取引情報を作成しました"
 
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Transaction not available at this time"
 msgstr "現在この取引はご覧いただけません。"
 
 #: src/js/controllers/activity.js:45
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 msgid "Transaction not found"
 msgstr "取引は見つかりません"
 
@@ -2507,7 +2512,7 @@ msgstr "未使用アドレス"
 msgid "Unused Addresses Limit"
 msgstr "未使用アドレス生成上限"
 
-#: src/js/controllers/tab-home.js:141
+#: src/js/controllers/tab-home.js:142
 msgid "Update Available"
 msgstr "利用可能なアップデートあり"
 
@@ -2523,17 +2528,17 @@ msgstr "取引履歴を更新します。しばらくお待ちください。"
 msgid "Updating... Please stand by"
 msgstr "更新中... お待ち下さい"
 
+#: src/js/services/feeService.js:8
+msgid "Urgent"
+msgstr ""
+
 #: www/views/advancedSettings.html:11
 msgid "Use Unconfirmed Funds"
 msgstr "未承認ビットコインを使用"
 
-#: src/js/services/onGoingProcess.js:34
+#: src/js/services/onGoingProcess.js:33
 msgid "Validating recovery phrase..."
 msgstr "復元フレーズを検証中…"
-
-#: src/js/services/onGoingProcess.js:33
-msgid "Validating wallet integrity..."
-msgstr "ウォレットの整合性を検証中..."
 
 #: www/views/preferencesAbout.html:14
 msgid "Version"
@@ -2551,11 +2556,11 @@ msgstr "全アドレスを表示"
 msgid "View Terms of Service"
 msgstr "サービス利用規約を表示"
 
-#: src/js/controllers/tx-details.js:157
+#: src/js/controllers/tx-details.js:158
 msgid "View Transaction on Insight"
 msgstr "Insightにて取引を表示"
 
-#: src/js/controllers/tab-home.js:143
+#: src/js/controllers/tab-home.js:144
 msgid "View Update"
 msgstr "更新情報を表示"
 
@@ -2668,7 +2673,7 @@ msgstr "ウォレットタイプ"
 msgid "Wallet already exists"
 msgstr "既存のウォレットです"
 
-#: src/js/services/profileService.js:531
+#: src/js/services/profileService.js:497
 msgid "Wallet already in Copay"
 msgstr "Copay内の既存のウォレットです"
 
@@ -2710,7 +2715,7 @@ msgstr "ウォレットがバックアップされていません"
 msgid "Wallet not found"
 msgstr "ウォレットが見つかりません。"
 
-#: src/js/controllers/tab-home.js:215
+#: src/js/controllers/tab-home.js:216
 msgid "Wallet not registered"
 msgstr "ウォレットが未登録"
 
@@ -2903,7 +2908,7 @@ msgstr "アドレスはまだ取得できませんでした"
 msgid "locked by pending payments"
 msgstr "未対応送金の提案によりロック中"
 
-#: src/js/services/profileService.js:417
+#: src/js/services/profileService.js:388
 msgid "me"
 msgstr "自分"
 
