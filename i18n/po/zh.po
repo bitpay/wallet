@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh\n"
-"PO-Revision-Date: 2017-03-10 09:48-0500\n"
+"PO-Revision-Date: 2017-03-16 08:32-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -23,7 +23,7 @@ msgstr "（可信的）"
 msgid "(possible double spend)"
 msgstr "（重复支付）"
 
-#: www/views/modals/txp-details.html:154
+#: www/views/modals/txp-details.html:160
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr "* 如果 1) 你是创造者，及没有其他 copayer 签名，或 2) 24 小时已经过去，支付提议将被删除。"
 
@@ -194,7 +194,7 @@ msgstr "数额低于最低允许值"
 msgid "Amount too big"
 msgstr "量太大"
 
-#: src/js/controllers/tab-home.js:142
+#: src/js/controllers/tab-home.js:143
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "本程序有一个可用的更新。为了您的安全，请更新到最新版本。"
 
@@ -276,7 +276,7 @@ msgstr "现在备份"
 msgid "Backup wallet"
 msgstr "备份钱包"
 
-#: src/js/services/profileService.js:458
+#: src/js/services/profileService.js:429
 msgid "Bad wallet invitation"
 msgstr "坏钱包邀请"
 
@@ -350,7 +350,7 @@ msgstr "购买或出售比特币"
 msgid "Buy Bitcoin"
 msgstr "购买比特币"
 
-#: src/js/services/onGoingProcess.js:40
+#: src/js/services/onGoingProcess.js:39
 msgid "Buying Bitcoin..."
 msgstr "正在发送 比特币..."
 
@@ -372,7 +372,7 @@ msgstr "取消"
 msgid "Cannot Create Wallet"
 msgstr "不能创建钱包"
 
-#: src/js/services/profileService.js:454
+#: src/js/services/profileService.js:425
 msgid "Cannot join the same wallet more that once"
 msgstr "无法重复加入同一个钱包"
 
@@ -424,6 +424,10 @@ msgstr "颜色"
 msgid "Commit hash"
 msgstr "提交哈希"
 
+#: www/views/preferences.html:59
+msgid "Complete the backup process to use this option"
+msgstr ""
+
 #: src/js/controllers/confirm.js:493
 #: src/js/controllers/copayers.js:41
 #: www/views/backup.html:53
@@ -439,9 +443,8 @@ msgid "Confirm &amp; Finish"
 msgstr "确认并完成"
 
 #: src/js/services/walletService.js:878
-#: src/js/services/walletService.js:879
-msgid "Confirm you new spending password"
-msgstr "输入你的支付密码"
+msgid "Confirm your new spending password"
+msgstr ""
 
 #: www/views/tx-details.html:88
 msgid "Confirmations"
@@ -500,7 +503,7 @@ msgid "Copayer {{$index}}"
 msgstr "Copayer {{$index}}"
 
 #: src/js/controllers/copayers.js:63
-#: src/js/controllers/export.js:190
+#: src/js/controllers/export.js:193
 #: www/views/includes/copyToClipboard.html:4
 msgid "Copied to clipboard"
 msgstr "已复制到剪贴板"
@@ -518,7 +521,7 @@ msgstr "复制到剪贴板"
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "无法访问服务器上的钱包。请确认︰"
 
-#: src/js/services/profileService.js:526
+#: src/js/services/profileService.js:492
 msgid "Could not access wallet"
 msgstr "无法访问钱包"
 
@@ -538,15 +541,15 @@ msgstr "无法建立交易"
 msgid "Could not create address"
 msgstr "无法创建地址"
 
-#: src/js/services/profileService.js:371
+#: src/js/services/profileService.js:342
 msgid "Could not create using the specified extended private key"
 msgstr "无法使用指定的扩展私人密钥创建"
 
-#: src/js/services/profileService.js:381
+#: src/js/services/profileService.js:352
 msgid "Could not create using the specified extended public key"
 msgstr "无法使用指定的扩展的公钥创建"
 
-#: src/js/services/profileService.js:364
+#: src/js/services/profileService.js:335
 msgid "Could not create: Invalid wallet recovery phrase"
 msgstr "无法创建 ︰ 无效的钱包恢复短语"
 
@@ -558,11 +561,11 @@ msgstr "无法解密文件，请检查你的密码"
 msgid "Could not delete payment proposal"
 msgstr "无法删除支付提议"
 
-#: src/js/services/feeService.js:51
+#: src/js/services/feeService.js:52
 msgid "Could not get dynamic fee"
 msgstr "不能动态费用"
 
-#: src/js/services/feeService.js:31
+#: src/js/services/feeService.js:32
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "无法获取水平动态费用︰ {{feeLevel}}"
 
@@ -570,17 +573,17 @@ msgstr "无法获取水平动态费用︰ {{feeLevel}}"
 msgid "Could not get transactions"
 msgstr "不能交易"
 
-#: src/js/services/profileService.js:631
-#: src/js/services/profileService.js:663
-#: src/js/services/profileService.js:686
+#: src/js/services/profileService.js:594
+#: src/js/services/profileService.js:626
+#: src/js/services/profileService.js:649
 msgid "Could not import"
 msgstr "无法导入"
 
-#: src/js/services/profileService.js:600
+#: src/js/services/profileService.js:563
 msgid "Could not import. Check input file and spending password"
 msgstr "无法导入。请检查输入文件和支付密码"
 
-#: src/js/services/profileService.js:467
+#: src/js/services/profileService.js:438
 msgid "Could not join wallet"
 msgstr "无法加入钱包"
 
@@ -668,15 +671,16 @@ msgstr "此策略的当前费用率"
 msgid "Custom Amount"
 msgstr "自定义金额"
 
+#: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
-msgstr ""
+msgstr "日期"
 
 #: www/views/preferencesDeleteWallet.html:21
 msgid "Delete"
 msgstr "删除"
 
-#: www/views/modals/txp-details.html:159
+#: www/views/modals/txp-details.html:165
 msgid "Delete Payment Proposal"
 msgstr "删除支付提议"
 
@@ -730,7 +734,7 @@ msgstr "下载"
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "每个比特币钱包可以从您的 12 字备份生成亿万个地址。一个新的地址是自动生成和显示每个时间你收到付款。"
 
-#: src/js/services/feeService.js:10
+#: src/js/services/feeService.js:11
 msgid "Economy"
 msgstr "经济"
 
@@ -813,13 +817,14 @@ msgstr "请输入你的密码"
 #: src/js/controllers/create.js:157
 #: src/js/controllers/create.js:172
 #: src/js/controllers/create.js:190
-#: src/js/controllers/export.js:106
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:151
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:109
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:154
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: src/js/controllers/export.js:47
+#: src/js/controllers/export.js:53
 #: src/js/controllers/feedback/send.js:23
 #: src/js/controllers/import.js:100
 #: src/js/controllers/import.js:118
@@ -851,9 +856,9 @@ msgstr "请输入你的密码"
 #: src/js/controllers/preferencesBitpayServices.js:33
 #: src/js/controllers/preferencesBitpayServices.js:50
 #: src/js/controllers/preferencesDelete.js:37
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Error"
 msgstr "错误！"
 
@@ -861,7 +866,7 @@ msgstr "错误！"
 msgid "Error at confirm"
 msgstr "在确认错误"
 
-#: src/js/services/profileService.js:424
+#: src/js/services/profileService.js:395
 msgid "Error creating wallet"
 msgstr "创建钱包时出现错误"
 
@@ -887,12 +892,12 @@ msgstr "超过 500 美元，每个用户的每日限额"
 
 #: src/js/controllers/confirm.js:338
 #: www/views/confirm.html:27
-#: www/views/modals/txp-details.html:114
+#: www/views/modals/txp-details.html:120
 msgid "Expired"
 msgstr "已过期"
 
 #: www/views/modals/paypro.html:54
-#: www/views/modals/txp-details.html:120
+#: www/views/modals/txp-details.html:126
 msgid "Expires"
 msgstr "到期"
 
@@ -922,10 +927,10 @@ msgstr "扩展的公钥"
 msgid "Extracting Wallet Information..."
 msgstr "正在获取钱包信息..."
 
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: www/views/tab-export-file.html:4
 msgid "Failed to export"
 msgstr "导出失败"
@@ -937,7 +942,7 @@ msgstr "家庭度假资金"
 
 #: www/views/confirm.html:88
 #: www/views/includes/confirm-tx.html:19
-#: www/views/modals/txp-details.html:95
+#: www/views/modals/txp-details.html:101
 #: www/views/tx-details.html:81
 msgid "Fee"
 msgstr "费用"
@@ -946,7 +951,7 @@ msgstr "费用"
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "无法提交反馈。请稍后再试。"
 
-#: src/js/services/onGoingProcess.js:42
+#: src/js/services/onGoingProcess.js:41
 msgid "Fetching BitPay Account..."
 msgstr ""
 
@@ -1009,7 +1014,7 @@ msgstr "资金将会转移到"
 msgid "Generating .csv file..."
 msgstr "正在生成 .csv 文件..."
 
-#: src/js/services/onGoingProcess.js:37
+#: src/js/services/onGoingProcess.js:36
 msgid "Generating new address..."
 msgstr "正在生成新的地址..."
 
@@ -1036,9 +1041,9 @@ msgstr "正在获取收费水平..."
 #: src/js/controllers/onboarding/terms.js:23
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
-#: src/js/controllers/tab-home.js:144
+#: src/js/controllers/tab-home.js:145
 #: src/js/controllers/tab-settings.js:48
-#: src/js/controllers/tx-details.js:159
+#: src/js/controllers/tx-details.js:160
 msgid "Go Back"
 msgstr "返回	#"
 
@@ -1150,7 +1155,7 @@ msgstr "我明白，我的资金安全地在此设备上，不由公司举行。
 msgid "I've written it down"
 msgstr "我已经把它写下来"
 
-#: www/views/preferences.html:55
+#: www/views/preferences.html:56
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
 msgstr ""
 
@@ -1324,7 +1329,7 @@ msgstr "让我们验证您备份的短语。"
 msgid "Loading addresses..."
 msgstr "正在加载地址..."
 
-#: src/js/services/onGoingProcess.js:35
+#: src/js/services/onGoingProcess.js:34
 msgid "Loading transaction info..."
 msgstr "正在加载交易信息..."
 
@@ -1361,14 +1366,14 @@ msgstr "我"
 msgid "Meh - it's alright"
 msgstr "咩-没关系"
 
-#: src/js/controllers/tx-details.js:131
+#: src/js/controllers/tx-details.js:132
 #: www/views/modals/paypro.html:48
-#: www/views/modals/txp-details.html:89
+#: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
 msgid "Memo"
 msgstr "便签"
 
-#: www/views/modals/txp-details.html:126
+#: www/views/modals/txp-details.html:132
 msgid "Merchant Message"
 msgstr "商人的消息"
 
@@ -1384,7 +1389,7 @@ msgstr "缺失参数"
 msgid "Missing private keys to sign"
 msgstr "遗失需要签名的私钥"
 
-#: www/views/preferences.html:66
+#: www/views/preferences.html:71
 #: www/views/preferencesAdvanced.html:3
 msgid "More Options"
 msgstr "更多的选择"
@@ -1395,7 +1400,7 @@ msgstr "更多的选择"
 msgid "Moved"
 msgstr "已调动"
 
-#: src/js/controllers/tx-details.js:109
+#: src/js/controllers/tx-details.js:110
 msgid "Moved Funds"
 msgstr "转移资金"
 
@@ -1487,7 +1492,7 @@ msgstr "没有可用的钱包"
 msgid "No wallets available to receive funds"
 msgstr "没有可用于接收资金的钱包"
 
-#: src/js/services/feeService.js:9
+#: src/js/services/feeService.js:10
 msgid "Normal"
 msgstr "常规"
 
@@ -1559,7 +1564,7 @@ msgstr "在此屏幕上您可以看到您的钱包、 帐户和资产。"
 
 #: src/js/controllers/tab-settings.js:47
 msgid "Open"
-msgstr ""
+msgstr "打开"
 
 #: src/js/controllers/preferencesLanguage.js:13
 msgid "Open Crowdin"
@@ -1573,7 +1578,7 @@ msgstr "打开 GitHub"
 msgid "Open GitHub Project"
 msgstr "打开 GitHub 项目"
 
-#: src/js/controllers/tx-details.js:158
+#: src/js/controllers/tx-details.js:159
 msgid "Open Insight"
 msgstr "开放的洞察力"
 
@@ -1667,7 +1672,7 @@ msgstr "支付被拒绝"
 
 #: www/views/confirm.html:123
 #: www/views/includes/walletActivity.html:11
-#: www/views/modals/txp-details.html:181
+#: www/views/modals/txp-details.html:187
 #: www/views/modals/txp-details.html:42
 msgid "Payment Sent"
 msgstr "支付已发送"
@@ -1680,7 +1685,7 @@ msgstr "支付已被接受，但尚未广播"
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "支付以被接受。它将由 Glidera 广播。如果出现问题，它可以在创建后的 6 个小时内删除。"
 
-#: www/views/modals/txp-details.html:102
+#: www/views/modals/txp-details.html:108
 msgid "Payment details"
 msgstr "支付明细"
 
@@ -1700,7 +1705,7 @@ msgstr "支付提议"
 msgid "Permanently delete this wallet."
 msgstr "永久删除这个钱包。"
 
-#: src/js/services/profileService.js:416
+#: src/js/services/profileService.js:387
 msgid "Personal Wallet"
 msgstr "个人钱包"
 
@@ -1742,19 +1747,19 @@ msgstr "请选择你的备份文件"
 msgid "Preferences"
 msgstr "偏好"
 
-#: src/js/services/onGoingProcess.js:38
+#: src/js/services/onGoingProcess.js:37
 msgid "Preparing addresses..."
 msgstr "正在准备地址..."
 
-#: src/js/controllers/export.js:195
+#: src/js/controllers/export.js:198
 msgid "Preparing backup..."
 msgstr "正在准备备份..."
 
-#: src/js/routes.js:1143
+#: src/js/routes.js:1144
 msgid "Press again to exit"
 msgstr "再按一次退出"
 
-#: src/js/services/feeService.js:8
+#: src/js/services/feeService.js:9
 msgid "Priority"
 msgstr "优先"
 
@@ -1832,7 +1837,7 @@ msgstr "接收"
 msgid "Received"
 msgstr "已接收"
 
-#: src/js/controllers/tx-details.js:108
+#: src/js/controllers/tx-details.js:109
 msgid "Received Funds"
 msgstr "收到的资金"
 
@@ -1910,7 +1915,7 @@ msgstr "重复输入密码"
 msgid "Repeat the password"
 msgstr "重复密码"
 
-#: www/views/preferences.html:61
+#: www/views/preferences.html:66
 msgid "Request Fingerprint"
 msgstr "请求指纹"
 
@@ -2007,7 +2012,7 @@ msgstr "选择钱包"
 msgid "Self-signed Certificate"
 msgstr "自签名证书"
 
-#: src/js/services/onGoingProcess.js:41
+#: src/js/services/onGoingProcess.js:40
 msgid "Selling Bitcoin..."
 msgstr "出售比特币......"
 
@@ -2060,11 +2065,11 @@ msgstr "而是向我们发送反馈"
 msgid "Sending"
 msgstr "正在发送"
 
-#: src/js/services/onGoingProcess.js:39
+#: src/js/services/onGoingProcess.js:38
 msgid "Sending 2FA code..."
 msgstr "正在发送 2FA 代码..."
 
-#: src/js/services/onGoingProcess.js:36
+#: src/js/services/onGoingProcess.js:35
 msgid "Sending feedback..."
 msgstr "发送反馈信息..."
 
@@ -2087,7 +2092,7 @@ msgstr "从你的 {{name}} 钱包发送 {{amountStr}}"
 msgid "Sent"
 msgstr "已发送"
 
-#: src/js/controllers/tx-details.js:107
+#: src/js/controllers/tx-details.js:108
 msgid "Sent Funds"
 msgstr "已发送的资金"
 
@@ -2137,7 +2142,7 @@ msgstr "将此邀请与你的 copayers 共享"
 
 #: src/js/controllers/feedback/complete.js:5
 msgid "Share {{appName}}"
-msgstr ""
+msgstr "分享 {{appName}}"
 
 #: www/views/tab-import-hardware.html:24
 msgid "Shared Wallet"
@@ -2212,7 +2217,7 @@ msgstr "开始发送比特币"
 msgid "Starting..."
 msgstr "正在启动..."
 
-#: src/js/services/feeService.js:11
+#: src/js/services/feeService.js:12
 msgid "Super Economy"
 msgstr "超级经济"
 
@@ -2401,14 +2406,14 @@ msgstr "此恢复短语是用密码创建。为了恢复此钱包，需要恢复
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "此钱包不在给定的 Bitcore Wallet Service (BWS) 注册。你可以从本地信息重新创建它。"
 
-#: www/views/modals/txp-details.html:131
+#: www/views/modals/txp-details.html:137
 #: www/views/tx-details.html:102
 msgid "Timeline"
 msgstr "时间轴"
 
 #: www/views/confirm.html:31
 #: www/views/includes/output.html:2
-#: www/views/modals/txp-details.html:104
+#: www/views/modals/txp-details.html:110
 #: www/views/modals/txp-details.html:53
 #: www/views/tx-details.html:41
 #: www/views/tx-details.html:53
@@ -2457,12 +2462,12 @@ msgstr "交易已经广播"
 msgid "Transaction created"
 msgstr "创建的交易记录"
 
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Transaction not available at this time"
 msgstr ""
 
 #: src/js/controllers/activity.js:45
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 msgid "Transaction not found"
 msgstr "找不到交易"
 
@@ -2503,7 +2508,7 @@ msgstr "未使用的地址"
 msgid "Unused Addresses Limit"
 msgstr "未使用的地址"
 
-#: src/js/controllers/tab-home.js:141
+#: src/js/controllers/tab-home.js:142
 msgid "Update Available"
 msgstr "可用的更新"
 
@@ -2519,17 +2524,17 @@ msgstr "更新交易历史记录。请等待。"
 msgid "Updating... Please stand by"
 msgstr "更新中… 请等待"
 
+#: src/js/services/feeService.js:8
+msgid "Urgent"
+msgstr ""
+
 #: www/views/advancedSettings.html:11
 msgid "Use Unconfirmed Funds"
 msgstr "使用未经确认的资金"
 
-#: src/js/services/onGoingProcess.js:34
+#: src/js/services/onGoingProcess.js:33
 msgid "Validating recovery phrase..."
 msgstr "正在验证恢复短语。。。"
-
-#: src/js/services/onGoingProcess.js:33
-msgid "Validating wallet integrity..."
-msgstr "正在验证钱包完整性。。。"
 
 #: www/views/preferencesAbout.html:14
 msgid "Version"
@@ -2547,11 +2552,11 @@ msgstr "查看所有地址"
 msgid "View Terms of Service"
 msgstr "查看服务条款"
 
-#: src/js/controllers/tx-details.js:157
+#: src/js/controllers/tx-details.js:158
 msgid "View Transaction on Insight"
 msgstr "查看交易记录的洞察"
 
-#: src/js/controllers/tab-home.js:143
+#: src/js/controllers/tab-home.js:144
 msgid "View Update"
 msgstr "查看更新"
 
@@ -2664,7 +2669,7 @@ msgstr "钱包类型"
 msgid "Wallet already exists"
 msgstr "钱包已存在"
 
-#: src/js/services/profileService.js:531
+#: src/js/services/profileService.js:497
 msgid "Wallet already in Copay"
 msgstr "钱包已经在 Copay"
 
@@ -2706,7 +2711,7 @@ msgstr "未备份的钱包"
 msgid "Wallet not found"
 msgstr "找不到钱包"
 
-#: src/js/controllers/tab-home.js:215
+#: src/js/controllers/tab-home.js:216
 msgid "Wallet not registered"
 msgstr "未注册的钱包"
 
@@ -2899,7 +2904,7 @@ msgstr "地址仍不可"
 msgid "locked by pending payments"
 msgstr "被未决支付锁定"
 
-#: src/js/services/profileService.js:417
+#: src/js/services/profileService.js:388
 msgid "me"
 msgstr "我"
 
