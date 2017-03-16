@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2017-03-10 13:32-0500\n"
+"PO-Revision-Date: 2017-03-16 09:48-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -23,7 +23,7 @@ msgstr "(Fiable)"
 msgid "(possible double spend)"
 msgstr "(double dépense possible)"
 
-#: www/views/modals/txp-details.html:154
+#: www/views/modals/txp-details.html:160
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
 msgstr "* Une proposition de paiement peut être supprimée si vous en êtes le créateur et qu'aucun des autres copayers n'a signé, ou si 24 heures sont passées depuis la création de la proposition."
 
@@ -194,7 +194,7 @@ msgstr "Montant en dessous du minimum autorisé"
 msgid "Amount too big"
 msgstr "Le montant est trop élevé"
 
-#: src/js/controllers/tab-home.js:142
+#: src/js/controllers/tab-home.js:143
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "Une mise à jour de cette application est disponible. Pour votre sécurité, veuillez mettre à jour vers la dernière version."
 
@@ -276,7 +276,7 @@ msgstr "Sauvegarder maintenant"
 msgid "Backup wallet"
 msgstr "Sauvegarder le portefeuille"
 
-#: src/js/services/profileService.js:458
+#: src/js/services/profileService.js:429
 msgid "Bad wallet invitation"
 msgstr "Mauvaise invitation de portefeuille"
 
@@ -350,7 +350,7 @@ msgstr "Acheter &amp; vendre des bitcoins"
 msgid "Buy Bitcoin"
 msgstr "Acheter des bitcoins"
 
-#: src/js/services/onGoingProcess.js:40
+#: src/js/services/onGoingProcess.js:39
 msgid "Buying Bitcoin..."
 msgstr "Achat de bitcoins..."
 
@@ -372,7 +372,7 @@ msgstr "Annuler"
 msgid "Cannot Create Wallet"
 msgstr "Impossible de créer le portefeuille"
 
-#: src/js/services/profileService.js:454
+#: src/js/services/profileService.js:425
 msgid "Cannot join the same wallet more that once"
 msgstr "Impossible de rejoindre le même portefeuille plus d'une fois"
 
@@ -424,6 +424,10 @@ msgstr "Couleur"
 msgid "Commit hash"
 msgstr "Commit hash"
 
+#: www/views/preferences.html:59
+msgid "Complete the backup process to use this option"
+msgstr "Terminez le processus de sauvegarde pour utiliser cette option"
+
 #: src/js/controllers/confirm.js:493
 #: src/js/controllers/copayers.js:41
 #: www/views/backup.html:53
@@ -439,8 +443,7 @@ msgid "Confirm &amp; Finish"
 msgstr "Confirmer &amp; Terminer"
 
 #: src/js/services/walletService.js:878
-#: src/js/services/walletService.js:879
-msgid "Confirm you new spending password"
+msgid "Confirm your new spending password"
 msgstr "Confirmez votre nouveau code de dépenses"
 
 #: www/views/tx-details.html:88
@@ -500,7 +503,7 @@ msgid "Copayer {{$index}}"
 msgstr "Copayer {{$index}}"
 
 #: src/js/controllers/copayers.js:63
-#: src/js/controllers/export.js:190
+#: src/js/controllers/export.js:193
 #: www/views/includes/copyToClipboard.html:4
 msgid "Copied to clipboard"
 msgstr "Copié(e) dans le presse-papier"
@@ -518,7 +521,7 @@ msgstr "Copier dans le presse-papier"
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "Impossible d'accéder au portefeuille via le serveur. Veuillez vérifier :"
 
-#: src/js/services/profileService.js:526
+#: src/js/services/profileService.js:492
 msgid "Could not access wallet"
 msgstr "Impossible d’accéder au portefeuille"
 
@@ -538,15 +541,15 @@ msgstr "Impossible de créer la transaction"
 msgid "Could not create address"
 msgstr "Impossible de créer l'adresse"
 
-#: src/js/services/profileService.js:371
+#: src/js/services/profileService.js:342
 msgid "Could not create using the specified extended private key"
 msgstr "Impossible de créer en utilisant la clé privée étendue spécifiée"
 
-#: src/js/services/profileService.js:381
+#: src/js/services/profileService.js:352
 msgid "Could not create using the specified extended public key"
 msgstr "Impossible de créer en utilisant la clé publique étendue spécifiée"
 
-#: src/js/services/profileService.js:364
+#: src/js/services/profileService.js:335
 msgid "Could not create: Invalid wallet recovery phrase"
 msgstr "Impossible de créer : Phrase de récupération du portefeuille invalide"
 
@@ -558,11 +561,11 @@ msgstr "Impossible de déchiffrer le fichier, vérifiez votre mot de passe"
 msgid "Could not delete payment proposal"
 msgstr "Impossible de supprimer la proposition de paiement"
 
-#: src/js/services/feeService.js:51
+#: src/js/services/feeService.js:52
 msgid "Could not get dynamic fee"
 msgstr "Impossible d'obtenir les frais dynamiques"
 
-#: src/js/services/feeService.js:31
+#: src/js/services/feeService.js:32
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "Impossible d'obtenir les frais dynamiques pour ce choix : {{feeLevel}}"
 
@@ -570,17 +573,17 @@ msgstr "Impossible d'obtenir les frais dynamiques pour ce choix : {{feeLevel}}"
 msgid "Could not get transactions"
 msgstr "Impossible de récupérer les transactions"
 
-#: src/js/services/profileService.js:631
-#: src/js/services/profileService.js:663
-#: src/js/services/profileService.js:686
+#: src/js/services/profileService.js:594
+#: src/js/services/profileService.js:626
+#: src/js/services/profileService.js:649
 msgid "Could not import"
 msgstr "Impossible d'importer"
 
-#: src/js/services/profileService.js:600
+#: src/js/services/profileService.js:563
 msgid "Could not import. Check input file and spending password"
 msgstr "Impossible d'importer. Vérifiez le fichier d'entrée et le code de dépenses"
 
-#: src/js/services/profileService.js:467
+#: src/js/services/profileService.js:438
 msgid "Could not join wallet"
 msgstr "Impossible de rejoindre le portefeuille"
 
@@ -668,6 +671,7 @@ msgstr "Frais actuels pour ce choix "
 msgid "Custom Amount"
 msgstr "Montant personnalisé"
 
+#: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
 msgstr "Date"
@@ -676,7 +680,7 @@ msgstr "Date"
 msgid "Delete"
 msgstr "Supprimer"
 
-#: www/views/modals/txp-details.html:159
+#: www/views/modals/txp-details.html:165
 msgid "Delete Payment Proposal"
 msgstr "Supprimer la proposition de paiement"
 
@@ -730,7 +734,7 @@ msgstr "Télécharger"
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Chaque portefeuille bitcoin peut générer des milliards d’adresses depuis votre sauvegarde de 12 mots. Une nouvelle adresse est automatiquement générée et affichée à chaque fois que vous recevez un paiement."
 
-#: src/js/services/feeService.js:10
+#: src/js/services/feeService.js:11
 msgid "Economy"
 msgstr "Faibles"
 
@@ -813,13 +817,14 @@ msgstr "Écrivez votre mot de passe"
 #: src/js/controllers/create.js:157
 #: src/js/controllers/create.js:172
 #: src/js/controllers/create.js:190
-#: src/js/controllers/export.js:106
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:151
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:109
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:154
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: src/js/controllers/export.js:47
+#: src/js/controllers/export.js:53
 #: src/js/controllers/feedback/send.js:23
 #: src/js/controllers/import.js:100
 #: src/js/controllers/import.js:118
@@ -851,9 +856,9 @@ msgstr "Écrivez votre mot de passe"
 #: src/js/controllers/preferencesBitpayServices.js:33
 #: src/js/controllers/preferencesBitpayServices.js:50
 #: src/js/controllers/preferencesDelete.js:37
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Error"
 msgstr "Erreur"
 
@@ -861,7 +866,7 @@ msgstr "Erreur"
 msgid "Error at confirm"
 msgstr "Erreur à la confirmation"
 
-#: src/js/services/profileService.js:424
+#: src/js/services/profileService.js:395
 msgid "Error creating wallet"
 msgstr "Erreur de création du portefeuille"
 
@@ -887,12 +892,12 @@ msgstr "La limite quotidienne de 500$ par utilisateur a été dépassée"
 
 #: src/js/controllers/confirm.js:338
 #: www/views/confirm.html:27
-#: www/views/modals/txp-details.html:114
+#: www/views/modals/txp-details.html:120
 msgid "Expired"
 msgstr "Expiré"
 
 #: www/views/modals/paypro.html:54
-#: www/views/modals/txp-details.html:120
+#: www/views/modals/txp-details.html:126
 msgid "Expires"
 msgstr "Expire"
 
@@ -922,10 +927,10 @@ msgstr "Clés publiques étendues"
 msgid "Extracting Wallet Information..."
 msgstr "Extraction des informations du portefeuille..."
 
-#: src/js/controllers/export.js:112
-#: src/js/controllers/export.js:123
-#: src/js/controllers/export.js:157
-#: src/js/controllers/export.js:168
+#: src/js/controllers/export.js:115
+#: src/js/controllers/export.js:126
+#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:171
 #: www/views/tab-export-file.html:4
 msgid "Failed to export"
 msgstr "Impossible d'exporter"
@@ -937,7 +942,7 @@ msgstr "Fonds pour les vacances familiales"
 
 #: www/views/confirm.html:88
 #: www/views/includes/confirm-tx.html:19
-#: www/views/modals/txp-details.html:95
+#: www/views/modals/txp-details.html:101
 #: www/views/tx-details.html:81
 msgid "Fee"
 msgstr "Frais"
@@ -946,7 +951,7 @@ msgstr "Frais"
 msgid "Feedback could not be submitted. Please try again later."
 msgstr "Vos commentaires n'ont pas pu être envoyés. Veuillez réessayer plus tard."
 
-#: src/js/services/onGoingProcess.js:42
+#: src/js/services/onGoingProcess.js:41
 msgid "Fetching BitPay Account..."
 msgstr "Récupération du compte BitPay..."
 
@@ -1009,7 +1014,7 @@ msgstr "Les fonds seront transférés à"
 msgid "Generating .csv file..."
 msgstr "Génération du fichier .csv..."
 
-#: src/js/services/onGoingProcess.js:37
+#: src/js/services/onGoingProcess.js:36
 msgid "Generating new address..."
 msgstr "Génération d'une nouvelle adresse..."
 
@@ -1036,9 +1041,9 @@ msgstr "Obtention des niveaux de frais..."
 #: src/js/controllers/onboarding/terms.js:23
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
-#: src/js/controllers/tab-home.js:144
+#: src/js/controllers/tab-home.js:145
 #: src/js/controllers/tab-settings.js:48
-#: src/js/controllers/tx-details.js:159
+#: src/js/controllers/tx-details.js:160
 msgid "Go Back"
 msgstr "Retour"
 
@@ -1150,7 +1155,7 @@ msgstr "Je comprends que mes fonds sont en toute sécurité sur cet appareil et 
 msgid "I've written it down"
 msgstr "Je l'ai bien écrite"
 
-#: www/views/preferences.html:55
+#: www/views/preferences.html:56
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
 msgstr "Si activé, toutes les informations sensibles (clé privée et phrase de récupération) ainsi que les opérations (dépenses et exportation) associées à ce portefeuille seront protégées."
 
@@ -1324,7 +1329,7 @@ msgstr "Vérifions votre phrase de sauvegarde."
 msgid "Loading addresses..."
 msgstr "Chargement des adresses..."
 
-#: src/js/services/onGoingProcess.js:35
+#: src/js/services/onGoingProcess.js:34
 msgid "Loading transaction info..."
 msgstr "Chargement des infos de transaction..."
 
@@ -1361,14 +1366,14 @@ msgstr "Moi"
 msgid "Meh - it's alright"
 msgstr "Ça peut aller"
 
-#: src/js/controllers/tx-details.js:131
+#: src/js/controllers/tx-details.js:132
 #: www/views/modals/paypro.html:48
-#: www/views/modals/txp-details.html:89
+#: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
 msgid "Memo"
 msgstr "Note"
 
-#: www/views/modals/txp-details.html:126
+#: www/views/modals/txp-details.html:132
 msgid "Merchant Message"
 msgstr "Message marchand"
 
@@ -1384,7 +1389,7 @@ msgstr "Paramètre manquant"
 msgid "Missing private keys to sign"
 msgstr "Clés privées manquantes pour signer"
 
-#: www/views/preferences.html:66
+#: www/views/preferences.html:71
 #: www/views/preferencesAdvanced.html:3
 msgid "More Options"
 msgstr "Plus d'options"
@@ -1395,7 +1400,7 @@ msgstr "Plus d'options"
 msgid "Moved"
 msgstr "Déplacés"
 
-#: src/js/controllers/tx-details.js:109
+#: src/js/controllers/tx-details.js:110
 msgid "Moved Funds"
 msgstr "Fonds déplacés"
 
@@ -1487,7 +1492,7 @@ msgstr "Aucun portefeuille disponible"
 msgid "No wallets available to receive funds"
 msgstr "Aucun portefeuille disponible pour recevoir des fonds"
 
-#: src/js/services/feeService.js:9
+#: src/js/services/feeService.js:10
 msgid "Normal"
 msgstr "Normaux"
 
@@ -1573,7 +1578,7 @@ msgstr "Ouvrir GitHub"
 msgid "Open GitHub Project"
 msgstr "Ouvrir le projet GitHub"
 
-#: src/js/controllers/tx-details.js:158
+#: src/js/controllers/tx-details.js:159
 msgid "Open Insight"
 msgstr "Ouvrir Insight"
 
@@ -1667,7 +1672,7 @@ msgstr "Paiement rejeté"
 
 #: www/views/confirm.html:123
 #: www/views/includes/walletActivity.html:11
-#: www/views/modals/txp-details.html:181
+#: www/views/modals/txp-details.html:187
 #: www/views/modals/txp-details.html:42
 msgid "Payment Sent"
 msgstr "Paiement envoyé"
@@ -1680,7 +1685,7 @@ msgstr "Paiement accepté, mais pas encore diffusé"
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "Paiement accepté. Il sera diffusé par Glidera. Dans le cas où il y a un problème, il peut être supprimé 6 heures après avoir été créé."
 
-#: www/views/modals/txp-details.html:102
+#: www/views/modals/txp-details.html:108
 msgid "Payment details"
 msgstr "Détails du paiement"
 
@@ -1700,7 +1705,7 @@ msgstr "Propositions en attente"
 msgid "Permanently delete this wallet."
 msgstr "Supprimer définitivement ce portefeuille."
 
-#: src/js/services/profileService.js:416
+#: src/js/services/profileService.js:387
 msgid "Personal Wallet"
 msgstr "Portefeuille personnel"
 
@@ -1742,21 +1747,21 @@ msgstr "Veuillez sélectionner votre fichier de sauvegarde"
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/js/services/onGoingProcess.js:38
+#: src/js/services/onGoingProcess.js:37
 msgid "Preparing addresses..."
 msgstr "Préparation des adresses..."
 
-#: src/js/controllers/export.js:195
+#: src/js/controllers/export.js:198
 msgid "Preparing backup..."
 msgstr "Préparation de la sauvegarde..."
 
-#: src/js/routes.js:1143
+#: src/js/routes.js:1144
 msgid "Press again to exit"
 msgstr "Appuyez de nouveau pour quitter"
 
-#: src/js/services/feeService.js:8
+#: src/js/services/feeService.js:9
 msgid "Priority"
-msgstr "Importants"
+msgstr "Élevés"
 
 #: src/js/controllers/paperWallet.js:142
 msgid "Private key encrypted. Enter password"
@@ -1832,7 +1837,7 @@ msgstr "Recevoir"
 msgid "Received"
 msgstr "Reçus"
 
-#: src/js/controllers/tx-details.js:108
+#: src/js/controllers/tx-details.js:109
 msgid "Received Funds"
 msgstr "Fonds reçus"
 
@@ -1910,7 +1915,7 @@ msgstr "Confirmez le mot de passe"
 msgid "Repeat the password"
 msgstr "Confirmez le mot de passe"
 
-#: www/views/preferences.html:61
+#: www/views/preferences.html:66
 msgid "Request Fingerprint"
 msgstr "Demander l'empreinte digitale"
 
@@ -2007,7 +2012,7 @@ msgstr "Sélectionner un portefeuille"
 msgid "Self-signed Certificate"
 msgstr "Certificat auto-signé"
 
-#: src/js/services/onGoingProcess.js:41
+#: src/js/services/onGoingProcess.js:40
 msgid "Selling Bitcoin..."
 msgstr "Vente de bitcoins..."
 
@@ -2060,11 +2065,11 @@ msgstr "Nous envoyer un avis à la place"
 msgid "Sending"
 msgstr "Envoi"
 
-#: src/js/services/onGoingProcess.js:39
+#: src/js/services/onGoingProcess.js:38
 msgid "Sending 2FA code..."
 msgstr "Envoi du code 2FA..."
 
-#: src/js/services/onGoingProcess.js:36
+#: src/js/services/onGoingProcess.js:35
 msgid "Sending feedback..."
 msgstr "Envoi de votre avis..."
 
@@ -2087,7 +2092,7 @@ msgstr "Envoi de {{amountStr}} depuis votre portefeuille {{name}}"
 msgid "Sent"
 msgstr "Envoyés"
 
-#: src/js/controllers/tx-details.js:107
+#: src/js/controllers/tx-details.js:108
 msgid "Sent Funds"
 msgstr "Fonds envoyés"
 
@@ -2212,7 +2217,7 @@ msgstr "Commencez à envoyer des bitcoins"
 msgid "Starting..."
 msgstr "Démarrage..."
 
-#: src/js/services/feeService.js:11
+#: src/js/services/feeService.js:12
 msgid "Super Economy"
 msgstr "Infimes"
 
@@ -2401,14 +2406,14 @@ msgstr "Cette phrase de récupération a été créée avec un mot de passe. Pou
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "Ce portefeuille n'est pas enregistré dans le Bitcore Wallet Service (BWS) donné. Vous pouvez le recréer depuis l'information locale."
 
-#: www/views/modals/txp-details.html:131
+#: www/views/modals/txp-details.html:137
 #: www/views/tx-details.html:102
 msgid "Timeline"
 msgstr "Chronologie"
 
 #: www/views/confirm.html:31
 #: www/views/includes/output.html:2
-#: www/views/modals/txp-details.html:104
+#: www/views/modals/txp-details.html:110
 #: www/views/modals/txp-details.html:53
 #: www/views/tx-details.html:41
 #: www/views/tx-details.html:53
@@ -2457,12 +2462,12 @@ msgstr "Transaction déjà diffusée"
 msgid "Transaction created"
 msgstr "Transaction créée"
 
-#: src/js/controllers/tx-details.js:98
+#: src/js/controllers/tx-details.js:99
 msgid "Transaction not available at this time"
 msgstr "La transaction n'est pas disponible pour l'instant"
 
 #: src/js/controllers/activity.js:45
-#: src/js/controllers/tab-home.js:169
+#: src/js/controllers/tab-home.js:170
 msgid "Transaction not found"
 msgstr "Transaction introuvable"
 
@@ -2503,7 +2508,7 @@ msgstr "Adresses inutilisées"
 msgid "Unused Addresses Limit"
 msgstr "Limite des adresses inutilisées"
 
-#: src/js/controllers/tab-home.js:141
+#: src/js/controllers/tab-home.js:142
 msgid "Update Available"
 msgstr "Mise à jour disponible"
 
@@ -2519,17 +2524,17 @@ msgstr "Mise à jour de l'historique des transactions. Veuillez patienter."
 msgid "Updating... Please stand by"
 msgstr "Mise à jour... veuillez patienter"
 
+#: src/js/services/feeService.js:8
+msgid "Urgent"
+msgstr "Très élevés"
+
 #: www/views/advancedSettings.html:11
 msgid "Use Unconfirmed Funds"
 msgstr "Utiliser les fonds non confirmés"
 
-#: src/js/services/onGoingProcess.js:34
+#: src/js/services/onGoingProcess.js:33
 msgid "Validating recovery phrase..."
 msgstr "Validation de la phrase de récupération..."
-
-#: src/js/services/onGoingProcess.js:33
-msgid "Validating wallet integrity..."
-msgstr "Validation de l’intégrité du portefeuille..."
 
 #: www/views/preferencesAbout.html:14
 msgid "Version"
@@ -2547,11 +2552,11 @@ msgstr "Voir toutes les adresses"
 msgid "View Terms of Service"
 msgstr "Voir les conditions d'utilisation"
 
-#: src/js/controllers/tx-details.js:157
+#: src/js/controllers/tx-details.js:158
 msgid "View Transaction on Insight"
 msgstr "Voir la transaction sur Insight"
 
-#: src/js/controllers/tab-home.js:143
+#: src/js/controllers/tab-home.js:144
 msgid "View Update"
 msgstr "Voir la mise à jour"
 
@@ -2664,7 +2669,7 @@ msgstr "Type de portefeuille"
 msgid "Wallet already exists"
 msgstr "Le portefeuille existe déjà"
 
-#: src/js/services/profileService.js:531
+#: src/js/services/profileService.js:497
 msgid "Wallet already in Copay"
 msgstr "Le portefeuille existe déjà dans Copay"
 
@@ -2706,7 +2711,7 @@ msgstr "Le portefeuille n'est pas sauvegardé"
 msgid "Wallet not found"
 msgstr "Portefeuille introuvable"
 
-#: src/js/controllers/tab-home.js:215
+#: src/js/controllers/tab-home.js:216
 msgid "Wallet not registered"
 msgstr "Portefeuille non enregistré"
 
@@ -2899,7 +2904,7 @@ msgstr "adresse indisponible"
 msgid "locked by pending payments"
 msgstr "verrouillés par les paiements en attente"
 
-#: src/js/services/profileService.js:417
+#: src/js/services/profileService.js:388
 msgid "me"
 msgstr "moi"
 
