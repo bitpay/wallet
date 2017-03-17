@@ -72,7 +72,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.showReceiveAddressFromHardware = function(wallet, address, cb) {
     switch (wallet.getPrivKeyExternalSourceName()) {
       case root.externalSource.intelTEE.id:
-        return intelTEE.showReceiveAddress(wallet.credentials.hwInfo.id, address, cb);
+        root.getAddressObj(wallet, address, function(err, addrObj) {
+          if (err) return cb(err);
+          return intelTEE.showReceiveAddress(wallet.credentials.hwInfo.id, addrObj, cb);
+        });
         break;
       default:
         cb('Error: unrecognized external source');
@@ -887,6 +890,21 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getAddressObj = function(wallet, address, cb) {
+    wallet.getMainAddresses({
+      reverse: true
+    }, function(err, addr) {
+      if (err) return cb(err);
+      var addrObj = lodash.find(addr, function(a) {
+        return a.address == address;
+      });
+      var err = null;
+      if (!addrObj) {
+        err = 'Error: specified address not in wallet';
+      }
+      return cb(err, addrObj);
+    });
+  };
 
   root.isReady = function(wallet, cb) {
     if (!wallet.isComplete())
