@@ -13,7 +13,7 @@ angular.module('copayApp.services')
       derivationStrategy: 'BIP44'
     };
 
-    if (!root.description.isAvailable) {
+    if (!root.description.supported) {
       return root;
     }
 

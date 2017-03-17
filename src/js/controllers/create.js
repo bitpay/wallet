@@ -154,23 +154,23 @@ angular.module('copayApp.controllers').controller('createController',
         return;
       }
 
-      if ($scope.seedSource.id == walletService.externalSource.ledger.id || $scope.seedSource.id == walletService.externalSource.trezor.id || self.seedSourceId == walletService.externalSource.intelTEE.id) {
+      if ($scope.seedSource.id == walletService.externalSource.ledger.id || $scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id) {
         var account = $scope.formData.account;
         if (!account || account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
-        if ($scope.seedSource.id == walletService.externalSource.trezor.id || self.seedSource.id == walletService.externalSource.intelTEE.id)
+        if ($scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id)
           account = account - 1;
 
         opts.account = account;
         ongoingProcess.set('connecting' + $scope.seedSource.id, true);
 
         var src;
-        switch (self.seedSourceId) {
+        switch ($scope.seedSource.id) {
           case walletService.externalSource.ledger.id:
-            src = legder;
+            src = ledger;
             break;
           case walletService.externalSource.trezor.id:
             src = trezor;
@@ -179,7 +179,7 @@ angular.module('copayApp.controllers').controller('createController',
             src = intelTEE;
             break;
           default:
-            this.error = gettextCatalog.getString('Invalid seed source id: ' + self.seedSourceId);
+            this.error = gettextCatalog.getString('Invalid seed source id: ' + $scope.seedSource.id);
             return;
         }
 
