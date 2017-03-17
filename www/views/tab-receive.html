@@ -53,19 +53,11 @@
         </div>
         <div class="row qr">
           <div class="text-center col center-block" copy-to-clipboard="addr" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
-
-
-            <span style="position: absolute; width: 220px" ng-show="shouldShowReceiveAddressFromHardware()">
-              <div style="width: 100%; height: 226px; background-color: rgba(255,255,255,0.8);">
-              <button class="button light-gray small round m10b"
-                style="background-color: white; border-color: black; color: black; top: 50%; transform: translateY(-50%);"
-                ng-click="showReceiveAddressFromHardware()">
+            <span class="overlay" ng-show="shouldShowReceiveAddressFromHardware()">
+              <button class="button button-standard button-primary" ng-click="showReceiveAddressFromHardware()">
                 <span translate>Show address</span>
               </button>
-              </div>
             </span>
-
-
             <qrcode ng-if="walletAddrs[wallet.id]" size="220" data="bitcoin:{{walletAddrs[wallet.id]}}" color="#334"></qrcode>
           </div>
         </div>
