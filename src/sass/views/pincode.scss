@@ -34,11 +34,8 @@
       }
     }
     .block-code {
-      width: 120px;
+      width: 50%;
       margin: auto;
-      .row {
-        height: 35px;
-      }
     }
     .block-buttons {
       .col {
@@ -47,19 +44,32 @@
       cursor: pointer;
       position: absolute;
       bottom: 3%;
-      left: 0;
-      width: 100%;
+      left: 5%;
+      width: 90%;
     }
   }
-  .circle {
-  	border: 1px solid #666666;
-  	border-radius: 50%;
-  	opacity: 0.6;
-  	box-shadow: 0 0 1px 0px rgb( 255, 255, 255);
-  	margin: 2px;
-  	transition: background-color .2s ease-in-out;
+  @mixin circle {
+    border-radius: 50%;
+    box-shadow: 0 0 1px 0px rgb( 255, 255, 255);
+    transition: background-color .2s ease-in-out;
+    padding: 7%;
+    margin: 5%;
   }
-  .filled {
-  	background-color: #666666;
+  .circle-copay {
+    @include circle;
+  	border: 1px solid $v-accent-color;
+  }
+  .circle-bitpay {
+    @include circle;
+  	border: 1px solid $v-primary-color;
+  }
+  .filled-copay {
+    background-color: $v-accent-color;
+  }
+  .filled-bitpay {
+    background-color: $v-primary-color;
+  }
+  .error {
+    color: #f13333;
   }
 }
