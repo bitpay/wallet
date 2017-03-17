@@ -4,8 +4,11 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <div class="content">
-    <div class="block-text row" translate ng-if="!newPincode">Please enter your mobile unlock code</div>
-    <div class="block-text row" translate ng-if="newPincode">Confirm your mobile unlock code</div>
+    <div class="block-text row">
+      <span translate ng-if="!newPincode && !isComplete()">Please enter your mobile unlock code</span>
+      <span translate ng-if="newPincode && !isComplete()">Confirm your mobile unlock code</span>
+      <span translate ng-if="isComplete() && !locking && !match" class="error">Incorrect code, try again.</span>
+    </div>
     <div class="app-icon">
       <i class="icon big-icon-svg">
         <div class="bg"></div>
@@ -13,10 +16,10 @@
     </div>
     <div class="block-code">
       <div class="row">
-        <div class="col circle" ng-class="{'filled': currentPincode.length >= 1}"></div>
-        <div class="col circle" ng-class="{'filled': currentPincode.length >= 2}"></div>
-        <div class="col circle" ng-class="{'filled': currentPincode.length >= 3}"></div>
-        <div class="col circle" ng-class="{'filled': currentPincode.length >= 4}"></div>
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(1)"></div>
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(2)"></div>
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(3)"></div>
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(4)"></div>
       </div>
     </div>
     <div class="block-buttons">
@@ -60,8 +63,8 @@
         <div class="col" ng-click="updatePinCode('0')">
           <div class="">0</div>
         </div>
-        <div class="col">
-          <div class="keyboard icon ion-arrow-left-a" ng-click="delete()"></div>
+        <div class="col" ng-click="delete()">
+          <div class="keyboard icon ion-arrow-left-a"></div>
         </div>
       </div>
     </div>

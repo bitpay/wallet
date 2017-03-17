@@ -1,12 +1,18 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pincodeController', function($state, $stateParams, $ionicHistory, $timeout, $scope, $log, configService) {
+angular.module('copayApp.controllers').controller('pincodeController', function($state, $stateParams, $ionicHistory, $timeout, $scope, $log, configService, appConfigService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     $scope.currentPincode = $scope.newPincode = '';
     $scope.fromSettings = $stateParams.fromSettings == 'true' ? true : false;
     $scope.locking = $stateParams.locking == 'true' ? true : false;
+    $scope.match = false;
+    $scope.appName = appConfigService.name;
   });
+
+  $scope.getFilledClass = function(limit) {
+    return $scope.currentPincode.length >= limit ? 'filled-' + $scope.appName : null;
+  };
 
   $scope.delete = function() {
     if ($scope.currentPincode.length > 0) {
@@ -15,30 +21,32 @@ angular.module('copayApp.controllers').controller('pincodeController', function(
     }
   };
 
-  function isComplete() {
+  $scope.isComplete = function() {
     if ($scope.currentPincode.length < 4) return false;
     else return true;
   };
 
   $scope.updatePinCode = function(value) {
-    if (value && !isComplete()) {
+    if (value && !$scope.isComplete()) {
       $scope.currentPincode = $scope.currentPincode + value;
     }
     $timeout(function() {
       $scope.$apply();
     });
-    if (!$scope.locking && isComplete()) {
+    if (!$scope.locking && $scope.isComplete()) {
       $scope.save();
     }
   };
 
   $scope.save = function() {
-    if (!isComplete()) return;
+    if (!$scope.isComplete()) return;
     var config = configService.getSync();
-    var match = config.lockapp.pincode.value == $scope.currentPincode ? true : false;
-
+    $scope.match = config.lockapp.pincode.value == $scope.currentPincode ? true : false;
+    $timeout(function() {
+      $scope.$apply();
+    });
     if (!$scope.locking) {
-      if (match) {
+      if ($scope.match) {
         $scope.fromSettings ? saveSettings($scope.locking, '') : $scope.close(150);
       }
     } else {
