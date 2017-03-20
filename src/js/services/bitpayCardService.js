@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, configService, txFormatService, appConfigService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, configService, txFormatService, appConfigService, rateService) {
   var root = {};
 
   var _setError = function(msg, e) {
@@ -44,12 +44,14 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = config.unitToSatoshi;
     var amountUnitStr;
+    var amountSat;
 
     // IF 'USD'
     if (currency) {
       amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
+      amountSat = rateService.fromFiat(amount, currency).toFixed(0);
     } else {
-      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+      amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
       amountUnitStr = txFormatService.formatAmountStr(amountSat);
       // convert unit to BTC
       amount = (amountSat * satToBtc).toFixed(8);
@@ -59,6 +61,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     return {
       amount: amount, 
       currency: currency, 
+      amountSat: amountSat,
       amountUnitStr: amountUnitStr
     };
   };
