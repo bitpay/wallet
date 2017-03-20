@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError) {
 
   var amount;
   var currency;
@@ -17,11 +17,11 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     });
   };
 
-  var showError = function(err) {
+  var showError = function(title, msg) {
     $scope.sendStatus = '';
-    $log.error(err);
-    err = err.errors ? err.errors[0].message : err;
-    popupService.showAlert('Error', err);
+    $log.error(msg);
+    msg = msg.errors ? msg.errors[0].message : msg;
+    popupService.showAlert(title, msg);
   };
 
   var publishAndSign = function (wallet, txp, onSendStatusChange, cb) {
@@ -68,11 +68,17 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
     $scope.network = bitpayService.getEnvironment().network;
     $scope.wallets = profileService.getWallets({
-      m: 1, // Only 1-signature wallet
       onlyComplete: true,
-      network: $scope.network
+      network: $scope.network,
+      hasFunds: true,
+      minAmount: parsedAmount.amountSat
     });
-    $scope.wallet = $scope.wallets[0]; // Default first wallet
+
+    if (lodash.isEmpty($scope.wallets)) {
+      showErrorAndBack('Insufficient funds');
+      return;
+    }
+    $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
 
     bitpayCardService.getRates(currency, function(err, data) {
       if (err) $log.error(err);
@@ -109,14 +115,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       bitpayCardService.topUp(cardId, dataSrc, function(err, invoiceId) {
         if (err) {
           ongoingProcess.set('topup', false, statusChangeHandler);
-          showError(err);
+          showError('Could not create the invoice', err);
           return;
         }
 
         bitpayCardService.getInvoice(invoiceId, function(err, invoice) {
           if (err) {
             ongoingProcess.set('topup', false, statusChangeHandler);
-            showError(err);
+            showError('Could not get the invoice', err);
             return;
           }
 
@@ -124,14 +130,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
           if (!payProUrl) {
             ongoingProcess.set('topup', false, statusChangeHandler);
-            showError('Error fetching invoice');
+            showError('Error in Payment Protocol', 'Invalid URL');
             return;
           }
 
           payproService.getPayProDetails(payProUrl, function(err, payProDetails) {
             if (err) {
               ongoingProcess.set('topup', false, statusChangeHandler);
-              showError(err);
+              showError('Error fetching invoice', err);
               return;
             }
 

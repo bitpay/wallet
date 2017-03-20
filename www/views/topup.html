@@ -63,7 +63,7 @@
     ng-if="!isCordova && cardInfo"
     click-send-status="sendStatus"
     has-wallet-chosen="wallet"
-    insufficient-funds="false"
+    insufficient-funds="insufficientFunds"
     no-matching-wallet="!cardInfo">
     Add funds
   </click-to-accept>
@@ -73,7 +73,7 @@
     slide-on-confirm="topUpConfirm()"
     slide-send-status="sendStatus"
     has-wallet-chosen="wallet"
-    insufficient-funds="false"
+    insufficient-funds="insufficientFunds"
     no-matching-wallet="!cardInfo">
     Slide to confirm
   </slide-to-accept>
@@ -81,9 +81,11 @@
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
-    <span>Sent</span>
+    <span ng-if="wallet.credentials.m == 1">Sent</span>
+    <span ng-if="wallet.credentials.m > 1">Success</span>
     <div class="m10 size-14">
-      Funds were added to debit card
+      <span ng-if="wallet.credentials.m == 1">Funds were added to debit card</span>
+      <span ng-if="wallet.credentials.m > 1">Transaction initiated</span>
     </div>
   </slide-to-accept-success>
 

@@ -762,6 +762,18 @@ angular.module('copayApp.services')
         });
       }
 
+      if (opts.hasFunds) {
+        ret = lodash.filter(ret, function(w) {
+          return (w.status.availableBalanceSat > 0);
+        });
+      }
+
+      if (opts.minAmount) {
+        ret = lodash.filter(ret, function(w) {
+          return (w.status.availableBalanceSat > opts.minAmount);
+        });
+      }
+
       if (opts.onlyComplete) {
         ret = lodash.filter(ret, function(w) {
           return w.isComplete();
