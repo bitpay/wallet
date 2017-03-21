@@ -3,6 +3,7 @@
 angular.module('copayApp.services').factory('ongoingProcess', function($log, $timeout, $filter, lodash, $ionicLoading, gettext, platformInfo) {
   var root = {};
   var isCordova = platformInfo.isCordova;
+  var isWP = platformInfo.isWP;
 
   var ongoingProcess = {};
 
@@ -79,11 +80,13 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     if (customHandler) {
       customHandler(processName, showName, isOn);
     } else if (root.onGoingProcessName) {
-      if (isCordova) {
+      if (isCordova && !isWP) {
         window.plugins.spinnerDialog.show(null, showName, root.clear);
       } else {
 
-        var tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
+        var tmpl;
+        if (isWP) tmpl = '<div class="loader"></div>';
+        else tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
         $ionicLoading.show({
           template: tmpl
         });
