@@ -1,10 +1,19 @@
 <ion-view>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-title>{{externalSource}}</ion-nav-title>
+    <ion-nav-title>{{externalSource.longName}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
+    <div class="list">
+      <div class="item">
+        <span translate>Version</span>
+        <span class="item-note">
+          {{externalSource.version}}
+        </span>
+      </div>
+    </div>
+
     <div class="padding">
       <button class="button button-standard button-assertive" ng-click="showMneumonicFromHardwarePopup()">
         {{'Show Recovery Phrase'|translate}}
