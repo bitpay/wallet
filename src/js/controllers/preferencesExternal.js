@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('preferencesExternalController
 
   $scope.externalSource = lodash.find(walletService.externalSource, function(source) {
     return source.id == wallet.getPrivKeyExternalSourceName();
-  }).name;
+  });
 
   $scope.showMneumonicFromHardwarePopup = function() {
     var title = gettextCatalog.getString('Warning!');

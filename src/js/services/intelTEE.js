@@ -7,6 +7,7 @@ angular.module('copayApp.services')
 
     root.description = {
       supported: platformInfo.supportsIntelTEE,
+      version: platformInfo.versionIntelTEE,
       id: 'intelTEE',
       name: 'Intel TEE',
       longName: 'Intel TEE Hardware Wallet',
