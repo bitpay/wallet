@@ -60,13 +60,13 @@ Object.keys(templates).forEach(function(k) {
     process.exit(1);
   }
 
-  if(k === 'config-template.xml'){
+  if (k === 'config-template.xml') {
     k = 'config.xml';
   } else if (k === 'package-template.json') {
     k = 'package.json';
   }
 
-  if (!fs.existsSync('../' + targetDir)){
+  if (!fs.existsSync('../' + targetDir)) {
     fs.mkdirSync('../' + targetDir);
   }
   fs.writeFileSync('../' + targetDir + k, content, 'utf8');
@@ -83,9 +83,9 @@ try {
   var confName = configDir.toUpperCase();
   var externalServicesConf = confName + '_EXTERNAL_SERVICES_CONFIG_LOCATION';
   console.log('Looking for ' + externalServicesConf + '...');
-  if(typeof process.env[externalServicesConf] !== 'undefined') {
+  if (typeof process.env[externalServicesConf] !== 'undefined') {
     var location = process.env[externalServicesConf]
-    if(location.charAt(0) === '~') {
+    if (location.charAt(0) === '~') {
       location = location.replace(/^\~/, process.env.HOME || process.env.USERPROFILE);
     }
     console.log('Found at: ' + location);
@@ -94,7 +94,7 @@ try {
   } else {
     throw externalServicesConf + ' environment variable not set.';
   }
-} catch(err) {
+} catch (err) {
   console.log(err);
   externalServices = '{}';
   console.log('External services not configured');
@@ -124,8 +124,8 @@ function copyDir(from, to, cb) {
     .on('end', function() {
       files.forEach(function(i) {
         console.log(' #    ' + i);
-        fs.copySync(i, to + path.basename(i));
-      });
+        fs.copySync(i, to);
+      })
       return cb();
 
     })
@@ -136,8 +136,8 @@ function copyDir(from, to, cb) {
 fs.copySync(configDir + '/GoogleService-Info.plist', '../GoogleService-Info.plist');
 fs.copySync(configDir + '/google-services.json', '../google-services.json');
 
-copyDir(configDir + '/img/', '../www/img/app/', function() {
-  copyDir(configDir + '/sass/', '../src/sass/app/', function() {
+copyDir(configDir + '/img', '../www/img/app', function() {
+  copyDir(configDir + '/saas', '../src/sass/app', function() {
     console.log("apply.js finished. \n\n");
   });
 });
