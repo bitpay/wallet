@@ -52,10 +52,12 @@
         <ion-toggle ng-model="encryptEnabled.value" toggle-class="toggle-balanced" ng-change="encryptChange()" ng-disabled="wallet.needsBackup">
           <span ng-class="{'disabled': wallet.needsBackup}" class="toggle-label" translate>Request Spending Password</span>
         </ion-toggle>
-        <div class="comment" translate>
-          If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected.
-          <span class="text-light assertive" ng-show="wallet.needsBackup">
-            {{'Complete the backup process to use this option' | translate}}
+        <div class="comment">
+          <span translate>
+            If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected.
+          </span>
+          <span class="text-light assertive" ng-show="wallet.needsBackup" translate>
+            Complete the backup process to use this option
           </span>
         </div>
       </div>
