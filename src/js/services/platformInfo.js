@@ -26,9 +26,9 @@ angular.module('copayApp.services').factory('platformInfo', function($window) {
 
   // Detect mobile devices
   var ret = {
-    isAndroid: !!ua.match(/Android/i),
-    isIOS: /iPad|iPhone|iPod/.test(ua) && !$window.MSStream,
-    isWP: !!ua.match(/IEMobile/i),
+    isAndroid: ionic.Platform.isAndroid(),
+    isIOS: ionic.Platform.isIOS(),
+    isWP: ionic.Platform.isWindowsPhone() || ionic.Platform.Platform() == 'edge',
     isSafari: Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0,
     ua: ua,
     isCordova: !!$window.cordova,
