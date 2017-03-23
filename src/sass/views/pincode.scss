@@ -32,25 +32,42 @@
         width: 60%;
         margin: 10% auto;
       }
+      @media(min-width: 480px) {
+        span {
+          font-size: 30px;
+          width: 90%;
+        }
+      }
     }
     .block-code {
       width: 50%;
       margin: auto;
+      @media(min-width: 480px) {
+        width: 25%;
+      }
     }
     .block-buttons {
       .col {
         padding: 5%;
       }
+      color: $v-dark-gray;
+      font-size: 1.7rem;
+      font-family: $v-font-family-light;
       cursor: pointer;
       position: absolute;
       bottom: 3%;
       left: 5%;
       width: 90%;
+      @media(min-width: 480px) {
+        left: 15%;
+        width: 70%;
+        max-height: 55%;
+      }
     }
   }
   @mixin circle {
     border-radius: 50%;
-    box-shadow: 0 0 1px 0px rgb( 255, 255, 255);
+    box-shadow: 0 0 3px 0px #5b5b5b;
     transition: background-color .2s ease-in-out;
     padding: 7%;
     margin: 5%;
@@ -67,7 +84,7 @@
     background-color: $v-accent-color;
   }
   .filled-bitpay {
-    background-color: $v-primary-color;
+    background-color: #1f3598;
   }
   .error {
     color: #f13333;

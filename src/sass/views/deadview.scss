@@ -7,6 +7,9 @@
   }
   .img-container-copay {
     padding: 20%;
+    @media(min-width: 480px) {
+      max-height: 150px;
+    }
     .big-icon-svg {
       > .bg {
         @include img-frame;
@@ -16,6 +19,9 @@
   }
   .img-container-bitpay {
     padding: 20%;
+    @media(min-width: 480px) {
+      max-height: 150px;
+    }
     .big-icon-svg {
       > .bg {
         @include img-frame;
