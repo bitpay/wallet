@@ -64,7 +64,6 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     amount = parsedAmount.amount;
     currency = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
-    $scope.alternativeIsoCode = parsedAmount.alternativeIsoCode;
 
     $scope.network = bitpayService.getEnvironment().network;
     $scope.wallets = profileService.getWallets({
@@ -80,7 +79,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
     $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
 
-    bitpayCardService.getRates($scope.alternativeIsoCode, function(err, data) {
+    bitpayCardService.getRates('USD', function(err, data) {
       if (err) $log.error(err);
       $scope.rate = data.rate;
     });
