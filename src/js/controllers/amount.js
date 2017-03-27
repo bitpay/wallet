@@ -224,7 +224,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $state.transitionTo($scope.nextStep, {
         id: _cardId,
         amount: _amount,
-        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : ''
+        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.unitName
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
