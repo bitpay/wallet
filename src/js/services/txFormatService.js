@@ -155,5 +155,34 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return txps;
   };
 
+  root.parseAmount = function(amount, currency) {
+    var config = configService.getSync().wallet.settings;
+    var satToBtc = 1 / 100000000;
+    var unitToSatoshi = config.unitToSatoshi;
+    var amountUnitStr;
+    var amountSat;
+    var alternativeIsoCode = config.alternativeIsoCode;
+
+    // If fiat currency
+    if (currency != 'bits' && currency != 'BTC') {
+      amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
+      amountSat = rateService.fromFiat(amount, currency).toFixed(0);
+    } else {
+      amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
+      amountUnitStr = root.formatAmountStr(amountSat);
+      // convert unit to BTC
+      amount = (amountSat * satToBtc).toFixed(8);
+      currency = 'BTC';
+    }
+
+    return {
+      amount: amount, 
+      currency: currency, 
+      alternativeIsoCode: alternativeIsoCode,
+      amountSat: amountSat,
+      amountUnitStr: amountUnitStr
+    };
+  };
+
   return root;
 });

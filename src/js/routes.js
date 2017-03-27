@@ -1060,8 +1060,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         params: {
           id: null,
-          currency: 'USD',
-          forceCurrency: true
+          currency: 'USD'
         }
       })
       .state('tabs.bitpayCard.amount', {
