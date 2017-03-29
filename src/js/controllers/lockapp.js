@@ -4,8 +4,7 @@ angular.module('copayApp.controllers').controller('lockappController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     var config = configService.getSync();
-    $scope.fingerprintAvailable = true;
-    // $scope.fingerprintAvailable = fingerprintService.isAvailable();
+    $scope.fingerprintAvailable = fingerprintService.isAvailable();
 
     $scope.usePincode = {
       enabled: config.lockapp ? config.lockapp.pincode.enabled : false
