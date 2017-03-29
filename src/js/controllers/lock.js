@@ -1,28 +1,28 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('lockappController', function($state, $scope, $timeout, $log, configService, popupService, gettextCatalog, appConfigService) {
+angular.module('copayApp.controllers').controller('lockController', function($state, $scope, $timeout, $log, configService, popupService, gettextCatalog, appConfigService, fingerprintService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     var config = configService.getSync();
     $scope.fingerprintAvailable = fingerprintService.isAvailable();
 
-    $scope.usePincode = {
-      enabled: config.lockapp ? config.lockapp.pincode.enabled : false
+    $scope.usePin = {
+      enabled: config.lock && config.lock.method == 'pin' ? true : false
     };
     $scope.useFingerprint = {
-      enabled: config.lockapp ? config.lockapp.fingerprint.enabled : false
+      enabled: config.lock && config.lock.method == 'fingerprint' ? true : false
     };
   });
 
-  $scope.usePincodeChange = function() {
-    $state.go('tabs.lockapp.pincode', {
+  $scope.usePinChange = function() {
+    $state.go('tabs.lock.pin', {
       fromSettings: true,
-      locking: $scope.usePincode.enabled
+      locking: $scope.usePin.enabled
     });
   };
 
   $scope.useFingerprintChange = function() {
-    if ($scope.usePincode.enabled) {
+    if ($scope.usePin.enabled) {
       var message = gettextCatalog.getString('{{appName}} is protected by Pin Code. Are you sure you want to disable it?', {
         appName: appConfigService.nameCase
       });
@@ -44,21 +44,16 @@ angular.module('copayApp.controllers').controller('lockappController', function(
       saveConfig();
 
     function saveConfig() {
-      $scope.usePincode = {
+      $scope.usePin = {
         enabled: false
       };
       $timeout(function() {
         $scope.$apply();
       });
       var opts = {
-        lockapp: {
-          pincode: {
-            enabled: false,
-            value: ''
-          },
-          fingerprint: {
-            enabled: $scope.useFingerprint.enabled
-          }
+        lock: {
+          method: $scope.useFingerprint.enabled ? 'fingerprint' : '',
+          value: '',
         }
       };
 

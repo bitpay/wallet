@@ -14,9 +14,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.hideNextSteps = {
       value: config.hideNextSteps.enabled
     };
-    $scope.usePincode = {
-      value: config.pincode ? config.pincode.enabled : false
-    };
   };
 
   $scope.spendUnconfirmedChange = function() {
@@ -34,23 +31,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     var opts = {
       hideNextSteps: {
         enabled: $scope.hideNextSteps.value
-      },
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.savePincodeChanges = function(val) {
-    if (!val || val.length < 4) {
-      $scope.usePincode = {
-        value: false
-      }
-      return;
-    }
-    var opts = {
-      usePincode: {
-        enabled: $scope.usePincode.enabled
       },
     };
     configService.set(opts, function(err) {

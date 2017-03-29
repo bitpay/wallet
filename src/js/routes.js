@@ -121,26 +121,26 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
-       * Pin code
+       * Pin
        *
        */
 
-      .state('pincode', {
-        url: '/pincode/',
-        controller: 'pincodeController',
-        templateUrl: 'views/pincode.html',
+      .state('pin', {
+        url: '/pin/',
+        controller: 'pinController',
+        templateUrl: 'views/pin.html',
       })
 
       /*
        *
-       * Dead state - locked
+       * Locked
        *
        */
 
-      .state('deadview', {
-        url: '/deadview/',
-        controller: 'deadviewController',
-        templateUrl: 'views/deadview.html',
+      .state('lockedView', {
+        url: '/lockedView/',
+        controller: 'lockedViewController',
+        templateUrl: 'views/lockedView.html',
       })
 
       /*
@@ -463,21 +463,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.lockapp', {
-        url: '/lockapp',
+      .state('tabs.lock', {
+        url: '/lock',
         views: {
           'tab-settings@tabs': {
-            controller: 'lockappController',
-            templateUrl: 'views/lockapp.html',
+            controller: 'lockController',
+            templateUrl: 'views/lock.html',
           }
         }
       })
-      .state('tabs.lockapp.pincode', {
-        url: '/pincode/:fromSettings/:locking',
+      .state('tabs.lock.pin', {
+        url: '/pin/:fromSettings/:locking',
         views: {
           'tab-settings@tabs': {
-            controller: 'lockappController',
-            templateUrl: 'views/pincode.html',
+            controller: 'pinController',
+            templateUrl: 'views/pin.html',
             cache: false
           }
         }
@@ -1196,24 +1196,28 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       });
 
       $ionicPlatform.on('resume', function() {
-        configService.whenAvailable(function(config) {
-          var nextView;
-          var lockapp = config.lockapp;
-          if (platformInfo.isCordova && fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
-            fingerprintService.check('unlockingApp', function(err) {
-              if (err) nextView = 'deadview';
-              else nextView = $ionicHistory.currentStateName();
-              goTo(nextView);
-            });
-          } else if (platformInfo.isCordova && lockapp.pincode && lockapp.pincode.enabled) {
-            goTo('pincode');
-          } else
-            goTo('tabs.home');
+        if (platformInfo.isCordova || platformInfo.isDevel) {
+          configService.whenAvailable(function(config) {
+            var nextView;
+            var lock = config.lock;
+            if (lock && lock.method == 'fingerprint' && fingerprintService.isAvailable()) {
+              fingerprintService.check('unlockingApp', function(err) {
+                if (err) nextView = 'lockedView';
+                else if ($ionicHistory.currentStateName() == 'lockedView') nextView = 'tabs.home';
+                else nextView = $ionicHistory.currentStateName();
+                goTo(nextView);
+              });
+            } else if (lock && lock.method == 'pin') {
+              goTo('pin');
+            }
 
-          function goTo(nextView) {
-            $state.go(nextView);
-          };
-        });
+            function goTo(nextView) {
+              $state.transitionTo(nextView).then(function() {
+                if (nextView == 'lockedView') $ionicHistory.clearHistory();
+              });
+            };
+          });
+        }
       });
 
       $ionicPlatform.on('menubutton', function() {
@@ -1256,25 +1260,27 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-            configService.whenAvailable(function(config) {
-              var lockapp = config.lockapp;
+            if (platformInfo.isCordova || platformInfo.isDevel) {
               startupService.ready();
-              if ((platformInfo.isCordova || platformInfo.isDevel) && fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
-                fingerprintService.check('unlockingApp', function(err) {
-                  if (err) goTo('deadview');
-                  else goTo('tabs.home');
-                });
-              } else if ((platformInfo.isCordova || platformInfo.isDevel) && lockapp.pincode && lockapp.pincode.enabled) {
-                goTo('pincode');
-              } else
-                goTo('tabs.home');
+              configService.whenAvailable(function(config) {
+                var lock = config.lock;
+                if (fingerprintService.isAvailable() && lock && lock.method == 'fingerprint') {
+                  fingerprintService.check('unlockingApp', function(err) {
+                    if (err) goTo('lockedView');
+                    else goTo('tabs.home');
+                  });
+                } else if (lock && lock.method == 'pin') {
+                  goTo('pin');
+                } else
+                  goTo('tabs.home');
 
-              function goTo(nextView) {
-                $state.transitionTo(nextView).then(function() {
-                  $ionicHistory.clearHistory();
-                });
-              };
-            });
+                function goTo(nextView) {
+                  $state.transitionTo(nextView).then(function() {
+                    $ionicHistory.clearHistory();
+                  });
+                };
+              });
+            }
           });
         }
 

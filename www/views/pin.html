@@ -1,13 +1,13 @@
-<ion-view id="pin-code" ng-controller="pincodeController" hide-tabs hide-back-button="!fromSettings">
+<ion-view id="pin" hide-tabs hide-back-button="!fromSettings">
   <ion-nav-bar class="bar-clear">
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
   <div class="content">
     <div class="block-text row">
-      <span translate ng-if="!newPincode && !isComplete()">Please enter your mobile unlock code</span>
-      <span translate ng-if="newPincode && !isComplete()">Confirm your mobile unlock code</span>
-      <span translate ng-if="isComplete() && !locking && !match" class="error">Incorrect code, try again.</span>
+      <span translate ng-if="!confirmPin && !error">Please enter your mobile unlock code</span>
+      <span translate ng-if="confirmPin && !error">Confirm your mobile unlock code</span>
+      <span translate ng-if="error" class="error">Incorrect code, try again.</span>
     </div>
     <div class="app-icon">
       <i class="icon big-icon-svg">
@@ -24,43 +24,41 @@
     </div>
     <div class="block-buttons">
       <div class="row">
-        <div class="col" ng-click="updatePinCode('1')">
+        <div class="col" ng-click="updatePin('1')">
           <div class="keyboard">1</div>
         </div>
-        <div class="col" ng-click="updatePinCode('2')">
+        <div class="col" ng-click="updatePin('2')">
           <div class="keyboard">2</div>
         </div>
-        <div class="col" ng-click="updatePinCode('3')">
+        <div class="col" ng-click="updatePin('3')">
           <div class="keyboard">3</div>
         </div>
       </div>
       <div class="row">
-        <div class="col" ng-click="updatePinCode('4')">
+        <div class="col" ng-click="updatePin('4')">
           <div class="keyboard">4</div>
         </div>
-        <div class="col" ng-click="updatePinCode('5')">
+        <div class="col" ng-click="updatePin('5')">
           <div class="keyboard">5</div>
         </div>
-        <div class="col" ng-click="updatePinCode('6')">
+        <div class="col" ng-click="updatePin('6')">
           <div class="keyboard">6</div>
         </div>
       </div>
       <div class="row">
-        <div class="col" ng-click="updatePinCode('7')">
+        <div class="col" ng-click="updatePin('7')">
           <div class="keyboard">7</div>
         </div>
-        <div class="col" ng-click="updatePinCode('8')">
+        <div class="col" ng-click="updatePin('8')">
           <div class="keyboard">8</div>
         </div>
-        <div class="col" ng-click="updatePinCode('9')">
+        <div class="col" ng-click="updatePin('9')">
           <div class="keyboard">9</div>
         </div>
       </div>
       <div class="row">
-        <div class="col" ng-click="save()">
-          <div class="keyboard icon ion-checkmark" ng-disabled=""></div>
-        </div>
-        <div class="col" ng-click="updatePinCode('0')">
+        <div class="col"></div>
+        <div class="col" ng-click="updatePin('0')">
           <div class="">0</div>
         </div>
         <div class="col" ng-click="delete()">
