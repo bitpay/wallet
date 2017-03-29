@@ -71,6 +71,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isCordova = platformInfo.isCordova;
+    $scope.isDevel = platformInfo.isDevel;
     updateConfig();
   });
 

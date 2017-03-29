@@ -1259,12 +1259,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             configService.whenAvailable(function(config) {
               var lockapp = config.lockapp;
               startupService.ready();
-              if (platformInfo.isCordova && fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
+              if ((platformInfo.isCordova || platformInfo.isDevel) && fingerprintService.isAvailable() && lockapp.fingerprint && lockapp.fingerprint.enabled) {
                 fingerprintService.check('unlockingApp', function(err) {
                   if (err) goTo('deadview');
                   else goTo('tabs.home');
                 });
-              } else if (platformInfo.isCordova && lockapp.pincode && lockapp.pincode.enabled) {
+              } else if ((platformInfo.isCordova || platformInfo.isDevel) && lockapp.pincode && lockapp.pincode.enabled) {
                 goTo('pincode');
               } else
                 goTo('tabs.home');
