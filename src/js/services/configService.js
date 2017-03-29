@@ -53,14 +53,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       }
     },
 
-    lockapp: {
-      pincode: {
-        enabled: false,
-        value: '',
-      },
-      fingerprint: {
-        enabled: false
-      }
+    lock: {
+      method: '',
+      value: '',
     },
 
     // External services
