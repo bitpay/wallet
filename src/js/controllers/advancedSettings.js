@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService, platformInfo) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -50,8 +50,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isCordova = platformInfo.isCordova;
-    $scope.isDevel = platformInfo.isDevel;
     updateConfig();
   });
 
