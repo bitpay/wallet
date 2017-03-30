@@ -25,9 +25,11 @@
     .block-text {
       align-items: center;
       background-color: #F1F1F1;
-      text-align: center;
       height: 30%;
       border-bottom: 1px solid #c5c5c5;
+      .message {
+        margin: auto;
+      }
       span {
         width: 60%;
         margin: 10% auto;
@@ -88,5 +90,6 @@
   }
   .error {
     color: #f13333;
+    max-width: 70%;
   }
 }
