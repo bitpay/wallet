@@ -6,14 +6,18 @@
   </ion-nav-bar>
 
   <ion-content>
-    <ion-toggle ng-model="usePin.enabled" toggle-class="toggle-balanced" ng-change="usePinChange()">
-      <span class="toggle-label" translate>Enable Pin</span>
+    <ion-toggle ng-model="usePin.enabled" toggle-class="toggle-balanced" ng-change="usePinChange()" ng-disabled="errorMsg && !usePin.enabled">
+      <span class="toggle-label" ng-class="{'disabled': errorMsg && !usePin.enabled}" translate>Enable Pin</span>
     </ion-toggle>
 
     <div ng-show="fingerprintAvailable">
-      <ion-toggle ng-model="useFingerprint.enabled" toggle-class="toggle-balanced" ng-change="useFingerprintChange()">
-        <span class="toggle-label" translate>Enable Fingerprint</span>
+      <ion-toggle ng-model="useFingerprint.enabled" toggle-class="toggle-balanced" ng-change="useFingerprintChange()" ng-disabled="errorMsg && !useFingerprint.enabled">
+        <span class="toggle-label" ng-class="{'disabled': errorMsg && !useFingerprint.enabled}" translate>Enable Fingerprint</span>
       </ion-toggle>
+    </div>
+
+    <div class="assertive" style="text-align: center; margin: 4rem" ng-if="errorMsg && !usePin.enabled && !useFingerprint.enabled">
+      {{errorMsg}}
     </div>
   </ion-content>
 </ion-view>
