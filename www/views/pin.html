@@ -5,11 +5,11 @@
   </ion-nav-bar>
   <div class="content">
     <div class="block-text row">
-      <div class="message" ng-if="!confirmPin && !error" translate>Please enter your unlock PIN</div>
-      <div class="message" ng-if="confirmPin && !error" translate>Confirm your unlock PIN</div>
+      <div class="message" ng-if="!confirmPin && !error" translate>Please enter your PIN</div>
+      <div class="message" ng-if="confirmPin && !error" translate>Confirm your PIN</div>
       <div class="message error" ng-if="error">
         <div ng-if="!expires" translate>Incorrect PIN, try again.</div>
-        <time ng-if="expires" translate>You have incorrectly typed your PIN. Try again in {{expires}}</time>
+        <time ng-if="expires" translate>Try again in {{expires}}</time>
       </div>
     </div>
     <div class="app-icon">
