@@ -54,8 +54,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.isDevel = platformInfo.isDevel;
     $scope.appName = appConfigService.nameCase;
     configService.whenAvailable(function(config) {
-      $scope.locked = config.lock.method == 'fingerprint' || config.lock.value || false;
-      $scope.method = config.lock.method != '' ? config.lock.method.charAt(0).toUpperCase() + config.lock.method.slice(1) : gettextCatalog.getString('Disabled');
+      $scope.locked = config.lock && config.lock.method != '' ? true : false;
+      $scope.method = config.lock && config.lock.method != '' ? config.lock.method.charAt(0).toUpperCase() + config.lock.method.slice(1) : gettextCatalog.getString('Disabled');
     });
   });
 

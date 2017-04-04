@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('lockController', function($st
   var PIN = 'pin';
   var FINGERPRINT = 'fingerprint';
 
-  $scope.$on("$ionicView.beforeEnter", function(event) {
+  function init() {
     var config = configService.getSync();
     $scope.locking = config.lock.method != PIN;
 
@@ -34,6 +34,10 @@ angular.module('copayApp.controllers').controller('lockController', function($st
 
     $scope.currentOption = lodash.find($scope.options, 'value');
     processWallets();
+  };
+
+  $scope.$on("$ionicView.beforeEnter", function(event) {
+    init();
   });
 
   function processWallets() {
@@ -77,6 +81,7 @@ angular.module('copayApp.controllers').controller('lockController', function($st
       if (config.lock.method == PIN) {
         askForDisablePin(function(disablePin) {
           if (disablePin) saveConfig(FINGERPRINT);
+          else init();
         });
       } else saveConfig(FINGERPRINT);
     } else if (method == PIN) {
