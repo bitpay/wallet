@@ -34,12 +34,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
-  $scope.loadAddresses = function(wallet, index) {
-    walletService.getAddress(wallet, false, function(err, addr) {
-      $scope.walletAddrs[wallet.id] = addr;
-    });
-  }
-
   $scope.goCopayers = function() {
     $ionicHistory.removeBackView();
     $ionicHistory.nextViewOptions({
@@ -88,9 +82,9 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
-  $scope.setWallet = function(index) {
-    $scope.wallet = $scope.wallets[index];
-    $scope.walletIndex = index;
+  $scope.setWallet = function(wallet) {
+    $scope.wallet = wallet;
+    $scope.walletIndex = $scope.wallets.indexOf(wallet);
     if ($scope.walletAddrs[$scope.wallet.id].addr) $scope.addr = $scope.walletAddrs[$scope.walletIndex].addr;
     else $scope.setAddress(false);
   }
@@ -147,10 +141,20 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
+    if (!$scope.wallets[0]) return;
 
     lodash.each($scope.wallets, function(wallet, index) {
-      $scope.loadAddresses(wallet);
+      walletService.getAddress(wallet, false, function(err, addr) {
+        $scope.walletAddrs[wallet.id] = addr;
+      });
     });
+
+    if (!$scope.wallet) {
+      $scope.setWallet($scope.wallets[0]);
+      $timeout(function() {
+        $scope.$apply();
+      });
+    }
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
@@ -158,14 +162,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
         if ($scope.wallet && walletId == $scope.wallet.id) $scope.updateCurrentWallet();
       })
     ];
-
-    // Update current wallet
-    if ($scope.wallet) {
-      var w = lodash.find($scope.wallets, function(w) {
-        return w.id == $scope.wallet.id;
-      });
-      if (w) $scope.updateCurrentWallet();
-    }
   });
 
   $scope.$on("$ionicView.leave", function(event, data) {
