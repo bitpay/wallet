@@ -121,6 +121,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
+       * Pin
+       *
+       */
+
+      .state('pin', {
+        url: '/pin/',
+        controller: 'pinController',
+        templateUrl: 'views/pin.html',
+      })
+
+      /*
+       *
+       * Locked
+       *
+       */
+
+      .state('lockedView', {
+        url: '/lockedView/',
+        controller: 'lockedViewController',
+        templateUrl: 'views/lockedView.html',
+      })
+
+      /*
+       *
        * URI
        *
        */
@@ -436,6 +460,25 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-settings@tabs': {
             controller: 'advancedSettingsController',
             templateUrl: 'views/advancedSettings.html'
+          }
+        }
+      })
+      .state('tabs.lock', {
+        url: '/lock',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'lockController',
+            templateUrl: 'views/lock.html',
+          }
+        }
+      })
+      .state('tabs.lock.pin', {
+        url: '/pin/:fromSettings/:locking',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'pinController',
+            templateUrl: 'views/pin.html',
+            cache: false
           }
         }
       })
@@ -1091,7 +1134,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
 
     uxLanguage.init();
 
@@ -1153,7 +1196,28 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       });
 
       $ionicPlatform.on('resume', function() {
-        // Nothing to do
+        if (platformInfo.isCordova || platformInfo.isDevel) {
+          configService.whenAvailable(function(config) {
+            var nextView;
+            var lock = config.lock;
+            if (lock && lock.method == 'fingerprint' && fingerprintService.isAvailable()) {
+              fingerprintService.check('unlockingApp', function(err) {
+                if (err) nextView = 'lockedView';
+                else if ($ionicHistory.currentStateName() == 'lockedView') nextView = 'tabs.home';
+                else nextView = $ionicHistory.currentStateName();
+                goTo(nextView);
+              });
+            } else if (lock && lock.method == 'pin') {
+              goTo('pin');
+            }
+
+            function goTo(nextView) {
+              $state.transitionTo(nextView).then(function() {
+                if (nextView == 'lockedView') $ionicHistory.clearHistory();
+              });
+            };
+          });
+        }
       });
 
       $ionicPlatform.on('menubutton', function() {
@@ -1196,10 +1260,27 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-            $state.transitionTo('tabs.home').then(function() {
-              // Clear history
-              $ionicHistory.clearHistory();
-            });
+            if (platformInfo.isCordova || platformInfo.isDevel) {
+              startupService.ready();
+              configService.whenAvailable(function(config) {
+                var lock = config.lock;
+                if (fingerprintService.isAvailable() && lock && lock.method == 'fingerprint') {
+                  fingerprintService.check('unlockingApp', function(err) {
+                    if (err) goTo('lockedView');
+                    else goTo('tabs.home');
+                  });
+                } else if (lock && lock.method == 'pin') {
+                  goTo('pin');
+                } else
+                  goTo('tabs.home');
+
+                function goTo(nextView) {
+                  $state.transitionTo(nextView).then(function() {
+                    $ionicHistory.clearHistory();
+                  });
+                };
+              });
+            }
           });
         }
 
