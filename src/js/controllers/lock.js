@@ -1,33 +1,30 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('lockController', function($state, $scope, $timeout, $log, configService, popupService, gettextCatalog, appConfigService, fingerprintService, profileService, lodash) {
-  var NONE = 'none';
-  var PIN = 'pin';
-  var FINGERPRINT = 'fingerprint';
 
   function init() {
     var config = configService.getSync();
-    $scope.locking = config.lock.method != PIN;
+    $scope.locking = config.lock.method != 'pin';
 
     $scope.options = [
       {
-        method: NONE,
+        method: 'none',
         label: gettextCatalog.getString('Disabled'),
         value: config.lock.method == '',
       },
       {
-        method: PIN,
+        method: 'pin',
         label: gettextCatalog.getString('Enable PIN'),
-        value: config.lock.method == PIN,
+        value: config.lock.method == 'pin',
         needsBackup: null,
       },
     ];
 
     if (fingerprintService.isAvailable()) {
       $scope.options.push({
-        method: FINGERPRINT,
+        method: 'fingerprint',
         label: gettextCatalog.getString('Enable Fingerprint'),
-        value: config.lock.method == FINGERPRINT,
+        value: config.lock.method == 'fingerprint',
         needsBackup: null,
       });
     }
@@ -74,17 +71,17 @@ angular.module('copayApp.controllers').controller('lockController', function($st
   };
 
   $scope.select = function(method) {
-    if (method == NONE)
+    if (method == 'none')
       saveConfig();
-    else if (method == FINGERPRINT) {
+    else if (method == 'fingerprint') {
       var config = configService.getSync();
-      if (config.lock.method == PIN) {
+      if (config.lock.method == 'pin') {
         askForDisablePin(function(disablePin) {
-          if (disablePin) saveConfig(FINGERPRINT);
+          if (disablePin) saveConfig('fingerprint');
           else init();
         });
-      } else saveConfig(FINGERPRINT);
-    } else if (method == PIN) {
+      } else saveConfig('fingerprint');
+    } else if (method == 'pin') {
       $state.transitionTo('tabs.lock.pin', {
         fromSettings: true,
         locking: $scope.locking

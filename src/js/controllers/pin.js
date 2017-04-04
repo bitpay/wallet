@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('pinController', function($state, $interval, $stateParams, $ionicHistory, $timeout, $scope, $log, configService, appConfigService) {
-  var PIN = 'pin';
-  var ATTEPMPTS_LIMIT = 3;
+  var ATTEMPT_LIMIT = 3;
+  var ATTEMPT_LOCK_OUT_TIME = 5 * 60;
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     $scope.currentPin = $scope.confirmPin = '';
@@ -29,13 +29,13 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
   function checkAttempts() {
     $scope.currentAttempts += 1;
     $log.debug('Attempts to unlock:', $scope.currentAttempts);
-    if ($scope.currentAttempts === 3) {
+    if ($scope.currentAttempts === ATTEMPT_LIMIT) {
       $scope.currentAttempts = 0;
-      var limitTime = Math.floor(Date.now() / 1000) + 5 * 60;
+      var limitTime = Math.floor(Date.now() / 1000) + ATTEMPT_LOCK_OUT_TIME;
       var config = configService.getSync();
       var opts = {
         lock: {
-          method: PIN,
+          method: 'pin',
           value: config.lock.value,
           bannedUntil: limitTime,
           attempts: config.lock.attempts + 1,
@@ -115,12 +115,12 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
   $scope.save = function() {
     if (!$scope.isComplete()) return;
     var config = configService.getSync();
-    $scope.match = config.lock && config.lock.method == PIN && config.lock.value == $scope.currentPin ? true : false;
+    $scope.match = config.lock && config.lock.method == 'pin' && config.lock.value == $scope.currentPin ? true : false;
     if (!$scope.locking) {
       if ($scope.match) {
         if ($scope.fromSettings) saveSettings();
         else {
-          saveSettings(PIN, $scope.currentPin);
+          saveSettings('pin', $scope.currentPin);
           $scope.error = false;
         }
       } else {
@@ -143,7 +143,7 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
       }, 200);
     } else {
       if ($scope.confirmPin == $scope.currentPin)
-        saveSettings(PIN, $scope.confirmPin);
+        saveSettings('pin', $scope.confirmPin);
       else {
         $scope.confirmPin = $scope.currentPin = '';
         $scope.error = true;
