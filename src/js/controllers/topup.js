@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService) {
 
   var amount;
   var currency;
@@ -50,15 +50,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency ? true : false;
     cardId = data.stateParams.id;
 
     if (!cardId) {
       showErrorAndBack('No card selected');
       return;
     }
-
-    var parsedAmount = bitpayCardService.parseAmount(
+    
+    var parsedAmount = txFormatService.parseAmount(
       data.stateParams.amount, 
       data.stateParams.currency);
 
@@ -80,7 +79,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
     $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
 
-    bitpayCardService.getRates(currency, function(err, data) {
+    bitpayCardService.getRates('USD', function(err, data) {
       if (err) $log.error(err);
       $scope.rate = data.rate;
     });
