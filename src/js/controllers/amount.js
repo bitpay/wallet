@@ -84,7 +84,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals);
     }
 
-    processAmount($scope.amount);
+    processAmount();
 
     $timeout(function() {
       $ionicScrollDelegate.resize();
@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   function paste(value) {
     $scope.amount = value;
-    processAmount(value);
+    processAmount();
     $timeout(function() {
       $scope.$apply();
     });
@@ -144,7 +144,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     $scope.amount = ($scope.amount + digit).replace('..', '.');
     checkFontSize();
-    processAmount($scope.amount);
+    processAmount();
   };
 
   $scope.pushOperator = function(operator) {
@@ -172,7 +172,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
   $scope.removeDigit = function() {
     $scope.amount = $scope.amount.slice(0, -1);
-    processAmount($scope.amount);
+    processAmount();
     checkFontSize();
   };
 
@@ -182,17 +182,12 @@ angular.module('copayApp.controllers').controller('amountController', function($
     checkFontSize();
   };
 
-  function processAmount(val) {
-    if (!val) {
-      $scope.resetAmount();
-      return;
-    }
-
-    var formatedValue = format(val);
+  function processAmount() {
+    var formatedValue = format($scope.amount);
     var result = evaluate(formatedValue);
     $scope.allowSend = lodash.isNumber(result) && +result > 0;
     if (lodash.isNumber(result)) {
-      $scope.globalResult = isExpression(val) ? '= ' + processResult(result) : '';
+      $scope.globalResult = isExpression($scope.amount) ? '= ' + processResult(result) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
       $scope.alternativeResult = txFormatService.formatAmount(fromFiat(result) * unitToSatoshi, true);
     }
