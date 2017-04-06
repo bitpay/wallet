@@ -1273,17 +1273,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
                   goTo('pin');
                 } else
                   goTo('tabs.home');
+              });
+            } else goTo('tabs.home');
 
-                function goTo(nextView) {
-                  $state.transitionTo(nextView).then(function() {
-                    $ionicHistory.clearHistory();
-                  });
-                };
+            function goTo(nextView) {
+              $state.transitionTo(nextView).then(function() {
+                $ionicHistory.clearHistory();
               });
             }
           });
-        }
-
+        };
         // After everything have been loaded, initialize handler URL
         $timeout(function() {
           openURLService.init();
