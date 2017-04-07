@@ -10,7 +10,8 @@ angular.module('copayApp.services')
       id: 'ledger',
       name: 'Ledger',
       longName: 'Ledger Hardware Wallet',
-      hasEmbeddedHardware: false
+      isEmbeddedHardware: false,
+      supportsTestnet: false
     };
 
     root.callbacks = {};
@@ -43,7 +44,8 @@ angular.module('copayApp.services')
       return callback(opts);
     };
 
-    root.getInfoForNewWallet = function(isMultisig, account, callback) {
+    root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
+      // networkName not used for this hardware (always livenet)
       root.getEntropySource(isMultisig, account, function(err, entropySource) {
         if (err) return callback(err);
 

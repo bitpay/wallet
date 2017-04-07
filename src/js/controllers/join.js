@@ -142,7 +142,7 @@ angular.module('copayApp.controllers').controller('joinController',
         ongoingProcess.set('connecting' + self.seedSourceId, true);
         var src = self.seedSourceId == walletService.externalSource.ledger.id ? ledger : trezor;
 
-        src.getInfoForNewWallet(true, account, function(err, lopts) {
+        src.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
           ongoingProcess.set('connecting' + self.seedSourceId, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);

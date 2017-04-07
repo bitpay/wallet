@@ -7,13 +7,13 @@
   <ion-content>
     <div ng-include="'views/includes/walletItem.html'"></div>
 
-    <div ng-if="!hasEmbeddedHardware">
+    <div ng-if="!externalSource.isEmbeddedHardware">
       <div ng-if="!hardwareConnected" class="info centered">
         <span translate>No hardware information available.</span>
       </div>
     </div>
 
-    <div ng-if="hasEmbeddedHardware">    
+    <div ng-if="externalSource.isEmbeddedHardware">    
       <div ng-if="!hardwareConnected" class="warning centered">
         <span translate>Hardware not connected.</span><br>
         <span translate>Check installation and retry.</span>

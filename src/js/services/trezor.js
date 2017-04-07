@@ -13,7 +13,8 @@ angular.module('copayApp.services')
       name: 'Trezor',
       longName: 'Trezor Hardware Wallet',
       derivationStrategy: 'BIP48',
-      hasEmbeddedHardware: false
+      isEmbeddedHardware: false,
+      supportsTestnet: false
     };
 
     root.getEntropySource = function(isMultisig, account, callback) {
@@ -40,7 +41,8 @@ angular.module('copayApp.services')
       return callback(opts);
     };
 
-    root.getInfoForNewWallet = function(isMultisig, account, callback) {
+    root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
+      // networkName not used for this hardware (always livenet)
       var opts = {};
       root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);

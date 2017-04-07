@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('preferencesExternalController
     return source.id == wallet.getPrivKeyExternalSourceName();
   });
 
-  if ($scope.externalSource.hasEmbeddedHardware) {
+  if ($scope.externalSource.isEmbeddedHardware) {
     $scope.hardwareConnected = $scope.externalSource.version.length > 0;
 
     $scope.showMneumonicFromHardwarePopup = function() {
