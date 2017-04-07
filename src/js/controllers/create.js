@@ -63,9 +63,11 @@ angular.module('copayApp.controllers').controller('createController',
       var seedOptions = [{
         id: 'new',
         label: gettextCatalog.getString('Random'),
+        supportsTestnet: true
       }, {        
         id: 'set',
         label: gettextCatalog.getString('Specify Recovery Phrase...'),
+        supportsTestnet: false
       }];
 
       $scope.seedSource = seedOptions[0];
@@ -81,12 +83,14 @@ angular.module('copayApp.controllers').controller('createController',
           seedOptions.push({
             id: walletService.externalSource.ledger.id,
             label: walletService.externalSource.ledger.longName,
+            supportsTestnet: walletService.externalSource.ledger.supportsTestnet
           });
 
         if (walletService.externalSource.trezor.supported) {
           seedOptions.push({
             id: walletService.externalSource.trezor.id,
             label: walletService.externalSource.trezor.longName,
+            supportsTestnet: walletService.externalSource.trezor.supportsTestnet
           });
         }
 
@@ -94,6 +98,7 @@ angular.module('copayApp.controllers').controller('createController',
           seedOptions.push({
             id: walletService.externalSource.intelTEE.id,
             label: walletService.externalSource.intelTEE.longName,
+            supportsTestnet: walletService.externalSource.intelTEE.supportsTestnet
           });
         }
       }
@@ -165,7 +170,7 @@ angular.module('copayApp.controllers').controller('createController',
           account = account - 1;
 
         opts.account = account;
-        ongoingProcess.set('connecting' + $scope.seedSource.id, true);
+        ongoingProcess.set('connecting ' + $scope.seedSource.id, true);
 
         var src;
         switch ($scope.seedSource.id) {
@@ -183,8 +188,8 @@ angular.module('copayApp.controllers').controller('createController',
             return;
         }
 
-        src.getInfoForNewWallet(opts.n > 1, account, function(err, lopts) {
-          ongoingProcess.set('connecting' + $scope.seedSource.id, false);
+        src.getInfoForNewWallet(opts.n > 1, account, opts.networkName, function(err, lopts) {
+          ongoingProcess.set('connecting ' + $scope.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
