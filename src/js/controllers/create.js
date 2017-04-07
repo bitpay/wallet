@@ -183,7 +183,7 @@ angular.module('copayApp.controllers').controller('createController',
             return;
         }
 
-        src.getInfoForNewWallet(opts, function(err, lopts) {
+        src.getInfoForNewWallet(opts.n > 1, account, function(err, lopts) {
           ongoingProcess.set('connecting' + $scope.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);

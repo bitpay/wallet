@@ -12,7 +12,8 @@ angular.module('copayApp.services')
       id: 'trezor',
       name: 'Trezor',
       longName: 'Trezor Hardware Wallet',
-      derivationStrategy: 'BIP48'
+      derivationStrategy: 'BIP48',
+      hasEmbeddedHardware: false
     };
 
     root.getEntropySource = function(isMultisig, account, callback) {
@@ -39,15 +40,15 @@ angular.module('copayApp.services')
       return callback(opts);
     };
 
-    root.getInfoForNewWallet = function(opts, callback) {
-      var isMultisig = opts.n > 1;
-      root.getEntropySource(isMultisig, opts.account, function(err, data) {
+    root.getInfoForNewWallet = function(isMultisig, account, callback) {
+      var opts = {};
+      root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);
         opts.entropySource = data;
         $log.debug('Waiting TREZOR to settle...');
         $timeout(function() {
 
-          root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, opts.account), function(data) {
+          root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account), function(data) {
             if (!data.success)
               return callback(hwWallet._err(data));
 

@@ -11,7 +11,8 @@ angular.module('copayApp.services')
       id: 'intelTEE',
       name: 'Intel TEE',
       longName: 'Intel TEE Hardware Wallet',
-      derivationStrategy: 'BIP44'
+      derivationStrategy: 'BIP44',
+      hasEmbeddedHardware: true
     };
 
     if (!root.description.supported) {
@@ -27,16 +28,16 @@ angular.module('copayApp.services')
       $log.error('Failed to create Intel Wallet enclave');
     }
 
-    root.getInfoForNewWallet = function(opts, callback) {
+    root.getInfoForNewWallet = function(isMultisig, account, callback) {
+      var opts = {};
       initSource(opts, function(err, opts) {
         if (err) return callback(err);
 
-        var isMultisig = opts.n > 1;
-        root.getEntropySource(opts.hwInfo.id, isMultisig, opts.account, function(err, entropySource) {
+        root.getEntropySource(opts.hwInfo.id, isMultisig, account, function(err, entropySource) {
           if (err) return callback(err);
 
           opts.entropySource = entropySource;
-          root.getXPubKey(opts.hwInfo.id, hwWallet.getAddressPath(root.description.id, isMultisig, opts.account, opts.networkName), function(data) {
+          root.getXPubKey(opts.hwInfo.id, hwWallet.getAddressPath(root.description.id, isMultisig, account, opts.networkName), function(data) {
             if (!data.success) {
               $log.warn(data.message);
               return callback(data);

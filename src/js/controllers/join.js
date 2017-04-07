@@ -138,6 +138,7 @@ angular.module('copayApp.controllers').controller('joinController',
           account = account - 1;
 
         opts.account = account;
+        opts.isMultisig = true;
         ongoingProcess.set('connecting' + self.seedSourceId, true);
         var src = self.seedSourceId == walletService.externalSource.ledger.id ? ledger : trezor;
 

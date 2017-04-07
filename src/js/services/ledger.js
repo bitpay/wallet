@@ -9,7 +9,8 @@ angular.module('copayApp.services')
       supported: platformInfo.supportsLedger,
       id: 'ledger',
       name: 'Ledger',
-      longName: 'Ledger Hardware Wallet'
+      longName: 'Ledger Hardware Wallet',
+      hasEmbeddedHardware: false
     };
 
     root.callbacks = {};
@@ -42,13 +43,13 @@ angular.module('copayApp.services')
       return callback(opts);
     };
 
-    root.getInfoForNewWallet = function(opts, callback) {
-      var isMultisig = opts.n > 1;
-      root.getEntropySource(isMultisig, opts.account, function(err, entropySource) {
+    root.getInfoForNewWallet = function(isMultisig, account, callback) {
+      root.getEntropySource(isMultisig, account, function(err, entropySource) {
         if (err) return callback(err);
 
+        var opts = {};
         opts.entropySource = entropySource;
-        root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, opts.account), function(data) {
+        root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account), function(data) {
           if (!data.success) {
             $log.warn(data.message);
             return callback(data);

@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('importController',
       if ($scope.isChromeApp || $scope.isDevel) {
         $scope.seedOptions.push({
           id: walletService.externalSource.trezor.id,
-          label: walletService.externalSource.ledger.longName,
+          label: walletService.externalSource.trezor.longName,
         });
         $scope.formData.seedSource = $scope.seedOptions[0];
       }
