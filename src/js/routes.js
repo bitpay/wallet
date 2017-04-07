@@ -1196,28 +1196,24 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       });
 
       $ionicPlatform.on('resume', function() {
-        if (platformInfo.isCordova || platformInfo.isDevel) {
-          configService.whenAvailable(function(config) {
-            var nextView;
-            var lock = config.lock;
-            if (lock && lock.method == 'fingerprint' && fingerprintService.isAvailable()) {
-              fingerprintService.check('unlockingApp', function(err) {
-                if (err) nextView = 'lockedView';
-                else if ($ionicHistory.currentStateName() == 'lockedView') nextView = 'tabs.home';
-                else nextView = $ionicHistory.currentStateName();
-                goTo(nextView);
-              });
-            } else if (lock && lock.method == 'pin') {
-              goTo('pin');
-            }
+        configService.whenAvailable(function(config) {
+          var nextView;
+          var lock = config.lock;
+          if (lock && lock.method == 'fingerprint' && fingerprintService.isAvailable()) {
+            fingerprintService.check('unlockingApp', function(err) {
+              if (err) goTo('lockedView');
+              else if ($ionicHistory.currentStateName() == 'lockedView') goTo('tabs.home');
+            });
+          } else if (lock && lock.method == 'pin') {
+            goTo('pin');
+          }
 
-            function goTo(nextView) {
-              $state.transitionTo(nextView).then(function() {
-                if (nextView == 'lockedView') $ionicHistory.clearHistory();
-              });
-            };
-          });
-        }
+          function goTo(nextView) {
+            $state.transitionTo(nextView).then(function() {
+              if (nextView == 'lockedView') $ionicHistory.clearHistory();
+            });
+          };
+        });
       });
 
       $ionicPlatform.on('menubutton', function() {
