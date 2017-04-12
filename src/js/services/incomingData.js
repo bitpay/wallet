@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog) {
 
   var root = {};
 
@@ -93,10 +93,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
       if (parsed.r) {
         payproService.getPayProDetails(parsed.r, function(err, details) {
-          if (err && addr && amount) {
-            goSend(addr, amount, message);
-          }
-          handlePayPro(details);
+          if (err) {
+            if (addr && amount) goSend(addr, amount, message);
+            else popupService.showAlert(gettextCatalog.getString('Error'), err);
+          } else handlePayPro(details);
         });
       } else {
         goSend(addr, amount, message);
