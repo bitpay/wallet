@@ -51,10 +51,9 @@ angular.module('copayApp.services').factory('feeService', function($log, $stateP
         if (errLivenet || errTestnet) {
           return cb(gettextCatalog.getString('Could not get dynamic fee'));
         } else {
-          for (var i = 0; i < 4; i++) {
-            levelsLivenet[i]['feePerKBUnit'] = txFormatService.formatAmount(levelsLivenet[i].feePerKB) + ' ' + unitName;
-            levelsTestnet[i]['feePerKBUnit'] = txFormatService.formatAmount(levelsTestnet[i].feePerKB) + ' ' + unitName;
-          }
+          lodash.each(lodash.union(levelsLivenet, levelsTestnet), function(level) {
+            level.feePerKBUnit = txFormatService.formatAmount(level.feePerKB) + ' ' + unitName;
+          });
         }
 
         return cb(null, {
