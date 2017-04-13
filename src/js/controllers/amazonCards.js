@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('amazonCardsController',
 
     var updateGiftCards = function(cb) {
       amazonService.getPendingGiftCards(function(err, gcds) {
+console.log('[amazonCards.js.11:gcds:]',gcds); //TODO
         if (err) {
           popupService.showAlert('Could not get gift cards', err);
           if (cb) return cb();
@@ -28,16 +29,24 @@ angular.module('copayApp.controllers').controller('amazonCardsController',
       updateGiftCards(function() {
         var index = 0;
         var gcds = $scope.giftCards;
+console.log('[amazonCards.js.31:gcds:]',gcds); //TODO
         lodash.forEach(gcds, function(dataFromStorage) {
-          if (dataFromStorage.status == 'PENDING') {
-            $log.debug("creating gift card");
+console.log('[amazonCards.js.33:dataFromStorage:]',dataFromStorage); //TODO
+          if (dataFromStorage.status == 'PENDING' || dataFromStorage.status == 'invalid') {
+            $log.debug("Creating / Updating gift card");
             $scope.updatingPending[dataFromStorage.invoiceId] = true;
+
+console.log('[amazonCards.js.38]'); //TODO
             amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
+
+console.log('[amazonCards.js.41]'); //TODO
               $scope.updatingPending[dataFromStorage.invoiceId] = false;
               if (err) {
                 popupService.showAlert('Error creating gift card', err);
                 return;
               }
+
+console.log('[amazonCards.js.48]', giftCard); //TODO
               if (giftCard.status != 'PENDING') {
                 var newData = {};
 
