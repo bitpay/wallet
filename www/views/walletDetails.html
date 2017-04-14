@@ -238,6 +238,10 @@
                 <div ng-show="btx.action == 'received'" class="ellipsis">
                   <div ng-if="btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
                   <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate>Received</div>
+                  <div class="low-fees" ng-if="btx.lowFees">
+                    <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
+                    <span class="comment" translate>Low fees</span>
+                  </div>
                 </div>
 
                 <div ng-show="btx.action == 'sent'" class="ellipsis">
