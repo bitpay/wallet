@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, $ionicPopover, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError) {
 
   var listeners = [];
+  var walletIndex;
   $scope.isCordova = platformInfo.isCordova;
   $scope.isNW = platformInfo.isNW;
   $scope.walletAddrs = {};
@@ -33,12 +34,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       }, 10);
     });
   };
-
-  $scope.loadAddresses = function(wallet, index) {
-    walletService.getAddress(wallet, false, function(err, addr) {
-      $scope.walletAddrs[wallet.id] = addr;
-    });
-  }
 
   $scope.goCopayers = function() {
     $ionicHistory.removeBackView();
@@ -88,10 +83,10 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
-  $scope.setWallet = function(index) {
-    $scope.wallet = $scope.wallets[index];
-    $scope.walletIndex = index;
-    if ($scope.walletAddrs[$scope.wallet.id].addr) $scope.addr = $scope.walletAddrs[$scope.walletIndex].addr;
+  $scope.setWallet = function(wallet) {
+    $scope.wallet = wallet;
+    walletIndex = $scope.wallets.indexOf(wallet);
+    if ($scope.walletAddrs[$scope.wallet.id].addr) $scope.addr = $scope.walletAddrs[walletIndex].addr;
     else $scope.setAddress(false);
   }
 
@@ -100,9 +95,9 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   }
 
   $scope.walletPosition = function(index) {
-    if (index == $scope.walletIndex) return 'current';
-    if (index < $scope.walletIndex) return 'prev';
-    if (index > $scope.walletIndex) return 'next';
+    if (index == walletIndex) return 'current';
+    if (index < walletIndex) return 'prev';
+    if (index > walletIndex) return 'next';
   }
 
 
@@ -118,7 +113,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.wallet = wallet;
     $log.debug('Wallet changed: ' + wallet.name);
 
-    $scope.walletIndex = lodash.findIndex($scope.wallets, function(wallet) {
+    walletIndex = lodash.findIndex($scope.wallets, function(wallet) {
       return wallet.id == $scope.wallet.id;
     });
 
@@ -147,9 +142,25 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
+    if (!$scope.wallets[0]) return;
 
     lodash.each($scope.wallets, function(wallet, index) {
-      $scope.loadAddresses(wallet);
+      walletService.getAddress(wallet, false, function(err, addr) {
+        $scope.walletAddrs[wallet.id] = addr;
+      });
+    });
+
+    if (!$scope.wallet) {
+      $scope.setWallet($scope.wallets[0]);
+    } else {
+      var isListed = lodash.find($scope.wallets, function(w) {
+        return w.id == $scope.wallet.id;
+      });
+
+      if (!isListed) $scope.setWallet($scope.wallets[0]);
+    }
+    $timeout(function() {
+      $scope.$apply();
     });
 
     listeners = [
@@ -158,14 +169,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
         if ($scope.wallet && walletId == $scope.wallet.id) $scope.updateCurrentWallet();
       })
     ];
-
-    // Update current wallet
-    if ($scope.wallet) {
-      var w = lodash.find($scope.wallets, function(w) {
-        return w.id == $scope.wallet.id;
-      });
-      if (w) $scope.updateCurrentWallet();
-    }
   });
 
   $scope.$on("$ionicView.leave", function(event, data) {

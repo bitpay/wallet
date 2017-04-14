@@ -77,7 +77,7 @@
     <article id="wallets" ng-if="wallets[0]">
       <div id="sidebar-wallet" class="list">
         <div id="wallet-list">
-          <div class="wallet" ng-repeat="wallet in wallets track by $index" ng-click="setWallet($index)" ng-class="walletPosition($index)">
+          <div class="wallet" ng-repeat="wallet in wallets track by $index" ng-click="setWallet(wallet)" ng-class="walletPosition($index)">
             <div class="card">
               <div class="item item-icon-left text-right" ng-class="{'noBalance': !wallet.status.availableBalanceStr}">
                 <i class="icon big-icon-svg">
