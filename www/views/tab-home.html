@@ -39,7 +39,7 @@
         On this screen you can see all your wallets, accounts, and assets.
       </div>
     </div>
-    <div class="loading-placeholder animate-show-hide" ng-show="!txpsFinished || !notificationsFinished || !walletsFinished">
+    <div class="loading-placeholder" ng-show="!txpsFinished || !notificationsFinished || !walletsFinished">
       <div class="row">
         <div class="list card card-loading-placeholder">
           <a class="item item-icon-right item-heading">
@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div ng-show="txpsFinished && notificationsFinished && walletsFinished">
+    <div class="animate-show-hide" ng-show="txpsFinished && notificationsFinished && walletsFinished">
       <div class="list card" ng-hide="!txps[0]">
         <a class="item item-icon-right item-heading" ui-sref="tabs.proposals">
           {{'Payment Proposals'|translate}}
