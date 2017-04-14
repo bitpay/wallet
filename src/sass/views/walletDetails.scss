@@ -209,6 +209,20 @@
     font-size: 13px;
     color: $v-mid-gray;
   }
+  .low-fees {
+    .comment {
+      color: $v-mid-gray;
+      font-size: 12.5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-left: 25px;
+    }
+    img {
+      position: absolute;
+      margin-top: 3px;
+    }
+  }
 }
 
 .wallet-details-wallet-info {
@@ -238,7 +252,7 @@ a.item {
 
 .recent svg {
   margin-left:5px;
-  width:0.7em; 
+  width:0.7em;
   height:0.7em;
   stroke: #eee;
 }
