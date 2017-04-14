@@ -112,6 +112,11 @@
       border-top: 1px solid #f2f2f2;
       border-bottom: 1px solid #f2f2f2;
 
+      &.bg {
+        padding: .25rem;
+        border: none;
+      }
+
       .wallet-external {
         background-color: $v-light-gray;
         border: none;

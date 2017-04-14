@@ -1105,7 +1105,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     // Check integrity of restrictions.
     restrictions.forEach(function(r) {
       if (allowedRestrictions[r] == undefined) {
-        return cb('Wallet restriction not allowed: ' + r);
+        return cb('Unrecognized wallet restriction: ' + r);
       }
     });
 

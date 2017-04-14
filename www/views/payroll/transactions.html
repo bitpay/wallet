@@ -1,8 +1,8 @@
-<ion-view id="payroll-history">
+<ion-view id="payroll-transactions">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>{{'Payroll history' | translate}}</ion-nav-title>
+    <ion-nav-title>{{'Payroll transactions' | translate}}</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content>
@@ -10,14 +10,14 @@
       {{error}}
     </div>
 
-    <div class="text-center padding no-tx" ng-show="!transactions[0]">
-      <h1>No Transactions</h1>
-      <div class="no-tx__text">
+    <div class="text-center padding no-tx" ng-show="!hasTransactions">
+      <h1 translate>No Transactions</h1>
+      <div class="no-tx__text" translate>
         We're waiting for the first one!
       </div>
     </div>
 
-    <div class="list" ng-show="transactions[0]">
+    <div class="list" ng-show="hasTransactions">
       <label class="item item-input item-select">
         <div class="input-label" translate>
           Activity

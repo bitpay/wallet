@@ -16,7 +16,7 @@
     <div class="list card" ng-repeat="record in payrollRecords">
 
       <!-- Eligible but not yet verified -->
-      <div ng-if="record.eligibility && !record.eligibility.verified">
+      <div ng-if="record.eligibility && record.eligibility.eligible && !record.employee.verified">
         <div class="section">
           <img class="full-image" ng-src="{{record.employer.imageUrl}}">
         </div>
@@ -29,20 +29,14 @@
           </div>
         </div>
         <div class="section footer">
-          <div class="action" ng-click="userRecheckEligibility(record.eligibility.qualifyingData)">
-            <div translate>Resend email</div>
-          </div>
-          <div class="action" ng-click="stopPayroll(record)">
-            <div translate>Cancel</div>
-          </div>
-          <div class="action" ng-click="goToPayrollAbout(record)" translate>
-            About
-          </div>
+          <div class="action" ng-click="recheckEligibility(record)" translate>Resend email</div>
+          <div class="action" ng-click="stopPayroll(record)" translate>Cancel</div>
+          <div class="action" ng-click="goToPayrollAbout(record)" translate>About</div>
         </div>
       </div>
 
       <!-- Verified but not yet setup -->
-      <div ng-if="record.eligibility && record.eligibility.verified">
+      <div ng-if="record.eligibility && record.eligibility.eligible && record.employee.verified">
         <div class="section">
           <img class="full-image" ng-src="{{record.employer.imageUrl}}">
         </div>
@@ -55,15 +49,9 @@
           </div>
         </div>
         <div class="section footer">
-          <div class="action" ng-click="setupPayroll(record)">
-            <div translate>Setup</div>
-          </div>
-          <div class="action" ng-click="stopPayroll(record)">
-            <div translate>Cancel</div>
-          </div>
-          <div class="action" ng-click="goToPayrollAbout(record)" translate>
-            About
-          </div>
+          <div class="action" ng-click="setupPayroll(record)" translate>Setup</div>
+          <div class="action" ng-click="stopPayroll(record)" translate>Cancel</div>
+          <div class="action" ng-click="goToPayrollAbout(record)" translate>About</div>
         </div>
       </div>
 
@@ -80,7 +68,7 @@
             </span>
             <div class="cycle">
               <i class="icon ion-record status-dot status-active" ng-class="record.deduction.active ? 'status-active' : 'status-paused'"></i>
-              {{record.employer.payCycle}}
+              <span translate>each pay period</span>
             </div>
           </div>
         </div>
@@ -88,7 +76,8 @@
         <div ng-if="!record.deduction.wallet.isExternal">
           <a class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet" ng-click="openWallet(record.deduction.wallet)">
             <i class="icon big-icon-svg">
-              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !record.deduction.wallet.color}"
+                ng-style="{'background-color': record.deduction.wallet.color}" class="bg wallet"/>
             </i>
             <span>
               {{record.deduction.wallet.name || record.deduction.wallet.id}}
@@ -129,15 +118,9 @@
         </div>
 
         <div class="section footer">
-          <div class="action" ng-click="viewPayrollDetails(record)" translate>
-            Details
-          </div>
-          <div class="action" ng-click="viewPayrollHistory(record)" translate>
-            History
-          </div>
-          <div class="action" ng-click="goToPayrollAbout(record)" translate>
-            About
-          </div>
+          <div class="action" ng-click="viewPayrollDetails(record)" translate>Details</div>
+          <div class="action" ng-click="viewPayrollTransactions(record)" translate>History</div>
+          <div class="action" ng-click="goToPayrollAbout(record)" translate>About</div>
         </div>
       </div>
 

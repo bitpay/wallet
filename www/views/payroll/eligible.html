@@ -5,8 +5,9 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="explanation" translate>
-        Please enter your eligible employer provided email address.
+    <div class="explanation">
+      <p translate>Please enter your eligible employer provided email address.</p>
+      <p ng-if="createAccount" translate>This email address will be used to create a new account at BitPay.com.</p>
     </div>
     <form name="eligibleForm" ng-submit="checkIfEligible()" novalidate>
       <div class="list settings-input-group">

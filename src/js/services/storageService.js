@@ -480,6 +480,27 @@ angular.module('copayApp.services')
       });
     };
 
+    root.updatePayrollRecord = function(network, record, cb) {
+      storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
+        if (err) cb(err);
+        if (lodash.isString(bitpayAccounts)) {
+          bitpayAccounts = JSON.parse(bitpayAccounts);
+        }
+        bitpayAccounts = bitpayAccounts || {};
+        Object.keys(bitpayAccounts).forEach(function(email) {
+          var data = bitpayAccounts[email]['payrollRecords'];
+          // Remove the existing record and replace it.
+          var newRecords = lodash.reject(data, {
+            'eid': record.eid
+          });
+          newRecords.push(record);
+          root.setPayrollRecords(network, email, newRecords, function(err) {
+            cb(err);
+          });
+        });
+      });
+    };
+
     root.removePayrollRecord = function(network, id, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
@@ -523,7 +544,20 @@ angular.module('copayApp.services')
       });
     };
 
-    root.removePayrollEligibilityRecord = function(network, email, cb) {
+    root.updatePayrollEligibilityRecord = function(network, record, cb) {
+      root.getPayrollEligibilityRecords(network, function(err, records) {
+        if (err) {
+          return cb(err);
+        }
+        var index = lodash.findIndex(records, function(r) {
+          return r.id == record.id;
+        });
+        records[index] = record;
+        storage.set('payrollEligibility-' + network, JSON.stringify(records), cb);
+      });
+    };
+
+    root.removePayrollEligibilityRecord = function(network, id, cb) {
       storage.get('payrollEligibility-' + network, function(err, records) {
         if (err) cb(err);
         if (lodash.isString(records)) {
@@ -531,29 +565,29 @@ angular.module('copayApp.services')
         }
         records = records || [];
         records = lodash.reject(records, function(r) {
-          return r.eligibility.qualifyingData.email == email;
+          return r.id == id;
         });
         storage.set('payrollEligibility-' + network, JSON.stringify(records), cb);
       });
     };
 
-    root.setPayrollRecordsHistory = function(network, data, cb) {
-      storage.set('payrollRecordsHistory-' + network, JSON.stringify(data), cb);
+    root.setPayrollTransactions = function(network, data, cb) {
+      storage.set('payrollTransactions-' + network, JSON.stringify(data), cb);
     };
 
-    root.getPayrollRecordsHistory = function(network, cb) {
-      storage.get('payrollRecordsHistory-' + network, cb);
+    root.getPayrollTransactions = function(network, cb) {
+      storage.get('payrollTransactions-' + network, cb);
     };
 
-    root.removePayrollRecordHistory = function(network, id, cb) {
-      root.getPayrollRecordsHistory(network, function(err, data) {
+    root.removePayrollTransactions = function(network, id, cb) {
+      root.getPayrollTransactions(network, function(err, data) {
         if (err) return cb(err);
         if (lodash.isString(data)) {
           data = JSON.parse(data);
         }
         data = data || {};
         delete data[id];
-        root.setPayrollRecordsHistory(network, JSON.stringify(data), cb);
+        root.setPayrollTransactions(network, JSON.stringify(data), cb);
       });
     };
 
@@ -594,7 +628,7 @@ angular.module('copayApp.services')
         lodash.each(allAccounts, function(account, email) {
 
           // Migrate old `'bitpayApi-' + network` key, if exists
-          if (!account.token && account['bitpayApi-' + network].token) {
+          if (!account.token && account['bitpayApi-' + network] && account['bitpayApi-' + network].token) {
 
             $log.info('Migrating all bitpayApi-network branch');
             account.token = account['bitpayApi-' + network].token;
@@ -623,6 +657,7 @@ angular.module('copayApp.services')
     // data: {
     //   email: account email
     //   token: account token
+    //   facade: facade associated with token
     //   familyName: account family (last) name
     //   givenName: account given (first) name
     // }
@@ -635,7 +670,30 @@ angular.module('copayApp.services')
 
         allAccounts = allAccounts || {};
         var account = allAccounts[data.email] || {};
-        account.token = data.token;
+        account.tokens = account.tokens || [];
+        //////
+        // Migration
+        // account.token replaced with account.tokens[]
+        if (account.token && account.token.length > 0 && account.tokens.length == 0) {
+          $log.info('Migrating account token');
+          account.tokens.push({
+            token: account.token,
+            facade: 'visaUser' // All legacy tokens are for visaUser
+          });
+          delete account.token;
+          $log.info('Successfully migrated account token');
+        }
+        //////
+        // Remove old token for the specified facade.
+        lodash.remove(account.tokens, function(t) {
+          return t.facade == data.facade;
+        });
+        // Add new token for the specified facade.
+        account.tokens.push({
+          token: data.token,
+          facade: data.facade
+        });
+
         account.familyName = data.familyName;
         account.givenName = data.givenName;
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollDetailsController', function($scope, $log, $ionicHistory, $state, lodash, bitpayPayrollService, txFormatService, configService, profileService, gettextCatalog, rateService, popupService) {
+angular.module('copayApp.controllers').controller('payrollDetailsController', function($scope, $log, $ionicHistory, $state, $timeout, lodash, bitpayPayrollService, txFormatService, configService, profileService, gettextCatalog, rateService, popupService) {
 
   var config = configService.getSync().wallet.settings;
 
@@ -57,7 +57,7 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
       });
     } else {
       return showError(
-        'No payroll record id specified when loading payrollConfirmController',
+        'No payroll record id specified when loading payrollDetailsController',
         gettextCatalog.getString('Error'),
         gettextCatalog.getString('No payroll settings specified.'));
     }
@@ -100,6 +100,10 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
             }
             $scope.payrollRecord = record;
             $scope.payrollStateButtonText = (record.deduction.active ? BUTTON_PAUSE : BUTTON_RESUME);
+
+            $timeout(function() {
+              $scope.$apply();
+            });
           });
         }
       });
@@ -111,6 +115,10 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
         }
         $scope.payrollRecord = record;
         $scope.payrollStateButtonText = (record.deduction.active ? BUTTON_PAUSE : BUTTON_RESUME);
+
+        $timeout(function() {
+          $scope.$apply();
+        });
       });
     }
   };
@@ -128,8 +136,8 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
     });
   };
 
-  $scope.goBackToHome = function() {
-    returnToState('tabs.home');
+  $scope.goToPayrollSummary = function() {
+    $state.go('tabs.payroll.summary');
   };
 
   function getDisplayAmount(amountStr) {

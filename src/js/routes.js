@@ -1049,7 +1049,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('tabs.bitpayCardIntro', {
-        url: '/bitpay-card-intro/:secret/:email/:otp',
+        url: '/bitpay-card-intro/:secret/:email/:otp/:facade',
         views: {
           'tab-home@tabs': {
             controller: 'bitpayCardIntroController',
@@ -1111,7 +1111,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
      */
 
     .state('tabs.payroll', {
-      url: '/payroll/:secret/:email/:otp',
+      url: '/payroll/:secret/:email/:otp/:facade',
       views: {
         'tab-home@tabs': {
           templateUrl: 'views/payroll/intro.html',
@@ -1120,7 +1120,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     })
     .state('tabs.payroll.eligible', {
-      url: '/payroll/eligible',
+      url: '/payroll/eligible/:createAccount',
       views: {
         'tab-home@tabs': {
           templateUrl: 'views/payroll/eligible.html',
@@ -1137,12 +1137,12 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       }
     })
-    .state('tabs.payroll.history', {
-      url: '/payroll/history/:id',
+    .state('tabs.payroll.transactions', {
+      url: '/payroll/transactions/:id',
       views: {
         'tab-home@tabs': {
-          templateUrl: 'views/payroll/history.html',
-          controller: 'payrollHistoryController'
+          templateUrl: 'views/payroll/transactions.html',
+          controller: 'payrollTransactionsController'
         }
       }
     })

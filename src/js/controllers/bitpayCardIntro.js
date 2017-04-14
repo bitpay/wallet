@@ -6,7 +6,8 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
       var pairData = {
         secret: data.stateParams.secret,
         email: data.stateParams.email,
-        otp: data.stateParams.otp
+        otp: data.stateParams.otp,
+        facade: data.stateParams.facade
       };
       bitpayAccountService.pair(pairData, function(err, paired, apiContext) {
         if (err) {
@@ -62,7 +63,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
   };
 
   var startPairBitPayAccount = function() {
-    bitpayAccountService.startPairBitPayAccount('card');
+    bitpayAccountService.startPairBitPayAccount(bitpayService.FACADE_VISA_USER);
   };
 
   var showAccountSelector = function() {

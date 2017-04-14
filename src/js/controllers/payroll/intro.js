@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollIntroController', function($scope, $state, $ionicHistory, configService, externalLinkService, gettextCatalog, bitpayAccountService, bitpayPayrollService, popupService, storageService) {
+angular.module('copayApp.controllers').controller('payrollIntroController', function($scope, $state, $ionicHistory, configService, externalLinkService, gettextCatalog, bitpayService, bitpayAccountService, bitpayPayrollService, popupService, storageService) {
 
   var accountSelectDest = undefined;
 
@@ -9,25 +9,20 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
       var pairData = {
         secret: data.stateParams.secret,
         email: data.stateParams.email,
-        otp: data.stateParams.otp
+        otp: data.stateParams.otp,
+        facade: data.stateParams.facade
       };
       bitpayAccountService.pair(pairData, function(err, paired, apiContext) {
         if (err) {
           return popupService.showAlert(gettextCatalog.getString('Error'), err);
         }
         if (paired) {
-          return startPayrollSetup(pairData.email);
+          return onAfterPairing(pairData.email);
         }
       });
     }
 
-    bitpayAccountService.getAccounts(function(err, accounts) {
-      if (err) {
-        return popupService.showAlert(gettextCatalog.getString('Error'), err);
-      }
-      $scope.accounts = accounts;
-      $scope.hasAccount = (accounts.length > 0);
-    });
+    updateAccounts();
   });
 
   $scope.payrollInfo = function() {
@@ -37,6 +32,7 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
   $scope.setupPayroll = function() {
     $scope.accountSelectorTitle = gettextCatalog.getString('On BitPay account');
+     $scope.accountSelectorItemLabel = gettextCatalog.getString('Create account');
     showAccountSelector('setup');
   };
 
@@ -45,22 +41,49 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
       startPairBitPayAccount();
     } else {
      $scope.accountSelectorTitle = gettextCatalog.getString('From BitPay account');
+     $scope.accountSelectorItemLabel = gettextCatalog.getString('Add account');
       showAccountSelector('connect');
     }
   };
 
-  var startPairBitPayAccount = function() {
-    bitpayAccountService.startPairBitPayAccount('payroll');
-  };
-
-  var startPayrollSetup = function(email) {
-    root.getAccount(email, function(err, account) {
+  var updateAccounts = function(callback) {
+    callback = callback || function(){};
+    bitpayAccountService.getAccounts(function(err, accounts) {
       if (err) {
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
-      bitpayPayrollService.bindToBitPayAccount(account);
-      $state.transitionTo('tabs.payroll.eligible');
+      $scope.accounts = accounts;
+      $scope.hasAccount = (accounts.length > 0);
+      return callback();
     });
+  };
+
+  var onAfterPairing = function(email) {
+    updateAccounts(function() {
+      // After pairing either show the summary view or stay here.
+      bitpayAccountService.getAccount(email, function(err, account) {
+        if (err) {
+          return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        }
+
+        if (account && bitpayPayrollService.hasAccess(account.apiContext)) {
+          // Has an account with payroll access.
+          bitpayPayrollService.getPayrollRecords(account.apiContext, function(err, records) {
+            if (err) {
+              return popupService.showAlert(gettextCatalog.getString('Error'), err);
+            }
+
+            if (records.length > 0) {
+              $state.transitionTo('tabs.payroll.summary');
+            }
+          });
+        }
+      });
+    });
+  };
+
+  var startPairBitPayAccount = function() {
+    bitpayAccountService.startPairBitPayAccount(bitpayService.FACADE_PAYROLL_USER);
   };
 
   var showAccountSelector = function(dest) {
@@ -69,30 +92,65 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
   };
 
   $scope.onAccountSelect = function(account) {
-    if (account == undefined) {
-      // 'Add account' selected.
-      // A new account will be created later using the verified email address.
-      $state.transitionTo('tabs.payroll.eligible');
+    if (!account) {
+      bitpayPayrollService.unbindBitPayAccount();
+    }
 
-    } else {
-
-      switch (accountSelectDest) {
-        case 'connect':
-          bitpayPayrollService.getPayrollRecords(account.apiContext, function(err, data) {
+    switch (accountSelectDest) {
+      case 'connect':
+        if (account && bitpayPayrollService.hasAccess(account.apiContext)) {
+          // Has an account with payroll access.
+          bitpayPayrollService.getPayrollRecords(account.apiContext, function(err, records) {
             if (err) {
-              popupService.showAlert(gettextCatalog.getString('Error'), err);
-              return;
+              return popupService.showAlert(gettextCatalog.getString('Error'), err);
+            }
+
+            if (records.length > 0) {
+              // Show the records we found.
+              return $state.transitionTo('tabs.payroll.summary');
+
+            } else {
+              // No records on account. Provide an option to begin setup.
+              var title = gettextCatalog.getString('No Payroll Settings');
+              var msg = gettextCatalog.getString('The selected BitPay account ({{email}}) does not have any payroll settings.  Would you like to setup payroll on this account?', {
+                email: account.email
+              });
+              var ok = gettextCatalog.getString('Setup Payroll');
+              var cancel = gettextCatalog.getString('Dismiss');
+
+              return popupService.showConfirm(title, msg, ok, cancel, function(res) {
+                if (res) {
+                  bitpayPayrollService.bindToBitPayAccount(account);
+                  $state.transitionTo('tabs.payroll.eligible', {createAccount: false});
+                }
+              });
             }
           });
-          break;
-        case 'setup':
-        default:
+
+        } else {
+          return startPairBitPayAccount();
+        }
+        break;
+
+      case 'setup':
+      default:
+        if (account && bitpayPayrollService.hasAccess(account.apiContext)) {
+          // Has an account with payroll access.
           bitpayPayrollService.bindToBitPayAccount(account);
-          $state.transitionTo('tabs.payroll.eligible');
-          break;
-      }
-      accountSelectDest = undefined;
+          $state.transitionTo('tabs.payroll.eligible', {createAccount: false});
+
+        } else if (account) {
+          // Has an account but no payroll access.
+          return startPairBitPayAccount();
+
+        } else {
+          // 'Create account' selected.
+          // A new account will be created later using the verified email address.
+          $state.transitionTo('tabs.payroll.eligible', {createAccount: true});
+        }
+        break;
     }
+    accountSelectDest = undefined;
   };
 
   function returnToState(name) {

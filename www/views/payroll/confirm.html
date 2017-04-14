@@ -19,7 +19,7 @@
           <div class="right size-12">
             <div class="exchange-rate">{{exchangeRate}}</div>
             <div class="exchange-rate-info" translate>* Today's rate.</div>
-            <div class="exchange-rate-info" translate>Transaction rate might be different.</div>
+            <div class="exchange-rate-info" translate>Payday transaction rate might be different.</div>
           </div>
           <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} {{btcDisplayUnit}}</div>
         </div>
@@ -30,19 +30,19 @@
           <span class="deposit-to">
             <img src="img/icon-bitcoin-small.svg">
 
-            <div copy-to-clipboard="address" class="ellipsis">
-              <span class="size-14">{{address}}</span>
+            <div copy-to-clipboard="address">
+              <span class="size-14 ellipsis">{{address}}</span>
             </div>
           </span>
         </div>
         <!-- Address (external wallet) -->
-        <div class="item item-icon-right" ng-if="recipientType == 'address'" ng-click="renameExternalWallet()">
+        <div class="item item-icon-right" ng-if="recipientType == 'address'" ng-click="renameWallet()">
           <span class="label" translate>Wallet</span>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet-external.svg" class="bg wallet-external"/>
             </i>
-            <div>{{externalWalletName}}</div>
+            <div>{{walletName}}</div>
           </div>
           <i class="icon bp-arrow-right"></i>
         </div>

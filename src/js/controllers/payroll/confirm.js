@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     $scope.depositDisplayUnit = config.alternativeIsoCode;
     $scope.btcEstimate = getDisplayAmount(btcEstimateStr);
     $scope.btcDisplayUnit = getDisplayUnit(btcEstimateStr);
-    $scope.externalWalletName = gettextCatalog.getString('My External Wallet');
+    $scope.walletName = gettextCatalog.getString('My Wallet');
 
     $scope.recipientType = data.stateParams.recipientType;
     switch ($scope.recipientType) {
@@ -86,15 +86,15 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
     setRecipientWallet(wallet);
   };
 
-  $scope.renameExternalWallet = function() {
+  $scope.renameWallet = function() {
     var opts = {
-      defaultText: $scope.externalWalletName
+      defaultText: $scope.walletName
     };
-    var title = gettextCatalog.getString('External Wallet Name');
+    var title = gettextCatalog.getString('Wallet Name');
     var message = gettextCatalog.getString('Enter a name for the bitcoin address you have entered. This name is used only to remind you of your bitcoin deposit destination.');
     popupService.showPrompt(title, message, opts, function(str) {
       if (typeof str != 'undefined') {
-        $scope.externalWalletName = str;
+        $scope.walletName = str;
       }
     });    
   };
@@ -106,7 +106,7 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
       amount: parseFloat($scope.depositAmount),
       currency: $scope.depositDisplayUnit,
       walletId: ($scope.wallet ? $scope.wallet.id : ''),
-      externalWalletName: $scope.externalWalletName
+      walletName: ($scope.wallet ? $scope.wallet.name : $scope.walletName)
     };
 
     bitpayPayrollService.startPayroll($scope.payrollRecord, function(err, record) {
@@ -114,7 +114,7 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
         return showError(err);
       }
       $state.transitionTo('tabs.payroll.details', {
-        id: $scope.payrollRecord.id
+        id: record.eid
       });
     });
   };

@@ -38,15 +38,14 @@
       <button class="button button-standard button-primary" ng-click="setupPayroll()" translate>
         Setup Payroll
       </button>
-      <!-- Connect button only available when users can setup payroll on the server. Remove button for now. -->
-      <button ng-if="false" class="button button-standard button-secondary button-clear" ng-click="connectPayroll()" translate>
+      <button class="button button-standard button-secondary button-clear" ng-click="connectPayroll()" translate>
         Connect my Payroll
       </button>
     </div>
   </ion-content>
   <account-selector
     title="accountSelectorTitle"
-    item-label="Create account"
+    item-label="{{accountSelectorItemLabel}}"
     accounts="accounts"
     selected-account="account"
     show="showAccounts"

@@ -172,26 +172,28 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
-      var reason = bitpayAccountService.getPairingReason();
+      var facade = getParameterByName('f', data);
 
       $state.go('tabs.home', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.home' ? false : true
       }).then(function() {
-        switch (reason.id) {
+        switch (facade) {
           default:
-          case 'card':
+          case 'visaUser':
             $state.transitionTo('tabs.bitpayCardIntro', {
               secret: secret,
               email: email,
-              otp: otp
+              otp: otp,
+              facade: facade
             });
             break;
-          case 'payroll':
+          case 'payrollUser':
             $state.transitionTo('tabs.payroll', {
               secret: secret,
               email: email,
-              otp: otp
+              otp: otp,
+              facade: facade
             });
             break;
         }

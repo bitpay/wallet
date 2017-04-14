@@ -1,31 +1,46 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollHistoryController', function($scope, $timeout, $log, $state, lodash, bitpayPayrollService, popupService, gettextCatalog, configService) {
+angular.module('copayApp.controllers').controller('payrollTransactionsController', function($scope, $timeout, $log, $state, lodash, bitpayPayrollService, popupService, gettextCatalog, configService) {
 
   var config = configService.getSync().wallet.settings;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.id) {
-
-      $scope.payrollRecordId = data.stateParams.id;
-      $scope.dateRange = {
-        value: 'last30Days'
-      };
-
-      // Try to cache history from server.
-      $scope.update(function(updateErr) {
-        if (updateErr) {
-          // Try to get cached history.
-          updateHistoryFromCache(function(cacheErr) {
-            if (!$scope.transactions && updateErr) {
-              showError(updateErr);
-            }
-          });
+      bitpayPayrollService.getPayrollRecordById(data.stateParams.id, function(err, record) {
+        if (err) {
+          return showError(err);
         }
+
+        if (!record) {
+          return showError(
+            'No payroll record found when loading payrollTransactionsController',
+            gettextCatalog.getString('Error'),
+            gettextCatalog.getString('No payroll settings specified.'));
+        }
+
+        $scope.payrollRecord = record;
+        $scope.dateRange = {
+          value: 'last30Days'
+        };
+
+        // Try to cache transactions from server.
+        $scope.hasTransactions = false;
+        $scope.update(function(updateErr) {
+  /*
+          if (updateErr) {
+            // Try to get cached transactions.
+            updateTransactionsFromCache(function(cacheErr) {
+              if (!$scope.transactions && updateErr) {
+                showError(updateErr);
+              }
+            });
+          }
+  */
+        });
       });
     } else {
       return showError(
-        'No payroll record id specified when loading payrollHistoryController',
+        'No payroll record id specified when loading payrollTransactionsController',
         gettextCatalog.getString('Error'),
         gettextCatalog.getString('No payroll settings specified.'));
     }
@@ -43,18 +58,22 @@ angular.module('copayApp.controllers').controller('payrollHistoryController', fu
 
   $scope.update = function(cb) {
     var dateRange = setDateRange($scope.dateRange.value);
-    $scope.loadingHistory = true;
+    $scope.loadingTransactions = true;
 
-    bitpayPayrollService.getPayrollRecordHistory($scope.payrollRecordId, dateRange, function(err, history) {
-      $scope.loadingHistory = false;
-      $scope.transactions = history.transactionList;
+    bitpayPayrollService.getPayrollTransactions($scope.payrollRecord, dateRange, function(err, txData) {
+      $scope.loadingTransactions = false;
+      if (err) {
+        return showError(err);        
+      }
+      $scope.transactions = txData.transactionList;
+      $scope.hasTransactions = $scope.transactions.length > 0;
       cb(err);
     });
   };
 
   var updateFromCache = function(cb) {
-    bitpayPayrollService.getPayrollRecordHistory($scope.payrollRecordId, function(err, history) {
-      $scope.transactions = history.transactionList;
+    bitpayPayrollService.getPayrollRecordTransactions($scope.payrollRecord, function(err, txData) {
+      $scope.transactions = txData.transactionList;
       return cb(err);
     });
   };

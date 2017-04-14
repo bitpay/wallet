@@ -62,6 +62,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   $scope.hold = function(event) {
     devModeTimer = $timeout(function() {
       $rootScope.devMode = true;
+      $rootScope.$emit('Local/DeveloperMode');
 
       var msg = 'Developer mode enabled';
       $log.info(msg);

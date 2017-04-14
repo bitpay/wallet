@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayInsightService', function($log, $http, bitauthService) {
+angular.module('copayApp.services').factory('bitpayInsightService', function($log, $http) {
   var root = {};
 
   var NETWORK = 'livenet';

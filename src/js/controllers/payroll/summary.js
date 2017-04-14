@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollSummaryController', function($rootScope, $scope, $timeout, $log, $state, $ionicHistory, $ionicScrollDelegate, lodash, gettextCatalog, bitpayAccountService, bitpayPayrollService, popupService, profileService, bitpayInsightService, configService, txFormatService, externalLinkService) {
+angular.module('copayApp.controllers').controller('payrollSummaryController', function($rootScope, $scope, $timeout, $log, $state, $ionicHistory, $ionicScrollDelegate, lodash, gettextCatalog, bitpayService, bitpayAccountService, bitpayPayrollService, popupService, profileService, bitpayInsightService, configService, txFormatService, externalLinkService) {
 
   var config = configService.getSync().wallet.settings;
 
@@ -21,17 +21,19 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
         function(record, callback) {
 
           if (record.eligibility) {
-            recheckEligibility(record.eligibility.qualifyingData, function(err, record) {
-              $scope.payrollRecords.push(record);
-              return callback();
-            });
+            $scope.payrollRecords.push(record);
+            return callback();
 
           } else if (record.deduction) {
-            if (record.deduction.externalWalletName.length > 0) {
+
+            // Attach wallet infomation to the payroll record.
+            record.deduction.wallet = profileService.getWallet(record.deduction.walletId);
+
+            if (!record.deduction.wallet) {
               getAddressBalanceStr(record.deduction.address, function(balanceStr) {
                 record.deduction.wallet = {
                   isExternal: true,
-                  name: record.deduction.externalWalletName,
+                  name: record.deduction.walletName,
                   status: {
                     totalBalanceStr: balanceStr
                   }
@@ -39,8 +41,9 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
                 $scope.payrollRecords.push(record);
                 return callback();
               });
+
             } else {
-              record.deduction.wallet = profileService.getWallet(record.deduction.walletId);
+              $scope.payrollRecords.push(record);
               return callback();
             }
           }
@@ -52,14 +55,8 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
     });
   };
 
-  var recheckEligibility = function(qualifyingData, cb) {
-    bitpayPayrollService.checkIfEligible(qualifyingData, function(err, record) {
-      cb(err, record);
-    });
-  };
-
-  $scope.userRecheckEligibility = function(qualifyingData) {
-    recheckEligibility(qualifyingData, function(err, record) {
+  $scope.recheckEligibility = function(record) {
+    bitpayPayrollService.recheckIfEligible(record, function(err, record) {
       if (err) {
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
@@ -119,35 +116,53 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
   };
 
   $scope.setupPayroll = function(record) {
-    bindAccountToPayrollService(record.email, function(err) {
+    bindAccountToPayrollService(record.user, function(err, bound) {
       if (err) {
         return showError(err);
       }
-      $state.go('tabs.payroll.depositAddress', {
-        id: record.id
-      });
+      if (bound) {
+        $state.go('tabs.payroll.depositAddress', {
+          id: record.id
+        });
+      }
     });
   };
 
   $scope.viewPayrollDetails = function(record) {
-    bindAccountToPayrollService(record.email, function(err) {
+    bindAccountToPayrollService(record.user, function(err, bound) {
       if (err) {
         return showError(err);
       }
-      $state.go('tabs.payroll.details', {
-        id: record.id
-      });
+      if (bound) {
+        $state.go('tabs.payroll.details', {
+          id: record.id
+        });
+      }
     });
   };
 
-  $scope.viewPayrollHistory = function(record) {
-    bindAccountToPayrollService(record.email, function(err) {
+  $scope.viewPayrollTransactions = function(record) {
+    bindAccountToPayrollService(record.user, function(err, bound) {
       if (err) {
         return showError(err);
       }
-      $state.go('tabs.payroll.history', {
-        id: record.id
+      if (bound) {
+        $state.go('tabs.payroll.transactions', {
+          id: record.id
+        });
+      }
+    });
+  };
+
+  $scope.openWallet = function(wallet) {
+    if (!wallet.isComplete()) {
+      return $state.go('tabs.copayers', {
+        walletId: wallet.credentials.walletId
       });
+    }
+
+    $state.go('tabs.wallet', {
+      walletId: wallet.credentials.walletId
     });
   };
 
@@ -173,14 +188,42 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
     });
   };
 
-  function bindAccountToPayrollService(email, cb) {
+  function bindAccountToPayrollService(user, cb) {
     // Bind appropriate bitpay account to the payroll service.
-    bitpayAccountService.getAccount(email, function(err, account) {
+    bitpayAccountService.getAccount(user.email, function(err, account) {
       if (err) {
         return cb(err);
       }
-      bitpayPayrollService.bindToBitPayAccount(account);
-      cb(null);
+
+      if (account) {
+        bitpayPayrollService.bindToBitPayAccount(account);
+        return cb(null, true);
+      }
+
+      // If we don't have the required account and the server indicates that the
+      // user account can be paired then start the pairing process.
+      if (!account && user.shouldPair) {
+        return popupService.showConfirm(
+          gettextCatalog.getString('Connect Account'),
+          gettextCatalog.getString('Your BitPay account ({{email}}) must be connected to this device. ' +
+            'To continue with payroll setup using this email address you will now be redirected to BitPay.com ' +
+            'to connect your account with this device.', {
+            email: user.email
+          }), 'Connect', 'Go Back', function(ok) {
+            if (!ok) return;
+            bitpayAccountService.startPairBitPayAccount(bitpayService.FACADE_PAYROLL_USER);
+          });
+
+      } else {
+
+        popupService.showAlert(
+          gettextCatalog.getString('Account not verified'),
+          gettextCatalog.getString('Your BitPay account has not been verified by you. Please check your email ({{email}}) and verify your account to continue payroll setup.', {
+            email: user.email
+          })
+        );
+        cb(null);
+      }
     });
   };
 
