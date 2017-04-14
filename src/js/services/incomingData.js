@@ -172,7 +172,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
-      var facade = getParameterByName('f', data);
+      var facade = getParameterByName('f', data) || 'visaUser'; // TODO: remove when server tells us this.
 
       $state.go('tabs.home', {}, {
         'reload': true,
