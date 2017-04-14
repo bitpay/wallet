@@ -14,16 +14,16 @@
         <img src="img/a-smile_color_btn.png" alt="{{id}}" width="40">
         <ion-spinner class="spinner-dark recent right m10 size-16" icon="crescent" ng-show="updatingPending[item.invoiceId]">
         </ion-spinner>
-        <h2>
-          <span ng-if="item.claimCode">{{item.amount | currency : '$ ' : 2}} {{item.currency}}</span>
-          <span ng-if="!item.claimCode">-</span>
+        <h2 ng-if="item.amount">
+          {{item.amount | currency : '$ ' : 2}} {{item.currency}}
         </h2> 
         <p>
           <span class="assertive" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
           <span class="assertive" ng-if="item.status == 'expired'">Expired</span>
+          <span class="assertive" ng-if="item.status == 'invalid'">Still waiting confirmation<br> (Use higher fees setting to faster delivery)</span>
           <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
           <span class="assertive" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
-          <span class="text-gray" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Fulfilled'">{{item.date | amTimeAgo}}</span>
+          <span class="text-gray">{{item.date | amTimeAgo}}</span>
         </p>
       </div>
     </div>

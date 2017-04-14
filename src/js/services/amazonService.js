@@ -72,7 +72,9 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       if (opts && opts.remove) {
         delete(inv[gc.invoiceId]);
       }
+
       inv = JSON.stringify(inv);
+
 
       storageService.setAmazonGiftCards(network, inv, function(err) {
 
