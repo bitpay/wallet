@@ -11,7 +11,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.wallet = profileService.getWallet(data.stateParams.walletId);
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
-    $scope.isShared = $scope.wallet.credentials.n > 1;
+    $scope.isShared = $scope.wallet.credentials.n > 1; 
+  });
+
+  $scope.$on("$ionicView.afterEnter", function(event) {
     updateTx();
 
     listeners = [

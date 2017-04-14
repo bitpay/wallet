@@ -211,6 +211,6 @@ angular.module('copayApp.controllers').controller('createController',
             }, 100);
           } else $state.go('tabs.home');
         });
-      }, 100);
+      }, 300);
     }
   });

@@ -61,10 +61,10 @@ module.exports = function(grunt) {
         stdin: true,
       },
       desktopsign: {
-        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.dmg.sig --detach-sig webkitbuilds/<%= pkg.title %>.dmg ; gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-win.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>-win.exe'
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.dmg.sig --detach-sig webkitbuilds/<%= pkg.title %>.dmg ; gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>.exe'
       },
       desktopverify: {
-        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>.dmg.sig webkitbuilds/<%= pkg.title %>.dmg ; gpg --verify webkitbuilds/<%= pkg.title %>-win.exe.sig webkitbuilds/<%= pkg.title %>-win.exe'
+        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>.dmg.sig webkitbuilds/<%= pkg.title %>.dmg ; gpg --verify webkitbuilds/<%= pkg.title %>.exe.sig webkitbuilds/<%= pkg.title %>.exe'
       },
     },
     watch: {
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
           'src/js/externalServices.js',
           'src/js/init.js',
           'src/js/trezor-url.js',
-          'bower_components/trezor-connect/login.js',
+          'bower_components/trezor-connect/connect.js',
           'node_modules/bezier-easing/dist/bezier-easing.min.js',
           'node_modules/cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js'
         ],

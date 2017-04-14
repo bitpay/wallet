@@ -2114,7 +2114,6 @@ msgstr ""
 
 #: www/views/customAmount.html:20
 #: www/views/tab-receive.html:62
-#: www/views/tab-settings.html:36
 msgid "Share"
 msgstr ""
 
@@ -2132,6 +2131,7 @@ msgid "Share this invitation with your copayers"
 msgstr ""
 
 #: src/js/controllers/feedback/complete.js:5
+#: www/views/tab-settings.html:36
 msgid "Share {{appName}}"
 msgstr ""
 

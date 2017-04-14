@@ -51,7 +51,12 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isCordova = platformInfo.isCordova;
+    $scope.isDevel = platformInfo.isDevel;
     $scope.appName = appConfigService.nameCase;
+    configService.whenAvailable(function(config) {
+      $scope.locked = config.lock && config.lock.method != '' ? true : false;
+      $scope.method = config.lock && config.lock.method != '' ? config.lock.method.charAt(0).toUpperCase() + config.lock.method.slice(1) : gettextCatalog.getString('Disabled');
+    });
   });
 
   $scope.$on("$ionicView.enter", function(event, data) {

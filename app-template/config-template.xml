@@ -64,7 +64,6 @@
     <plugin name="cordova-custom-config" spec="~3.0.5" />
     <plugin name="cordova-plugin-queries-schemes" spec="~0.1.5" />
     <plugin name="cordova-plugin-fcm" spec="2.1.1" />
-    <plugin name="cordova-plugin-winstore-jscompat" spec="https://github.com/gabrielbazan7/cordova-plugin-winstore-jscompat.git" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
