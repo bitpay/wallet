@@ -127,10 +127,8 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       "invoiceId": data.invoiceId,
       "accessKey": data.accessKey
     };
-console.log('[amazonService.js.129:dataSrc:]',dataSrc); //TODO
 
     $http(_postBitPay('/amazon-gift/redeem', dataSrc)).then(function(data) {
-console.log('[amazonService.js.130:data:]',data); //TODO
       var status = data.data.status == 'new' ? 'PENDING' : (data.data.status == 'paid') ? 'PENDING' : data.data.status;
       data.data.status = status;
       $log.info('Amazon.com Gift Card Create/Update: ' + status);
