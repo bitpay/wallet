@@ -32,7 +32,7 @@
         <span class="toggle-label" translate>Hide Balance</span>
       </ion-toggle>
 
-      <div class="item item-divider" translate>
+      <div class="item item-divider" ng-hide="wallet.isPrivKeyExternal() || !wallet.canSign()" translate>
         Security
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.backupWarning({from: 'tabs.preferences'})" ng-hide="wallet.isPrivKeyExternal()">

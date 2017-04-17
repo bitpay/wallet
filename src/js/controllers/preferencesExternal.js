@@ -2,7 +2,6 @@
 
 angular.module('copayApp.controllers').controller('preferencesExternalController', function($scope, $stateParams, lodash, gettextCatalog, popupService, profileService, walletService) {
   var wallet = profileService.getWallet($stateParams.walletId);
-  $scope.wallet = wallet;
 
   $scope.externalSource = lodash.find(walletService.externalSource, function(source) {
     return source.id == wallet.getPrivKeyExternalSourceName();

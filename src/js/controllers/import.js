@@ -3,15 +3,13 @@
 angular.module('copayApp.controllers').controller('importController',
   function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService) {
 
-    var isChromeApp = platformInfo.isChromeApp;
-    var isDevel = platformInfo.isDevel;
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
 
     $scope.init = function() {
-      $scope.isDevel = platformInfo.isDevel;
-      $scope.isChromeApp = platformInfo.isChromeApp;
+      $scope.supportsLedger = platformInfo.supportsLedger;
+      $scope.supportsTrezor = platformInfo.supportsTrezor;
       $scope.isCordova = platformInfo.isCordova;
       $scope.formData = {};
       $scope.formData.bwsurl = defaults.bws.url;
@@ -25,14 +23,14 @@ angular.module('copayApp.controllers').controller('importController',
 
       $scope.seedOptions = [];
 
-      if ($scope.isChromeApp) {
+      if ($scope.supportsLedger) {
         $scope.seedOptions.push({
           id: walletService.externalSource.ledger.id,
           label: walletService.externalSource.ledger.longName,
         });
       }
 
-      if ($scope.isChromeApp || $scope.isDevel) {
+      if ($scope.supportsTrezor) {
         $scope.seedOptions.push({
           id: walletService.externalSource.trezor.id,
           label: walletService.externalSource.trezor.longName,

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
 
     var self = this;
     var defaults = configService.getDefaults();
@@ -64,14 +64,21 @@ angular.module('copayApp.controllers').controller('joinController',
         if (walletService.externalSource.ledger.supported) {
           self.seedOptions.push({
             id: walletService.externalSource.ledger.id,
-            label: walletService.externalSource.ledger.longName,
+            label: walletService.externalSource.ledger.longName
           });
         }
 
         if (walletService.externalSource.trezor.supported) {
           self.seedOptions.push({
             id: walletService.externalSource.trezor.id,
-            label: walletService.externalSource.trezor.longName,
+            label: walletService.externalSource.trezor.longName
+          });
+        }
+
+        if (walletService.externalSource.intelTEE.supported) {
+          seedOptions.push({
+            id: walletService.externalSource.intelTEE.id,
+            label: walletService.externalSource.intelTEE.longName
           });
         }
       }
@@ -94,7 +101,7 @@ angular.module('copayApp.controllers').controller('joinController',
       var opts = {
         secret: form.secret.$modelValue,
         myName: form.myName.$modelValue,
-        bwsurl: $scope.bwsurl,
+        bwsurl: $scope.bwsurl
       }
 
       var setSeed = self.seedSourceId == 'set';
@@ -127,21 +134,37 @@ angular.module('copayApp.controllers').controller('joinController',
         return;
       }
 
-      if (self.seedSourceId == walletService.externalSource.ledger.id || self.seedSourceId == walletService.externalSource.trezor.id) {
+      if (self.seedSourceId == walletService.externalSource.ledger.id || self.seedSourceId == walletService.externalSource.trezor.id || self.seedSourceId == walletService.externalSource.intelTEE.id) {
         var account = $scope.account;
         if (!account || account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
-        if (self.seedSourceId == walletService.externalSource.trezor.id)
+        if (self.seedSourceId == walletService.externalSource.trezor.id || self.seedSourceId == walletService.externalSource.intelTEE.id)
           account = account - 1;
 
         opts.account = account;
         opts.isMultisig = true;
         ongoingProcess.set('connecting' + self.seedSourceId, true);
-        var src = self.seedSourceId == walletService.externalSource.ledger.id ? ledger : trezor;
 
+        var src;
+        switch (self.seedSourceId) {
+          case walletService.externalSource.ledger.id:
+            src = ledger;
+            break;
+          case walletService.externalSource.trezor.id:
+            src = trezor;
+            break;
+          case walletService.externalSource.intelTEE.id:
+            src = intelTEE;
+            break;
+          default:
+            this.error = gettextCatalog.getString('Invalid seed source id: ' + self.seedSourceId);
+            return;
+        }
+
+        // TODO: cannot currently join an intelTEE testnet wallet (need to detect from the secret)
         src.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
           ongoingProcess.set('connecting' + self.seedSourceId, false);
           if (err) {
