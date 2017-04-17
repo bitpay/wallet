@@ -43,7 +43,13 @@
           {{derivationStrategy}}
         </span>
       </div>
-      <a class="item item-icon-right" href ui-sref="tabs.preferences.preferencesExternal" ng-show="wallet.isPrivKeyExternal()">
+      <div class="item" ng-show="wallet.isPrivKeyExternal() && !externalSource.isEmbeddedHardware">
+        <span translate>Hardware Wallet</span>
+        <span class="item-note">
+          {{externalSource}}
+        </span>
+      </div>
+      <a class="item item-icon-right" href ui-sref="tabs.preferences.preferencesExternal" ng-show="wallet.isPrivKeyExternal() && externalSource.isEmbeddedHardware">
         <span translate>Hardware Wallet</span>
         <span class="item-note">
           {{externalSource}}
