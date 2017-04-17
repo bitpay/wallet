@@ -251,5 +251,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       }
     }
+    $scope.useSendMax = null;
   };
 });
