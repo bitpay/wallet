@@ -76,7 +76,7 @@
 
         <div class="col col-50">
           <div class="size-12 text-bold">
-            {{tx.merchant.name}}
+            {{tx.merchant.name || 'Unknown Merchant'}}
           </div>
           <div class="size-12 text-gray">
             <span ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.city}}, {{tx.merchant.state}}</span>
