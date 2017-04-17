@@ -181,6 +181,10 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
         return w.id == $scope.wallet.id;
       });
       if (w) $scope.updateCurrentWallet();
+      else if (screen.width > 700 && screen.height > 700 && $scope.wallets[0]) {
+        $scope.setWallet(0)
+        $scope.walletPosition(0);
+      }
     }
   });
 
