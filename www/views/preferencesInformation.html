@@ -43,12 +43,19 @@
           {{derivationStrategy}}
         </span>
       </div>
-      <div class="item" ng-show="wallet.isPrivKeyExternal()">
+      <div class="item" ng-show="wallet.isPrivKeyExternal() && !externalSource.isEmbeddedHardware">
         <span translate>Hardware Wallet</span>
         <span class="item-note">
-        {{wallet.getPrivKeyExternalSourceName()}}
+          {{externalSource}}
         </span>
       </div>
+      <a class="item item-icon-right" href ui-sref="tabs.preferences.preferencesExternal" ng-show="wallet.isPrivKeyExternal() && externalSource.isEmbeddedHardware">
+        <span translate>Hardware Wallet</span>
+        <span class="item-note">
+          {{externalSource}}
+        </span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
       <div class="item" ng-show="!wallet.isPrivKeyExternal() && !wallet.canSign()">
         <span translate></span>
         <span class="item-note">
