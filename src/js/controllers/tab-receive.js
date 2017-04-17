@@ -145,6 +145,22 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
+  $scope.shouldShowReceiveAddressFromHardware = function() {
+    var wallet = $scope.wallet;
+    if (wallet.isPrivKeyExternal() && wallet.credentials.hwInfo) {
+      return (wallet.credentials.hwInfo.name == walletService.externalSource.intelTEE.id);
+    } else {
+      return false;
+    }
+  };
+
+  $scope.showReceiveAddressFromHardware = function() {
+    var wallet = $scope.wallet;
+    if (wallet.isPrivKeyExternal() && wallet.credentials.hwInfo) {
+      walletService.showReceiveAddressFromHardware(wallet, $scope.addr, function(){});
+    }
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
 
