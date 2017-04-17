@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService) {
 
   var amount;
   var currency;
   var cardId;
+  var sendMax;
 
   $scope.isCordova = platformInfo.isCordova;
 
@@ -51,6 +52,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     cardId = data.stateParams.id;
+    sendMax = data.stateParams.useSendMax;
 
     if (!cardId) {
       showErrorAndBack('No card selected');
@@ -188,6 +190,29 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    if (sendMax) {
+      ongoingProcess.set('retrievingInputs', true);
+      sendMaxService.getInfo($scope.wallet, function(err, values) {
+        ongoingProcess.set('retrievingInputs', false);
+        if (err) {
+          showErrorAndBack(err);
+          return;
+        }
+        var config = configService.getSync().wallet.settings;
+        var unitName = config.unitName;
+        var amountUnit = txFormatService.satToUnit(values.amount);
+        var parsedAmount = txFormatService.parseAmount(
+          amountUnit, 
+          unitName);
+
+        amount = parsedAmount.amount;
+        currency = parsedAmount.currency;
+        $scope.amountUnitStr = parsedAmount.amountUnitStr;
+        $timeout(function() {
+          $scope.$digest();
+        }, 100);
+      });
+    }
   };
 
   $scope.goBackHome = function() {
