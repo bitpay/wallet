@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, buyAndSellService, coinbaseService) {
   var cachedTxp = {};
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
@@ -17,7 +17,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
     $scope.showFeeFiat = false;
@@ -43,10 +42,24 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
     $scope.feeLevel = feeService.feeOpts[feeLevel];
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
+    $scope.canUseCoinbase = canUseCoinbase();
     resetValues();
     setwallets();
     applyButtonText();
   });
+
+  function canUseCoinbase() {
+    if ($scope.paypro && $scope.paypro.url.match(/bitpay.com/g)) {
+      var services = buyAndSellService.getLinked();
+      if (!lodash.isEmpty(services)) {
+        var isCoinbaseActive = lodash.find(services, function(s) {
+          return s.name == 'coinbase' && s.isActive;
+        });
+        if (isCoinbaseActive) return true;
+      }
+    }
+    return false;
+  };
 
   function applyButtonText(multisig) {
     $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
@@ -164,7 +177,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function resetValues() {
     $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
-    $scope.showFeeFiat = $scope.showAddress = false;
+    $scope.showFeeFiat = $scope.showAddress = $scope.payWithCoinbase = false;
   };
 
   $scope.getSendMaxInfo = function() {
@@ -275,6 +288,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.onWalletSelect = function(wallet) {
+    if (!wallet) {
+      $scope.wallet = $scope.txp = null;
+      $scope.payWithCoinbase = true;
+      $scope.fee = 'Free';
+      return;
+    } else
+      $scope.payWithCoinbase = false;
+
     if ($scope.useSendMax) {
       $scope.wallet = wallet;
       if (cachedSendMax[wallet.id]) {
@@ -460,7 +481,23 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.payproModal.hide();
   };
 
+  function payWithCoinbase() {
+    coinbaseService.init(function(err, resp) {
+      if (err) return popupService.showAlert(gettextCatalog.getString('Error'), err);
+      var accessToken = res.accessToken;
+      var accountId = res.accountId;
+      coinbaseService.transferBetweenAccounts(accessToken, accountId, function(err, resp) {
+        if (err) return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        $scope.sendStatus = 'success';
+      });
+    });
+  };
+
   $scope.approve = function(onSendStatusChange) {
+    if ($scope.payWithCoinbase) {
+      payWithCoinbase();
+      return;
+    }
 
     var wallet = $scope.wallet;
     if (!wallet) {
