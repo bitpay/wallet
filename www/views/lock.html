@@ -7,7 +7,7 @@
 
   <ion-content>
     <ion-radio ng-repeat="opt in options" ng-value="opt" ng-model="currentOption" ng-click="select(opt.method)" ng-disabled="opt.needsBackup">
-      <span ng-class="{'disabled': opt.needsBackup}" translate>{{opt.label}}</span>
+      <span ng-class="{'disabled': opt.needsBackup}">{{opt.label}}</span>
     </ion-radio>
 
     <div class="assertive" style="text-align: center; margin: 4rem" ng-if="errorMsg">
