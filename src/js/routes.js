@@ -1213,6 +1213,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           goTo(defaultView);
         }
 
+        if (onResume) {
+          var now = Math.floor(Date.now() / 1000);
+          if (now < openURLService.unlockUntil) {
+            $log.debug('Skip startup locking');
+            return;
+          }
+        }
+
         function goTo(nextView) {
           nextView = nextView || defaultView;
           $state.transitionTo(nextView).then(function() {
@@ -1293,7 +1301,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         // After everything have been loaded, initialize handler URL
         $timeout(function() {
           openURLService.init();
-        }, 1000);
+        });
       });
     });
 
