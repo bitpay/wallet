@@ -50,6 +50,22 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
   };
 
+  var checkDailyLimit = function() {
+    if (currency == 'USD' && amount > 10000) {
+      showErrorAndBack('Top up is limited to USD 10,000 per day');
+      return;
+    }
+
+    bitpayCardService.getRates('USD', function(err, data) {
+      if (err) $log.error(err);
+      $scope.rate = data.rate;
+      if (currency == 'BTC' && (amount * data.rate) > 10000) {
+        showErrorAndBack('Top up is limited to USD 10,000 per day');
+        return;
+      }
+    });
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     cardId = data.stateParams.id;
     sendMax = data.stateParams.useSendMax;
@@ -80,11 +96,6 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       return;
     }
     $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
-
-    bitpayCardService.getRates('USD', function(err, data) {
-      if (err) $log.error(err);
-      $scope.rate = data.rate;
-    });
 
     bitpayCardService.get({ cardId: cardId, noRefresh: true }, function(err, card) {
       if (err) {
@@ -207,11 +218,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
         amount = parsedAmount.amount;
         currency = parsedAmount.currency;
+        checkDailyLimit();
         $scope.amountUnitStr = parsedAmount.amountUnitStr;
         $timeout(function() {
           $scope.$digest();
         }, 100);
       });
+    } else {
+      checkDailyLimit();
     }
   };
 
