@@ -4,18 +4,18 @@ angular.module('copayApp.controllers').controller('lockController', function($st
 
   function init() {
     var config = configService.getSync();
-    $scope.locking = config.lock.method != 'pin';
+    $scope.locking = config.lock && config.lock.method == 'pin' ? false : true;
 
     $scope.options = [
       {
-        method: 'none',
+        method: '',
         label: gettextCatalog.getString('Disabled'),
-        value: config.lock.method == '',
+        selected: config.lock && config.lock.method == '' ? true : false,
       },
       {
         method: 'pin',
         label: gettextCatalog.getString('Enable PIN'),
-        value: config.lock.method == 'pin',
+        selected: config.lock && config.lock.method == 'pin' ? true : false,
         needsBackup: null,
       },
     ];
@@ -24,12 +24,12 @@ angular.module('copayApp.controllers').controller('lockController', function($st
       $scope.options.push({
         method: 'fingerprint',
         label: gettextCatalog.getString('Enable Fingerprint'),
-        value: config.lock.method == 'fingerprint',
+        selected: config.lock && config.lock.method == 'fingerprint' ? true : false,
         needsBackup: null,
       });
     }
 
-    $scope.currentOption = lodash.find($scope.options, 'value');
+    $scope.currentOption = lodash.find($scope.options, 'selected') || $scope.options[0];
     processWallets();
   };
 
@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('lockController', function($st
   };
 
   $scope.select = function(method) {
-    if (method == 'none')
+    if (method == '')
       saveConfig();
     else if (method == 'fingerprint') {
       var config = configService.getSync();
