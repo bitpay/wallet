@@ -160,8 +160,8 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
     var attempts = config.lock && config.lock.attempts ? config.lock.attempts : 0;
     var opts = {
       lock: {
-        method: method || '',
-        value: value || '',
+        method: method || null,
+        value: value || null,
         bannedUntil: null,
         attempts: attempts + 1,
       }

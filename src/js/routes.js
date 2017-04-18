@@ -1206,41 +1206,44 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       });
 
 
-      function checkAndApplyLock(defaultView) {
+      function checkAndApplyLock(onResume) {
+        var defaultView = 'tabs.home';
 
         if (!platformInfo.isCordova && !platformInfo.isDevel) {
-          goTo('tabs.home');
+          goTo(defaultView);
         }
 
         function goTo(nextView) {
+          nextView = nextView || defaultView;
           $state.transitionTo(nextView).then(function() {
-            if (nextView == 'lockedView') 
+            if (nextView == 'lockedView')
               $ionicHistory.clearHistory();
           });
         };
 
+        startupService.ready();
+
         configService.whenAvailable(function(config) {
           var lockMethod = config.lock && config.lock.method;
-          $log.debug('App Lock:' + (lockMethod||'no') );
+          $log.debug('App Lock:' + (lockMethod || 'no'));
 
           if (lockMethod == 'fingerprint' && fingerprintService.isAvailable()) {
             fingerprintService.check('unlockingApp', function(err) {
-              if (err) 
+              if (err)
                 goTo('lockedView');
-
-              if ($ionicHistory.currentStateName() == 'lockedView') 
+              if ($ionicHistory.currentStateName() == 'lockedView' || !onResume)
                 goTo('tabs.home');
             });
           } else if (lockMethod == 'pin') {
             goTo('pin');
-          } else if (defaultView) {
+          } else {
             goTo(defaultView);
           }
         });
       }
 
       $ionicPlatform.on('resume', function() {
-        checkAndApplyLock();
+        checkAndApplyLock(true);
       });
 
       $ionicPlatform.on('menubutton', function() {
@@ -1284,10 +1287,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               historyRoot: true
             });
 
-            if (platformInfo.isCordova) 
-              startupService.ready();
-
-            checkAndApplyLock('tabs.home');
+            checkAndApplyLock();
           });
         };
         // After everything have been loaded, initialize handler URL
