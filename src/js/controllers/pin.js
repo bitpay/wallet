@@ -175,7 +175,12 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
   $scope.close = function(delay) {
     $timeout(function() {
-      $ionicHistory.viewHistory().backView ? $ionicHistory.goBack() : $state.go('tabs.home');
+      var shouldReturn = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName != 'starting';
+
+      if (shouldReturn)
+        $ionicHistory.goBack()
+      else
+        $state.go('tabs.home');
     }, delay || 1);
   };
 });
