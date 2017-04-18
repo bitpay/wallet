@@ -40,7 +40,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
         },
         function(msg) {
           $log.debug('Finger Failed:' + JSON.stringify(msg));
-          return cb(gettextCatalog.getString('Finger Scan Failed') + ': ' + msg.localizedDescription);
+          return cb(gettextCatalog.getString('Finger Scan Failed'));
         }
       );
     } catch (e) {
@@ -60,7 +60,7 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
         },
         function(msg) {
           $log.debug('Touch ID Failed:' + JSON.stringify(msg));
-          return cb(gettextCatalog.getString('Touch ID Failed') + ': ' + msg.localizedDescription);
+          return cb(gettextCatalog.getString('Touch ID Failed'));
         }
       );
     } catch (e) {
