@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, walletService, platformInfo, pushNotificationsService) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, walletService) {
 
   $scope.$on("$ionicView.beforeLeave", function() {
     $ionicConfig.views.swipeBackEnabled(true);
@@ -9,11 +9,6 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   $scope.$on("$ionicView.enter", function() {
     $ionicConfig.views.swipeBackEnabled(false);
   });
-
-  var isCordova = platformInfo.isCordova;
-  var isWP = platformInfo.isWP;
-  var usePushNotifications = isCordova && !isWP;
-  var requiresOptIn = platformInfo.isIOS;
 
   var wallet = profileService.getWallet($stateParams.walletId);
   var walletId = wallet.credentials.walletId;
@@ -37,20 +32,9 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   };
 
   $scope.goNextView = function() {
-    if (!usePushNotifications) {
-      $state.go('onboarding.backupRequest', {
-        walletId: walletId
-      });
-    } else if (requiresOptIn) {
-      $state.go('onboarding.notifications', {
-        walletId: walletId
-      });
-    } else {
-      pushNotificationsService.init();
-      $state.go('onboarding.backupRequest', {
-        walletId: walletId
-      });
-    }
+    $state.go('onboarding.backupRequest', {
+      walletId: walletId
+    });
   };
 
   $scope.confirm = function(emailForm) {
