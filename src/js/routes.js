@@ -777,15 +777,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('onboarding.notifications', {
-        url: '/notifications/:walletId',
-        views: {
-          'onboarding': {
-            templateUrl: 'views/onboarding/notifications.html',
-            controller: 'notificationsController'
-          }
-        }
-      })
       .state('onboarding.backupRequest', {
         url: '/backupRequest/:walletId',
         views: {
@@ -1176,12 +1167,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         var matchWelcome = $ionicHistory.currentStateName() == 'onboarding.welcome' ? true : false;
         var matchCollectEmail = $ionicHistory.currentStateName() == 'onboarding.collectEmail' ? true : false;
         var matchBackupRequest = $ionicHistory.currentStateName() == 'onboarding.backupRequest' ? true : false;
-        var matchNotifications = $ionicHistory.currentStateName() == 'onboarding.notifications' ? true : false;
         var backedUp = $ionicHistory.backView().stateName == 'onboarding.backup' ? true : false;
         var noBackView = $ionicHistory.backView().stateName == 'starting' ? true : false;
         var matchDisclaimer = $ionicHistory.currentStateName() == 'onboarding.disclaimer' && (backedUp || noBackView) ? true : false;
 
-        var fromOnboarding = matchCollectEmail | matchBackupRequest | matchNotifications | matchWelcome | matchDisclaimer;
+        var fromOnboarding = matchCollectEmail | matchBackupRequest | matchWelcome | matchDisclaimer;
 
         //views with disable backbutton
         var matchComplete = $ionicHistory.currentStateName() == 'tabs.rate.complete' ? true : false;
