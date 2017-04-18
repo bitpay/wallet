@@ -463,16 +463,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.lock', {
-        url: '/lock',
+      .state('tabs.lockSetup', {
+        url: '/lockSetup',
         views: {
           'tab-settings@tabs': {
-            controller: 'lockController',
-            templateUrl: 'views/lock.html',
+            controller: 'lockSetupController',
+            templateUrl: 'views/lockSetup.html',
           }
         }
       })
-      .state('tabs.lock.pin', {
+      .state('tabs.pin', {
         url: '/pin/:fromSettings/:locking',
         views: {
           'tab-settings@tabs': {
@@ -1205,25 +1205,42 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         // Nothing to do
       });
 
-      $ionicPlatform.on('resume', function() {
-        configService.whenAvailable(function(config) {
-          var nextView;
-          var lock = config.lock;
-          if (lock && lock.method == 'fingerprint' && fingerprintService.isAvailable()) {
-            fingerprintService.check('unlockingApp', function(err) {
-              if (err) goTo('lockedView');
-              else if ($ionicHistory.currentStateName() == 'lockedView') goTo('tabs.home');
-            });
-          } else if (lock && lock.method == 'pin') {
-            goTo('pin');
-          }
 
-          function goTo(nextView) {
-            $state.transitionTo(nextView).then(function() {
-              if (nextView == 'lockedView') $ionicHistory.clearHistory();
+      function checkAndApplyLock(defaultView) {
+
+        if (!platformInfo.isCordova && !platformInfo.isDevel) {
+          goTo('tabs.home');
+        }
+
+        function goTo(nextView) {
+          $state.transitionTo(nextView).then(function() {
+            if (nextView == 'lockedView') 
+              $ionicHistory.clearHistory();
+          });
+        };
+
+        configService.whenAvailable(function(config) {
+          var lockMethod = config.lock && config.lock.method;
+          $log.debug('App Lock:' + (lockMethod||'no') );
+
+          if (lockMethod == 'fingerprint' && fingerprintService.isAvailable()) {
+            fingerprintService.check('unlockingApp', function(err) {
+              if (err) 
+                goTo('lockedView');
+
+              if ($ionicHistory.currentStateName() == 'lockedView') 
+                goTo('tabs.home');
             });
-          };
+          } else if (lockMethod == 'pin') {
+            goTo('pin');
+          } else if (defaultView) {
+            goTo(defaultView);
+          }
         });
+      }
+
+      $ionicPlatform.on('resume', function() {
+        checkAndApplyLock();
       });
 
       $ionicPlatform.on('menubutton', function() {
@@ -1266,27 +1283,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-            if (platformInfo.isCordova || platformInfo.isDevel) {
-              startupService.ready();
-              configService.whenAvailable(function(config) {
-                var lock = config.lock;
-                if (fingerprintService.isAvailable() && lock && lock.method == 'fingerprint') {
-                  fingerprintService.check('unlockingApp', function(err) {
-                    if (err) goTo('lockedView');
-                    else goTo('tabs.home');
-                  });
-                } else if (lock && lock.method == 'pin') {
-                  goTo('pin');
-                } else
-                  goTo('tabs.home');
-              });
-            } else goTo('tabs.home');
 
-            function goTo(nextView) {
-              $state.transitionTo(nextView).then(function() {
-                $ionicHistory.clearHistory();
-              });
-            }
+            if (platformInfo.isCordova) 
+              startupService.ready();
+
+            checkAndApplyLock('tabs.home');
           });
         };
         // After everything have been loaded, initialize handler URL
