@@ -1209,12 +1209,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       function checkAndApplyLock(onResume) {
         var defaultView = 'tabs.home';
 
-console.log('[routes.js.1211]'); //TODO
         if (!platformInfo.isCordova && !platformInfo.isDevel) {
           goTo(defaultView);
         }
 
-console.log('[routes.js.1216]'); //TODO
         function goTo(nextView) {
           nextView = nextView || defaultView;
           $state.transitionTo(nextView).then(function() {
@@ -1289,7 +1287,6 @@ console.log('[routes.js.1216]'); //TODO
               historyRoot: true
             });
 
-console.log('[routes.js.1289]'); //TODO
             checkAndApplyLock();
           });
         };
