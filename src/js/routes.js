@@ -1206,6 +1206,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         if (onResume) {
           var now = Math.floor(Date.now() / 1000);
           if (now < openURLService.unlockUntil) {
+            openURLService.unlockUntil = null;
             $log.debug('Skip startup locking');
             return;
           }
