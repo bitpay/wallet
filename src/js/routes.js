@@ -463,16 +463,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.lock', {
-        url: '/lock',
+      .state('tabs.lockSetup', {
+        url: '/lockSetup',
         views: {
           'tab-settings@tabs': {
-            controller: 'lockController',
-            templateUrl: 'views/lock.html',
+            controller: 'lockSetupController',
+            templateUrl: 'views/lockSetup.html',
           }
         }
       })
-      .state('tabs.lock.pin', {
+      .state('tabs.pin', {
         url: '/pin/:fromSettings/:locking',
         views: {
           'tab-settings@tabs': {
@@ -1195,25 +1195,53 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         // Nothing to do
       });
 
-      $ionicPlatform.on('resume', function() {
-        configService.whenAvailable(function(config) {
-          var nextView;
-          var lock = config.lock;
-          if (lock && lock.method == 'fingerprint' && fingerprintService.isAvailable()) {
-            fingerprintService.check('unlockingApp', function(err) {
-              if (err) goTo('lockedView');
-              else if ($ionicHistory.currentStateName() == 'lockedView') goTo('tabs.home');
-            });
-          } else if (lock && lock.method == 'pin') {
-            goTo('pin');
-          }
 
-          function goTo(nextView) {
-            $state.transitionTo(nextView).then(function() {
-              if (nextView == 'lockedView') $ionicHistory.clearHistory();
+      function checkAndApplyLock(onResume) {
+        var defaultView = 'tabs.home';
+
+        if (!platformInfo.isCordova && !platformInfo.isDevel) {
+          goTo(defaultView);
+        }
+
+        if (onResume) {
+          var now = Math.floor(Date.now() / 1000);
+          if (now < openURLService.unlockUntil) {
+            $log.debug('Skip startup locking');
+            return;
+          }
+        }
+
+        function goTo(nextView) {
+          nextView = nextView || defaultView;
+          $state.transitionTo(nextView).then(function() {
+            if (nextView == 'lockedView')
+              $ionicHistory.clearHistory();
+          });
+        };
+
+        startupService.ready();
+
+        configService.whenAvailable(function(config) {
+          var lockMethod = config.lock && config.lock.method;
+          $log.debug('App Lock:' + (lockMethod || 'no'));
+
+          if (lockMethod == 'fingerprint' && fingerprintService.isAvailable()) {
+            fingerprintService.check('unlockingApp', function(err) {
+              if (err)
+                goTo('lockedView');
+              if ($ionicHistory.currentStateName() == 'lockedView' || !onResume)
+                goTo('tabs.home');
             });
-          };
+          } else if (lockMethod == 'pin') {
+            goTo('pin');
+          } else {
+            goTo(defaultView);
+          }
         });
+      }
+
+      $ionicPlatform.on('resume', function() {
+        checkAndApplyLock(true);
       });
 
       $ionicPlatform.on('menubutton', function() {
@@ -1256,33 +1284,14 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-            if (platformInfo.isCordova || platformInfo.isDevel) {
-              startupService.ready();
-              configService.whenAvailable(function(config) {
-                var lock = config.lock;
-                if (fingerprintService.isAvailable() && lock && lock.method == 'fingerprint') {
-                  fingerprintService.check('unlockingApp', function(err) {
-                    if (err) goTo('lockedView');
-                    else goTo('tabs.home');
-                  });
-                } else if (lock && lock.method == 'pin') {
-                  goTo('pin');
-                } else
-                  goTo('tabs.home');
-              });
-            } else goTo('tabs.home');
 
-            function goTo(nextView) {
-              $state.transitionTo(nextView).then(function() {
-                $ionicHistory.clearHistory();
-              });
-            }
+            checkAndApplyLock();
           });
         };
         // After everything have been loaded, initialize handler URL
         $timeout(function() {
           openURLService.init();
-        }, 1000);
+        });
       });
     });
 
