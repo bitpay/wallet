@@ -1,9 +1,15 @@
 'use strict';
 
 angular.module('copayApp.services').factory('openURLService', function($rootScope, $ionicHistory, $document, $log, $state, platformInfo, lodash, profileService, incomingData, appConfigService) {
+  var DELAY_UNLOCK_TIME = 2 * 60;
   var root = {};
 
+  root.unlockUntil = null;
+
   var handleOpenURL = function(args) {
+    root.unlockUntil = Math.floor(Date.now() / 1000) + DELAY_UNLOCK_TIME;
+    $log.debug('Set unlock time until: ' + root.unlockUntil);
+
     $log.info('Handling Open URL: ' + JSON.stringify(args));
     // Stop it from caching the first view as one to return when the app opens
     $ionicHistory.nextViewOptions({
@@ -103,5 +109,5 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
     });
   };
 
-return root;
+  return root;
 });
