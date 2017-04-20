@@ -165,7 +165,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.removeDigit = function() {
-    $scope.amount = $scope.amount.slice(0, -1);
+    $scope.amount = ($scope.amount).toString().slice(0, -1);
     processAmount();
     checkFontSize();
   };
