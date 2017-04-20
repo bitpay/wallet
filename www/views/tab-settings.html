@@ -47,22 +47,22 @@
         <i class="icon bp-arrow-right"></i>
       </a>
       <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.language">
-       <i class="icon big-icon-svg">
-         <img src="img/icon-language.svg" class="bg"/>
-       </i>
-       <span class="setting-title">{{'Language' | translate}}</span>
-       <span class="setting-value">
-         {{currentLanguageName|translate}}
-       </span>
-       <i class="icon bp-arrow-right"></i>
-     </a>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-language.svg" class="bg"/>
+        </i>
+        <span class="setting-title">{{'Language' | translate}}</span>
+        <span class="setting-value" translate>
+          {{currentLanguageName || '...'}}
+        </span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
       <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.unit">
         <i class="icon big-icon-svg">
           <img src="img/icon-unit.svg" class="bg"/>
         </i>
         <span class="setting-title">{{'Bitcoin Unit' | translate}}</span>
         <span class="setting-value">
-          {{unitName}}
+          {{unitName || '...'}}
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
@@ -73,7 +73,7 @@
         </i>
         <span class="setting-title">{{'Alternative Currency' | translate}}</span>
         <span class="setting-value">
-          {{selectedAlternative.name}}
+          {{selectedAlternative.name || '...'}}
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
@@ -83,8 +83,8 @@
           <img src="img/icon-network.svg" class="bg"/>
         </i>
         <span class="setting-title">{{'Bitcoin Network Fee Policy' | translate}}</span>
-        <span class="setting-value">
-          {{feeOpts[currentFeeLevel]|translate}}
+        <span class="setting-value" translate>
+          {{feeOpts[currentFeeLevel] || '...'}}
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
