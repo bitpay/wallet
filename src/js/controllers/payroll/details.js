@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
     'auto': gettextCatalog.getString('This deposit address was verified automatically to be owned by you and associated with the specified wallet.'),
     'not-found': gettextCatalog.getString('We are unable to verify this deposit address. The specified address does not belong to any wallet in this app. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION),
     'not-in-wallet': gettextCatalog.getString('We are unable to verify this deposit address. The address is not associated with the specified wallet. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION),
-    'unknown': gettextCatalog.getString('We are unable to verify this deposit address. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION)
+    'address': gettextCatalog.getString('We are unable to verify this deposit address. ' + ADDRESS_NOT_VERIFIED_RECOMMENDATION)
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
 
   $scope.showVerification = function() {
     var verification = $scope.payrollRecord.deduction.addressVerification;
-    var message = addressVerificationMessage[verification.reason];
+    var message = addressVerificationMessage[verification.reason || 'address'];
     if (verification.verified) {
       return popupService.showAlert(ADDRESS_VERIFIED_TITLE, message);
     } else if (verification.accepted) {

@@ -39,6 +39,10 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     return history;
   };
 
+  root.hasAccess = function(apiContext) {
+    return (bitpayService.getTokenForFacade(bitpayService.FACADE_VISA_USER, apiContext.tokens) != undefined);
+  };
+
   root.sync = function(apiContext, cb) {
     var json = {
       method: 'getDebitCards'

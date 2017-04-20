@@ -448,7 +448,7 @@ angular.module('copayApp.services')
       });
     };
 
-    root.setPayrollRecords = function(network, email, records, cb) {
+    root.setPayrollRecordsOnAccount = function(network, email, records, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
         if (lodash.isString(bitpayAccounts)) {
@@ -487,16 +487,20 @@ angular.module('copayApp.services')
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
-        Object.keys(bitpayAccounts).forEach(function(email) {
+        asyncEach(Object.keys(bitpayAccounts), function(email, callback) {
           var data = bitpayAccounts[email]['payrollRecords'];
           // Remove the existing record and replace it.
           var newRecords = lodash.reject(data, {
             'eid': record.eid
           });
           newRecords.push(record);
-          root.setPayrollRecords(network, email, newRecords, function(err) {
-            cb(err);
+          root.setPayrollRecordsOnAccount(network, email, newRecords, function(err) {
+            if (err) return cb(err);
+            callback();
           });
+        }, function() {
+          // done
+          cb();
         });
       });
     };
@@ -508,14 +512,18 @@ angular.module('copayApp.services')
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
-        Object.keys(bitpayAccounts).forEach(function(email) {
+        asyncEach(Object.keys(bitpayAccounts), function(email, callback) {
           var data = bitpayAccounts[email]['payrollRecords'];
           var newRecords = lodash.reject(data, {
             'eid': id
           });
-          root.setPayrollRecords(network, email, newRecords, function(err) {
-            cb(err);
+          root.setPayrollRecordsOnAccount(network, email, newRecords, function(err) {
+            if (err) return cb(err);
+            callback();
           });
+        }, function() {
+          // done
+          cb();
         });
       });
     };
@@ -763,6 +771,24 @@ angular.module('copayApp.services')
 
     root.removeAmazonGiftCards = function(network, cb) {
       storage.remove('amazonGiftCards-' + network, cb);
+    };
+
+    var asyncEach = function(iterableList, callback, done) {
+      var i = -1;
+      var length = iterableList.length;
+
+      function loop() {
+        i++;
+        if (i === length) {
+          done(); 
+          return;
+        } else if (i < length) {
+          callback(iterableList[i], loop);
+        } else {
+          return;
+        }
+      } 
+      loop();
     };
 
     return root;

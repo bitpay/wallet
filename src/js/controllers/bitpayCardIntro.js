@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
   };
 
   $scope.onAccountSelect = function(account) {
-    if (account == undefined) {
+    if (account == undefined || (account && !bitpayCardService.hasAccess(account.email))) {
       startPairBitPayAccount();
     } else {
       bitpayCardService.sync(account.apiContext, function(err, data) {

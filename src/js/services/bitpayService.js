@@ -4,7 +4,8 @@ angular.module('copayApp.services').factory('bitpayService', function($log, $htt
   var root = {};
 
   var NETWORK = 'livenet';
-  var BITPAY_URL = NETWORK == 'livenet' ? 'https://bitpay.com' : 'https://test.bitpay.com';
+//  var BITPAY_URL = NETWORK == 'livenet' ? 'https://bitpay.com' : 'https://test.bitpay.com';
+  var BITPAY_URL = 'https://andy.bp:8088';
   var BITPAY_API_URL = BITPAY_URL + '/api/v2/';
 
   root.FACADE_PUBLIC = 'public';

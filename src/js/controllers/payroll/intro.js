@@ -61,24 +61,18 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
   var onAfterPairing = function(email) {
     updateAccounts(function() {
       // After pairing either show the summary view or stay here.
-      bitpayAccountService.getAccount(email, function(err, account) {
-        if (err) {
-          return popupService.showAlert(gettextCatalog.getString('Error'), err);
-        }
+      if (account && bitpayPayrollService.hasAccess(email)) {
+        // Has an account with payroll access.
+        bitpayPayrollService.getPayrollRecords(email, function(err, records) {
+          if (err) {
+            return popupService.showAlert(gettextCatalog.getString('Error'), err);
+          }
 
-        if (account && bitpayPayrollService.hasAccess(account.apiContext)) {
-          // Has an account with payroll access.
-          bitpayPayrollService.getPayrollRecords(account.apiContext, function(err, records) {
-            if (err) {
-              return popupService.showAlert(gettextCatalog.getString('Error'), err);
-            }
-
-            if (records.length > 0) {
-              $state.transitionTo('tabs.payroll.summary');
-            }
-          });
-        }
-      });
+          if (records.length > 0) {
+            $state.transitionTo('tabs.payroll.summary');
+          }
+        });
+      }
     });
   };
 
@@ -98,9 +92,9 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
     switch (accountSelectDest) {
       case 'connect':
-        if (account && bitpayPayrollService.hasAccess(account.apiContext)) {
+        if (account && bitpayPayrollService.hasAccess(account)) {
           // Has an account with payroll access.
-          bitpayPayrollService.getPayrollRecords(account.apiContext, function(err, records) {
+          bitpayPayrollService.getPayrollRecords(account, function(err, records) {
             if (err) {
               return popupService.showAlert(gettextCatalog.getString('Error'), err);
             }
@@ -112,7 +106,7 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
             } else {
               // No records on account. Provide an option to begin setup.
               var title = gettextCatalog.getString('No Payroll Settings');
-              var msg = gettextCatalog.getString('The selected BitPay account ({{email}}) does not have any payroll settings.  Would you like to setup payroll on this account?', {
+              var msg = gettextCatalog.getString('The selected BitPay account ({{email}}) does not have any payroll settings to connect.  Would you like to setup payroll on this account?', {
                 email: account.email
               });
               var ok = gettextCatalog.getString('Setup Payroll');
@@ -134,14 +128,26 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
       case 'setup':
       default:
-        if (account && bitpayPayrollService.hasAccess(account.apiContext)) {
+        if (account && bitpayPayrollService.hasAccess(account)) {
           // Has an account with payroll access.
           bitpayPayrollService.bindToBitPayAccount(account);
           $state.transitionTo('tabs.payroll.eligible', {createAccount: false});
 
         } else if (account) {
           // Has an account but no payroll access.
-          return startPairBitPayAccount();
+          // Ask if the user wants to add payroll access to this account.
+          var title = gettextCatalog.getString('No Payroll Access');
+          var msg = gettextCatalog.getString('Do you want to setup access for this BitPay account ({{email}}) to share payroll information with this device?', {
+            email: account.email
+          });
+          var ok = gettextCatalog.getString('Yes');
+          var cancel = gettextCatalog.getString('No');
+
+          return popupService.showConfirm(title, msg, ok, cancel, function(res) {
+            if (res) {
+              return startPairBitPayAccount();
+            }
+          });
 
         } else {
           // 'Create account' selected.

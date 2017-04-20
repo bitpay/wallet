@@ -32,7 +32,7 @@
           {{record.employer.name}}
         </span>
         <span class="item-subtitle">
-          {{record.email}}
+          <b>{{record.deduction.amount}} {{record.deduction.currency}}</b> deposits to <b>{{record.deduction.walletName}}</b>
         </span>
         <div class="icon icon-unlink icon-hotspot" ng-click="removePayrollRecord(record)"></div>
       </div>
