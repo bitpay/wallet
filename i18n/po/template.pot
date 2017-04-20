@@ -257,7 +257,7 @@ msgstr ""
 msgid "Backup Needed"
 msgstr ""
 
-#: src/js/controllers/lock.js:51
+#: src/js/controllers/lockSetup.js:50
 msgid "Backup all livenet wallets before using this function"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "Backup wallet"
 msgstr ""
 
-#: src/js/controllers/lock.js:48
+#: src/js/controllers/lockSetup.js:47
 msgid "Backup your wallet before using this function"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgid "Calculating fee"
 msgstr ""
 
 #: src/js/controllers/confirm.js:494
-#: src/js/controllers/lock.js:100
+#: src/js/controllers/lockSetup.js:102
 #: src/js/services/popupService.js:59
 #: www/views/addressbook.add.html:10
 #: www/views/feedback/send.html:5
@@ -372,7 +372,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/js/controllers/onboarding/tour.js:56
+#: src/js/controllers/onboarding/tour.js:52
 msgid "Cannot Create Wallet"
 msgstr ""
 
@@ -486,7 +486,7 @@ msgstr ""
 msgid "Contacts"
 msgstr ""
 
-#: src/js/controllers/lock.js:99
+#: src/js/controllers/lockSetup.js:101
 #: www/views/onboarding/notifications.html:9
 msgid "Continue"
 msgstr ""
@@ -725,7 +725,7 @@ msgstr ""
 msgid "Derivation Strategy"
 msgstr ""
 
-#: src/js/controllers/lock.js:12
+#: src/js/controllers/lockSetup.js:9
 #: src/js/controllers/tab-settings.js:58
 msgid "Disabled"
 msgstr ""
@@ -771,14 +771,6 @@ msgstr ""
 
 #: src/js/services/bwcError.js:122
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr ""
-
-#: src/js/controllers/lock.js:26
-msgid "Enable Fingerprint"
-msgstr ""
-
-#: src/js/controllers/lock.js:17
-msgid "Enable PIN"
 msgstr ""
 
 #: www/views/tab-scan.html:19
@@ -1374,9 +1366,16 @@ msgstr ""
 msgid "Loading transaction info..."
 msgstr ""
 
-#: www/views/lock.html:3
 #: www/views/tab-settings.html:95
 msgid "Lock App"
+msgstr ""
+
+#: src/js/controllers/lockSetup.js:21
+msgid "Lock by Fingerprint"
+msgstr ""
+
+#: src/js/controllers/lockSetup.js:13
+msgid "Lock by PIN"
 msgstr ""
 
 #: www/views/modals/wallet-balance.html:80
@@ -1821,7 +1820,7 @@ msgstr ""
 msgid "Preparing backup..."
 msgstr ""
 
-#: src/js/routes.js:1196
+#: src/js/routes.js:1186
 msgid "Press again to exit"
 msgstr ""
 
@@ -2005,7 +2004,7 @@ msgstr ""
 msgid "Retrieving inputs information"
 msgstr ""
 
-#: src/js/controllers/onboarding/tour.js:60
+#: src/js/controllers/onboarding/tour.js:56
 msgid "Retry"
 msgstr ""
 
@@ -2295,6 +2294,10 @@ msgstr ""
 msgid "Starting..."
 msgstr ""
 
+#: www/views/lockSetup.html:3
+msgid "Startup Lock"
+msgstr ""
+
 #: src/js/services/feeService.js:12
 msgid "Super Economy"
 msgstr ""
@@ -2341,6 +2344,7 @@ msgid "Terms of Use"
 msgstr ""
 
 #: www/views/tab-create-personal.html:94
+#: www/views/tab-import-phrase.html:55
 msgid "Testnet"
 msgstr ""
 
@@ -2741,6 +2745,7 @@ msgid "Wallet Recovery Phrase is invalid"
 msgstr ""
 
 #: www/views/preferencesAdvanced.html:21
+#: www/views/tab-import-phrase.html:51
 msgid "Wallet Service URL"
 msgstr ""
 
@@ -3026,8 +3031,8 @@ msgstr ""
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr ""
 
-#: src/js/controllers/lock.js:96
-msgid "{{appName}} is protected by Pin. Are you sure you want to disable it?"
+#: src/js/controllers/lockSetup.js:98
+msgid "{{appName}} startup is locked by PIN. Are you sure you want to disable it?"
 msgstr ""
 
 #: www/views/includes/confirm-tx.html:23
