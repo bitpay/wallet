@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
         method: 'pin',
         label: gettextCatalog.getString('Lock by PIN'),
         needsBackup: null,
+        disabled: null,
       },
     ];
 
@@ -20,21 +21,37 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
         method: 'fingerprint',
         label: gettextCatalog.getString('Lock by Fingerprint'),
         needsBackup: null,
+        disabled: null,
       });
     }
 
-    var config = configService.getSync();
-    var method = config.lock && config.lock.method;
-    if (!method) $scope.currentOption = $scope.options[0];
-    else $scope.currentOption = lodash.find($scope.options, {
-      'method': method
-    });
+    checkAndSelectOption();
     processWallets();
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event) {
     init();
   });
+
+  function checkAndSelectOption() {
+    var config = configService.getSync();
+    var method = config.lock && config.lock.method;
+
+    if (!method) {
+      $scope.currentOption = $scope.options[0];
+      $scope.options[1].disabled = false;
+      $scope.options[2].disabled = false;
+    } else {
+      if (method == 'fingerprint') $scope.options[1].disabled = true;
+      if (method == 'pin') $scope.options[2].disabled = true;
+      $scope.currentOption = lodash.find($scope.options, {
+        'method': method
+      });
+    }
+    $timeout(function() {
+      $scope.$apply();
+    });
+  };
 
   function processWallets() {
     var wallets = profileService.getWallets();
@@ -73,9 +90,14 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
     var config = configService.getSync();
     var savedMethod = config.lock && config.lock.method;
 
-    if (!selectedMethod)
-      saveConfig();
-    else if (selectedMethod == 'fingerprint') {
+    if (!selectedMethod) {
+      if (!savedMethod) return;
+      if (savedMethod == 'pin') $state.transitionTo('tabs.pin', {
+        fromSettings: true,
+        locking: false,
+      });
+      else saveConfig();
+    } else if (selectedMethod == 'fingerprint') {
       if (savedMethod == 'pin') {
         askForDisablePin(function(disablePin) {
           if (disablePin) saveConfig('fingerprint');
@@ -116,6 +138,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
+      checkAndSelectOption();
     });
   };
 });
