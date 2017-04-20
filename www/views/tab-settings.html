@@ -89,7 +89,7 @@
         <span class="setting-value">
           {{feeOpts[currentFeeLevel] | translate}}
         </span>
-        <span ng-if="feeOpts[currentFeeLevel]" class="setting-value">
+        <span ng-if="!feeOpts[currentFeeLevel]" class="setting-value">
           ...
         </span>
         <i class="icon bp-arrow-right"></i>
