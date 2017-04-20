@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('createController',
             src = intelTEE;
             break;
           default:
-            this.error = gettextCatalog.getString('Invalid seed source id: ' + $scope.seedSource.id);
+            popupService.showAlert(gettextCatalog.getString('Error'), 'Invalid seed source id');
             return;
         }
 
