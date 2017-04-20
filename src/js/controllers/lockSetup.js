@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('lockSetupController', function($state, $scope, $timeout, $log, configService, popupService, gettextCatalog, appConfigService, fingerprintService, profileService, lodash) {
+angular.module('copayApp.controllers').controller('lockSetupController', function($state, $scope, $timeout, $log, configService, gettextCatalog, fingerprintService, profileService, lodash) {
 
   function init() {
     $scope.options = [
@@ -97,34 +97,18 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
         locking: false,
       });
       else saveConfig();
-    } else if (selectedMethod == 'fingerprint') {
-      if (savedMethod == 'pin') {
-        askForDisablePin(function(disablePin) {
-          if (disablePin) saveConfig('fingerprint');
-          else init();
-        });
-      } else saveConfig('fingerprint');
     } else if (selectedMethod == 'pin') {
       if (savedMethod == 'pin') return;
       $state.transitionTo('tabs.pin', {
         fromSettings: true,
         locking: savedMethod == 'pin' ? false : true
       });
+    } else if (selectedMethod == 'fingerprint') {
+      if (savedMethod == 'fingerprint') return;
+      else saveConfig('fingerprint');
     }
     $timeout(function() {
       $scope.$apply();
-    });
-  };
-
-  function askForDisablePin(cb) {
-    var message = gettextCatalog.getString('{{appName}} startup is locked by PIN. Are you sure you want to disable it?', {
-      appName: appConfigService.nameCase
-    });
-    var okText = gettextCatalog.getString('Continue');
-    var cancelText = gettextCatalog.getString('Cancel');
-    popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-      if (!ok) return cb(false);
-      return cb(true);
     });
   };
 
