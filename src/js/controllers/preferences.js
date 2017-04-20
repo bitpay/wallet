@@ -89,9 +89,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
         value: $scope.wallet.balanceHidden
       };
 
-      if (wallet.isPrivKeyExternal)
-        $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
-
       $scope.touchIdAvailable = fingerprintService.isAvailable();
       $scope.touchIdEnabled = {
         value: config.touchIdFor ? config.touchIdFor[walletId] : null

@@ -8,8 +8,8 @@ angular.module('copayApp.controllers').controller('importController',
     var errors = bwcService.getErrors();
 
     $scope.init = function() {
-      $scope.isDevel = platformInfo.isDevel;
-      $scope.isChromeApp = platformInfo.isChromeApp;
+      $scope.supportsLedger = platformInfo.supportsLedger;
+      $scope.supportsTrezor = platformInfo.supportsTrezor;
       $scope.isCordova = platformInfo.isCordova;
       $scope.formData = {};
       $scope.formData.bwsurl = defaults.bws.url;
@@ -23,17 +23,17 @@ angular.module('copayApp.controllers').controller('importController',
 
       $scope.seedOptions = [];
 
-      if ($scope.isChromeApp) {
+      if ($scope.supportsLedger) {
         $scope.seedOptions.push({
-          id: 'ledger',
-          label: 'Ledger Hardware Wallet',
+          id: walletService.externalSource.ledger.id,
+          label: walletService.externalSource.ledger.longName,
         });
       }
 
-      if ($scope.isChromeApp || $scope.isDevel) {
+      if ($scope.supportsTrezor) {
         $scope.seedOptions.push({
-          id: 'trezor',
-          label: 'Trezor Hardware Wallet',
+          id: walletService.externalSource.trezor.id,
+          label: walletService.externalSource.trezor.longName,
         });
         $scope.formData.seedSource = $scope.seedOptions[0];
       }
@@ -260,14 +260,14 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importTrezor = function(account, isMultisig) {
-      trezor.getInfoForNewWallet(isMultisig, account, function(err, lopts) {
+      trezor.getInfoForNewWallet(isMultisig, account, 'livenet', function(err, lopts) {
         ongoingProcess.clear();
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
 
-        lopts.externalSource = 'trezor';
+        lopts.externalSource = walletService.externalSource.trezor.id;
         lopts.bwsurl = $scope.formData.bwsurl;
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);
@@ -293,7 +293,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       var account = $scope.formData.account;
 
-      if ($scope.formData.seedSource.id == 'trezor') {
+      if ($scope.formData.seedSource.id == walletService.externalSource.trezor.id) {
         if (account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
@@ -302,11 +302,11 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       switch ($scope.formData.seedSource.id) {
-        case ('ledger'):
+        case (walletService.externalSource.ledger.id):
           ongoingProcess.set('connectingledger', true);
           $scope.importLedger(account);
           break;
-        case ('trezor'):
+        case (walletService.externalSource.trezor.id):
           ongoingProcess.set('connectingtrezor', true);
           $scope.importTrezor(account, $scope.formData.isMultisig);
           break;
@@ -316,14 +316,14 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importLedger = function(account) {
-      ledger.getInfoForNewWallet(true, account, function(err, lopts) {
+      ledger.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
         ongoingProcess.clear();
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err);
           return;
         }
 
-        lopts.externalSource = 'ledger';
+        lopts.externalSource = lopts.externalSource = walletService.externalSource.ledger.id;
         lopts.bwsurl = $scope.formData.bwsurl;
         ongoingProcess.set('importingWallet', true);
         $log.debug('Import opts', lopts);

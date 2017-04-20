@@ -3,6 +3,13 @@
   .icon-bitpay {
     background-image: url("../img/icon-bitpay.svg");
   }
+  .warning {
+    color: $v-warning-color;
+  }
+  .centered {
+    width: 100%;
+    text-align: center;
+  }
   .disabled {
     color: $v-light-gray;
   }
