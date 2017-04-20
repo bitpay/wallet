@@ -57,7 +57,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       method: null,
       value: null,
       bannedUntil: null,
-      attempts: null,
     },
 
     // External services
