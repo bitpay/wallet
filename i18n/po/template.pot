@@ -833,6 +833,7 @@ msgstr ""
 #: src/js/controllers/create.js:145
 #: src/js/controllers/create.js:158
 #: src/js/controllers/create.js:165
+#: src/js/controllers/create.js:187
 #: src/js/controllers/create.js:194
 #: src/js/controllers/create.js:212
 #: src/js/controllers/export.js:109
@@ -865,6 +866,7 @@ msgstr ""
 #: src/js/controllers/join.js:119
 #: src/js/controllers/join.js:133
 #: src/js/controllers/join.js:140
+#: src/js/controllers/join.js:163
 #: src/js/controllers/join.js:171
 #: src/js/controllers/join.js:189
 #: src/js/controllers/join.js:97
@@ -1284,11 +1286,6 @@ msgstr ""
 #: src/js/controllers/import.js:232
 #: src/js/controllers/join.js:119
 msgid "Invalid derivation path"
-msgstr ""
-
-#: src/js/controllers/create.js:187
-#: src/js/controllers/join.js:163
-msgid "Invalid seed source id:"
 msgstr ""
 
 #: src/js/controllers/copayers.js:74
