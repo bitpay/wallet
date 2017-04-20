@@ -184,5 +184,13 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
+  root.satToUnit = function(amount) {
+    var config = configService.getSync().wallet.settings;
+    var unitToSatoshi = config.unitToSatoshi;
+    var satToUnit = 1 / unitToSatoshi;
+    var unitDecimals = config.unitDecimals;
+    return parseFloat((amount * satToUnit).toFixed(unitDecimals));
+  };
+
   return root;
 });

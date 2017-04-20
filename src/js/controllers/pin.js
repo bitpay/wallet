@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
   $scope.$on("$ionicView.enter", function(event) {
     configService.whenAvailable(function(config) {
+      if (!config.lock) return;
       $scope.bannedUntil = config.lock.bannedUntil || null;
       if ($scope.bannedUntil) {
         var now = Math.floor(Date.now() / 1000);
@@ -156,12 +157,13 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
   function saveSettings(method, value) {
     var config = configService.getSync();
+    var attempts = config.lock && config.lock.attempts ? config.lock.attempts : 0;
     var opts = {
       lock: {
-        method: method || '',
-        value: value || '',
+        method: method || null,
+        value: value || null,
         bannedUntil: null,
-        attempts: config.lock.attempts + 1,
+        attempts: attempts + 1,
       }
     };
 
@@ -173,7 +175,12 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
   $scope.close = function(delay) {
     $timeout(function() {
-      $ionicHistory.viewHistory().backView ? $ionicHistory.goBack() : $state.go('tabs.home');
+      var shouldReturn = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName != 'starting';
+
+      if (shouldReturn)
+        $ionicHistory.goBack()
+      else
+        $state.go('tabs.home');
     }, delay || 1);
   };
 });

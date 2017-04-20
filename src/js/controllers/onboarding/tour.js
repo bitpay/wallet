@@ -1,10 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('tourController',
-  function($scope, $state, $log, $timeout, $filter, ongoingProcess, platformInfo, profileService, rateService, popupService, gettextCatalog) {
-
-    var isCordova = platformInfo.isCordova;
-    var isWP = platformInfo.isWP;
-    var usePushNotifications = isCordova && !isWP;
+  function($scope, $state, $log, $timeout, $filter, ongoingProcess, profileService, rateService, popupService, gettextCatalog) {
 
     $scope.data = {
       index: 0
@@ -66,15 +62,9 @@ angular.module('copayApp.controllers').controller('tourController',
           ongoingProcess.set('creatingWallet', false);
           var wallet = walletClient;
           var walletId = wallet.credentials.walletId;
-          if (!usePushNotifications) {
-            $state.go('onboarding.backupRequest', {
-              walletId: walletId
-            });
-          } else {
-            $state.go('onboarding.notifications', {
-              walletId: walletId
-            });
-          }
+          $state.go('onboarding.backupRequest', {
+            walletId: walletId
+          });
         });
       }, 300);
     };
