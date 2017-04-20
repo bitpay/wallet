@@ -1,4 +1,4 @@
-<ion-view id="walletDetails">
+<ion-view id="walletDetails" hide-tabs>
 
   <ion-nav-bar ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}">
     <ion-nav-title>{{wallet.name}}</ion-nav-title>
@@ -103,7 +103,7 @@
       <div
         ng-style="{'background-color':wallet.color}"
         class="amount"
-        ng-class="{'collapsible': amountIsCollapsible, 'wallet-background-color-default': !wallet.color}" 
+        ng-class="{'collapsible': amountIsCollapsible, 'wallet-background-color-default': !wallet.color}"
       >
         <div ng-if="!updatingStatus">
 
@@ -238,6 +238,10 @@
                 <div ng-show="btx.action == 'received'" class="ellipsis">
                   <div ng-if="btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
                   <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate>Received</div>
+                  <div class="low-fees" ng-if="btx.lowFees">
+                    <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
+                    <span class="comment" translate>Low fees</span>
+                  </div>
                 </div>
 
                 <div ng-show="btx.action == 'sent'" class="ellipsis">

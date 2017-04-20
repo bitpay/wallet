@@ -1,9 +1,15 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
   // `wallet` is a decorated version of client.
 
   var root = {};
+
+  root.externalSource = {
+    ledger: ledger.description,
+    trezor: trezor.description,
+    intelTEE: intelTEE.description
+  }
 
   root.WALLET_STATUS_MAX_TRIES = 7;
   root.WALLET_STATUS_DELAY_BETWEEN_TRIES = 1.4 * 1000;
@@ -38,6 +44,43 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       txp.signatures = result.signatures;
       return wallet.signTxProposal(txp, cb);
     });
+  };
+
+  var _signWithIntelTEE = function(wallet, txp, cb) {
+    $log.info('Requesting Intel TEE to sign the transaction');
+
+    intelTEE.signTx(wallet.credentials.hwInfo.id, txp, function(err, result) {
+      if (err) return cb(err);
+
+      $log.debug('Intel TEE response', result);
+      txp.signatures = result.Signatures;
+      return wallet.signTxProposal(txp, cb);
+    });
+  };
+
+  root.showMneumonicFromHardware = function(wallet, cb) {
+    switch (wallet.getPrivKeyExternalSourceName()) {
+      case root.externalSource.intelTEE.id:
+        return intelTEE.showMneumonic(wallet.credentials.hwInfo.id, cb);
+        break;
+      default:
+        cb('Error: unrecognized external source');
+        break;
+    }
+  };
+
+  root.showReceiveAddressFromHardware = function(wallet, address, cb) {
+    switch (wallet.getPrivKeyExternalSourceName()) {
+      case root.externalSource.intelTEE.id:
+        root.getAddressObj(wallet, address, function(err, addrObj) {
+          if (err) return cb(err);
+          return intelTEE.showReceiveAddress(wallet.credentials.hwInfo.id, addrObj, cb);
+        });
+        break;
+      default:
+        cb('Error: unrecognized external source');
+        break;
+    }
   };
 
   root.invalidateCache = function(wallet) {
@@ -629,10 +672,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     if (wallet.isPrivKeyExternal()) {
       switch (wallet.getPrivKeyExternalSourceName()) {
-        case 'ledger':
+        case root.externalSource.ledger.id:
           return _signWithLedger(wallet, txp, cb);
-        case 'trezor':
+        case root.externalSource.trezor.id:
           return _signWithTrezor(wallet, txp, cb);
+        case root.externalSource.intelTEE.id:
+          return _signWithIntelTEE(wallet, txp, cb);
         default:
           var msg = 'Unsupported External Key:' + wallet.getPrivKeyExternalSourceName();
           $log.error(msg);
@@ -845,6 +890,21 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getAddressObj = function(wallet, address, cb) {
+    wallet.getMainAddresses({
+      reverse: true
+    }, function(err, addr) {
+      if (err) return cb(err);
+      var addrObj = lodash.find(addr, function(a) {
+        return a.address == address;
+      });
+      var err = null;
+      if (!addrObj) {
+        err = 'Error: specified address not in wallet';
+      }
+      return cb(err, addrObj);
+    });
+  };
 
   root.isReady = function(wallet, cb) {
     if (!wallet.isComplete())

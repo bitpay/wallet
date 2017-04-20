@@ -1,11 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService) {
-
-    var isChromeApp = platformInfo.isChromeApp;
-    var isCordova = platformInfo.isCordova;
-    var isDevel = platformInfo.isDevel;
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService) {
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -67,9 +63,11 @@ angular.module('copayApp.controllers').controller('createController',
       var seedOptions = [{
         id: 'new',
         label: gettextCatalog.getString('Random'),
-      }, {
+        supportsTestnet: true
+      }, {        
         id: 'set',
         label: gettextCatalog.getString('Specify Recovery Phrase...'),
+        supportsTestnet: false
       }];
 
       $scope.seedSource = seedOptions[0];
@@ -81,16 +79,26 @@ angular.module('copayApp.controllers').controller('createController',
       */
 
       if (appConfigService.name == 'copay') {
-        if (n > 1 && isChromeApp) {
+        if (n > 1 && walletService.externalSource.ledger.supported)
           seedOptions.push({
-            id: 'ledger',
-            label: 'Ledger Hardware Wallet',
+            id: walletService.externalSource.ledger.id,
+            label: walletService.externalSource.ledger.longName,
+            supportsTestnet: walletService.externalSource.ledger.supportsTestnet
+          });
+
+        if (walletService.externalSource.trezor.supported) {
+          seedOptions.push({
+            id: walletService.externalSource.trezor.id,
+            label: walletService.externalSource.trezor.longName,
+            supportsTestnet: walletService.externalSource.trezor.supportsTestnet
           });
         }
-        if (isChromeApp || isDevel) {
+
+        if (walletService.externalSource.intelTEE.supported) {
           seedOptions.push({
-            id: 'trezor',
-            label: 'Trezor Hardware Wallet',
+            id: walletService.externalSource.intelTEE.id,
+            label: walletService.externalSource.intelTEE.longName,
+            supportsTestnet: walletService.externalSource.intelTEE.supportsTestnet
           });
         }
       }
@@ -151,23 +159,37 @@ angular.module('copayApp.controllers').controller('createController',
         return;
       }
 
-      if ($scope.seedSource.id == 'ledger' || $scope.seedSource.id == 'trezor') {
+      if ($scope.seedSource.id == walletService.externalSource.ledger.id || $scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id) {
         var account = $scope.formData.account;
         if (!account || account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
-        if ($scope.seedSource.id == 'trezor')
+        if ($scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id)
           account = account - 1;
 
         opts.account = account;
-        ongoingProcess.set('connecting' + $scope.seedSource.id, true);
+        ongoingProcess.set('connecting ' + $scope.seedSource.id, true);
 
-        var src = $scope.seedSource.id == 'ledger' ? ledger : trezor;
+        var src;
+        switch ($scope.seedSource.id) {
+          case walletService.externalSource.ledger.id:
+            src = ledger;
+            break;
+          case walletService.externalSource.trezor.id:
+            src = trezor;
+            break;
+          case walletService.externalSource.intelTEE.id:
+            src = intelTEE;
+            break;
+          default:
+            this.error = gettextCatalog.getString('Invalid seed source id: ' + $scope.seedSource.id);
+            return;
+        }
 
-        src.getInfoForNewWallet(opts.n > 1, account, function(err, lopts) {
-          ongoingProcess.set('connecting' + $scope.seedSource.id, false);
+        src.getInfoForNewWallet(opts.n > 1, account, opts.networkName, function(err, lopts) {
+          ongoingProcess.set('connecting ' + $scope.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
@@ -211,6 +233,6 @@ angular.module('copayApp.controllers').controller('createController',
             }, 100);
           } else $state.go('tabs.home');
         });
-      }, 100);
+      }, 300);
     }
   });

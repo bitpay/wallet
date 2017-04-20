@@ -1,10 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('tourController',
-  function($scope, $state, $log, $timeout, $filter, ongoingProcess, platformInfo, profileService, rateService, popupService, gettextCatalog) {
-
-    var isCordova = platformInfo.isCordova;
-    var isWP = platformInfo.isWP;
-    var usePushNotifications = isCordova && !isWP;
+  function($scope, $state, $log, $timeout, $filter, ongoingProcess, profileService, rateService, popupService, gettextCatalog) {
 
     $scope.data = {
       index: 0
@@ -43,38 +39,34 @@ angular.module('copayApp.controllers').controller('tourController',
     var retryCount = 0;
     $scope.createDefaultWallet = function() {
       ongoingProcess.set('creatingWallet', true);
-      profileService.createDefaultWallet(function(err, walletClient) {
-        if (err) {
-          $log.warn(err);
+      $timeout(function() {
+        profileService.createDefaultWallet(function(err, walletClient) {
+          if (err) {
+            $log.warn(err);
 
-          return $timeout(function() {
-            $log.warn('Retrying to create default wallet.....:' + ++retryCount);
-            if (retryCount > 3) {
-              ongoingProcess.set('creatingWallet', false);
-              popupService.showAlert(
-                gettextCatalog.getString('Cannot Create Wallet'), err,
-                function() {
-                  retryCount = 0;
-                  return $scope.createDefaultWallet();
-                }, gettextCatalog.getString('Retry'));
-            } else {
-              return $scope.createDefaultWallet();
-            }
-          }, 2000);
-        };
-        ongoingProcess.set('creatingWallet', false);
-        var wallet = walletClient;
-        var walletId = wallet.credentials.walletId;
-        if (!usePushNotifications) {
+            return $timeout(function() {
+              $log.warn('Retrying to create default wallet.....:' + ++retryCount);
+              if (retryCount > 3) {
+                ongoingProcess.set('creatingWallet', false);
+                popupService.showAlert(
+                  gettextCatalog.getString('Cannot Create Wallet'), err,
+                  function() {
+                    retryCount = 0;
+                    return $scope.createDefaultWallet();
+                  }, gettextCatalog.getString('Retry'));
+              } else {
+                return $scope.createDefaultWallet();
+              }
+            }, 2000);
+          };
+          ongoingProcess.set('creatingWallet', false);
+          var wallet = walletClient;
+          var walletId = wallet.credentials.walletId;
           $state.go('onboarding.backupRequest', {
             walletId: walletId
           });
-        } else {
-          $state.go('onboarding.notifications', {
-            walletId: walletId
-          });
-        }
-      });
+        });
+      }, 300);
     };
 
     $scope.goBack = function() {

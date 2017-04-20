@@ -347,6 +347,7 @@ angular.module('copayApp.services')
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
           });
+          walletClient.credentials.hwInfo = opts.hwInfo;
         } catch (ex) {
           $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
           return cb(gettextCatalog.getString('Could not create using the specified extended public key'));

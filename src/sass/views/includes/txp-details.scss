@@ -89,6 +89,17 @@
           flex-grow: 1;
         }
       }
+      &.low-fees {
+        border-top: none;
+        display: flex;
+        font-size: 14px;
+        color: #aaa;
+        align-items: center;
+        margin-top: -20px;
+        i {
+          padding-right: 20px;
+        }
+      }
     }
     .item-divider {
       padding-top: 1.2rem;
