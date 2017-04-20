@@ -29,15 +29,18 @@ angular.module('copayApp.controllers').controller('amazonCardsController',
         var index = 0;
         var gcds = $scope.giftCards;
         lodash.forEach(gcds, function(dataFromStorage) {
-          if (dataFromStorage.status == 'PENDING') {
-            $log.debug("creating gift card");
+          if (dataFromStorage.status == 'PENDING' || dataFromStorage.status == 'invalid') {
+            $log.debug("Creating / Updating gift card");
             $scope.updatingPending[dataFromStorage.invoiceId] = true;
+
             amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
+
               $scope.updatingPending[dataFromStorage.invoiceId] = false;
               if (err) {
                 popupService.showAlert('Error creating gift card', err);
                 return;
               }
+
               if (giftCard.status != 'PENDING') {
                 var newData = {};
 

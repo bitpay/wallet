@@ -84,6 +84,10 @@
             <span ng-if="toggleFeeFiat">{{feeFiatStr}}</span>
           </span>
         </div>
+        <div class="item low-fees" ng-if="btx.action == 'received' && btx.lowFees">
+          <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
+          <span translate>This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender</span>
+        </div>
         <div class="item single-line">
           <span class="label" translate>Confirmations</span>
           <span class="item-note">

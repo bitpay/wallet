@@ -112,8 +112,13 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
     $scope.network = amazonService.getNetwork();
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
-      network: $scope.network
+      network: $scope.network,
+      hasFunds: true
     });
+    if (lodash.isEmpty($scope.wallets)) {
+      showErrorAndBack('No wallets with funds');
+      return;
+    }
     $scope.wallet = $scope.wallets[0]; // Default first wallet
   });
 
@@ -140,7 +145,13 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       amazonService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
         if (err) {
           ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-          showError('Error creating BitPay invoice', err);
+
+          if (err && err.message && err.message.match(/suspended/i)) {
+            showError('Service not available', 'Amazon Gift Card Service is not available at this moment. Please try back later.');
+          } else {
+            showError('Could not access Gift Card Service', err);
+          };
+
           return;
         }
 

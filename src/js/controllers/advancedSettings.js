@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, profileService, feeService, storageService, $ionicHistory, $timeout, $ionicScrollDelegate) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -11,7 +11,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.recentTransactionsEnabled = {
       value: config.recentTransactions.enabled
     };
-
     $scope.hideNextSteps = {
       value: config.hideNextSteps.enabled
     };
@@ -31,7 +30,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   $scope.nextStepsChange = function() {
     var opts = {
       hideNextSteps: {
-        enabled:  $scope.hideNextSteps.value
+        enabled: $scope.hideNextSteps.value
       },
     };
     configService.set(opts, function(err) {

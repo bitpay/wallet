@@ -11,13 +11,21 @@
       <div class="header-modal text-center">
         <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="230" ng-click="refreshGiftCard()">
 
+        <div class="m10t">
+          Gift Card Amount:
+          <span class="text-bold">
+            {{card.amount | currency : '$ ' : 2}}
+          </span>
+        </div>
+
+
+        <div class="m10t">
+          Created
+            {{card.date | amTimeAgo}}
+        </div>
+
+
         <div ng-show="card.claimCode">
-          <div class="m10t">
-            Gift Card Amount:
-            <span class="text-bold">
-              {{card.amount | currency : '$ ' : 2}}
-            </span>
-          </div>
           <div ng-show="card.cardStatus !== 'Canceled'">
             Claim code: <span class="text-bold" copy-to-clipboard="card.claimCode">{{card.claimCode}}</span>
           </div>
@@ -42,6 +50,10 @@
             <span class="text-bold" ng-show="card.status == 'PENDING'">
               PENDING
             </span>
+            <span class="text-bold" ng-show="card.status=='invalid'">
+              STILL PENDING
+            </span>
+
             <span class="text-bold" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
               FAILURE
             </span>

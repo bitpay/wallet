@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService) {
 
   var amount;
   var currency;
   var cardId;
+  var sendMax;
 
   $scope.isCordova = platformInfo.isCordova;
 
@@ -49,16 +50,32 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
   };
 
+  var checkDailyLimit = function() {
+    if (currency == 'USD' && amount > 10000) {
+      showErrorAndBack('Top up is limited to USD 10,000 per day');
+      return;
+    }
+
+    bitpayCardService.getRates('USD', function(err, data) {
+      if (err) $log.error(err);
+      $scope.rate = data.rate;
+      if (currency == 'BTC' && (amount * data.rate) > 10000) {
+        showErrorAndBack('Top up is limited to USD 10,000 per day');
+        return;
+      }
+    });
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency ? true : false;
     cardId = data.stateParams.id;
+    sendMax = data.stateParams.useSendMax;
 
     if (!cardId) {
       showErrorAndBack('No card selected');
       return;
     }
-
-    var parsedAmount = bitpayCardService.parseAmount(
+    
+    var parsedAmount = txFormatService.parseAmount(
       data.stateParams.amount, 
       data.stateParams.currency);
 
@@ -79,11 +96,6 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       return;
     }
     $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
-
-    bitpayCardService.getRates(currency, function(err, data) {
-      if (err) $log.error(err);
-      $scope.rate = data.rate;
-    });
 
     bitpayCardService.get({ cardId: cardId, noRefresh: true }, function(err, card) {
       if (err) {
@@ -189,6 +201,32 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    if (sendMax) {
+      ongoingProcess.set('retrievingInputs', true);
+      sendMaxService.getInfo($scope.wallet, function(err, values) {
+        ongoingProcess.set('retrievingInputs', false);
+        if (err) {
+          showErrorAndBack(err);
+          return;
+        }
+        var config = configService.getSync().wallet.settings;
+        var unitName = config.unitName;
+        var amountUnit = txFormatService.satToUnit(values.amount);
+        var parsedAmount = txFormatService.parseAmount(
+          amountUnit, 
+          unitName);
+
+        amount = parsedAmount.amount;
+        currency = parsedAmount.currency;
+        checkDailyLimit();
+        $scope.amountUnitStr = parsedAmount.amountUnitStr;
+        $timeout(function() {
+          $scope.$digest();
+        }, 100);
+      });
+    } else {
+      checkDailyLimit();
+    }
   };
 
   $scope.goBackHome = function() {

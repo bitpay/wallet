@@ -1,10 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('backController', function($scope, $state, $stateParams, platformInfo) {
-
-  var isCordova = platformInfo.isCordova;
-  var isWP = platformInfo.isWP;
-  var usePushNotifications = isCordova && !isWP;
+angular.module('copayApp.controllers').controller('backController', function($scope, $state, $stateParams) {
 
   $scope.importGoBack = function() {
     if ($stateParams.fromOnboarding) $state.go('onboarding.welcome');
@@ -12,8 +8,7 @@ angular.module('copayApp.controllers').controller('backController', function($sc
   };
 
   $scope.onboardingMailSkip = function() {
-    if (!usePushNotifications) $state.go('onboarding.backupRequest');
-    else $state.go('onboarding.notifications');
+    $state.go('onboarding.backupRequest');
   }
 
 });

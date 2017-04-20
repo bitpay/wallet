@@ -107,30 +107,6 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     };
   };
 
-  root.parseAmount = function(amount, currency) {
-    var config = configService.getSync().wallet.settings;
-    var satToBtc = 1 / 100000000;
-    var unitToSatoshi = config.unitToSatoshi;
-    var amountUnitStr;
-
-    // IF 'USD'
-    if (currency) {
-      amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
-    } else {
-      var amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
-      amountUnitStr = txFormatService.formatAmountStr(amountSat);
-      // convert unit to BTC
-      amount = (amountSat * satToBtc).toFixed(8);
-      currency = 'BTC';
-    }
-
-    return {
-      amount: amount, 
-      currency: currency, 
-      amountUnitStr: amountUnitStr
-    };
-  };
-
   root.getSignupUrl = function() {
     return credentials.HOST + '/signup';
   }
