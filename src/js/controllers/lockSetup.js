@@ -5,14 +5,15 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
   function init() {
     $scope.options = [
       {
-        method: null,
+        method: 'none',
         label: gettextCatalog.getString('Disabled'),
+        disabled: false,
       },
       {
         method: 'pin',
         label: gettextCatalog.getString('Lock by PIN'),
-        needsBackup: null,
-        disabled: null,
+        needsBackup: false,
+        disabled: false,
       },
     ];
 
@@ -20,12 +21,12 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
       $scope.options.push({
         method: 'fingerprint',
         label: gettextCatalog.getString('Lock by Fingerprint'),
-        needsBackup: null,
-        disabled: null,
+        needsBackup: false,
+        disabled: false,
       });
     }
 
-    checkAndSelectOption();
+    initMethodSelector();
     processWallets();
   };
 
@@ -33,21 +34,40 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
     init();
   });
 
-  function checkAndSelectOption() {
+  function getSavedMethod() {
     var config = configService.getSync();
-    var method = config.lock && config.lock.method;
+    if (config.lock) return config.lock.method;
+    return 'none';
+  };
 
-    if (!method) {
-      $scope.currentOption = $scope.options[0];
-      $scope.options[1].disabled = false;
-      $scope.options[2].disabled = false;
-    } else {
-      if (method == 'fingerprint') $scope.options[1].disabled = true;
-      if (method == 'pin') $scope.options[2].disabled = true;
-      $scope.currentOption = lodash.find($scope.options, {
-        'method': method
-      });
+  function initMethodSelector() {
+    function disable(method) {
+      lodash.find($scope.options, {
+        method: method
+      }).disabled = true;
+    };
+
+    var savedMethod = getSavedMethod();
+
+    lodash.each($scope.options, function(o) {
+      o.disabled = false;
+    });
+
+    // HACK: Disable untill we allow to change between methods directly
+    if (fingerprintService.isAvailable()) {
+      switch (savedMethod) {
+        case 'pin':
+          disable('fingerprint');
+          break;
+        case 'fingerprint':
+          disable('pin');
+          break;
+      }
     }
+
+    $scope.currentOption = lodash.find($scope.options, {
+      method: savedMethod
+    });
     $timeout(function() {
       $scope.$apply();
     });
@@ -87,42 +107,56 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
   };
 
   $scope.select = function(selectedMethod) {
-    var config = configService.getSync();
-    var savedMethod = config.lock && config.lock.method;
+    var savedMethod = getSavedMethod();
+    if (savedMethod == selectedMethod) return;
 
-    if (!selectedMethod) {
-      if (!savedMethod) return;
-      if (savedMethod == 'pin') $state.transitionTo('tabs.pin', {
-        fromSettings: true,
-        locking: false,
-      });
-      else saveConfig();
-    } else if (selectedMethod == 'pin') {
-      if (savedMethod == 'pin') return;
-      $state.transitionTo('tabs.pin', {
-        fromSettings: true,
-        locking: savedMethod == 'pin' ? false : true
-      });
-    } else if (selectedMethod == 'fingerprint') {
-      if (savedMethod == 'fingerprint') return;
-      else saveConfig('fingerprint');
+    if (selectedMethod == 'none') {
+      disableMethod(savedMethod);
+    } else {
+      enableMethod(selectedMethod);
     }
-    $timeout(function() {
-      $scope.$apply();
-    });
+  };
+
+  function disableMethod(method) {
+    switch (method) {
+      case 'pin':
+        $state.transitionTo('tabs.pin', {
+          action: 'disable'
+        });
+        break;
+      case 'fingerprint':
+        fingerprintService.check('unlockingApp', function(err) {
+          if (err) init();
+          else saveConfig('none');
+        });
+        break;
+    }
+  };
+
+  function enableMethod(method) {
+    switch (method) {
+      case 'pin':
+        $state.transitionTo('tabs.pin', {
+          action: 'setup'
+        });
+        break;
+      case 'fingerprint':
+        saveConfig('fingerprint');
+        break;
+    }
   };
 
   function saveConfig(method) {
     var opts = {
       lock: {
-        method: method || null,
+        method: method,
         value: null,
       }
     };
 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
-      checkAndSelectOption();
+      initMethodSelector();
     });
   };
 });
