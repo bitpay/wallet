@@ -1,33 +1,29 @@
 <div class="wallet-details__item__marker"></div>
-<img class="wallet-details__tx-icon" src="img/icon-proposal-pending.svg" width="40">
+<div style="padding-right: 25px">
+  <img src="img/icon-proposal-pending.svg" width="40">
+</div>
 
 <div class="wallet-details__tx-content" ng-class="{'no-border': $last}">
 
   <div class="wallet-details__tx-title">
     <span ng-show="!tx.merchant">
-      <span ng-show="addressbook[tx.toAddress] && !tx.message">
-        {{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}
-      </span>
-      <span class="ellipsis" ng-show="!addressbook[tx.toAddress] && tx.message">
-        {{tx.message}}
-      </span>
-      <span ng-show="!addressbook[tx.toAddress] && !tx.message" translate>
-        Sending
-      </span>
+      <span ng-if="tx.message" class="ellipsis">{{tx.message}}</span>
+      <span ng-if="!tx.message && addressbook[tx.toAddress]"  class="ellipsis">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
+      <span ng-if="!tx.message && !addressbook[tx.toAddress]"  class="ellipsis" translate>Sending</span>
     </span>
     <span ng-show="tx.merchant">
-      <span ng-show="tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
-      <span ng-show="!tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
+      <span ng-show="tx.merchant.pr.ca" class="ellipsis"><i class="fi-lock"></i> {{tx.merchant.domain}}</span>
+      <span ng-show="!tx.merchant.pr.ca" class="ellipsis"><i class="fi-unlock"></i> {{tx.merchant.domain}}</span>
     </span>
   </div>
 
   <span class="item-note text-right wallet-details__tx-amount">
     <span class="wallet-details__tx-amount wallet-details__tx-amount--sent">
       <span ng-if="tx.action == 'sent'">–</span>
-      <span  class="size-12" ng-if="tx.action == 'invalid'" translate>
+      <span class="size-12" ng-if="tx.action == 'invalid'" translate>
       (possible double spend)
       </span>
-      <span  ng-if="tx.action != 'invalid'">
+      <span ng-if="tx.action != 'invalid'">
       – {{tx.amountStr}}
       </span>
     </span>
