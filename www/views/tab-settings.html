@@ -51,8 +51,11 @@
           <img src="img/icon-language.svg" class="bg"/>
         </i>
         <span class="setting-title">{{'Language' | translate}}</span>
-        <span class="setting-value" translate>
-          {{currentLanguageName || '...'}}
+        <span class="setting-value">
+          {{currentLanguageName | translate}}
+        </span>
+        <span ng-if="!currentLanguageName" class="setting-value">
+          ...
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
@@ -83,8 +86,11 @@
           <img src="img/icon-network.svg" class="bg"/>
         </i>
         <span class="setting-title">{{'Bitcoin Network Fee Policy' | translate}}</span>
-        <span class="setting-value" translate>
-          {{feeOpts[currentFeeLevel] || '...'}}
+        <span class="setting-value">
+          {{feeOpts[currentFeeLevel] | translate}}
+        </span>
+        <span ng-if="feeOpts[currentFeeLevel]" class="setting-value">
+          ...
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
