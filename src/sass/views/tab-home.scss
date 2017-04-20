@@ -53,6 +53,44 @@
         }
       }
     }
+    .loading-block-title {
+      height: 20px;
+      width: 150px;
+      background:-webkit-radial-gradient(#fff, #f7f7f7);
+      background-size: 20px 100px;
+      -webkit-animation: m .6s linear infinite;
+    }
+    .loading-block-body {
+      width: 100%;
+      height: 160px;
+      background: -webkit-radial-gradient(#fff, #f7f7f7);
+      background-size: 25px 100%;
+      -webkit-animation: m .6s linear infinite;
+    }
+    @keyframes m {
+      0% {
+      background-position: 20px 0;
+      }
+      100% {
+      }
+    }
+  }
+  .card-loading-placeholder {
+    width: 100%;
+    margin-bottom: 0;
+  }
+  .loading-placeholder {
+    height: 100%;
+    .row {
+      height: 50%;
+    }
+  }
+  .animate-show-hide.ng-hide {
+    opacity: 0;
+  }
+  .animate-show-hide.ng-hide-add,
+  .animate-show-hide.ng-hide-remove {
+    transition: all linear 0.2s;
   }
   .wallet-details__item.item {
     padding-top: 0;
