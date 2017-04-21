@@ -16,6 +16,18 @@
           <input type="email" id="email" name="email" ng-model="qualifyingData.email" required></input>
         </label>
       </div>
+      <div ng-if="employeeLabelRequired">
+        <div class="explanation">
+          <p translate>Additional information is required.</p>
+          <p translate>Please enter your eligible employer provided ID.</p>
+        </div>
+        <div class="list settings-input-group">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" translate>Employee ID</span>
+            <input type="text" id="label" name="label" ng-model="qualifyingData.label" required></input>
+          </label>
+        </div>
+      </div>
       <button type="submit" class="button button-standard button-primary" ng-disabled="eligibleForm.$invalid" translate>
         Continue
       </button>

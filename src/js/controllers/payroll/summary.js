@@ -14,8 +14,6 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
 
     ongoingProcess.set('loadingPayrollRecords', true);
     bitpayPayrollService.getPayrollRecords(null, function(err, records) {
-      ongoingProcess.set('loadingPayrollRecords', false);
-
       if (err) {
         return showError(err);
       }
@@ -52,6 +50,7 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
           }
         }, function() {
           // done
+          ongoingProcess.set('loadingPayrollRecords', false);
           cb();
         }
       );

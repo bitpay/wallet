@@ -59,7 +59,8 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   // Payroll qualifying data
   // 
   // qualifyingData: {
-  //   email: string
+  //   email: string,
+  //   label: string
   // }
   // 
   // Returns null OR payroll record OR eligibility record
@@ -92,7 +93,8 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //   eligibility: {
   //     eligible: boolean,
   //     qualifyingData: {
-  //       email: string
+  //       email: string,
+  //       label: string
   //     }
   //   }
   // }
@@ -112,8 +114,21 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
 
     bitpayService.post(bitpayService.FACADE_PUBLIC, '', json, function(data) {
       if (data && data.data.error) {
-        return cb(_setError('BitPay service', data));
+        switch (data.data.error) {
+          case 'employee label required':
+            return cb('EMPLOYEE_LABEL_REQUIRED');
+            break;
+
+          case 'employee not found':
+            return cb('EMPLOYEE_NOT_FOUND');
+            break;
+
+          default:
+            return cb(_setError('BitPay service', data));
+            break;
+        }
       }
+
       $log.info('BitPay Check Payroll Eligible: SUCCESS');
       var record = data.data.data;
 

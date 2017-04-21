@@ -4,8 +4,10 @@ angular.module('copayApp.controllers').controller('payrollEligibleController', f
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.createAccount = data.stateParams && (data.stateParams.createAccount == 'true');
+    $scope.employeeLabelRequired = false;
     $scope.qualifyingData = {
-      email: ''
+      email: '',
+      label: ''
     };
   });
 
@@ -13,8 +15,25 @@ angular.module('copayApp.controllers').controller('payrollEligibleController', f
     ongoingProcess.set('checkingPayrollEligible', true);
     bitpayPayrollService.checkIfEligible($scope.qualifyingData, function(err, record) {
       ongoingProcess.set('checkingPayrollEligible', false);
+
       if (err) {
-        return popupService.showAlert(gettextCatalog.getString('Error'), err);
+        switch (err) {
+          case 'EMPLOYEE_LABEL_REQUIRED':
+            $scope.employeeLabelRequired = true;
+            return;
+            break;
+
+          case 'EMPLOYEE_NOT_FOUND':
+            return popupService.showAlert(
+              gettextCatalog.getString('Not Eligible'),
+              gettextCatalog.getString('You are not eligible for bitcoin payroll at this time. ' +
+                'Please contact your employer and ask them to offer bitcoin payroll through BitPay. ' +
+                'If you believe you entered the correct information please contact your employer to confirm your information and eligibility.'));
+
+          default:
+            return popupService.showAlert(gettextCatalog.getString('Error'), err);
+            break;
+        }
       }
 
       if (record.eligibility.eligible && !record.employee.verified) {
@@ -37,16 +56,6 @@ angular.module('copayApp.controllers').controller('payrollEligibleController', f
             gettextCatalog.getString('You are eligible for Bitcoin payroll! ' +
               'Continue payroll setup by tapping the \'Setup\' button on your payroll card in this view.'));
         });
-
-      } else {
-
-        return popupService.showAlert(
-          gettextCatalog.getString('Not Eligible'),
-          gettextCatalog.getString('The email address provided ({{email}}) is not eligible for bitcoin payroll. ' +
-            'Please contact your employer and ask them to offer bitcoin payroll through BitPay. ' +
-            'If you believe you are using the correct email address please contact your employer to confirm your information and eligibility.', {
-            email: record.eligibility.qualifyingData.email
-          }));
       }
     });
   };
