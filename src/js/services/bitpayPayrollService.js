@@ -91,7 +91,6 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //   },
   //   eligibility: {
   //     eligible: boolean,
-  //     createDate: date,
   //     qualifyingData: {
   //       email: string
   //     }
@@ -169,6 +168,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //     familyName: string
   //   },
   //   deduction: {
+  //     created: date,
   //     active: boolean,
   //     address: string,
   //     walletId: string,
