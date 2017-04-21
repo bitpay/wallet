@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollDetailsController', function($scope, $log, $ionicHistory, $state, $timeout, lodash, bitpayPayrollService, txFormatService, configService, profileService, gettextCatalog, rateService, popupService) {
+angular.module('copayApp.controllers').controller('payrollDetailsController', function($scope, $log, $ionicHistory, $state, $timeout, lodash, bitpayPayrollService, txFormatService, configService, profileService, gettextCatalog, rateService, popupService, ongoingProcess) {
 
   var config = configService.getSync().wallet.settings;
 

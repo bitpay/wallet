@@ -173,6 +173,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //     address: string,
   //     walletId: string,
   //     walletName: string,
+  //     label: string,
   //     amount: float,
   //     currency: string,
   //     addressVerification: {
@@ -624,6 +625,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
           address: record.deduction.address,
           walletId: record.deduction.walletId,
           walletName: record.deduction.walletName,
+          label: record.deduction.label,
           amount: record.deduction.amount,
           currency: record.deduction.currency,
           active: record.deduction.active,

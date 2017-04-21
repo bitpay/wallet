@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
   var currentContactsPage;
   var list;
 
-  var amountViewAmountLabel = gettextCatalog.getString('Deduction');
+  var amountViewAmountLabel = gettextCatalog.getString('Deposit Amount');
   var amountViewRecipientLabel = gettextCatalog.getString('Deposit to');
   var amountViewTitle = '';
 
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
     };
 
     // User may have changed alternative currency so init on each view entry.
-    amountViewTitle = gettextCatalog.getString('Enter {{alternativeIsoCode}} Deduction', {alternativeIsoCode: config.alternativeIsoCode});
+    amountViewTitle = gettextCatalog.getString('Enter {{alternativeIsoCode}} Deposit Amount', {alternativeIsoCode: config.alternativeIsoCode});
   });
 
   var updateList = function() {

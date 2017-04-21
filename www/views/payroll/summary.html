@@ -61,6 +61,9 @@
           <img class="full-image" ng-src="{{record.employer.imageUrl}}">
         </div>
         <div class="section">
+          <div class="centered">
+              {{record.deduction.label}}
+          </div>
           <div class="amount">
             {{record.deduction.amount.toFixed(2)}} 
             <span class="unit">

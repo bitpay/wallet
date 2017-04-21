@@ -23,6 +23,44 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
 
         $scope.payrollRecord = record;
         $scope.effectiveDate = formatDate(record.employer.nextEffectiveDate);
+
+        // Deposit amount is in fiat (alternative) currency.
+        var depositAmount = parseFloat(data.stateParams.amount);
+        var btcEstimate = rateService.fromFiat(depositAmount, config.alternativeIsoCode);
+        var btcEstimateStr = txFormatService.formatAmountStr(btcEstimate);
+
+        $scope.depositAmount = depositAmount.toFixed(2);
+        $scope.depositDisplayUnit = config.alternativeIsoCode;
+        $scope.btcEstimate = getDisplayAmount(btcEstimateStr);
+        $scope.btcDisplayUnit = getDisplayUnit(btcEstimateStr);
+
+        $scope.walletName = $scope.payrollRecord.deduction.walletName || gettextCatalog.getString('My Wallet');
+        $scope.label = $scope.payrollRecord.deduction.label || gettextCatalog.getString('My bitcoin pay');
+
+        $scope.recipientType = data.stateParams.recipientType;
+        switch ($scope.recipientType) {
+          case 'address':
+            setRecipientAddress(data.stateParams.toAddress);
+            break;
+          case 'contact':
+            setRecipientContact(data.stateParams.toAddress);
+            break;
+          case 'wallet':
+            $scope.wallets = profileService.getWallets({
+              onlyComplete: true,
+              network: 'livenet'
+            });
+
+            var wallet = lodash.find($scope.wallets, function(w) {
+              return w.name == data.stateParams.toName;
+            });
+            setRecipientWallet(wallet);
+            break;
+        }
+
+        rateService.whenAvailable(function() {
+          $scope.exchangeRate = getCurrentRateStr();
+        });
       });
     } else {
       return showError(
@@ -30,42 +68,6 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
         gettextCatalog.getString('Error'),
         gettextCatalog.getString('No payroll settings specified.'));
     }
-
-  	// Deposit amount is in fiat (alternative) currency.
-    var depositAmount = parseFloat(data.stateParams.amount);
-    var btcEstimate = rateService.fromFiat(depositAmount, config.alternativeIsoCode);
-    var btcEstimateStr = txFormatService.formatAmountStr(btcEstimate);
-
-    $scope.depositAmount = depositAmount.toFixed(2);
-    $scope.depositDisplayUnit = config.alternativeIsoCode;
-    $scope.btcEstimate = getDisplayAmount(btcEstimateStr);
-    $scope.btcDisplayUnit = getDisplayUnit(btcEstimateStr);
-    $scope.walletName = gettextCatalog.getString('My Wallet');
-
-    $scope.recipientType = data.stateParams.recipientType;
-    switch ($scope.recipientType) {
-      case 'address':
-        setRecipientAddress(data.stateParams.toAddress);
-        break;
-      case 'contact':
-        setRecipientContact(data.stateParams.toAddress);
-        break;
-      case 'wallet':
-        $scope.wallets = profileService.getWallets({
-          onlyComplete: true,
-          network: 'livenet'
-        });
-
-        var wallet = lodash.find($scope.wallets, function(w) {
-          return w.name == data.stateParams.toName;
-        });
-        setRecipientWallet(wallet);
-        break;
-    }
-
-    rateService.whenAvailable(function() {
-      $scope.exchangeRate = getCurrentRateStr();
-    });
   });
 
   $scope.showContactSelector = function() {
@@ -96,7 +98,20 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
       if (typeof str != 'undefined') {
         $scope.walletName = str;
       }
-    });    
+    });
+  };
+
+  $scope.editLabel = function() {
+    var opts = {
+      defaultText: $scope.label
+    };
+    var title = gettextCatalog.getString('Label');
+    var message = gettextCatalog.getString('Enter a friendly name for this payroll deposit. This name is used to help you identify these payroll settings.');
+    popupService.showPrompt(title, message, opts, function(str) {
+      if (typeof str != 'undefined') {
+        $scope.label = str;
+      }
+    });
   };
 
   $scope.startPayroll = function() {
@@ -106,7 +121,8 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
       amount: parseFloat($scope.depositAmount),
       currency: $scope.depositDisplayUnit,
       walletId: ($scope.wallet ? $scope.wallet.id : ''),
-      walletName: ($scope.wallet ? $scope.wallet.name : $scope.walletName)
+      walletName: ($scope.wallet ? $scope.wallet.name : $scope.walletName),
+      label: $scope.label
     };
 
     ongoingProcess.set('savingPayrollRecord', true);
