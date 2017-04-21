@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesBitpayServicesController',
-  function($rootScope, $scope, $state, $timeout, $ionicHistory, bitpayAccountService, bitpayCardService, bitpayPayrollService, popupService, gettextCatalog) {
+  function($rootScope, $scope, $state, $timeout, $ionicHistory, lodash, bitpayAccountService, bitpayCardService, bitpayPayrollService, popupService, gettextCatalog) {
 
     $scope.removeAccount = function(account) {
       var title = gettextCatalog.getString('Unlink BitPay Account?');
@@ -80,7 +80,9 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
       });
 
       bitpayPayrollService.getPayrollRecords(null, function(err, records) {
-        $scope.payrollRecords = records;
+        $scope.payrollRecords = lodash.filter(records, function(record) {
+          return record.token != undefined;
+        });
       });
 
       bitpayAccountService.getAccounts(function(err, accounts) {

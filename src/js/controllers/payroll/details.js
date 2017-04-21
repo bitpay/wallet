@@ -94,7 +94,9 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
     if ($scope.payrollRecord.deduction.active) {
       popupService.showConfirm(PAUSE_PAYROLL_TITLE, PAUSE_PAYROLL_MESSAGE, BUTTON_YES, BUTTON_NO, function(res) {
         if (res) {
+          ongoingProcess.set('pausingPayrollRecord', true);
           bitpayPayrollService.pausePayroll($scope.payrollRecord, function(err, record) {
+            ongoingProcess.set('pausingPayrollRecord', false);
             if (err) {
               return showError(err);
             }
@@ -109,7 +111,9 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
       });
     } else {
       // Don't confirm resuming payroll, just do it.
+      ongoingProcess.set('resumingPayrollRecord', true);
       bitpayPayrollService.startPayroll($scope.payrollRecord, function(err, record) {
+        ongoingProcess.set('resumingPayrollRecord', false);
         if (err) {
           return showError(err);
         }
@@ -126,7 +130,9 @@ angular.module('copayApp.controllers').controller('payrollDetailsController', fu
   $scope.stopPayroll = function() {
     popupService.showConfirm(STOP_PAYROLL_TITLE, STOP_PAYROLL_MESSAGE, BUTTON_YES, BUTTON_NO, function(res) {
       if (res) {
+        ongoingProcess.set('cancelingPayrollRecord', true);
         bitpayPayrollService.stopPayroll($scope.payrollRecord, function(err, record) {
+          ongoingProcess.set('cancelingPayrollRecord', false);
           if (err) {
             return showError(err);
           }

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollEligibleController', function($scope, $log, $state, gettextCatalog, bitpayPayrollService, bitpayAccountService, popupService) {
+angular.module('copayApp.controllers').controller('payrollEligibleController', function($scope, $log, $state, gettextCatalog, ongoingProcess, bitpayPayrollService, bitpayAccountService, popupService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.createAccount = data.stateParams && (data.stateParams.createAccount == 'true');
@@ -10,7 +10,9 @@ angular.module('copayApp.controllers').controller('payrollEligibleController', f
   });
 
   $scope.checkIfEligible = function() {
+    ongoingProcess.set('checkingPayrollEligible', true);
     bitpayPayrollService.checkIfEligible($scope.qualifyingData, function(err, record) {
+      ongoingProcess.set('checkingPayrollEligible', false);
       if (err) {
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }

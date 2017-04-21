@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollSummaryController', function($rootScope, $scope, $timeout, $log, $state, $ionicHistory, $ionicScrollDelegate, lodash, gettextCatalog, bitpayService, bitpayAccountService, bitpayPayrollService, popupService, profileService, bitpayInsightService, configService, txFormatService, externalLinkService) {
+angular.module('copayApp.controllers').controller('payrollSummaryController', function($rootScope, $scope, $timeout, $log, $state, $ionicHistory, $ionicScrollDelegate, lodash, gettextCatalog, ongoingProcess, bitpayService, bitpayAccountService, bitpayPayrollService, popupService, profileService, bitpayInsightService, configService, txFormatService, externalLinkService) {
 
   var config = configService.getSync().wallet.settings;
 
@@ -12,7 +12,10 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
     cb = cb || function(){};
     $scope.payrollRecords = [];
 
+    ongoingProcess.set('loadingPayrollRecords', true);
     bitpayPayrollService.getPayrollRecords(null, function(err, records) {
+      ongoingProcess.set('loadingPayrollRecords', false);
+
       if (err) {
         return showError(err);
       }
@@ -56,7 +59,9 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
   };
 
   $scope.recheckEligibility = function(record) {
+    ongoingProcess.set('checkingPayrollEligible', true);
     bitpayPayrollService.recheckIfEligible(record, function(err, record) {
+      ongoingProcess.set('checkingPayrollEligible', false);
       if (err) {
         return popupService.showAlert(gettextCatalog.getString('Error'), err);
       }
@@ -80,26 +85,14 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
     });
   };
 
-  $scope.startPayroll = function(record) {
-    bitpayPayrollService.startPayroll(record, function(err, record) {
-      if (err) {
-        return showError(err);
-      }
-      return popupService.showAlert(
-        gettextCatalog.getString('Bitcoin Payroll Active!'),
-        gettextCatalog.getString('Your next bitcoin payment will be made on {nextEffectiveDate}.', {
-          nextEffectiveDate: formatDate(record.employer.nextEffectiveDate)
-        })
-      );
-    });
-  };
-
   $scope.stopPayroll = function(record) {
     return popupService.showConfirm(
       gettextCatalog.getString('Cancel Payroll Setup'),
       gettextCatalog.getString('Are you sure you want to cancel bitcoin payroll setup?'), null, null, function(res) {
         if (res) {
+          ongoingProcess.set('cancelingPayrollRecord', true);
           bitpayPayrollService.stopPayroll(record, function(err) {
+            ongoingProcess.set('cancelingPayrollRecord', false);
             if (err) {
               return showError(err);
             }

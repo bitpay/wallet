@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollConfirmController', function($scope, $log, $state, $timeout, $ionicScrollDelegate, lodash, bitpayPayrollService, txFormatService, profileService, configService, walletService, gettextCatalog, rateService, popupService, moment, addressbookService, platformInfo) {
+angular.module('copayApp.controllers').controller('payrollConfirmController', function($scope, $log, $state, $timeout, $ionicScrollDelegate, lodash, ongoingProcess, bitpayPayrollService, txFormatService, profileService, configService, walletService, gettextCatalog, rateService, popupService, moment, addressbookService, platformInfo) {
 
   var BITPAY_API_URL = 'https://bitpay.com';
   var config = configService.getSync().wallet.settings;
@@ -109,7 +109,9 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
       walletName: ($scope.wallet ? $scope.wallet.name : $scope.walletName)
     };
 
+    ongoingProcess.set('savingPayrollRecord', true);
     bitpayPayrollService.startPayroll($scope.payrollRecord, function(err, record) {
+      ongoingProcess.set('savingPayrollRecord', false);
       if (err) {
         return showError(err);
       }

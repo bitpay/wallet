@@ -502,6 +502,11 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
         return cb(err);
       }
       asyncEach(records, function(record, callback) {
+        if (!record.token) {
+          // Eligibility records don't have tokens; skip these records.
+          return callback();
+        }
+
         bitpayService.get(bitpayService.FACADE_PAYROLL_USER_RECORD, record.token, function(data) {
           if (data && data.data.error) {
             return cb(data.data.error);
@@ -517,9 +522,9 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
         }, function(data) {
           return cb(_setError('BitPay service', data));
         });
-      }, function() {
-        // done
-        return cb();
+        }, function() {
+          // done
+          return cb();
       });
     });
   };

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('payrollTransactionsController', function($scope, $timeout, $log, $state, lodash, bitpayPayrollService, popupService, gettextCatalog, configService) {
+angular.module('copayApp.controllers').controller('payrollTransactionsController', function($scope, $timeout, $log, $state, lodash, ongoingProcess, bitpayPayrollService, popupService, gettextCatalog, configService) {
 
   var config = configService.getSync().wallet.settings;
 
@@ -58,10 +58,10 @@ angular.module('copayApp.controllers').controller('payrollTransactionsController
 
   $scope.update = function(cb) {
     var dateRange = setDateRange($scope.dateRange.value);
-    $scope.loadingTransactions = true;
 
+    ongoingProcess.set('loadingTxInfo', true);
     bitpayPayrollService.getPayrollTransactions($scope.payrollRecord, dateRange, function(err, txData) {
-      $scope.loadingTransactions = false;
+      ongoingProcess.set('loadingTxInfo', false);
       if (err) {
         return showError(err);        
       }
