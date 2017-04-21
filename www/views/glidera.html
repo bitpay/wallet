@@ -75,7 +75,7 @@
         </a>
         <a class="item item-icon-right"
             ng-show="account.status.userCanSell"
-            href ui-sref="tabs.buyandsell.glidera.amount({nextStep: 'tabs.buyandsell.glidera.sell', currency: currency})">
+            href ui-sref="tabs.buyandsell.glidera.amount({nextStep: 'tabs.buyandsell.glidera.sell', currency: currency})"  no-low-fee>
           <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="25" class="item-img-sell">
           Sell Bitcoin
           <span class="item-note" ng-show="account.price.sell">
