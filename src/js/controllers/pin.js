@@ -38,13 +38,12 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
     $log.debug('Attempts to unlock:', $scope.currentAttempts);
     if ($scope.currentAttempts === ATTEMPT_LIMIT) {
       $scope.currentAttempts = 0;
-      var limitTime = Math.floor(Date.now() / 1000) + ATTEMPT_LOCK_OUT_TIME;
-      saveFailedAttempt(limitTime);
+      var bannedUntil = Math.floor(Date.now() / 1000) + ATTEMPT_LOCK_OUT_TIME;
+      saveFailedAttempt(bannedUntil);
     }
   };
 
-  function lockTimeControl(limitTime) {
-    $scope.limitTimeExpired = false;
+  function lockTimeControl(bannedUntil) {
     setExpirationTime();
 
     var countDown = $interval(function() {
@@ -53,12 +52,11 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
     function setExpirationTime() {
       var now = Math.floor(Date.now() / 1000);
-      if (now > limitTime) {
-        $scope.limitTimeExpired = true;
+      if (now > bannedUntil) {
         if (countDown) reset();
       } else {
         $scope.disableButtons = true;
-        var totalSecs = limitTime - now;
+        var totalSecs = bannedUntil - now;
         var m = Math.floor(totalSecs / 60);
         var s = totalSecs % 60;
         $scope.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
@@ -130,6 +128,7 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
       case 'check':
         if (isMatch(currentPin)) return $scope.close();
         showError();
+        checkAttempts();
         break;
     }
   };
@@ -203,7 +202,7 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
-      lockTimeControl(limitTime);
+      lockTimeControl(bannedUntil);
     });
   };
 
