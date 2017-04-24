@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2017-04-21 12:51-0400\n"
+"PO-Revision-Date: 2017-04-24 08:26-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -461,7 +461,7 @@ msgstr "Подтвердить &amp; Завершить"
 
 #: www/views/pin.html:9
 msgid "Confirm your PIN"
-msgstr ""
+msgstr "Подтвердите Ваш PIN-код"
 
 #: src/js/services/walletService.js:938
 msgid "Confirm your new spending password"
@@ -1252,7 +1252,7 @@ msgstr "Не все совладельцы присоединились"
 
 #: www/views/pin.html:11
 msgid "Incorrect PIN, try again."
-msgstr ""
+msgstr "Неверный PIN-код, попробуйте снова."
 
 #: src/js/services/bwcError.js:113
 msgid "Incorrect address network"
