@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2017-04-21 12:51-0400\n"
+"PO-Revision-Date: 2017-04-24 08:26-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -1380,11 +1380,11 @@ msgstr "アプリをロックする"
 
 #: src/js/controllers/lockSetup.js:21
 msgid "Lock by Fingerprint"
-msgstr ""
+msgstr "指紋認証でロック"
 
 #: src/js/controllers/lockSetup.js:13
 msgid "Lock by PIN"
-msgstr ""
+msgstr "PINでロック"
 
 #: www/views/modals/wallet-balance.html:80
 msgid "Locked"
@@ -2306,7 +2306,7 @@ msgstr "開始中..."
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
-msgstr ""
+msgstr "起動ロック"
 
 #: src/js/services/feeService.js:12
 msgid "Super Economy"
@@ -3045,7 +3045,7 @@ msgstr "{{appName}}はブロックチェーンの情報を取得したり参加�
 
 #: src/js/controllers/lockSetup.js:98
 msgid "{{appName}} startup is locked by PIN. Are you sure you want to disable it?"
-msgstr ""
+msgstr "{{appName}} の起動はPINによって保護されています。PINを無効にしてもよろしいですか。"
 
 #: www/views/includes/confirm-tx.html:23
 msgid "{{feeRateStr}} of the transaction"
