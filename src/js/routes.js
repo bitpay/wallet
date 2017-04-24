@@ -126,7 +126,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('pin', {
-        url: '/pin/',
+        url: '/pin/:action',
         controller: 'pinController',
         templateUrl: 'views/pin.html',
       })
@@ -473,7 +473,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.pin', {
-        url: '/pin/:fromSettings/:locking',
+        url: '/pin/:action',
         views: {
           'tab-settings@tabs': {
             controller: 'pinController',
@@ -1214,7 +1214,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         function goTo(nextView) {
           nextView = nextView || defaultView;
-          $state.transitionTo(nextView).then(function() {
+          $state.transitionTo(nextView, {
+            action: 'check'
+          }).then(function() {
             if (nextView == 'lockedView')
               $ionicHistory.clearHistory();
           });
@@ -1230,7 +1232,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             fingerprintService.check('unlockingApp', function(err) {
               if (err)
                 goTo('lockedView');
-              if ($ionicHistory.currentStateName() == 'lockedView' || !onResume)
+              else if ($ionicHistory.currentStateName() == 'lockedView' || !onResume)
                 goTo('tabs.home');
             });
           } else if (lockMethod == 'pin') {
