@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2017-04-21 12:51-0400\n"
+"PO-Revision-Date: 2017-04-24 08:26-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -208,7 +208,7 @@ msgstr "Sei osservato?"
 
 #: src/js/controllers/preferencesExternal.js:15
 msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr ""
+msgstr "Siete osservati? Chiunque con la vostra frase di recupero può accedere o spendere i vostri bitcoin."
 
 #: src/js/controllers/copayers.js:42
 msgid "Are you sure you want to cancel and delete this wallet?"
@@ -268,7 +268,7 @@ msgstr "Backup necessario"
 
 #: src/js/controllers/lockSetup.js:50
 msgid "Backup all livenet wallets before using this function"
-msgstr ""
+msgstr "Fai un backup di tutti i portafogli sulla livenet prima di utilizzare questa funzione"
 
 #: www/views/preferences.html:41
 #: www/views/tab-settings.html:120
@@ -286,7 +286,7 @@ msgstr "Backup portafoglio"
 
 #: src/js/controllers/lockSetup.js:47
 msgid "Backup your wallet before using this function"
-msgstr ""
+msgstr "Eseguire il backup del tuo portafoglio prima di utilizzare questa funzione"
 
 #: src/js/services/profileService.js:430
 msgid "Bad wallet invitation"
@@ -1378,11 +1378,11 @@ msgstr "Blocca app"
 
 #: src/js/controllers/lockSetup.js:21
 msgid "Lock by Fingerprint"
-msgstr ""
+msgstr "Blocco con impronte digitali"
 
 #: src/js/controllers/lockSetup.js:13
 msgid "Lock by PIN"
-msgstr ""
+msgstr "Blocca tramite PIN"
 
 #: www/views/modals/wallet-balance.html:80
 msgid "Locked"
@@ -1398,7 +1398,7 @@ msgstr "Locktime in effetto. Si prega di attendere per rimuovere questa proposta
 
 #: www/views/walletDetails.html:243
 msgid "Low fees"
-msgstr ""
+msgstr "Commissioni basse"
 
 #: www/views/paymentUri.html:13
 msgid "Make a payment to"
@@ -1517,7 +1517,7 @@ msgstr "Ancora nessun contatto"
 
 #: www/views/preferencesExternal.html:12
 msgid "No hardware information available."
-msgstr ""
+msgstr "Nessuna informazione del'hardware disponibile."
 
 #: www/views/tab-import-hardware.html:3
 msgid "No hardware wallets supported on this device"
@@ -1623,7 +1623,7 @@ msgstr "In questa schermata puoi vedere tutti i portafogli, gli account e i beni
 
 #: www/views/lockedView.html:14
 msgid "One-touch Sign In"
-msgstr ""
+msgstr "Accesso one-touch"
 
 #: src/js/controllers/tab-settings.js:47
 msgid "Open"
@@ -1800,7 +1800,7 @@ msgstr "Inserisci il tuo PIN"
 
 #: www/views/lockedView.html:15
 msgid "Please place your fingertip on the scanner to verify your identity"
-msgstr ""
+msgstr "Si prega di mettere la punta del dito sullo scanner per verificare la tua identità"
 
 #: www/views/backup.html:46
 msgid "Please tap each word in the correct order."
@@ -2225,7 +2225,7 @@ msgstr "Portafoglio Condiviso"
 
 #: www/views/preferencesExternal.html:34
 msgid "Show Recovery Phrase"
-msgstr ""
+msgstr "Visualizza Frase di Recupero"
 
 #: www/views/tab-receive.html:58
 msgid "Show address"
@@ -2302,7 +2302,7 @@ msgstr "Avvio..."
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
-msgstr ""
+msgstr "Blocco all'avvio"
 
 #: src/js/services/feeService.js:12
 msgid "Super Economy"
@@ -2491,7 +2491,7 @@ msgstr "Questa frase di recupero è stata creata con una password. Per recuperar
 
 #: www/views/tx-details.html:89
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
-msgstr ""
+msgstr "Questa operazione potrebbe richiedere molto tempo per essere confermata o potrebbe essere abbandonata a causa delle commissioni basse impostate dal mittente"
 
 #: www/views/walletDetails.html:116
 #: www/views/walletDetails.html:35
@@ -3039,7 +3039,7 @@ msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per inform
 
 #: src/js/controllers/lockSetup.js:98
 msgid "{{appName}} startup is locked by PIN. Are you sure you want to disable it?"
-msgstr ""
+msgstr "L'avvio di {{appName}} è bloccato da un PIN. Sei sicuro volerlo disattivare?"
 
 #: www/views/includes/confirm-tx.html:23
 msgid "{{feeRateStr}} of the transaction"

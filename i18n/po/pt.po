@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2017-04-21 12:51-0400\n"
+"PO-Revision-Date: 2017-04-24 08:26-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -208,7 +208,7 @@ msgstr "Você está sendo vigiado?"
 
 #: src/js/controllers/preferencesExternal.js:15
 msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr ""
+msgstr "Você está sendo observado? Qualquer pessoa com sua frase de recuperação pode acessar ou gastar seu bitcoin."
 
 #: src/js/controllers/copayers.js:42
 msgid "Are you sure you want to cancel and delete this wallet?"
@@ -268,7 +268,7 @@ msgstr "Cópia de segurança necessária"
 
 #: src/js/controllers/lockSetup.js:50
 msgid "Backup all livenet wallets before using this function"
-msgstr ""
+msgstr "Faça backup de todas as carteiras do livenet antes de usar esta função"
 
 #: www/views/preferences.html:41
 #: www/views/tab-settings.html:120
@@ -286,7 +286,7 @@ msgstr "Criar cópia da carteira"
 
 #: src/js/controllers/lockSetup.js:47
 msgid "Backup your wallet before using this function"
-msgstr ""
+msgstr "Faça backup da sua carteira antes de usar esta função"
 
 #: src/js/services/profileService.js:430
 msgid "Bad wallet invitation"
@@ -399,7 +399,7 @@ msgstr "Certificado por"
 
 #: www/views/preferencesExternal.html:19
 msgid "Check installation and retry."
-msgstr ""
+msgstr "Verifique a instalação e tente novamente."
 
 #: www/views/tab-import-file.html:4
 msgid "Choose a backup file from your computer"
@@ -461,7 +461,7 @@ msgstr "Confirmar &amp; Terminado"
 
 #: www/views/pin.html:9
 msgid "Confirm your PIN"
-msgstr ""
+msgstr "Confirme o seu PIN"
 
 #: src/js/services/walletService.js:938
 msgid "Confirm your new spending password"
@@ -737,7 +737,7 @@ msgstr "Estratégia de derivação"
 #: src/js/controllers/lockSetup.js:9
 #: src/js/controllers/tab-settings.js:58
 msgid "Disabled"
-msgstr ""
+msgstr "Desativado"
 
 #: www/views/includes/backupNeededPopup.html:10
 #: www/views/onboarding/backupRequest.html:12
@@ -1097,7 +1097,7 @@ msgstr "Carteira de hardware"
 
 #: www/views/preferencesExternal.html:18
 msgid "Hardware not connected."
-msgstr ""
+msgstr "Hardware não conectado."
 
 #: www/views/import.html:20
 msgid "Hardware wallet"
@@ -1252,7 +1252,7 @@ msgstr "Carteira incompleta"
 
 #: www/views/pin.html:11
 msgid "Incorrect PIN, try again."
-msgstr ""
+msgstr "PIN incorreto, tente novamente."
 
 #: src/js/services/bwcError.js:113
 msgid "Incorrect address network"
@@ -1374,15 +1374,15 @@ msgstr "A carregar informação da transação..."
 
 #: www/views/tab-settings.html:95
 msgid "Lock App"
-msgstr ""
+msgstr "Bloquear aplicativo"
 
 #: src/js/controllers/lockSetup.js:21
 msgid "Lock by Fingerprint"
-msgstr ""
+msgstr "Bloquear por impressão digital"
 
 #: src/js/controllers/lockSetup.js:13
 msgid "Lock by PIN"
-msgstr ""
+msgstr "Bloquear por PIN"
 
 #: www/views/modals/wallet-balance.html:80
 msgid "Locked"
@@ -1398,7 +1398,7 @@ msgstr "Bloqueio de tempo em ação. Por favor espere para remover esta proposta
 
 #: www/views/walletDetails.html:243
 msgid "Low fees"
-msgstr ""
+msgstr "Baixas taxas"
 
 #: www/views/paymentUri.html:13
 msgid "Make a payment to"
@@ -1517,7 +1517,7 @@ msgstr "Ainda não existem contactos"
 
 #: www/views/preferencesExternal.html:12
 msgid "No hardware information available."
-msgstr ""
+msgstr "Nenhuma informação de hardware disponível."
 
 #: www/views/tab-import-hardware.html:3
 msgid "No hardware wallets supported on this device"
@@ -1623,7 +1623,7 @@ msgstr "Nesta tela você pode ver todas as suas carteiras, contas e ativos."
 
 #: www/views/lockedView.html:14
 msgid "One-touch Sign In"
-msgstr ""
+msgstr "Um toque para Entrar"
 
 #: src/js/controllers/tab-settings.js:47
 msgid "Open"
@@ -1796,11 +1796,11 @@ msgstr "Por favor, digite a frase de recuperação da carteira"
 
 #: www/views/pin.html:8
 msgid "Please enter your PIN"
-msgstr ""
+msgstr "Introduza o seu PIN"
 
 #: www/views/lockedView.html:15
 msgid "Please place your fingertip on the scanner to verify your identity"
-msgstr ""
+msgstr "Coloque a ponta do dedo no scanner para verificar sua identidade"
 
 #: www/views/backup.html:46
 msgid "Please tap each word in the correct order."
@@ -2041,7 +2041,7 @@ msgstr "Pesquisando endereços por fundos"
 
 #: www/views/lockedView.html:17
 msgid "Scan again"
-msgstr ""
+msgstr "Digitalizar novamente"
 
 #: src/js/services/fingerprintService.js:56
 msgid "Scan your fingerprint please"
@@ -2225,11 +2225,11 @@ msgstr "Compartilhar Carteira"
 
 #: www/views/preferencesExternal.html:34
 msgid "Show Recovery Phrase"
-msgstr ""
+msgstr "Mostrar Frase de Recuperação"
 
 #: www/views/tab-receive.html:58
 msgid "Show address"
-msgstr ""
+msgstr "Mostrar endereço"
 
 #: www/views/join.html:45
 #: www/views/tab-create-personal.html:24
@@ -2282,15 +2282,15 @@ msgstr "Especifique a frase de recuperação..."
 
 #: src/js/services/bwcError.js:92
 msgid "Spend proposal is not accepted"
-msgstr ""
+msgstr "A proposta de gasto não é aceita"
 
 #: src/js/services/bwcError.js:95
 msgid "Spend proposal not found"
-msgstr ""
+msgstr "Proposta de pagamento não encontrada"
 
 #: src/js/services/bwcError.js:137
 msgid "Spending Password needed"
-msgstr ""
+msgstr "Digitar a senha é necessária"
 
 #: www/views/tab-send.html:24
 msgid "Start sending bitcoin"
@@ -2302,7 +2302,7 @@ msgstr "A iniciar..."
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
-msgstr ""
+msgstr "Bloqueio de Inicialização"
 
 #: src/js/services/feeService.js:12
 msgid "Super Economy"
@@ -2314,11 +2314,11 @@ msgstr "Limpar"
 
 #: www/views/paperWallet.html:3
 msgid "Sweep paper wallet"
-msgstr ""
+msgstr "Varrer a carteira de papel"
 
 #: src/js/services/onGoingProcess.js:33
 msgid "Sweeping Wallet..."
-msgstr ""
+msgstr "Carteira de varredura..."
 
 #: www/views/preferencesDeleteWallet.html:16
 msgid "THIS ACTION CANNOT BE REVERSED"
@@ -2326,7 +2326,7 @@ msgstr "ESTA AÇÃO NÃO PODE SER REVERTIDA"
 
 #: www/views/onboarding/welcome.html:5
 msgid "Take control of your money,<br>get started with bitcoin."
-msgstr ""
+msgstr "Assuma o controle de seu dinheiro, <br> começar com bitcoin."
 
 #: www/views/walletDetails.html:140
 #: www/views/walletDetails.html:60
@@ -2367,23 +2367,23 @@ msgstr "Obrigado!"
 
 #: src/js/controllers/feedback/send.js:73
 msgid "That's exciting to hear. We'd love to earn that fifth star from you – how could we improve your experience?"
-msgstr ""
+msgstr "Isso é emocionante de ouvir. Gostaríamos de ganhar essa quinta estrela de você - como poderíamos melhorar sua experiência?"
 
 #: src/js/services/ledger.js:152
 msgid "The Ledger Chrome application is not installed"
-msgstr ""
+msgstr "O aplicativo Ledger Chrome não está instalado"
 
 #: www/views/modals/wallet-balance.html:55
 msgid "The amount of bitcoin immediately spendable from this wallet."
-msgstr ""
+msgstr "A quantidade de bitcoin imediatamente spendable desta carteira."
 
 #: www/views/modals/wallet-balance.html:93
 msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr ""
+msgstr "A quantidade de bitcoin armazenada nesta carteira que é alocada como entradas para suas propostas de transação pendentes. O valor é determinado usando saídas de transação não utilizadas associadas a essa carteira e podem ser maiores do que os valores reais associados às suas propostas de transações pendentes."
 
 #: www/views/modals/wallet-balance.html:74
 msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
-msgstr ""
+msgstr "A quantidade de bitcoin armazenada nesta carteira com menos de 1 confirmação blockchain."
 
 #: www/views/tab-import-phrase.html:5
 msgid "The derivation path"
@@ -2391,23 +2391,23 @@ msgstr "O caminho de derivação"
 
 #: www/views/onboarding/tour.html:32
 msgid "The exchange rate changes with the market."
-msgstr ""
+msgstr "A taxa de câmbio muda com o mercado."
 
 #: www/views/preferencesFee.html:12
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
-msgstr ""
+msgstr "Quanto maior a taxa, maior o incentivo um mineiro tem que incluir essa transação em um bloco. As taxas atuais são determinadas com base na carga da rede e na política selecionada."
 
 #: www/views/addresses.html:65
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
-msgstr ""
+msgstr "O número máximo de endereços não utilizados consecutivos (20) foi atingido. Quando um de seus endereços não utilizados recebe um pagamento, um novo endereço será gerado e mostrado na sua guia Receber."
 
 #: src/js/controllers/onboarding/terms.js:21
 msgid "The official English Terms of Service are available on the BitPay website."
-msgstr ""
+msgstr "Os Termos de Serviço oficiais estão disponíveis no site BitPay."
 
 #: www/views/tab-import-phrase.html:4
 msgid "The password of the recovery phrase (if set)"
-msgstr ""
+msgstr "A senha da frase de recuperação (se configurada)"
 
 #: src/js/services/walletService.js:1044
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -2422,39 +2422,39 @@ msgstr "O pagamento foi removido pelo criador"
 #: www/views/tab-create-shared.html:90
 #: www/views/tab-import-phrase.html:38
 msgid "The recovery phrase could require a password to be imported"
-msgstr ""
+msgstr "A frase de recuperação pode exigir que uma senha seja importada"
 
 #: src/js/services/bwcError.js:56
 msgid "The request could not be understood by the server"
-msgstr ""
+msgstr "O pedido não pôde ser entendido pelo servidor"
 
 #: www/views/addresses.html:66
 msgid "The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated."
-msgstr ""
+msgstr "O processo de restauração irá parar quando 20 endereços são gerados em uma linha que não contêm fundos. Para gerar segurança mais endereços, fazer um pagamento a um dos endereços não utilizados que já foi gerado."
 
 #: src/js/services/bwcError.js:98
 msgid "The spend proposal is not pending"
-msgstr ""
+msgstr "A proposta de gasto não está pendente"
 
 #: www/views/modals/wallet-balance.html:36
 msgid "The total amount of bitcoin stored in this wallet."
-msgstr ""
+msgstr "A quantidade total de bitcoin armazenado nesta carteira."
 
 #: www/views/preferencesHistory.html:27
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
-msgstr ""
+msgstr "O histórico de transações e todas as novas transações recebidas são armazenados em cache no aplicativo. Este recurso limpa isso e sincroniza novamente a partir do servidor"
 
 #: www/views/tab-import-phrase.html:6
 msgid "The wallet service URL"
-msgstr ""
+msgstr "O URL do serviço carteira"
 
 #: www/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
-msgstr ""
+msgstr "Não há carteiras para fazer esse pagamento"
 
 #: src/js/controllers/tab-home.js:37
 msgid "There is a new version of {{appName}} available"
-msgstr ""
+msgstr "Existe uma nova versão do {{appName}} disponível"
 
 #: src/js/controllers/import.js:196
 #: src/js/controllers/import.js:220
@@ -2465,7 +2465,7 @@ msgstr "Existe um erro no formulário"
 #: src/js/controllers/feedback/send.js:61
 #: src/js/controllers/feedback/send.js:65
 msgid "There's obviously something we're doing wrong."
-msgstr ""
+msgstr "Obviamente há algo que estamos fazendo de errado."
 
 #: src/js/controllers/feedback/rateCard.js:38
 msgid "This app is fantastic!"
@@ -2473,21 +2473,21 @@ msgstr "Esta aplicação é fantástica!"
 
 #: www/views/onboarding/tour.html:42
 msgid "This app stores your bitcoin with cutting-edge security."
-msgstr ""
+msgstr "Este aplicativo armazena seu bitcoin com segurança de ponta."
 
 #: src/js/controllers/confirm.js:471
 msgid "This bitcoin payment request has expired."
-msgstr ""
+msgstr "Este bitcoin pagamento pedido expirou."
 
 #: www/views/join.html:108
 #: www/views/tab-create-personal.html:79
 #: www/views/tab-create-shared.html:109
 msgid "This password cannot be recovered. If the password is lost, there is no way you could recover your funds."
-msgstr ""
+msgstr "Esta senha não pode ser recuperada. Se a senha for perdida, não há nenhuma maneira que você poderia recuperar seus fundos."
 
 #: www/views/backup.html:24
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
-msgstr ""
+msgstr "Esta frase de recuperação foi criada com uma senha. Para recuperar esta carteira, tanto a frase de recuperação como a senha são necessárias."
 
 #: www/views/tx-details.html:89
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
@@ -2859,11 +2859,11 @@ msgstr ""
 
 #: src/js/controllers/feedback/send.js:77
 msgid "We're always looking for ways to improve {{appName}}."
-msgstr ""
+msgstr "Estamos sempre procurando maneiras de melhorar o {{appName}}."
 
 #: src/js/controllers/feedback/send.js:83
 msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
-msgstr ""
+msgstr "Estamos sempre procurando maneiras de melhorar o {{appName}}. Como melhorar sua experiência?"
 
 #: www/views/preferencesLanguage.html:16
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
