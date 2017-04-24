@@ -147,7 +147,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
             var outputs = [];
             var toAddress = payProDetails.toAddress;
             var amountSat = payProDetails.amount;
-            var comment = 'Top up ' + amount + ' ' + currency + ' to Debit Card';
+            var comment = 'Top up ' + amount + ' ' + currency + ' to Debit Card (' + $scope.cardInfo.lastFourDigits + ')';
 
             outputs.push({
               'toAddress': toAddress,
