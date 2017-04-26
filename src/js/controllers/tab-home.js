@@ -194,7 +194,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         if (err) $log.error(err);
         $scope.txps = txps;
         $scope.txpsN = n;
-        $scope.txpsFinished = true;
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();
@@ -226,7 +225,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           }
           if (++j == i) {
             updateTxps();
-            $scope.walletsFinished = true;
           }
         });
       });
@@ -254,7 +252,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
         $scope.notifications = notifications;
         $scope.notificationsN = total;
-        $scope.notificationsFinished = true;
         $timeout(function() {
           $ionicScrollDelegate.resize();
           $scope.$apply();

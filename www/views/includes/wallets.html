@@ -8,7 +8,7 @@
           </i>
           <span class="wallet-name">{{wallet.name || wallet.id}}</span>
           <span class="item-note m10l" ng-if="!wallet.balanceHidden">
-            {{wallet.status.availableBalanceStr || '...'}}
+            {{wallet.status.availableBalanceStr}}
           </span>
           <span class="item-note m10l" ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
         </div>
