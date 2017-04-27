@@ -44,7 +44,7 @@ $relish-success: 1.3s;
     color: $v-dark-gray;
     font-size: 1.2rem;
     font-weight: bold;
-    margin: 3rem 0 1rem;
+    margin: 2rem 0 1rem;
   }
   .prompt {
     margin: 1rem 1.5rem;
@@ -62,7 +62,6 @@ $relish-success: 1.3s;
   #collect-email {
     opacity: 1;
     background: #fff;
-    height: 25rem;
     animation-name: topBottom;
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
@@ -80,7 +79,23 @@ $relish-success: 1.3s;
     margin: 0 auto;
   }
 
-
+  #collect-email-confirm {
+    p.confirm {
+      margin: 2rem 0;
+      color: $v-mid-gray;
+    }
+    p.user-email {
+      color: $v-dark-gray;
+      margin-bottom: 2rem;
+    }
+    .row, .col {
+      padding: 0;
+    }
+    .button {
+      padding: 0.5rem;
+      margin-bottom: 0;
+    }
+  }
 
   #news-updates {
     padding-top: 0;
@@ -97,13 +112,13 @@ $relish-success: 1.3s;
       border-width: 2px;
       padding: 12px;
       position: relative;
-      right: 5px;
-      bottom: 5px;
+      right: 2px;
+      bottom: 2px;
     }
     .checkbox input:checked:after,
     input:checked + .checkbox-icon:after {
       border-color: $v-onboarding-checkbox-on-border;
-      top: 4px;
+      top: 8px;
       left: 6px;
     }
     .item-content {
