@@ -6,21 +6,21 @@
     </div>
     <div id="collect-email">
       <div id="collect-email-inner" ng-if="!confirmation">
-        <div translate class="heading">Email Notifications</div>
-        <div translate class="prompt">Where would you like to receive email notifications about payments?</div>
+        <div translate class="heading" translate>Notifications by email</div>
+        <div translate class="prompt" translate>Where would you like to receive email notifications about payments?</div>
         <form id="email-form" name="emailForm" ng-submit="confirm(emailForm)" novalidate>
           <label class="item item-input" id="email-label">
-            <input type="email" name="email" ng-model="email" placeholder="email address" required></input>
+            <input type="email" name="email" ng-model="data.email" placeholder="{{'Enter you email'|translate}}" required></input>
           </label>
           <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from BitPay</span></ion-checkbox>
-          <button class="button button-standard button-primary" disabled>
+          <button class="button button-standard button-primary" ng-disabled="emailForm.$invalid">
             Continue &rarr;
           </button>
         </form>
       </div>
-      <div ng-if="confirmation">
-          <p translate class="confirm">Is this email address correct?</p>
-          <p class="user-email">{{email}}</p>
+      <div id="collect-email-confirm" ng-if="confirmation">
+        <p translate class="confirm">Is this email address correct?</p>
+        <p class="user-email">{{data.email}}</p>
         <div class="row">
           <div class="col col-50">
             <button class="button button-block button-stable" ng-click="cancel()">

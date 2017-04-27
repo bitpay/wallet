@@ -1,27 +1,23 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, $stateParams, $ionicConfig, profileService, configService, walletService) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $timeout, profileService, configService, walletService) {
 
-  $scope.$on("$ionicView.beforeLeave", function() {
-    $ionicConfig.views.swipeBackEnabled(true);
-  });
-
-  $scope.$on("$ionicView.enter", function() {
-    $ionicConfig.views.swipeBackEnabled(false);
-  });
-
-  var wallet = profileService.getWallet($stateParams.walletId);
-  var walletId = wallet.credentials.walletId;
+  var wallet, walletId;
   $scope.data = {};
-  $scope.data.accept = false;
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    walletId = data.stateParams.walletId;
+    wallet = profileService.getWallet(walletId);
+    $scope.data.accept = true;
+  });
 
   $scope.save = function() {
     var opts = {
       emailFor: {}
     };
-    opts.emailFor[walletId] = $scope.email;
+    opts.emailFor[walletId] = $scope.data.email;
     walletService.updateRemotePreferences(wallet, {
-      email: $scope.email,
+      email: $scope.data.email,
     }, function(err) {
       if (err) $log.warn(err);
       configService.set(opts, function(err) {
@@ -40,7 +36,6 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   $scope.confirm = function(emailForm) {
     if (emailForm.$invalid) return;
     $scope.confirmation = true;
-    $scope.email = emailForm.email.$modelValue;
   };
 
   $scope.cancel = function() {
