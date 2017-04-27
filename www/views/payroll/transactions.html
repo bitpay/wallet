@@ -22,7 +22,7 @@
         <div class="input-label" translate>
           Activity
         </div>
-        <select ng-model="dateRange.value" ng-change="update()">
+        <select ng-model="query.value" ng-change="loadTransactions()">
           <option value="last30Days" selected translate>Recent</option>
           <option value="lastMonth" translate>Last Month</option>
           <option value="all" translate>All</option>

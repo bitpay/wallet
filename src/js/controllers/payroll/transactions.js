@@ -19,13 +19,12 @@ angular.module('copayApp.controllers').controller('payrollTransactionsController
         }
 
         $scope.payrollRecord = record;
-        $scope.dateRange = {
+        $scope.query = {
           value: 'last30Days'
         };
 
-        // Try to cache transactions from server.
         $scope.hasTransactions = false;
-        $scope.update(function(updateErr) {
+        $scope.loadTransactions(function(updateErr) {
   /*
           if (updateErr) {
             // Try to get cached transactions.
@@ -56,11 +55,11 @@ angular.module('copayApp.controllers').controller('payrollTransactionsController
     return str;
   };
 
-  $scope.update = function(cb) {
-    var dateRange = setDateRange($scope.dateRange.value);
+  $scope.loadTransactions = function(cb) {
+    var query = setQuery($scope.query.value);
 
     ongoingProcess.set('loadingTxInfo', true);
-    bitpayPayrollService.getPayrollTransactions($scope.payrollRecord, dateRange, function(err, txData) {
+    bitpayPayrollService.getPayrollTransactions($scope.payrollRecord, query, function(err, txData) {
       ongoingProcess.set('loadingTxInfo', false);
       if (err) {
         return showError(err);        
@@ -78,24 +77,25 @@ angular.module('copayApp.controllers').controller('payrollTransactionsController
     });
   };
 
-  var setDateRange = function(preset) {
+  var setQuery = function(value) {
     var startDate, endDate;
-    preset = preset ||  'last30Days';
-    switch (preset) {
+    value = value || 'last30Days';
+    switch (value) {
       case 'last30Days':
         startDate = moment().subtract(30, 'days').toISOString();
         endDate = moment().toISOString();
         break;
+
       case 'lastMonth':
         startDate = moment().startOf('month').subtract(1, 'month').toISOString();
         endDate = moment().startOf('month').toISOString();
         break;
+
       case 'all':
+      default:
         startDate = null;
         endDate = null;
         break;
-      default:
-        return;
     }
     return {
       startDate: startDate,

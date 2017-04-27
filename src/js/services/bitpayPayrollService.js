@@ -365,12 +365,11 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //     }]
   //   }
   // }
-  root.getPayrollTransactions = function(record, dateRange, cb) {
+  root.getPayrollTransactions = function(record, query, cb) {
     var json = {
       method: 'getTransactions',
       params: JSON.stringify({
-        recordId: record.id,
-        dateRange: dateRange
+        query: query
       })
     };
     // Get payroll transactions
