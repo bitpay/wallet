@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $log, $timeout, $http, $httpParamSerializer, profileService, configService, walletService, appConfigService) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $log, $timeout, $http, $httpParamSerializer, $ionicConfig, profileService, configService, walletService, appConfigService) {
 
   var wallet, walletId;
   $scope.data = {};
@@ -17,6 +17,14 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
       data: $httpParamSerializer(dataSrc)
     };
   };
+
+  $scope.$on("$ionicView.beforeLeave", function() {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function() {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     walletId = data.stateParams.walletId;
@@ -47,11 +55,13 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
     walletService.updateRemotePreferences(wallet, {
       email: $scope.data.email,
     }, function(err) {
-      if (err) $log.warn(err);
+      if (err) return;
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
         if ($scope.data.accept) collectEmail();
-        $scope.goNextView();
+        $timeout(function() {
+          $scope.goNextView();
+        }, 200);
       });
     });
   };
