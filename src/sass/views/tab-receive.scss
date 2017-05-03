@@ -100,6 +100,7 @@
       top:50%;
       &, &.next {
         left:100%;
+        -webkit-transform: translate(100%, -40%);
         transform: translate(100%, -40%);
       }
       &.next, &.prev {
@@ -110,10 +111,12 @@
         left:50%;
       }
       &.current {
+        -webkit-transform: translate(-50%, -40%);
         transform: translate(-50%, -40%);
         z-index: 3;
       }
       &.prev {
+        -webkit-transform: translate(-150%, -40%);
         transform: translate(-150%, -40%);
       }
       .item {
@@ -152,13 +155,16 @@
           left:50%;
         }
         &.current {
+          -webkit-transform: translate(-50%, -40%);
           transform: translate(-50%, -40%);
         }
         &.prev {
+          -webkit-transform: translate(-150%, -40%);
           transform: translate(-150%, -40%);
         }
         &.next {
           left:100%;
+          -webkit-transform: translate(100%, -40%);
           transform: translate(100%, -40%);
         }
       }
@@ -170,6 +176,7 @@
         button {
           width: 100%;
           top: 50%;
+          -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
         }
       }
@@ -379,6 +386,7 @@
         .bit-address {
           .item{
             top: 40%;
+            -webkit-transform: translateY(-40%);
             transform: translateY(-40%);
             font-size:1rem;
           }
@@ -417,6 +425,7 @@
           position: relative;
           .card {
             opacity: 1;
+            -webkit-transform: scale(1);
             transform: scale(1);
           }
           &:before {
@@ -445,6 +454,7 @@
         margin: 1.5rem auto 0;
         position: relative;
         opacity: .5;
+        -webkit-transform:scale(.85);
         transform:scale(.85);
         transition:transform .2s ease;
         .item {
