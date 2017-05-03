@@ -130,8 +130,16 @@ angular.module('copayApp.controllers').controller('addressesController', functio
 
   $scope.scan = function() {
     walletService.startScan($scope.wallet);
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      historyRoot: true
+    });
     $ionicHistory.clearHistory();
-    $state.go('tabs.home');
+    $state.go('tabs.home').then(function() {
+      $state.transitionTo('tabs.wallet', {
+        walletId: $scope.wallet.credentials.walletId
+      });
+    });
   };
 
   $scope.sendByEmail = function() {
