@@ -655,19 +655,19 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        *
        */
 
-      .state('tabs.receive.addresses', {
+      .state('tabs.settings.addresses', {
         url: '/addresses/:walletId/:toAddress',
         views: {
-          'tab-receive@tabs': {
+          'tab-settings@tabs': {
             controller: 'addressesController',
             templateUrl: 'views/addresses.html'
           }
         }
       })
-      .state('tabs.receive.allAddresses', {
+      .state('tabs.settings.allAddresses', {
         url: '/allAddresses/:walletId',
         views: {
-          'tab-receive@tabs': {
+          'tab-settings@tabs': {
             controller: 'addressesController',
             templateUrl: 'views/allAddresses.html'
           }

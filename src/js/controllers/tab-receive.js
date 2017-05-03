@@ -13,11 +13,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
-  $scope.setAddress = function(forceNew) {
+  $scope.setAddress = function() {
     if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
     $scope.addr = null;
     $scope.generatingAddress = true;
-    walletService.getAddress($scope.wallet, forceNew, function(err, addr) {
+    walletService.getAddress($scope.wallet, false, function(err, addr) {
       $scope.generatingAddress = false;
 
       if (err) {
