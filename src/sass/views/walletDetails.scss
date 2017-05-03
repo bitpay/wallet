@@ -176,6 +176,9 @@
     display: block;
     align-items: center;
     justify-content: center;
+    @media(max-width: 320px) {
+      padding-top: 60px;
+    }
 
     &.collapsible {
       margin-bottom: 10px;
