@@ -21,8 +21,7 @@ angular.module('copayApp.directives')
           if (!data) return;
 
           if (isCordova) {
-            window.cordova.plugins.clipboard.copy(data);
-            window.plugins.toast.showShortCenter(msg);
+            window.plugins.socialsharing.share(data, null, null, null);
           } else if (isNW) {
             nodeWebkitService.writeToClipboard(data);
             scope.$apply(function() {

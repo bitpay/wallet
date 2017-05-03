@@ -12,10 +12,6 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     $scope.altAmountStr = txFormatService.formatAlternativeStr($scope.amount);
   });
 
-  $scope.shareAddress = function(uri) {
-    window.plugins.socialsharing.share(uri, null, null, null);
-  };
-
   $scope.finish = function() {
     $ionicHistory.nextViewOptions({
       disableAnimate: false
