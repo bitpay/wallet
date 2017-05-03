@@ -28,6 +28,9 @@
     @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2) {
       height: 64vh;
     }
+    @media(max-width: 320px) {
+      height: 62vh;
+    }
     &-info {
       height: 100%;
       display: flex;
@@ -35,6 +38,9 @@
       justify-content: center;
       align-items: center;
       width: 100%;
+      @media(max-width: 320px) {
+        height: auto;
+      }
     }
     article {
       flex:1;
@@ -128,6 +134,12 @@
         @media(min-width:450px) {
           font-size:1rem;
         }
+        &.item-icon-left {
+          @media(max-width: 320px) {
+            padding-left: 48px;
+            text-overflow: initial;
+          }
+        }
         color:$v-light-gray;
       }
     }
@@ -140,6 +152,10 @@
       justify-content: center;
       flex: 1;
       z-index: 1;
+      @media(max-width: 320px) {
+        height: 260px;
+        margin-top: -50px;
+      }
       div {
         transition: all .4s ease;
         &.current,
