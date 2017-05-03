@@ -42,11 +42,9 @@
     }
     #bit-address {
       width: 100%;
-      align-self: flex-end;
       margin-top: auto;
-      justify-content: center;
-      align-content: center;
-      position: relative;
+      position: absolute;
+      bottom: 0;
       min-height: 40px;
       #next-address {
         color:$v-light-gray;
@@ -217,9 +215,6 @@
             -webkit-transform: scale(.7);
             transform: scale(.7);
           }
-        }
-        #bit-address {
-          position: relative;
         }
       }
     }
