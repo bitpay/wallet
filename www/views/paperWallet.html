@@ -18,10 +18,29 @@
           <div ng-show="!balance" class="size-24 ng-hide">...</div>
         </div>
       </div>
-      <wallets id="wallet-slider" wallets="wallets" options="sliderOptions"></wallets>
       <div class="text-center size-12 text-gray">
         <span translate>Funds will be transferred to</span>:
-        <b>{{wallet.walletAlias || wallet.name}}</b>
+      </div>
+      <div class="list card" ng-click="showWalletSelector()" ng-if="wallets[0]">
+        <a ng-if="wallet" class="item item-sub item-icon-left item-big-icon-left item-icon-right">
+          <i class="icon big-icon-svg">
+            <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+          </i>
+          <span>
+            {{wallet.name || wallet.id}}
+          </span>
+          <p>
+          <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
+
+          <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+          <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+            {{wallet.m}}-of-{{wallet.n}}
+          </span>
+          <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
+          &nbsp;
+          </p>
+          <i ng-if="!singleWallet" class="icon bp-arrow-right"></i>
+        </a>
       </div>
     </div>
     <div class="text-center padding ng-hide" ng-show="noMatchingWallet">
@@ -34,4 +53,11 @@
       <span translate>Funds transferred</span>
     </slide-to-accept-success>
   </ion-content>
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
 </ion-view>
