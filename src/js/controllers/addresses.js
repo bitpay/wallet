@@ -109,7 +109,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   };
 
   $scope.viewAllAddresses = function() {
-    $state.go('tabs.receive.allAddresses', {
+    $state.go('tabs.settings.allAddresses', {
       walletId: $scope.wallet.id
     });
   };
