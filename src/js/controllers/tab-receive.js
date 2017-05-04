@@ -127,7 +127,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   $scope.init = function() {
     $scope.wallet = $scope.wallets[0];
     $scope.updateCurrentWallet($scope.wallet);
-    $scope.showWalletSelector();
   };
 
   $scope.$on("$ionicView.leave", function(event, data) {
