@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.currency = data.stateParams.currency;
     $scope.forceCurrency = data.stateParams.forceCurrency;
 
-    $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' || 
+    $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
     $scope.recipientType = data.stateParams.recipientType || null;
     $scope.toAddress = data.stateParams.toAddress;
@@ -30,6 +30,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toEmail = data.stateParams.toEmail;
     $scope.showAlternativeAmount = !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
+    $scope.walletId = data.stateParams.walletId;
     $scope.showSendMax = false;
 
     $scope.customAmount = data.stateParams.customAmount;
@@ -236,6 +237,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       if ($scope.customAmount) {
         $state.transitionTo('tabs.receive.customAmount', {
+          walletId: $scope.walletId,
           toAmount: (amount * unitToSatoshi).toFixed(0),
           toAddress: $scope.toAddress
         });
