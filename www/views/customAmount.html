@@ -12,7 +12,7 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <div ng-include="'views/includes/walletItem.html'"></div>
+    <div class="item" ng-include="'views/includes/walletItem.html'"></div>
     <div class="item head text-center" copy-to-clipboard="'bitcoin:' + address + '?amount=' + amountBtc">
       <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
     </div>
