@@ -1,0 +1,31 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Your cards</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list card">
+      <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
+           ng-click="openCardModal(item)"
+           class="item item-avatar"
+           ng-hide="hideCards">
+        <img src="img/mercado-libre/icon-ml.svg" alt="{{id}}" width="40">
+        <ion-spinner class="spinner-dark recent right m10 size-16" icon="crescent" ng-show="updatingPending[item.invoiceId]">
+        </ion-spinner>
+        <h2 ng-if="item.amount">
+          {{item.amount | currency : '$ ' : 2}} {{item.currency}}
+        </h2> 
+        <p>
+          <span class="assertive" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
+          <span class="assertive" ng-if="item.status == 'expired'">Expired</span>
+          <span class="assertive" ng-if="item.status == 'invalid'">Still waiting confirmation<br> (Use higher fees setting to faster delivery)</span>
+          <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
+          <span class="assertive" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
+          <span class="text-gray">{{item.date | amTimeAgo}}</span>
+        </p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

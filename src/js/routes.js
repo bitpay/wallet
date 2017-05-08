@@ -1028,6 +1028,57 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
+       * Mercado Libre Gift Card
+       *
+       */
+
+      .state('tabs.giftcards.mercadoLibre', {
+        url: '/mercadoLibre',
+        views: {
+          'tab-home@tabs': {
+            controller: 'mercadoLibreController',
+            templateUrl: 'views/mercadoLibre.html'
+          }
+        }
+      })
+      .state('tabs.giftcards.mercadoLibre.cards', {
+        url: '/cards',
+        views: {
+          'tab-home@tabs': {
+            controller: 'mercadoLibreCardsController',
+            templateUrl: 'views/mercadoLibreCards.html'
+          }
+        },
+        params: {
+          cardClaimCode: null
+        }
+      })
+      .state('tabs.giftcards.mercadoLibre.amount', {
+        url: '/amount',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        },
+        params: {
+          nextStep: 'tabs.giftcards.mercadoLibre.buy',
+          currency: 'BRL',
+          forceCurrency: true
+        }
+      })
+      .state('tabs.giftcards.mercadoLibre.buy', {
+        url: '/buy/:amount/:currency',
+        views: {
+          'tab-home@tabs': {
+            controller: 'buyMercadoLibreController',
+            templateUrl: 'views/buyMercadoLibre.html'
+          }
+        }
+      })
+
+      /*
+       *
        * Amazon.com Gift Card
        *
        */
