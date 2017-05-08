@@ -274,6 +274,13 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       category: 'bp002',
       description: ''
     },
+    '604': {
+      merchant: {
+        name: 'Foreign Transaction Fee',
+      },
+      category: 'bp002',
+      description: ''
+    },
     '606': {
       merchant: {
         name: 'International ATM Fee',
@@ -298,6 +305,13 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     '37': {
       merchant: {
         name: 'ACH / Payroll Deposit',
+      },
+      category: 'bp002',
+      description: ''
+    },
+    '10036': {
+      merchant: {
+        name: 'Inactivity Fee (90 days)',
       },
       category: 'bp002',
       description: ''
