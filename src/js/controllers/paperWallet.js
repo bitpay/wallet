@@ -101,21 +101,15 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       $state.go('tabs.home');
     };
 
-    $scope.$on('Wallet/Changed', function(event, wallet) {
-      if (!wallet) {
-        $log.debug('No wallet provided');
-        return;
-      }
-      if (wallet == $scope.wallet) {
-        $log.debug('No change in wallet');
-        return;
-      }
+    $scope.onWalletSelect = function(wallet) {
       $scope.wallet = wallet;
-      $log.debug('Wallet changed: ' + wallet.name);
-      $timeout(function() {
-        $scope.$apply();
-      });
-    });
+    };
+
+    $scope.showWalletSelector = function() {
+      if ($scope.singleWallet) return;
+      $scope.walletSelectorTitle = gettextCatalog.getString('Transfer to');
+      $scope.showWallets = true;
+    };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.scannedKey = (data.stateParams && data.stateParams.privateKey) ? data.stateParams.privateKey : null;
@@ -127,6 +121,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         onlyComplete: true,
         network: 'livenet',
       });
+      $scope.singleWallet = $scope.wallets.length == 1;
 
       if (!$scope.wallets || !$scope.wallets.length) {
         $scope.noMatchingWallet = true;
