@@ -28,6 +28,9 @@
     @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2) {
       height: 64vh;
     }
+    @media(max-width: 320px) {
+      height: 62vh;
+    }
     &-info {
       height: 100%;
       display: flex;
@@ -35,6 +38,9 @@
       justify-content: center;
       align-items: center;
       width: 100%;
+      @media(max-width: 320px) {
+        height: auto;
+      }
     }
     article {
       flex:1;
@@ -42,11 +48,9 @@
     }
     #bit-address {
       width: 100%;
-      align-self: flex-end;
       margin-top: auto;
-      justify-content: center;
-      align-content: center;
-      position: relative;
+      position: absolute;
+      bottom: 0;
       min-height: 40px;
       #next-address {
         color:$v-light-gray;
@@ -100,6 +104,7 @@
       top:50%;
       &, &.next {
         left:100%;
+        -webkit-transform: translate(100%, -40%);
         transform: translate(100%, -40%);
       }
       &.next, &.prev {
@@ -110,10 +115,12 @@
         left:50%;
       }
       &.current {
+        -webkit-transform: translate(-50%, -40%);
         transform: translate(-50%, -40%);
         z-index: 3;
       }
       &.prev {
+        -webkit-transform: translate(-150%, -40%);
         transform: translate(-150%, -40%);
       }
       .item {
@@ -127,6 +134,12 @@
         @media(min-width:450px) {
           font-size:1rem;
         }
+        &.item-icon-left {
+          @media(max-width: 320px) {
+            padding-left: 48px;
+            text-overflow: initial;
+          }
+        }
         color:$v-light-gray;
       }
     }
@@ -139,6 +152,10 @@
       justify-content: center;
       flex: 1;
       z-index: 1;
+      @media(max-width: 320px) {
+        height: 260px;
+        margin-top: -50px;
+      }
       div {
         transition: all .4s ease;
         &.current,
@@ -152,13 +169,16 @@
           left:50%;
         }
         &.current {
+          -webkit-transform: translate(-50%, -40%);
           transform: translate(-50%, -40%);
         }
         &.prev {
+          -webkit-transform: translate(-150%, -40%);
           transform: translate(-150%, -40%);
         }
         &.next {
           left:100%;
+          -webkit-transform: translate(100%, -40%);
           transform: translate(100%, -40%);
         }
       }
@@ -170,6 +190,7 @@
         button {
           width: 100%;
           top: 50%;
+          -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
         }
       }
@@ -210,9 +231,6 @@
             -webkit-transform: scale(.7);
             transform: scale(.7);
           }
-        }
-        #bit-address {
-          position: relative;
         }
       }
     }
@@ -379,6 +397,7 @@
         .bit-address {
           .item{
             top: 40%;
+            -webkit-transform: translateY(-40%);
             transform: translateY(-40%);
             font-size:1rem;
           }
@@ -417,6 +436,7 @@
           position: relative;
           .card {
             opacity: 1;
+            -webkit-transform: scale(1);
             transform: scale(1);
           }
           &:before {
@@ -445,6 +465,7 @@
         margin: 1.5rem auto 0;
         position: relative;
         opacity: .5;
+        -webkit-transform:scale(.85);
         transform:scale(.85);
         transition:transform .2s ease;
         .item {
