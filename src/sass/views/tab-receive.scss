@@ -1,17 +1,11 @@
 #tab-receive {
+  @extend .deflash-blue;
   .address {
     background: #fff;
-    height: 65vh;
-    @media(max-height: 600px) and (max-width: 320px) {
-      height: 70vh;
-      .button {
-        min-height: 50px;
-      }
-    }
+    overflow: scroll;
+    height: 100%;
     &-info {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+      padding: 10% 0 18% 0;
       .address-label {
         margin-top: 5%;
         font-size: 13px;
@@ -19,16 +13,7 @@
       .qr {
         position: relative;
         top: 15%;
-      }
-      .backup {
-        background-color: orange;
-        color: #fff;
-        position: absolute;
-        z-index: 2;
-        i {
-          padding: 10px;
-        }
-      }
+      } 
       .request-button {
         padding-top: 20px;
       }
@@ -36,7 +21,7 @@
     .incomplete {
       height: 100%;
       .title {
-        margin-top: 10%;
+        padding-top: 10%;
         font-size: 25px;
         color: #444;
         text-align: center;
@@ -44,12 +29,28 @@
       .subtitle {
         padding: 20px;
         color: #444;
-        margin-top: 20%;
+        margin-top: 10%;
         text-align: center;
       }
       .button {
-        margin-top: 20%;
+        margin: 10%;
       }
     }
+  }
+  .backup {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    cursor: pointer;
+    background-color: orange;
+    color: #fff;
+    i {
+      padding: 10px;
+    }
+  }
+  .wallet-selector {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }
