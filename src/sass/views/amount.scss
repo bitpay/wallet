@@ -32,6 +32,13 @@
       padding-left: 48px;
     }
   }
+  @media(max-width: 320px) {
+    .bitcoin-address {
+      & > span:last-child {
+        margin-left: -2px;
+      }
+    }
+  }
   .send-gravatar {
     left: 11px;
     position: absolute;
@@ -49,6 +56,9 @@
       padding: 24px 0;
       font-size: 18px;
       @media(max-height: 480px) {
+        padding: 0px;
+      }
+      @media(max-width: 320px) {
         padding: 0px;
       }
       .title {
@@ -77,6 +87,16 @@
       }
       @media(max-height: 480px) {
         top: 45px;
+      }
+      @media(max-width: 320px) {
+        bottom: 276px;
+        top: 60px;
+        & > div {
+          display: inline-block;
+        }
+        & > div:first-child {
+          display: inherit;
+        }
       }
     }
   }
@@ -147,6 +167,10 @@
       position: relative;
       top: -3px;
       line-height: 1;
+      @media(max-width: 320px) {
+        line-height: 30px;
+        height: 30px;
+      }
     }
     &__results {
       &--minimize {
