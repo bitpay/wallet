@@ -109,17 +109,10 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   };
 
   $scope.viewAllAddresses = function() {
-    $state.go('tabs.receive.allAddresses', {
+    $state.go('tabs.settings.allAddresses', {
       walletId: $scope.wallet.id
     });
   };
-
-  $scope.requestSpecificAmount = function() {
-    $state.go('tabs.receive.amount', {
-      customAmount: true,
-      toAddress: $stateParams.toAddress
-    });
-  }
 
   $scope.showInformation = function() {
     $timeout(function() {
@@ -137,8 +130,16 @@ angular.module('copayApp.controllers').controller('addressesController', functio
 
   $scope.scan = function() {
     walletService.startScan($scope.wallet);
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      historyRoot: true
+    });
     $ionicHistory.clearHistory();
-    $state.go('tabs.home');
+    $state.go('tabs.home').then(function() {
+      $state.transitionTo('tabs.wallet', {
+        walletId: $scope.wallet.credentials.walletId
+      });
+    });
   };
 
   $scope.sendByEmail = function() {

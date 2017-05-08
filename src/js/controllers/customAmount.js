@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($rootScope, $scope, $stateParams, $ionicHistory, txFormatService, platformInfo) {
+angular.module('copayApp.controllers').controller('customAmountController', function($rootScope, $scope, $stateParams, $ionicHistory, txFormatService, platformInfo, profileService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     var satToBtc = 1 / 100000000;
@@ -10,11 +10,8 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     $scope.amountBtc = ($scope.amount * satToBtc).toFixed(8);
     $scope.amountStr = txFormatService.formatAmountStr($scope.amount);
     $scope.altAmountStr = txFormatService.formatAlternativeStr($scope.amount);
+    $scope.wallet = profileService.getWallet($stateParams.walletId);
   });
-
-  $scope.shareAddress = function(uri) {
-    window.plugins.socialsharing.share(uri, null, null, null);
-  };
 
   $scope.finish = function() {
     $ionicHistory.nextViewOptions({

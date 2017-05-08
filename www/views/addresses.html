@@ -1,4 +1,4 @@
-<ion-view hide-tabs id="addresses" class="addr">
+<ion-view id="addresses" class="addr">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Wallet Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -11,11 +11,7 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="text-center banner-icon">
-      <i class="icon zero-state-icon">
-        <img src="img/tab-icons/ico-receive-selected.svg"/>
-      </i>
-    </div>
+    <div ng-include="'views/includes/walletItem.html'"></div>
 
     <div class="addr-list">
       <div class="addr-explanation">
@@ -33,10 +29,6 @@
       <div class="list">
         <div class="item view-all" ng-click="scan()">
           <span translate>Scan addresses for funds</span>
-        </div>
-        <div class="item item-icon-right view-all" ng-click="requestSpecificAmount()">
-          <span translate>Request Specific amount</span>
-          <i class="icon ion-ios-arrow-thin-right"></i>
         </div>
         <div class="item item-icon-right view-all" ng-if="viewAll.value" ng-click="viewAllAddresses()">
           <span translate>View All Addresses</span>

@@ -1,512 +1,55 @@
 #tab-receive {
-  @extend .deflash-blue;
-  ion-header-bar {
-    button {
-      i {
-        color:#fff;
-        font-size: 1.1rem;
-      }
-    }
-  }
-  .border-top {
-    border-top:1px solid rgb(228,228,228);
-  }
-  .scroll {
-    height:100%;
-  }
-  #address {
+  .address {
     background: #fff;
-    height: 66vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    flex-flow: column;
-    @media(max-height: 600px) {
-      height: 68vh;
-    }
-    @media(max-height: 600px) and (-webkit-device-pixel-ratio: 2) {
-      height: 64vh;
-    }
-    @media(max-width: 320px) {
-      height: 62vh;
+    height: 65vh;
+    @media(max-height: 600px) and (max-width: 320px) {
+      height: 70vh;
+      .button {
+        min-height: 50px;
+      }
     }
     &-info {
       height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      @media(max-width: 320px) {
-        height: auto;
+      .address-label {
+        margin-top: 5%;
+        font-size: 13px;
       }
-    }
-    article {
-      flex:1;
-      width: 100%;
-    }
-    #bit-address {
-      width: 100%;
-      margin-top: auto;
-      position: absolute;
-      bottom: 0;
-      min-height: 40px;
-      #next-address {
-        color:$v-light-gray;
+      .qr {
+        position: relative;
+        top: 15%;
+      }
+      .backup {
+        background-color: orange;
+        color: #fff;
+        position: absolute;
+        z-index: 2;
+        i {
+          padding: 10px;
+        }
+      }
+      .request-button {
+        padding-top: 20px;
       }
     }
     .incomplete {
-      padding: 50px;
-      height: 352px;
+      height: 100%;
       .title {
-        padding: 20px;
+        margin-top: 10%;
         font-size: 25px;
         color: #444;
+        text-align: center;
       }
       .subtitle {
         padding: 20px;
         color: #444;
+        margin-top: 20%;
+        text-align: center;
       }
       .button {
+        margin-top: 20%;
       }
     }
-    .item {
-      border: none;
-      font-size: .8rem;
-      z-index: 0;
-      i {
-        font-size: 1.3rem;
-      }
-    }
-    #qr-options {
-      .item {
-        font-size:.7rem;
-        @media(min-width:350px) {
-          font-size:.9rem;
-        }
-        @media(min-width:450px) {
-          font-size:1rem;
-        }
-      }
-    }
-    .bit-address {
-      font-size: .8rem;
-      // left:10%;
-      cursor: pointer;
-      cursor: hand;
-      position: absolute;
-      transition: all .15s ease;
-      width:100%;
-      height: 100%;
-      z-index: 0;
-      position: absolute;
-      top:50%;
-      &, &.next {
-        left:100%;
-        -webkit-transform: translate(100%, -40%);
-        transform: translate(100%, -40%);
-      }
-      &.next, &.prev {
-        z-index:2;
-      }
-      &.current,
-      &.prev {
-        left:50%;
-      }
-      &.current {
-        -webkit-transform: translate(-50%, -40%);
-        transform: translate(-50%, -40%);
-        z-index: 3;
-      }
-      &.prev {
-        -webkit-transform: translate(-150%, -40%);
-        transform: translate(-150%, -40%);
-      }
-      .item {
-        white-space: nowrap;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: .7rem;
-        @media(min-width:350px) {
-          font-size:.9rem;
-        }
-        @media(min-width:450px) {
-          font-size:1rem;
-        }
-        &.item-icon-left {
-          @media(max-width: 320px) {
-            padding-left: 48px;
-            text-overflow: initial;
-          }
-        }
-        color:$v-light-gray;
-      }
-    }
-    .qr {
-      padding: 15vh 0 4vh;
-      align-self: center;
-      margin-top: auto;
-      height: 220px;
-      position: relative;
-      justify-content: center;
-      flex: 1;
-      z-index: 1;
-      @media(max-width: 320px) {
-        height: 260px;
-        margin-top: -50px;
-      }
-      div {
-        transition: all .4s ease;
-        &.current,
-        &.prev,
-        &.next {
-          position: absolute;
-          top:50%;
-        }
-        &.current,
-        &.prev {
-          left:50%;
-        }
-        &.current {
-          -webkit-transform: translate(-50%, -40%);
-          transform: translate(-50%, -40%);
-        }
-        &.prev {
-          -webkit-transform: translate(-150%, -40%);
-          transform: translate(-150%, -40%);
-        }
-        &.next {
-          left:100%;
-          -webkit-transform: translate(100%, -40%);
-          transform: translate(100%, -40%);
-        }
-      }
-      .overlay {
-        position: absolute;
-        width: 220px;
-        height: 100%;
-        background-color: rgba(255,255,255,0.8);
-        button {
-          width: 100%;
-          top: 50%;
-          -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-        }
-      }
-      @media(max-height: 700px) {
-        padding: 10vh 0 4vh;
-      }
-      div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        min-height: 220px;
-      }
-    }
-    #qr-options {
-      justify-content: center;
-      align-self: flex-end;
-      .item{
-        i{left:25px;}
-      }
-    }
-    .backup {
-      background-color: orange;
-      color: #fff;
-      position: absolute;
-      top: 0;
-      left:0;
-      z-index: 2;
-      i {
-        padding: 10px;
-      }
-    }
-    @media (max-height: 600px) {
-      & {
-        .qr {
-          padding:6vh 0 0;
-          div {
-            -webkit-transform: scale(.7);
-            transform: scale(.7);
-          }
-        }
-      }
-    }
-  }
-  #wallets {
-    position: relative;
-    &:before {
-      content: "";
-      display: inline-block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0 20px 20px 20px;
-      border-color: transparent transparent rgb(242,242,242) transparent;
-      top: -9px;
-      position: absolute;
-      left: 50%;
-      -webkit-transform: translateX(-50%);
-      transform: translateX(-50%);
-      z-index: 4;
-    }
-  }
-  #first-time-tip {
-    background: rgba(30, 49, 134, 1);
-    background: -moz-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(30, 49, 134, 1)), color-stop(88%, rgba(30, 49, 134, 0)), color-stop(100%, rgba(30, 49, 134, 0)));
-    background: -webkit-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
-    background: -o-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
-    background: -ms-linear-gradient(top, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
-    background: linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(30, 49, 134, 0) 88%, rgba(30, 49, 134, 0) 100%);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    animation-name: fadeIn;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in;
-    animation-duration: .4s;
-    animation-delay: 2s;
-    animation-fill-mode: forwards;
-    z-index: 10;
-    text-align: center;
-    color: #fff;
-    padding-top: 3rem;
-    .close {
-      top: .5rem;
-      right: 1rem;
-      position: absolute;
-      font-size: 1.5rem;
-      opacity: .5;
-    }
-    h3 {
-      color: #fff;
-      margin-bottom:1rem;
-    }
-  }
-  .receive-tab-bitcoin-icon {
-    border-right: 1px solid rgb(228, 228, 228);
-    padding-right: 10px;
-  }
-  #wallets {
-    #sidebar-wallet{
-      display: none;
-    }
-  }
-  .wallets {
-    position: relative;
-    height: calc(27vh - 62px);
-    z-index: 5;
-    .slides {
-      .swiper-container {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        max-width: 450px;
-        .swiper-wrapper {
-          height: auto;
-          top: 10%;
-          position:relative;
-          @media(max-height: 600px) {
-            padding-top:.2rem
-          }
-          @media(min-height: 900px) {
-            top:30%;
-          }
-        }
-        .swiper-slide {
-          text-align: center;
-          .card{
-            margin-top: 1vh;
-            display: inline-block;
-            width:80%;
-            @media(min-height: 1000px) and (max-width: 699px) {
-              .item {
-                padding: 2vh 3vw 2vh 3vw;
-              }
-            }
-          }
-          @media(max-width: 500px) {
-            &-next {
-              left:-25%;
-            }
-            &-prev {
-              left:25%;
-            }
-          }
-        }
-        @media (max-height: 600px) {
-          & {
-            -webkit-transform: translate(-50%, -58%);
-            transform: translate(-50%, -58%);
-          }
-        }
-      }
-    }
-  }
-  @media(min-width: 700px) and (min-height: 700px) {
-    .wallets {
-      display: none;
-    }
-    #address {
-      float:left;
-      height:100%;
-      width:calc(100% - 410px);
-      @media(max-width: 1000px){
-        width:65%;
-      }
-      &-info {
-        height: 100%;
-      }
-      #qr-options {
-        .item{
-          font-size:1rem;
-        }
-      }
-      .qr {
-        height: 70%;
-        div {
-          opacity: 0;
-          transition: none;
-          &.current {
-            opacity: 1;
-          }
-        }
-      }
-      .bit-address {
-        opacity: 0;
-        transition: none;
-        &.current {
-          opacity: 1;
-        }
-      }
-      .backup,
-      #bit-address {
-        left:0;
-      }
-      #bit-address {
-        height: 10%;
-        padding: 1vh;
-        .bit-address {
-          .item{
-            top: 40%;
-            -webkit-transform: translateY(-40%);
-            transform: translateY(-40%);
-            font-size:1rem;
-          }
-        }
-      }
-    }
-    #wallets {
-      float:left;
-      width:35%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      overflow: visible;
-      max-width: 410px;
-      @media(max-height: 600px) {
-        padding-top:.55rem;
-      }
-      @media(max-width: 1000px) {
-        max-width: none;
-      }
-      #sidebar-wallet {
-        display: block;
-      }
-      .list {
-        height: 100%;overflow: visible;
-      }
-      #wallet-list {
-        position: absolute;
-        width: 110%;
-        overflow-y: auto;
-        height: 100%;
-        left: -6%;
-      }
-      .wallet {
-        &.current {
-          position: relative;
-          .card {
-            opacity: 1;
-            -webkit-transform: scale(1);
-            transform: scale(1);
-          }
-          &:before {
-          	right: 93%;
-          	top: 50%;
-          	border: solid transparent;
-          	content: " ";
-          	height: 0;
-          	width: 0;
-          	position: absolute;
-          	pointer-events: none;
-            border-right-color: #f2f2f2;
-            border-width: 20px;
-            margin-top: -20px;
-          }
-        }
-      }
-      .card {
-        max-width: 350px;
-        box-shadow: 0 1px 36px rgba(0, 0, 0, 0.07);
-        padding:0;
-        border-radius: 6px;
-        padding:2px;
-        width: 80%;
-        position: relative;
-        margin: 1.5rem auto 0;
-        position: relative;
-        opacity: .5;
-        -webkit-transform:scale(.85);
-        transform:scale(.85);
-        transition:transform .2s ease;
-        .item {
-          padding: 6% 10% 6% 8%;
-          span {
-            clear: both;
-            width: 100%;
-            display: inline-block;
-            &.wallet-name {
-              font-size:16px;
-              width: 79%;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              font-weight: 600;
-            }
-            &.wallet-number {
-              visibility: hidden;
-            }
-            &.visible {
-              visibility: visible !important;
-            }
-          }
-          .big-icon-svg {
-            padding: 0;
-            & > .bg {
-              padding:.3rem;
-              width: 40px;
-              height:40px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
   }
 }

@@ -6,25 +6,8 @@
     <article class="list card padding text-center" ng-if="!wallets[0]">
       <span translate>No Wallet</span>
     </article>
-    <article id="address" ng-if="wallets[0]">
-      <div id="address-info" class="text-center" ng-if="!wallet">
-        <div class="row qr">
-          <div class="text-center col center-block">
-            <div style="height:225px; width:220px; margin:auto; background: white; padding-top: 25%;">
-              ...
-            </div>
-          </div>
-        </div>
-        <div class="row border-top">
-          <div class="col col-90 center-block bit-address text-center">
-            <div class="item item-icon-left">
-              <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
-              <span class="bit-address-gen-address">...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="address-info" class="text-center" ng-if="wallet && !wallet.isComplete()">
+    <article class="address" ng-if="wallets[0]">
+      <div class="address-info" class="text-center" ng-if="wallet && !wallet.isComplete()">
         <div class="incomplete">
           <div class="title">
             <span translate>Incomplete wallet</span>
@@ -32,72 +15,63 @@
           <div class="subtitle">
             <span translate>All signing devices must be added to this multisig wallet before bitcoin addresses can be created.</span>
           </div>
-          <div>
-            <button class="button button-standard button-primary" ng-click="goCopayers()" translate>Open wallet</button>
-          </div>
-        </div>
-        <div class="row border-top">
-          <div class="col col-90 center-block bit-address text-center">
-            <div class="item item-icon-left">
-              <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
-              <span class="bit-address-gen-address" translate>address not yet available</span>
-            </div>
-          </div>
+          <button class="button button-standard button-primary" ng-click="goCopayers()" translate>Open wallet</button>
         </div>
       </div>
-      <div id="address-info" ng-if="wallet && wallet.isComplete()">
+      <div class="address-info" ng-if="wallet && wallet.isComplete()">
         <div class="row backup" ng-show="wallet.needsBackup" ng-click="openBackupNeededModal()">
           <div class="text-center col center-block">
             <i class="icon ion-alert"></i><span translate>Wallet not backed up</span><i class="icon ion-ios-arrow-thin-right"></i>
           </div>
         </div>
         <div class="row qr">
-          <div class="text-center col center-block" copy-to-clipboard="addr" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
-            <span class="overlay" ng-show="shouldShowReceiveAddressFromHardware()">
-              <button class="button button-standard button-primary" ng-click="showReceiveAddressFromHardware()">
-                <span translate>Show address</span>
-              </button>
-            </span>
-            <qrcode ng-if="walletAddrs[wallet.id]" size="220" data="bitcoin:{{walletAddrs[wallet.id]}}" color="#334"></qrcode>
-          </div>
-        </div>
-        <div id="qr-options" class="row text-center">
-          <div class="item item-icon-left" ng-click="shareAddress(addr)" ng-show="isCordova">
-            <i class="icon ion-ios-upload-outline"></i>
-            <span translate>Share</span>
-          </div>
-        </div>
-        <div id="bit-address" class="row border-top" ng-click="showAddresses()">
-          <div class="center-block bit-address text-center" ng-repeat="wallet in wallets track by $index" ng-class="walletPosition($index)">
-            <div class="item item-icon-left item-icon-right">
-              <i class="icon icon-svg receive-tab-bitcoin-icon"><img src="img/icon-bitcoin-symbol.svg"></i>
-              <span class="bit-address-gen-address" class="ellipsis">{{walletAddrs[wallet.id]}}</span>
-              <span class="bit-address-gen-address" ng-show="!walletAddrs[wallet.id]" translate>address not available</span>
-              <i class="icon ion-ios-arrow-right"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
-    <article id="wallets" ng-if="wallets[0]">
-      <div id="sidebar-wallet" class="list">
-        <div id="wallet-list">
-          <div class="wallet" ng-repeat="wallet in wallets track by $index" ng-click="setWallet($index)" ng-class="walletPosition($index)">
-            <div class="card">
-              <div class="item item-icon-left text-right" ng-class="{'noBalance': !wallet.status.availableBalanceStr}">
-                <i class="icon big-icon-svg">
-                  <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
-                </i>
-                <span class="wallet-name">{{wallet.name || wallet.id}}</span>
-                <span class="item-note m10l">
-                  {{wallet.status.availableBalanceStr}}
-                </span>
+          <div class="text-center col">
+            <div copy-to-clipboard="copyToClipboard()">
+              <span ng-show="shouldShowReceiveAddressFromHardware()">
+                <button class="button button-standard button-primary" ng-click="showReceiveAddressFromHardware()">
+                  <span translate>Show address</span>
+                </button>
+              </span>
+              <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}" color="#334"></qrcode>
+              <div class="address-label">
+                <span class="ellipsis">{{addr}}</span>
+                <ion-spinner ng-show="!addr" class="spinner-dark" icon="crescent"></ion-spinner>
               </div>
             </div>
+            <div ng-show="addr" class="request-button">
+              <button class="button button-standard button-primary button-outline" ng-click="requestSpecificAmount()" translate>Request Specific amount</button>
+            </div>
           </div>
         </div>
       </div>
-      <wallets id="wallet-slider" wallets="wallets" options="sliderOptions"></wallets>
     </article>
+    <div ng-click="showWalletSelector()" ng-if="wallets[0]">
+      <a ng-if="wallet" class="item item-sub item-icon-left item-big-icon-left item-icon-right">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+        </i>
+        <span>
+          {{wallet.name || wallet.id}}
+        </span>
+        <p>
+        <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
+
+        <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+        <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+          {{wallet.m}}-of-{{wallet.n}}
+        </span>
+        <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
+        &nbsp;
+        </p>
+        <i ng-if="!singleWallet" class="icon bp-arrow-right"></i>
+      </a>
+    </div>
   </ion-content>
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
 </ion-view>
