@@ -2,24 +2,20 @@
   @extend .deflash-blue;
   .address {
     background: #fff;
-    overflow: scroll;
+    overflow: auto;
     height: 100%;
     &-info {
-      padding: 10% 0 18% 0;
+      padding: 12% 0 20% 0;
+      text-align: center;
       .address-label {
         margin-top: 5%;
         font-size: 13px;
       }
-      .qr {
-        position: relative;
-        top: 15%;
-      } 
       .request-button {
         padding-top: 20px;
       }
     }
     .incomplete {
-      height: 100%;
       .title {
         padding-top: 10%;
         font-size: 25px;
@@ -32,9 +28,6 @@
         margin-top: 10%;
         text-align: center;
       }
-      .button {
-        margin: 10%;
-      }
     }
   }
   .backup {
@@ -44,8 +37,10 @@
     cursor: pointer;
     background-color: orange;
     color: #fff;
+    text-align: center;
+    padding: 5px 0;
     i {
-      padding: 10px;
+      margin: 0 10px;
     }
   }
   .wallet-selector {
