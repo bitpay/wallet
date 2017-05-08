@@ -26,6 +26,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.viewTitle = data.stateParams.viewTitle || gettextCatalog.getString('Enter Amount');
     $scope.recipientLabel = data.stateParams.recipientLabel || gettextCatalog.getString('Recipient');
     $scope.amountLabel = data.stateParams.amountLabel || gettextCatalog.getString('Amount');
+    $scope.amountMax = data.stateParams.amountMax || -1;
     $scope.showRate = (showRate.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.askForAlternative = (askForAlternative.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.showAlternativeAmount = (showAlternativeAmount.toString().trim().toLowerCase() == 'true' ? true : false);
@@ -194,7 +195,16 @@ angular.module('copayApp.controllers').controller('amountController', function($
   function processAmount() {
     var formatedValue = format($scope.amount);
     var result = evaluate(formatedValue);
-    $scope.allowSend = lodash.isNumber(result) && +result > 0;
+
+    // If a maximum entry amount is present, don't allow the user to exceed that amount.
+    var exceedMax = (+$scope.amountMax >= 0 ? +result > +$scope.amountMax : false);
+
+    $scope.keypadAlert = undefined;
+    if (exceedMax) {
+      $scope.keypadAlert = gettextCatalog.getString('Amount exceeds maximum allowed');
+    }
+
+    $scope.allowSend = lodash.isNumber(result) && +result > 0 && ($scope.keypadAlert == undefined);
     if (lodash.isNumber(result)) {
       $scope.globalResult = isExpression($scope.amount) ? '= ' + processResult(result) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));

@@ -451,7 +451,7 @@ angular.module('copayApp.services')
     root.setPayrollRecordsOnAccount = function(network, email, records, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) return cb(err);
-        if (lodash.isString(bitpayAccounts)) {
+        if (lodash.isString(bitpayAccounts) && bitpayAccounts.length > 0) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
@@ -463,7 +463,7 @@ angular.module('copayApp.services')
 
     root.getPayrollRecords = function(network, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
-        if (lodash.isString(bitpayAccounts)) {
+        if (lodash.isString(bitpayAccounts) && bitpayAccounts.length > 0) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
@@ -483,7 +483,7 @@ angular.module('copayApp.services')
     root.updatePayrollRecord = function(network, record, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
-        if (lodash.isString(bitpayAccounts)) {
+        if (lodash.isString(bitpayAccounts) && bitpayAccounts.length > 0) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
@@ -508,7 +508,7 @@ angular.module('copayApp.services')
     root.removePayrollRecord = function(network, id, cb) {
       storage.get('bitpayAccounts-v2-' + network, function(err, bitpayAccounts) {
         if (err) cb(err);
-        if (lodash.isString(bitpayAccounts)) {
+        if (lodash.isString(bitpayAccounts) && bitpayAccounts.length > 0) {
           bitpayAccounts = JSON.parse(bitpayAccounts);
         }
         bitpayAccounts = bitpayAccounts || {};
@@ -533,7 +533,7 @@ angular.module('copayApp.services')
       if (lodash.isEmpty(record)) return cb('Cannot add payroll eligibility record: no record content');
       storage.get('payrollEligibility-' + network, function(err, records) {
         if (err) return cb(err);
-        if (lodash.isString(records)) {
+        if (lodash.isString(records) && records.length > 0) {
           records = JSON.parse(records);
         }
         records = records || [];
@@ -544,7 +544,7 @@ angular.module('copayApp.services')
 
     root.getPayrollEligibilityRecords = function(network, cb) {
       storage.get('payrollEligibility-' + network, function(err, records) {
-        if (lodash.isString(records)) {
+        if (lodash.isString(records) && records.length > 0) {
           records = JSON.parse(records);
         }
         records = records || [];
@@ -568,7 +568,7 @@ angular.module('copayApp.services')
     root.removePayrollEligibilityRecord = function(network, id, cb) {
       storage.get('payrollEligibility-' + network, function(err, records) {
         if (err) cb(err);
-        if (lodash.isString(records)) {
+        if (lodash.isString(records) && records.length > 0) {
           records = JSON.parse(records);
         }
         records = records || [];
@@ -590,7 +590,7 @@ angular.module('copayApp.services')
     root.removePayrollTransactions = function(network, id, cb) {
       root.getPayrollTransactions(network, function(err, data) {
         if (err) return cb(err);
-        if (lodash.isString(data)) {
+        if (lodash.isString(data) && data.length > 0) {
           data = JSON.parse(data);
         }
         data = data || {};

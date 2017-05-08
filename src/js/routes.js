@@ -1217,7 +1217,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       }
     })
     .state('tabs.payroll.depositAmount', {
-      url: '/payroll/amount/:recipientType/:id/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel',
+      url: '/payroll/amount/:recipientType/:id/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel/:amountMax',
       views: {
         'tab-home@tabs': {
           templateUrl: 'views/amount.html',

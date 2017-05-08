@@ -34,8 +34,15 @@ angular.module('copayApp.controllers').controller('payrollConfirmController', fu
         $scope.btcEstimate = getDisplayAmount(btcEstimateStr);
         $scope.btcDisplayUnit = getDisplayUnit(btcEstimateStr);
 
-        $scope.walletName = $scope.payrollRecord.deduction.walletName || gettextCatalog.getString('My Wallet');
-        $scope.label = $scope.payrollRecord.deduction.label || gettextCatalog.getString('My bitcoin pay');
+        if ($scope.payrollRecord.deduction) {
+          // Use existing record deduction info
+          $scope.walletName = $scope.payrollRecord.deduction.walletName;
+          $scope.label = $scope.payrollRecord.deduction.label;
+        } else {
+          // Initialize from an eligibility record
+          $scope.walletName = data.stateParams.toName || gettextCatalog.getString('My Wallet');
+          $scope.label = gettextCatalog.getString('My bitcoin pay');
+        }
 
         $scope.recipientType = data.stateParams.recipientType;
         switch ($scope.recipientType) {

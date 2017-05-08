@@ -77,6 +77,9 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //     iconUrl: string,
   //     imageUrl: string,
   //     nextEffectiveDate: string,
+  //     limits: {
+  //       payPeriod: float
+  //     },
   //     about: {
   //       message: string,
   //       terms: string,
@@ -175,6 +178,9 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //     iconUrl: string,
   //     imageUrl: string,
   //     nextEffectiveDate: date,
+  //     limits: {
+  //       payPeriod: float
+  //     }
   //   },
   //   employee: {
   //     label: string,

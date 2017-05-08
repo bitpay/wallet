@@ -8,9 +8,9 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
   var currentContactsPage;
   var list;
 
-  var amountViewAmountLabel = gettextCatalog.getString('Deposit Amount');
   var amountViewRecipientLabel = gettextCatalog.getString('Deposit to');
   var amountViewTitle = '';
+  var amountViewAmountLabel = '';
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.id) {
@@ -27,6 +27,12 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
         }
 
         $scope.payrollRecord = record;
+
+        // Show the maximum amount allowed.
+        amountViewAmountLabel = gettextCatalog.getString('Deposit Maximum {{amountMax}} {{currencyCode}}', {
+          amountMax: $scope.payrollRecord.employer.limits.payPeriod,
+          currencyCode: $scope.payrollRecord.employer.fundingCurrency
+        });
       });
     } else {
       return showError(
@@ -44,7 +50,9 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
     };
 
     // User may have changed alternative currency so init on each view entry.
-    amountViewTitle = gettextCatalog.getString('Enter {{alternativeIsoCode}} Deposit Amount', {alternativeIsoCode: config.alternativeIsoCode});
+    amountViewTitle = gettextCatalog.getString('Enter {{alternativeIsoCode}} Deposit Amount', {
+      alternativeIsoCode: config.alternativeIsoCode
+    });
   });
 
   var updateList = function() {
@@ -151,7 +159,8 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
       toColor: null,
       viewTitle: amountViewTitle,
       recipientLabel: amountViewRecipientLabel,
-      amountLabel: amountViewAmountLabel
+      amountLabel: amountViewAmountLabel,
+      amountMax: $scope.payrollRecord.employer.limits.payPeriod
     });
   };
 
@@ -170,7 +179,8 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
         toColor: item.color,
         viewTitle: amountViewTitle,
         recipientLabel: amountViewRecipientLabel,
-        amountLabel: amountViewAmountLabel
+        amountLabel: amountViewAmountLabel,
+        amountMax: $scope.payrollRecord.employer.limits.payPeriod
       });
     });
   };
