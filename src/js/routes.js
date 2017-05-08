@@ -1175,8 +1175,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
         //views with disable backbutton
         var matchComplete = $ionicHistory.currentStateName() == 'tabs.rate.complete' ? true : false;
+        var matchLockedView = $ionicHistory.currentStateName() == 'lockedView' ? true : false;
+        var matchPin = $ionicHistory.currentStateName() == 'pin' ? true : false;
 
-        if ($ionicHistory.backView() && !fromTabs && !fromOnboarding && !matchComplete) {
+        if ($ionicHistory.backView() && !fromTabs && !fromOnboarding && !matchComplete && !matchPin && !matchLockedView) {
           $ionicHistory.goBack();
         } else
         if ($rootScope.backButtonPressedOnceToExit) {
