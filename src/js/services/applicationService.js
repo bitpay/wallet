@@ -45,6 +45,7 @@ angular.module('copayApp.services')
         hardwareBackButtonClose: false
       }).then(function(modal) {
         scope.fingerprintCheckModal = modal;
+        root.isModalOpen = true;
         scope.openModal();
       });
       scope.openModal = function() {
@@ -52,6 +53,7 @@ angular.module('copayApp.services')
         checkFingerprint();
       };
       scope.hideModal = function() {
+        root.isModalOpen = false;
         scope.fingerprintCheckModal.hide();
       };
 
@@ -68,8 +70,6 @@ angular.module('copayApp.services')
 
     root.pinModal = function(action) {
 
-      if (root.isPinModalOpen) return;
-
       var scope = $rootScope.$new(true);
       scope.action = action;
       $ionicModal.fromTemplateUrl('views/modals/pin.html', {
@@ -79,7 +79,7 @@ angular.module('copayApp.services')
         hardwareBackButtonClose: false
       }).then(function(modal) {
         scope.pinModal = modal;
-        root.isPinModalOpen = true;
+        root.isModalOpen = true;
         scope.openModal();
       });
       scope.openModal = function() {
@@ -87,12 +87,14 @@ angular.module('copayApp.services')
       };
       scope.hideModal = function() {
         scope.$emit('pinModalClosed');
-        root.isPinModalOpen = false;
+        root.isModalOpen = false;
         scope.pinModal.hide();
       };
     };
 
     root.appLockModal = function(action) {
+
+      if (root.isModalOpen) return;
 
       configService.whenAvailable(function(config) {
         var lockMethod = config.lock && config.lock.method;
