@@ -3,6 +3,8 @@ angular.module('copayApp.services')
   .factory('applicationService', function($rootScope, $timeout, $ionicHistory, $ionicModal, platformInfo, fingerprintService, openURLService, configService, $state) {
     var root = {};
 
+    root.isPinModalOpen = false;
+
     var isChromeApp = platformInfo.isChromeApp;
     var isNW = platformInfo.isNW;
 
@@ -34,15 +36,39 @@ angular.module('copayApp.services')
     };
 
     root.fingerprintModal = function() {
-      fingerprintService.check('unlockingApp', function(err) {
-        if (err) {
-          root.fingerprintModal();
-          return;
-        }
+
+      var scope = $rootScope.$new(true);
+      $ionicModal.fromTemplateUrl('views/modals/fingerprintCheck.html', {
+        scope: scope,
+        animation: 'none',
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false
+      }).then(function(modal) {
+        scope.fingerprintCheckModal = modal;
+        scope.openModal();
       });
+      scope.openModal = function() {
+        scope.fingerprintCheckModal.show();
+        checkFingerprint();
+      };
+      scope.hideModal = function() {
+        scope.fingerprintCheckModal.hide();
+      };
+
+      function checkFingerprint() {
+        fingerprintService.check('unlockingApp', function(err) {
+          if (err) {
+            checkFingerprint();
+            return;
+          }
+          scope.hideModal();
+        });
+      }
     };
 
     root.pinModal = function(action) {
+
+      if (root.isPinModalOpen) return;
 
       var scope = $rootScope.$new(true);
       scope.action = action;
@@ -53,6 +79,7 @@ angular.module('copayApp.services')
         hardwareBackButtonClose: false
       }).then(function(modal) {
         scope.pinModal = modal;
+        root.isPinModalOpen = true;
         scope.openModal();
       });
       scope.openModal = function() {
@@ -60,6 +87,7 @@ angular.module('copayApp.services')
       };
       scope.hideModal = function() {
         scope.$emit('pinModalClosed');
+        root.isPinModalOpen = false;
         scope.pinModal.hide();
       };
     };
