@@ -121,30 +121,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
-       * Pin
-       *
-       */
-
-      .state('pin', {
-        url: '/pin/:action',
-        controller: 'pinController',
-        templateUrl: 'views/pin.html',
-      })
-
-      /*
-       *
-       * Locked
-       *
-       */
-
-      .state('lockedView', {
-        url: '/lockedView/',
-        controller: 'lockedViewController',
-        templateUrl: 'views/lockedView.html',
-      })
-
-      /*
-       *
        * URI
        *
        */
@@ -1135,7 +1111,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService, applicationService) {
 
     uxLanguage.init();
 
@@ -1197,56 +1173,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         // Nothing to do
       });
 
-
-      function checkAndApplyLock(onResume) {
-        var defaultView = 'tabs.home';
-
-        if (!platformInfo.isCordova && !platformInfo.isDevel) {
-          goTo(defaultView);
-        }
-
-        if (onResume) {
-          var now = Math.floor(Date.now() / 1000);
-          if (now < openURLService.unlockUntil) {
-            openURLService.unlockUntil = null;
-            $log.debug('Skip startup locking');
-            return;
-          }
-        }
-
-        function goTo(nextView) {
-          nextView = nextView || defaultView;
-          $state.transitionTo(nextView, {
-            action: 'check'
-          }).then(function() {
-            if (nextView == 'lockedView')
-              $ionicHistory.clearHistory();
-          });
-        };
-
-        startupService.ready();
-
-        configService.whenAvailable(function(config) {
-          var lockMethod = config.lock && config.lock.method;
-          $log.debug('App Lock:' + (lockMethod || 'no'));
-
-          if (lockMethod == 'fingerprint' && fingerprintService.isAvailable()) {
-            fingerprintService.check('unlockingApp', function(err) {
-              if (err)
-                goTo('lockedView');
-              else if ($ionicHistory.currentStateName() == 'lockedView' || !onResume)
-                goTo('tabs.home');
-            });
-          } else if (lockMethod == 'pin') {
-            goTo('pin');
-          } else {
-            goTo(defaultView);
-          }
-        });
-      }
-
       $ionicPlatform.on('resume', function() {
-        checkAndApplyLock(true);
+        applicationService.appLockModal('check');
       });
 
       $ionicPlatform.on('menubutton', function() {
@@ -1289,14 +1217,17 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-
-            checkAndApplyLock();
+            $state.transitionTo('tabs.home').then(function() {
+              // Clear history
+              $ionicHistory.clearHistory();
+            });
+            applicationService.appLockModal('check');
           });
         };
         // After everything have been loaded, initialize handler URL
         $timeout(function() {
           openURLService.init();
-        });
+        }, 1000);
       });
     });
 
