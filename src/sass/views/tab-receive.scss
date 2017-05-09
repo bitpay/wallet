@@ -1,42 +1,33 @@
 #tab-receive {
+  @extend .deflash-blue;
   .address {
     background: #fff;
-    height: 65vh;
-    @media(max-height: 600px) and (max-width: 320px) {
-      height: 70vh;
-      .button {
-        min-height: 50px;
-      }
-    }
+    overflow: auto;
+    height: 100%;
     &-info {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+      padding-top: 22vh;
+      padding-bottom: 17vh;
+      @media(max-height: 800px) {
+        padding-top: 17vh;
+      }
+      @media(max-height: 700px) {
+        padding-top: 14vh;
+      }
+      @media(max-height: 600px) {
+        padding-top: 7vh;
+      }
+      text-align: center;
       .address-label {
         margin-top: 5%;
         font-size: 13px;
-      }
-      .qr {
-        position: relative;
-        top: 15%;
-      }
-      .backup {
-        background-color: orange;
-        color: #fff;
-        position: absolute;
-        z-index: 2;
-        i {
-          padding: 10px;
-        }
       }
       .request-button {
         padding-top: 20px;
       }
     }
     .incomplete {
-      height: 100%;
       .title {
-        margin-top: 10%;
+        padding-top: 10%;
         font-size: 25px;
         color: #444;
         text-align: center;
@@ -44,12 +35,27 @@
       .subtitle {
         padding: 20px;
         color: #444;
-        margin-top: 20%;
+        margin-top: 10%;
         text-align: center;
       }
-      .button {
-        margin-top: 20%;
-      }
     }
+  }
+  .backup {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    cursor: pointer;
+    background-color: orange;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    i {
+      margin: 0 10px;
+    }
+  }
+  .wallet-selector {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }

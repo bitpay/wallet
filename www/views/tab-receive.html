@@ -18,34 +18,32 @@
           <button class="button button-standard button-primary" ng-click="goCopayers()" translate>Open wallet</button>
         </div>
       </div>
-      <div class="address-info" ng-if="wallet && wallet.isComplete()">
-        <div class="row backup" ng-show="wallet.needsBackup" ng-click="openBackupNeededModal()">
-          <div class="text-center col center-block">
-            <i class="icon ion-alert"></i><span translate>Wallet not backed up</span><i class="icon ion-ios-arrow-thin-right"></i>
+      <div class="address-info" ng-if="wallet && wallet.isComplete()"> 
+        <div copy-to-clipboard="copyToClipboard()">
+          <span ng-show="shouldShowReceiveAddressFromHardware()">
+            <button class="button button-standard button-primary" ng-click="showReceiveAddressFromHardware()">
+              <span translate>Show address</span>
+            </button>
+          </span>
+          <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}" color="#334"></qrcode>
+          <div class="address-label">
+            <span class="ellipsis">{{addr}}</span>
+            <ion-spinner ng-show="!addr" class="spinner-dark" icon="crescent"></ion-spinner>
           </div>
         </div>
-        <div class="row qr">
-          <div class="text-center col">
-            <div copy-to-clipboard="copyToClipboard()">
-              <span ng-show="shouldShowReceiveAddressFromHardware()">
-                <button class="button button-standard button-primary" ng-click="showReceiveAddressFromHardware()">
-                  <span translate>Show address</span>
-                </button>
-              </span>
-              <qrcode ng-if="addr" size="220" data="bitcoin:{{addr}}" color="#334"></qrcode>
-              <div class="address-label">
-                <span class="ellipsis">{{addr}}</span>
-                <ion-spinner ng-show="!addr" class="spinner-dark" icon="crescent"></ion-spinner>
-              </div>
-            </div>
-            <div ng-show="addr" class="request-button">
-              <button class="button button-standard button-primary button-outline" ng-click="requestSpecificAmount()" translate>Request Specific amount</button>
-            </div>
-          </div>
+        <div ng-show="addr" class="request-button">
+          <button class="button button-standard button-primary button-outline button-small" ng-click="requestSpecificAmount()" translate>Request Specific amount</button>
         </div>
-      </div>
+      </div> 
     </article>
-    <div ng-click="showWalletSelector()" ng-if="wallets[0]">
+
+    <div class="backup" ng-if="wallets[0] && wallet && wallet.isComplete() && wallet.needsBackup" ng-click="openBackupNeededModal()">
+      <i class="icon ion-alert"></i>
+      <span translate>Wallet not backed up</span>
+      <i class="icon ion-ios-arrow-thin-right"></i>
+    </div>
+
+    <div class="wallet-selector" ng-click="showWalletSelector()" ng-if="wallets[0] && wallet">
       <a ng-if="wallet" class="item item-sub item-icon-left item-big-icon-left item-icon-right">
         <i class="icon big-icon-svg">
           <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
@@ -66,6 +64,7 @@
         <i ng-if="!singleWallet" class="icon bp-arrow-right"></i>
       </a>
     </div>
+    
   </ion-content>
   <wallet-selector
     wallet-selector-title="walletSelectorTitle"
