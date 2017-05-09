@@ -14,11 +14,11 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
-  $scope.setAddress = function() {
-    if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
+  $scope.setAddress = function(newAddr) {
     $scope.addr = null;
+    if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
     $scope.generatingAddress = true;
-    walletService.getAddress($scope.wallet, false, function(err, addr) {
+    walletService.getAddress($scope.wallet, newAddr, function(err, addr) {
       $scope.generatingAddress = false;
 
       if (err) {
@@ -74,20 +74,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   };
 
-  $scope.updateCurrentWallet = function(wallet) {
-    walletService.getStatus(wallet, {}, function(err, status) {
-      if (err) {
-        return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
-      }
-      $timeout(function() {
-        $scope.wallet = profileService.getWallet(wallet.id);
-        $scope.wallet.status = status;
-        $scope.setAddress();
-        $scope.$apply();
-      }, 200);
-    });
-  };
-
   $scope.shouldShowReceiveAddressFromHardware = function() {
     var wallet = $scope.wallet;
     if (wallet.isPrivKeyExternal() && wallet.credentials.hwInfo) {
@@ -108,27 +94,19 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.wallets = profileService.getWallets();
     $scope.singleWallet = $scope.wallets.length == 1;
 
+    if (!$scope.wallets[0]) return;
+
+    // select first wallet if no wallet selected previously
+    var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
+    $scope.onWalletSelect(selectedWallet);
+
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
         // Update current address
-        if ($scope.wallet && walletId == $scope.wallet.id) $scope.updateCurrentWallet($scope.wallet);
+        if ($scope.wallet && walletId == $scope.wallet.id && type == 'NewIncomingTx') $scope.setAddress(true);
       })
-      ];
-
-    if (!$scope.wallets[0]) return;
-    if (!$scope.wallet) return $scope.init();
-
-    var w = lodash.find($scope.wallets, function(w) {
-      return w.id == $scope.wallet.id;
-    });
-    if (w) $scope.updateCurrentWallet($scope.wallet);
-    else $scope.init();
+    ];
   });
-
-  $scope.init = function() {
-    $scope.wallet = $scope.wallets[0];
-    $scope.updateCurrentWallet($scope.wallet);
-  };
 
   $scope.$on("$ionicView.leave", function(event, data) {
     lodash.each(listeners, function(x) {
@@ -136,8 +114,18 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     });
   });
 
+  var checkSelectedWallet = function(wallet, wallets) {
+    if (!wallet) return wallets[0];
+    var w = lodash.find(wallets, function(w) {
+      return w.id == wallet.id;
+    });
+    if (!w) return wallets[0];
+    return wallet;
+  }
+
   $scope.onWalletSelect = function(wallet) {
-    $scope.updateCurrentWallet(wallet);
+    $scope.wallet = wallet;
+    $scope.setAddress();
   };
 
   $scope.showWalletSelector = function() {
