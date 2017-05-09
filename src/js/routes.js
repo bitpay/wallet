@@ -1231,6 +1231,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               // Clear history
               $ionicHistory.clearHistory();
             });
+            applicationService.appLockModal('check');
           });
         };
         // After everything have been loaded, initialize handler URL
@@ -1258,7 +1259,5 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
-
-      if (!applicationService.successfullUnlocked) applicationService.appLockModal('check');
     });
   });

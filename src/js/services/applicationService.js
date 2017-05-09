@@ -3,9 +3,6 @@ angular.module('copayApp.services')
   .factory('applicationService', function($rootScope, $timeout, $ionicHistory, $ionicModal, platformInfo, fingerprintService, openURLService, configService, $state) {
     var root = {};
 
-    root.successfullUnlocked = false;
-    root.pinModalIsOpen = false;
-
     var isChromeApp = platformInfo.isChromeApp;
     var isNW = platformInfo.isNW;
 
@@ -42,12 +39,10 @@ angular.module('copayApp.services')
           root.fingerprintModal();
           return;
         }
-        root.successfullUnlocked = true;
       });
     };
 
     root.pinModal = function(action) {
-      if (root.pinModalIsOpen) return;
 
       var scope = $rootScope.$new(true);
       scope.action = action;
@@ -61,12 +56,10 @@ angular.module('copayApp.services')
         scope.openModal();
       });
       scope.openModal = function() {
-        root.pinModalIsOpen = true;
         scope.pinModal.show();
       };
       scope.hideModal = function() {
         scope.$emit('pinModalClosed');
-        root.pinModalIsOpen = false;
         scope.pinModal.hide();
       };
     };

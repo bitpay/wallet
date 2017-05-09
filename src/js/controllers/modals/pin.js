@@ -122,7 +122,6 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
         break;
       case 'check':
         if (isMatch(currentPin)) {
-          applicationService.successfullUnlocked = true;
           $scope.hideModal();
           return;
         }
