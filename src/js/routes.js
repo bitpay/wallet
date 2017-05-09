@@ -1183,58 +1183,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         // Nothing to do
       });
 
-
-      // function checkAndApplyLock(onResume) {
-      //   var defaultView = 'tabs.home';
-      //
-      //   if (!platformInfo.isCordova && !platformInfo.isDevel) {
-      //     goTo(defaultView);
-      //   }
-      //
-      //   if (onResume) {
-      //     var now = Math.floor(Date.now() / 1000);
-      //     if (now < openURLService.unlockUntil) {
-      //       openURLService.unlockUntil = null;
-      //       $log.debug('Skip startup locking');
-      //       return;
-      //     }
-      //   }
-      //
-      //   function goTo(nextView) {
-      //     nextView = nextView || defaultView;
-      //     $state.transitionTo(nextView, {
-      //       action: 'check'
-      //     }).then(function() {
-      //       if (nextView == 'lockedView')
-      //         $ionicHistory.clearHistory();
-      //     });
-      //   };
-      //
-      //   startupService.ready();
-      //
-      //   configService.whenAvailable(function(config) {
-      //     var lockMethod = config.lock && config.lock.method;
-      //     $log.debug('App Lock:' + (lockMethod || 'no'));
-      //
-      //     if (lockMethod == 'fingerprint' && fingerprintService.isAvailable()) {
-      //       fingerprintService.check('unlockingApp', function(err) {
-      //         if (err)
-      //           goTo('lockedView');
-      //         else if ($ionicHistory.currentStateName() == 'lockedView' || !onResume)
-      //           goTo('tabs.home');
-      //       });
-      //     } else if (lockMethod == 'pin') {
-      //       goTo('pin');
-      //     } else {
-      //       goTo(defaultView);
-      //     }
-      //   });
-      // }
-
       $ionicPlatform.on('resume', function() {
-        applicationService.successfullUnlocked = false;
-        applicationService.pinModal('check');
-        // checkAndApplyLock(true);
+        applicationService.appLockModal('check');
       });
 
       $ionicPlatform.on('menubutton', function() {
@@ -1305,14 +1255,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('Route change from:', fromState.name || '-', ' to:', toState.name);
       $log.debug('            toParams:' + JSON.stringify(toParams || {}));
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
-      configService.whenAvailable(function(config) {
-        var lockMethod = config.lock && config.lock.method;
-        if (!lockMethod || lockMethod == 'none') return;
 
-        if (!applicationService.successfullUnlocked && !applicationService.pinIsOpen) {
-          console.log("################################# OPEN PIN MODAL");
-          applicationService.pinModal('check');
-        }
-      });
+      if (!applicationService.successfullUnlocked) applicationService.appLockModal('check');
     });
   });
