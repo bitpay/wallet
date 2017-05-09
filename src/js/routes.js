@@ -121,18 +121,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
-       * Locked
-       *
-       */
-
-      .state('lockedView', {
-        url: '/lockedView/',
-        controller: 'lockedViewController',
-        templateUrl: 'views/lockedView.html',
-      })
-
-      /*
-       *
        * URI
        *
        */
