@@ -1197,7 +1197,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         // Nothing to do
       });
 
-
       function checkAndApplyLock(onResume) {
         var defaultView = 'tabs.home';
 
@@ -1239,7 +1238,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             });
           } else if (lockMethod == 'pin') {
             goTo('pin');
-          } else {
+          } else if (!onResume) {
             goTo(defaultView);
           }
         });
