@@ -5,7 +5,17 @@
     overflow: auto;
     height: 100%;
     &-info {
-      padding: 12% 0 20% 0;
+      padding-top: 22vh;
+      padding-bottom: 17vh;
+      @media(max-height: 800px) {
+        padding-top: 17vh;
+      }
+      @media(max-height: 700px) {
+        padding-top: 14vh;
+      }
+      @media(max-height: 600px) {
+        padding-top: 7vh;
+      }
       text-align: center;
       .address-label {
         margin-top: 5%;
