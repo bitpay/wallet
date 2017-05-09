@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
 
         // Show the maximum amount allowed.
         amountViewAmountLabel = gettextCatalog.getString('Deposit Maximum {{amountMax}} {{currencyCode}}', {
-          amountMax: $scope.payrollRecord.employer.limits.payPeriod,
+          amountMax: $scope.payrollRecord.employee.amountMax,
           currencyCode: $scope.payrollRecord.employer.fundingCurrency
         });
       });
@@ -160,7 +160,7 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
       viewTitle: amountViewTitle,
       recipientLabel: amountViewRecipientLabel,
       amountLabel: amountViewAmountLabel,
-      amountMax: $scope.payrollRecord.employer.limits.payPeriod
+      amountMax: $scope.payrollRecord.employee.amountMax
     });
   };
 
@@ -180,7 +180,7 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
         viewTitle: amountViewTitle,
         recipientLabel: amountViewRecipientLabel,
         amountLabel: amountViewAmountLabel,
-        amountMax: $scope.payrollRecord.employer.limits.payPeriod
+        amountMax: $scope.payrollRecord.employee.amountMax
       });
     });
   };
