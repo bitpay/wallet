@@ -121,7 +121,6 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
     switch (method) {
       case 'pin':
         applicationService.pinModal('disable');
-        initMethodSelector();
         break;
       case 'fingerprint':
         fingerprintService.check('unlockingApp', function(err) {
@@ -136,7 +135,6 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
     switch (method) {
       case 'pin':
         applicationService.pinModal('setup');
-        initMethodSelector();
         break;
       case 'fingerprint':
         saveConfig('fingerprint');
@@ -159,7 +157,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
   };
 
   $rootScope.$on('pinModalClosed', function() {
-    initMethodSelector();
+    init()
   });
 
 });

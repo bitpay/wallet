@@ -1227,13 +1227,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
               disableAnimate: true,
               historyRoot: true
             });
-            $state.transitionTo('tabs.home');
+            $state.transitionTo('tabs.home').then(function() {
+              // Clear history
+              $ionicHistory.clearHistory();
+            });
           });
         };
         // After everything have been loaded, initialize handler URL
         $timeout(function() {
           openURLService.init();
-        });
+        }, 1000);
       });
     });
 

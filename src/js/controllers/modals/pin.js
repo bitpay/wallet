@@ -204,4 +204,5 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
       lockTimeControl(bannedUntil);
     });
   };
+
 });

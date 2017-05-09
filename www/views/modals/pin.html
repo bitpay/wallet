@@ -1,4 +1,9 @@
 <ion-modal-view id="pin" ng-controller="pinController">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button ng-if="action != 'check'" class="button button-back button-clear" ng-click="hideModal()">
+      Close
+    </button>
+  </ion-header-bar>
   <div class="content">
     <div class="block-text row">
       <div class="message" ng-if="!confirmPin && !error" translate>Please enter your PIN</div>
