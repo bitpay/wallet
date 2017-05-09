@@ -36,25 +36,28 @@ angular.module('copayApp.services')
       }
     };
 
-    root.pinModal = function() {
+    root.pinModal = function(action) {
 
       root.pinIsOpen = true;
       root.successfullUnlocked = false;
       var scope = $rootScope.$new(true);
-      $ionicModal.fromTemplateUrl('views/modals/pintestview.html', {
+      console.log(action);
+      console.log("###########################111");
+      scope.action = action;
+      $ionicModal.fromTemplateUrl('views/modals/pin.html', {
         scope: scope,
         animation: 'slide-in-up',
         backdropClickToClose: false,
         hardwareBackButtonClose: false
       }).then(function(modal) {
-        scope.pintestview = modal;
-        scope.pintestview.show();
+        scope.pinModal = modal;
+        scope.openModal();
       });
       scope.openModal = function() {
-        scope.modal.show();
+        scope.pinModal.show();
       };
-      scope.closeModal = function() {
-        scope.modal.hide();
+      scope.hideModal = function() {
+        scope.pinModal.hide();
       };
       // Cleanup the modal when we're done with it!
       scope.$on('$destroy', function() {

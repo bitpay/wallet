@@ -121,18 +121,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       /*
        *
-       * Pin
-       *
-       */
-
-      .state('pin', {
-        url: '/pin/:action',
-        controller: 'pinController',
-        templateUrl: 'views/pin.html',
-      })
-
-      /*
-       *
        * Locked
        *
        */
@@ -1245,7 +1233,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       $ionicPlatform.on('resume', function() {
         applicationService.successfullUnlocked = false;
-        applicationService.pinModal();
+        applicationService.pinModal('check');
         // checkAndApplyLock(true);
       });
 
@@ -1319,13 +1307,11 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       $log.debug('            fromParams:' + JSON.stringify(fromParams || {}));
       configService.whenAvailable(function(config) {
         var lockMethod = config.lock && config.lock.method;
-        console.log(lockMethod);
-        console.log("########################");
         if (!lockMethod || lockMethod == 'none') return;
 
         if (!applicationService.successfullUnlocked && !applicationService.pinIsOpen) {
           console.log("################################# OPEN PIN MODAL");
-          applicationService.pinModal();
+          applicationService.pinModal('check');
         }
       });
     });
