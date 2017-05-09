@@ -1245,6 +1245,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       $ionicPlatform.on('resume', function() {
         applicationService.successfullUnlocked = false;
+        applicationService.pinModal();
         // checkAndApplyLock(true);
       });
 
