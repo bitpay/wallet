@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('lockSetupController', function($state, $scope, $timeout, $log, configService, gettextCatalog, fingerprintService, profileService, lodash, applicationService) {
+angular.module('copayApp.controllers').controller('lockSetupController', function($state, $rootScope, $scope, $timeout, $log, configService, gettextCatalog, fingerprintService, profileService, lodash, applicationService) {
 
   function init() {
     $scope.options = [
@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
       o.disabled = false;
     });
 
-    // HACK: Disable untill we allow to change between methods directly
+    // HACK: Disable until we allow to change between methods directly
     if (fingerprintService.isAvailable()) {
       switch (savedMethod) {
         case 'pin':
@@ -121,6 +121,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
     switch (method) {
       case 'pin':
         applicationService.pinModal('disable');
+        initMethodSelector();
         break;
       case 'fingerprint':
         fingerprintService.check('unlockingApp', function(err) {
@@ -135,6 +136,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
     switch (method) {
       case 'pin':
         applicationService.pinModal('setup');
+        initMethodSelector();
         break;
       case 'fingerprint':
         saveConfig('fingerprint');
@@ -155,4 +157,9 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
       initMethodSelector();
     });
   };
+
+  $rootScope.$on('pinModalClosed', function() {
+    initMethodSelector();
+  });
+
 });
