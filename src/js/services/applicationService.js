@@ -1,7 +1,10 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('applicationService', function($rootScope, $timeout, $ionicHistory, platformInfo, $state) {
+  .factory('applicationService', function($rootScope, $timeout, $ionicHistory, $ionicModal, platformInfo, $state) {
     var root = {};
+
+    root.successfullUnlocked = false;
+    root.pinIsOpen = false;
 
     var isChromeApp = platformInfo.isChromeApp;
     var isNW = platformInfo.isNW;
@@ -33,5 +36,38 @@ angular.module('copayApp.services')
       }
     };
 
+    root.pinModal = function() {
+
+      root.pinIsOpen = true;
+      root.successfullUnlocked = false;
+      var scope = $rootScope.$new(true);
+      $ionicModal.fromTemplateUrl('views/modals/pintestview.html', {
+        scope: scope,
+        animation: 'slide-in-up',
+        backdropClickToClose: false,
+        hardwareBackButtonClose: false
+      }).then(function(modal) {
+        scope.pintestview = modal;
+        scope.pintestview.show();
+      });
+      scope.openModal = function() {
+        scope.modal.show();
+      };
+      scope.closeModal = function() {
+        scope.modal.hide();
+      };
+      // Cleanup the modal when we're done with it!
+      scope.$on('$destroy', function() {
+        scope.modal.remove();
+      });
+      // Execute action on hide modal
+      scope.$on('modal.hidden', function() {
+        // Execute action
+      });
+      // Execute action on remove modal
+      scope.$on('modal.removed', function() {
+        // Execute action
+      });
+    }
     return root;
   });
