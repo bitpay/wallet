@@ -8,22 +8,22 @@ angular.module('copayApp.directives')
       transclude: true,
       scope: {
         title: '=',
-        itemLabel: '@?',
+        items: '=?',
         show: '=',
         accounts: '=',
         selectedAccount: '=',
         onSelect: '='
       },
       link: function(scope, element, attrs) {
-        scope.itemLabel = scope.itemLabel || 'Add account';
+        scope.items = scope.items || [{label: 'Connect account', icon: 'img/icon-account-link.svg'}];
         scope.hide = function() {
           scope.show = false;
         };
-        scope.selectAccount = function(account) {
+        scope.select = function(accountOrIndex) {
           $timeout(function() {
             scope.hide();
           }, 100);
-          scope.onSelect(account);
+          scope.onSelect(accountOrIndex);
         };
       }
     };
