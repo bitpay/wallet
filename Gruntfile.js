@@ -61,10 +61,13 @@ module.exports = function(grunt) {
         stdin: true,
       },
       desktopsign: {
-        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.dmg.sig --detach-sig webkitbuilds/<%= pkg.title %>.dmg ; gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>.exe'
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>-linux.zip.sig --detach-sig webkitbuilds/<%= pkg.title %>-linux.zip ; gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.exe.sig --detach-sig webkitbuilds/<%= pkg.title %>.exe'
       },
       desktopverify: {
-        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip && gpg --verify webkitbuilds/<%= pkg.title %>.dmg.sig webkitbuilds/<%= pkg.title %>.dmg ; gpg --verify webkitbuilds/<%= pkg.title %>.exe.sig webkitbuilds/<%= pkg.title %>.exe'
+        cmd: 'gpg --verify webkitbuilds/<%= pkg.title %>-linux.zip.sig webkitbuilds/<%= pkg.title %>-linux.zip; gpg --verify webkitbuilds/<%= pkg.title %>.exe.sig webkitbuilds/<%= pkg.title %>.exe'
+      },
+      osxsign: {
+        cmd: 'gpg -u 1112CFA1 --output webkitbuilds/<%= pkg.title %>.dmg.sig --detach-sig webkitbuilds/<%= pkg.title %>.dmg'
       },
     },
     watch: {
@@ -255,8 +258,8 @@ module.exports = function(grunt) {
   grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
-  grunt.registerTask('macos', ['prod', 'nwjs', 'exec:macos']);
-  grunt.registerTask('macos-debug', ['default', 'nwjs']);
+  grunt.registerTask('osx', ['prod', 'nwjs', 'exec:macos', 'exec:osxsign']);
+  grunt.registerTask('osx-debug', ['default', 'nwjs']);
   grunt.registerTask('chrome', ['exec:chrome']);
   grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-copy', ['default', 'exec:wpcopy']);
