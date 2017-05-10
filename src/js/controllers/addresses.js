@@ -84,7 +84,11 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     walletService.getAddress($scope.wallet, true, function(err, addr) {
       if (err) {
         ongoingProcess.set('generatingNewAddress', false);
-        $scope.gapReached = true;
+        if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
+          $scope.gapReached = true;
+        } else {
+          popupService.showAlert(err);
+        }
         $timeout(function() {
           $scope.$digest();
         });

@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
       if (err) {
         //Error is already formated
-        return popupService.showAlert(err);
+        popupService.showAlert(err);
       }
 
       $scope.addr = addr;
