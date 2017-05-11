@@ -656,8 +656,17 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        *
        */
 
-      .state('tabs.receive.amount', {
-        url: '/amount/:walletId/:customAmount/:toAddress',
+      .state('tabs.paymentRequest', {
+        url: '/payment-request',
+        abstract: true,
+        params: {
+          id: null,
+          nextStep: 'tabs.paymentRequest.confirm'
+        }
+      })
+
+      .state('tabs.paymentRequest.amount', {
+        url: '/amount',
         views: {
           'tab-receive@tabs': {
             controller: 'amountController',
@@ -665,8 +674,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.receive.customAmount', {
-        url: '/customAmount/:walletId/:toAmount/:toAddress',
+      .state('tabs.paymentRequest.confirm', {
+        url: '/confirm/:amount/:currency',
         views: {
           'tab-receive@tabs': {
             controller: 'customAmountController',
