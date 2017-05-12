@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, configService, profileService, fingerprintService, walletService) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    var walletId = wallet.credentials.walletId;
-    $scope.wallet = wallet;
+  function($scope, $rootScope, $timeout, $log, $ionicHistory, configService, profileService, fingerprintService, walletService) {
+    var wallet;
+    var walletId; 
 
     $scope.encryptEnabled = {
       value: walletService.isEncrypted(wallet)
@@ -78,6 +77,10 @@ angular.module('copayApp.controllers').controller('preferencesController',
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      wallet = profileService.getWallet(data.stateParams.walletId);
+      walletId = wallet.credentials.walletId;
+      $scope.wallet = wallet;
+      
       $scope.externalSource = null;
 
       if (!wallet)
