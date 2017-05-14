@@ -1111,7 +1111,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService, applicationService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, emailService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService, applicationService) {
 
     uxLanguage.init();
 
@@ -1224,8 +1224,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             applicationService.appLockModal('check');
           });
         };
-        // After everything have been loaded, initialize handler URL
+        // After everything have been loaded
         $timeout(function() {
+          emailService.init(); // Update email subscription if necessary
           openURLService.init();
         }, 1000);
       });
