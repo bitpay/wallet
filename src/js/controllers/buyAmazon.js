@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo) {
+angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo) {
 
   var amount;
   var currency;
-  $scope.isCordova = platformInfo.isCordova;
+  $scope.isCordova = platformInfo.isCordova; 
 
   $scope.openExternalLink = function(url) {
     externalLinkService.open(url);
@@ -96,6 +96,14 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
     });
   }, 8000, {
     'leading': true
+  });
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(false);
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
