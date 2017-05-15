@@ -4,6 +4,8 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
 
   var root = {};
 
+  var accountCache = [];
+
   // A list of facades that this service recognizes.
   //   items - the kind of items that this facade manages; UI friendly description.
   //   startUrl - url where pairing with this facade starts.
@@ -149,6 +151,24 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
     });
   };
 
+  // Check if the given email address is already used on an account.
+  root.checkAccountAvailable = function(email, cb) {
+    var json = {
+      method: 'checkAccountAvailable',
+      params: JSON.stringify({
+        email: email
+      })
+    };
+
+    bitpayService.post(bitpayService.FACADE_PUBLIC, '', json, function(data) {
+      if (data && data.data.error) return cb(data.data.error);
+      $log.info('Check Account Available: SUCCESS');
+      return cb(null, data.data.data);
+    }, function(data) {
+      return cb(_setError('BitPay Account Error: Check Account Available', data));
+    });
+  };
+
   // Returns account objects as stored.
   root.getAccountsAsStored = function(cb) {
     storageService.getBitpayAccounts(bitpayService.getEnvironment().network, cb);
@@ -157,6 +177,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
   // Returns an array where each element represents an account including all information required for fetching data
   // from the server for each account (apiContext).
   root.getAccounts = function(cb) {
+    cb = cb || function(){};
     root.getAccountsAsStored(function(err, accounts) {
       if (err || lodash.isEmpty(accounts)) {
         return cb(err, []);
@@ -166,7 +187,9 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
           return cb(err);
         }
 
-        var accountsArray = [];
+        // Reset cache.
+        accountCache = [];
+
         lodash.forEach(Object.keys(accounts), function(key) {
           accounts[key].cards = accounts[key].cards;
           accounts[key].email = key;
@@ -180,9 +203,9 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
             appIdentity: appIdentity
           };
 
-          accountsArray.push(accounts[key]);
+          accountCache.push(accounts[key]);
         });
-        return cb(null, accountsArray);
+        return cb(null, accountCache);
       });
     });
   };
@@ -198,6 +221,12 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
       });
       // Can return undefined (not found).
       cb(null, account);
+    });
+  };
+
+  root.getAccountSync = function(email) {
+    return lodash.find(accountCache, function(account) {
+      return account.email == email;
     });
   };
 
@@ -219,6 +248,9 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
     var error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
   };
+
+  // Initialize account cache.
+  root.getAccounts();
 
   return root;
   

@@ -14,6 +14,7 @@
         <label class="item item-input item-stacked-label">
           <span class="input-label" translate>Email Address</span>
           <input type="email" id="email" name="email" ng-model="qualifyingData.email" required></input>
+          <span class="error" ng-if="error">{{error}}</span>
         </label>
       </div>
       <div ng-if="employeeLabelRequired">

@@ -52,6 +52,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'resumingPayrollRecord': gettext('Resuming payroll...'),
     'cancelingPayrollRecord': gettext('Canceling payroll...'),
     'checkingPayrollEligible': gettext('Checking eligibility...'),
+    'checkingAccountAvailability': gettext('Checking account availability...'),
   };
 
   root.clear = function() {

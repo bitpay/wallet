@@ -87,7 +87,9 @@ angular.module('copayApp.controllers').controller('payrollSummaryController', fu
   $scope.stopPayroll = function(record) {
     return popupService.showConfirm(
       gettextCatalog.getString('Cancel Payroll Setup'),
-      gettextCatalog.getString('Are you sure you want to cancel bitcoin payroll setup?'), null, null, function(res) {
+      gettextCatalog.getString('Are you sure you want to cancel bitcoin payroll setup?'),
+      gettextCatalog.getString('Yes'),
+      gettextCatalog.getString('No'), function(res) {
         if (res) {
           ongoingProcess.set('cancelingPayrollRecord', true);
           bitpayPayrollService.stopPayroll(record, function(err) {

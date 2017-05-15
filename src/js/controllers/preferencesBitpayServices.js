@@ -75,18 +75,21 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
     };
 
     var setScope = function(cb) {
+      cb = cb || function(){};
+
       bitpayCardService.getCards(function(err, cards) {
         $scope.cards = cards;
-      });
 
-      bitpayPayrollService.getPayrollRecords(null, function(err, records) {
-        $scope.payrollRecords = lodash.filter(records, function(record) {
-          return record.token != undefined;
+        bitpayPayrollService.getPayrollRecords(null, function(err, records) {
+          $scope.payrollRecords = lodash.filter(records, function(record) {
+            return record.token != undefined;
+          });
+
+          bitpayAccountService.getAccounts(function(err, accounts) {
+            $scope.accounts = accounts;
+            cb();
+          });
         });
-      });
-
-      bitpayAccountService.getAccounts(function(err, accounts) {
-        $scope.accounts = accounts;
       });
     };
 

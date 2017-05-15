@@ -9,9 +9,30 @@ angular.module('copayApp.controllers').controller('payrollEligibleController', f
       email: '',
       label: ''
     };
+    $scope.error = undefined;
   });
 
   $scope.checkIfEligible = function() {
+    $scope.error = undefined;
+    if ($scope.createAccount) {
+      // Check if the email address is available.
+      ongoingProcess.set('checkingAccountAvailability', true);
+      bitpayAccountService.checkAccountAvailable($scope.qualifyingData.email, function(err, data) {
+        ongoingProcess.set('checkingAccountAvailability', false);
+        if (err) {
+          $scope.error = err;
+        } else  if (!data.available) {
+          $scope.error = gettextCatalog.getString('Email address not available for account creation');
+        } else {
+          checkEligibility();
+        }
+      });
+    } else {
+      checkEligibility();
+    }
+  };
+
+  var checkEligibility = function() {
     ongoingProcess.set('checkingPayrollEligible', true);
     bitpayPayrollService.checkIfEligible($scope.qualifyingData, function(err, record) {
       ongoingProcess.set('checkingPayrollEligible', false);

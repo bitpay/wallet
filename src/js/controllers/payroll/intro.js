@@ -81,9 +81,10 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
   };
 
   var onAfterPairing = function(email) {
+    // After pairing show the summary view if there are existing payroll records.
+    // If there are no payroll records then advance to the start of payroll setup.
     updateAccounts(function() {
-      // After pairing either show the summary view or stay here.
-      if (account && bitpayPayrollService.hasAccess(email)) {
+      if (bitpayPayrollService.hasAccess(email)) {
         // Has an account with payroll access.
         bitpayPayrollService.getPayrollRecords(email, function(err, records) {
           if (err) {
@@ -92,9 +93,13 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
           if (records.length > 0) {
             $state.transitionTo('tabs.payroll.summary');
+          } else {
+            $state.transitionTo('tabs.payroll.eligible');
           }
         });
       }
+      // No accounts with payroll access. Just stay on this view.
+      // (this shouldn't happen)
     });
   };
 

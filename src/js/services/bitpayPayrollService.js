@@ -29,23 +29,13 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   // During payroll setup the bitpayAccount defines the environment for submission of payroll records.
   var bitpayAccount = undefined;
 
-  root.hasAccess = function(accountOrEmail) {
+  root.hasAccess = function(accountOrEmail, cb) {
+    var account = accountOrEmail;
     if (typeof accountOrEmail === 'string') {
       var email = accountOrEmail;
-      bitpayAccountService.getAccount(email, function(err, account) {
-        if (err) {
-          return cb(err);
-        }
-        if (!account) {
-          return cb(err);
-        }
-
-        return (bitpayService.getTokenForFacade(bitpayService.FACADE_PAYROLL_USER, account.apiContext.tokens) != undefined);
-      });
-    } else {
-      var account = accountOrEmail;
-      return (bitpayService.getTokenForFacade(bitpayService.FACADE_PAYROLL_USER, account.apiContext.tokens) != undefined);
+      account = bitpayAccountService.getAccountSync(email);
     }
+    return (bitpayService.getTokenForFacade(bitpayService.FACADE_PAYROLL_USER, account.apiContext.tokens) != undefined);
   };
 
   root.bindToBitPayAccount = function(account) {
