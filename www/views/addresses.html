@@ -33,6 +33,11 @@
         <div class="item item-icon-right view-all" ng-if="viewAll.value" ng-click="viewAllAddresses()">
           <span translate>View All Addresses</span>
           <i class="icon ion-ios-arrow-thin-right"></i>
+        </div> 
+
+        <div class="item item-divider item-icon-right" ng-click="newAddress()">
+          <span translate>Unused Addresses</span>
+          <i class="icon ion-ios-plus-empty"></i>
         </div>
 
         <div ng-if="loading" class="updating">
@@ -41,11 +46,6 @@
         </div>
 
         <div ng-if="latestUnused[0]">
-          <div class="item item-divider item-icon-right" ng-click="newAddress()">
-            <span translate>Unused Addresses</span>
-            <i class="icon ion-ios-plus-empty"></i>
-          </div>
-
           <div class="box-error" ng-if="gapReached">
             <h5 translate>Unused Addresses Limit</h5>
             <p><span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab.</span>&nbsp<a ng-click="readMore()" ng-if="!showMore" translate>Read more</a></p>
