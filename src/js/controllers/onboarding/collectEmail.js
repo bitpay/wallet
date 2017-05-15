@@ -48,17 +48,19 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   };
 
   $scope.save = function() {
-    var enabled = true; // Set enabled email: true
-
-    emailService.updateEmail({
-      enabled: enabled,
-      email: enabled ? $scope.data.email : null
-    });
-        
-    if ($scope.data.accept) collectEmail();
-
     $timeout(function() {
-      $scope.goNextView();
+      var enabled = true; // Set enabled email: true
+
+      emailService.updateEmail({
+        enabled: enabled,
+        email: enabled ? $scope.data.email : null
+      });
+          
+      if ($scope.data.accept) collectEmail();
+
+      $timeout(function() {
+        $scope.goNextView();
+      }, 200);
     }, 200);
   };
 
