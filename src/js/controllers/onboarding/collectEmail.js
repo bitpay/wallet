@@ -48,6 +48,7 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   };
 
   $scope.save = function() {
+    $scope.disableButton = true;
     $timeout(function() {
       var enabled = true; // Set enabled email: true
 
