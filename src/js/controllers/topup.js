@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService) {
 
   var amount;
   var currency;
@@ -8,6 +8,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   var sendMax;
 
   $scope.isCordova = platformInfo.isCordova;
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
 
   var showErrorAndBack = function(title, msg) {
     title = title || 'Error';
