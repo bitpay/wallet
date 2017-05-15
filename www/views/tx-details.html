@@ -77,7 +77,7 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-click="toggleFeeFiat = !toggleFeeFiat">
+        <div class="item single-line" ng-click="toggleFeeFiat = !toggleFeeFiat" ng-if="btx.action != 'received'">
           <span class="label" translate>Fee</span>
           <span class="item-note">
             <span ng-if="!toggleFeeFiat">{{btx.feeStr}}</span>
