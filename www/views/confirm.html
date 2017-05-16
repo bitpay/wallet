@@ -48,7 +48,7 @@
           </span>
           <div class="wallet" ng-if="recipientType == 'wallet'">
             <i class="icon big-icon-svg">
-              <img src="img/icon-wallet.svg" ng-style="{'background-color': toColor}" class="bg"/>
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}" class="bg"/>
             </i>
             <div copy-to-clipboard="toAddress" class="ellipsis">
               <contact ng-if="!toName" address="{{toAddress}}"></contact>
@@ -77,18 +77,21 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <a class="item single-line item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet" ng-click="showDescriptionPopup()">
+        <div class="item item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet" ng-click="chooseFeeLevel()">
+          <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
+          <span class="m10l">{{fee || '...'}}</span>
+          <span class="item-note m10l">
+            <span>{{feeFiat || '...'}}&nbsp;<span class="fee-percent" ng-if="feePercent" translate>- {{feePercent}} % of the transaction</span></span>
+          </span>
+          <i class="icon bp-arrow-right"></i>
+        </div>
+        <a class="item item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet" ng-click="showDescriptionPopup()">
           <span class="label" translate>Add Memo</span>
           <span class="item-note m10l">
             {{description}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line toggle" ng-if="!insufficientFunds && !noMatchingWallet">
-          <span class="label">{{'Fee' | translate}}: {{feeLevel | translate}}</span>
-          <span ng-if="!showFeeFiat" class="item-note" ng-click="toggleFeeValue()">{{fee || '...'}}</span>
-          <span ng-if="showFeeFiat" class="item-note" ng-click="toggleFeeValue()">{{feeFiat || '...'}}</span>
-        </div>
         <div class="text-center" ng-show="noMatchingWallet">
           <span class="badge badge-energized" translate>No wallets available</span>
         </div>
