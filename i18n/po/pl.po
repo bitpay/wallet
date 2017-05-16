@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"PO-Revision-Date: 2017-04-24 08:26-0400\n"
+"PO-Revision-Date: 2017-05-16 09:39-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -208,7 +208,7 @@ msgstr "Czy jesteś obserwowany?"
 
 #: src/js/controllers/preferencesExternal.js:15
 msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr ""
+msgstr "Czy jesteś obserwowany? Każdy, kto zdobędzie twoją kluczową frazę może uzyskać dostęp do portfela i wydać twoje bitcoiny."
 
 #: src/js/controllers/copayers.js:42
 msgid "Are you sure you want to cancel and delete this wallet?"
@@ -268,7 +268,7 @@ msgstr "Potrzebna kopia zapasowa"
 
 #: src/js/controllers/lockSetup.js:50
 msgid "Backup all livenet wallets before using this function"
-msgstr ""
+msgstr "Zrób kopię zapasową wszystkich swoich portfeli przed użyciem tej funkcji"
 
 #: www/views/preferences.html:41
 #: www/views/tab-settings.html:120
@@ -286,7 +286,7 @@ msgstr "Kopia zapasowa portfela"
 
 #: src/js/controllers/lockSetup.js:47
 msgid "Backup your wallet before using this function"
-msgstr ""
+msgstr "Zrób kopię zapasową portfela przed użyciem tej funkcji"
 
 #: src/js/services/profileService.js:430
 msgid "Bad wallet invitation"
@@ -399,7 +399,7 @@ msgstr "Certyfikowane przez"
 
 #: www/views/preferencesExternal.html:19
 msgid "Check installation and retry."
-msgstr ""
+msgstr "Sprawdź instalację i ponów próbę."
 
 #: www/views/tab-import-file.html:4
 msgid "Choose a backup file from your computer"
@@ -461,7 +461,7 @@ msgstr "Potwierdź &amp; zakończenie"
 
 #: www/views/pin.html:9
 msgid "Confirm your PIN"
-msgstr ""
+msgstr "Potwierdź kod PIN"
 
 #: src/js/services/walletService.js:938
 msgid "Confirm your new spending password"
@@ -737,7 +737,7 @@ msgstr "Strategia derywacji"
 #: src/js/controllers/lockSetup.js:9
 #: src/js/controllers/tab-settings.js:58
 msgid "Disabled"
-msgstr ""
+msgstr "Wyłącz"
 
 #: www/views/includes/backupNeededPopup.html:10
 #: www/views/onboarding/backupRequest.html:12
@@ -1097,7 +1097,7 @@ msgstr "Portfel sprzętowy"
 
 #: www/views/preferencesExternal.html:18
 msgid "Hardware not connected."
-msgstr ""
+msgstr "Sprzęt nie podłączony."
 
 #: www/views/import.html:20
 msgid "Hardware wallet"
@@ -1252,7 +1252,7 @@ msgstr "Nie wszyscy współwłaściciele dołączyli"
 
 #: www/views/pin.html:11
 msgid "Incorrect PIN, try again."
-msgstr ""
+msgstr "Nieprawidłowy kod PIN. Spróbuj ponownie."
 
 #: src/js/services/bwcError.js:113
 msgid "Incorrect address network"
@@ -1374,15 +1374,15 @@ msgstr "Ładowanie informacji o transakcji..."
 
 #: www/views/tab-settings.html:95
 msgid "Lock App"
-msgstr ""
+msgstr "Blokada aplikacji"
 
 #: src/js/controllers/lockSetup.js:21
 msgid "Lock by Fingerprint"
-msgstr ""
+msgstr "Blokada przez odcisk palca"
 
 #: src/js/controllers/lockSetup.js:13
 msgid "Lock by PIN"
-msgstr ""
+msgstr "Blokada przez PIN"
 
 #: www/views/modals/wallet-balance.html:80
 msgid "Locked"
@@ -1398,7 +1398,7 @@ msgstr "Skuteczna blokada. Proszę czekać, aby usunąć wniosek wypłaty"
 
 #: www/views/walletDetails.html:243
 msgid "Low fees"
-msgstr ""
+msgstr "Niskie opłaty"
 
 #: www/views/paymentUri.html:13
 msgid "Make a payment to"
@@ -1517,7 +1517,7 @@ msgstr "Brak kontaktów"
 
 #: www/views/preferencesExternal.html:12
 msgid "No hardware information available."
-msgstr ""
+msgstr "Brak dostępnych informacji o sprzęcie."
 
 #: www/views/tab-import-hardware.html:3
 msgid "No hardware wallets supported on this device"
@@ -1623,7 +1623,7 @@ msgstr "Na tym ekranie można zobaczyć wszystkie swoje portfele, konta i środk
 
 #: www/views/lockedView.html:14
 msgid "One-touch Sign In"
-msgstr ""
+msgstr "Zaloguj się one-touch"
 
 #: src/js/controllers/tab-settings.js:47
 msgid "Open"
@@ -1796,11 +1796,11 @@ msgstr "Wpisz kluczową frazę portfela"
 
 #: www/views/pin.html:8
 msgid "Please enter your PIN"
-msgstr ""
+msgstr "Wprowadź kod PIN"
 
 #: www/views/lockedView.html:15
 msgid "Please place your fingertip on the scanner to verify your identity"
-msgstr ""
+msgstr "Umieść palec na skanerze, aby potwierdzić swoją tożsamość"
 
 #: www/views/backup.html:46
 msgid "Please tap each word in the correct order."
@@ -2041,7 +2041,7 @@ msgstr "Skanuj adresy w celu znalezienia środków"
 
 #: www/views/lockedView.html:17
 msgid "Scan again"
-msgstr ""
+msgstr "Skanuj ponownie"
 
 #: src/js/services/fingerprintService.js:56
 msgid "Scan your fingerprint please"
@@ -2225,11 +2225,11 @@ msgstr "Współdzielony portfel"
 
 #: www/views/preferencesExternal.html:34
 msgid "Show Recovery Phrase"
-msgstr ""
+msgstr "Pokaż kluczową frazę"
 
 #: www/views/tab-receive.html:58
 msgid "Show address"
-msgstr ""
+msgstr "Pokaż adres"
 
 #: www/views/join.html:45
 #: www/views/tab-create-personal.html:24
@@ -2302,7 +2302,7 @@ msgstr "Rozpoczynanie..."
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
-msgstr ""
+msgstr "Blokada uruchamiania"
 
 #: src/js/services/feeService.js:12
 msgid "Super Economy"
@@ -2491,7 +2491,7 @@ msgstr "Ta kluczowa fraza został utworzona przy użyciu hasła. Aby odzyskać p
 
 #: www/views/tx-details.html:89
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
-msgstr ""
+msgstr "Potwierdzenie transakcja może trwać długo lub zostać przerwane z powodu niskiej prowizji ustalonej przez nadawcę"
 
 #: www/views/walletDetails.html:116
 #: www/views/walletDetails.html:35
@@ -2569,7 +2569,7 @@ msgstr "Przenieś do portfela"
 
 #: www/views/pin.html:12
 msgid "Try again in {{expires}}"
-msgstr ""
+msgstr "Spróbuj ponownie w {{expires}}"
 
 #: www/views/bitpayCardIntro.html:18
 msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
@@ -3001,7 +3001,7 @@ msgstr "adres jeszcze niedostępny"
 
 #: src/js/controllers/lockedView.js:5
 msgid "is locked"
-msgstr ""
+msgstr "jest zablokowany"
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
@@ -3039,7 +3039,7 @@ msgstr "{{appName}} jest zależny od Bitcore Wallet Service (BWS) jeśli chodzi 
 
 #: src/js/controllers/lockSetup.js:98
 msgid "{{appName}} startup is locked by PIN. Are you sure you want to disable it?"
-msgstr ""
+msgstr "Uruchamianie {{appName}} jest zablokowane przez PIN. Czy na pewno chcesz wyłączyć blokadę?"
 
 #: www/views/includes/confirm-tx.html:23
 msgid "{{feeRateStr}} of the transaction"
