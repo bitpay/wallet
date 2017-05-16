@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2017-04-21 12:51-0400\n"
+"PO-Revision-Date: 2017-05-16 09:39-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -2298,7 +2298,7 @@ msgstr "Empezar a enviar bitcoin"
 
 #: src/js/routes.js:118
 msgid "Starting..."
-msgstr "Empezando..."
+msgstr "Iniciando..."
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"

@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2017-04-24 08:26-0400\n"
+"PO-Revision-Date: 2017-05-16 09:39-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -2491,7 +2491,7 @@ msgstr "Esta frase de recuperação foi criada com uma senha. Para recuperar est
 
 #: www/views/tx-details.html:89
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
-msgstr ""
+msgstr "Esta operação poderá demorar muito tempo para ser confirmada ou poderá ser descartada devido às baixas taxas definidas pelo remetente"
 
 #: www/views/walletDetails.html:116
 #: www/views/walletDetails.html:35
@@ -2514,11 +2514,11 @@ msgstr "Para"
 
 #: www/views/tab-send.html:28
 msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
-msgstr ""
+msgstr "Para começar, compre bitcoins ou compartilhe seu endereço. Você pode receber bitcoins de qualquer carteira ou serviço."
 
 #: www/views/tab-send.html:29
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr ""
+msgstr "Para começar, você precisa criar uma carteira de bitcoins e obter alguns bitcoins."
 
 #: www/views/modals/wallet-balance.html:23
 msgid "Total"
@@ -2530,7 +2530,7 @@ msgstr "Saldo Total Bloqueado"
 
 #: www/views/tab-create-shared.html:33
 msgid "Total number of copayers"
-msgstr ""
+msgstr "Número total de copayers"
 
 #: src/js/services/fingerprintService.js:63
 #: src/js/services/fingerprintService.js:68
@@ -2544,7 +2544,7 @@ msgstr "Transação"
 #: www/views/preferencesAdvanced.html:25
 #: www/views/preferencesHistory.html:3
 msgid "Transaction History"
-msgstr ""
+msgstr "Histórico de Transações"
 
 #: src/js/services/bwcError.js:83
 msgid "Transaction already broadcasted"
@@ -2569,7 +2569,7 @@ msgstr "Transferir para carteira"
 
 #: www/views/pin.html:12
 msgid "Try again in {{expires}}"
-msgstr ""
+msgstr "Tente novamente em {{expires}}"
 
 #: www/views/bitpayCardIntro.html:18
 msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
@@ -2577,11 +2577,11 @@ msgstr ""
 
 #: www/views/tab-import-phrase.html:17
 msgid "Type the Recovery Phrase (usually 12 words)"
-msgstr ""
+msgstr "Digite a frase de recuperação (normalmente 12 palavras)"
 
 #: src/js/controllers/backup.js:75
 msgid "Uh oh..."
-msgstr ""
+msgstr "Uh oh..."
 
 #: www/views/modals/search.html:36
 #: www/views/tx-details.html:94
@@ -2602,7 +2602,7 @@ msgstr "Endereços não utilizados"
 
 #: www/views/addresses.html:64
 msgid "Unused Addresses Limit"
-msgstr ""
+msgstr "Limite de endereços não utilizados"
 
 #: src/js/controllers/tab-home.js:142
 msgid "Update Available"
@@ -2610,15 +2610,15 @@ msgstr "Atualização Disponível"
 
 #: www/views/proposals.html:15
 msgid "Updating pending proposals. Please stand by"
-msgstr ""
+msgstr "Atualizando propostas pendentes. Por favor, aguarde"
 
 #: www/views/walletDetails.html:209
 msgid "Updating transaction history. Please stand by."
-msgstr ""
+msgstr "Atualizando o histórico de transações. Por favor, aguarde."
 
 #: www/views/activity.html:14
 msgid "Updating... Please stand by"
-msgstr ""
+msgstr "Atualizando... Por favor, aguarde"
 
 #: src/js/services/feeService.js:8
 msgid "Urgent"
@@ -2626,11 +2626,11 @@ msgstr "Urgente"
 
 #: www/views/advancedSettings.html:11
 msgid "Use Unconfirmed Funds"
-msgstr ""
+msgstr "Utilizar fundos não confirmados"
 
 #: src/js/services/onGoingProcess.js:34
 msgid "Validating recovery phrase..."
-msgstr ""
+msgstr "Validando a frase de recuperação..."
 
 #: www/views/preferencesAbout.html:14
 #: www/views/preferencesExternal.html:25
@@ -2643,11 +2643,11 @@ msgstr "Ver"
 
 #: www/views/addresses.html:42
 msgid "View All Addresses"
-msgstr ""
+msgstr "Ver todos os endereços"
 
 #: src/js/controllers/onboarding/terms.js:20
 msgid "View Terms of Service"
-msgstr ""
+msgstr "Ver os Termos de Serviço"
 
 #: src/js/controllers/tx-details.js:161
 msgid "View Transaction on Insight"
@@ -2655,15 +2655,15 @@ msgstr ""
 
 #: src/js/controllers/tab-home.js:144
 msgid "View Update"
-msgstr ""
+msgstr "Ver atualizações"
 
 #: www/views/tx-details.html:132
 msgid "View on blockchain"
-msgstr ""
+msgstr "Ver no blockchain"
 
 #: www/views/walletDetails.html:165
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
-msgstr ""
+msgstr "Aviso: Derivação de chave não está funcionando neste dispositivo/carteira. Ações não podem ser executadas nesta carteira."
 
 #: www/views/tab-export-file.html:45
 msgid "WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>."
@@ -2679,11 +2679,11 @@ msgstr "AVISO: CERTIFICADO NÃO CONFIÁVEL"
 
 #: src/js/services/onGoingProcess.js:15
 msgid "Waiting for Ledger..."
-msgstr ""
+msgstr "Esperando por Ledger..."
 
 #: src/js/services/onGoingProcess.js:16
 msgid "Waiting for Trezor..."
-msgstr ""
+msgstr "Esperando por Trezor..."
 
 #: www/views/copayers.html:48
 msgid "Waiting for copayers"
@@ -2711,12 +2711,12 @@ msgstr "Carteira criada"
 
 #: www/views/preferencesInformation.html:17
 msgid "Wallet Id"
-msgstr ""
+msgstr "Id da carteira"
 
 #: www/views/preferencesAdvanced.html:13
 #: www/views/preferencesInformation.html:3
 msgid "Wallet Information"
-msgstr ""
+msgstr "Informações da carteira"
 
 #: www/views/join.html:26
 msgid "Wallet Invitation"
@@ -2726,7 +2726,7 @@ msgstr "Convite para Carteira"
 #: www/views/tab-create-personal.html:35
 #: www/views/tab-create-shared.html:65
 msgid "Wallet Key"
-msgstr ""
+msgstr "Chave da carteira"
 
 #: www/views/preferencesAlias.html:4
 msgid "Wallet Name"
@@ -2734,34 +2734,34 @@ msgstr "Nome da carteira"
 
 #: www/views/preferencesInformation.html:11
 msgid "Wallet Name (at creation)"
-msgstr ""
+msgstr "Nome da carteira (na criação)"
 
 #: www/views/preferencesInformation.html:29
 msgid "Wallet Network"
-msgstr ""
+msgstr "Network da carteira"
 
 #: www/views/join.html:74
 #: www/views/tab-create-personal.html:47
 #: www/views/tab-create-shared.html:77
 msgid "Wallet Recovery Phrase"
-msgstr ""
+msgstr "Frase de recuperação da carteira"
 
 #: src/js/services/bwcError.js:26
 msgid "Wallet Recovery Phrase is invalid"
-msgstr ""
+msgstr "Frase de recuperação da carteira é inválida"
 
 #: www/views/preferencesAdvanced.html:21
 #: www/views/tab-import-phrase.html:51
 msgid "Wallet Service URL"
-msgstr ""
+msgstr "URL do serviço de carteira"
 
 #: www/views/preferences.html:4
 msgid "Wallet Settings"
-msgstr ""
+msgstr "Configurações da carteira"
 
 #: www/views/tab-import-hardware.html:11
 msgid "Wallet Type"
-msgstr ""
+msgstr "Tipo da carteira"
 
 #: src/js/services/bwcError.js:59
 msgid "Wallet already exists"
@@ -2769,7 +2769,7 @@ msgstr "A carteira já existe"
 
 #: src/js/services/profileService.js:498
 msgid "Wallet already in Copay"
-msgstr ""
+msgstr "Carteira já em Copay"
 
 #: www/views/includes/walletActivity.html:6
 msgid "Wallet created"
@@ -2789,7 +2789,7 @@ msgstr "Carteira está bloqueada"
 
 #: src/js/services/bwcError.js:128
 msgid "Wallet is not complete"
-msgstr ""
+msgstr "Carteira não está completa"
 
 #: www/views/tab-create-personal.html:12
 #: www/views/tab-create-shared.html:12
@@ -2798,32 +2798,32 @@ msgstr "Nome da carteira"
 
 #: src/js/services/bwcError.js:131
 msgid "Wallet needs backup"
-msgstr ""
+msgstr "Carteira precisa de backup"
 
 #: www/views/tab-receive.html:51
 #: www/views/walletDetails.html:157
 msgid "Wallet not backed up"
-msgstr ""
+msgstr "Carteira sem backup"
 
 #: src/js/services/bwcError.js:68
 msgid "Wallet not found"
-msgstr ""
+msgstr "Carteira não encontrada"
 
 #: src/js/controllers/tab-home.js:216
 msgid "Wallet not registered"
-msgstr ""
+msgstr "Carteira não registrada"
 
 #: src/js/services/bwcError.js:29
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
-msgstr ""
+msgstr "Carteira não registrada no serviço de carteira. Recriá-la em \"Criar carteira\" usando \"Opções avançadas\" para definir a sua frase de recuperação"
 
 #: www/views/backup.html:11
 msgid "Wallet recovery phrase not available."
-msgstr ""
+msgstr "Frase de recuperação da carteira não disponível."
 
 #: src/js/services/bwcError.js:50
 msgid "Wallet service not found"
-msgstr ""
+msgstr "Serviço de carteira não encontrado"
 
 #: www/views/tab-home.html:68
 msgid "Wallets"
@@ -2843,7 +2843,7 @@ msgstr "Atenção!"
 
 #: www/views/modals/txp-details.html:47
 msgid "Warning: this transaction has unconfirmed inputs"
-msgstr ""
+msgstr "Aviso: esta transação tem entradas não confirmadas"
 
 #: src/js/controllers/onboarding/backupRequest.js:17
 msgid "Watch out!"
@@ -2851,11 +2851,11 @@ msgstr "Cuidado!"
 
 #: src/js/controllers/feedback/send.js:69
 msgid "We'd love to do better."
-msgstr ""
+msgstr "Nós adoraríamos fazer melhor."
 
 #: www/views/backup.html:28
 msgid "We'll confirm on the next screen."
-msgstr ""
+msgstr "Confirmaremos na próxima tela."
 
 #: src/js/controllers/feedback/send.js:77
 msgid "We're always looking for ways to improve {{appName}}."
@@ -2867,7 +2867,7 @@ msgstr "Estamos sempre procurando maneiras de melhorar o {{appName}}. Como melho
 
 #: www/views/preferencesLanguage.html:16
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
-msgstr ""
+msgstr "Estamos sempre procurando por contribuições de tradução! Você pode fazer correções ou ajudar a tornar este app disponível em seu idioma nativo ao aderir à nossa comunidade na Crowdin."
 
 #: www/views/preferencesAlias.html:11
 msgid "What do you call this wallet?"
@@ -2875,11 +2875,11 @@ msgstr ""
 
 #: www/views/preferencesAlias.html:12
 msgid "When this wallet was created, it was called &ldquo;{{walletName}}&rdquo;. You can change the name displayed on this device below."
-msgstr ""
+msgstr "Quando esta carteira foi criada, foi chamada de &ldquo;{{walletName}}&rdquo;. Abaixo você poderá alterar o nome exibido neste dispositivo."
 
 #: www/views/onboarding/collectEmail.html:10
 msgid "Where would you like to receive email notifications about payments?"
-msgstr ""
+msgstr "Onde você gostaria de receber os e-mails de notificações sobre os pagamentos?"
 
 #: www/views/addresses.html:23
 msgid "Why?"
@@ -2887,19 +2887,19 @@ msgstr ""
 
 #: www/views/feedback/rateApp.html:10
 msgid "Would you be willing to rate {{appName}} in the app store?"
-msgstr ""
+msgstr "Você estaria disposto a dar uma nota ao {{appName}} na app store?"
 
 #: www/views/onboarding/notifications.html:4
 msgid "Would you like to receive push notifications about payments?"
-msgstr ""
+msgstr "Gostaria de receber notificações push sobre pagamentos?"
 
 #: src/js/controllers/import.js:253
 msgid "Wrong number of recovery words:"
-msgstr ""
+msgstr "Número errado de palavras de recuperação:"
 
 #: src/js/services/bwcError.js:140
 msgid "Wrong spending password"
-msgstr ""
+msgstr "Senha de gastos errada"
 
 #: www/views/modals/confirmation.html:7
 #: www/views/onboarding/collectEmail.html:32
@@ -2912,15 +2912,15 @@ msgstr ""
 
 #: src/js/controllers/onboarding/backupRequest.js:24
 msgid "You can create a backup later from your wallet settings."
-msgstr ""
+msgstr "Você poderá criar um backup de suas configurações de carteira mais tarde."
 
 #: src/js/controllers/preferencesLanguage.js:12
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
-msgstr ""
+msgstr "Você pode fazer contribuições inscrevendo-se no nosso site da comunidade de tradução Crowdin. Estamos ansiosos para ouvir de você!"
 
 #: www/views/tab-scan.html:16
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr ""
+msgstr "Você pode escanear endereços bitcoins, pedidos de pagamento carteiras de papel e muito mais."
 
 #: src/js/controllers/preferencesAbout.js:14
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
@@ -2928,15 +2928,15 @@ msgstr ""
 
 #: www/views/onboarding/tour.html:14
 msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr ""
+msgstr "Você pode gastar bitcoins em milhões de sites e lojas em todo o mundo."
 
 #: www/views/backup.html:12
 msgid "You can still export it from Advanced &gt; Export."
-msgstr ""
+msgstr "Você ainda pode exportá-la em Avançado &gt; Exportar."
 
 #: www/views/onboarding/tour.html:27
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
-msgstr ""
+msgstr "Você pode trocá-lo por outras moedas como dólares americanos, Euros ou libras."
 
 #: www/views/onboarding/tour.html:41
 msgid "You control your bitcoin."
@@ -2944,19 +2944,19 @@ msgstr "Você controla o seu bitcoin."
 
 #: www/views/preferencesNotifications.html:28
 msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr ""
+msgstr "Você receberá notificações por e-mail sobre pagamentos enviados e recebidos de suas carteiras."
 
 #: www/views/includes/confirmBackupPopup.html:6
 msgid "Your bitcoin wallet is backed up!"
-msgstr ""
+msgstr "O backup de sua carteira de bitcoins está feito!"
 
 #: www/views/tab-home.html:35
 msgid "Your bitcoin wallet is ready!"
-msgstr ""
+msgstr "Sua carteira de bitcoins está pronta!"
 
 #: www/views/feedback/send.html:42
 msgid "Your ideas, feedback, or comments"
-msgstr ""
+msgstr "Suas ideias, comentários ou observações"
 
 #: www/views/tab-create-shared.html:22
 msgid "Your name"
@@ -2993,11 +2993,11 @@ msgstr ""
 
 #: www/views/tab-receive.html:75
 msgid "address not available"
-msgstr ""
+msgstr "endereço não disponível"
 
 #: www/views/tab-receive.html:43
 msgid "address not yet available"
-msgstr ""
+msgstr "endereço ainda não disponível"
 
 #: src/js/controllers/lockedView.js:5
 msgid "is locked"
