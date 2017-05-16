@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService) { 
+angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $rootScope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService) {
 
   $scope.save = function(newFee) {
     var opts = {
@@ -21,7 +21,16 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     });
   };
 
+  function hideTabs() {
+    $timeout(function() {
+      $rootScope.hideTabs = 'tabs-item-hide';
+      $rootScope.$apply();
+    });
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+
+    if ($ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send.confirm')) hideTabs();
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
     $scope.loadingFee = true;
@@ -45,7 +54,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     });
     if (lodash.isEmpty(feeLevelValue)) {
       $scope.feePerKBUnit = null;
-      $scope.avgConfirmationTime = null; 
+      $scope.avgConfirmationTime = null;
       return;
     }
     $scope.feePerKBUnit = feeLevelValue.feePerKBUnit;
