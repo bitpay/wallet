@@ -295,6 +295,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           paypro: null
         }
       })
+      .state('tabs.send.confirm.fee', {
+        url: '/fee',
+        views: {
+          'tab-send@tabs': {
+            controller: 'preferencesFeeController',
+            templateUrl: 'views/preferencesFee.html'
+          }
+        }
+      })
       .state('tabs.send.addressbook', {
         url: '/addressbook/add/:fromSendTab/:addressbookEntry',
         views: {

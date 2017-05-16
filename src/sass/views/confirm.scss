@@ -1,6 +1,12 @@
 #view-confirm {
   background-color: #ffffff;
   @extend .deflash-blue;
+  .item-note {
+    float: none;
+    .fee-percent {
+      display: inline-block;
+    }
+  }
   .icon-amazon {
     background-image: url("../img/icon-amazon.svg");
   }

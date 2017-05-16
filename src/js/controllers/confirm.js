@@ -20,7 +20,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
-    $scope.showFeeFiat = false;
     $scope.showAddress = false;
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
     $scope.recipientType = data.stateParams.recipientType || null;
@@ -44,9 +43,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.feeLevel = feeService.feeOpts[feeLevel];
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     resetValues();
-    setwallets();
+    if (!$scope.wallet) setwallets();
+    else useSelectedWallet();
     applyButtonText();
   });
+
+
+  function useSelectedWallet() {
+    if (!$scope.useSendMax) displayValues();
+    $scope.onWalletSelect($scope.wallet);
+  }
 
   function applyButtonText(multisig) {
     $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
@@ -95,7 +101,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         }
 
         if (++index == $scope.wallets.length) {
-
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
             if ($scope.useSendMax) {
@@ -133,10 +138,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  $scope.toggleFeeValue = function() {
-    $scope.showFeeFiat = !$scope.showFeeFiat;
-  };
-
   $scope.toggleAddress = function() {
     $scope.showAddress = !$scope.showAddress;
   };
@@ -163,8 +164,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function resetValues() {
-    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
-    $scope.showFeeFiat = $scope.showAddress = false;
+    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.feeFiat = $scope.feePercent = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
+    $scope.showAddress = false;
   };
 
   $scope.getSendMaxInfo = function() {
@@ -255,10 +256,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.displayAmount = getDisplayAmount($scope.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
     $scope.fee = txFormatService.formatAmountStr(data.fee);
+    txFormatService.formatAlternativeStr(data.fee, function(v) {
+      $scope.feeFiat = v;
+    });
     toAmount = parseFloat((data.amount * satToUnit).toFixed(unitDecimals));
     txFormatService.formatAlternativeStr(data.amount, function(v) {
       $scope.alternativeAmountStr = v;
     });
+    $scope.feePercent = (data.fee * 100 / (data.amount + data.fee)).toFixed(2);
     $timeout(function() {
       $scope.$apply();
     });
@@ -347,7 +352,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var stop;
     $scope.wallet = wallet;
     $scope.fee = $scope.txp = null;
-
     if (stop) {
       $timeout.cancel(stop);
       stop = null;
@@ -385,6 +389,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.feeFiat = v;
     });
     $scope.txp = txp;
+    $scope.feePercent = (txp.fee * 100 / (txp.amount + txp.fee)).toFixed(2);
     $timeout(function() {
       $scope.$apply();
     });
@@ -576,4 +581,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (err) return setSendError(err);
     }, onSendStatusChange);
   };
+
+  $scope.chooseFeeLevel = function() {
+    cachedTxp = {};
+    $state.go('tabs.send.confirm.fee');
+  };
+
 });
