@@ -164,7 +164,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function resetValues() {
-    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.feeFiat = $scope.feePercent = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
+    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.feeFiat = $scope.feeRateStr = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
     $scope.showAddress = false;
   };
 
@@ -263,7 +263,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txFormatService.formatAlternativeStr(data.amount, function(v) {
       $scope.alternativeAmountStr = v;
     });
-    $scope.feePercent = (data.fee * 100 / (data.amount + data.fee)).toFixed(2);
+    $scope.feeRateStr = (data.fee / (data.amount + data.fee) * 100).toFixed(2) + '%';
     $timeout(function() {
       $scope.$apply();
     });
@@ -389,7 +389,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.feeFiat = v;
     });
     $scope.txp = txp;
-    $scope.feePercent = (txp.fee * 100 / (txp.amount + txp.fee)).toFixed(2);
+    $scope.feeRateStr = (txp.fee / (txp.amount + txp.fee) * 100).toFixed(2) + '%';
     $timeout(function() {
       $scope.$apply();
     });
