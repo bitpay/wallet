@@ -88,6 +88,22 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     }
   };
 
+  root.transferBetweenAccounts = function(accountId, token) {
+    var data = {
+      type: 'transfer',
+      to: '58542935-67b5-56e1-a3f9-42686e07fa40',
+      amount: '1',
+      currency: 'BTC'
+    }
+    $http(_post('/accounts/' + accountId + '/transactions', token, data)).then(function(data) {
+      $log.info('Coinbase Transfer Request: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Coinbase Transfer Request: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
   root.getNetwork = function() {
     return credentials.NETWORK;
   };
@@ -712,7 +728,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   var register = function() {
 
-    root.isActive(function(err, isActive){
+    root.isActive(function(err, isActive) {
       if (err) return;
 
       buyAndSellService.register({
@@ -731,7 +747,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
     if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
-      root.isActive(function(err,isActive){
+      root.isActive(function(err, isActive) {
         // Update Coinbase
         if (isActive)
           root.updatePendingTransactions();

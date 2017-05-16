@@ -10,6 +10,7 @@ angular.module('copayApp.directives')
         title: '=walletSelectorTitle',
         show: '=walletSelectorShow',
         wallets: '=walletSelectorWallets',
+        service: '=walletSelectorService',
         selectedWallet: '=walletSelectorSelectedWallet',
         onSelect: '=walletSelectorOnSelect'
       },
@@ -17,7 +18,7 @@ angular.module('copayApp.directives')
         scope.hide = function() {
           scope.show = false;
         };
-        scope.selectWallet = function(wallet) {
+        scope.select = function(wallet) {
           $timeout(function() {
             scope.hide();
           }, 100);

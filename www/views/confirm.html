@@ -69,11 +69,14 @@
             </i>
             <div>{{wallet.name}}</div>
           </div>
-          <div class="wallet" ng-if="!wallet">
+          <div class="wallet" ng-if="!wallet && !payWithCoinbase">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-style="{'background-color': 'grey'}" class="bg"/>
             </i>
             <div>...</div>
+          </div>
+          <div class="wallet" ng-if="payWithCoinbase">
+            <img ng-src="img/coinbase-logo.png" width="90">
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
@@ -102,7 +105,7 @@
     ng-click="approve(statusChangeHandler)"
     ng-if="!isCordova"
     click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
+    has-wallet-chosen="wallet || payWithCoinbase"
     insufficient-funds="insufficientFunds"
     no-matching-wallet="noMatchingWallet">
     {{buttonText}}
@@ -111,7 +114,7 @@
     ng-if="isCordova && (wallet && !insufficientFunds && !noMatchingWallet)"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
+    has-wallet-chosen="wallet || payWithCoinbase"
     insufficient-funds="insufficientFunds"
     no-matching-wallet="noMatchingWallet">
     {{buttonText}}
@@ -128,6 +131,7 @@
   <wallet-selector
     wallet-selector-title="walletSelectorTitle"
     wallet-selector-wallets="wallets"
+    wallet-selector-service="canUseCoinbase"
     wallet-selector-selected-wallet="wallet"
     wallet-selector-show="showWallets"
     wallet-selector-on-select="onWalletSelect">
