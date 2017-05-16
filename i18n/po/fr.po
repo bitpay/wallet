@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2017-04-21 12:51-0400\n"
+"PO-Revision-Date: 2017-05-16 09:39-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -1196,7 +1196,7 @@ msgstr "Si activé, toutes les informations sensibles (clé privée et phrase de
 
 #: www/views/advancedSettings.html:22
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr "Si l'option est activée, la carte des transactions récentes - une liste des transactions qui se produisent dans l’ensemble des portefeuilles - s’affiche dans l’onglet Accueil."
+msgstr "Si l'option est activée, la carte des transactions récentes - une liste des transactions qui se produisent dans l’ensemble des portefeuilles - s’affichera dans l’onglet « Accueil »."
 
 #: www/views/advancedSettings.html:13
 msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
