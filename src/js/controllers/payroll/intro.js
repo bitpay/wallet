@@ -62,9 +62,9 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
 
   $scope.onSelect = function(accountOrIndex) {
     if (isNaN(accountOrIndex)) {
-      doOnAccountSelect(parseInt(accountOrIndex));
+      doOnAccountSelect(accountOrIndex);
     } else {
-      doOnItemSelect(accountOrIndex);
+      doOnItemSelect(parseInt(accountOrIndex));
     }
   };
 
@@ -115,19 +115,37 @@ angular.module('copayApp.controllers').controller('payrollIntroController', func
   var doOnItemSelect = function(index) {
     bitpayPayrollService.unbindBitPayAccount();
 
-    // Index one of the item choices.
-    switch (index) {
-      case 0:
-        // 'Create account' selected.
-        // A new account will be created later using the verified email address.
-        $state.transitionTo('tabs.payroll.eligible', {createAccount: true});
-        break;
+    switch (accountSelectDest) {
+      case 'connect':
 
-      case 1:
+        // Index one of the item choices.
+        switch (index) {
+          case 0:
+          default:
+            // 'Connect account' selected.
+            // Start pairing process for unknown account.
+            return startPairBitPayAccount();
+            break;
+        }
+
+      case 'setup':
       default:
-        // 'Connect account' selected.
-        // Start pairing process for unknown account.
-        return startPairBitPayAccount();
+
+        // Index one of the item choices.
+        switch (index) {
+          case 0:
+            // 'Create account' selected.
+            // A new account will be created later using the verified email address.
+            $state.transitionTo('tabs.payroll.eligible', {createAccount: true});
+            break;
+
+          case 1:
+          default:
+            // 'Connect account' selected.
+            // Start pairing process for unknown account.
+            return startPairBitPayAccount();
+            break;
+        }
         break;
     }
   };

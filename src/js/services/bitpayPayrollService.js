@@ -64,8 +64,8 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //   },
   //   employer: {
   //     name: string,
-  //     iconUrl: string,
-  //     imageUrl: string,
+  //     iconURL: string,
+  //     imageURL: string,
   //     nextEffectiveDate: string,
   //     about: {
   //       message: string,
@@ -163,8 +163,8 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
   //   },
   //   employer: {
   //     name: string,
-  //     iconUrl: string,
-  //     imageUrl: string,
+  //     iconURL: string,
+  //     imageURL: string,
   //     nextEffectiveDate: date,
   //   },
   //   employee: {
@@ -215,7 +215,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
             });
           }
 
-          cachePayrollRecord(record, cb);
+          cb(null, newRecord);
         });
       });
     };
@@ -330,7 +330,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
         $log.error('Error removing payroll record: ' + err);
       }
       // If there are no more records in storage then re-register our service.
-        root.getPayrollRecords(null, function(err, records) {
+      root.getPayrollRecords(null, function(err, records) {
         if (err) {
           $log.error('Error getting payroll records after remove: ' + err);
           // Continue
@@ -491,6 +491,12 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
     });
   };
 
+  var uncachePayrollRecord = function(recordId, cb) {
+    storageService.removePayrollRecord(bitpayService.getEnvironment().network, recordId, function(err) {
+      return cb(err);
+    });
+  };
+
   // Return payroll records from local cache. Looks across all paired accounts, includes eligibility records.
   var getRecordCache = function(cb) {
     storageService.getPayrollRecords(bitpayService.getEnvironment().network, function(err, pRecords) {
@@ -514,9 +520,21 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
           return callback();
         }
 
+        var recordId = record.id;
         bitpayService.get(bitpayService.FACADE_PAYROLL_USER_RECORD, record.token, function(data) {
           if (data && data.data.error) {
-            return cb(data.data.error);
+            if (data.data.error.includes('archived')) {
+              // Remove payroll record from cache.
+              return uncachePayrollRecord(recordId, function(err) {
+                if (err) {
+                  $log.error('Failed to uncache payroll record: ' + err);
+                }
+                callback();
+              });
+            } else {
+              // Other errors are fatal.
+              return cb(data.data.error);
+            }
           } else {
             $log.info('BitPay Get Payroll Record: SUCCESS');
             var record = data.data.data;
@@ -640,7 +658,7 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
       };
     };
 
-    var updateExisting = (record.eid != undefined);
+    var updateExisting = (record.eligibility == undefined);
 
     var method = 'createPayrollRecord';
     var facadeName = bitpayService.FACADE_PAYROLL_USER;
@@ -687,8 +705,14 @@ angular.module('copayApp.services').factory('bitpayPayrollService', function($ro
       }
       $log.info('BitPay Archive Payroll Record: SUCCESS');
 
-      cachePayrollRecord(record, function(err) {
-        cb(err, record);
+      // If there are no more records in storage then re-register our service.
+      root.getPayrollRecords(null, function(err, records) {
+        if (err) {
+          $log.error('Error getting payroll records after archive: ' + err);
+          // Continue
+        }
+        register(records.length > 0); // Update home view.
+        return cb(null, record);
       });
     }, function(data) {
       return cb(_setError('BitPay service', data));

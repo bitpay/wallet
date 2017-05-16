@@ -584,7 +584,13 @@ angular.module('copayApp.services')
     };
 
     root.getPayrollTransactions = function(network, cb) {
-      storage.get('payrollTransactions-' + network, cb);
+      storage.get('payrollTransactions-' + network, function(err, data) {
+        if (err) cb(err);
+        if (!data || data.length == 0) {
+          data = '[]';
+        }
+        cb(null, data);
+      });
     };
 
     root.removePayrollTransactions = function(network, id, cb) {
