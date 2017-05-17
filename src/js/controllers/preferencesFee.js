@@ -53,11 +53,11 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       level: $scope.currentFeeLevel
     });
     if (lodash.isEmpty(feeLevelValue)) {
-      $scope.feePerKBUnit = null;
+      $scope.feePerSatByte = null;
       $scope.avgConfirmationTime = null;
       return;
     }
-    $scope.feePerKBUnit = feeLevelValue.feePerKBUnit;
+    $scope.feePerSatByte = (feeLevelValue.feePerKB / 1000).toFixed();
     $scope.avgConfirmationTime = feeLevelValue.nbBlocks * 10;
   };
 });
