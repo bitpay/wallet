@@ -37,8 +37,8 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       var allAddresses = addresses;
 
       walletService.getBalance($scope.wallet, {}, function(err, resp) {
-        $scope.loading = false;
         if (err) {
+          $scope.loading = false;
           return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
         }
 
@@ -64,9 +64,12 @@ angular.module('copayApp.controllers').controller('addressesController', functio
         $scope.allAddresses = $scope.noBalance.concat(withBalance);
 
         cachedWallet = $scope.wallet.id;
+        $scope.loading = false;
         $log.debug('Addresses cached for Wallet:', cachedWallet);
-        $ionicScrollDelegate.resize();
-        $scope.$digest();
+        $timeout(function() {
+          $ionicScrollDelegate.resize();
+          $scope.$digest();
+        });
       });
     });
   };
@@ -84,7 +87,11 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     walletService.getAddress($scope.wallet, true, function(err, addr) {
       if (err) {
         ongoingProcess.set('generatingNewAddress', false);
-        $scope.gapReached = true;
+        if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
+          $scope.gapReached = true;
+        } else {
+          popupService.showAlert(err);
+        }
         $timeout(function() {
           $scope.$digest();
         });
@@ -109,17 +116,10 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   };
 
   $scope.viewAllAddresses = function() {
-    $state.go('tabs.receive.allAddresses', {
+    $state.go('tabs.settings.allAddresses', {
       walletId: $scope.wallet.id
     });
   };
-
-  $scope.requestSpecificAmount = function() {
-    $state.go('tabs.receive.amount', {
-      customAmount: true,
-      toAddress: $stateParams.toAddress
-    });
-  }
 
   $scope.showInformation = function() {
     $timeout(function() {
@@ -137,8 +137,16 @@ angular.module('copayApp.controllers').controller('addressesController', functio
 
   $scope.scan = function() {
     walletService.startScan($scope.wallet);
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+      historyRoot: true
+    });
     $ionicHistory.clearHistory();
-    $state.go('tabs.home');
+    $state.go('tabs.home').then(function() {
+      $state.transitionTo('tabs.wallet', {
+        walletId: $scope.wallet.credentials.walletId
+      });
+    });
   };
 
   $scope.sendByEmail = function() {

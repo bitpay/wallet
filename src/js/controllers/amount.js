@@ -41,7 +41,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     showRecipient = (showRecipient.toString().trim().toLowerCase() == 'true' ? true : false);
     $scope.showRecipient = showRecipient || (!$scope.customAmount && !$scope.nextStep);
 
-    $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' || 
+    $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
     $scope.recipientType = data.stateParams.recipientType || null;
     $scope.toAddress = data.stateParams.toAddress;
@@ -262,9 +262,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
     var _amount = evaluate(format($scope.amount));
 
     if ($scope.nextStep) {
-      var amount = _amount;
-      if ($scope.askForAlternative && !$scope.showAlternativeAmount) {
-        amount = toFiat(_amount);
+      var amount = $scope.useSendMax ? null : _amount;
+      if (amount && $scope.askForAlternative && !$scope.showAlternativeAmount) {
+        amount = toFiat(amount);
       }
       $state.transitionTo($scope.nextStep, {
         id: _id,
@@ -277,22 +277,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
-      if ($scope.customAmount) {
-        $state.transitionTo('tabs.receive.customAmount', {
-          toAmount: (amount * unitToSatoshi).toFixed(0),
-          toAddress: $scope.toAddress
-        });
-      } else {
-        $state.transitionTo('tabs.send.confirm', {
-          recipientType: $scope.recipientType,
-          toAmount: $scope.useSendMax ? null : (amount * unitToSatoshi).toFixed(0),
-          toAddress: $scope.toAddress,
-          toName: $scope.toName,
-          toEmail: $scope.toEmail,
-          toColor: $scope.toColor,
-          useSendMax: $scope.useSendMax
-        });
-      }
+      $state.transitionTo('tabs.send.confirm', {
+        recipientType: $scope.recipientType,
+        toAmount: $scope.useSendMax ? null : (amount * unitToSatoshi).toFixed(0),
+        toAddress: $scope.toAddress,
+        toName: $scope.toName,
+        toEmail: $scope.toEmail,
+        toColor: $scope.toColor,
+        useSendMax: $scope.useSendMax
+      });
     }
     $scope.useSendMax = null;
   };

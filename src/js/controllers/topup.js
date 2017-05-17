@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, rateService) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, rateService) {
 
   var amount;
   var currency;
@@ -8,6 +8,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   var sendMax;
 
   $scope.isCordova = platformInfo.isCordova;
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
 
   var showErrorAndBack = function(title, msg) {
     title = title || 'Error';
@@ -147,7 +155,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
             var outputs = [];
             var toAddress = payProDetails.toAddress;
             var amountSat = payProDetails.amount;
-            var comment = 'Top up ' + amount + ' ' + currency + ' to Debit Card';
+            var comment = 'Top up ' + amount + ' ' + currency + ' to Debit Card (' + $scope.cardInfo.lastFourDigits + ')';
 
             outputs.push({
               'toAddress': toAddress,

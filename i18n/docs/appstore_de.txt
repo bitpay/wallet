@@ -5,7 +5,7 @@ Ansparen von Beträgen für Urlaub oder gemeinsame Anschaffungen (z.B. mit Freun
 Überwachung von Ausgaben und Einkünften der Familie.
 Organisation der Ausgaben in Firmen, Vereinen oder Organisationen.
 
-Folgende Funktionen wurden in diese Version von Copay eingebaut um ein Bitcoin Wallet anzubieten das keine Kompromisse in Sichereit oder Zugänglichkeit eingeht:
+Folgende Funktionen wurden in diese Version von Copay eingebaut um ein Bitcoin Wallet anzubieten, das keine Kompromisse in Sicherheit oder Zugänglichkeit eingeht:
 
 Anlage und Verwaltung von mehreren Wallets innerhalb der Anwendung 
 Intiutive mehrfachunterschriften Sicherheit für persönliche und geteilete Wallets
