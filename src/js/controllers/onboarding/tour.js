@@ -62,9 +62,16 @@ angular.module('copayApp.controllers').controller('tourController',
           ongoingProcess.set('creatingWallet', false);
           var wallet = walletClient;
           var walletId = wallet.credentials.walletId;
+
+          $state.go('onboarding.collectEmail', {
+            walletId: walletId
+          });
+
+            /*
           $state.go('onboarding.backupRequest', {
             walletId: walletId
           });
+            */
         });
       }, 300);
     };

@@ -152,6 +152,7 @@
       position: absolute;
       width: 100%;
       height: 500px;
+      -webkit-transform: translateY(-499px);
       transform: translateY(-499px);
 
       &.collapsible {
@@ -161,6 +162,7 @@
         position: absolute;
         width: 100%;
         height: 200px;
+        -webkit-transform: translateY(100px);
         transform: translateY(100px);
       }
     }
@@ -174,12 +176,16 @@
     display: block;
     align-items: center;
     justify-content: center;
+    @media(max-width: 320px) {
+      padding-top: 60px;
+    }
 
     &.collapsible {
       margin-bottom: 10px;
     }
 
     &__balance {
+      -webkit-transform: scale3d(1, 1, 1) translateY(45px);
       transform: scale3d(1, 1, 1) translateY(45px);
     }
 

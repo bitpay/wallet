@@ -55,7 +55,10 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.appName = appConfigService.nameCase;
     configService.whenAvailable(function(config) {
       $scope.locked = config.lock && config.lock.method;
-      $scope.method = $scope.locked ? config.lock.method.charAt(0).toUpperCase() + config.lock.method.slice(1) : gettextCatalog.getString('Disabled');
+      if (!$scope.locked || $scope.locked == 'none')
+        $scope.method = gettextCatalog.getString('Disabled');
+      else
+        $scope.method = $scope.locked.charAt(0).toUpperCase() + config.lock.method.slice(1);
     });
   });
 

@@ -1,14 +1,8 @@
 #pin {
   background-color: #FAFAFA;
-  .bar.bar-clear {
-    background-color: transparent;
-    border: none;
-    .back-button .icon:before {
-      color: #2d3f50;
-    }
-  }
   .content {
     text-align: center;
+    position: fixed;
     width: 100%;
     height: 100%;
     .app-icon {

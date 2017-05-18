@@ -8,6 +8,9 @@
   &-amount {
     float: right;
     font-size: 18px;
+    @media(max-width: 320px) {
+      text-align: right;
+    }
   }
 
   &-note {

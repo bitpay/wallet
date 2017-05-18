@@ -3,18 +3,18 @@
 'use strict';
 
 if (process.argv[2]) {
-  var no_key = (process.argv[2].toLowerCase() == '--nokey')
-  if (no_key == false) {
-    console.log('Incorrect arg. Please use --nokey if you would like to download without api key.');
+  var no_build = (process.argv[2].toLowerCase() == '--nobuild')
+  if (no_build == false) {
+    console.log('Incorrect arg. Please use --nobuild if you would like to download without api key.');
     process.exit(1);
   };
 } else {
-  var no_key = false;
+  var no_build = false;
   console.log('\n' +
               'Please note: If you do not have the crowdin API key and would like to download the ' +
               'translations without building anyways, please make sure your English files are the same ' +
-              'version as crowdin, and then run this script with --nokey\n\n' +
-              'eg. "node crowdin_download.js --nokey"\n\n');
+              'version as crowdin, and then run this script with --nobuild\n\n' +
+              'eg. "node crowdin_download.js --nobuild"\n\n');
 };
 
 var fs = require('fs');
@@ -36,15 +36,15 @@ catch (e) {
     process.exit(1);
 }
 
-if (no_key == false) { // Reminder: Any changes to the script below must also be made to the else clause and vice versa.
+try {
+  // obtain the crowdin api key
+  var crowdin_api_key = fs.readFileSync(path.join(__dirname, 'crowdin_api_key.txt'), 'utf8')
+} catch (e) {
+  console.log('### ERROR ### You do not have the crowdin api key in ./crowdin_api_key.txt');
+  process.exit(1);
+};
 
-  try {
-    // obtain the crowdin api key
-    var crowdin_api_key = fs.readFileSync(path.join(__dirname, 'crowdin_api_key.txt'), 'utf8')
-  } catch (e) {
-    console.log('### ERROR ### You do not have the crowdin api key in ./crowdin_api_key.txt so the translation build has failed.\nFor download only use --nokey.');
-    process.exit(1);
-  };
+if (no_build == false) { // Reminder: Any changes to the script below must also be made to the else clause and vice versa. 
 
   // This call will tell the server to generate a new zip file for you based on most recent translations.
   https.get('https://api.crowdin.com/api/project/' + crowdin_identifier + '/export?key=' + crowdin_api_key, function(res) {
@@ -61,7 +61,7 @@ if (no_key == false) { // Reminder: Any changes to the script below must also be
                     '2. API limit of once per 30 minutes has not been waited.\n\n' +
                     'Since we can not guarantee that translations have been built properly, this script will end here.\n' +
                     'Log in to Copay\'s Crowdin Settings and click the "Build Project" button to assure it is built recently, and then run this ' +
-                    'script again with the --nokey arg to download translations without checking if built.');
+                    'script again with the --nobuild arg to download translations without checking if built.');
         process.exit(1);
       };
       
@@ -160,7 +160,7 @@ if (no_key == false) { // Reminder: Any changes to the script below must also be
 } else { // Reminder: Any changes to the script below must also be made to the above and vice versa.
 
   // Download most recent translations for all languages.
-  https.get('https://crowdin.com/download/project/' + crowdin_identifier + '.zip', function(res) {
+  https.get('https://api.crowdin.com/api/project/' + crowdin_identifier + '/download/all.zip?key=' + crowdin_api_key, function(res) {
     var data = [], dataLen = 0; 
     
     res.on('data', function(chunk) {

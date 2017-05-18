@@ -15,7 +15,7 @@
       </div>
       <div class="integration-onboarding-description">Gift Cards are only redeemable on Amazon.com (US website). Cards never expire and can be redeemed towards millions of items.</div>
       <div class="integration-onboarding-cta" ng-show="!showOauthForm">
-        <button class="button button-standard button-primary" ui-sref="tabs.giftcards.amazon.amount">Buy a Gift Card</button>
+        <button class="button button-standard button-primary" ui-sref="tabs.giftcards.amazon.amount" no-low-fee>Buy a Gift Card</button>
         <button class="button button-standard button-secondary" ng-click="openExternalLink('https://www.amazon.com')">Visit Amazon.com &rarr;</button>
       </div>
     </div>
@@ -33,7 +33,7 @@
     <div class="m20t" ng-if="giftCards">
       <div class="list card">
         <a class="item item-icon-left item-icon-right" href
-          ui-sref="tabs.giftcards.amazon.amount">
+          ui-sref="tabs.giftcards.amazon.amount"  no-low-fee>
           <i class="icon ion-ios-pricetags-outline"></i>
           Buy Gift Card
           <i class="icon bp-arrow-right"></i>

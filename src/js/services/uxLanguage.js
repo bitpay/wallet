@@ -34,6 +34,9 @@ angular.module('copayApp.services')
     }, {
       name: 'Pусский',
       isoCode: 'ru',
+    }, {
+      name: 'Português',
+      isoCode: 'pt',
     }];
 
     // }, {
