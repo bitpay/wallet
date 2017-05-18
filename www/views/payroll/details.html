@@ -15,7 +15,10 @@
       <div class="item head">
         <div class="deduction-label">
           <img src="img/icon-bitcoin-small.svg">
-          <span translate>{{payrollRecord.deduction.label}}</span>
+          <div>
+            <div>{{payrollRecord.deduction.label}}</div>
+            <div class="size-14">{{payrollRecord.employer.name}}</div>
+          </div>
         </div>
         <div class="amount-label">
           <div class="amount">{{payrollRecord.deduction.amount.toFixed(2) || '...'}} <span class="unit">{{payrollRecord.deduction.currency}}<span></div>

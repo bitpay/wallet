@@ -1,7 +1,7 @@
 <ion-view id="payroll-confirm" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
-      {{'Confirm payroll deduction' | translate}}
+      {{'Confirm deposit' | translate}}
     </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -12,7 +12,10 @@
       <div class="item head">
         <div class="deduction-label">
           <img src="img/icon-bitcoin-small.svg">
-          <span translate>Deduction</span>
+          <div>
+            <div>{{label}}</div>
+            <div class="size-14">{{payrollRecord.employer.name}}</div>
+          </div>
         </div>
         <div class="amount-label">
           <div class="amount">{{depositAmount || '...'}} <span class="unit">{{depositDisplayUnit}}<span></div>

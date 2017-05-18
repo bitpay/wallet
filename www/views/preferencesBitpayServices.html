@@ -29,10 +29,10 @@
       </div>
       <div class="item item-icon-right" ng-repeat="record in payrollRecords">
         <span class="item-title">
-          {{record.employer.name}}
+          {{record.deduction.label}}
         </span>
         <span class="item-subtitle">
-          {{record.deduction.walletName}}, {{record.deduction.amount}} {{record.deduction.currency}} per pay period
+          {{record.employer.name}}
         </span>
         <div class="icon icon-unlink icon-hotspot" ng-click="removePayrollRecord(record)"></div>
       </div>

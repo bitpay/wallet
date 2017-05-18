@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('payrollDepositAddressControll
     };
 
     // User may have changed alternative currency so init on each view entry.
-    amountViewTitle = gettextCatalog.getString('Enter {{alternativeIsoCode}} Deposit Amount', {
+    amountViewTitle = gettextCatalog.getString('Enter {{alternativeIsoCode}} deposit amount', {
       alternativeIsoCode: config.alternativeIsoCode
     });
   });
