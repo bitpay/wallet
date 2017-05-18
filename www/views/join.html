@@ -80,38 +80,6 @@
                    ng-model="privateKey">
           </label>
 
-          <ion-toggle class="has-comment" ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()" ng-show="join.seedSourceId == 'new' || join.seedSourceId == 'set'">
-            <span class="toggle-label" translate>Add a password</span>
-          </ion-toggle>
-          <div class="comment">
-            <span ng-show="join.seedSourceId == 'new'" translate>Add an optional password to secure the recovery phrase</span>
-            <span ng-show="join.seedSourceId == 'set'" translate>The recovery phrase could require a password to be imported</span>
-          </div>
-
-          <div class="item item-input" ng-show="encrypt">
-            <input ng-show="join.seedSourceId == 'new'"
-                   placeholder="{{'Password'|translate}}"
-                   type="password"
-                   autocapitalize="off"
-                   name="createPassphrase"
-                   ng-model="createPassphrase">
-
-            <input ng-show="join.seedSourceId == 'set'"
-                   placeholder="{{'Password'|translate}}"
-                   type="password"
-                   autocapitalize="off"
-                   name="passphrase"
-                   ng-model="passphrase">
-          </div>
-
-          <div class="text-center box-notification error" ng-show="(join.seedSourceId =='new' || join.seedSourceId =='set') && encrypt">
-            <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
-          </div>
-
-          <ion-checkbox ng-model="passwordSaved" class="checkbox-positive" ng-show="encrypt">
-            <span class="toggle-label" translate>I have written it down</span>
-          </ion-checkbox>
-
           <label class="item item-input item-stacked-label" ng-show="join.seedSourceId == 'set'">
             <span class="input-label" translate>Derivation Path</span>
             <input type="text"
@@ -124,7 +92,7 @@
       </div> <!-- list -->
 
       <button type="submit" class="button button-standard button-primary"
-        ng-disabled="joinForm.$invalid || ((encrypt && !passwordSaved) || encrypt && ((join.seedSourceId == 'new' && !createPassphrase) || (join.seedSourceId == 'set' && !passphrase)))"
+        ng-disabled="joinForm.$invalid"
         translate>Join
       </button>
     </form>

@@ -40,16 +40,6 @@ angular.module('copayApp.controllers').controller('createController',
       $timeout(function() {
         $ionicScrollDelegate.resize();
       }, 10);
-      checkPasswordFields();
-    };
-
-    function checkPasswordFields() {
-      if (!$scope.encrypt) {
-        $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = null;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      }
     };
 
     function updateRCSelect(n) {
@@ -64,7 +54,7 @@ angular.module('copayApp.controllers').controller('createController',
         id: 'new',
         label: gettextCatalog.getString('Random'),
         supportsTestnet: true
-      }, {        
+      }, {
         id: 'set',
         label: gettextCatalog.getString('Specify Recovery Phrase...'),
         supportsTestnet: false
@@ -138,7 +128,6 @@ angular.module('copayApp.controllers').controller('createController',
         } else {
           opts.mnemonic = words;
         }
-        opts.passphrase = $scope.formData.passphrase;
 
         var pathData = derivationPathHelper.parse($scope.formData.derivationPath);
         if (!pathData) {
@@ -150,8 +139,6 @@ angular.module('copayApp.controllers').controller('createController',
         opts.networkName = pathData.networkName;
         opts.derivationStrategy = pathData.derivationStrategy;
 
-      } else {
-        opts.passphrase = $scope.formData.createPassphrase;
       }
 
       if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
