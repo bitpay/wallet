@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
         if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
-          updateTx({hideLoading: true});
+          updateTxDebounced({hideLoading: true});
         }
       })
     ];
@@ -97,7 +97,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     walletService.getTx($scope.wallet, txId, function(err, tx) {
       if (!opts.hideLoading) ongoingProcess.set('loadingTxInfo', false);
       if (err) {
-        $log.warn('Error getting transaction' + err);
+        $log.warn('Error getting transaction: ' + err);
         $ionicHistory.goBack();
         return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not available at this time'));
       }
@@ -124,6 +124,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       });
     });
   };
+
+  var updateTxDebounced = lodash.debounce(updateTx, 5000);
   
   $scope.showCommentPopup = function() {
     var opts = {};
