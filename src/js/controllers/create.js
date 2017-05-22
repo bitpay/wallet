@@ -29,27 +29,41 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);
+      resetPasswordFields();
     };
 
     $scope.showAdvChange = function() {
       $scope.showAdv = !$scope.showAdv;
+      $scope.encrypt = null;
       $scope.resizeView();
+    };
+
+    $scope.checkPassword = function(pw1, pw2) {
+      if (pw1 && pw1.length > 0) {
+        if (pw2 && pw2.length > 0) {
+          if (pw1 == pw2) $scope.result = 'correct';
+          else {
+            $scope.formData.passwordSaved = null;
+            $scope.result = 'incorrect';
+          }
+        } else
+          $scope.result = null;
+      } else
+        $scope.result = null;
     };
 
     $scope.resizeView = function() {
       $timeout(function() {
         $ionicScrollDelegate.resize();
       }, 10);
-      checkPasswordFields();
+      resetPasswordFields();
     };
 
-    function checkPasswordFields() {
-      if (!$scope.encrypt) {
-        $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = null;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      }
+    function resetPasswordFields() {
+      $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = $scope.formData.repeatpassword = $scope.result = null;
+      $timeout(function() {
+        $scope.$apply();
+      });
     };
 
     function updateRCSelect(n) {
@@ -64,7 +78,7 @@ angular.module('copayApp.controllers').controller('createController',
         id: 'new',
         label: gettextCatalog.getString('Random'),
         supportsTestnet: true
-      }, {        
+      }, {
         id: 'set',
         label: gettextCatalog.getString('Specify Recovery Phrase...'),
         supportsTestnet: false
