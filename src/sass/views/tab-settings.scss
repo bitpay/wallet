@@ -95,6 +95,21 @@
       font-size: 16px;
     }
  }
+ input[type="password"] {
+   border: none;
+   margin-left: -5px;
+   padding-left: 4px;
+   &.incorrect {
+    margin-right: 10px;
+    border: 1px solid;
+    color: #C90505;
+   }
+   &.correct {
+    margin-right: 10px;
+    border: 1px solid;
+    color: #00901B;
+   }
+ }
 }
 
 #tab-settings {
