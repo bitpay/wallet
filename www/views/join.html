@@ -6,9 +6,9 @@
   </ion-nav-bar>
 
 
-  <ion-content ng-controller="joinController as join">
+  <ion-content ng-controller="joinController" ng-init="init()">
 
-    <form name="joinForm" ng-submit="join.join(joinForm)" novalidate>
+    <form name="formData" ng-submit="join()" novalidate>
 
       <div class="list settings-list settings-input-group">
 
@@ -25,8 +25,8 @@
           <label class="item item-input item-stacked-label no-border">
             <span class="input-label" translate>Wallet Invitation</span>
             <div class="input-notification">
-              <i ng-show="!joinForm.secret.$invalid" class="icon ion-checkmark-circled valid"></i>
-              <i ng-show="joinForm.secret.$invalid && secret" class="icon ion-close-circled invalid"></i>
+              <i ng-show="!formData.secret.$invalid" class="icon ion-checkmark-circled valid"></i>
+              <i ng-show="formData.secret.$invalid && secret" class="icon ion-close-circled invalid"></i>
             </div>
             <input id="secret"
                    type="text"
@@ -36,7 +36,7 @@
                    wallet-secret required>
           </label>
           <div class="qr-scan-icon">
-            <qr-scanner class="qr-icon size-24" on-scan="join.onQrCodeScannedJoin(data)"></qr-scanner>
+            <qr-scanner class="qr-icon size-24" on-scan="onQrCodeScannedJoin(data)"></qr-scanner>
           </div>
         </div>
         <div class="item item-divider"></div>
@@ -59,18 +59,18 @@
             </div>
             <select class="m10t"
                     ng-model="seedSource"
-                    ng-options="seed as seed.label for seed in join.seedOptions"
-                    ng-change="join.setSeedSource()">
+                    ng-options="seed as seed.label for seed in seedOptions"
+                    ng-change="setSeedSource(); resizeView()">
             </select>
           </label>
 
           <label class="item item-input item-stacked-label"
-                 ng-show="join.seedSourceId == 'trezor' || join.seedSourceId == 'ledger'">
+                 ng-show="seedSourceId == 'trezor' || seedSourceId == 'ledger'">
             <span class="input-label" translate>Account Number</span>
             <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
           </label>
 
-          <label class="item item-input item-stacked-label" ng-show="join.seedSourceId=='set'">
+          <label class="item item-input item-stacked-label" ng-show="seedSourceId=='set'">
             <span class="input-label" translate>Wallet Recovery Phrase</span>
             <input id="ext-master"
                    placeholder="{{'Enter the recovery phrase (BIP39)'|translate}}"
@@ -80,39 +80,61 @@
                    ng-model="privateKey">
           </label>
 
-          <ion-toggle class="has-comment" ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()" ng-show="join.seedSourceId == 'new' || join.seedSourceId == 'set'">
+          <ion-toggle class="has-comment" ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()" ng-show="seedSourceId == 'new' || seedSourceId == 'set'">
             <span class="toggle-label" translate>Add a password</span>
           </ion-toggle>
           <div class="comment">
-            <span ng-show="join.seedSourceId == 'new'" translate>Add an optional password to secure the recovery phrase</span>
-            <span ng-show="join.seedSourceId == 'set'" translate>The recovery phrase could require a password to be imported</span>
+            <span ng-show="seedSourceId == 'new'" translate>Add an optional password to secure the recovery phrase</span>
+            <span ng-show="seedSourceId == 'set'" translate>The recovery phrase could require a password to be imported</span>
           </div>
 
           <div class="item item-input" ng-show="encrypt">
-            <input ng-show="join.seedSourceId == 'new'"
+            <input ng-show="seedSourceId == 'new'"
                    placeholder="{{'Password'|translate}}"
                    type="password"
                    autocapitalize="off"
                    name="createPassphrase"
-                   ng-model="createPassphrase">
+                   ng-model="formData.createPassphrase"
+                   ng-change="checkPassword(formData.createPassphrase, formData.repeatpassword)"
+                   ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
 
-            <input ng-show="join.seedSourceId == 'set'"
+            <input ng-show="seedSourceId == 'set'"
                    placeholder="{{'Password'|translate}}"
                    type="password"
                    autocapitalize="off"
                    name="passphrase"
-                   ng-model="passphrase">
+                   ng-model="formData.passphrase"
+                   ng-change="checkPassword(formData.passphrase, formData.repeatpassword)"
+                   ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
           </div>
 
-          <div class="text-center box-notification error" ng-show="(join.seedSourceId =='new' || join.seedSourceId =='set') && encrypt">
+          <div class="item item-input" ng-show="encrypt">
+            <input ng-show="seedSource.id == 'new'"
+                   placeholder="{{'Repeat password'|translate}}"
+                   type="password"
+                   autocapitalize="off"
+                   ng-model="formData.repeatpassword"
+                   ng-change="checkPassword(formData.createPassphrase, formData.repeatpassword)"
+                   ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
+
+             <input ng-show="seedSource.id == 'set'"
+                    placeholder="{{'Repeat password'|translate}}"
+                    type="password"
+                    autocapitalize="off"
+                    ng-model="formData.repeatpassword"
+                    ng-change="checkPassword(formData.passphrase, formData.repeatpassword)"
+                    ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
+          </div>
+
+          <div class="text-center box-notification error" ng-show="(seedSourceId =='new' || seedSourceId =='set') && encrypt">
             <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
           </div>
 
-          <ion-checkbox ng-model="passwordSaved" class="checkbox-positive" ng-show="encrypt">
+          <ion-checkbox ng-model="passwordSaved" class="checkbox-positive" ng-show="encrypt && result == 'correct'">
             <span class="toggle-label" translate>I have written it down</span>
           </ion-checkbox>
 
-          <label class="item item-input item-stacked-label" ng-show="join.seedSourceId == 'set'">
+          <label class="item item-input item-stacked-label" ng-show="seedSourceId == 'set'">
             <span class="input-label" translate>Derivation Path</span>
             <input type="text"
                    placeholder="{{'BIP32 path for address derivation'|translate}}"
@@ -124,7 +146,7 @@
       </div> <!-- list -->
 
       <button type="submit" class="button button-standard button-primary"
-        ng-disabled="joinForm.$invalid || ((encrypt && !passwordSaved) || encrypt && ((join.seedSourceId == 'new' && !createPassphrase) || (join.seedSourceId == 'set' && !passphrase)))"
+        ng-disabled="formData.$invalid || ((encrypt && !passwordSaved) || encrypt && ((seedSourceId == 'new' && !formData.createPassphrase) || (seedSourceId == 'set' && !formData.passphrase)))"
         translate>Join
       </button>
     </form>
