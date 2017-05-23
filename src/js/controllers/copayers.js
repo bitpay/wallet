@@ -12,8 +12,12 @@ angular.module('copayApp.controllers').controller('copayersController',
       updateWallet();
     });
 
-    $rootScope.$on('bwsEvent', function() {
+    var listener = $rootScope.$on('bwsEvent', function() {
       updateWallet();
+    });
+
+    $scope.$on('$destroy', function() {
+      listener();
     });
 
     var updateWallet = function() {
