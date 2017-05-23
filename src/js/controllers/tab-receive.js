@@ -98,6 +98,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
     $scope.onWalletSelect(selectedWallet);
 
+    $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;
+
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
         // Update current address
@@ -132,8 +134,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     $scope.showWallets = true;
   };
 
-  $scope.copyToClipboard = function() {
-    if ($scope.isCordova) return 'bitcoin:' + $scope.addr;
-    else return $scope.addr;
+  $scope.shareAddress = function() {
+    if (!$scope.isCordova) return;
+    window.plugins.socialsharing.share('bitcoin:' + $scope.addr, null, null, null);
   }
 });
