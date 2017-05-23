@@ -81,38 +81,6 @@
             ng-model="formData.privateKey">
           </label>
 
-          <div ng-show="seedSource.id == 'new' || seedSource.id == 'set'">
-            <ion-toggle class="has-comment" ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()">
-              <span class="toggle-label" translate>Add a password</span>
-            </ion-toggle>
-            <div class="comment">
-              <span ng-show="seedSource.id == 'new'" translate>Add an optional password to secure the recovery phrase</span>
-              <span ng-show="seedSource.id == 'set'" translate>The recovery phrase could require a password to be imported</span>
-            </div>
-          </div>
-
-          <div class="item item-input" ng-show="encrypt">
-            <input ng-show="seedSource.id == 'new'"
-                   placeholder="{{'Password'|translate}}"
-                   type="password"
-                   autocapitalize="off"
-                   ng-model="formData.createPassphrase">
-
-            <input ng-show="seedSource.id == 'set'"
-                   placeholder="{{'Password'|translate}}"
-                   type="password"
-                   autocapitalize="off"
-                   ng-model="formData.passphrase">
-          </div>
-
-          <div class="text-center box-notification error" ng-show="(seedSource.id =='new' || seedSource.id =='set') && encrypt">
-            <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
-          </div>
-
-          <ion-checkbox ng-model="formData.passwordSaved" class="checkbox-positive" ng-show="encrypt">
-            <span class="toggle-label" translate>I have written it down</span>
-          </ion-checkbox>
-
           <label class="item item-input item-stacked-label" ng-show="seedSource.id  == 'set'">
             <span class="input-label" translate>Derivation Path</span>
             <input type="text"
@@ -133,7 +101,7 @@
       </div> <!-- list -->
 
       <button type="submit" class="button button-standard button-primary"
-        ng-disabled="setupForm.$invalid || ((encrypt && !formData.passwordSaved) || encrypt && ((seedSource.id == 'new' && !formData.createPassphrase) || (seedSource.id == 'set' && !formData.passphrase)))">
+        ng-disabled="setupForm.$invalid">
         <span translate>Create {{formData.requiredCopayers}}-of-{{formData.totalCopayers}} wallet</span>
       </button>
     </form>

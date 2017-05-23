@@ -18,16 +18,6 @@ angular.module('copayApp.controllers').controller('joinController',
       $timeout(function() {
         $ionicScrollDelegate.resize();
       }, 10);
-      checkPasswordFields();
-    };
-
-    function checkPasswordFields() {
-      if (!$scope.encrypt) {
-        $scope.passphrase = $scope.createPassphrase = $scope.passwordSaved = null;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      }
     };
 
     this.onQrCodeScannedJoin = function(data) {
@@ -112,7 +102,6 @@ angular.module('copayApp.controllers').controller('joinController',
         } else {
           opts.mnemonic = words;
         }
-        opts.passphrase = form.passphrase.$modelValue;
 
         var pathData = derivationPathHelper.parse($scope.derivationPath);
         if (!pathData) {
@@ -122,8 +111,6 @@ angular.module('copayApp.controllers').controller('joinController',
         opts.account = pathData.account;
         opts.networkName = pathData.networkName;
         opts.derivationStrategy = pathData.derivationStrategy;
-      } else {
-        opts.passphrase = form.createPassphrase.$modelValue;
       }
 
       opts.walletPrivKey = $scope._walletPrivKey; // Only for testing
