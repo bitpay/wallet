@@ -12,7 +12,6 @@ angular.module('copayApp.controllers').controller('joinController',
       $scope.formData.secret = null;
       resetPasswordFields();
       updateSeedSourceSelect();
-      $scope.setSeedSource();
     });
 
     $scope.showAdvChange = function() {
@@ -67,7 +66,7 @@ angular.module('copayApp.controllers').controller('joinController',
         id: 'set',
         label: gettextCatalog.getString('Specify Recovery Phrase...'),
       }];
-      $scope.formData.seedSource = $scope.seedOptions[0];
+      $scope.seedSource = $scope.seedOptions[0];
       /*
 
       Disable Hardware Wallets
@@ -98,14 +97,6 @@ angular.module('copayApp.controllers').controller('joinController',
       }
     };
 
-    $scope.setSeedSource = function() {
-      $scope.seedSourceId = $scope.formData.seedSource.id;
-
-      $timeout(function() {
-        $rootScope.$apply();
-      });
-    };
-
     $scope.join = function() {
 
       var opts = {
@@ -114,7 +105,7 @@ angular.module('copayApp.controllers').controller('joinController',
         bwsurl: $scope.formData.bwsurl
       }
 
-      var setSeed = $scope.seedSourceId == 'set';
+      var setSeed = $scope.seedSource.id == 'set';
       if (setSeed) {
         var words = $scope.formData.privateKey;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
@@ -144,22 +135,22 @@ angular.module('copayApp.controllers').controller('joinController',
         return;
       }
 
-      if ($scope.seedSourceId == walletService.externalSource.ledger.id || $scope.seedSourceId == walletService.externalSource.trezor.id || $scope.seedSourceId == walletService.externalSource.intelTEE.id) {
+      if ($scope.seedSource.id == walletService.externalSource.ledger.id || $scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id) {
         var account = $scope.account;
         if (!account || account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
-        if ($scope.seedSourceId == walletService.externalSource.trezor.id || $scope.seedSourceId == walletService.externalSource.intelTEE.id)
+        if ($scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id)
           account = account - 1;
 
         opts.account = account;
         opts.isMultisig = true;
-        ongoingProcess.set('connecting' + $scope.seedSourceId, true);
+        ongoingProcess.set('connecting' + $scope.seedSource.id, true);
 
         var src;
-        switch ($scope.seedSourceId) {
+        switch ($scope.seedSource.id) {
           case walletService.externalSource.ledger.id:
             src = ledger;
             break;
@@ -176,7 +167,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
         // TODO: cannot currently join an intelTEE testnet wallet (need to detect from the secret)
         src.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
-          ongoingProcess.set('connecting' + $scope.seedSourceId, false);
+          ongoingProcess.set('connecting' + $scope.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
