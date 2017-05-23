@@ -43,7 +43,7 @@ angular.module('copayApp.controllers').controller('joinController',
     };
 
     function resetPasswordFields() {
-      $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = $scope.formData.repeatpassword = $scope.result = null;
+      $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = $scope.formData.repeatPassword = $scope.result = null;
       $timeout(function() {
         $scope.$apply();
       });
