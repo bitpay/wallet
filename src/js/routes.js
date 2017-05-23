@@ -323,7 +323,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/join/:url',
         views: {
           'tab-home@tabs': {
-            templateUrl: 'views/join.html'
+            templateUrl: 'views/join.html',
+            controller: 'joinController'
           },
         }
       })

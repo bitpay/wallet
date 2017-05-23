@@ -126,11 +126,7 @@ angular.module('copayApp.controllers').controller('createController',
       updateSeedSourceSelect(tc);
     };
 
-    $scope.create = function(form) {
-      if (form && form.$invalid) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the required fields'));
-        return;
-      }
+    $scope.create = function() {
 
       var opts = {
         name: $scope.formData.walletName,

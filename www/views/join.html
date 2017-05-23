@@ -6,9 +6,9 @@
   </ion-nav-bar>
 
 
-  <ion-content ng-controller="joinController" ng-init="init()">
+  <ion-content ng-init="init()">
 
-    <form name="formData" ng-submit="join()" novalidate>
+    <form name="setupForm" ng-submit="join()" novalidate>
 
       <div class="list settings-list settings-input-group">
 
@@ -17,22 +17,22 @@
           <input type="text"
           placeholder="{{'John'|translate}}"
           name="myName"
-          ng-model="myName"
-          ng-required="true">
+          ng-model="formData.myName"
+          required>
         </label>
 
         <div>
           <label class="item item-input item-stacked-label no-border">
             <span class="input-label" translate>Wallet Invitation</span>
             <div class="input-notification">
-              <i ng-show="!formData.secret.$invalid" class="icon ion-checkmark-circled valid"></i>
-              <i ng-show="formData.secret.$invalid && secret" class="icon ion-close-circled invalid"></i>
+              <i ng-show="!setupForm.secret.$invalid" class="icon ion-checkmark-circled valid"></i>
+              <i ng-show="setupForm.secret.$invalid && formData.secret" class="icon ion-close-circled invalid"></i>
             </div>
             <input id="secret"
                    type="text"
                    placeholder="{{'Paste invitation here'|translate}}"
                    name="secret"
-                   ng-model="secret"
+                   ng-model="formData.secret"
                    wallet-secret required>
           </label>
           <div class="qr-scan-icon">
@@ -50,7 +50,7 @@
 
           <label class="item item-input item-stacked-label">
             <span class="input-label">Wallet Service URL</span>
-            <input type="text" id="bwsurl" name="bwsurl" ng-model="bwsurl">
+            <input type="text" id="bwsurl" name="bwsurl" ng-model="formData.bwsurl">
           </label>
 
           <label class="item item-input item-select">
@@ -58,7 +58,7 @@
               Wallet Key
             </div>
             <select class="m10t"
-                    ng-model="seedSource"
+                    ng-model="formData.seedSource"
                     ng-options="seed as seed.label for seed in seedOptions"
                     ng-change="setSeedSource(); resizeView()">
             </select>
@@ -67,7 +67,7 @@
           <label class="item item-input item-stacked-label"
                  ng-show="seedSourceId == 'trezor' || seedSourceId == 'ledger'">
             <span class="input-label" translate>Account Number</span>
-            <input type="number" id="account" ng-model="account" ignore-mouse-wheel>
+            <input type="number" id="account" ng-model="formData.account" ignore-mouse-wheel>
           </label>
 
           <label class="item item-input item-stacked-label" ng-show="seedSourceId=='set'">
@@ -77,7 +77,7 @@
                    autocapitalize="off"
                    type="text"
                    name="privateKey"
-                   ng-model="privateKey">
+                   ng-model="formData.privateKey">
           </label>
 
           <ion-toggle class="has-comment" ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()" ng-show="seedSourceId == 'new' || seedSourceId == 'set'">
@@ -130,7 +130,7 @@
             <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
           </div>
 
-          <ion-checkbox ng-model="passwordSaved" class="checkbox-positive" ng-show="encrypt && result == 'correct'">
+          <ion-checkbox ng-model="formData.passwordSaved" class="checkbox-positive" ng-show="encrypt && result == 'correct'">
             <span class="toggle-label" translate>I have written it down</span>
           </ion-checkbox>
 
@@ -139,14 +139,14 @@
             <input type="text"
                    placeholder="{{'BIP32 path for address derivation'|translate}}"
                    name="derivationPath"
-                   ng-model="derivationPath">
+                   ng-model="formData.derivationPath">
           </label>
 
         </div> <!-- advanced -->
       </div> <!-- list -->
 
       <button type="submit" class="button button-standard button-primary"
-        ng-disabled="formData.$invalid || ((encrypt && !passwordSaved) || encrypt && ((seedSourceId == 'new' && !formData.createPassphrase) || (seedSourceId == 'set' && !formData.passphrase)))"
+        ng-disabled="setupForm.$invalid || ((encrypt && !passwordSaved) || encrypt && ((seedSourceId == 'new' && !formData.createPassphrase) || (seedSourceId == 'set' && !formData.passphrase)))"
         translate>Join
       </button>
     </form>

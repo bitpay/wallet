@@ -3,16 +3,17 @@
 angular.module('copayApp.controllers').controller('joinController',
   function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
 
-    $scope.init = function() {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       var defaults = configService.getDefaults();
-      $scope.bwsurl = defaults.bws.url;
-      $scope.derivationPath = derivationPathHelper.default;
-      $scope.account = 1;
       $scope.formData = {};
+      $scope.formData.bwsurl = defaults.bws.url;
+      $scope.formData.derivationPath = derivationPathHelper.default;
+      $scope.formData.account = 1;
+      $scope.formData.secret = null;
       resetPasswordFields();
       updateSeedSourceSelect();
       $scope.setSeedSource();
-    };
+    });
 
     $scope.showAdvChange = function() {
       $scope.showAdv = !$scope.showAdv;
@@ -49,11 +50,7 @@ angular.module('copayApp.controllers').controller('joinController',
     };
 
     $scope.onQrCodeScannedJoin = function(data) {
-      $scope.secret = data;
-      if ($scope.formData) {
-        $scope.formData.secret.$setViewValue(data);
-        $scope.formData.secret.$render();
-      }
+      $scope.formData.secret = data;
     };
 
     if ($stateParams.url) {
@@ -70,7 +67,7 @@ angular.module('copayApp.controllers').controller('joinController',
         id: 'set',
         label: gettextCatalog.getString('Specify Recovery Phrase...'),
       }];
-      $scope.seedSource = $scope.seedOptions[0];
+      $scope.formData.seedSource = $scope.seedOptions[0];
       /*
 
       Disable Hardware Wallets
@@ -102,7 +99,7 @@ angular.module('copayApp.controllers').controller('joinController',
     };
 
     $scope.setSeedSource = function() {
-      $scope.seedSourceId = $scope.seedSource.id;
+      $scope.seedSourceId = $scope.formData.seedSource.id;
 
       $timeout(function() {
         $rootScope.$apply();
@@ -111,28 +108,23 @@ angular.module('copayApp.controllers').controller('joinController',
 
     $scope.join = function() {
 
-      if ($scope.formData && $scope.formData.$invalid) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the required fields'));
-        return;
-      }
-
       var opts = {
-        secret: $scope.formData.secret.$modelValue,
-        myName: $scope.formData.myName.$modelValue,
-        bwsurl: $scope.bwsurl
+        secret: $scope.formData.secret,
+        myName: $scope.formData.myName,
+        bwsurl: $scope.formData.bwsurl
       }
 
       var setSeed = $scope.seedSourceId == 'set';
       if (setSeed) {
-        var words = $scope.formData.privateKey.$modelValue;
+        var words = $scope.formData.privateKey;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
           opts.extendedPrivateKey = words;
         } else {
           opts.mnemonic = words;
         }
-        opts.passphrase = $scope.formData.passphrase ? $scope.formData.passphrase.$modelValue : null;
+        opts.passphrase = $scope.formData.passphrase;
 
-        var pathData = derivationPathHelper.parse($scope.derivationPath);
+        var pathData = derivationPathHelper.parse($scope.formData.derivationPath);
         if (!pathData) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
           return;
@@ -141,7 +133,7 @@ angular.module('copayApp.controllers').controller('joinController',
         opts.networkName = pathData.networkName;
         opts.derivationStrategy = pathData.derivationStrategy;
       } else {
-        opts.passphrase = $scope.formData.createPassphrase ? $scope.formData.createPassphrase.$modelValue : null;
+        opts.passphrase = $scope.formData.createPassphrase;
       }
 
       opts.walletPrivKey = $scope._walletPrivKey; // Only for testing
