@@ -102,6 +102,13 @@
             </span>
           </span>
         </div>
+        <ion-toggle ng-show="!btx.confirmations || btx.confirmations == 0"
+                    class="toggle-unconfirmed"
+                    ng-model="txNotification.value" 
+                    toggle-class="toggle-balanced"
+                    ng-change="txConfirmNotificationChange()">
+          <span class="toggle-label" translate>Notify me if confirmed</span>
+        </ion-toggle>
         <div ng-if="actionList[0]">
           <div class="item item-divider" translate>Timeline</div>
           <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">
