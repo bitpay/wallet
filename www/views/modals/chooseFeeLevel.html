@@ -1,15 +1,14 @@
-<ion-view id="settings-fee" class="settings">
-  <ion-nav-bar class="bar-royal">
-    <ion-nav-title>
+<ion-modal-view id="settings-fee" class="settings" ng-controller="preferencesFeeController" ng-init="init()">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button button-clear" ng-click="hideModal()">
+      Close
+    </button>
+    <div class="title">
       {{'Bitcoin Network Fee Policy'|translate}}
-    </ion-nav-title>
-    <ion-nav-back-button>
-    </ion-nav-back-button>
-  </ion-nav-bar>
+    </div>
+  </ion-header-bar>
   <ion-content>
     <div class="settings-explanation">
-      <div class="settings-heading" translate>Bitcoin transactions include a fee collected by miners on the network.</div>
-      <div class="settings-description" translate>The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.</div>
       <div class="estimates">
         <div>
           <span translate>Average confirmation time</span>:
@@ -28,5 +27,8 @@
         {{level|translate}}
       </ion-radio>
     </div>
+    <div class="m20t">
+      <button class="button button-standard button-primary" ng-click="chooseNewFee()" translate>Save</button>
+    </div>
   </ion-content>
-</ion-view>
+</ion-modal-view>
