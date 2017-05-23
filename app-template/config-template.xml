@@ -63,11 +63,11 @@
     </plugin>
     <plugin name="cordova-custom-config" spec="~3.0.5" />
     <plugin name="cordova-plugin-queries-schemes" spec="~0.1.5" />
-    <plugin name="cordova-plugin-fcm" spec="2.1.1" />
+    <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git" />
 
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
-    <engine name="android" spec="~5.2.2" />
+    <engine name="android" spec="~6.2.3" />
     <engine name="windows" spec="~4.4.3" />
 
     <!-- Platform Specific Settings -->
