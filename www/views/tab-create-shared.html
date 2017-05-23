@@ -5,7 +5,7 @@
     </ion-nav-back-button>
   </ion-nav-bar>
 
-  <ion-content ng-controller="createController" ng-init="init(3);">
+  <ion-content>
     <form name="setupForm" ng-submit="create()" novalidate>
       <div class="list settings-list settings-input-group">
         <label class="item item-input item-stacked-label">
@@ -97,7 +97,7 @@
                    type="password"
                    autocapitalize="off"
                    ng-model="formData.createPassphrase"
-                   ng-change="checkPassword(formData.createPassphrase, formData.repeatpassword)"
+                   ng-change="checkPassword(formData.createPassphrase, formData.repeatPassword)"
                    ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
 
             <input ng-show="seedSource.id == 'set'"
@@ -105,7 +105,7 @@
                    type="password"
                    autocapitalize="off"
                    ng-model="formData.passphrase"
-                   ng-change="checkPassword(formData.passphrase, formData.repeatpassword)"
+                   ng-change="checkPassword(formData.passphrase, formData.repeatPassword)"
                    ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
           </div>
           <div class="item item-input" ng-show="encrypt">
@@ -113,16 +113,16 @@
                    placeholder="{{'Repeat password'|translate}}"
                    type="password"
                    autocapitalize="off"
-                   ng-model="formData.repeatpassword"
-                   ng-change="checkPassword(formData.createPassphrase, formData.repeatpassword)"
+                   ng-model="formData.repeatPassword"
+                   ng-change="checkPassword(formData.createPassphrase, formData.repeatPassword)"
                    ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
 
              <input ng-show="seedSource.id == 'set'"
                     placeholder="{{'Repeat password'|translate}}"
                     type="password"
                     autocapitalize="off"
-                    ng-model="formData.repeatpassword"
-                    ng-change="checkPassword(formData.passphrase, formData.repeatpassword)"
+                    ng-model="formData.repeatPassword"
+                    ng-change="checkPassword(formData.passphrase, formData.repeatPassword)"
                     ng-class="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}">
           </div>
 

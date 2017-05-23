@@ -19,18 +19,18 @@ angular.module('copayApp.controllers').controller('createController',
       12: 1,
     };
 
-    $scope.init = function(tc) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.formData = {};
       var defaults = configService.getDefaults();
+      var tc = $state.current.name == 'tabs.add.create-personal' ? 1 : defaults.wallet.totalCopayers;
       $scope.formData.account = 1;
       $scope.formData.bwsurl = defaults.bws.url;
       $scope.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
-      $scope.formData.totalCopayers = defaults.wallet.totalCopayers;
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);
       resetPasswordFields();
-    };
+    });
 
     $scope.showAdvChange = function() {
       $scope.showAdv = !$scope.showAdv;
@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('createController',
     };
 
     function resetPasswordFields() {
-      $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = $scope.formData.repeatpassword = $scope.result = null;
+      $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = $scope.formData.repeatPassword = $scope.result = null;
       $timeout(function() {
         $scope.$apply();
       });
