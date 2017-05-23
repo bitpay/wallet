@@ -23,6 +23,14 @@ angular.module('copayApp.services').factory('pushNotificationsService', function
     }); 
   };
 
+  root.updateSubscription = function(walletClient) {
+    if (!_token) {
+      $log.warn('Push notifications disabled for this device. Nothing to do here.');
+      return;
+    }
+    _subscribe(walletClient);
+  };
+
   root.enable = function() {
     if (!_token) {
       $log.warn('No token available for this device. Cannot set push notifications. Needs registration.');
