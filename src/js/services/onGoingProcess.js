@@ -85,7 +85,7 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
       } else {
 
         var tmpl;
-        if (isWP) tmpl = '<div>' + showName +'</div>';
+        if (isWP) tmpl = '<div>' + showName + '</div>';
         else tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
         $ionicLoading.show({
           template: tmpl
@@ -95,8 +95,8 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
       if (isCordova && !isWP) {
         window.plugins.spinnerDialog.hide();
       } else {
-      $ionicLoading.hide();
-    }
+        $ionicLoading.hide();
+      }
     }
   };
 
