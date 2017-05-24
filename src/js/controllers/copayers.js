@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, bwcError, platformInfo, gettextCatalog, ongoingProcess) {
+  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, bwcError, platformInfo, gettextCatalog, ongoingProcess, pushNotificationsService) {
 
+    var listener;
     var appName = appConfigService.userVisibleName;
     var appUrl = appConfigService.url;
 
@@ -10,13 +11,15 @@ angular.module('copayApp.controllers').controller('copayersController',
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.wallet = profileService.getWallet(data.stateParams.walletId);
       updateWallet();
-    });
+      $scope.shareIcon = platformInfo.isIOS ? 'iOS' : 'Android';
+    
+      listener = $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+        if ($scope.wallet && walletId == $scope.wallet.id && type == ('NewCopayer' || 'WalletComplete'))
+          updateWalletDebounced();
+      });
+    }); 
 
-    var listener = $rootScope.$on('bwsEvent', function() {
-      updateWallet();
-    });
-
-    $scope.$on('$destroy', function() {
+    $scope.$on("$ionicView.leave", function(event, data) {
       listener();
     });
 
@@ -35,11 +38,18 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (status.wallet.status == 'complete') {
           $scope.wallet.openWallet(function(err, status) {
             if (err) $log.error(err);
-            $scope.goHome();
+            $scope.clearNextView();
+            $state.go('tabs.home').then(function() {
+              $state.transitionTo('tabs.wallet', {
+                walletId: $scope.wallet.credentials.walletId
+              });
+            });
           });
         }
       });
     };
+
+    var updateWalletDebounced = lodash.debounce(updateWallet, 5000, true);
 
     $scope.showDeletePopup = function() {
       var title = gettextCatalog.getString('Confirm');
@@ -56,7 +66,9 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err.message || err);
         } else {
-          $scope.goHome();
+          pushNotificationsService.unsubscribe($scope.wallet);
+          $scope.clearNextView();
+          $state.go('tabs.home');
         }
       });
     };
@@ -81,9 +93,13 @@ angular.module('copayApp.controllers').controller('copayersController',
       }
     };
 
-    $scope.goHome = function() {
-      $state.go('tabs.home');
-      $ionicHistory.clearHistory();
+    $scope.clearNextView = function() {
+      listener(); // remove listener
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        historyRoot: true
+      });
+      $ionicHistory.clearHistory(); 
     };
 
   });
