@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('copayersController',
-  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, bwcError, platformInfo, gettextCatalog, ongoingProcess) {
+  function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, bwcError, platformInfo, gettextCatalog, ongoingProcess, pushNotificationsService) {
 
     var appName = appConfigService.userVisibleName;
     var appUrl = appConfigService.url;
@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.wallet = profileService.getWallet(data.stateParams.walletId);
       updateWallet();
+      $scope.shareIcon = platformInfo.isIOS ? 'iOS' : 'Android';
     });
 
     var listener = $rootScope.$on('bwsEvent', function() {
@@ -35,7 +36,12 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (status.wallet.status == 'complete') {
           $scope.wallet.openWallet(function(err, status) {
             if (err) $log.error(err);
-            $scope.goHome();
+            $scope.clearNextView();
+            $state.go('tabs.home').then(function() {
+              $state.transitionTo('tabs.wallet', {
+                walletId: $scope.wallet.credentials.walletId
+              });
+            });
           });
         }
       });
@@ -56,7 +62,9 @@ angular.module('copayApp.controllers').controller('copayersController',
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err.message || err);
         } else {
-          $scope.goHome();
+          pushNotificationsService.unsubscribe($scope.wallet);
+          $scope.clearNextView();
+          $state.go('tabs.home');
         }
       });
     };
@@ -81,9 +89,12 @@ angular.module('copayApp.controllers').controller('copayersController',
       }
     };
 
-    $scope.goHome = function() {
-      $state.go('tabs.home');
-      $ionicHistory.clearHistory();
+    $scope.clearNextView = function() {
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        historyRoot: true
+      });
+      $ionicHistory.clearHistory(); 
     };
 
   });
