@@ -19,4 +19,14 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
     }, 100);
   };
 
+  $scope.remove = function(addr) {
+    addressbookService.remove(addr, function(err, ab) {
+      if (err) {
+        popupService.showAlert(gettextCatalog.getString('Error'), err);
+        return;
+      }
+      $ionicHistory.goBack();
+    });
+  };
+
 });

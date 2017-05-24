@@ -5,6 +5,11 @@
     <ion-nav-title>
       <span>{{addressbookEntry.name}}</span>
     </ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="remove(addressbookEntry.address)">
+        Remove
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
     <div class="gravatar-content">
@@ -23,7 +28,7 @@
         <span>{{addressbookEntry.email}}</span>
       </div>
       <div class="item item-text-wrap">
-        <span class="address-book-field-label" translate>Address</span>
+        <span class="address-book-field-label" copy-to-clipboard="addressbookEntry.address" translate>Address</span>
         <span>{{addressbookEntry.address}}</span>
       </div>
     </div>
