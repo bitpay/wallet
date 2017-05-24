@@ -34,7 +34,7 @@
     <div ng-class="{
          'balanced': tx.price.toString().indexOf('-') == -1 && !tx.pending,
          'text-gray': tx.price.toString().indexOf('-') == -1 && tx.pending}">
-      <span ng-show="tx.price.toString().indexOf('-') == -1 && !tx.pending">+ </span>
+      <span ng-show="tx.price.toString().indexOf('-') == -1">+ </span>
       {{tx.price | currency:'$':2 }}
     </div>
     <time class="size-12 text-gray" ng-if="!tx.pending">{{tx.runningBalance | currency:'$':2}}</time>
