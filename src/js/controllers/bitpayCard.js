@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService, externalLinkService) {
 
   var self = this;
   var runningBalance;
@@ -37,15 +37,15 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   var setGetStarted = function(history, cb) {
 
     // Is the card new?
-    if (!lodash.isEmpty(history.transactionList)) 
+    if (!lodash.isEmpty(history.transactionList))
       return cb();
 
     var dateRange = setDateRange('all');
     bitpayCardService.getHistory($scope.cardId, dateRange, function(err, history) {
 
-      if (!err && lodash.isEmpty(history.transactionList)) 
-        self.getStated=true;
-        
+      if (!err && lodash.isEmpty(history.transactionList))
+        self.getStarted = true;
+
       return cb();
     });
   };
@@ -60,7 +60,11 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
       if (err) {
         $log.error(err);
-        self.bitpayCardTransactionHistory = null;
+        self.bitpayCardTransactionHistoryCompleted = null;
+        self.bitpayCardTransactionHistoryConfirming = null;
+        self.bitpayCardTransactionHistoryPreAuth = null;
+        self.underpaidInvoiceInList = null;
+        self.delayedInvoiceInList = null;
         self.balance = null;
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get transactions'));
         return;
@@ -84,7 +88,26 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
             txs[i].merchant.location = txs[i].merchant.city || txs[i].merchant.state || '';
           }
         }
-        self.bitpayCardTransactionHistory = txs;
+        self.bitpayCardTransactionHistoryCompleted = lodash.filter(txs, function(tx) {
+          return !tx.pending && tx.type.indexOf('93') == -1;
+        });
+        self.bitpayCardTransactionHistoryConfirming = lodash.filter(txs, function(tx) {
+          return tx.pending;
+        });
+        self.bitpayCardTransactionHistoryPreAuth = lodash.includes(txs, function(tx) {
+          return tx.type.indexOf('93') > -1;
+        });
+
+        lodash.forEach(self.bitpayCardTransactionHistoryConfirming, function(tx) {
+          if (lodash.includes(tx, 'paidPartial'))
+            self.underpaidInvoiceInList = true;
+        });
+
+        lodash.forEach(self.bitpayCardTransactionHistoryConfirming, function(tx) {
+          if (lodash.includes(tx, 'paid') || lodash.includes(tx, 'invalid'))
+            self.delayedInvoiceInList = true;
+        });
+
         self.balance = history.currentCardBalance;
         self.updatedOn = null;
 
@@ -132,11 +155,31 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   var _price = function(tx) {
-    return parseFloat(tx.amount) + parseFloat(tx.fee)
+    var price = tx.fee ? parseFloat(tx.amount) + parseFloat(tx.fee) : parseFloat(tx.amount);
+    return price;
   };
 
   var _runningBalance = function(tx) {
     runningBalance -= parseFloat(tx.amount);
+  };
+
+  this.openExternalLink = function(url) {
+    var optIn = true;
+    var title = null;
+    var message = gettextCatalog.getString('Help and support information is available at the website.');
+    var okText = gettextCatalog.getString('Open');
+    var cancelText = gettextCatalog.getString('Go Back');
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
+  };
+
+  this.viewOnBlockchain = function(transactionId) {
+    var url = 'https://insight.bitpay.com/tx/' + transactionId;
+    var optIn = true;
+    var title = null;
+    var message = gettextCatalog.getString('View Transaction on Insight');
+    var okText = gettextCatalog.getString('Open Insight');
+    var cancelText = gettextCatalog.getString('Go Back');
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -149,7 +192,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       $state.go('tabs.home');
     }
 
-    
+
     bitpayCardService.get({
       cardId: $scope.cardId,
       noRefresh: true,

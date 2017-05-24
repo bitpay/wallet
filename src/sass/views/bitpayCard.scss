@@ -7,6 +7,23 @@
   @extend .deflash-blue;
   background: white;
 
+  .status-label {
+    font-size: 14px;
+    font-weight: 300;
+    color: #727272;
+    padding: 2px 1rem;
+    background: #f8f8f9;
+  }
+
+  .comment {
+    padding: 15px;
+    background: #f8f8f9;
+    font-weight: bold;
+    font-size:0.9em;
+    color: $v-mid-gray;
+    display: inline-block;
+  }
+
   .spinner svg {
     stroke: #0067c8;
     fill: #0067c8;

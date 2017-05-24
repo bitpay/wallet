@@ -31,7 +31,9 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
             amount: invoices[i].price,
             type: '00611 = Client Funded Deposit',
             pending: true,
-            status: invoices[i].status
+            status: invoices[i].status,
+            transactionId: invoices[i].transactions && invoices[i].transactions[0] ? invoices[i].transactions[0].txid : '',
+            exceptionStatus: invoices[i].exceptionStatus
           });
         }
       }
