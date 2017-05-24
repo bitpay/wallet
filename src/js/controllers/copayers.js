@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('copayersController',
   function($scope, $log, $timeout, $stateParams, $state, $rootScope, $ionicHistory, appConfigService, lodash, profileService, walletService, popupService, bwcError, platformInfo, gettextCatalog, ongoingProcess, pushNotificationsService) {
 
+    var listener;
     var appName = appConfigService.userVisibleName;
     var appUrl = appConfigService.url;
 
@@ -11,13 +12,14 @@ angular.module('copayApp.controllers').controller('copayersController',
       $scope.wallet = profileService.getWallet(data.stateParams.walletId);
       updateWallet();
       $scope.shareIcon = platformInfo.isIOS ? 'iOS' : 'Android';
-    });
+    
+      listener = $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+        if ($scope.wallet && walletId == $scope.wallet.id && type == ('NewCopayer' || 'WalletComplete'))
+          updateWalletDebounced();
+      });
+    }); 
 
-    var listener = $rootScope.$on('bwsEvent', function() {
-      updateWallet();
-    });
-
-    $scope.$on('$destroy', function() {
+    $scope.$on("$ionicView.leave", function(event, data) {
       listener();
     });
 
@@ -46,6 +48,8 @@ angular.module('copayApp.controllers').controller('copayersController',
         }
       });
     };
+
+    var updateWalletDebounced = lodash.debounce(updateWallet, 5000, true);
 
     $scope.showDeletePopup = function() {
       var title = gettextCatalog.getString('Confirm');
@@ -90,6 +94,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     };
 
     $scope.clearNextView = function() {
+      listener(); // remove listener
       $ionicHistory.nextViewOptions({
         disableAnimate: true,
         historyRoot: true
