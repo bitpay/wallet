@@ -40,10 +40,17 @@
             <ion-spinner ng-show="!addr" class="spinner-dark" icon="crescent"></ion-spinner>
           </div>
         </div>
-        <button ng-show="addr" class="button-request" ng-click="requestSpecificAmount()">
-          <span translate>Request Specific amount</span> 
-          <i class="icon ion-ios-arrow-right"></i>
-        </button>
+        <div>
+          <button ng-show="addr" class="button-request" ng-click="requestSpecificAmount()">
+            <span translate>Request Specific amount</span> 
+            <i class="icon ion-ios-arrow-right"></i>
+          </button>
+        </div>
+        <div>
+          <button ng-show="addr" class="button-address" ng-click="setAddress(true)">
+            <span translate>Generate new address</span> 
+          </button>
+        </div>
       </div> 
     </article>
 

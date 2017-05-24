@@ -21,6 +21,13 @@
       padding-left: 5px;
     }
   }
+  .button-address {
+    margin-top: 5px;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: $v-text-accent-color;
+  }
   .address {
     background: #fff;
     overflow: auto;
