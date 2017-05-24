@@ -1,5 +1,33 @@
 #tab-receive {
   @extend .deflash-blue;
+  .button-share {
+    color: #fff;
+    box-shadow: none;
+    border-color: transparent;
+    background: transparent;
+    padding: 0 10px;
+    .icon:before {
+      font-size: 26px;
+    }
+  }
+  .button-request {
+    margin-top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: $v-text-accent-color;
+    i.icon {
+      vertical-align: middle;
+      padding-left: 5px;
+    }
+  }
+  .button-address {
+    margin-top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: $v-text-accent-color;
+  }
   .address {
     background: #fff;
     overflow: auto;
@@ -20,9 +48,6 @@
       .address-label {
         margin-top: 5%;
         font-size: 13px;
-      }
-      .request-button {
-        padding-top: 20px;
       }
     }
     .incomplete {
