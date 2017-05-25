@@ -1,0 +1,73 @@
+<ion-view class="settings pane" id="view-create-bitlox-wallet" ng-controller="WalletCtrl as vm">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>Create/Restore BitLox Wallet</ion-nav-title>
+    <ion-nav-back-button></ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <form class="form" name="newWalletForm"
+          ng-submit="vm.createWallet()">
+        <div class="list settings-list settings-input-group">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" translate>Wallet name</span>
+            <input type="text"
+            placeholder="{{'Family vacation funds'|translate}}"
+            ng-model="vm.newWallet.name"
+            ng-required="true">
+          </label>
+
+          <div class="item item-divider"></div>
+
+          <ion-toggle ng-model="vm.newWallet.isSecure" toggle-class="toggle-positive">
+            <span class="toggle-label" translate>Set PIN/Password?</span>
+          </ion-toggle>
+
+          <div class="item item-divider"></div>
+
+          <ion-toggle ng-model="vm.newWallet.isRestore" toggle-class="toggle-balanced">
+            <span class="toggle-label" translate>Restore From Mnemonic?</span>
+          </ion-toggle>
+
+          <div ng-show="vm.newWallet.isRestore">
+              <p>
+                  To quickly restore the wallet, type the words of your
+                  mnemonic into the text box below, and you will get a list
+                  of index numbers for the words.
+              </p>
+              <p>
+                  You can use the "Index restore" option to quickly restore
+                  the wallet, rather than typing each word individually. Do
+                  this before executing the operation, as the browser will
+                  become locked while the BitLox is restoring the wallet.
+              </p>
+              <p>
+                  This word list is <b>not</b> transmittied to either the
+                  device, nor sent over the internet.
+              </p>
+              <div class="form-group">
+                  <textarea class="form-control"
+                            ng-model="userWords"
+                            placeholder="Enter your Mnemonic here"
+                            ng-change="updateWordNumbers()"
+                            ng-keyup="updateWordNumbers()"></textarea>
+              </div>
+              <div>
+                  <span ng-repeat="(index, wordNum) in wordIndexes"
+                        style="padding-right: 8px">
+                      {{index + 1}}:{{wordNum}}
+                  </span>
+              </div>
+          </div>
+          <div class="item item-divider"></div>
+
+        </div>
+        <div class="form-group">
+            <input type="submit"
+                   class="button button-standard button-primary"
+                   value="Go"
+                   ng-disabled="creatingWallet">
+        </div>
+    </form>
+
+  </ion-content>
+</ion-view>

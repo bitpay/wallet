@@ -81,7 +81,19 @@
            class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
            ng-click="openWallet(wallet)">
           <i class="icon big-icon-svg">
-            <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+            <img src="img/icon-wallet-bitlox.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"
+
+            ng-show="wallet.getPrivKeyExternalSourceName().indexOf('bitlox') > -1"
+            />
+            <img src="img/aureus.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"
+            ng-show="wallet.network === 'aureus'"
+            />
+            <img src="img/deuscoin.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"
+            ng-show="wallet.network === 'deuscoin'"
+            />
+            <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"
+            ng-hide="wallet.getPrivKeyExternalSourceName().indexOf('bitlox') > -1 || wallet.network !== 'livenet'"
+            />
           </i>
           <span>
             {{wallet.name || wallet.id}}
@@ -106,10 +118,10 @@
         </a>
       </div>
     </div>
-    <div class="ng-hide list card" ng-show="wallets[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
+<!--     <div class="ng-hide list card" ng-show="wallets[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
     <div class="ng-hide list card" ng-show="wallets[0] && buyAndSellItems.length>0" ng-include="'views/includes/buyAndSellCard.html'"></div>
     <div class="ng-hide list card" ng-show="homeIntegrations.length>0" ng-include="'views/includes/homeIntegrations.html'"></div>
     <div class="ng-hide list card" ng-show="nextStepsItems.length>0 && !isWindowsPhoneApp" ng-include="'views/includes/nextSteps.html'"></div>
-
+ -->
   </ion-content>
 </ion-view>

@@ -23,7 +23,7 @@ var RateService = function(opts) {
   self.UNSUPPORTED_CURRENCY_ERROR = 'Currency not supported';
 
   self._isAvailable = false;
-  self._rates = {};
+  self._rates = {'aur': 9, 'deus': 0.11};
   self._alternatives = [];
   self._queued = [];
 

@@ -1,0 +1,96 @@
+<h3 ng-show="vm.readingWallets">Loading wallets</h3>
+<div class="row"
+     ng-show="!vm.readingWallets">
+    <div class="col-sm-3">
+        <div class="list-group">
+            <button type="button" class="list-group-item"
+                    ng-repeat="wallet in vm.wallets"
+                    ng-click="vm.loadWallet(wallet)"
+                    ng-disabled="vm.openWallet.number == wallet.number"
+                    ng-class="{
+                              'list-group-item-default': vm.openWallet.number != wallet.number,
+                              'list-group-item-warning': vm.openingWallet == wallet.number,
+                              'list-group-item-success': vm.openWallet.number == wallet.number,
+                              }">
+                #{{wallet.number}}&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-lock"
+                      ng-if="wallet.isSecure">&nbsp;</span>{{wallet.name}}
+                <span ng-if="vm.openingWallet == wallet.number && vm.loadingXpub"
+                      class="pull-right">Check BitLox</span>
+                <span ng-if="vm.openWallet.number == wallet.number"
+                      class="pull-right">
+                    <span ng-hide="vm.openWallet.updatingBalance"
+                          bc-val="vm.openWallet.balance"></span>
+                    <span ng-show="!vm.openWallet.updatingBalance && vm.openWallet.unconfirmedBalance">
+                        (<span bc-val="vm.openWallet.unconfirmedBalance"></span> unconfirmed)
+                    </span>
+                    <span ng-show="vm.openWallet.updatingBalance">
+                        Updating
+                    </span>
+                </span>
+            </button>
+        </div>
+        <form class="form" ng-submit="vm.readWallets()">
+            <div class="form-group">
+                <button class="btn btn-primary"
+                        ng-disabled="vm.readingWallets">Refresh Wallets</button>
+            </div>
+        </form>
+        <h3>Direct Load</h3>
+        <form class="form" ng-submit="vm.directLoad()">
+            <div class="form-group">
+                <label>Wallet Number</label>
+                <div class="input-group">
+                    <input type="number"
+                           class="form-control"
+                           ng-model="vm.directOpenNumber">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"
+                                ng-disabled="vm.readingWallets">Load</button>
+                    </span>
+
+                </div>
+            </div>
+        </form>
+        <h3>Create/Restore Wallet</h3>
+        <wallet-create available-numbers="vm.availableWalletNumbers"
+                       on-finish="vm.readWallets()"></wallet-create>
+<!-- 
+        <div ng-show="expertMode">
+            <h3>Prep for Flashing</h3>
+            <button class="btn btn-danger"
+                    ng-click="vm.confirmFlash = true"
+                    ng-disabled="vm.flashing">FLASH</button>
+        </div>
+        <div ng-show="vm.confirmFlash">
+            <h3>Confirm Flash</h3>
+            <p>
+                Confirm prepping the deice for firmare update. After
+                sending this command, run the update tool for your
+                platform. If an alert about Network Interface is shown,
+                please just cancel the alert
+            </p>
+            <button class="btn btn-primary"
+                    ng-click="vm.prepForFlash()"
+                    ng-disabled="vm.flashing">Confirm</button>
+        </div>
+ -->
+
+    </div>
+    <div class="col-sm-9">
+        <h3 ng-show="vm.openingWallet >= 0"
+            ng-controller="StatusCtrl as sc">
+            <span ng-show="sc.wallet.status">
+                <span class="glyphicon"
+                      ng-class="sc.wallet.glyph"></span>
+                {{sc.wallet.status}}
+            </span>
+        </h3>
+        <h3 ng-show="vm.openingWallet < 0 && vm.openWallet == null">
+            Select wallet to open
+        </h3>
+        <wallet-info expert-mode="expertMode"
+                     wallet="vm.openWallet"
+                     on-delete="vm.readWallets()"></wallet-info>
+    </div>
+</div>

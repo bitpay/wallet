@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService, CUSTOMNETWORKS) {
   var _id;
   var unitToSatoshi;
   var satToUnit;
@@ -23,12 +23,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.forceCurrency = data.stateParams.forceCurrency;
 
     $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
+
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
     $scope.recipientType = data.stateParams.recipientType || null;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.nextStep;
+    $scope.showAlternativeAmount = false; //!!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
@@ -63,7 +64,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
     });
 
     var config = configService.getSync().wallet.settings;
+
     $scope.unitName = config.unitName;
+    // if(CUSTOMNETWORKS[configService.getSync().wallet.network]) {
+    //   $scope.unitName = configService.getSync().wallet.symbol;
+    // }
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
     } else {

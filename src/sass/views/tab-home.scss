@@ -106,9 +106,8 @@
   }
   .tab-home {
     &__logo {
-      height: 18px;
+      height: $v-logo-height;
       position: relative;
-      top: 3px;
     }
     &__wallet {
       &__multisig-number {

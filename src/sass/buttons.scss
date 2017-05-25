@@ -8,6 +8,7 @@
 
 .button,
 .onboarding .button {
+  -webkit-touch-callout: none;
   &.button-primary {
     @include button-style($v-button-primary-bg, $v-button-primary-border, $v-button-primary-active-bg, $v-button-primary-active-border, $v-button-primary-color);
     @include button-clear($v-button-primary-bg);

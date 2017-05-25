@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, CUSTOMNETWORKS) {
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -127,14 +127,26 @@ angular.module('copayApp.controllers').controller('createController',
     };
 
     $scope.create = function() {
+      var networkName = $scope.formData.testnetEnabled ? 'testnet' : 'livenet';
+      var bwsUrl = $scope.formData.bwsurl;
 
+      if($scope.formData.customParam) {
+        networkName = $scope.formData.customParam
+        var customNet = CUSTOMNETWORKS[$scope.formData.customParam]
+        if(!customNet) {
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid') + ": " + $scope.formData.customParam);
+          return;
+        }
+        bwsUrl = customNet.bwsUrl
+
+      }
       var opts = {
         name: $scope.formData.walletName,
         m: $scope.formData.requiredCopayers,
         n: $scope.formData.totalCopayers,
         myName: $scope.formData.totalCopayers > 1 ? $scope.formData.myName : null,
-        networkName: $scope.formData.testnetEnabled ? 'testnet' : 'livenet',
-        bwsurl: $scope.formData.bwsurl,
+        networkName: networkName,
+        bwsurl: bwsUrl,
         singleAddress: $scope.formData.singleAddressEnabled,
         walletPrivKey: $scope.formData._walletPrivKey, // Only for testing
       };

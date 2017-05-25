@@ -7,6 +7,8 @@
 <img style="height:0.6em; margin-right: 1px;" ng-show="wallet.network != 'livenet'" src="img/icon-text-testnet-white.svg">
 <img style="height:0.6em; margin-right: 1px;" ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" src="img/icon-read-only-white.svg">
 
+<img style="height:0.6em; margin-right: 1px;"  ng-show="wallet.getPrivKeyExternalSourceName().indexOf('bitlox') > -1" src="img/icon-wallet-bitlox.svg">
+
 <img style="height:0.6em; margin-right: 1px;"  ng-show="wallet.getPrivKeyExternalSourceName() == 'trezor'" src="img/icon-trezor-white.svg">
 <img style="height:0.6em; margin-right: 1px;"  ng-show="wallet.getPrivKeyExternalSourceName() == 'ledger'" src="img/icon-ledger-white.svg">
 <img style="height:0.6em; margin-right: 1px;"  ng-show="wallet.getPrivKeyExternalSourceName() == 'intelTEE'" src="img/icon-inteltee-white.svg">

@@ -17,7 +17,10 @@ var modules = [
   'copayApp.services',
   'copayApp.controllers',
   'copayApp.directives',
-  'copayApp.addons'
+  'copayApp.addons',
+  'app.core',
+  'app.wallet',
+  'app.util'
 ];
 
 var copayApp = window.copayApp = angular.module('copayApp', modules);

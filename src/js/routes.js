@@ -349,6 +349,28 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           },
         },
       })
+      .state('tabs.add.attach-bitlox', {
+        url: '/attach-bitlox',
+        params: {
+          connectOnly: null
+        },
+        views: {
+          'tab-home@tabs': {
+            templateUrl: 'views/bitlox/tab-attach-bitlox.html',
+          },
+        }
+      })
+      .state('tabs.add.create-bitlox', {
+        url: '/create-bitlox',
+        params: {
+          createWallet: true
+        },
+        views: {
+          'tab-home@tabs': {
+            templateUrl: 'views/bitlox/tab-create-bitlox-wallet.html',
+          },
+        }
+      })      
       .state('tabs.add.create-personal', {
         url: '/create-personal',
         views: {

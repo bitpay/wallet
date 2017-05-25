@@ -44,7 +44,7 @@ $v-wallet-color-map: (
 ) !default;
 
 /* Theme */
-$v-default-wallet-color-index:                       8 !default; // See $v-wallet-color-map
+$v-default-wallet-color-index:                       6 !default; // See $v-wallet-color-map
 $v-subtle-box-shadow:                                0 1px 2px rgba(0, 0, 0, 0.25) !default;
 $v-hovering-box-shadow:                              0px 6px 12px 0px rgba(0, 0, 0, 0.3) !default;
 $v-subtle-radius:                                    3px !default;
@@ -146,6 +146,7 @@ $v-tab-scan-selected-icon:                           url('../img/tab-icons/ico-s
 $v-tab-send-icon:                                    url('../img/tab-icons/ico-send.svg') !default;
 $v-tab-send-selected-icon:                           url('../img/tab-icons/ico-send-selected.svg') !default;
 
+$v-logo-height: 100%;
 /*
  * Ionic variables
  */
@@ -181,8 +182,8 @@ $item-default-active-border:                         darken($v-subtle-gray, 7%) 
 $item-divider-bg:                                    $v-subtle-gray !default;
 
 $bar-default-border:                                 $v-subtle-gray !default;
-$bar-royal-bg:                                       $v-primary-color !default;
-$bar-royal-border:                                   $v-primary-color !default;
+$bar-royal-bg:                                       $v-bar-color !default;
+$bar-royal-border:                                   $v-bar-color !default;
 $bar-royal-text:                                     #ffffff !default;
 
 $tabs-icon-size:                                     22px !default;

@@ -1,6 +1,7 @@
 ./index.html
 ./cordova.js
 ./css/*.css
+./roboto-font/*
 ./fonts/*
 ./img/*
 ./img/**/*

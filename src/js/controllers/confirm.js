@@ -539,6 +539,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         (processName == 'sendingTx' && !$scope.wallet.canSign() && !$scope.wallet.isPrivKeyExternal())
       ) && !isOn) {
       $scope.sendStatus = 'success';
+    console.log($scope.sendStatus)
       $timeout(function() {
         $scope.$digest();
       }, 100);

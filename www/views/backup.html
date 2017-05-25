@@ -46,7 +46,7 @@
           <div ng-show="!selectComplete" class="tldr-prompt" translate>Please tap each word in the correct order.</div>
           <div ng-show="selectComplete" class="tldr-prompt" translate>Is this correct?</div>
           <span ng-show="!selectComplete" ng-repeat="shuffledWord in shuffledMnemonicWords track by $index">
-            <button class="button select-word" ng-click="addButton($index, shuffledWord)"
+            <button class="button button-primary select-word" ng-click="addButton($index, shuffledWord)"
             ng-disabled="shuffledWord.selected">{{shuffledWord.word}}
             </button>
           </span>

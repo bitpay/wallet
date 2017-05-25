@@ -1,6 +1,7 @@
 var bwcModule = angular.module('bwcModule', []);
 var Client = require('../node_modules/bitcore-wallet-client');
 
+
 bwcModule.constant('MODULE_VERSION', '1.0.0');
 
 bwcModule.provider("bwcService", function() {
@@ -39,6 +40,7 @@ bwcModule.provider("bwcService", function() {
         timeout: 100000,
         transports: ['polling'],
       });
+     
       if (walletData)
         bwc.import(walletData, opts);
       return bwc;

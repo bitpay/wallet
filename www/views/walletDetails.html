@@ -43,15 +43,15 @@
           ng-style="{'transform': amountScale}"
           ng-class="{amount__balance: amountIsCollapsible}">
           <strong class="size-36">{{status.totalBalanceStr}}</strong>
-          <div
+<!--           <div
             class="size-14 amount-alternative"
             ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'"
             ng-style="{opacity: altAmountOpacity}">
             {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
-          </div>
+          </div> -->
         </div>
 
-        <div ng-style="{'transform': amountScale}"
+<!--         <div ng-style="{'transform': amountScale}"
         class="amount__balance"
         ng-show="!updateStatusError && wallet.balanceHidden"
         on-hold="hideToggle()">
@@ -59,7 +59,7 @@
           <div ng-style="{opacity: altAmountOpacity}" class="size-14 amount-alternative" translate>
             Tap and hold to show
           </div>
-        </div>
+        </div> -->
 
         <div ng-if="!wallet.balanceHidden && showBalanceButton" ng-style="{'opacity': altAmountOpacity, 'transform': amountScale}">
           <button class="button button-standard button-primary amount__button-balance size-14" ng-click="openBalanceModal()">

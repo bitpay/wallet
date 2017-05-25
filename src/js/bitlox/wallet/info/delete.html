@@ -1,0 +1,34 @@
+<form>
+    <div class="form-group"
+         ng-hide="otpRequested">
+        <button class="btn btn-danger"
+                ng-disabled="formatting || deletingWallet"
+                ng-click="deleteWallet()">
+            Delete this wallet?
+        </button>
+    </div>
+    <div class="form-group"
+         ng-hide="otpRequested">
+        <button class="btn btn-danger"
+                ng-disabled="formatting || deletingWallet"
+                ng-click="formatDevice()">
+            Format Device (Deletes all wallets)
+        </button>
+    </div>
+    <div class="form-group"
+         ng-show="otpRequested">
+        <div class="input-group">
+            <input class="form-control"
+                   ng-model="otp"
+                   ng-disabled="!otpRequested"
+                   placeholder="OTP (Check device)">
+            <span class="input-group-btn">
+                <button class="btn btn-primary"
+                        ng-click="sendOtp()"
+                        ng-disabled="!otpRequested ||
+                                     sendingOtp ||
+                                     !otp.length">Confirm</button>
+            </span>
+        </div>
+    </div>
+</form>

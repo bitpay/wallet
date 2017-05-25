@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     var wallet;
     var listeners = [];
     var notifications = [];
+
     $scope.externalServices = {};
     $scope.openTxpModal = txpModalService.open;
     $scope.version = $window.version;

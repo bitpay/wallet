@@ -33,7 +33,7 @@ slide-to-accept-success {
       &.fill-screen {
         -webkit-transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
         transform: scale3d($scale-factor, $scale-factor, 1) translateY(-40%);
-        background: $v-success-bg-color;
+        background: $v-slider-bg-color;
       }
     }
 

@@ -1,0 +1,16 @@
+<form ng-submit="renameWallet()">
+    <div class="form-group">
+        <div class="input-group">
+            <input class="form-control"
+                   ng-model="newName"
+                   placeholder="New Name"
+                   required>
+            <span class="input-group-btn">
+                <input class="btn btn-primary"
+                       type="submit"
+                       value="Rename"
+                       ng-disabled="renamingWallet || !newName.length">
+            </span>
+        </div>
+    </div>
+</form>

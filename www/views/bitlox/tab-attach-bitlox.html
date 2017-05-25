@@ -1,0 +1,88 @@
+<ion-view id="tab-home">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>Attach a BitLox</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+
+  <ion-content ng-controller="WalletCtrl as vm" >
+    <br /><br />
+    <div ng-controller="BitLoxCtrl">
+
+      <div ng-hide="bitlox.connected || bitlox.isMobile" ng-if="!bitlox.isMobile">
+          <h4>
+              No BitLox device detected.<br />
+              Please connect your BitLox and
+              <a href ng-click="refreshBitlox()">click here to try again.</a>
+          </h4>
+      </div>
+      <div class="list card"  ng-show="bitlox.isMobile && !bitlox.connected">
+        <a class="item item-remove-animate" ng-click="refreshBitlox($event)">
+          <span  ng-if="api.getNumDevices() < 1">No devices found - </span>Tap here to refresh
+        </a>
+        <a ng-repeat="device in api.getKnownDevices()"
+           ng-click="connectBle(device.address, false)"
+           style="padding-top: 2rem; padding-bottom: 2rem"
+           class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet">
+           <i class="icon big-icon-svg">
+             <img src="img/icon-wallet-bitlox.svg" class="bg wallet icon-create-wallet"/>
+           </i>
+          <span>{{device.name}}</span>
+          <i class="icon bp-arrow-right"></i>
+          <!-- <pre>{{device}}</pre> -->
+        </a>
+        <button ng-if="closeModal" style="width:100%" class="button icon icon-left ion-ios-close-outline"
+           ng-click = "closeModal()">Cancel</button>
+      </div>
+      <div
+        ng-show="bitlox.connected">
+        <!-- <h3 ng-show="vm.readingWallets">Loading wallets</h3> -->
+
+        <div class="list card"  ng-show="!vm.readingWallets">
+          <a
+          style="padding-top: 2rem; padding-bottom: 2rem"
+          class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
+          type="item-text-wrap" ui-sref="tabs.add.create-bitlox">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" class="bg wallet icon-create-wallet"/>
+            </i>
+            <span class="add-type" translate>Create/Restore<br />BitLox Wallet</span>
+            <i class="icon bp-arrow-right"></i>
+          </a>
+          <!-- <div class="item" ng-show="createToggle">
+            <wallet-create available-numbers="vm.availableWalletNumbers"
+                           on-finish="vm.onCreateFinished()"></wallet-create>
+          </div> -->
+          <!-- <a class="item item-remove-animate item-icon-right item-icon-left item-big-icon-left" type="item-text-wrap" ng-click="ping()">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" class="bg"/>
+            </i>
+            <span class="add-type" translate>PING</span>
+            <i class="icon bp-arrow-right"></i>
+          </a>
+          <a class="item item-remove-animate item-icon-right item-icon-left item-big-icon-left" type="item-text-wrap" ng-click="getEntropy()">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" class="bg"/>
+            </i>
+            <span class="add-type" translate>ENTROPY 1024</span>
+            <i class="icon bp-arrow-right"></i>
+          </a> -->
+          <a ng-repeat="wallet in vm.wallets"
+                ng-click="vm.loadWallet(wallet)"
+                ng-disabled="vm.openWallet.number == wallet.number"
+                style="padding-top: 2rem; padding-bottom: 2rem"
+                class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet">
+
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+            </i>
+            <span>#{{wallet.number}}&nbsp;&nbsp;{{wallet.name}}</span>
+            <i class="icon bp-arrow-right"></i>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

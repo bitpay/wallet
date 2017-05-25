@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.bitpay.*BUNDLENAME*"
+<widget id="com.bitlox.*BUNDLENAME*"
   version="*VERSION*"
   android-versionCode="*ANDROIDVERSION*"
   ios-CFBundleVersion="*VERSION*">
@@ -7,8 +7,8 @@
     <description>
       *PURPOSELINE*
     </description>
-    <author email="support@bitpay.com" href="*URL*">
-        BitPay Inc.
+    <author email="support@bitlox.com" href="*URL*">
+        BitLox Ltd.
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -70,10 +70,7 @@
     <plugin name="cordova-custom-config" spec="~3.0.5" />
     <plugin name="cordova-plugin-queries-schemes" spec="~0.1.5" />
     <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git" />
-
-    <!--  Delete cordova-plugin-qrscanner plugin and enable phonegap-plugin-barcodescanner to build cordova windows-->
-    <!-- <plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" /> -->
-
+    <plugin name="cordova-plugin-ble" spec="~2.0.1" />
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
     <engine name="android" spec="~6.2.3" />

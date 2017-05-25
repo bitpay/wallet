@@ -1,0 +1,136 @@
+<form class="form" name="sendForm">
+    <ng-form class="form-horizontal"
+             ng-repeat="(index, output) in outputs"
+             ng-hide="dust > 0">
+        <div class="form-group">
+            <label class="col-sm-2">To</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input class="form-control"
+                           ng-model="output.address"
+                           ng-disabled="sending || updatingBalance"
+                           placeholder="Address">
+                    <span class="input-group-btn">
+                        <button type="button"
+                                ng-if="outputs.length > 1"
+                                ng-disabled="sending || updatingBalance"
+                                ng-click="removeOutput(index)"
+                                class="btn glyphicon glyphicon-remove btn-default">
+                        </button>
+                        <button type="button"
+                                ng-disabled="sending || updatingBalance"
+                                ng-click="addOutput(index)"
+                                class="btn glyphicon glyphicon-plus btn-default">
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2">Amount</label>
+            <div class="col-sm-10">
+                <bc-input model="output.amount"
+                          ng-keyup="amountChanged()"
+                          class="input-group"></bc-input>
+            </div>
+        </div>
+        <hr class="hr-subtle">
+    </ng-form>
+    <ng-form class="form-horizontal"
+             ng-hide="dust > 0">
+        <div class="form-group">
+            <label class="col-sm-2">Fee</label>
+            <div class="col-sm-10">
+                <bc-input model="fee"
+                          ng-disabled="sending || updatingBalance"
+                          class="input-group"></bc-input>
+            </div>
+            <div class="col-sm-12"
+                 ng-show="fee < DEFAULT_FEE">
+                <p class="help-block">
+                    Setting a fee lower than <span bc-val="DEFAULT_FEE"></span> may
+                    result in a longer confirmation time.
+                </p>
+            </div>
+        </div>
+    </ng-form>
+    <div class="form-group"
+         ng-hide="updatingBalance || sending || dust > 0">
+        <button class="btn btn-primary"
+                ng-disabled="sending || updatingBalance"
+                ng-click="reset()">Reset</button>
+        <button class="btn btn-primary"
+                ng-disabled="sending || updatingBalance || totalTooHigh"
+                ng-click="addOutput()">Add Recipient</button>
+        <button class="btn btn-primary"
+                ng-disabled="sending || updatingBalance || totalTooHigh"
+                ng-click="send()">Send</button>
+    </div>
+    <div ng-show="expertMode && signedHex">
+        <pre class="selectable">{{signedHex}}</pre>
+        <div class="form-group">
+            <button class="btn btn-primary"
+                    ng-disabled="submitting || sending || updatingBalance"
+                    ng-click="submit()">Submit Signed TX</button>
+        </div>
+    </div>
+    <ng-form ng-show="dust > 0">
+        <div class="form-group">
+            <p>
+                The change for this transaction <span bc-val="dust"></span>,
+                which is below the standard limit of <span bc-val="MIN_OUTPUT"></span>.
+                This is considered "non standard" and may result
+                in delays propagating the transaction through the
+                Bitcoin network.
+            </p>
+            <p>
+                You can choose to roll this small change amount
+                (A.K.A. "dust") in with the transaction fee, to be
+                collected by the Bitcoin node that mines this
+                transaction.
+            </p>
+            <p ng-show="fee >= (MIN_OUTPUT - dust)">
+                Alternatively, you can choose to lower the fee used to
+                send this transaction. This option will potentially
+                cause the first confirmation to take longer than usual.
+            </p>
+            <p>
+                Finally, you can also choose to ignore this and send the
+                transaction to the network, but propagation and
+                confirmation may be delayed.
+            </p>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary"
+                    ng-disabled="sending || updatingBalance"
+                    ng-click="smallChangeToFee()">Roll into fee</button>
+            <button class="btn btn-primary"
+                    ng-show="fee >= (MIN_OUTPUT - dust)"
+                    ng-disabled="sending || updatingBalance"
+                    ng-click="smallChangeLowerFee()">Reduce fee</button>
+            <button class="btn btn-primary"
+                    ng-disabled="sending || updatingBalance"
+                    ng-click="smallChangeForce()">Ignore and Send</button>
+        </div>
+    </ng-form>
+    <div class="form-group"
+         ng-show="sending">
+        <div class="alert alert-info">Sending. Check BitLox</div>
+    </div>
+    <div class="form-group"
+         ng-show="updatingBalance">
+        <div class="alert alert-info">Refreshing unspent outputs</div>
+    </div>
+    <div class="form-group"
+         ng-show="submitting">
+        <div class="alert alert-info">Submitting</div>
+    </div>
+    <div class="form-group"
+         ng-show="totalExceedsConfirmed">
+        <div class="alert alert-info">Total exceeds confirmed wallet balance!</div>
+    </div>
+    <div class="form-group"
+         ng-show="totalTooHigh">
+        <div class="alert alert-danger">Total exceeds wallet balance!</div>
+    </div>
+</form>

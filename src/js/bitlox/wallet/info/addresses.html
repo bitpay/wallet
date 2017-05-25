@@ -1,0 +1,37 @@
+<table class="table"
+       ng-repeat="addrType in ['receive', 'change']">
+    <thead>
+        <th class="text-center"
+            colspan="3">
+            {{addrType[0].toUpperCase()}}{{addrType.slice(1)}} Addresses
+        </th>
+    </thead>
+    <thead>
+        <th>Index</th>
+        <th>Address</th>
+        <th>Balance</th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="(address, data) in wallet.addresses[addrType]">
+            <td>{{data.key.child_index}}</td>
+            <td>
+                <div class="pull-left">
+                    <button class="btn btn-primary btn-sm glyphicon glyphicon-qrcode"
+                            ng-click="showQr(address, data.chainIndex, addrType)">
+                    </button>
+                    <span class="monospaced selectable">{{address}}</span>
+                </div>
+                <div class="pull-right"
+                     ng-style="{'min-width': qrsize}">
+                    <div uib-collapse="!showqr[address]">
+                        <qrcode data="bitcoin:{{address}}"
+                                size="{{qrsize}}"
+                                error-correction-level="Q"></qrcode>
+                    </div>
+                </div>
+            </td>
+            <td ng-show="!wallet.updatingBalance" bc-val="data.balance"></td>
+            <td ng-show="wallet.updatingBalance">Updating</td>
+        </tr>
+    </tbody>
+</table>

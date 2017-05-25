@@ -1,0 +1,27 @@
+<form class="form" name="signForm"
+      ng-submit="sign()">
+    <div class="form-group col-md-12">
+        <label>Address</label>
+        <select class="form-control"
+                ng-model="address"
+                ng-options="addr as addr.pub for addr in addresses" id="addressSign"></select>
+    </div>
+    <div class="form-group col-md-12">
+        <label>Message</label>
+        <textarea class="form-control"
+                  ng-model="message" id="signMessageContent"></textarea>
+    </div>
+    <div class="form-group col-md-12">
+        <input type="submit"
+               class="btn btn-primary"
+               value="Go"
+               ng-disabled="signing">
+    </div>
+    <div class="form-group col-md-12"
+         ng-show="signing">
+        <div class="alert alert-info">Signing. Check BitLox</div>
+    </div>
+    <div class="form-group col-md-12">
+        <pre class="selectable" ng-show="signed" id="signedContent">{{signed}}</pre>
+    </div>
+</form>

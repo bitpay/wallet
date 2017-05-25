@@ -8,8 +8,19 @@
     "unlimitedStorage",
     "notifications",
     "videoCapture",
-    "webview"
+    "webview",
+    "hid", {
+        "usbDevices": [
+            { "vendorId": 1003, "productId": 8271 }
+        ]
+    },
+    "usb", {
+        "usbDevices": [
+            { "vendorId": 1003, "productId": 8271 }
+        ]
+    }    
   ],
+
   "app": {
     "background": {
       "scripts": ["initial.js"]

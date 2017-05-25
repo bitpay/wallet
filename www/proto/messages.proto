@@ -1,0 +1,433 @@
+// ../../generator-bin/protoc --nanopb_out=. messages.proto
+// package Device;
+
+//  import "nanopb.proto"; // commented out for ProtoBuf.js use -- hmm, perhaps should include it!
+
+// Specifies algorithm used for deterministic wallet.
+enum Algorithm
+{
+	// See https://en.bitcoin.it/wiki/BIP_0032
+	BIP32 = 0;
+	// Note that we are unlikely to support Electrum's determinstic
+	// wallet algorithm.
+	ELECTRUM = 1;
+}
+
+// Reset state of wallet. If a wallet is loaded, this message will unload
+// (lock) it.
+//
+// Direction: Host to Device
+// Responses: Features
+message Initialize
+{
+	// Arbitrary session identifier, which will be echoed back in the response
+	// (a Features message).
+    required bytes session_id = 1;
+}
+
+// List of features supported by the device.
+//
+// Direction: Device To Host
+// Responses: none
+message Features
+{
+	// Echoed from Initialize message.
+	required bytes echoed_session_id = 1;
+	// Name of the manufacturer eg. "Aperture Science".
+	optional string vendor = 2;
+	// Major version number of the device eg. 0.
+	optional uint32 major_version = 3;
+	// Minor version number of the device eg. 9.
+	optional uint32 minor_version = 4;
+	// Vendor-specific configuration information (eg. firmware build options).
+	optional string config = 5;
+	// Whether device is able to use OtpRequest interjections.
+	optional bool otp = 6;
+	// Whether device is able to use PinRequest interjections.
+	optional bool pin = 7;
+	// Whether device expects supporting transactions to be included when
+	// signing a transaction.
+	optional bool spv = 8;
+	// List of supported deterministic wallet algorithms.
+	repeated Algorithm algo = 9;
+	// Whether DebugLink is enabled. Production builds will never have
+	// DebugLink enabled.
+	optional bool debug_link = 10;
+	// Has device been formatted?
+	optional bool is_formatted = 11;
+	// device name
+	optional bytes device_name = 12;
+}
+
+// Check whether device is still alive.
+//
+// Direction: Host to Device
+// Responses: PingResponse
+message Ping
+{
+	// Arbitrary greeting which will be echoed back in the response
+	// (PingResponse message).
+	optional string greeting = 1;
+}
+
+// Response to Ping message which indicates to the host that the device is
+// still alive.
+//
+// Direction: Device To Host
+// Responses: none
+message PingResponse
+{
+	// Echoed from Ping message.
+	optional string echoed_greeting = 1;
+	// Echoed from most recent Initialize message. The host can use this as
+	// a sanity check to ensure the device hasn't reset itself in the middle
+	// of a session. If Initialize hasn't been called since reset, this will
+	// be filled with 00s.
+	required bytes echoed_session_id = 2;
+}
+
+// Responses: none
+message Success
+{
+}
+
+// Responses: none
+message Failure
+{
+	// Numeric identifier of error.
+	required uint32 error_code = 1;
+	// Human-readable description of error.
+	required string error_message = 2;
+}
+
+// Interjection sent from the device to the host specifying that a button
+// press (on the device) is required in order to continue.
+// Responses: ButtonAck or ButtonCancel
+message ButtonRequest
+{
+}
+
+// Host grants permission for device to wait for button press.
+message ButtonAck
+{
+}
+
+// Host denies permission for device to wait for button press. This will
+// probably cause the current action to be cancelled.
+message ButtonCancel
+{
+}
+
+// Interjection sent from the device to the host specifying that an action
+// requires a password to be submitted to the device.
+message PinRequest
+{
+}
+
+// Host submits password to the device.
+message PinAck
+{
+	required bytes password = 1;
+}
+
+// Host does not want to submit password to the device.
+message PinCancel
+{
+}
+
+message OtpRequest
+{
+}
+
+message OtpAck
+{
+	required string otp = 1;
+}
+
+message OtpCancel
+{
+}
+
+// Delete a wallet, making space for another one. Deleting a wallet does not
+// require that wallet to be loaded. Thus it is possible to delete a wallet
+// that you don't own.
+//
+// Direction: Host to Device
+// Responses: Success or Failure
+// Response interjections: ButtonRequest, OtpRequest
+message DeleteWallet
+{
+	// Which wallet to delete.
+	optional uint32 wallet_handle = 1;
+}
+
+// Responses: Success or Failure
+// Response interjections: ButtonRequest
+// wallet_name is stored purely for the convenience of the host. It should be
+// a null-terminated UTF-8 encoded string with a maximum length of 40 bytes.
+// To create an unencrypted wallet, exclude password.
+message NewWallet
+{
+	optional uint32 wallet_number = 1;
+	optional bytes password = 2;
+	optional bytes wallet_name = 3;
+	optional bool is_hidden = 4 ;
+}
+
+// Responses: Address or Failure
+// Response interjections: ButtonRequest
+message NewAddress
+{
+}
+
+// Responses: none
+message Address
+{
+	required uint32 address_handle = 1;
+	required bytes public_key = 2;
+	required bytes address = 3;
+}
+
+// Responses: none
+message AddressPubKey
+{
+	required bytes public_key = 1;
+}
+
+
+// Responses: NumberOfAddresses or Failure
+message GetNumberOfAddresses
+{
+}
+
+// Responses: none
+message NumberOfAddresses
+{
+	required uint32 number_of_addresses = 1;
+}
+
+// Responses: Address or Failure
+message GetAddressAndPublicKey
+{
+	required uint32 address_handle = 1;
+}
+
+// Responses: Signature or Failure
+// Response interjections: ButtonRequest
+message SignTransaction
+{
+	required uint32 address_handle = 1;
+	required bytes transaction_data = 2;
+}
+
+message AddressHandleExtended
+{
+	required uint32 address_handle_root = 1;
+	required uint32 address_handle_chain = 2;
+	required uint32 address_handle_index = 3;
+}
+
+// Responses: Signature or Failure
+// Response interjections: ButtonRequest
+message SignTransactionExtended
+{
+	repeated AddressHandleExtended address_handle_extended = 1;
+	required bytes transaction_data = 2;
+	optional AddressHandleExtended change_address = 3;
+}
+
+
+
+
+// Responses: none
+message Signature
+{
+	required bytes signature_data = 1;
+}
+
+// Responses: none
+message SignatureCompleteData
+{
+	required bytes signature_data_complete = 1;
+}
+
+message SignatureComplete
+{
+	repeated SignatureCompleteData signature_complete_data = 1;
+}
+
+// Responses: Success or Failure
+// Response interjections: PinRequest
+message LoadWallet
+{
+	optional uint32 wallet_number = 1 ;
+}
+
+// Responses: Success or Failure
+// Response interjections: ButtonRequest
+message FormatWalletArea
+{
+	required bytes initial_entropy_pool = 1;
+}
+
+// Responses: Success or Failure
+// Response interjections: ButtonRequest
+// To change the current wallet into an unencrypted wallet,
+// exclude password.
+message ChangeEncryptionKey
+{
+	optional bytes password = 1;
+}
+
+// Responses: Success or Failure
+// Response interjections: ButtonRequest
+// wallet_name is stored purely for the convenience of the host. It should be
+// a null-terminated UTF-8 encoded string with a maximum length of 40 bytes.
+message ChangeWalletName
+{
+	required bytes wallet_name = 1;
+}
+
+// Responses: Success or Failure
+// Response interjections: ButtonRequest
+// device_name is stored purely for the convenience of the host. It should be
+// a null-terminated UTF-8 encoded string with a maximum length of 40 bytes.
+message ChangeDeviceName
+{
+	required bytes device_name = 1;
+}
+
+// Responses: Wallets or Failure
+message ListWallets
+{
+}
+
+// Responses: none
+message WalletInfo
+{
+	required uint32 wallet_number = 1;
+	required bytes wallet_name = 2;
+	required bytes wallet_uuid = 3;
+	optional uint32 version = 4;
+}
+
+// Responses: none
+message Wallets
+{
+	repeated WalletInfo wallet_info = 1;
+}
+
+// Responses: Success or Failure
+// Response interjections: ButtonRequest
+message BackupWallet
+{
+	optional bool is_encrypted = 1 ;
+	optional uint32 device = 2 ;
+}
+
+// Responses: Success or Failure
+// Response interjections: ButtonRequest
+message RestoreWallet
+{
+	required NewWallet new_wallet = 1;
+	required bytes seed = 2;
+}
+
+// Responses: DeviceUUID or Failure
+message GetDeviceUUID
+{
+}
+
+// Responses: none
+message DeviceUUID
+{
+	required bytes device_uuid = 1;
+}
+
+// Responses: Entropy or Failure
+message GetEntropy
+{
+	required uint32 number_of_bytes = 1;
+}
+
+// Responses: none
+message Entropy
+{
+	required bytes entropy = 1;
+}
+
+// Responses: MasterPublicKey or Failure
+// Response interjections: ButtonRequest
+message GetMasterPublicKey
+{
+}
+
+// Responses: none
+message MasterPublicKey
+{
+	required bytes public_key = 1;
+	required bytes chain_code = 2;
+}
+
+// Host requests language choice menu.
+message ResetLang
+{
+}
+
+// Host requests PIN change (device must be loaded & will have to input current).
+message ResetPIN
+{
+}
+
+// Responses: Entropy or Failure
+message GetBulk
+{
+}
+
+// Responses: none
+message Bulk
+{
+	required bytes bulk = 1;
+}
+
+// Responses: none
+message SetBulk
+{
+	required bytes bulk = 1;
+}
+
+
+// Host requests wallet scan.
+message ScanWallet
+{
+}
+
+message CurrentWalletXPUB
+{
+	required string xpub = 1;
+}
+
+message SignMessage
+{
+	required AddressHandleExtended address_handle_extended = 1;
+	optional bytes message_data = 2;
+}
+
+// Responses: none
+message SignatureMessage
+{
+	required bytes signature_data_complete = 1;
+}
+
+//Will always take from root 0 chain 1
+message SetChangeAddressIndex
+{
+	optional uint32 address_handle_index = 1;
+}
+
+
+//Will always take from root 0 chain 0
+message DisplayAddressAsQR
+{
+	optional uint32 address_handle_index = 1;
+}
