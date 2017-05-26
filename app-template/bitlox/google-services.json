@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:703103669941:android:ed8410990e5d0af4",
         "android_client_info": {
-          "package_name": "com.bitlox.wallet"
+          "package_name": "com.bitlox.mobilewallet"
         }
       },
       "oauth_client": [

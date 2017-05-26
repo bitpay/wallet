@@ -4,7 +4,7 @@
   "packageNameId": "com.bitlox.wallet",
   "userVisibleName": "BitLox",
   "purposeLine": "BitLox Wallet",
-  "bundleName": "wallet",
+  "bundleName": "mobilewallet",
   "appUri": "bitlox",
   "name": "bitlox",
   "nameNoSpace": "bitlox",
@@ -23,7 +23,7 @@
   "downloadUrl": "https://bitlox.io",
   "rateAppUrls": {
     "ios": "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=111111111&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8",
-    "android": "https://play.google.com/store/apps/details?id=com.bitlox.wallet",
+    "android": "https://play.google.com/store/apps/details?id=com.bitlox.mobilewallet",
     "wp": ""
   },
   "appDescription": "BitLox Wallet",
