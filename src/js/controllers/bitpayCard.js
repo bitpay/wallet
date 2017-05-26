@@ -77,6 +77,12 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           txs[i].price = _price(txs[i]);
           txs[i].runningBalance = runningBalance;
           _runningBalance(txs[i]);
+
+          if (txs[i].merchant.city && txs[i].merchant.state) {
+            txs[i].merchant.location = txs[i].merchant.city + ', ' + txs[i].merchant.state;
+          } else {
+            txs[i].merchant.location = txs[i].merchant.city || txs[i].merchant.state || '';
+          }
         }
         self.bitpayCardTransactionHistory = txs;
         self.balance = history.currentCardBalance;
