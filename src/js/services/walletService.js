@@ -170,7 +170,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           if (err instanceof errors.NOT_AUTHORIZED) {
             return cb('WALLET_NOT_REGISTERED');
           }
-          return cb(err);
+          return cb(err.message);
         }
 
         return cb(null, ret);
