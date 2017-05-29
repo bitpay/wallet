@@ -262,7 +262,9 @@
 
               <div class="wallet-details__tx-title" ng-if="isUnconfirmed(btx)">
                 <div class="ellipsis" style="color: #B4B4B4;">
-                  <span ng-if="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
+                  <span ng-if="btx.action == 'sent' || btx.action == 'moved'">
+                    {{addressbook[btx.addressTo].name || addressbook[btx.addressTo] || 'Sending'|translate}}
+                  </span>
                   <span ng-if="btx.action == 'received'" translate>Receiving</span>
                 </div>
               </div>
