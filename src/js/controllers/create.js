@@ -84,7 +84,9 @@ angular.module('copayApp.controllers').controller('createController',
         supportsTestnet: false
       }];
 
-      $scope.seedSource = seedOptions[0];
+      console.log(seedOptions[0]);
+      console.log("############################111");
+      $scope.formData.seedSource = seedOptions[0];
 
       /*
 
@@ -139,7 +141,7 @@ angular.module('copayApp.controllers').controller('createController',
         walletPrivKey: $scope.formData._walletPrivKey, // Only for testing
       };
 
-      var setSeed = $scope.seedSource.id == 'set';
+      var setSeed = $scope.formData.seedSource.id == 'set';
       if (setSeed) {
 
         var words = $scope.formData.privateKey || '';
@@ -169,21 +171,21 @@ angular.module('copayApp.controllers').controller('createController',
         return;
       }
 
-      if ($scope.seedSource.id == walletService.externalSource.ledger.id || $scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id) {
+      if ($scope.formData.seedSource.id == walletService.externalSource.ledger.id || $scope.formData.seedSource.id == walletService.externalSource.trezor.id || $scope.formData.seedSource.id == walletService.externalSource.intelTEE.id) {
         var account = $scope.formData.account;
         if (!account || account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
-        if ($scope.seedSource.id == walletService.externalSource.trezor.id || $scope.seedSource.id == walletService.externalSource.intelTEE.id)
+        if ($scope.formData.seedSource.id == walletService.externalSource.trezor.id || $scope.formData.seedSource.id == walletService.externalSource.intelTEE.id)
           account = account - 1;
 
         opts.account = account;
-        ongoingProcess.set('connecting ' + $scope.seedSource.id, true);
+        ongoingProcess.set('connecting ' + $scope.formData.seedSource.id, true);
 
         var src;
-        switch ($scope.seedSource.id) {
+        switch ($scope.formData.seedSource.id) {
           case walletService.externalSource.ledger.id:
             src = ledger;
             break;
@@ -199,7 +201,7 @@ angular.module('copayApp.controllers').controller('createController',
         }
 
         src.getInfoForNewWallet(opts.n > 1, account, opts.networkName, function(err, lopts) {
-          ongoingProcess.set('connecting ' + $scope.seedSource.id, false);
+          ongoingProcess.set('connecting ' + $scope.formData.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
@@ -226,7 +228,7 @@ angular.module('copayApp.controllers').controller('createController',
           walletService.updateRemotePreferences(client);
           pushNotificationsService.updateSubscription(client);
 
-          if ($scope.seedSource.id == 'set') {
+          if ($scope.formData.seedSource.id == 'set') {
             profileService.setBackupFlag(client.credentials.walletId);
           }
 
