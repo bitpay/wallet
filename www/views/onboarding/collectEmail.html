@@ -10,7 +10,7 @@
         <div translate class="prompt" translate>Where would you like to receive email notifications about payments?</div>
         <form id="email-form" name="emailForm" ng-submit="confirm(emailForm)" novalidate>
           <label class="item item-input" id="email-label">
-            <input type="email" name="email" ng-model="data.email" placeholder="{{'Enter you email'|translate}}" required></input>
+            <input type="email" name="email" ng-model="data.email" placeholder="{{'Enter your email'|translate}}" required></input>
           </label>
           <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from BitPay</span></ion-checkbox>
           <button class="button button-standard button-primary" ng-disabled="emailForm.$invalid">
