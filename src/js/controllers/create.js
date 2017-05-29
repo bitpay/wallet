@@ -84,8 +84,6 @@ angular.module('copayApp.controllers').controller('createController',
         supportsTestnet: false
       }];
 
-      console.log(seedOptions[0]);
-      console.log("############################111");
       $scope.formData.seedSource = seedOptions[0];
 
       /*
