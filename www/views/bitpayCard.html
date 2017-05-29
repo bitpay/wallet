@@ -79,7 +79,7 @@
             {{tx.merchant.name || 'Unknown Merchant'}}
           </div>
           <div class="size-12 text-gray">
-            <span ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.city}}, {{tx.merchant.state}}</span>
+            <span ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.location}}</span>
             <span ng-class="{'m5l':tx.merchant.city && tx.merchant.state}">
               {{tx.timestamp | amDateFormat:'h:mm A'}}
             </span>
