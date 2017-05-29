@@ -1,5 +1,6 @@
 #txp-details,
 #view-confirm {
+  @extend .deflash-blue;
   $item-lateral-padding: 20px;
   $item-vertical-padding: 10px;
   $item-border-color: #EFEFEF;
@@ -99,6 +100,14 @@
         }
       }
     }
+    .toggle-unconfirmed {
+      padding-bottom: 15px;
+    }
+    .toggle-label {
+      margin-top: 5px;
+      font-size: 14px;
+      color: $item-label-color;
+    } 
     .item-divider {
       padding-top: 1.2rem;
       color: $item-label-color;
