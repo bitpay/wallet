@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess, txFormatService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification) {
 
   var txId;
   var listeners = [];
@@ -12,6 +12,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1; 
+
+    txConfirmNotification.checkIfEnabled(txId, function(res) {
+      $scope.txNotification = { value: res };
+    });
   });
 
   $scope.$on("$ionicView.afterEnter", function(event) {
@@ -186,6 +190,14 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.rate = res.rate;
       }
     });
+  };
+
+  $scope.txConfirmNotificationChange = function() {
+    if ($scope.txNotification.value) {
+      txConfirmNotification.subscribe($scope.wallet, { txid: txId });
+    } else {
+      txConfirmNotification.unsubscribe($scope.wallet, txId);
+    }
   };
 
 });

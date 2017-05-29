@@ -598,5 +598,17 @@ angular.module('copayApp.services')
       storage.remove('amazonGiftCards-' + network, cb);
     };
 
+    root.setTxConfirmNotification = function(txid, val, cb) {
+      storage.set('txConfirmNotif-' + txid, val, cb);
+    };
+
+    root.getTxConfirmNotification = function(txid, cb) {
+      storage.get('txConfirmNotif-' + txid, cb);
+    };
+
+    root.removeTxConfirmNotification = function(txid, cb) {
+      storage.remove('txConfirmNotif-' + txid, cb);
+    };
+
     return root;
   });
