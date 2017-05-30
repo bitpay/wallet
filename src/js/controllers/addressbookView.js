@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory, platformInfo) {
+angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory, platformInfo, gettextCatalog) {
   $scope.isChromeApp = platformInfo.isChromeApp;
   $scope.addressbookEntry = {};
   $scope.addressbookEntry.name = $stateParams.name;
@@ -20,13 +20,18 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
   };
 
   $scope.remove = function(addr) {
-    addressbookService.remove(addr, function(err, ab) {
-      if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), err);
-        return;
-      }
-      $ionicHistory.goBack();
-    });
+    var title = gettextCatalog.getString('Warning!');
+    var message = gettextCatalog.getString('Are you sure you want to delete this contact?');
+    popupService.showConfirm(title, message, null, null, function(res) {
+      if (!res) return;
+      addressbookService.remove(addr, function(err, ab) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+          return;
+        }
+        $ionicHistory.goBack();
+      });
+    }); 
   };
 
 });
