@@ -49,6 +49,7 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isChromeApp = platformInfo.isChromeApp;
     $scope.showAddIcon = false;
+    $scope.addrSearch = { value: null };
     initAddressbook();
   });
 
