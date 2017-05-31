@@ -77,6 +77,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   $scope.openSearchModal = function() {
     $scope.color = $scope.wallet.color;
+    $scope.isSearching = true;
+    $scope.txHistorySearchResults = [];
+    $scope.filteredTxHistory = [];
 
     $ionicModal.fromTemplateUrl('views/modals/search.html', {
       scope: $scope,
@@ -87,6 +90,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
 
     $scope.close = function() {
+      $scope.isSearching = false;
       $scope.searchModal.hide();
     };
 
@@ -94,7 +98,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $ionicHistory.nextViewOptions({
         disableAnimate: true
       });
-      $scope.searchModal.hide();
+      $scope.close();
       $scope.openTxModal(tx);
     };
   };
@@ -197,6 +201,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   function createdDuringSameMonth(tx1, tx2) {
+    if (!tx1 || !tx2) return false;
     var date1 = new Date(tx1.time * 1000);
     var date2 = new Date(tx2.time * 1000);
     return getMonthYear(date1) === getMonthYear(date2);
