@@ -166,14 +166,14 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
             showError(err);
             return;
           }
-          var tx = b.data ? b.data.transaction : null;
-          if (!tx) {
-            ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
-            showError('Transaction not found');
-            return;
-          }
 
-          $timeout(function() {
+          var processBuyTx = function (tx) {
+            if (!tx) {
+              ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+              showError('Transaction not found');
+              return;
+            }
+
             coinbaseService.getTransaction(accessToken, accountId, tx.id, function(err, updatedTx) {
               if (err) {
                 ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
@@ -196,7 +196,23 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
                 });
               });
             });
-          }, 8000);
+          };
+
+          var tx = b.data ? b.data.transaction : null;
+          if (tx) {
+            processBuyTx(tx);
+          }
+          else {
+            coinbaseService.getBuyOrder(accessToken, accountId, b.data.id, function (err, buyResp) {
+              if (err) {
+                ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+                showError(err);
+                return;
+              }
+              var tx = buyResp.data ? buyResp.data.transaction : null;
+              processBuyTx(tx);
+            });
+          }
         });
       });
     });
