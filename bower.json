@@ -11,7 +11,7 @@
     "angular-gettext": "2.2.1",
     "angular-moment": "0.10.1",
     "angular-qrcode": "bitpay/angular-qrcode#~6.3.0",
-    "ionic": "https://github.com/driftyco/ionic-v1.git",
+    "ionic": "https://github.com/ionic-team/ionic-v1.git",
     "moment": "2.10.3",
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*",
@@ -24,6 +24,6 @@
   },
   "resolutions": {
     "angular": "1.5.3",
-    "ionic": "298ad4b645"
+    "ionic": "1b7414faba"
   }
 }
