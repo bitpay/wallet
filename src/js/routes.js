@@ -323,7 +323,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/join/:url',
         views: {
           'tab-home@tabs': {
-            templateUrl: 'views/join.html'
+            templateUrl: 'views/join.html',
+            controller: 'joinController'
           },
         }
       })
@@ -340,7 +341,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/create-personal',
         views: {
           'tab-home@tabs': {
-            templateUrl: 'views/tab-create-personal.html'
+            templateUrl: 'views/tab-create-personal.html',
+            controller: 'createController'
           },
         }
       })
@@ -348,7 +350,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         url: '/create-shared',
         views: {
           'tab-home@tabs': {
-            templateUrl: 'views/tab-create-shared.html'
+            templateUrl: 'views/tab-create-shared.html',
+            controller: 'createController'
           },
         }
       })

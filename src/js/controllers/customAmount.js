@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($rootScope, $scope, $stateParams, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService) {
+angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService) {
 
   var showErrorAndBack = function(title, msg) {
     popupService.showAlert(title, msg, function() {
@@ -15,6 +15,8 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       showErrorAndBack('Error', 'No wallet selected');
       return;
     }
+      
+    $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;
 
     $scope.wallet = profileService.getWallet(walletId);
 
@@ -56,6 +58,12 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     });
     $ionicHistory.goBack(-2);
   };
+
+  $scope.shareAddress = function() {
+    if (!platformInfo.isCordova) return;
+    var data = 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    window.plugins.socialsharing.share(data, null, null, null);
+  }
 
   $scope.copyToClipboard = function() {
     return 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;

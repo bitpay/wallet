@@ -2,6 +2,8 @@
 
 angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError) {
   var cachedTxp = {};
+  var feeLevel;
+  var feePerKb;
   var toAmount;
   var isChromeApp = platformInfo.isChromeApp;
   var countDown = null;
@@ -20,7 +22,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     toAmount = data.stateParams.toAmount;
     cachedSendMax = {};
-    $scope.showFeeFiat = false;
     $scope.showAddress = false;
     $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
     $scope.recipientType = data.stateParams.recipientType || null;
@@ -38,15 +39,28 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.remainingTimeStr = {
       value: null
     };
-
-    var config = configService.getSync().wallet;
-    var feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
-    $scope.feeLevel = feeService.feeOpts[feeLevel];
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
+    setFee();
     resetValues();
     setwallets();
     applyButtonText();
   });
+
+  function setFee(customFeeLevel, cb) {
+    feeService.getCurrentFeeValue($scope.network, customFeeLevel, function(err, feePerKb) {
+      var config = configService.getSync().wallet;
+      var configFeeLevel = (config.settings && config.settings.feeLevel) ? config.settings.feeLevel : 'normal';
+      feePerKb = feePerKb;
+      feeLevel = customFeeLevel ? customFeeLevel : configFeeLevel;
+      $scope.feeLevel = feeService.feeOpts[feeLevel];
+      if (cb) return cb();
+    });
+  }
+
+  function useSelectedWallet() {
+    if (!$scope.useSendMax) displayValues();
+    $scope.onWalletSelect($scope.wallet);
+  }
 
   function applyButtonText(multisig) {
     $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
@@ -95,7 +109,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         }
 
         if (++index == $scope.wallets.length) {
-
           if (!lodash.isEmpty(filteredWallets)) {
             $scope.wallets = lodash.clone(filteredWallets);
             if ($scope.useSendMax) {
@@ -133,10 +146,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  $scope.toggleFeeValue = function() {
-    $scope.showFeeFiat = !$scope.showFeeFiat;
-  };
-
   $scope.toggleAddress = function() {
     $scope.showAddress = !$scope.showAddress;
   };
@@ -163,84 +172,75 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function resetValues() {
-    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
-    $scope.showFeeFiat = $scope.showAddress = false;
+    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.feeFiat = $scope.feeRateStr = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
+    $scope.showAddress = false;
   };
 
   $scope.getSendMaxInfo = function() {
     resetValues();
+    var config = configService.getSync().wallet;
 
-    ongoingProcess.set('gettingFeeLevels', true);
-    feeService.getCurrentFeeValue($scope.network, function(err, feePerKb) {
-      ongoingProcess.set('gettingFeeLevels', false);
+    ongoingProcess.set('retrievingInputs', true);
+    walletService.getSendMaxInfo($scope.wallet, {
+      feePerKb: feePerKb,
+      excludeUnconfirmedUtxos: !config.spendUnconfirmed,
+      returnInputs: true,
+    }, function(err, resp) {
+      ongoingProcess.set('retrievingInputs', false);
       if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), err.message);
+        popupService.showAlert(gettextCatalog.getString('Error'), err);
         return;
       }
-      var config = configService.getSync().wallet;
 
-      ongoingProcess.set('retrievingInputs', true);
-      walletService.getSendMaxInfo($scope.wallet, {
+      if (resp.amount == 0) {
+        $scope.insufficientFunds = true;
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
+        return;
+      }
+
+      $scope.sendMaxInfo = {
+        sendMax: true,
+        amount: resp.amount,
+        inputs: resp.inputs,
+        fee: resp.fee,
         feePerKb: feePerKb,
-        excludeUnconfirmedUtxos: !config.spendUnconfirmed,
-        returnInputs: true,
-      }, function(err, resp) {
-        ongoingProcess.set('retrievingInputs', false);
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return;
-        }
+      };
 
-        if (resp.amount == 0) {
-          $scope.insufficientFunds = true;
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
-          return;
-        }
+      cachedSendMax[$scope.wallet.id] = $scope.sendMaxInfo;
 
-        $scope.sendMaxInfo = {
-          sendMax: true,
-          amount: resp.amount,
-          inputs: resp.inputs,
-          fee: resp.fee,
-          feePerKb: feePerKb,
-        };
-
-        cachedSendMax[$scope.wallet.id] = $scope.sendMaxInfo;
-
-        var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
-          fee: txFormatService.formatAmountStr(resp.fee)
-        });
-        var warningMsg = verifyExcludedUtxos();
-
-        if (!lodash.isEmpty(warningMsg))
-          msg += '\n' + warningMsg;
-
-        popupService.showAlert(null, msg, function() {
-          setSendMaxValues(resp);
-
-          createTx($scope.wallet, true, function(err, txp) {
-            if (err) return;
-            cachedTxp[$scope.wallet.id] = txp;
-            apply(txp);
-          });
-        });
-
-        function verifyExcludedUtxos() {
-          var warningMsg = [];
-          if (resp.utxosBelowFee > 0) {
-            warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-              amountBelowFeeStr: txFormatService.formatAmountStr(resp.amountBelowFee)
-            }));
-          }
-
-          if (resp.utxosAboveMaxSize > 0) {
-            warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
-              amountAboveMaxSizeStr: txFormatService.formatAmountStr(resp.amountAboveMaxSize)
-            }));
-          }
-          return warningMsg.join('\n');
-        };
+      var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
+        fee: txFormatService.formatAmountStr(resp.fee)
       });
+      var warningMsg = verifyExcludedUtxos();
+
+      if (!lodash.isEmpty(warningMsg))
+        msg += '\n' + warningMsg;
+
+      popupService.showAlert(null, msg, function() {
+        setSendMaxValues(resp);
+
+        createTx($scope.wallet, true, function(err, txp) {
+          if (err) return;
+          cachedTxp[$scope.wallet.id] = txp;
+          apply(txp);
+        });
+      });
+
+      function verifyExcludedUtxos() {
+        var warningMsg = [];
+        if (resp.utxosBelowFee > 0) {
+          warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+            amountBelowFeeStr: txFormatService.formatAmountStr(resp.amountBelowFee)
+          }));
+        }
+
+        if (resp.utxosAboveMaxSize > 0) {
+          warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
+            amountAboveMaxSizeStr: txFormatService.formatAmountStr(resp.amountAboveMaxSize)
+          }));
+        }
+        return warningMsg.join('\n');
+      };
     });
   };
 
@@ -255,10 +255,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.displayAmount = getDisplayAmount($scope.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
     $scope.fee = txFormatService.formatAmountStr(data.fee);
+    txFormatService.formatAlternativeStr(data.fee, function(v) {
+      $scope.feeFiat = v;
+    });
     toAmount = parseFloat((data.amount * satToUnit).toFixed(unitDecimals));
     txFormatService.formatAlternativeStr(data.amount, function(v) {
       $scope.alternativeAmountStr = v;
     });
+    $scope.feeRateStr = (data.fee / (data.amount + data.fee) * 100).toFixed(2) + '%';
     $timeout(function() {
       $scope.$apply();
     });
@@ -347,7 +351,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var stop;
     $scope.wallet = wallet;
     $scope.fee = $scope.txp = null;
-
     if (stop) {
       $timeout.cancel(stop);
       stop = null;
@@ -385,6 +388,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.feeFiat = v;
     });
     $scope.txp = txp;
+    $scope.feeRateStr = (txp.fee / (txp.amount + txp.fee) * 100).toFixed(2) + '%';
     $timeout(function() {
       $scope.$apply();
     });
@@ -428,7 +432,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp.inputs = $scope.sendMaxInfo.inputs;
       txp.fee = $scope.sendMaxInfo.fee;
     } else
-      txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
+      txp.feeLevel = feeLevel;
 
     txp.message = description;
 
@@ -576,4 +580,31 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (err) return setSendError(err);
     }, onSendStatusChange);
   };
+
+  $scope.chooseFeeLevel = function() {
+
+    $scope.customFeeLevel = feeLevel;
+    $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.chooseFeeLevelModal = modal;
+      $scope.openModal();
+    });
+    $scope.openModal = function() {
+      $scope.chooseFeeLevelModal.show();
+    };
+    $scope.hideModal = function(customFeeLevel) {
+      if (customFeeLevel) {
+        cachedTxp = {};
+        ongoingProcess.set('gettingFeeLevels', true);
+        setFee(customFeeLevel, function() {
+          ongoingProcess.set('gettingFeeLevels', false);
+          resetValues();
+          if ($scope.wallet) useSelectedWallet();
+        })
+      }
+      $scope.chooseFeeLevelModal.hide();
+    };
+  };
+
 });

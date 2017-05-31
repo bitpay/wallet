@@ -457,13 +457,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           // do not sync all history, just looking for a single TX.
           if (opts.limitTx) {
 
-            foundLimitTx = lodash.find(newTxs, {
+            foundLimitTx = lodash.find(txsFromLocal, {
               txid: opts.limitTx,
             });
 
             if (foundLimitTx) {
               $log.debug('Found limitTX: ' + opts.limitTx);
-              return next(null, newTxs);
+              return next(null, [foundLimitTx]);
             }
           }
           // </HACK>
@@ -836,13 +836,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.createAddress({}, function(err, addr) {
       if (err) {
         var prefix = gettextCatalog.getString('Could not create address');
-        if (err.error && err.error.match(/locked/gi)) {
-          $log.debug(err.error);
+        if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
+          $log.warn(err);
           return $timeout(function() {
             createAddress(wallet, cb);
           }, 5000);
-        } else if (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED') {
-          $log.warn(err.message);
+        } else if (err instanceof errors.MAIN_ADDRESS_GAP_REACHED || (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED')) {
+          $log.warn(err);
           prefix = null;
           wallet.getMainAddresses({
             reverse: true,
