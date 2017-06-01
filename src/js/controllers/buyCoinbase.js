@@ -198,21 +198,23 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
             });
           };
 
-          var tx = b.data ? b.data.transaction : null;
-          if (tx) {
-            processBuyTx(tx);
-          }
-          else {
-            coinbaseService.getBuyOrder(accessToken, accountId, b.data.id, function (err, buyResp) {
-              if (err) {
-                ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
-                showError(err);
-                return;
-              }
-              var tx = buyResp.data ? buyResp.data.transaction : null;
+          $timeout(function() {
+            var tx = b.data ? b.data.transaction : null;
+            if (tx) {
               processBuyTx(tx);
-            });
-          }
+            }
+            else {
+              coinbaseService.getBuyOrder(accessToken, accountId, b.data.id, function (err, buyResp) {
+                if (err) {
+                  ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+                  showError(err);
+                  return;
+                }
+                var tx = buyResp.data ? buyResp.data.transaction : null;
+                processBuyTx(tx);
+              });
+            }
+          }, 8000);
         });
       });
     });
