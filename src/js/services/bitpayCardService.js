@@ -7,7 +7,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     $log.error(msg);
     var error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
-  };
+  }; 
 
   var _processTransactions = function(invoices, history) {
     invoices = invoices ||  [];
@@ -39,6 +39,16 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       }
     }
     return history;
+  };
+
+  root.getAvailableCurrency = function() {
+    var config = configService.getSync().wallet.settings;
+    // ONLY "USD", "EUR" and "GBP"
+    switch (config.alternativeIsoCode) {
+      case 'EUR': return 'EUR';
+      case 'GBP': return 'GBP';
+      default: return 'USD'
+    };
   };
 
   root.sync = function(apiContext, cb) {
