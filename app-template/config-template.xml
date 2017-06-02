@@ -11,7 +11,7 @@
         BitPay Inc.
     </author>
     <content src="index.html" />
-    <access launch-external="yes" origin="*" />
+    <access origin="*" />
     <preference name="AndroidLaunchMode" value="singleTask" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
