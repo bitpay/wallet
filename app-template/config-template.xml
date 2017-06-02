@@ -12,6 +12,7 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="AndroidLaunchMode" value="singleTask" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="DisallowOverscroll" value="true"/>
