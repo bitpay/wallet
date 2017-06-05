@@ -14,7 +14,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     for (var i = 0; i < invoices.length; i++) {
       var matched = false;
       for (var j = 0; j < history.length; j++) {
-        if (history[j].description[0].indexOf(invoices[i].id) > -1) {
+        if (history[j].description[0] && history[j].description[0].indexOf(invoices[i].id) > -1) {
           matched = true;
         }
       }
@@ -64,6 +64,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         n.id = x.id;
         n.lastFourDigits = x.lastFourDigits;
         n.token = x.token;
+        n.currency = x.currency;
         cards.push(n);
       });
 
@@ -74,6 +75,17 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     }, function(data) {
       return cb(_setError('BitPay Card Error: Get Debit Cards', data));
     });
+  };
+
+  root.setCurrencySymbol = function(card) {
+    // Sets a currency symbol.
+    // Uses the currency code if no symbol is mapped (should never happen).
+    // Backaward compatibility for FirstView cards (all USD).
+    // This avoids users having to re-pair their account.
+    if (!card.currency) {
+      card.currency = 'USD';
+    }
+    card.currencySymbol = root.currencySymbols[card.currency] || card.currency + ' ';
   };
 
   // opts: range
@@ -240,6 +252,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       // Async, no problem
       lodash.each(cards, function(x) {
 
+        root.setCurrencySymbol(x);
         root.addLastKnownBalance(x, function() {});
 
         // async refresh
@@ -258,6 +271,12 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   /*
    * CONSTANTS
    */
+
+  root.currencySymbols = {
+    'EUR': '€',
+    'GBP': '£',
+    'USD': '$'
+  };
 
   root.bpTranCodes = {
     '00611': {
@@ -314,6 +333,13 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     '10036': {
       merchant: {
         name: 'Inactivity Fee (90 days)',
+      },
+      category: 'bp002',
+      description: ''
+    },
+    '9991': { // General assignment of a fee for WC card
+      merchant: {
+        name: 'Transaction Fee',
       },
       category: 'bp002',
       description: ''
