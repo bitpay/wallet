@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, $sce, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService) {
 
   var amount;
   var currency;
@@ -95,14 +95,13 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     var code;
     switch(currencyCode) {
       case 'EUR': 
-        code = '&euro;';
+        $scope.currencySymbol = '€';
         break;
       case 'GBP': 
-        code = '&pound;';
+        $scope.currencySymbol = '£';
         break;
-      default : code = '&dollar;';
+      default : $scope.currencySymbol = '$';
     };
-    $scope.htmlCurrencyCode = $sce.trustAsHtml(code);
     bitpayCardService.getRates(currencyCode, function(err, data) {
       if (err) $log.error(err);
       $scope.rate = data.rate;
