@@ -143,7 +143,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   var _getIconName = function(tx) {
     var icon = tx.mcc || tx.category || null;
-    if (!icon) return 'default';
+    if (!icon || bitpayCardService.iconMap[icon] == undefined) return 'default';
     return bitpayCardService.iconMap[icon];
   };
 
@@ -201,6 +201,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       if (cards && cards[0]) {
         self.lastFourDigits = cards[0].lastFourDigits;
         self.balance = cards[0].balance;
+        self.currencySymbol = cards[0].currencySymbol;
         self.updatedOn = cards[0].updatedOn;
       }
       self.update();
