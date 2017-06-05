@@ -91,28 +91,17 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
     $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
 
-    var currencyCode = bitpayCardService.getAvailableCurrency();
-    var code;
-    switch(currencyCode) {
-      case 'EUR': 
-        $scope.currencySymbol = '€';
-        break;
-      case 'GBP': 
-        $scope.currencySymbol = '£';
-        break;
-      default : $scope.currencySymbol = '$';
-    };
-    bitpayCardService.getRates(currencyCode, function(err, data) {
-      if (err) $log.error(err);
-      $scope.rate = data.rate;
-    });
-
     bitpayCardService.get({ cardId: cardId, noRefresh: true }, function(err, card) {
       if (err) {
         showErrorAndBack(null, err);
         return;
       }
       $scope.cardInfo = card[0];
+      bitpayCardService.setCurrencySymbol($scope.cardInfo);
+      bitpayCardService.getRates($scope.cardInfo.currency, function(err, data) {
+        if (err) $log.error(err);
+        $scope.rate = data.rate;
+      });
     });
 
   });

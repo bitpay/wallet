@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, configService, txFormatService, appConfigService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, txFormatService, appConfigService) {
   var root = {};
 
   var _setError = function(msg, e) {
@@ -39,16 +39,6 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       }
     }
     return history;
-  };
-
-  root.getAvailableCurrency = function() {
-    var config = configService.getSync().wallet.settings;
-    // ONLY "USD", "EUR" and "GBP"
-    switch (config.alternativeIsoCode) {
-      case 'EUR': return 'EUR';
-      case 'GBP': return 'GBP';
-      default: return 'USD'
-    };
   };
 
   root.sync = function(apiContext, cb) {

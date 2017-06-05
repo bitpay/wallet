@@ -20,7 +20,7 @@
           <div class="amount-final">{{amountUnitStr}}</div>
           <div class="alternative">
             <span ng-if="rate">@ 
-              {{rate | currency:currencySymbol:2}} per BTC</span>
+              {{rate | currency:cardInfo.currencySymbol:2}} per BTC</span>
             <span ng-if="!rate">...</span>
           </div>
         </div>
