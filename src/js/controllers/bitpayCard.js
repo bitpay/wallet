@@ -184,7 +184,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.cardId = data.stateParams.id;
-    $scope.currency = bitpayCardService.getAvailableCurrency();
 
     if (!$scope.cardId) {
       $ionicHistory.nextViewOptions({
@@ -204,6 +203,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         self.balance = cards[0].balance;
         self.currencySymbol = cards[0].currencySymbol;
         self.updatedOn = cards[0].updatedOn;
+        self.currency = cards[0].currency;
       }
       self.update();
     });
