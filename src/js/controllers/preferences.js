@@ -18,7 +18,6 @@ angular.module('copayApp.controllers').controller('preferencesController',
 
     $scope.encryptChange = function() {
       if (!wallet) return;
-      console.log($scope.encryptEnabled.value);
       var val = $scope.encryptEnabled.value;
 
       if (val && !walletService.isEncrypted(wallet)) {
