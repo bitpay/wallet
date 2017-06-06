@@ -302,6 +302,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     });
   };
 
+  root.getBuyOrder = function(token, accountId, buyId, cb) {
+      if (!token) return cb('Invalid Token');
+      $http(_get('/accounts/' + accountId + '/buys/' + buyId, token)).then(function(data) {
+          $log.info('Coinbase Buy Info: SUCCESS');
+          return cb(null, data.data);
+      }, function(data) {
+          $log.error('Coinbase Buy Info: ERROR ' + data.statusText);
+          return cb(data.data);
+      });
+  };
+
   root.getTransaction = function(token, accountId, transactionId, cb) {
     if (!token) return cb('Invalid Token');
     $http(_get('/accounts/' + accountId + '/transactions/' + transactionId, token)).then(function(data) {
