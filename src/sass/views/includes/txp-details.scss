@@ -284,4 +284,17 @@
     font-size: 12px;
     color: $v-mid-gray;
   }
+
+  .spinner svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .bbn {
+    border-bottom: none;
+  }
+
+  .btn {
+    border-top: none;
+  }
 }

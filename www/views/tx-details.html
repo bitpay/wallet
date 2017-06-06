@@ -138,8 +138,43 @@ This transaction amount is too small compared to current Bitcoin network fees. S
             </div>
           </div>
         </div>
-      </div>
 
+        <a class="item single-line item-icon-right" ng-click="displayChecks = !displayChecks">
+          <span class="label" translate>Check on another block explorer</span>
+          <i class="icon bp-arrow-down p5r" ng-if="!displayChecks"></i>
+          <i class="icon bp-arrow-up p5r" ng-if="displayChecks"></i>
+        </a>
+        <div class="item single-line" ng-if="displayChecks">
+          <span class="label" translate>Blockchain.info</span>
+          <a class="item-note" ng-click="checkTx('blockchainInfo')" ng-if="!loading">Check</a>
+          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading"></ion-spinner>
+        </div>
+        <div class="item single-line" ng-class="{'btn': displayChecks}" ng-if="displayChecks">
+          <span class="label" translate>Amount</span>
+          <span class="item-note" ng-click="checkTx('blockchainInfo')">Ok</span>
+        </div>
+        <div class="item single-line" ng-class="{'btn': displayChecks}" ng-if="displayChecks">
+          <span class="label" translate>Address</span>
+          <span class="item-note" ng-click="checkTx('blockchainInfo')">Ok</span>
+        </div>
+
+
+
+        <!-- <div class="item single-line" ng-class="{'btn': displayChecks}" ng-if="displayChecks">
+          <div class="check-tx">
+            <span class="label" translate>Blockr.io</span>
+            <button class="item-note" ng-click="checkTx('blockrio')"></button>
+          </div>
+          <div class="check-tx">
+            <span class="label" translate>Amount</span>
+            <span class="item-note" ng-click="checkTx('blockchainInfo')"></span>
+          </div>
+          <div class="check-tx">
+            <span class="label" translate>Address</span>
+            <span class="item-note" ng-click="checkTx('blockchainInfo')"></span>
+          </div>
+        </div> -->
+      </div>
     </div>
 
     <button ng-if="btx" class="view-on-blockchain-btn button button-standard button-primary" ng-click="viewOnBlockchain()" translate>

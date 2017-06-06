@@ -1,9 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, txParamsService) {
 
   var txId;
   var listeners = [];
+  $scope.data = {
+    checkTx: false
+  };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     txId = data.stateParams.txid;
@@ -12,6 +15,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
+    $scope.loading = false;
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
       $scope.txNotification = {
@@ -37,6 +41,39 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       x();
     });
   });
+
+  $scope.checkTx = function(from) {
+    if (!txId) return;
+    console.log($scope.btx);
+    $scope.loading = true;
+    txParamsService.getTxParams(from, txId, function(err, params) {
+      $scope.loading = false;
+      if (err) {
+        $log.warn('Could not get the tx params');
+        return;
+      }
+      compareAndUpdateParams(params);
+    });
+  };
+
+  function compareAndUpdateParams(params) {
+    console.console.log(params);
+    if (params.from == 'blockchainInfo') {
+      console.log('AMOUNT INSIGHT VS BLOCKCHAIN.INFO:', $scope.btx.amount == params.amount);
+      console.log('ADDRESS INSIGHT VS BLOCKCHAIN.INFO:', $scope.btx.addressTo == params.address);
+    } else {
+      console.log('AMOUNT INSIGHT VS BLOCKR.IO:', $scope.btx.amount == params.amount);
+      console.log('ADDRESS INSIGHT VS BLOCKR.IO:', $scope.btx.addressTo == params.address);
+    }
+  };
+
+  function getDisplayAmount(amountStr) {
+    return amountStr.split(' ')[0];
+  }
+
+  function getDisplayUnit(amountStr) {
+    return amountStr.split(' ')[1];
+  }
 
   function updateMemo() {
     walletService.getTxNote($scope.wallet, $scope.btx.txid, function(err, note) {
