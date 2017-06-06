@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, configService, txFormatService, appConfigService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, txFormatService, appConfigService) {
   var root = {};
 
   var _setError = function(msg, e) {
     $log.error(msg);
     var error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
-  };
+  }; 
 
   var _processTransactions = function(invoices, history) {
     invoices = invoices ||  [];
