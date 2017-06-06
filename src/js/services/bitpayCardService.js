@@ -7,7 +7,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     $log.error(msg);
     var error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
-  }; 
+  };
 
   var _processTransactions = function(invoices, history) {
     invoices = invoices ||  [];
@@ -56,7 +56,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         var n = {};
 
         if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
-          $log.warn('BAD data from Bitpay card' + JSON.stringify(x));
+          $log.warn('BAD data from BitPay card' + JSON.stringify(x));
           return;
         }
 
