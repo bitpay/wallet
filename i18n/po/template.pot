@@ -233,7 +233,7 @@ msgid "Are you sure you want to skip it?"
 msgstr ""
 
 #: www/views/modals/bitpay-card-confirmation.html:4
-msgid "Are you sure you would like to log out of your Bitpay Card account?"
+msgid "Are you sure you would like to log out of your BitPay Card account?"
 msgstr ""
 
 #: src/js/controllers/preferencesBitpayCard.js:7
@@ -927,7 +927,7 @@ msgid "Error creating wallet"
 msgstr ""
 
 #: src/js/controllers/bitpayCardIntro.js:14
-msgid "Error pairing Bitpay Account"
+msgid "Error pairing BitPay Account"
 msgstr ""
 
 #: src/js/controllers/paperWallet.js:41
@@ -2975,7 +2975,7 @@ msgid "You control your bitcoin."
 msgstr ""
 
 #: www/views/modals/bitpay-card-confirmation.html:5
-msgid "You will need to log back for fill in your Bitpay Card."
+msgid "You will need to log back for fill in your BitPay Card."
 msgstr ""
 
 #: www/views/preferencesNotifications.html:28
