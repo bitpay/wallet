@@ -11,7 +11,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
       var pairingReason = gettextCatalog.getString('add your BitPay Visa card(s)');
       bitpayAccountService.pair(pairData, pairingReason, function(err, paired, apiContext) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error pairing Bitpay Account'), err);
+          popupService.showAlert(gettextCatalog.getString('Error pairing BitPay Account'), err);
           return;
         }
         if (paired) {
@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
 
   var startPairBitPayAccount = function() {
     var url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
-    externalLinkService.open(url);          
+    externalLinkService.open(url);
   };
 
   var showAccountSelector = function() {
