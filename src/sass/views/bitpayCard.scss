@@ -70,7 +70,65 @@
     }
   }
   .item {
-    border-color: $item-border-color;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 0 0 0 1rem;
+    margin: 0;
+    border: 0;
+
+    &.send .svg #-Transaction-icons {
+    }
+    &.receive .svg #-Transaction-icons {
+      stroke: #09C286;
+    }
+    &.pending .svg #-Transaction-icons {
+      stroke: $v-bitcoin-orange;
+    }
+  }
+  .tx-icon {
+    float: left;
+    margin-right: 25px;
+  }
+  .tx-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 1rem 0;
+    padding-right: 1rem;
+    border-bottom: 1px solid rgb(245, 245, 245);
+    overflow: hidden;
+  }
+  .tx-title {
+    flex-grow: 1;
+    color: $v-dark-gray;
+    overflow: hidden;
+  }
+  .tx-message {
+    margin-right: 1rem;
+  }
+  .tx-location {
+    margin-right: 1rem;
+    font-size: 12.5px;
+    color: $v-light-gray;
+  }
+  .tx-amount {
+    font-size: 16px;
+    white-space: nowrap;
+    &--received {
+      color: #09C286;
+    }
+    &--sent {
+      color: $v-dark-gray;
+    }
+    &--pending {
+      color: $v-bitcoin-orange;
+    }
+  }
+  .tx-time {
+    white-space: nowrap;
+    color: $v-light-gray;
+    font-size: 12.5px;
   }
   .info {
     .badge {
