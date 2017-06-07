@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('qrScanner', function($state, $rootScope, $log, $ionicHistory, platformInfo, scannerService) {
+  .directive('qrScanner', function($state, $rootScope, $log, $ionicHistory, platformInfo, scannerService, popupService) {
 
     return {
       restrict: 'E',

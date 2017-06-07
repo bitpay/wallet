@@ -72,7 +72,7 @@
     <!-- Supported Platforms -->
     <engine name="ios" spec="~4.2.1" />
     <engine name="android" spec="~6.2.3" />
-    <engine name="windows" spec="~4.4.3" />
+    <engine name="windows" spec="~5.0.0" />
 
     <!-- Platform Specific Settings -->
     <platform name="ios">
