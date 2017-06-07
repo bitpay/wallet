@@ -51,6 +51,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isCordova = platformInfo.isCordova;
+    $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isDevel = platformInfo.isDevel;
     $scope.appName = appConfigService.nameCase;
     configService.whenAvailable(function(config) {
