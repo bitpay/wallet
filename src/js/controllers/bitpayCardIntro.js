@@ -11,7 +11,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
       };
       bitpayAccountService.pair(pairData, function(err, paired, apiContext) {
         if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error pairing Bitpay Account'), err);
+          popupService.showAlert(gettextCatalog.getString('Error pairing BitPay Account'), err);
           return;
         }
         if (paired) {

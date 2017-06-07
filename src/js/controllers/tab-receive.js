@@ -130,7 +130,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.showWalletSelector = function() {
     if ($scope.singleWallet) return;
-    $scope.walletSelectorTitle = gettextCatalog.getString('Address from');
+    $scope.walletSelectorTitle = gettextCatalog.getString('Select a wallet');
     $scope.showWallets = true;
   };
 

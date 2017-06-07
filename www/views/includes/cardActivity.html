@@ -1,6 +1,6 @@
 <div class="item row">
   <div class="col col-10 text-center">
-    <div class="tu size-12">{{tx.timestamp | amDateFormat:'MMM'}}</div>
+    <div class="tu size-10">{{tx.timestamp | amDateFormat:'MMM'}}</div>
     <div class="text-light">{{tx.timestamp | amDateFormat:'DD'}}</div>
   </div>
   <div class="col col-10">
@@ -35,9 +35,9 @@
          'balanced': tx.price.toString().indexOf('-') == -1 && !tx.pending,
          'text-gray': tx.price.toString().indexOf('-') == -1 && tx.pending}">
       <span ng-show="tx.price.toString().indexOf('-') == -1">+ </span>
-      {{tx.price | currency:'$':2 }}
+      {{tx.price | currency:bitpayCard.currencySymbol:2 }}
     </div>
-    <time class="size-12 text-gray" ng-if="!tx.pending">{{tx.runningBalance | currency:'$':2}}</time>
+    <time class="size-12 text-gray" ng-if="!tx.pending">{{tx.runningBalance | currency:bitpayCard.currencySymbol:2}}</time>
     <span class="size-12 text-gray text-italic" ng-if="tx.pending" class="tu" translate>Pending</span>
   </div>
 </div>

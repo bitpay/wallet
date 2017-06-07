@@ -102,6 +102,11 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         return;
       }
       $scope.cardInfo = card[0];
+      bitpayCardService.setCurrencySymbol($scope.cardInfo);
+      bitpayCardService.getRates($scope.cardInfo.currency, function(err, data) {
+        if (err) $log.error(err);
+        $scope.rate = data.rate;
+      });
     });
 
   });

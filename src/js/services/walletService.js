@@ -457,7 +457,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           // do not sync all history, just looking for a single TX.
           if (opts.limitTx) {
 
-            foundLimitTx = lodash.find(txsFromLocal, {
+            foundLimitTx = lodash.find(newTxs, {
               txid: opts.limitTx,
             });
 
