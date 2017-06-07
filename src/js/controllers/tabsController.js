@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabsController', function($rootScope, $log, $scope, $state, $stateParams, $timeout, incomingData, lodash, popupService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabsController', function($rootScope, $log, $scope, $state, $stateParams, $timeout, platformInfo, incomingData, lodash, popupService, gettextCatalog, scannerService) {
 
   $scope.onScan = function(data) {
     if (!incomingData.redir(data)) {
@@ -20,6 +20,25 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
     $timeout(function() {
       $scope.$apply();
     }, 1);
+  };
+
+  $scope.chooseScanner = function() {
+
+    var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+
+    if (!isWindowsPhoneApp) {
+      $state.go('tabs.scan');
+      return;
+    }
+
+    scannerService.useOldScanner(function(err, contents) {
+      if (err) {
+        popupService.showAlert(gettextCatalog.getString('Error'), err);
+        return;
+      }
+      incomingData.redir(contents);
+    });
+
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
