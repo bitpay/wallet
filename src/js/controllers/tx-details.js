@@ -4,8 +4,11 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   var txId;
   var listeners = [];
-  $scope.data = {
-    checkTx: false
+  $scope.blockchainInfoParams = {
+    checked: false
+  };
+  $scope.blockrIoParams = {
+    checked: false
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -46,6 +49,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     if (!txId) return;
     console.log($scope.btx);
     $scope.loading = true;
+    $scope.from = from;
     txParamsService.getTxParams(from, txId, function(err, params) {
       $scope.loading = false;
       if (err) {
@@ -57,14 +61,29 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   };
 
   function compareAndUpdateParams(params) {
-    console.console.log(params);
+    console.log(params);
     if (params.from == 'blockchainInfo') {
-      console.log('AMOUNT INSIGHT VS BLOCKCHAIN.INFO:', $scope.btx.amount == params.amount);
-      console.log('ADDRESS INSIGHT VS BLOCKCHAIN.INFO:', $scope.btx.addressTo == params.address);
+      $scope.blockchainInfoParams = {
+        amount: $scope.btx.amount == params.amount,
+        address: $scope.btx.addressTo == params.address,
+        checked: true
+      };
+      $log.debug('Comparing tx params insight vs blockchain.info...');
+      $log.debug('Amount:', $scope.blockchainInfoParams.amount);
+      $log.debug('Address:', $scope.blockchainInfoParams.address);
     } else {
-      console.log('AMOUNT INSIGHT VS BLOCKR.IO:', $scope.btx.amount == params.amount);
-      console.log('ADDRESS INSIGHT VS BLOCKR.IO:', $scope.btx.addressTo == params.address);
+      $scope.blockrIoParams = {
+        amount: $scope.btx.amount == params.amount,
+        address: $scope.btx.addressTo == params.address,
+        checked: true
+      };
+      $log.debug('Comparing tx params insight vs blockr.io...');
+      $log.debug('Amount:', $scope.blockrIoParams.amount);
+      $log.debug('Address:', $scope.blockrIoParams.address);
     }
+    $timeout(function() {
+      $scope.$apply();
+    });
   };
 
   function getDisplayAmount(amountStr) {
