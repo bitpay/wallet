@@ -1,43 +1,23 @@
-<div class="item row">
-  <div class="col col-10 text-center">
-    <div class="tu size-10">{{tx.timestamp | amDateFormat:'MMM'}}</div>
-    <div class="text-light">{{tx.timestamp | amDateFormat:'DD'}}</div>
-  </div>
-  <div class="col col-10">
-    <img class="m15t" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="24">
-  </div>
-
-  <div class="col col-50">
-    <div class="size-12 text-bold">
-      {{tx.merchant.name || 'Unknown Merchant'}}
+<div class="item" ng-class="{'sent': tx.price.toString().indexOf('-') > -1 && !tx.pending, 'receive': tx.price.toString().indexOf('-') == -1 && !tx.pending, 'pending': tx.pending}">
+  <img class="tx-icon svg" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="40">
+  <div class="tx-content">
+    <div class="tx-title">
+      <div class="ellipsis">
+        <div class="tx-message ellipsis">{{tx.merchant.name || 'Unknown Merchant'}}</div>
+        <div class="tx-location ellipsis" ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.location}}</div>
+        <div ng-show="tx.pending && tx.transactionId" class="size-12 tx-amount--pending">
+          <div ng-click="bitpayCard.viewOnBlockchain(tx.transactionId)">View Confirmation Status</div>
+        </div>
+      </div>
     </div>
-    <div class="size-12 text-gray">
-      <span ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.location}}</span>
-      <span ng-class="{'m5l':tx.merchant.city && tx.merchant.state}">
-        {{tx.timestamp | amDateFormat:'h:mm A'}}
+    <span class="item-note text-right">
+      <span class="tx-amount" ng-class="{'tx-amount--sent': tx.price.toString().indexOf('-') > -1 && !tx.pending, 'tx-amount--received': tx.price.toString().indexOf('-') == -1 && !tx.pending, 'tx-amount--pending': tx.pending}">
+        {{tx.price | currency:bitpayCard.currencySymbol:2 }}
       </span>
-    </div>
-    <div ng-show="tx.pending && tx.transactionId" class="size-12">
-      <a ng-click="bitpayCard.viewOnBlockchain(tx.transactionId)">View Confirmation Status</a>
-    </div>
-  </div>
-
-  <!-- <div class="col size-12">
-    {{tx.desc}}
-  </div>
-  <div class="col col-10 text-center p10t">
-    <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
-    <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
-  </div> -->
-
-  <div class="col text-right">
-    <div ng-class="{
-         'balanced': tx.price.toString().indexOf('-') == -1 && !tx.pending,
-         'text-gray': tx.price.toString().indexOf('-') == -1 && tx.pending}">
-      <span ng-show="tx.price.toString().indexOf('-') == -1">+ </span>
-      {{tx.price | currency:bitpayCard.currencySymbol:2 }}
-    </div>
-    <time class="size-12 text-gray" ng-if="!tx.pending">{{tx.runningBalance | currency:bitpayCard.currencySymbol:2}}</time>
-    <span class="size-12 text-gray text-italic" ng-if="tx.pending" class="tu" translate>Pending</span>
+      <div>
+        <time class="tx-time" ng-if="createdWithinPastDay(tx)">{{tx.timestamp | amTimeAgo}}</time>
+        <time class="tx-time" ng-if="!createdWithinPastDay(tx)">{{tx.timestamp | amDateFormat:'MMM D, YYYY'}}</time>
+      </div>
+    </span>
   </div>
 </div>
