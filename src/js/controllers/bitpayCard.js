@@ -163,7 +163,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     runningBalance -= parseFloat(tx.amount);
   };
 
-  this.withinPastDay = function(tx) {
+  $scope.createdWithinPastDay = function(tx) {
     var result = false;
     if (tx.timestamp) {
       result = timeService.withinPastDay(tx.timestamp);

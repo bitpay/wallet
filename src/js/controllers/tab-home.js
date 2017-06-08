@@ -131,9 +131,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.createdWithinPastDay = function(time) {
-      var now = new Date();
-      var date = new Date(time * 1000);
-      return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+      return timeService.withinPastDay(time);
     };
 
     $scope.openExternalLink = function() {

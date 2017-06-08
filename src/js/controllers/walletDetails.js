@@ -201,7 +201,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.createdDuringSameMonth = function(curTx, prevTx) {
-    return timeService.withinSameMonth(curTx.time, prevTx.time);
+    return timeService.withinSameMonth(curTx.time * 1000, prevTx.time * 1000);
   };
 
   $scope.createdWithinPastDay = function(time) {

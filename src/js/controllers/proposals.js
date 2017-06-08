@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('proposalsController',
-  function($timeout, $scope, profileService, $log, txpModalService, addressbookService) {
+  function($timeout, $scope, profileService, $log, txpModalService, addressbookService, timeService) {
 
     $scope.fetchingProposals = true;
 
@@ -27,8 +27,6 @@ angular.module('copayApp.controllers').controller('proposalsController',
     $scope.openTxpModal = txpModalService.open;
 
     $scope.createdWithinPastDay = function(time) {
-      var now = new Date();
-      var date = new Date(time * 1000);
-      return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+      return timeService.withinPastDay(time);
     };
   });
