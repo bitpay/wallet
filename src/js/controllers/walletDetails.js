@@ -190,7 +190,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     }
     var curTx = $scope.txHistory[index];
     var prevTx = $scope.txHistory[index - 1];
-    return !createdDuringSameMonth(curTx, prevTx);
+    return !$scope.createdDuringSameMonth(curTx, prevTx);
   };
 
   $scope.isLastInGroup = function(index) {
