@@ -70,23 +70,33 @@
     }
   }
   .item {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    padding: 0 0 0 1rem;
-    margin: 0;
-    border: 0;
+    border-color: $item-border-color;
+    &.activity-header {
+      z-index: 3;
+      border: 0;
+      border-bottom: 1px solid #EFEFEF;
+    }
+    &.activity {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 0 0 0 1rem;
+      margin: 0;
+      border: 0;
 
-    &.send .svg #-Transaction-icons {
-    }
-    &.receive .svg #-Transaction-icons {
-      stroke: #09C286;
-    }
-    &.pending .svg #-Transaction-icons {
-      stroke: $v-bitcoin-orange;
+      &.send .svg #-Transaction-icons {
+      }
+      &.receive .svg #-Transaction-icons {
+        stroke: #09C286;
+      }
+      &.pending .svg #-Transaction-icons {
+        stroke: $v-bitcoin-orange;
+      }
     }
   }
   .tx-icon {
+    width: 36px;
+    height: 36px;
     float: left;
     margin-right: 25px;
   }

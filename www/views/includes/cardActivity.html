@@ -1,5 +1,5 @@
-<div class="item" ng-class="{'sent': tx.price.toString().indexOf('-') > -1 && !tx.pending, 'receive': tx.price.toString().indexOf('-') == -1 && !tx.pending, 'pending': tx.pending}">
-  <img class="tx-icon svg" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="40">
+<div class="item activity" ng-class="{'sent': tx.price.toString().indexOf('-') > -1 && !tx.pending, 'receive': tx.price.toString().indexOf('-') == -1 && !tx.pending, 'pending': tx.pending}">
+  <img class="tx-icon svg" ng-src="img/mcc-icons/{{tx.icon}}.svg">
   <div class="tx-content">
     <div class="tx-title">
       <div class="ellipsis">
