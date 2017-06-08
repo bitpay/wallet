@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
+    $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
 
@@ -42,6 +43,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       }
 
       storageService.getFeedbackInfo(function(error, info) {
+
+        if ($scope.isWindowsPhoneApp) {
+          $scope.showRateCard.value = false;
+          return;
+        }
         if (!info) {
           initFeedBackInfo();
         } else {
