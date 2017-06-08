@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, $ionicHistory, configService, profileService, fingerprintService, walletService) {
+  function($scope, $rootScope, $timeout, $log, $ionicHistory, configService, profileService, fingerprintService, walletService, platformInfo) {
     var wallet;
     var walletId;
 
@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
       wallet = profileService.getWallet(data.stateParams.walletId);
       walletId = wallet.credentials.walletId;
       $scope.wallet = wallet;
-
+      $scope.isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
       $scope.externalSource = null;
 
       if (!wallet)
