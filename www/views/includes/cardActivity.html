@@ -1,10 +1,16 @@
 <div class="item activity" ng-class="{'sent': tx.price.toString().indexOf('-') > -1 && !tx.pending, 'receive': tx.price.toString().indexOf('-') == -1 && !tx.pending, 'pending': tx.pending}">
-  <img class="tx-icon svg" ng-src="img/mcc-icons/{{tx.icon}}.svg">
+  <div class="tx-icon">
+    <div class="houston" ng-class="{'no-border': tx.icon.includes('topup')}">
+      <img class="svg" ng-src="img/mcc-icons/{{tx.icon}}.svg">
+    </div>
+  </div>
   <div class="tx-content">
     <div class="tx-title">
       <div class="ellipsis">
         <div class="tx-message ellipsis">{{tx.merchant.name || 'Unknown Merchant'}}</div>
+<!-- Removed to cleanup look and since intl card does not provide location.
         <div class="tx-location ellipsis" ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.location}}</div>
+-->
         <div ng-show="tx.pending && tx.transactionId" class="size-12 tx-amount--pending">
           <div ng-click="bitpayCard.viewOnBlockchain(tx.transactionId)">View Confirmation Status</div>
         </div>

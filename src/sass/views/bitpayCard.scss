@@ -95,10 +95,36 @@
     }
   }
   .tx-icon {
-    width: 36px;
-    height: 36px;
-    float: left;
     margin-right: 25px;
+    .houston {
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+      border: 1px solid;
+      &.no-border {
+        border: none;
+        .svg {
+          width: 40px;
+          height: 40px;
+          display: block;
+          margin: 0 auto;
+          position: relative;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+        }
+      }
+      .svg {
+        width: 23px;
+        height: 23px;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+    }
   }
   .tx-content {
     display: flex;
