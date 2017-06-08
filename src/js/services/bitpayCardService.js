@@ -65,6 +65,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         n.lastFourDigits = x.lastFourDigits;
         n.token = x.token;
         n.currency = x.currency;
+        n.country = x.country;
         cards.push(n);
       });
 

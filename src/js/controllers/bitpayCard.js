@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService, externalLinkService) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService, externalLinkService, timeService) {
 
   var self = this;
   var runningBalance;
@@ -161,6 +161,14 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
 
   var _runningBalance = function(tx) {
     runningBalance -= parseFloat(tx.amount);
+  };
+
+  $scope.createdWithinPastDay = function(tx) {
+    var result = false;
+    if (tx.timestamp) {
+      result = timeService.withinPastDay(tx.timestamp);
+    }
+    return result;
   };
 
   this.openExternalLink = function(url) {

@@ -64,8 +64,8 @@
         </span>
       </span>
       <div>
-        <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx.time)">{{btx.time * 1000 | amTimeAgo}}</time>
-        <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time)">
+        <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx.time * 1000)">{{btx.time * 1000 | amTimeAgo}}</time>
+        <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time * 1000)">
           {{btx.time * 1000 | amDateFormat:'MMM D, YYYY'}}
         </time>
       </div>
