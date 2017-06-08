@@ -8,9 +8,7 @@ angular.module('copayApp.services').factory('txParamsService', function txParams
     if (from == 'blockchainInfo') {
       requestTxParams('https://blockchain.info/es/rawtx/' + txid, function(err, resp) {
         if (err) return cb(err);
-        console.log('### BLOCKCHAIN');
         var params = {
-          from: from,
           amount: resp.data.out[0].value,
           address: resp.data.out[0].addr,
           fee: 'TODO'
@@ -20,13 +18,9 @@ angular.module('copayApp.services').factory('txParamsService', function txParams
     } else {
       requestTxParams('http://btc.blockr.io/api/v1/tx/info/' + txid, function(err, resp) {
         if (err) return cb(err);
-        console.log('### BLOCKRIO');
-        console.log(JSON.stringify(resp.data));
-        console.log(JSON.stringify(resp.data.data.vouts));
         var config = configService.getSync().wallet.settings;
         var unitToSatoshi = config.unitToSatoshi;
         var params = {
-          from: from,
           amount: resp.data.data.vouts[0].amount * unitToSatoshi,
           address: resp.data.data.vouts[0].address,
           fee: resp.data.data.fee

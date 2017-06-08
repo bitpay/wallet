@@ -4,12 +4,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   var txId;
   var listeners = [];
-  $scope.blockchainInfoParams = {
-    checked: false
-  };
-  $scope.blockrIoParams = {
-    checked: false
-  };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     txId = data.stateParams.txid;
@@ -18,7 +12,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
-    $scope.loading = false;
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
       $scope.txNotification = {
@@ -27,6 +20,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
 
     updateTx();
+    checkTxParamsFromBlockchainInfo();
+    checkTxParamsFromBlockrIo();
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
@@ -45,28 +40,37 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   });
 
-  $scope.checkTx = function(from) {
+  function checkTxParamsFromBlockchainInfo() {
     if (!txId) return;
-    console.log($scope.btx);
-    $scope.loading = true;
-    $scope.from = from;
+    $scope.loadingBlockchainInfo = true;
+    processTxParams('blockchainInfo');
+  };
+
+  function checkTxParamsFromBlockrIo() {
+    if (!txId) return;
+    $scope.loadingBlockrIo = true;
+    processTxParams('blockrIo');
+  };
+
+  function processTxParams(from) {
     txParamsService.getTxParams(from, txId, function(err, params) {
-      $scope.loading = false;
+      if (from == 'blockchainInfo') $scope.loadingBlockchainInfo = false;
+      if (from == 'blockrIo') $scope.loadingBlockrIo = false;
+
       if (err) {
         $log.warn('Could not get the tx params');
         return;
       }
-      compareAndUpdateParams(params);
+
+      compareAndUpdateParams(from, params);
     });
   };
 
-  function compareAndUpdateParams(params) {
-    console.log(params);
-    if (params.from == 'blockchainInfo') {
+  function compareAndUpdateParams(from, params) {
+    if (from == 'blockchainInfo') {
       $scope.blockchainInfoParams = {
         amount: $scope.btx.amount == params.amount,
         address: $scope.btx.addressTo == params.address,
-        checked: true
       };
       $log.debug('Comparing tx params insight vs blockchain.info...');
       $log.debug('Amount:', $scope.blockchainInfoParams.amount);
@@ -75,7 +79,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       $scope.blockrIoParams = {
         amount: $scope.btx.amount == params.amount,
         address: $scope.btx.addressTo == params.address,
-        checked: true
       };
       $log.debug('Comparing tx params insight vs blockr.io...');
       $log.debug('Amount:', $scope.blockrIoParams.amount);

@@ -139,46 +139,22 @@ This transaction amount is too small compared to current Bitcoin network fees. S
           </div>
         </div>
 
-        <a class="item single-line item-icon-right" ng-click="displayChecks = !displayChecks">
+        <div class="item single-line">
           <span class="label" translate>Check on another block explorer</span>
-          <i class="icon bp-arrow-down p5r" ng-if="!displayChecks"></i>
-          <i class="icon bp-arrow-up p5r" ng-if="displayChecks"></i>
-        </a>
-
-        <div class="item single-line" ng-if="displayChecks">
-          <span class="label" translate>Blockchain.info</span>
-          <a class="item-note" ng-click="checkTx('blockchainInfo')" ng-if="!loading || from != 'blockchainInfo'">Check</a>
-          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading && from == 'blockchainInfo'"></ion-spinner>
-        </div>
-        <div class="item single-line" ng-class="{'btn': displayChecks}" ng-if="blockchainInfoParams.checked && displayChecks">
-          <span class="label" translate>Amount</span>
-          <span class="item-note ok-tx" ng-if="blockchainInfoParams.amount && !loading">Ok</span>
-          <span class="item-note warn-tx" ng-if="!blockchainInfoParams.amount && !loading">No Ok</span>
-          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading && from == 'blockchainInfo'"></ion-spinner>
-        </div>
-        <div class="item single-line" ng-class="{'btn': displayChecks}" ng-if="blockchainInfoParams.checked && displayChecks">
-          <span class="label" translate>Address</span>
-          <span class="item-note ok-tx" ng-if="blockchainInfoParams.address && !loading">Ok</span>
-          <span class="item-note warn-tx" ng-if="!blockchainInfoParams.address && !loading">No Ok</span>
-          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading && from == 'blockchainInfo'"></ion-spinner>
         </div>
 
-        <div class="item single-line" ng-if="displayChecks">
-          <span class="label" translate>Blockr.io</span>
-          <a class="item-note" ng-click="checkTx('blockrIo')" ng-if="!loading || from != 'blockrIo'">Check</a>
-          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading && from == 'blockrIo'"></ion-spinner>
+        <div class="item single-line" ng-style="{'border-top': 'none'}">
+          <span class="label">Blockchain.info</span>
+          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loadingBlockchainInfo"></ion-spinner>
+          <span class="item-note ok-tx" ng-if="blockchainInfoParams.amount && blockchainInfoParams.address && !loadingBlockchainInfo">Ok</span>
+          <span class="item-note" ng-if="(!blockchainInfoParams.amount || !blockchainInfoParams.address) && !loadingBlockchainInfo">...</span>
         </div>
-        <div class="item single-line" ng-class="{'btn': displayChecks}" ng-if="blockrIoParams.checked && displayChecks">
-          <span class="label" translate>Amount</span>
-          <span class="item-note ok-tx" ng-if="blockrIoParams.amount && !loading">Ok</span>
-          <span class="item-note warn-tx" ng-if="!blockrIoParams.amount && !loading">No Ok</span>
-          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading && from == 'blockrIo'"></ion-spinner>
-        </div>
-        <div class="item single-line" ng-class="{'btn': displayChecks}" ng-if="blockrIoParams.checked && displayChecks">
-          <span class="label" translate>Address</span>
-          <span class="item-note ok-tx" ng-if="blockrIoParams.address && !loading">Ok</span>
-          <span class="item-note warn-tx" ng-if="!blockrIoParams.address && !loading">No Ok</span>
-          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading"></ion-spinner>
+
+        <div class="item single-line" ng-style="{'border-top': 'none'}">
+          <span class="label">Blockr.io</span>
+          <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loadingBlockrIo"></ion-spinner>
+          <span class="item-note ok-tx" ng-if="blockrIoParams.amount && blockrIoParams.address && !loadingBlockrIo">Ok</span>
+          <span class="item-note" ng-if="(!blockrIoParams.amount || !blockrIoParams.address) && !loadingBlockrIo">...</span>
         </div>
       </div>
     </div>
