@@ -35,8 +35,60 @@
   .send-heading {
     font-size: 14px;
     font-weight: bold;
-    padding-bottom: 0;
+    padding: 0 0 16px 0;
+    border: none;
   }
+
+
+
+  .send-header-wrapper {
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 5px 10px 0px #cccccc;
+  }
+  .search-wrapper {
+    background-color: #f2f2f2;
+    border-radius: 3px;
+    border: none;
+    .svg#Bitcoin_Symbol {
+      width: 14px;
+      .st0 {
+        fill: #cccccc;
+      }
+    }
+    &.focus {
+      background: none;
+      .svg#Bitcoin_Symbol {
+        display: none;
+      }
+      .search-input {
+        padding-left: 0;
+        &:focus::-webkit-input-placeholder {
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+
+  .abs-v-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+   }
+  .search-input {
+    background-color: transparent;
+    padding-left: 30px;
+  }
+  .separator-left {
+    border-left: 1px solid #d9d9df;
+    padding-left: 10px;
+    height: 70%;
+  }
+
+
+
+
   .bitcoin-address {
     border-top: none;
     padding-bottom: .5rem;
