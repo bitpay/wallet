@@ -13,7 +13,7 @@ angular.module('copayApp.directives')
       link: function(scope, el, attrs) {
 
         scope.chooseScanner = function() {
-          var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+          var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
           if (!isWindowsPhoneApp) {
             scope.openScanner();

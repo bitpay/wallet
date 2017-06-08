@@ -5,7 +5,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var credentials = {};
   var isCordova = platformInfo.isCordova;
   var isNW = platformInfo.isNW;
-  var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   root.priceSensitivity = [{
     value: 0.5,
@@ -303,14 +303,14 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   root.getBuyOrder = function(token, accountId, buyId, cb) {
-      if (!token) return cb('Invalid Token');
-      $http(_get('/accounts/' + accountId + '/buys/' + buyId, token)).then(function(data) {
-          $log.info('Coinbase Buy Info: SUCCESS');
-          return cb(null, data.data);
-      }, function(data) {
-          $log.error('Coinbase Buy Info: ERROR ' + data.statusText);
-          return cb(data.data);
-      });
+    if (!token) return cb('Invalid Token');
+    $http(_get('/accounts/' + accountId + '/buys/' + buyId, token)).then(function(data) {
+      $log.info('Coinbase Buy Info: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Coinbase Buy Info: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
   };
 
   root.getTransaction = function(token, accountId, transactionId, cb) {
@@ -723,7 +723,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   var register = function() {
 
-    root.isActive(function(err, isActive){
+    root.isActive(function(err, isActive) {
       if (err) return;
 
       buyAndSellService.register({
@@ -742,7 +742,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
     if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
-      root.isActive(function(err,isActive){
+      root.isActive(function(err, isActive) {
         // Update Coinbase
         if (isActive)
           root.updatePendingTransactions();

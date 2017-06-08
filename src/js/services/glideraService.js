@@ -4,7 +4,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
-  var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   var setCredentials = function() {
     if (!$window.externalServices || !$window.externalServices.glidera) {

@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
 
   $scope.chooseScanner = function() {
 
-    var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+    var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
     if (!isWindowsPhoneApp) {
       $state.go('tabs.scan');

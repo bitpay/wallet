@@ -5,7 +5,8 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
   $scope.appName = appConfigService.nameCase;
   var isAndroid = platformInfo.isAndroid;
   var isIOS = platformInfo.isIOS;
-  var isWP = platformInfo.isWP;
+  var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+
   var config = configService.getSync();
 
   $scope.skip = function() {
@@ -42,7 +43,7 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
       url = $scope.appName == 'Copay' ? defaults.rateApp.copay.android : defaults.rateApp.bitpay.android;
     if (isIOS)
       url = $scope.appName == 'Copay' ? defaults.rateApp.copay.ios : defaults.rateApp.bitpay.ios;
-    // if (isWP)
+    // if (isWindowsPhoneApp)
     // url = $scope.appName == 'Copay' ? defaults.rateApp.copay.windows : defaults.rateApp.bitpay.windows;
 
     externalLinkService.open(url);

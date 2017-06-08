@@ -5,12 +5,12 @@ angular.module('copayApp.services')
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
-    var isWP = platformInfo.isWP;
+    var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     var isIOS = platformInfo.isIOS;
 
     var root = {};
     var errors = bwcService.getErrors();
-    var usePushNotifications = isCordova && !isWP;
+    var usePushNotifications = isCordova && !isWindowsPhoneApp;
 
     var UPDATE_PERIOD = 15;
 
@@ -208,9 +208,9 @@ angular.module('copayApp.services')
     };
 
     var shouldSkipValidation = function(walletId) {
-        return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWP;
-      }
-      // Used when reading wallets from the profile
+      return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWindowsPhoneApp;
+    }
+    // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
       if (!credentials.walletId || !credentials.m)
         return cb('bindWallet should receive credentials JSON');
