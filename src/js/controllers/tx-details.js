@@ -12,6 +12,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
+    $scope.blockchainInfoParams = $scope.blockrIoParams = {
+      match: null,
+      code: null
+    };
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
       $scope.txNotification = {
@@ -69,21 +73,30 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   function compareAndUpdateParams(from, params) {
     if (from == 'blockchainInfo') {
       $scope.blockchainInfoParams = {
-        amount: $scope.btx.amount == params.amount,
-        address: $scope.btx.addressTo == params.address,
+        match: $scope.btx.amount == params.amount && $scope.btx.addressTo == params.address,
+        code: params.code,
       };
       $log.debug('Comparing tx params insight vs blockchain.info...');
       $log.debug('Amount:', $scope.blockchainInfoParams.amount);
       $log.debug('Address:', $scope.blockchainInfoParams.address);
-    } else {
+    }
+    if (from == 'blockrIo') {
       $scope.blockrIoParams = {
-        amount: $scope.btx.amount == params.amount,
-        address: $scope.btx.addressTo == params.address,
+        match: $scope.btx.amount == params.amount && $scope.btx.addressTo == params.address,
+        code: params.code,
       };
       $log.debug('Comparing tx params insight vs blockr.io...');
       $log.debug('Amount:', $scope.blockrIoParams.amount);
       $log.debug('Address:', $scope.blockrIoParams.address);
     }
+
+    var notFound = $scope.blockchainInfoParams.code == 400 || $scope.blockrIoParams.code == 400;
+    var notMatch = !$scope.blockchainInfoParams.match || !$scope.blockrIoParams.match;
+    var isConfirmed = $scope.btx.confirmations > 0;
+
+    if (isConfirmed && (notFound || notMatch))
+      popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('This transaction could not be verified on some third party block explorers'));
+
     $timeout(function() {
       $scope.$apply();
     });

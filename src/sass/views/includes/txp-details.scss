@@ -288,9 +288,23 @@
   .spinner svg {
     width: 15px;
     height: 15px;
+    position: absolute;
+    right: 21px;
   }
-
-  .ok-tx {
-    color: #269D27;
+  .icon {
+    &.valid {
+      font-size: 16px;
+      padding-right: 5px;
+      color: $v-success-color;
+    }
+    &.invalid {
+      font-size: 16px;
+      padding-right: 5px;
+      color: #DF2121;
+    }
+    &.warning {
+      font-size: 16px;
+      padding-right: 9px;
+    }
   }
 }

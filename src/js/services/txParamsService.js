@@ -9,6 +9,7 @@ angular.module('copayApp.services').factory('txParamsService', function txParams
       requestTxParams('https://blockchain.info/es/rawtx/' + txid, function(err, resp) {
         if (err) return cb(err);
         var params = {
+          code: resp.data.status,
           amount: resp.data.out[0].value,
           address: resp.data.out[0].addr,
           fee: 'TODO'
@@ -21,9 +22,10 @@ angular.module('copayApp.services').factory('txParamsService', function txParams
         var config = configService.getSync().wallet.settings;
         var unitToSatoshi = config.unitToSatoshi;
         var params = {
+          code: resp.status,
           amount: resp.data.data.vouts[0].amount * unitToSatoshi,
           address: resp.data.data.vouts[0].address,
-          fee: resp.data.data.fee
+          fee: resp.data.data.fee * unitToSatoshi
         };
         return cb(null, params);
       });

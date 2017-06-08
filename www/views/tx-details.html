@@ -140,21 +140,29 @@ This transaction amount is too small compared to current Bitcoin network fees. S
         </div>
 
         <div class="item single-line">
-          <span class="label" translate>Check on another block explorer</span>
+          <span class="label" translate>Verifying on:</span>
         </div>
 
-        <div class="item single-line" ng-style="{'border-top': 'none'}">
+        <div class="item single-line item-icon-right" ng-style="{'border-top': 'none'}">
           <span class="label">Blockchain.info</span>
           <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loadingBlockchainInfo"></ion-spinner>
-          <span class="item-note ok-tx" ng-if="blockchainInfoParams.amount && blockchainInfoParams.address && !loadingBlockchainInfo">Ok</span>
-          <span class="item-note" ng-if="(!blockchainInfoParams.amount || !blockchainInfoParams.address) && !loadingBlockchainInfo">...</span>
+          <i class="icon ion-checkmark-circled valid" ng-if="blockchainInfoParams.match && blockchainInfoParams.code == 200 && !loadingBlockchainInfo"></i>
+          <i class="icon ion-close-circled invalid" ng-if="btx.confirmations > 0 && (blockchainInfoParams.code == 404 || !blockchainInfoParams.match) && !loadingBlockchainInfo"></i>
+          <div ng-if="btx.confirmations <= 0 && blockchainInfoParams.code == 404 && !loadingBlockchainInfo">
+            <span class="item-note" translate>Transaction not found</span>
+            <i class="icon warning"><img src="img/icon-warning.png" width="16px"></i>
+          </div>
         </div>
 
-        <div class="item single-line" ng-style="{'border-top': 'none'}">
+        <div class="item single-line item-icon-right" ng-style="{'border-top': 'none'}">
           <span class="label">Blockr.io</span>
           <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loadingBlockrIo"></ion-spinner>
-          <span class="item-note ok-tx" ng-if="blockrIoParams.amount && blockrIoParams.address && !loadingBlockrIo">Ok</span>
-          <span class="item-note" ng-if="(!blockrIoParams.amount || !blockrIoParams.address) && !loadingBlockrIo">...</span>
+          <i class="icon ion-checkmark-circled valid" ng-if="blockrIoParams.match && blockrIoParams.code == 200 && !loadingBlockrIo"></i>
+          <i class="icon ion-close-circled invalid" ng-if="btx.confirmations > 0 && (blockrIoParams.code == 404 || !blockrIoParams.match) && !loadingBlockrIo"></i>
+          <div ng-if="btx.confirmations <= 0 && blockrIoParams.code == 404 && !loadingBlockrIo">
+            <span class="item-note" translate>Transaction not found</span>
+            <i class="icon warning"><img src="img/icon-warning.png" width="16px"></i>
+          </div>
         </div>
       </div>
     </div>
