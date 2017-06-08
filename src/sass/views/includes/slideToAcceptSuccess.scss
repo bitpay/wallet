@@ -12,6 +12,12 @@ slide-to-accept-success {
 
   .slide-success {
     $duration: 400ms;
+    &__windows-background {
+      background: $v-success-bg-color;
+      height: 100%;
+      width: 100%;
+      position: fixed;
+    }
     &__background {
       $start-radius: 5;
       $scale-factor: 20;

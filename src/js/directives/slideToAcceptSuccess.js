@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.directives')
-  .directive('slideToAcceptSuccess', function($timeout) {
+  .directive('slideToAcceptSuccess', function($timeout, platformInfo) {
     return {
       restrict: 'E',
       templateUrl: 'views/includes/slideToAcceptSuccess.html',
@@ -12,10 +12,13 @@ angular.module('copayApp.directives')
         hideOnConfirm: '=slideSuccessHideOnConfirm'
       },
       link: function(scope, element, attrs) {
+
+        scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
+
         var elm = element[0];
         elm.style.display = 'none';
         scope.$watch('isShown', function() {
-          if(scope.isShown) {
+          if (scope.isShown) {
             elm.style.display = 'flex';
             $timeout(function() {
               scope.fillScreen = true;
@@ -24,7 +27,7 @@ angular.module('copayApp.directives')
         });
         scope.onConfirmButtonClick = function() {
           scope.onConfirm();
-          if(scope.hideOnConfirm) {
+          if (scope.hideOnConfirm) {
             scope.fillScreen = false;
             elm.style.display = 'none';
           }
