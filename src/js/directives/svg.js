@@ -10,7 +10,7 @@ angular.module('copayApp.directives')
       link: function(scope, element, attrs) {
         var imgId = attrs.id;
         var imgClass = attrs.class;
-        var imgUrl = attrs.src;
+        var imgUrl = attrs.src || attrs.ngSrc;
         var svg;
 
         // Load svg content
