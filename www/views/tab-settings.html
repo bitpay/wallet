@@ -29,7 +29,7 @@
         <span>{{'Send Feedback' | translate}}</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a ng-if="isCordova" class="item item-icon-left item-icon-right" ui-sref="tabs.shareApp({score: 4, skipped: true, fromSettings: true})">
+      <a ng-if="isCordova && !isWindowsPhoneApp" class="item item-icon-left item-icon-right" ui-sref="tabs.shareApp({score: 4, skipped: true, fromSettings: true})">
         <i class="icon big-icon-svg">
           <img src="img/icon-heart.svg" class="bg"/>
         </i>
