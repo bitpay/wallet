@@ -128,6 +128,16 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     updateWalletsList();
   };
 
+  $scope.searchInFocus = function() {
+    $scope.searchFocus = true;
+  };
+
+  $scope.searchBlurred = function() {
+    if ($scope.formData.search == null) {
+      $scope.searchFocus = false;
+    }
+  };
+
   $scope.findContact = function(search) {
 
     if (incomingData.redir(search)) {
