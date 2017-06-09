@@ -5,7 +5,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="-Transaction-icons" transform="translate(-150.000000, -2269.000000)" stroke="#343434">
+        <g id="-Transaction-icons" transform="translate(-150.000000, -2269.000000)" stroke="#9B9BAB">
             <g id="plant" transform="translate(150.000000, 2269.000000)">
                 <g id="Group" transform="translate(0.500000, 0.500000)">
                     <path d="M0,24 C0,14.125 12,0 12,0 C12,0 24,14.125 24,24 C24,30.62742 18.62742,34 12,34 C5.37258,34 0,30.62742 0,24 L0,24 Z" id="Shape"></path>
