@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, txParamsService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, blockExplorerService, configService) {
 
   var txId;
   var listeners = [];
+  var serviceCounter;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     txId = data.stateParams.txid;
@@ -12,10 +13,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
-    $scope.blockchainInfoParams = $scope.blockrIoParams = {
-      match: null,
-      code: null
-    };
+    $scope.availableServices = configService.getDefaults().blockExplorerServices || null;
+    $scope.loadingService = {};
+    $scope.showError = false;
+    serviceCounter = 0;
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
       $scope.txNotification = {
@@ -24,8 +25,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
 
     updateTx();
-    checkTxParamsFromBlockchainInfo();
-    checkTxParamsFromBlockrIo();
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
@@ -44,61 +43,57 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   });
 
-  function checkTxParamsFromBlockchainInfo() {
-    if (!txId) return;
-    $scope.loadingBlockchainInfo = true;
-    processTxParams('blockchainInfo');
-  };
-
-  function checkTxParamsFromBlockrIo() {
-    if (!txId) return;
-    $scope.loadingBlockrIo = true;
-    processTxParams('blockrIo');
-  };
-
-  function processTxParams(from) {
-    txParamsService.getTxParams(from, txId, function(err, params) {
-      if (from == 'blockchainInfo') $scope.loadingBlockchainInfo = false;
-      if (from == 'blockrIo') $scope.loadingBlockrIo = false;
-
-      if (err) {
-        $log.warn('Could not get the tx params');
-        return;
-      }
-
-      compareAndUpdateParams(from, params);
+  function setLoading(name, state) {
+    $scope.loadingService[name] = state;
+    $timeout(function() {
+      $scope.$apply();
     });
   };
 
-  function compareAndUpdateParams(from, params) {
-    if (from == 'blockchainInfo') {
-      $scope.blockchainInfoParams = {
-        match: $scope.btx.amount == params.amount && $scope.btx.addressTo == params.address,
-        code: params.code,
-      };
-      $log.debug('Comparing tx params insight vs blockchain.info...');
-      $log.debug('Amount:', $scope.blockchainInfoParams.amount);
-      $log.debug('Address:', $scope.blockchainInfoParams.address);
-    }
-    if (from == 'blockrIo') {
-      $scope.blockrIoParams = {
-        match: $scope.btx.amount == params.amount && $scope.btx.addressTo == params.address,
-        code: params.code,
-      };
-      $log.debug('Comparing tx params insight vs blockr.io...');
-      $log.debug('Amount:', $scope.blockrIoParams.amount);
-      $log.debug('Address:', $scope.blockrIoParams.address);
-    }
+  function compareTx() {
+    if (lodash.isEmpty($scope.availableServices) || $scope.wallet.network == 'testnet') return;
 
-    var notFound = $scope.blockchainInfoParams.code == 400 || $scope.blockrIoParams.code == 400;
-    var notMatch = !$scope.blockchainInfoParams.match || !$scope.blockrIoParams.match;
+    lodash.each($scope.availableServices, function(service) {
+      setLoading(service.name, true);
+      serviceCounter += 1;
+
+      blockExplorerService.getTx(service, txId, function(err, params) {
+        if (err) {
+          $log.warn('Could not get tx params from: ' + service.name);
+          return;
+        }
+        compareAndUpdateParams(params);
+      });
+    });
+  };
+
+  function compareAndUpdateParams(params) {
+    $log.debug('Comparing tx params from' + params.name);
+    $log.debug('Amount:', params.amount);
+    $log.debug('Address:', params.address);
+
+    var match = $scope.btx.amount == params.amount && $scope.btx.addressTo == params.address;
     var isConfirmed = $scope.btx.confirmations > 0;
 
-    if (isConfirmed && (notFound || notMatch))
-      popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('This transaction could not be verified on some third party block explorers'));
+    if (!isConfirmed && params.notFound) {
+      setLoading(params.name, false);
+      $log.warn('Could not get the tx params from: ' + params.name);
+    } else if ((isConfirmed && params.notFound) || !match) {
+      setLoading(params.name, false);
+      $scope.showError = true;
+    }
 
+    params.isConfirmed = isConfirmed;
+    params.match = match;
+    lodash.each($scope.availableServices, function(service, i) {
+      if (service.name == params.name)
+        $scope.availableServices[i] = params;
+    });
+
+    setLoading(params.name, false);
     $timeout(function() {
-      $scope.$apply();
+      if ($scope.showError && serviceCounter == $scope.availableServices.length)
+        return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('This transaction could not be verified on some third party block explorers'));
     });
   };
 
@@ -184,6 +179,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
       }
 
+      $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
+      $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
+
+      compareTx();
       updateMemo();
       initActionList();
       getFiatRate();
