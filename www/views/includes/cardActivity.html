@@ -8,9 +8,7 @@
     <div class="tx-title">
       <div class="ellipsis">
         <div class="tx-message ellipsis">{{tx.merchant.name || 'Unknown Merchant'}}</div>
-<!-- Removed to cleanup look and since intl card does not provide location.
         <div class="tx-location ellipsis" ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.location}}</div>
--->
         <div ng-show="tx.pending && tx.transactionId" class="size-12 tx-amount--pending">
           <div ng-click="bitpayCard.viewOnBlockchain(tx.transactionId)">View Confirmation Status</div>
         </div>
