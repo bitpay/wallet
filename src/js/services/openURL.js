@@ -62,6 +62,16 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
           handleOpenURL({
             url: pathData.substring(pathData.indexOf('bitcoin:'))
           });
+        } else if (pathData.indexOf('deuscoin:') != -1) {
+          $log.debug('Deuscoin URL found');
+          handleOpenURL({
+            url: pathData.substring(pathData.indexOf('deuscoin:'))
+          });
+        } else if (pathData.indexOf('aureus:') != -1) {
+          $log.debug('Aureus URL found');
+          handleOpenURL({
+            url: pathData.substring(pathData.indexOf('aureus:'))
+          });
         } else if (pathData.indexOf(appConfigService.name + '://') != -1) {
           $log.debug(appConfigService.name + ' URL found');
           handleOpenURL({

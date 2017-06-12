@@ -51,6 +51,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       }
     });
     $scope.network = $scope.wallet.network;
+    if($scope.network === "livenet") {$scope.network = "bitcoin";}
   });
 
   $scope.close = function() {

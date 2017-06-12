@@ -26,6 +26,7 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
       $scope.addr = addr;
       $scope.network = (new bitcore.Address($scope.addr)).network.name;
+      if($scope.network === "livenet") {$scope.network = "bitcoin";}
 
       $timeout(function() {
         $scope.$apply();
