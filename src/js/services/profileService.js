@@ -208,9 +208,9 @@ angular.module('copayApp.services')
     };
 
     var shouldSkipValidation = function(walletId) {
-      return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWP;
-    }
-    // Used when reading wallets from the profile
+        return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWP;
+      }
+      // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
       if (!credentials.walletId || !credentials.m)
         return cb('bindWallet should receive credentials JSON');
@@ -618,6 +618,8 @@ angular.module('copayApp.services')
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,
+        entropySourcePath: opts.entropySourcePath,
+        derivationStrategy: opts.derivationStrategy || 'BIP44',
         account: opts.account || 0,
       }, function(err) {
         if (err) {
