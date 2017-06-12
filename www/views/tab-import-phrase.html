@@ -49,14 +49,23 @@
         ng-model="formData.derivationPath">
       </label>
 
+
+      <ion-toggle ng-model="formData.fromHardwareWallet" toggle-class="toggle-positive">
+        <span translate>From Hardware Wallet</span>
+      </ion-toggle>
+
+      <select ng-model="formData.seedSourceAll" ng-options="seed as seed.label for seed in seedOptionsAll"></select>
+
+      <ion-toggle ng-model="formData.testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-positive">
+        <span translate>Testnet</span>
+      </ion-toggle>
+
+
       <label class="item item-input item-stacked-label">
         <span class="input-label" translate>Wallet Service URL</span>
         <input type="text" ng-model="formData.bwsurl">
       </label>
 
-      <ion-toggle ng-model="formData.testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-positive">
-        <span translate>Testnet</span>
-      </ion-toggle>
     </div>
   </div>
 
