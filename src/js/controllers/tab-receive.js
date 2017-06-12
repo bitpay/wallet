@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, $ionicPopover, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, $ionicPopover, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError, bitcore) {
 
   var listeners = [];
   $scope.isCordova = platformInfo.isCordova;
@@ -25,6 +25,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       }
 
       $scope.addr = addr;
+      $scope.network = (new bitcore.Address($scope.addr)).network.name;
+
       $timeout(function() {
         $scope.$apply();
       }, 10);

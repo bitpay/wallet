@@ -50,6 +50,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
         $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat);
       }
     });
+    $scope.network = $scope.wallet.network;
   });
 
   $scope.close = function() {
