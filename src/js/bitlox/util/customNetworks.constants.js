@@ -15,7 +15,8 @@
         xprivkey: 0x0488ade4,
         bwsUrl: 'https://bws.aureus.cc/bws/api',
         port: 9697,
-        magic: 0x6ee58c2a
+        magic: 0x6ee58c2a,
+        explorer: 'https://explorer.deuscoin.org/'
       },
       deuscoin: {
         name: 'deuscoin',
@@ -29,7 +30,8 @@
         xprivkey: 0x0488ade4,
         bwsUrl: 'https://bws.deuscoin.org/bws/api',
         port: 19697,
-        magic: 0x9ee8bc5a
+        magic: 0x9ee8bc5a,
+        explorer: 'https://explorer.aureus.cc/'
       }}
 )
 
