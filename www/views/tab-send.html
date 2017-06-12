@@ -5,11 +5,15 @@
   <ion-content>
 
     <div ng-if="hasFunds">
-      <div class="item item-heading send-heading" translate>Recipient</div>
-      <div class="item item-icon-left item-icon-right input">
-        <i class="icon icon-svg left"><img src="img/icon-bitcoin-symbol.svg"></i>
-        <input type="text" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur>
-        <i class="icon icon-svg qr" on-tap="openScanner()"><img src="img/scan-ico.svg"/></i>
+      <div class="send-header-wrapper">
+        <div class="item item-heading send-heading"><span translate>Recipient</span></div>
+        <div class="item input search-wrapper" ng-class="{'focus': searchFocus}">
+          <i class="icon icon-svg abs-v-center"><img class="svg" src="img/icon-bitcoin-symbol.svg"></i>
+          <div class="item-icon-right">
+            <input type="text" class="search-input" placeholder="{{'Search or enter bitcoin address' | translate}}" ng-model="formData.search" ng-change="findContact(formData.search)" ng-model-onblur ng-focus="searchInFocus()" ng-blur="searchBlurred()">
+            <i class="icon icon-svg qr abs-v-center separator-left" on-tap="openScanner()"><img src="img/scan-ico.svg"></i>
+          </div>
+        </div>
       </div>
     </div>
 
