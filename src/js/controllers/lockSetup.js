@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
 
   function getSavedMethod() {
     var config = configService.getSync();
-    if (config.lock) return config.lock.method;
+    if (config.lock && config.lock.method) return config.lock.method;
     return 'none';
   };
 
