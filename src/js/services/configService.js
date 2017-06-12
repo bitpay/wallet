@@ -74,7 +74,7 @@ angular.module('copayApp.services').factory('configService', function(appConfigS
     },
     log: {
       filter: 'debug',
-    },
+    }
   };
 
   var configCache = null;
