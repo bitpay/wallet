@@ -17,6 +17,7 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.formData.account = 1;
       $scope.importErr = false;
       $scope.isCopay = appConfigService.name == 'copay';
+      $scope.fromHardwareWallet = { value: false };
 
       if ($stateParams.code)
         $scope.processWalletInfo($stateParams.code);
@@ -273,7 +274,7 @@ angular.module('copayApp.controllers').controller('importController',
 
       opts.passphrase = $scope.formData.passphrase || null;
 
-      if ($scope.formData.fromHardwareWallet) {
+      if ($scope.fromHardwareWallet.value) {
         $log.debug('Importing seed from hardware wallet');
         $log.warn('This wont work for Intel TEE wallets');
 
