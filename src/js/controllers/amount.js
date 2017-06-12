@@ -33,6 +33,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
+    $scope.customAmount = data.stateParams.customAmount;
+    $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
+    $scope.unitName = "BTC";
+    if(CUSTOMNETWORKS[$scope.network]) {
+      $scope.unitName = CUSTOMNETWORKS[$scope.network].symbol;
+    }
+
     if (!$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
@@ -65,10 +72,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     var config = configService.getSync().wallet.settings;
 
-    $scope.unitName = config.unitName;
-    // if(CUSTOMNETWORKS[configService.getSync().wallet.network]) {
-    //   $scope.unitName = configService.getSync().wallet.symbol;
-    // }
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
     } else {
