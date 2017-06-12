@@ -1,8 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
   .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, $state, sjcl, lodash, storageService, bwcService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, appConfigService) {
-
-
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
     var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
@@ -854,14 +852,30 @@ angular.module('copayApp.services')
         var shown = lodash.sortBy(notifications, 'createdOn').reverse();
 
         shown = shown.splice(0, opts.limit || MAX);
-
+        var u = bwcService.getUtils();
         lodash.each(shown, function(x) {
           x.txpId = x.data ? x.data.txProposalId : null;
           x.txid = x.data ? x.data.txid : null;
           x.types = [x.type];
 
+
+          function formatAmount(satoshis, fullPrecision) {
+            var config = configService.getSync().wallet.settings;
+            if (config.unitCode == 'sat') return satoshis;
+            //TODO : now only works for english, specify opts to change thousand separator and decimal separator
+            var opts = {
+              fullPrecision: !!fullPrecision
+            };
+            return u.formatAmount(satoshis, config.unitCode, opts);
+          };
+
+          function formatAmountStr (satoshis) {
+            if (isNaN(satoshis)) return;
+            var config = configService.getSync().wallet.settings;
+            return formatAmount(satoshis);// + ' ' + config.unitName;
+          };
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+            x.amountStr = formatAmountStr(x.data.amount);
 
           x.action = function() {
             // TODO?
@@ -895,7 +909,7 @@ angular.module('copayApp.services')
           }
         });
 
-        var u = bwcService.getUtils();
+        
         lodash.each(finale, function(x) {
           if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
             // TODO TODO TODO => BWC

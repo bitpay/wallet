@@ -129,7 +129,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       lodash.each(txps, function(tx) {
 
-        tx = txFormatService.processTx(tx);
+        tx = txFormatService.processTx(tx, wallet.network);
 
         // no future transactions...
         if (tx.createdOn > now)
@@ -366,7 +366,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, function(tx) {
-      tx = txFormatService.processTx(tx);
+      tx = txFormatService.processTx(tx, wallet.network);
 
       // no future transactions...
       if (tx.time > now)

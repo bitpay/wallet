@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, lodash) {
+angular.module('copayApp.services').factory('txFormatService', function($filter, profileService, bwcService, rateService, configService, lodash, CUSTOMNETWORKS) {
   var root = {};
 
   root.Utils = bwcService.getUtils();
@@ -9,7 +9,6 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
   root.formatAmount = function(satoshis, fullPrecision) {
     var config = configService.getSync().wallet.settings;
     if (config.unitCode == 'sat') return satoshis;
-
     //TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
@@ -86,10 +85,15 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.processTx = function(tx) {
+  root.processTx = function(tx, network) {
     if (!tx || tx.action == 'invalid')
       return tx;
 
+    var networkObj = CUSTOMNETWORKS[network];
+    var unitSymbol = "BTC";
+    if(networkObj) {
+      unitSymbol = networkObj.symbol;
+    }
     // New transaction output format
     if (tx.outputs && tx.outputs.length) {
 
@@ -101,7 +105,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
           tx.hasMultiplesOutputs = true;
         }
         tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-          o.amountStr = root.formatAmountStr(o.amount);
+          o.amountStr = root.formatAmountStr(o.amount) + " " + unitSymbol;
           o.alternativeAmountStr = root.formatAlternativeStr(o.amount);
           return total + o.amount;
         }, 0);
@@ -109,9 +113,9 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
       tx.toAddress = tx.outputs[0].toAddress;
     }
 
-    tx.amountStr = root.formatAmountStr(tx.amount);
+    tx.amountStr = root.formatAmountStr(tx.amount) + " " + unitSymbol;
     tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount);
-    tx.feeStr = root.formatAmountStr(tx.fee || tx.fees);
+    tx.feeStr = root.formatAmountStr(tx.fee || tx.fees) + " " + unitSymbol;
 
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
@@ -145,13 +149,15 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
 
     lodash.each(txps, function(tx) {
 
-      tx = txFormatService.processTx(tx);
+      var walletObj = profileService.getWallet(tx.walletId);
+
+      tx = txFormatService.processTx(tx, walletObj.credentials.network);
 
       // no future transactions...
       if (tx.createdOn > now)
         tx.createdOn = now;
 
-      tx.wallet = profileService.getWallet(tx.walletId);
+      tx.wallet = walletObj
       if (!tx.wallet) {
         $log.error("no wallet at txp?");
         return;
