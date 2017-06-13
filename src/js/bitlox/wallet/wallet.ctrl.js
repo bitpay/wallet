@@ -96,8 +96,8 @@
             opts.n = 1;
             opts.singleAddress = false;
 
-            opts.network = true
-            opts.bwsurl = 'https://bws.bitpay.com/bws/api'
+            opts.network = 'livenet'
+            opts.bwsurl = 'https://bws.bitlox.com/bws/api'
 
             // console.warn("START IMPORTING")
             profileService.createWallet(opts, function(err, walletId) {
