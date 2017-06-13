@@ -20,8 +20,12 @@ angular.module('copayApp.services').factory('blockExplorerService', function blo
       params.name = service.name;
       params.notFound = resp.data.status == 404;
       params.success = resp.data.status == 200;
-      params.amount = resp.data.out[0].value;
-      params.address = resp.data.out[0].addr;
+      params.amount = 0;
+      params.address = [];
+      lodash.each(resp.data.out, function(out) {
+        params.amount += parseInt(out.value);
+        params.address.push(out.addr);
+      });
       return cb(null, params);
     });
   };
@@ -39,8 +43,12 @@ angular.module('copayApp.services').factory('blockExplorerService', function blo
       params.name = service.name;
       params.notFound = resp.status == 404;
       params.success = resp.status == 200;
-      params.amount = resp.data.data.vouts[0].amount * unitToSatoshi;
-      params.address = resp.data.data.vouts[0].address;
+      params.amount = 0;
+      params.address = [];
+      lodash.each(resp.data.data.vouts, function(out) {
+        params.amount += parseInt(out.amount * unitToSatoshi);
+        params.address.push(out.address);
+      });
       return cb(null, params);
     });
   };

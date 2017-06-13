@@ -59,6 +59,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
       blockExplorerService.getTx(service, txId, function(err, params) {
         if (err) {
+          setLoading(service.name, false);
           $log.warn('Could not get tx params from: ' + service.name);
           return;
         }
@@ -72,8 +73,12 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $log.debug('Amount:', params.amount);
     $log.debug('Address:', params.address);
 
-    var match = $scope.btx.amount == params.amount && $scope.btx.addressTo == params.address;
+    var matchAmount = $scope.btx.amount == params.amount;
+    var matchAddress = lodash.find(params.address, function(addr) {
+      return $scope.btx.addressTo == addr;
+    });
     var isConfirmed = $scope.btx.confirmations > 0;
+    var match = matchAmount && matchAddress;
 
     if (!isConfirmed && params.notFound) {
       setLoading(params.name, false);
