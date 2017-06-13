@@ -93,7 +93,6 @@ angular.module('copayApp.services')
         outputs = [];
       var tmpOutputs = [];
 
-
       if (txp.type && txp.type != 'simple') {
         return callback('Only TXPs type SIMPLE are supported in TREZOR');
       } else if (txp.outputs) {
@@ -170,7 +169,6 @@ angular.module('copayApp.services')
           return '';
         });
 
-
         inputs = lodash.map(txp.inputs, function(i) {
           $log.debug("Trezor TX input path:", i.path);
           var pathArr = i.path.split('/');
@@ -180,12 +178,12 @@ angular.module('copayApp.services')
           inAmount += i.satoshis;
 
           var orderedPubKeys = root._orderPubKeys(xPubKeys, np);
-          var pubkeys = lodash(orderedPubKeys.map(function(v) {
+          var pubkeys = orderedPubKeys.map(function(v) {
             return {
               node: v,
               address_n: np,
             };
-          }));
+          });
 
           return {
             address_n: n,
@@ -208,12 +206,12 @@ angular.module('copayApp.services')
           var np = n.slice(3);
 
           var orderedPubKeys = root._orderPubKeys(xPubKeys, np);
-          var pubkeys = lodash(orderedPubKeys.map(function(v) {
+          var pubkeys = orderedPubKeys.map(function(v) {
             return {
               node: v,
               address_n: np,
             };
-          }));
+          });
 
           tmpOutputs.push({
             address_n: n,
