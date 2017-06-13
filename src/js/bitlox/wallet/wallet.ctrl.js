@@ -109,7 +109,7 @@
                 profileService.importExtendedPublicKey(opts, function(err2, walletId) {
 
                   // console.warn("DONE IMPORTING")
-                  if (err) {
+                  if (err2) {
                     console.error(err2)
                     popupService.showAlert(gettextCatalog.getString('Error'), err2);
                     return;
