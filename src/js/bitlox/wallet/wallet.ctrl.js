@@ -106,7 +106,7 @@
               if (err) {
                 console.error(err)
 
-                profileService.importExtendedPublicKey(opts, function(err, walletId) {
+                profileService.importExtendedPublicKey(opts, function(err2, walletId) {
 
                   // console.warn("DONE IMPORTING")
                   if (err) {
