@@ -79,28 +79,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       });
       return true;
     }
-    var regex = /(bitcoin:|testnet:|aureus:|deuscoin:)([A-Za-z0-9]+)[\?\&]amount=(\d+([\,\.]\d+)?)/i;
-    var match = regex.exec(data);
-    console.log(match)
-    // data extensions for customnet
-    if (match && match[1].length > 0) {
-      data = decodeURIComponent(data.replace(match[1], ''));
-      // Fixes when a region uses comma to separate decimals
-
-      if (!match[3] || match[3].length === 0) {
-        goToAmountPage(data)
-      } else {
-        var value = match[3].replace(',', '.');
-        $state.transitionTo('tabs.send.confirm', {
-          toAmount: value,
-          toAddress: match[2],
-          description: match[1] + " Scanned QR"
-        });
-      }
-
-      return true;
-    }
-
 
     data = sanitizeUri(data);
 
