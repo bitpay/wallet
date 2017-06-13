@@ -14,6 +14,20 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.hideNextSteps = {
       value: config.hideNextSteps.enabled
     };
+    $scope.verifyTransactionEnabled = {
+      value: config.verifyTransaction ? config.verifyTransaction.enabled : false
+    };
+  };
+
+  $scope.verifyTransactionChange = function() {
+    var opts = {
+      verifyTransaction: {
+        enabled: $scope.verifyTransactionEnabled.value
+      }
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
+    });
   };
 
   $scope.spendUnconfirmedChange = function() {

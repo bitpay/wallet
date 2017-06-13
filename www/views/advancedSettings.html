@@ -25,7 +25,16 @@
 
       <div class="item item-divider"></div>
 
-      <ion-toggle ng-model="hideNextSteps.value" ng-if="!isWindowsPhoneApp" toggle-class="toggle-balanced" ng-change="nextStepsChange()">
+      <ion-toggle class="has-comment" ng-model="verifyTransactionEnabled.value" toggle-class="toggle-balanced" ng-change="verifyTransactionChange()">
+        <span class="toggle-label" translate>Verify transaction</span>
+      </ion-toggle>
+      <div class="comment" translate>
+        If enabled, each transaction will be automatically verified with third party Block Explorer.
+      </div>
+
+      <div class="item item-divider"></div>
+
+      <ion-toggle ng-model="hideNextSteps.value" toggle-class="toggle-balanced" ng-change="nextStepsChange()">
         <span class="toggle-label" translate>Hide Next Steps Card</span>
       </ion-toggle>
     </div>

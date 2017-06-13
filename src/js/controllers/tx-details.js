@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   var txId;
   var listeners = [];
   var serviceCounter;
+  var config;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     txId = data.stateParams.txid;
@@ -13,7 +14,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
-    $scope.availableServices = configService.getDefaults().blockExplorerServices || null;
+    config = configService.getSync();
+    if (config.verifyTransaction && config.verifyTransaction.enabled) $scope.availableServices = configService.getDefaults().blockExplorerServices;
+    else $scope.availableServices = null;
     $scope.loadingService = {};
     $scope.showError = false;
     serviceCounter = 0;

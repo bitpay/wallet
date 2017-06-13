@@ -81,6 +81,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       },
     ],
 
+    verifyTransaction: {
+      enabled: false,
+    },
+
     rates: {
       url: 'https://insight.bitpay.com:443/api/rates',
     },
