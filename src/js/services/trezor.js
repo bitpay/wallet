@@ -18,9 +18,7 @@ angular.module('copayApp.services')
     };
 
     root.getEntropySource = function(isMultisig, account, callback) {
-console.log('[trezor.js.20:isMultisig:]',root.description.id, isMultisig, account); //TODO
       root.getXPubKey(hwWallet.getEntropyPath(root.description.id, isMultisig, account), function(data) {
-console.log('[trezor.js.21:data:]',data); //TODO
         if (!data.success)
           return callback(hwWallet._err(data));
 
@@ -32,7 +30,6 @@ console.log('[trezor.js.21:data:]',data); //TODO
     root.getXPubKey = function(path, callback) {
       $log.debug('TREZOR deriving xPub path:', path);
       try {
-console.log('[trezor.js.35:path:]',path); //TODO
         TrezorConnect.getXPubKey(path, callback);
       } catch (e) {
         callback('Error connecting Trezor');
