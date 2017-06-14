@@ -105,7 +105,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $ionicHistory.goBack();
         return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not available at this time'));
       }
-      console.log("??????",$scope.wallet)
       $scope.btx = txFormatService.processTx(tx, $scope.wallet.credentials.network);
       txFormatService.formatAlternativeStr(tx.fees, function(v) {
         $scope.btx.feeFiatStr = v;
