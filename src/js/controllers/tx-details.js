@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, blockExplorerService, configService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, verifyByThirdPartyService, configService) {
 
   var txId;
   var listeners = [];
@@ -53,18 +53,25 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   };
 
-  function compareTx() {
+  function verifyByThirdParties() {
     if (lodash.isEmpty($scope.availableServices) || $scope.wallet.network == 'testnet') return;
 
     lodash.each($scope.availableServices, function(service) {
       setLoading(service.name, true);
       serviceCounter += 1;
 
-      blockExplorerService.getTx(service, txId, function(err, params) {
+      verifyByThirdPartyService.getTx(service, txId, function(err, params) {
         if (err) {
           setLoading(service.name, false);
-          $log.warn('Could not get tx params from: ' + service.name);
-          return;
+          if (err.status == 404) {
+            params = {
+              notFound: true,
+              name: service.name
+            };
+          } else {
+            $log.warn('Could not get tx params from: ' + service.name);
+            return;
+          }
         }
         compareAndUpdateParams(params);
       });
@@ -101,7 +108,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     setLoading(params.name, false);
     $timeout(function() {
       if ($scope.showError && serviceCounter == $scope.availableServices.length)
-        return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('This transaction could not be verified on some third party block explorers'));
+        return popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by some third party block explorers'));
     });
   };
 
@@ -190,7 +197,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
       $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
 
-      compareTx();
+      verifyByThirdParties();
       updateMemo();
       initActionList();
       getFiatRate();
