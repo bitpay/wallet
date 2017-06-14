@@ -191,15 +191,18 @@
                     console.log("WALLET LOADED")
                     console.log(wallet.xpub)
                     _importExtendedPublicKey(wallet)
-                }, Toast.errorHandler, function(status) {
+                }).catch(function(err) {
+                    console.log("OPEN WALLET ERROR", err)
+                    $ionicLoading.hide();
+                    popupService.showAlert(gettextCatalog.getString('Error'), err);
+                })
+                .finally(function(status) {
                     console.debug("open notify", status);
                     if (status === bitloxWallet.NOTIFY_XPUB_LOADED) {
                         vm.loadingXpub = false;
                     }
-                })
-                .finally(function() {
                     console.debug("done loading wallet", wallet.number);
-                    vm.openingWallet = -99;
+                    vm.openingWallet = -99;    
                 });
           });
         };
