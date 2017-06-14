@@ -23,9 +23,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         setLoading(s.name, true);
       });
     }
-    serviceCounter = 1;
+    serviceCounter = 0;
     $scope.addresses = [];
-    $scope.showError = false;
+    $scope.serviceError = {};
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
       $scope.txNotification = {
@@ -64,14 +64,17 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
     lodash.each($scope.availableServices, function(service) {
       setLoading(service.name, true);
-      serviceCounter += 1;
 
       verifyByThirdPartyService.getTx(service, txId, function(err, params) {
         if (err) {
           setLoading(service.name, false);
+          $scope.serviceError[service.name] = true;
           $log.warn('Could not get tx params from: ' + service.name);
+          checkError();
         } else
           compareAndUpdateParams(params);
+
+        serviceCounter += 1;
       });
     });
   };
@@ -93,7 +96,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       $log.warn('Could not get the tx params from: ' + params.name);
     } else if ((isConfirmed && params.notFound) || !match) {
       setLoading(params.name, false);
-      $scope.showError = true;
+      $scope.serviceError[params.name] = true;
     }
 
     params.isConfirmed = isConfirmed;
@@ -104,11 +107,11 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
 
     setLoading(params.name, false);
-    if (serviceCounter == $scope.availableServices.length) checkError();
+    checkError();
   };
 
   function checkError() {
-    if ($scope.showError)
+    if (lodash.countBy($scope.serviceError).true == $scope.availableServices.length)
       popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by some third party block explorers'));
   };
 
