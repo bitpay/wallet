@@ -57,7 +57,7 @@
             </i>
             <div>{{wallet.name}}</div>
           </div>
-        </div>
+        </div>     
         <div class="item single-line" ng-if="btx.action != 'received' && isShared">
           <span class="label" translate>Created by</span>
           <span class="item-note">
@@ -94,6 +94,12 @@
 This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself. </span>
         </div>
  
+        <div class="item single-line">
+          <span class="label" translate>TX ID</span>
+          <span class="item-note">
+              {{btx.txid|ellipses}}
+          </span>
+        </div>        
         <div class="item single-line">
           <span class="label" translate>Confirmations</span>
           <span class="item-note">

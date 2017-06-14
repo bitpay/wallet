@@ -79,4 +79,10 @@ angular.module('copayApp.filters', [])
         input.push(i);
       return input;
     };
-  });
+  }).filter('ellipses', 
+    function() {
+      return function(input,length) {
+        return input.substring(0,length || 20)+"..."
+      };
+    }
+  );
