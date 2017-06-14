@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   var listeners = [];
   var serviceCounter;
   var config;
+  var defaults;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     txId = data.stateParams.txid;
@@ -14,9 +15,11 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
+    $scope.availableServices = null;
     config = configService.getSync();
-    if (config.verifyTransaction && config.verifyTransaction.enabled) $scope.availableServices = configService.getDefaults().blockExplorerServices;
-    else $scope.availableServices = null;
+    if (config.verifyTransaction && config.verifyTransaction.enabled) {
+      $scope.availableServices = lodash.clone(configService.getDefaults().blockExplorerServices);
+    }
     $scope.loadingService = {};
     $scope.showError = false;
     serviceCounter = 0;
@@ -63,15 +66,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       verifyByThirdPartyService.getTx(service, txId, function(err, params) {
         if (err) {
           setLoading(service.name, false);
-          if (err.status == 404) {
-            params = {
-              notFound: true,
-              name: service.name
-            };
-          } else {
-            $log.warn('Could not get tx params from: ' + service.name);
-            return;
-          }
+          $log.warn('Could not get tx params from: ' + service.name);
+          return;
         }
         compareAndUpdateParams(params);
       });
@@ -79,9 +75,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   };
 
   function compareAndUpdateParams(params) {
-    $log.debug('Comparing tx params from' + params.name);
-    $log.debug('Amount:', params.amount);
-    $log.debug('Address:', params.address);
+    $log.debug('Comparing tx params from ' + params.name);
+    $log.debug('Amount: ' + params.amount);
+    $log.debug('Address: ' + params.address);
 
     var matchAmount = $scope.btx.amount == params.amount;
     var matchAddress = lodash.find(params.address, function(addr) {
