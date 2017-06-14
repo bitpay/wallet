@@ -85,7 +85,8 @@
             opts.derivationStrategy = 'BIP44'
             opts.hasPassphrase = false;
             opts.name = wallet.name;
-            opts.account = 0
+            opts.account = 0;
+            opts.hwInfo = result.payload.device_uuid.toString('hex')+'/'+wallet._uuid.toString("hex");
 
             var b = bwcService.getBitcore();
             var x = b.HDPublicKey(wallet.xpub);
