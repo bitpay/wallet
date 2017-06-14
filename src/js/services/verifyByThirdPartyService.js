@@ -19,13 +19,14 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
 
       var params = {};
       params.name = service.name;
-      params.notFound = resp.data.status == 404;
-      params.success = resp.data.status == 200;
-      params.amount = 0;
-      params.address = [];
+      params.notFound = resp.status == 404;
+      params.success = resp.status == 200;
+      params.out = [];
       lodash.each(resp.data.out, function(out) {
-        params.amount += parseInt(out.value);
-        params.address.push(out.addr);
+        params.out.push({
+          address: out.addr,
+          amount: parseInt(out.value)
+        });
       });
       return cb(null, params);
     });
@@ -45,11 +46,12 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
       params.name = service.name;
       params.notFound = resp.status == 404;
       params.success = resp.status == 200;
-      params.amount = 0;
-      params.address = [];
+      params.out = [];
       lodash.each(resp.data.data.vouts, function(out) {
-        params.amount += parseInt(out.amount * unitToSatoshi);
-        params.address.push(out.address);
+        params.out.push({
+          address: out.address,
+          amount: parseInt(out.amount * unitToSatoshi)
+        });
       });
       return cb(null, params);
     });

@@ -139,7 +139,7 @@ This transaction amount is too small compared to current Bitcoin network fees. S
           </div>
         </div>
 
-        <div ng-if="wallet.network == 'livenet'">
+        <div ng-if="wallet.network == 'livenet' && btx.action == 'received'">
           <div class="item single-line" ng-if="availableServices[0]"><span class="label" translate>Verifying transaction on:</span></div>
 
           <div ng-repeat="service in availableServices">
