@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService, bitcore, CUSTOMNETWORKS, ) {
+
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -208,6 +209,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     var updateAllWallets = function() {
       $scope.wallets = profileService.getWallets();
+      for(var i in $scope.wallets) {
+        if(CUSTOMNETWORKS[$scope.wallets[i].network]) {
+          bitcore.Networks.add(CUSTOMNETWORKS[$scope.wallets[i].network])
+        }
+      }      
       if (lodash.isEmpty($scope.wallets)) return;
 
       var i = $scope.wallets.length;
