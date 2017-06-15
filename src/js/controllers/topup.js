@@ -187,9 +187,9 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
             return;
           }
 
-          title = gettextCatalog.getString('Sending {{amountStr}} from {{name}}', {
+          title = gettextCatalog.getString('Sending {{amountStr}} from {{walletName}}', {
             amountStr:  txFormatService.formatAmountStr(ctxp.amount, true),
-            name: $scope.wallet.name
+            walletName: $scope.wallet.name
           });
           message = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
             fee: txFormatService.formatAmountStr(ctxp.fee)
