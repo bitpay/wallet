@@ -19,7 +19,7 @@
         <div class="amount-label">
           <div class="amount-final">{{amountUnitStr}}</div>
           <div class="alternative">
-            <span ng-if="rate">@ 
+            <span ng-if="rate">@
               {{rate | currency:cardInfo.currencySymbol:2}} per BTC</span>
             <span ng-if="!rate">...</span>
           </div>
@@ -54,6 +54,30 @@
             {{cardInfo.email}}
           </span>
         </div>
+
+        <div class="item item-divider">
+          Invoice
+        </div>
+        <div class="item">
+          Expire in
+          <span class="item-note" ng-if="expirationTime">
+            <timer countdown="expirationTime" interval="1000" active="true" output-format="mm:ss"
+            on-zero-callback="invoiceExpired">{{formatted}}</timer>
+          </span>
+        </div>
+        <div class="item">
+          Fee
+          <span class="item-note">
+            {{invoice.buyerPaidBtcMinerFee}}
+          </span>
+        </div>
+        <div class="item">
+          Total
+          <span class="item-note total">
+            {{invoice.buyerTotalBtcAmount}}
+          </span>
+        </div>
+        <div class="item item-divider"></div>
       </div>
     </div>
 
