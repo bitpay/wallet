@@ -80,6 +80,8 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           txs[i].desc = _processDescription(txs[i]);
           txs[i].price = _price(txs[i]);
           txs[i].runningBalance = runningBalance;
+          txs[i].pending = txs[i].status.toLowerCase() == 'pending';
+
           _runningBalance(txs[i]);
 
           if (txs[i].merchant.city && txs[i].merchant.state) {
