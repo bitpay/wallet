@@ -1,0 +1,11 @@
+{
+    "windows": {
+        "debug": {
+            "packageCertificateKeyFile": "platforms\\windows\\CordovaApp_TemporaryKey.pfx"
+        },
+        "release": {
+            "packageThumbprint": "ABCABCABCABC123123123123",
+            "publisherId": "CN=F89609D1-EB3E-45FD-A58A-C2E3895FCE7B"
+        }
+    }
+}
