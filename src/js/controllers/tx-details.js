@@ -82,14 +82,14 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   function compareAndUpdateParams(params) {
     $log.debug('Comparing tx params from ' + params.name);
 
-    var matchAmount = lodash.includes(lodash.map(params.out, 'amount'), $scope.btx.amount);
-    var matchAddress;
-    lodash.each(lodash.map(params.out, 'address'), function(addr) {
-      if (lodash.includes($scope.addresses, addr)) matchAddress = true;
+    var match;
+    lodash.each(params.out, function(out) {
+      if (lodash.includes($scope.addresses, out.address)) {
+        match = out.amount == $scope.btx.amount;
+      }
     });
 
     var isConfirmed = $scope.btx.confirmations > 0;
-    var match = matchAmount && matchAddress;
 
     if (!isConfirmed && params.notFound) {
       setLoading(params.name, false);
