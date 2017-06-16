@@ -133,7 +133,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.searchBlurred = function() {
-    if ($scope.formData.search == null) {
+    if ($scope.formData.search == null || $scope.formData.search.length == 0) {
       $scope.searchFocus = false;
     }
   };

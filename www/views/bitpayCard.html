@@ -51,18 +51,6 @@
         Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.
       </div>
     </div>
-    <div ng-if="bitpayCard.bitpayCardTransactionHistoryConfirming[0] && !bitpayCard.underpaidInvoiceInList && bitpayCard.delayedInvoiceInList" class="comment">
-      <span translate>Confirming transactions take up to 1 block confirmation to proccess.</span>
-      <a ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-do-you-require-one-blockchain-confirmation-for-bitpay-card-loads')" translate>Learn More</a>
-    </div>
-    <div ng-if="bitpayCard.bitpayCardTransactionHistoryConfirming[0] && bitpayCard.underpaidInvoiceInList" class="comment">
-      <span translate>Confirming load transactions that are underpaid may require at least six blockchain confirmations to process.</span>
-      <a ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-do-you-require-one-blockchain-confirmation-for-bitpay-card-loads')" translate>Learn More</a>
-    </div>
-    <div ng-if="bitpayCard.bitpayCardTransactionHistoryPreAuth[0]" class="comment">
-      <span translate>(Pre-Auth Holds transactions) The merchant has initiated a hold to make those funds unavailable until your transaction to them has fully settled. Funds are released within 30 days at the latest in the event the merchant decides not to complete the transaction.</span>
-      <a ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-was-i-overcharged-on-my-bitpay-card-account-why-is-there-a-hold-on-my-account')" translate>Learn More</a>
-    </div>
     <div class="list" ng-show="!bitpayCard.getStarted">
       <label class="item item-input item-select activity-header">
         <div class="input-label" translate>
@@ -75,9 +63,12 @@
         </select>
       </label>
       <div ng-if="bitpayCard.bitpayCardTransactionHistoryConfirming[0]">
-        <label class="item status-label">
+        <label class="item status-label" ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-do-you-require-one-blockchain-confirmation-for-bitpay-card-loads')">
           <div translate>
             Confirming
+            <i class="icon">
+              <img src="img/icon-help-support.svg" class="bg"/>
+            </i>
           </div>
         </label>
         <div ng-repeat="tx in bitpayCard.bitpayCardTransactionHistoryConfirming">
@@ -85,9 +76,12 @@
         </div>
       </div>
       <div ng-if="bitpayCard.bitpayCardTransactionHistoryPreAuth[0]">
-        <label class="item status-label">
+        <label class="item status-label" ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-was-i-overcharged-on-my-bitpay-card-account-why-is-there-a-hold-on-my-account')">
           <div translate>
             Pre-Auth Holds
+            <i class="icon">
+              <img src="img/icon-help-support.svg" class="bg"/>
+            </i>
           </div>
         </label>
         <div ng-repeat="tx in bitpayCard.bitpayCardTransactionHistoryPreAuth">
@@ -95,7 +89,7 @@
         </div>
       </div>
       <div ng-if="bitpayCard.bitpayCardTransactionHistoryCompleted[0]">
-        <label ng-if="bitpayCard.bitpayCardTransactionHistoryConfirming[0]" class="item status-label">
+        <label class="item status-label">
           <div translate>
             Completed
           </div>
