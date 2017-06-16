@@ -94,10 +94,10 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
           return !tx.pending && tx.type.indexOf('93') == -1;
         });
         self.bitpayCardTransactionHistoryConfirming = lodash.filter(txs, function(tx) {
-          return tx.pending;
+          return tx.pending && tx.type.indexOf('93') == -1;
         });
-        self.bitpayCardTransactionHistoryPreAuth = lodash.includes(txs, function(tx) {
-          return tx.type.indexOf('93') > -1;
+        self.bitpayCardTransactionHistoryPreAuth = lodash.filter(txs, function(tx) {
+          return tx.pending && tx.type.indexOf('93') > -1;
         });
 
         lodash.forEach(self.bitpayCardTransactionHistoryConfirming, function(tx) {

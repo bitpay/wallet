@@ -13,6 +13,10 @@
     color: #727272;
     padding: 2px 1rem;
     background: #f8f8f9;
+    i {
+      position: absolute;
+      padding-left: 5px;
+    }
   }
 
   .comment {
@@ -86,11 +90,15 @@
 
       &.send .svg #-Transaction-icons {
       }
-      &.receive .svg #-Transaction-icons {
+      &.receive .svg #-Transaction-icons,
+      &.receive .tx-icon .houston {
         stroke: #09C286;
+        color: #09C286;
       }
-      &.pending .svg #-Transaction-icons {
+      &.pending .svg #-Transaction-icons,
+      &.pending .tx-icon .houston {
         stroke: $v-bitcoin-orange;
+        color: $v-bitcoin-orange;
       }
     }
   }
