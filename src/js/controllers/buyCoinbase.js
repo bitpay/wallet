@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService) {
+angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService, feeService) {
 
   var amount;
   var currency;
+  var feeBTC;
 
   var showErrorAndBack = function(err) {
     $scope.sendStatus = '';
@@ -44,13 +45,33 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
     var parsedAmount = txFormatService.parseAmount(
-      data.stateParams.amount, 
+      data.stateParams.amount,
       data.stateParams.currency);
+console.log('[buyCoinbase.js:46]',parsedAmount); //TODO/
 
-    amount = parsedAmount.amount;
-    currency = parsedAmount.currency;
+    // Buy always in BTC
+    amount = (parsedAmount.amountSat / 100000000).toFixed(8);
+console.log('[buyCoinbase.js:52]',amount); //TODO/
+    currency = 'BTC';
+console.log('[buyCoinbase.js:54]',currency); //TODO/
+
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
+console.log('[buyCoinbase.js:57]',$scope.amountUnitStr); //TODO/
 
+    // Fee Normal for a single transaction
+    var txNormalFeeKB = 450 / 1024;
+console.log('[buyCoinbase.js:60]',txNormalFeeKB); //TODO/
+    feeService.getCurrentFeeValue(null, 'normal', function(err, feePerKB) {
+      feeBTC = (feePerKB * txNormalFeeKB / 100000000).toFixed(8);
+console.log('[buyCoinbase.js:60]',feePerKB, feeBTC, amount - feeBTC); //TODO/
+      // Check if transaction has enough funds to transfer bitcoin from Coinbase to Copay
+      if (amount - feeBTC < 0) {
+        showErrorAndBack('Not enough funds for fee');
+        return;
+      }
+    });
+
+    return; // TODO
     $scope.network = coinbaseService.getNetwork();
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
@@ -144,7 +165,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
     var cancelText = 'Cancel';
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {
       if (!ok) return;
-        
+
       ongoingProcess.set('buyingBitcoin', true, statusChangeHandler);
       coinbaseService.init(function(err, res) {
         if (err) {
