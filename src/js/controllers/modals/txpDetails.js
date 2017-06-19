@@ -16,9 +16,19 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.data = {};
     $scope.displayAmount = getDisplayAmount($scope.tx.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
+    displayFeeValues();
     initActionList();
     checkPaypro();
     applyButtonText();
+  };
+
+  function displayFeeValues() {
+    txFormatService.formatAlternativeStr($scope.tx.fee, function(v) {
+      $scope.tx.feeFiatStr = v;
+    });
+    $scope.tx.feeRateStr = ($scope.tx.fee / ($scope.tx.amount + $scope.tx.fee) * 100).toFixed(2) + '%';
+    if ($scope.tx.feeLevel == 'superEconomy') $scope.tx.feeLevelStr = gettextCatalog.getString('Super Economy');
+    else $scope.tx.feeLevelStr = $scope.tx.feeLevelStr = $scope.tx.feeLevel.charAt(0).toUpperCase() + $scope.tx.feeLevel.slice(1);
   };
 
   function applyButtonText() {
