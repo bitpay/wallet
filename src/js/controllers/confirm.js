@@ -40,20 +40,21 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       value: null
     };
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
-    setFee();
-    resetValues();
-    setwallets();
-    applyButtonText();
+    setFee(null, function() {
+      resetValues();
+      setwallets();
+      applyButtonText();
+    });
   });
 
   function setFee(customFeeLevel, cb) {
-    feeService.getCurrentFeeValue($scope.network, customFeeLevel, function(err, currentFeePerKb) {
+    feeService.getFeeValue($scope.network, customFeeLevel, function(err, currentFeePerKb) {
       var config = configService.getSync().wallet;
       var configFeeLevel = (config.settings && config.settings.feeLevel) ? config.settings.feeLevel : 'normal';
       feePerKb = currentFeePerKb;
       feeLevel = customFeeLevel ? customFeeLevel : configFeeLevel;
       $scope.feeLevel = feeService.feeOpts[feeLevel];
-      if (cb) return cb();
+      return cb();
     });
   }
 
