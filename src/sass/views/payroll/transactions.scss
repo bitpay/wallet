@@ -1,0 +1,60 @@
+#payroll-transactions {
+  background: white;
+
+  .bar-header {
+    border: 0;
+    background: #1e3186;
+
+    .title, .button {
+      color: #fff;
+    }
+
+    .button {
+      background-color: transparent;
+    }
+
+  }
+
+  .inline {
+    display: flex;
+  }
+
+  .ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .select-style {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    background-image: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .item-select select {
+    color: #667;
+  }
+
+  .no-tx {
+
+    margin-top: 20px;
+
+    h1 {
+      font-size: 28px;
+      color: #4A4A4A;
+    }
+
+    &__text {
+      font-weight: 300;
+      color: #8e8e8e;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+  }
+
+}

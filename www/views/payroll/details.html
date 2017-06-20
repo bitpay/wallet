@@ -1,0 +1,74 @@
+<ion-view id="payroll-details">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Payroll details' | translate}}
+    </ion-nav-title>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="goToPayrollSummary()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list">
+      <div class="item head">
+        <div class="deduction-label">
+          <img src="img/icon-bitcoin-small.svg">
+          <div>
+            <div>{{payrollRecord.deduction.label}}</div>
+            <div class="size-14">{{payrollRecord.employer.name}}</div>
+          </div>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{payrollRecord.deduction.amount.toFixed(2) || '...'}} <span class="unit">{{payrollRecord.deduction.currency}}<span></div>
+          <div class="right size-12">
+            <div class="exchange-rate">{{exchangeRate}}</div>
+            <div class="exchange-rate-info" translate>* Today's rate.</div>
+            <div class="exchange-rate-info" translate>Payday transaction rate might be different.</div>
+          </div>
+          <div class="btc-estimate">&asymp; {{btcEstimate  || '...'}} {{btcDisplayUnit}}</div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="item">
+          <span class="label" translate>Deposit Address</span>
+          <certified-address address="payrollRecord.deduction.address"
+            verified="payrollRecord.deduction.addressVerification.verified"
+            unverified-accepted="payrollRecord.deduction.addressVerification.accepted"
+            show-verification="showVerification">
+          </certified-address>
+        </div>
+        <div class="item item-icon-right" ng-if="wallet">
+          <span class="label" translate>Wallet</span>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+            <div>{{wallet.name}}</div>
+          </div>
+        </div>
+        <div class="item item-icon-right" ng-if="!wallet">
+          <span class="label" translate>Wallet</span>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet-external.svg" class="bg wallet-external"/>
+            </i>
+            <div>{{payrollRecord.deduction.walletName}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button class="button button-standard button-primary" ng-click="changePayroll()">
+        <span translate>Change</span>
+      </button>
+      <button class="button button-standard button-secondary" ng-click="togglePausePayroll()">
+        <span>{{payrollStateButtonText}}</span>
+      </button>
+      <button class="button button-standard button-assertive button-clear" ng-click="stopPayroll()">
+        <span translate>Cancel</span>
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

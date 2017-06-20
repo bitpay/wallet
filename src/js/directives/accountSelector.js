@@ -7,21 +7,23 @@ angular.module('copayApp.directives')
       templateUrl: 'views/includes/accountSelector.html',
       transclude: true,
       scope: {
-        title: '=accountSelectorTitle',
-        show: '=accountSelectorShow',
-        accounts: '=accountSelectorAccounts',
-        selectedAccount: '=accountSelectorSelectedAccount',
-        onSelect: '=accountSelectorOnSelect'
+        title: '=',
+        items: '=?',
+        show: '=',
+        accounts: '=',
+        selectedAccount: '=',
+        onSelect: '='
       },
       link: function(scope, element, attrs) {
+        scope.items = scope.items || [{label: 'Connect account', icon: 'img/icon-account-link.svg'}];
         scope.hide = function() {
           scope.show = false;
         };
-        scope.selectAccount = function(account) {
+        scope.select = function(accountOrIndex) {
           $timeout(function() {
             scope.hide();
           }, 100);
-          scope.onSelect(account);
+          scope.onSelect(accountOrIndex);
         };
       }
     };

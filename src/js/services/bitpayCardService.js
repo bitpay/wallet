@@ -41,12 +41,17 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     return history;
   };
 
+  root.hasAccess = function(apiContext) {
+    return (bitpayService.getTokenForFacade(bitpayService.FACADE_VISA_USER, apiContext.tokens) != undefined);
+  };
+
   root.sync = function(apiContext, cb) {
     var json = {
       method: 'getDebitCards'
     };
     // Get Debit Cards
-    bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
+    var endpoint = bitpayService.getTokenForFacade(bitpayService.FACADE_VISA_USER, apiContext.tokens).token;
+    bitpayService.post(bitpayService.FACADE_VISA_USER, endpoint, json, function(data) {
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Get Debit Cards: SUCCESS');
 
@@ -112,7 +117,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
           return cb(_setError('Card not found'));
 
         // Get invoices
-        bitpayService.post('/api/v2/' + card.token, json, function(data) {
+        bitpayService.post(bitpayService.FACADE_VISA_USER, card.token, json, function(data) {
           $log.info('BitPay Get Invoices: SUCCESS');
           invoices = data.data.data || [];
 
@@ -124,7 +129,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
             params: JSON.stringify(opts)
           };
           // Get transactions list
-          bitpayService.post('/api/v2/' + card.token, json, function(data) {
+          bitpayService.post(bitpayService.FACADE_VISA_USER, card.token, json, function(data) {
             $log.info('BitPay Get Transactions: SUCCESS');
             transactions = data.data.data || {};
             transactions['txs'] = _processTransactions(invoices, transactions.transactionList);
@@ -161,7 +166,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
         if (!card)
           return cb(_setError('Card not found'));
 
-        bitpayService.post('/api/v2/' + card.token, json, function(data) {
+        bitpayService.post(bitpayService.FACADE_VISA_USER, card.token, json, function(data) {
           $log.info('BitPay TopUp: SUCCESS');
           if (data.data.error) {
             return cb(data.data.error);
@@ -176,7 +181,7 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
   };
 
   root.getInvoice = function(id, cb) {
-    bitpayService.get('/invoices/' + id, function(data) {
+    bitpayService.get(bitpayService.FACADE_PUBLIC, '/invoices/' + id, function(data) {
       $log.info('BitPay Get Invoice: SUCCESS');
       return cb(data.data.error, data.data.data);
     }, function(data) {
@@ -225,16 +230,6 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       storageService.removeBalanceCache(cardId, cb);
     });
   };
-
-  root.getRates = function(currency, cb) {
-    bitpayService.get('/rates/' + currency, function(data) {
-      $log.info('BitPay Get Rates: SUCCESS');
-      return cb(data.data.error, data.data.data);
-    }, function(data) {
-      return cb(_setError('BitPay Error: Get Rates', data));
-    });
-  };
-
 
   root.get = function(opts, cb) {
     root.getCards(function(err, cards) {

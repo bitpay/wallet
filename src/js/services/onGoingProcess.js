@@ -45,7 +45,14 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'cancelingGiftCard': 'Canceling Gift Card...',
     'creatingGiftCard': 'Creating Gift Card...',
     'buyingGiftCard': 'Buying Gift Card...',
-    'topup': 'Top up in progress...'
+    'topup': 'Top up in progress...',
+    'loadingPayrollRecords': gettext('Loading payroll data...'),
+    'savingPayrollRecord': gettext('Saving payroll data...'),
+    'pausingPayrollRecord': gettext('Pausing payroll...'),
+    'resumingPayrollRecord': gettext('Resuming payroll...'),
+    'cancelingPayrollRecord': gettext('Canceling payroll...'),
+    'checkingPayrollEligible': gettext('Checking eligibility...'),
+    'checkingAccountAvailability': gettext('Checking account availability...'),
   };
 
   root.clear = function() {

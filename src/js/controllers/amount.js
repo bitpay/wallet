@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, nodeWebkitService) {
   var _id;
   var unitToSatoshi;
   var satToUnit;
@@ -16,11 +16,30 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    // Go to...
-    _id = data.stateParams.id; // Optional (BitPay Card ID or Wallet ID)
+    // Default values
+    var showRate = data.stateParams.showRate || 'false';
+    var askForAlternative = data.stateParams.askForAlternative || 'false';
+    var showAlternativeAmount = data.stateParams.showAlternativeAmount || 'false';
+    var disallowCurrencyToggle = data.stateParams.disallowCurrencyToggle || 'false';
+    var showRecipient = data.stateParams.showRecipient || 'false';
+
+    $scope.viewTitle = data.stateParams.viewTitle || gettextCatalog.getString('Enter Amount');
+    $scope.recipientLabel = data.stateParams.recipientLabel || gettextCatalog.getString('Recipient');
+    $scope.amountLabel = data.stateParams.amountLabel || gettextCatalog.getString('Amount');
+    $scope.amountMax = data.stateParams.amountMax || -1;
+    $scope.showRate = (showRate.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.askForAlternative = (askForAlternative.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.showAlternativeAmount = (showAlternativeAmount.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.disallowCurrencyToggle = (disallowCurrencyToggle.toString().trim().toLowerCase() == 'true' ? true : false);
+
+    _id = data.stateParams.id; // Optional (callers id value, e.g., card id, payroll record id..)
+
     $scope.nextStep = data.stateParams.nextStep;
     $scope.currency = data.stateParams.currency;
-    $scope.forceCurrency = data.stateParams.forceCurrency;
+    $scope.customAmount = data.stateParams.customAmount;
+
+    showRecipient = (showRecipient.toString().trim().toLowerCase() == 'true' ? true : false);
+    $scope.showRecipient = showRecipient || (!$scope.customAmount && !$scope.nextStep);
 
     $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
@@ -28,7 +47,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
@@ -115,7 +133,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.toggleAlternative = function() {
-    if ($scope.forceCurrency) return;
+    if ($scope.disallowCurrencyToggle) return;
     $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
 
     if ($scope.amount && isExpression($scope.amount)) {
@@ -177,7 +195,16 @@ angular.module('copayApp.controllers').controller('amountController', function($
   function processAmount() {
     var formatedValue = format($scope.amount);
     var result = evaluate(formatedValue);
-    $scope.allowSend = lodash.isNumber(result) && +result > 0;
+
+    // If a maximum entry amount is present, don't allow the user to exceed that amount.
+    var exceedMax = (+$scope.amountMax >= 0 ? +result > +$scope.amountMax : false);
+
+    $scope.keypadAlert = undefined;
+    if (exceedMax) {
+      $scope.keypadAlert = gettextCatalog.getString('Amount exceeds maximum allowed');
+    }
+
+    $scope.allowSend = lodash.isNumber(result) && +result > 0 && ($scope.keypadAlert == undefined);
     if (lodash.isNumber(result)) {
       $scope.globalResult = isExpression($scope.amount) ? '= ' + processResult(result) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
@@ -220,15 +247,33 @@ angular.module('copayApp.controllers').controller('amountController', function($
     return result.replace('x', '*');
   };
 
+  $scope.setExchangeRateStr = function() {
+    rateService.whenAvailable(function() {
+      var rate = rateService.getRate($scope.alternativeIsoCode);
+      if ($scope.unitName == 'bits') {
+        $scope.exchangeRate = '1,000,000 bits ~ ' + rate.toFixed(2) + ' ' + $scope.alternativeIsoCode;
+      } else {
+        $scope.exchangeRate = '1 BTC ~ ' + rate.toFixed(2) + ' ' + $scope.alternativeIsoCode;
+      }
+    });
+  };
+
   $scope.finish = function() {
     var _amount = evaluate(format($scope.amount));
 
     if ($scope.nextStep) {
+      var amount = $scope.useSendMax ? null : _amount;
+      if (amount && $scope.askForAlternative && !$scope.showAlternativeAmount) {
+        amount = toFiat(amount);
+      }
       $state.transitionTo($scope.nextStep, {
         id: _id,
-        amount: $scope.useSendMax ? null : _amount,
+        amount: amount,
         currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.unitName,
-        useSendMax: $scope.useSendMax
+        useSendMax: $scope.useSendMax,
+        recipientType: $scope.recipientType,
+        toAddress: $scope.toAddress,
+        toName: $scope.toName,
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;

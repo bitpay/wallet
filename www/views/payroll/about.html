@@ -1,0 +1,48 @@
+<ion-view id="payroll-about">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'About payroll' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list card">
+      <div class="section">
+        <div class="centered">
+          <i class="icon big-icon-svg">
+            <img src="{{payrollRecord.employer.imageURL}}" class="employer">
+          </i>
+            <div class="name">
+            {{payrollRecord.employer.name}}
+          </div>
+          <div class="description">
+            {{payrollRecord.employer.about.message}}
+          </div>
+          <div class="description">
+            {{payrollRecord.employer.about.terms}}
+          </div>
+          <div class="description">
+            <a href="{{payrollRecord.employer.about.utl}}">Learn more</a>
+          </div>
+        </div>
+      </div>
+      <div class="section" ng-if="payrollRecord.employee">
+        <div class="centered">
+					<i class="icon big-icon-svg">
+      			<img src="img/contact-placeholder.svg" class="employee">
+   				</i>
+          <div class="name">
+		      	{{payrollRecord.employee.givenName}} {{payrollRecord.employee.familyName}}
+          </div>
+          <div class="description">
+            Employee ID: {{payrollRecord.employee.label}}
+          </div>
+          <div class="description">
+		      	{{payrollRecord.employee.email}}
+          </div>
+        </div>
+      </div>
+   </div>
+
+  </ion-content>
+</ion-view>

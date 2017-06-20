@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="274px" height="247px" viewBox="0 0 274 247" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>onboarding-payroll</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="89.4673583%" id="linearGradient-1">
+            <stop stop-color="#3950B5" offset="0%"></stop>
+            <stop stop-color="#162360" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="onboarding-payroll" transform="translate(-1.000000, 0.000000)">
+            <g id="Page-1">
+                <g id="onboarding-push-notifications">
+                    <g id="Onboarding">
+                        <g id="0.4---Allow-Push-Notifications">
+                            <g id="Group-7">
+                                <path d="M151.5,247 C219.707167,247 275,191.707167 275,123.5 C275,55.2928334 219.707167,1.42108547e-14 151.5,1.42108547e-14 C83.2928334,1.42108547e-14 28,55.2928334 28,123.5 C28,191.707167 83.2928334,247 151.5,247 Z" id="Oval-2" fill="url(#linearGradient-1)" opacity="0.300000012"></path>
+                                <g id="Calendar" transform="translate(85.000000, 9.000000)">
+                                    <rect id="Combined-Shape" stroke="#647CE8" stroke-width="2" fill="#253377" x="0" y="17.027027" width="179.545155" height="165.004873" rx="8"></rect>
+                                    <g id="Grid" transform="translate(0.405405, 57.594595)" stroke="#647CE8" stroke-width="2">
+                                        <path d="M98.1081081,93.2162162 L178.378378,93.2162162" id="Line"></path>
+                                        <path d="M94.4594595,61.5945946 L179.594595,61.5945946" id="Line"></path>
+                                        <path d="M75,31.1891892 L178.378378,31.1891892" id="Line"></path>
+                                        <path d="M0.810810811,0.783783784 L178.485703,0.783783784" id="Line"></path>
+                                        <path d="M64.0540541,24.1081081 L110.27027,24.1081081" id="Line" transform="translate(87.162162, 24.108108) rotate(90.000000) translate(-87.162162, -24.108108) "></path>
+                                        <path d="M62.8378378,54.5135135 L169.864865,54.5135135" id="Line" transform="translate(116.351351, 54.513514) rotate(90.000000) translate(-116.351351, -54.513514) "></path>
+                                        <path d="M84.7567568,63 L208.756757,63" id="Line" transform="translate(146.756757, 63.000000) rotate(90.000000) translate(-146.756757, -63.000000) "></path>
+                                    </g>
+                                    <g id="Rings" transform="translate(35.270270, 0.000000)" stroke="#647CE8" stroke-width="2">
+                                        <path d="M91.7851054,16.4581379 L125.449822,16.4581379" id="Line" transform="translate(108.617464, 16.832358) rotate(90.000000) translate(-108.617464, -16.832358) "></path>
+                                        <path d="M-16.4581379,16.4581379 L17.2065786,16.4581379" id="Line" transform="translate(0.374220, 16.832358) rotate(90.000000) translate(-0.374220, -16.832358) "></path>
+                                    </g>
+                                    <g id="Payday" transform="translate(132.175676, 104.000000) scale(1, -1) translate(-132.175676, -104.000000) translate(120.675676, 98.500000)" stroke="#12E5B6" stroke-width="3">
+                                        <path d="M0.460854207,9.55405405 L22.0066355,9.55405405" id="Line"></path>
+                                        <path d="M5.73569211,0.506756676 L17.7360279,0.506756676" id="Line"></path>
+                                    </g>
+                                </g>
+                                <g id="B-circle" transform="translate(69.000000, 94.000000)">
+                                    <ellipse id="Oval-2" stroke="#647CE8" stroke-width="2" fill-opacity="0.41907269" fill="#5462B1" opacity="0.945615695" cx="47" cy="44.4884375" rx="47" ry="44.4884375"></ellipse>
+                                    <g id="B" opacity="0.899286685" transform="translate(28.000000, 17.000000)" stroke="#FFFFFF" stroke-width="5">
+                                        <g id="shopping-48px-outline_bitcoin" transform="translate(0.666667, 0.180606)">
+                                            <g id="Group" transform="translate(0.619048, 0.627502)">
+                                                <path d="M12,0 L12,7.5300202" id="Shape"></path>
+                                                <path d="M19,0 L19,7.5300202" id="Shape"></path>
+                                                <path d="M12,47.6901279 L12,55.2201481" id="Shape"></path>
+                                                <path d="M19,47.6901279 L19,55.2201481" id="Shape"></path>
+                                                <path d="M0,47.691892 L7.42857143,47.691892" id="Shape-Copy"></path>
+                                                <path d="M0,7.531892 L7.42857143,7.531892" id="Shape-Copy-2"></path>
+                                                <path d="M7.42857143,25.1000673 L7.42857143,7.5300202 L21.8042328,7.5300202 C26.9010582,7.5300202 30.952381,11.4205306 30.952381,16.3150438 C30.952381,21.2095569 26.9010582,25.1000673 21.8042328,25.1000673" id="Shape"></path>
+                                                <path d="M7.42857143,47.6901279 L7.42857143,25.1000673 L23.6785714,25.1000673 C29.0952381,25.1000673 33.4285714,30.1200808 33.4285714,36.3950976 C33.4285714,42.6701145 29.0952381,47.6901279 23.6785714,47.6901279 L7.42857143,47.6901279 Z" id="Shape"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                                <g id="Arrow" transform="translate(34.874368, 138.414990) rotate(225.000000) translate(-34.874368, -138.414990) translate(10.874368, 113.914990)" stroke="#647CE8" stroke-width="5">
+                                    <path d="M5.3890873,43.3180195 L47.8154942,0.891612613" id="Line"></path>
+                                    <path d="M0.70710678,45.7977995 L20.7071068,45.7977995" id="Line"></path>
+                                    <path d="M3.0355339,28 L3.0355339,48" id="Line"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

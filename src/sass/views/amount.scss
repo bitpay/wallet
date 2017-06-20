@@ -26,6 +26,10 @@
           width:30px;
           height:30px;
           box-shadow: none;
+
+          &.address {
+            background-color: $v-light-gray;
+          }
         }
       }
       font-size: 13px;
@@ -256,5 +260,11 @@
       font-size: 12px;
 
     }
+  }
+
+  .keypad-alert {
+    color: $v-warning-color;
+    font-size: 16px;
+    font-weight: normal;
   }
 }

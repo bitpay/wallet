@@ -1,0 +1,54 @@
+
+<ion-view id="payroll-intro" class="onboarding" hide-tabs>
+  <ion-nav-bar>
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="goBackToHome()">
+        <i class="icon ion-ios-arrow-thin-left"></i>
+      </button>
+    </ion-nav-buttons>
+    <ion-nav-title></ion-nav-title>
+    <ion-nav-buttons side="secondary">
+      <button class="button button-clear" ng-click="payrollInfo()">
+        <i class="icon ion-ios-information-outline payroll__info"></i>
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content scroll="false">
+    <div class="payroll__illustration">
+      <img class="payroll__illustration__img" src="img/onboarding-payroll.svg">
+    </div>
+    <ion-slide-box>
+      <ion-slide>
+        <p class="slider__text" translate>
+        Receive bitcoin as a portion of your pay.
+        </p>
+      </ion-slide>
+      <ion-slide>
+        <p class="slider__text" translate>
+        Secure delivery of bitcoin directly to your wallet.
+        </p>
+      </ion-slide>
+      <ion-slide>
+        <p class="slider__text" translate>
+        Pay 0% fees to receive bitcoin deposits.
+        </p>
+      </ion-slide>
+    </ion-slide-box>
+    <div class="cta-button">
+      <button class="button button-standard button-primary" ng-click="setupPayroll()" translate>
+        Setup Payroll
+      </button>
+      <button class="button button-standard button-secondary button-clear" ng-click="connectPayroll()" translate>
+        Connect my Payroll
+      </button>
+    </div>
+  </ion-content>
+  <account-selector
+    title="accountSelectorTitle"
+    items="accountSelectorItems"
+    accounts="accounts"
+    selected-account="account"
+    show="showAccounts"
+    on-select="onSelect">
+  </account-selector>
+</ion-view>

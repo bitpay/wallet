@@ -7,8 +7,8 @@ angular.module('copayApp.directives')
       templateUrl: 'views/includes/itemSelector.html',
       transclude: true,
       scope: {
-        show: '=itemSelectorShow',
-        onSelect: '=itemSelectorOnSelect'
+        show: '=',
+        onSelect: '='
       },
       link: function(scope, element, attrs) {
         scope.hide = function() {

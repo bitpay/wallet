@@ -1,0 +1,37 @@
+<ion-view id="payroll-eligible" class="settings" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Eligibility' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+    <div class="explanation">
+      <p translate>Please enter your eligible employer provided email address.</p>
+      <p ng-if="createAccount" translate>This email address will be used to create a new account at BitPay.com.</p>
+    </div>
+    <form name="eligibleForm" ng-submit="checkIfEligible()" novalidate>
+      <div class="list settings-input-group">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label" translate>Email Address</span>
+          <input type="email" id="email" name="email" ng-model="qualifyingData.email" required></input>
+          <span class="error" ng-if="error">{{error}}</span>
+        </label>
+      </div>
+      <div ng-if="employeeLabelRequired">
+        <div class="explanation">
+          <p translate>Additional information is required.</p>
+          <p translate>Please enter your eligible employer provided ID.</p>
+        </div>
+        <div class="list settings-input-group">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" translate>Employee ID</span>
+            <input type="text" id="label" name="label" ng-model="qualifyingData.label" required></input>
+          </label>
+        </div>
+      </div>
+      <button type="submit" class="button button-standard button-primary" ng-disabled="eligibleForm.$invalid" translate>
+        Continue
+      </button>
+    </form>
+  </ion-content>
+</ion-view>

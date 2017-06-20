@@ -1,15 +1,15 @@
 'use strict';
-angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService, bitpayAccountService) {
+angular.module('copayApp.controllers').controller('bitpayCardIntroController', function($scope, $log, $state, $ionicHistory, storageService, externalLinkService, bitpayCardService, gettextCatalog, popupService, bitpayService, bitpayAccountService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (data.stateParams && data.stateParams.secret) {
       var pairData = {
         secret: data.stateParams.secret,
         email: data.stateParams.email,
-        otp: data.stateParams.otp
+        otp: data.stateParams.otp,
+        facade: data.stateParams.facade
       };
-      var pairingReason = gettextCatalog.getString('add your BitPay Visa card(s)');
-      bitpayAccountService.pair(pairData, pairingReason, function(err, paired, apiContext) {
+      bitpayAccountService.pair(pairData, function(err, paired, apiContext) {
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error pairing BitPay Account'), err);
           return;
@@ -63,8 +63,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
   };
 
   var startPairBitPayAccount = function() {
-    var url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
-    externalLinkService.open(url);
+    bitpayAccountService.startPairBitPayAccount(bitpayService.FACADE_VISA_USER);
   };
 
   var showAccountSelector = function() {
@@ -73,7 +72,7 @@ angular.module('copayApp.controllers').controller('bitpayCardIntroController', f
   };
 
   $scope.onAccountSelect = function(account) {
-    if (account == undefined) {
+    if (account == undefined || (account && !bitpayCardService.hasAccess(account.email))) {
       startPairBitPayAccount();
     } else {
       bitpayCardService.sync(account.apiContext, function(err, data) {

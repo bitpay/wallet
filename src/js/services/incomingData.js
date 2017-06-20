@@ -163,7 +163,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       });
       return true;
 
-      // BitPayCard Authentication
+      // BitPay Account Authentication
     } else if (data && data.indexOf(appConfigService.name + '://') === 0) {
 
       // Disable BitPay Card
@@ -172,22 +172,30 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var secret = getParameterByName('secret', data);
       var email = getParameterByName('email', data);
       var otp = getParameterByName('otp', data);
-      var reason = getParameterByName('r', data);
+      var facade = getParameterByName('f', data) || 'visaUser'; // TODO: remove when server tells us this.
 
       $state.go('tabs.home', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.home' ? false : true
       }).then(function() {
-        switch (reason) {
+        switch (facade) {
           default:
-            case '0':
-            /* For BitPay card binding */
+          case 'visaUser':
             $state.transitionTo('tabs.bitpayCardIntro', {
               secret: secret,
               email: email,
-              otp: otp
+              otp: otp,
+              facade: facade
             });
-          break;
+            break;
+          case 'payrollUser':
+            $state.transitionTo('tabs.payroll', {
+              secret: secret,
+              email: email,
+              otp: otp,
+              facade: facade
+            });
+            break;
         }
       });
       return true;

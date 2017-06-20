@@ -1,0 +1,130 @@
+#payroll-summary {
+
+  .card {
+    color: $v-mid-gray;
+
+  	.title {
+	    font-size: 16px;
+  	}
+
+  	.message {
+	    font-size: 14px;
+    	padding: 10px;
+    	border: 1px solid $v-subtle-gray;
+  	}
+
+    .amount {
+      font-size: 38px;
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+      text-align: center;
+
+      > .unit {
+        font-family: "Roboto-Light";
+      }
+
+      > .cycle {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 10px 0;
+      }
+
+    }
+
+    .icon {
+
+      &.eligible {
+        font-size: 120px;
+        color: $v-accent-color;
+      }
+
+      &.verified {
+        font-size: 120px;
+        color: $v-success-color;
+      }
+
+      &.status-dot {
+        position: initial;
+        font-size: 10px;
+
+        &:before {
+          width: 14px;
+          text-align: left;
+        }
+
+        &.status-active {
+          color: #63c563;
+        }
+
+        &.status-inactive {
+          color: #c56363;
+        }
+
+      }
+
+    }
+
+    .section {
+      padding: 16px;
+
+      .title {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      &.footer {
+        margin-bottom: 16px;
+      }
+
+      .centered {
+        text-align: center;
+      }
+
+    	.description {
+        margin-top: 16px;
+      }
+
+      .active {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: green;
+      }
+
+      .paused {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: orange;
+      }
+
+      .action {
+        font-size: 12px;
+        text-transform: uppercase;
+        padding-right: 25px;
+        color: $v-accent-color;
+        float: left;
+      }
+
+    }
+
+    .wallet {
+      border-top: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
+
+      &.bg {
+        padding: .25rem;
+        border: none;
+      }
+
+      .wallet-external {
+        background-color: $v-light-gray;
+        border: none;
+      }
+
+    }
+
+  }
+
+}

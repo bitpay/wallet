@@ -1,0 +1,64 @@
+<ion-view id="payroll-transactions">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>{{'Payroll transactions' | translate}}</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div ng-show="error" class="text-center m10t assertive">
+      {{error}}
+    </div>
+
+    <div class="text-center padding no-tx" ng-show="!hasTransactions">
+      <h1 translate>No Transactions</h1>
+      <div class="no-tx__text" translate>
+        We're waiting for the first one!
+      </div>
+    </div>
+
+    <div class="list" ng-show="hasTransactions">
+      <label class="item item-input item-select">
+        <div class="input-label" translate>
+          Activity
+        </div>
+        <select ng-model="query.value" ng-change="loadTransactions()">
+          <option value="last30Days" selected translate>Recent</option>
+          <option value="lastMonth" translate>Last Month</option>
+          <option value="all" translate>All</option>
+        </select>
+      </label>
+      <div copy-to-clipboard="tx.address" class="item row" ng-repeat="tx in transactions | orderBy: ['-timestamp']">
+        <div class="col col-10 text-center">
+          <div class="tu size-12">{{tx.timestamp | amDateFormat:'MMM'}}</div>
+          <div class="text-light">{{tx.timestamp | amDateFormat:'DD'}}</div>
+        </div>
+        <div class="col col-10">
+          <img class="m15t" ng-src="img/icon-tx-received-outline.svg" width="24" ng-if="tx.status == 'PAID'">
+          <img class="m15t" ng-src="img/icon-confirming-clear.svg" width="24" ng-if="tx.status == 'PENDING'">
+        </div>
+
+        <div class="col col-50">
+          <div class="size-12 inline">
+            <span class="text-bold">{{tx.status}}</span>
+            <span class="ellipsis">&nbsp;-&nbsp;{{tx.address}}</span>
+          </div>
+          <div class="size-12 text-gray">
+            <span>{{formatRate(tx.rate)}}</span>
+          </div>
+        </div>
+        <div class="col text-right">
+          <div class="balanced" ng-if="tx.status == 'PAID'">
+            {{tx.btc}}
+          </div>
+          <div class="stable" ng-if="tx.status == 'PENDING'">
+            Pending
+          </div>
+          <div class="size-12 text-gray" ng-if="!tx.pending">
+            {{tx.amount | currency:'$':2}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

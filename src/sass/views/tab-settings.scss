@@ -34,6 +34,16 @@
     font-size: 17px;
     color: $v-dark-gray;
     margin: 1rem 0;
+    &.centered {
+      text-align: center;
+      .icon {
+        font-size: 120px;
+        color: $v-accent-color;
+        line-height: 150px;
+        position: relative;
+        top: -10px;
+      }
+    }
   }
   &-description {
     color: $v-mid-gray;

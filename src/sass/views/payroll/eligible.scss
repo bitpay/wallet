@@ -1,0 +1,19 @@
+#payroll-eligible {
+
+  .explanation {
+    font-size: 15px;
+    color: #667;
+    margin: 1rem 0;
+    padding: 0 1rem;
+  }
+
+	.list:last-child {
+    margin-bottom: 20px;
+	}
+
+  .error {
+    font-size: 14px;
+    color: $v-warning-color;
+  }
+
+}

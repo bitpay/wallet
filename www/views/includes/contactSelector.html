@@ -1,0 +1,26 @@
+<action-sheet action-sheet-show="show" class="contact-selector">
+  <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()">
+  <div class="header">{{title}}</div>
+  <a
+    ng-repeat="c in contacts track by $index"
+    class="item item-icon-left item-big-icon-left item-icon-right contact"
+    ng-click="selectContact(c)">
+      <i class="icon big-icon-svg">
+        <img src="img/contact-placeholder.svg" class="bg" ng-if="isChromeApp">
+        <gravatar class="gravatar" name="{{c.name}}" width="30" email="{{c.email}}" ng-if="!isChromeApp"></gravatar>
+      </i>
+      <div class="contact-inner">
+        <div class="contact-details">
+          <div class="contact-name">
+            {{c.name}}
+          </div>
+          <p class="contact-balance">
+            <span>{{c.email}}</span>
+          </span>
+          &nbsp;
+          </p>
+        </div>
+        <img class="check" src="img/icon-check-selected.svg" ng-show="selectedContact === c">
+      </div>
+    </a>
+</action-sheet>

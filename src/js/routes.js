@@ -920,6 +920,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
+        },
+        params: {
+          showAlternativeAmount: true
         }
       })
       .state('tabs.buyandsell.glidera.buy', {
@@ -982,6 +985,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
+        },
+        params: {
+          showAlternativeAmount: true
         }
       })
       .state('tabs.buyandsell.coinbase.buy', {
@@ -1052,7 +1058,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           nextStep: 'tabs.giftcards.amazon.buy',
           currency: 'USD',
-          forceCurrency: true
+          askForAlternative: true,
+          showAlternativeAmount: true,
+          disallowCurrencyToggle: true
         }
       })
       .state('tabs.giftcards.amazon.buy', {
@@ -1072,7 +1080,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('tabs.bitpayCardIntro', {
-        url: '/bitpay-card-intro/:secret/:email/:otp',
+        url: '/bitpay-card-intro/:secret/:email/:otp/:facade',
         views: {
           'tab-home@tabs': {
             controller: 'bitpayCardIntroController',
@@ -1102,6 +1110,10 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'amountController',
             templateUrl: 'views/amount.html'
           }
+        },
+        params: {
+          showAlternativeAmount: true,
+          showRate: true
         }
       })
       .state('tabs.bitpayCard.topup', {
@@ -1121,9 +1133,113 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/preferencesBitpayServices.html'
           }
         }
-      });
+      })
+
+    /*
+     *
+     * Payroll service
+     *
+     */
+
+    .state('tabs.payroll', {
+      url: '/payroll/:secret/:email/:otp/:facade',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/intro.html',
+          controller: 'payrollIntroController'
+        }
+      }
+    })
+    .state('tabs.payroll.eligible', {
+      url: '/payroll/eligible/:createAccount',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/eligible.html',
+          controller: 'payrollEligibleController'
+        }
+      }
+    })
+    .state('tabs.payroll.summary', {
+      url: '/payroll/summary',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/summary.html',
+          controller: 'payrollSummaryController'
+        }
+      }
+    })
+    .state('tabs.payroll.transactions', {
+      url: '/payroll/transactions/:id',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/transactions.html',
+          controller: 'payrollTransactionsController'
+        }
+      }
+    })
+    .state('tabs.payroll.about', {
+      url: '/payroll/about/:id',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/about.html',
+          controller: 'payrollAboutController'
+        }
+      }
+    })
+    .state('tabs.payroll.depositAddress', {
+      url: '/payroll/deposit-address/:id',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/deposit-address.html',
+          controller: 'payrollDepositAddressController'
+        }
+      }
+    })
+    .state('tabs.payroll.addressbook', {
+      url: '/addressbook/add',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/addressbook.add.html',
+          controller: 'addressbookAddController'
+        }
+      }
+    })
+    .state('tabs.payroll.depositAmount', {
+      url: '/payroll/amount/:recipientType/:id/:toAddress/:toName/:toColor/:viewTitle/:recipientLabel/:amountLabel/:amountMax',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/amount.html',
+          controller: 'amountController'
+        }
+      },
+      params: {
+        nextStep: 'tabs.payroll.confirm',
+        showAlternativeAmount: true,
+        askForAlternative: true,
+        showRecipient: true,
+        showRate: true
+      }
+    })
+    .state('tabs.payroll.confirm', {
+      url: '/payroll/confirm/:recipientType/:id/:toAddress/:toName/:amount',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/confirm.html',
+          controller: 'payrollConfirmController'
+        }
+      }
+    })
+    .state('tabs.payroll.details', {
+      url: '/payroll/details/:id',
+      views: {
+        'tab-home@tabs': {
+          templateUrl: 'views/payroll/details.html',
+          controller: 'payrollDetailsController'
+        }
+      }
+    });
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, emailService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService, applicationService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, startupService, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, emailService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService, applicationService, bitpayPayrollService) {
 
     uxLanguage.init();
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, profileService) {
   // `wallet` is a decorated version of client.
 
   var root = {};
@@ -1140,6 +1140,76 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.getSendMaxInfo(opts, function(err, res) {
       return cb(err, res);
     });
+  };
+
+  // Wallet restrictions provide a wallet associated mechanism for the app to, for example, prevent
+  // certain user operations from executing.  For example, if payroll deposits are bound to a wallet
+  // address then the wallet should not able to be deleted before the payroll binding is removed,
+  // thereby lifting the restriction on the delete operation.
+  // 
+  // Restriction elements are of the from 'operation:binding', where
+  //   operation is what is being restricted
+  //   binding is why the operation is being restricted
+  //   
+  // Example
+  // 
+  //   restrictions = [
+  //     'delete:payroll-deposit', // Cannot delete because payroll deposit is associated with wallet
+  //     'delete:locked', // Cannot delete because the wallet has been locked
+  //     'send:locked', // Cannot send tx because the wallet has been locked
+  //   ]
+  // 
+  var allowedRestrictions = {
+    'delete:payroll-deposit': gettextCatalog.getString('This wallet is receiving payroll deposits.')
+  };
+
+  root.setRestrictions = function(walletId, restrictions, cb) {
+    // Check integrity of restrictions.
+    restrictions.forEach(function(r) {
+      if (allowedRestrictions[r] == undefined) {
+        return cb('Unrecognized wallet restriction: ' + r);
+      }
+    });
+
+    // Combine existing and new restrictions.
+    var walletRestrictions = configService.getSync().restrictionsFor[walletId];
+    walletRestrictions = lodash.union(walletRestrictions, restrictions);
+    saveRestrictions(walletId, walletRestrictions, cb);
+  };
+
+  root.removeRestrictions = function(walletId, restrictions, cb) {
+    // Exclude specified restrictions.
+    var walletRestrictions = configService.getSync().restrictionsFor[walletId];
+    walletRestrictions = lodash.without(walletRestrictions, restrictions);
+    saveRestrictions(walletId, walletRestrictions, cb);
+  };
+
+  var saveRestrictions = function(walletId, restrictions, cb) {
+    var opts = {
+      restrictionsFor: {}
+    };
+    opts.restrictionsFor[walletId] = restrictions;
+
+    configService.set(opts, function(err) {
+      if (err) $log.warn(err);
+      // Re-bind the wallet with new settings.
+      profileService.bindWalletClient(profileService.getWallet(walletId), {force: true});
+      cb(err);
+    });
+  };
+
+  // Return an array of reasons or null.
+  root.getRestriction = function(wallet, operation) {
+    var res = lodash.filter(Object.keys(wallet.restrictions), function(r) {
+      var regex = new RegExp('^' + operation + ':', 'i');
+      return regex.test(r);
+    });
+
+    var restrictionReasons = [];
+    for (var i = 0; i < res.length; i++) {
+      restrictionReasons.push(allowedRestrictions[res[i]]);
+    }
+    return (restrictionReasons.length == 0 ? null : restrictionReasons);
   };
 
   return root;

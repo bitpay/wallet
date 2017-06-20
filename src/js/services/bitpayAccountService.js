@@ -1,7 +1,32 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayAccountService', function($log, lodash, platformInfo, appIdentityService, bitpayService, bitpayCardService, storageService, gettextCatalog, popupService) {
+angular.module('copayApp.services').factory('bitpayAccountService', function($log, lodash, platformInfo, appIdentityService, bitpayService, bitpayCardService, storageService, gettextCatalog, popupService, externalLinkService) {
+
   var root = {};
+
+  var accountCache = [];
+
+  // A list of facades that this service recognizes.
+  //   items - the kind of items that this facade manages; UI friendly description.
+  //   startUrl - url where pairing with this facade starts.
+  var pairFor = {
+    visaUser: {
+      items: 'BitPay Visa<sup>&reg;</sup> card(s)',
+      startUrl: 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm'
+    },
+    payrollUser: {
+      items: 'payroll settings',
+      startUrl: 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm' // TODO
+    }
+  };
+
+  root.startPairBitPayAccount = function(facade) {
+    if (!facade || !pairFor[facade]) {
+      return $log.error('Start account pairing failed, unrecognized facade: ' + facade);
+    }
+    externalLinkService.open(pairFor[facade].startUrl);
+    $log.info('Started account pairing process for ' + facade);
+  };
 
   /*
    * Pair this app with the bitpay server using the specified pairing data.
@@ -13,11 +38,8 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
    *   secret: shared pairing secret
    *   email: email address associated with bitpay account
    *   otp: two-factor one-time use password
+   *   facade: facade for whihch access is being requested
    * }
-   * 
-   * pairingReason - text string to be embedded into popup message.  If `null` then the reason
-   * message is not shown to the UI.
-   *   "To {{reason}} you must pair this app with your BitPay account ({{email}})."
    * 
    * cb - callback after completion
    *   callback(err, paired, apiContext)
@@ -28,12 +50,12 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
    * 
    *   apiContext - the context needed for making future api calls
    *   {
-   *     token: api token for use in future calls
+   *     tokens: api token array for use in future calls {token, facade}
    *     pairData: the input pair data
    *     appIdentity: the identity of this app
    *   }
    */
-  root.pair = function(pairData, pairingReason, cb) {
+  root.pair = function(pairData, cb) {
     checkOtp(pairData, function(otp) {
       pairData.otp = otp;
 	    var deviceName = 'Unknown device';
@@ -57,34 +79,37 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
           return cb(data.data.error);
         }
         var apiContext = {
-          token: data.data.data,
+          tokens: [{
+            token: data.data.data,
+            facade: pairData.facade
+          }],
           pairData: pairData,
           appIdentity: data.appIdentity
         };
         $log.info('BitPay service BitAuth create token: SUCCESS');
 
         fetchBasicInfo(apiContext, function(err, basicInfo) {
-          if (err) return cb(err);
-          var title = gettextCatalog.getString('Add BitPay Account?');
-          var msgDetail = 'Add this BitPay account ({{email}})?';
-          if (pairingReason) {
-  	        msgDetail = 'To {{reason}} you must first add your BitPay account - {{email}}';
-  	      }
-          var msg = gettextCatalog.getString(msgDetail, {
-          	reason: pairingReason,
+          if (err) {
+            return cb(err);
+          }
+          var title = gettextCatalog.getString('Allow Access?');
+          var msg = gettextCatalog.getString('Allow this device to access your {{items}} on your BitPay account ({{email}})?', {
+          	items: pairFor[pairData.facade].items,
             email: pairData.email
           });
-          var ok = gettextCatalog.getString('Add Account');
-          var cancel = gettextCatalog.getString('Go back');
+          var ok = gettextCatalog.getString('Allow');
+          var cancel = gettextCatalog.getString('Deny');
+
           popupService.showConfirm(title, msg, ok, cancel, function(res) {
           	if (res) {
   		        var acctData = {
-                token: apiContext.token,
+                token: apiContext.tokens[0].token,
+                facade: apiContext.tokens[0].facade,
                 email: pairData.email,
                 givenName: basicInfo.givenName,
                 familyName: basicInfo.familyName
               };
-  						setBitpayAccount(acctData, function(err) {
+  						setAccount(acctData, function(err) {
   			        return cb(err, true, apiContext);
   						});
           	} else {
@@ -111,16 +136,36 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
   };
 
   var fetchBasicInfo = function(apiContext, cb) {
+    // The 'getBasicInfo' method must be on all user facades we use. We don't check the apiContext.tokens
+    // here, we just use the first token in the list.
     var json = {
       method: 'getBasicInfo'
     };
     // Get basic account information
-    bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
+    bitpayService.post(bitpayService.FACADE_USER, apiContext.tokens[0].token, json, function(data) {
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Account Get Basic Info: SUCCESS');
       return cb(null, data.data.data);
     }, function(data) {
       return cb(_setError('BitPay Account Error: Get Basic Info', data));
+    });
+  };
+
+  // Check if the given email address is already used on an account.
+  root.checkAccountAvailable = function(email, cb) {
+    var json = {
+      method: 'checkAccountAvailable',
+      params: JSON.stringify({
+        email: email
+      })
+    };
+
+    bitpayService.post(bitpayService.FACADE_PUBLIC, '', json, function(data) {
+      if (data && data.data.error) return cb(data.data.error);
+      $log.info('Check Account Available: SUCCESS');
+      return cb(null, data.data.data);
+    }, function(data) {
+      return cb(_setError('BitPay Account Error: Check Account Available', data));
     });
   };
 
@@ -132,6 +177,7 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
   // Returns an array where each element represents an account including all information required for fetching data
   // from the server for each account (apiContext).
   root.getAccounts = function(cb) {
+    cb = cb || function(){};
     root.getAccountsAsStored(function(err, accounts) {
       if (err || lodash.isEmpty(accounts)) {
         return cb(err, []);
@@ -141,28 +187,50 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
           return cb(err);
         }
 
-        var accountsArray = [];
+        // Reset cache.
+        accountCache = [];
+
         lodash.forEach(Object.keys(accounts), function(key) {
           accounts[key].cards = accounts[key].cards;
           accounts[key].email = key;
           accounts[key].givenName = accounts[key].givenName || '';
           accounts[key].familyName = accounts[key].familyName || '';
           accounts[key].apiContext = {
-            token: accounts[key].token,
+            tokens: accounts[key].tokens,
             pairData: {
               email: key
             },
             appIdentity: appIdentity
           };
 
-          accountsArray.push(accounts[key]);
+          accountCache.push(accounts[key]);
         });
-        return cb(null, accountsArray);
+        return cb(null, accountCache);
       });
     });
   };
 
-  var setBitpayAccount = function(account, cb) {
+  // Convenience function returns the specified account.
+  root.getAccount = function(email, cb) {
+    root.getAccounts(function(err, accounts) {
+      if (err) {
+        return cb(err);
+      }
+      var account = lodash.find(accounts, function(account) {
+        return account.email == email;
+      });
+      // Can return undefined (not found).
+      cb(null, account);
+    });
+  };
+
+  root.getAccountSync = function(email) {
+    return lodash.find(accountCache, function(account) {
+      return account.email == email;
+    });
+  };
+
+  var setAccount = function(account, cb) {
     storageService.setBitpayAccount(bitpayService.getEnvironment().network, account, function(err) {
       return cb(err);
     });
@@ -180,6 +248,9 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
     var error = (e && e.data && e.data.error) ? e.data.error : msg;
     return error;
   };
+
+  // Initialize account cache.
+  root.getAccounts();
 
   return root;
   
