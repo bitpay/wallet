@@ -58,11 +58,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    function setWalletSelector(minAmount, cb) {
-      console.log('[confirm.js.38:minAmount:]', minAmount); //TODO
+    function setWalletSelector(network, minAmount, cb) {
+
+      // no min amount? (sendMax) => look for no empty wallets
+      minAmount = minAmount || 1; 
+
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
-        network: $scope.network
+        network: network
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
@@ -130,7 +133,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     // Other Scope vars
     $scope.isCordova = isCordova;
     $scope.showAddress = false;
-    $scope.insufficientFunds = false;
     $scope.paymentExpired = {
       value: false
     };
@@ -140,7 +142,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
-    setWalletSelector(tx.toAmount, function(err) {
+    setWalletSelector(tx.network, tx.toAmount, function(err) {
       if (err) {
         return exitWithError('Could not update wallets');
       }
@@ -154,7 +156,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   });
 
 
-  function getSendMaxInfo(tx, cb) {
+  function getSendMaxInfo(tx, wallet, cb) {
     if (!tx.sendMax) return cb();
 
     //ongoingProcess.set('retrievingInputs', true);
@@ -224,20 +226,26 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.tx = tx;
 
-    // Amount
-    tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
-    console.log('[confirm.js.217:tx:]', tx); //TODO
-    tx.amountValueStr = tx.amountStr.split(' ')[0];
-    tx.amountUnitStr = tx.amountStr.split(' ')[1];
-    txFormatService.formatAlternativeStr(tx.toAmount, function(v) {
-      tx.alternativeAmountStr = v;
-    });
+    function refresh() {
+      $timeout(function() {
+        $scope.$apply();
+      }, 1);
+    }
 
+    function updateAmount() {
+      if (!tx.toAmount) return;
 
-    // inmediate refresh of know values
-    $timeout(function() {
-      $scope.$apply();
-    }, 1);
+      // Amount
+      tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
+      tx.amountValueStr = tx.amountStr.split(' ')[0];
+      tx.amountUnitStr = tx.amountStr.split(' ')[1];
+      txFormatService.formatAlternativeStr(tx.toAmount, function(v) {
+        tx.alternativeAmountStr = v;
+      });
+    }
+
+    updateAmount();
+    refresh();
 
     feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
       if (err) return cb(err);
@@ -245,24 +253,27 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       tx.feeRate = feeRate;
       tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
 
-      getSendMaxInfo(lodash.clone(tx), function(err, sendMaxInfo) {
+      getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
         if (err) {
           var msg = gettextCatalog.getString('Error getting SendMax information');
           return setSendError(msg);
         }
 
         if (sendMaxInfo) {
-          if (tx.sendMax && tx.sendMaxInfo.amount == 0) {
-            $scope.insufficientFunds = true;
+
+          $log.debug('Send max info', sendMaxInfo);
+
+          if (tx.sendMax && sendMaxInfo.amount == 0) {
+            setNoWallet('Insufficent funds');
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
             return cb('no_funds');
           }
 
-          tx.sendMaxInfo = resp;
-          tx.toAmount = parseFloat((tx.sendMaxInfo.amount * unitToSatoshi).toFixed(0));
+          tx.sendMaxInfo = sendMaxInfo;
+          tx.toAmount =tx.sendMaxInfo.amount;
+          updateAmount();
         }
-
-
+        refresh();
 
         // txp already generated for this wallet?
         if (tx.txp[wallet.id])
@@ -273,7 +284,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
           if (tx.sendMaxInfo)
             showSendMaxWarning(sendMaxInfo, function(err) {});
-
 
           txp.feeStr = txFormatService.formatAmountStr(txp.fee);
           txFormatService.formatAlternativeStr(txp.fee, function(v) {
@@ -433,8 +443,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     updateTx(tx, wallet, {
       dryRun: true
     }, function(err) {
-      if (err) return;
-
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
