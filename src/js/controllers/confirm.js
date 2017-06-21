@@ -34,6 +34,28 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $ionicConfig.views.swipeBackEnabled(false);
   });
 
+
+  function exitWithError(err) {
+    $log.info('Error setting wallet selector:' + err);
+    popupService.showAlert(gettextCatalog.getString(), bwcError.msg(err), function() {
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        historyRoot: true
+      });
+      $ionicHistory.clearHistory();
+      $state.go('tabs.send');
+    });
+  };
+
+  function setNoWallet(msg) {
+    $scope.wallet = null;
+    $scope.noWalletMessage = gettextCatalog.getString(msg);
+    $log.warn('Not ready to make the payment:' + msg);
+    $timeout(function() {
+      $scope.$apply();
+    });
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     function setWalletSelector(minAmount, cb) {
@@ -44,12 +66,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
-        $scope.noMatchingWallet = true;
-        $log.warn('No ' + $scope.network + ' wallets to make the payment');
-        $timeout(function() {
-          $scope.$apply();
-        });
-        return;
+        setNoWallet('No wallets available');
+        return cb();
       }
 
       var filteredWallets = [];
@@ -77,8 +95,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               return cb('Could not update any wallet');
 
             if (lodash.isEmpty(filteredWallets)) {
-              $scope.insufficientFunds = true;
-              $log.warn('No wallet available to make the payment');
+              setNoWallet('Insufficent funds');
             }
             $scope.wallets = lodash.clone(filteredWallets);
             return cb();
@@ -114,7 +131,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.isCordova = isCordova;
     $scope.showAddress = false;
     $scope.insufficientFunds = false;
-    $scope.noMatchingWallet = false;
     $scope.paymentExpired = {
       value: false
     };
@@ -122,29 +138,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       value: null
     };
 
-
     $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
-
-    console.log('[confirm.js.126:tx:]', tx); //TODO
 
     setWalletSelector(tx.toAmount, function(err) {
       if (err) {
-        $log.debug('Error updating wallets:' + err);
-        popupService.showAlert(gettextCatalog.getString('Could not update wallets'), bwcError.msg(err), function() {
-          $ionicHistory.nextViewOptions({
-            disableAnimate: true,
-            historyRoot: true
-          });
-          $ionicHistory.clearHistory();
-          $state.go('tabs.send');
-        });
+        return exitWithError('Could not update wallets');
       }
-
-      $log.debug('Wallet selector is setup');
 
       if ($scope.wallets.length > 1) {
         $scope.showWalletSelector();
-      } else {
+      } else if ($scope.wallets.length) {
         setWallet($scope.wallets[0], tx);
       }
     });
@@ -314,15 +317,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
 
-  function resetView() {
-    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.feeFiat = $scope.feeRateStr = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
-    $scope.showAddress = false;
-
-    console.log('[confirm.js.213] RESET'); //TODO
-  };
-
-
-
   function showSendMaxWarning(sendMaxInfo) {
 
     function verifyExcludedUtxos() {
@@ -353,7 +347,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function setSendMaxValues(data) {
-    resetView();
     $scope.amountStr = txFormatService.formatAmountStr(data.amount, true);
     $scope.displayAmount = getDisplayAmount($scope.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.amountStr);
@@ -488,7 +481,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
     getTxp(lodash.clone(tx), wallet, false, function(err, txp) {
-console.log('[confirm.js.490:txp:]',txp); //TODO
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;
 
@@ -534,8 +526,6 @@ console.log('[confirm.js.490:txp:]',txp); //TODO
           });
           return;
         }
-
-console.log('[confirm.js.541]'); //TODO
         publishAndSign();
       });
     });
@@ -585,27 +575,33 @@ console.log('[confirm.js.541]'); //TODO
 
   $scope.chooseFeeLevel = function(tx, wallet) {
 
-    $scope.customFeeLevel = tx.feeLevel;
+
+    var scope = $rootScope.$new(true);
+    scope.network = tx.network;
+    scope.feeLevel = tx.feeLevel;
+    scope.noSave = true;
+
     $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
-      scope: $scope,
+      scope: scope,
     }).then(function(modal) {
-      $scope.chooseFeeLevelModal = modal;
-      $scope.openModal();
+      scope.chooseFeeLevelModal = modal;
+      scope.openModal();
     });
-    $scope.openModal = function() {
-      $scope.chooseFeeLevelModal.show();
+    scope.openModal = function() {
+      scope.chooseFeeLevelModal.show();
     };
-    $scope.hideModal = function(customFeeLevel) {
+
+    scope.hideModal = function(customFeeLevel) {
       $log.debug('Custom fee level choosen:' + customFeeLevel + ' was:' + tx.feeLevel);
       if (tx.feeLevel == customFeeLevel)
-        $scope.chooseFeeLevelModal.hide();
+        scope.chooseFeeLevelModal.hide();
 
       tx.feeLevel = customFeeLevel;
       updateTx(tx, wallet, {
         clearCache: true,
         dryRun: true,
       }, function() {
-        $scope.chooseFeeLevelModal.hide();
+        scope.chooseFeeLevelModal.hide();
       });
     };
   };
