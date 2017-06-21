@@ -26,7 +26,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
   root.getFeeRate = function(network, feeLevel, cb) {
     network = network || 'livenet';
 
-    root.getFeeLevels(function(err, levels) {
+    root.getFeeLevels(function(err, levels, fromCache) {
       if (err) return cb(err);
 
       var feeLevelRate = lodash.find(levels[network], {
@@ -42,7 +42,8 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       }
 
       var feeRate = feeLevelRate.feePerKB;
-      $log.debug('Dynamic fee: ' + feeLevel + ' ' + feeRate + ' SAT');
+
+      if (!fromCache) $log.debug('Dynamic fee: ' + feeLevel + '/' + network +' ' +  (feeLevelRate.feePerKB / 1000).toFixed() + ' SAT/B');
 
       return cb(null, feeRate);
     });
@@ -55,9 +56,8 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
   root.getFeeLevels = function(cb) {
 
     if (cache.updateTs > Date.now() - CACHE_TIME_TS * 1000 ) {
-      $log.debug('Fee cache hit');
       $timeout( function() {
-        return cb(null, cache.data);
+        return cb(null, cache.data, true);
       }, 1);
     }
 

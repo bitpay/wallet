@@ -77,15 +77,15 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet" ng-click="chooseFeeLevel()">
-          <span class="label">{{'Fee:' | translate}} {{tx.feeLevel | translate}}</span>
-          <span class="m10l">{{tx.fee || '...'}}</span>
+        <div class="item item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet" ng-click="chooseFeeLevel(tx, wallet)">
+          <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
+          <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}}</span>
           <span class="item-note m10l">
-            <span>{{tx.alternativeFeeStr || '...'}}&nbsp;<span class="fee-rate" ng-if="tx.feeRatePerStr" translate>- {{tx.feeRatePerStr}} of the transaction</span></span>
+            <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;<span class="fee-rate" ng-if="tx.feeRatePerStr" translate>- {{tx.txp[wallet.id].feeRatePerStr}} of the transaction</span></span>
           </span>
           <i class="icon bp-arrow-right"></i>
         </div>
-        <a class="item item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet" ng-click="showDescriptionPopup()">
+        <a class="item item-icon-right" ng-if="!insufficientFunds && !noMatchingWallet" ng-click="showDescriptionPopup(tx)">
           <span class="label" translate>Add Memo</span>
           <span class="item-note m10l">
             {{tx.description}}
@@ -102,7 +102,7 @@
     </div>
   </ion-content>
   <click-to-accept
-    ng-click="approve(statusChangeHandler)"
+    ng-click="approve(tx, wallet, statusChangeHandler)"
     ng-if="!isCordova"
     click-send-status="sendStatus"
     has-wallet-chosen="wallet"
