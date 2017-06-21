@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, walletService, popupService, $ionicHistory) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, walletService, popupService, $ionicHistory, feeService) {
   var isGlidera = $scope.isGlidera;
   var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   var now = Math.floor(Date.now() / 1000);
@@ -27,8 +27,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       $scope.tx.feeFiatStr = v;
     });
     $scope.tx.feeRateStr = ($scope.tx.fee / ($scope.tx.amount + $scope.tx.fee) * 100).toFixed(2) + '%';
-    if ($scope.tx.feeLevel == 'superEconomy') $scope.tx.feeLevelStr = gettextCatalog.getString('Super Economy');
-    else $scope.tx.feeLevelStr = $scope.tx.feeLevelStr = $scope.tx.feeLevel.charAt(0).toUpperCase() + $scope.tx.feeLevel.slice(1);
+    $scope.tx.feeLevelStr = feeService.feeOpts[$scope.tx.feeLevel];
   };
 
   function applyButtonText() {
