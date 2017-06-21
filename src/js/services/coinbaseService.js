@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope, feeService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -105,6 +105,30 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     switch (config.alternativeIsoCode) {
       default: return 'USD'
     };
+  };
+
+  root.getReductedAmountByFee = function(amount, cb) {
+    // Fee Normal for a single transaction (450 bytes)
+    var txNormalFeeKB = 450 / 1000;
+    feeService.getCurrentFeeValue(null, 'normal', function(err, feePerKB) {
+      if (err) return cb(err);
+      var feeBTC = (feePerKB * txNormalFeeKB / 100000000).toFixed(8);
+
+      return cb(null, amount - feeBTC, feeBTC);
+    });
+  };
+
+  root.checkEnoughFundsForFee = function(amount, cb) {
+    root.getReductedAmountByFee(amount, function(err, reductedAmount) {
+      if (err) return cb(err);
+
+      // Check if transaction has enough funds to transfer bitcoin from Coinbase to Copay
+      if (reductedAmount < 0) {
+        return cb('Not enough funds for fee');
+      }
+
+      return cb();
+    });
   };
 
   root.getSignupUrl = function() {
@@ -657,13 +681,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var _sendToWallet = function(tx, accessToken, accountId, coinbasePendingTransactions) {
     if (!tx) return;
     var desc = appConfigService.nameCase + ' Wallet';
-    var data = {
-      to: tx.toAddr,
-      amount: tx.amount.amount,
-      currency: tx.amount.currency,
-      description: desc
-    };
-    root.sendTo(accessToken, accountId, data, function(err, res) {
+    root.getReductedAmountByFee(tx.amount.amount, function(err, amountBTC, feeBTC) {
       if (err) {
         _savePendingTransaction(tx, {
           status: 'error',
@@ -672,8 +690,18 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
           if (err) $log.debug(err);
           _updateTxs(coinbasePendingTransactions);
         });
-      } else {
-        if (res.data && !res.data.id) {
+        return;
+      }
+
+      var data = {
+        to: tx.toAddr,
+        amount: amountBTC,
+        currency: tx.amount.currency,
+        description: desc,
+        fee: feeBTC
+      };
+      root.sendTo(accessToken, accountId, data, function(err, res) {
+        if (err) {
           _savePendingTransaction(tx, {
             status: 'error',
             error: err
@@ -681,19 +709,29 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
             if (err) $log.debug(err);
             _updateTxs(coinbasePendingTransactions);
           });
-          return;
-        }
-        root.getTransaction(accessToken, accountId, res.data.id, function(err, sendTx) {
-          _savePendingTransaction(tx, {
-            remove: true
-          }, function(err) {
-            _savePendingTransaction(sendTx.data, {}, function(err) {
+        } else {
+          if (res.data && !res.data.id) {
+            _savePendingTransaction(tx, {
+              status: 'error',
+              error: err
+            }, function(err) {
               if (err) $log.debug(err);
               _updateTxs(coinbasePendingTransactions);
             });
+            return;
+          }
+          root.getTransaction(accessToken, accountId, res.data.id, function(err, sendTx) {
+            _savePendingTransaction(tx, {
+              remove: true
+            }, function(err) {
+              _savePendingTransaction(sendTx.data, {}, function(err) {
+                if (err) $log.debug(err);
+                _updateTxs(coinbasePendingTransactions);
+              });
+            });
           });
-        });
-      }
+        }
+      });
     });
   };
 
