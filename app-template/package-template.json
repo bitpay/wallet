@@ -81,7 +81,7 @@
   },
   "scripts": {
     "postinstall":            "bower install",
-    "start":                  "npm run build:www && ionic serve --nolivereload --nogulp -s",
+    "start":                  "npm run build:www && ionic serve --nolivereload --nogulp -s --address 0.0.0.0",
     "start:ios":              "npm run build:www && npm run build:ios && npm run open:ios",
     "start:android":          "npm run build:www && npm run build:android && npm run run:android",
     "start:windows":          "npm run build:www && npm run build:windows",
