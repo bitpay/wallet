@@ -93,6 +93,11 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount);
     tx.feeStr = root.formatAmountStr(tx.fee || tx.fees);
 
+    if (tx.amountStr) {
+      tx.amountValueStr = tx.amountStr.split(' ')[0];
+      tx.amountUnitStr = tx.amountStr.split(' ')[1];
+    }
+
     return tx;
   };
 
