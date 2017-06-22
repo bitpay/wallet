@@ -107,7 +107,7 @@
   </click-to-accept>
   <slide-to-accept
     ng-if="isCordova && wallet"
-    slide-on-confirm="onConfirm()"
+    slide-on-confirm="approve(tx, wallet, statusChangeHandler)"
     slide-send-status="sendStatus"
     is-disabled="!wallet">
     {{buttonText}}

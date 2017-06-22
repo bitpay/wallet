@@ -13,7 +13,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var unitToSatoshi = walletConfig.settings.unitToSatoshi;
   var unitDecimals = walletConfig.settings.unitDecimals;
   var satToUnit = 1 / unitToSatoshi;
-  var touchIdEnabled = config.touchIdFor && config.touchIdFor[wallet.id];
   var configFeeLevel = walletConfig.settings.feeLevel ? walletConfig.settings.feeLevel : 'normal';
 
 
@@ -354,10 +353,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     popupService.showAlert(null, msg, function() {});
   };
 
-  $scope.$on('accepted', function(event) {
-    $scope.approve();
-  });
-
   $scope.onWalletSelect = function(wallet) {
     setWallet(wallet, tx);
   };
@@ -535,10 +530,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.statusChangeHandler = statusChangeHandler;
-
-  $scope.onConfirm = function() {
-    $scope.approve(statusChangeHandler);
-  };
 
   $scope.onSuccessConfirm = function() {
     $scope.sendStatus = '';
