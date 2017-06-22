@@ -13,7 +13,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var unitToSatoshi = walletConfig.settings.unitToSatoshi;
   var unitDecimals = walletConfig.settings.unitDecimals;
   var satToUnit = 1 / unitToSatoshi;
-  var touchIdEnabled = config.touchIdFor && config.touchIdFor[wallet.id];
   var configFeeLevel = walletConfig.settings.feeLevel ? walletConfig.settings.feeLevel : 'normal';
 
 
