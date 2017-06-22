@@ -90,8 +90,6 @@ angular.module('copayApp.services')
       wallet.m = wallet.credentials.m;
       wallet.n = wallet.credentials.n;
 
-      wallet.lowAmount = 
-
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;
 
