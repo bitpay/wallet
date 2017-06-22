@@ -47,6 +47,19 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
   };
 
+  var analyzeUtxosDone;
+
+  var analyzeUtxos = function() {
+    if (analyzeUtxosDone) return;
+
+    feeService.getFeeLevels(function(err, levels){
+      walletService.getLowUtxos($scope.wallet, levels, function(err, resp){
+        analyzeUtxosDone = true;
+        $scope.lowUtxosWarning = resp.warning;
+      });
+    });
+  };
+
   var updateStatus = function(force) {
     $scope.updatingStatus = true;
     $scope.updateStatusError = null;
@@ -71,6 +84,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $timeout(function() {
         $scope.$apply();
       });
+
+      analyzeUtxos();
 
     });
   };
@@ -154,10 +169,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       });
     };
 
-    feeService.getLowAmount($scope.wallet, function(err, lowAmount){
+    feeService.getFeeLevels(function(err, levels){
       walletService.getTxHistory($scope.wallet, {
         progressFn: progressFn,
-        lowAmount: lowAmount,
+        feeLevels: levels,
       }, function(err, txHistory) {
         $scope.updatingTxHistory = false;
         if (err) {
