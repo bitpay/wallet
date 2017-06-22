@@ -5,6 +5,10 @@
     float: none;
     .fee-rate {
       display: inline-block;
+      .warn {
+        color: red;
+      }
+
     }
   }
   .icon-amazon {

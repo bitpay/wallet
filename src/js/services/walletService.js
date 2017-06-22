@@ -413,7 +413,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       $log.debug('Fixing Tx Cache Unit to:' + name)
       lodash.each(txs, function(tx) {
-
         tx.amountStr = txFormatService.formatAmount(tx.amount) + name;
         tx.feeStr = txFormatService.formatAmount(tx.fees) + name;
       });
@@ -511,6 +510,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           });
         }
 
+        function updateLowAmount(txs) {
+          if (!opts.lowAmount) return;
+          lodash.each(txs, function(tx) {
+            tx.lowAmount = tx.amount < opts.lowAmount;
+          });
+        };
+
+        updateLowAmount(txs);
+
         updateNotes(function() {
 
           // <HACK>
@@ -567,9 +575,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getTx = function(wallet, txid, cb) {
 
-    function finish(list){
+    function finish(list) {
       var tx = lodash.find(list, {
-          txid: txid
+        txid: txid
       });
 
       if (!tx) return cb('Could not get transaction');
@@ -602,7 +610,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
- 
+
 
   root.getTxHistory = function(wallet, opts, cb) {
     opts = opts || {};
