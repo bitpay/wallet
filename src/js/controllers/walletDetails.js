@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService, feeService) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -154,9 +154,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       });
     };
 
-    $timeout(function() {
+    feeService.getLowAmount($scope.wallet, function(err, lowAmount){
       walletService.getTxHistory($scope.wallet, {
         progressFn: progressFn,
+        lowAmount: lowAmount,
       }, function(err, txHistory) {
         $scope.updatingTxHistory = false;
         if (err) {
