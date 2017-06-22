@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('preferencesController',
       wallet = profileService.getWallet(data.stateParams.walletId);
       walletId = wallet.credentials.walletId;
       $scope.wallet = wallet;
-      $scope.isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+      $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
       $scope.externalSource = null;
 
       if (!wallet)
