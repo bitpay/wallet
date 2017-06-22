@@ -5,7 +5,12 @@
   $item-vertical-padding: 10px;
   $item-border-color: #EFEFEF;
   $item-label-color: #6C6C6E;
-
+  .item-note {
+    float: none;
+    .fee-rate {
+      display: inline-block;
+    }
+  }
   .list {
     background: #f5f5f5;
   }
@@ -107,7 +112,7 @@
       margin-top: 5px;
       font-size: 14px;
       color: $item-label-color;
-    } 
+    }
     .item-divider {
       padding-top: 1.2rem;
       color: $item-label-color;

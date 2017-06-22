@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, walletService, popupService, $ionicHistory) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, walletService, popupService, $ionicHistory, feeService) {
   var isGlidera = $scope.isGlidera;
   var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   var now = Math.floor(Date.now() / 1000);
@@ -16,9 +16,18 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.data = {};
     $scope.displayAmount = getDisplayAmount($scope.tx.amountStr);
     $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
+    displayFeeValues();
     initActionList();
     checkPaypro();
     applyButtonText();
+  };
+
+  function displayFeeValues() {
+    txFormatService.formatAlternativeStr($scope.tx.fee, function(v) {
+      $scope.tx.feeFiatStr = v;
+    });
+    $scope.tx.feeRateStr = ($scope.tx.fee / ($scope.tx.amount + $scope.tx.fee) * 100).toFixed(2) + '%';
+    $scope.tx.feeLevelStr = feeService.feeOpts[$scope.tx.feeLevel];
   };
 
   function applyButtonText() {
