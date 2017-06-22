@@ -9,51 +9,51 @@
     <div class="list">
       <div class="item head">
         <div class="amount-label">
-          <div class="amount">{{displayAmount || '...'}} <span class="unit">{{displayUnit}}</span></div>
-          <div class="alternative">{{alternativeAmountStr || '...'}}</div>
+          <div class="amount">{{tx.amountValueStr || '...'}} <span class="unit">{{tx.amountUnitStr}}</span></div>
+          <div class="alternative">{{tx.alternativeAmountStr || '...'}}</div>
         </div>
       </div>
       <div class="info">
-        <div class="item single-line" ng-if="paypro.domain">
+        <div class="item single-line" ng-if="tx.paypro.domain">
           <span class="label">{{'Pay To'|translate}}</span>
           <span class="item-note">
-            {{paypro.domain}}
+            {{tx.paypro.domain}}
           </span>
         </div>
-        <div class="item single-line" ng-if="paypro.toAddress">
+        <div class="item single-line" ng-if="tx.paypro.toAddress">
           <span class="label">{{'Address'|translate}}</span>
           <span class="item-note m10l ellipsis">
-            {{paypro.toAddress}}
+            {{tx.paypro.toAddress}}
           </span>
         </div>
         <div class="item">
           <span class="label">{{'Certified by'|translate}}</span>
           <span class="item-note w100p">
-            <span ng-show="paypro.caTrusted">
+            <span ng-show="tx.paypro.caTrusted">
               <i class="ion-locked" style="color:green"></i>
-              {{paypro.caName}} {{'(Trusted)' | translate}}</span>
+              {{tx.paypro.caName}} {{'(Trusted)' | translate}}</span>
             </span>
-            <span ng-show="!paypro.caTrusted">
-              <span ng-show="paypro.selfSigned">
+            <span ng-show="!tx.paypro.caTrusted">
+              <span ng-show="tx.paypro.selfSigned">
                 <i class="ion-unlocked" style="color:red"></i> <span translate>Self-signed Certificate</span>
               </span>
-              <span ng-show="!paypro.selfSigned">
-                <i class="ion-locked" style="color:yellow"></i>{{paypro.caName}}<br>
+              <span ng-show="!tx.paypro.selfSigned">
+                <i class="ion-locked" style="color:yellow"></i>{{tx.paypro.caName}}<br>
                 <span translate>WARNING: UNTRUSTED CERTIFICATE</span>
               </span>
             </span>
           </span>
         </div>
-        <div class="item" ng-if="paypro.memo">
+        <div class="item" ng-if="tx.paypro.memo">
           <span class="label">{{'Memo'|translate}}</span>
           <span class="item-note w100p">
-            {{paypro.memo}}
+            {{tx.paypro.memo}}
           </span>
         </div>
-        <div class="item single-line" ng-if="paypro.expires">
+        <div class="item single-line" ng-if="tx.paypro.expires">
           <span class="label">{{'Expires'|translate}}</span>
           <span class="item-note">
-            {{paypro.expires * 1000 | amTimeAgo }}
+            {{tx.paypro.expires * 1000 | amTimeAgo }}
           </span>
         </div>
       </div>
