@@ -19,7 +19,7 @@
         <div class="amount-label">
           <div class="amount-final">{{amountUnitStr}}</div>
           <div class="alternative">
-            <span ng-if="rate">@ 
+            <span ng-if="rate">@
               {{rate | currency:cardInfo.currencySymbol:2}} per BTC</span>
             <span ng-if="!rate">...</span>
           </div>
@@ -29,7 +29,7 @@
       <div class="info">
 
         <div class="item item-icon-right" ng-click="showWalletSelector()">
-          <div class="label">From</div>
+          <div class="label" translate>From</div>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg">
@@ -39,21 +39,45 @@
           <i class="icon bp-arrow-right"></i>
         </div>
 
-        <div class="item item-divider">
+        <div class="item item-divider" translate>
           Deposit into
         </div>
         <div class="item">
-          Card
+          <span translate>Card</span>
           <span class="item-note">
             xxxx-xxxx-xxxx-{{cardInfo.lastFourDigits}}
           </span>
         </div>
         <div class="item">
-          Account
+          <span translate>Account</span>
           <span class="item-note">
             {{cardInfo.email}}
           </span>
         </div>
+
+        <div class="item item-divider" translate>
+          Invoice
+        </div>
+        <div class="item">
+          <span translate>Expire in</span>
+          <span class="item-note" ng-if="expirationTime">
+            <timer countdown="expirationTime" interval="1000" active="true" output-format="mm:ss"
+            on-zero-callback="invoiceExpired">{{formatted}}</timer>
+          </span>
+        </div>
+        <div class="item">
+          <span translate>Fee</span>
+          <span class="item-note">
+            {{invoice.buyerPaidBtcMinerFee}}
+          </span>
+        </div>
+        <div class="item">
+          <span translate>Total</span>
+          <span class="item-note total">
+            {{invoice.buyerTotalBtcAmount}}
+          </span>
+        </div>
+        <div class="item item-divider"></div>
       </div>
     </div>
 
@@ -83,11 +107,11 @@
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
-    <span ng-if="wallet.credentials.m == 1">Sent</span>
-    <span ng-if="wallet.credentials.m > 1">Success</span>
+    <span ng-if="wallet.credentials.m == 1" translate>Sent</span>
+    <span ng-if="wallet.credentials.m > 1" translate>Success</span>
     <div class="m10 size-14">
-      <span ng-if="wallet.credentials.m == 1">Funds were added to debit card</span>
-      <span ng-if="wallet.credentials.m > 1">Transaction initiated</span>
+      <span ng-if="wallet.credentials.m == 1" translate>Funds were added to debit card</span>
+      <span ng-if="wallet.credentials.m > 1" translate>Transaction initiated</span>
     </div>
   </slide-to-accept-success>
 
