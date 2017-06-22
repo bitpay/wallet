@@ -23,8 +23,8 @@
       <div class="info">
         <div class="item single-line" ng-if="tx.paypro">
           <span class="label" translate>Payment Expires:</span>
-          <span class="item-note" ng-if="!paymentExpired.value">{{remainingTimeStr.value}}</span>
-          <span class="item-note" ng-if="paymentExpired.value" ng-style="{'color': 'red'}" translate>Expired</span>
+          <span class="item-note" ng-if="!paymentExpired">{{remainingTimeStr}}</span>
+          <span class="item-note" ng-if="paymentExpired" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
 
         <div class="item">
@@ -61,7 +61,7 @@
             <span ng-if="tx.toName && showAddress">{{tx.toAddress}}</span>
           </div>
         </div>
-        <a class="item item-icon-right" ng-hide="!tx.sendMax ||!wallet" ng-click="showWalletSelector()">
+        <a class="item item-icon-right" ng-hide="!wallets" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>
           <div class="wallet" ng-if="wallet">
             <i class="icon big-icon-svg">
@@ -92,7 +92,7 @@
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="text-center" ng-show="!wallet">
+        <div class="text-center" ng-show="noWalletMessage">
           <span class="badge badge-energized">{{noWalletMessage}}</span>
         </div>
       </div>

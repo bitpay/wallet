@@ -22,8 +22,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var isCordova = platformInfo.isCordova;
 
 
+  function refresh() {
+    $timeout(function() {
+      $scope.$apply();
+    }, 1);
+  }
+
+
   $scope.showWalletSelector = function() {
     $scope.walletSelector = true;
+    refresh();
   };
 
   $scope.$on("$ionicView.beforeLeave", function(event, data) {
@@ -61,7 +69,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     function setWalletSelector(network, minAmount, cb) {
 
       // no min amount? (sendMax) => look for no empty wallets
-      minAmount = minAmount || 1; 
+      minAmount = minAmount || 1;
 
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
@@ -133,25 +141,23 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     // Other Scope vars
     $scope.isCordova = isCordova;
     $scope.showAddress = false;
-    $scope.paymentExpired = {
-      value: false
-    };
-    $scope.remainingTimeStr = {
-      value: null
-    };
 
-    $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
+    updateTx(tx, null, {}, function() {
 
-    setWalletSelector(tx.network, tx.toAmount, function(err) {
-      if (err) {
-        return exitWithError('Could not update wallets');
-      }
+      $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
-      if ($scope.wallets.length > 1) {
-        $scope.showWalletSelector();
-      } else if ($scope.wallets.length) {
-        setWallet($scope.wallets[0], tx);
-      }
+      setWalletSelector(tx.network, tx.toAmount, function(err) {
+        if (err) {
+          return exitWithError('Could not update wallets');
+        }
+
+        if ($scope.wallets.length > 1) {
+          $scope.showWalletSelector();
+        } else if ($scope.wallets.length) {
+          setWallet($scope.wallets[0], tx);
+        }
+      });
+
     });
   });
 
@@ -226,12 +232,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.tx = tx;
 
-    function refresh() {
-      $timeout(function() {
-        $scope.$apply();
-      }, 1);
-    }
-
     function updateAmount() {
       if (!tx.toAmount) return;
 
@@ -253,6 +253,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       tx.feeRate = feeRate;
       tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
 
+      // End of quick refresh, before wallet is selected.
+      if (!wallet) 
+        return cb();
+
       getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
         if (err) {
           var msg = gettextCatalog.getString('Error getting SendMax information');
@@ -270,7 +274,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           }
 
           tx.sendMaxInfo = sendMaxInfo;
-          tx.toAmount =tx.sendMaxInfo.amount;
+          tx.toAmount = tx.sendMaxInfo.amount;
           updateAmount();
         }
         refresh();
@@ -397,7 +401,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   function _paymentTimeControl(expirationTime) {
-    $scope.paymentExpired.value = false;
+    $scope.paymentExpired = false;
     setExpirationTime();
 
     countDown = $interval(function() {
@@ -415,12 +419,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       var totalSecs = expirationTime - now;
       var m = Math.floor(totalSecs / 60);
       var s = totalSecs % 60;
-      $scope.remainingTimeStr.value = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+      $scope.remainingTimeStr = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
     };
 
     function setExpiredValues() {
-      $scope.paymentExpired.value = true;
-      $scope.remainingTimeStr.value = gettextCatalog.getString('Expired');
+      $scope.paymentExpired = true;
+      $scope.remainingTimeStr = gettextCatalog.getString('Expired');
       if (countDown) $interval.cancel(countDown);
       $timeout(function() {
         $scope.$apply();
@@ -436,9 +440,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     setButtonText(wallet.credentials.m > 1, !!tx.paypro);
 
-    //T TODO
-    if ($scope.paypro)
-      _paymentTimeControl($scope.paypro.expires);
+    if (tx.paypro)
+      _paymentTimeControl(tx.paypro.expires);
 
     updateTx(tx, wallet, {
       dryRun: true
@@ -477,8 +480,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (!tx || !wallet) return;
 
-    // TODO
-    if (tx.paypro && $scope.paymentExpired.value) {
+    if ($scope.paymentExpired) {
       popupService.showAlert(null, gettextCatalog.getString('This bitcoin payment request has expired.'));
       $scope.sendStatus = '';
       $timeout(function() {
