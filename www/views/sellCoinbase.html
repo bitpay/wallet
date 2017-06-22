@@ -17,11 +17,11 @@
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative" ng-if="sellPrice">
-            <span ng-show="isFiat">{{sellRequestInfo.amount.amount}} {{sellRequestInfo.amount.currency}}</span> 
+            <span ng-show="isFiat">{{sellRequestInfo.amount.amount}} {{sellRequestInfo.amount.currency}}</span>
             @ ${{sellPrice.amount}} per BTC
           </div>
         </div>
-      </div> 
+      </div>
 
       <div class="info">
 
@@ -62,16 +62,16 @@
             will be sent to your Coinbase account, and sold when Coinbase accepts the transaction (usually one
             hour).
           </div>
-          <div class="label" ng-if="sellRequestInfo">Estimated sale value: 
+          <div class="label" ng-if="sellRequestInfo">Estimated sale value:
             <strong>
-            {{sellRequestInfo.total.amount | currency : '' : 2}} 
+            {{sellRequestInfo.total.amount | currency : '' : 2}}
             {{sellRequestInfo.total.currency}}
             </strong>
           </div>
-          <div class="label" ng-if="sellRequestInfo">Still sell if price fall until: 
+          <div class="label" ng-if="sellRequestInfo">Still sell if price fall until:
             <strong>
-            {{(sellRequestInfo.total.amount - 
-            (selectedPriceSensitivity.data.value / 100) * sellRequestInfo.total.amount) | currency : '' : 2}} 
+            {{(sellRequestInfo.total.amount -
+            (selectedPriceSensitivity.data.value / 100) * sellRequestInfo.total.amount) | currency : '' : 2}}
             {{sellRequestInfo.total.currency}}
             </strong>
           </div>
@@ -107,23 +107,17 @@
   </ion-content>
 
   <click-to-accept
-    ng-disabled="!selectedPaymentMethodId.value || !sellRequestInfo || !wallet"
     ng-click="sellConfirm()"
     ng-if="!isCordova && sellRequestInfo"
     click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="!selectedPaymentMethodId.value"
-    no-matching-wallet="!sellRequestInfo">
+    is-disabled="!selectedPaymentMethodId.value || !sellRequestInfo || !wallet">
     Confirm sale
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!selectedPaymentMethodId.value || !sellRequestInfo || !wallet"
     ng-if="isCordova && sellRequestInfo"
     slide-on-confirm="sellConfirm()"
     slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="!selectedPaymentMethodId.value"
-    no-matching-wallet="!sellRequestInfo">
+    is-disabled="!selectedPaymentMethodId.value || !sellRequestInfo || !wallet">
     Slide to sell
   </slide-to-accept>
   <slide-to-accept-success

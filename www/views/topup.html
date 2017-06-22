@@ -84,23 +84,17 @@
   </ion-content>
 
   <click-to-accept
-    ng-disabled="!cardInfo || !wallet"
     ng-click="topUpConfirm()"
     ng-if="!isCordova && cardInfo"
     click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="insufficientFunds"
-    no-matching-wallet="!cardInfo">
+    is-disabled="!cardInfo || !wallet">
     Add funds
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!cardInfo || !wallet"
     ng-if="isCordova && cardInfo"
     slide-on-confirm="topUpConfirm()"
     slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="insufficientFunds"
-    no-matching-wallet="!cardInfo">
+    is-disabled="!cardInfo || !wallet">
     Slide to confirm
   </slide-to-accept>
   <slide-to-accept-success

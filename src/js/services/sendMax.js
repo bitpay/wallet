@@ -10,7 +10,7 @@ angular.module('copayApp.services').service('sendMaxService', function(feeServic
    *
    */
   this.getInfo = function(wallet, cb) {
-    feeService.getCurrentFeeValue(wallet.credentials.network, null, function(err, feePerKb) {
+    feeService.getCurrentFeeRate(wallet.credentials.network, null, function(err, feePerKb) {
       if (err) return cb(err);
 
       var config = configService.getSync().wallet;
