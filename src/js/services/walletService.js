@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
-  // `wallet` is a decorated version of client.
 
-  var LOW_AMOUNT_RATIO = 0.15; //Ratio low amount warning (econ fee/amount)
-  var TOTAL_LOW_WARNING_RATIO = .15;
+  // Ratio low amount warning (fee/amount) in incoming TX 
+  var LOW_AMOUNT_RATIO = 0.15; 
+
+  // Ratio of "many utxos" warning in total balance (fee/amount)
+  var TOTAL_LOW_WARNING_RATIO = .3;
 
   var root = {};
 
@@ -921,15 +923,20 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   // Approx utxo amount, from which the uxto is economically redeemable  
-  root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
+  root.getMinFee = function(wallet, feeLevels, nbOutputs) {
     var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
       level: 'normal',
     }).feePerKB / 1000).toFixed(0);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
-    var minFee = size * lowLevelRate;
+    return size * lowLevelRate;
+  };
 
-    return parseInt(minFee / (LOW_AMOUNT_RATIO));
+
+  // Approx utxo amount, from which the uxto is economically redeemable  
+  root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
+    var minFee = root.getMinFee(wallet,feeLevels, nbOutputs);
+    return parseInt( minFee / LOW_AMOUNT_RATIO);
   };
 
 
@@ -939,14 +946,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.getUtxos({}, function(err, resp) {
       if (err || !resp || !resp.length) return cb();
 
-
       var lowAmountN = root.getLowAmount(wallet, levels, resp.length + 1);
-console.log('[walletService.js.946:lowAmountN:]',lowAmountN); //TODO
       var total = lodash.sum(resp, 'satoshis');
-console.log('[walletService.js.948:total:]',total); //TODO
 
       var lowAmount1 = root.getLowAmount(wallet, levels);
-console.log('[walletService.js.950:lowAmount1:]',lowAmount1); //TODO
       var lowUtxos = lodash.filter(resp, function(x) {
         return x.satoshis < lowAmount1;
       });
@@ -954,8 +957,10 @@ console.log('[walletService.js.950:lowAmount1:]',lowAmount1); //TODO
       var totalLow = lodash.sum(lowUtxos, 'satoshis');
 
       return cb(err, {
-        lowUtxos: lowUtxos,
+        allUtxos:  resp || [],
+        lowUtxos: lowUtxos || [],
         warning: lowAmountN / total > TOTAL_LOW_WARNING_RATIO,
+        minFee: root.getMinFee(wallet, levels, resp.length),
       });
     });
   };
