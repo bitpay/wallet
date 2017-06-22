@@ -17,7 +17,7 @@
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative" ng-if="buyPrice">
-            <span ng-show="isFiat">{{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}</span> 
+            <span ng-show="isFiat">{{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}</span>
             @ ${{buyPrice.amount}} per BTC
           </div>
         </div>
@@ -59,7 +59,7 @@
             {{fee.type}} fee
           </span>
           <span class="item-note">
-            {{fee.amount.amount}} {{fee.amount.currency}} 
+            {{fee.amount.amount}} {{fee.amount.currency}}
           </span>
         </div>
         <div class="item">
@@ -74,23 +74,17 @@
   </ion-content>
 
   <click-to-accept
-    ng-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet"
     ng-click="buyConfirm()"
     ng-if="!isCordova && buyRequestInfo"
     click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="!selectedPaymentMethodId.value"
-    no-matching-wallet="!buyRequestInfo">
+    is-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet">
     Confirm purchase
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet"
     ng-if="isCordova && buyRequestInfo"
     slide-on-confirm="buyConfirm()"
     slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="!selectedPaymentMethodId.value"
-    no-matching-wallet="!buyRequestInfo">
+    is-disabled="!selectedPaymentMethodId.value || !buyRequestInfo || !wallet">
     Slide to buy
   </slide-to-accept>
   <slide-to-accept-success

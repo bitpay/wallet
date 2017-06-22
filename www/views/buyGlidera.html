@@ -17,8 +17,8 @@
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative">
-            <span ng-show="!isFiat">{{buyInfo.subtotal}} {{buyInfo.currency}}</span> 
-            <span ng-show="isFiat">{{buyInfo.qty}} BTC</span> 
+            <span ng-show="!isFiat">{{buyInfo.subtotal}} {{buyInfo.currency}}</span>
+            <span ng-show="isFiat">{{buyInfo.qty}} BTC</span>
             @ ${{buyInfo.price}} per BTC
           </div>
         </div>
@@ -64,23 +64,17 @@
   </ion-content>
 
   <click-to-accept
-    ng-disabled="!buyInfo || !wallet"
     ng-click="buyConfirm()"
     ng-if="!isCordova && buyInfo"
     click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="!buyInfo">
+    is-disabled="!buyInfo || !wallet">
     Confirm purchase
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!buyInfo || !wallet"
     ng-if="isCordova && buyInfo"
     slide-on-confirm="buyConfirm()"
     slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="!buyInfo">
+    is-disabled="!buyInfo || !wallet">
     Slide to buy
   </slide-to-accept>
   <slide-to-accept-success
