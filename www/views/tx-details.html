@@ -77,7 +77,7 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item">
+        <div class="item" ng-if="btx.action != 'received'">
           <span class="label" translate>Fee</span>
           <span class="m10l">{{btx.feeStr || '...'}}</span>
           <span class="item-note m10l">
