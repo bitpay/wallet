@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+    $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     updateConfig();
   });
 
