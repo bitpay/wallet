@@ -53,23 +53,17 @@
   </ion-content>
 
   <click-to-accept
-    ng-disabled="!wallet"
     ng-click="buyConfirm()"
     ng-if="!isCordova"
     click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="false">
+    is-disabled="!wallet">
     Confirm purchase
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!wallet"
     ng-if="isCordova"
     slide-on-confirm="buyConfirm()"
     slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="false">
+    is-disabled="!wallet">
     Slide to buy
   </slide-to-accept>
   <slide-to-accept-success

@@ -176,12 +176,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function getTxp(tx, wallet, dryRun, cb) {
 
-    var paypro = tx.paypro;
-    var toAddress = tx.toAddress;
-    var description = tx.description;
-
     // ToDo: use a credential's (or fc's) function for this
-    if (description && !wallet.credentials.sharedEncryptingKey) {
+    if (tx.description && !wallet.credentials.sharedEncryptingKey) {
       var msg = gettextCatalog.getString('Could not add message to imported wallet without shared encrypting key');
       $log.warn(msg);
       return setSendError(msg);
@@ -208,7 +204,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp.feeLevel = tx.feeLevel;
     }
 
-    txp.message = description;
+    txp.message = tx.description;
 
     if (tx.paypro) {
       txp.payProUrl = tx.paypro.url;
@@ -254,7 +250,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
 
       // End of quick refresh, before wallet is selected.
-      if (!wallet) 
+      if (!wallet)
         return cb();
 
       getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
@@ -276,6 +272,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           tx.sendMaxInfo = sendMaxInfo;
           tx.toAmount = tx.sendMaxInfo.amount;
           updateAmount();
+          showSendMaxWarning(sendMaxInfo);
         }
         refresh();
 
@@ -285,9 +282,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
           if (err) return cb(err);
-
-          if (tx.sendMaxInfo)
-            showSendMaxWarning(sendMaxInfo, function(err) {});
 
           txp.feeStr = txFormatService.formatAmountStr(txp.fee);
           txFormatService.formatAlternativeStr(txp.fee, function(v) {
@@ -358,24 +352,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       msg += '\n' + warningMsg;
 
     popupService.showAlert(null, msg, function() {});
-  };
-
-  function setSendMaxValues(data) {
-    $scope.amountStr = txFormatService.formatAmountStr(data.amount, true);
-    $scope.displayAmount = getDisplayAmount($scope.amountStr);
-    $scope.displayUnit = getDisplayUnit($scope.amountStr);
-    $scope.fee = txFormatService.formatAmountStr(data.fee);
-    txFormatService.formatAlternativeStr(data.fee, function(v) {
-      $scope.feeFiat = v;
-    });
-    toAmount = parseFloat((data.amount * satToUnit).toFixed(unitDecimals));
-    txFormatService.formatAlternativeStr(data.amount, function(v) {
-      $scope.alternativeAmountStr = v;
-    });
-    $scope.feeRateStr = (data.fee / (data.amount + data.fee) * 100).toFixed(2) + '%';
-    $timeout(function() {
-      $scope.$apply();
-    });
   };
 
   $scope.$on('accepted', function(event) {
@@ -565,26 +541,18 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.onSuccessConfirm = function() {
-    var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
-
-    $ionicHistory.nextViewOptions({
-      disableAnimate: true
-    });
-    $ionicHistory.removeBackView();
     $scope.sendStatus = '';
-
     $ionicHistory.nextViewOptions({
       disableAnimate: true,
       historyRoot: true
     });
-    $ionicHistory.clearHistory();
     $state.go('tabs.send').then(function() {
+      $ionicHistory.clearHistory();
       $state.transitionTo('tabs.home');
     });
   };
 
   $scope.chooseFeeLevel = function(tx, wallet) {
-
 
     var scope = $rootScope.$new(true);
     scope.network = tx.network;
