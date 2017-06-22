@@ -107,23 +107,12 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     };
   };
 
-  root.getReductedAmountByFee = function(amount, cb) {
-    // Fee Normal for a single transaction (450 bytes)
-    var txNormalFeeKB = 450 / 1000;
-    feeService.getFeeRate(null, 'normal', function(err, feePerKB) {
-      if (err) return cb(err);
-      var feeBTC = (feePerKB * txNormalFeeKB / 100000000).toFixed(8);
-
-      return cb(null, amount - feeBTC, feeBTC);
-    });
-  };
-
   root.checkEnoughFundsForFee = function(amount, cb) {
-    root.getReductedAmountByFee(amount, function(err, reductedAmount) {
+    _getNetAmount(amount, function(err, reducedAmount) {
       if (err) return cb(err);
 
       // Check if transaction has enough funds to transfer bitcoin from Coinbase to Copay
-      if (reductedAmount < 0) {
+      if (reducedAmount < 0) {
         return cb('Not enough funds for fee');
       }
 
@@ -174,6 +163,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     }, function(data) {
       $log.error('Coinbase Authorization Access Token: ERROR ' + data.statusText);
       return cb(data.data || 'Could not get the access token');
+    });
+  };
+
+  var _getNetAmount = function(amount, cb) {
+    // Fee Normal for a single transaction (450 bytes)
+    var txNormalFeeKB = 450 / 1000;
+    feeService.getFeeRate(null, 'normal', function(err, feePerKB) {
+      if (err) return cb(err);
+      var feeBTC = (feePerKB * txNormalFeeKB / 100000000).toFixed(8);
+
+      return cb(null, amount - feeBTC, feeBTC);
     });
   };
 
@@ -681,7 +681,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var _sendToWallet = function(tx, accessToken, accountId, coinbasePendingTransactions) {
     if (!tx) return;
     var desc = appConfigService.nameCase + ' Wallet';
-    root.getReductedAmountByFee(tx.amount.amount, function(err, amountBTC, feeBTC) {
+    _getNetAmount(tx.amount.amount, function(err, amountBTC, feeBTC) {
       if (err) {
         _savePendingTransaction(tx, {
           status: 'error',
