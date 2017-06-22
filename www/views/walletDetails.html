@@ -158,6 +158,12 @@
       Wallet not backed up
     </a>
 
+
+    <a class="wallet-not-backed-up-warning" ng-if="lowUtxosWarning" ui-sref="tabs.settings.addresses({walletId:wallet.id,from: 'tabs.wallet'})" translate>
+      Spending this balance will need significant Bitcoin network fees
+    </a>
+
+
     <div class="p60b" ng-if="wallet &&  wallet.isComplete() && !walletNotRegistered" style="padding-top: 1rem;">
       <div class="oh pr m20t" ng-show="wallet.incorrectDerivation">
         <div class="text-center text-warning">
