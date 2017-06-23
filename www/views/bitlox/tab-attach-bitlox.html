@@ -10,16 +10,16 @@
     <br /><br />
     <div ng-controller="BitLoxCtrl">
 
-      <div ng-hide="bitlox.connected || bitlox.isMobile" ng-if="!bitlox.isMobile">
-          <h4>
-              No BitLox device detected.<br />
-              Please connect your BitLox and
-              <a href ng-click="refreshBitlox()">click here to try again.</a>
-          </h4>
+      <div class="list card" ng-hide="bitlox.connected" ng-if="!bitlox.isMobile">
+          <span class="item">
+              No BitLox device detected.<br /><br />
+              Please turn on your BitLox, enter the device PIN, and select USB mode.<br/><br/>
+              <button class="button button-standard button-primary" ng-click="vm.reset()">Refresh</button>
+          </span>
       </div>
       <div class="list card"  ng-show="bitlox.isMobile && !bitlox.connected">
         <a class="item item-remove-animate" ng-click="refreshBitlox($event)">
-          <span  ng-if="api.getNumDevices() < 1">No devices found - </span>Tap here to refresh
+          <span  ng-if="api.getNumDevices() < 1">No devices found - </span>Press here to refresh
         </a>
         <a ng-repeat="device in api.getKnownDevices()"
            ng-click="connectBle(device.address, false)"

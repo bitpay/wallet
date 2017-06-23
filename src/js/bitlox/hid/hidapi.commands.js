@@ -28,6 +28,7 @@
 
             // just a ping
             ping: '2323000000000000',
+            initPrefix: '23230017',
 
             pingData: '23230000000000070A0548656C6C6F',
             button_cancel: '2323005200000000',

@@ -82,11 +82,6 @@
         $scope.refreshBitlox()
       }
     });
-    if(platformInfo.isChromeApp) {
-        api.$scope.$watch('status', function(hidstatus) {
-          checkStatus(hidstatus)
-        });
-    }
     $scope.$watch('api.getStatus()', function(hidstatus) {
       checkStatus(hidstatus)
     });
@@ -110,26 +105,40 @@
           break;
       case api.STATUS_CONNECTING:
           $scope.bitlox.connectAttempted = true;
+          $scope.bitlox.connected = false;
           $scope.bitlox.statusString = "Bitlox connecting";
           $scope.bitlox.alertClass = "success";
           $scope.bitlox.glyph = "glyphicon-refresh";
           break;
-      case api.STATUS_DISCONNECTED:
+      case api.STATUS_INITIALIZING:
+          $scope.bitlox.connectAttempted = true;
           $scope.bitlox.connected = false;
+          $scope.bitlox.statusString = "Bitlox initializing";
+          $scope.bitlox.alertClass = "success";
+          $scope.bitlox.glyph = "glyphicon-refresh";
+          break;          
+      case api.STATUS_DISCONNECTED:
           $scope.bitlox.statusString = "Bitlox disconnected!";
           $scope.bitlox.alertClass = "danger";
           $scope.bitlox.glyph = "glyphicon-remove";
+          if($scope.bitlox.connected) {
+            $ionicLoading.hide();
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Disconnected'));
+            $ionicHistory.goBack();
+          }
+
+          $scope.bitlox.connected = false;
           break;
       case api.STATUS_WRITING:
           $scope.bitlox.connectAttempted = true;
-          $scope.bitlox.connected = true;
+          // $scope.bitlox.connected = true;
           $scope.bitlox.statusString = "Bitlox writing";
           $scope.bitlox.alertClass = "info";
           $scope.bitlox.glyph = "glyphicon-upload";
           break;
       case api.STATUS_READING:
           $scope.bitlox.connectAttempted = true;
-          $scope.bitlox.connected = true;
+          // $scope.bitlox.connected = true;
           $scope.bitlox.statusString = "Bitlox reading";
           $scope.bitlox.alertClass = "info";
           $scope.bitlox.glyph = "glyphicon-download";
@@ -138,6 +147,8 @@
           $scope.bitlox.connected = false;
           $scope.bitlox.statusString = null;
       }
+
+      $scope.wallet.status = hidstatus;
     }
 
 

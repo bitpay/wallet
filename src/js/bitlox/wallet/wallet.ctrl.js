@@ -58,7 +58,7 @@
             vm.wordIndexes = numbers;
         };
 
-        vm.reset = function() {
+        vm.resetNewWallet = function() {
             vm.newWallet = {
                 name: "Wallet",
                 number: 0,
@@ -67,7 +67,7 @@
                 isRestore: false,
             };
         }
-        vm.reset()
+        vm.resetNewWallet()
 
 
         // dave says this comes from the import.js file by copay, with edits
@@ -136,24 +136,20 @@
 
         };
 
-        if(chrome && chrome.hid) {
-          chrome.hid.onDeviceAdded.addListener(function() {
-              vm.readWallets();
-          });
-        }
-        else if(platformInfo.isMobile && !$stateParams.connectOnly) {
+
+        if(!$stateParams.connectOnly) {
           $scope.$watch('api.getStatus()', function(newVal) {
             if(newVal === api.STATUS_CONNECTED) {
-                $timeout(vm.readWallets.bind(vm), 1000);
+                vm.readWallets(); 
+            } else if (newVal === api.STATUS_INITIALIZING) {
+                var session = new Date().getTime(true);
+                api.initialize(session);
             }
           })
         }
         vm.readWallets = function() {
-          $ionicLoading.show({template: "Connecting to BitLox, please wait..."})
+            $ionicLoading.show({template: "Reading BitLox wallet list, please wait..."})
             vm.readingWallets = true;
-            setTimeout(function() {
-              $ionicLoading.hide();
-            },3000)
             return bitloxWallet.list()
                 .then(function(wallets) {
                     vm.wallets = wallets;
@@ -258,7 +254,8 @@
             }
         }
 
-        function reset() {
+
+        vm.reset = function() {
             console.log("RESET WALLET CONTROLLER")
             // status variables
             vm.readingWallets = true;
@@ -267,35 +264,33 @@
             vm.creatingWallet = false;
             vm.refreshingBalance = false;
             vm.openWallet = null;
-            // read after a timeout, so angular does not hang and show
-            // garbage while the browser is locked form readin the device
-            if(!platformInfo.isMobile) {
-              $timeout(vm.readWallets.bind(vm), 100);
+            if(platformInfo.isChromeApp) {
+                api.close().then(function() {api.device()})
             }
         }
 
 
 
-        reset();
+        vm.reset();
 
 
-        $scope.$watch('api.getStatus()', function(hidstatus) {
-          checkStatus(hidstatus)
-          $scope.prevStatus = hidstatus;
-        });
+        // $scope.$watch('api.getStatus()', function(hidstatus) {
+        //   checkStatus(hidstatus)
+        //   $scope.prevStatus = hidstatus;
+        // });
 
-        function checkStatus(hidstatus) {
-          console.warn("New device status: " + hidstatus)
-          switch(hidstatus) {
-          case api.STATUS_DISCONNECTED:
-              if(!platformInfo.isIOS && $scope.prevStatus && $scope.prevStatus !== api.STATUS_DISCONNECTED) {
-                $ionicLoading.hide();
-                popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Disconnected.");
+        // function checkStatus(hidstatus) {
+        //   console.warn("New device status: " + hidstatus)
+        //   switch(hidstatus) {
+        //   case api.STATUS_DISCONNECTED:
+        //       if(!platformInfo.isIOS && $scope.prevStatus && $scope.prevStatus !== api.STATUS_DISCONNECTED) {
+        //         $ionicLoading.hide();
+        //         popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Disconnected.");
 
-              }
-              break;
-          }
-        }
+        //       }
+        //       break;
+        //   }
+        // }
     }
 
 })(window, window.angular, window.chrome);
