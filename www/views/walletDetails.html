@@ -164,7 +164,7 @@
     </a>
 
 
-    <div class="p60b" ng-if="wallet &&  wallet.isComplete() && !walletNotRegistered" style="padding-top: 1rem;">
+    <div class="p60b" ng-if="wallet &&  wallet.isComplete() && !walletNotRegistered">
       <div class="oh pr m20t" ng-show="wallet.incorrectDerivation">
         <div class="text-center text-warning">
           <i class="fi-alert"></i>
@@ -173,12 +173,8 @@
           </span>
         </div>
       </div>
-      <div class="list" ng-if="txps[0]">
-        <!-- <div class="item item-heading" translate>
-          <span ng-show="requiresMultipleSignatures" translate>Payment Proposals</span>
-          <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
-        </div> -->
-        <div class="wallet-details__group-label" style="padding-bottom: 8px;">
+      <div ng-if="txps[0]">
+        <div class="wallet-details__group-label">
           <span ng-show="requiresMultipleSignatures" translate>Proposals</span>
           <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
         </div>
