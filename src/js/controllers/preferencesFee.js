@@ -46,7 +46,9 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       }
       $scope.feeLevels = levels;
       updateCurrentValues();
-      $scope.$apply();
+      $timeout(function() {
+        $scope.$apply();
+      });
     });
   };
 
