@@ -43,11 +43,11 @@ cd copay
 Ensure you have [Node](https://nodejs.org/) installed, then install and start Copay:
 
 ```sh
-npm install
+npm run apply:copay
 npm start
 ```
 
-Visit [`localhost:3000`](http://localhost:3000/) to view the app.
+Visit [`localhost:8100`](http://localhost:8100/) to view the app.
 
 A watch task is also available to rebuild components of the app as changes are made. This task can be run in a separate process – while the server started by `npm start` is running – to quickly test changes.
 
