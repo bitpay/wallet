@@ -567,16 +567,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     scope.hideModal = function(customFeeLevel) {
+      scope.chooseFeeLevelModal.hide();
       $log.debug('Custom fee level choosen:' + customFeeLevel + ' was:' + tx.feeLevel);
       if (tx.feeLevel == customFeeLevel)
-        scope.chooseFeeLevelModal.hide();
+        return;
 
       tx.feeLevel = customFeeLevel;
       updateTx(tx, wallet, {
         clearCache: true,
         dryRun: true,
       }, function() {
-        scope.chooseFeeLevelModal.hide();
       });
     };
   };

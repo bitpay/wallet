@@ -56,9 +56,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
   root.getFeeLevels = function(cb) {
 
     if (cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
-      $timeout(function() {
-        return cb(null, cache.data, true);
-      }, 1);
+      return cb(null, cache.data, true);
     }
 
     var walletClient = bwcService.getClient();
