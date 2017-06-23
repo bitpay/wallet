@@ -3,6 +3,7 @@
 angular.module('copayApp.services').service('popupService', function($log, $ionicPopup, platformInfo, gettextCatalog) {
 
   var isCordova = platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   /*************** Ionic ****************/
 
@@ -121,7 +122,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
     opts = opts ||  {};
 
-    if (isCordova && !opts.forceHTMLPrompt)
+    if (isCordova && !isWindowsPhoneApp && !opts.forceHTMLPrompt)
       _cordovaPrompt(title, message, opts, cb);
     else
       _ionicPrompt(title, message, opts, cb);

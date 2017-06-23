@@ -10,6 +10,7 @@
      spinner="ios-small"
      on-refresh="onRefresh()">
    </ion-refresher>
+
     <div class="list card release ng-hide" ng-show="newRelease">
       <i class="item icon big-icon-svg">
         <img src="img/icon-update.svg" class="bg"/>
@@ -108,7 +109,7 @@
     <div class="ng-hide" ng-show="wallets[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
     <div class="ng-hide" ng-show="wallets[0] && buyAndSellItems.length>0" ng-include="'views/includes/buyAndSellCard.html'"></div>
     <div class="ng-hide" ng-show="homeIntegrations.length>0" ng-include="'views/includes/homeIntegrations.html'"></div>
-    <div class="ng-hide" ng-show="nextStepsItems.length>0" ng-include="'views/includes/nextSteps.html'"></div>
+    <div class="ng-hide" ng-show="nextStepsItems.length>0 && !isWindowsPhoneApp" ng-include="'views/includes/nextSteps.html'"></div>
 
   </ion-content>
 </ion-view>

@@ -50,6 +50,7 @@ angular.module('copayApp.controllers').controller('joinController',
 
     $scope.onQrCodeScannedJoin = function(data) {
       $scope.formData.secret = data;
+      $scope.$apply();
     };
 
     if ($stateParams.url) {
