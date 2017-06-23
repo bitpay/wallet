@@ -18,9 +18,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         value: res
       };
     });
-  });
 
-  $scope.$on("$ionicView.afterEnter", function(event) {
     updateTx();
 
     listeners = [
@@ -117,6 +115,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       updateMemo();
       initActionList();
       getFiatRate();
+      $timeout(function() {
+        $scope.$digest();
+      });
 
       feeService.getFeeLevels(function(err, levels) {
         if (err) return;
