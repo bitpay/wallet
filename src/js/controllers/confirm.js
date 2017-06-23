@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
+  var FEE_TOO_HIGH_LIMIT_PER = 15;
 
   var tx = {};
 
@@ -286,7 +287,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           txFormatService.formatAlternativeStr(txp.fee, function(v) {
             txp.alternativeFeeStr = v;
           });
-          txp.feeRatePerStr = (txp.fee / (txp.amount + txp.fee) * 100).toFixed(2) + '%';
+
+          var per = (txp.fee / (txp.amount + txp.fee) * 100);
+          txp.feeRatePerStr = per.toFixed(2) + '%';
+          txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER; 
 
 
           tx.txp[wallet.id] = txp;

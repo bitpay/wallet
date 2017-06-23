@@ -43,7 +43,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
       var feeRate = feeLevelRate.feePerKB;
 
-      if (!fromCache) $log.debug('Dynamic fee: ' + feeLevel + '/' + network +' ' +  (feeLevelRate.feePerKB / 1000).toFixed() + ' SAT/B');
+      if (!fromCache) $log.debug('Dynamic fee: ' + feeLevel + '/' + network + ' ' + (feeLevelRate.feePerKB / 1000).toFixed() + ' SAT/B');
 
       return cb(null, feeRate);
     });
@@ -55,8 +55,8 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
   root.getFeeLevels = function(cb) {
 
-    if (cache.updateTs > Date.now() - CACHE_TIME_TS * 1000 ) {
-      $timeout( function() {
+    if (cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
+      $timeout(function() {
         return cb(null, cache.data, true);
       }, 1);
     }
@@ -70,7 +70,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
           return cb(gettextCatalog.getString('Could not get dynamic fee'));
         }
 
-        cache.updateTs =Date.now();
+        cache.updateTs = Date.now();
         cache.data = {
           'livenet': levelsLivenet,
           'testnet': levelsTestnet
@@ -80,6 +80,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       });
     });
   };
+
 
   return root;
 });

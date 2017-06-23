@@ -35,7 +35,7 @@
           <i class="icon ion-ios-arrow-thin-right"></i>
         </div> 
 
-        <div class="item item-divider item-icon-right" ng-click="newAddress()">
+        <div class="item item-divider item-icon-right"  ng-click="newAddress()">
           <span translate>Unused Addresses</span>
           <i class="icon ion-ios-plus-empty"></i>
         </div>
@@ -69,6 +69,34 @@
             {{w.address}}
             <div class="addr-balance">{{w.balanceStr}}</div>
           </div>
+        </div>
+
+
+        <div ng-if="allUtxosNb">
+          <div class="item item-divider" translate>
+            Wallet Inputs
+          </div>
+
+          <div class="item" >
+            <span translate> Total wallet inputs </span>
+            <div class="addr-path">
+              {{allUtxosNb}} [{{allUtxosSum}}]
+            </div>
+          </div>
+          <div class="item" >
+            <span  translate> Low amount inputs </span>
+            <div class="addr-path">
+              {{lowUtxosNb}} [{{ lowUtxosSum }}]
+            </div>
+          </div>
+
+          <div class="item" >
+            <span translate> Approximate fee to move all wallet's balance (with normal priority) </span>
+            <div class="addr-path">
+              {{minFeePer}} [{{minFee}}]
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

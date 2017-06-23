@@ -14,8 +14,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
     $scope.color = $scope.wallet.color;
     $scope.data = {};
-    $scope.displayAmount = getDisplayAmount($scope.tx.amountStr);
-    $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
     displayFeeValues();
     initActionList();
     checkPaypro();
@@ -41,14 +39,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       $scope.buttonText += gettextCatalog.getString('to send');
     else
       $scope.buttonText += gettextCatalog.getString('to accept');
-  };
-
-  function getDisplayAmount(amountStr) {
-    return amountStr.split(' ')[0];
-  };
-
-  function getDisplayUnit(amountStr) {
-    return amountStr.split(' ')[1];
   };
 
   function initActionList() {
