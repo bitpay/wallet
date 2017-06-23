@@ -136,7 +136,7 @@ angular.module('copayApp.controllers').controller('joinController',
       }
 
       if ($scope.formData.seedSource.id == walletService.externalSource.ledger.id || $scope.formData.seedSource.id == walletService.externalSource.trezor.id || $scope.formData.seedSource.id == walletService.externalSource.intelTEE.id) {
-        var account = $scope.account;
+        var account = $scope.formData.account;
         if (!account || account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
