@@ -1209,7 +1209,7 @@ this.sendToProcess = function(rawData) {
 
 this.sendData = function(data,type) {
   currentCommand = null;
-  if(type = this.TYPE_INITIALIZE) {
+  if(type === this.TYPE_INITIALIZE) {
     status = this.STATUS_CONNECTED;
   } else {
     status = BleApi.STATUS_IDLE;
