@@ -64,8 +64,8 @@
       </label>
       <div ng-if="bitpayCard.bitpayCardTransactionHistoryConfirming[0]">
         <label class="item status-label" ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-do-you-require-one-blockchain-confirmation-for-bitpay-card-loads')">
-          <div translate>
-            Confirming
+          <div>
+            <span translate>Confirming</span>
             <i class="icon">
               <img src="img/icon-help-support.svg" class="bg"/>
             </i>
@@ -77,8 +77,8 @@
       </div>
       <div ng-if="bitpayCard.bitpayCardTransactionHistoryPreAuth[0]">
         <label class="item status-label" ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-was-i-overcharged-on-my-bitpay-card-account-why-is-there-a-hold-on-my-account')">
-          <div translate>
-            Pre-Auth Holds
+          <div>
+            <span translate>Pre-Auth Holds</span>
             <i class="icon">
               <img src="img/icon-help-support.svg" class="bg"/>
             </i>
@@ -89,7 +89,7 @@
         </div>
       </div>
       <div ng-if="bitpayCard.bitpayCardTransactionHistoryCompleted[0]">
-        <label class="item status-label">
+        <label class="item status-label" ng-if="bitpayCard.bitpayCardTransactionHistoryPreAuth[0] || bitpayCard.bitpayCardTransactionHistoryConfirming[0]">
           <div translate>
             Completed
           </div>
