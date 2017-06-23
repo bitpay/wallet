@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService, feeService) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -47,6 +47,19 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
   };
 
+  var analyzeUtxosDone;
+
+  var analyzeUtxos = function() {
+    if (analyzeUtxosDone) return;
+
+    feeService.getFeeLevels(function(err, levels){
+      walletService.getLowUtxos($scope.wallet, levels, function(err, resp){
+        analyzeUtxosDone = true;
+        $scope.lowUtxosWarning = resp.warning;
+      });
+    });
+  };
+
   var updateStatus = function(force) {
     $scope.updatingStatus = true;
     $scope.updateStatusError = null;
@@ -71,6 +84,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       $timeout(function() {
         $scope.$apply();
       });
+
+      analyzeUtxos();
 
     });
   };
@@ -154,9 +169,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       });
     };
 
-    $timeout(function() {
+    feeService.getFeeLevels(function(err, levels){
       walletService.getTxHistory($scope.wallet, {
         progressFn: progressFn,
+        feeLevels: levels,
       }, function(err, txHistory) {
         $scope.updatingTxHistory = false;
         if (err) {

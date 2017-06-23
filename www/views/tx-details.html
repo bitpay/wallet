@@ -24,7 +24,7 @@
           <span ng-if="btx.action == 'received'" translate>Receiving</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="amount">{{btx.amountValueStr}} <span class="unit">{{btx.amountUnitStr}}</span></div>
           <div class="alternative" ng-click="showRate = !showRate">
             <span ng-if="!showRate">{{btx.alternativeAmountStr}}</span>
             <span ng-if="showRate">
@@ -88,6 +88,12 @@
           <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
           <span translate>This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender</span>
         </div>
+        <div class="item low-fees" ng-if="btx.lowAmount">
+          <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
+          <span translate>
+This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself. </span>
+        </div>
+ 
         <div class="item single-line">
           <span class="label" translate>Confirmations</span>
           <span class="item-note">

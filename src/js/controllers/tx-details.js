@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService) {
 
   var txId;
   var listeners = [];
@@ -39,14 +39,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       x();
     });
   });
-
-  function getDisplayAmount(amountStr) {
-    return amountStr.split(' ')[0];
-  }
-
-  function getDisplayUnit(amountStr) {
-    return amountStr.split(' ')[1];
-  }
 
   function updateMemo() {
     walletService.getTxNote($scope.wallet, $scope.btx.txid, function(err, note) {
@@ -122,12 +114,14 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
       }
 
-      $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
-      $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
-
       updateMemo();
       initActionList();
       getFiatRate();
+
+      feeService.getLowAmount($scope.wallet, function(err, amount) {
+        $scope.btx.lowAmount = tx.amount< amount;
+      });
+
       $timeout(function() {
         $scope.$apply();
       });
