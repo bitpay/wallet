@@ -136,17 +136,18 @@
 
         };
 
-
-        if(!$stateParams.connectOnly) {
-          $scope.$watch('api.getStatus()', function(newVal) {
+        $scope.$watch('api.getStatus()', function(newVal) {
             if(newVal === api.STATUS_CONNECTED) {
+
+                $rootScope.$broadcast('bitloxConnectSuccess')
                 vm.readWallets(); 
             } else if (newVal === api.STATUS_INITIALIZING) {
                 var session = new Date().getTime(true);
+                console.log('new device status!!! '+newVal)
                 api.initialize(session);
             }
-          })
-        }
+        })
+
         vm.readWallets = function() {
             $ionicLoading.show({template: "Reading BitLox wallet list, please wait..."})
             vm.readingWallets = true;

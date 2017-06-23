@@ -34,6 +34,7 @@ BleApi.STATUS_CONNECTING       = "connecting";
 BleApi.STATUS_READING          = "reading";
 BleApi.STATUS_WRITING          = "writing";
 BleApi.STATUS_IDLE         = "idle";
+BleApi.STATUS_INITIALIZING          = "initializing";
 
 
 BleApi.TYPE_INITIALIZE          = 'initialize';
@@ -667,7 +668,20 @@ this.loadWallet = function(num) {
   var cmd = this.getWalletCommand('load', num);
   return this.write(cmd, 300000)
 }
+this.initialize = function(sessionId) {
+  currentCommand = 'initialize'
+  var sessionIdHex = hexUtil.toPaddedHex(sessionId, 39) + '00';
+  this.sessionIdHex = sessionIdHex;
+  console.debug(sessionId, "->", sessionIdHex);
+  var sessionIdBuf = hexUtil.hexToByteBuffer(sessionIdHex);
+  sessionIdBuf.flip();
+  var msg = new protoDevice.Initialize({
+      session_id: sessionIdBuf
+  });
 
+  var cmd = BleApi.makeCommand(deviceCommands.initPrefix,msg)
+  return this.write(cmd, 10000)
+}
 this.ping = function(args) {
   currentCommand = 'ping'
   var msg = new protoDevice.Ping(args);
@@ -716,14 +730,14 @@ this.stopScan = function() {
 	evothings.ble.stopScan();
 }
 
-this.initialize = function() {
+this.initializeBle = function() {
 	document.addEventListener(
 		'deviceready',
     function() {
       // if we've already initialized don't do it again
       if(bleReady) {
-        console.log("ALREADY INITIALIZED, STOPPING")
-        status = BleApi.STATUS_CONNECTED
+        console.log("BLE PREVIOUSLY INITIALISED, STARTING NEW SESSION", status)
+        status = BleApi.STATUS_INITIALIZING
         $rootScope.$applyAsync()        
         return true;
       }
@@ -878,9 +892,9 @@ this.startReading = function(def) {
           evothings.ble.close(BleApi.deviceHandle)
           $rootScope.$applyAsync();
         });
-      BleApi.displayStatus('Ready');
+      BleApi.displayStatus('BLE device connected and ready for communications');
       pausecomp(1000)
-      status = BleApi.STATUS_CONNECTED
+      status = BleApi.STATUS_INITIALIZING
       $rootScope.$applyAsync()
       def.resolve()
     });
@@ -1008,7 +1022,7 @@ this.connect = function(address)	{
 this.write = function(data, timer, noPromise) {
   if(!noPromise) currentPromise = $q.defer();
   console.log("ready to write status: " + status + ": command: " +data)
-  if(status !== BleApi.STATUS_CONNECTED && status !== BleApi.STATUS_IDLE) {
+  if(status !== BleApi.STATUS_INITIALIZING && status !== BleApi.STATUS_CONNECTED && status !== BleApi.STATUS_IDLE) {
     // return if the device isn't currently idle
     if(status == BleApi.STATUS_DISCONNECTED) {
       return $q.reject(new Error("Device is not connected"))
@@ -1195,7 +1209,11 @@ this.sendToProcess = function(rawData) {
 
 this.sendData = function(data,type) {
   currentCommand = null;
-  status = BleApi.STATUS_IDLE;
+  if(type = this.TYPE_INITIALIZE) {
+    status = this.STATUS_CONNECTED;
+  } else {
+    status = BleApi.STATUS_IDLE;
+  }
   $rootScope.$applyAsync()
   console.log('sending data back to promise')
   // console.log(JSON.stringify(data))
@@ -1216,12 +1234,9 @@ this.processResults = function(command, length, payload) {
   //  			window.plugins.toast.show('to process: ' + command, 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   console.log('to process: ' + command + ' ' + length + ' ' + payload);
   switch (command) {
-    case "3A": // initialize
-    //                     var featuresMessage = protoDevice.Features.decodeHex(payload);
-    //                     console.log("vendor: " + featuresMessage.vendor);
-    //                     console.log("config: " + featuresMessage.config);
-    //                     console.log("device name: " + featuresMessage.device_name);
-    // 					document.getElementById("device_name").innerHTML = featuresMessage.device_name;
+    case "3a": // initialize
+    case "3A":
+      this.sendData({},BleApi.TYPE_INITIALIZE)
     break;
 
     case "30": // public address

@@ -17,7 +17,7 @@
     }
     $scope.api = api;
     if(platformInfo.isMobile) {
-      api.initialize();
+      api.initializeBle();
     }
     $scope.bitlox = {
       isMobile: platformInfo.isMobile,
