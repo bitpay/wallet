@@ -67,8 +67,6 @@
           });
       console.log('connecting to '+address)
       api.connect(address).then(function() {
-        $ionicLoading.hide()
-        $rootScope.$broadcast('bitloxConnectSuccess')
       }, function(err) {
         $log.debug("BitLox Connection Error", err)
       }).finally(function() {
