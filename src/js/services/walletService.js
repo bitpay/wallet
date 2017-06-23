@@ -946,12 +946,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.getUtxos({}, function(err, resp) {
       if (err || !resp || !resp.length) return cb();
 
-      var lowAmountN = root.getLowAmount(wallet, levels, resp.length + 1);
-      var total = lodash.sum(resp, 'satoshis');
+      var minFee = root.getMinFee(wallet, levels, resp.length);
 
-      var lowAmount1 = root.getLowAmount(wallet, levels);
+      var balance = lodash.sum(resp, 'satoshis');
+
+      // for 2 outputs
+      var lowAmount = root.getLowAmount(wallet, levels);
       var lowUtxos = lodash.filter(resp, function(x) {
-        return x.satoshis < lowAmount1;
+        return x.satoshis < lowAmount;
       });
 
       var totalLow = lodash.sum(lowUtxos, 'satoshis');
@@ -959,8 +961,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return cb(err, {
         allUtxos:  resp || [],
         lowUtxos: lowUtxos || [],
-        warning: lowAmountN / total > TOTAL_LOW_WARNING_RATIO,
-        minFee: root.getMinFee(wallet, levels, resp.length),
+        warning: minFee / balance > TOTAL_LOW_WARNING_RATIO,
+        minFee: minFee,
       });
     });
   };
