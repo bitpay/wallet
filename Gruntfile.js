@@ -93,7 +93,14 @@ module.exports = function(grunt) {
           'src/js/controllers/**/*.js'
         ],
         tasks: ['concat:js']
-      }
+      },
+      gettext: {
+        files: [
+          'i18n/po/*.po',
+          'i18n/po/*.pot'
+        ],
+        tasks: ['nggettext_compile','concat']
+      },
     },
     sass: {
       dist: {
