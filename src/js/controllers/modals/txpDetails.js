@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   $scope.init = function() {
     $scope.loading = null;
     $scope.isCordova = platformInfo.isCordova;
+    $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
@@ -29,7 +30,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   function applyButtonText() {
-    $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
+    $scope.buttonText = $scope.isCordova && !$scope.isWindowsPhoneApp ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
 
     var lastSigner = lodash.filter($scope.tx.actions, {
       type: 'accept'

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -120,7 +120,20 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.openScanner = function() {
-    $state.go('tabs.scan');
+    var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
+
+    if (!isWindowsPhoneApp) {
+      $state.go('tabs.scan');
+      return;
+    }
+
+    scannerService.useOldScanner(function(err, contents) {
+      if (err) {
+        popupService.showAlert(gettextCatalog.getString('Error'), err);
+        return;
+      }
+      incomingData.redir(contents);
+    });
   };
 
   $scope.showMore = function() {

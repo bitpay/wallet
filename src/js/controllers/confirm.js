@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   // Platform info
   var isChromeApp = platformInfo.isChromeApp;
   var isCordova = platformInfo.isCordova;
-
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   function refresh() {
     $timeout(function() {
@@ -140,6 +140,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     // Other Scope vars
     $scope.isCordova = isCordova;
+    $scope.isWindowsPhoneApp = isWindowsPhoneApp;
     $scope.showAddress = false;
 
     updateTx(tx, null, {}, function() {
@@ -316,7 +317,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   }
 
   function setButtonText(isMultisig, isPayPro) {
-    $scope.buttonText = gettextCatalog.getString(isCordova ? 'Slide' : 'Click') + ' ';
+    $scope.buttonText = gettextCatalog.getString(isCordova && !isWindowsPhoneApp ? 'Slide' : 'Click') + ' ';
 
     if (isPayPro) {
       $scope.buttonText += gettextCatalog.getString('to pay');
