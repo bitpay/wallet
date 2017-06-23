@@ -17,6 +17,7 @@
         }
         $scope.api = api;
 
+
         vm.createWallet = function() {
             $ionicLoading.show({template: "Creating Wallet, Check Your BitLox"})
             vm.creatingWallet = true;
@@ -38,7 +39,6 @@
                 vm.creatingWallet = false;
             });
         };
-
 
         vm.updateWordNumbers = function() {
             if (!vm.userWords) {
@@ -138,9 +138,12 @@
 
         $scope.$watch('api.getStatus()', function(newVal) {
             if(newVal === api.STATUS_CONNECTED) {
-
                 $rootScope.$broadcast('bitloxConnectSuccess')
-                vm.readWallets(); 
+                console.log($state)
+                // only read wallets if we are on the add bitlox screen
+                if($state.current.url === '/attach-bitlox') {
+                    vm.readWallets(); 
+                }
             } else if (newVal === api.STATUS_INITIALIZING) {
                 var session = new Date().getTime(true);
                 console.log('new device status!!! '+newVal)
@@ -265,6 +268,12 @@
             vm.creatingWallet = false;
             vm.refreshingBalance = false;
             vm.openWallet = null;
+            vm.timer = false;
+
+            $ionicLoading.show({template: "Connecting to BitLox, please wait...",duration:5000})
+            $timeout(function() {
+                vm.timer = true;
+            },5000);            
             if(platformInfo.isChromeApp) {
                 api.close().then(function() {api.device()})
             }

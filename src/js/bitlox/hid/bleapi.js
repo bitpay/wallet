@@ -1016,6 +1016,7 @@ this.connect = function(address)	{
         if(currentPromise) {
           BleApi.sendError(BleApi.TYPE_ERROR, {})          
         }
+        $rootScope.$broadcast('bitloxConnectError')
       }
 		});
   return def.promise

@@ -51,6 +51,8 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         console.debug("DEVICE REMOVED");
         hidapi._device = null;
         hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
+        if(hidapi.currentPromise) { hidapi.currentPromise.reject(); }
+        $rootScope.$broadcast('bitloxConnectError')
 
     });
 
@@ -83,7 +85,6 @@ function HidAPI($q, $timeout, $interval, $rootScope,
     }
     HidAPI.setStatus = function(status) {
         if(this.status !== status) { 
-            // console.log('new status:',status)
             this.status = status;
             $rootScope.$applyAsync();
         }
@@ -461,7 +462,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
             var doRead = function() {
                 return hidapi.read('', 'wait please').then(function(data) {
                     counter += 1;
-                    if (data === null) {
+                    if (!data) {
                         // if (counter === counterMax) { // two minutes... ish
                         //     return hidapi.close().then(function() {
                         //         return hidapi.$q.reject(new Error("Command response timeout"));

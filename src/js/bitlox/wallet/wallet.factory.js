@@ -107,7 +107,10 @@
             });
         };
         Wallet.signTransaction = function(wallet, txp, cb) {
-          if(platformInfo.isMobile && api.getStatus() !== api.STATUS_CONNECTED && api.getStatus() !== api.STATUS_IDLE) {
+        if(api.getStatus() === api.STATUS_CONNECTED || api.getStatus() === api.STATUS_IDLE) {
+            console.log('device is already connected, proceed with transaction:'+api.getStatus())
+            return _bitloxSend(wallet,txp,cb)
+          } else {
             var newScope = $rootScope.$new();
             var successListener;
             var errorListener
@@ -147,24 +150,16 @@
 
                 // Execute action
               });
-          } else {
-            _bitloxSend(wallet,txp,cb)
           }
         }
         function _bitloxSend(wallet,txp,cb) {
+
+            if(api.getStatus() !== api.STATUS_CONNECTED && api.getStatus() !== api.STATUS_IDLE) {
+              return cb(new Error("Unable to connect to BitLox: "+api.getStatus()))
+            }          
             $ionicLoading.show({
               template: 'Connecting to BitLox, Please Wait...'
             });
-            var connectTimer;
-            if(platformInfo.isChromeApp) {
-              connectTimer = setTimeout(function() {
-                cb(new Error("Unable to connect to BitLox"))
-              },20000);
-            }
-            if(platformInfo.isMobile && api.getStatus() !== api.STATUS_IDLE && api.getStatus() !== api.STATUS_CONNECTED) {
-
-              return cb(new Error("Unable to connect to BitLox"))
-            }
 
             try {
 
@@ -190,7 +185,7 @@
             $log.debug('xPubKeys', xPubKeys)
 
             return api.getDeviceUUID().then(function(results) {
-              if(platformInfo.isChromeApp) { clearTimeout(connectTimer) }
+              console.log('got device UUID, finding wallet')
               var externalSource = wallet.getPrivKeyExternalSourceName()
               var bitloxInfo = externalSource.split('/')
               if(bitloxInfo[1] !== results.payload.device_uuid.toString('hex')) {
@@ -270,7 +265,7 @@
               })
             }, function(e) {
               $log.debug('cannot get device uuid', e)
-              if(platformInfo.isChromeApp) { clearTimeout(connectTimer) }
+
               return cb(e)
             })
         }

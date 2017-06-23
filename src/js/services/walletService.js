@@ -1134,6 +1134,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
 
           ongoingProcess.set('signingTx', false, customStatusHandler);
+          if (err) {
+            $ionicLoading.hide();
+            $log.warn('sign error:' + err);
+            var msg = err && err.message ?
+              err.message :
+              gettextCatalog.getString('The payment was created but could not be completed. Please try again from home screen');
+
+            $rootScope.$emit('Local/TxAction', wallet.id);
+            return cb(msg);
+          }          
           if (wallet.isPrivKeyExternal()) {
             var externalSource = wallet.getPrivKeyExternalSourceName()
             if(externalSource.indexOf('bitlox') === 0) {
@@ -1150,15 +1160,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
           root.invalidateCache(wallet);
-          if (err) {
-            $log.warn('sign error:' + err);
-            var msg = err && err.message ?
-              err.message :
-              gettextCatalog.getString('The payment was created but could not be completed. Please try again from home screen');
 
-            $rootScope.$emit('Local/TxAction', wallet.id);
-            return cb(msg);
-          }
 
           if (signedTxp.status == 'accepted') {
             ongoingProcess.set('broadcastingTx', true, customStatusHandler);
