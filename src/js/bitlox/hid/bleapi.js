@@ -772,8 +772,10 @@ this.initProtoBuf = function(cb) {
     return cb(null, Device)
   });
 }
-this.displayStatus = function(status) {
-	console.log('Status: '+status);
+this.displayStatus = function(newStatus) {
+  if(status !== newStatus) {
+    console.log('Status: '+status);
+  }
 }
 this.getServices = function(def) {
   var bleapi = this
@@ -866,7 +868,7 @@ this.startReading = function(def) {
         BleApi.deviceHandle,
         BleApi.characteristicRead,
         function(data) {
-          BleApi.displayStatus('Active');
+          // BleApi.displayStatus('Active');
           var buf = new Uint8Array(data);
           for (var i = 0 ; i < buf.length; i++)
           {

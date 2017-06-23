@@ -70,6 +70,7 @@
       }, function(err) {
         $log.debug("BitLox Connection Error", err)
       }).finally(function() {
+        $ionicLoading.hide();
 
       })
     }
