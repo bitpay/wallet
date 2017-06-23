@@ -276,11 +276,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           updateAmount();
           showSendMaxWarning(sendMaxInfo);
         }
-        refresh();
 
         // txp already generated for this wallet?
-        if (tx.txp[wallet.id])
+        if (tx.txp[wallet.id]) {
+          refresh();
           return cb();
+        }
 
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
           if (err) return cb(err);
@@ -297,6 +298,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
           tx.txp[wallet.id] = txp;
           $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+          refresh();
 
           return cb();
         });
@@ -567,16 +569,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     scope.hideModal = function(customFeeLevel) {
+      scope.chooseFeeLevelModal.hide();
       $log.debug('Custom fee level choosen:' + customFeeLevel + ' was:' + tx.feeLevel);
       if (tx.feeLevel == customFeeLevel)
-        scope.chooseFeeLevelModal.hide();
+        return;
 
       tx.feeLevel = customFeeLevel;
       updateTx(tx, wallet, {
         clearCache: true,
         dryRun: true,
       }, function() {
-        scope.chooseFeeLevelModal.hide();
       });
     };
   };
