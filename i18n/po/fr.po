@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2017-06-23 14:52-0400\n"
+"PO-Revision-Date: 2017-06-23 15:23-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -220,7 +220,7 @@ msgstr "Quelqu'un disposant de votre phrase de sauvegarde peut accéder ou dépe
 
 #: www/views/addresses.html:94
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
-msgstr ""
+msgstr "Frais de réseau Bitcoin approximatifs pour transférer le solde du portefeuille (avec des frais normaux)"
 
 #: www/views/backupWarning.html:10
 msgid "Are you being watched?"
@@ -975,7 +975,7 @@ msgstr "Erreur de récupération de la facture"
 
 #: src/js/controllers/confirm.js:261
 msgid "Error getting SendMax information"
-msgstr ""
+msgstr "Erreur d’obtention de l'information SendMax"
 
 #: src/js/controllers/topup.js:152
 msgid "Error in Payment Protocol"
@@ -1512,7 +1512,7 @@ msgstr "Se déconnecter"
 
 #: www/views/addresses.html:87
 msgid "Low amount inputs"
-msgstr ""
+msgstr "Entrées de faible montant"
 
 #: www/views/includes/walletHistory.html:27
 msgid "Low fees"
@@ -2165,7 +2165,7 @@ msgstr "Analyser les adresses pour des fonds"
 
 #: www/views/modals/fingerprintCheck.html:11
 msgid "Scan again"
-msgstr ""
+msgstr "Réanalyser"
 
 #: src/js/services/fingerprintService.js:56
 msgid "Scan your fingerprint please"
@@ -2657,11 +2657,11 @@ msgstr "Pour {{reason}} vous devez d'abord ajouter votre compte BitPay - {{email
 
 #: src/js/services/onGoingProcess.js:48
 msgid "Top up in progress..."
-msgstr ""
+msgstr "Rechargement en cours..."
 
 #: src/js/controllers/topup.js:137
 msgid "Top up {{amountStr}} to debit card ({{cardLastNumber}})"
-msgstr ""
+msgstr "Rechargement de {{amountStr}} vers la carte de débit ({{cardLastNumber}})"
 
 #: www/views/modals/wallet-balance.html:23
 #: www/views/topup.html:75
