@@ -53,7 +53,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     if (analyzeUtxosDone) return;
 
     feeService.getFeeLevels(function(err, levels){
+      if (err) return;
       walletService.getLowUtxos($scope.wallet, levels, function(err, resp){
+        if (err || !resp) return;
         analyzeUtxosDone = true;
         $scope.lowUtxosWarning = resp.warning;
       });
