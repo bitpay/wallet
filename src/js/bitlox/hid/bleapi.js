@@ -990,14 +990,15 @@ this.connect = function(address)	{
       $rootScope.$applyAsync()
 			BleApi.displayStatus('connect: ' + errorCode);
       delete knownDevices[address]
-      BleApi.startScanNew();
+      // BleApi.startScanNew();
 
       if(parseInt(errorCode,10) === 133) {
         return def.resolve(new Error('Unable to maintain connection to BitLox BLE'))
       }
       if(parseInt(errorCode,10) === 8) {
+        $rootScope.$digest()
         if(currentPromise) {
-          BleApi.sendError(BleApi.TYPE_ERROR, {})
+          BleApi.sendError(BleApi.TYPE_ERROR, {})          
         }
       }
 		});
