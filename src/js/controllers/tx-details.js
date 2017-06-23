@@ -118,12 +118,17 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       initActionList();
       getFiatRate();
 
-      feeService.getLowAmount($scope.wallet, function(err, amount) {
-        $scope.btx.lowAmount = tx.amount< amount;
-      });
+      feeService.getFeeLevels(function(err, levels) {
+        if (err) return;
+        walletService.getLowAmount($scope.wallet, levels, function(err, amount) {
+          if (err) return;
+          $scope.btx.lowAmount = tx.amount < amount;
 
-      $timeout(function() {
-        $scope.$apply();
+          $timeout(function() {
+            $scope.$apply();
+          });
+
+        });
       });
     });
   };
