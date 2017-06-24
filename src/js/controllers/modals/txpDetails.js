@@ -133,9 +133,19 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.loading = false;
     popupService.showAlert(gettextCatalog.getString('Error'), bwcError.msg(err, prefix));
   };
+  $scope.$on('destroy', function() {
+    destroyBitloxListeners();
+  })
+  function destroyBitloxListeners() {
+    if($rootScope.bitloxConnectErrorListener) {
+      $rootScope.bitloxConnectErrorListener();    
+    }    
+  }
 
   $scope.sign = function(onSendStatusChange) {
     $scope.loading = true;
+    
+    destroyBitloxListeners();
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
       $scope.$emit('UpdateTx');
       if (err) return setError(err, gettextCatalog.getString('Could not send payment'));

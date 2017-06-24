@@ -192,6 +192,9 @@
               console.log('got device UUID, finding wallet')
               var externalSource = wallet.getPrivKeyExternalSourceName()
               var bitloxInfo = externalSource.split('/')
+              if(!results) {
+                return cb(new Error('Unable to get BitLox device information. Try reconnecting the BitLox'))
+              }
               if(bitloxInfo[1] !== results.payload.device_uuid.toString('hex')) {
                 return cb(new Error('This wallet is not on the connected BitLox device or has been moved. Select the correct Bitlox or contact support.'))
               }
@@ -230,8 +233,11 @@
                           return api.signTransaction(tx)
                           .then(function(result) {
                             $log.debug('Bitlox response', result);
+                            if(!result) {
+                              return cb(new Error('Unable to get signatures from BitLox. Try reconnecting the BitLox'))
+                            }                            
                             if(result.type === api.TYPE_SIGNATURE_RETURN) {
-                              txp.signatures = result.payload.signedScripts;
+                              txp.signatures = result.data.signedScripts;
                               tx.replaceScripts(txp.signatures)
                               $ionicLoading.show({
                                 template: 'Broadcasting Transaction. Please Wait...'
@@ -447,7 +453,7 @@
             WalletStatus.status = WalletStatus.STATUS_LOADING;
             var deferred = $q.defer();
             api.loadWallet(this.number).then(function(data) {
-                if (data.type !== api.TYPE_SUCCESS) {
+                if (!data || data.type !== api.TYPE_SUCCESS) {
                     wallet.unlocked = false;
                     return deferred.reject("Error opening wallet");
                 }
