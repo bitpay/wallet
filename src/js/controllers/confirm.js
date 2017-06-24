@@ -464,7 +464,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     destroyBitloxListeners();
   })
   function destroyBitloxListeners() {
-    if(typeof($rootScope.bitloxConnectErrorListener) === 'function') {
+    if($rootScope.bitloxConnectErrorListener) {
       $rootScope.bitloxConnectErrorListener();    
     }    
   }

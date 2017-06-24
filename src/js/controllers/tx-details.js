@@ -176,6 +176,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       urlRoot = networkObj.explorer;
     }
     var url = + urlRoot+'tx/' + btx.txid;
+
+    console.log(url)
     var optIn = true;
     var title = null;
     var message = gettextCatalog.getString('View Transaction on Block Explorer');
