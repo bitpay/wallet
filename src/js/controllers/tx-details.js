@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.title = gettextCatalog.getString('Transaction');
     $scope.wallet = profileService.getWallet(data.stateParams.walletId);
     if(!$scope.wallet) { 
+      $scope.wallet = {credentials:{}};
       return;
     }
     $scope.color = $scope.wallet.color;
