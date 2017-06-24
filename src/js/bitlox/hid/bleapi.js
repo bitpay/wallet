@@ -680,7 +680,7 @@ this.initialize = function(sessionId) {
   });
 
   var cmd = BleApi.makeCommand(deviceCommands.initPrefix,msg)
-  return this.write(cmd, 10000)
+  return this.write(cmd, 15000)
 }
 this.ping = function(args) {
   currentCommand = 'ping'
