@@ -14,6 +14,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     txId = data.stateParams.txid;
     $scope.title = gettextCatalog.getString('Transaction');
     $scope.wallet = profileService.getWallet(data.stateParams.walletId);
+    if(!$scope.wallet) { 
+      return;
+    }
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
