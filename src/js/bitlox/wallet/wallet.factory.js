@@ -251,7 +251,7 @@
                               // return cb(null,txp)
                             } else {
                               $log.debug('TX signing error', result)
-                              return cb(new Error(result))
+                              return cb(new Error(result.error_message))
                             }
                           }, function(err) {
                             $log.debug("TX sign error", err)
