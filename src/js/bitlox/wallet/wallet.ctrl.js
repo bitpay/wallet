@@ -144,9 +144,9 @@
                 if($state.current.url === '/attach-bitlox') {
                     vm.readWallets(); 
                 }
+                $timeout.cancel($rootScope.bitloxConnectTimer)
             } else if (newVal === api.STATUS_INITIALIZING) {
                 var session = new Date().getTime(true);
-                console.log('new device status!!! '+newVal)
                 api.initialize(session);
             }
         })

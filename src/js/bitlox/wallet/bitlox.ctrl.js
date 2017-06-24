@@ -4,9 +4,9 @@
   angular.module('app.core')
       .controller('BitLoxCtrl', BitLoxCtrl);
 
-  BitLoxCtrl.$inject = ['$rootScope', '$scope', '$state', '$log', '$stateParams', 'gettextCatalog', '$ionicHistory', '$ionicLoading', 'popupService', 'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', 'platformInfo'];
+  BitLoxCtrl.$inject = ['$rootScope', '$timeout', '$scope', '$state', '$log', '$stateParams', 'gettextCatalog', '$ionicHistory', '$ionicLoading', 'popupService', 'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', 'platformInfo'];
 
-  function BitLoxCtrl($rootScope, $scope, $state, $log, $stateParams, gettextCatalog, $ionicHistory, $ionicLoading, popupService,  hidchrome, hidweb, bleapi, platformInfo) {
+  function BitLoxCtrl($rootScope, $timeout, $scope, $state, $log, $stateParams, gettextCatalog, $ionicHistory, $ionicLoading, popupService,  hidchrome, hidweb, bleapi, platformInfo) {
 
     var api = hidweb;
     if (platformInfo.isChromeApp) {
@@ -55,7 +55,7 @@
 
       if(platformInfo.isMobile) {
         api.startScanNew();
-        setTimeout(function() {
+        $timeout(function() {
           api.stopScan();
         },60000)
       }
@@ -69,9 +69,12 @@
       }, function(err) {
         $log.debug("BitLox Connection Error", err)
       }).finally(function() {
-        $ionicLoading.hide();
 
       })
+      $rootScope.bitloxConnectTimer = $timeout(function() {
+        $ionicLoading.hide();
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Unable to connect to BitLox via Bluetooth'));
+      },20000)
     }
 
 

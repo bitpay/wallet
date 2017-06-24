@@ -144,7 +144,7 @@
                   cb(new Error("Unable to connect to BitLox"));
                 })      
 
-                setTimeout(function() {_bitloxSend(wallet,txp,cb)},1000)
+                $timeout(function() {_bitloxSend(wallet,txp,cb)},1000)
               });
               successListener = newScope.$on('bitloxConnectSuccess', function() {
                 // Execute action
@@ -250,8 +250,12 @@
                               })
                               // return cb(null,txp)
                             } else {
-                              $log.debug('TX signing error', result)
-                              return cb(new Error(result.error_message))
+                              $log.debug('TX signing error')
+                              if(platformInfo.isMobile) {
+                                return cb(new Error(result.type.error_message))
+                              } else {
+                                return cb(new Error(result))
+                              }
                             }
                           }, function(err) {
                             $log.debug("TX sign error", err)

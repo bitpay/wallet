@@ -70,9 +70,9 @@ var bleReady = null,
   platform = null,
   protoDevice = null,
   currentPromise = null,
-  timeout = setTimeout(function() {},0),
   errCommandInProgress = $q.reject(new Error("command already in progress"))
 
+BleApi.timeout = $timeout(function() {},0)
 var incomingData = '';
 var dataAlmostReady = false;
 var dataReady = false;
@@ -261,7 +261,7 @@ this.newWallet = function(walletNumber, options) {
   // make a proto buffer for the data, generate a command and
   // send it off
   var newWalletMessage = new protoDevice.NewWallet(protoData);
-  console.warn(JSON.stringify(protoData))
+  // console.warn(JSON.stringify(protoData))
   // if isRestore === true in the option, use the restor command
   // instead (everything else is the same)
   var cmdPrefix = (options.isRestore === true) ?
@@ -672,7 +672,7 @@ this.initialize = function(sessionId) {
   currentCommand = 'initialize'
   var sessionIdHex = hexUtil.toPaddedHex(sessionId, 39) + '00';
   this.sessionIdHex = sessionIdHex;
-  console.debug(sessionId, "->", sessionIdHex);
+  // console.debug(sessionId, "->", sessionIdHex);
   var sessionIdBuf = hexUtil.hexToByteBuffer(sessionIdHex);
   sessionIdBuf.flip();
   var msg = new protoDevice.Initialize({
@@ -1016,7 +1016,8 @@ this.connect = function(address)	{
         if(currentPromise) {
           BleApi.sendError(BleApi.TYPE_ERROR, {})          
         }
-        clearTimeout(timeout)
+
+        $timeout.cancel(BleApi.timeout)
         if(BleApi.status !== BleApi.STATUS_DISCONNECTED && BleApi.status !== BleApi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
       }
 		});
@@ -1061,10 +1062,10 @@ this.write = function(data, timer, noPromise) {
   for(k = 0; k < iterations; k++)
   {
     transData[k] = data.slice(k*chunkSize,chunkSize+(k*chunkSize));
-    console.log("k " + k);
+    // console.log("k " + k);
   };
 
-  console.log("k out " + k);
+  // console.log("k out " + k);
 
   // 		deal with the leftover, backfilling the frame with zeros
   if(remainder != 0)
@@ -1076,14 +1077,14 @@ this.write = function(data, timer, noPromise) {
     }
     // console.log("remainder " + transData[k]);
 
-    console.log("remainder length " + transData[k].length);
+    // console.log("remainder length " + transData[k].length);
   };
 
   // 		The BLE writer takes ByteBuffer arrays
   var ByteBuffer = dcodeIO.ByteBuffer;
   var j = 0;
   var parseLength = 0;
-  console.log("transData.length " + transData.length);
+  // console.log("transData.length " + transData.length);
 
   async.eachSeries(transData, function(data, next) {
     parseLength = data.length
@@ -1125,7 +1126,7 @@ this.write = function(data, timer, noPromise) {
       evothings.ble.close(BleApi.deviceHandle)
       status = BleApi.STATUS_DISCONNECTED
       $rootScope.$applyAsync()
-      return currentPromise.reject(new Error('Command Write Error'))
+      return currentPromise.reject(new Error('Command Write Processing Error'))
     }
     status = BleApi.STATUS_READING
     $rootScope.$applyAsync();
@@ -1135,8 +1136,9 @@ this.write = function(data, timer, noPromise) {
 
   if(!noPromise) {
     if(!timer) timer = 30000;
-    console.log(timer + " milliseconds. hurry up!")
-    timeout = setTimeout(function() {
+    console.log(timer + " milliseconds.")
+
+    BleApi.timeout = $timeout(function() {
       console.warn("TIMEOUT of Write Command")
       evothings.ble.close(BleApi.deviceHandle)
       status = BleApi.STATUS_DISCONNECTED
@@ -1196,10 +1198,10 @@ this.sendToProcess = function(rawData) {
       var command = dataToSendOut.substring(headerPosition + 4, headerPosition + 8);
       // document.getElementById("command").innerHTML = command;
       var payloadSize2 = dataToSendOut.substring(headerPosition + 8, headerPosition + 16);
-      console.log('PayloadSize: ' + payloadSize2);
+      // console.log('PayloadSize: ' + payloadSize2);
       var decPayloadSize = parseInt(payloadSize2, 16);
-      console.log('decPayloadSize: ' + decPayloadSize);
-      console.log('decPayloadSize*2 + 16: ' + ((decPayloadSize *2) + 16));
+      // console.log('decPayloadSize: ' + decPayloadSize);
+      // console.log('decPayloadSize*2 + 16: ' + ((decPayloadSize *2) + 16));
 
       // document.getElementById("payLoadSize").innerHTML = payloadSize2;
       var payload = dataToSendOut.substring(headerPosition + 16, headerPosition + 16 + (2 * (decPayloadSize)));
@@ -1213,23 +1215,25 @@ this.sendToProcess = function(rawData) {
 
 this.sendData = function(data,type) {
   currentCommand = null;
+
+  $timeout.cancel(BleApi.timeout)
+
   if(type === this.TYPE_INITIALIZE) {
     status = this.STATUS_CONNECTED;
   } else {
     status = BleApi.STATUS_IDLE;
   }
   $rootScope.$applyAsync()
-  console.log('sending data back to promise')
+  // console.log('sending data back to promise')
   // console.log(JSON.stringify(data))
-  clearTimeout(timeout)
   currentPromise.resolve({type: type, payload:data});
 }
 this.sendError = function(data,type) {
   currentCommand = null;
+  $timeout.cancel(BleApi.timeout)
   status = BleApi.STATUS_IDLE;
   $rootScope.$applyAsync()
-  clearTimeout(timeout)
-  currentPromise.resolve({type: type, data: data});
+  currentPromise.resolve({type: type, payload: data});
 }
 this.processResults = function(command, length, payload) {
 
