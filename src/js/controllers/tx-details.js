@@ -1,10 +1,6 @@
 'use strict';
 
-<<<<<<< HEAD
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService) {
-=======
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, configService, externalLinkService, popupService, ongoingProcess, txFormatService, CUSTOMNETWORKS) {
->>>>>>> correct block explorer links per currency.
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService, CUSTOMNETWORKS, $ionicHistory) {
 
   var txId;
   var listeners = [];
@@ -14,9 +10,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     txId = data.stateParams.txid;
     $scope.title = gettextCatalog.getString('Transaction');
     $scope.wallet = profileService.getWallet(data.stateParams.walletId);
-    if(!$scope.wallet) { 
-      $scope.wallet = {credentials:{}};
-      return;
+    if(!$scope.wallet) {
+      return $ionicHistory.goBack();
     }
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
@@ -33,7 +28,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-        if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+        if (type == 'NewBlock' && n && n.data) {//&& n.data.network == 'livenet') {
           updateTxDebounced({
             hideLoading: true
           });
