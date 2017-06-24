@@ -49,10 +49,12 @@ function HidAPI($q, $timeout, $interval, $rootScope,
     // monitor disconnect
     chrome.hid.onDeviceRemoved.addListener(function() {
         console.debug("DEVICE REMOVED");
+        
         hidapi._device = null;
+        if(status !== hidapi.STATUS_DISCONNECTED && status !== hidapi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
         hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
         if(hidapi.currentPromise) { hidapi.currentPromise.reject(); }
-        $rootScope.$broadcast('bitloxConnectError')
+
 
     });
 
@@ -473,17 +475,8 @@ function HidAPI($q, $timeout, $interval, $rootScope,
                         return data;                        
                     } else 
                     if (data.type === HidAPI.TYPE_ERROR) {
-						if (expectedType === hidapi.TYPE_SIGNATURE_RETURN) {
-							// if (counter === counterMax) { // two minutes... ish
-							// 	return hidapi.close().then(function() {
-							// 		return hidapi.$q.reject(new Error("Command response timeout"));
-							// 	});
-							// }
-							return hidapi.$timeout(doRead, readTimeout);
-						} else {
-							hidapi.doingCommand = false;
-							return hidapi.$q.reject(data.payload);
-						}
+                        hidapi.doingCommand = false;
+                        return hidapi.$q.reject(data.payload);
                     } else if (data.type === HidAPI.TYPE_PLEASE_ACK) {
                         return hidapi._doCommand(hidapi.commands.button_ack, expectedType);
                     } else if (expectedType) {

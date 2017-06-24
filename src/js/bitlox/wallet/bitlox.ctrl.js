@@ -4,9 +4,9 @@
   angular.module('app.core')
       .controller('BitLoxCtrl', BitLoxCtrl);
 
-  BitLoxCtrl.$inject = ['$rootScope', '$scope', '$log', '$stateParams', 'gettextCatalog', '$ionicHistory', '$ionicLoading', 'popupService', 'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', 'platformInfo'];
+  BitLoxCtrl.$inject = ['$rootScope', '$scope', '$state', '$log', '$stateParams', 'gettextCatalog', '$ionicHistory', '$ionicLoading', 'popupService', 'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', 'platformInfo'];
 
-  function BitLoxCtrl($rootScope, $scope, $log, $stateParams, gettextCatalog, $ionicHistory, $ionicLoading, popupService,  hidchrome, hidweb, bleapi, platformInfo) {
+  function BitLoxCtrl($rootScope, $scope, $state, $log, $stateParams, gettextCatalog, $ionicHistory, $ionicLoading, popupService,  hidchrome, hidweb, bleapi, platformInfo) {
 
     var api = hidweb;
     if (platformInfo.isChromeApp) {
@@ -31,7 +31,6 @@
       status: null,
       alertClass: "warning"
     };
-
 
 
     $scope.getEntropy = function(data) {
@@ -120,7 +119,7 @@
           $scope.bitlox.statusString = "Bitlox disconnected!";
           $scope.bitlox.alertClass = "danger";
           $scope.bitlox.glyph = "glyphicon-remove";
-          if($scope.bitlox.connected) {
+          if($scope.bitlox.connected && $state.current.url === '/attach-bitlox') {
             $ionicLoading.hide();
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Disconnected'));
             $ionicHistory.goBack();

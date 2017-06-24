@@ -264,7 +264,10 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
   function success() {
     $scope.sendStatus = 'success';
-    $scope.$digest();
+    var phase = $scope.$root.$$phase;
+    if (phase !== '$apply' && phase !== '$digest') {
+      $scope.$digest();
+    }
   }
 
   $scope.statusChangeHandler = statusChangeHandler;

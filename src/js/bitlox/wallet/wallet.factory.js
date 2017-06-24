@@ -6,14 +6,14 @@
 
     WalletFactory.$inject = [
         '$rootScope', '$q', '$timeout',
-        'WalletStatus',
+        'WalletStatus', '$state', 
          'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', 'BIP32', 'bitloxTransaction', 'addressInfo', 'MIN_OUTPUT', 'bcMath', 'platformInfo',
          '$ionicLoading',  '$ionicModal', '$log', 'lodash', 'txUtil'
       ];
 
     function WalletFactory(
         $rootScope, $q, $timeout,
-        WalletStatus,
+        WalletStatus, $state,
         hidchrome,hidweb, bleapi, BIP32, Transaction, addressInfo, MIN_OUTPUT, bcMath, platformInfo,
         $ionicLoading, $ionicModal, $log, lodash, txUtil) {
 
@@ -140,6 +140,10 @@
                 // Execute action
                 successListener()
                 errorListener()
+                $rootScope.bitloxConnectErrorListener = $rootScope.$on('bitloxConnectError', function() {
+                  cb(new Error("Unable to connect to BitLox"));
+                })      
+
                 setTimeout(function() {_bitloxSend(wallet,txp,cb)},1000)
               });
               successListener = newScope.$on('bitloxConnectSuccess', function() {
@@ -155,7 +159,7 @@
         function _bitloxSend(wallet,txp,cb) {
 
             if(api.getStatus() !== api.STATUS_CONNECTED && api.getStatus() !== api.STATUS_IDLE) {
-              return cb(new Error("Unable to connect to BitLox: "+api.getStatus()))
+              return cb(new Error("Unable to connect to BitLox"))
             }          
             $ionicLoading.show({
               template: 'Connecting to BitLox, Please Wait...'
@@ -240,8 +244,8 @@
                               })
                               // return cb(null,txp)
                             } else {
-                              $log.debug('TX parse error', result)
-                              return cb(new Error("TX parse error"))
+                              $log.debug('TX signing error', result)
+                              return cb(new Error(result))
                             }
                           }, function(err) {
                             $log.debug("TX sign error", err)

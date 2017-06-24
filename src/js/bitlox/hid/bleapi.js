@@ -1016,7 +1016,7 @@ this.connect = function(address)	{
         if(currentPromise) {
           BleApi.sendError(BleApi.TYPE_ERROR, {})          
         }
-        $rootScope.$broadcast('bitloxConnectError')
+        if(BleApi.status !== BleApi.STATUS_DISCONNECTED && BleApi.status !== BleApi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
       }
 		});
   return def.promise
