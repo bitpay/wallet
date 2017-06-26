@@ -122,7 +122,7 @@
           $scope.bitlox.alertClass = "danger";
           $scope.bitlox.glyph = "glyphicon-remove";
           console.log($state.current.url)
-          if($scope.wallet.status !== api.STATUS_DISCONNECTED) {
+          if($scope.wallet.status && $scope.wallet.status !== api.STATUS_DISCONNECTED) {
             console.log("disconnected error")
             $ionicLoading.hide();
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));

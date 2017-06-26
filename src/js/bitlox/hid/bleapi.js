@@ -1026,7 +1026,7 @@ this.connect = function(address)	{
     if(parseInt(errorCode,10) === 133) {
 
       console.log("BitLox Disconnected from BLE: 133")
-      api.disconnect()
+      BleApi.disconnect()
     
     } else if(parseInt(errorCode,10) === 8) {
       console.log("BitLox Disconnected from BLE: 8")
@@ -1056,6 +1056,7 @@ this.disconnect = function() {
   $rootScope.$applyAsync(function() {
     status = BleApi.STATUS_DISCONNECTED;
   })
+
 }
 // old sliceAndWrite64, 'data' is a command constant
 this.write = function(data, timer, noPromise) {
