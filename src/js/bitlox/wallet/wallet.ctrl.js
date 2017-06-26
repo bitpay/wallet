@@ -275,7 +275,12 @@
                 vm.timer = true;
             },5000);            
             if(platformInfo.isChromeApp) {
-                api.close().then(function() {api.device()})
+                // api.close().then(function() {api.device()})
+                api.device().then(function() {
+                    if(api.getStatus() === api.STATUS_IDLE) {
+                        vm.readWallets();
+                    }
+                })
             }
         }
 
