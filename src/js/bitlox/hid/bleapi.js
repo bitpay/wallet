@@ -1012,7 +1012,7 @@ this.connect = function(address)	{
       $rootScope.$applyAsync(function() {
         status = BleApi.STATUS_DISCONNECTED
       });
-      return BleApi.currentPromise.reject(new Error('Unable to connect to BitLox BLE'))
+      sendData(BleApi.TYPE_ERROR, {error: new Error('Unable to connect to BitLox BLE')});
 
     }
   },
@@ -1025,7 +1025,7 @@ this.connect = function(address)	{
     if(parseInt(errorCode,10) === 133) {
 
       console.log("BitLox Disconnected from BLE: 133")
-      BleApi.currentPromise.resolve(new Error('Unable to maintain connection to BitLox BLE'))
+      BleApi.currentPromise.reject(new Error('Unable to maintain connection to BitLox BLE'))
     
     } else if(parseInt(errorCode,10) === 8) {
       console.log("BitLox Disconnected from BLE: 8")
@@ -1154,7 +1154,7 @@ this.write = function(data, timer, noPromise) {
       $rootScope.$applyAsync(function() {
         status = BleApi.STATUS_DISCONNECTED
       })
-      return BleApi.currentPromise.reject(new Error('Command Write Processing Error'))
+      return sendData(BleApi.TYPE_ERROR, {error: new Error('Command Write Processing Error')})
     }
     $rootScope.$applyAsync(function() {
       status = BleApi.STATUS_READING
@@ -1173,7 +1173,7 @@ this.write = function(data, timer, noPromise) {
         status = BleApi.STATUS_DISCONNECTED
       })
 
-      BleApi.currentPromise.reject(new Error('Command Write Timeout'))
+      sendData(BleApi.TYPE_ERROR, {error: new Error('Command Write Timeout')})
     },timer)
   }
   return this.currentPromise.promise;
