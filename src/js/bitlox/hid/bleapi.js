@@ -1023,9 +1023,9 @@ this.connect = function(address)	{
     if(parseInt(errorCode,10) === 133) {
 
       console.log("BitLox Disconnected from BLE: 133")
-      return BleApi.currentPromise.resolve(new Error('Unable to maintain connection to BitLox BLE'))
-    }
-    if(parseInt(errorCode,10) === 8) {
+      BleApi.currentPromise.resolve(new Error('Unable to maintain connection to BitLox BLE'))
+    
+    } else if(parseInt(errorCode,10) === 8) {
       console.log("BitLox Disconnected from BLE: 8")
       $rootScope.$digest()
       if(BleApi.currentPromise) {
