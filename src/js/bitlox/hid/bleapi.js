@@ -1048,7 +1048,8 @@ this.disconnect = function() {
     console.log("broadcasting disconnection notice")
     $rootScope.$broadcast('bitloxConnectError'); 
   }
-
+  knownDevices = {}
+  BleApi.startScanNew();
 }
 // old sliceAndWrite64, 'data' is a command constant
 this.write = function(data, timer, noPromise) {
