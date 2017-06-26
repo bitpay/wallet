@@ -71,10 +71,7 @@
       }).finally(function() {
 
       })
-      $rootScope.bitloxConnectTimer = $timeout(function() {
-        $ionicLoading.hide();
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Unable to connect to BitLox via Bluetooth'));
-      },20000)
+
     }
 
 

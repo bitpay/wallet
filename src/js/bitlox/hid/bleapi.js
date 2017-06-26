@@ -13,7 +13,7 @@ angular.module('hid')
 'txUtil',
 'RECEIVE_CHAIN',
 'CHANGE_CHAIN',
-function BleApi($rootScope,$q,$timeout,$interval, hidCommands, hexUtil, txUtil, RECEIVE_CHAIN, CHANGE_CHAIN) {
+function BleApi($rootScope,$q,$timeout,$interval,hidCommands, hexUtil, txUtil, RECEIVE_CHAIN, CHANGE_CHAIN) {
 var BleApi = this
 var deviceCommands = hidCommands;
 
@@ -26,6 +26,7 @@ this.pinTheFirst = 0;
 this.pinFirstDecline = 0;
 this.characteristicName = null;
 this.deviceHandle = null;
+this.hexUtil = hexUtil;
 
 BleApi.STATUS_SCANNING     = "scanning";
 BleApi.STATUS_DISCONNECTED  = "disconnected";
@@ -69,9 +70,9 @@ var bleReady = null,
   currentCommand = null,
   platform = null,
   protoDevice = null,
-  currentPromise = null,
   errCommandInProgress = $q.reject(new Error("command already in progress"))
 
+BleApi.currentPromise = null;
 BleApi.timeout = $timeout(function() {},0)
 var incomingData = '';
 var dataAlmostReady = false;
@@ -254,8 +255,8 @@ this.newWallet = function(walletNumber, options) {
   if (options.name && 'string' === typeof name) {
       name = options.name;
   }
-  var nameHex = hexUtil.toPaddedHex(name, 39) + '00';
-  var nameBuf = hexUtil.hexToByteBuffer(nameHex);
+  var nameHex = BleApi.hexUtil.toPaddedHex(name, 39) + '00';
+  var nameBuf = BleApi.hexUtil.hexToByteBuffer(nameHex);
   nameBuf.flip();
   protoData.wallet_name = nameBuf;
   // make a proto buffer for the data, generate a command and
@@ -357,7 +358,7 @@ this.signTransaction = function(opts) {
         // get the hex of the full input transaction
         txUtil.getHex(input.txid).then(function(hex) {
             var thisInputData = '01';
-            var vout = hexUtil.intToBigEndianString(input.vout, 4);
+            var vout = BleApi.hexUtil.intToBigEndianString(input.vout, 4);
             thisInputData += vout
             thisInputData += hex;
             inputData.push(thisInputData);
@@ -376,7 +377,7 @@ this.signTransaction = function(opts) {
         dataString += '01000000';
         dataString = inputData.join('') + dataString;
 
-        var dataBuf = hexUtil.hexToByteBuffer(dataString);
+        var dataBuf = BleApi.hexUtil.hexToByteBuffer(dataString);
         dataBuf.flip();
         var msg = new protoDevice.SignTransactionExtended({
             address_handle_extended: addrHandlers,
@@ -670,10 +671,10 @@ this.loadWallet = function(num) {
 }
 this.initialize = function(sessionId) {
   currentCommand = 'initialize'
-  var sessionIdHex = hexUtil.toPaddedHex(sessionId, 39) + '00';
+  var sessionIdHex = BleApi.hexUtil.toPaddedHex(sessionId, 39) + '00';
   this.sessionIdHex = sessionIdHex;
   // console.debug(sessionId, "->", sessionIdHex);
-  var sessionIdBuf = hexUtil.hexToByteBuffer(sessionIdHex);
+  var sessionIdBuf = BleApi.hexUtil.hexToByteBuffer(sessionIdHex);
   sessionIdBuf.flip();
   var msg = new protoDevice.Initialize({
       session_id: sessionIdBuf
@@ -737,8 +738,10 @@ this.initializeBle = function() {
       // if we've already initialized don't do it again
       if(bleReady) {
         console.log("BLE PREVIOUSLY INITIALISED, STARTING NEW SESSION", status)
-        status = BleApi.STATUS_INITIALIZING
-        $rootScope.$applyAsync()        
+        
+        $rootScope.$applyAsync(function() {
+          status = BleApi.STATUS_DISCONNECTED
+        })        
         return true;
       }
       platform = window.device.platform.toLowerCase()
@@ -777,7 +780,7 @@ this.displayStatus = function(newStatus) {
     console.log('Status: '+status);
   }
 }
-this.getServices = function(def) {
+this.getServices = function() {
   var bleapi = this
 
 	BleApi.displayStatus('Reading services...');
@@ -831,7 +834,7 @@ this.getServices = function(def) {
 		if (BleApi.characteristicRead && BleApi.characteristicWrite && BleApi.descriptorNotification && BleApi.characteristicName && BleApi.descriptorName)
 		{
       BleApi.displayStatus('RX/TX services found!');
-			BleApi.startReading(def);
+			BleApi.startReading();
 		}
 		else
 		{
@@ -850,7 +853,7 @@ this.getServices = function(def) {
 * 	be processed. The passed frame may not contain the whole message, which will be completed
 * 	in subsequent frames. Android needs a shim of ~10 ms to properly keep up.
 */
-this.startReading = function(def) {
+this.startReading = function() {
   var bleapi = this
 	BleApi.displayStatus('Enabling notifications...');
 
@@ -882,23 +885,26 @@ this.startReading = function(def) {
           };
           BleApi.sendToProcess(sD);
           sD = '';
-          if(platform == "android")
-          {
-            pausecomp(20);
-          }
+          // if(platform == "android")
+          // {
+          //   pausecomp(20);
+          // }
 
         },
         function(errorCode) {
           BleApi.displayStatus('enableNotification error: ' + errorCode);
-          status = BleApi.STATUS_DISCONNECTED
           evothings.ble.close(BleApi.deviceHandle)
-          $rootScope.$applyAsync();
+          $rootScope.$applyAsync(function() {
+            status = BleApi.STATUS_DISCONNECTED
+          })     
         });
       BleApi.displayStatus('BLE device connected and ready for communications');
-      pausecomp(1000)
-      status = BleApi.STATUS_INITIALIZING
-      $rootScope.$applyAsync()
-      def.resolve()
+      // pausecomp(1000)
+      $timeout.cancel(BleApi.timeout)
+      $rootScope.$applyAsync(function() {
+        status = BleApi.STATUS_INITIALIZING
+      });
+      BleApi.currentPromise.resolve()
     });
 }
 
@@ -958,8 +964,10 @@ this.deviceFound = function(device, errorCode)  {
 		// inactive devices).
 		device.timeStamp = Date.now();
 		// Insert the device into table of found devices
-    knownDevices[device.address] = device;
-    $rootScope.$applyAsync()
+
+    $rootScope.$applyAsync(function() {
+      knownDevices[device.address] = device;
+    })
     //this next line goes nuts in logcat. use wisely
     // console.warn("BITLOX FOUND A BLE DEVICE: "+ JSON.stringify( knownDevices[device.address].address));
 	}
@@ -971,61 +979,76 @@ this.deviceFound = function(device, errorCode)  {
 }
 this.connect = function(address)	{
   var bleapi = this
-  evothings.ble.stopScan();
-  var def = $q.defer()
-  if(platform === 'android') pausecomp(1000);
+  // if(platform === 'android') pausecomp(1000);
   if(status === BleApi.STATUS_CONNECTING) {
+    console.log('rejecting additional calls to BLE connect function')
     return $q.reject(new Error("Already connecting"));
   }
-  status = BleApi.STATUS_CONNECTING
-  $rootScope.$applyAsync()
-	this.displayStatus('Connecting...');
-	evothings.ble.connect(
-		address,
-		function(device)
-		{
-			if (device.state == 2) // Connected
-			{
-				BleApi.displayStatus('Connected');
-				BleApi.deviceHandle = device.deviceHandle;
-				BleApi.getServices(def);
-			}
-			else
-			{
-        status = BleApi.STATUS_DISCONNECTED
-        $rootScope.$applyAsync()
-				// BleApi.displayStatus('Disconnected');
-				// pausecomp(50);
-				// BleApi.connect(address);
-        return def.resolve(new Error('Unable to connect to BitLox BLE'))
-			}
-		},
-		function(errorCode)
-		{
+  $rootScope.$applyAsync(function() {
+    status = BleApi.STATUS_CONNECTING
+  });  
+  this.timeout = $timeout(function() {
+    
+    $rootScope.$applyAsync(function() {
       status = BleApi.STATUS_DISCONNECTED
-      $rootScope.$applyAsync()
-			BleApi.displayStatus('connect: ' + errorCode);
-      delete knownDevices[address]
-      // BleApi.startScanNew();
+    });
+  },20000)
 
-      if(parseInt(errorCode,10) === 133) {
-        return def.resolve(new Error('Unable to maintain connection to BitLox BLE'))
-      }
-      if(parseInt(errorCode,10) === 8) {
-        $rootScope.$digest()
-        if(currentPromise) {
-          BleApi.sendError(BleApi.TYPE_ERROR, {})          
-        }
+  this.currentPromise = $q.defer()
 
-        $timeout.cancel(BleApi.timeout)
-        if(BleApi.status !== BleApi.STATUS_DISCONNECTED && BleApi.status !== BleApi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
+  evothings.ble.stopScan();
+
+  BleApi.displayStatus('Connecting...');
+  evothings.ble.connect(address, function(device) {
+    if (device.state == 2) {
+      BleApi.displayStatus('Connected');
+      BleApi.deviceHandle = device.deviceHandle;
+      BleApi.getServices();
+    }
+    else {
+      console.log("CONNECTION TO BLE FAILED")
+      $rootScope.$applyAsync(function() {
+        status = BleApi.STATUS_DISCONNECTED
+      });
+      return BleApi.currentPromise.resolve(new Error('Unable to connect to BitLox BLE'))
+
+    }
+  },
+  function(errorCode) {
+
+    BleApi.displayStatus('connect: ' + errorCode);
+    delete knownDevices[address]
+    // BleApi.startScanNew();
+
+    if(parseInt(errorCode,10) === 133) {
+
+      console.log("BitLox Disconnected from BLE: 133")
+      return BleApi.currentPromise.resolve(new Error('Unable to maintain connection to BitLox BLE'))
+    }
+    if(parseInt(errorCode,10) === 8) {
+      console.log("BitLox Disconnected from BLE: 8")
+      $rootScope.$digest()
+      if(BleApi.currentPromise) {
+        BleApi.sendData(BleApi.TYPE_ERROR, {})          
       }
-		});
-  return def.promise
+
+      $timeout.cancel(BleApi.timeout)
+      if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) { 
+        console.log("broadcasting disconnection notice")
+        $rootScope.$broadcast('bitloxConnectError'); 
+      }
+    }
+    $rootScope.$applyAsync(function() {
+      status = BleApi.STATUS_DISCONNECTED
+    });
+  });    
+
+
+  return this.currentPromise.promise
 }
 // old sliceAndWrite64, 'data' is a command constant
 this.write = function(data, timer, noPromise) {
-  if(!noPromise) currentPromise = $q.defer();
+  if(!noPromise) this.currentPromise = $q.defer();
   console.log("ready to write status: " + status + ": command: " +data)
   if(status !== BleApi.STATUS_INITIALIZING && status !== BleApi.STATUS_CONNECTED && status !== BleApi.STATUS_IDLE) {
     // return if the device isn't currently idle
@@ -1035,8 +1058,9 @@ this.write = function(data, timer, noPromise) {
 
     return $q.reject(new Error("Device is busy"))
   }
-  status = BleApi.STATUS_WRITING
-  $rootScope.$applyAsync();
+  $rootScope.$applyAsync(function() {
+    status = BleApi.STATUS_WRITING
+  });
   var chunkSize;
   if(platform == "android")
   {
@@ -1123,14 +1147,16 @@ this.write = function(data, timer, noPromise) {
       });
   }, function(err) {
     if(err) {
+      console.log("Command write error")
       evothings.ble.close(BleApi.deviceHandle)
-      status = BleApi.STATUS_DISCONNECTED
-      $rootScope.$applyAsync()
-      return currentPromise.reject(new Error('Command Write Processing Error'))
+      $rootScope.$applyAsync(function() {
+        status = BleApi.STATUS_DISCONNECTED
+      })
+      return BleApi.currentPromise.reject(new Error('Command Write Processing Error'))
     }
-    status = BleApi.STATUS_READING
-    $rootScope.$applyAsync();
-
+    $rootScope.$applyAsync(function() {
+      status = BleApi.STATUS_READING
+    })
 
   })
 
@@ -1141,12 +1167,14 @@ this.write = function(data, timer, noPromise) {
     BleApi.timeout = $timeout(function() {
       console.warn("TIMEOUT of Write Command")
       evothings.ble.close(BleApi.deviceHandle)
-      status = BleApi.STATUS_DISCONNECTED
-      $rootScope.$applyAsync()
-      currentPromise.reject(new Error('Command Write Timeout'))
+      $rootScope.$applyAsync(function() {
+        status = BleApi.STATUS_DISCONNECTED
+      })
+
+      BleApi.currentPromise.reject(new Error('Command Write Timeout'))
     },timer)
   }
-  return currentPromise.promise;
+  return this.currentPromise.promise;
 };
 /**
 * 	Assembles whole message strings
@@ -1218,23 +1246,20 @@ this.sendData = function(data,type) {
 
   $timeout.cancel(BleApi.timeout)
 
-  if(type === this.TYPE_INITIALIZE) {
-    status = this.STATUS_CONNECTED;
-  } else {
-    status = BleApi.STATUS_IDLE;
-  }
-  $rootScope.$applyAsync()
+  $rootScope.$applyAsync(function() {
+
+    if(type === BleApi.TYPE_INITIALIZE) {
+      status = BleApi.STATUS_CONNECTED;
+    } else {
+      status = BleApi.STATUS_IDLE;
+    }    
+    BleApi.currentPromise.resolve({type: type, payload:data});
+
+  })
   // console.log('sending data back to promise')
   // console.log(JSON.stringify(data))
-  currentPromise.resolve({type: type, payload:data});
 }
-this.sendError = function(data,type) {
-  currentCommand = null;
-  $timeout.cancel(BleApi.timeout)
-  status = BleApi.STATUS_IDLE;
-  $rootScope.$applyAsync()
-  currentPromise.resolve({type: type, payload: data});
-}
+
 this.processResults = function(command, length, payload) {
 
       // 			console.log("RX: " + command);
@@ -1354,7 +1379,7 @@ this.processResults = function(command, length, payload) {
 
     case "35": // general purpose error/cancel
       var Failure = protoDevice.Failure.decodeHex(payload);
-      this.sendError({}, Failure,BleApi.TYPE_ERROR)
+      this.sendData({}, Failure,BleApi.TYPE_ERROR)
     	switch (currentCommand) {
 				case "deleteWallet":
         // 							BleApi.displayStatus('Wallet deleted');
@@ -1644,84 +1669,6 @@ this.processResults = function(command, length, payload) {
   	},
 
 
-
-
-
-
-  // 	startScan: function()
-  // 	{
-  // // 		this.stopScan();
-  // 		this.displayStatus('Starting scan...');
-  // 		this.displayStatus('Scanning...');
-  // 		evothings.ble.startScan(
-  // 			function(deviceInfo)
-  // 			{
-  // 				if (this.knownDevices[deviceInfo.address])
-  // 				{
-  // 					return;
-  // 				}
-  // 				console.log('found device: ' + deviceInfo.name);
-  // 				this.knownDevices[deviceInfo.address] = deviceInfo;
-  // /**
-  // *				This is used if a specifically named device is desired
-  // */
-  // // 				if (deviceInfo.name == 'bitlox-1' && !this.connectee)
-  // // 				{
-  // // 					console.log('Found bitlox');
-  // // 					connectee = deviceInfo;
-  // // 					pausecomp(5000);
-  // // 					this.connect(deviceInfo.address);
-  // // 				}
-  // 				if(platform == "android")
-  // 				{
-  // 					pausecomp(500);
-  // 				}
-  //
-  // 				this.connect(deviceInfo.address);
-  //
-  // 			},
-  // 			function(errorCode)
-  // 			{
-  // 				this.displayStatus('startScan error: ' + errorCode);
-  // 			});
-  // 	},
-
-  	// Start the scan. Call the callback function when a device is found.
-  	// Format:
-  	//   callbackFun(deviceInfo, errorCode)
-  	//   deviceInfo: address, rssi, name
-  	//   errorCode: String
-
-  // 	reconnect: function()
-  // 	{
-  // 		this.displayStatus('Reconnecting...');
-  // 		evothings.ble.startScan(
-  // 			function(device)
-  // 			{
-  // 				console.log('found device: ' + device.name);
-  // 				this.knownDevices[device.address] = device;
-  // /**
-  // *				This is used if a specifically named device is desired
-  // */
-  // // 				if (deviceInfo.name == 'bitlox-1' && !this.connectee)
-  // // 				{
-  // // 					console.log('Found bitlox');
-  // // 					connectee = deviceInfo;
-  // // 					pausecomp(5000);
-  // // 					this.connect(deviceInfo.address);
-  // // 				}
-  // 				if(platform == "android")
-  // 				{
-  // 					pausecomp(500);
-  // 				}
-  //
-  // 				this.connect(device.address);
-  // 			},
-  // 			function(errorCode)
-  // 			{
-  // 				this.displayStatus('reconnect: ' + errorCode);
-  // 			});
-  // 	},
 
 
 

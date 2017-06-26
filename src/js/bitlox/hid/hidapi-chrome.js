@@ -86,9 +86,11 @@ function HidAPI($q, $timeout, $interval, $rootScope,
       return this.status;
     }
     HidAPI.setStatus = function(status) {
+        var self = this
         if(this.status !== status) { 
-            this.status = status;
-            $rootScope.$applyAsync();
+            $rootScope.$applyAsync(function() {
+                self.status = status
+            });
         }
     }
     // Get the device. If we already have it, just return it.
