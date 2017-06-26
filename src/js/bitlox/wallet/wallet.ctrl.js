@@ -287,6 +287,10 @@
                         vm.readWallets();
                     }
                 })
+            } else {
+                if(api.getStatus() === api.STATUS_IDLE) {
+                    vm.readWallets();
+                }                
             }
         }
 
