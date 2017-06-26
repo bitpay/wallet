@@ -80,7 +80,7 @@
         <a ng-repeat="wallet in wallets track by $index"
            class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
            ng-click="openWallet(wallet)">
-           <i class="icon big-icon-svg" wallet-icon wallet="{{wallet}}"></i>
+           <i class="icon big-icon-svg" wallet-icon data-wallet="wallet"></i>
           <span>
             {{wallet.name || wallet.id}}
           </span>
