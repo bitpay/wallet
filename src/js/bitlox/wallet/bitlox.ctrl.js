@@ -121,7 +121,7 @@
           $scope.bitlox.glyph = "glyphicon-remove";
           if($scope.bitlox.connected && $state.current.url === '/attach-bitlox') {
             $ionicLoading.hide();
-            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Disconnected'));
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
             $ionicHistory.goBack();
           }
 

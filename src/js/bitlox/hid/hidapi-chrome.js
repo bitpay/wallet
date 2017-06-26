@@ -7,13 +7,12 @@ angular.module('hid')
     'Toast', 'hexUtil', 'txUtil', 'messageUtil',  'abconv',
     'VENDOR_ID', 'PRODUCT_ID', 'RECEIVE_CHAIN', 'CHANGE_CHAIN',
     'hidCommands', 'PROTO_STRING', 'platformInfo',
-function HidAPI($q, $timeout, $interval, $rootScope,
+function HidApi($q, $timeout, $interval, $rootScope,
     Toast, hexUtil, txUtil, messageUtil, abconv,
     VENDOR_ID, PRODUCT_ID, RECEIVE_CHAIN, CHANGE_CHAIN,
     hidCommands, PROTO_STRING, platformInfo) {
 
-    var hidapi = this;
-    var HidAPI = this;
+    var HidApi = this;
     if(!platformInfo.isChromeApp) {
       return false;
     }
@@ -43,49 +42,52 @@ function HidAPI($q, $timeout, $interval, $rootScope,
     this.getTxHex = txUtil.getHex;
 
 
-    this.status = HidAPI.STATUS_DISCONNECTED;
+    this.status = HidApi.STATUS_DISCONNECTED;
 
 
     // monitor disconnect
     chrome.hid.onDeviceRemoved.addListener(function() {
-        console.debug("DEVICE REMOVED");
+        console.debug("DEVICE REMOVED", status);
         
-        hidapi._device = null;
-        if(status !== hidapi.STATUS_DISCONNECTED && status !== hidapi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
-        hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
-        if(hidapi.currentPromise) { hidapi.currentPromise.reject(); }
+        HidApi._device = null;
+        if(status !== HidApi.STATUS_DISCONNECTED && status !== HidApi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
+        HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
+        if(HidApi.currentPromise) { 
+            console.log("rejecting promise after device removal")
+            HidApi.currentPromise.reject(); 
+        }
 
 
     });
 
 
-    HidAPI.TYPE_INITIALIZE         = 'initialize';
-    HidAPI.TYPE_PUBLIC_ADDRESS     = 'public address';
-    HidAPI.TYPE_ADDRESS_COUNT      = 'address count';
-    HidAPI.TYPE_WALLET_LIST        = 'wallet list';
-    HidAPI.TYPE_PONG               = 'pong';
-    HidAPI.TYPE_SUCCESS            = 'success';
-    HidAPI.TYPE_ERROR              = 'error';
-    HidAPI.TYPE_UUID               = 'uuid';
-    HidAPI.TYPE_SIGNATURE          = 'signature';
-    HidAPI.TYPE_PLEASE_ACK         = 'please ack';
-    HidAPI.TYPE_PLEASE_OTP         = 'please otp';
-    HidAPI.TYPE_XPUB               = 'xpub';
-    HidAPI.TYPE_SIGNATURE_RETURN   = 'signature return';
-    HidAPI.TYPE_MESSAGE_SIGNATURE  = 'message signature';
+    HidApi.TYPE_INITIALIZE         = 'initialize';
+    HidApi.TYPE_PUBLIC_ADDRESS     = 'public address';
+    HidApi.TYPE_ADDRESS_COUNT      = 'address count';
+    HidApi.TYPE_WALLET_LIST        = 'wallet list';
+    HidApi.TYPE_PONG               = 'pong';
+    HidApi.TYPE_SUCCESS            = 'success';
+    HidApi.TYPE_ERROR              = 'error';
+    HidApi.TYPE_UUID               = 'uuid';
+    HidApi.TYPE_SIGNATURE          = 'signature';
+    HidApi.TYPE_PLEASE_ACK         = 'please ack';
+    HidApi.TYPE_PLEASE_OTP         = 'please otp';
+    HidApi.TYPE_XPUB               = 'xpub';
+    HidApi.TYPE_SIGNATURE_RETURN   = 'signature return';
+    HidApi.TYPE_MESSAGE_SIGNATURE  = 'message signature';
 
-    HidAPI.STATUS_DISCONNECTED     = "disconnected";
-    HidAPI.STATUS_CONNECTED        = "connected";
-    HidAPI.STATUS_CONNECTING       = "connecting";
-    HidAPI.STATUS_READING          = "reading";
-    HidAPI.STATUS_WRITING          = "writing";
-    HidAPI.STATUS_IDLE          = "idle";
-    HidAPI.STATUS_INITIALIZING          = "initializing";
+    HidApi.STATUS_DISCONNECTED     = "disconnected";
+    HidApi.STATUS_CONNECTED        = "connected";
+    HidApi.STATUS_CONNECTING       = "connecting";
+    HidApi.STATUS_READING          = "reading";
+    HidApi.STATUS_WRITING          = "writing";
+    HidApi.STATUS_IDLE          = "idle";
+    HidApi.STATUS_INITIALIZING          = "initializing";
 
-    HidAPI.getStatus = function() {
+    HidApi.getStatus = function() {
       return this.status;
     }
-    HidAPI.setStatus = function(status) {
+    HidApi.setStatus = function(status) {
         var self = this
         if(this.status !== status) { 
             $rootScope.$applyAsync(function() {
@@ -95,65 +97,65 @@ function HidAPI($q, $timeout, $interval, $rootScope,
     }
     // Get the device. If we already have it, just return it.
     // Otherwise, do a hidraw scan and find, then open, the device
-    HidAPI.device = function(force) {
-        var hidapi = this;
-        if (hidapi._device !== null) {
-            return hidapi.$timeout(function() {
-                return hidapi._device;
+    HidApi.device = function(force) {
+        var HidApi = this;
+        if (HidApi._device !== null) {
+            return HidApi.$timeout(function() {
+                return HidApi._device;
             }, 0);
         }
-        hidapi.setStatus(hidapi.STATUS_CONNECTING);
-        var deferred = hidapi.$q.defer();
+        HidApi.setStatus(HidApi.STATUS_CONNECTING);
+        var deferred = HidApi.$q.defer();
         // console.debug("device: Getting HID devices");
         chrome.hid.getDevices({
             filters: [{
-                vendorId: hidapi.VENDOR_ID,
-                productId: hidapi.PRODUCT_ID
+                vendorId: HidApi.VENDOR_ID,
+                productId: HidApi.PRODUCT_ID
             }]
         }, function(devices) {
             if (chrome.runtime.lastError) {
                 
-                hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
+                HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
                 
                 console.error("device:", chrome.runtime.lastError);
                 return deferred.reject(chrome.runtime.lastError);
             }
             if (!devices || !devices.length) {
                 
-                hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
+                HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
                 
                 // console.error("device: No devices");
                 return deferred.reject(new Error("No devices"));
             }
             // console.debug("device: Got devices", devices);
             // console.debug("device: reportDescriptor",
-                          // hidapi.abconv.ab2hex(devices[0].reportDescriptor));
+                          // HidApi.abconv.ab2hex(devices[0].reportDescriptor));
             console.debug("device: Connecting to device", devices[0].deviceId);
             chrome.hid.connect(devices[0].deviceId, function(connection) {
                 if (chrome.runtime.lastError) {
                     
-                    hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
+                    HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
                     
                     console.error("device:", chrome.runtime.lastError);
                     return deferred.reject(chrome.runtime.lastError);
                 }
                 if (!connection) {
                     
-                    hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
+                    HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
                     
 
                     return deferred.reject(new Error("Failed to get connection"));
                 }
                 console.debug("device: Got connection", connection);
-                hidapi.setStatus(hidapi.STATUS_INITIALIZING);
-                hidapi._device = connection.connectionId;
-                deferred.resolve(hidapi._device);
+                HidApi.setStatus(HidApi.STATUS_INITIALIZING);
+                HidApi._device = connection.connectionId;
+                deferred.resolve(HidApi._device);
             });
         });
         return deferred.promise;
     };
 
-    HidAPI.protoBuilder = function() {
+    HidApi.protoBuilder = function() {
         if (this._builder === null) {
             var builder = ProtoBuf.loadProto(this.PROTO_STRING);
             this._builder = builder.build();
@@ -161,7 +163,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         return this._builder;
     };
 
-    HidAPI.chunkData = function(data, chunkSize) {
+    HidApi.chunkData = function(data, chunkSize) {
         if (chunkSize === undefined) {
             chunkSize = 2;
         }
@@ -185,18 +187,18 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         console.debug("delay ", milliseconds);
     }
 
-    HidAPI.write = function(data) {
-        var hidapi = this;
-        hidapi.setStatus(hidapi.STATUS_WRITING);
+    HidApi.write = function(data) {
+        var HidApi = this;
+        HidApi.setStatus(HidApi.STATUS_WRITING);
         var deferred = this.$q.defer();
         console.debug("write:", data);
-        hidapi.device().then(function(dev) {
+        HidApi.device().then(function(dev) {
             // get the device
             if (dev === null) {
-                hidapi.close();
+                HidApi.close();
                 return deferred.reject(new Error("No device to write to"));
             }
-            hidapi.isWriting = true;
+            HidApi.isWriting = true;
             // check remainder against 8 bytes and add 4 null bytes if we
             // have 0, 6, or 7 bytes of space left over
             var remainder = data.length % 16;
@@ -204,7 +206,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
                 data = '00000000' + data;
             }
             // split into 16 byte chunks
-            var chunks = hidapi.chunkData(data, 64);
+            var chunks = HidApi.chunkData(data, 64);
             // console.debug("write:", chunks.length, "chunks");
             // keep track of the total sent
             var totalSent = 0;
@@ -215,8 +217,8 @@ function HidAPI($q, $timeout, $interval, $rootScope,
                         thisData += '7E7E';
                     }
                     // write to the device
-                    var thisAb = hidapi.abconv.hex2abPad(thisData, 32);
-//                     console.debug("write: writing", thisAb.byteLength, "bytes", thisData, hidapi.abconv.ab2hex(thisAb));
+                    var thisAb = HidApi.abconv.hex2abPad(thisData, 32);
+//                     console.debug("write: writing", thisAb.byteLength, "bytes", thisData, HidApi.abconv.ab2hex(thisAb));
                     chrome.hid.send(dev, 0, thisAb, function() {
                         if (chrome.runtime.lastError) {
                             console.error("write error:", chrome.runtime.lastError);
@@ -234,7 +236,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
                     return deferred.reject(err);
                 }
                 // console.debug("write: finished");
-                hidapi.isWriting = false;
+                HidApi.isWriting = false;
                 return deferred.resolve(totalSent);
             });
         }, deferred.reject);
@@ -244,55 +246,55 @@ function HidAPI($q, $timeout, $interval, $rootScope,
     var trimBeef = new RegExp('^(DEAD|BEEF|ADBEEF|EFDEAD)(DEAD|BEEF)+(2323)');
 
 
-    HidAPI.hidRead = function(size, timeout) {
+    HidApi.hidRead = function(size, timeout) {
         if (timeout === undefined) {
             timeout = 3000;
         }
         if (size === undefined) {
             size = 64;
         }
-        var hidapi = this;
+        var HidApi = this;
         this.currentPromise = this.$q.defer();
-        hidapi.device().then(function(dev) {
+        HidApi.device().then(function(dev) {
             // console.debug("hidRead: doing read");
             chrome.hid.receive(dev, function(reportId, data) {
                 if (chrome.runtime.lastError) {
                     return deferred.reject(chrome.runtime.lastError);
                 }
                 // console.debug("hidRead: reportId", reportId);
-                var result = hidapi.abconv.ab2hex(data)
+                var result = HidApi.abconv.ab2hex(data)
                     .replace(trimBeef, '$3');
                 // console.debug("hidRead: RX", result);
-                hidapi.currentPromise.resolve(result);
+                HidApi.currentPromise.resolve(result);
             });
-        }, hidapi.currentPromise.reject);
+        }, HidApi.currentPromise.reject);
         return this.currentPromise.promise;
     };
 
     var magic = '2323';
     var magicRegexp = new RegExp(magic);
     var magicRegexpEdge = new RegExp('BEEF(23){1,2}$');
-    HidAPI.read = function(serialData, wait) {
+    HidApi.read = function(serialData, wait) {
         if (serialData === undefined) {
             serialData = '';
         }
-        var hidapi = this;
+        var HidApi = this;
 //         console.debug("read: data so far", serialData);
         return this.hidRead().then(function(newData) {
-            hidapi.isReading = true;
+            HidApi.isReading = true;
 //             console.debug("reading");
             if (serialData===newData) {
-                return hidapi.read(serialData, wait);
+                return HidApi.read(serialData, wait);
             }
             serialData = serialData + newData;
             if (magicRegexpEdge.test(serialData)) {
-                return hidapi.read(serialData, wait);
+                return HidApi.read(serialData, wait);
             }
 
             // 			bonehead forgot to put in the edge split case
       			if (((serialData[60] !== 2) || (serialData[61] !== 3)) && ((serialData[62] === 2) && (serialData[63] === 3))) {
       			  //                     console.log('EDGE:' + sD);
-		          serialData = serialData + hidapi.read(serialData, wait);
+		          serialData = serialData + HidApi.read(serialData, wait);
       			  //                     console.log('EDGE WRAP:' + sD);
       			}
 
@@ -304,7 +306,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
                 // command and content length could be cut off, go ahead
                 // and get more data
                 if (headerPosition >= (serialData.length - (64 - 48))) {
-                    return hidapi.read(serialData, wait);
+                    return HidApi.read(serialData, wait);
                 }
                 // command is the 2 bytes after the magic
                 var command = serialData.substring(headerPosition + 4, headerPosition + 8);
@@ -325,14 +327,14 @@ function HidAPI($q, $timeout, $interval, $rootScope,
                 // if the content length is longer than the rest of the
                 // data, go get some more
                 if ((headerPosition + 16 + (2 * decPayloadSize)) > serialData.length) {
-                    return hidapi.read(serialData, wait);
+                    return HidApi.read(serialData, wait);
                 }
                 // the payload will start after 8 bytes
                 var payload = serialData.substring(headerPosition + 16, headerPosition + 16 + (2 * (decPayloadSize)));
-                return hidapi.processResults(command, payloadSize, payload);
+                return HidApi.processResults(command, payloadSize, payload);
             } else if (!wait && serialData === "") { //If nothing is detected, close down port
                 console.warn("Device unplugged");
-                hidapi.close();
+                HidApi.close();
                 return null;
             } else {
                 return null;
@@ -340,12 +342,12 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         },function(e) {
           console.warn("error in read", e)
         }).finally(function() {
-            hidapi.setStatus(hidapi.STATUS_IDLE);
+            HidApi.setStatus(HidApi.STATUS_IDLE);
         });
     };
 
-    HidAPI.processResults = function(command, length, payload) {
-        var hidapi = this;
+    HidApi.processResults = function(command, length, payload) {
+        var HidApi = this;
         var Device = this.protoBuilder();
         command = command.substring(2, 4);
         var data = {
@@ -356,30 +358,30 @@ function HidAPI($q, $timeout, $interval, $rootScope,
 
         switch (command) {
         case "3A": // initialize
-            data.type = HidAPI.TYPE_INITIALIZE;
+            data.type = HidApi.TYPE_INITIALIZE;
             break;
         case "30": // public address
-            data.type = HidAPI.TYPE_PUBLIC_ADDRESS;
+            data.type = HidApi.TYPE_PUBLIC_ADDRESS;
             data.payload.ecdsa = payload.substring(8, 74);
             data.payload.ripe160of2 = payload.substring(78, 118);
             break;
         case "31": // number of addresses in loaded wallet
-            data.type = HidAPI.TYPE_ADDRESS_COUNT;
+            data.type = HidApi.TYPE_ADDRESS_COUNT;
             data.payload.count = payload.substring(2, 4);
             break;
         case "32": // Wallet list
-            data.type = HidAPI.TYPE_WALLET_LIST;
+            data.type = HidApi.TYPE_WALLET_LIST;
             data.payload.wallets = Device.Wallets.decodeHex(payload).wallet_info;
             break;
         case "33": // Ping response
-            data.type = HidAPI.TYPE_PONG;
+            data.type = HidApi.TYPE_PONG;
             data.payload = Device.PingResponse.decodeHex(payload);
             break;
         case "34": // success
-            data.type = HidAPI.TYPE_SUCCESS;
+            data.type = HidApi.TYPE_SUCCESS;
             break;
         case "35": // general purpose error/cancel
-            data.type = HidAPI.TYPE_ERROR;
+            data.type = HidApi.TYPE_ERROR;
             var hidErr = Device.Failure.decodeHex(payload);
             data.payload = new Error(hidErr.error_message.toString('utf8'));
             console.debug(data.payload);
@@ -387,25 +389,25 @@ function HidAPI($q, $timeout, $interval, $rootScope,
             console.debug("caught error");
             break;
         case "36": // device uuid return
-            data.type = HidAPI.TYPE_UUID;
+            data.type = HidApi.TYPE_UUID;
             data.payload = Device.DeviceUUID.decodeHex(payload);
             break;
         case "39": // signature return [original]
-            data.type = HidAPI.TYPE_SIGNATURE;
+            data.type = HidApi.TYPE_SIGNATURE;
             data.payload = Device.Signature.decodeHex(payload);
             break;
         case "50": // please ack
-            data.type = HidAPI.TYPE_PLEASE_ACK;
+            data.type = HidApi.TYPE_PLEASE_ACK;
             break;
         case "56": // please otp
-            data.type = HidAPI.TYPE_PLEASE_OTP;
+            data.type = HidApi.TYPE_PLEASE_OTP;
             break;
         case "62": // parse & insert xpub from current wallet //RETURN from scan wallet
-            data.type = HidAPI.TYPE_XPUB;
+            data.type = HidApi.TYPE_XPUB;
             data.payload = Device.CurrentWalletXPUB.decodeHex(payload);
             break;
         case "64": // signature return
-            data.type = HidAPI.TYPE_SIGNATURE_RETURN;
+            data.type = HidApi.TYPE_SIGNATURE_RETURN;
             var signedScripts = [];
             var sigs = Device.SignatureComplete.decodeHex(payload).signature_complete_data;
             console.log(sigs)
@@ -423,12 +425,12 @@ function HidAPI($q, $timeout, $interval, $rootScope,
             };
             break;
         case "71": // message signing return
-            data.type = HidAPI.TYPE_MESSAGE_SIGNATURE;
+            data.type = HidApi.TYPE_MESSAGE_SIGNATURE;
             var protoSig = Device.SignatureMessage.decodeHex(payload).signature_data_complete;
             data.payload = this.hexUtil.hexToBytes(protoSig.toString('hex'));
             break;
         default:
-            data.type = HidAPI.TYPE_ERROR;
+            data.type = HidApi.TYPE_ERROR;
             data.payload = new Error("Unknown command received: 00" + command);
             data.payload.code = 1;
             break;
@@ -436,11 +438,11 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         return data;
     };
 
-    HidAPI.close = function() {
-        return hidapi.$timeout(function() {
-            hidapi._device = null;
-            hidapi._plugin = null;    
-            hidapi.setStatus(hidapi.STATUS_DISCONNECTED);
+    HidApi.close = function() {
+        return HidApi.$timeout(function() {
+            HidApi._device = null;
+            HidApi._plugin = null;    
+            HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
             console.debug("closed");
         })
     };
@@ -448,67 +450,67 @@ function HidAPI($q, $timeout, $interval, $rootScope,
     var readTimeout = 10;
     var counterMax = (120 * 1000) / readTimeout; // appx 2 minutes timeout
 
-    HidAPI._doCommand = function(command, expectedType) {
-        var hidapi = this;
-        hidapi.doingCommand = true;
-        return hidapi.write(command).then(function(written) {
+    HidApi._doCommand = function(command, expectedType) {
+        var HidApi = this;
+        HidApi.doingCommand = true;
+        return HidApi.write(command).then(function(written) {
             if (written === 0) {
-                return hidapi.close().then(function() {
-                    return hidapi.$q.reject(new Error("No data written"));
+                return HidApi.close().then(function() {
+                    return HidApi.$q.reject(new Error("No data written"));
                 });
             } else if (written === -1) {
-                return hidapi.close().then(function() {
-                    return hidapi.$q.reject(new Error("Write error"));
+                return HidApi.close().then(function() {
+                    return HidApi.$q.reject(new Error("Write error"));
                 });
             }
             var counter = 0;
 
             var doRead = function() {
-                return hidapi.read('', 'wait please').then(function(data) {
+                return HidApi.read('', 'wait please').then(function(data) {
                     counter += 1;
                     if (!data) {
                         // if (counter === counterMax) { // two minutes... ish
-                        //     return hidapi.close().then(function() {
-                        //         return hidapi.$q.reject(new Error("Command response timeout"));
+                        //     return HidApi.close().then(function() {
+                        //         return HidApi.$q.reject(new Error("Command response timeout"));
                         //     });
                         // }
-                        // return hidapi.$timeout(doRead, readTimeout);
-                        hidapi.doingCommand = false;
+                        // return HidApi.$timeout(doRead, readTimeout);
+                        HidApi.doingCommand = false;
                         return data;                        
                     } else 
-                    if (data.type === HidAPI.TYPE_ERROR) {
-                        hidapi.doingCommand = false;
-                        return hidapi.$q.reject(data.payload);
-                    } else if (data.type === HidAPI.TYPE_PLEASE_ACK) {
-                        return hidapi._doCommand(hidapi.commands.button_ack, expectedType);
+                    if (data.type === HidApi.TYPE_ERROR) {
+                        HidApi.doingCommand = false;
+                        return HidApi.$q.reject(data.payload);
+                    } else if (data.type === HidApi.TYPE_PLEASE_ACK) {
+                        return HidApi._doCommand(HidApi.commands.button_ack, expectedType);
                     } else if (expectedType) {
                         if (data.type === expectedType) {
 
-                            if(data.type === HidAPI.TYPE_INITIALIZE) {
-                                hidapi.setStatus(hidapi.STATUS_CONNECTED);
+                            if(data.type === HidApi.TYPE_INITIALIZE) {
+                                HidApi.setStatus(HidApi.STATUS_CONNECTED);
                             }
                             // we got what we wanted, return it
-                            hidapi.doingCommand = false;
+                            HidApi.doingCommand = false;
                             return data;
                         }
 
-                        return hidapi.$timeout(doRead, readTimeout);
+                        return HidApi.$timeout(doRead, readTimeout);
                     } else {
-                        hidapi.doingCommand = false;
+                        HidApi.doingCommand = false;
                         return data;
                     }
                 });
             };
-            return hidapi.$timeout(function(){})
+            return HidApi.$timeout(function(){})
                 .then(doRead);
         }, function(err) {
-            return hidapi.close().then(function() {
-                return hidapi.$q.reject(err);
+            return HidApi.close().then(function() {
+                return HidApi.$q.reject(err);
             });
         });
     };
 
-    HidAPI.makeCommand = function(prefix, protoBuf) {
+    HidApi.makeCommand = function(prefix, protoBuf) {
         var tmpBuf = protoBuf.encode();
         var messageHex = tmpBuf.toString('hex');
         var txSizeHex = (messageHex.length / 2).toString(16);
@@ -520,10 +522,10 @@ function HidAPI($q, $timeout, $interval, $rootScope,
 
     // commands to be called from outside this file
 
-    HidAPI.ping = function() {
+    HidApi.ping = function() {
         return this._doCommand(this.commands.ping, this.TYPE_PONG);
     };
-    HidAPI.initialize = function(sessionId) {
+    HidApi.initialize = function(sessionId) {
         var Device = this.protoBuilder();
         var sessionIdHex = this.hexUtil.toPaddedHex(sessionId, 39) + '00';
         this.sessionIdHex = sessionIdHex;
@@ -533,18 +535,18 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         var sessionIdProtoBuf = new Device.Initialize({
             session_id: sessionIdBuf
         });
-        var cmd = hidapi.makeCommand(hidapi.commands.initPrefix, sessionIdProtoBuf);
+        var cmd = HidApi.makeCommand(HidApi.commands.initPrefix, sessionIdProtoBuf);
         return this._doCommand(cmd, this.TYPE_INITIALIZE);
     }; 
-    HidAPI.getDeviceUUID = function() {
+    HidApi.getDeviceUUID = function() {
         return this._doCommand(this.commands.get_device_uuid, this.TYPE_UUID);
     };
 
-    HidAPI.listWallets = function() {
+    HidApi.listWallets = function() {
         return this._doCommand(this.commands.list_wallets, this.TYPE_WALLET_LIST);
     };
 
-    HidAPI.getWalletCommand = function(type, walletNumber) {
+    HidApi.getWalletCommand = function(type, walletNumber) {
         var cmd = this.commands[type + 'WalletPrefix'];
         var numHex = parseInt(walletNumber, 10).toString(16);
         if (numHex.length === 1) {
@@ -553,25 +555,25 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         return cmd + numHex;
     };
 
-    HidAPI.loadWallet = function(walletNumber) {
+    HidApi.loadWallet = function(walletNumber) {
         var cmd = this.getWalletCommand('load', walletNumber);
         return this._doCommand(cmd, this.TYPE_SUCCESS);
     };
 
-    HidAPI.deleteWallet = function(walletNumber) {
+    HidApi.deleteWallet = function(walletNumber) {
         var cmd = this.getWalletCommand('delete', walletNumber);
         return this._doCommand(cmd, this.TYPE_PLEASE_OTP);
     };
 
-    HidAPI.format = function() {
+    HidApi.format = function() {
         return this._doCommand(this.commands.format_storage, this.TYPE_PLEASE_OTP);
     };
 
-    HidAPI.scanWallet = function() {
+    HidApi.scanWallet = function() {
         return this._doCommand(this.commands.scan_wallet, this.TYPE_XPUB);
     };
 
-    HidAPI.newWallet = function(walletNumber, options) {
+    HidApi.newWallet = function(walletNumber, options) {
         var Device = this.protoBuilder();
         // look through the options and fill in the data for the proto
         // buffer
@@ -607,8 +609,8 @@ function HidAPI($q, $timeout, $interval, $rootScope,
     };
 
     // tx is from bitcoin/transaction.factory.js
-    HidAPI.signTransaction = function(opts) {
-        var hidapi = this;
+    HidApi.signTransaction = function(opts) {
+        var HidApi = this;
         var deferred = this.$q.defer();
         var Device = this.protoBuilder();
         var addrHandlers = [];
@@ -621,13 +623,13 @@ function HidAPI($q, $timeout, $interval, $rootScope,
 
             console.log(inputPath)
 
-            var handler = hidapi.makeAddressHandler(input.chain, input.chainIndex);
+            var handler = HidApi.makeAddressHandler(input.chain, input.chainIndex);
             // add to the handler array
             addrHandlers.push(handler);
             // get the hex of the full input transaction
-            hidapi.getTxHex(input.txid).then(function(hex) {
+            HidApi.getTxHex(input.txid).then(function(hex) {
                 var thisInputData = '01';
-                thisInputData += hidapi.hexUtil.intToBigEndianString(input.vout, 4);
+                thisInputData += HidApi.hexUtil.intToBigEndianString(input.vout, 4);
                 thisInputData += hex;
                 inputData.push(thisInputData);
                 return next();
@@ -647,17 +649,17 @@ function HidAPI($q, $timeout, $interval, $rootScope,
             dataString += '01000000';
             dataString = inputData.join('') + dataString;
 
-            var dataBuf = hidapi.hexUtil.hexToByteBuffer(dataString);
+            var dataBuf = HidApi.hexUtil.hexToByteBuffer(dataString);
             // console.log(addrHandlers,dataBuf)
             dataBuf.flip();
             var txMessage = new Device.SignTransactionExtended({
                 address_handle_extended: addrHandlers,
                 transaction_data: dataBuf
             });
-            var cmd = hidapi.makeCommand(hidapi.commands.signTxPrefix, txMessage);
+            var cmd = HidApi.makeCommand(HidApi.commands.signTxPrefix, txMessage);
             // console.log('sending')
             // console.log(cmd)
-            hidapi._doCommand(cmd, hidapi.TYPE_SIGNATURE_RETURN).then(deferred.resolve, deferred.resolve);
+            HidApi._doCommand(cmd, HidApi.TYPE_SIGNATURE_RETURN).then(deferred.resolve, deferred.resolve);
         });
         return deferred.promise;
     };
@@ -668,23 +670,23 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         "-----END BITCOIN SIGNED MESSAGE-----"
     ];
 
-    HidAPI.signMessage = function(address, chain, chainIndex, message) {
-        var hidapi = this;
-        var Device = hidapi.protoBuilder();
-        var messageBytes = hidapi.messageUtil.makeMessageBytes(message);
-        var messageHex = hidapi.hexUtil.bytesToHex(messageBytes);
-        var msgBuf = hidapi.hexUtil.hexToByteBuffer(messageHex);
+    HidApi.signMessage = function(address, chain, chainIndex, message) {
+        var HidApi = this;
+        var Device = HidApi.protoBuilder();
+        var messageBytes = HidApi.messageUtil.makeMessageBytes(message);
+        var messageHex = HidApi.hexUtil.bytesToHex(messageBytes);
+        var msgBuf = HidApi.hexUtil.hexToByteBuffer(messageHex);
         msgBuf.flip();
         console.debug("signMessage: ", message, "->", messageBytes, "->", messageHex);
         var protoMsg = new Device.SignMessage({
-            address_handle_extended: hidapi.makeAddressHandler(chain, chainIndex),
+            address_handle_extended: HidApi.makeAddressHandler(chain, chainIndex),
             message_data: msgBuf
         });
-        var cmd = hidapi.makeCommand(hidapi.commands.signMessagePrefix, protoMsg);
-        return hidapi._doCommand(cmd, hidapi.TYPE_MESSAGE_SIGNATURE).then(function(data) {
-            var sig = hidapi.messageUtil.processSignature(message, address, data.payload);
+        var cmd = HidApi.makeCommand(HidApi.commands.signMessagePrefix, protoMsg);
+        return HidApi._doCommand(cmd, HidApi.TYPE_MESSAGE_SIGNATURE).then(function(data) {
+            var sig = HidApi.messageUtil.processSignature(message, address, data.payload);
             if (!sig) {
-                return hidapi.$q.reject(new Error("Invalid signature returned"));
+                return HidApi.$q.reject(new Error("Invalid signature returned"));
             }
             return ([
                 sigHeaders[0],
@@ -697,7 +699,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         });
     };
 
-    HidAPI.makeAddressHandler = function(chain, chainIndex) {
+    HidApi.makeAddressHandler = function(chain, chainIndex) {
         var handler = {
             address_handle_root: 0,
             address_handle_chain: chain,
@@ -715,7 +717,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         return handler;
     };
 
-    HidAPI.renameWallet = function(name) {
+    HidApi.renameWallet = function(name) {
         var Device = this.protoBuilder();
         var nameHex = this.hexUtil.toPaddedHex(name, 39) + '00';
         console.debug(name, "->", nameHex);
@@ -730,7 +732,7 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         return this._doCommand(cmd);
     };
 
-    HidAPI.sendOTP = function(otp) {
+    HidApi.sendOTP = function(otp) {
         var Device = this.protoBuilder();
         var otpMessage = new Device.OtpAck({
             otp: otp,
@@ -739,24 +741,24 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         return this._doCommand(cmd);
     };
 
-    HidAPI.showQr = function(chainIndex) {
+    HidApi.showQr = function(chainIndex) {
         var Device = this.protoBuilder();
         var otpMessage = new Device.DisplayAddressAsQR({
             address_handle_index: chainIndex,
         });
         var cmd = this.makeCommand(this.commands.qrPrefix, otpMessage);
-        var hidapi = this;
-        return hidapi.write(cmd).then(function(written) {
+        var HidApi = this;
+        return HidApi.write(cmd).then(function(written) {
             if (written === 0) {
-                return hidapi.$q.reject(new Error("No data written"));
+                return HidApi.$q.reject(new Error("No data written"));
             } else if (written === -1) {
-                return hidapi.$q.reject(new Error("Write error"));
+                return HidApi.$q.reject(new Error("Write error"));
             }
         });
     };
 
-    HidAPI.setChangeAddress = function(chainIndex) {
-    	// console.debug("in hidapi setChangeAddress",chainIndex,typeof(chainIndex));
+    HidApi.setChangeAddress = function(chainIndex) {
+    	// console.debug("in HidApi setChangeAddress",chainIndex,typeof(chainIndex));
         var Device = this.protoBuilder();
         var otpMessage = new Device.SetChangeAddressIndex({
             address_handle_index: parseInt(chainIndex,10),
@@ -765,10 +767,10 @@ function HidAPI($q, $timeout, $interval, $rootScope,
         return this._doCommand(cmd, this.TYPE_SUCCESS)
     };
 
-    HidAPI.flash = function() {
-        var hidapi = this;
-        var deferred = hidapi.$q.defer();
-        hidapi.device().then(function(dev) {
+    HidApi.flash = function() {
+        var HidApi = this;
+        var deferred = HidApi.$q.defer();
+        HidApi.device().then(function(dev) {
             chrome.hid.sendFeatureReport(dev, 1, new ArrayBuffer(), function() {
                 if (chrome.runtime.lastError) {
                     return deferred.reject(chrome.runtime.lastError);

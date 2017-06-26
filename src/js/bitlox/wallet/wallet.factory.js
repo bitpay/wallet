@@ -109,6 +109,9 @@
         Wallet.signTransaction = function(wallet, txp, cb) {
         if(api.getStatus() === api.STATUS_CONNECTED || api.getStatus() === api.STATUS_IDLE) {
             console.log('device is already connected, proceed with transaction:'+api.getStatus())
+            $rootScope.bitloxConnectErrorListener = $rootScope.$on('bitloxConnectError', function() {
+              cb(new Error("BitLox Disconnected"));
+            })      
             return _bitloxSend(wallet,txp,cb)
           } else {
             var newScope = $rootScope.$new();
@@ -141,10 +144,10 @@
                 successListener()
                 errorListener()
                 $rootScope.bitloxConnectErrorListener = $rootScope.$on('bitloxConnectError', function() {
-                  cb(new Error("Unable to connect to BitLox"));
+                  cb(new Error("BitLox Disconnected"));
                 })      
-
-                $timeout(function() {_bitloxSend(wallet,txp,cb)},1000)
+                console.log("BitLox connection successful, signing...")
+                $timeout(function() {_bitloxSend(wallet,txp,cb)})
               });
               successListener = newScope.$on('bitloxConnectSuccess', function() {
                 // Execute action
@@ -205,6 +208,10 @@
               return api.listWallets()
               .then(function(res) {
 
+                if(!res || res.type === api.TYPE_ERROR) {
+                  return cb(new Error('BitLox wallet connection error'))
+                }
+
                 var wallets = [];
                 res.payload.wallets.forEach(function(data) {
                     wallets.push(new Wallet(data));
@@ -215,6 +222,7 @@
                   if(thisWallet._uuid.toString("hex") === bitloxInfo[2]) {
                     return thisWallet.open()
                     .then(function() {
+
                         $log.debug("WALLET LOADED", thisWallet.xpub)
                         $ionicLoading.show({
                           template: 'Preparing Transaction. Please Wait...'
@@ -237,7 +245,7 @@
                               return cb(new Error('Unable to get signatures from BitLox. Try reconnecting the BitLox'))
                             }                            
                             if(result.type === api.TYPE_SIGNATURE_RETURN) {
-                              txp.signatures = result.data.signedScripts;
+                              txp.signatures = result.payload.signedScripts;
                               tx.replaceScripts(txp.signatures)
                               $ionicLoading.show({
                                 template: 'Broadcasting Transaction. Please Wait...'
