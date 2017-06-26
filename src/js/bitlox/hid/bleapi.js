@@ -1031,15 +1031,7 @@ this.connect = function(address)	{
     } else if(parseInt(errorCode,10) === 8) {
       console.log("BitLox Disconnected from BLE: 8")
       $rootScope.$digest()
-      if(BleApi.currentPromise) {
-        BleApi.sendData(new Error('BitLox BLE Disconnected'), BleApi.TYPE_ERROR)          
-      }
-
-      $timeout.cancel(BleApi.timeout)
-      if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) { 
-        console.log("broadcasting disconnection notice")
-        $rootScope.$broadcast('bitloxConnectError'); 
-      }
+      BleApi.disconnect();
     }
     $rootScope.$applyAsync(function() {
       status = BleApi.STATUS_DISCONNECTED
@@ -1056,6 +1048,10 @@ this.disconnect = function() {
   $rootScope.$applyAsync(function() {
     status = BleApi.STATUS_DISCONNECTED;
   })
+  if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) { 
+    console.log("broadcasting disconnection notice")
+    $rootScope.$broadcast('bitloxConnectError'); 
+  }
 
 }
 // old sliceAndWrite64, 'data' is a command constant
@@ -1156,8 +1152,7 @@ this.write = function(data, timer, noPromise) {
   }, function(err) {
     if(err) {
       console.log("Command write error")
-      evothings.ble.close(BleApi.deviceHandle)
-      return BleApi.sendData({error: new Error('Command Write Processing Error')}, BleApi.TYPE_ERROR)
+      return BleApi.disconnect();
     }
     $rootScope.$applyAsync(function() {
       status = BleApi.STATUS_READING
