@@ -266,7 +266,6 @@
 
 
         vm.reset = function() {
-            console.log("RESET WALLET CONTROLLER")
             // status variables
             vm.readingWallets = true;
             vm.openingWallet = -99;

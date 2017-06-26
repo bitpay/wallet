@@ -989,11 +989,10 @@ this.connect = function(address)	{
   });  
   this.timeout = $timeout(function() {
     
-    $rootScope.$applyAsync(function() {
-      status = BleApi.STATUS_DISCONNECTED
-    });
     if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) {     
+      BleApi.disconnect();
       $rootScope.$broadcast('bitloxConnectError'); 
+
     }    
   },20000)
 
@@ -1001,12 +1000,13 @@ this.connect = function(address)	{
 
   evothings.ble.stopScan();
 
-  BleApi.displayStatus('Connecting...');
   evothings.ble.connect(address, function(device) {
+    console.log('new device state: '+device.state)
     if (device.state == 2) {
-      BleApi.displayStatus('Connected');
       BleApi.deviceHandle = device.deviceHandle;
       BleApi.getServices();
+    } else if(device.state === 3) {
+          BleApi.disconnect()
     }
     // this never seems to get called, except status === 1 which means the connection is now in progress on iOS
     else {
@@ -1036,6 +1036,8 @@ this.connect = function(address)	{
     $rootScope.$applyAsync(function() {
       status = BleApi.STATUS_DISCONNECTED
     });
+  }, function(errorCode) {
+
   });    
 
 
