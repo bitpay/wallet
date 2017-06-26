@@ -992,6 +992,9 @@ this.connect = function(address)	{
     $rootScope.$applyAsync(function() {
       status = BleApi.STATUS_DISCONNECTED
     });
+    if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) {     
+      $rootScope.$broadcast('bitloxConnectError'); 
+    }    
   },20000)
 
   this.currentPromise = $q.defer()
@@ -1008,12 +1011,11 @@ this.connect = function(address)	{
       BleApi.getServices();
     }
     else {
-      console.log("CONNECTION TO BLE FAILED")
-      $rootScope.$applyAsync(function() {
-        status = BleApi.STATUS_DISCONNECTED
-      });
-      sendData(BleApi.TYPE_ERROR, {error: new Error('Unable to connect to BitLox BLE')});
-
+      // console.log("CONNECTION TO BLE FAILED")
+      // $rootScope.$applyAsync(function() {
+      //   status = BleApi.STATUS_DISCONNECTED
+      // });
+      // BleApi.sendData({error: new Error('Unable to connect to BitLox BLE')}, BleApi.TYPE_ERROR);
     }
   },
   function(errorCode) {
@@ -1031,7 +1033,7 @@ this.connect = function(address)	{
       console.log("BitLox Disconnected from BLE: 8")
       $rootScope.$digest()
       if(BleApi.currentPromise) {
-        BleApi.sendData(BleApi.TYPE_ERROR, {})          
+        BleApi.sendData(new Error('BitLox BLE Disconnected'), BleApi.TYPE_ERROR)          
       }
 
       $timeout.cancel(BleApi.timeout)
@@ -1154,7 +1156,7 @@ this.write = function(data, timer, noPromise) {
       $rootScope.$applyAsync(function() {
         status = BleApi.STATUS_DISCONNECTED
       })
-      return sendData(BleApi.TYPE_ERROR, {error: new Error('Command Write Processing Error')})
+      return BleApi.sendData({error: new Error('Command Write Processing Error')}, BleApi.TYPE_ERROR)
     }
     $rootScope.$applyAsync(function() {
       status = BleApi.STATUS_READING
@@ -1173,7 +1175,7 @@ this.write = function(data, timer, noPromise) {
         status = BleApi.STATUS_DISCONNECTED
       })
 
-      sendData(BleApi.TYPE_ERROR, {error: new Error('Command Write Timeout')})
+      BleApi.sendData({error: new Error('Command Write Timeout')}, BleApi.TYPE_ERROR)
     },timer)
   }
   return this.currentPromise.promise;

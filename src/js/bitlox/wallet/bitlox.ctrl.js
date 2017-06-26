@@ -65,6 +65,10 @@
             template: 'Connecting to BitLox, Please Wait...'
           });
       console.log('connecting to '+address)
+      $rootScope.bitloxConnectErrorListener = $rootScope.$on('bitloxConnectError', function() {
+        $ionicLoading.hide();
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox BLE Connection Failed'));
+      })            
       api.connect(address).then(function() {
       }, function(err) {
         $log.debug("BitLox Connection Error", err)
