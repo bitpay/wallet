@@ -147,7 +147,12 @@
                 $timeout.cancel($rootScope.bitloxConnectTimer)
             } else if (newVal === api.STATUS_INITIALIZING) {
                 var session = new Date().getTime(true);
-                api.initialize(session);
+                api.initialize(session).then(function(res) {
+                    if(res.type === api.TYPE_ERROR) {
+                        $ionicLoading.hide();
+                        popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Initialization Error.");
+                    }
+                });
             }
         })
 

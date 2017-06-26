@@ -739,9 +739,9 @@ this.initializeBle = function() {
       if(bleReady) {
         console.log("BLE PREVIOUSLY INITIALISED, STARTING NEW SESSION", status)
         
-        $rootScope.$applyAsync(function() {
-          status = BleApi.STATUS_DISCONNECTED
-        })        
+        // $rootScope.$applyAsync(function() {
+        //   status = BleApi.STATUS_DISCONNECTED
+        // })        
         return true;
       }
       platform = window.device.platform.toLowerCase()
@@ -1003,13 +1003,12 @@ this.connect = function(address)	{
 
   BleApi.displayStatus('Connecting...');
   evothings.ble.connect(address, function(device) {
-    console.log(JSON.stringify(device))
-    console.log(device.state)
     if (device.state == 2) {
       BleApi.displayStatus('Connected');
       BleApi.deviceHandle = device.deviceHandle;
       BleApi.getServices();
     }
+    // this never seems to get called, except status === 1 which means the connection is now in progress on iOS
     else {
       // console.log("CONNECTION TO BLE FAILED")
       // $rootScope.$applyAsync(function() {
@@ -1139,11 +1138,7 @@ this.write = function(data, timer, noPromise) {
       BleApi.characteristicWrite,
       bb
       , function(err) {
-        // if(platform == "android") {
-        //   pausecomp(200);
-        // }
         if(err) {
-
           return next(new Error('Command Write Error'))
         } else {
           return next()
@@ -1153,9 +1148,6 @@ this.write = function(data, timer, noPromise) {
     if(err) {
       console.log("Command write error")
       evothings.ble.close(BleApi.deviceHandle)
-      $rootScope.$applyAsync(function() {
-        status = BleApi.STATUS_DISCONNECTED
-      })
       return BleApi.sendData({error: new Error('Command Write Processing Error')}, BleApi.TYPE_ERROR)
     }
     $rootScope.$applyAsync(function() {
@@ -1174,8 +1166,10 @@ this.write = function(data, timer, noPromise) {
       $rootScope.$applyAsync(function() {
         status = BleApi.STATUS_DISCONNECTED
       })
-
-      BleApi.sendData({error: new Error('Command Write Timeout')}, BleApi.TYPE_ERROR)
+      $timeout.cancel(BleApi.timeout);
+      if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) {     
+        $rootScope.$broadcast('bitloxConnectError'); 
+      }          
     },timer)
   }
   return this.currentPromise.promise;
