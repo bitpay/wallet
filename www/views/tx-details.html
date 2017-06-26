@@ -140,15 +140,18 @@ This transaction amount is too small compared to current Bitcoin network fees. S
         </div>
 
         <div ng-if="wallet.network == 'livenet' && btx.action == 'received'">
-          <div class="item single-line" ng-if="availableServices[0]"><span class="label" translate>Verifying transaction on:</span></div>
+          <div class="item single-line" ng-if="availableServices[0]">
+            <span class="label" ng-if="!loading" translate>Verifyed by:</span>
+            <span class="label" ng-if="loading" translate>Verifying transaction on:</span>
+            <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loading"></ion-spinner>
+          </div>
 
           <div ng-repeat="service in availableServices">
             <div class="item single-line item-icon-right" ng-style="{'border-top': 'none'}">
-              <span class="label">{{service.name}}</span>
-              <ion-spinner class="item-note spinner-dark" icon="crescent" ng-if="loadingService[service.name]"></ion-spinner>
-              <i class="icon ion-checkmark-circled valid" ng-if="service.match && service.success && !loadingService[service.name]"></i>
-              <i class="icon ion-close-circled invalid" ng-if="btx.confirmations > 0 && (service.notFound || !service.match) && !loadingService[service.name]"></i>
-              <div ng-if="btx.confirmations <= 0 && service.notFound && !loadingService[service.name]">
+              <span class="label">{{service.serviceName}}</span>
+              <i class="icon ion-checkmark-circled valid" ng-if="service.status == 'success'"></i>
+              <i class="icon ion-close-circled invalid" ng-if="btx.confirmations > 0 && (service.status == 'notFound' || service.status == 'N/A') && !loading"></i>
+              <div ng-if="btx.confirmations <= 0 && service.status == 'notFound' && !loading">
                 <span class="item-note" translate>Transaction not found</span>
                 <i class="icon warning"><img src="img/icon-warning.png" width="16px"></i>
               </div>

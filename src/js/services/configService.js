@@ -70,17 +70,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       enabled: isWindowsPhoneApp ? true : false,
     },
 
-    blockExplorerServices: [
-      {
-        name: 'Blockchain.info',
-        url: 'https://blockchain.info/es/rawtx/',
-      },
-      {
-        name: 'Blockr.io',
-        url: 'http://btc.blockr.io/api/v1/tx/info/',
-      },
-    ],
-
     verifyTransaction: {
       enabled: false,
     },

@@ -1,11 +1,10 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, verifyByThirdPartyService, configService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, verifyByThirdPartyService, configService) {
 
   var txId;
   var listeners = [];
   var config;
-  var serviceCounter;
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     txId = data.stateParams.txid;
@@ -15,17 +14,11 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
     $scope.availableServices = null;
-    $scope.loadingService = {};
+    $scope.loading = false;
     config = configService.getSync();
     if (config.verifyTransaction && config.verifyTransaction.enabled) {
-      $scope.availableServices = lodash.clone(configService.getDefaults().blockExplorerServices);
-      lodash.each($scope.availableServices, function(s) {
-        setLoading(s.name, true);
-      });
+      $scope.availableServices = verifyByThirdPartyService.getAvailableServices();
     }
-    serviceCounter = 0;
-    $scope.addresses = [];
-    $scope.serviceError = {};
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
       $scope.txNotification = {
@@ -52,76 +45,15 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   });
 
-  function setLoading(name, state) {
-    $scope.loadingService[name] = state;
-    $timeout(function() {
-      $scope.$apply();
+  function verifyByThirdParties(addresses) {
+    verifyByThirdPartyService.getTx(lodash.clone($scope.btx), addresses, function(resp) {
+      $scope.loading = false;
+      $scope.availableServices = lodash.clone(resp);
+      var status = lodash.countBy($scope.availableServices, 'status');
+      if (!status.success)
+        popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by some third party block explorers'));
     });
   };
-
-  function verifyByThirdParties() {
-    if (lodash.isEmpty($scope.availableServices) || $scope.wallet.network == 'testnet') return;
-
-    lodash.each($scope.availableServices, function(service) {
-      setLoading(service.name, true);
-
-      verifyByThirdPartyService.getTx(service, txId, function(err, params) {
-        if (err) {
-          setLoading(service.name, false);
-          $scope.serviceError[service.name] = true;
-          $log.warn('Could not get tx params from: ' + service.name);
-          checkError();
-        } else
-          compareAndUpdateParams(params);
-
-        serviceCounter += 1;
-      });
-    });
-  };
-
-  function compareAndUpdateParams(params) {
-    $log.debug('Comparing tx params from ' + params.name);
-
-    var match;
-    lodash.each(params.out, function(out) {
-      if (lodash.includes($scope.addresses, out.address)) {
-        match = out.amount == $scope.btx.amount;
-      }
-    });
-
-    var isConfirmed = $scope.btx.confirmations > 0;
-
-    if (!isConfirmed && params.notFound) {
-      setLoading(params.name, false);
-      $log.warn('Could not get the tx params from: ' + params.name);
-    } else if ((isConfirmed && params.notFound) || !match) {
-      setLoading(params.name, false);
-      $scope.serviceError[params.name] = true;
-    }
-
-    params.isConfirmed = isConfirmed;
-    params.match = match;
-    lodash.each($scope.availableServices, function(service, i) {
-      if (service.name == params.name)
-        $scope.availableServices[i] = params;
-    });
-
-    setLoading(params.name, false);
-    checkError();
-  };
-
-  function checkError() {
-    if (lodash.countBy($scope.serviceError).true == $scope.availableServices.length)
-      popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by some third party block explorers'));
-  };
-
-  function getDisplayAmount(amountStr) {
-    return amountStr.split(' ')[0];
-  }
-
-  function getDisplayUnit(amountStr) {
-    return amountStr.split(' ')[1];
-  }
 
   function updateMemo() {
     walletService.getTxNote($scope.wallet, $scope.btx.txid, function(err, note) {
@@ -197,17 +129,16 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
       }
 
-      $scope.displayAmount = getDisplayAmount($scope.btx.amountStr);
-      $scope.displayUnit = getDisplayUnit($scope.btx.amountStr);
-
       if ($scope.btx.action == 'received') {
+        if (lodash.isEmpty($scope.availableServices) || $scope.wallet.network == 'testnet') return;
+
+        $scope.loading = true;
         walletService.getMainAddresses($scope.wallet, {}, function(err, addresses) {
           if (err) {
             $log.warn('Could not get the wallet addresses: ', $scope.wallet.id);
             return;
           }
-          $scope.addresses = lodash.map(addresses, 'address');
-          verifyByThirdParties();
+          verifyByThirdParties(lodash.map(addresses, 'address'));
         });
       }
       updateMemo();

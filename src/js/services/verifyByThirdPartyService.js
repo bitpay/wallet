@@ -1,72 +1,83 @@
 'use strict';
 
 angular.module('copayApp.services').factory('verifyByThirdPartyService', function verifyByThirdPartyServiceFactory($log, $http, lodash, configService) {
-
+  var STATUS_OK = 'success';
+  var STATUS_NA = 'N/A';
+  var STATUS_NOT_FOUND = 'notFound';
   var root = {};
 
-  root.getTx = function(service, txid, cb) {
-    return explorers[service.name].getTx(txid, cb);
-  };
-
-  var getTxFromBlockchainInfo = function(txid, cb) {
-    var service = lodash.find(configService.getDefaults().blockExplorerServices, function(s) {
-      return (s.name == 'Blockchain.info');
-    });
-
-    requestTx(service.name, service.url + txid, function(err, resp) {
-      if (err) return cb(err);
-      if (resp.notFound) return cb(null, resp);
-
-      var params = {};
-      params.name = service.name;
-      params.notFound = resp.status == 404;
-      params.success = resp.status == 200;
-      params.out = [];
-      lodash.each(resp.data.out, function(out) {
-        params.out.push({
-          address: out.addr,
-          amount: parseInt(out.value)
-        });
-      });
-      return cb(null, params);
+  root.getAvailableServices = function() {
+    return lodash.map(lodash.keys(explorers), function(serviceName) {
+      return {
+        name: serviceName
+      };
     });
   };
 
-  var getTxFromBlockrIo = function(txid, cb) {
-    var service = lodash.find(configService.getDefaults().blockExplorerServices, function(s) {
-      return (s.name == 'Blockr.io');
-    });
-    requestTx(service.name, service.url + txid, function(err, resp) {
-      if (err) return cb(err);
-      if (resp.notFound) return cb(null, resp);
-
-      var settings = configService.getSync().wallet.settings;
-      var unitToSatoshi = settings.unitToSatoshi;
-      var params = {};
-      params.name = service.name;
-      params.notFound = resp.status == 404;
-      params.success = resp.status == 200;
-      params.out = [];
-      lodash.each(resp.data.data.vouts, function(out) {
-        params.out.push({
-          address: out.address,
-          amount: parseInt(out.amount * unitToSatoshi)
-        });
+  var getStatusFromBlockchainInfo = function(amount, addrs, params) {
+    var txOuts = [];
+    lodash.each(resp.data.out, function(out) {
+      txOuts.push({
+        address: out.addr,
+        amount: parseInt(out.value)
       });
-      return cb(null, params);
     });
+    var match;
+    lodash.each(txOuts, function(out) {
+      if (lodash.includes(addrs, out.address)) match = out.amount == amount;
+    });
+    return match ? STATUS_OK : STATUS_NA;
+  };
+
+  var getStatusFromBlockrIo = function(amount, addrs, params) {
+    var settings = configService.getSync().wallet.settings;
+    var unitToSatoshi = settings.unitToSatoshi;
+    var txOuts = [];
+    lodash.each(params.data.data.vouts, function(out) {
+      txOuts.push({
+        address: out.address,
+        amount: parseInt(out.amount * unitToSatoshi)
+      });
+    });
+    var match;
+    lodash.each(txOuts, function(out) {
+      if (lodash.includes(addrs, out.address)) match = out.amount == amount;
+    });
+    return match ? STATUS_OK : STATUS_NA;
   };
 
   var explorers = {
     'Blockchain.info': {
-      getTx: getTxFromBlockchainInfo,
+      url: 'https://blockchain.info/es/rawtx/',
+      getStatus: getStatusFromBlockchainInfo,
     },
     'Blockr.io': {
-      getTx: getTxFromBlockrIo,
+      url: 'http://btc.blockr.io/api/v1/tx/info/',
+      getStatus: getStatusFromBlockrIo,
     }
   };
 
-  function requestTx(serviceName, url, cb) {
+  root.getTx = function(tx, addrs, cb) {
+    var i = 0;
+    var result = [];
+    var keys = lodash.keys(explorers);
+
+    lodash.each(keys, function(k) {
+      var service = explorers[k];
+      var normalizedResp = {};
+
+      requestTx(service.url + tx.txid, function(resp) {
+        normalizedResp.serviceName = k;
+
+        var hasError = resp.status == STATUS_NOT_FOUND || resp.status == STATUS_NA;
+        normalizedResp.status = hasError ? resp.status : service.getStatus(tx.amount, addrs, resp);
+        result.push(normalizedResp);
+        if (++i == keys.length) return cb(result);
+      });
+    });
+  };
+
+  function requestTx(url, cb) {
     $log.debug('Retrieving tx information...');
 
     var request = {
@@ -77,13 +88,11 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
 
     $http(request).then(function(resp) {
       $log.debug('Tx params:', resp);
-      return cb(null, resp);
+      return cb(resp);
     }, function(err) {
-      if (err.status == 404) return cb(null, {
-        name: serviceName,
-        notFound: true
+      return cb({
+        status: err.status == 404 ? STATUS_NOT_FOUND : STATUS_NA
       });
-      return cb(err);
     });
   };
 
