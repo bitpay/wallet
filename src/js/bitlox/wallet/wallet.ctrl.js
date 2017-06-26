@@ -151,6 +151,7 @@
                     if(res.type === api.TYPE_ERROR) {
                         $ionicLoading.hide();
                         popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Initialization Error.");
+                        api.disconnect();
                     }
                 });
             }
@@ -275,10 +276,10 @@
             vm.openWallet = null;
             vm.timer = false;
 
-            $ionicLoading.show({template: "Connecting to BitLox, please wait...",duration:5000})
+            $ionicLoading.show({template: "Connecting to BitLox, please wait...",duration:3000})
             $timeout(function() {
                 vm.timer = true;
-            },5000);            
+            },3000);            
             if(platformInfo.isChromeApp) {
                 // api.close().then(function() {api.device()})
                 api.device().then(function() {

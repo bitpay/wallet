@@ -62,13 +62,14 @@
     }
     $scope.connectBle = function(address) {
       $ionicLoading.show({
-            template: 'Connecting to BitLox, Please Wait...'
-          });
-      console.log('connecting to '+address)
+        template: 'Connecting to BitLox, Please Wait...'
+      });
+      // console.log('connecting to '+address)
 
       api.connect(address).then(function() {
       }, function(err) {
         $log.debug("BitLox Connection Error", err)
+        api.disconnect();
       }).finally(function() {
 
       })
@@ -120,12 +121,13 @@
           $scope.bitlox.statusString = "Bitlox disconnected!";
           $scope.bitlox.alertClass = "danger";
           $scope.bitlox.glyph = "glyphicon-remove";
-          if($state.current.url === '/attach-bitlox') {
+          console.log($state.current.url)
+          if($scope.wallet.status !== api.STATUS_DISCONNECTED) {
+            console.log("disconnected error")
             $ionicLoading.hide();
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
             // $ionicHistory.goBack();
           }
-
           $scope.bitlox.connected = false;
           break;
       case api.STATUS_WRITING:
