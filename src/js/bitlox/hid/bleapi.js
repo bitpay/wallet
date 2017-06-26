@@ -893,10 +893,7 @@ this.startReading = function() {
         },
         function(errorCode) {
           BleApi.displayStatus('enableNotification error: ' + errorCode);
-          evothings.ble.close(BleApi.deviceHandle)
-          $rootScope.$applyAsync(function() {
-            status = BleApi.STATUS_DISCONNECTED
-          })     
+          BleApi.disconnect();
         });
       BleApi.displayStatus('BLE device connected and ready for communications');
       // pausecomp(1000)
@@ -1005,7 +1002,7 @@ this.connect = function(address)	{
     if (device.state == 2) {
       BleApi.deviceHandle = device.deviceHandle;
       BleApi.getServices();
-    } else if(device.state === 3) {
+    } else if(device.state === 0) {
           BleApi.disconnect()
     }
     // this never seems to get called, except status === 1 which means the connection is now in progress on iOS
@@ -1026,16 +1023,13 @@ this.connect = function(address)	{
     if(parseInt(errorCode,10) === 133) {
 
       console.log("BitLox Disconnected from BLE: 133")
-      BleApi.disconnect()
     
     } else if(parseInt(errorCode,10) === 8) {
       console.log("BitLox Disconnected from BLE: 8")
       $rootScope.$digest()
-      BleApi.disconnect();
     }
-    $rootScope.$applyAsync(function() {
-      status = BleApi.STATUS_DISCONNECTED
-    });
+
+    BleApi.disconnect();
   }, function(errorCode) {
 
   });    
