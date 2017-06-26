@@ -1000,6 +1000,8 @@ this.connect = function(address)	{
 
   BleApi.displayStatus('Connecting...');
   evothings.ble.connect(address, function(device) {
+    console.log(JSON.stringify(device))
+    console.log(device.state)
     if (device.state == 2) {
       BleApi.displayStatus('Connected');
       BleApi.deviceHandle = device.deviceHandle;
@@ -1010,7 +1012,7 @@ this.connect = function(address)	{
       $rootScope.$applyAsync(function() {
         status = BleApi.STATUS_DISCONNECTED
       });
-      return BleApi.currentPromise.resolve(new Error('Unable to connect to BitLox BLE'))
+      return BleApi.currentPromise.reject(new Error('Unable to connect to BitLox BLE'))
 
     }
   },
@@ -1261,8 +1263,7 @@ this.sendData = function(data,type) {
 }
 
 this.processResults = function(command, length, payload) {
-
-      // 			console.log("RX: " + command);
+  // 			console.log("RX: " + command);
   command = command.substring(2, 4)
   //  			window.plugins.toast.show('to process: ' + command, 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   console.log('to process: ' + command + ' ' + length + ' ' + payload);
