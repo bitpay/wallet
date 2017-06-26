@@ -1002,7 +1002,7 @@ this.connect = function(address)	{
     if (device.state == 2) {
       BleApi.deviceHandle = device.deviceHandle;
       BleApi.getServices();
-    } else if(device.state === 0) {
+    } else if(device.state === 0 || device.state === 3) {
           BleApi.disconnect()
     }
     // this never seems to get called, except status === 1 which means the connection is now in progress on iOS
