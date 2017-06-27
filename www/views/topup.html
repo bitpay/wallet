@@ -2,25 +2,27 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>Add funds</ion-nav-title>
+    <ion-nav-title>
+      {{'Add funds' | translate}}
+    </ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="add-bottom-for-cta">
     <!-- SELL -->
-    <div class="list" ng-if="cardInfo">
+    <div class="list">
 
       <div class="item head">
         <div class="sending-label">
           <i class="icon big-icon-svg">
             <div class="bg icon-bitpay-card"></div>
           </i>
-          <span>BitPay Card - Visa &reg; Prepaid Debit</span>
+          <span>BitPay Visa&reg; Card ({{lastFourDigits}})</span>
         </div>
         <div class="amount-label">
           <div class="amount-final">{{amountUnitStr}}</div>
           <div class="alternative">
             <span ng-if="rate">@
-              {{rate | currency:cardInfo.currencySymbol:2}} per BTC</span>
+              {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per BTC</span>
             <span ng-if="!rate">...</span>
           </div>
         </div>
@@ -40,44 +42,36 @@
         </div>
 
         <div class="item item-divider" translate>
-          Deposit into
+          Details
         </div>
         <div class="item">
-          <span translate>Card</span>
+          <span translate>Funds to be added</span>
           <span class="item-note">
-            xxxx-xxxx-xxxx-{{cardInfo.lastFourDigits}}
+            <span ng-if="amount">{{amount | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span ng-if="!amount">...</span>
           </span>
         </div>
         <div class="item">
-          <span translate>Account</span>
+          <span translate>Invoice Fee</span>
           <span class="item-note">
-            {{cardInfo.email}}
-          </span>
-        </div>
-
-        <div class="item item-divider" translate>
-          Invoice
-        </div>
-        <div class="item">
-          <span translate>Expire in</span>
-          <span class="item-note" ng-if="expirationTime">
-            <timer countdown="expirationTime" interval="1000" active="true" output-format="mm:ss"
-            on-zero-callback="invoiceExpired">{{formatted}}</timer>
+            <span ng-if="invoiceFee">{{invoiceFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span ng-if="!invoiceFee">...</span>
           </span>
         </div>
         <div class="item">
-          <span translate>Fee</span>
+          <span translate>Network Fee</span>
           <span class="item-note">
-            {{invoice.buyerPaidBtcMinerFee}}
+            <span ng-if="networkFee">{{networkFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span ng-if="!networkFee">...</span>
           </span>
         </div>
         <div class="item">
           <span translate>Total</span>
-          <span class="item-note total">
-            {{invoice.buyerTotalBtcAmount}}
+          <span class="item-note">
+            <span ng-if="totalAmount">{{totalAmount | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span ng-if="totalAmountStr">({{totalAmountStr}})</span>
           </span>
         </div>
-        <div class="item item-divider"></div>
       </div>
     </div>
 
@@ -85,16 +79,16 @@
 
   <click-to-accept
     ng-click="topUpConfirm()"
-    ng-if="!isCordova && cardInfo"
+    ng-if="!isCordova"
     click-send-status="sendStatus"
-    is-disabled="!cardInfo || !wallet">
+    is-disabled="!wallet">
     Add funds
   </click-to-accept>
   <slide-to-accept
-    ng-if="isCordova && cardInfo"
+    ng-if="isCordova"
     slide-on-confirm="topUpConfirm()"
     slide-send-status="sendStatus"
-    is-disabled="!cardInfo || !wallet">
+    is-disabled="!wallet">
     Slide to confirm
   </slide-to-accept>
   <slide-to-accept-success
