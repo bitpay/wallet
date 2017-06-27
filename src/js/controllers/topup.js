@@ -149,13 +149,12 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
             message: err
           })
         }
-        var maxAmountBtc = (values.amount / 100000000).toFixed(8);
-console.log('[topup.js:152]',maxAmountBtc); //TODO/
+        var maxAmountBtc = Number((values.amount / 100000000).toFixed(8));
 
         createInvoice({amount: maxAmountBtc, currency: 'BTC'}, function(err, inv) {
           if (err) return cb(err);
 
-          return cb(null, txFormatService.parseAmount(maxAmountBtc - inv.btcDue, 'BTC'));
+          return cb(null, txFormatService.parseAmount(maxAmountBtc - inv.buyerPaidBtcMinerFee, 'BTC'));
         });
       });
     } else {
@@ -171,7 +170,6 @@ console.log('[topup.js:152]',maxAmountBtc); //TODO/
     };
     ongoingProcess.set('loadingTxInfo', true);
     createInvoice(dataSrc, function(err, invoice) {
-console.log('[topup.js:155] INVOICE',invoice); //TODO/
       if (err) {
         ongoingProcess.set('loadingTxInfo', false);
         showErrorAndBack(err.title, err.message);
@@ -186,7 +184,6 @@ console.log('[topup.js:155] INVOICE',invoice); //TODO/
       });
 
       createTx(wallet, invoice, message, function(err, ctxp) {
-console.log('[topup.js:159] CREATE TX',ctxp); //TODO
         ongoingProcess.set('loadingTxInfo', false);
         if (err) {
           showErrorAndBack(err.title, err.message);
@@ -195,8 +192,7 @@ console.log('[topup.js:159] CREATE TX',ctxp); //TODO
 
         createdTx = ctxp;
 
-        var totalAmountSat = ctxp.amount + ctxp.fee;
-        $scope.totalAmountStr = txFormatService.formatAmountStr(totalAmountSat);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
 
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
 
@@ -220,10 +216,8 @@ console.log('[topup.js:159] CREATE TX',ctxp); //TODO
     useSendMax = data.stateParams.useSendMax;
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
-console.log('[topup.js:201]',cardId, useSendMax, amount, currency); //TODO/
 
     bitpayCardService.get({ cardId: cardId, noRefresh: true }, function(err, card) {
-console.log('[topup.js:203]',card[0]); //TODO/
       if (err) {
         showErrorAndBack(null, err);
         return;
@@ -285,7 +279,6 @@ console.log('[topup.js:203]',card[0]); //TODO/
     $scope.wallet = wallet;
     ongoingProcess.set('retrievingInputs', true);
     parseAmount(wallet, function(err, parsedAmount) {
-console.log('[topup.js:287]',parsedAmount); //TODO/
       ongoingProcess.set('retrievingInputs', false);
       if (err) {
         showErrorAndBack(err.title, err.message);
