@@ -195,7 +195,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         HidApi.device().then(function(dev) {
             // get the device
             if (dev === null) {
-                HidApi.close();
+                HidApi.disconnect();
                 return deferred.reject(new Error("No device to write to"));
             }
             HidApi.isWriting = true;
@@ -334,7 +334,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
                 return HidApi.processResults(command, payloadSize, payload);
             } else if (!wait && serialData === "") { //If nothing is detected, close down port
                 console.warn("Device unplugged");
-                HidApi.close();
+                HidApi.disconnect();
                 return null;
             } else {
                 return null;
@@ -438,7 +438,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         return data;
     };
 
-    HidApi.close = function() {
+    HidApi.disconnect = function() {
         return HidApi.$timeout(function() {
             HidApi._device = null;
             HidApi._plugin = null;    
@@ -455,11 +455,11 @@ function HidApi($q, $timeout, $interval, $rootScope,
         HidApi.doingCommand = true;
         return HidApi.write(command).then(function(written) {
             if (written === 0) {
-                return HidApi.close().then(function() {
+                return HidApi.disconnect().then(function() {
                     return HidApi.$q.reject(new Error("No data written"));
                 });
             } else if (written === -1) {
-                return HidApi.close().then(function() {
+                return HidApi.disconnect().then(function() {
                     return HidApi.$q.reject(new Error("Write error"));
                 });
             }
@@ -470,7 +470,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
                     counter += 1;
                     if (!data) {
                         // if (counter === counterMax) { // two minutes... ish
-                        //     return HidApi.close().then(function() {
+                        //     return HidApi.disconnect().then(function() {
                         //         return HidApi.$q.reject(new Error("Command response timeout"));
                         //     });
                         // }
@@ -504,7 +504,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
             return HidApi.$timeout(function(){})
                 .then(doRead);
         }, function(err) {
-            return HidApi.close().then(function() {
+            return HidApi.disconnect().then(function() {
                 return HidApi.$q.reject(err);
             });
         });

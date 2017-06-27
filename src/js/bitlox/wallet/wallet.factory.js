@@ -74,6 +74,10 @@
 
             return api.listWallets().then(function(res) {
                 var wallets = [];
+                // if(!res) {
+                  // popupService.showAlert(gettextCatalog.getString('Error'), "Unable to fetch BitLox wallet list");
+                  // return wallets;
+                // }
                 res.payload.wallets.forEach(function(data) {
                     wallets.push(new Wallet(data));
                 });
