@@ -23,6 +23,26 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return root.formatAmount(satoshis) + ' ' + config.unitName;
   };
 
+  root.formatToCode = function(satoshis, code, cb) {
+    if (isNaN(satoshis)) return;
+    var val = function() {
+      var v1 = rateService.toFiat(satoshis, code);
+      if (!v1) return null;
+
+      return v1.toFixed(2);
+    };
+
+    // Async version
+    if (cb) {
+      rateService.whenAvailable(function() {
+        return cb(val());
+      });
+    } else {
+      if (!rateService.isAvailable()) return null;
+      return val();
+    };
+  };
+
   root.formatToUSD = function(satoshis, cb) {
     if (isNaN(satoshis)) return;
     var val = function() {
@@ -181,8 +201,8 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     }
 
     return {
-      amount: amount, 
-      currency: currency, 
+      amount: amount,
+      currency: currency,
       alternativeIsoCode: alternativeIsoCode,
       amountSat: amountSat,
       amountUnitStr: amountUnitStr

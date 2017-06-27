@@ -2,9 +2,13 @@
 
 angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog) {
 
-  var dataSrc = {};
+  $scope.isCordova = platformInfo.isCordova;
   var cardId;
-  var sendMax;
+  var useSendMax;
+  var amount;
+  var currency;
+  var createdTx;
+  var message;
   var configWallet = configService.getSync().wallet;
 
   var showErrorAndBack = function(title, msg) {
@@ -25,6 +29,12 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     popupService.showAlert(title, msg);
   };
 
+  var satToAlternative = function(sat, cb) {
+    txFormatService.formatToCode(sat, $scope.currencyIsoCode, function(value) {
+      return cb(value);
+    });
+  };
+
   var publishAndSign = function (wallet, txp, onSendStatusChange, cb) {
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       var err = gettextCatalog.getString('No signing proposal: No private key');
@@ -40,7 +50,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   var statusChangeHandler = function (processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
-    if ( processName == 'sendingTx' && !isOn) {
+    if (processName == 'topup' && !isOn && !hasError) {
       $scope.sendStatus = 'success';
       $timeout(function() {
         $scope.$digest();
@@ -50,29 +60,150 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
   };
 
-  var createInvoice = function() {
-    $scope.expirationTime = null;
-    ongoingProcess.set('creatingInvoice', true);
-    bitpayCardService.topUp(cardId, dataSrc, function(err, invoiceId) {
+  var setTotalAmount = function(amountSat, invoiceFeeSat, networkFeeSat) {
+    satToAlternative(amountSat, function(a) {
+      $scope.amount = Number(a);
+
+      satToAlternative(invoiceFeeSat, function(i) {
+        $scope.invoiceFee = Number(i);
+
+        satToAlternative(networkFeeSat, function(n) {
+          $scope.networkFee = Number(n);
+          $scope.totalAmount = $scope.amount + $scope.invoiceFee + $scope.networkFee;
+          $timeout(function() {
+            $scope.$digest();
+          });
+        });
+      });
+    });
+  };
+
+  var createInvoice = function(data, cb) {
+    bitpayCardService.topUp(cardId, data, function(err, invoiceId) {
       if (err) {
-        ongoingProcess.set('creatingInvoice', false);
-        showErrorAndBack(gettextCatalog.getString('Could not create the invoice'), err);
-        return;
+        return cb({
+          title: gettextCatalog.getString('Could not create the invoice'),
+          message: err
+        });
       }
 
       bitpayCardService.getInvoice(invoiceId, function(err, inv) {
-        ongoingProcess.set('creatingInvoice', false);
         if (err) {
-          showError(gettextCatalog.getString('Could not get the invoice'), err);
-          return;
+          return cb({
+            title: gettextCatalog.getString('Could not get the invoice'),
+            message: err
+          });
         }
-        $scope.invoice = inv;
-        $scope.expirationTime = ($scope.invoice.expirationTime - $scope.invoice.invoiceTime) / 1000;
-        $timeout(function() {
-          $scope.$digest();
-        }, 1);
+        return cb(null, inv);
       });
     });
+  };
+
+  var createTx = function(wallet, invoice, message, cb) {
+    var payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
+
+    if (!payProUrl) {
+      return cb({
+        title: gettextCatalog.getString('Error in Payment Protocol'),
+        message: gettextCatalog.getString('Invalid URL')
+      });
+    }
+
+    var outputs = [];
+    var toAddress = invoice.bitcoinAddress;
+    var amountSat = parseInt(invoice.btcDue * 100000000); // BTC to Satoshi
+
+    outputs.push({
+      'toAddress': toAddress,
+      'amount': amountSat,
+      'message': message
+    });
+
+    var txp = {
+      toAddress: toAddress,
+      amount: amountSat,
+      outputs: outputs,
+      message: message,
+      payProUrl: payProUrl,
+      excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+      feeLevel: configWallet.settings.feeLevel || 'normal'
+    };
+
+    walletService.createTx(wallet, txp, function(err, ctxp) {
+      if (err) {
+        return cb({
+          title: gettextCatalog.getString('Could not create transaction'),
+          message: bwcError.msg(err)
+        });
+      }
+      return cb(null, ctxp);
+    });
+  };
+
+  var parseAmount = function(wallet, cb) {
+    if (useSendMax) {
+      sendMaxService.getInfo(wallet, function(err, values) {
+        if (err) {
+          return cb({
+            title: null,
+            message: err
+          })
+        }
+        var maxAmountBtc = (values.amount / 100000000).toFixed(8);
+console.log('[topup.js:152]',maxAmountBtc); //TODO/
+
+        createInvoice({amount: maxAmountBtc, currency: 'BTC'}, function(err, inv) {
+          if (err) return cb(err);
+
+          return cb(null, txFormatService.parseAmount(maxAmountBtc - inv.btcDue, 'BTC'));
+        });
+      });
+    } else {
+      return cb(null, txFormatService.parseAmount(amount, currency));
+    }
+  };
+
+  var initializeTopUp = function(wallet, parsedAmount) {
+    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    var dataSrc = {
+      amount: parsedAmount.amount,
+      currency: parsedAmount.currency
+    };
+    ongoingProcess.set('loadingTxInfo', true);
+    createInvoice(dataSrc, function(err, invoice) {
+console.log('[topup.js:155] INVOICE',invoice); //TODO/
+      if (err) {
+        ongoingProcess.set('loadingTxInfo', false);
+        showErrorAndBack(err.title, err.message);
+        return;
+      }
+
+      var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
+
+      message = gettextCatalog.getString("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
+        amountStr: $scope.amountUnitStr,
+        cardLastNumber: $scope.lastFourDigits
+      });
+
+      createTx(wallet, invoice, message, function(err, ctxp) {
+console.log('[topup.js:159] CREATE TX',ctxp); //TODO
+        ongoingProcess.set('loadingTxInfo', false);
+        if (err) {
+          showErrorAndBack(err.title, err.message);
+          return;
+        }
+
+        createdTx = ctxp;
+
+        var totalAmountSat = ctxp.amount + ctxp.fee;
+        $scope.totalAmountStr = txFormatService.formatAmountStr(totalAmountSat);
+
+        setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
+
+      });
+
+    });
+
   };
 
   $scope.$on("$ionicView.beforeLeave", function(event, data) {
@@ -84,136 +215,64 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.wallet = null;
-    $scope.isCordova = platformInfo.isCordova;
 
     cardId = data.stateParams.id;
-    sendMax = data.stateParams.useSendMax;
-
-    if (!cardId) {
-      showErrorAndBack(null, gettextCatalog.getString('No card selected'));
-      return;
-    }
-
-    var parsedAmount = txFormatService.parseAmount(
-      data.stateParams.amount,
-      data.stateParams.currency);
-
-    dataSrc['amount'] = parsedAmount.amount;
-    dataSrc['currency'] = parsedAmount.currency;
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
-
-    $scope.network = bitpayService.getEnvironment().network;
-    $scope.wallets = profileService.getWallets({
-      onlyComplete: true,
-      network: $scope.network,
-      hasFunds: true,
-      minAmount: parsedAmount.amountSat
-    });
-
-    if (lodash.isEmpty($scope.wallets)) {
-      showErrorAndBack(null, gettextCatalog.getString('Insufficient funds'));
-      return;
-    }
-    $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
+    useSendMax = data.stateParams.useSendMax;
+    amount = data.stateParams.amount;
+    currency = data.stateParams.currency;
+console.log('[topup.js:201]',cardId, useSendMax, amount, currency); //TODO/
 
     bitpayCardService.get({ cardId: cardId, noRefresh: true }, function(err, card) {
+console.log('[topup.js:203]',card[0]); //TODO/
       if (err) {
         showErrorAndBack(null, err);
         return;
       }
-      $scope.cardInfo = card[0];
-      bitpayCardService.setCurrencySymbol($scope.cardInfo);
-      bitpayCardService.getRates($scope.cardInfo.currency, function(err, data) {
-        if (err) $log.error(err);
-        $scope.rate = data.rate;
+      bitpayCardService.setCurrencySymbol(card[0]);
+      $scope.lastFourDigits = card[0].lastFourDigits;
+      $scope.currencySymbol = card[0].currencySymbol;
+      $scope.currencyIsoCode = card[0].currency;
+
+      $scope.wallets = profileService.getWallets({
+        onlyComplete: true,
+        network: bitpayService.getEnvironment().network,
+        hasFunds: true
       });
-    });
 
-  });
-
-  $scope.topUpConfirm = function() {
-    var title;
-    var message = gettextCatalog.getString("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
-      amountStr: $scope.amountUnitStr,
-      cardLastNumber: $scope.cardInfo.lastFourDigits
-    });
-    var okText = gettextCatalog.getString('Continue');
-    var cancelText = gettextCatalog.getString('Cancel');
-    popupService.showConfirm(title, message, okText, cancelText, function(ok) {
-      if (!ok) return;
-
-      ongoingProcess.set('topup', true, statusChangeHandler);
-
-      var payProUrl = ($scope.invoice && $scope.invoice.paymentUrls) ? $scope.invoice.paymentUrls.BIP73 : null;
-
-      if (!payProUrl) {
-        ongoingProcess.set('topup', false, statusChangeHandler);
-        showError(gettextCatalog.getString('Error in Payment Protocol'), gettextCatalog.getString('Invalid URL'));
+      if (lodash.isEmpty($scope.wallets)) {
+        showErrorAndBack(null, gettextCatalog.getString('No wallets with funds'));
         return;
       }
 
-      payproService.getPayProDetails(payProUrl, function(err, payProDetails) {
+      bitpayCardService.getRates($scope.currencyIsoCode, function(err, r) {
+        if (err) $log.error(err);
+        $scope.rate = r.rate;
+      });
+
+      $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
+    });
+  });
+
+  $scope.topUpConfirm = function() {
+    var title = gettextCatalog.getString('Confirm');
+    var okText = gettextCatalog.getString('OK');
+    var cancelText = gettextCatalog.getString('Cancel');
+    popupService.showConfirm(title, message, okText, cancelText, function(ok) {
+      if (!ok) {
+        $scope.sendStatus = '';
+        return;
+      }
+
+      ongoingProcess.set('topup', true, statusChangeHandler);
+      publishAndSign($scope.wallet, createdTx, function() {}, function(err, txSent) {
         if (err) {
-          ongoingProcess.set('topup', false, statusChangeHandler);
-          showError(gettextCatalog.getString('Error fetching invoice'), err);
+          ongoingProcess.set('topup', false);
+          $scope.sendStatus = '';
+          showError(gettextCatalog.getString('Could not send transaction'), err);
           return;
         }
-
-        var outputs = [];
-        var toAddress = payProDetails.toAddress;
-        var amountSat = payProDetails.amount;
-
-        outputs.push({
-          'toAddress': toAddress,
-          'amount': amountSat,
-          'message': message
-        });
-
-        var txp = {
-          toAddress: toAddress,
-          amount: amountSat,
-          outputs: outputs,
-          message: message,
-          payProUrl: payProUrl,
-          excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-          feeLevel: configWallet.settings.feeLevel || 'normal'
-        };
-
-        walletService.createTx($scope.wallet, txp, function(err, ctxp) {
-          if (err) {
-            ongoingProcess.set('topup', false, statusChangeHandler);
-            showError(gettextCatalog.getString('Could not create transaction'), bwcError.msg(err));
-            return;
-          }
-
-          title = gettextCatalog.getString('Sending {{amountStr}} from {{walletName}}', {
-            amountStr:  txFormatService.formatAmountStr(ctxp.amount, true),
-            walletName: $scope.wallet.name
-          });
-          message = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
-            fee: txFormatService.formatAmountStr(ctxp.fee)
-          });
-          okText = gettextCatalog.getString('Confirm');
-          popupService.showConfirm(title, message, okText, cancelText, function(ok) {
-            ongoingProcess.set('topup', false, statusChangeHandler);
-            if (!ok) {
-              $scope.sendStatus = '';
-              return;
-            }
-
-            $scope.expirationTime = null; // Disable countdown
-            ongoingProcess.set('sendingTx', true, statusChangeHandler);
-            publishAndSign($scope.wallet, ctxp, function() {}, function(err, txSent) {
-              ongoingProcess.set('sendingTx', false, statusChangeHandler);
-              if (err) {
-                showError(gettextCatalog.getString('Could not send transaction'), err);
-                return;
-              }
-            });
-          });
-        });
-      }, true); // Disable loader
+        ongoingProcess.set('topup', false, statusChangeHandler);
+      });
     });
   };
 
@@ -223,38 +282,17 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   $scope.onWalletSelect = function(wallet) {
-    if ($scope.wallet && (wallet.id == $scope.wallet.id)) return;
     $scope.wallet = wallet;
-    if (sendMax) {
-      ongoingProcess.set('retrievingInputs', true);
-      sendMaxService.getInfo($scope.wallet, function(err, values) {
-        ongoingProcess.set('retrievingInputs', false);
-        if (err) {
-          showErrorAndBack(null, err);
-          return;
-        }
-        var unitName = configWallet.settings.unitName;
-        var amountUnit = txFormatService.satToUnit(values.amount);
-        var parsedAmount = txFormatService.parseAmount(
-          amountUnit,
-          unitName);
-
-        dataSrc['amount'] = parsedAmount.amount;
-        dataSrc['currency'] = parsedAmount.currency;
-        $scope.amountUnitStr = parsedAmount.amountUnitStr;
-        createInvoice();
-        $timeout(function() {
-          $scope.$digest();
-        }, 100);
-      });
-    } else {
-      createInvoice();
-    }
-  };
-
-  $scope.invoiceExpired = function() {
-    $scope.sendStatus = '';
-    showErrorAndBack(gettextCatalog.getString('Invoice Expired'), gettextCatalog.getString('This invoice has expired. An invoice is only valid for 15 minutes.'));
+    ongoingProcess.set('retrievingInputs', true);
+    parseAmount(wallet, function(err, parsedAmount) {
+console.log('[topup.js:287]',parsedAmount); //TODO/
+      ongoingProcess.set('retrievingInputs', false);
+      if (err) {
+        showErrorAndBack(err.title, err.message);
+        return;
+      }
+      initializeTopUp(wallet, parsedAmount);
+    });
   };
 
   $scope.goBackHome = function() {
