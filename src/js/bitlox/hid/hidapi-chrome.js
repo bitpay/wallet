@@ -447,7 +447,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         })
     };
 
-    var readTimeout = 10;
+    var readTimeout = 100;
     var counterMax = (120 * 1000) / readTimeout; // appx 2 minutes timeout
 
     HidApi._doCommand = function(command, expectedType) {
@@ -468,15 +468,16 @@ function HidApi($q, $timeout, $interval, $rootScope,
             var doRead = function() {
                 return HidApi.read('', 'wait please').then(function(data) {
                     counter += 1;
-                    if (!data) {
+                    if (data === null) {
                         if (counter === counterMax) { // two minutes... ish
                             return HidApi.disconnect().then(function() {
                                 return HidApi.$q.reject(new Error("Command response timeout"));
                             });
                         }
                         return HidApi.$timeout(doRead, readTimeout);
-                        // HidApi.doingCommand = false;
-                        // return data;                        
+                    } else if (!data) {
+                        HidApi.doingCommand = false;
+                        return data;                        
                     } else 
                     if (data.type === HidApi.TYPE_ERROR) {
                         HidApi.doingCommand = false;
