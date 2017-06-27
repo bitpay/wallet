@@ -469,14 +469,14 @@ function HidApi($q, $timeout, $interval, $rootScope,
                 return HidApi.read('', 'wait please').then(function(data) {
                     counter += 1;
                     if (!data) {
-                        // if (counter === counterMax) { // two minutes... ish
-                        //     return HidApi.disconnect().then(function() {
-                        //         return HidApi.$q.reject(new Error("Command response timeout"));
-                        //     });
-                        // }
-                        // return HidApi.$timeout(doRead, readTimeout);
-                        HidApi.doingCommand = false;
-                        return data;                        
+                        if (counter === counterMax) { // two minutes... ish
+                            return HidApi.disconnect().then(function() {
+                                return HidApi.$q.reject(new Error("Command response timeout"));
+                            });
+                        }
+                        return HidApi.$timeout(doRead, readTimeout);
+                        // HidApi.doingCommand = false;
+                        // return data;                        
                     } else 
                     if (data.type === HidApi.TYPE_ERROR) {
                         HidApi.doingCommand = false;
