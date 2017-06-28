@@ -1,4 +1,4 @@
-<ion-view id="addresses" class="addr">
+<ion-view id="addresses" class="addr" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Wallet Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -33,7 +33,7 @@
         <div class="item item-icon-right view-all" ng-if="viewAll.value" ng-click="viewAllAddresses()">
           <span translate>View All Addresses</span>
           <i class="icon ion-ios-arrow-thin-right"></i>
-        </div> 
+        </div>
 
         <div class="item item-divider item-icon-right"  ng-click="newAddress()">
           <span translate>Unused Addresses</span>
