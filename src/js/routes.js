@@ -202,6 +202,25 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
+      .state('tabs.wallet.addresses', {
+        url: '/addresses/:walletId/:toAddress',
+        views: {
+          'tab-home@tabs': {
+            controller: 'addressesController',
+            templateUrl: 'views/addresses.html'
+          }
+        }
+      })
+      .state('tabs.wallet.allAddresses', {
+        url: '/allAddresses/:walletId',
+        views: {
+          'tab-home@tabs': {
+            controller: 'addressesController',
+            templateUrl: 'views/allAddresses.html'
+          }
+        }
+      })
+
       /*
        *
        * Tabs
