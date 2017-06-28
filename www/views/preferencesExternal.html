@@ -1,4 +1,4 @@
-<ion-view class="settings">
+<ion-view class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{externalSource.longName}}</ion-nav-title>
     <ion-nav-back-button>
@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div ng-if="externalSource.isEmbeddedHardware">    
+    <div ng-if="externalSource.isEmbeddedHardware">
       <div ng-if="!hardwareConnected" class="warning centered">
         <span translate>Hardware not connected.</span><br>
         <span translate>Check installation and retry.</span>
