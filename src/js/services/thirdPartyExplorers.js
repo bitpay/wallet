@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').factory('verifyByThirdPartyService', function verifyByThirdPartyServiceFactory($log, $http, lodash, configService) {
+angular.module('copayApp.services').factory('thirdPartyExplorersService', function thirdPartyExplorersServiceFactory($log, $http, lodash, configService) {
   var STATUS_OK = 'success';
-  var STATUS_NA = 'N/A';
+  var STATUS_NOT_AVAILABLE = 'notAvailable';
+  var STATUS_NOT_MATCH = 'notMatch';
   var STATUS_NOT_FOUND = 'notFound';
   var root = {};
 
@@ -26,7 +27,7 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
     lodash.each(txOuts, function(out) {
       if (lodash.includes(addrs, out.address)) match = out.amount == amount;
     });
-    return match ? STATUS_OK : STATUS_NA;
+    return match ? STATUS_OK : STATUS_NOT_MATCH;
   };
 
   var getStatusFromBlockrIo = function(amount, addrs, params) {
@@ -43,7 +44,7 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
     lodash.each(txOuts, function(out) {
       if (lodash.includes(addrs, out.address)) match = out.amount == amount;
     });
-    return match ? STATUS_OK : STATUS_NA;
+    return match ? STATUS_OK : STATUS_NOT_MATCH;
   };
 
   var explorers = {
@@ -57,7 +58,7 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
     }
   };
 
-  root.getTx = function(tx, addrs, cb) {
+  root.verifyTx = function(tx, addrs, cb) {
     var i = 0;
     var result = [];
     var keys = lodash.keys(explorers);
@@ -66,11 +67,15 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
       var service = explorers[k];
       var normalizedResp = {};
 
-      requestTx(service.url + tx.txid, function(resp) {
+      requestTx(service.url + tx.txid, function(err, resp) {
         normalizedResp.serviceName = k;
 
-        var hasError = resp.status == STATUS_NOT_FOUND || resp.status == STATUS_NA;
-        normalizedResp.status = hasError ? resp.status : service.getStatus(tx.amount, addrs, resp);
+        if (err) {
+          if (err.status == 404) normalizedResp.status = STATUS_NOT_FOUND;
+          else normalizedResp.status = STATUS_NOT_AVAILABLE;
+        } else
+          normalizedResp.status = service.getStatus(tx.amount, addrs, resp);
+
         result.push(normalizedResp);
         if (++i == keys.length) return cb(result);
       });
@@ -88,11 +93,9 @@ angular.module('copayApp.services').factory('verifyByThirdPartyService', functio
 
     $http(request).then(function(resp) {
       $log.debug('Tx params:', resp);
-      return cb(resp);
+      return cb(null, resp);
     }, function(err) {
-      return cb({
-        status: err.status == 404 ? STATUS_NOT_FOUND : STATUS_NA
-      });
+      return cb(err);
     });
   };
 

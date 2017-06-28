@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, verifyByThirdPartyService, configService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, thirdPartyExplorersService, configService) {
 
   var txId;
   var listeners = [];
@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.loading = false;
     config = configService.getSync();
     if (config.verifyTransaction && config.verifyTransaction.enabled) {
-      $scope.availableServices = verifyByThirdPartyService.getAvailableServices();
+      $scope.availableServices = thirdPartyExplorersService.getAvailableServices();
     }
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
@@ -45,13 +45,13 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   });
 
-  function verifyByThirdParties(addresses) {
-    verifyByThirdPartyService.getTx(lodash.clone($scope.btx), addresses, function(resp) {
+  function verifyByThirdParty(addresses) {
+    thirdPartyExplorersService.verifyTx(lodash.clone($scope.btx), addresses, function(resp) {
       $scope.loading = false;
       $scope.availableServices = lodash.clone(resp);
       var status = lodash.countBy($scope.availableServices, 'status');
       if (!status.success)
-        popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by some third party block explorers'));
+        popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by third party block explorers'));
     });
   };
 
@@ -138,7 +138,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
             $log.warn('Could not get the wallet addresses: ', $scope.wallet.id);
             return;
           }
-          verifyByThirdParties(lodash.map(addresses, 'address'));
+          verifyByThirdParty(lodash.map(addresses, 'address'));
         });
       }
       updateMemo();
