@@ -23,7 +23,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return root.formatAmount(satoshis) + ' ' + config.unitName;
   };
 
-  root.formatToCode = function(satoshis, code, cb) {
+  root.toFiat = function(satoshis, code, cb) {
     if (isNaN(satoshis)) return;
     var val = function() {
       var v1 = rateService.toFiat(satoshis, code);
@@ -189,9 +189,15 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     var alternativeIsoCode = config.alternativeIsoCode;
 
     // If fiat currency
-    if (currency != 'bits' && currency != 'BTC') {
+    if (currency != 'bits' && currency != 'BTC' && currency != 'sat') {
       amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
       amountSat = rateService.fromFiat(amount, currency).toFixed(0);
+    } else if (currency == 'sat') {
+      amountSat = amount;
+      amountUnitStr = root.formatAmountStr(amountSat);
+      // convert sat to BTC
+      amount = (amountSat * satToBtc).toFixed(8);
+      currency = 'BTC';
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
       amountUnitStr = root.formatAmountStr(amountSat);

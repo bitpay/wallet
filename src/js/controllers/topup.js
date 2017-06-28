@@ -29,8 +29,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     popupService.showAlert(title, msg);
   };
 
-  var satToAlternative = function(sat, cb) {
-    txFormatService.formatToCode(sat, $scope.currencyIsoCode, function(value) {
+  var satToFiat = function(sat, cb) {
+    txFormatService.toFiat(sat, $scope.currencyIsoCode, function(value) {
       return cb(value);
     });
   };
@@ -61,13 +61,13 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   var setTotalAmount = function(amountSat, invoiceFeeSat, networkFeeSat) {
-    satToAlternative(amountSat, function(a) {
+    satToFiat(amountSat, function(a) {
       $scope.amount = Number(a);
 
-      satToAlternative(invoiceFeeSat, function(i) {
+      satToFiat(invoiceFeeSat, function(i) {
         $scope.invoiceFee = Number(i);
 
-        satToAlternative(networkFeeSat, function(n) {
+        satToFiat(networkFeeSat, function(n) {
           $scope.networkFee = Number(n);
           $scope.totalAmount = $scope.amount + $scope.invoiceFee + $scope.networkFee;
           $timeout(function() {
@@ -140,25 +140,32 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     });
   };
 
-  var parseAmount = function(wallet, cb) {
+  var calculateAmount = function(wallet, cb) {
+    // Global variables defined beforeEnter
+    var a = amount;
+    var c = currency;
+
     if (useSendMax) {
-      sendMaxService.getInfo(wallet, function(err, values) {
+      sendMaxService.getInfo(wallet, function(err, maxValues) {
         if (err) {
           return cb({
             title: null,
             message: err
           })
         }
-        var maxAmountBtc = Number((values.amount / 100000000).toFixed(8));
+        var maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
 
         createInvoice({amount: maxAmountBtc, currency: 'BTC'}, function(err, inv) {
           if (err) return cb(err);
 
-          return cb(null, txFormatService.parseAmount(maxAmountBtc - inv.buyerPaidBtcMinerFee, 'BTC'));
+          var invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
+          var newAmountSat = maxValues.amount - invoiceFeeSat;
+
+          return cb(null, newAmountSat, 'sat');
         });
       });
     } else {
-      return cb(null, txFormatService.parseAmount(amount, currency));
+      return cb(null, a, c);
     }
   };
 
@@ -190,6 +197,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
           return;
         }
 
+        // Save TX in memory
         createdTx = ctxp;
 
         $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
@@ -278,12 +286,13 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
     ongoingProcess.set('retrievingInputs', true);
-    parseAmount(wallet, function(err, parsedAmount) {
+    calculateAmount(wallet, function(err, a, c) {
       ongoingProcess.set('retrievingInputs', false);
       if (err) {
         showErrorAndBack(err.title, err.message);
         return;
       }
+      var parsedAmount = txFormatService.parseAmount(a, c);
       initializeTopUp(wallet, parsedAmount);
     });
   };
