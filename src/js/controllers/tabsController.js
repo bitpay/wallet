@@ -41,8 +41,4 @@ angular.module('copayApp.controllers').controller('tabsController', function($ro
 
   };
 
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $rootScope.hideTabs = '';
-  });
-
 });
