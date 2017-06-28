@@ -39,6 +39,21 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     ];
   });
 
+  $scope.$on("$ionicView.afterEnter", function(event, data) {
+    if ($scope.btx.action == 'received') {
+      if (lodash.isEmpty($scope.availableServices) || $scope.wallet.network == 'testnet') return;
+
+      $scope.loading = true;
+      walletService.getMainAddresses($scope.wallet, {}, function(err, addresses) {
+        if (err) {
+          $log.warn('Could not get the wallet addresses: ', $scope.wallet.id);
+          return;
+        }
+        verifyByThirdParty(lodash.map(addresses, 'address'));
+      });
+    }
+  });
+
   $scope.$on("$ionicView.leave", function(event, data) {
     lodash.each(listeners, function(x) {
       x();
@@ -129,18 +144,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
       }
 
-      if ($scope.btx.action == 'received') {
-        if (lodash.isEmpty($scope.availableServices) || $scope.wallet.network == 'testnet') return;
-
-        $scope.loading = true;
-        walletService.getMainAddresses($scope.wallet, {}, function(err, addresses) {
-          if (err) {
-            $log.warn('Could not get the wallet addresses: ', $scope.wallet.id);
-            return;
-          }
-          verifyByThirdParty(lodash.map(addresses, 'address'));
-        });
-      }
       updateMemo();
       initActionList();
       getFiatRate();

@@ -17,7 +17,7 @@ angular.module('copayApp.services').factory('thirdPartyExplorersService', functi
 
   var getStatusFromBlockchainInfo = function(amount, addrs, params) {
     var txOuts = [];
-    lodash.each(resp.data.out, function(out) {
+    lodash.each(params.data.out, function(out) {
       txOuts.push({
         address: out.addr,
         amount: parseInt(out.value)
