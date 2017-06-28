@@ -141,7 +141,14 @@ angular.module('copayApp.controllers').controller('addressesController', functio
   };
 
   $scope.viewAllAddresses = function() {
-    $state.go('tabs.settings.allAddresses', {
+    var fromView = $ionicHistory.currentStateName();
+    var path;
+    if (fromView.indexOf('settings') !== -1) {
+      path = 'tabs.settings.allAddresses';
+    } else {
+      path = 'tabs.wallet.allAddresses';
+    }
+    $state.go(path, {
       walletId: $scope.wallet.id
     });
   };
