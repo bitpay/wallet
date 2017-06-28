@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
   var statusChangeHandler = function (processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'topup' && !isOn && !hasError) {
+    if (processName == 'topup' && !isOn) {
       $scope.sendStatus = 'success';
       $timeout(function() {
         $scope.$digest();
