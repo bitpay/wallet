@@ -21,12 +21,13 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     });
   };
 
-  var showError = function(title, msg) {
+  var showError = function(title, msg, cb) {
+    cb = cb || function() {};
     title = title || gettextCatalog.getString('Error');
     $scope.sendStatus = '';
     $log.error(msg);
     msg = msg.errors ? msg.errors[0].message : msg;
-    popupService.showAlert(title, msg);
+    popupService.showAlert(title, msg, cb);
   };
 
   var satToFiat = function(sat, cb) {
@@ -153,6 +154,11 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
             message: err
           })
         }
+
+        if (maxValues.amount == 0) {
+          return cb({message: gettextCatalog.getString('Insufficient funds for fee')});
+        }
+
         var maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
 
         createInvoice({amount: maxAmountBtc, currency: 'BTC'}, function(err, inv) {
@@ -160,6 +166,10 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
           var invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
           var newAmountSat = maxValues.amount - invoiceFeeSat;
+
+          if (newAmountSat <= 0) {
+            return cb({message: gettextCatalog.getString('Insufficient funds for fee')});
+          }
 
           return cb(null, newAmountSat, 'sat');
         });
@@ -256,6 +266,12 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   });
 
   $scope.topUpConfirm = function() {
+
+    if (!createdTx) {
+      showError(null, gettextCatalog.getString('Transaction has not been created'));
+      return;
+    }
+
     var title = gettextCatalog.getString('Confirm');
     var okText = gettextCatalog.getString('OK');
     var cancelText = gettextCatalog.getString('Cancel');
@@ -289,7 +305,10 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     calculateAmount(wallet, function(err, a, c) {
       ongoingProcess.set('retrievingInputs', false);
       if (err) {
-        showErrorAndBack(err.title, err.message);
+        createdTx = message = $scope.totalAmountStr = $scope.amountUnitStr = $scope.wallet = null;
+        showError(err.title, err.message, function() {
+          $scope.showWalletSelector();
+        });
         return;
       }
       var parsedAmount = txFormatService.parseAmount(a, c);
