@@ -41,6 +41,7 @@ angular.module('copayApp.controllers').controller('createController',
     $scope.onNetworkSelect = function(network) {
       $scope.network = network
       $scope.formData.derivationPath = derivationPathHelper.getDefault(network.name);
+      $scope.formData.bwsurl = network.bwsUrl;
     }
 
 
