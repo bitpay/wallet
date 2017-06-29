@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.loading = null;
     $scope.isCordova = platformInfo.isCordova;
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
+    $scope.copayers = $scope.wallet.status.wallet.copayers;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
@@ -36,10 +37,13 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
       type: 'accept'
     }).length == $scope.tx.requiredSignatures - 1;
 
-    if (lastSigner)
+    if (lastSigner) {
       $scope.buttonText += gettextCatalog.getString('to send');
-    else
+      $scope.successText = gettextCatalog.getString('Payment Sent');
+    } else {
       $scope.buttonText += gettextCatalog.getString('to accept');
+      $scope.successText = gettextCatalog.getString('Payment Accepted');
+    }
   };
 
   function initActionList() {
