@@ -215,10 +215,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
       }
       storageService.getCustomNetworks(function(err, networkListRaw) {
-        console.log(networkListRaw)
         var networkList = JSON.parse(networkListRaw)
         for (var n in networkList) {
-          console.log(networkList[n])
           CUSTOMNETWORKS[n] = networkList[n]
           bitcore.Networks.add(networkList[n])
         }

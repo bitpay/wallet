@@ -71,12 +71,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     function setWalletSelector(network, minAmount, cb) {
 
-      // no min amount? (sendMax) => look for no empty wallets
-      minAmount = minAmount || 1;
-
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
-        network: network
+        network: $scope.network
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
@@ -332,9 +329,19 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.buttonText += gettextCatalog.getString('to send');
   };
 
+<<<<<<< HEAD
 
   $scope.toggleAddress = function() {
     $scope.showAddress = !$scope.showAddress;
+=======
+  $scope.$on('accepted', function(event) {
+    $scope.approve();
+  });
+  $scope.showWalletSelector = function() {
+    $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
+    if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
+    $scope.showWallets = true;
+>>>>>>> select from a list of networks when creating wallet,
   };
 
 

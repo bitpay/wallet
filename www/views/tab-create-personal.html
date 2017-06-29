@@ -20,6 +20,16 @@
         </label>
 
         <div class="item item-divider"></div>
+        <a class="item item-icon-left item-big-icon-left item-icon-right wallet" ng-hide="customParam" ng-click="showNetworkSelector()">
+          <span class="label" translate>Currency</span>
+          <i class="icon big-icon-svg" wallet-icon data-wallet="network">
+          </i>
+          <div>{{network.alias}}</div>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+          
+         <div class="item item-divider"></div>
+
 
         <a class="item" ng-click="showAdvChange()">
           <span translate ng-show="!showAdv">Show advanced options</span>
@@ -131,7 +141,15 @@
       <button type="submit" class="button button-standard button-primary"
         ng-disabled="setupForm.$invalid || ((encrypt && !formData.passwordSaved) || encrypt && ((formData.seedSource.id == 'new' && !formData.createPassphrase) || (formData.seedSource.id == 'set' && !formData.passphrase)))">
         <span translate>Create new wallet</span>
-      </button>
+      </button>      
     </form>
   </ion-content>
+  <network-selector
+      network-selector-title="networkSelectorTitle"
+      network-selector-networks="networks"
+      network-selector-selected-network="network"
+      network-selector-show="showNetworks"
+      network-selector-on-select="onNetworkSelect">
+    </network-selector>
+
 </ion-view>

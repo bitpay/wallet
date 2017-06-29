@@ -8,7 +8,7 @@ angular.module('copayApp.directives')
       scope: {wallet: '='},
 
       link: function(scope, element, attrs) {
-        // scope.wallet = attrs.wallet
+        
       }
     };
   });

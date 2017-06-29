@@ -57,20 +57,10 @@ angular.module('copayApp.services').factory('openURLService', function($rootScop
 
       // This event is sent to an existent instance of Copay (only for standalone apps)
       gui.App.on('open', function(pathData) {
-        if (pathData.indexOf('bitcoin:') != -1) {
-          $log.debug('Bitcoin URL found');
+        if (pathData.regexIndexOf(/:\w/) != -1) {
+          $log.debug('Crypto URL found');
           handleOpenURL({
-            url: pathData.substring(pathData.indexOf('bitcoin:'))
-          });
-        } else if (pathData.indexOf('deuscoin:') != -1) {
-          $log.debug('Deuscoin URL found');
-          handleOpenURL({
-            url: pathData.substring(pathData.indexOf('deuscoin:'))
-          });
-        } else if (pathData.indexOf('aureus:') != -1) {
-          $log.debug('Aureus URL found');
-          handleOpenURL({
-            url: pathData.substring(pathData.indexOf('aureus:'))
+            url: pathData.substring(pathData.indexOf(':'))
           });
         } else if (pathData.indexOf(appConfigService.name + '://') != -1) {
           $log.debug(appConfigService.name + ' URL found');

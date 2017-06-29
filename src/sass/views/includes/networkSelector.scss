@@ -1,0 +1,19 @@
+network-selector {
+
+  $border-color: #EFEFEF;
+
+  .bp-action-sheet__sheet {
+    padding-left: 2rem;
+    padding-right: .75rem;
+  }
+
+  .network-selector {
+    .network {
+      .check {
+        height:25px;
+        float:right;
+      }
+    }
+  }
+
+}
