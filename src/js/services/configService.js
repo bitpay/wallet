@@ -66,6 +66,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       enabled: true,
     },
 
+    showBitcoinPrice: {
+      enabled: false,
+    },
+
     hideNextSteps: {
       enabled: isWindowsPhoneApp ? true : false,
     },
@@ -127,6 +131,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
         if (!configCache.recentTransactions) {
           configCache.recentTransactions = defaultConfig.recentTransactions;
+        }
+        if (!configCache.showBitcoinPrice) {
+          configCache.showBitcoinPrice = defaultConfig.showBitcoinPrice;
         }
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;

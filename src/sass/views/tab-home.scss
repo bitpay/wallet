@@ -53,6 +53,19 @@
         }
       }
     }
+    &.price-card {
+      text-align: center;
+      .item-profit {
+        display: flex;
+        justify-content: space-around;
+        .positive {
+          color: $v-success-color;
+        }
+        .negative {
+          color: $v-warning-color;
+        }
+      }
+    }
   }
   .wallet-details__item.item {
     padding-top: 0;

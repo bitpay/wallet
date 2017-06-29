@@ -11,6 +11,9 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.recentTransactionsEnabled = {
       value: config.recentTransactions.enabled
     };
+    $scope.showBitcoinPriceEnabled = {
+      value: config.showBitcoinPrice.enabled
+    };
     $scope.hideNextSteps = {
       value: config.hideNextSteps.enabled
     };
@@ -42,6 +45,17 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     var opts = {
       recentTransactions: {
         enabled: $scope.recentTransactionsEnabled.value
+      }
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
+    });
+  };
+
+  $scope.showBitcoinPriceChange = function() {
+    var opts = {
+      showBitcoinPrice: {
+        enabled: $scope.showBitcoinPriceEnabled.value
       }
     };
     configService.set(opts, function(err) {

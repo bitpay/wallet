@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService) {
+  function($rootScope, $timeout, $scope, $state, $filter, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash,  popupService, rateService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -114,6 +114,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       configService.whenAvailable(function(config) {
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
         if ($scope.recentTransactionsEnabled) getNotifications();
+
+        $scope.showBitcoinPriceEnabled = config.showBitcoinPrice.enabled;
+        if ($scope.showBitcoinPriceEnabled) setCurrentPrice(config);
 
         if (config.hideNextSteps.enabled) {
           $scope.nextStepsItems = null;
@@ -261,6 +264,55 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           $scope.$apply();
         }, 10);
       });
+    };
+
+    var setCurrentPrice = function(config) {
+      $scope.unitName = config.wallet.settings.unitName;
+      $scope.selectedAlternative = {
+        name: config.wallet.settings.alternativeName,
+        isoCode: config.wallet.settings.alternativeIsoCode
+      };
+
+      rateService.whenAvailable(function() {
+
+        var now = moment().unix();
+        var yesterday = now - 24 * 60 * 60;
+
+        $scope.wallets[0].getFiatRate({
+          code: $scope.selectedAlternative.isoCode,
+          ts: yesterday * 1000
+        }, function(err, res) {
+          if (err) {
+            $log.debug('Could not get historic rate');
+            return;
+          }
+          if (res && res.rate) {
+            $scope.rateDate = res.fetchedOn;
+            $scope.rate = res.rate;
+          }
+
+          var localCurrency = $scope.selectedAlternative.isoCode;
+          var btcAmount = 1;
+          var rate = rateService.toFiat(btcAmount * 1e8, localCurrency);
+          $scope.localCurrencySymbol = '$';
+          $scope.localCurrencyPerBtc = $filter('formatFiatAmount')(parseFloat(rate.toFixed(2), 10));
+          calculateProfitPercent($scope.rate, parseFloat(rate.toFixed(2), 10));
+        });
+      });
+    };
+
+    var calculateProfitPercent = function(yesterdayPrice, actualPrice) {
+
+      $scope.difference = Math.abs((actualPrice - yesterdayPrice).toFixed(2));
+      $scope.percentage = ($scope.difference * 100 / yesterdayPrice).toFixed(2);
+
+      if (actualPrice >= yesterdayPrice) {
+        $scope.percentageSymbol = '+';
+        $scope.negativeProfit = false;
+      } else {
+        $scope.percentageSymbol = '-';
+        $scope.negativeProfit = true;
+      }
     };
 
     $scope.hideHomeTip = function() {

@@ -25,6 +25,15 @@
 
       <div class="item item-divider"></div>
 
+      <ion-toggle class="has-comment" ng-model="showBitcoinPriceEnabled.value" toggle-class="toggle-balanced" ng-change="showBitcoinPriceChange()">
+        <span class="toggle-label" translate>Show Bitcoin Price</span>
+      </ion-toggle>
+      <div class="comment" translate>
+        If enabled, the current price of Bitcoin and percentage of change in the last 24 hours will appear in the Home tab.
+      </div>
+
+      <div class="item item-divider"></div>
+
       <ion-toggle ng-model="hideNextSteps.value" ng-if="!isWindowsPhoneApp" toggle-class="toggle-balanced" ng-change="nextStepsChange()">
         <span class="toggle-label" translate>Hide Next Steps Card</span>
       </ion-toggle>
