@@ -120,16 +120,13 @@
             <span class="toggle-label" translate>I have written it down</span>
           </ion-checkbox>
 
-          <label class="item item-input item-stacked-label" ng-show="formData.seedSource.id == 'set'">
+          <label class="item item-input item-stacked-label">
             <span class="input-label" translate>Derivation Path</span>
             <input type="text"
             placeholder="{{'BIP32 path for address derivation'|translate}}"
             ng-model="formData.derivationPath">
           </label>
-<!--           <ion-toggle ng-show="formData.seedSource.supportsTestnet" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
-            <span translate>Testnet</span>
-          </ion-toggle>
- -->
+
           <ion-toggle ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">
             <span translate>Single Address Wallet</span>
             <small translate>For audit purposes</small>

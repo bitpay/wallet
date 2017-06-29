@@ -81,7 +81,7 @@
             opts.externalSource = 'bitlox/'+result.payload.device_uuid.toString('hex')+'/'+wallet._uuid.toString("hex")
             opts.isPrivKeyExternal = true
             opts.extendedPublicKey = wallet.xpub
-            opts.derivationPath = derivationPathHelper.default
+            opts.derivationPath = derivationPathHelper.getDefault('livenet')
             opts.derivationStrategy = 'BIP44'
             opts.hasPassphrase = false;
             opts.name = wallet.name;

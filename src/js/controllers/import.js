@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.isCordova = platformInfo.isCordova;
       $scope.formData = {};
       $scope.formData.bwsurl = defaults.bws.url;
-      $scope.formData.derivationPath = derivationPathHelper.default;
+      $scope.formData.derivationPath = derivationPathHelper.getDefault('livenet');
       $scope.formData.account = 1;
       $scope.importErr = false;
       $scope.isCopay = appConfigService.name == 'copay';
