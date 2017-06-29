@@ -3,11 +3,11 @@
 
     angular.module('app.util')
         .constant('CUSTOMNETWORKS', {
-      aureus: {
-        name: 'aureus',
-        alias: 'AUREUS',
-        code: 'aur',
-        symbol: 'AUR',
+      dogecoin: {
+        name: 'dogecoin',
+        alias: 'dogecoin',
+        code: 'xdg',
+        symbol: 'XDG',
         pubkeyhash: 0x17,
         privatekey: 0x80,
         scripthash: 0x1C,
@@ -18,11 +18,11 @@
         magic: 0x6ee58c2a,
         explorer: 'https://explorer.deuscoin.org/'
       },
-      deuscoin: {
-        name: 'deuscoin',
-        alias: 'DEUSCOIN',
-        code: 'deus',
-        symbol: 'DEUS',
+      litecoin: {
+        name: 'litecoin',
+        alias: 'litecoin',
+        code: 'ltc',
+        symbol: 'LTC',
         pubkeyhash: 0x1e,
         privatekey: 0x80,
         scripthash: 0x23,
@@ -31,7 +31,7 @@
         bwsUrl: 'https://bws.deuscoin.org/bws/api',
         port: 19697,
         magic: 0x9ee8bc5a,
-        explorer: 'https://explorer.aureus.cc/'
+        explorer: 'https://explorer.deuscoin.org/'
       }}
 )
 

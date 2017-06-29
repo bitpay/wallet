@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, CUSTOMNETWORKS) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS) {
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -126,9 +126,64 @@ angular.module('copayApp.controllers').controller('createController',
       updateSeedSourceSelect(tc);
     };
 
-    $scope.create = function() {
+
+    $scope.getCustomNetwork = function() {
+      var def = $q.defer();
+      if($scope.formData.customParam) {
+        networkName = $scope.formData.customParam
+        // check apple approved list on iOS, and the full list of whatever we can support for Android
+        var customNet = CUSTOMNETWORKS[$scope.formData.customParam]
+        if(customNet) {
+          def.resolve(customNet)
+        } else {
+          // check previously imported custom nets
+          var customNetworks = storageService.getCustomNetworks(function(err, customNetworkListRaw) {
+            if(!customNetworkListRaw) {
+              customNetworkList = {};
+            } else {
+              customNetworkList = JSON.parse(customNetworkListRaw)
+            }
+            // try getting it from bitlox website
+            $http.get("https://btm.bitlox.com/coin/"+networkName+".php").then(function(response){
+              if(!response) {
+                def.reject();
+              }
+              var res = response.data;
+              res.pubkeyhash = parseInt(res.pubkeyhash,16)
+              res.privatekey = parseInt(res.privatekey,16)
+              res.xpubkey = parseInt(res.xpubkey,16)
+              res.xprivkey = parseInt(res.xprivkey,16)
+              res.magic = parseInt(res.magic,16)
+              
+              customNetworkList[$scope.formData.customParam] = res;
+              CUSTOMNETWORKS[$scope.formData.customParam] = res;
+              storageService.setCustomNetworks(JSON.stringify(customNetworkList));
+              bitcore.Networks.add(res)
+              def.resolve(res)
+            }, function(err) {
+              console.warn(err)
+              def.reject();
+            })
+
+          })
+ 
+        }
+      } else {
+        return $q.resolve();
+      }
+      return def.promise;
+
+    }
+
+    $scope.create = function(form) {
+      if (form && form.$invalid) {
+        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the required fields'));
+        return;
+      }
       var networkName = $scope.formData.testnetEnabled ? 'testnet' : 'livenet';
-      var bwsUrl = $scope.formData.bwsurl;
+      if($scope.formData.customParam) {
+        networkName = $scope.formData.customParam;
+      }
 
       if($scope.formData.customParam) {
         networkName = $scope.formData.customParam
@@ -138,7 +193,6 @@ angular.module('copayApp.controllers').controller('createController',
           return;
         }
         bwsUrl = customNet.bwsUrl
-
       }
       var opts = {
         name: $scope.formData.walletName,
@@ -146,7 +200,7 @@ angular.module('copayApp.controllers').controller('createController',
         n: $scope.formData.totalCopayers,
         myName: $scope.formData.totalCopayers > 1 ? $scope.formData.myName : null,
         networkName: networkName,
-        bwsurl: bwsUrl,
+        bwsurl: $scope.formData.bwsurl,
         singleAddress: $scope.formData.singleAddressEnabled,
         walletPrivKey: $scope.formData._walletPrivKey, // Only for testing
       };
@@ -217,12 +271,29 @@ angular.module('copayApp.controllers').controller('createController',
             return;
           }
           opts = lodash.assign(lopts, opts);
-          _create(opts);
+          _prepareToCreate(opts);
         });
       } else {
-        _create(opts);
+        _prepareToCreate(opts);
       }
+
     };
+
+    function _prepareToCreate(opts) {
+      $scope.getCustomNetwork().then(function(customNet) {
+        if(customNet) {
+          opts.bwsurl = customNet.bwsUrl
+        }
+        _create(opts)
+      }, function(err) {
+        if($scope.formData.customParam) {
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid') + ": " + $scope.formData.customParam);
+        } else {
+          // user did not ask for custom network, do nothing
+          _create(opts)
+        }
+      })      
+    }
 
     function _create(opts) {
       ongoingProcess.set('creatingWallet', true);

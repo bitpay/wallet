@@ -317,6 +317,7 @@ angular.module('copayApp.services')
       opts = opts || {};
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
+      console.log(opts)
 
       if (opts.mnemonic) {
         try {

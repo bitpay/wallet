@@ -332,6 +332,15 @@ angular.module('copayApp.services')
       storage.get('lastCurrencyUsed', cb)
     };
 
+   root.getCustomNetworks = function(cb) {
+      storage.get('customNetworks', cb);
+    };
+
+    root.setCustomNetworks = function(customNetworks, cb) {
+      storage.set('customNetworks', customNetworks, cb);
+    };
+
+
     root.checkQuota = function() {
       var block = '';
       // 50MB
