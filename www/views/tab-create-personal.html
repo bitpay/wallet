@@ -42,7 +42,7 @@
             <input type="text" autocomplete="off" autocapitalize="off" ng-model="formData.customParam" placeholder="">
           </label>
 
-          <label class="item item-input item-stacked-label">
+          <label ng-hide="formData.customParam" class="item item-input item-stacked-label">
             <span class="input-label">Wallet Service URL</span>
             <input type="text" ng-model="formData.bwsurl" placeholder="https://bws.bitpay.com/bws/api">
           </label>
