@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2017-06-23 14:04-0400\n"
+"PO-Revision-Date: 2017-06-29 07:15-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -57,12 +57,11 @@ msgid "About"
 msgstr "Informazioni"
 
 #: src/js/controllers/modals/txpDetails.js:52
-#: src/js/controllers/tx-details.js:62
+#: src/js/controllers/tx-details.js:60
 msgid "Accepted"
 msgstr "Accettata"
 
 #: www/views/preferencesInformation.html:66
-#: www/views/topup.html:52
 msgid "Account"
 msgstr "Conto"
 
@@ -121,6 +120,10 @@ msgstr "Aggiungere una password facoltativa per proteggere la frase di recupero"
 #: src/js/controllers/confirm.js:370
 msgid "Add description"
 msgstr "Aggiungi descrizione"
+
+#: www/views/topup.html:6
+msgid "Add funds"
+msgstr ""
 
 #: src/js/services/bitpayAccountService.js:78
 msgid "Add this BitPay account ({{email}})?"
@@ -337,7 +340,7 @@ msgstr "Carte di BitPay Visa®"
 msgid "Bitcoin Address"
 msgstr "Indirizzo Bitcoin"
 
-#: www/views/modals/chooseFeeLevel.html:7
+#: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:85
 msgid "Bitcoin Network Fee Policy"
@@ -372,7 +375,7 @@ msgid "Broadcast Payment"
 msgstr "Diffusione del Pagamento"
 
 #: src/js/controllers/modals/txpDetails.js:54
-#: src/js/controllers/tx-details.js:64
+#: src/js/controllers/tx-details.js:62
 msgid "Broadcasted"
 msgstr "Trasmesso"
 
@@ -401,7 +404,7 @@ msgid "Calculating fee"
 msgstr "Calcolo commissione"
 
 #: src/js/controllers/confirm.js:491
-#: src/js/controllers/topup.js:142
+#: src/js/controllers/topup.js:277
 #: src/js/services/popupService.js:60
 #: www/views/addressbook.add.html:10
 #: www/views/feedback/send.html:5
@@ -422,10 +425,6 @@ msgstr "Impossibile creare portafoglio"
 #: src/js/services/profileService.js:426
 msgid "Cannot join the same wallet more that once"
 msgstr "Non è possibile aggiungere un portafoglio più di una volta"
-
-#: www/views/topup.html:46
-msgid "Card"
-msgstr ""
 
 #: www/views/includes/bitpayCardsCard.html:4
 msgid "Cards"
@@ -489,7 +488,7 @@ msgstr "Completato"
 
 #: src/js/controllers/confirm.js:490
 #: src/js/controllers/copayers.js:55
-#: src/js/controllers/topup.js:197
+#: src/js/controllers/topup.js:275
 #: www/views/backup.html:53
 #: www/views/backup.html:72
 #: www/views/confirm.html:4
@@ -506,7 +505,7 @@ msgstr "Confirm &amp; concludi"
 msgid "Confirm your PIN"
 msgstr "Conferma il tuo PIN"
 
-#: src/js/services/walletService.js:1032
+#: src/js/services/walletService.js:1034
 msgid "Confirm your new spending password"
 msgstr "Conferma la tua nuova password di spesa"
 
@@ -539,7 +538,6 @@ msgstr "Connessione ripristinata dall'utente"
 msgid "Contacts"
 msgstr "Contatti"
 
-#: src/js/controllers/topup.js:141
 #: www/views/onboarding/notifications.html:9
 msgid "Continue"
 msgstr "Continua"
@@ -607,11 +605,11 @@ msgstr "Non è possibile generare la transazione"
 msgid "Could not create address"
 msgstr "Impossibile creare un indirizzo"
 
-#: src/js/controllers/topup.js:59
+#: src/js/controllers/topup.js:86
 msgid "Could not create the invoice"
 msgstr ""
 
-#: src/js/controllers/topup.js:186
+#: src/js/controllers/topup.js:136
 msgid "Could not create transaction"
 msgstr ""
 
@@ -643,7 +641,7 @@ msgstr "Impossibile avere commissioni dinamiche"
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "Impossibile avere la commissione per il livello: {{feeLevel}}"
 
-#: src/js/controllers/topup.js:66
+#: src/js/controllers/topup.js:94
 msgid "Could not get the invoice"
 msgstr ""
 
@@ -686,7 +684,7 @@ msgstr "Impossibile salvare le preferenze nel server"
 msgid "Could not send payment"
 msgstr "Impossibile inviare il pagamento"
 
-#: src/js/controllers/topup.js:210
+#: src/js/controllers/topup.js:289
 msgid "Could not send transaction"
 msgstr ""
 
@@ -736,10 +734,6 @@ msgstr "Creato da"
 msgid "Creating Wallet..."
 msgstr "Creazione Portafoglio..."
 
-#: src/js/services/onGoingProcess.js:49
-msgid "Creating invoice..."
-msgstr ""
-
 #: src/js/services/onGoingProcess.js:17
 msgid "Creating transaction"
 msgstr "Creazione transazione"
@@ -783,10 +777,6 @@ msgstr "Eliminazione del portafoglio..."
 msgid "Deleting payment proposal"
 msgstr "Cancello la richiesta di pagamento"
 
-#: www/views/topup.html:42
-msgid "Deposit into"
-msgstr ""
-
 #: www/views/join.html:138
 #: www/views/tab-create-personal.html:109
 #: www/views/tab-create-shared.html:138
@@ -797,6 +787,10 @@ msgstr "Percorso derivato"
 #: www/views/preferencesInformation.html:41
 msgid "Derivation Strategy"
 msgstr "Strategia di derivazione"
+
+#: www/views/topup.html:45
+msgid "Details"
+msgstr ""
 
 #: src/js/controllers/lockSetup.js:9
 #: src/js/controllers/tab-settings.js:60
@@ -866,8 +860,8 @@ msgstr "Abilita la fotocamera per iniziare."
 msgid "Enter Amount"
 msgstr "Inserisci importo"
 
-#: src/js/services/walletService.js:1046
-#: src/js/services/walletService.js:1061
+#: src/js/services/walletService.js:1048
+#: src/js/services/walletService.js:1063
 msgid "Enter Spending Password"
 msgstr "Inserisci Password di spesa"
 
@@ -875,7 +869,7 @@ msgstr "Inserisci Password di spesa"
 msgid "Enter Two Factor for your BitPay account"
 msgstr "Inserisci Due Fattori per il tuo account BitPay"
 
-#: src/js/services/walletService.js:1028
+#: src/js/services/walletService.js:1030
 msgid "Enter new spending password"
 msgstr "Inserisci la nuova password di spesa"
 
@@ -954,9 +948,9 @@ msgstr "Inserisci la tua password"
 #: src/js/controllers/tab-send.js:132
 #: src/js/controllers/tabsController.js:36
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/topup.js:11
-#: src/js/controllers/topup.js:21
-#: src/js/controllers/tx-details.js:102
+#: src/js/controllers/topup.js:15
+#: src/js/controllers/topup.js:26
+#: src/js/controllers/tx-details.js:100
 #: src/js/services/incomingData.js:98
 msgid "Error"
 msgstr "Errore"
@@ -969,15 +963,11 @@ msgstr "Errore di conferma"
 msgid "Error creating wallet"
 msgstr "Errore creazione portafoglio"
 
-#: src/js/controllers/topup.js:159
-msgid "Error fetching invoice"
-msgstr ""
-
 #: src/js/controllers/confirm.js:261
 msgid "Error getting SendMax information"
 msgstr ""
 
-#: src/js/controllers/topup.js:152
+#: src/js/controllers/topup.js:108
 msgid "Error in Payment Protocol"
 msgstr ""
 
@@ -1000,10 +990,6 @@ msgstr "Errore durante l'aggiornamento delle carte di debito"
 #: src/js/services/bwcError.js:143
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Superato il limite giornaliero di $500 per utente"
-
-#: www/views/topup.html:62
-msgid "Expire in"
-msgstr ""
 
 #: src/js/controllers/confirm.js:407
 #: www/views/confirm.html:27
@@ -1029,7 +1015,7 @@ msgstr "Esporta in un file"
 msgid "Export wallet"
 msgstr "Esporta portafoglio"
 
-#: src/js/services/walletService.js:1173
+#: src/js/services/walletService.js:1175
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
 msgstr "Per questo portafoglio non è supportata l'esportazione tramite QR"
@@ -1055,7 +1041,6 @@ msgstr "Esportazione non riuscita"
 msgid "Family vacation funds"
 msgstr "Fondi vacanza di famiglia"
 
-#: www/views/topup.html:69
 #: www/views/tx-details.html:81
 msgid "Fee"
 msgstr "Tassa"
@@ -1099,7 +1084,7 @@ msgstr "Per finalità di controllo"
 
 #: www/views/confirm.html:65
 #: www/views/modals/txp-details.html:74
-#: www/views/topup.html:32
+#: www/views/topup.html:34
 #: www/views/tx-details.html:52
 msgid "From"
 msgstr "Da"
@@ -1124,11 +1109,15 @@ msgstr "I fondi sono bloccati in attesa della proposta di pagamento"
 msgid "Funds found:"
 msgstr "Fondi trovati:"
 
+#: www/views/topup.html:49
+msgid "Funds to be added"
+msgstr ""
+
 #: www/views/paperWallet.html:53
 msgid "Funds transferred"
 msgstr "Fondi trasferiti"
 
-#: www/views/topup.html:107
+#: www/views/topup.html:103
 msgid "Funds were added to debit card"
 msgstr ""
 
@@ -1176,7 +1165,7 @@ msgstr "Ottenendo i livelli di commissione..."
 #: src/js/controllers/preferencesLanguage.js:14
 #: src/js/controllers/tab-home.js:149
 #: src/js/controllers/tab-settings.js:48
-#: src/js/controllers/tx-details.js:173
+#: src/js/controllers/tx-details.js:174
 msgid "Go Back"
 msgstr "Indietro"
 
@@ -1366,11 +1355,12 @@ msgstr "Formato qrcode non corretto"
 msgid "Incorrect network address"
 msgstr ""
 
-#: src/js/controllers/topup.js:115
 #: src/js/services/bwcError.js:44
 msgid "Insufficient funds"
 msgstr "Fondi insufficienti"
 
+#: src/js/controllers/topup.js:159
+#: src/js/controllers/topup.js:171
 #: src/js/services/bwcError.js:71
 msgid "Insufficient funds for fee"
 msgstr "Fondi insufficienti per la commissione"
@@ -1379,7 +1369,7 @@ msgstr "Fondi insufficienti per la commissione"
 msgid "Invalid"
 msgstr "Invalido"
 
-#: src/js/controllers/topup.js:152
+#: src/js/controllers/topup.js:109
 msgid "Invalid URL"
 msgstr ""
 
@@ -1407,12 +1397,8 @@ msgstr "Percorso di derivazione non valido"
 msgid "Invitation to share a {{appName}} Wallet"
 msgstr "Invito a condividere un {{appName}} portafoglio"
 
-#: www/views/topup.html:58
-msgid "Invoice"
-msgstr ""
-
-#: src/js/controllers/topup.js:257
-msgid "Invoice Expired"
+#: www/views/topup.html:56
+msgid "Invoice Fee"
 msgstr ""
 
 #: src/js/controllers/feedback/send.js:79
@@ -1539,7 +1525,7 @@ msgstr "Io"
 msgid "Meh - it's alright"
 msgstr "Beh - è tutto ok"
 
-#: src/js/controllers/tx-details.js:145
+#: src/js/controllers/tx-details.js:146
 #: www/views/modals/paypro.html:48
 #: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
@@ -1572,7 +1558,7 @@ msgstr "Altre Opzioni"
 msgid "Moved"
 msgstr "Spostato"
 
-#: src/js/controllers/tx-details.js:114
+#: src/js/controllers/tx-details.js:112
 msgid "Moved Funds"
 msgstr "Fondi trasferiti"
 
@@ -1594,6 +1580,10 @@ msgstr "Nome"
 #: www/views/paymentUri.html:18
 msgid "Network"
 msgstr "Network"
+
+#: www/views/topup.html:63
+msgid "Network Fee"
+msgstr ""
 
 #: src/js/services/bwcError.js:47
 msgid "Network error"
@@ -1623,10 +1613,6 @@ msgstr "Nessun Portafoglio"
 msgid "No backup, no bitcoin."
 msgstr "Nessun backup, nessun bitcoin."
 
-#: src/js/controllers/topup.js:94
-msgid "No card selected"
-msgstr ""
-
 #: www/views/addressbook.html:19
 msgid "No contacts yet"
 msgstr "Ancora nessun contatto"
@@ -1647,7 +1633,7 @@ msgstr "Nessuna proposta in attesa"
 msgid "No recent transactions"
 msgstr "Nessuna transazione recente"
 
-#: src/js/controllers/topup.js:30
+#: src/js/controllers/topup.js:41
 msgid "No signing proposal: No private key"
 msgstr ""
 
@@ -1662,6 +1648,10 @@ msgstr "Nessun portafoglio trovato"
 #: src/js/controllers/preferencesDelete.js:8
 msgid "No wallet selected"
 msgstr "Nessun portafoglio selezionato"
+
+#: src/js/controllers/topup.js:255
+msgid "No wallets available"
+msgstr ""
 
 #: www/views/paperWallet.html:47
 msgid "No wallets available to receive funds"
@@ -1721,9 +1711,9 @@ msgstr "Ora è un buon momento per effettuare un backup del tuo portafoglio. Se 
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
 msgstr "È il momento perfetto per valutare l'ambiente circostante. Finestre nelle vicinanze? Telecamere nascoste? Spie alle spalle?"
 
+#: src/js/controllers/topup.js:276
 #: src/js/services/popupService.js:16
 #: src/js/services/popupService.js:59
-#: www/views/modals/chooseFeeLevel.html:34
 msgid "OK"
 msgstr "Ok"
 
@@ -1764,7 +1754,7 @@ msgid "Open GitHub Project"
 msgstr "Aprire il progetto GitHub"
 
 #: src/js/controllers/bitpayCard.js:190
-#: src/js/controllers/tx-details.js:172
+#: src/js/controllers/tx-details.js:173
 msgid "Open Insight"
 msgstr "Aprire Insight"
 
@@ -1940,7 +1930,7 @@ msgstr "Preparazione indirizzi..."
 msgid "Preparing backup..."
 msgstr "Preparando il backup..."
 
-#: src/js/routes.js:1177
+#: src/js/routes.js:1196
 msgid "Press again to exit"
 msgstr "Premi ancora per uscire"
 
@@ -1961,7 +1951,7 @@ msgid "Proposal Accepted"
 msgstr "Proposta accettata"
 
 #: src/js/controllers/modals/txpDetails.js:51
-#: src/js/controllers/tx-details.js:61
+#: src/js/controllers/tx-details.js:59
 #: www/views/confirm.html:127
 msgid "Proposal Created"
 msgstr "Proposta creata"
@@ -2021,7 +2011,7 @@ msgstr "Ricevi"
 msgid "Received"
 msgstr "Ricevuti"
 
-#: src/js/controllers/tx-details.js:113
+#: src/js/controllers/tx-details.js:111
 msgid "Received Funds"
 msgstr "Fondi ricevuti"
 
@@ -2067,7 +2057,7 @@ msgid "Recreating Wallet..."
 msgstr "Ricreando Portafoglio..."
 
 #: src/js/controllers/modals/txpDetails.js:53
-#: src/js/controllers/tx-details.js:63
+#: src/js/controllers/tx-details.js:61
 msgid "Rejected"
 msgstr "Respinto"
 
@@ -2143,7 +2133,6 @@ msgstr "Riprova con fotocamera"
 
 #: www/views/addressbook.add.html:56
 #: www/views/includes/note.html:9
-#: www/views/modals/chooseFeeLevel.html:33
 #: www/views/preferencesAlias.html:21
 #: www/views/preferencesBwsUrl.html:25
 #: www/views/preferencesNotifications.html:40
@@ -2280,18 +2269,14 @@ msgstr "Invio transazione"
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr "L'invio di {{amountStr}} dal tuo portafoglio {{name}}"
 
-#: src/js/controllers/topup.js:190
-msgid "Sending {{amountStr}} from {{walletName}}"
-msgstr ""
-
 #: www/views/includes/walletHistory.html:42
 #: www/views/modals/tx-status.html:9
-#: www/views/topup.html:104
+#: www/views/topup.html:100
 #: www/views/tx-details.html:17
 msgid "Sent"
 msgstr "Inviato"
 
-#: src/js/controllers/tx-details.js:112
+#: src/js/controllers/tx-details.js:110
 msgid "Sent Funds"
 msgstr "Inviare Fondi"
 
@@ -2423,7 +2408,7 @@ msgstr "Avvio..."
 msgid "Startup Lock"
 msgstr "Blocco all'avvio"
 
-#: www/views/topup.html:105
+#: www/views/topup.html:101
 msgid "Success"
 msgstr ""
 
@@ -2532,7 +2517,7 @@ msgstr "I termini di servizio ufficiali in inglese sono disponibili sul sito web
 msgid "The password of the recovery phrase (if set)"
 msgstr "La password della frase recupero (se impostata)"
 
-#: src/js/services/walletService.js:1138
+#: src/js/services/walletService.js:1140
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "Il pagamento è stato creato ma è stato impossibile completarlo. Per favore prova di nuovo dalla schermata iniziale"
 
@@ -2602,10 +2587,6 @@ msgstr "Questa app memorizza i tuoi bitcoin con sicurezza all'avanguardia."
 msgid "This bitcoin payment request has expired."
 msgstr "Questa richiesta di pagamento in bitcoin è scaduta."
 
-#: src/js/controllers/topup.js:257
-msgid "This invoice has expired. An invoice is only valid for 15 minutes."
-msgstr ""
-
 #: www/views/join.html:130
 #: www/views/tab-create-personal.html:101
 #: www/views/tab-create-shared.html:130
@@ -2659,12 +2640,12 @@ msgstr ""
 msgid "Top up in progress..."
 msgstr ""
 
-#: src/js/controllers/topup.js:137
+#: src/js/controllers/topup.js:198
 msgid "Top up {{amountStr}} to debit card ({{cardLastNumber}})"
 msgstr ""
 
 #: www/views/modals/wallet-balance.html:23
-#: www/views/topup.html:75
+#: www/views/topup.html:70
 msgid "Total"
 msgstr "Totale"
 
@@ -2702,11 +2683,15 @@ msgstr "Transazione già trasmessa"
 msgid "Transaction created"
 msgstr "Transazione creata"
 
-#: www/views/topup.html:108
+#: src/js/controllers/topup.js:271
+msgid "Transaction has not been created"
+msgstr ""
+
+#: www/views/topup.html:104
 msgid "Transaction initiated"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:102
+#: src/js/controllers/tx-details.js:100
 msgid "Transaction not available at this time"
 msgstr "Transazione non disponibile in questo momento"
 
@@ -2809,7 +2794,7 @@ msgid "View Terms of Service"
 msgstr "Visualizza i termini di servizio"
 
 #: src/js/controllers/bitpayCard.js:189
-#: src/js/controllers/tx-details.js:171
+#: src/js/controllers/tx-details.js:172
 msgid "View Transaction on Insight"
 msgstr "Visualizzazione della transazione su Insight"
 
@@ -3149,7 +3134,7 @@ msgstr "La tua password"
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Il tuo portafoglio non viene mai salvato in archiviazione cloud o nel normale backup del dispositivo."
 
-#: src/js/services/walletService.js:1029
+#: src/js/services/walletService.js:1031
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
 msgstr "La chiave del tuo portafoglio verrà cifrata. La Password Per Spendere non può essere recuperata. Assicurati di scrivertela."
 
@@ -3201,7 +3186,6 @@ msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain inform
 msgstr "{{appName}} dipende dal servizio portafoglio di Bitcore (BWS) per informazioni blockchain, networking e sincronizzazione di Copayer. La configurazione predefinita fa riferimento a https://bws.bitpay.com (istanza di BitPay BWS pubblica)."
 
 #: src/js/controllers/confirm.js:354
-#: src/js/controllers/topup.js:194
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} verranno detratti come commissione per il network."
 
