@@ -1640,12 +1640,12 @@ msgstr ""
 msgid "No wallet selected"
 msgstr ""
 
-#: www/views/paperWallet.html:47
-msgid "No wallets available to receive funds"
+#: src/js/controllers/topup.js:255
+msgid "No wallets available"
 msgstr ""
 
-#: src/js/controllers/topup.js:255
-msgid "No wallets with funds"
+#: www/views/paperWallet.html:47
+msgid "No wallets available to receive funds"
 msgstr ""
 
 #: src/js/services/feeService.js:12
