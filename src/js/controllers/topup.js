@@ -252,7 +252,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       });
 
       if (lodash.isEmpty($scope.wallets)) {
-        showErrorAndBack(null, gettextCatalog.getString('No wallets with funds'));
+        showErrorAndBack(null, gettextCatalog.getString('No wallets available'));
         return;
       }
 
