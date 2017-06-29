@@ -87,7 +87,7 @@
     Add funds
   </click-to-accept>
   <slide-to-accept
-    ng-if="isCordova && (!wallet || !totalAmountStr)"
+    ng-if="isCordova && wallet && totalAmountStr"
     slide-on-confirm="topUpConfirm()"
     slide-send-status="sendStatus"
     is-disabled="!wallet || !totalAmountStr">
