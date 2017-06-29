@@ -66,7 +66,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       $scope.availableServices = lodash.clone(resp);
       var status = lodash.countBy($scope.availableServices, 'status');
       if (!status.success)
-        popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by third party block explorers'));
+        popupService.showAlert(gettextCatalog.getString('Warning'), gettextCatalog.getString('This transaction could not be verified by third party Block Explorers'));
     });
   };
 
