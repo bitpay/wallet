@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('preferencesAbout',
     $scope.commitHash = $window.commitHash;
 
     $scope.openExternalLink = function() {
-      var url = 'https://github.com/bitpay/' + appConfigService.gitHubRepoName + '/tree/' + $window.commitHash + '';
+      var url = 'https://github.com/' + appConfigService.gitHubRepoName + '/tree/' + $window.commitHash + '';
       var optIn = true;
       var title = gettextCatalog.getString('Open GitHub Project');
       var message = gettextCatalog.getString('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');
