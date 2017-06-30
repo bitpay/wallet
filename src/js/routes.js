@@ -112,11 +112,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
       .state('starting', {
         url: '/starting',
-        template: '<ion-view id="starting"><ion-content>{{starting}}</ion-content></ion-view>',
-        controller: function($scope, $log, gettextCatalog) {
-          $log.info('Starting...');
-          $scope.starting = gettextCatalog.getString('Starting...');
-        }
+        template: '<ion-view id="starting"><ion-content><div class="block-spinner row"><ion-spinner class="spinner-stable" icon="crescent"></ion-spinner></div></ion-content></ion-view>'
       })
 
       /*
