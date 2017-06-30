@@ -215,6 +215,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }
       }
       storageService.getCustomNetworks(function(err, networkListRaw) {
+        if(!networkListRaw) {
+          return;
+        }
         var networkList = JSON.parse(networkListRaw)
         for (var n in networkList) {
           CUSTOMNETWORKS[n] = networkList[n]
