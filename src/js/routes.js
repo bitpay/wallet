@@ -132,10 +132,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           })
         }
       })
-      .state('uripayment', {
-        url: '/uri-payment/:url',
-        templateUrl: 'views/paymentUri.html'
-      })
 
       /*
        *
