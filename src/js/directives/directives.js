@@ -1,7 +1,7 @@
 'use strict';
 angular.module('copayApp.directives')
-  .directive('validAddress', ['$rootScope', 'bitcore',
-    function($rootScope, bitcore) {
+  .directive('validAddress', ['$rootScope', 'bitcore', 'CUSTOMNETWORKS',
+    function($rootScope, bitcore, CUSTOMNETWORKS) {
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
@@ -16,15 +16,20 @@ angular.module('copayApp.directives')
             }
 
             // Bip21 uri
-            if (/^bitcoin:/.test(value)) {
+            if (/^[A-Za-z]+:[^\/]/.test(value)) {
               var uri, isAddressValidLivenet, isAddressValidTestnet;
               var isUriValid = URI.isValid(value);
+              var isNetworkValid = false
               if (isUriValid) {
+
                 uri = new URI(value);
-                isAddressValidLivenet = Address.isValid(uri.address.toString(), 'livenet')
-                isAddressValidTestnet = Address.isValid(uri.address.toString(), 'testnet')
+                for(var i in CUSTOMNETWORKS) {
+                  if(Address.isValid(uri.address.toString(), i.name)) {
+                    isNetworkValid = true
+                  }
+                }
               }
-              ctrl.$setValidity('validAddress', isUriValid && (isAddressValidLivenet || isAddressValidTestnet));
+              ctrl.$setValidity('validAddress', isUriValid && isNetworkValid);
               return value;
             }
 
@@ -34,9 +39,13 @@ angular.module('copayApp.directives')
             }
 
             // Regular Address
-            var regularAddressLivenet = Address.isValid(value, 'livenet');
-            var regularAddressTestnet = Address.isValid(value, 'testnet');
-            ctrl.$setValidity('validAddress', (regularAddressLivenet || regularAddressTestnet));
+            var isNetworkValid = false;
+            for(var i in CUSTOMNETWORKS) {
+              if(Address.isValid(uri.address.toString(), i.name)) {
+                isNetworkValid = true
+              }
+            }
+            ctrl.$setValidity('validAddress', isNetworkValid);
             return value;
           };
 

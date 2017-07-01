@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog, CUSTOMNETWORKS) {
 
   var root = {};
 
@@ -66,15 +66,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         }
       }, 100);
     }
+    var dataExtMatch = (/^[A-Za-z]+:\?r=([\w+])/).match(data);
     // data extensions for Payment Protocol with non-backwards-compatible request
-    if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
-      data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
+    if (dataExtMatch) {
+      
       $state.go('tabs.send', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.send' ? false : true
       }).then(function() {
         $state.transitionTo('tabs.send.confirm', {
-          paypro: data
+          paypro: (dataExtMatch[1]
         });
       });
       return true;
@@ -82,6 +83,12 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     data = sanitizeUri(data);
 
+    var isNetworkValid = false;
+    for(var i in CUSTOMNETWORKS) {
+      if(bitcore.Address.isValid(data), i.name)) {
+        isNetworkValid = true
+      }
+    }
     // BIP21
     if (bitcore.URI.isValid(data)) {
       var parsed = new bitcore.URI(data);
@@ -118,7 +125,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         return true;
       });
       // Plain Address
-    } else if (bitcore.Address.isValid(data, 'aureus') || bitcore.Address.isValid(data, 'deuscoin') || bitcore.Address.isValid(data, 'livenet') || bitcore.Address.isValid(data, 'testnet')) {
+    } else if (isNetworkValid) {
       if ($state.includes('tabs.scan')) {
         root.showMenu({
           data: data,
@@ -193,7 +200,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       return true;
 
       // Join
-    } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
+    } else if (data && data.exec(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
       $state.go('tabs.home', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.home' ? false : true
