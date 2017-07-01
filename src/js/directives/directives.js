@@ -41,7 +41,7 @@ angular.module('copayApp.directives')
             // Regular Address
             var isNetworkValid = false;
             for(var i in CUSTOMNETWORKS) {
-              if(Address.isValid(uri.address.toString(), i.name)) {
+              if(Address.isValid(value.toString(), i.name)) {
                 isNetworkValid = true
               }
             }
