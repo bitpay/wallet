@@ -24,7 +24,7 @@ angular.module('copayApp.directives')
 
                 uri = new URI(value);
                 for(var i in CUSTOMNETWORKS) {
-                  if(Address.isValid(uri.address.toString(), i.name)) {
+                  if(Address.isValid(value, i.name)) {
                     isNetworkValid = true
                   }
                 }
