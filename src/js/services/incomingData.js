@@ -69,13 +69,13 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     var dataExtMatch = (/^[A-Za-z]+:\?r=([\w+])/).match(data);
     // data extensions for Payment Protocol with non-backwards-compatible request
     if (dataExtMatch) {
-      
+
       $state.go('tabs.send', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.send' ? false : true
       }).then(function() {
         $state.transitionTo('tabs.send.confirm', {
-          paypro: (dataExtMatch[1]
+          paypro: dataExtMatch[1]
         });
       });
       return true;
