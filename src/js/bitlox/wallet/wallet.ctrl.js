@@ -297,24 +297,6 @@
 
         vm.reset();
 
-
-        // $scope.$watch('api.getStatus()', function(hidstatus) {
-        //   checkStatus(hidstatus)
-        //   $scope.prevStatus = hidstatus;
-        // });
-
-        // function checkStatus(hidstatus) {
-        //   console.warn("New device status: " + hidstatus)
-        //   switch(hidstatus) {
-        //   case api.STATUS_DISCONNECTED:
-        //       if(!platformInfo.isIOS && $scope.prevStatus && $scope.prevStatus !== api.STATUS_DISCONNECTED) {
-        //         $ionicLoading.hide();
-        //         popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Disconnected.");
-
-        //       }
-        //       break;
-        //   }
-        // }
     }
 
 })(window, window.angular, window.chrome);
