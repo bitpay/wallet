@@ -819,7 +819,7 @@ this.getServices = function() {
 				{
 					var descriptor = characteristic.descriptors[di];
           if(!descriptor) {
-            BleApi.disconnect();
+            return false;
           }
 
 					if (characteristic.uuid == '0000ffe4-0000-1000-8000-00805f9b34fb' &&
@@ -1033,7 +1033,6 @@ this.connect = function(address)	{
       console.log("BitLox Disconnected from BLE: 8")
       $rootScope.$digest()
     }
-
     BleApi.disconnect();
   }, function(errorCode) {
 
@@ -1073,10 +1072,13 @@ this.write = function(data, timer, noPromise, forcePing) {
     status = BleApi.STATUS_WRITING
   });
   if(!forcePing && !this.sessionIdMatch && data.indexOf(deviceCommands.ping) === -1 && data.indexOf(deviceCommands.initPrefix) === -1) {
-      return this.write(deviceCommands.ping).then(function(pingResult) {
+      
+        var msg = new protoDevice.Ping();
+        var pingString = BleApi.makeCommand("0000",msg)
+        return this.write(pingString).then(function(pingResult) {
           if(!pingResult) {
               console.log("session id not found or ping failed")
-              return $q.reject(new Error('BitLox session errr. Try reconnecting the BitLox'))
+              return $q.reject(new Error('BitLox session error. Try reconnecting the BitLox'))
           }
           var sessionIdHex = pingResult.payload.echoed_session_id.toString('hex')
           if(sessionIdHex !== BleApi.sessionIdHex) {

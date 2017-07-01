@@ -458,10 +458,10 @@ function HidApi($q, $timeout, $interval, $rootScope,
         var HidApi = this;
         HidApi.doingCommand = true;
         if(!forcePing && !HidApi.sessionIdMatch && command.indexOf(this.commands.ping) === -1 && command.indexOf(this.commands.initPrefix) === -1) {
-            return this.ping().then(function(pingResult) {
+            return this._doCommand(this.commands.ping, this.TYPE_PONG).then(function(pingResult) {
                 if(!pingResult) {
                     console.log("session id not found or ping failed")
-                    return HidApi.$q.reject(new Error('BitLox session errr. Try reconnecting the BitLox'))
+                    return HidApi.$q.reject(new Error('BitLox session error. Try reconnecting the BitLox'))
                 }
                 var sessionIdHex = pingResult.payload.echoed_session_id.toString('hex')
                 if(sessionIdHex !== HidApi.sessionIdHex) {
