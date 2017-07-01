@@ -95,7 +95,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
             if (!status.availableBalanceSat)
               $log.debug('No balance available in: ' + w.name);
-
             if (status.availableBalanceSat > minAmount) {
               filteredWallets.push(w);
             }
@@ -329,19 +328,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.buttonText += gettextCatalog.getString('to send');
   };
 
-<<<<<<< HEAD
 
   $scope.toggleAddress = function() {
     $scope.showAddress = !$scope.showAddress;
-=======
-  $scope.$on('accepted', function(event) {
-    $scope.approve();
-  });
+  }
   $scope.showWalletSelector = function() {
     $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
     if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
     $scope.showWallets = true;
->>>>>>> select from a list of networks when creating wallet,
   };
 
 
