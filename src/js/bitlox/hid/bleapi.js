@@ -1152,6 +1152,7 @@ this.write = function(data, timer, noPromise, forcePing) {
         if(err) {
           return next(new Error('Command Write Error'))
         } else {
+          BleApi.sessionIdMatch = false;
           return next()
         }
       });
