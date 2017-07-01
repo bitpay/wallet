@@ -1128,7 +1128,6 @@ this.sendData = function(data,type,retainCommand) {
   // console.log('sending data back to promise')
   // console.log(JSON.stringify(data))
 
-  if(!retainCommand) { currentCommand = null; }
   BleApi.currentPromise.resolve({type: type, payload:data});
   $timeout.cancel(BleApi.timeout)
   $rootScope.$applyAsync(function() {
@@ -1141,9 +1140,11 @@ this.sendData = function(data,type,retainCommand) {
   })
 
   if(!retainCommand && type !== BleApi.expectedResponseType) {
+    console.warn("UNEXPECTED RESPONSE: " + type)
     BleApi.disconnect()
   }
-  BleApi.expectedResponseType = null;
+  if(!retainCommand) { currentCommand = null; BleApi.expectedResponseType = null; }
+  
 }
 
 this.processResults = function(command, length, payload) {
