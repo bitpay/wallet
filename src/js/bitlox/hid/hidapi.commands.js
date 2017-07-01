@@ -73,6 +73,7 @@
 
             get_entropy_4096_bytes: '2323001400000003088020',
             get_entropy_32_bytes: '23230014000000020820',
+            get_entropy: '2323001400000000',
             reset_lang: '2323005900000000',
             get_device_uuid: '2323001300000000',
             features: '2323003A00000000',
