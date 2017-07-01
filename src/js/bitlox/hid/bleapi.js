@@ -74,6 +74,8 @@ var bleReady = null,
 
 BleApi.currentPromise = null;
 BleApi.timeout = $timeout(function() {},0)
+BleApi.sessionId = null;
+BleApi.sessionIdHex = null;
 var incomingData = '';
 var dataAlmostReady = false;
 var dataReady = false;
@@ -1052,8 +1054,7 @@ this.disconnect = function() {
   BleApi.startScanNew();
 }
 // old sliceAndWrite64, 'data' is a command constant
-this.write = function(data, timer, noPromise) {
-  if(!noPromise) this.currentPromise = $q.defer();
+this.write = function(data, timer, noPromise, forcePing) {
   console.log("ready to write status: " + status + ": command: " +data)
   if(status !== BleApi.STATUS_INITIALIZING && status !== BleApi.STATUS_CONNECTED && status !== BleApi.STATUS_IDLE) {
     // return if the device isn't currently idle
@@ -1066,18 +1067,24 @@ this.write = function(data, timer, noPromise) {
   $rootScope.$applyAsync(function() {
     status = BleApi.STATUS_WRITING
   });
-  var chunkSize;
-  if(platform == "android")
-  {
-    chunkSize = 128;  // android
-    // console.log('ChunkSize set to: ' + chunkSize);
-  }
-  else
-  {
-    chunkSize = 128;
-    // console.log('ChunkSize set to: ' + chunkSize);
+  if(!forcePing && !this.sessionIdMatch && command.indexOf(this.deviceCommands.ping) === -1 && command.indexOf(this.deviceCommands.initPrefix) === -1) {
+      return this.write(this.deviceCommands.ping).then(function(pingResult) {
+          if(!pingResult) {
+              console.log("session id not found or ping failed")
+              return $q.reject(new Error('BitLox session errr. Try reconnecting the BitLox'))
+          }
+          var sessionIdHex = pingResult.payload.echoed_session_id.toString('hex')
+          if(sessionIdHex !== HidApi.sessionIdHex) {
+              console.log("session id does not match")
+              return $q.reject(new Error('BitLox session expired. Try reconnecting the BitLox'))
+          }
+          BleApi.sessionIdMatch = true;
+          return BleApi.write(data, timer, noPromise)
+      })
   }
 
+  if(!noPromise) this.currentPromise = $q.defer();
+  var chunkSize = 128;
   var thelength = data.length;
   var iterations = Math.floor(thelength/chunkSize);
   // console.log('iterations : ' + iterations);

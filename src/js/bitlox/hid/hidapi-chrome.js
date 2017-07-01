@@ -28,6 +28,9 @@ function HidApi($q, $timeout, $interval, $rootScope,
     this._device = null;
     this._builder = null;
     this.currentPromise = null;
+    this.sessionId = null;
+    this.sessionIdHex = null;
+    this.sessionIdMatch = false;
 
     this.$q = $q;
     this.$timeout = $timeout;
@@ -184,19 +187,19 @@ function HidApi($q, $timeout, $interval, $rootScope,
                 break;
             }
         }
-        console.debug("delay ", milliseconds);
+        // console.debug("delay ", milliseconds);
     }
 
     HidApi.write = function(data) {
         var HidApi = this;
-        HidApi.setStatus(HidApi.STATUS_WRITING);
         var deferred = this.$q.defer();
+        HidApi.setStatus(HidApi.STATUS_WRITING);
         console.debug("write:", data);
         HidApi.device().then(function(dev) {
             // get the device
             if (dev === null) {
                 HidApi.disconnect();
-                return deferred.reject(new Error("No device to write to"));
+                return this.$q.reject(new Error("No device to write to"));
             }
             HidApi.isWriting = true;
             // check remainder against 8 bytes and add 4 null bytes if we
@@ -227,7 +230,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
 //                         console.debug("write: wrote", thisAb.byteLength);
                         // add to the total sent
                         totalSent += thisAb.length;
-                        pausecomp(150);
+                        // pausecomp(150);
                         return next();
                     });
                 }
@@ -450,10 +453,27 @@ function HidApi($q, $timeout, $interval, $rootScope,
     var readTimeout = 100;
     var counterMax = (120 * 1000) / readTimeout; // appx 2 minutes timeout
 
-    HidApi._doCommand = function(command, expectedType) {
+    HidApi._doCommand = function(command, expectedType, forcePing) {
         var HidApi = this;
         HidApi.doingCommand = true;
+        if(!forcePing && !HidApi.sessionIdMatch && command.indexOf(this.commands.ping) === -1 && command.indexOf(this.commands.initPrefix) === -1) {
+            return this.ping().then(function(pingResult) {
+                if(!pingResult) {
+                    console.log("session id not found or ping failed")
+                    return HidApi.$q.reject(new Error('BitLox session errr. Try reconnecting the BitLox'))
+                }
+                var sessionIdHex = pingResult.payload.echoed_session_id.toString('hex')
+                if(sessionIdHex !== HidApi.sessionIdHex) {
+                    console.log("session id does not match")
+                    return HidApi.$q.reject(new Error('BitLox session expired. Try reconnecting the BitLox'))
+                }
+                HidApi.sessionIdMatch = true;
+                return HidApi._doCommand(command, expectedType)
+            })
+        }
+
         return HidApi.write(command).then(function(written) {
+            HidApi.sessionIdMatch = false;
             if (written === 0) {
                 return HidApi.disconnect().then(function() {
                     return HidApi.$q.reject(new Error("No data written"));
@@ -524,10 +544,11 @@ function HidApi($q, $timeout, $interval, $rootScope,
     // commands to be called from outside this file
 
     HidApi.ping = function() {
-        return this._doCommand(this.commands.ping, this.TYPE_PONG);
+        return this._doCommand(this.commands.ping, this.TYPE_PONG, true);
     };
     HidApi.initialize = function(sessionId) {
         var Device = this.protoBuilder();
+        this.sessionId = sessionId;
         var sessionIdHex = this.hexUtil.toPaddedHex(sessionId, 39) + '00';
         this.sessionIdHex = sessionIdHex;
         console.debug(sessionId, "->", sessionIdHex);
