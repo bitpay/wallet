@@ -1069,8 +1069,8 @@ this.write = function(data, timer, noPromise, forcePing) {
   $rootScope.$applyAsync(function() {
     status = BleApi.STATUS_WRITING
   });
-  if(!forcePing && !this.sessionIdMatch && command.indexOf(this.deviceCommands.ping) === -1 && command.indexOf(this.deviceCommands.initPrefix) === -1) {
-      return this.write(this.deviceCommands.ping).then(function(pingResult) {
+  if(!forcePing && !this.sessionIdMatch && data.indexOf(deviceCommands.ping) === -1 && data.indexOf(deviceCommands.initPrefix) === -1) {
+      return this.write(deviceCommands.ping).then(function(pingResult) {
           if(!pingResult) {
               console.log("session id not found or ping failed")
               return $q.reject(new Error('BitLox session errr. Try reconnecting the BitLox'))
