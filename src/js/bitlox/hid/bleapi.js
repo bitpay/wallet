@@ -1076,7 +1076,7 @@ this.write = function(data, timer, noPromise, forcePing) {
               return $q.reject(new Error('BitLox session errr. Try reconnecting the BitLox'))
           }
           var sessionIdHex = pingResult.payload.echoed_session_id.toString('hex')
-          if(sessionIdHex !== HidApi.sessionIdHex) {
+          if(sessionIdHex !== BleApi.sessionIdHex) {
               console.log("session id does not match")
               return $q.reject(new Error('BitLox session expired. Try reconnecting the BitLox'))
           }
