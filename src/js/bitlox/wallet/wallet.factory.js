@@ -274,15 +274,18 @@
                                 }
                               }
                             }, function(err) {
-                              $log.debug("TX sign error", err)
+                              $log.debug("TX sign error")
+                              if(err) { $log.debug(err) }
                               return cb(err)
                             })
                           }, function(err) {
-                            $log.debug("setChangeAddress error", err)
+                            $log.debug("setChangeAddress error")
+                            if(err) { $log.debug(err) }
                             return cb(err)
                           })
                       }, function(err) {
-                        $log.debug('load wallet error', err)
+                        $log.debug('load wallet error')
+                        if(err) { $log.debug(err) }
                         return cb(err)
                       })
                     }

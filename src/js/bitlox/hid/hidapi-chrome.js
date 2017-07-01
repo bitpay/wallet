@@ -457,7 +457,10 @@ function HidApi($q, $timeout, $interval, $rootScope,
     HidApi._doCommand = function(command, expectedType, forcePing) {
         var HidApi = this;
         HidApi.doingCommand = true;
-        if(!forcePing && !HidApi.sessionIdMatch && command.indexOf(this.commands.ping) != 0 && command.indexOf(this.commands.initPrefix) === -1) {
+        if(!forcePing && !HidApi.sessionIdMatch 
+            && command.indexOf(this.commands.ping) != 0 
+            && command.indexOf(this.commands.initPrefix) != 0
+            && data.indexOf(deviceCommands.scan_wallet) != 0) {
             return this._doCommand(this.commands.ping, this.TYPE_PONG).then(function(pingResult) {
                 if(!pingResult) {
                     console.log("session id not found or ping failed")

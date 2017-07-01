@@ -1075,14 +1075,18 @@ this.write = function(data, timer, noPromise, forcePing) {
   $rootScope.$applyAsync(function() {
     status = BleApi.STATUS_WRITING
   });
+
+  if(!noPromise) this.currentPromise = $q.defer();
+
   if(!forcePing && !this.sessionIdMatch 
     && data.indexOf(deviceCommands.ping) != 0 
-    && data.indexOf(deviceCommands.initPrefix) != 0) {
+    && data.indexOf(deviceCommands.initPrefix) != 0
+    && data.indexOf(deviceCommands.scan_wallet) != 0) {
         console.log('checking session, for command: '+data)
         var msg = new protoDevice.Ping();
         var pingString = BleApi.makeCommand(deviceCommands.ping,msg)
         return this.write(pingString, 5000).then(function(pingResult) {
-          if(!pingResult) {
+          if(!pingResult || pingResult.type === BleApi.TYPE_ERROR) {
               console.log("session id not found or ping failed")
               return $q.reject(new Error('BitLox session error. Try reconnecting the BitLox'))
           }
@@ -1096,10 +1100,13 @@ this.write = function(data, timer, noPromise, forcePing) {
           }
           BleApi.sessionIdMatch = true;
           return BleApi.write(data, timer, noPromise)
+      }, function(err) {
+        console.log("PING ERROR:"+JSON.stringify(err))
+        return $q.reject(new Error("Cannot ping BitLox. Try reconnecting the BitLox"))
       })
+
   }
 
-  if(!noPromise) this.currentPromise = $q.defer();
   var chunkSize = 128;
   var thelength = data.length;
   var iterations = Math.floor(thelength/chunkSize);
@@ -1186,8 +1193,8 @@ this.write = function(data, timer, noPromise, forcePing) {
 
     BleApi.timeout = $timeout(function() {
       console.warn("TIMEOUT of Write Command")
-      evothings.ble.close(BleApi.deviceHandle)
       return BleApi.sendData({}, BleApi.TYPE_ERROR)
+      evothings.ble.close(BleApi.deviceHandle)
 
     },timer)
   }
@@ -1259,10 +1266,13 @@ this.sendToProcess = function(rawData) {
 }
 
 this.sendData = function(data,type,retainCommand) {
+
+  // console.log('sending data back to promise')
+  // console.log(JSON.stringify(data))
+
   if(!retainCommand) { currentCommand = null; }
-
+  BleApi.currentPromise.resolve({type: type, payload:data});
   $timeout.cancel(BleApi.timeout)
-
   $rootScope.$applyAsync(function() {
 
     if(type === BleApi.TYPE_INITIALIZE) {
@@ -1270,11 +1280,10 @@ this.sendData = function(data,type,retainCommand) {
     } else {
       status = BleApi.STATUS_IDLE;
     }    
-    BleApi.currentPromise.resolve({type: type, payload:data});
+    
 
   })
-  // console.log('sending data back to promise')
-  // console.log(JSON.stringify(data))
+
 }
 
 this.processResults = function(command, length, payload) {
