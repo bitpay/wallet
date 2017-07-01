@@ -15,7 +15,7 @@
   "gitHubRepoBugs": "https://github.com/bitlox/bitlox-copay/issues",
   "disclaimerUrl": "https://bitlox.io/",
   "url": "https://bitlox.io/",
-  "bwsUrl": "https://bws.bitpay.com/bws/api",
+  "bwsUrl": "https://bws.bitlox.com/bws/api",
   "unitName": "BTC",
   "unitCode": "btc",
   "ratesUrl": "https://insight.bitpay.com:443/api/rates",
