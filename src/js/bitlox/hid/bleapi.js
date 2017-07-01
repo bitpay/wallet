@@ -818,6 +818,9 @@ this.getServices = function() {
 				for (var di in characteristic.descriptors)
 				{
 					var descriptor = characteristic.descriptors[di];
+          if(!descriptor) {
+            BleApi.disconnect();
+          }
 
 					if (characteristic.uuid == '0000ffe4-0000-1000-8000-00805f9b34fb' &&
 						descriptor.uuid == '00002902-0000-1000-8000-00805f9b34fb')
