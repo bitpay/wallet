@@ -445,6 +445,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         return HidApi.$timeout(function() {
             HidApi._device = null;
             HidApi._plugin = null;    
+            HidApi.sessionIdHex = null;
             HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
             console.debug("closed");
         })

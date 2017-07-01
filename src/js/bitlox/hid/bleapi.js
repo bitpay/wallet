@@ -1041,6 +1041,8 @@ this.connect = function(address)	{
 }
 this.disconnect = function() {
   currentCommand = null
+
+  this.sessionIdHex = null;
   $timeout.cancel(BleApi.timeout)
   evothings.ble.close(BleApi.deviceHandle)
   $rootScope.$applyAsync(function() {
