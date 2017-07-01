@@ -76,6 +76,7 @@ BleApi.currentPromise = null;
 BleApi.timeout = $timeout(function() {},0)
 BleApi.sessionId = null;
 BleApi.sessionIdHex = null;
+BleApi.expectedResponseType = null;
 var incomingData = '';
 var dataAlmostReady = false;
 var dataReady = false;
@@ -212,6 +213,7 @@ this.makeCommand = function(prefix, protoBuf) {
 
 this.getDeviceUUID = function() {
   currentCommand = 'getDeviceUUID'
+  BleApi.expectedResponseType = BleApi.TYPE_UUID;
   return this.write(deviceCommands.get_device_uuid);
 }
 ////////////////////////////
@@ -232,6 +234,7 @@ this.getDeviceUUID = function() {
 ////////////////////////////
 this.setChangeAddress = function(changeIndex) {
   currentCommand = 'setChangeAddress'
+  BleApi.expectedResponseType = BleApi.TYPE_SUCCESS;  
   var msg = new protoDevice.SetChangeAddressIndex({
     "address_handle_index": parseInt(changeIndex,10)
   });
@@ -242,6 +245,7 @@ this.newWallet = function(walletNumber, options) {
   currentCommand = "newWallet"
   // look through the options and fill in the data for the proto
   // buffer
+  BleApi.expectedResponseType = BleApi.TYPE_SUCCESS;    
   var protoData = {};
   if (options.isSecure) {
       var pass = new ByteBuffer();
@@ -274,43 +278,9 @@ this.newWallet = function(walletNumber, options) {
   return this.write(cmd,900000);
 };
 
-/**
-*	Initialize device
-*	parameters: none
-*	sends a ~random number as a session id. This random number is echoed in any
-*	subsequent ping requests as a method of ensuring the device has not been reset in the middle of
-*	a session. Unloads all wallets & clears memory.
-*/
-this.initialize_protobuf_encode = function() {
-	var randomnumber= d2h(Math.floor(Math.random()*1000000001));
-  console.log("randomnumber: " + randomnumber);
-
-	var bb = new ByteBuffer();
-  var parseLength = randomnumber.length
-  // 	console.log("utx length = " + parseLength);
-  var i;
-  for (i = 0; i < parseLength; i += 2) {
-    var value = randomnumber.substring(i, i + 2);
-    // 	console.log("value = " + value);
-    var prefix = "0x";
-    var together = prefix.concat(value);
-    // 	console.log("together = " + together);
-    var result = parseInt(together);
-    // 	console.log("result = " + result);
-
-    bb.writeUint8(result);
-  }
-  bb.flip();
-
-  var msg = new protoDevice.Initialize({
-      "session_id": bb,
-  });
-  var tempTXstring = BleApi.makeCommand("0017",msg)
-
-  this.write(tempTXstring);
-}
 this.deleteWallet = function(walletNumber) {
     var cmd = this.getWalletCommand('delete', walletNumber);
+    BleApi.expectedResponseType = BleApi.TYPE_SUCCESS;      
     return this.write(cmd);
 };
 
@@ -348,6 +318,7 @@ this.signTransaction = function(opts) {
     var addrHandlers = [];
     var inputData = [];
     var deferred = $q.defer()
+    BleApi.expectedResponseType = BleApi.TYPE_SIGNATURE_RETURN;         
     async.eachSeries(opts.bwsInputs, function(input, next) {
         var inputPath = input.path.split('/')
         input.chain = parseInt(inputPath[1],10)
@@ -396,126 +367,6 @@ this.signTransaction = function(opts) {
     });
     return deferred.promise
 };
-
-this.signTransactionOld = function(unsignedtx, originatingTransactionArray, originatingTransactionArrayIndices, address_handle_chain, address_handle_index) {
-  var numberOfInputsinArray = originatingTransactionArray.length;
-  console.log("numberOfInputsinArray: " + numberOfInputsinArray);
-
-  var m;
-  for(m = 0; m < numberOfInputsinArray; m++) {
-    console.log("Originating Transaction "+m+": " + originatingTransactionArray[m]);
-  }
-
-  var address_handle_root = [];
-  for(m = 0; m < numberOfInputsinArray; m++) {
-    address_handle_root[m] = 0;
-  }
-
-  var address_handle_extended_data = []; // empty array
-  var k;
-  for (k=0;k<numberOfInputsinArray;k++)
-  {
-    address_handle_extended_data.push({
-    address_handle_root: address_handle_root[k],
-    address_handle_chain: address_handle_chain[k],
-    address_handle_index: address_handle_index[k]});
-  }
-  console.log(JSON.stringify(address_handle_extended_data));
-
-  // INPUTS
-  var inputHexTemp = "";
-  var j;
-  for (j=0; j<numberOfInputsinArray; j++){
-    //         wrapper:
-    var tempOriginating = "";
-    var is_ref01 = "01";
-    var output_num_select = valueFromInteger(originatingTransactionArrayIndices[j]);
-    //         previous transaction data:
-    output_num_select = Crypto.util.bytesToHex(output_num_select);
-    console.log("output_num_select: " + j +" : "+ output_num_select);
-    tempOriginating = is_ref01.concat(output_num_select);
-    tempOriginating = tempOriginating.concat(originatingTransactionArray[j]);
-    inputHexTemp = inputHexTemp.concat(tempOriginating);
-  }
-  // END INPUTS
-  var tempBuffer = ByteBuffer.allocate(1024);
-  // OUTPUTS
-  var is_ref00 = "00";
-  unsignedtx = is_ref00.concat(unsignedtx);
-  console.log("utx = " + unsignedtx);
-  var hashtype = "01000000";
-  unsignedtx = unsignedtx.concat(hashtype);
-
-  unsignedtx = inputHexTemp.concat(unsignedtx);
-
-  var sizeOfInput =  unsignedtx.length;
-  console.log("sizeOfInput = " + sizeOfInput);
-
-  var bb = ByteBuffer.allocate((sizeOfInput/2)+64);
-
-  var i;
-  for (i = 0; i < sizeOfInput; i += 2) {
-    var value = unsignedtx.substring(i, i + 2);
-    // 		console.log("value = " + value);
-    var prefix = "0x";
-    var together = prefix.concat(value);
-    // 		console.log("together = " + together);
-    var result = parseInt(together);
-    // 		console.log("result = " + result);
-
-    bb.writeUint8(result);
-  }
-  bb.flip();
-  // END OUTPUTS
-
-  for(m = 0; m < numberOfInputsinArray; m++) {
-    console.log("address_handle_root["+m+"]" + address_handle_root[m]);
-    console.log("address_handle_chain["+m+"]" + address_handle_chain[m]);
-    console.log("address_handle_index["+m+"]" + address_handle_index[m]);
-  }
-
-  var txContents = new protoDevice.SignTransactionExtended({
-  	"address_handle_extended": address_handle_extended_data
-  	,
-      "transaction_data": bb
-  });
-  // 		console.log("txContents: " + JSON.stringify(txContents));
-
-  tempBuffer = txContents.encode()
-  var tempTXstring = tempBuffer.toString('hex');
-  //         document.getElementById("temp_results").innerHTML = tempTXstring;
-  txSize = d2h((tempTXstring.length) / 2).toString('hex');
-  // 	console.log("txSize = " + txSize);
-  // 	console.log("txSize.length = " + txSize.length);
-  var j;
-  var txLengthOriginal = txSize.length;
-  for (j = 0; j < (8 - txLengthOriginal); j++) {
-    var prefix = "0";
-    txSize = prefix.concat(txSize);
-  }
-  // 	console.log("txSizePadded = " + txSize);
-  tempTXstring = txSize.concat(tempTXstring);
-
-  var command = "0065"; // extended
-  tempTXstring = command.concat(tempTXstring);
-
-  var magic = "2323"
-  tempTXstring = magic.concat(tempTXstring);
-
-  if(currentCommand == 'signAndSend')
-  {
-  	tempTXglobal = tempTXstring;
-  	setChangeAddress(usechange);
-  //         	BleApi.app.sliceAndWrite64(tempTXglobal);
-  } else {
-    document.getElementById("device_signed_transaction").value = tempTXstring;
-    $("#sign_transaction_with_device").attr('disabled',false);
-    console.log("READY");
-    BleApi.displayStatus('About to set change');
-    setChangeAddress(usechange);
-    BleApi.displayStatus('Ready to sign');
-  }
-}
 
 this.genTransaction = function(txp) {
 
@@ -659,20 +510,24 @@ this.genTransaction = function(txp) {
 }
 this.scanWallet = function() {
   currentCommand = 'scanWallet'
+  BleApi.expectedResponseType = BleApi.TYPE_XPUB  
   return this.write(deviceCommands.scan_wallet);
 }
 this.listWallets = function() {
   currentCommand = 'listWallets'
+  BleApi.expectedResponseType = BleApi.TYPE_WALLET_LIST
   return this.write(deviceCommands.list_wallets);
 }
 
 this.loadWallet = function(num) {
   currentCommand = 'loadWallet'
+  BleApi.expectedResponseType = BleApi.TYPE_SUCCESS    
   var cmd = this.getWalletCommand('load', num);
   return this.write(cmd, 300000)
 }
 this.initialize = function(sessionId) {
   currentCommand = 'initialize'
+  BleApi.expectedResponseType = BleApi.TYPE_INITIALIZE 
   var sessionIdHex = BleApi.hexUtil.toPaddedHex(sessionId, 39) + '00';
   this.sessionIdHex = sessionIdHex;
   // console.debug(sessionId, "->", sessionIdHex);
@@ -686,7 +541,8 @@ this.initialize = function(sessionId) {
   return this.write(cmd, 15000)
 }
 this.ping = function(args) {
-  // currentCommand = 'ping'
+  // currentCommand = 'ping' // DO NOT DO THIS
+  BleApi.expectedResponseType = BleApi.TYPE_PONG   
   var msg = new protoDevice.Ping(args);
   var tempTXstring = BleApi.makeCommand(deviceCommands.ping,msg)
   return this.write(tempTXstring, 5000)
@@ -700,6 +556,7 @@ this.ping = function(args) {
 */
 this.getEntropy = function(entropy_amount) {
   currentCommand = 'getEntropy'
+  BleApi.expectedResponseType = BleApi.TYPE_ENTROPY_RETURN  
   var entropyToGet = Number(entropy_amount);
   var msg = new protoDevice.GetEntropy({
 	     "number_of_bytes": entropyToGet
@@ -1085,6 +942,7 @@ this.write = function(data, timer, noPromise, forcePing) {
         console.log('checking session, for command: '+data)
         var msg = new protoDevice.Ping();
         var pingString = BleApi.makeCommand(deviceCommands.ping,msg)
+
         return this.write(pingString, 5000).then(function(pingResult) {
           if(!pingResult || pingResult.type === BleApi.TYPE_ERROR) {
               console.log("session id not found or ping failed")
@@ -1280,10 +1138,12 @@ this.sendData = function(data,type,retainCommand) {
     } else {
       status = BleApi.STATUS_IDLE;
     }    
-    
-
   })
 
+  if(!retainCommand && type !== BleApi.expectedResponseType) {
+    BleApi.disconnect()
+  }
+  BleApi.expectedResponseType = null;
 }
 
 this.processResults = function(command, length, payload) {
@@ -1404,59 +1264,6 @@ this.processResults = function(command, length, payload) {
     case "35": // general purpose error/cancel
       var Failure = protoDevice.Failure.decodeHex(payload);
       this.sendData({}, Failure,BleApi.TYPE_ERROR)
-    	switch (currentCommand) {
-				case "deleteWallet":
-        // 							BleApi.displayStatus('Wallet deleted');
-        // 							$('#myTab a[href="#bip32"]').tab('show');
-        //
-        // 							window.plugins.toast.show('Refreshing your wallet list', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
-        // 							$('#helpBlock').text('Click the wallet name and enter the PIN on your BitLox');
-        //
-        // 							BleApi.app.sliceAndWrite64(deviceCommands.list_wallets);
-        //
-        // 							BleApi.displayStatus('Listing wallets');
-					currentCommand = '';
-				break;
-				case "renameWallet":
-        // 							BleApi.displayStatus('Wallet renamed');
-        // 							$('#myTab a[href="#bip32"]').tab('show');
-        //
-        // 							window.plugins.toast.show('Refreshing your wallet list', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
-        // 							$('#helpBlock').text('Click the wallet name and enter the PIN on your BitLox');
-        //
-        // 							BleApi.app.sliceAndWrite64(deviceCommands.list_wallets);
-        //         					$('#renameWallet').attr('disabled',false);
-        //
-        // 							BleApi.displayStatus('Listing wallets');
-					currentCommand = '';
-				break;
-				case "newWallet":
-        // 							window.plugins.toast.show('Refreshing your wallet list', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
-        //
-        // 							$('#helpBlock').text('Click the wallet name and enter the PIN on your BitLox');
-        // 							pausecomp(15000);
-        // 							BleApi.app.sliceAndWrite64(deviceCommands.list_wallets);
-        //
-        // 							BleApi.displayStatus('Listing refreshed');
-        //
-					currentCommand = '';
-				break;
-				case "formatDevice":
-        // 							window.plugins.toast.show('Format successful', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
-        // 							BleApi.displayStatus('Ready');
-        // 							BleApi.app.sliceAndWrite64(deviceCommands.list_wallets);
-        // 							$('#myTab a[href="#bip32"]').tab('show');
-					currentCommand = '';
-				break;
-				case "loadWallet":
-
-					currentCommand = '';
-				break;
-				default:
-        // 							BleApi.displayStatus('Error');
-				break;
-    	}
-
       break;
 
     case "36": // device uuid return
@@ -1564,7 +1371,7 @@ this.processResults = function(command, length, payload) {
   	{
   		if(results.buttonIndex == 1)
   		{
-  // 			event.preventDefault();
+      // 			event.preventDefault();
   			currentCommand = "loadWallet";
   			directLoadWallet(results.input1);
   			this.displayStatus('Loading wallet');
