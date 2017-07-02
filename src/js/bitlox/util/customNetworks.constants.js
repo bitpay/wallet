@@ -36,23 +36,6 @@
           bwsUrl: 'https://bws.bitlox.com/bws/api/',
           explorer: 'https://tbtc.blockr.io/'
         },
-      dogecoin: {
-        network: 'dogecoin',
-        name: 'dogecoin',
-        alias: 'Dogecoin',
-        code: 'xdg',
-        symbol: 'XDG',
-          derivationCoinPath: "3",
-        pubkeyhash: 0x1e,
-        privatekey: 0x9e,
-        scripthash: 0x05,
-        xpubkey: 0x0488c42e,
-        xprivkey: 0x0488e1f4,
-        bwsUrl: 'https://bws.bitlox.com/bws/api/',
-        port: 22556,
-        networkMagic: 0xc0c0c0c0,
-        explorer: 'https://dogechain.info/'
-      },
       litecoin: {
         network: 'litecoin',
         name: 'litecoin',
