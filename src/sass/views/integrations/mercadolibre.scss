@@ -11,7 +11,7 @@
     stroke: black;
     fill: black;
   }
-  
+
   .add-bottom-for-cta {
     bottom: 92px;
   }
@@ -36,7 +36,12 @@
       }
 
       .big-icon-svg {
+        padding: 0 7px 0 0;
         margin-right: 0.6rem;
+      }
+
+      .big-icon-svg > .bg {
+        height: 27px;
       }
 
     }
@@ -80,7 +85,7 @@
         color: $item-label-color;
         margin-bottom: 8px;
       }
-      
+
       .capitalized {
         text-transform: capitalize;
       }
