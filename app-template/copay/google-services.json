@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "149194066736",
-    "firebase_url": "https://bitpay-wallet.firebaseio.com",
-    "project_id": "bitpay-wallet",
-    "storage_bucket": "bitpay-wallet.appspot.com"
+    "project_number": "56154276633",
+    "firebase_url": "https://copay-analytics.firebaseio.com",
+    "project_id": "copay-analytics",
+    "storage_bucket": "copay-analytics.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:149194066736:android:6de8942b48fea047",
+        "mobilesdk_app_id": "1:56154276633:android:6de8942b48fea047",
         "android_client_info": {
           "package_name": "com.bitpay.copay"
         }
       },
       "oauth_client": [
         {
-          "client_id": "149194066736-1gf0d9nk288dke5jdiuj8unkplhl8nco.apps.googleusercontent.com",
+          "client_id": "56154276633-ishjqpmm634tv0h53162smp4sdvtfc38.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCZ8nyjRBe-0Lyur0LjO-SOkjv32uNQKy0"
+          "current_key": "AIzaSyCgm5bNzNhj_z7s5QCaxbsI_Wig9F0i8qM"
         }
       ],
       "services": {
