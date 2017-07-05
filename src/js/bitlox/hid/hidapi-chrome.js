@@ -52,14 +52,13 @@ function HidApi($q, $timeout, $interval, $rootScope,
     chrome.hid.onDeviceRemoved.addListener(function() {
         console.debug("DEVICE REMOVED", status);
         
-        HidApi._device = null;
         if(status !== HidApi.STATUS_DISCONNECTED && status !== HidApi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
-        HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
+
         if(HidApi.currentPromise) { 
             console.log("rejecting promise after device removal")
             HidApi.currentPromise.reject(); 
         }
-
+        HidApi.disconnect()
 
     });
 
@@ -133,7 +132,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
             // console.debug("device: Got devices", devices);
             // console.debug("device: reportDescriptor",
                           // HidApi.abconv.ab2hex(devices[0].reportDescriptor));
-            console.debug("device: Connecting to device", devices[0].deviceId);
+            // console.debug("device: Connecting to device", devices[0].deviceId);
             chrome.hid.connect(devices[0].deviceId, function(connection) {
                 if (chrome.runtime.lastError) {
                     
@@ -149,7 +148,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
 
                     return deferred.reject(new Error("Failed to get connection"));
                 }
-                console.debug("device: Got connection", connection);
+                // console.debug("device: Got connection", connection);
                 HidApi.setStatus(HidApi.STATUS_INITIALIZING);
                 HidApi._device = connection.connectionId;
                 deferred.resolve(HidApi._device);
@@ -278,6 +277,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
     var magicRegexp = new RegExp(magic);
     var magicRegexpEdge = new RegExp('BEEF(23){1,2}$');
     HidApi.read = function(serialData, wait) {
+        HidApi.readErr = false;
         if (serialData === undefined) {
             serialData = '';
         }
@@ -344,8 +344,10 @@ function HidApi($q, $timeout, $interval, $rootScope,
             }
         },function(e) {
           console.warn("error in read", e)
+          HidApi.readErr = true;
+          HidApi.disconnect();
         }).finally(function() {
-            HidApi.setStatus(HidApi.STATUS_IDLE);
+            if(!HidApi.readErr) { HidApi.setStatus(HidApi.STATUS_IDLE); }
         });
     };
 
@@ -443,14 +445,13 @@ function HidApi($q, $timeout, $interval, $rootScope,
     HidApi.clearDevice = function() {
 
         HidApi._device = null;
-        HidApi._plugin = null;    
         HidApi.sessionIdHex = null;
     }
     HidApi.disconnect = function() {
         HidApi.clearDevice();
         return HidApi.$timeout(function() {
             HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
-            console.debug("closed");
+            // console.debug("closed");
         })
     };
 
@@ -506,11 +507,8 @@ function HidApi($q, $timeout, $interval, $rootScope,
                     } else if (!data) {
                         HidApi.doingCommand = false;
                         return data;                        
-                    } else 
-                    if (data.type === HidApi.TYPE_ERROR) {
-                        HidApi.doingCommand = false;
-                        return HidApi.$q.reject(data.payload);
-                    } else if (data.type === HidApi.TYPE_PLEASE_ACK) {
+                    }
+                    if (data.type === HidApi.TYPE_PLEASE_ACK) {
                         return HidApi._doCommand(HidApi.commands.button_ack, expectedType);
                     } else if (expectedType) {
                         if (data.type === expectedType) {
@@ -521,6 +519,9 @@ function HidApi($q, $timeout, $interval, $rootScope,
                             // we got what we wanted, return it
                             HidApi.doingCommand = false;
                             return data;
+                        } else {
+                            HidApi.doingCommand = false;
+                            return HidApi.$q.reject(new Error("Unexpected response from BitLox. If this problem persists, reset your BitLox"));
                         }
 
                         return HidApi.$timeout(doRead, readTimeout);
@@ -559,7 +560,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         this.sessionId = sessionId;
         var sessionIdHex = this.hexUtil.toPaddedHex(sessionId, 39) + '00';
         this.sessionIdHex = sessionIdHex;
-        console.debug(sessionId, "->", sessionIdHex);
+        // console.debug(sessionId, "->", sessionIdHex);
         var sessionIdBuf = this.hexUtil.hexToByteBuffer(sessionIdHex);
         sessionIdBuf.flip();
         var sessionIdProtoBuf = new Device.Initialize({

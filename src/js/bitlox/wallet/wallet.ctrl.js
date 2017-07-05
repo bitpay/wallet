@@ -421,11 +421,13 @@
             if(platformInfo.isChromeApp) {
 
                 api.disconnect().then(function() {
-                    api.device().then(function() {
-                        if(api.getStatus() === api.STATUS_IDLE) {
-                            $scope.readWallets();
-                        }
-                    })
+                    $timeout(function() {
+                        api.device().then(function() {
+                            if(api.getStatus() === api.STATUS_IDLE) {
+                                $scope.readWallets();
+                            }
+                        })
+                    },1000);
                 })
             } else {
                 if(api.getStatus() === api.STATUS_IDLE) {
