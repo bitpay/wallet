@@ -32,29 +32,40 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </div>
+
+        <div ng-show="totalAmountStr">
+          <div class="item item-divider" translate>
+            Details
+          </div>
+          <div class="item">
+            <span translate>Network fee</span>
+            <span class="item-note">
+              {{totalFeeStr}}
+            </span>
+          </div>
+          <div class="item">
+            <span translate>Total to pay</span>
+            <span class="item-note">
+              {{totalAmountStr}}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
 
   </ion-content>
 
   <click-to-accept
-    ng-disabled="!wallet"
+    is-disabled="!wallet || !totalAmountStr"
     ng-click="buyConfirm()"
     ng-if="!isCordova"
-    click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="false">
+    click-send-status="sendStatus">
     Confirm purchase
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!wallet"
-    ng-if="isCordova"
+    ng-if="isCordova && wallet && totalAmountStr"
     slide-on-confirm="buyConfirm()"
-    slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="false">
+    slide-send-status="sendStatus">
     Slide to buy
   </slide-to-accept>
   <slide-to-accept-success
@@ -70,7 +81,7 @@
     <span ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.status == 'active'">
       Bought {{mlGiftCard.amount}} {{mlGiftCard.currency}}
     </span>
-    <div class="m10 size-14" ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.status == 'active'">
+    <div class="m10 size-14" ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.cardStatus == 'active'">
       Gift card generated and ready to use.
     </div>
   </slide-to-accept-success>

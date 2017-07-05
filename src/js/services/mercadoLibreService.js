@@ -19,7 +19,7 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
   credentials.NETWORK = 'testnet';
 
   if (credentials.NETWORK == 'testnet') {
-    credentials.BITPAY_API_URL = "https://test.bitpay.com";
+    credentials.BITPAY_API_URL = "https://gustavo.bp:8088";
   } else {
     credentials.BITPAY_API_URL = "https://bitpay.com";
   };
@@ -102,16 +102,13 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
   };
 
   root.createBitPayInvoice = function(data, cb) {
-
-    // TODO
     var dataSrc = {
-      currency: 'USD' || data.currency,
+      currency: data.currency,
       amount: data.amount,
       clientId: data.uuid
     };
-console.log('[mercadoLibreService.js:106]',dataSrc); //TODO
 
-    $http(_postBitPay('/amazon-gift/pay', dataSrc)).then(function(data) {
+    $http(_postBitPay('/mercado-libre-gift/pay', dataSrc)).then(function(data) {
       $log.info('BitPay Create Invoice: SUCCESS');
       return cb(null, data.data);
     }, function(data) {
@@ -131,22 +128,6 @@ console.log('[mercadoLibreService.js:106]',dataSrc); //TODO
   };
 
   root.createGiftCard = function(data, cb) {
-console.log('[mercadoLibreService.js:132]',data); //TODO
-
-    return cb(null, {
-      "id": "f2bd6204fc49661a56057d33e37e32f2518ae92eea2f5457c379434712e35537",
-      "currency_id": data.currency,
-      "external_reference": "external_id_123456",
-      "initial_amount": data.amount,
-      "balance": 59.99,
-      "status": "active",
-      "date_creation": "2017­03­14T10:39:14.826­03:00",
-      "date_activation": "2017­03­14T10:39:15.316­03:00",
-      "date_expiration": "2018­09­14T10:39:15.316­03:00",
-      "date_last_updated": "2017­03­14T10:39:15.321­03:00",
-      "pin": "UYNHSIONUY"
-    });
-
     var dataSrc = {
       "clientId": data.uuid,
       "invoiceId": data.invoiceId,
@@ -164,6 +145,10 @@ console.log('[mercadoLibreService.js:132]',data); //TODO
     });
   };
 
+  /*
+   * Disabled for now *
+   */
+  /*
   root.cancelGiftCard = function(data, cb) {
 
     var dataSrc = {
@@ -180,6 +165,7 @@ console.log('[mercadoLibreService.js:132]',data); //TODO
       return cb(data.data);
     });
   };
+  */
 
   var register = function() {
     storageService.getMercadoLibreGiftCards(root.getNetwork(), function(err, giftCards) {

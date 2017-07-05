@@ -1,27 +1,36 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyMercadoLibreController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, lodash, mercadoLibreService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo) {
+angular.module('copayApp.controllers').controller('buyMercadoLibreController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, mercadoLibreService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, txFormatService, gettextCatalog) {
 
   var amount;
   var currency;
+  var createdTx;
+  var message;
+  var invoiceId;
+  var configWallet = configService.getSync().wallet;
   $scope.isCordova = platformInfo.isCordova;
 
   $scope.openExternalLink = function(url) {
     externalLinkService.open(url);
   };
 
-  var showErrorAndBack = function(msg, err) {
+  var showErrorAndBack = function(title, msg) {
+    title = title || gettextCatalog.getString('Error');
     $scope.sendStatus = '';
-    err = err && err.errors ? err.errors[0].message : err;
-    popupService.showAlert(msg, err, function() {
+    $log.error(msg);
+    msg = (msg && msg.errors) ? msg.errors[0].message : msg;
+    popupService.showAlert(title, msg, function() {
       $ionicHistory.goBack();
     });
   };
 
-  var showError = function(msg, err) {
+  var showError = function(title, msg, cb) {
+    cb = cb || function() {};
+    title = title || gettextCatalog.getString('Error');
     $scope.sendStatus = '';
-    err = err && err.errors ? err.errors[0].message : (err || '');
-    popupService.showAlert(msg, err);
+    $log.error(msg);
+    msg = (msg && msg.errors) ? msg.errors[0].message : msg;
+    popupService.showAlert(title, msg, cb);
   };
 
   var publishAndSign = function(wallet, txp, onSendStatusChange, cb) {
@@ -49,15 +58,95 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     }
   };
 
+  var createInvoice = function(data, cb) {
+    mercadoLibreService.createBitPayInvoice(data, function(err, dataInvoice) {
+      if (err) {
+        var err_title = gettextCatalog.getString('Error creating the invoice');
+        var err_msg;
+        if (err && err.message && err.message.match(/suspended/i)) {
+          err_title = gettextCatalog.getString('Service not available');
+          err_msg = gettextCatalog.getString('Mercadolibre Gift Card Service is not available at this moment. Please try back later.');
+        } else if (err && err.message) {
+          err_msg = err.message;
+        } else {
+          err_msg = gettextCatalog.getString('Could not access Gift Card Service');
+        };
+
+        return cb({
+          title: err_title,
+          message: err_msg
+        });
+      }
+
+      var accessKey = dataInvoice ? dataInvoice.accessKey : null;
+
+      if (!accessKey) {
+        return cb({
+          message: gettextCatalog.getString('No access key defined')
+        });
+      }
+
+      mercadoLibreService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
+        if (err) {
+          return cb({
+            message: gettextCatalog.getString('Could not get the invoice')
+          });
+        }
+
+        return cb(null, invoice, accessKey);
+      });
+    });
+  };
+
+  var createTx = function(wallet, invoice, message, cb) {
+    var payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
+
+    if (!payProUrl) {
+      return cb({
+        title: gettextCatalog.getString('Error in Payment Protocol'),
+        message: gettextCatalog.getString('Invalid URL')
+      });
+    }
+
+    var outputs = [];
+    var toAddress = invoice.bitcoinAddress;
+    var amountSat = parseInt(invoice.btcDue * 100000000); // BTC to Satoshi
+
+    outputs.push({
+      'toAddress': toAddress,
+      'amount': amountSat,
+      'message': message
+    });
+
+    var txp = {
+      toAddress: toAddress,
+      amount: amountSat,
+      outputs: outputs,
+      message: message,
+      payProUrl: payProUrl,
+      excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+      feeLevel: configWallet.settings.feeLevel || 'normal'
+    };
+
+    walletService.createTx(wallet, txp, function(err, ctxp) {
+      if (err) {
+        return cb({
+          title: gettextCatalog.getString('Could not create transaction'),
+          message: bwcError.msg(err)
+        });
+      }
+      return cb(null, ctxp);
+    });
+  };
+
   var checkTransaction = lodash.throttle(function(count, dataSrc) {
     mercadoLibreService.createGiftCard(dataSrc, function(err, giftCard) {
-console.log('[buyMercadoLibre.js:53]',giftCard); //TODO
       $log.debug("creating gift card " + count);
-      if (err) {
+      if (err || !giftCard.pin) {
+        $scope.sendStatus = '';
         ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
         giftCard = {};
         giftCard.status = 'FAILURE';
-        showError('Error creating gift card', err);
       }
 
       if (giftCard.status == 'PENDING' && count < 3) {
@@ -77,17 +166,6 @@ console.log('[buyMercadoLibre.js:53]',giftCard); //TODO
       newData['date'] = dataSrc.invoiceTime || now;
       newData['uuid'] = dataSrc.uuid;
 
-      if (newData.status == 'expired') {
-        mercadoLibreService.savePendingGiftCard(newData, {
-          remove: true
-        }, function(err) {
-          $log.error(err);
-          ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-          showError('Invoice expired');
-          return;
-        });
-      }
-
       mercadoLibreService.savePendingGiftCard(newData, null, function(err) {
         ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
         $log.debug("Saving new gift card with status: " + newData.status);
@@ -98,144 +176,106 @@ console.log('[buyMercadoLibre.js:53]',giftCard); //TODO
     'leading': true
   });
 
+  var initialize = function(wallet, parsedAmount) {
+    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    var dataSrc = {
+      amount: parsedAmount.amount,
+      currency: parsedAmount.currency,
+      uuid: wallet.id
+    };
+    ongoingProcess.set('loadingTxInfo', true);
+    createInvoice(dataSrc, function(err, invoice, accessKey) {
+      if (err) {
+        ongoingProcess.set('loadingTxInfo', false);
+        showErrorAndBack(err.title, err.message);
+        return;
+      }
+
+      message = gettextCatalog.getString("Mercado Libre Gift Card {{amountStr}}", {
+        amountStr: $scope.amountUnitStr
+      });
+
+      createTx(wallet, invoice, message, function(err, ctxp) {
+        ongoingProcess.set('loadingTxInfo', false);
+        if (err) {
+          // Clear variables
+          createdTx = message = $scope.totalFeeStr = $scope.totalAmountStr = $scope.wallet = null;
+          showError(err.title, err.message);
+          return;
+        }
+
+        // Save in memory
+        createdTx = ctxp;
+        invoiceId = invoice.id;
+
+        createdTx['giftData'] = {
+          currency: dataSrc.currency,
+          amount: dataSrc.amount,
+          uuid: dataSrc.uuid,
+          accessKey: accessKey,
+          invoiceId: invoice.id,
+          invoiceUrl: invoice.url,
+          invoiceTime: invoice.invoiceTime
+        };
+        $scope.totalFeeStr = txFormatService.formatAmountStr(ctxp.fee);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount + ctxp.fee);
+      });
+    });
+  };
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
 
-    /* TODO
     if (amount > 2000 || amount < 50) {
-      showErrorAndBack('Purchase amount must be a value between 50 and 2000');
+      showErrorAndBack(null, gettextCatalog.getString('Purchase amount must be a value between 50 and 2000'));
       return;
     }
-    */
-
-    $scope.amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
 
     $scope.network = mercadoLibreService.getNetwork();
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
-      network: $scope.network,
-      hasFunds: true
+      network: $scope.network
     });
     if (lodash.isEmpty($scope.wallets)) {
-      showErrorAndBack('No wallets with funds');
+      showErrorAndBack(null, gettextCatalog.getString('No wallets available'));
       return;
     }
-    $scope.wallet = $scope.wallets[0]; // Default first wallet
+    $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
   });
 
   $scope.buyConfirm = function() {
 
-    var message = 'Buy gift card for ' + amount + ' ' + currency;
-    var okText = 'Confirm';
-    var cancelText = 'Cancel';
-    popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-      if (!ok) return;
+    if (!createdTx) {
+      showError(null, gettextCatalog.getString('Transaction has not been created'));
+      return;
+    }
 
-      var config = configService.getSync();
-      var configWallet = config.wallet;
-      var walletSettings = configWallet.settings;
-      // Selected WalletID as UUID
-      var uuid = $scope.wallet.id;
-      var dataSrc = {
-        currency: currency,
-        amount: amount,
-        uuid: uuid
-      };
+    var title = gettextCatalog.getString('Confirm');
+    var okText = gettextCatalog.getString('Ok');
+    var cancelText = gettextCatalog.getString('Cancel');
+    popupService.showConfirm(title, message, okText, cancelText, function(ok) {
+      if (!ok) {
+        $scope.sendStatus = '';
+        return;
+      }
 
       ongoingProcess.set('buyingGiftCard', true, statusChangeHandler);
-      mercadoLibreService.createBitPayInvoice(dataSrc, function(err, dataInvoice) {
+      publishAndSign($scope.wallet, createdTx, function() {}, function(err, txSent) {
         if (err) {
           ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-
-          if (err && err.message && err.message.match(/suspended/i)) {
-            showError('Service not available', 'Mercadolibre Gift Card Service is not available at this moment. Please try back later.');
-          } else {
-            showError('Could not access Gift Card Service', err);
-          };
-
+          showError(gettextCatalog.getString('Could not send transaction'), err);
           return;
         }
-
-        var accessKey = dataInvoice ? dataInvoice.accessKey : null;
-
-        if (!accessKey) {
-          ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-          showError('No access key defined');
-          return;
-        }
-
-        mercadoLibreService.getBitPayInvoice(dataInvoice.invoiceId, function(err, invoice) {
-          if (err) {
-            ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-            showError('Error getting BitPay invoice', err);
-            return;
-          }
-
-          var payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
-
-          if (!payProUrl) {
-            ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-            showError('Error fetching invoice');
-            return;
-          }
-
-          payproService.getPayProDetails(payProUrl, function(err, payProDetails) {
-            if (err) {
-              ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-              showError('Error fetching payment info', bwcError.msg(err));
-              return;
-            }
-
-            var outputs = [];
-            var toAddress = payProDetails.toAddress;
-            var amountSat = payProDetails.amount;
-            var comment = amount + ' ' + currency + ' Mercadolibre Gift Card';
-
-            outputs.push({
-              'toAddress': toAddress,
-              'amount': amountSat,
-              'message': comment
-            });
-
-            var txp = {
-              toAddress: toAddress,
-              amount: amountSat,
-              outputs: outputs,
-              message: comment,
-              payProUrl: payProUrl,
-              excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-              feeLevel: walletSettings.feeLevel || 'normal'
-            };
-
-            walletService.createTx($scope.wallet, txp, function(err, ctxp) {
-              if (err) {
-                ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-                showError('Could not create transaction', bwcError.msg(err));
-                return;
-              }
-              publishAndSign($scope.wallet, ctxp, function() {}, function(err, txSent) {
-                if (err) {
-                  ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-                  showError('Could not send transaction', err);
-                  return;
-                }
-                $log.debug('Transaction broadcasted. Waiting for confirmation...');
-                var invoiceId = JSON.parse(payProDetails.merchant_data).invoiceId;
-                var dataSrc = {
-                  currency: currency,
-                  amount: amount,
-                  uuid: uuid,
-                  accessKey: accessKey,
-                  invoiceId: invoice.id,
-                  invoiceUrl: payProUrl,
-                  invoiceTime: invoice.invoiceTime
-                };
-                checkTransaction(1, dataSrc);
-              });
-            });
-          }, true); // Disable loader
-        });
+        checkTransaction(1, createdTx.giftData);
       });
     });
   };
@@ -247,6 +287,8 @@ console.log('[buyMercadoLibre.js:53]',giftCard); //TODO
 
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    var parsedAmount = txFormatService.parseAmount(amount, currency);
+    initialize(wallet, parsedAmount);
   };
 
   $scope.goBackHome = function() {
@@ -256,14 +298,13 @@ console.log('[buyMercadoLibre.js:53]',giftCard); //TODO
       historyRoot: true
     });
     $ionicHistory.clearHistory();
-    var claimCode = $scope.mlGiftCard ? $scope.mlGiftCard.pin : null;
     $state.go('tabs.home').then(function() {
       $ionicHistory.nextViewOptions({
         disableAnimate: true
       });
       $state.transitionTo('tabs.giftcards.mercadoLibre').then(function() {
         $state.transitionTo('tabs.giftcards.mercadoLibre.cards', {
-          cardClaimCode: claimCode
+          invoiceId: invoiceId
         });
       });
     });

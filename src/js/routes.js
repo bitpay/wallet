@@ -1050,7 +1050,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         },
         params: {
-          cardClaimCode: null
+          invoiceId: null
         }
       })
       .state('tabs.giftcards.mercadoLibre.amount', {
