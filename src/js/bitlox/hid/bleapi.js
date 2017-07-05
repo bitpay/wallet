@@ -797,6 +797,7 @@ this.bleWrite = function(writeFunc, deviceHandle, handle, value, cb) {
 this.startScanNew = function() {
   var bleapi = this
   evothings.ble.stopScan();
+  knownDevices = {}
 	this.displayStatus('Scanning...');
 	evothings.ble.startScan(
 		function(device)
@@ -921,7 +922,7 @@ this.disconnect = function() {
     console.log("broadcasting disconnection notice")
     $rootScope.$broadcast('bitloxConnectError'); 
   }
-  knownDevices = {}
+  
   BleApi.startScanNew();
 }
 // old sliceAndWrite64, 'data' is a command constant
