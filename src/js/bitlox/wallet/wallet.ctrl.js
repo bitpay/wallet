@@ -203,7 +203,7 @@
             $scope.refreshBitlox()
           }
         });
-        $scope.$watch('api.getStatus()', function(newVal) {
+        $scope.$watch('api.getStatus()', function(hidstatus) {
 
 
           console.warn("New device status: " + hidstatus)
@@ -242,14 +242,7 @@
                   $scope.bitlox.statusString = "Bitlox initializing";
                   $scope.bitlox.alertClass = "success";
                   $scope.bitlox.glyph = "glyphicon-refresh";
-                    var session = new Date().getTime(true);
-                    api.initialize(session).then(function(res) {
-                        if(!res || res.type === api.TYPE_ERROR) {
-                            $ionicLoading.hide();
-                            popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Initialization Error.");
-                            api.disconnect();
-                        }
-                    });              
+                    $scope.initializeDevice();              
                   break;          
               case api.STATUS_DISCONNECTED:
                   $scope.bitlox.statusString = "Bitlox disconnected!";
@@ -399,7 +392,16 @@
             }
         }
 
-
+        $scope.initializeDevice = function() {
+            var session = new Date().getTime(true);
+            api.initialize(session).then(function(res) {
+                if(!res || res.type === api.TYPE_ERROR) {
+                    $ionicLoading.hide();
+                    popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Initialization Error.");
+                    api.disconnect();
+                }
+            });            
+        }
         $scope.reset = function() {
             // status variables
             $scope.readingWallets = true;
@@ -410,10 +412,10 @@
             $scope.openWallet = null;
             $scope.timer = false;
 
-            $ionicLoading.show({template: "Finding BitLox, please wait...",duration:3000})
-            $timeout(function() {
-                $scope.timer = true;
-            },3000);            
+            // $ionicLoading.show({template: "Finding BitLox, please wait...",duration:3000})
+            // $timeout(function() {
+            //     $scope.timer = true;
+            // },3000);            
             if(platformInfo.isChromeApp) {
                 // api.close().then(function() {api.device()})
                 api.device().then(function() {
