@@ -206,7 +206,7 @@
         $scope.$watch('api.getStatus()', function(hidstatus) {
 
 
-          console.warn("New device status: " + hidstatus)
+          // console.warn("New device status: " + hidstatus)
           switch(hidstatus) {
               case api.STATUS_CONNECTED:
                   $scope.bitlox.connectAttempted = true;
@@ -258,7 +258,7 @@
                         if($state.current.url === '/create-bitlox') {
                             $ionicHistory.goBack();
                         } 
-                        if ($state.current.url === '/create-bitlox' || $state.current.url === '/attach-bitlox') {
+                        if ($state.current.url === '/attach-bitlox') {
                             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
                         }                        
                     }
@@ -420,7 +420,7 @@
             },3000);            
             if(platformInfo.isChromeApp) {
 
-                api.disconnect().then(function() {
+                // api.disconnect().then(function() {
                     $timeout(function() {
                         api.device().then(function() {
                             if(api.getStatus() === api.STATUS_IDLE) {
@@ -428,7 +428,7 @@
                             }
                         })
                     },1000);
-                })
+                // })
             } else {
                 if(api.getStatus() === api.STATUS_IDLE) {
                     $scope.readWallets();

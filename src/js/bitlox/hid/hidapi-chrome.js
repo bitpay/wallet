@@ -229,7 +229,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
 //                         console.debug("write: wrote", thisAb.byteLength);
                         // add to the total sent
                         totalSent += thisAb.length;
-                        // pausecomp(150);
+                        pausecomp(150);
                         return next();
                     });
                 }
@@ -277,11 +277,12 @@ function HidApi($q, $timeout, $interval, $rootScope,
     var magicRegexp = new RegExp(magic);
     var magicRegexpEdge = new RegExp('BEEF(23){1,2}$');
     HidApi.read = function(serialData, wait) {
-        HidApi.readErr = false;
+        
         if (serialData === undefined) {
             serialData = '';
         }
         var HidApi = this;
+        HidApi.readErr = false;
 //         console.debug("read: data so far", serialData);
         return this.hidRead().then(function(newData) {
             HidApi.isReading = true;
@@ -359,7 +360,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
             type: null,
             payload: {}
         };
-        console.log(command, length, payload)
+        // console.log(command, length, payload)
 
         switch (command) {
         case "3A": // initialize
@@ -465,7 +466,9 @@ function HidApi($q, $timeout, $interval, $rootScope,
             && command.indexOf(this.commands.ping) != 0 
             && command.indexOf(this.commands.initPrefix) != 0
             && command.indexOf(this.commands.scan_wallet) != 0) {
+            console.log("checking session with ping")
             return this._doCommand(this.commands.ping, this.TYPE_PONG).then(function(pingResult) {
+                // console.log(JSON.stringify(pingResult))
                 if(!pingResult) {
                     console.log("session id not found or ping failed")
                     return HidApi.$q.reject(new Error('BitLox session error. Try reconnecting the BitLox'))
