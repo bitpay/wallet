@@ -810,7 +810,7 @@ this.startScanNew = function() {
 		},
 		function(errorCode)
 		{
-      console.error("BITLOX BLE SCAN ERROR", errorCode)
+      console.error("BITLOX BLE SCAN ERROR: "+ errorCode)
 			// Report error.
 			BleApi.deviceFound(null, errorCode);
 		}
@@ -835,6 +835,7 @@ this.deviceFound = function(device, errorCode)  {
 	}
 	else if (errorCode)
 	{
+    console.log('BLE scan error: '+errorCode)
     knownDevices = {};
 		this.displayStatus('Scan Error: ' + errorCode);
 	}

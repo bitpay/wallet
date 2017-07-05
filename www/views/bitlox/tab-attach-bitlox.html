@@ -6,19 +6,19 @@
   </ion-nav-bar>
 
 
-  <ion-content ng-controller="WalletCtrl as vm" >
+  <ion-content ng-controller="WalletCtrl" >
     <br /><br />
-    <div ng-controller="BitLoxCtrl">
+    <!-- <div ng-controller="BitLoxCtrl"> -->
 
-      <div class="list card" ng-hide="bitlox.connected" ng-if="!bitlox.isMobile && vm.timer">
+      <div class="list card" ng-hide="bitlox.connected" ng-if="!bitlox.isMobile && timer">
           <span class="item">
               No BitLox device detected.<br /><br />
               Please turn on your BitLox, enter the device PIN, and select USB mode.<br/><br/>
-              <button class="button button-standard button-primary" ng-click="vm.reset()">Refresh</button>
+              <button class="button button-standard button-primary" ng-click="reset()">Refresh</button>
               <button class="button button-standard button-secondary" ng-if="closeModal" ng-click="closeModal()">Cancel</button>              
           </span>
       </div>
-      <div class="list card"  ng-if="vm.timer" ng-show="bitlox.isMobile && !bitlox.connected">
+      <div class="list card"  ng-if="timer" ng-show="bitlox.isMobile && !bitlox.connected">
         <a class="item item-remove-animate" ng-click="refreshBitlox($event)">
           <span  ng-if="api.getNumDevices() < 1">No devices found - </span>Press here to refresh
         </a>
@@ -38,9 +38,9 @@
       </div>
       <div
         ng-show="bitlox.connected">
-        <!-- <h3 ng-show="vm.readingWallets">Loading wallets</h3> -->
+        <!-- <h3 ng-show="readingWallets">Loading wallets</h3> -->
 
-        <div class="list card"  ng-show="!vm.readingWallets">
+        <div class="list card"  ng-show="!readingWallets">
           <a
           style="padding-top: 2rem; padding-bottom: 2rem"
           class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
@@ -52,8 +52,8 @@
             <i class="icon bp-arrow-right"></i>
           </a>
           <!-- <div class="item" ng-show="createToggle">
-            <wallet-create available-numbers="vm.availableWalletNumbers"
-                           on-finish="vm.onCreateFinished()"></wallet-create>
+            <wallet-create available-numbers="availableWalletNumbers"
+                           on-finish="onCreateFinished()"></wallet-create>
           </div> -->
           <!-- <a class="item item-remove-animate item-icon-right item-icon-left item-big-icon-left" type="item-text-wrap" ng-click="ping()">
             <i class="icon big-icon-svg">
@@ -69,9 +69,9 @@
             <span class="add-type" translate>ENTROPY 1024</span>
             <i class="icon bp-arrow-right"></i>
           </a> -->
-          <a ng-repeat="wallet in vm.wallets"
-                ng-click="vm.loadWallet(wallet)"
-                ng-disabled="vm.openWallet.number == wallet.number"
+          <a ng-repeat="wallet in wallets"
+                ng-click="loadWallet(wallet)"
+                ng-disabled="openWallet.number == wallet.number"
                 style="padding-top: 2rem; padding-bottom: 2rem"
                 class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet">
 
@@ -84,6 +84,6 @@
 
         </div>
       </div>
-    </div>
+    <!-- </div> -->
   </ion-content>
 </ion-view>
