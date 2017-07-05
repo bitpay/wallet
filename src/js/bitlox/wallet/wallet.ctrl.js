@@ -90,6 +90,7 @@
               bitloxWallet.getBip32().then(function() {
                 $timeout($scope.readWallets.bind(vm), 1000).then(function() {
                   _importExtendedPublicKey(wallet)
+                  $scope.resetNewWallet()
                 });
               })
 
