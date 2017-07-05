@@ -253,12 +253,14 @@
                   if($scope.wallet.status && $scope.wallet.status !== api.STATUS_DISCONNECTED) {
                     console.log("disconnected error")
                     $scope.wallet.status = hidstatus;
-                    $ionicLoading.hide();
-                    if($state.current.url === '/create-bitlox') {
-                        $ionicHistory.goBack();
-                    } 
-                    if ($state.current.url === '/create-bitlox' || $state.current.url === '/attach-bitlox') {
-                        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
+                    if($scope.timer) {
+                        $ionicLoading.hide();
+                        if($state.current.url === '/create-bitlox') {
+                            $ionicHistory.goBack();
+                        } 
+                        if ($state.current.url === '/create-bitlox' || $state.current.url === '/attach-bitlox') {
+                            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
+                        }                        
                     }
                   }                              
                   break;
@@ -412,16 +414,18 @@
             $scope.openWallet = null;
             $scope.timer = false;
 
-            // $ionicLoading.show({template: "Finding BitLox, please wait...",duration:3000})
-            // $timeout(function() {
-            //     $scope.timer = true;
-            // },3000);            
+            $ionicLoading.show({template: "Finding BitLox, please wait...",duration:3000})
+            $timeout(function() {
+                $scope.timer = true;
+            },3000);            
             if(platformInfo.isChromeApp) {
-                // api.close().then(function() {api.device()})
-                api.device().then(function() {
-                    if(api.getStatus() === api.STATUS_IDLE) {
-                        $scope.readWallets();
-                    }
+
+                api.disconnect().then(function() {
+                    api.device().then(function() {
+                        if(api.getStatus() === api.STATUS_IDLE) {
+                            $scope.readWallets();
+                        }
+                    })
                 })
             } else {
                 if(api.getStatus() === api.STATUS_IDLE) {

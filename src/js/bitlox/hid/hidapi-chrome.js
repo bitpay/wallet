@@ -440,12 +440,15 @@ function HidApi($q, $timeout, $interval, $rootScope,
         }
         return data;
     };
+    HidApi.clearDevice = function() {
 
+        HidApi._device = null;
+        HidApi._plugin = null;    
+        HidApi.sessionIdHex = null;
+    }
     HidApi.disconnect = function() {
+        HidApi.clearDevice();
         return HidApi.$timeout(function() {
-            HidApi._device = null;
-            HidApi._plugin = null;    
-            HidApi.sessionIdHex = null;
             HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
             console.debug("closed");
         })
