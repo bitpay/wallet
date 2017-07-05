@@ -286,8 +286,8 @@
                 $ionicLoading.hide();
                 if($state.current.url === '/create-bitlox') {
                     $ionicHistory.goBack();
-                    popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
-                } else if ($state.current.url === '/attach-bitlox') {
+                } 
+                if ($state.current.url === '/create-bitlox' || $state.current.url === '/attach-bitlox') {
                     popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
                 }
               }                

@@ -460,7 +460,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         if(!forcePing && !HidApi.sessionIdMatch 
             && command.indexOf(this.commands.ping) != 0 
             && command.indexOf(this.commands.initPrefix) != 0
-            && data.indexOf(deviceCommands.scan_wallet) != 0) {
+            && command.indexOf(this.commands.scan_wallet) != 0) {
             return this._doCommand(this.commands.ping, this.TYPE_PONG).then(function(pingResult) {
                 if(!pingResult) {
                     console.log("session id not found or ping failed")
