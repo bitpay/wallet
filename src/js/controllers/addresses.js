@@ -41,7 +41,6 @@ angular.module('copayApp.controllers').controller('addressesController', functio
           $scope.loading = false;
           return popupService.showAlert(bwcError.msg(err, gettextCatalog.getString('Could not update wallet')));
         }
-
         withBalance = resp.byAddress;
         var idx = lodash.indexBy(withBalance, 'address');
         $scope.noBalance = lodash.reject(allAddresses, function(x) {

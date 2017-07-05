@@ -466,7 +466,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
             && command.indexOf(this.commands.ping) != 0 
             && command.indexOf(this.commands.initPrefix) != 0
             && command.indexOf(this.commands.scan_wallet) != 0) {
-            console.log("checking session with ping")
+            // console.log("checking session with ping")
             return this._doCommand(this.commands.ping, this.TYPE_PONG).then(function(pingResult) {
                 // console.log(JSON.stringify(pingResult))
                 if(!pingResult) {
@@ -587,6 +587,19 @@ function HidApi($q, $timeout, $interval, $rootScope,
             numHex = '0' + numHex;
         }
         return cmd + numHex;
+    };
+
+
+    HidApi.setQrCode = function(index) {
+        var Device = this.protoBuilder();
+        var indexHex = this.hexUtil.toPaddedHex(index, 39) + '00';
+        var indexBuf = this.hexUtil.hexToByteBuffer(indexHex);
+        indexBuf.flip();
+        var indexProtoBuf = new Device.DisplayAddressAsQR({
+            address_handle_index: parseInt(index,10)
+        });
+        var cmd = HidApi.makeCommand(HidApi.commands.qrPrefix, indexProtoBuf);
+        return this._doCommand(cmd);
     };
 
     HidApi.loadWallet = function(walletNumber) {

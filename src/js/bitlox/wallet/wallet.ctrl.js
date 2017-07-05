@@ -178,18 +178,21 @@
                     return;
                   }
 
+                  $scope.updateDeviceQr(walletId, function() {
+                    $ionicLoading.hide()
+                    $ionicHistory.goBack(-3);
+                  })
 
-                  walletService.updateRemotePreferences(walletId);
-                  $ionicLoading.hide()
-                  $ionicHistory.goBack(-3);
 
                 });
                 return;
               }
+              $scope.updateDeviceQr(walletId, function() {
+                $ionicLoading.hide()
+                $ionicHistory.goBack(-3);
+              })
 
-              $ionicLoading.hide()
-              walletService.updateRemotePreferences(walletId);
-              $ionicHistory.goBack(-3);
+              
 
             });
           }).catch(function(e) {
@@ -198,7 +201,15 @@
 
         };
 
-
+        $scope.updateDeviceQr = function(walletId, cb) {
+          walletService.getMainAddresses(walletId, {reverse:true}, function(err, addresses) {
+            var sp = addresses[0].path.split('/')
+            var p = parseInt(sp.pop(),10);
+              
+            api.setQrCode(p+1);
+            cb();
+          });
+        }
         $scope.$watch('api.getBleReady()', function(newVal) {
           if(newVal) {
             $scope.refreshBitlox()

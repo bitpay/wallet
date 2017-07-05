@@ -540,6 +540,13 @@ this.initialize = function(sessionId) {
   var cmd = BleApi.makeCommand(deviceCommands.initPrefix,msg)
   return this.write(cmd, 15000)
 }
+this.setQrCode = function(index) {
+  var indexProtoBuf = new protoDevice.DisplayAddressAsQR({
+      address_handle_index: parseInt(index,10)
+  });
+  var cmd = BleApi.makeCommand(deviceCommands.qrPrefix, indexProtoBuf);
+  return this.write(cmd,15000,true);
+}
 this.ping = function(args) {
   // currentCommand = 'ping' // DO NOT DO THIS
   BleApi.expectedResponseType = BleApi.TYPE_PONG   
