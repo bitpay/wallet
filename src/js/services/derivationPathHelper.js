@@ -44,7 +44,7 @@ angular.module('copayApp.services').factory('derivationPathHelper', ['lodash', '
 
     ret.networkName = '';
     for(var i in CUSTOMNETWORKS) {
-      if(CUSTOMNETWORKS[i]+"'" === arr[2]) {
+      if(CUSTOMNETWORKS[i].derivationCoinPath+"'" === arr[2]) {
         ret.networkName = arr[2]
       }
     }
