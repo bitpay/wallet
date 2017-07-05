@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $filter, $stateParams, $ionicModal, $ionicScrollDelegate, $window, bwcService, gettextCatalog, lodash,  popupService, rateService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService) {
+  function($rootScope, $timeout, $scope, $state, $filter, $stateParams, $ionicModal, $ionicScrollDelegate, $window, bwcService, gettextCatalog, lodash, popupService, rateService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -15,7 +15,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
-
+    $scope.localCurrencySymbol = '$';
+    
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
     });
@@ -282,7 +283,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         var localCurrency = $scope.selectedAlternative.isoCode;
         var btcAmount = 1;
         var currentRate = rateService.toFiat(btcAmount * 1e8, localCurrency);
-        $scope.localCurrencySymbol = '$';
         $scope.localCurrencyPerBtc = $filter('formatFiatAmount')(parseFloat(currentRate.toFixed(2), 10));
 
         walletClient.getFiatRate({
@@ -307,13 +307,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.difference = Math.abs((actualPrice - yesterdayPrice).toFixed(2));
       $scope.percentage = ($scope.difference * 100 / yesterdayPrice).toFixed(2);
 
-      if (actualPrice >= yesterdayPrice) {
-        $scope.percentageSymbol = '+';
-        $scope.negativeProfit = false;
-      } else {
-        $scope.percentageSymbol = '-';
-        $scope.negativeProfit = true;
-      }
+      $scope.negativeProfit = !(actualPrice >= yesterdayPrice);
     };
 
     $scope.hideHomeTip = function() {

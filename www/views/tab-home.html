@@ -23,20 +23,37 @@
       </div>
     </div>
 
-    <div ng-if="showBitcoinPriceEnabled" class="card price-card">
-      <div ng-hide="percentage">
-        <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+    <div ng-if="showBitcoinPriceEnabled" class="list card price-card">
+      <div class="item item-heading">
+        <span>Bitcoin price</span>
       </div>
-      <div ng-show="percentage">
-        <div class="item item-text-wrap">
-          {{localCurrencySymbol}} {{selectedAlternative.isoCode}} {{localCurrencyPerBtc}}
-        </div>
-        <div class="item item-text-wrap item-profit">
-          <span class="positive" ng-class="{negative: negativeProfit}">{{percentageSymbol}}{{difference}}</span>
-          <span class="positive" ng-class="{negative: negativeProfit}">{{percentageSymbol}}{{percentage}}%</span>
+      <div>
+        <div class="item item-sub">
+          <div ng-hide="percentage" class="spinner">
+            <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
+          </div>
+          <div class="price-data">
+            <div ng-show="percentage">
+              <div>
+                <span class="symbol">{{localCurrencySymbol}}</span>
+                <span class="price">{{localCurrencyPerBtc}}</span>
+              </div>
+              <div class="item-profit">
+                <div>
+                  <i class="icon" ng-class="{'negative ion-arrow-down-b' : negativeProfit, 'positive ion-arrow-up-b' : !negativeProfit}"></i>
+                  <span class="difference">{{difference}}</span>
+                </div>
+                <div>
+                  <i class="icon" ng-class="{'negative ion-arrow-down-b' : negativeProfit, 'positive ion-arrow-up-b' : !negativeProfit}"></i>
+                  <span class="percentage">{{percentage}}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    
 
     <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div>
     <div class="list card homeTip" ng-if="homeTip">
@@ -74,9 +91,11 @@
         <i class="icon bp-arrow-right"></i>
         <span class="badge badge-assertive m5t m10r" ng-show="notificationsN>3"> {{notificationsN}}</span>
       </a>
-      <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
-        <span ng-include="'views/includes/walletActivity.html'"></span>
-      </a>
+      <div>
+        <a class="item item-sub activity" ng-repeat="notification in notifications" ng-click="openNotificationModal(notification)">
+          <span ng-include="'views/includes/walletActivity.html'"></span>
+        </a>
+      </div>
     </div>
 
     <div class="list card">

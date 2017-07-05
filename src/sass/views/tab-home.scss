@@ -54,15 +54,31 @@
       }
     }
     &.price-card {
-      text-align: center;
-      .item-profit {
+      .spinner {
+        text-align: center;
+      }
+      .symbol {
+        vertical-align: top;
+      }
+      .price {
+        font-size: 2.3rem;
+      }
+      .price-data {
         display: flex;
-        justify-content: space-around;
-        .positive {
-          color: $v-success-color;
-        }
-        .negative {
-          color: $v-warning-color;
+        justify-content: flex-start;
+        .item-profit {
+          padding-top: 10px;
+          display: flex;
+          justify-content: space-around;
+          .difference, .percentage {
+            color: $v-light-gray;
+          }
+          .positive {
+            color: $v-success-color;
+          }
+          .negative {
+            color: $v-warning-color;
+          }
         }
       }
     }
