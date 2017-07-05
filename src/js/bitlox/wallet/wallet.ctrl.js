@@ -79,66 +79,6 @@
 
 
 
-
-        function checkStatus(hidstatus) {
-          console.warn("New device status: " + hidstatus)
-          switch(hidstatus) {
-          case api.STATUS_CONNECTED:
-              $scope.bitlox.connectAttempted = true;
-              $scope.bitlox.connected = true;
-              $scope.bitlox.statusString = "Bitlox connected";
-              $scope.bitlox.alertClass = "success";
-              $scope.bitlox.glyph = "glyphicon-ok";
-              break;
-          case api.STATUS_IDLE:
-              $scope.bitlox.connectAttempted = true;
-              $scope.bitlox.connected = true;
-              $scope.bitlox.statusString = "Bitlox idle";
-              $scope.bitlox.alertClass = "success";
-              $scope.bitlox.glyph = "glyphicon-ok";
-              break;
-          case api.STATUS_CONNECTING:
-              $scope.bitlox.connectAttempted = true;
-              $scope.bitlox.connected = false;
-              $scope.bitlox.statusString = "Bitlox connecting";
-              $scope.bitlox.alertClass = "success";
-              $scope.bitlox.glyph = "glyphicon-refresh";
-              break;
-          case api.STATUS_INITIALIZING:
-              $scope.bitlox.connectAttempted = true;
-              $scope.bitlox.connected = false;
-              $scope.bitlox.statusString = "Bitlox initializing";
-              $scope.bitlox.alertClass = "success";
-              $scope.bitlox.glyph = "glyphicon-refresh";
-              break;          
-          case api.STATUS_DISCONNECTED:
-              $scope.bitlox.statusString = "Bitlox disconnected!";
-              $scope.bitlox.alertClass = "danger";
-              $scope.bitlox.glyph = "glyphicon-remove";
-              $scope.bitlox.connected = false;
-              break;
-          case api.STATUS_WRITING:
-              $scope.bitlox.connectAttempted = true;
-              // $scope.bitlox.connected = true;
-              $scope.bitlox.statusString = "Bitlox writing";
-              $scope.bitlox.alertClass = "info";
-              $scope.bitlox.glyph = "glyphicon-upload";
-              break;
-          case api.STATUS_READING:
-              $scope.bitlox.connectAttempted = true;
-              // $scope.bitlox.connected = true;
-              $scope.bitlox.statusString = "Bitlox reading";
-              $scope.bitlox.alertClass = "info";
-              $scope.bitlox.glyph = "glyphicon-download";
-              break;
-          default:
-              $scope.bitlox.connected = false;
-              $scope.bitlox.statusString = null;
-          }
-
-          $scope.wallet.status = hidstatus;
-        }
-
         $scope.createWallet = function() {
             $ionicLoading.show({template: "Creating Wallet, Check Your BitLox"})
             $scope.creatingWallet = true;
@@ -264,35 +204,92 @@
           }
         });
         $scope.$watch('api.getStatus()', function(newVal) {
-            if(newVal === api.STATUS_CONNECTED) {
-                $rootScope.$broadcast('bitloxConnectSuccess')
-                // only read wallets if we are on the add bitlox screen
-                if($state.current.url === '/attach-bitlox') {
-                    $scope.readWallets(); 
-                }
-                $timeout.cancel($rootScope.bitloxConnectTimer)
-            } else if (newVal === api.STATUS_INITIALIZING) {
-                var session = new Date().getTime(true);
-                api.initialize(session).then(function(res) {
-                    if(!res || res.type === api.TYPE_ERROR) {
-                        $ionicLoading.hide();
-                        popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Initialization Error.");
-                        api.disconnect();
+
+
+          console.warn("New device status: " + hidstatus)
+          switch(hidstatus) {
+              case api.STATUS_CONNECTED:
+                  $scope.bitlox.connectAttempted = true;
+                  $scope.bitlox.connected = true;
+                  $scope.bitlox.statusString = "Bitlox connected";
+                  $scope.bitlox.alertClass = "success";
+                  $scope.bitlox.glyph = "glyphicon-ok";
+
+                    $rootScope.$broadcast('bitloxConnectSuccess')
+                    // only read wallets if we are on the add bitlox screen
+                    if($state.current.url === '/attach-bitlox') {
+                        $scope.readWallets(); 
                     }
-                });
-            } else if (newVal === api.STATUS_DISCONNECTED) {
-              if($scope.wallet.status && $scope.wallet.status !== api.STATUS_DISCONNECTED) {
-                console.log("disconnected error")
-                $ionicLoading.hide();
-                if($state.current.url === '/create-bitlox') {
-                    $ionicHistory.goBack();
-                } 
-                if ($state.current.url === '/create-bitlox' || $state.current.url === '/attach-bitlox') {
-                    popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
-                }
-              }                
-            }
-            checkStatus(newVal);
+                    $timeout.cancel($rootScope.bitloxConnectTimer)              
+                  break;
+              case api.STATUS_IDLE:
+                  $scope.bitlox.connectAttempted = true;
+                  $scope.bitlox.connected = true;
+                  $scope.bitlox.statusString = "Bitlox idle";
+                  $scope.bitlox.alertClass = "success";
+                  $scope.bitlox.glyph = "glyphicon-ok";
+                  break;
+              case api.STATUS_CONNECTING:
+                  $scope.bitlox.connectAttempted = true;
+                  $scope.bitlox.connected = false;
+                  $scope.bitlox.statusString = "Bitlox connecting";
+                  $scope.bitlox.alertClass = "success";
+                  $scope.bitlox.glyph = "glyphicon-refresh";
+                  break;
+              case api.STATUS_INITIALIZING:
+                  $scope.bitlox.connectAttempted = true;
+                  $scope.bitlox.connected = false;
+                  $scope.bitlox.statusString = "Bitlox initializing";
+                  $scope.bitlox.alertClass = "success";
+                  $scope.bitlox.glyph = "glyphicon-refresh";
+                    var session = new Date().getTime(true);
+                    api.initialize(session).then(function(res) {
+                        if(!res || res.type === api.TYPE_ERROR) {
+                            $ionicLoading.hide();
+                            popupService.showAlert(gettextCatalog.getString('Error'), "BitLox Initialization Error.");
+                            api.disconnect();
+                        }
+                    });              
+                  break;          
+              case api.STATUS_DISCONNECTED:
+                  $scope.bitlox.statusString = "Bitlox disconnected!";
+                  $scope.bitlox.alertClass = "danger";
+                  $scope.bitlox.glyph = "glyphicon-remove";
+                  $scope.bitlox.connected = false;
+
+                  if($scope.wallet.status && $scope.wallet.status !== api.STATUS_DISCONNECTED) {
+                    console.log("disconnected error")
+                    $scope.wallet.status = hidstatus;
+                    $ionicLoading.hide();
+                    if($state.current.url === '/create-bitlox') {
+                        $ionicHistory.goBack();
+                    } 
+                    if ($state.current.url === '/create-bitlox' || $state.current.url === '/attach-bitlox') {
+                        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('BitLox Connection Error'));
+                    }
+                  }                              
+                  break;
+              case api.STATUS_WRITING:
+                  $scope.bitlox.connectAttempted = true;
+                  // $scope.bitlox.connected = true;
+                  $scope.bitlox.statusString = "Bitlox writing";
+                  $scope.bitlox.alertClass = "info";
+                  $scope.bitlox.glyph = "glyphicon-upload";
+                  break;
+              case api.STATUS_READING:
+                  $scope.bitlox.connectAttempted = true;
+                  // $scope.bitlox.connected = true;
+                  $scope.bitlox.statusString = "Bitlox reading";
+                  $scope.bitlox.alertClass = "info";
+                  $scope.bitlox.glyph = "glyphicon-download";
+                  break;
+              default:
+                  $scope.bitlox.connected = false;
+                  $scope.bitlox.statusString = null;
+          }
+
+          $scope.wallet.status = hidstatus;
+
         })
 
         $scope.readWallets = function() {
