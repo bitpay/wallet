@@ -851,7 +851,8 @@ this.connect = function(address)	{
   });  
   this.timeout = $timeout(function() {
     
-    if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) {     
+    if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) {
+      console.log('connection timeout')     
       BleApi.disconnect();
       $rootScope.$broadcast('bitloxConnectError'); 
 
@@ -933,7 +934,6 @@ this.write = function(data, timer, noPromise, forcePing) {
     status = BleApi.STATUS_WRITING
   });
 
-  if(!noPromise) this.currentPromise = $q.defer();
 
   if(!forcePing && !this.sessionIdMatch 
     && data.indexOf(deviceCommands.ping) != 0 
@@ -965,6 +965,7 @@ this.write = function(data, timer, noPromise, forcePing) {
 
   }
 
+  if(!noPromise) this.currentPromise = $q.defer();
   var chunkSize = 128;
   var thelength = data.length;
   var iterations = Math.floor(thelength/chunkSize);

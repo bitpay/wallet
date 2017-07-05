@@ -446,7 +446,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $timeout(function() {
       $scope.$apply();
     });
-    popupService.showAlert(gettextCatalog.getString('Error at confirm'), bwcError.msg(msg));
+    popupService.showAlert(gettextCatalog.getString('Error sending transaction'), bwcError.msg(msg));
   };
 
   $scope.openPPModal = function() {

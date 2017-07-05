@@ -146,6 +146,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.loading = true;
     
     destroyBitloxListeners();
+    console.log("ALLKJSDFLJWORUSDFJKHW#IL*YSDFILUHW#YILWERSEFUILGY")
     walletService.publishAndSign($scope.wallet, $scope.tx, function(err, txp) {
       $scope.$emit('UpdateTx');
       if (err) return setError(err, gettextCatalog.getString('Could not send payment'));
