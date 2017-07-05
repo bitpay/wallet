@@ -908,8 +908,12 @@ this.disconnect = function() {
   currentCommand = null
 
   this.sessionIdHex = null;
-  $timeout.cancel(BleApi.timeout)
-  evothings.ble.close(BleApi.deviceHandle)
+  if(BleApi.timeout && BleApi.timeout.$$state.value !== 'canceled') {
+    $timeout.cancel(BleApi.timeout)
+  }
+  if(BleApi.deviceHandle) {
+    evothings.ble.close(BleApi.deviceHandle)
+  }
   $rootScope.$applyAsync(function() {
     status = BleApi.STATUS_DISCONNECTED;
   })
