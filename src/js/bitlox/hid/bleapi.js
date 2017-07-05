@@ -676,7 +676,6 @@ this.getServices = function() {
 				{
 					var descriptor = characteristic.descriptors[di];
           if(!descriptor) {
-            console.log("REALLLLLLLLLY")
             return false;
           }
 
@@ -688,7 +687,6 @@ this.getServices = function() {
 					if (characteristic.uuid == '0000ff91-0000-1000-8000-00805f9b34fb' &&
 						descriptor.uuid == '00002901-0000-1000-8000-00805f9b34fb')
 					{
-            console.log("REALLY????????????????????")
 						BleApi.descriptorName = descriptor.handle;
 					}
 				}
@@ -780,7 +778,7 @@ this.bleWrite = function(writeFunc, deviceHandle, handle, value, cb) {
       function()
       {
       // 					alert(writeFunc + ': ' + handle + ' success.');
-        console.log(writeFunc + ': ' + JSON.stringify(handle) + ' success.');
+        // console.log(writeFunc + ': ' + JSON.stringify(handle) + ' success.');
         BleApi.sessionIdMatch = false;
         if(cb) cb();
       },
@@ -788,7 +786,7 @@ this.bleWrite = function(writeFunc, deviceHandle, handle, value, cb) {
       {
           // 					alert(writeFunc + ': ' + handle + ' error: ' + errorCode);
 
-        console.log(writeFunc + ': ' + JSON.stringify(handle) + ' error: ' + errorCode);
+        // console.log(writeFunc + ': ' + JSON.stringify(handle) + ' error: ' + errorCode);
         if(cb) cb(new Error(writeFunc + ': ' + JSON.stringify(handle) + ' error: ' + errorCode));
       });
   }
@@ -866,7 +864,7 @@ this.connect = function(address)	{
   evothings.ble.stopScan();
 
   evothings.ble.connect(address, function(device) {
-    console.log('new device state: '+device.state)
+    // console.log('new device state: '+device.state)
     if (device.state == 2) {
       BleApi.deviceHandle = device.deviceHandle;
       BleApi.getServices();
@@ -927,7 +925,7 @@ this.disconnect = function() {
 }
 // old sliceAndWrite64, 'data' is a command constant
 this.write = function(data, timer, noPromise, forcePing) {
-  console.log("ready to write status: " + status + ": command: " +data)
+  // console.log("ready to write status: " + status + ": command: " +data)
   if(status !== BleApi.STATUS_INITIALIZING && status !== BleApi.STATUS_CONNECTED && status !== BleApi.STATUS_IDLE) {
     // return if the device isn't currently idle
     if(status == BleApi.STATUS_DISCONNECTED) {
@@ -945,7 +943,7 @@ this.write = function(data, timer, noPromise, forcePing) {
     && data.indexOf(deviceCommands.ping) != 0 
     && data.indexOf(deviceCommands.initPrefix) != 0
     && data.indexOf(deviceCommands.scan_wallet) != 0) {
-        console.log('checking session, for command: '+data)
+        // console.log('checking session, for command: '+data)
         var msg = new protoDevice.Ping();
         var pingString = BleApi.makeCommand(deviceCommands.ping,msg)
 
@@ -1145,6 +1143,8 @@ this.sendData = function(data,type,retainCommand) {
       status = BleApi.STATUS_IDLE;
     }    
   })
+  // console.log(type)
+  // console.log(BleApi.expectedResponseType)
 
   if(!retainCommand && type !== BleApi.expectedResponseType) {
     console.warn("UNEXPECTED RESPONSE: " + type)
@@ -1157,7 +1157,7 @@ this.sendData = function(data,type,retainCommand) {
 this.processResults = function(command, length, payload) {
   // 			console.log("RX: " + command);
   command = command.substring(2, 4)
-  console.log('to process: ' + command + ' ' + length + ' ' + payload);
+  // console.log('to process: ' + command + ' ' + length + ' ' + payload);
   switch (command) {
     case "3a": // initialize
     case "3A":
@@ -1271,7 +1271,7 @@ this.processResults = function(command, length, payload) {
 
     case "35": // general purpose error/cancel
       var Failure = protoDevice.Failure.decodeHex(payload);
-      this.sendData({}, Failure,BleApi.TYPE_ERROR)
+      this.sendData(Failure, BleApi.TYPE_ERROR)
       break;
 
     case "36": // device uuid return
