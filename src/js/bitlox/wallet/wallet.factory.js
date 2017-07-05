@@ -255,10 +255,12 @@
                                 template: 'Broadcasting Transaction. Please Wait...'
                               });
                               wallet.getMainAddresses({reverse:true}, function(err, addresses) {                          
-                                var sp = addresses[0].path.split('/')
-                                var p = parseInt(sp.pop(),10);
-                                  
-                                api.setQrCode(p+1);
+                                if(addresses.length > 0) {
+                                  var sp = addresses[0].path.split('/')
+                                  var p = parseInt(sp.pop(),10);
+                                    
+                                  api.setQrCode(p+1);              
+                                }
                               });                                                
                               // comment out thes 5 lines and send `return cb(null,txp) to skip broadcast`
                               return txUtil.submit(tx.signedHex).then(function() {
