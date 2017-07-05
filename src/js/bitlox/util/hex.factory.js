@@ -59,9 +59,9 @@
         }
 
         function hexToByteBuffer(hex) {
-            console.debug("converting to byte buffer");
-            console.debug(hex)
-            console.debug(hex.toString('hex'))
+            // console.debug("converting to byte buffer");
+            // console.debug(hex)
+            // console.debug(hex.toString('hex'))
             var buf = new ByteBuffer();
             var hexLen = hex.length;
             for(var i = 0; i < hexLen; i+=2) {
