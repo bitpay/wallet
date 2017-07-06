@@ -142,12 +142,20 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
   var checkTransaction = lodash.throttle(function(count, dataSrc) {
     mercadoLibreService.createGiftCard(dataSrc, function(err, giftCard) {
       $log.debug("creating gift card " + count);
-      if (err || !giftCard.pin) {
+      if (err) {
         $scope.sendStatus = '';
         ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
         giftCard = {};
         giftCard.status = 'FAILURE';
       }
+
+      if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
+        $scope.sendStatus = '';
+        ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
+        giftCard = {};
+        giftCard.status = 'FAILURE';
+      }
+
 
       if (giftCard.status == 'PENDING' && count < 3) {
         $log.debug("Waiting for payment confirmation");

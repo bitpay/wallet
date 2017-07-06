@@ -24,18 +24,15 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardsController',
     };
 
     $scope.updatePendingGiftCards = lodash.debounce(function() {
-      $scope.updatingPending = {};
       updateGiftCards(function() {
         var index = 0;
         var gcds = $scope.giftCards;
         lodash.forEach(gcds, function(dataFromStorage) {
-          if (dataFromStorage.status == 'PENDING' || dataFromStorage.status == 'invalid') {
+          if (dataFromStorage.status == 'PENDING') {
             $log.debug("Creating / Updating gift card");
-            $scope.updatingPending[dataFromStorage.invoiceId] = true;
 
             mercadoLibreService.createGiftCard(dataFromStorage, function(err, giftCard) {
 
-              $scope.updatingPending[dataFromStorage.invoiceId] = false;
               if (err) {
                 popupService.showAlert('Error creating gift card', err);
                 return;
@@ -43,6 +40,12 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardsController',
 
               if (giftCard.status != 'PENDING') {
                 var newData = {};
+
+                if (!giftCard.status) dataFromStorage.status = null; // Fix error from server
+
+                var cardStatus = giftCard.cardStatus;
+                if (cardStatus && (cardStatus != 'active' && cardStatus != 'inactive' && cardStatus != 'expired'))
+                  giftCard.status = 'FAILURE';
 
                 lodash.merge(newData, dataFromStorage, giftCard);
 

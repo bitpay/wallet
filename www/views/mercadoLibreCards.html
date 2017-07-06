@@ -12,19 +12,20 @@
            class="item item-avatar"
            ng-hide="hideCards">
         <img src="img/mercado-libre/icon-ml.svg" alt="{{id}}" width="40">
-        <ion-spinner class="spinner-dark recent right m10 size-16" icon="crescent" ng-show="updatingPending[item.invoiceId]">
-        </ion-spinner>
+
+        <span class="item-note">
+          <span class="assertive" ng-if="item.status == 'FAILURE'" translate>Error</span>
+          <span class="dark" ng-if="item.status == 'expired'" translate>Invoice expired</span>
+          <span class="calm" ng-if="item.status == 'invalid'" translate>Still pending</span>
+          <span class="positive" ng-if="item.status == 'PENDING'" translate>Pending</span>
+
+          <span class="assertive" ng-if="item.cardStatus == 'inactive'" translate>Inactive</span>
+          <span class="assertive" ng-if="item.cardStatus == 'expired'" translate>Expired</span>
+        </span>
         <h2 ng-if="item.amount">
-          {{item.amount | currency : '$ ' : 2}} {{item.currency}}
-        </h2> 
-        <p>
-          <span class="assertive" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
-          <span class="assertive" ng-if="item.status == 'expired'">Expired</span>
-          <span class="assertive" ng-if="item.status == 'invalid'">Still waiting confirmation<br> (Use higher fees setting to faster delivery)</span>
-          <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
-          <span class="assertive" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
-          <span class="text-gray">{{item.date | amTimeAgo}}</span>
-        </p>
+          {{item.amount | currency : '' : 2}} {{item.currency}}
+        </h2>
+        <p class="dark">{{item.date | amTimeAgo}}</p>
       </div>
     </div>
   </ion-content>

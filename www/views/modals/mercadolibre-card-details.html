@@ -1,82 +1,75 @@
-<ion-modal-view ng-controller="mercadoLibreCardDetailsController">
+<ion-modal-view id="meli-card" ng-controller="mercadoLibreCardDetailsController">
   <ion-header-bar align-title="center" class="bar-royal">
-    <button class="button button-back button-clear" ng-click="cancel()">
+    <button class="button button-back button-clear" ng-click="cancel()" translate>
       Close
     </button>
-    <h1 class="title">Details</h1>
+    <h1 class="title" translate>Details</h1>
   </ion-header-bar>
 
   <ion-content>
 
-      <div class="header-modal text-center">
-        <img src="img/mercado-libre/giftcard-pt.svg" alt="Mercado Libre Gift Card" width="230" ng-click="refreshGiftCard()">
+    <div class="card-head">
+      <img src="img/mercado-libre/giftcard-pt.svg" alt="Mercado Libre Gift Card" width="230" ng-click="refreshGiftCard()">
 
-        <div class="m10t">
-          Gift Card Amount:
-          <span class="text-bold">
-            {{card.amount | currency : '$ ' : 2}}
-          </span>
-        </div>
+      <div class="amount">
+        {{card.amount | currency : '' : 2}} {{card.currency}}
+      </div>
+    </div>
 
+    <div class="card-status">
+      <div ng-show="card.cardStatus == 'active'">
+        <div class="redeem-pin" copy-to-clipboard="card.pin">{{card.pin}}</div>
+        <button class="button-redeem"
+                ng-click="openExternalLink('https://www.mercadolivre.com.br/redeem?pin=' + card.pin)" translate>
+          Redeem Now
+        </button>
+      </div>
 
-        <div class="m10t">
-          <span translate>Created</span>
+      <div ng-show="card.cardStatus == 'inactive'">
+        <span class="assertive" translate>Inactive</span>
+        <div class="card-status-desc" translate>Gift Card is not available to use anymore</div>
+      </div>
+
+      <div ng-show="card.cardStatus == 'expired'">
+        <span class="assertive" translate>Expired</span>
+        <div class="card-status-desc" translate>Gift Card is not available to use anymore</div>
+      </div>
+
+      <div ng-show="card.status">
+        <span class="positive" ng-show="card.status == 'PENDING'" translate>
+          Pending
+        </span>
+        <span class="calm" ng-show="card.status=='invalid'" translate>
+          Still pending
+        </span>
+        <span class="assertive" ng-show="card.status == 'FAILURE'" translate>
+          Error
+        </span>
+        <span class="dark" ng-show="card.status == 'expired'" translate>
+          Invoice expired
+        </span>
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="item">
+        <span translate>Created</span>
+        <span class="item-note">
           {{card.date | amTimeAgo}}
-        </div>
-
-
-        <div ng-show="card.pin">
-          <div ng-show="card.cardStatus !== 'inactive' && card.cardStatus !== 'expired'">
-            Claim code: <span class="text-bold" copy-to-clipboard="card.pin">{{card.pin}}</span>
-          </div>
-          <div class="m10t" ng-show="card.status == 'active'">
-            <button class="button button-positive"
-                    ng-click="openExternalLink('https://www.mercadolivre.com.br/redeem?pin=' + card.pin)">
-              Redeem Now
-            </button>
-          </div>
-          <div class="m10t" ng-show="card.cardStatus == 'inactive'">
-            <div class="m10t">
-              Status:
-              <span class="text-bold">
-                Inactive
-              </span>
-            </div>
-          </div>
-        </div>
-        <div ng-show="!card.pin">
-          <div class="m10t">
-            Status:
-            <span class="text-bold" ng-show="card.status == 'PENDING'">
-              PENDING
-            </span>
-            <span class="text-bold" ng-show="card.status=='invalid'">
-              STILL PENDING
-            </span>
-
-            <span class="text-bold" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
-              FAILURE
-            </span>
-            <span class="text-bold" ng-show="card.status == 'expired'">
-              EXPIRED
-            </span>
-          </div>
-        </div>
-        <div class="m10t text-center">
-          <a class="button button-clear button-calm" ng-click="openExternalLink(card.invoiceUrl)">See invoice</a>
-        </div>
+        </span>
       </div>
 
-      <div class="box-notification warning" ng-show="card.status == 'FAILURE' || card.status == 'RESEND'">
-          There was a failure to the create gift card. Please, contact BitPay support.
+      <div class="item item-icon-right" ng-click="openExternalLink(card.invoiceUrl)" translate>
+        <i class="icon bp-arrow-right"></i>
+        See invoice
       </div>
+    </div>
 
-      <div class="list text-center">
-        <a class="item" ng-show="card.status == 'FAILURE' || card.cardStatus == 'Canceled'
-          || card.cardStatus == 'Expired' || card.status == 'expired'" ng-click="remove()">
-          <span class="assertive">Remove</span>
-        </a>
-      </div>
+    <div class="card-remove" ng-show="card.status == 'FAILURE' || card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'">
+      <button class="button-remove" ng-click="remove()" translate>
+        Remove
+      </button>
+    </div>
 
   </ion-content>
 </ion-modal-view>

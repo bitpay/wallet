@@ -140,7 +140,7 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
       $log.info('Mercado Libre Gift Card Create/Update: ' + status);
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Mercado Libre Gift Card Create/Update: ' + data.data.message);
+      $log.error('Mercado Libre Gift Card Create/Update: ', JSON.stringify(data.data));
       return cb(data.data);
     });
   };
