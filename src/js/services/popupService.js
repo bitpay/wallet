@@ -72,7 +72,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     var okText = gettextCatalog.getString('OK');
     var cancelText = gettextCatalog.getString('Cancel');
     title = title ? title : '';
-    navigator.notification.prompt(message, onPrompt, title, [cancelText, okText], opts.defaultText);
+    navigator.notification.prompt(message, onPrompt, title, [okText, cancelText], opts.defaultText);
   };
 
   /**
