@@ -66,7 +66,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         }
       }, 100);
     }
-    var dataExtMatch = (/^[A-Za-z]+:\?r=([\w+])/).match(data);
+    var dataExtMatch = data.match(/^[A-Za-z]+:\?r=([\w+])/);
     // data extensions for Payment Protocol with non-backwards-compatible request
     if (dataExtMatch) {
 
