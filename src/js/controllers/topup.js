@@ -203,7 +203,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       createTx(wallet, invoice, message, function(err, ctxp) {
         ongoingProcess.set('loadingTxInfo', false);
         if (err) {
-          showErrorAndBack(err.title, err.message);
+          showError(err.title, err.message);
           return;
         }
 
