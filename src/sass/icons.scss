@@ -20,7 +20,11 @@
 .item.item-big-icon-left {
   padding-left: 74px;
 }
-
+.bg {
+  &.wallet {
+    padding: .25rem
+  }
+}
 
 .icon-svg {
   display: flex;
