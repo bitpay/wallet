@@ -11,7 +11,8 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     priority: gettext('Priority'),
     normal: gettext('Normal'),
     economy: gettext('Economy'),
-    superEconomy: gettext('Super Economy')
+    superEconomy: gettext('Super Economy'),
+    custom: gettext('Custom')
   };
 
   var cache = {
@@ -24,6 +25,9 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
 
   root.getFeeRate = function(network, feeLevel, cb) {
+
+    if (feeLevel == 'custom') return cb();
+
     network = network || 'livenet';
 
     root.getFeeLevels(function(err, levels, fromCache) {
