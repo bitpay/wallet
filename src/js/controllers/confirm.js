@@ -202,7 +202,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp.inputs = tx.sendMaxInfo.inputs;
       txp.fee = tx.sendMaxInfo.fee;
     } else {
-      txp.feeLevel = tx.feeLevel;
+      if (tx.feeLevel == 'custom') {
+        txp.feePerKb = tx.feeRate;
+      } else txp.feeLevel = tx.feeLevel;
     }
 
     txp.message = tx.description;
@@ -245,12 +247,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     refresh();
 
     // End of quick refresh, before wallet is selected.
-    if (!wallet)return cb();
+    if (!wallet) return cb();
 
     feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
       if (err) return cb(err);
 
-      tx.feeRate = feeRate;
+      if (tx.feeLevel != 'custom') tx.feeRate = feeRate;
       tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
 
       if (!wallet)
@@ -294,8 +296,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
           var per = (txp.fee / (txp.amount + txp.fee) * 100);
           txp.feeRatePerStr = per.toFixed(2) + '%';
-          txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER; 
-
+          txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
 
           tx.txp[wallet.id] = txp;
           $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
@@ -558,9 +559,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     scope.network = tx.network;
     scope.feeLevel = tx.feeLevel;
     scope.noSave = true;
+    if (tx.feeLevel == 'custom') scope.feePerSatByte = (tx.feeRate / 1000).toFixed();
 
     $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
       scope: scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false
     }).then(function(modal) {
       scope.chooseFeeLevelModal = modal;
       scope.openModal();
@@ -569,18 +573,19 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       scope.chooseFeeLevelModal.show();
     };
 
-    scope.hideModal = function(customFeeLevel) {
+    scope.hideModal = function(newFeeLevel, customFeePerKBValue) {
       scope.chooseFeeLevelModal.hide();
-      $log.debug('Custom fee level choosen:' + customFeeLevel + ' was:' + tx.feeLevel);
-      if (tx.feeLevel == customFeeLevel)
-        return;
+      $log.debug('New fee level choosen:' + newFeeLevel + ' was:' + tx.feeLevel);
 
-      tx.feeLevel = customFeeLevel;
+      if (tx.feeLevel == newFeeLevel && !customFeePerKBValue) return;
+
+      tx.feeLevel = newFeeLevel;
+      if (customFeePerKBValue) tx.feeRate = parseInt(customFeePerKBValue);
+
       updateTx(tx, wallet, {
         clearCache: true,
-        dryRun: true,
-      }, function() {
-      });
+        dryRun: true
+      }, function() {});
     };
   };
 
