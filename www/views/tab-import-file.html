@@ -22,6 +22,14 @@
     </label>
 
     <div class="item item-divider"></div>
+    <a class="item item-icon-left item-big-icon-left item-icon-right wallet" ng-hide="customParam" ng-click="showNetworkSelector()">
+      <span class="label" translate>Currency</span>
+      <i class="icon big-icon-svg" wallet-icon data-wallet="network">
+      </i>
+      <div>{{network.alias}}</div>
+      <i class="icon bp-arrow-right"></i>
+    </a>
+    <div class="item item-divider"></div>
 
     <a class="item" ng-click="showAdvChange()">
       <span translate ng-show="!showAdv">Show advanced options</span>
@@ -30,6 +38,10 @@
 
     <div ng-show="showAdv">
       <label class="item item-input item-stacked-label">
+        <span class="input-label">Custom Wallet Parameter</span>
+        <input type="text" autocomplete="off" autocapitalize="off" ng-model="formData.customParam" placeholder="">
+      </label>        
+      <label class="item item-input item-stacked-label" ng-hide="formData.customParam">
         <span class="input-label">Wallet Service URL</span>
         <input type="text" ng-model="formData.bwsurl">
       </label>
@@ -38,5 +50,13 @@
 
   <button type="submit" class="button button-standard button-primary" ng-disabled="importForm.$invalid || !formData.password" translate>
     Import backup
-  </button>
+  </button>  
 </form>
+  <network-selector
+      network-selector-title="networkSelectorTitle"
+      network-selector-networks="networks"
+      network-selector-selected-network="network"
+      network-selector-show="showNetworks"
+      network-selector-on-select="onNetworkSelect">
+    </network-selector>
+

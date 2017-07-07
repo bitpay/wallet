@@ -10,7 +10,7 @@ angular.module('copayApp.directives')
       link: function(scope, element, attrs) {
         
         scope.bitlox = false;
-        if(scope.wallet.isPrivKeyExternal() && scope.wallet.getPrivKeyExternalSourceName().indexOf('bitlox') > -1) {
+        if(scope.wallet && scope.wallet.isPrivKeyExternal && scope.wallet.isPrivKeyExternal() && scope.wallet.getPrivKeyExternalSourceName().indexOf('bitlox') > -1) {
           scope.bitlox = true;
         }
 

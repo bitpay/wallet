@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet) {
-
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, CUSTOMNETWORKS, customNetworkService) {
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
@@ -17,7 +16,11 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.formData.account = 1;
       $scope.importErr = false;
       $scope.isCopay = appConfigService.name == 'copay';
+
       $scope.fromHardwareWallet = { value: false };
+      $scope.networks = CUSTOMNETWORKS;
+      $scope.network = CUSTOMNETWORKS['livenet']
+
 
       if ($stateParams.code)
         $scope.processWalletInfo($stateParams.code);
@@ -58,6 +61,16 @@ angular.module('copayApp.controllers').controller('importController',
         $scope.$apply();
       });
     };
+    $scope.showNetworkSelector = function() {
+      $scope.networkSelectorTitle = gettextCatalog.getString('Select currency');
+      $scope.showNetworks = true;
+    };
+    $scope.onNetworkSelect = function(network) {
+      $scope.network = network
+      $scope.formData.derivationPath = derivationPathHelper.getDefault(network.name);
+      $scope.formData.bwsurl = network.bwsUrl;
+      $scope.showNetworks = false;
+    }
 
     $scope.processWalletInfo = function(code) {
       if (!code) return;
@@ -110,15 +123,15 @@ angular.module('copayApp.controllers').controller('importController',
       opts.password = null;
 
       $timeout(function() {
-        profileService.importWallet(str2, opts, function(err, client) {
-          ongoingProcess.set('importingWallet', false);
-          if (err) {
-            popupService.showAlert(gettextCatalog.getString('Error'), err);
-            return;
+          profileService.importWallet(str2, opts, function(err, client) {
+            ongoingProcess.set('importingWallet', false);
+            if (err) {
+              popupService.showAlert(gettextCatalog.getString('Error'), err);
+              return;
 
-          }
-          finish(client);
-        });
+            }
+            finish(client);
+          });
       }, 100);
     };
 
@@ -174,22 +187,29 @@ angular.module('copayApp.controllers').controller('importController',
       ongoingProcess.set('importingWallet', true);
 
       $timeout(function() {
-        profileService.importMnemonic(words, opts, function(err, client) {
+        customNetworkService.getCustomNetwork($scope.formData.customParam).then(function(customNet) {
+          if(customNet) {
+            opts.derivationStrategy = "BIP44";
+            opts.bwsurl = customNet.bwsUrl
+            opts.network = customNet.network
+            opts.networkName = customNet.network
+          }        
+          profileService.importMnemonic(words, opts, function(err, client) {
+            ongoingProcess.set('importingWallet', false);
 
-          ongoingProcess.set('importingWallet', false);
-
-          if (err) {
-            if (err instanceof errors.NOT_AUTHORIZED) {
-              $scope.importErr = true;
-            } else {
-              popupService.showAlert(gettextCatalog.getString('Error'), err);
+            if (err) {
+              if (err instanceof errors.NOT_AUTHORIZED) {
+                $scope.importErr = true;
+              } else {
+                popupService.showAlert(gettextCatalog.getString('Error'), err);
+              }
+              return $timeout(function() {
+                $scope.$apply();
+              });
             }
-            return $timeout(function() {
-              $scope.$apply();
-            });
-          }
-          finish(client);
-        });
+            finish(client);
+          });
+        })
       }, 100);
     };
 
@@ -251,27 +271,40 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       opts.account = pathData.account;
-      opts.networkName = pathData.networkName;
+      // opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
 
-      var words = $scope.formData.words || null;
 
-      if (!words) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the recovery phrase'));
-        return;
-      } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
-        return _importExtendedPrivateKey(words, opts);
-      } else if (words.indexOf('xpub') == 0 || words.indexOf('tpuv') == 0) {
-        return _importExtendedPublicKey(words, opts);
-      } else {
-        var wordList = words.split(/[\u3000\s]+/);
-
-        if ((wordList.length % 3) != 0) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Wrong number of recovery words: ') + wordList.length);
-          return;
-        }
+      var networkName = $scope.network.name
+      if($scope.formData.customParam) {
+        networkName = $scope.formData.customParam;
       }
+      customNetworkService.getCustomNetwork(networkName).then(function(customNet) {
+        if(customNet) {
+          opts.derivationStrategy = "BIP44";
+          opts.bwsurl = customNet.bwsUrl
+          opts.network = customNet.network
+          opts.networkName = customNet.network
+        }          
+        var words = $scope.formData.words || null;
 
+        if (!words) {
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the recovery phrase'));
+          return;
+        } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
+          return _importExtendedPrivateKey(words, opts);
+        } else if (words.indexOf('xpub') == 0 || words.indexOf('tpuv') == 0) {
+          return _importExtendedPublicKey(words, opts);
+        } else {
+          var wordList = words.split(/[\u3000\s]+/);
+
+          if ((wordList.length % 3) != 0) {
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Wrong number of recovery words: ') + wordList.length);
+            return;
+          }
+        }
+
+<<<<<<< HEAD
       opts.passphrase = $scope.formData.passphrase || null;
 
       if ($scope.fromHardwareWallet.value) {
@@ -285,6 +318,13 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       _importMnemonic(words, opts);
+=======
+        opts.passphrase = $scope.formData.passphrase || null;
+        _importMnemonic(words, opts);        
+      });
+
+
+>>>>>>> ../src/js/bitlox/util/
     };
 
     $scope.importTrezor = function(account, isMultisig) {
