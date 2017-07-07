@@ -21,7 +21,7 @@
     <preference name="WindowsStoreDisplayName" value="*WINDOWSSTOREDISPLAYNAME*"/>
 
     <!-- <preference name="KeyboardDisplayRequiresUserAction" value="false" /> -->
-    <preference name="StatusBarBackgroundColor" value="#1e3186" />
+    <preference name="StatusBarBackgroundColor" value="*STATUSBARCOLOR*" />
     <preference name="BackupWebStorage" value="none"/>
     <preference name="windows-target-version" value="10.0"/>
     <preference name="Orientation" value="default" />
