@@ -28,6 +28,9 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
       case "48'":
         ret.derivationStrategy = 'BIP48';
         break;
+      case "200'":
+        ret.derivationStrategy = 'BIP200';
+        break;
       default:
         return false;
     };
@@ -46,7 +49,13 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
     var match = arr[3].match(/(\d+)'/);
     if (!match)
       return false;
-    ret.account = +match[1]
+
+    if (ret.derivationStrategy === 'BIP200') {
+      ret.contractId = +match[1];
+      ret.subContractIds = lodash.drop(arr, 4);
+    } else {
+      ret.account = +match[1];
+    }
 
     return ret;
   };

@@ -328,6 +328,8 @@ angular.module('copayApp.services')
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
+            contractId: opts.contractId,
+            subContractIds: opts.subContractIds
           });
 
         } catch (ex) {
