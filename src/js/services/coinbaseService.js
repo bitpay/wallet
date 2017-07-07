@@ -53,6 +53,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       'wallet:sells:create,' +
       'wallet:transactions:read,' +
       'wallet:transactions:send,' +
+      'wallet:transactions:send:bypass-2fa,' +
       'wallet:payment-methods:read';
 
     // NW has a bug with Window Object
