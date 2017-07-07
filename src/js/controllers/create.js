@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
+<<<<<<< HEAD
   function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS) {
+=======
+  function($scope, $rootScope, $timeout, $http, $q, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, bitcore, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, CUSTOMNETWORKS, customNetworkService) {
+>>>>>>> make dropdown actually work
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -42,6 +46,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.network = network
       $scope.formData.derivationPath = derivationPathHelper.getDefault(network.name);
       $scope.formData.bwsurl = network.bwsUrl;
+      $scope.showNetworks = false;
     }
 
 
@@ -138,7 +143,6 @@ angular.module('copayApp.controllers').controller('createController',
       updateRCSelect(tc);
       updateSeedSourceSelect(tc);
     };
-
 
     $scope.getCustomNetwork = function() {
       var def = $q.defer();
@@ -237,7 +241,7 @@ angular.module('copayApp.controllers').controller('createController',
         }
 
         opts.account = pathData.account;
-        opts.networkName = pathData.networkName;
+        // opts.networkName = pathData.networkName;
         opts.derivationStrategy = pathData.derivationStrategy;
 
       } else {
@@ -294,7 +298,7 @@ angular.module('copayApp.controllers').controller('createController',
     };
 
     function _prepareToCreate(opts) {
-      $scope.getCustomNetwork().then(function(customNet) {
+      customNetworkService.getCustomNetwork(opts.networkName).then(function(customNet) {
         if(customNet) {
           opts.derivationStrategy = "BIP44";
           opts.bwsurl = customNet.bwsUrl
