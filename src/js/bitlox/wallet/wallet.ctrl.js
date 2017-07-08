@@ -197,7 +197,7 @@
                     $ionicLoading.hide()
                     $ionicHistory.goBack(-3);
                   })
-                })
+                },5000)
               },5000);
 
               
