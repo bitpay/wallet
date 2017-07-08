@@ -143,7 +143,7 @@
                 newScope.modal = modal;
                 newScope.modal.show();
               }).catch(function(err) {
-                $log.debug('modal error', err)
+                //$log.debug('modal error', err)
               });
               newScope.closeModal = function() {
                 newScope.modal.remove();
@@ -216,7 +216,7 @@
             if(!xPubKeys) {
               return cb(new Error("Unable to connect to BitLox, pub key error"))
             }
-            $log.debug('xPubKeys', xPubKeys)
+            //$log.debug('xPubKeys', xPubKeys)
 
             return api.getDeviceUUID().then(function(results) {
               console.log('got device UUID, finding wallet')
@@ -250,24 +250,24 @@
                     return thisWallet.open()
                     .then(function() {
 
-                        $log.debug("WALLET LOADED", thisWallet.xpub)
+                        //$log.debug("WALLET LOADED", thisWallet.xpub)
                         $ionicLoading.show({
                           template: 'Preparing Transaction. Please Wait...'
                         });
                         if(thisWallet.xpub !== xPubKeys[0]) {
-                          $log.debug('pubkeys do not match')
+                          //$log.debug('pubkeys do not match')
                           return cb(new Error('pubkeys do not match'))
                         }
                         var changeIndex = txp.changeAddress.path.split('/')[2]
-                        $log.debug('changeIndex', changeIndex)
+                        //$log.debug('changeIndex', changeIndex)
                         return api.setChangeAddress(changeIndex).then(function() {
-                          $log.debug('Done setting change address')
+                          //$log.debug('Done setting change address')
                           $ionicLoading.show({
                             template: 'Signing Transaction. Check Your BitLox...'
                           });
                           return api.signTransaction(tx,signTimer)
                           .then(function(result) {
-                            $log.debug('Bitlox response', result);
+                            //$log.debug('Bitlox response', result);
                             if(!result) {
                               return cb(new Error('Unable to get signatures from BitLox. Try reconnecting the BitLox'))
                             }                            
@@ -284,16 +284,20 @@
                                     
                                   api.setQrCode(p+1);              
                                 }
-                              });                                                
-                              // comment out thes 5 lines and send `return cb(null,txp) to skip broadcast`
+                              });                                          
+                              // comment out these lines and send `return cb(null,txp) to skip broadcast`
                               return txUtil.submit(tx.signedHex).then(function() {
                                 return cb(null, txp)
                               }, function(err) {
                                 return cb(err)
                               })
+                              // this does not work, always gives BAD_SIGNATURES from BWS
+                              // wallet.signTxProposal(txp, function(signedTxp) {
+                              //   return cb(null,signedTxp)
+                              // })
                               // return cb(null,txp)
                             } else {
-                              $log.debug('TX signing error')
+                              //$log.debug('TX signing error')
                               if(platformInfo.isMobile) {
                                 return cb(new Error(result.type.error_message))
                               } else {
@@ -301,15 +305,15 @@
                               }
                             }
                           }, function(err) {
-                            $log.debug("TX sign error", err)
+                            //$log.debug("TX sign error", err)
                             return cb(err)
                           })
                         }, function(err) {
-                          $log.debug("setChangeAddress error", err)
+                          //$log.debug("setChangeAddress error", err)
                           return cb(err)
                         })
                     }, function(err) {
-                      $log.debug('load wallet error', err)
+                      //$log.debug('load wallet error', err)
                       return cb(err)
                     })
                   }
@@ -317,11 +321,11 @@
                 return cb(new Error('This wallet is not on the connected BitLox device or has been moved. Select the correct Bitlox or contact support.'))
 
               }, function(e) {
-                $log.debug('Bitlox wallet list error', e)
+                //$log.debug('Bitlox wallet list error', e)
                 return cb(e)
               })
             }, function(e) {
-              $log.debug('cannot get device uuid', e)
+              //$log.debug('cannot get device uuid', e)
 
               return cb(e)
             })

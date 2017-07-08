@@ -569,6 +569,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $state.go('tabs.send').then(function() {
       $ionicHistory.clearHistory();
       $state.transitionTo('tabs.home');
+      $timeout(function() {
+        console.log('k')
+        $rootScope.$broadcast('Local/TxAction', $scope.wallet.id);
+      },5000);
     });
   };
 
@@ -583,7 +587,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       scope.customFeePerKB = tx.feeRate;
       scope.feePerSatByte = tx.feeRate / 1000;
     }
-
     $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
       scope: scope,
       backdropClickToClose: false,

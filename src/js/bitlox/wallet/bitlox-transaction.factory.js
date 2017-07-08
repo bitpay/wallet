@@ -52,7 +52,7 @@
             //     return a.confirmations > b.confirmations ? -1 : 1;
             // });
             var changeAddress = this.changeAddress = options.changeAddress;
-            console.log('change Address', changeAddress)
+            // console.log('change Address', changeAddress)
             if (!changeAddress) {
                 throw ERR_NO_CHANGE_ADDRESS;
             }
@@ -71,7 +71,7 @@
             this.target = this.totalOut + this.fee;
             // then add inputs
             var change = this.changeAmount = this.addInputs(inputs);
-            console.log('change', change)
+            // console.log('change', change)
             if (change < 0) {
                 // if change is less than 0, out inputs were not enough to
                 // cover the outputs
@@ -90,7 +90,7 @@
             } else if (change > 0) {
                 // if greater than 0, then we have change left over,
                 // send it to the change address provided
-                console.log('ok')
+                // console.log('ok')
                 this.addOutput({
                     toAddress: changeAddress,
                     amount: change
@@ -98,7 +98,7 @@
             }
             // set the unsigned tx to this instance
             this.unsignedHex = Bitcoin.Util.bytesToHex(this.tx.serialize());
-            console.debug("transaction assembled", this);
+            // console.debug("transaction assembled", this);
         }
 
         // add outputs will take the outputs for our API and convert
@@ -112,7 +112,7 @@
 
         Transaction.prototype.addOutput = function(output, forceSmall) {
             var amount = parseInt(output.amount, 10);
-            console.log('adding output',output)
+            // console.log('adding output',output)
             if (isNaN(amount)) {
                 throw ERR_INVALID_AMOUNT;
             }

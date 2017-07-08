@@ -437,9 +437,13 @@
             $scope.openWallet = null;
             $scope.timer = false;
 
-            $ionicLoading.show({template: "Finding BitLox, please wait...",duration:3000})
+            $ionicLoading.show({template: "Finding BitLox, please wait..."})
+            
             $timeout(function() {
                 $scope.timer = true;
+                if($state.current.url === '/attach-bitlox' || $state.current.rul === '/create-bitlox') {
+                  $ionicLoading.hide();
+                }
             },3000);            
             if(platformInfo.isChromeApp) {
 

@@ -50,12 +50,12 @@ function HidApi($q, $timeout, $interval, $rootScope,
 
     // monitor disconnect
     chrome.hid.onDeviceRemoved.addListener(function() {
-        console.debug("DEVICE REMOVED", status);
+        // console.debug("DEVICE REMOVED", status);
         
         if(status !== HidApi.STATUS_DISCONNECTED && status !== HidApi.STATUS_INITIALIZING) { $rootScope.$broadcast('bitloxConnectError'); }
 
         if(HidApi.currentPromise) { 
-            console.log("rejecting promise after device removal")
+            // console.log("rejecting promise after device removal")
             HidApi.currentPromise.reject(); 
         }
         HidApi.disconnect()
@@ -119,7 +119,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
                 
                 HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
                 
-                console.error("device:", chrome.runtime.lastError);
+                // console.error("device:", chrome.runtime.lastError);
                 return deferred.reject(chrome.runtime.lastError);
             }
             if (!devices || !devices.length) {
@@ -138,7 +138,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
                     
                     HidApi.setStatus(HidApi.STATUS_DISCONNECTED);
                     
-                    console.error("device:", chrome.runtime.lastError);
+                    // console.error("device:", chrome.runtime.lastError);
                     return deferred.reject(chrome.runtime.lastError);
                 }
                 if (!connection) {
@@ -193,7 +193,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         var HidApi = this;
         var deferred = this.$q.defer();
         HidApi.setStatus(HidApi.STATUS_WRITING);
-        console.debug("write:", data);
+        // console.debug("write:", data);
         HidApi.device().then(function(dev) {
             // get the device
             if (dev === null) {
@@ -337,7 +337,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
                 var payload = serialData.substring(headerPosition + 16, headerPosition + 16 + (2 * (decPayloadSize)));
                 return HidApi.processResults(command, payloadSize, payload);
             } else if (!wait && serialData === "") { //If nothing is detected, close down port
-                console.warn("Device unplugged");
+                // console.warn("Device unplugged");
                 HidApi.disconnect();
                 return null;
             } else {
@@ -390,9 +390,9 @@ function HidApi($q, $timeout, $interval, $rootScope,
             data.type = HidApi.TYPE_ERROR;
             var hidErr = Device.Failure.decodeHex(payload);
             data.payload = new Error(hidErr.error_message.toString('utf8'));
-            console.debug(data.payload);
+            // console.debug(data.payload);
             data.payload.code = parseInt(hidErr.error_code, 10);
-            console.debug("caught error");
+            // console.debug("caught error");
             break;
         case "36": // device uuid return
             data.type = HidApi.TYPE_UUID;
@@ -416,14 +416,14 @@ function HidApi($q, $timeout, $interval, $rootScope,
             data.type = HidApi.TYPE_SIGNATURE_RETURN;
             var signedScripts = [];
             var sigs = Device.SignatureComplete.decodeHex(payload).signature_complete_data;
-            console.log(sigs)
+            // console.log(sigs)
             sigs.forEach(function(sig) {
                 var sigHex = sig.signature_data_complete.toString('hex');
-                console.log('original sig', sigHex)
+                // console.log('original sig', sigHex)
                 var sigSize = parseInt(sigHex.slice(0, 2), 16);
                 var sigChars = 2 + (sigSize * 2);
                 sigHex = sigHex.slice(0, sigChars);
-                console.log('sliced up sig', sigHex)
+                // console.log('sliced up sig', sigHex)
                 signedScripts.push(sigHex);
             });
             data.payload = {
@@ -470,12 +470,12 @@ function HidApi($q, $timeout, $interval, $rootScope,
             return this._doCommand(this.commands.ping, this.TYPE_PONG).then(function(pingResult) {
                 // console.log(JSON.stringify(pingResult))
                 if(!pingResult) {
-                    console.log("session id not found or ping failed")
+                    // console.log("session id not found or ping failed")
                     return HidApi.$q.reject(new Error('BitLox session error. Try reconnecting the BitLox'))
                 }
                 var sessionIdHex = pingResult.payload.echoed_session_id.toString('hex')
                 if(sessionIdHex !== HidApi.sessionIdHex) {
-                    console.log("session id does not match")
+                    // console.log("session id does not match")
                     HidApi.disconnect();
                     return HidApi.$q.reject(new Error('BitLox session expired. Try reconnecting the BitLox'))
                 }
@@ -668,7 +668,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
             input.chain = parseInt(inputPath[1],10)
             input.chainIndex = parseInt(inputPath[2],10)
 
-            console.log(inputPath)
+            // console.log(inputPath)
 
             var handler = HidApi.makeAddressHandler(input.chain, input.chainIndex);
             // add to the handler array
@@ -724,7 +724,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
         var messageHex = HidApi.hexUtil.bytesToHex(messageBytes);
         var msgBuf = HidApi.hexUtil.hexToByteBuffer(messageHex);
         msgBuf.flip();
-        console.debug("signMessage: ", message, "->", messageBytes, "->", messageHex);
+        // console.debug("signMessage: ", message, "->", messageBytes, "->", messageHex);
         var protoMsg = new Device.SignMessage({
             address_handle_extended: HidApi.makeAddressHandler(chain, chainIndex),
             message_data: msgBuf
