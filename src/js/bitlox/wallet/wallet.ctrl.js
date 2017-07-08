@@ -203,13 +203,14 @@
 
         $scope.updateDeviceQr = function(walletId, cb) {
           walletService.getMainAddresses(walletId, {reverse:true}, function(err, addresses) {
-            if(addresses.length > 0) {
-              var sp = addresses[0].path.split('/')
-              var p = parseInt(sp.pop(),10);
+            return cb();
+            // if(addresses.length > 0) {
+            //   var sp = addresses[0].path.split('/')
+            //   var p = parseInt(sp.pop(),10);
                 
-              api.setQrCode(p+1);              
-            }
-            cb();
+            //   api.setQrCode(p+1);              
+            // }
+            // cb();
           });
         }
         $scope.$watch('api.getBleReady()', function(newVal) {
