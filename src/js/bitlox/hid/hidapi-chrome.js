@@ -656,7 +656,7 @@ function HidApi($q, $timeout, $interval, $rootScope,
     };
 
     // tx is from bitcoin/transaction.factory.js
-    HidApi.signTransaction = function(opts) {
+    HidApi.signTransaction = function(opts,signTimer) {
         var HidApi = this;
         var deferred = this.$q.defer();
         var Device = this.protoBuilder();

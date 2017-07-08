@@ -314,7 +314,7 @@ this.makeAddressHandler = function(chain, chainIndex) {
 // Sign Transaction Prep
 ////////////////////////////
 // tx is from bitcoin/transaction.factory.js
-this.signTransaction = function(opts) {
+this.signTransaction = function(opts,signTimer) {
     var addrHandlers = [];
     var inputData = [];
     var deferred = $q.defer()
@@ -359,7 +359,7 @@ this.signTransaction = function(opts) {
         var cmd = BleApi.makeCommand(deviceCommands.signTxPrefix, msg);
         // console.warn('sending something')
         // console.warn(cmd)
-        return BleApi.write(cmd, 900000).then(function(res) {
+        return BleApi.write(cmd, signTimer).then(function(res) {
           return deferred.resolve(res)
         },function(e) {
           return deferred.resolve(e)

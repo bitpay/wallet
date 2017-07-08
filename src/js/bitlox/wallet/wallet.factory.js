@@ -8,14 +8,14 @@
         '$rootScope', '$q', '$timeout',
         'WalletStatus', '$state', 
          'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', 'BIP32', 'bitloxTransaction', 'addressInfo', 'MIN_OUTPUT', 'bcMath', 'platformInfo',
-         '$ionicLoading',  '$ionicModal', '$log', 'lodash', 'txUtil'
+         '$ionicLoading',  '$ionicModal', '$log', 'lodash', 'txUtil', 'popupService', 'gettextCatalog'
       ];
 
     function WalletFactory(
         $rootScope, $q, $timeout,
         WalletStatus, $state,
         hidchrome,hidweb, bleapi, BIP32, Transaction, addressInfo, MIN_OUTPUT, bcMath, platformInfo,
-        $ionicLoading, $ionicModal, $log, lodash, txUtil) {
+        $ionicLoading, $ionicModal, $log, lodash, txUtil, popupService, gettextCatalog) {
 
         var Wallet = function(data) {
             this.number = data.wallet_number;
@@ -111,12 +111,26 @@
             });
         };
         Wallet.signTransaction = function(wallet, txp, cb) {
-        if(api.getStatus() === api.STATUS_CONNECTED || api.getStatus() === api.STATUS_IDLE) {
+          
+          var signTimer = 900000;
+          var longSign = false;
+          if(txp.inputs.length > 50) {
+            signTimer = 9000000
+            longSign = true;
+          }          
+          if(api.getStatus() === api.STATUS_CONNECTED || api.getStatus() === api.STATUS_IDLE) {
             console.log('device is already connected, proceed with transaction:'+api.getStatus())
             $rootScope.bitloxConnectErrorListener = $rootScope.$on('bitloxConnectError', function() {
               cb(new Error("BitLox Disconnected"));
-            })      
-            return _bitloxSend(wallet,txp,cb)
+            })
+            if(longSign) {
+              return popupService.showConfirm(gettextCatalog.getString('Warning'), "BitLox will take a very long time to sign this transaction. Please keep your BitLox plugged in and be patient.", "OK", "Cancel", function(ok) {
+                if(ok) { _bitloxSend(wallet,txp,signTimer,cb) }
+                  else { return cb(new Error("Transaction Canceled")); }
+              });
+            } else {
+              return _bitloxSend(wallet,txp,signTimer,cb)
+            }
           } else {
             var newScope = $rootScope.$new();
             var successListener;
@@ -151,7 +165,16 @@
                   cb(new Error("BitLox Disconnected"));
                 })      
                 console.log("BitLox connection successful, signing...")
-                $timeout(function() {_bitloxSend(wallet,txp,cb)})
+
+                if(longSign) {
+                  popupService.showConfirm(gettextCatalog.getString('Error'), "BitLox will take a very long time to sign this transaction. Please keep your BitLox plugged in and be patient.", "OK", "Cancel", function(ok) {
+                    
+                    if(ok) { $timeout(function() {_bitloxSend(wallet,txp,signTimer,cb)}) }
+                      else { return cb(new Error("Transaction Canceled")); }
+                  });
+                } else {
+                  $timeout(function() {_bitloxSend(wallet,txp,signTimer,cb)})
+                }
               });
               successListener = newScope.$on('bitloxConnectSuccess', function() {
                 // Execute action
@@ -163,7 +186,7 @@
               });
           }
         }
-        function _bitloxSend(wallet,txp,cb) {
+        function _bitloxSend(wallet,txp,signTimer,cb) {
 
             if(api.getStatus() !== api.STATUS_CONNECTED && api.getStatus() !== api.STATUS_IDLE) {
               return cb(new Error("Unable to connect to BitLox"))
@@ -242,7 +265,7 @@
                           $ionicLoading.show({
                             template: 'Signing Transaction. Check Your BitLox...'
                           });
-                          return api.signTransaction(tx)
+                          return api.signTransaction(tx,signTimer)
                           .then(function(result) {
                             $log.debug('Bitlox response', result);
                             if(!result) {
