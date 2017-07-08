@@ -153,7 +153,7 @@
             var b = bwcService.getBitcore();
             var x = b.HDPublicKey(wallet.xpub);
             opts.entropySource = x.publicKey.toString(); //"40c13cfdbafeccc47b4685d6e7f6a27c";
-            opts.account = wallet.number;
+            // opts.account = wallet.number;
             opts.networkName = 'livenet';
             opts.m = 1;
             opts.n = 1;
@@ -177,20 +177,24 @@
                     popupService.showAlert(gettextCatalog.getString('Error'), err2);
                     return;
                   }
-
-                  $scope.updateDeviceQr(walletId, function() {
-                    $ionicLoading.hide()
-                    $ionicHistory.goBack(-3);
-                  })
-
+                  $timeout(function() {
+                    walletService.startScan(walletId);
+                    $scope.updateDeviceQr(walletId, function() {
+                      $ionicLoading.hide()
+                      $ionicHistory.goBack(-3);
+                    })
+                  },5000);
 
                 });
                 return;
               }
-              $scope.updateDeviceQr(walletId, function() {
-                $ionicLoading.hide()
-                $ionicHistory.goBack(-3);
-              })
+              $timeout(function() {
+                walletService.startScan(walletId);
+                $scope.updateDeviceQr(walletId, function() {
+                  $ionicLoading.hide()
+                  $ionicHistory.goBack(-3);
+                })
+              },5000);
 
               
 

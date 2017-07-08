@@ -92,6 +92,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
       listeners = [
         $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
+          console.warn("NOTIFICATION",e,walletId,type,n)
           var wallet = profileService.getWallet(walletId);
           updateWallet(wallet);
           if ($scope.recentTransactionsEnabled) getNotifications();
