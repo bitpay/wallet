@@ -164,7 +164,7 @@
 
             // console.warn("START IMPORTING")
             profileService.createWallet(opts, function(err, walletId) {
-              $ionicLoading.hide()
+
               // console.warn("DONE IMPORTING")
               if (err) {
                 console.error(err)
@@ -179,10 +179,12 @@
                   }
                   $timeout(function() {
                     walletService.startScan(walletId);
-                    $scope.updateDeviceQr(walletId, function() {
-                      $ionicLoading.hide()
-                      $ionicHistory.goBack(-3);
-                    })
+                    $timeout(function() {
+                      $scope.updateDeviceQr(walletId, function() {
+                        $ionicLoading.hide()
+                        $ionicHistory.goBack(-3);
+                      })
+                    },5000)
                   },5000);
 
                 });
@@ -190,9 +192,11 @@
               }
               $timeout(function() {
                 walletService.startScan(walletId);
-                $scope.updateDeviceQr(walletId, function() {
-                  $ionicLoading.hide()
-                  $ionicHistory.goBack(-3);
+                $timeout(function() {
+                  $scope.updateDeviceQr(walletId, function() {
+                    $ionicLoading.hide()
+                    $ionicHistory.goBack(-3);
+                  })
                 })
               },5000);
 
