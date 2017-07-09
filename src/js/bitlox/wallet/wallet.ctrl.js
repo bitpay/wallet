@@ -437,7 +437,6 @@
             $scope.openWallet = null;
             $scope.timer = false;
 
-            $ionicLoading.show({template: "Finding BitLox, please wait..."})
             
             $timeout(function() {
                 $scope.timer = true;
@@ -446,7 +445,8 @@
                 }
             },3000);            
             if(platformInfo.isChromeApp) {
-
+                $ionicLoading.show({template: "Finding BitLox, please wait..."})
+            
                 // api.disconnect().then(function() {
                     $timeout(function() {
                         api.device().then(function() {
@@ -457,6 +457,8 @@
                     },1000);
                 // })
             } else {
+                $ionicLoading.show({template: "Finding BitLox, please wait..."}, duration:3000)
+            
                 if(api.getStatus() === api.STATUS_IDLE) {
                     $scope.readWallets();
                 }                
