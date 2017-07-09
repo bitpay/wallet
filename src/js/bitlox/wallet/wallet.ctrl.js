@@ -457,7 +457,7 @@
                     },1000);
                 // })
             } else {
-                $ionicLoading.show({template: "Finding BitLox, please wait..."}, duration:3000)
+                $ionicLoading.show({template: "Finding BitLox, please wait...", duration:3000})
             
                 if(api.getStatus() === api.STATUS_IDLE) {
                     $scope.readWallets();
