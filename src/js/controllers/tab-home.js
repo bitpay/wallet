@@ -271,8 +271,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           $log.error(err);
           return;
         }
-        
-          console.warn("NOTIFICATION",e,walletId,type,n)
+
+          console.warn("NOTIFICATION",err,notifications,total)
         $scope.notifications = notifications;
         $scope.notificationsN = total;
         $timeout(function() {
