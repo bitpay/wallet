@@ -87,7 +87,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     for(var i in CUSTOMNETWORKS) {
       if(bitcore.Address.isValid(data, CUSTOMNETWORKS[i].name)) {
 
-      console.log(data, CUSTOMNETWORKS[i].name)
+      console.log('it worked', data, CUSTOMNETWORKS[i].name)
               isNetworkValid = true
       }
     }
