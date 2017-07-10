@@ -283,8 +283,8 @@ angular.module('copayApp.controllers').controller('importController',
         if(customNet) {
           opts.derivationStrategy = "BIP44";
           opts.bwsurl = customNet.bwsUrl
-          opts.network = customNet.network
-          opts.networkName = customNet.network
+          opts.network = customNet.name
+          opts.networkName = customNet.name
         }          
         var words = $scope.formData.words || null;
 

@@ -86,7 +86,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     var isNetworkValid = false;
     for(var i in CUSTOMNETWORKS) {
       if(bitcore.Address.isValid(data, CUSTOMNETWORKS[i].name)) {
-        isNetworkValid = true
+
+      console.log(data, CUSTOMNETWORKS[i].name)
+              isNetworkValid = true
       }
     }
     // BIP21

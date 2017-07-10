@@ -4,7 +4,7 @@
     angular.module('app.util')
         .constant('CUSTOMNETWORKS', {
         livenet: {
-          network: 'livenet',
+          network: 'bitcoin',
           name: 'livenet',
           alias: 'Bitcoin',
           code: 'btc',
