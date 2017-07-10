@@ -1,31 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 51 51" style="enable-background:new 0 0 51 51;" xml:space="preserve">
-<style type="text/css">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   viewBox="0 0 128 128"
+   xml:space="preserve"
+   sodipodi:docname="icon-bitcoin-Edited.svg"
+   width="128"
+   height="128"
+   inkscape:version="0.92.1 r15371"><metadata
+   id="metadata4536"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1600"
+   inkscape:window-height="838"
+   id="namedview4534"
+   showgrid="false"
+   inkscape:zoom="4.627451"
+   inkscape:cx="25.134297"
+   inkscape:cy="43.052098"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1"
+   inkscape:pagecheckerboard="true" />
+<style
+   type="text/css"
+   id="style4515">
 	.st0{fill:url(#coin_1_);}
 	.st1{filter:url(#Adobe_OpacityMaskFilter);}
 	.st2{fill:#FFFFFF;}
-	.st3{mask:url(#mask-3);fill:#FFFFFF;}
+	.st3{mask:url(#mask-3);fill:#FFFFFF;stroke:#000000;}
 </style>
-<linearGradient id="coin_1_" gradientUnits="userSpaceOnUse" x1="-273.8224" y1="413.966" x2="-274.172" y2="414.57" gradientTransform="matrix(50.3194 0 0 -50.3886 13809.4346 20893.9863)">
-	<stop  offset="0" style="stop-color:#FFA24B"/>
-	<stop  offset="1" style="stop-color:#F7891C"/>
+<linearGradient
+   id="coin_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="-273.82239"
+   y1="413.966"
+   x2="-274.172"
+   y2="414.57001"
+   gradientTransform="matrix(121.3881,0,0,-121.55503,33315.568,50406.262)">
+	<stop
+   offset="0"
+   style="stop-color:#ffffff"
+   id="stop4517" />
+	<stop
+   offset="1"
+   style="stop-color:#ffffff"
+   id="stop4519" />
 </linearGradient>
-<path id="coin" class="st0" d="M25.5,51c14.1,0,25.5-11.4,25.5-25.5S39.5,0,25.5,0S0,11.4,0,25.5S11.4,51,25.5,51z"/>
-<defs>
-	<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="15" y="11" width="21" height="28.7">
-		<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+
+<defs
+   id="defs4526">
+	<filter
+   id="Adobe_OpacityMaskFilter"
+   filterUnits="userSpaceOnUse"
+   x="15"
+   y="11"
+   width="21"
+   height="28.700001">
+		<feColorMatrix
+   type="matrix"
+   values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
+   id="feColorMatrix4523" />
 	</filter>
 </defs>
-<mask maskUnits="userSpaceOnUse" x="15" y="11" width="21" height="28.7" id="mask-3">
-	<g class="st1">
-		<path id="path-2" class="st2" d="M26.2,50.4c13.9,0,25.2-11.3,25.2-25.2S40.1,0,26.2,0S1,11.3,1,25.2S12.3,50.4,26.2,50.4z"/>
+<mask
+   maskUnits="userSpaceOnUse"
+   x="15"
+   y="11"
+   width="21"
+   height="28.7"
+   id="mask-3">
+	<g
+   class="st1"
+   id="g4529"
+   style="filter:url(#Adobe_OpacityMaskFilter)">
+		<path
+   id="path-2"
+   class="st2"
+   d="M 26.2,50.4 C 40.1,50.4 51.4,39.1 51.4,25.2 51.4,11.3 40.1,0 26.2,0 12.3,0 1,11.3 1,25.2 1,39.1 12.3,50.4 26.2,50.4 Z"
+   inkscape:connector-curvature="0"
+   style="fill:#ffffff" />
 	</g>
 </mask>
-<path id="BitPay-Bitcoin_Symbol" class="st3" d="M33.5,19.1c-0.6-3-3.3-3.8-6.5-3.9L26.5,11l-2.5,0.2l0.5,4.2c-0.7,0.1-1.3,0.1-2,0.2
-	l-0.5-4.2l-2.5,0.2l0.5,4.3c-0.5,0-1.1,0.1-1.6,0.2l0,0L15,16.4l0.3,2.8c0,0,1.8-0.2,1.8-0.1c1-0.1,1.4,0.5,1.5,1l0.5,4.9
-	c0.1,0,0.2,0,0.3,0c-0.1,0-0.2,0-0.3,0l0.8,6.8c0,0.3-0.2,0.9-0.8,0.9c0,0-1.8,0.2-1.8,0.2l-0.1,3.1l3.2-0.3c0.6,0,1.2-0.1,1.8-0.1
-	l0.5,4.3l2.5-0.2l-0.5-4.3c0.7,0,1.4-0.1,2-0.1l0.5,4.2l2.5-0.2l-0.5-4.3c4.2-0.6,7-2,6.9-6.1c-0.1-3.3-1.7-4.7-4.2-5.1
-	C33.2,22.8,34,21.4,33.5,19.1L33.5,19.1z M31,28.7c0.4,3.2-5,3.3-6.7,3.5l-0.6-5.7C25.5,26.3,30.7,25.3,31,28.7L31,28.7z M23.5,23.8
-	l-0.5-5.2c1.4-0.1,5.8-1,6.1,2.1C29.3,23.6,24.9,23.7,23.5,23.8z"/>
+<path
+   id="BitPay-Bitcoin_Symbol"
+   class="st3"
+   d="M 33.5,19.1 C 32.9,16.1 30.2,15.3 27,15.2 L 26.5,11.176925 24,11.2 l 0.5,4.2 c -0.7,0.1 -1.3,0.1 -2,0.2 L 22,11.4 19.5,11.6 20,15.981658 c -0.5,0 -0.827808,0.07278 -1.6,0.118342 l -0.966281,0.108877 -2.134308,0.08225 L 15.3,19.2 c 0,0 1.568637,-0.07751 1.990534,-0.07278 C 18.238858,19.315584 18.394108,19.601669 18.6,20.1 L 19.1,25 19.246025,24.942259 19.1,25 l 0.8,6.8 c 0,0.3 -0.2,0.9 -0.8,0.9 l -1.8,0.2 -0.1,3.1 3.2,-0.3 c 0.6,0 1.2,-0.1 1.8,-0.1 l 0.444595,3.941881 0.544241,0.0103 2.059281,0.0035 L 24.7,35.4 c 0.7,0 1.4,-0.1 2,-0.1 L 27.182404,39.420677 29.7,39.3 29.2,35 c 4.2,-0.6 6.162605,-2.216102 6.30572,-6.181038 C 35.351694,25.708051 34.129873,24.551165 31.9,23.935064 33.2,22.935064 34,21.4 33.5,19.1 Z M 31,28.7 c 0.4,3.2 -5,3.3 -6.7,3.5 l -0.6,-5.7 c 1.8,-0.2 7,-1.2 7.3,2.2 z M 23.5,23.8 23,18.6 c 1.4,-0.1 5.8,-1 6.1,2.1 0.2,2.9 -4.2,3 -5.6,3.1 z"
+   mask="url(#mask-3)"
+   inkscape:connector-curvature="0"
+   style="fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none"
+   sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccccccc"
+   transform="matrix(3.9696563,0,0,3.9696563,-37.997103,-36.710858)" />
 </svg>

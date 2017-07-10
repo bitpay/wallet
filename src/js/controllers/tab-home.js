@@ -272,7 +272,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
 
-          console.warn("NOTIFICATION",err,notifications,total)
+          console.log("NOTIFICATIONS")
+          console.log(JSON.stringify(err))
+
+          console.log(notifications)
+
+          console.log(JSON.stringify(total))
         $scope.notifications = notifications;
         $scope.notificationsN = total;
         $timeout(function() {
@@ -280,7 +285,14 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           $scope.$apply();
         }, 10);
       });
-    };
+    };  
+    $scope.openBitLox = function() {
+      console.log('test')
+      if(platformInfo.isCordova) {window.open('https://bitlox.com', '_system')}
+        else {
+          window.open(href="https://bitlox.com" ,"_blank")
+        }
+    }
 
     $scope.hideHomeTip = function() {
       storageService.setHomeTipAccepted('accepted', function() {

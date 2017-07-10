@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('completeController', function
   });
 
   var defaults = configService.getDefaults();
-  var downloadUrl = appConfigService.name == 'copay' ? defaults.download.copay.url : defaults.download.bitpay.url;
+  var downloadUrl = defaults.downloadUrl;
 
   function quickFeedback(cb) {
     window.plugins.spinnerDialog.show();

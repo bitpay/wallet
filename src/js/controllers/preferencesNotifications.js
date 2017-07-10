@@ -81,7 +81,9 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
     $scope.latestEmail = {
       value: $scope.newEmail.value
     };
-
+    if (platformInfo.isCordova) {
+      window.plugins.toast.showLongCenter('Saved!');
+    }
     $timeout(function() {
       $scope.$apply();
     });
