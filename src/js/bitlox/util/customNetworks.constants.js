@@ -4,7 +4,7 @@
     angular.module('app.util')
         .constant('CUSTOMNETWORKS', {
         livenet: {
-          network: 'livenet',
+          network: 'bitcoin',
           name: 'livenet',
           alias: 'Bitcoin',
           code: 'btc',
@@ -18,7 +18,15 @@
           networkMagic: 0xf9beb4d9,
           port: 8333,
           bwsUrl: 'https://bws.bitlox.com/bws/api/',
-          explorer: 'https://bitlox.io/'
+          explorer: 'https://bitlox.io/',
+          dnsSeeds: [
+            'seed.bitcoin.sipa.be',
+            'dnsseed.bluematt.me',
+            'dnsseed.bitcoin.dashjr.org',
+            'seed.bitcoinstats.com',
+            'seed.bitnodes.io',
+            'bitseed.xf2.org'
+          ]          
           
         }}
 )
