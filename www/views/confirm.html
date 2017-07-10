@@ -32,8 +32,7 @@
           <span class="payment-proposal-to" ng-if="!recipientType">
             
             
-            <gravatar ng-if="toName && !showAddress" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
-            <gravatar ng-if="toName && showAddress" class="send-gravatar" name="{{toAddress}}" height="30" width="30"></gravatar>
+            <span></span>
 
             <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
               <contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>

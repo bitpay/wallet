@@ -52,7 +52,6 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" copy-to-clipboard="tx.toAddress">
-            <gravatar class="send-gravatar" name="{{tx.toAddress}}" height="30" width="30"></gravatar>
 
             <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span>

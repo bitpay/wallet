@@ -40,8 +40,7 @@
         <div class="item" ng-if="btx.action === 'sent'">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to">
-            <gravatar ng-if="!cardId" class="send-gravatar" name="{{btx.addressTo}}" height="30" width="30"></gravatar>
-            <img ng-if="cardId" src="img/icon-card.svg" width="34">
+            <img src="img/icon-card.svg" width="34">
             <div copy-to-clipboard="btx.addressTo" class="ellipsis">
               <contact ng-if="!toName" address="{{btx.addressTo}}" class="ellipsis" style="display: block;"></contact>
               <span class="m15l size-14" ng-if="toName">{{toName}}</span>

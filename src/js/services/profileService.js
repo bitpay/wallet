@@ -106,6 +106,8 @@ angular.module('copayApp.services')
       });
 
       wallet.on('notification', function(n) {
+        // console.log(" a notification! ")
+        // console.log(JSON.stringify(n))
 
         $log.debug('BWC Notification:', n);
 
