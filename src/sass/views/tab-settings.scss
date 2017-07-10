@@ -26,10 +26,13 @@
     font-size:0.9em;
     color: $v-mid-gray;
     .text {
-      padding-left: 30px;
+      padding-left: 25px;
     }
     .icon {
       position: absolute;
+      img {
+        width: 20px;
+      }
     }
   }
   &-explanation, &-button-group {
