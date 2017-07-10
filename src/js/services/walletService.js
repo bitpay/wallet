@@ -273,12 +273,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     function _getStatus(initStatusHash, tries, cb) {
-      if (isStatusCached() && !opts.force) {
-        $log.debug('Wallet status cache hit:' + wallet.id);
-        cacheStatus(wallet.cachedStatus);
-        processPendingTxps(wallet.cachedStatus);
-        return cb(null, wallet.cachedStatus);
-      };
+      // if (isStatusCached() && !opts.force) {
+      //   $log.debug('Wallet status cache hit:' + wallet.id);
+      //   cacheStatus(wallet.cachedStatus);
+      //   processPendingTxps(wallet.cachedStatus);
+      //   return cb(null, wallet.cachedStatus);
+      // };
 
       tries = tries || 0;
 
