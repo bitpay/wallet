@@ -30,7 +30,10 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" ng-if="!recipientType">
-            <!-- <img src="img/icon-bitcoin-small.svg"> -->
+            
+            
+            <gravatar ng-if="toName && !showAddress" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
+            <gravatar ng-if="toName && showAddress" class="send-gravatar" name="{{toAddress}}" height="30" width="30"></gravatar>
 
             <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
               <contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>
@@ -43,8 +46,8 @@
               <span class="ellipsis" ng-show="!tx.toName">{{tx.paypro.domain || tx.paypro.toAddress}}</span>
               <span ng-show="tx.toName">{{tx.toName}}</span>
             </div>
-            <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{toAddress}}"></contact>
-            <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span>
+            <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{toAddress}}"></contact>
+            <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
           </span>
           <div class="wallet" ng-if="recipientType == 'wallet'">
             <i class="icon big-icon-svg">

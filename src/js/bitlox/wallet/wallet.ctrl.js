@@ -440,12 +440,18 @@
             
             $timeout(function() {
                 $scope.timer = true;
-                if($state.current.url === '/attach-bitlox' || $state.current.rul === '/create-bitlox') {
+
+                if(api.getStatus() !== api.STATUS_DISCONNECTED) {
                   $ionicLoading.hide();
                 }
             },3000);            
+            // if($state.current.url === '/attach-bitlox' || $state.current.url === '/create-bitlox') {
+            //   $ionicLoading.show({template: "Finding BitLox, please wait...", duration:3000})
+            // } else {
+            // }
+            $ionicLoading.show({template: "Finding BitLox, please wait..."})
+
             if(platformInfo.isChromeApp) {
-                $ionicLoading.show({template: "Finding BitLox, please wait..."})
             
                 // api.disconnect().then(function() {
                     $timeout(function() {
@@ -456,9 +462,7 @@
                         })
                     },1000);
                 // })
-            } else {
-                $ionicLoading.show({template: "Finding BitLox, please wait...", duration:3000})
-            
+            } else {            
                 if(api.getStatus() === api.STATUS_IDLE) {
                     $scope.readWallets();
                 }                
