@@ -438,12 +438,9 @@
             $scope.timer = false;
 
             
-            $timeout(function() {
+            $scope.timeout = $timeout(function() {
                 $scope.timer = true;
-
-                if(api.getStatus() !== api.STATUS_DISCONNECTED) {
-                  $ionicLoading.hide();
-                }
+                $ionicLoading.hide();
             },3000);            
             // if($state.current.url === '/attach-bitlox' || $state.current.url === '/create-bitlox') {
             //   $ionicLoading.show({template: "Finding BitLox, please wait...", duration:3000})
@@ -469,7 +466,9 @@
             }
         }
 
-
+        $scope.$on('destroy', function() {
+          $timeout.cancel($scope.timeout)
+        })
 
         $scope.reset();
 
