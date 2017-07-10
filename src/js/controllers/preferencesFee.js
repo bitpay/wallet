@@ -86,6 +86,9 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       $scope.customFeePerKB = ($scope.feePerSatByte * 1000).toFixed();
       setMaxWarning();
       setMinWarning();
+      $timeout(function() {
+        $scope.$apply();
+      });
     });
   };
 
