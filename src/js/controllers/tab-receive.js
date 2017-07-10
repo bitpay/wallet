@@ -11,11 +11,15 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       id: $scope.wallet.credentials.walletId
     });
   };
-
+  $scope.setNetwork = function() {
+      $scope.network = $scope.wallet.network;
+      if($scope.network === "livenet") {$scope.network = "bitcoin";}    
+  }
   $scope.setAddress = function(newAddr) {
     $scope.addr = null;
     if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
     $scope.generatingAddress = true;
+    $scope.setNetwork();
     walletService.getAddress($scope.wallet, newAddr, function(err, addr) {
       $scope.generatingAddress = false;
 
@@ -25,8 +29,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
       }
 
       $scope.addr = addr;
-      $scope.network = (new bitcore.Address($scope.addr)).network.name;
-      if($scope.network === "livenet") {$scope.network = "bitcoin";}
 
       $timeout(function() {
         $scope.$apply();
@@ -100,9 +102,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     // select first wallet if no wallet selected previously
     var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
     $scope.onWalletSelect(selectedWallet);
-
+    
     $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;
-
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
         // Update current address
