@@ -13,12 +13,12 @@
         <div>
           <span translate>Average confirmation time</span>:
           <span class="fee-minutes" ng-if="avgConfirmationTime && currentFeeLevel != 'custom'">{{avgConfirmationTime | amDurationFormat: 'minute'}}</span>
-          <span class="fee-minutes" ng-if="currentFeeLevel == 'custom' && !invalidCustomFeeEntered" translate>Could not be estimated</span>
+          <span class="fee-minutes" ng-if="currentFeeLevel == 'custom' && !invalidCustomFeeEntered && !loadingFee" translate>Could not be estimated</span>
           <span ng-if="loadingFee || invalidCustomFeeEntered">...</span>
         </div>
         <div>
           <span translate>Current fee rate for this policy</span>:
-          <span class="fee-rate" ng-if="feePerSatByte && !invalidCustomFeeEntered">{{feePerSatByte}} satoshis/byte</span>
+          <span class="fee-rate" ng-if="feePerSatByte && !invalidCustomFeeEntered && !loadingFee">{{feePerSatByte}} satoshis/byte</span>
           <span ng-if="loadingFee || invalidCustomFeeEntered">...</span>
         </div>
         <span ng-if="network!='livenet'">[{{network}}]</span>
