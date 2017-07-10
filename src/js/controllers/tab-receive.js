@@ -138,6 +138,9 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   $scope.shareAddress = function(network) {
+    if(network === 'livenet') {
+      network = 'bitcoin';
+    }    
     if (!$scope.isCordova) return;
     window.plugins.socialsharing.share(network+':' + $scope.addr, null, null, null);
   }
