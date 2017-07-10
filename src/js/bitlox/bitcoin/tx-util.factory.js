@@ -26,8 +26,8 @@
             var d = $q.defer()
             console.log(url)
             $http.get(url).then(function(res) {
-                console.log("rawtX get")
-                if(res) { console.log(JSON.stringify(res.data)) }
+                // console.log("rawtX get")
+                // if(res) { console.log(JSON.stringify(res.data)) }
                 if(res.data && res.data.rawtx) {
                     return d.resolve(res.data.rawtx)
                 } else {
