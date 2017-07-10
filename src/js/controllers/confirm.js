@@ -22,6 +22,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   var isCordova = platformInfo.isCordova;
   var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
+  //custom fee flag
+  var usingCustomFee = null;
+
   function refresh() {
     $timeout(function() {
       $scope.$apply();
@@ -202,7 +205,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp.inputs = tx.sendMaxInfo.inputs;
       txp.fee = tx.sendMaxInfo.fee;
     } else {
-      if (tx.feeLevel == 'custom') {
+      if (usingCustomFee) {
         txp.feePerKb = tx.feeRate;
       } else txp.feeLevel = tx.feeLevel;
     }
@@ -252,7 +255,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
       if (err) return cb(err);
 
-      if (tx.feeLevel != 'custom') tx.feeRate = feeRate;
+      if (!usingCustomFee) tx.feeRate = feeRate;
       tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
 
       if (!wallet)
@@ -559,7 +562,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     scope.network = tx.network;
     scope.feeLevel = tx.feeLevel;
     scope.noSave = true;
-    if (tx.feeLevel == 'custom') scope.feePerSatByte = (tx.feeRate / 1000).toFixed();
+
+    if (usingCustomFee) {
+      scope.customFeePerKB = tx.feeRate;
+      scope.feePerSatByte = (tx.feeRate / 1000).toFixed();
+    }
 
     $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
       scope: scope,
@@ -573,14 +580,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       scope.chooseFeeLevelModal.show();
     };
 
-    scope.hideModal = function(newFeeLevel, customFeePerKBValue) {
+    scope.hideModal = function(newFeeLevel, customFeePerKB) {
       scope.chooseFeeLevelModal.hide();
       $log.debug('New fee level choosen:' + newFeeLevel + ' was:' + tx.feeLevel);
 
-      if (tx.feeLevel == newFeeLevel && !customFeePerKBValue) return;
+      usingCustomFee = newFeeLevel == 'custom' ? true : false;
+
+      if (tx.feeLevel == newFeeLevel && !usingCustomFee) return;
 
       tx.feeLevel = newFeeLevel;
-      if (customFeePerKBValue) tx.feeRate = parseInt(customFeePerKBValue);
+      if (usingCustomFee) tx.feeRate = parseInt(customFeePerKB);
 
       updateTx(tx, wallet, {
         clearCache: true,
