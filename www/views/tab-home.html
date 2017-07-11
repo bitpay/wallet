@@ -106,7 +106,7 @@
     </div>
 
     <div class="list card">
-      <a ng-hide="isCordova && !isAndroid" href="https://bitlox.com" target="_system" ng-click="openBitlox($event)" class="item item-icon-left item-big-icon-left">
+      <a ng-show="!isAndroid" href="https://bitlox.com" target="_system" ng-click="openBitlox($event)" class="item item-icon-left item-big-icon-left">
        <i class="icon big-icon-svg">
          <img src="img/icon-wallet-bitlox.svg" class="bg wallet icon-create-wallet"/>
        </i>
