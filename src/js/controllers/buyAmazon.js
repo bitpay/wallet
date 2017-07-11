@@ -235,7 +235,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
 
-      message = gettextCatalog.getString("Amazon.con Gift Card {{amountStr}}", {
+      message = gettextCatalog.getString("Amazon.com Gift Card {{amountStr}}", {
         amountStr: $scope.amountUnitStr
       });
 
