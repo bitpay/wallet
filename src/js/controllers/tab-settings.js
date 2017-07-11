@@ -45,7 +45,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     var title = null;
     var message = gettextCatalog.getString('Help and support information is available at the website.');
     var okText = gettextCatalog.getString('Open');
-    var cancelText = gettextCatalog.getString('Go Back');
+    var cancelText = gettextCatalog.getString('Go back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 

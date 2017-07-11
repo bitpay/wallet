@@ -2,8 +2,8 @@
 
 angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
 
-  // Ratio low amount warning (fee/amount) in incoming TX 
-  var LOW_AMOUNT_RATIO = 0.15; 
+  // Ratio low amount warning (fee/amount) in incoming TX
+  var LOW_AMOUNT_RATIO = 0.15;
 
   // Ratio of "many utxos" warning in total balance (fee/amount)
   var TOTAL_LOW_WARNING_RATIO = .3;
@@ -39,7 +39,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   var _signWithTrezor = function(wallet, txp, cb) {
-    $log.info('Requesting Trezor  to sign the transaction');
+    $log.info('Requesting Trezor to sign the transaction');
 
     var xPubKeys = lodash.pluck(wallet.credentials.publicKeyRing, 'xPubKey');
     trezor.signTx(xPubKeys, txp, wallet.credentials.account, function(err, result) {
@@ -282,7 +282,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       tries = tries || 0;
 
-      $log.debug('Updating Status:', wallet.credentials.walletName, tries);
+      $log.debug('Updating status:', wallet.credentials.walletName, tries);
       get(function(err, status) {
         if (err) return cb(err);
 
@@ -300,7 +300,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
         processPendingTxps(status);
 
-        $log.debug('Got Wallet Status for:' + wallet.credentials.walletName);
+        $log.debug('Got Wallet status for:' + wallet.credentials.walletName);
 
         cacheStatus(status);
 
@@ -421,7 +421,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       var name = ' ' + config.unitName;
 
-      $log.debug('Fixing Tx Cache Unit to:' + name)
+      $log.debug('Fixing tx cache unit to:' + name)
       lodash.each(txs, function(tx) {
         tx.amountStr = txFormatService.formatAmount(tx.amount) + name;
         tx.feeStr = txFormatService.formatAmount(tx.fees) + name;
@@ -636,7 +636,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
 
-    $log.debug('Updating Transaction History');
+    $log.debug('Updating transaction history');
 
     updateLocalTxHistory(wallet, opts, function(err, txs) {
       if (err) return cb(err);
@@ -922,7 +922,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-  // Approx utxo amount, from which the uxto is economically redeemable  
+  // Approx utxo amount, from which the uxto is economically redeemable
   root.getMinFee = function(wallet, feeLevels, nbOutputs) {
     var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
       level: 'normal',
@@ -933,10 +933,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-  // Approx utxo amount, from which the uxto is economically redeemable  
+  // Approx utxo amount, from which the uxto is economically redeemable
   root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
-    var minFee = root.getMinFee(wallet,feeLevels, nbOutputs);
-    return parseInt( minFee / LOW_AMOUNT_RATIO);
+    var minFee = root.getMinFee(wallet, feeLevels, nbOutputs);
+    return parseInt(minFee / LOW_AMOUNT_RATIO);
   };
 
 
@@ -959,7 +959,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       var totalLow = lodash.sum(lowUtxos, 'satoshis');
 
       return cb(err, {
-        allUtxos:  resp || [],
+        allUtxos: resp || [],
         lowUtxos: lowUtxos || [],
         warning: minFee / balance > TOTAL_LOW_WARNING_RATIO,
         minFee: minFee,
@@ -1045,7 +1045,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.decrypt = function(wallet, cb) {
     $log.debug('Disabling private key encryption for' + wallet.name);
-    askPassword(null, gettextCatalog.getString('Enter Spending Password'), function(password) {
+    askPassword(null, gettextCatalog.getString('Enter spending password'), function(password) {
       if (!password) return cb('no password');
 
       try {
@@ -1060,7 +1060,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.handleEncryptedWallet = function(wallet, cb) {
     if (!root.isEncrypted(wallet)) return cb();
 
-    askPassword(wallet.name, gettextCatalog.getString('Enter Spending Password'), function(password) {
+    askPassword(wallet.name, gettextCatalog.getString('Enter spending password'), function(password) {
       if (!password) return cb('No password');
       if (!wallet.checkPassword(password)) return cb('Wrong password');
 

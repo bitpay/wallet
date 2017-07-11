@@ -8,7 +8,7 @@
   </div>
 
   <div ng-if="notification.type == 'NewOutgoingTx'">
-      <span translate>Payment Sent </span>
+      <span translate>Payment sent</span>
       <div class="wallet-activity-amount">
       {{notification.amountStr}}
       </div>
@@ -17,14 +17,14 @@
 
 
   <div ng-if="notification.type == 'NewIncomingTx'">
-      <span translate>Payment Received</span>
+      <span translate>Payment received</span>
       <div class="wallet-activity-amount">
       {{notification.amountStr}}
       </div>
   </div>
 
   <div ng-if="notification.type == 'TxProposalRemoved'">
-    <span translate>Proposal Deleted</span>:
+    <span translate>Proposal deleted</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
       {{notification.amountStr}}:
@@ -32,7 +32,7 @@
   </div>
 
   <div ng-if="notification.type == 'TxProposalRejectedBy'">
-    <span translate>Proposal Rejected</span>:
+    <span translate>Proposal rejected</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
       {{notification.amountStr}}:
@@ -40,7 +40,7 @@
   </div>
 
   <span ng-if="notification.type == 'NewTxProposal'">
-    <span translate>New Proposal</span>:
+    <span translate>New proposal</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
     {{notification.amountStr}}
@@ -48,7 +48,7 @@
   </span>
 
   <span ng-if="notification.type == 'TxProposalAcceptedBy'">
-    <span translate>Proposal Accepted</span>:
+    <span translate>Proposal accepted</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
     {{notification.amountStr}}

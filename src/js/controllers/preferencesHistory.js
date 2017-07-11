@@ -41,7 +41,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           if (cb) return cb(err);
           return;
         }
-        $log.debug('Wallet Transaction History Length:', txs.length);
+        $log.debug('Wallet transaction History Length:', txs.length);
 
         $scope.satToUnit = 1 / $scope.unitToSatoshi;
         var data = txs;
@@ -125,7 +125,7 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
     };
 
     $scope.clearTransactionHistory = function() {
-      $log.info('Removing Transaction history ' + $scope.wallet.id);
+      $log.info('Removing transaction history ' + $scope.wallet.id);
 
       walletService.clearTxHistory($scope.wallet, function(err) {
 

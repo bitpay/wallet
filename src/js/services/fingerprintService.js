@@ -40,12 +40,12 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
         },
         function(msg) {
           $log.debug('Finger Failed:' + JSON.stringify(msg));
-          return cb(gettextCatalog.getString('Finger Scan Failed'));
+          return cb(gettextCatalog.getString('Finger scan failed'));
         }
       );
     } catch (e) {
       $log.warn('Finger Scan Failed:' + JSON.stringify(e));
-      return cb(gettextCatalog.getString('Finger Scan Failed'));
+      return cb(gettextCatalog.getString('Finger scan failed'));
     };
   };
 
@@ -60,12 +60,12 @@ angular.module('copayApp.services').factory('fingerprintService', function($log,
         },
         function(msg) {
           $log.debug('Touch ID Failed:' + JSON.stringify(msg));
-          return cb(gettextCatalog.getString('Touch ID Failed'));
+          return cb(gettextCatalog.getString('Touch ID failed'));
         }
       );
     } catch (e) {
       $log.debug('Touch ID Failed:' + JSON.stringify(e));
-      return cb(gettextCatalog.getString('Touch ID Failed'));
+      return cb(gettextCatalog.getString('Touch ID failed'));
     };
   };
 

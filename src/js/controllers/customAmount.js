@@ -12,10 +12,10 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     var walletId = data.stateParams.id;
 
     if (!walletId) {
-      showErrorAndBack('Error', 'No wallet selected');
+      showErrorAndBack('Error', 'No Wallet selected');
       return;
     }
-      
+
     $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;
 
     $scope.wallet = profileService.getWallet(walletId);
@@ -25,11 +25,11 @@ angular.module('copayApp.controllers').controller('customAmountController', func
         showErrorAndBack('Error', 'Could not get the address');
         return;
       }
-      
+
       $scope.address = addr;
-    
+
       var parsedAmount = txFormatService.parseAmount(
-        data.stateParams.amount, 
+        data.stateParams.amount,
         data.stateParams.currency);
 
       // Amount in USD or BTC
@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
         var config = configService.getSync().wallet.settings;
         var amountUnit = txFormatService.satToUnit(parsedAmount.amountSat);
         var btcParsedAmount = txFormatService.parseAmount(amountUnit, config.unitName);
-        
+
         $scope.amountBtc = btcParsedAmount.amount;
         $scope.altAmountStr = btcParsedAmount.amountUnitStr;
       } else {

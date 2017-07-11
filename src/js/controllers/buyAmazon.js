@@ -278,7 +278,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
 
-    $scope.limitPerDayMessage = gettextCatalog.getString('Purchase Amount is limited to {{limitPerDay}} {{currency}} per day', {
+    $scope.limitPerDayMessage = gettextCatalog.getString('Purchase amount is limited to {{limitPerDay}} {{currency}} per day', {
       limitPerDay: amazonService.limitPerDay,
       currency: currency
     });

@@ -23,9 +23,9 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
     popupService.showAlert('Error', err);
   };
 
-  var statusChangeHandler = function (processName, showName, isOn) {
+  var statusChangeHandler = function(processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
-    if ( processName == 'sellingBitcoin' && !isOn) {
+    if (processName == 'sellingBitcoin' && !isOn) {
       $scope.sendStatus = 'success';
       $timeout(function() {
         $scope.$digest();
@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
     var parsedAmount = txFormatService.parseAmount(
-      data.stateParams.amount, 
+      data.stateParams.amount,
       data.stateParams.currency);
 
     amount = parsedAmount.amount;
@@ -108,7 +108,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
       popupService.showPrompt(title, message, null, function(twoFaCode) {
         if (typeof twoFaCode == 'undefined') return cb();
         return cb(twoFaCode);
-      });   
+      });
     } else {
       return cb();
     }
@@ -119,7 +119,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
     var okText = 'Confirm';
     var cancelText = 'Cancel';
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-      if (!ok) return; 
+      if (!ok) return;
       ongoingProcess.set('sellingBitcoin', true, statusChangeHandler);
       glideraService.get2faCode($scope.token, function(err, tfa) {
         if (err) {
@@ -225,7 +225,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
   };
 
   $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = 'Sell From';
+    $scope.walletSelectorTitle = 'Sell from';
     $scope.showWallets = true;
   };
 

@@ -49,7 +49,7 @@ angular.module('copayApp.controllers').controller('tourController',
               if (retryCount > 3) {
                 ongoingProcess.set('creatingWallet', false);
                 popupService.showAlert(
-                  gettextCatalog.getString('Cannot Create Wallet'), err,
+                  gettextCatalog.getString('Cannot create Wallet'), err,
                   function() {
                     retryCount = 0;
                     return $scope.createDefaultWallet();
@@ -67,7 +67,7 @@ angular.module('copayApp.controllers').controller('tourController',
             walletId: walletId
           });
 
-            /*
+          /*
           $state.go('onboarding.backupRequest', {
             walletId: walletId
           });

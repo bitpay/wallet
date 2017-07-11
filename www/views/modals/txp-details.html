@@ -4,7 +4,7 @@
       Close
     </button>
     <div class="title" translate>
-      Payment Proposal
+      Payment proposal
     </div>
     <button class="button button-clear" ng-click="reject()" ng-disabled="loading" ng-if="isShared && tx.pendingForUs">
       Reject
@@ -33,14 +33,14 @@
 
             <button class="button button-positive button-block" ng-click="broadcast(tx)" ng-disabled="loading">
               <i class="icon ion-ios-cloud-upload-outline"></i>
-              <span translate>Broadcast Payment</span>
+              <span translate>Broadcast payment</span>
             </button>
           </div>
           <div ng-show="tx.status == 'accepted' && tx.isGlidera" >
             <div class="m10h" translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created.</div>
           </div>
-          <div class="balanced" ng-show="tx.status == 'broadcasted'" translate>Payment Sent</div>
-          <div class="assertive" ng-show="tx.status=='rejected'" translate>Payment Rejected</div>
+          <div class="balanced" ng-show="tx.status == 'broadcasted'" translate>Payment sent</div>
+          <div class="assertive" ng-show="tx.status=='rejected'" translate>Payment rejected</div>
         </div>
       </div>
 
@@ -163,7 +163,7 @@
       </div>
       <button class="button button-assertive button-clear" ng-click="remove()" ng-disabled="loading">
         <i class="fi-trash size-14 m5r"></i>
-        <span translate>Delete Payment Proposal</span>
+        <span translate>Delete payment proposal</span>
       </button>
     </div>
   </ion-content>

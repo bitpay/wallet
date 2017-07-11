@@ -10,10 +10,10 @@ angular.module('copayApp.controllers').controller('preferencesAbout',
     $scope.openExternalLink = function() {
       var url = 'https://github.com/bitpay/' + appConfigService.gitHubRepoName + '/tree/' + $window.commitHash + '';
       var optIn = true;
-      var title = gettextCatalog.getString('Open GitHub Project');
+      var title = gettextCatalog.getString('Open GitHub project');
       var message = gettextCatalog.getString('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');
       var okText = gettextCatalog.getString('Open GitHub');
-      var cancelText = gettextCatalog.getString('Go Back');
+      var cancelText = gettextCatalog.getString('Go back');
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
   });
