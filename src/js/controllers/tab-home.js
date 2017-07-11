@@ -268,10 +268,16 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         $scope.homeTip = false;
         $timeout(function() {
           $scope.$apply();
-        })
+        });
       });
     };
 
+    $scope.hideNewReleaseCard = function() {
+      $scope.newRelease = false;
+      $timeout(function() {
+        $scope.$apply();
+      });
+    };
 
     $scope.onRefresh = function() {
       $timeout(function() {
