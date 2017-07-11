@@ -141,6 +141,9 @@
   &-content{
     max-width: 450px;
     @include center-block();
+    p {
+      display: inline;
+    }
   }
   .item{
     background-color: transparent;
