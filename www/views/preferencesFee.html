@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="fee-policies">
-      <ion-radio ng-repeat="(fee, level) in feeOpts" ng-value="fee" ng-model="currentFeeLevel" ng-click="save(fee)">
+      <ion-radio ng-repeat="(fee, level) in feeOpts" ng-if="fee != 'custom'" ng-value="fee" ng-model="currentFeeLevel" ng-click="save(fee)">
         {{level|translate}}
       </ion-radio>
     </div>
