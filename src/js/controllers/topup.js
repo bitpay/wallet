@@ -11,6 +11,11 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   var message;
   var configWallet = configService.getSync().wallet;
 
+  var _resetValues = function() {
+    $scope.totalAmountStr = $scope.amount = $scope.invoiceFee = $scope.networkFee = $scope.totalAmount = $scope.wallet = null;
+    createdTx = message = null;
+  };
+
   var showErrorAndBack = function(title, msg) {
     title = title || gettextCatalog.getString('Error');
     $scope.sendStatus = '';
@@ -193,6 +198,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         return;
       }
 
+      // Sometimes API does not return this element;
+      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
 
       message = gettextCatalog.getString("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
@@ -203,6 +210,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       createTx(wallet, invoice, message, function(err, ctxp) {
         ongoingProcess.set('loadingTxInfo', false);
         if (err) {
+          _resetValues();
           showError(err.title, err.message);
           return;
         }
@@ -284,8 +292,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       ongoingProcess.set('topup', true, statusChangeHandler);
       publishAndSign($scope.wallet, createdTx, function() {}, function(err, txSent) {
         if (err) {
-          ongoingProcess.set('topup', false);
-          $scope.sendStatus = '';
+          _resetValues();
+          ongoingProcess.set('topup', false, statusChangeHandler);
           showError(gettextCatalog.getString('Could not send transaction'), err);
           return;
         }
@@ -295,7 +303,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = 'From';
+    $scope.walletSelectorTitle = gettextCatalog.getString('From');
     $scope.showWallets = true;
   };
 
@@ -305,7 +313,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     calculateAmount(wallet, function(err, a, c) {
       ongoingProcess.set('retrievingInputs', false);
       if (err) {
-        createdTx = message = $scope.totalAmountStr = $scope.amountUnitStr = $scope.wallet = null;
+        _resetValues();
         showError(err.title, err.message, function() {
           $scope.showWalletSelector();
         });
