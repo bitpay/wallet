@@ -7,6 +7,7 @@ angular.module('copayApp.services').factory('payproService',
 
     ret.getPayProDetails = function(uri, cb, disableLoader) {
       if (!cb) cb = function() {};
+      console.log("SERIOUSLY?")
 
       var wallet = profileService.getWallets({
         onlyComplete: true
