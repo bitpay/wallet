@@ -108,7 +108,7 @@
       <a class="item item-icon-left item-icon-right" href
            ui-sref="tabs.preferences({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
-         <i class="icon big-icon-svg circle" wallet-icon data-wallet="wallet"></i>
+         <i class="icon big-icon-svg circle" wallet-icon data-wallet="item"></i>
         <span>
           {{item.name || item.id}}
           <span class="size-12 text-light" ng-show="item.n > 1">
