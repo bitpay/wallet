@@ -106,24 +106,24 @@
     </div>
 
     <div class="list card">
-      <a ng-show="!isAndroid" href="https://bitlox.com" target="_system" ng-click="openBitlox($event)" class="item item-icon-left item-big-icon-left">
+      <a ng-hide="isCordova" href="https://bitlox.com" target="_system" ng-click="openBitlox($event)" class="item item-icon-left item-big-icon-left">
        <i class="icon big-icon-svg">
          <img src="img/icon-wallet-bitlox.svg" class="bg wallet icon-create-wallet"/>
        </i>
         <label style="text-decoration: none" translate>Buy a BitLox Now</label>
       </a>
-      <a ng-show="isCordova && isAndroid" onclick="window.open('https://bitlox.com', '_system')" class="item item-icon-left item-big-icon-left">
+      <a ng-show="isCordova && isAndroid" onclick="window.open('https://bitlox.com', '_system'); return false;" class="item item-icon-left item-big-icon-left">
        <i class="icon big-icon-svg">
          <img src="img/icon-wallet-bitlox.svg" class="bg wallet icon-create-wallet"/>
        </i>
         <label style="text-decoration: none" translate>Buy a BitLox Now</label>
       </a>
-<!--       <a ng-show="isCordova && !isAndroid" onclick="window.open('https://bitlox.com')" class="item item-icon-left item-big-icon-left">
+      <a ng-show="isCordova && !isAndroid" onclick="window.open('https://bitlox.com');  return false;" class="item item-icon-left item-big-icon-left">
        <i class="icon big-icon-svg">
          <img src="img/icon-wallet-bitlox.svg" class="bg wallet icon-create-wallet"/>
        </i>
         <label style="text-decoration: none" translate>Buy a BitLox Now</label>
-      </a> -->
+      </a>
 
     </div>
   </ion-content>
