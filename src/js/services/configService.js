@@ -48,7 +48,7 @@ angular.module('copayApp.services').factory('configService', function(appConfigS
 
     // External services
     recentTransactions: {
-      enabled: true,
+      enabled: false,
     },
 
     hideNextSteps: {
