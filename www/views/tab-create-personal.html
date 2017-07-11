@@ -27,7 +27,7 @@
           <div>{{network.alias}}</div>
           <i class="icon bp-arrow-right"></i>
         </a>
-          
+
          <div class="item item-divider"></div>
 
 
@@ -44,7 +44,7 @@
 
           <label ng-hide="formData.customParam" class="item item-input item-stacked-label">
             <span class="input-label">Wallet Service URL</span>
-            <input type="text" ng-model="formData.bwsurl" placeholder="https://bws.bitpay.com/bws/api">
+            <input type="text" ng-model="formData.bwsurl" placeholder="https://bws.bitlox.com/bws/api">
           </label>
 
           <label class="item item-input item-select">
@@ -138,7 +138,7 @@
       <button type="submit" class="button button-standard button-primary"
         ng-disabled="setupForm.$invalid || ((encrypt && !formData.passwordSaved) || encrypt && ((formData.seedSource.id == 'new' && !formData.createPassphrase) || (formData.seedSource.id == 'set' && !formData.passphrase)))">
         <span translate>Create new wallet</span>
-      </button>      
+      </button>
     </form>
   </ion-content>
   <network-selector
