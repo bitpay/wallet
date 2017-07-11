@@ -110,7 +110,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Amount below minimum allowed');
             break;
           case 'INCORRECT_ADDRESS_NETWORK':
-            body = gettextCatalog.getString('Incorrect address network');
+            body = gettextCatalog.getString('Incorrect network address');
             break;
           case 'COPAYER_REGISTERED':
             body = gettextCatalog.getString('Key already associated with an existing wallet');

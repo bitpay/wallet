@@ -25,6 +25,15 @@
     background-color: #fff;
     font-size:0.9em;
     color: $v-mid-gray;
+    .text {
+      padding-left: 25px;
+    }
+    .icon {
+      position: absolute;
+      img {
+        width: 20px;
+      }
+    }
   }
   &-explanation, &-button-group {
     padding: 0 1rem;
@@ -95,6 +104,21 @@
       font-size: 16px;
     }
  }
+ input[type="password"] {
+   border: none;
+   margin-left: -5px;
+   padding-left: 4px;
+   &.incorrect {
+    margin-right: 10px;
+    border: 1px solid;
+    color: #C90505;
+   }
+   &.correct {
+    margin-right: 10px;
+    border: 1px solid;
+    color: #00901B;
+   }
+ }
 }
 
 #tab-settings {
@@ -147,6 +171,7 @@
 
 #settings-fee {
   .estimates {
+    min-height: 6rem;
     font-size: 15px;
     color: $v-dark-gray;
     margin-bottom: .5rem;

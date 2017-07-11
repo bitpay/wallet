@@ -1,12 +1,41 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError) {
-  var cachedTxp = {};
-  var toAmount;
-  var isChromeApp = platformInfo.isChromeApp;
+
   var countDown = null;
-  var cachedSendMax = {};
-  $scope.isCordova = platformInfo.isCordova;
+  var CONFIRM_LIMIT_USD = 20;
+  var FEE_TOO_HIGH_LIMIT_PER = 15;
+
+  var tx = {};
+
+  // Config Related values
+  var config = configService.getSync();
+  var walletConfig = config.wallet;
+  var unitToSatoshi = walletConfig.settings.unitToSatoshi;
+  var unitDecimals = walletConfig.settings.unitDecimals;
+  var satToUnit = 1 / unitToSatoshi;
+  var configFeeLevel = walletConfig.settings.feeLevel ? walletConfig.settings.feeLevel : 'normal';
+
+
+  // Platform info
+  var isChromeApp = platformInfo.isChromeApp;
+  var isCordova = platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
+
+  //custom fee flag
+  var usingCustomFee = null;
+
+  function refresh() {
+    $timeout(function() {
+      $scope.$apply();
+    }, 1);
+  }
+
+
+  $scope.showWalletSelector = function() {
+    $scope.walletSelector = true;
+    refresh();
+  };
 
   $scope.$on("$ionicView.beforeLeave", function(event, data) {
     $ionicConfig.views.swipeBackEnabled(true);
@@ -16,303 +45,347 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $ionicConfig.views.swipeBackEnabled(false);
   });
 
+
+  function exitWithError(err) {
+    $log.info('Error setting wallet selector:' + err);
+    popupService.showAlert(gettextCatalog.getString(), bwcError.msg(err), function() {
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        historyRoot: true
+      });
+      $ionicHistory.clearHistory();
+      $state.go('tabs.send');
+    });
+  };
+
+  function setNoWallet(msg) {
+    $scope.wallet = null;
+    $scope.noWalletMessage = gettextCatalog.getString(msg);
+    $log.warn('Not ready to make the payment:' + msg);
+    $timeout(function() {
+      $scope.$apply();
+    });
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    toAmount = data.stateParams.toAmount;
-    cachedSendMax = {};
-    $scope.showFeeFiat = false;
-    $scope.showAddress = false;
-    $scope.useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
-    $scope.recipientType = data.stateParams.recipientType || null;
-    $scope.toAddress = data.stateParams.toAddress;
-    $scope.toName = data.stateParams.toName;
-    $scope.toEmail = data.stateParams.toEmail;
-    $scope.toColor = data.stateParams.toColor;
-    $scope.description = data.stateParams.description;
-    $scope.paypro = data.stateParams.paypro;
-    $scope.insufficientFunds = false;
-    $scope.noMatchingWallet = false;
-    $scope.paymentExpired = {
-      value: false
-    };
-    $scope.remainingTimeStr = {
-      value: null
+    function setWalletSelector(network, minAmount, cb) {
+
+      // no min amount? (sendMax) => look for no empty wallets
+      minAmount = minAmount || 1;
+
+      $scope.wallets = profileService.getWallets({
+        onlyComplete: true,
+        network: network
+      });
+
+      if (!$scope.wallets || !$scope.wallets.length) {
+        setNoWallet('No wallets available');
+        return cb();
+      }
+
+      var filteredWallets = [];
+      var index = 0;
+      var walletsUpdated = 0;
+
+      lodash.each($scope.wallets, function(w) {
+        walletService.getStatus(w, {}, function(err, status) {
+          if (err || !status) {
+            $log.error(err);
+          } else {
+            walletsUpdated++;
+            w.status = status;
+
+            if (!status.availableBalanceSat)
+              $log.debug('No balance available in: ' + w.name);
+
+            if (status.availableBalanceSat > minAmount) {
+              filteredWallets.push(w);
+            }
+          }
+
+          if (++index == $scope.wallets.length) {
+            if (!walletsUpdated)
+              return cb('Could not update any wallet');
+
+            if (lodash.isEmpty(filteredWallets)) {
+              setNoWallet('Insufficent funds');
+            }
+            $scope.wallets = lodash.clone(filteredWallets);
+            return cb();
+          }
+        });
+      });
     };
 
-    var config = configService.getSync().wallet;
-    var feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
-    $scope.feeLevel = feeService.feeOpts[feeLevel];
-    $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
-    resetValues();
-    setwallets();
-    applyButtonText();
+    // Setup $scope
+
+    // Grab stateParams
+    tx = {
+      toAmount: parseInt(data.stateParams.toAmount),
+      sendMax: data.stateParams.useSendMax == 'true' ? true : false,
+      toAddress: data.stateParams.toAddress,
+      description: data.stateParams.description,
+      paypro: data.stateParams.paypro,
+
+      feeLevel: configFeeLevel,
+      spendUnconfirmed: walletConfig.spendUnconfirmed,
+
+      // Vanity tx info (not in the real tx)
+      recipientType: data.stateParams.recipientType || null,
+      toName: data.stateParams.toName,
+      toEmail: data.stateParams.toEmail,
+      toColor: data.stateParams.toColor,
+      network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
+      txp: {},
+    };
+
+
+    // Other Scope vars
+    $scope.isCordova = isCordova;
+    $scope.isWindowsPhoneApp = isWindowsPhoneApp;
+    $scope.showAddress = false;
+
+    updateTx(tx, null, {}, function() {
+
+      $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
+
+      setWalletSelector(tx.network, tx.toAmount, function(err) {
+        if (err) {
+          return exitWithError('Could not update wallets');
+        }
+
+        if ($scope.wallets.length > 1) {
+          $scope.showWalletSelector();
+        } else if ($scope.wallets.length) {
+          setWallet($scope.wallets[0], tx);
+        }
+      });
+
+    });
   });
 
-  function applyButtonText(multisig) {
-    $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
 
-    if ($scope.paypro) {
+  function getSendMaxInfo(tx, wallet, cb) {
+    if (!tx.sendMax) return cb();
+
+    //ongoingProcess.set('retrievingInputs', true);
+    walletService.getSendMaxInfo(wallet, {
+      feePerKb: tx.feeRate,
+      excludeUnconfirmedUtxos: !tx.spendUnconfirmed,
+      returnInputs: true,
+    }, cb);
+  };
+
+
+  function getTxp(tx, wallet, dryRun, cb) {
+
+    // ToDo: use a credential's (or fc's) function for this
+    if (tx.description && !wallet.credentials.sharedEncryptingKey) {
+      var msg = gettextCatalog.getString('Could not add message to imported wallet without shared encrypting key');
+      $log.warn(msg);
+      return setSendError(msg);
+    }
+
+    if (tx.toAmount > Number.MAX_SAFE_INTEGER) {
+      var msg = gettextCatalog.getString('Amount too big');
+      $log.warn(msg);
+      return setSendError(msg);
+    }
+
+    var txp = {};
+
+    txp.outputs = [{
+      'toAddress': tx.toAddress,
+      'amount': tx.toAmount,
+      'message': tx.description
+    }];
+
+    if (tx.sendMaxInfo) {
+      txp.inputs = tx.sendMaxInfo.inputs;
+      txp.fee = tx.sendMaxInfo.fee;
+    } else {
+      if (usingCustomFee) {
+        txp.feePerKb = tx.feeRate;
+      } else txp.feeLevel = tx.feeLevel;
+    }
+
+    txp.message = tx.description;
+
+    if (tx.paypro) {
+      txp.payProUrl = tx.paypro.url;
+    }
+    txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
+    txp.dryRun = dryRun;
+    walletService.createTx(wallet, txp, function(err, ctxp) {
+      if (err) {
+        setSendError(err);
+        return cb(err);
+      }
+      return cb(null, ctxp);
+    });
+  };
+
+  function updateTx(tx, wallet, opts, cb) {
+
+    if (opts.clearCache) {
+      tx.txp = {};
+    }
+
+    $scope.tx = tx;
+
+    function updateAmount() {
+      if (!tx.toAmount) return;
+
+      // Amount
+      tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
+      tx.amountValueStr = tx.amountStr.split(' ')[0];
+      tx.amountUnitStr = tx.amountStr.split(' ')[1];
+      txFormatService.formatAlternativeStr(tx.toAmount, function(v) {
+        tx.alternativeAmountStr = v;
+      });
+    }
+
+    updateAmount();
+    refresh();
+
+    // End of quick refresh, before wallet is selected.
+    if (!wallet) return cb();
+
+    feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
+      if (err) return cb(err);
+
+      if (!usingCustomFee) tx.feeRate = feeRate;
+      tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
+
+      if (!wallet)
+        return cb();
+
+      getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
+        if (err) {
+          var msg = gettextCatalog.getString('Error getting SendMax information');
+          return setSendError(msg);
+        }
+
+        if (sendMaxInfo) {
+
+          $log.debug('Send max info', sendMaxInfo);
+
+          if (tx.sendMax && sendMaxInfo.amount == 0) {
+            setNoWallet('Insufficent funds');
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
+            return cb('no_funds');
+          }
+
+          tx.sendMaxInfo = sendMaxInfo;
+          tx.toAmount = tx.sendMaxInfo.amount;
+          updateAmount();
+          showSendMaxWarning(sendMaxInfo);
+        }
+
+        // txp already generated for this wallet?
+        if (tx.txp[wallet.id]) {
+          refresh();
+          return cb();
+        }
+
+        getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
+          if (err) return cb(err);
+
+          txp.feeStr = txFormatService.formatAmountStr(txp.fee);
+          txFormatService.formatAlternativeStr(txp.fee, function(v) {
+            txp.alternativeFeeStr = v;
+          });
+
+          var per = (txp.fee / (txp.amount + txp.fee) * 100);
+          txp.feeRatePerStr = per.toFixed(2) + '%';
+          txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
+
+          tx.txp[wallet.id] = txp;
+          $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+          refresh();
+
+          return cb();
+        });
+      });
+    });
+  }
+
+  function useSelectedWallet() {
+
+    if (!$scope.useSendMax) {
+      showAmount(tx.toAmount);
+    }
+
+    $scope.onWalletSelect($scope.wallet);
+  }
+
+  function setButtonText(isMultisig, isPayPro) {
+    $scope.buttonText = gettextCatalog.getString(isCordova && !isWindowsPhoneApp ? 'Slide' : 'Click') + ' ';
+
+    if (isPayPro) {
       $scope.buttonText += gettextCatalog.getString('to pay');
-    } else if (multisig) {
+    } else if (isMultisig) {
       $scope.buttonText += gettextCatalog.getString('to accept');
     } else
       $scope.buttonText += gettextCatalog.getString('to send');
   };
 
-  function setwallets() {
-    $scope.wallets = profileService.getWallets({
-      onlyComplete: true,
-      network: $scope.network
-    });
-
-    if (!$scope.wallets || !$scope.wallets.length) {
-      $scope.noMatchingWallet = true;
-      displayValues();
-      $log.warn('No ' + $scope.network + ' wallets to make the payment');
-      $timeout(function() {
-        $scope.$apply();
-      });
-      return;
-    }
-
-    var filteredWallets = [];
-    var index = 0;
-    var enoughFunds = false;
-    var walletsUpdated = 0;
-
-    lodash.each($scope.wallets, function(w) {
-      walletService.getStatus(w, {}, function(err, status) {
-        if (err || !status) {
-          $log.error(err);
-        } else {
-          walletsUpdated++;
-          w.status = status;
-          if (!status.availableBalanceSat) $log.debug('No balance available in: ' + w.name);
-          if (status.availableBalanceSat > toAmount) {
-            filteredWallets.push(w);
-            enoughFunds = true;
-          }
-        }
-
-        if (++index == $scope.wallets.length) {
-
-          if (!lodash.isEmpty(filteredWallets)) {
-            $scope.wallets = lodash.clone(filteredWallets);
-            if ($scope.useSendMax) {
-              if ($scope.wallets.length > 1)
-                $scope.showWalletSelector();
-              else {
-                $scope.wallet = $scope.wallets[0];
-                $scope.getSendMaxInfo();
-              }
-            } else initConfirm();
-          } else {
-
-            // Were we able to update any wallet?
-            if (walletsUpdated) {
-              if (!enoughFunds) $scope.insufficientFunds = true;
-              displayValues();
-              $log.warn('No wallet available to make the payment');
-            } else {
-              popupService.showAlert(gettextCatalog.getString('Could not update wallets'), bwcError.msg(err), function() {
-                $ionicHistory.nextViewOptions({
-                  disableAnimate: true,
-                  historyRoot: true
-                });
-                $ionicHistory.clearHistory();
-                $state.go('tabs.send');
-              });
-            }
-
-          }
-          $timeout(function() {
-            $scope.$apply();
-          });
-        }
-      });
-    });
-  };
-
-  $scope.toggleFeeValue = function() {
-    $scope.showFeeFiat = !$scope.showFeeFiat;
-  };
 
   $scope.toggleAddress = function() {
     $scope.showAddress = !$scope.showAddress;
   };
 
-  var initConfirm = function() {
-    if ($scope.paypro) _paymentTimeControl($scope.paypro.expires);
 
-    displayValues();
-    if ($scope.wallets.length > 1) $scope.showWalletSelector();
-    else setWallet($scope.wallets[0]);
-    $timeout(function() {
-      $scope.$apply();
-    });
-  };
+  function showSendMaxWarning(sendMaxInfo) {
 
-  function displayValues() {
-    toAmount = parseInt(toAmount);
-    $scope.amountStr = txFormatService.formatAmountStr(toAmount);
-    $scope.displayAmount = getDisplayAmount($scope.amountStr);
-    $scope.displayUnit = getDisplayUnit($scope.amountStr);
-    txFormatService.formatAlternativeStr(toAmount, function(v) {
-      $scope.alternativeAmountStr = v;
-    });
-  };
-
-  function resetValues() {
-    $scope.displayAmount = $scope.displayUnit = $scope.fee = $scope.alternativeAmountStr = $scope.insufficientFunds = $scope.noMatchingWallet = null;
-    $scope.showFeeFiat = $scope.showAddress = false;
-  };
-
-  $scope.getSendMaxInfo = function() {
-    resetValues();
-
-    ongoingProcess.set('gettingFeeLevels', true);
-    feeService.getCurrentFeeValue($scope.network, function(err, feePerKb) {
-      ongoingProcess.set('gettingFeeLevels', false);
-      if (err) {
-        popupService.showAlert(gettextCatalog.getString('Error'), err.message);
-        return;
+    function verifyExcludedUtxos() {
+      var warningMsg = [];
+      if (sendMaxInfo.utxosBelowFee > 0) {
+        warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+          amountBelowFeeStr: txFormatService.formatAmountStr(sendMaxInfo.amountBelowFee)
+        }));
       }
-      var config = configService.getSync().wallet;
 
-      ongoingProcess.set('retrievingInputs', true);
-      walletService.getSendMaxInfo($scope.wallet, {
-        feePerKb: feePerKb,
-        excludeUnconfirmedUtxos: !config.spendUnconfirmed,
-        returnInputs: true,
-      }, function(err, resp) {
-        ongoingProcess.set('retrievingInputs', false);
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return;
-        }
+      if (sendMaxInfo.utxosAboveMaxSize > 0) {
+        warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
+          amountAboveMaxSizeStr: txFormatService.formatAmountStr(sendMaxInfo.amountAboveMaxSize)
+        }));
+      }
+      return warningMsg.join('\n');
+    };
 
-        if (resp.amount == 0) {
-          $scope.insufficientFunds = true;
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
-          return;
-        }
-
-        $scope.sendMaxInfo = {
-          sendMax: true,
-          amount: resp.amount,
-          inputs: resp.inputs,
-          fee: resp.fee,
-          feePerKb: feePerKb,
-        };
-
-        cachedSendMax[$scope.wallet.id] = $scope.sendMaxInfo;
-
-        var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
-          fee: txFormatService.formatAmountStr(resp.fee)
-        });
-        var warningMsg = verifyExcludedUtxos();
-
-        if (!lodash.isEmpty(warningMsg))
-          msg += '\n' + warningMsg;
-
-        popupService.showAlert(null, msg, function() {
-          setSendMaxValues(resp);
-
-          createTx($scope.wallet, true, function(err, txp) {
-            if (err) return;
-            cachedTxp[$scope.wallet.id] = txp;
-            apply(txp);
-          });
-        });
-
-        function verifyExcludedUtxos() {
-          var warningMsg = [];
-          if (resp.utxosBelowFee > 0) {
-            warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-              amountBelowFeeStr: txFormatService.formatAmountStr(resp.amountBelowFee)
-            }));
-          }
-
-          if (resp.utxosAboveMaxSize > 0) {
-            warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
-              amountAboveMaxSizeStr: txFormatService.formatAmountStr(resp.amountAboveMaxSize)
-            }));
-          }
-          return warningMsg.join('\n');
-        };
-      });
+    var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
+      fee: txFormatService.formatAmountStr(sendMaxInfo.fee)
     });
-  };
+    var warningMsg = verifyExcludedUtxos();
 
-  function setSendMaxValues(data) {
-    resetValues();
-    var config = configService.getSync().wallet;
-    var unitToSatoshi = config.settings.unitToSatoshi;
-    var satToUnit = 1 / unitToSatoshi;
-    var unitDecimals = config.settings.unitDecimals;
+    if (!lodash.isEmpty(warningMsg))
+      msg += '\n' + warningMsg;
 
-    $scope.amountStr = txFormatService.formatAmountStr(data.amount, true);
-    $scope.displayAmount = getDisplayAmount($scope.amountStr);
-    $scope.displayUnit = getDisplayUnit($scope.amountStr);
-    $scope.fee = txFormatService.formatAmountStr(data.fee);
-    toAmount = parseFloat((data.amount * satToUnit).toFixed(unitDecimals));
-    txFormatService.formatAlternativeStr(data.amount, function(v) {
-      $scope.alternativeAmountStr = v;
-    });
-    $timeout(function() {
-      $scope.$apply();
-    });
-  };
-
-  $scope.$on('accepted', function(event) {
-    $scope.approve();
-  });
-
-  $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
-    if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
-    $scope.showWallets = true;
+    popupService.showAlert(null, msg, function() {});
   };
 
   $scope.onWalletSelect = function(wallet) {
-    if ($scope.useSendMax) {
-      $scope.wallet = wallet;
-      if (cachedSendMax[wallet.id]) {
-        $log.debug('Send max cached for wallet:', wallet.id);
-        setSendMaxValues(cachedSendMax[wallet.id]);
-        return;
-      }
-      $scope.getSendMaxInfo();
-    } else
-      setWallet(wallet);
-
-    applyButtonText(wallet.credentials.m > 1);
+    setWallet(wallet, tx);
   };
 
-  $scope.showDescriptionPopup = function() {
+  $scope.showDescriptionPopup = function(tx) {
     var message = gettextCatalog.getString('Add description');
     var opts = {
-      defaultText: $scope.description
+      defaultText: tx.description
     };
 
     popupService.showPrompt(null, message, opts, function(res) {
-      if (typeof res != 'undefined') $scope.description = res;
+      if (typeof res != 'undefined') tx.description = res;
       $timeout(function() {
         $scope.$apply();
       });
     });
   };
 
-  function getDisplayAmount(amountStr) {
-    return $scope.amountStr.split(' ')[0];
-  };
-
-  function getDisplayUnit(amountStr) {
-    return $scope.amountStr.split(' ')[1];
-  };
-
   function _paymentTimeControl(expirationTime) {
-    $scope.paymentExpired.value = false;
+    $scope.paymentExpired = false;
     setExpirationTime();
 
     countDown = $interval(function() {
@@ -330,12 +403,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       var totalSecs = expirationTime - now;
       var m = Math.floor(totalSecs / 60);
       var s = totalSecs % 60;
-      $scope.remainingTimeStr.value = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+      $scope.remainingTimeStr = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
     };
 
     function setExpiredValues() {
-      $scope.paymentExpired.value = true;
-      $scope.remainingTimeStr.value = gettextCatalog.getString('Expired');
+      $scope.paymentExpired = true;
+      $scope.remainingTimeStr = gettextCatalog.getString('Expired');
       if (countDown) $interval.cancel(countDown);
       $timeout(function() {
         $scope.$apply();
@@ -343,32 +416,27 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
   };
 
-  function setWallet(wallet, delayed) {
-    var stop;
+  /* sets a wallet on the UI, creates a TXPs for that wallet */
+
+  function setWallet(wallet, tx) {
+
     $scope.wallet = wallet;
-    $scope.fee = $scope.txp = null;
 
-    if (stop) {
-      $timeout.cancel(stop);
-      stop = null;
-    }
+    setButtonText(wallet.credentials.m > 1, !!tx.paypro);
 
-    if (cachedTxp[wallet.id]) {
-      apply(cachedTxp[wallet.id]);
-    } else {
-      stop = $timeout(function() {
-        createTx(wallet, true, function(err, txp) {
-          if (err) return;
-          cachedTxp[wallet.id] = txp;
-          apply(txp);
-        });
-      }, delayed ? 2000 : 1);
-    }
+    if (tx.paypro)
+      _paymentTimeControl(tx.paypro.expires);
 
-    $timeout(function() {
-      $ionicScrollDelegate.resize();
-      $scope.$apply();
-    }, 10);
+    updateTx(tx, wallet, {
+      dryRun: true
+    }, function(err) {
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+        $scope.$apply();
+      }, 10);
+
+    });
+
   };
 
   var setSendError = function(msg) {
@@ -377,74 +445,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.$apply();
     });
     popupService.showAlert(gettextCatalog.getString('Error at confirm'), bwcError.msg(msg));
-  };
-
-  function apply(txp) {
-    $scope.fee = txFormatService.formatAmountStr(txp.fee);
-    txFormatService.formatAlternativeStr(txp.fee, function(v) {
-      $scope.feeFiat = v;
-    });
-    $scope.txp = txp;
-    $timeout(function() {
-      $scope.$apply();
-    });
-  };
-
-  var createTx = function(wallet, dryRun, cb) {
-    var config = configService.getSync().wallet;
-    var currentSpendUnconfirmed = config.spendUnconfirmed;
-    var paypro = $scope.paypro;
-    var toAddress = $scope.toAddress;
-    var description = $scope.description;
-    var unitToSatoshi = config.settings.unitToSatoshi;
-    var unitDecimals = config.settings.unitDecimals;
-
-    // ToDo: use a credential's (or fc's) function for this
-    if (description && !wallet.credentials.sharedEncryptingKey) {
-      var msg = gettextCatalog.getString('Could not add message to imported wallet without shared encrypting key');
-      $log.warn(msg);
-      return setSendError(msg);
-    }
-
-    if (toAmount > Number.MAX_SAFE_INTEGER) {
-      var msg = gettextCatalog.getString('Amount too big');
-      $log.warn(msg);
-      return setSendError(msg);
-    }
-
-    var txp = {};
-    var amount;
-
-    if ($scope.useSendMax) amount = parseFloat((toAmount * unitToSatoshi).toFixed(0));
-    else amount = toAmount;
-
-    txp.outputs = [{
-      'toAddress': toAddress,
-      'amount': amount,
-      'message': description
-    }];
-
-    if ($scope.sendMaxInfo) {
-      txp.inputs = $scope.sendMaxInfo.inputs;
-      txp.fee = $scope.sendMaxInfo.fee;
-    } else
-      txp.feeLevel = config.settings && config.settings.feeLevel ? config.settings.feeLevel : 'normal';
-
-    txp.message = description;
-
-    if (paypro) {
-      txp.payProUrl = paypro.url;
-    }
-    txp.excludeUnconfirmedUtxos = !currentSpendUnconfirmed;
-    txp.dryRun = dryRun;
-
-    walletService.createTx(wallet, txp, function(err, ctxp) {
-      if (err) {
-        setSendError(err);
-        return cb(err);
-      }
-      return cb(null, ctxp);
-    });
   };
 
   $scope.openPPModal = function() {
@@ -460,14 +460,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.payproModal.hide();
   };
 
-  $scope.approve = function(onSendStatusChange) {
+  $scope.approve = function(tx, wallet, onSendStatusChange) {
 
-    var wallet = $scope.wallet;
-    if (!wallet) {
-      return;
-    }
+    if (!tx || !wallet) return;
 
-    if ($scope.paypro && $scope.paymentExpired.value) {
+    if ($scope.paymentExpired) {
       popupService.showAlert(null, gettextCatalog.getString('This bitcoin payment request has expired.'));
       $scope.sendStatus = '';
       $timeout(function() {
@@ -477,46 +474,54 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
-    createTx(wallet, false, function(err, txp) {
+    getTxp(lodash.clone(tx), wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;
 
-      var config = configService.getSync();
-      var spendingPassEnabled = walletService.isEncrypted(wallet);
-      var touchIdEnabled = config.touchIdFor && config.touchIdFor[wallet.id];
-      var isCordova = $scope.isCordova;
-      var bigAmount = parseFloat(txFormatService.formatToUSD(txp.amount)) > 20;
-      var message = gettextCatalog.getString('Sending {{amountStr}} from your {{name}} wallet', {
-        amountStr: $scope.amountStr,
-        name: wallet.name
-      });
-      var okText = gettextCatalog.getString('Confirm');
-      var cancelText = gettextCatalog.getString('Cancel');
+      // confirm txs for more that 20usd, if not spending/touchid is enabled
+      function confirmTx(cb) {
+        if (walletService.isEncrypted(wallet))
+          return cb();
 
-      if (!spendingPassEnabled && !touchIdEnabled) {
-        if (isCordova) {
-          if (bigAmount) {
-            popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-              if (!ok) {
-                $scope.sendStatus = '';
-                $timeout(function() {
-                  $scope.$apply();
-                });
-                return;
-              }
-              publishAndSign(wallet, txp, onSendStatusChange);
-            });
-          } else publishAndSign(wallet, txp, onSendStatusChange);
-        } else {
-          popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-            if (!ok) {
-              $scope.sendStatus = '';
-              return;
-            }
-            publishAndSign(wallet, txp, onSendStatusChange);
-          });
+        var amountUsd = parseFloat(txFormatService.formatToUSD(txp.amount));
+        if (amountUsd <= CONFIRM_LIMIT_USD)
+          return cb();
+
+        var message = gettextCatalog.getString('Sending {{amountStr}} from your {{name}} wallet', {
+          amountStr: tx.amountStr,
+          name: wallet.name
+        });
+        var okText = gettextCatalog.getString('Confirm');
+        var cancelText = gettextCatalog.getString('Cancel');
+        popupService.showConfirm(null, message, okText, cancelText, function(ok) {
+          return cb(!ok);
+        });
+      };
+
+      function publishAndSign() {
+        if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+          $log.info('No signing proposal: No private key');
+
+          return walletService.onlyPublish(wallet, txp, function(err) {
+            if (err) setSendError(err);
+          }, onSendStatusChange);
         }
-      } else publishAndSign(wallet, txp, onSendStatusChange);
+
+        walletService.publishAndSign(wallet, txp, function(err, txp) {
+          if (err) return setSendError(err);
+        }, onSendStatusChange);
+      };
+
+      confirmTx(function(nok) {
+        if (nok) {
+          $scope.sendStatus = '';
+          $timeout(function() {
+            $scope.$apply();
+          });
+          return;
+        }
+        publishAndSign();
+      });
     });
   };
 
@@ -539,41 +544,58 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.statusChangeHandler = statusChangeHandler;
 
-  $scope.onConfirm = function() {
-    $scope.approve(statusChangeHandler);
-  };
-
   $scope.onSuccessConfirm = function() {
-    var previousView = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName;
-
-    $ionicHistory.nextViewOptions({
-      disableAnimate: true
-    });
-    $ionicHistory.removeBackView();
     $scope.sendStatus = '';
-
     $ionicHistory.nextViewOptions({
       disableAnimate: true,
       historyRoot: true
     });
-    $ionicHistory.clearHistory();
     $state.go('tabs.send').then(function() {
+      $ionicHistory.clearHistory();
       $state.transitionTo('tabs.home');
     });
   };
 
-  function publishAndSign(wallet, txp, onSendStatusChange) {
+  $scope.chooseFeeLevel = function(tx, wallet) {
 
-    if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-      $log.info('No signing proposal: No private key');
+    var scope = $rootScope.$new(true);
+    scope.network = tx.network;
+    scope.feeLevel = tx.feeLevel;
+    scope.noSave = true;
 
-      return walletService.onlyPublish(wallet, txp, function(err) {
-        if (err) setSendError(err);
-      }, onSendStatusChange);
+    if (usingCustomFee) {
+      scope.customFeePerKB = tx.feeRate;
+      scope.feePerSatByte = (tx.feeRate / 1000).toFixed();
     }
 
-    walletService.publishAndSign(wallet, txp, function(err, txp) {
-      if (err) return setSendError(err);
-    }, onSendStatusChange);
+    $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
+      scope: scope,
+      backdropClickToClose: false,
+      hardwareBackButtonClose: false
+    }).then(function(modal) {
+      scope.chooseFeeLevelModal = modal;
+      scope.openModal();
+    });
+    scope.openModal = function() {
+      scope.chooseFeeLevelModal.show();
+    };
+
+    scope.hideModal = function(newFeeLevel, customFeePerKB) {
+      scope.chooseFeeLevelModal.hide();
+      $log.debug('New fee level choosen:' + newFeeLevel + ' was:' + tx.feeLevel);
+
+      usingCustomFee = newFeeLevel == 'custom' ? true : false;
+
+      if (tx.feeLevel == newFeeLevel && !usingCustomFee) return;
+
+      tx.feeLevel = newFeeLevel;
+      if (usingCustomFee) tx.feeRate = parseInt(customFeePerKB);
+
+      updateTx(tx, wallet, {
+        clearCache: true,
+        dryRun: true
+      }, function() {});
+    };
   };
+
 });

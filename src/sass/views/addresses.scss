@@ -1,4 +1,15 @@
 #addresses {
+  @extend .deflash-blue;
+  .updating {
+    text-align: center;
+    font-size: 0.9em;
+    color: $v-mid-gray;
+    padding-top: 1.3rem;
+    .spinner svg {
+      stroke: #111;
+      fill: #111;
+    }
+  }
   .addr {
     &-explanation, &-button-group {
       padding: 0 1rem;

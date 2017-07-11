@@ -1,13 +1,37 @@
-.copayers-secret {
-  text-align: center;
-  font-size: 12px;
-  margin: 10px;
-  white-space: -moz-pre-wrap !important;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  white-space: -webkit-pre-wrap;
-  word-break: break-all;
-  white-space: normal;
+#copayers-invitation {
+  @extend .deflash-blue;
+  .button-share {
+    color: #fff;
+    box-shadow: none;
+    border-color: transparent;
+    background: transparent;
+    padding: 0 10px;
+    .icon:before {
+      font-size: 26px;
+    }
+  }
+  .button-cancel {
+    margin-top: 15px;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: $v-error-color;
+    i.icon {
+      vertical-align: middle;
+      padding-left: 5px;
+    }
+  }
+  .copayers-secret {
+    text-align: center;
+    font-size: 12px;
+    margin: 10px;
+    white-space: -moz-pre-wrap !important;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    white-space: -webkit-pre-wrap;
+    word-break: break-all;
+    white-space: normal;
+  }
 }

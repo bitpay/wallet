@@ -1,4 +1,4 @@
-<ion-view id="advanced-settings" class="settings">
+<ion-view id="advanced-settings" class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Advanced Settings' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -16,7 +16,7 @@
 
       <div class="item item-divider"></div>
 
-      <ion-toggle class="has-comment" ng-show="!isWP" ng-model="recentTransactionsEnabled.value" toggle-class="toggle-balanced" ng-change="recentTransactionsChange()">
+      <ion-toggle class="has-comment" ng-model="recentTransactionsEnabled.value" toggle-class="toggle-balanced" ng-change="recentTransactionsChange()">
         <span class="toggle-label" translate>Recent Transaction Card</span>
       </ion-toggle>
       <div class="comment" translate>
@@ -25,7 +25,7 @@
 
       <div class="item item-divider"></div>
 
-      <ion-toggle ng-model="hideNextSteps.value" toggle-class="toggle-balanced" ng-change="nextStepsChange()">
+      <ion-toggle ng-model="hideNextSteps.value" ng-if="!isWindowsPhoneApp" toggle-class="toggle-balanced" ng-change="nextStepsChange()">
         <span class="toggle-label" translate>Hide Next Steps Card</span>
       </ion-toggle>
     </div>

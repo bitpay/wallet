@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout, $rootScope) {
+angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout, $rootScope, platformInfo) {
   var root = {};
+
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   var defaultConfig = {
     // wallet limits
@@ -65,7 +67,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     hideNextSteps: {
-      enabled: false,
+      enabled: isWindowsPhoneApp ? true : false,
     },
 
     rates: {

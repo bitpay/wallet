@@ -1,13 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('searchController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicScrollDelegate, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService) {
+angular.module('copayApp.controllers').controller('searchController', function($scope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicScrollDelegate, bwcError, profileService, lodash, configService, gettext, gettextCatalog, platformInfo, walletService) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
   var wallet;
   var isCordova = platformInfo.isCordova;
-  $scope.txHistorySearchResults = [];
-  $scope.filteredTxHistory = [];
 
   $scope.updateSearchInput = function(search) {
     if (isCordova)
@@ -26,7 +24,7 @@ angular.module('copayApp.controllers').controller('searchController', function($
 
       function computeSearchableString(tx) {
         var addrbook = '';
-        if (tx.addressTo && self.addressbook && self.addressbook[tx.addressTo]) addrbook = self.addressbook[tx.addressTo] || '';
+        if (tx.addressTo && $scope.addressbook && $scope.addressbook[tx.addressTo]) addrbook = $scope.addressbook[tx.addressTo].name || $scope.addressbook[tx.addressTo] || '';
         var searchableDate = computeSearchableDate(new Date(tx.time * 1000));
         var message = tx.message ? tx.message : '';
         var comment = tx.note ? tx.note.body : '';
@@ -54,7 +52,6 @@ angular.module('copayApp.controllers').controller('searchController', function($
 
       if ($scope.filteredTxHistory.length > HISTORY_SHOW_LIMIT) $scope.txHistoryShowMore = true;
       else $scope.txHistoryShowMore = false;
-
       return $scope.filteredTxHistory;
     };
 
@@ -64,7 +61,7 @@ angular.module('copayApp.controllers').controller('searchController', function($
       window.plugins.toast.showShortBottom(gettextCatalog.getString('Matches: ' + $scope.filteredTxHistory.length));
 
     $timeout(function() {
-      $rootScope.$apply();
+      $scope.$apply();
     });
 
   }, 1000);

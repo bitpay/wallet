@@ -1,7 +1,12 @@
 'use strict';
 
 angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
-  // `wallet` is a decorated version of client.
+
+  // Ratio low amount warning (fee/amount) in incoming TX 
+  var LOW_AMOUNT_RATIO = 0.15; 
+
+  // Ratio of "many utxos" warning in total balance (fee/amount)
+  var TOTAL_LOW_WARNING_RATIO = .3;
 
   var root = {};
 
@@ -401,6 +406,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var progressFn = opts.progressFn || function() {};
     var foundLimitTx = false;
 
+
+    if (opts.feeLevels) {
+      opts.lowAmount = root.getLowAmount(wallet, opts.feeLevels);
+    }
+
     var fixTxsUnit = function(txs) {
       if (!txs || !txs[0] || !txs[0].amountStr) return;
 
@@ -413,7 +423,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       $log.debug('Fixing Tx Cache Unit to:' + name)
       lodash.each(txs, function(tx) {
-
         tx.amountStr = txFormatService.formatAmount(tx.amount) + name;
         tx.feeStr = txFormatService.formatAmount(tx.fees) + name;
       });
@@ -463,7 +472,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
             if (foundLimitTx) {
               $log.debug('Found limitTX: ' + opts.limitTx);
-              return next(null, newTxs);
+              return next(null, [foundLimitTx]);
             }
           }
           // </HACK>
@@ -510,6 +519,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             return cb2();
           });
         }
+
+        function updateLowAmount(txs) {
+          if (!opts.lowAmount) return;
+
+          lodash.each(txs, function(tx) {
+            tx.lowAmount = tx.amount < opts.lowAmount;
+          });
+        };
+
+        updateLowAmount(txs);
 
         updateNotes(function() {
 
@@ -567,9 +586,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getTx = function(wallet, txid, cb) {
 
-    function finish(list){
+    function finish(list) {
       var tx = lodash.find(list, {
-          txid: txid
+        txid: txid
       });
 
       if (!tx) return cb('Could not get transaction');
@@ -602,7 +621,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
- 
+
 
   root.getTxHistory = function(wallet, opts, cb) {
     opts = opts || {};
@@ -763,11 +782,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     // Update this JIC.
-    var config = configService.getSync().wallet.settings;
+    var config = configService.getSync();
+    var walletSettings = config.wallet.settings;
 
     //prefs.email  (may come from arguments)
+    prefs.email = config.emailNotifications.email;
     prefs.language = uxLanguage.getCurrentLanguage();
-    prefs.unit = config.unitCode;
+    prefs.unit = walletSettings.unitCode;
 
     updateRemotePreferencesFor(lodash.clone(clients), prefs, function(err) {
       if (err) return cb(err);
@@ -834,13 +855,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.createAddress({}, function(err, addr) {
       if (err) {
         var prefix = gettextCatalog.getString('Could not create address');
-        if (err.error && err.error.match(/locked/gi)) {
-          $log.debug(err.error);
+        if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
+          $log.warn(err);
           return $timeout(function() {
             createAddress(wallet, cb);
           }, 5000);
-        } else if (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED') {
-          $log.warn(err.message);
+        } else if (err instanceof errors.MAIN_ADDRESS_GAP_REACHED || (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED')) {
+          $log.warn(err);
           prefix = null;
           wallet.getMainAddresses({
             reverse: true,
@@ -868,6 +889,81 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     opts = opts || {};
     wallet.getBalance(opts, function(err, resp) {
       return cb(err, resp);
+    });
+  };
+
+
+  // These 2 functions were taken from
+  // https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js#L243
+
+  function getEstimatedSizeForSingleInput(wallet) {
+    switch (wallet.credentials.addressType) {
+      case 'P2PKH':
+        return 147;
+      default:
+      case 'P2SH':
+        return wallet.m * 72 + wallet.n * 36 + 44;
+    }
+  };
+
+
+  root.getEstimatedTxSize = function(wallet, nbOutputs) {
+    // Note: found empirically based on all multisig P2SH inputs and within m & n allowed limits.
+    var safetyMargin = 0.02;
+
+    var overhead = 4 + 4 + 9 + 9;
+    var inputSize = getEstimatedSizeForSingleInput(wallet);
+    var outputSize = 34;
+    var nbInputs = 1; //Assume 1 input
+    var nbOutputs = nbOutputs || 2; // Assume 2 outputs
+
+    var size = overhead + inputSize * nbInputs + outputSize * nbOutputs;
+    return parseInt((size * (1 + safetyMargin)).toFixed(0));
+  };
+
+
+  // Approx utxo amount, from which the uxto is economically redeemable  
+  root.getMinFee = function(wallet, feeLevels, nbOutputs) {
+    var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
+      level: 'normal',
+    }).feePerKB / 1000).toFixed(0);
+
+    var size = root.getEstimatedTxSize(wallet, nbOutputs);
+    return size * lowLevelRate;
+  };
+
+
+  // Approx utxo amount, from which the uxto is economically redeemable  
+  root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
+    var minFee = root.getMinFee(wallet,feeLevels, nbOutputs);
+    return parseInt( minFee / LOW_AMOUNT_RATIO);
+  };
+
+
+
+  root.getLowUtxos = function(wallet, levels, cb) {
+
+    wallet.getUtxos({}, function(err, resp) {
+      if (err || !resp || !resp.length) return cb();
+
+      var minFee = root.getMinFee(wallet, levels, resp.length);
+
+      var balance = lodash.sum(resp, 'satoshis');
+
+      // for 2 outputs
+      var lowAmount = root.getLowAmount(wallet, levels);
+      var lowUtxos = lodash.filter(resp, function(x) {
+        return x.satoshis < lowAmount;
+      });
+
+      var totalLow = lodash.sum(lowUtxos, 'satoshis');
+
+      return cb(err, {
+        allUtxos:  resp || [],
+        lowUtxos: lowUtxos || [],
+        warning: minFee / balance > TOTAL_LOW_WARNING_RATIO,
+        minFee: minFee,
+      });
     });
   };
 

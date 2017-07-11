@@ -19,7 +19,7 @@
           <span translate>Sending</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="amount">{{tx.amountValueStr}} <span class="unit">{{tx.amountUnitStr}}</span></div>
           <div class="alternative" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
         </div>
 
@@ -97,10 +97,11 @@
             {{tx.message}}
           </span>
         </div>
-        <div class="item single-line">
-          <span class="label" translate>Fee</span>
-          <span class="item-note">
-            {{tx.feeStr}}
+        <div class="item">
+          <span class="label">{{'Fee:' | translate}} {{tx.feeLevelStr | translate}}</span>
+          <span class="m10l">{{tx.feeStr || '...'}}</span>
+          <span class="item-note m10l">
+            <span>{{tx.feeFiatStr || '...'}}&nbsp;<span class="fee-rate" ng-if="tx.feeRateStr" translate>- {{tx.feeRateStr}} of the transaction</span></span>
           </span>
         </div>
 
@@ -169,13 +170,13 @@
 
   <click-to-accept
     ng-click="onConfirm(statusChangeHandler)"
-    ng-if="tx.pendingForUs && canSign && !paymentExpired && !isCordova"
+    ng-if="tx.pendingForUs && canSign && !paymentExpired && (!isCordova || isWindowsPhoneApp)"
     click-send-status="sendStatus"
     has-wallet-chosen="true">
     {{buttonText}}
   </click-to-accept>
   <slide-to-accept
-    ng-if="tx.pendingForUs && canSign && !paymentExpired && isCordova"
+    ng-if="tx.pendingForUs && canSign && !paymentExpired && isCordova && !isWindowsPhoneApp"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus"
     has-wallet-chosen="true">
@@ -184,6 +185,6 @@
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="onSuccessConfirm()">
-    {{'Payment Sent' | translate}}
+    {{successText}}
   </slide-to-accept-success>
 </ion-modal-view>

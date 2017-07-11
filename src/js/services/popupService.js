@@ -3,16 +3,17 @@
 angular.module('copayApp.services').service('popupService', function($log, $ionicPopup, platformInfo, gettextCatalog) {
 
   var isCordova = platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   /*************** Ionic ****************/
 
-  var _ionicAlert = function(title, message, cb, buttonName) {
+  var _ionicAlert = function(title, message, cb, okText) {
     if (!cb) cb = function() {};
     $ionicPopup.alert({
       title: title,
       subTitle: message,
       okType: 'button-clear button-positive',
-      okText: buttonName || gettextCatalog.getString('OK'),
+      okText: okText || gettextCatalog.getString('OK'),
     }).then(cb);
   };
 
@@ -45,9 +46,11 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
   /*************** Cordova ****************/
 
-  var _cordovaAlert = function(title, message, cb, buttonName) {
+  var _cordovaAlert = function(title, message, cb, okText) {
     if (!cb) cb = function() {};
-    navigator.notification.alert(message, cb, title, buttonName);
+    title = title ? title : '';
+    okText = okText || gettextCatalog.getString('OK');
+    navigator.notification.alert(message, cb, title, okText);
   };
 
   var _cordovaConfirm = function(title, message, okText, cancelText, cb) {
@@ -57,6 +60,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
     }
     okText = okText || gettextCatalog.getString('OK');
     cancelText = cancelText || gettextCatalog.getString('Cancel');
+    title = title ? title : '';
     navigator.notification.confirm(message, onConfirm, title, [cancelText, okText]);
   };
 
@@ -65,7 +69,10 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
       if (results.buttonIndex == 1) return cb(results.input1);
       else return cb();
     }
-    navigator.notification.prompt(message, onPrompt, title, null, opts.defaultText);
+    var okText = gettextCatalog.getString('OK');
+    var cancelText = gettextCatalog.getString('Cancel');
+    title = title ? title : '';
+    navigator.notification.prompt(message, onPrompt, title, [okText, cancelText], opts.defaultText);
   };
 
   /**
@@ -76,14 +83,14 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
    * @param {Callback} Function (optional)
    */
 
-  this.showAlert = function(title, msg, cb, buttonName) {
+  this.showAlert = function(title, msg, cb, okText) {
     var message = (msg && msg.message) ? msg.message : msg;
     $log.warn(title ? (title + ': ' + message) : message);
 
     if (isCordova)
-      _cordovaAlert(title, message, cb, buttonName);
+      _cordovaAlert(title, message, cb, okText);
     else
-      _ionicAlert(title, message, cb, buttonName);
+      _ionicAlert(title, message, cb, okText);
   };
 
   /**
@@ -121,7 +128,7 @@ angular.module('copayApp.services').service('popupService', function($log, $ioni
 
     opts = opts ||  {};
 
-    if (isCordova && !opts.forceHTMLPrompt)
+    if (isCordova && !isWindowsPhoneApp && !opts.forceHTMLPrompt)
       _cordovaPrompt(title, message, opts, cb);
     else
       _ionicPrompt(title, message, opts, cb);

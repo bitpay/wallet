@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope, feeService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
   var isNW = platformInfo.isNW;
-  var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   root.priceSensitivity = [{
     value: 0.5,
@@ -107,6 +107,19 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     };
   };
 
+  root.checkEnoughFundsForFee = function(amount, cb) {
+    _getNetAmount(amount, function(err, reducedAmount) {
+      if (err) return cb(err);
+
+      // Check if transaction has enough funds to transfer bitcoin from Coinbase to Copay
+      if (reducedAmount < 0) {
+        return cb('Not enough funds for fee');
+      }
+
+      return cb();
+    });
+  };
+
   root.getSignupUrl = function() {
     return credentials.HOST + '/signup';
   }
@@ -150,6 +163,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     }, function(data) {
       $log.error('Coinbase Authorization Access Token: ERROR ' + data.statusText);
       return cb(data.data || 'Could not get the access token');
+    });
+  };
+
+  var _getNetAmount = function(amount, cb) {
+    // Fee Normal for a single transaction (450 bytes)
+    var txNormalFeeKB = 450 / 1000;
+    feeService.getFeeRate(null, 'normal', function(err, feePerKB) {
+      if (err) return cb(err);
+      var feeBTC = (feePerKB * txNormalFeeKB / 100000000).toFixed(8);
+
+      return cb(null, amount - feeBTC, feeBTC);
     });
   };
 
@@ -298,6 +322,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       return cb(null, data.data);
     }, function(data) {
       $log.error('Coinbase Get Current User: ERROR ' + data.statusText);
+      return cb(data.data);
+    });
+  };
+
+  root.getBuyOrder = function(token, accountId, buyId, cb) {
+    if (!token) return cb('Invalid Token');
+    $http(_get('/accounts/' + accountId + '/buys/' + buyId, token)).then(function(data) {
+      $log.info('Coinbase Buy Info: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Coinbase Buy Info: ERROR ' + data.statusText);
       return cb(data.data);
     });
   };
@@ -646,13 +681,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var _sendToWallet = function(tx, accessToken, accountId, coinbasePendingTransactions) {
     if (!tx) return;
     var desc = appConfigService.nameCase + ' Wallet';
-    var data = {
-      to: tx.toAddr,
-      amount: tx.amount.amount,
-      currency: tx.amount.currency,
-      description: desc
-    };
-    root.sendTo(accessToken, accountId, data, function(err, res) {
+    _getNetAmount(tx.amount.amount, function(err, amountBTC, feeBTC) {
       if (err) {
         _savePendingTransaction(tx, {
           status: 'error',
@@ -661,8 +690,18 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
           if (err) $log.debug(err);
           _updateTxs(coinbasePendingTransactions);
         });
-      } else {
-        if (res.data && !res.data.id) {
+        return;
+      }
+
+      var data = {
+        to: tx.toAddr,
+        amount: amountBTC,
+        currency: tx.amount.currency,
+        description: desc,
+        fee: feeBTC
+      };
+      root.sendTo(accessToken, accountId, data, function(err, res) {
+        if (err) {
           _savePendingTransaction(tx, {
             status: 'error',
             error: err
@@ -670,19 +709,29 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
             if (err) $log.debug(err);
             _updateTxs(coinbasePendingTransactions);
           });
-          return;
-        }
-        root.getTransaction(accessToken, accountId, res.data.id, function(err, sendTx) {
-          _savePendingTransaction(tx, {
-            remove: true
-          }, function(err) {
-            _savePendingTransaction(sendTx.data, {}, function(err) {
+        } else {
+          if (res.data && !res.data.id) {
+            _savePendingTransaction(tx, {
+              status: 'error',
+              error: err
+            }, function(err) {
               if (err) $log.debug(err);
               _updateTxs(coinbasePendingTransactions);
             });
+            return;
+          }
+          root.getTransaction(accessToken, accountId, res.data.id, function(err, sendTx) {
+            _savePendingTransaction(tx, {
+              remove: true
+            }, function(err) {
+              _savePendingTransaction(sendTx.data, {}, function(err) {
+                if (err) $log.debug(err);
+                _updateTxs(coinbasePendingTransactions);
+              });
+            });
           });
-        });
-      }
+        }
+      });
     });
   };
 
@@ -712,7 +761,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   var register = function() {
 
-    root.isActive(function(err, isActive){
+    root.isActive(function(err, isActive) {
       if (err) return;
 
       buyAndSellService.register({
@@ -731,7 +780,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
   $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
     if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
-      root.isActive(function(err,isActive){
+      root.isActive(function(err, isActive) {
         // Update Coinbase
         if (isActive)
           root.updatePendingTransactions();

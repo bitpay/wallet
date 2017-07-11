@@ -1,30 +1,25 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('pinController', function($state, $interval, $stateParams, $ionicHistory, $timeout, $scope, $log, configService, appConfigService) {
+angular.module('copayApp.controllers').controller('pinController', function($state, $interval, $stateParams, $ionicHistory, $timeout, $scope, $log, configService, appConfigService, applicationService) {
   var ATTEMPT_LIMIT = 3;
   var ATTEMPT_LOCK_OUT_TIME = 5 * 60;
   var currentPin;
+  currentPin = $scope.confirmPin = '';
 
-  $scope.$on("$ionicView.beforeEnter", function(event) {
-    currentPin = $scope.confirmPin = '';
-    $scope.action = $stateParams.action;
-    $scope.match = $scope.error = $scope.disableButtons = false;
-    $scope.currentAttempts = 0;
-    $scope.appName = appConfigService.name;
-  });
+  $scope.match = $scope.error = $scope.disableButtons = false;
+  $scope.currentAttempts = 0;
+  $scope.appName = appConfigService.name;
 
-  $scope.$on("$ionicView.enter", function(event) {
-    configService.whenAvailable(function(config) {
-      if (!config.lock) return;
-      $scope.bannedUntil = config.lock.bannedUntil || null;
-      if ($scope.bannedUntil) {
-        var now = Math.floor(Date.now() / 1000);
-        if (now < $scope.bannedUntil) {
-          $scope.error = $scope.disableButtons = true;
-          lockTimeControl($scope.bannedUntil);
-        }
+  configService.whenAvailable(function(config) {
+    if (!config.lock) return;
+    $scope.bannedUntil = config.lock.bannedUntil || null;
+    if ($scope.bannedUntil) {
+      var now = Math.floor(Date.now() / 1000);
+      if (now < $scope.bannedUntil) {
+        $scope.error = $scope.disableButtons = true;
+        lockTimeControl($scope.bannedUntil);
       }
-    });
+    }
   });
 
   function getSavedMethod() {
@@ -126,7 +121,10 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
         }
         break;
       case 'check':
-        if (isMatch(currentPin)) return $scope.close();
+        if (isMatch(currentPin)) {
+          $scope.hideModal();
+          return;
+        }
         showError();
         checkAttempts();
         break;
@@ -174,7 +172,7 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
-      $scope.close();
+      $scope.hideModal();
     });
   };
 
@@ -189,7 +187,7 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
-      $scope.close();
+      $scope.hideModal();
     });
   };
 
@@ -206,14 +204,4 @@ angular.module('copayApp.controllers').controller('pinController', function($sta
     });
   };
 
-  $scope.close = function(delay) {
-    $timeout(function() {
-      var shouldReturn = $ionicHistory.viewHistory().backView && $ionicHistory.viewHistory().backView.stateName != 'starting';
-
-      if (shouldReturn)
-        $ionicHistory.goBack()
-      else
-        $state.go('tabs.home');
-    }, delay || 1);
-  };
 });

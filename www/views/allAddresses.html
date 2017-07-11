@@ -1,4 +1,4 @@
-<ion-view hide-tabs id="addresses" class="addr">
+<ion-view id="addresses" class="addr" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'All Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -10,14 +10,8 @@
       <div class="item item-divider"></div>
 
       <div ng-if="loading" class="updating">
-        <div class="row">
-          <ion-spinner class="spinner-dark" icon="crescent"></ion-spinner>
-        </div>
-        <div class="row">
-          <div class="col">
-            <span translate>Loading addresses...</span>
-          </div>
-        </div>
+        <ion-spinner class="spinner-dark recent" icon="crescent"></ion-spinner>
+        <span translate>Loading addresses...</span>
       </div>
 
       <div ng-show="isCordova && allAddresses[0]">

@@ -18,6 +18,8 @@
           <textarea ng-model="formData.words"
                     rows="3"
                     autocapitalize="off"
+                    autocomplete="off"
+                    autocorrect="off"
                     spellcheck="false"></textarea>
       </label>
       <div class="qr-scan-icon">
@@ -47,14 +49,28 @@
         ng-model="formData.derivationPath">
       </label>
 
-      <label class="item item-input item-stacked-label">
-        <span class="input-label" translate>Wallet Service URL</span>
-        <input type="text" ng-model="formData.bwsurl">
+
+      <ion-toggle ng-model="fromHardwareWallet.value" toggle-class="toggle-positive">
+        <span class="toggle-label" translate>From Hardware Wallet</span>
+      </ion-toggle>
+
+      <label class="item item-input item-select" ng-if="fromHardwareWallet.value">
+        <div class="input-label" translate>
+          Wallet Type
+        </div>
+        <select class="m10t" ng-model="formData.seedSourceAll" ng-options="seed as seed.label for seed in seedOptionsAll"></select>
       </label>
 
       <ion-toggle ng-model="formData.testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-positive">
         <span translate>Testnet</span>
       </ion-toggle>
+
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label" translate>Wallet Service URL</span>
+        <input type="text" ng-model="formData.bwsurl">
+      </label>
+
     </div>
   </div>
 

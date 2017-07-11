@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $log, $timeout, $http, $httpParamSerializer, $ionicConfig, profileService, configService, walletService, appConfigService) {
+angular.module('copayApp.controllers').controller('collectEmailController', function($scope, $state, $log, $timeout, $http, $httpParamSerializer, $ionicConfig, profileService, configService, walletService, appConfigService, emailService) {
 
   var wallet, walletId;
   $scope.data = {};
@@ -48,22 +48,21 @@ angular.module('copayApp.controllers').controller('collectEmailController', func
   };
 
   $scope.save = function() {
-    var opts = {
-      emailFor: {}
-    };
-    opts.emailFor[walletId] = $scope.data.email;
-    walletService.updateRemotePreferences(wallet, {
-      email: $scope.data.email,
-    }, function(err) {
-      if (err) return;
-      configService.set(opts, function(err) {
-        if (err) $log.warn(err);
-        if ($scope.data.accept) collectEmail();
-        $timeout(function() {
-          $scope.goNextView();
-        }, 200);
+    $scope.disableButton = true;
+    $timeout(function() {
+      var enabled = true; // Set enabled email: true
+
+      emailService.updateEmail({
+        enabled: enabled,
+        email: enabled ? $scope.data.email : null
       });
-    });
+          
+      if ($scope.data.accept) collectEmail();
+
+      $timeout(function() {
+        $scope.goNextView();
+      }, 200);
+    }, 200);
   };
 
   $scope.goNextView = function() {

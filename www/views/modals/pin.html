@@ -1,8 +1,9 @@
-<ion-view id="pin" hide-tabs hide-back-button="action == 'check'">
-  <ion-nav-bar class="bar-clear">
-    <ion-nav-back-button>
-    </ion-nav-back-button>
-  </ion-nav-bar>
+<ion-modal-view id="pin" ng-controller="pinController">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button ng-if="action != 'check'" class="button button-back button-clear" ng-click="hideModal()" translate>
+      Close
+    </button>
+  </ion-header-bar>
   <div class="content">
     <div class="block-text row">
       <div class="message" ng-if="!confirmPin && !error" translate>Please enter your PIN</div>
@@ -70,4 +71,4 @@
       </div>
     </div>
   </div>
-</ion-view>
+</ion-modal-view>

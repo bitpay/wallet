@@ -24,13 +24,13 @@
     </div>
   </ion-content>
   <ion-content ng-show="!isEmptyList">
-    <div class="bar bar-header item-input-inset" ng-show="addressbook.length >= 5">
+    <div class="bar bar-header item-input-inset">
       <label class="item-input-wrapper">
         <i class="icon ion-ios-search placeholder-icon"></i>
         <input type="search"
                placeholder="Search"
-               ng-model="addrSearch"
-               ng-change="findAddressbook(addrSearch)" ng-model-onblur>
+               ng-model="addrSearch.value"
+               ng-change="findAddressbook(addrSearch.value)" ng-model-onblur>
       </label>
     </div>
     <ion-list>
@@ -42,9 +42,6 @@
         <h2>{{addrEntry.name}}</h2>
         <p>{{addrEntry.address}}</p>
         <i class="icon bp-arrow-right"></i>
-        <ion-option-button class="button-assertive" ng-click="remove(addrEntry.address)">
-          <i class="icon ion-minus-circled"></i>
-        </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>

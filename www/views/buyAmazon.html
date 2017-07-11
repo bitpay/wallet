@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>Buy</ion-nav-title>
+    <ion-nav-title>{{'Buy'|translate}}</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="add-bottom-for-cta">
@@ -19,14 +19,14 @@
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative">
-            Purchase Amount is limited to USD 1000 per day
+            {{limitPerDayMessage}}
           </div>
         </div>
       </div>
 
       <div class="info">
         <div class="item item-icon-right" ng-click="showWalletSelector()">
-          <div class="label">From</div>
+          <div class="label" translate>From</div>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg">
@@ -34,6 +34,36 @@
             {{wallet ? wallet.name : '...'}}
           </div>
           <i class="icon bp-arrow-right"></i>
+        </div>
+        <div ng-show="totalAmountStr">
+          <div class="item item-divider" translate>
+            Details
+          </div>
+          <div class="item">
+            <span translate>Gift card</span>
+            <span class="item-note">
+              {{amount | currency:'$ ':2}}<span ng-if="amount"> {{currencyIsoCode}}</span>
+            </span>
+          </div>
+          <div class="item">
+            <span translate>Invoice Fee</span>
+            <span class="item-note">
+              <span>{{invoiceFee | currency:'$ ':2}}<span ng-if="invoiceFee"> {{currencyIsoCode}}</span>
+            </span>
+          </div>
+          <div class="item">
+            <span translate>Network Fee</span>
+            <span class="item-note">
+              <span>{{networkFee | currency:'$ ':2}}<span ng-if="networkFee"> {{currencyIsoCode}}</span>
+            </span>
+          </div>
+          <div class="item">
+            <span translate>Total</span>
+            <span class="item-note">
+              <span ng-if="totalAmount">{{totalAmount | currency:'$ ':2}} {{currencyIsoCode}}</span>
+              <span ng-if="totalAmountStr">({{totalAmountStr}})</span>
+            </span>
+          </div>
         </div>
         <div class="item item-divider"></div>
         <div class="item size-12">
@@ -53,39 +83,32 @@
   </ion-content>
 
   <click-to-accept
-    ng-disabled="!wallet"
     ng-click="buyConfirm()"
     ng-if="!isCordova"
     click-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="false">
-    Confirm purchase
+    is-disabled="!wallet || !totalAmountStr">
+    {{'Confirm purchase'|translate}}
   </click-to-accept>
   <slide-to-accept
-    ng-disabled="!wallet"
-    ng-if="isCordova"
+    ng-if="isCordova && wallet && totalAmountStr"
     slide-on-confirm="buyConfirm()"
-    slide-send-status="sendStatus"
-    has-wallet-chosen="wallet"
-    insufficient-funds="false"
-    no-matching-wallet="false">
-    Slide to buy
+    slide-send-status="sendStatus">
+    {{'Slide to buy'|translate}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
-    <span ng-show="amazonGiftCard.status == 'FAILURE'">
+    <span ng-show="amazonGiftCard.status == 'FAILURE'" translate>
       Your purchase could not be completed
     </span>
-    <span ng-show="amazonGiftCard.status == 'PENDING'">
+    <span ng-show="amazonGiftCard.status == 'PENDING'" translate>
       Your purchase was added to the list of pending
     </span>
-    <span ng-show="amazonGiftCard.status == 'SUCCESS'">
-      Bought {{amazonGiftCard.amount}} {{amazonGiftCard.currency}}
+    <span ng-show="amazonGiftCard.status == 'SUCCESS'" translate>
+      Bought {{amountUnitStr}}
     </span>
-    <div class="m10 size-14" ng-show="amazonGiftCard.status == 'SUCCESS'">
+    <div class="m10 size-14" ng-show="amazonGiftCard.status == 'SUCCESS'" translate>
       Gift card generated and ready to use.
     </div>
   </slide-to-accept-success>

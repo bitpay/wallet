@@ -1,21 +1,16 @@
-
-<div class="list card">
-  <div class="item item-icon-right item-heading">
-    <span translate>Cards</span>
-    <a ui-sref="tabs.bitpayCardIntro"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
-  </div>
-  <div>
-    <a ng-repeat="card in bitpayCardItems track by $index"
-        ui-sref="tabs.bitpayCard({id:card.id})"
-        class="item item-sub item-icon-left item-big-icon-left item-icon-right">
-      <i class="icon big-icon-svg">
-        <div class="bg icon-bitpay-card"></div>
-      </i>
-      <span>BitPay Visa&reg; Card ({{card.lastFourDigits}})</span>
-      <p>{{card.balance ? '$' + card.balance : 'Add funds to get started'|translate}} {{card.updatedOn ?   (' &middot; ' + (card.updatedOn  * 1000 | amTimeAgo)) : ''}}</p>
-      <i class="icon bp-arrow-right"></i>
-    </a>
-  </div>
+<div class="item item-icon-right item-heading">
+  <span translate>Cards</span>
+  <a ui-sref="tabs.bitpayCardIntro"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
 </div>
-
-
+<div>
+  <a ng-repeat="card in bitpayCardItems track by $index"
+      ui-sref="tabs.bitpayCard({id:card.id})"
+      class="item item-sub item-icon-left item-big-icon-left item-icon-right">
+    <i class="icon big-icon-svg">
+      <div class="bg icon-bitpay-card"></div>
+    </i>
+    <span>BitPay Visa&reg; Card ({{card.lastFourDigits}})</span>
+    <p>{{card.balance ? card.currencySymbol + card.balance : 'Add funds to get started'|translate}} {{card.updatedOn ?   (' &middot; ' + (card.updatedOn  * 1000 | amTimeAgo)) : ''}}</p>
+    <i class="icon bp-arrow-right"></i>
+  </a>
+</div>

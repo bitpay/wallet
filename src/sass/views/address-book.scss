@@ -114,6 +114,9 @@
 }
 
 #address-book-view {
+  .has-click {
+    cursor: pointer;
+  }
   .bar.bar-royal {
     border: 0 transparent;
   }

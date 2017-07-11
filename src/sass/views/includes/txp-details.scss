@@ -1,10 +1,16 @@
 #txp-details,
 #view-confirm {
+  @extend .deflash-blue;
   $item-lateral-padding: 20px;
   $item-vertical-padding: 10px;
   $item-border-color: #EFEFEF;
   $item-label-color: #6C6C6E;
-
+  .item-note {
+    float: none;
+    .fee-rate {
+      display: inline-block;
+    }
+  }
   .list {
     background: #f5f5f5;
   }
@@ -25,10 +31,6 @@
         margin-right: 1rem;
         height: 35px;
         width: 35px;
-      }
-
-      span {
-        text-transform: capitalize;
       }
     }
     .amount-label{
@@ -90,16 +92,22 @@
         }
       }
       &.low-fees {
-        border-top: none;
         display: flex;
         font-size: 14px;
-        color: #aaa;
+        color: #777;
         align-items: center;
-        margin-top: -20px;
         i {
           padding-right: 20px;
         }
       }
+    }
+    .toggle-unconfirmed {
+      padding-bottom: 15px;
+    }
+    .toggle-label {
+      margin-top: 5px;
+      font-size: 14px;
+      color: $item-label-color;
     }
     .item-divider {
       padding-top: 1.2rem;
@@ -141,10 +149,6 @@
       align-items: center;
       padding: .2rem 0;
       margin-bottom: 5px;
-
-      ~ .bp-arrow-right {
-        top: 14px;
-      }
 
       > i {
         padding: 0;

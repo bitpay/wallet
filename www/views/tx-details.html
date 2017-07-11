@@ -24,7 +24,7 @@
           <span ng-if="btx.action == 'received'" translate>Receiving</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{displayAmount}} <span class="unit">{{displayUnit}}</span></div>
+          <div class="amount">{{btx.amountValueStr}} <span class="unit">{{btx.amountUnitStr}}</span></div>
           <div class="alternative" ng-click="showRate = !showRate">
             <span ng-if="!showRate">{{btx.alternativeAmountStr}}</span>
             <span ng-if="showRate">
@@ -77,17 +77,23 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item single-line" ng-click="toggleFeeFiat = !toggleFeeFiat">
+        <div class="item" ng-if="btx.action != 'received'">
           <span class="label" translate>Fee</span>
-          <span class="item-note">
-            <span ng-if="!toggleFeeFiat">{{btx.feeStr}}</span>
-            <span ng-if="toggleFeeFiat">{{feeFiatStr}}</span>
+          <span class="m10l">{{btx.feeStr || '...'}}</span>
+          <span class="item-note m10l">
+            <span>{{btx.feeFiatStr || '...'}}&nbsp;<span class="fee-rate" ng-if="btx.feeRateStr" translate>- {{btx.feeRateStr}} of the transaction</span></span>
           </span>
         </div>
         <div class="item low-fees" ng-if="btx.action == 'received' && btx.lowFees">
           <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
           <span translate>This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender</span>
         </div>
+        <div class="item low-fees" ng-if="btx.lowAmount">
+          <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
+          <span translate>
+This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself. </span>
+        </div>
+ 
         <div class="item single-line">
           <span class="label" translate>Confirmations</span>
           <span class="item-note">
@@ -102,6 +108,13 @@
             </span>
           </span>
         </div>
+        <ion-toggle ng-show="!btx.confirmations || btx.confirmations == 0"
+                    class="toggle-unconfirmed"
+                    ng-model="txNotification.value"
+                    toggle-class="toggle-balanced"
+                    ng-change="txConfirmNotificationChange()">
+          <span class="toggle-label" translate>Notify me if confirmed</span>
+        </ion-toggle>
         <div ng-if="actionList[0]">
           <div class="item item-divider" translate>Timeline</div>
           <div class="item timeline-item" ng-class="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}" ng-repeat="a in actionList track by $index">

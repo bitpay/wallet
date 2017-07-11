@@ -28,8 +28,8 @@
       </span>
     </span>
     <div>
-      <time class="wallet-details__tx-time" ng-if="tx.createdOn && createdWithinPastDay(tx.createdOn)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
-      <time class="wallet-details__tx-time" ng-if="tx.createdOn && !createdWithinPastDay(tx.createdOn)">{{tx.createdOn * 1000 | date:'MMMM d, y'}}</time>
+      <time class="wallet-details__tx-time" ng-if="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
+      <time class="wallet-details__tx-time" ng-if="tx.createdOn && !createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | date:'MMMM d, y'}}</time>
     </div>
   </span>
 </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('lockSetupController', function($state, $scope, $timeout, $log, configService, gettextCatalog, fingerprintService, profileService, lodash) {
+angular.module('copayApp.controllers').controller('lockSetupController', function($state, $rootScope, $scope, $timeout, $log, configService, gettextCatalog, fingerprintService, profileService, lodash, applicationService) {
 
   function init() {
     $scope.options = [
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
 
   function getSavedMethod() {
     var config = configService.getSync();
-    if (config.lock) return config.lock.method;
+    if (config.lock && config.lock.method) return config.lock.method;
     return 'none';
   };
 
@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
       o.disabled = false;
     });
 
-    // HACK: Disable untill we allow to change between methods directly
+    // HACK: Disable until we allow to change between methods directly
     if (fingerprintService.isAvailable()) {
       switch (savedMethod) {
         case 'pin':
@@ -120,9 +120,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
   function disableMethod(method) {
     switch (method) {
       case 'pin':
-        $state.transitionTo('tabs.pin', {
-          action: 'disable'
-        });
+        applicationService.pinModal('disable');
         break;
       case 'fingerprint':
         fingerprintService.check('unlockingApp', function(err) {
@@ -136,9 +134,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
   function enableMethod(method) {
     switch (method) {
       case 'pin':
-        $state.transitionTo('tabs.pin', {
-          action: 'setup'
-        });
+        applicationService.pinModal('setup');
         break;
       case 'fingerprint':
         saveConfig('fingerprint');
@@ -159,4 +155,9 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
       initMethodSelector();
     });
   };
+
+  $rootScope.$on('pinModalClosed', function() {
+    init()
+  });
+
 });

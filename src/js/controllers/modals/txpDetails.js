@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, walletService, popupService, $ionicHistory) {
+angular.module('copayApp.controllers').controller('txpDetailsController', function($scope, $rootScope, $timeout, $interval, $log, ongoingProcess, platformInfo, $ionicScrollDelegate, txFormatService, bwcError, gettextCatalog, lodash, walletService, popupService, $ionicHistory, feeService) {
   var isGlidera = $scope.isGlidera;
   var GLIDERA_LOCK_TIME = 6 * 60 * 60;
   var now = Math.floor(Date.now() / 1000);
@@ -9,37 +9,41 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   $scope.init = function() {
     $scope.loading = null;
     $scope.isCordova = platformInfo.isCordova;
+    $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
+    $scope.copayers = $scope.wallet.status.wallet.copayers;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
     $scope.color = $scope.wallet.color;
     $scope.data = {};
-    $scope.displayAmount = getDisplayAmount($scope.tx.amountStr);
-    $scope.displayUnit = getDisplayUnit($scope.tx.amountStr);
+    displayFeeValues();
     initActionList();
     checkPaypro();
     applyButtonText();
   };
 
+  function displayFeeValues() {
+    txFormatService.formatAlternativeStr($scope.tx.fee, function(v) {
+      $scope.tx.feeFiatStr = v;
+    });
+    $scope.tx.feeRateStr = ($scope.tx.fee / ($scope.tx.amount + $scope.tx.fee) * 100).toFixed(2) + '%';
+    $scope.tx.feeLevelStr = feeService.feeOpts[$scope.tx.feeLevel];
+  };
+
   function applyButtonText() {
-    $scope.buttonText = $scope.isCordova ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
+    $scope.buttonText = $scope.isCordova && !$scope.isWindowsPhoneApp ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
 
     var lastSigner = lodash.filter($scope.tx.actions, {
       type: 'accept'
     }).length == $scope.tx.requiredSignatures - 1;
 
-    if (lastSigner)
+    if (lastSigner) {
       $scope.buttonText += gettextCatalog.getString('to send');
-    else
+      $scope.successText = gettextCatalog.getString('Payment Sent');
+    } else {
       $scope.buttonText += gettextCatalog.getString('to accept');
-  };
-
-  function getDisplayAmount(amountStr) {
-    return amountStr.split(' ')[0];
-  };
-
-  function getDisplayUnit(amountStr) {
-    return amountStr.split(' ')[1];
+      $scope.successText = gettextCatalog.getString('Payment Accepted');
+    }
   };
 
   function initActionList() {

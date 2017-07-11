@@ -46,22 +46,10 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
     $scope.addressbook = result;
   };
 
-  $scope.remove = function(addr) {
-    $timeout(function() {
-      addressbookService.remove(addr, function(err, ab) {
-        if (err) {
-          popupService.showAlert(gettextCatalog.getString('Error'), err);
-          return;
-        }
-        initAddressbook();
-        $scope.$digest();
-      });
-    }, 100);
-  };
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isChromeApp = platformInfo.isChromeApp;
     $scope.showAddIcon = false;
+    $scope.addrSearch = { value: null };
     initAddressbook();
   });
 

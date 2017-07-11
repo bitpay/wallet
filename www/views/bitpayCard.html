@@ -1,4 +1,4 @@
-<ion-view id="bitpayCard">
+<ion-view id="bitpayCard" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
@@ -15,7 +15,7 @@
       <div class="amount-bg"></div>
       <div class="amount">
         <div ng-if="bitpayCard.balance" ng-click="bitpayCard.update()">
-          <div class="amount__balance">${{bitpayCard.balance}}</div>
+          <div class="amount__balance">{{bitpayCard.currencySymbol}}{{bitpayCard.balance}}</div>
 
           <div class="size-12 m5r" ng-if="bitpayCard.updatedOn">
             {{bitpayCard.updatedOn  * 1000 | amTimeAgo}}
@@ -23,7 +23,7 @@
 
           <a class="button button-primary button-small m5t size-14"
             style="padding: 0.5em 1em;"
-            ui-sref="tabs.bitpayCard.amount({nextStep: 'tabs.bitpayCard.topup'})" no-low-fee>
+            ui-sref="tabs.bitpayCard.amount({nextStep: 'tabs.bitpayCard.topup', currency: bitpayCard.currency})" no-low-fee>
             <i class="icon ion-plus m10r" style="vertical-align: baseline;"></i>
             {{'Add Funds'|translate}}
           </a>
@@ -46,14 +46,13 @@
       class="text-center padding get-started"
       ng-show="bitpayCard.getStarted">
       <i class="icon ion-ios-arrow-thin-up get-started__arrow"></i>
-      <h1>Get started</h1>
-      <div class="get-started__text">
-        Your BitPay Card is ready. Add funds to your card to start using your card at stores and ATMs worldwide.
+      <h1 translate>Get started</h1>
+      <div class="get-started__text" translate>
+        Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide.
       </div>
     </div>
-
     <div class="list" ng-show="!bitpayCard.getStarted">
-      <label class="item item-input item-select">
+      <label class="item item-input item-select activity-header">
         <div class="input-label" translate>
           Activity
         </div>
@@ -63,46 +62,40 @@
           <option value="all" translate>All</option>
         </select>
       </label>
-      <div ng-if="bitpayCard.bitpayCardTransactionHistory[0]"
-        ng-repeat="tx in bitpayCard.bitpayCardTransactionHistory"
-        class="item row">
-        <div class="col col-10 text-center">
-          <div class="tu size-12">{{tx.timestamp | amDateFormat:'MMM'}}</div>
-          <div class="text-light">{{tx.timestamp | amDateFormat:'DD'}}</div>
-        </div>
-        <div class="col col-10">
-          <img class="m15t" ng-src="img/mcc-icons/{{tx.icon}}.svg" width="24">
-        </div>
-
-        <div class="col col-50">
-          <div class="size-12 text-bold">
-            {{tx.merchant.name || 'Unknown Merchant'}}
+      <div ng-if="bitpayCard.bitpayCardTransactionHistoryConfirming[0]">
+        <label class="item status-label" ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-do-you-require-one-blockchain-confirmation-for-bitpay-card-loads')">
+          <div>
+            <span translate>Confirming</span>
+            <i class="icon">
+              <img src="img/icon-help-support.svg" class="bg"/>
+            </i>
           </div>
-          <div class="size-12 text-gray">
-            <span ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.city}}, {{tx.merchant.state}}</span>
-            <span ng-class="{'m5l':tx.merchant.city && tx.merchant.state}">
-              {{tx.timestamp | amDateFormat:'h:mm A'}}
-            </span>
+        </label>
+        <div ng-repeat="tx in bitpayCard.bitpayCardTransactionHistoryConfirming">
+          <span ng-include="'views/includes/cardActivity.html'"></span>
+        </div>
+      </div>
+      <div ng-if="bitpayCard.bitpayCardTransactionHistoryPreAuth[0]">
+        <label class="item status-label" ng-click="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-was-i-overcharged-on-my-bitpay-card-account-why-is-there-a-hold-on-my-account')">
+          <div>
+            <span translate>Pre-Auth Holds</span>
+            <i class="icon">
+              <img src="img/icon-help-support.svg" class="bg"/>
+            </i>
           </div>
+        </label>
+        <div ng-repeat="tx in bitpayCard.bitpayCardTransactionHistoryPreAuth">
+          <span ng-include="'views/includes/cardActivity.html'"></span>
         </div>
-        <!--
-        <div class="col size-12">
-          {{tx.desc}}
-        </div>
-        <div class="col col-10 text-center p10t">
-          <img ng-show="!tx.pending" ng-src="img/check.svg" width="14">
-          <img ng-show="tx.pending" ng-src="img/sync.svg" width="14">
-        </div>
-        -->
-        <div class="col text-right">
-          <div ng-class="{
-               'balanced': tx.price.toString().indexOf('-') == -1 && !tx.pending,
-               'stable': tx.price.toString().indexOf('-') == -1 && tx.pending}">
-            <span ng-show="tx.price.toString().indexOf('-') == -1 && !tx.pending">+ </span>
-            {{tx.price | currency:'$':2 }}
+      </div>
+      <div ng-if="bitpayCard.bitpayCardTransactionHistoryCompleted[0]">
+        <label class="item status-label" ng-if="bitpayCard.bitpayCardTransactionHistoryPreAuth[0] || bitpayCard.bitpayCardTransactionHistoryConfirming[0]">
+          <div translate>
+            Completed
           </div>
-          <time class="size-12 text-gray" ng-if="!tx.pending">{{tx.runningBalance | currency:'$':2}}</time>
-          <span class="size-12 text-gray text-italic" ng-if="tx.pending" class="tu" translate>Pending</span>
+        </label>
+        <div ng-repeat="tx in bitpayCard.bitpayCardTransactionHistoryCompleted">
+          <span ng-include="'views/includes/cardActivity.html'"></span>
         </div>
       </div>
     </div>

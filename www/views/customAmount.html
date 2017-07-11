@@ -1,38 +1,50 @@
 <ion-view id="custom-amount" hide-tabs>
   <ion-nav-bar class="bar-royal">
+    <ion-nav-buttons side="primary">
+      <button class="button back-button button-clear" ng-click="close()" translate>
+        Close
+      </button>
+    </ion-nav-buttons>
     <ion-nav-title>
       {{'Custom Amount' | translate}}
     </ion-nav-title>
-    <ion-nav-back-button>
-    </ion-nav-back-button>
     <ion-nav-buttons side="secondary">
-      <button class="button no-border" ng-click="finish()" translate>
-        Finish
+      <button class="button-share ng-hide" ng-show="showShareButton" ng-click="shareAddress()">
+        <i class="icon" 
+          ng-class="{
+          'ion-ios-upload-outline': showShareButton == 'iOS', 
+          'ion-android-share-alt': showShareButton != 'iOS'
+          }"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <div class="item head text-center">
-      <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
-      <div class="row text-center share" ng-if="isCordova">
-        <div class="item item-icon-left" ng-click="shareAddress('bitcoin:' + address + '?amount=' + amountBtc)" ng-show="true">
-          <i class="icon ion-ios-upload-outline"></i>
-          <span translate>Share</span>
+    <div class="address" ng-if="address && amountBtc">
+      <div class="qr-code" copy-to-clipboard="copyToClipboard()">
+        <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
+      </div>
+      <div class="info"> 
+        <div class="item single-line" copy-to-clipboard="address">
+          <span class="label" translate>Address</span>
+          <span class="item-note ellipsis">
+            {{address}}
+          </span>
         </div>
-      </div>
-    </div>
-    <div class="info">
-      <div class="item single-line">
-        <span class="label" translate>Address</span>
-        <span class="item-note ellipsis">
-          {{address}}
-        </span>
-      </div>
-      <div class="item single-line">
-        <span class="label" translate>Amount</span>
-        <span class="item-note">
-          {{amountStr}} - {{altAmountStr}}
-        </span>
+        <div class="item single-line">
+          <span class="label" translate>Amount</span>
+          <span class="item-note">
+            {{amountUnitStr}} - {{altAmountStr}}
+          </span>
+        </div>
+        <div class="item single-line">
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg">
+            </i>
+            {{wallet.name}}
+          </div>
+          <div class="label">Receive in</div>
+        </div>
       </div>
     </div>
   </ion-content>

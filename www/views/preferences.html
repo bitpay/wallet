@@ -1,4 +1,4 @@
-<ion-view class="settings">
+<ion-view class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Wallet Settings'|translate}}
@@ -18,7 +18,7 @@
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
+      <a ng-if="!isWindowsPhoneApp" class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
         <span translate>Color</span>
         <span class="item-note">
           <span class="settings-color-block"
