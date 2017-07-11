@@ -272,12 +272,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
 
-          console.log("NOTIFICATIONS")
-          console.log(JSON.stringify(err))
-
-          console.log(notifications)
-
-          console.log(JSON.stringify(total))
         $scope.notifications = notifications;
         $scope.notificationsN = total;
         $timeout(function() {
@@ -286,13 +280,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         }, 10);
       });
     };  
-    $scope.openBitLox = function() {
-      console.log('test')
-      if(platformInfo.isCordova) {window.open('https://bitlox.com', '_system')}
-        else {
-          window.open(href="https://bitlox.com" ,"_blank")
-        }
-    }
 
     $scope.hideHomeTip = function() {
       storageService.setHomeTipAccepted('accepted', function() {
@@ -302,7 +289,15 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         })
       });
     };
-
+    $scope.openBitlox = function() {
+      var url = 'https://bitlox.com';
+      var optIn = true;
+      var title = gettextCatalog.getString('BitLox');
+      var message = gettextCatalog.getString('Do you want to visit BitLox.com?');
+      var okText = gettextCatalog.getString('Yes');
+      var cancelText = gettextCatalog.getString('Cancel');
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    }
 
     $scope.onRefresh = function() {
       $timeout(function() {
