@@ -125,11 +125,12 @@
       align-items: center;
       border-radius: 4px;
 
-      img {
-        padding: .2rem;
-        padding-left: 0;
-        border-right: 1px solid #e4e4e4;
-        padding-right: 12px;
+      .recipient-address {
+        display:inline;
+        img {
+          width: 25px;
+          margin: 0.4em 0 -0.4em 0;
+        }
       }
 
       i {
