@@ -267,7 +267,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
-    var setCurrentPrice = function(config) {
+    /*var setCurrentPrice = function(config) {
       $scope.unitName = config.wallet.settings.unitName;
       $scope.selectedAlternative = {
         name: config.wallet.settings.alternativeName,
@@ -300,6 +300,74 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           calculateProfitPercent($scope.yesterdayRate, parseFloat(currentRate.toFixed(2), 10));
         });
       });
+    };*/
+
+    var setCurrentPrice = function(config) {
+      var data = {
+        ts: 1491523200,
+        rate: 2370.48,
+        variationAbs24h: 12.3,
+        variationRel24h: 0.52,
+        min24h: 2101.65,
+        max24h: 2543.23,
+        data: [
+          {
+            ts: 1491523200,
+            rate: 2500.24
+          }, {
+            ts: 1491609600,
+            rate: 2675.24
+          }, {
+            ts: 1491696000,
+            rate: 2786.50
+          }, {
+            ts: 1491782400,
+            rate: 2799
+          }, {
+            ts: 1491868800,
+            rate: 2813.60
+          }, {
+            ts: 1491955200,
+            rate: 3012.24
+          }, {
+            ts: 1492041600,
+            rate: 2901.24
+          }, {
+            ts: 1492128000,
+            rate: 2608.24
+          }, {
+            ts: 1492214400,
+            rate: 2401.24
+          }, {
+            ts: 1492300800,
+            rate: 2333.24
+          }, {
+            ts: 1492387200,
+            rate: 2292.24
+          }, {
+            ts: 1492473600,
+            rate: 2366.24
+          }, {
+            ts: 1492560000,
+            rate: 2500.24
+          }, {
+            ts: 1492646400,
+            rate: 2567.24
+          }, {
+            ts: 1492732800,
+            rate: 2678.24
+          }
+        ]
+      }
+
+      $scope.localCurrencyPerBtc = data.rate;
+      $scope.difference = Math.abs(data.variationAbs24h);
+      $scope.percentage = data.variationRel24h;
+      $scope.negativeProfit = !(data.variationAbs24h >= 0);
+      $scope.low24h = data.min24h;
+      $scope.high24h = data.max24h;
+
+      console.log("Hola, aca esta la data: ", data);
     };
 
     var calculateProfitPercent = function(yesterdayPrice, actualPrice) {

@@ -80,6 +80,16 @@
             color: $v-warning-color;
           }
         }
+        .price-data-right {
+          padding-left: 1rem;
+          div {
+            margin-bottom: 0.5rem;
+            span {
+              font-weight: bold;
+              color: $v-light-gray;
+            }
+          }
+        }
       }
     }
   }
