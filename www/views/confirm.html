@@ -30,15 +30,20 @@
         <div class="item">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" ng-if="!recipientType">
-            
-            
+            <div copy-to-clipboard="toAddress" ng-if="!paypro" class="ellipsis">
 <!--             <img class="recipient-address" src="img/aureus.svg" ng-show="wallet.network === 'aureus'"/>
             <img class="recipient-address" src="img/deuscoin.svg" ng-show="wallet.network === 'deuscoin'"/>
+<<<<<<< HEAD
             <img class="recipient-address" src="img/icon-bitcoin.svg" ng-show="wallet.network === 'livenet'"/> -->
 
             <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
               <contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>
               <span class="m15l size-14" ng-if="tx.toName">{{tx.toName}}</span>
+=======
+            <img class="recipient-address" src="img/icon-bitcoin.svg" ng-show="wallet.network === 'livenet'"/> -->            
+              <contact ng-if="!toName" address="{{toAddress}}"></contact>
+              <span class="m15l size-14" ng-if="toName">{{toName}}</span>
+>>>>>>> fix confirm send after doing wallet icons
             </div>
 
             <div ng-if="tx.paypro" ng-click="openPPModal(tx.paypro)" class="m15l size-14 w100p pointer">
@@ -51,9 +56,7 @@
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
           </span>
           <div class="wallet" ng-if="recipientType == 'wallet'">
-            <i class="icon big-icon-svg">
-              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}" class="bg"/>
-            </i>
+            <i class="icon big-icon-svg" wallet-icon data-network="network"></i>
             <div copy-to-clipboard="tx.toAddress" class="ellipsis">
               <contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>
               <span ng-if="tx.toName" class="wallet-name">{{tx.toName}}</span>
