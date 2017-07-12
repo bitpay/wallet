@@ -1,6 +1,7 @@
 #view-confirm {
   background-color: #ffffff;
   @extend .deflash-blue;
+
   .item-note {
     float: none;
     .fee-rate {
@@ -10,6 +11,9 @@
       }
 
     }
+  }
+  img.recipient-address {
+    width: 20px;
   }
   .icon-amazon {
     background-image: url("../img/icon-amazon.svg");

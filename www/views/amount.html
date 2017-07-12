@@ -18,14 +18,14 @@
       <div class="item item-no-bottom-border recipient-label" translate>Recipient</div>
 
       <div class="item item-text-wrap item-icon-left bitcoin-address">
-        <i class="icon big-icon-svg" ng-if="recipientType == 'wallet'" wallet-icon data-wallet="wallet"></i>
+        <i class="icon big-icon-svg" ng-if="recipientType == 'wallet' || (!recipientType && network)" wallet-icon data-wallet="wallet" data-network="network"></i>
         <span ng-if="recipientType == 'contact'">
           <i class="icon big-icon-svg" ng-if="isChromeApp">
             <img src="img/contact-placeholder.svg" class="bg"/>
           </i>
           <gravatar ng-if="!isChromeApp" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
         </span>
-        <span ng-if="!recipientType">
+        <span ng-if="!recipientType && !network">
           <i class="icon big-icon-svg">
             <img src="img/contact-placeholder.svg" class="bg"/>
           </i>

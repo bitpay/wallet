@@ -184,7 +184,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           return popupService.showAlert(err);
         }
         $log.debug('Got toAddress:' + addr + ' | ' + item.name);
-        console.log(item)
         return $state.transitionTo('tabs.send.amount', {
           recipientType: item.recipientType,
           toAddress: addr,

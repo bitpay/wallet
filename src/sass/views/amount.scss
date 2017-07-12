@@ -1,5 +1,8 @@
 #view-amount {
   @extend .deflash-blue;
+    img.recipient-address {
+      width: 20px;
+    }  
   .recipient-label {
     font-size: 14px;
     padding-bottom: 0;

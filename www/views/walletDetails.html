@@ -42,7 +42,7 @@
           on-hold="hideToggle()"
           ng-style="{'transform': amountScale}"
           ng-class="{amount__balance: amountIsCollapsible}">
-          <strong class="size-36">{{status.totalBalanceStr}}</strong>
+          <strong class="size-30">{{status.totalBalanceStr}}</strong>
 <!--           <div
             class="size-14 amount-alternative"
             ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'"
@@ -76,7 +76,7 @@
 
       </div>
       <div ng-if="updatingStatus" class="amount__updating">
-        <div class="size-36">
+        <div class="size-30">
           <strong>...</strong>
         </div>
       </div>
@@ -142,7 +142,7 @@
           </div>
         </div>
         <div ng-if="updatingStatus">
-          <div class="size-36">
+          <div class="size-30">
             <strong>...</strong>
           </div>
         </div>
