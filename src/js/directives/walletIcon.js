@@ -16,6 +16,7 @@ angular.module('copayApp.directives')
         } else if (scope.wallet && scope.wallet.isPrivKeyExternalString && scope.wallet.getPrivKeyExternalSourceNameString.indexOf('bitlox') > -1) {
           scope.bitlox = true
         }
+        console.log(scope.wallet)
 
       }
     };
