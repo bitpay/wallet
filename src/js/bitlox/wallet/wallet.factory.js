@@ -83,8 +83,8 @@
                 });
                 return wallets;
             }, function(err) {
-              console.error('listWallets call failed')
-              console.error(err)
+              $log.error('listWallets call failed')
+              $log.error(err)
             });
         };
 
@@ -100,7 +100,7 @@
                 try {
                     bip32 = new BIP32(data.payload.xpub);
                 } catch(ex) {
-                    console.error(ex);
+                    $log.error(ex);
                     return $q.reject(ex);
                 }
                 wallet.xpub = data.payload.xpub;
@@ -119,7 +119,7 @@
             longSign = true;
           }          
           if(api.getStatus() === api.STATUS_CONNECTED || api.getStatus() === api.STATUS_IDLE) {
-            console.log('device is already connected, proceed with transaction:'+api.getStatus())
+            $log.debug('device is already connected, proceed with transaction:'+api.getStatus())
             $rootScope.bitloxConnectErrorListener = $rootScope.$on('bitloxConnectError', function() {
               cb(new Error("BitLox Disconnected"));
             })
@@ -164,7 +164,7 @@
                 $rootScope.bitloxConnectErrorListener = $rootScope.$on('bitloxConnectError', function() {
                   cb(new Error("BitLox Disconnected"));
                 })      
-                console.log("BitLox connection successful, signing...")
+                $log.debug("BitLox connection successful, signing...")
 
                 if(longSign) {
                   popupService.showConfirm(gettextCatalog.getString('Error'), "BitLox will take a very long time to sign this transaction. Please keep your BitLox plugged in and be patient.", "OK", "Cancel", function(ok) {
@@ -219,7 +219,7 @@
             //$log.debug('xPubKeys', xPubKeys)
 
             return api.getDeviceUUID().then(function(results) {
-              console.log('got device UUID, finding wallet')
+              $log.debug('got device UUID, finding wallet')
               var externalSource = wallet.getPrivKeyExternalSourceName()
               var bitloxInfo = externalSource.split('/')
               if(!results) {
@@ -250,24 +250,24 @@
                     return thisWallet.open()
                     .then(function() {
 
-                        //$log.debug("WALLET LOADED", thisWallet.xpub)
+                        $log.debug("WALLET LOADED", thisWallet.xpub)
                         $ionicLoading.show({
                           template: 'Preparing Transaction. Please Wait...'
                         });
                         if(thisWallet.xpub !== xPubKeys[0]) {
-                          //$log.debug('pubkeys do not match')
+                          $log.debug('pubkeys do not match')
                           return cb(new Error('pubkeys do not match'))
                         }
                         var changeIndex = txp.changeAddress.path.split('/')[2]
-                        //$log.debug('changeIndex', changeIndex)
+                        $log.debug('changeIndex', changeIndex)
                         return api.setChangeAddress(changeIndex).then(function() {
-                          //$log.debug('Done setting change address')
+                          $log.debug('Done setting change address')
                           $ionicLoading.show({
                             template: 'Signing Transaction. Check Your BitLox...'
                           });
                           return api.signTransaction(tx,signTimer)
                           .then(function(result) {
-                            //$log.debug('Bitlox response', result);
+                            $log.debug('Bitlox response', result);
                             if(!result) {
                               return cb(new Error('Unable to get signatures from BitLox. Try reconnecting the BitLox'))
                             }                            
@@ -297,7 +297,7 @@
                               // })
                               // return cb(null,txp)
                             } else {
-                              //$log.debug('TX signing error')
+                              $log.debug('TX signing error')
                               if(platformInfo.isMobile) {
                                 return cb(new Error(result.type.error_message))
                               } else {
@@ -305,15 +305,18 @@
                               }
                             }
                           }, function(err) {
-                            //$log.debug("TX sign error", err)
+                            $log.debug("TX sign error")
+                            $log.debug(err)
                             return cb(err)
                           })
                         }, function(err) {
-                          //$log.debug("setChangeAddress error", err)
+                          $log.debug("setChangeAddress error")
+                          $log.debug(err)
                           return cb(err)
                         })
                     }, function(err) {
-                      //$log.debug('load wallet error', err)
+                      $log.debug('load wallet error')
+                      $log.debug(err)
                       return cb(err)
                     })
                   }
@@ -321,11 +324,13 @@
                 return cb(new Error('This wallet is not on the connected BitLox device or has been moved. Select the correct Bitlox or contact support.'))
 
               }, function(e) {
-                //$log.debug('Bitlox wallet list error', e)
+                $log.debug('Bitlox wallet list error')
+                $log.debug(e)
                 return cb(e)
               })
             }, function(e) {
-              //$log.debug('cannot get device uuid', e)
+                $log.debug('cannot get device uuid')
+                $log.debug(e)
 
               return cb(e)
             })
@@ -383,7 +388,7 @@
             ], function(addrType, done) {
                 var hasAll = false;
                 var index = 0;
-                console.debug("getting", addrType, "addresses");
+                $log.debug("getting", addrType, "addresses");
                 async.until(function() {
                     return hasAll;
                 }, function(next) {
@@ -526,7 +531,7 @@
         Wallet.prototype.getChangeAddress = function() {
             var chAddr;
             var addresses = this.addresses.change;
-            console.debug("Choosing change address");
+            $log.debug("Choosing change address");
             for (var address in addresses) {
                 if (addresses.hasOwnProperty(address)) {
                     var received = addresses[address].received;
@@ -551,7 +556,7 @@
             var wallet = this;
             var deferred = $q.defer();
             try {
-                console.debug("making transaction");
+                $log.debug("making transaction");
                 var tx = new Transaction({
                     outputs: outputs,
                     fee: fee,
@@ -565,7 +570,7 @@
                     WalletStatus.status = null;
                 });
             } catch (ex) {
-            	console.debug("caught exception in making transaction");
+            	$log.debug("caught exception in making transaction");
                 if (ex === Transaction.ERR_AMOUNT_TOO_LOW) {
                     $timeout(function() {
                         deferred.reject("You cannot send less than " + bcMath.toBTC(MIN_OUTPUT) + " BTC");
@@ -584,13 +589,13 @@
         };
 
         function doSend(tx) {
-            console.debug("send: signing with device");
+            $log.debug("send: signing with device");
             // sign the transaction on the device
             return api.signTransaction(tx)
                 .then(function(res) {
                     // after signing, replace the input scripts
                     // with the signed versions
-                    console.debug("send: signed, replacing scripts");
+                    $log.debug("send: signed, replacing scripts");
                     tx.replaceScripts(res.payload.signedScripts);
                     // then submit it to the network
                     return tx;
@@ -609,7 +614,7 @@
         Wallet.prototype.rename = function(newName) {
             var wallet = this;
             return api.renameWallet(newName).then(function() {
-                console.debug(arguments);
+                $log.debug(arguments);
                 wallet._name = newName;
             });
         };
@@ -645,7 +650,7 @@
                         txs.forEach(function(tx) {
                             if (foundHashes.indexOf(tx.txid) === -1) {
                                 foundHashes.push(tx.txid);
-                                console.debug("foundHashes.push(tx.txid) " + tx.txid);
+                                $log.debug("foundHashes.push(tx.txid) " + tx.txid);
                                 transactions.push(tx);
                             }
                         });
@@ -686,22 +691,22 @@
 		}
 
     Wallet.prototype.txMap = function(tx) {
-        console.debug("*************************************");
-    	console.debug("ROOT txid " + tx.txid);
+        $log.debug("*************************************");
+    	$log.debug("ROOT txid " + tx.txid);
 
 			var epochDate = 0;
 			if (tx.confirmations > 0) {
 				epochDate = tx.blocktime*1000;
-				console.debug("epochDate raw >0 conf " + epochDate);
+				$log.debug("epochDate raw >0 conf " + epochDate);
 			} else {
 				epochDate = tx.time*1000;
-				console.debug("epochDate raw 0 conf " + epochDate);
+				$log.debug("epochDate raw 0 conf " + epochDate);
 			}
 			tx.blocktime = moment(epochDate).format("YYYY-MM-DD HH:mm");
-			console.debug("tx.blocktime formatted " + tx.blocktime);
+			$log.debug("tx.blocktime formatted " + tx.blocktime);
 
 			tx.fees = tx.fees * 100000000;
-			console.debug("tx.fees " + tx.fees);
+			$log.debug("tx.fees " + tx.fees);
 
       tx.type = 'send';
       var wallet = this;
@@ -718,7 +723,7 @@
               } else if (wallet.addresses.change.hasOwnProperty(addr)) {
                   ownAddresses += 1;
                   var changeAmount = stringToSatoshis(out.value);
-                  console.debug("changeAmount " + changeAmount);
+                  $log.debug("changeAmount " + changeAmount);
                   tx.amount -= changeAmount;
               }
           });
@@ -732,7 +737,7 @@
                   if (!wallet.addresses.receive.hasOwnProperty(addr) &&
                       !wallet.addresses.change.hasOwnProperty(addr)) {
                       var receiveAmount = stringToSatoshis(out.value);
-                      console.debug("receiveAmount " + receiveAmount);
+                      $log.debug("receiveAmount " + receiveAmount);
                       tx.amount -= receiveAmount;
                   }
               });

@@ -6,6 +6,7 @@ angular.module('hid')
 .service('bitloxBleApi',
 ['$rootScope',
 '$q',
+'$log',
 '$timeout',
 '$interval',
 'hidCommands',
@@ -13,7 +14,7 @@ angular.module('hid')
 'txUtil',
 'RECEIVE_CHAIN',
 'CHANGE_CHAIN',
-function BleApi($rootScope,$q,$timeout,$interval,hidCommands, hexUtil, txUtil, RECEIVE_CHAIN, CHANGE_CHAIN) {
+function BleApi($rootScope,$q,$log,$timeout,$interval,hidCommands, hexUtil, txUtil, RECEIVE_CHAIN, CHANGE_CHAIN) {
 var BleApi = this
 var deviceCommands = hidCommands;
 
@@ -268,7 +269,7 @@ this.newWallet = function(walletNumber, options) {
   // make a proto buffer for the data, generate a command and
   // send it off
   var newWalletMessage = new protoDevice.NewWallet(protoData);
-  // console.warn(JSON.stringify(protoData))
+  // $log.debug(JSON.stringify(protoData))
   // if isRestore === true in the option, use the restor command
   // instead (everything else is the same)
   var cmdPrefix = (options.isRestore === true) ?
@@ -346,7 +347,7 @@ this.signTransaction = function(opts,signTimer) {
 
         var dataString = '00';
             dataString += opts.unsignedHex
-            // console.warn("raw="+opts.unsignedHex)        // hash type
+            // $log.debug("raw="+opts.unsignedHex)        // hash type
         dataString += '01000000';
         dataString = inputData.join('') + dataString;
 
@@ -357,8 +358,8 @@ this.signTransaction = function(opts,signTimer) {
             transaction_data: dataBuf
         });
         var cmd = BleApi.makeCommand(deviceCommands.signTxPrefix, msg);
-        // console.warn('sending something')
-        // console.warn(cmd)
+        // $log.debug('sending something')
+        // $log.debug(cmd)
         return BleApi.write(cmd, signTimer).then(function(res) {
           return deferred.resolve(res)
         },function(e) {
@@ -390,10 +391,10 @@ this.genTransaction = function(txp) {
   //         "chain": ui.chain,
   //         "index": ui.index
   //     };
-		// 	console.log("address: " + coin.address);
-  //     //             			console.log("coin: " + coin.coin);
-		// 	console.log("chain: " + coin.chain);
-		// 	console.log("index: " + coin.index);
+		// 	$log.debug("address: " + coin.address);
+  //     //             			$log.debug("coin: " + coin.coin);
+		// 	$log.debug("chain: " + coin.chain);
+		// 	$log.debug("index: " + coin.index);
   //     incoin.push(coin);
   //   }
   // }
@@ -457,7 +458,7 @@ this.genTransaction = function(txp) {
   //         if (inchain) {
   //             tx.signWithKey(inchain[k].eckey);
   //         } else {
-  //             console.log("Don't know about all the keys needed.");
+  //             $log.debug("Don't know about all the keys needed.");
   //         }
   //     }
   //     $("#signedtxlabel").show()
@@ -485,7 +486,7 @@ this.genTransaction = function(txp) {
 // 				function(data)
 // 					{
 //             // 									alert(data.rawtx);
-//             // 									console.log("in each done: "  + data.rawtx + " i:" + i);
+//             // 									$log.debug("in each done: "  + data.rawtx + " i:" + i);
 // 						fullInputTXHex[i] = data.rawtx;
 // 						mCounter++;
 // 						if(mCounter == how_many_inputs){prepForSigning(unsignedTransactionToBeCoded, fullInputTXHex, fullInputTXindex, address_handle_chain, address_handle_index)}
@@ -500,10 +501,10 @@ this.genTransaction = function(txp) {
 // 			)
 // 		} // end each function
 // 	) // end each
-//   console.log("fullInputTXindex: " + fullInputTXindex);
-//   console.log("unsignedTransactionToBeCoded: " + unsignedTransactionToBeCoded);
+//   $log.debug("fullInputTXindex: " + fullInputTXindex);
+//   $log.debug("unsignedTransactionToBeCoded: " + unsignedTransactionToBeCoded);
 // 	for(m=0; m < how_many_inputs; m++) {
-//           console.log("scripts to replace: " + scriptsToReplace[m]);
+//           $log.debug("scripts to replace: " + scriptsToReplace[m]);
 // 	}
   return tx;
 
@@ -575,7 +576,7 @@ this.constructTxString = function(pinAckMessage,command) {
   var tempBuffer = pinAckMessage.encode();
   var tempTXstring = tempBuffer.toString('hex');
   var txSize = d2h((tempTXstring.length) / 2).toString('hex');
-  // console.log("tempTXstring = " + tempTXstring);
+  // $log.debug("tempTXstring = " + tempTXstring);
 
   var j;
   var txLengthOriginal = txSize.length;
@@ -589,7 +590,7 @@ this.constructTxString = function(pinAckMessage,command) {
 
   var magic = "2323"
   tempTXstring = magic.concat(tempTXstring);
-  console.log("tempTXstring = " + tempTXstring);
+  $log.debug("tempTXstring = " + tempTXstring);
   return tempTXstring;
 }
 
@@ -603,7 +604,7 @@ this.initializeBle = function() {
     function() {
       // if we've already initialized don't do it again
       if(bleReady) {
-        console.log("BLE PREVIOUSLY INITIALISED, STARTING NEW SESSION", status)
+        $log.debug("BLE PREVIOUSLY INITIALISED, STARTING NEW SESSION", status)
         
         // $rootScope.$applyAsync(function() {
         //   status = BleApi.STATUS_DISCONNECTED
@@ -613,8 +614,8 @@ this.initializeBle = function() {
       platform = window.device.platform.toLowerCase()
       BleApi.initProtoBuf(function(err, device) {
         if(err) {
-          console.error("ProtoBuf Failed to Load Messages File")
-          console.error(err)
+          $log.error("ProtoBuf Failed to Load Messages File")
+          $log.error(err)
         }
         protoDevice = device
         bleReady = true;
@@ -630,11 +631,11 @@ this.initProtoBuf = function(cb) {
   var path_prefix = platform === 'android' ? "file:///android_asset/www/" : ""
 
   var pathToProto = path_prefix+"proto/messages.proto";
-  // console.log(pathToProto)
+  // $log.debug(pathToProto)
   ProtoBuf.loadProtoFile(pathToProto, function(err, builder) {
     if(err) {
-      console.error("load protofile error")
-      console.error(err)
+      $log.error("load protofile error")
+      $log.error(err)
       return cb(err)
     }
     var Device = builder.build();
@@ -643,7 +644,7 @@ this.initProtoBuf = function(cb) {
 }
 this.displayStatus = function(newStatus) {
   if(status !== newStatus) {
-    console.log('Status: '+status);
+    $log.debug('Status: '+status);
   }
 }
 this.getServices = function() {
@@ -727,7 +728,7 @@ this.startReading = function() {
 	BleApi.displayStatus('Enabling notifications...');
 
 	var sD = '';
-	// console.log('data at beginning: ' + sD);
+	// $log.debug('data at beginning: ' + sD);
 
 	// Turn notifications on.
 	BleApi.bleWrite(
@@ -747,7 +748,7 @@ this.startReading = function() {
             sD = sD.concat(d2h(buf[i]).toString('hex'));
           };
 
-          // console.log('data semifinal: ' + sD);
+          // $log.debug('data semifinal: ' + sD);
           for (var i = 0 ; i < buf.length; i++)
           {
             buf[i] = 0;
@@ -785,7 +786,7 @@ this.bleWrite = function(writeFunc, deviceHandle, handle, value, cb) {
       function()
       {
       // 					alert(writeFunc + ': ' + handle + ' success.');
-        // console.log(writeFunc + ': ' + JSON.stringify(handle) + ' success.');
+        // $log.debug(writeFunc + ': ' + JSON.stringify(handle) + ' success.');
         BleApi.sessionIdMatch = false;
         if(cb) cb();
       },
@@ -793,7 +794,7 @@ this.bleWrite = function(writeFunc, deviceHandle, handle, value, cb) {
       {
           // 					alert(writeFunc + ': ' + handle + ' error: ' + errorCode);
 
-        // console.log(writeFunc + ': ' + JSON.stringify(handle) + ' error: ' + errorCode);
+        // $log.debug(writeFunc + ': ' + JSON.stringify(handle) + ' error: ' + errorCode);
         if(cb) cb(new Error(writeFunc + ': ' + JSON.stringify(handle) + ' error: ' + errorCode));
       });
   }
@@ -816,7 +817,7 @@ this.startScanNew = function() {
 		},
 		function(errorCode)
 		{
-      console.error("BITLOX BLE SCAN ERROR: "+ errorCode)
+      $log.error("BITLOX BLE SCAN ERROR: "+ errorCode)
 			// Report error.
 			BleApi.deviceFound(null, errorCode);
 		}
@@ -824,7 +825,7 @@ this.startScanNew = function() {
 }
 
 this.deviceFound = function(device, errorCode)  {
-  // console.log(JSON.stringify(device.advertisementData))
+  // $log.debug(JSON.stringify(device.advertisementData))
 	if (device && device.advertisementData.kCBAdvDataServiceUUIDs
     && device.advertisementData.kCBAdvDataServiceUUIDs.indexOf('0000fff0-0000-1000-8000-00805f9b34fb') > -1) {
 	// if (device){
@@ -837,11 +838,11 @@ this.deviceFound = function(device, errorCode)  {
       knownDevices[device.address] = device;
     })
     //this next line goes nuts in logcat. use wisely
-    // console.warn("BITLOX FOUND A BLE DEVICE: "+ JSON.stringify( knownDevices[device.address].address));
+    // $log.debug("BITLOX FOUND A BLE DEVICE: "+ JSON.stringify( knownDevices[device.address].address));
 	}
 	else if (errorCode)
 	{
-    console.log('BLE scan error: '+errorCode)
+    $log.debug('BLE scan error: '+errorCode)
     knownDevices = {};
 		this.displayStatus('Scan Error: ' + errorCode);
 	}
@@ -850,7 +851,7 @@ this.connect = function(address)	{
   var bleapi = this
   // if(platform === 'android') pausecomp(1000);
   if(status === BleApi.STATUS_CONNECTING) {
-    console.log('rejecting additional calls to BLE connect function')
+    $log.debug('rejecting additional calls to BLE connect function')
     return $q.reject(new Error("Already connecting"));
   }
   $rootScope.$applyAsync(function() {
@@ -859,7 +860,7 @@ this.connect = function(address)	{
   this.timeout = $timeout(function() {
     
     if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) {
-      console.log('connection timeout')     
+      $log.debug('connection timeout')     
       BleApi.disconnect();
       $rootScope.$broadcast('bitloxConnectError'); 
 
@@ -871,7 +872,7 @@ this.connect = function(address)	{
   evothings.ble.stopScan();
 
   evothings.ble.connect(address, function(device) {
-    // console.log('new device state: '+device.state)
+    $log.debug('new device state: '+device.state)
     if (device.state == 2) {
       BleApi.deviceHandle = device.deviceHandle;
       BleApi.getServices();
@@ -880,7 +881,7 @@ this.connect = function(address)	{
     }
     // this never seems to get called, except status === 1 which means the connection is now in progress on iOS
     else {
-      // console.log("CONNECTION TO BLE FAILED")
+      // $log.debug("CONNECTION TO BLE FAILED")
       // $rootScope.$applyAsync(function() {
       //   status = BleApi.STATUS_DISCONNECTED
       // });
@@ -895,15 +896,15 @@ this.connect = function(address)	{
 
     if(parseInt(errorCode,10) === 133) {
 
-      console.log("BitLox Disconnected from BLE: 133")
+      $log.debug("BitLox Disconnected from BLE: 133")
     
     } else if(parseInt(errorCode,10) === 8) {
-      console.log("BitLox Disconnected from BLE: 8")
+      $log.debug("BitLox Disconnected from BLE: 8")
       $rootScope.$digest()
     }
     BleApi.disconnect();
   }, function(errorCode) {
-    console.log("BLE CONNECT ERROR:" + errorCode)
+    $log.debug("BLE CONNECT ERROR:" + errorCode)
     BleApi.disconnect();
   });    
 
@@ -924,7 +925,7 @@ this.disconnect = function() {
     status = BleApi.STATUS_DISCONNECTED;
   })
   if(status !== BleApi.STATUS_DISCONNECTED && status !== BleApi.STATUS_INITIALIZING) { 
-    console.log("broadcasting disconnection notice")
+    // $log.debug("broadcasting disconnection notice")
     $rootScope.$broadcast('bitloxConnectError'); 
   }
   
@@ -932,7 +933,7 @@ this.disconnect = function() {
 }
 // old sliceAndWrite64, 'data' is a command constant
 this.write = function(data, timer, noPromise, forcePing) {
-  // console.log("ready to write status: " + status + ": command: " +data)
+  $log.debug("ready to write: " + status + ": command: " +data)
   if(status !== BleApi.STATUS_INITIALIZING && status !== BleApi.STATUS_CONNECTED && status !== BleApi.STATUS_IDLE) {
     // return if the device isn't currently idle
     if(status == BleApi.STATUS_DISCONNECTED) {
@@ -950,27 +951,27 @@ this.write = function(data, timer, noPromise, forcePing) {
     && data.indexOf(deviceCommands.ping) != 0 
     && data.indexOf(deviceCommands.initPrefix) != 0
     && data.indexOf(deviceCommands.scan_wallet) != 0) {
-        // console.log('checking session, for command: '+data)
+        // $log.debug('checking session, for command: '+data)
         var msg = new protoDevice.Ping();
         var pingString = BleApi.makeCommand(deviceCommands.ping,msg)
 
         return this.write(pingString, 5000).then(function(pingResult) {
           if(!pingResult || pingResult.type === BleApi.TYPE_ERROR) {
-              console.log("session id not found or ping failed")
+              $log.debug("session id not found or ping failed")
               return $q.reject(new Error('BitLox session error. Try reconnecting the BitLox'))
           }
-          // console.log(pingResult.type)
-          // console.log(JSON.stringify(pingResult.payload))
+          // $log.debug(pingResult.type)
+          // $log.debug(JSON.stringify(pingResult.payload))
           var sessionIdHex = pingResult.payload.echoed_session_id.toString('hex')
           if(sessionIdHex !== BleApi.sessionIdHex) {
-              console.log("session id does not match")
+              $log.debug("session id does not match")
               BleApi.disconnect();
               return $q.reject(new Error('BitLox session expired. Try reconnecting the BitLox'))
           }
           BleApi.sessionIdMatch = true;
           return BleApi.write(data, timer, noPromise)
       }, function(err) {
-        console.log("PING ERROR:"+JSON.stringify(err))
+        $log.debug("PING ERROR:"+JSON.stringify(err))
         return $q.reject(new Error("Cannot ping BitLox. Try reconnecting the BitLox"))
       })
 
@@ -980,9 +981,9 @@ this.write = function(data, timer, noPromise, forcePing) {
   var chunkSize = 128;
   var thelength = data.length;
   var iterations = Math.floor(thelength/chunkSize);
-  // console.log('iterations : ' + iterations);
+  // $log.debug('iterations : ' + iterations);
   var remainder  = thelength%chunkSize;
-  // console.log('remainder : ' + remainder);
+  // $log.debug('remainder : ' + remainder);
   var k = 0;
   var m = 0;
   var transData = [];
@@ -991,10 +992,10 @@ this.write = function(data, timer, noPromise, forcePing) {
   for(k = 0; k < iterations; k++)
   {
     transData[k] = data.slice(k*chunkSize,chunkSize+(k*chunkSize));
-    // console.log("k " + k);
+    // $log.debug("k " + k);
   };
 
-  // console.log("k out " + k);
+  // $log.debug("k out " + k);
 
   // 		deal with the leftover, backfilling the frame with zeros
   if(remainder != 0)
@@ -1004,31 +1005,31 @@ this.write = function(data, timer, noPromise, forcePing) {
     {
       transData[k] = transData[k].concat("0");
     }
-    // console.log("remainder " + transData[k]);
+    // $log.debug("remainder " + transData[k]);
 
-    // console.log("remainder length " + transData[k].length);
+    // $log.debug("remainder length " + transData[k].length);
   };
 
   // 		The BLE writer takes ByteBuffer arrays
   var ByteBuffer = dcodeIO.ByteBuffer;
   var j = 0;
   var parseLength = 0;
-  // console.log("transData.length " + transData.length);
+  // $log.debug("transData.length " + transData.length);
 
   async.eachSeries(transData, function(data, next) {
     parseLength = data.length
 
     var bb = new ByteBuffer();
-    //  console.log("utx length = " + parseLength);
+    //  $log.debug("utx length = " + parseLength);
     var i;
     for (i = 0; i < parseLength; i += 2) {
       var value = data.substring(i, i + 2);
-      //  console.log("value = " + value);
+      //  $log.debug("value = " + value);
       var prefix = "0x";
       var together = prefix.concat(value);
-      //  console.log("together = " + together);
+      //  $log.debug("together = " + together);
       var result = parseInt(together);
-      //  console.log("result = " + result);
+      //  $log.debug("result = " + result);
 
       bb.writeUint8(result);
     }
@@ -1048,7 +1049,7 @@ this.write = function(data, timer, noPromise, forcePing) {
       });
   }, function(err) {
     if(err) {
-      console.log("Command write error")
+      $log.debug("Command write error")
       return BleApi.disconnect();
     }
     $rootScope.$applyAsync(function() {
@@ -1059,10 +1060,10 @@ this.write = function(data, timer, noPromise, forcePing) {
 
   if(!noPromise) {
     if(!timer) timer = 30000;
-    // console.log(timer + " milliseconds.")
+    // $log.debug(timer + " milliseconds.")
 
     BleApi.timeout = $timeout(function() {
-      console.warn("TIMEOUT of Write Command")
+      $log.debug("TIMEOUT of Write Command")
       return BleApi.sendData({}, BleApi.TYPE_ERROR)
       evothings.ble.close(BleApi.deviceHandle)
 
@@ -1078,31 +1079,31 @@ this.write = function(data, timer, noPromise, forcePing) {
 * 	may send the received message onwards.
 */
 this.sendToProcess = function(rawData) {
-	// console.log('data final: ' + rawData);
+	// $log.debug('data final: ' + rawData);
 	var rawSize = rawData.length;
-	// console.log('rawSize: ' + rawSize);
-	// console.log('incomingData at top ' + incomingData);
+	$log.debug('rawSize: ' + rawSize);
+	$log.debug('incomingData at top ' + incomingData);
 
 	// Grab the incoming frame and add it to the global incomingData
       // We match on 2323 and then toggle the dataReady boolean to get ready for any subsequent frames
 	if (rawData.match(/2323/) || dataReady == true)
 	{
-		// console.log('or match ');
+		// $log.debug('or match ');
 		incomingData = incomingData.concat(rawData);
-		// console.log('incomingData ' + incomingData);
+		// $log.debug('incomingData ' + incomingData);
 
     // 			Find out how long the total message is. This must be stored globally as the
     // 			sendToProcess routine is called repeatedly blanking local variables
 		if (incomingData.match(/2323/))
 		{
-			// console.log('header match');
+			// $log.debug('header match');
 			dataReady = true;
 			var headerPosition = incomingData.search(2323)
 			payloadSize = incomingData.substring(headerPosition + 8, headerPosition + 16)
-			// console.log('PayloadSize hex: ' + payloadSize);
+			// $log.debug('PayloadSize hex: ' + payloadSize);
 			var decPayloadSize = parseInt(payloadSize, 16);
-			// console.log('decPayloadSize: ' + decPayloadSize);
-			// console.log('decPayloadSize*2 + 16: ' + ((decPayloadSize *2) + 16));
+			// $log.debug('decPayloadSize: ' + decPayloadSize);
+			// $log.debug('decPayloadSize*2 + 16: ' + ((decPayloadSize *2) + 16));
 		}
 	}
   // 		Once the incomingData has grown to the length declared, send it onwards.
@@ -1120,16 +1121,16 @@ this.sendToProcess = function(rawData) {
       var command = dataToSendOut.substring(headerPosition + 4, headerPosition + 8);
       // document.getElementById("command").innerHTML = command;
       var payloadSize2 = dataToSendOut.substring(headerPosition + 8, headerPosition + 16);
-      // console.log('PayloadSize: ' + payloadSize2);
+      // $log.debug('PayloadSize: ' + payloadSize2);
       var decPayloadSize = parseInt(payloadSize2, 16);
-      // console.log('decPayloadSize: ' + decPayloadSize);
-      // console.log('decPayloadSize*2 + 16: ' + ((decPayloadSize *2) + 16));
+      // $log.debug('decPayloadSize: ' + decPayloadSize);
+      // $log.debug('decPayloadSize*2 + 16: ' + ((decPayloadSize *2) + 16));
 
       // document.getElementById("payLoadSize").innerHTML = payloadSize2;
       var payload = dataToSendOut.substring(headerPosition + 16, headerPosition + 16 + (2 * (decPayloadSize)));
       // document.getElementById("payload_HEX").innerHTML = payload;
       // document.getElementById("payload_ASCII").innerHTML = hex2a(payload);
-      // console.log('ready to process: ' + dataToSendOut);
+      // $log.debug('ready to process: ' + dataToSendOut);
       this.processResults(command, payloadSize2, payload);
     }
 	}
@@ -1137,8 +1138,8 @@ this.sendToProcess = function(rawData) {
 
 this.sendData = function(data,type,retainCommand) {
 
-  // console.log('sending data back to promise')
-  // console.log(JSON.stringify(data))
+  // $log.debug('sending data back to promise')
+  // $log.debug(JSON.stringify(data))
 
   BleApi.currentPromise.resolve({type: type, payload:data});
   $timeout.cancel(BleApi.timeout)
@@ -1150,11 +1151,11 @@ this.sendData = function(data,type,retainCommand) {
       status = BleApi.STATUS_IDLE;
     }    
   })
-  // console.log(type)
-  // console.log(BleApi.expectedResponseType)
+  // $log.debug(type)
+  // $log.debug(BleApi.expectedResponseType)
 
   if(!retainCommand && type !== BleApi.expectedResponseType) {
-    console.warn("UNEXPECTED RESPONSE: " + type)
+    $log.debug("UNEXPECTED RESPONSE: " + type)
     BleApi.disconnect()
   }
   if(!retainCommand) { currentCommand = null; BleApi.expectedResponseType = null; }
@@ -1162,9 +1163,9 @@ this.sendData = function(data,type,retainCommand) {
 }
 
 this.processResults = function(command, length, payload) {
-  // 			console.log("RX: " + command);
+  // 			$log.debug("RX: " + command);
   command = command.substring(2, 4)
-  // console.log('to process: ' + command + ' ' + length + ' ' + payload);
+  $log.debug('to process: ' + command + ' ' + length + ' ' + payload);
   switch (command) {
     case "3a": // initialize
     case "3A":
@@ -1174,19 +1175,19 @@ this.processResults = function(command, length, payload) {
     case "30": // public address
         ecdsa = payload.substring(8, 74);
         // 					ecdsa = payload.substring(8,138); //uncompressed
-        // 					console.log('ecdsa from device ' + ecdsa);
+        // 					$log.debug('ecdsa from device ' + ecdsa);
         document.getElementById("ecdsa").innerHTML = ecdsa;
         ripe160of2 = payload.substring(78, 118);
         // 					ripe160of2 = payload.substring(142,182);
         document.getElementById("ripe160of2").innerHTML = ripe160of2;
-        // 					console.log('RIPE from device ' + ripe160of2);
+        // 					$log.debug('RIPE from device ' + ripe160of2);
         pub58 = ecdsaToBase58(ecdsa);
         document.getElementById("address_58").innerHTML = pub58;
     break;
 
     case "31": // number of addresses in loaded wallet
         numberOfAddresses = payload.substring(2, 4);
-        // 					console.log('# of addresses ' + numberOfAddresses);
+        // 					$log.debug('# of addresses ' + numberOfAddresses);
         document.getElementById("numberOfAddresses").innerHTML = numberOfAddresses;
         break;
 
@@ -1205,7 +1206,7 @@ this.processResults = function(command, length, payload) {
 					BleApi.displayStatus('Wallet deleted');
 					$('#myTab a[href="#bip32"]').tab('show');
 
-					window.plugins.toast.show('Refreshing your wallet list', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+					window.plugins.toast.show('Refreshing your wallet list', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 					$('#helpBlock').text('Click the wallet name and enter the PIN on your BitLox');
 
 					BleApi.app.sliceAndWrite64(deviceCommands.list_wallets);
@@ -1217,7 +1218,7 @@ this.processResults = function(command, length, payload) {
           BleApi.displayStatus('Wallet renamed');
           $('#myTab a[href="#bip32"]').tab('show');
 
-          window.plugins.toast.show('Refreshing your wallet list', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+          window.plugins.toast.show('Refreshing your wallet list', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
           $('#helpBlock').text('Click the wallet name and enter the PIN on your BitLox');
 
           BleApi.app.sliceAndWrite64(deviceCommands.list_wallets);
@@ -1230,7 +1231,7 @@ this.processResults = function(command, length, payload) {
 					this.sendData({},BleApi.TYPE_SUCCESS)
 				break;
 				case "formatDevice":
-					window.plugins.toast.show('Format successful', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+					window.plugins.toast.show('Format successful', 'long', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 					BleApi.displayStatus('Ready');
 					BleApi.app.sliceAndWrite64(deviceCommands.list_wallets);
 					$('#myTab a[href="#bip32"]').tab('show');
@@ -1242,7 +1243,7 @@ this.processResults = function(command, length, payload) {
           currentCommand = '';
         break;
 				case "loadWallet":
-					// window.plugins.toast.show('Wallet loaded', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+					// window.plugins.toast.show('Wallet loaded', 'long', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 					// document.getElementById("transactionDisplayList").innerHTML = '';
 					// document.getElementById("balance_display").innerHTML = '';
 					// document.getElementById("payment_title").value = '';
@@ -1324,19 +1325,19 @@ this.processResults = function(command, length, payload) {
             });
             this.sendData({
                 signedScripts: signedScripts
-            }, BleApi.TYPE_SIGNATURE_RETURN);        // 						console.log("SignatureComplete:Data:signature_data_complete part SIGNED " + sigIndex + " " + unSignedTransaction);
+            }, BleApi.TYPE_SIGNATURE_RETURN);        // 						$log.debug("SignatureComplete:Data:signature_data_complete part SIGNED " + sigIndex + " " + unSignedTransaction);
     break;
 
     case "71": // message signing return
-    	console.log("########## in case 71 ###########");
-           window.plugins.toast.show('Processing signature', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+    	$log.debug("########## in case 71 ###########");
+           window.plugins.toast.show('Processing signature', 'long', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
         var SignatureMessage = protoDevice.SignatureMessage.decodeHex(payload);
 
         var data_size = (SignatureMessage.signature_data_complete.toString("hex").length)/2;
         var data_size_hex = d2h(data_size);
 
-			console.log("SigMsg signature_data length: " + data_size_hex);
-			console.log("SigMsg signature_data hex: " + SignatureMessage.signature_data_complete.toString("hex"));
+			$log.debug("SigMsg signature_data length: " + data_size_hex);
+			$log.debug("SigMsg signature_data hex: " + SignatureMessage.signature_data_complete.toString("hex"));
 
 				var SigByteArrayHex = Crypto.util.hexToBytes(SignatureMessage.signature_data_complete.toString("hex"));
 
@@ -1354,16 +1355,16 @@ this.processResults = function(command, length, payload) {
     break;
 
     case "82": // bulk return
-    	console.log("########## in case 82 ###########");
+    	$log.debug("########## in case 82 ###########");
         Bulk = protoDevice.Bulk.decodeHex(payload);
 
         var data_size = (Bulk.bulk.toString("hex").length)/2;
         var data_size_hex = d2h(data_size);
 
 				BulkString = Bulk.bulk.toString("hex")
-        // 					console.log("Bulk.bulk raw: " + Bulk.bulk);
-				console.log("Bulk.bulk length: " + data_size_hex);
-        // 					console.log("Bulk.bulk hex: " + BulkString);
+        // 					$log.debug("Bulk.bulk raw: " + Bulk.bulk);
+				$log.debug("Bulk.bulk length: " + data_size_hex);
+        // 					$log.debug("Bulk.bulk hex: " + BulkString);
     break;
 
     default:
@@ -1391,7 +1392,7 @@ this.processResults = function(command, length, payload) {
   			directLoadWallet(results.input1);
   			this.displayStatus('Loading wallet');
 
-  			window.plugins.toast.show('Check your BitLox', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+  			window.plugins.toast.show('Check your BitLox', 'long', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   			document.getElementById("loaded_wallet_name").innerHTML = "<small><i>HIDDEN</i></small>";
 
   		}
@@ -1443,7 +1444,7 @@ this.processResults = function(command, length, payload) {
   // 		alert("You can later set a PIN in the extras menu");
   			this.pinFirstDecline = 1;
   			// Cancel clicked
-          	window.plugins.toast.show('Canceled', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+          	window.plugins.toast.show('Canceled', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   			$("#theBody").removeClass('grell');
   			$('#myTab a[href="#ble_scan"]').tab('show');
   			$("#renameWallet").attr('disabled',true);
@@ -1458,7 +1459,7 @@ this.processResults = function(command, length, payload) {
   			{
   				window.localStorage['PINvalue'] = results.input1;
   				var PINvalue = window.localStorage['PINvalue'];
-  				window.plugins.toast.show('PIN set to: ' + PINvalue, 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+  				window.plugins.toast.show('PIN set to: ' + PINvalue, 'long', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   // 				alert('PIN set to: ' + PINvalue);
   				window.localStorage['PINstatus'] = 'true';
   				var PINstatus = window.localStorage['PINstatus'];
@@ -1468,7 +1469,7 @@ this.processResults = function(command, length, payload) {
   				$("#renameWallet").attr('disabled',true);
   			}else
   			{
-  				window.plugins.toast.show('PINs don\'t match', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+  				window.plugins.toast.show('PINs don\'t match', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   				pausecomp(300);
   				this.setAppPIN();
   			}
@@ -1476,7 +1477,7 @@ this.processResults = function(command, length, payload) {
   		if(results.buttonIndex == 2)
   		{
   			// Cancel clicked
-          	window.plugins.toast.show('Canceled', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+          	window.plugins.toast.show('Canceled', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   			$("#theBody").removeClass('grell');
   			$('#myTab a[href="#ble_scan"]').tab('show');
   			$("#renameWallet").attr('disabled',true);
@@ -1579,15 +1580,15 @@ this.processResults = function(command, length, payload) {
   				value,
   				function()
   				{
-  					window.plugins.toast.show('Device renamed successfully', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+  					window.plugins.toast.show('Device renamed successfully', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
   // 					alert(writeFunc + ': ' + handle + ' success.');
-  					console.log(writeFunc + ': ' + handle + ' success.');
+  					$log.debug(writeFunc + ': ' + handle + ' success.');
   				},
   				function(errorCode)
   				{
   // 					alert(writeFunc + ': ' + handle + ' error: ' + errorCode);
 
-  					console.log(writeFunc + ': ' + handle + ' error: ' + errorCode);
+  					$log.debug(writeFunc + ': ' + handle + ' error: ' + errorCode);
   				});
   		}
   		$('#myTab a[href="#ble_scan"]').tab('show');
@@ -1756,7 +1757,7 @@ this.processResults = function(command, length, payload) {
 
     function fullTrim(message)
     {
-        console.log("in FullTrim");
+        $log.debug("in FullTrim");
         message = message.replace(/^\s+|\s+$/g, '');
         message = message.replace(/^\n+|\n+$/g, '');
         return message;
@@ -1857,8 +1858,8 @@ this.processResults = function(command, length, payload) {
         // some forums break signatures with spaces
         sig = sig.replace(" ","");
       }
-      console.log("in splitSignature address = " + addr);
-      console.log("in splitSignature signature = " + sig);
+      $log.debug("in splitSignature address = " + addr);
+      $log.debug("in splitSignature signature = " + sig);
       return { "address":addr, "signature":sig };
     }
 
@@ -1880,9 +1881,9 @@ this.processResults = function(command, length, payload) {
             if ( p2>p1 )
             {
               var msg = s.substring(p0+hdr[0].length+1, p1-1);
-              console.log("in splitSignedMessage msg = " + msg);
+              $log.debug("in splitSignedMessage msg = " + msg);
               var sig = s.substring(p1+hdr[1].length+1, p2-1);
-              console.log("in splitSignedMessage sig = " + sig);
+              $log.debug("in splitSignedMessage sig = " + sig);
               var m = splitSignature(sig);
               msg = fullTrim(msg); // doesn't work without this
               return { "message":msg, "address":m.address, "signature":m.signature };
@@ -1894,9 +1895,9 @@ this.processResults = function(command, length, payload) {
     }
 
     function vrVerify() {
-    console.log("in vrVerify");
+    $log.debug("in vrVerify");
         var s = $('#vrSig').val();
-    console.log("s: \n" + s);
+    $log.debug("s: \n" + s);
         var p = splitSignedMessage(s);
         var res = verify_message(p.signature, p.message, PUBLIC_KEY_VERSION);
 
@@ -1985,15 +1986,15 @@ this.processResults = function(command, length, payload) {
         var tempTXstring = tempBuffer.toString('hex');
         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-	console.log("tempTXstring = " + tempTXstring);
-// 	console.log("txSize.length = " + txSize.length);
+	$log.debug("tempTXstring = " + tempTXstring);
+// 	$log.debug("txSize.length = " + txSize.length);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-// 	console.log("txSizePadded = " + txSize);
+// 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "000B";
@@ -2001,7 +2002,7 @@ this.processResults = function(command, length, payload) {
 
         var magic = "2323"
         tempTXstring = magic.concat(tempTXstring);
-        console.log("tempTXstring = " + tempTXstring);
+        $log.debug("tempTXstring = " + tempTXstring);
 
         BleApi.app.sliceAndWrite64(tempTXstring);
 	}
@@ -2044,7 +2045,7 @@ this.processResults = function(command, length, payload) {
 			var tempTXstring = tempBuffer.toString('hex');
 			document.getElementById("temp_results").innerHTML = tempTXstring;
 			txSize = d2h((tempTXstring.length) / 2).toString('hex');
-			console.log("tempTXstring = " + tempTXstring);
+			$log.debug("tempTXstring = " + tempTXstring);
 			var j;
 			var txLengthOriginal = txSize.length;
 			for (j = 0; j < (8 - txLengthOriginal); j++) {
@@ -2058,7 +2059,7 @@ this.processResults = function(command, length, payload) {
 
 			var magic = "2323"
 			tempTXstring = magic.concat(tempTXstring);
-			console.log("tempTXstring = " + tempTXstring);
+			$log.debug("tempTXstring = " + tempTXstring);
 			BleApi.app.sliceAndWrite64(tempTXstring);
        }else if(results.buttonIndex == 2){
 			BleApi.displayStatus('OTP canceled');
@@ -2083,16 +2084,16 @@ this.processResults = function(command, length, payload) {
 
 		var bbPIN = new ByteBuffer();
         var parseLength = pin.length
-// 	console.log("utx length = " + parseLength);
+// 	$log.debug("utx length = " + parseLength);
         var i;
         for (i = 0; i < parseLength; i += 2) {
             var value = pin.substring(i, i + 2);
-// 	console.log("value = " + value);
+// 	$log.debug("value = " + value);
             var prefix = "0x";
             var together = prefix.concat(value);
-// 	console.log("together = " + together);
+// 	$log.debug("together = " + together);
             var result = parseInt(together);
-// 	console.log("result = " + result);
+// 	$log.debug("result = " + result);
 
             bbPIN.writeUint8(result);
         }
@@ -2106,15 +2107,15 @@ this.processResults = function(command, length, payload) {
         var tempTXstring = tempBuffer.toString('hex');
         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-	console.log("tempTXstring = " + tempTXstring);
-// 	console.log("txSize.length = " + txSize.length);
+	$log.debug("tempTXstring = " + tempTXstring);
+// 	$log.debug("txSize.length = " + txSize.length);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-// 	console.log("txSizePadded = " + txSize);
+// 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "0054";
@@ -2122,7 +2123,7 @@ this.processResults = function(command, length, payload) {
 
         var magic = "2323"
         tempTXstring = magic.concat(tempTXstring);
-        console.log("tempTXstring = " + tempTXstring);
+        $log.debug("tempTXstring = " + tempTXstring);
 
         BleApi.app.sliceAndWrite64(tempTXstring);
  	}
@@ -2132,7 +2133,7 @@ this.processResults = function(command, length, payload) {
 
 
 	function putAll() {
-	        console.log("In putAll");
+	        $log.debug("In putAll");
         var ProtoBuf = dcodeIO.ProtoBuf;
         var ByteBuffer = dcodeIO.ByteBuffer;
         var builder = ProtoBuf.loadProtoFile("libs/bitlox/messages.proto"),
@@ -2141,16 +2142,16 @@ this.processResults = function(command, length, payload) {
 
 		var bbBulk = new ByteBuffer();
         var parseLength = BulkString.length
-// 	console.log("utx length = " + parseLength);
+// 	$log.debug("utx length = " + parseLength);
         var i;
         for (i = 0; i < parseLength; i += 2) {
             var value = BulkString.substring(i, i + 2);
-// 	console.log("value = " + value);
+// 	$log.debug("value = " + value);
             var prefix = "0x";
             var together = prefix.concat(value);
-// 	console.log("together = " + together);
+// 	$log.debug("together = " + together);
             var result = parseInt(together);
-// 	console.log("result = " + result);
+// 	$log.debug("result = " + result);
 
             bbBulk.writeUint8(result);
         }
@@ -2165,15 +2166,15 @@ this.processResults = function(command, length, payload) {
         var tempTXstring = tempBuffer.toString('hex');
         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-// 	console.log("tempTXstring = " + tempTXstring);
-	console.log("txSize = " + txSize);
+// 	$log.debug("tempTXstring = " + tempTXstring);
+	$log.debug("txSize = " + txSize);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-// 	console.log("txSizePadded = " + txSize);
+// 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "0083";
@@ -2181,7 +2182,7 @@ this.processResults = function(command, length, payload) {
 
         var magic = "2323"
         tempTXstring = magic.concat(tempTXstring);
-//         console.log("tempTXstring = " + tempTXstring);
+//         $log.debug("tempTXstring = " + tempTXstring);
 
         BleApi.app.sliceAndWrite64(tempTXstring);
 
@@ -2229,19 +2230,19 @@ this.processResults = function(command, length, payload) {
 		var passwordString = '1';
 		if (passwordString != ''){
 			var password = Crypto.util.bytesToHex(Crypto.charenc.UTF8.stringToBytes(passwordString));
-			console.log("pass: " + password);
+			$log.debug("pass: " + password);
 			var bbPass = new ByteBuffer();
 			var parseLength = password.length
-	// 	console.log("utx length = " + parseLength);
+	// 	$log.debug("utx length = " + parseLength);
 			var i;
 			for (i = 0; i < parseLength; i += 2) {
 				var value = password.substring(i, i + 2);
-	// 	console.log("value = " + value);
+	// 	$log.debug("value = " + value);
 				var prefix = "0x";
 				var together = prefix.concat(value);
-	// 	console.log("together = " + together);
+	// 	$log.debug("together = " + together);
 				var result = parseInt(together);
-	// 	console.log("result = " + result);
+	// 	$log.debug("result = " + result);
 
 				bbPass.writeUint8(result);
 			}
@@ -2252,23 +2253,23 @@ this.processResults = function(command, length, payload) {
 
 // NAME
         var nameToUse = document.getElementById('new_wallet_name').value;
-        console.log("name: " + nameToUse);
+        $log.debug("name: " + nameToUse);
 
         var nameToUseHexed = toHexPadded40bytes(nameToUse);
-        console.log("namehexed: " + nameToUseHexed);
+        $log.debug("namehexed: " + nameToUseHexed);
 
 		var bbName = new ByteBuffer();
         var parseLength = nameToUseHexed.length
-// 	console.log("utx length = " + parseLength);
+// 	$log.debug("utx length = " + parseLength);
         var i;
         for (i = 0; i < parseLength; i += 2) {
             var value = nameToUseHexed.substring(i, i + 2);
-// 	console.log("value = " + value);
+// 	$log.debug("value = " + value);
             var prefix = "0x";
             var together = prefix.concat(value);
-// 	console.log("together = " + together);
+// 	$log.debug("together = " + together);
             var result = parseInt(together);
-// 	console.log("result = " + result);
+// 	$log.debug("result = " + result);
 
             bbName.writeUint8(result);
         }
@@ -2293,19 +2294,19 @@ this.processResults = function(command, length, payload) {
 		var restoreSeed = document.getElementById('restore_wallet_input').value;
 
 		var sizeOfSeed =  restoreSeed.length;
-        console.log("sizeOfSeed = " + sizeOfSeed);
+        $log.debug("sizeOfSeed = " + sizeOfSeed);
 
         var bb = ByteBuffer.allocate((sizeOfSeed/2)+64);
 
         var i;
         for (i = 0; i < sizeOfSeed; i += 2) {
             var value = restoreSeed.substring(i, i + 2);
-            // 		console.log("value = " + value);
+            // 		$log.debug("value = " + value);
             var prefix = "0x";
             var together = prefix.concat(value);
-            // 		console.log("together = " + together);
+            // 		$log.debug("together = " + together);
             var result = parseInt(together);
-            // 		console.log("result = " + result);
+            // 		$log.debug("result = " + result);
 
             bb.writeUint8(result);
         }
@@ -2321,15 +2322,15 @@ this.processResults = function(command, length, payload) {
         var tempTXstring = tempBuffer.toString('hex');
         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-	console.log("tempTXstring = " + tempTXstring);
-// 	console.log("txSize.length = " + txSize.length);
+	$log.debug("tempTXstring = " + tempTXstring);
+// 	$log.debug("txSize.length = " + txSize.length);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-// 	console.log("txSizePadded = " + txSize);
+// 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "0012";
@@ -2337,7 +2338,7 @@ this.processResults = function(command, length, payload) {
 
         var magic = "2323"
         tempTXstring = magic.concat(tempTXstring);
-        console.log("tempTXstring = " + tempTXstring);
+        $log.debug("tempTXstring = " + tempTXstring);
 
         BleApi.app.sliceAndWrite64(tempTXstring);
 
@@ -2367,11 +2368,11 @@ this.processResults = function(command, length, payload) {
 		if(results.buttonIndex == 1)
 		{
 			BleApi.displayStatus('Creating wallet');
-			window.plugins.toast.show('Check your BitLox', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+			window.plugins.toast.show('Check your BitLox', 'long', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 			constructNewWallet(results.input1);
 		}else if(results.buttonIndex == 2)
 		{
-			window.plugins.toast.show('Canceled', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+			window.plugins.toast.show('Canceled', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 		}
 	}
 
@@ -2409,19 +2410,19 @@ this.processResults = function(command, length, payload) {
 		var passwordString = '1';
 		if (passwordString != ''){
 			var password = Crypto.util.bytesToHex(Crypto.charenc.UTF8.stringToBytes(passwordString));
-			console.log("pass: " + password);
+			$log.debug("pass: " + password);
 			var bbPass = new ByteBuffer();
 			var parseLength = password.length
-	// 	console.log("utx length = " + parseLength);
+	// 	$log.debug("utx length = " + parseLength);
 			var i;
 			for (i = 0; i < parseLength; i += 2) {
 				var value = password.substring(i, i + 2);
-	// 	console.log("value = " + value);
+	// 	$log.debug("value = " + value);
 				var prefix = "0x";
 				var together = prefix.concat(value);
-	// 	console.log("together = " + together);
+	// 	$log.debug("together = " + together);
 				var result = parseInt(together);
-	// 	console.log("result = " + result);
+	// 	$log.debug("result = " + result);
 
 				bbPass.writeUint8(result);
 			}
@@ -2432,23 +2433,23 @@ this.processResults = function(command, length, payload) {
 
 // NAME
         var nameToUse = 'Restored wallet';
-        console.log("name: " + nameToUse);
+        $log.debug("name: " + nameToUse);
 
         var nameToUseHexed = toHexPadded40bytes(nameToUse);
-        console.log("namehexed: " + nameToUseHexed);
+        $log.debug("namehexed: " + nameToUseHexed);
 
 		var bbName = new ByteBuffer();
         var parseLength = nameToUseHexed.length
-// 	console.log("utx length = " + parseLength);
+// 	$log.debug("utx length = " + parseLength);
         var i;
         for (i = 0; i < parseLength; i += 2) {
             var value = nameToUseHexed.substring(i, i + 2);
-// 	console.log("value = " + value);
+// 	$log.debug("value = " + value);
             var prefix = "0x";
             var together = prefix.concat(value);
-// 	console.log("together = " + together);
+// 	$log.debug("together = " + together);
             var result = parseInt(together);
-// 	console.log("result = " + result);
+// 	$log.debug("result = " + result);
 
             bbName.writeUint8(result);
         }
@@ -2474,15 +2475,15 @@ this.processResults = function(command, length, payload) {
         var tempTXstring = tempBuffer.toString('hex');
         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-	console.log("tempTXstring = " + tempTXstring);
-// 	console.log("txSize.length = " + txSize.length);
+	$log.debug("tempTXstring = " + tempTXstring);
+// 	$log.debug("txSize.length = " + txSize.length);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-// 	console.log("txSizePadded = " + txSize);
+// 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "0018";
@@ -2490,7 +2491,7 @@ this.processResults = function(command, length, payload) {
 
         var magic = "2323"
         tempTXstring = magic.concat(tempTXstring);
-        console.log("tempTXstring = " + tempTXstring);
+        $log.debug("tempTXstring = " + tempTXstring);
 
         BleApi.app.sliceAndWrite64(tempTXstring);
     }
@@ -2507,7 +2508,7 @@ this.processResults = function(command, length, payload) {
 			BleApi.app.writeDeviceName(nameArray);
 		}else if(resultsRename.buttonIndex == 2)
 		{
-			window.plugins.toast.show('Canceled', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+			window.plugins.toast.show('Canceled', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 			$('#renameDeviceButton').attr('disabled',false);
 		}
 	}
@@ -2522,11 +2523,11 @@ this.processResults = function(command, length, payload) {
 	function onPromptRename(resultsRename) {
 		if(resultsRename.buttonIndex == 1)
 		{
-			window.plugins.toast.show('Check your BitLox', 'long', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+			window.plugins.toast.show('Check your BitLox', 'long', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 			constructRenameWallet(resultsRename.input1)
 		}else if(resultsRename.buttonIndex == 2)
 		{
-			window.plugins.toast.show('Canceled', 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+			window.plugins.toast.show('Canceled', 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 		}
 	}
 
@@ -2539,23 +2540,23 @@ this.processResults = function(command, length, payload) {
             Device = builder.build();
 
 //         var nameToUse = document.getElementById('rename_wallet_input').value;
-        console.log("name: " + nameToUse);
+        $log.debug("name: " + nameToUse);
 
         var nameToUseHexed = toHexPadded40bytes(nameToUse);
-        console.log("namehexed: " + nameToUseHexed);
+        $log.debug("namehexed: " + nameToUseHexed);
 
 		var bb = new ByteBuffer();
         var parseLength = nameToUseHexed.length
-// 	console.log("utx length = " + parseLength);
+// 	$log.debug("utx length = " + parseLength);
         var i;
         for (i = 0; i < parseLength; i += 2) {
             var value = nameToUseHexed.substring(i, i + 2);
-// 	console.log("value = " + value);
+// 	$log.debug("value = " + value);
             var prefix = "0x";
             var together = prefix.concat(value);
-// 	console.log("together = " + together);
+// 	$log.debug("together = " + together);
             var result = parseInt(together);
-// 	console.log("result = " + result);
+// 	$log.debug("result = " + result);
 
             bb.writeUint8(result);
         }
@@ -2571,15 +2572,15 @@ this.processResults = function(command, length, payload) {
         var tempTXstring = tempBuffer.toString('hex');
         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-	console.log("tempTXstring = " + tempTXstring);
-// 	console.log("txSize.length = " + txSize.length);
+	$log.debug("tempTXstring = " + tempTXstring);
+// 	$log.debug("txSize.length = " + txSize.length);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-// 	console.log("txSizePadded = " + txSize);
+// 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "000F";
@@ -2587,7 +2588,7 @@ this.processResults = function(command, length, payload) {
 
         var magic = "2323"
         tempTXstring = magic.concat(tempTXstring);
-        console.log("tempTXstring = " + tempTXstring);
+        $log.debug("tempTXstring = " + tempTXstring);
 
         BleApi.app.sliceAndWrite64(tempTXstring);
 
@@ -2600,7 +2601,7 @@ this.processResults = function(command, length, payload) {
 ////////////////////////////
 
 	function signMessageWithDevice() {
-		console.log("in signMessageWithDevice ########@@@@@@@@@@@@@@");
+		$log.debug("in signMessageWithDevice ########@@@@@@@@@@@@@@");
         var ProtoBuf = dcodeIO.ProtoBuf;
         var ByteBuffer = dcodeIO.ByteBuffer;
         var builder = ProtoBuf.loadProtoFile("libs/bitlox/messages.proto"),
@@ -2612,10 +2613,10 @@ this.processResults = function(command, length, payload) {
 	    document.getElementById("sgMsgHidden").value = message_string;
 
 		var message_concat_bytes = msg_bytes("Bitcoin Signed Message:\n").concat(msg_bytes(message_string));
-		console.log("2b hashed msg bytes: " + message_concat_bytes);
+		$log.debug("2b hashed msg bytes: " + message_concat_bytes);
 
 		var message_concat_hex = Crypto.util.bytesToHex(message_concat_bytes);
-		console.log("2b hashed msg hex: " +  message_concat_hex);
+		$log.debug("2b hashed msg hex: " +  message_concat_hex);
 
 
 
@@ -2623,22 +2624,22 @@ this.processResults = function(command, length, payload) {
 		address_handle_chain = Number(document.getElementById("sgChain").value);
 		address_handle_index = Number(document.getElementById("sgIndex").value);
 
-console.log("address_handle_root " + address_handle_root);
-console.log("address_handle_chain " + address_handle_chain);
-console.log("address_handle_index " + address_handle_index);
+$log.debug("address_handle_root " + address_handle_root);
+$log.debug("address_handle_chain " + address_handle_chain);
+$log.debug("address_handle_index " + address_handle_index);
 
 		var bb = new ByteBuffer();
         var parseLength = message_concat_hex.length
-// 	console.log("utx length = " + parseLength);
+// 	$log.debug("utx length = " + parseLength);
         var i;
         for (i = 0; i < parseLength; i += 2) {
             var value = message_concat_hex.substring(i, i + 2);
-// 	console.log("value = " + value);
+// 	$log.debug("value = " + value);
             var prefix = "0x";
             var together = prefix.concat(value);
-// 	console.log("together = " + together);
+// 	$log.debug("together = " + together);
             var result = parseInt(together);
-// 	console.log("result = " + result);
+// 	$log.debug("result = " + result);
 
             bb.writeUint8(result);
         }
@@ -2659,15 +2660,15 @@ console.log("address_handle_index " + address_handle_index);
         var tempTXstring = tempBuffer.toString('hex');
         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-// 	console.log("txSize = " + txSize);
-// 	console.log("txSize.length = " + txSize.length);
+// 	$log.debug("txSize = " + txSize);
+// 	$log.debug("txSize.length = " + txSize.length);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-// 	console.log("txSizePadded = " + txSize);
+// 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "0070";
@@ -2675,7 +2676,7 @@ console.log("address_handle_index " + address_handle_index);
 
         var magic = "2323"
         tempTXstring = magic.concat(tempTXstring);
-        console.log("tempTXstring = " + tempTXstring);
+        $log.debug("tempTXstring = " + tempTXstring);
 
         BleApi.app.sliceAndWrite64(tempTXstring);
 
@@ -2706,15 +2707,15 @@ console.log("address_handle_index " + address_handle_index);
         var tempTXstring = tempBuffer.toString('hex');
 //         document.getElementById("temp_results").innerHTML = tempTXstring;
         txSize = d2h((tempTXstring.length) / 2).toString('hex');
-        // 	console.log("txSize = " + txSize);
-        // 	console.log("txSize.length = " + txSize.length);
+        // 	$log.debug("txSize = " + txSize);
+        // 	$log.debug("txSize.length = " + txSize.length);
         var j;
         var txLengthOriginal = txSize.length;
         for (j = 0; j < (8 - txLengthOriginal); j++) {
             var prefix = "0";
             txSize = prefix.concat(txSize);
         }
-        // 	console.log("txSizePadded = " + txSize);
+        // 	$log.debug("txSizePadded = " + txSize);
         tempTXstring = txSize.concat(tempTXstring);
 
         var command = "0066";
@@ -2731,7 +2732,7 @@ console.log("address_handle_index " + address_handle_index);
 
     var sendTransactionForSigning = function() {
         var preppedForDevice = document.getElementById("device_signed_transaction").value;
-        // 	console.log("send to device = " + preppedForDevice);
+        // 	$log.debug("send to device = " + preppedForDevice);
         BleApi.app.sliceAndWrite64(preppedForDevice);
     }
 
@@ -2766,17 +2767,17 @@ console.log("address_handle_index " + address_handle_index);
 
         var doubleSHA = Crypto.SHA256(Crypto.util.hexToBytes(Crypto.SHA256(hashAndBytes)))
         var addressChecksum = doubleSHA.substr(0, 8)
-            // 		console.log(addressChecksum) //26268187
+            // 		$log.debug(addressChecksum) //26268187
 
         var unencodedAddress = "00" + hash160 + addressChecksum
 
-        // 		console.log(unencodedAddress)
+        // 		$log.debug(unencodedAddress)
         /* output
 		  003c176e659bea0f29a3e9bf7880c112b1b31b4dc826268187
 		*/
 
         var address = Bitcoin.Base58.encode(Crypto.util.hexToBytes(unencodedAddress))
-            // 		console.log("Address58 " + address) //16UjcYNBG9GTK4uq2f7yYEbuifqCzoLMGS
+            // 		$log.debug("Address58 " + address) //16UjcYNBG9GTK4uq2f7yYEbuifqCzoLMGS
         return address;
     }
 
@@ -3024,7 +3025,7 @@ console.log("address_handle_index " + address_handle_index);
     var noUpdate = function(addr) {
         return function(jqXHR, textStatus, errorThrown) {
             if (jqXHR.status != 500) {
-                console.log(errorThrown);
+                $log.debug(errorThrown);
             } else {
                 $("#" + addr).children(".balance").text(0);
                 $("#" + addr).children(".pending").text(0);
@@ -3035,9 +3036,9 @@ console.log("address_handle_index " + address_handle_index);
 
     var gotUnspent = function(chain, index, addr) {
         return function(data, textStatus, jqXHR) {
-        	console.log("chain " + chain);
-        	console.log("index " + index);
-        	console.log("addr " + addr);
+        	$log.debug("chain " + chain);
+        	$log.debug("index " + index);
+        	$log.debug("addr " + addr);
 //         	alert("addr " + addr);
 			if(chain === "receive"){
 				chain_numerical = 0;
@@ -3091,7 +3092,7 @@ console.log("address_handle_index " + address_handle_index);
     var gotUnspentError = function(chain, index, addr) {
         return function(jqXHR, textStatus, errorThrown) {
             if (jqXHR.status != 500) {
-                console.log(errorThrown);
+                $log.debug(errorThrown);
             } else {
                 $("#" + addr).children(".balance").text(0);
             }
@@ -3100,7 +3101,7 @@ console.log("address_handle_index " + address_handle_index);
 
     var checkReceived = function(chain, index, addr, callback) {
         return function(data, textStatus, jqXHR) {
-        	console.log('check if EVER received funds on '+chain+' : '  + data);
+        	$log.debug('check if EVER received funds on '+chain+' : '  + data);
         	BleApi.displayStatus('Checking balances');
             if (parseInt(data) > 0) {
                 var newlast = Math.max(index + GAP + 1, lastone[chain]);
@@ -3233,8 +3234,8 @@ console.log("address_handle_index " + address_handle_index);
     try {
         key = new BIP32(source_key);
     } catch (e) {
-        console.log(source_key);
-        console.log("Incorrect key?");
+        $log.debug(source_key);
+        $log.debug("Incorrect key?");
     }
     if (key) {
         switch (key.version) {
@@ -3260,18 +3261,18 @@ console.log("address_handle_index " + address_handle_index);
                 break;
             default:
                 key = null;
-                console.log("Unknown key version");
+                $log.debug("Unknown key version");
         }
         Bitcoin.setNetwork(network);
     }
     // $("#bip32_key_info_title").text(keylabel);
     // $("#network_label").text(networklabel);
 
-    console.log("key depth: " + key.depth);
-    //         window.plugins.toast.show("key depth: " + key.depth, 'short', 'center', function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
+    $log.debug("key depth: " + key.depth);
+    //         window.plugins.toast.show("key depth: " + key.depth, 'short', 'center', function(a){$log.debug('toast success: ' + a)}, function(b){alert('toast error: ' + b)});
 
     if (key.depth != 1) {
-        console.error("Non-standard key depth: should be 1, and it is " + key.depth + ", are you sure you want to use that?");
+        $log.error("Non-standard key depth: should be 1, and it is " + key.depth + ", are you sure you want to use that?");
     }
 
 		addressListForMessages.length = 0;
@@ -3292,7 +3293,7 @@ console.log("address_handle_index " + address_handle_index);
   var onUpdateSourceKey = function() {
       var source_key = $("#bip32_source_key").val();
       useNewKey(source_key);
-      //         console.log('balances done');
+      //         $log.debug('balances done');
       //      BleApi.displayStatus('Balances updated');
   };
 
