@@ -23,12 +23,12 @@
         <span ng-show="tx.type == 'sell'">Sold</span>
       </div>
       <div ng-show="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
-        <span ng-show="tx.to">Receiving purchased bitcoin</span>
-        <span ng-show="tx.from">Sending bitcoin to sell</span>
+        <span ng-show="tx.to">Receiving purchased Navcoin</span>
+        <span ng-show="tx.from">Sending Navcoin to sell</span>
       </div>
       <div ng-show="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
-        <span ng-show="tx.type == 'buy'">Buying bitcoin</span>
-        <span ng-show="tx.type == 'sell'">Selling bitcoin</span>
+        <span ng-show="tx.type == 'buy'">Buying Navcoin</span>
+        <span ng-show="tx.type == 'sell'">Selling Navcoin</span>
       </div>
       <div class="size-24 text-bold">
         <span ng-if="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
@@ -75,8 +75,8 @@
       </li>
 
       <li ng-show="tx.description" class="item">
-        <span ng-show="tx.from && tx.type == 'send'">Sent bitcoin from</span>
-        <span ng-show="tx.to && tx.type == 'send'">Receive bitcoin in</span>
+        <span ng-show="tx.from && tx.type == 'send'">Sent Navcoin from</span>
+        <span ng-show="tx.to && tx.type == 'send'">Receive Navcoin in</span>
         <span class="item-note">{{tx.description}}</span>
       </li>
       <div ng-show="tx.status == 'error'" class="item item-divider"></div>

@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>Sell bitcoin</ion-nav-title>
+    <ion-nav-title>Sell Navcoin</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="add-bottom-for-cta">
@@ -11,15 +11,15 @@
 
       <div class="item head">
         <div class="sending-label">
-          <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="35" class="item-img-sell">
+          <img src="img/sell-bitcoin.svg" alt="sell Navcoin" width="35" class="item-img-sell">
           <span>Selling</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative">
             <span ng-show="!isFiat">{{sellInfo.subtotal}} {{sellInfo.currency}}</span>
-            <span ng-show="isFiat">{{sellInfo.qty}} BTC</span>
-            @ ${{sellInfo.price}} per BTC
+            <span ng-show="isFiat">{{sellInfo.qty}} NAV</span>
+            @ ${{sellInfo.price}} per NAV
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
     slide-success-hide-on-confirm="true">
     <span>Funds sent to Glidera Account</span>
     <div class="m10 size-14">
-      The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be
+      The transaction is not yet confirmed, and will show as "Pending" in your Activity. The Navcoin sale will be
       completed automatically once it is confirmed by Glidera.
     </div>
   </slide-to-accept-success>

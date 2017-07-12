@@ -22,7 +22,7 @@
           <div class="amount-final">{{amountUnitStr}}</div>
           <div class="alternative" ng-show="amountUnitStr">
             <span ng-if="rate">@
-              {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per BTC</span>
+              {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per NAV</span>
             <span ng-if="!rate">...</span>
           </div>
         </div>

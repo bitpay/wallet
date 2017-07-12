@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>Buy bitcoin</ion-nav-title>
+    <ion-nav-title>Buy Navcoin</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="add-bottom-for-cta">
@@ -11,15 +11,15 @@
 
       <div class="item head">
         <div class="sending-label">
-          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35" class="item-img-buy">
+          <img src="img/buy-bitcoin.svg" alt="buy Navcoin " width="35" class="item-img-buy">
           <span>Buying</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative">
             <span ng-show="!isFiat">{{buyInfo.subtotal}} {{buyInfo.currency}}</span>
-            <span ng-show="isFiat">{{buyInfo.qty}} BTC</span>
-            @ ${{buyInfo.price}} per BTC
+            <span ng-show="isFiat">{{buyInfo.qty}} NAV</span>
+            @ ${{buyInfo.price}} per NAV
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
     slide-success-hide-on-confirm="true">
     <span>Bought</span>
     <div class="m10 size-14">
-      A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day
+      A transfer has been initiated from your bank account. Your Navcoin s should arrive to your wallet in 2-4 business day
     </div>
   </slide-to-accept-success>
 

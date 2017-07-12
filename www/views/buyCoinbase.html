@@ -2,7 +2,7 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>Buy bitcoin</ion-nav-title>
+    <ion-nav-title>Buy Navcoin</ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="add-bottom-for-cta">
@@ -11,14 +11,14 @@
 
       <div class="item head">
         <div class="sending-label">
-          <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="35" class="item-img-buy">
+          <img src="img/buy-bitcoin.svg" alt="buy Navcoin" width="35" class="item-img-buy">
           <span>Buying</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
           <div class="alternative" ng-if="buyPrice">
             <span ng-show="isFiat">{{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}</span>
-            @ ${{buyPrice.amount}} per BTC
+            @ ${{buyPrice.amount}} per NAV
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
     slide-success-hide-on-confirm="true">
     <span>Bought</span>
     <div class="m10 size-14">
-      Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet
+      Navcoin purchase completed. Coinbase has queued the transfer to your selected wallet
     </div>
   </slide-to-accept-success>
 

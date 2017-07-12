@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       $scope.address = addr;
     
       var parsedAmount = txFormatService.parseAmount(
-        data.stateParams.amount, 
+        data.stateParams.amount,
         data.stateParams.currency);
 
       // Amount in USD or BTC
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       var currency = parsedAmount.currency;
       $scope.amountUnitStr = parsedAmount.amountUnitStr;
 
-      if (currency != 'BTC') {
+      if (currency != 'NAV') {
         // Convert to BTC
         var config = configService.getSync().wallet.settings;
         var amountUnit = txFormatService.satToUnit(parsedAmount.amountSat);
@@ -61,12 +61,12 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
   $scope.shareAddress = function() {
     if (!platformInfo.isCordova) return;
-    var data = 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    var data = 'Navcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
     window.plugins.socialsharing.share(data, null, null, null);
   }
 
   $scope.copyToClipboard = function() {
-    return 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    return 'Navcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
   };
 
 });

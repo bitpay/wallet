@@ -17,7 +17,7 @@
         </div>
         <span ng-show="tx.type == 'BUY'">Bought</span>
         <span ng-show="tx.type == 'SELL'">Sold</span>
-        <b>{{tx.qty}}</b> BTC
+        <b>{{tx.qty}}</b> NAV
         <div class="size-36 m20v">
           {{tx.subtotal|currency:'':2}} {{tx.currency}}
         </div>
@@ -41,7 +41,7 @@
 
         <li ng-show="tx.price" class="item">
           Exchange rate
-          <span class="item-note">{{tx.price|currency:'':2}} {{tx.currency}}/BTC</span>
+          <span class="item-note">{{tx.price|currency:'':2}} {{tx.currency}}/NAV</span>
         </li>
 
         <li ng-show="tx.subtotal" class="item">

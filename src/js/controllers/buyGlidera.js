@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
+    $scope.isFiat = data.stateParams.currency != 'μNAV' && data.stateParams.currency != 'NAV' ? true : false;
     var parsedAmount = txFormatService.parseAmount(
       data.stateParams.amount, 
       data.stateParams.currency);
@@ -112,7 +112,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
   };
 
   $scope.buyConfirm = function() {
-    var message = 'Buy bitcoin for ' + amount + ' ' + currency;
+    var message = 'Buy Navcoin for ' + amount + ' ' + currency;
     var okText = 'Confirm';
     var cancelText = 'Cancel';
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {
