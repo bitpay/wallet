@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, $timeout, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog) {
+angular.module('copayApp.services').factory('feeService', function($log, $timeout, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog, CUSTOMNETWORKS) {
+
   var root = {};
 
   var CACHE_TIME_TS = 60; // 1 min
@@ -53,8 +54,9 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     });
   };
 
+<<<<<<< HEAD
   root.getCurrentFeeRate = function(network, cb) {
-    return root.getFeeRate(network, root.getCurrentFeeLevel(), cb);
+    return root.getFeeRatenetwork, root.getCurrentFeeLevel(), cb);
   };
 
   root.getFeeLevels = function(cb) {
@@ -63,7 +65,9 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       return cb(null, cache.data, true);
     }
 
-    var walletClient = bwcService.getClient();
+    network = network || 'livenet';
+    var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
+
     var unitName = configService.getSync().wallet.settings.unitName;
 
     walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
