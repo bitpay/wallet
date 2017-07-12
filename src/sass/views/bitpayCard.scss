@@ -154,11 +154,13 @@
   }
   .tx-message {
     margin-right: 1rem;
+    text-transform: capitalize;
   }
   .tx-location {
     margin-right: 1rem;
     font-size: 12.5px;
     color: $v-light-gray;
+    text-transform: capitalize;
   }
   .tx-amount {
     font-size: 16px;
