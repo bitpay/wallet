@@ -10,9 +10,9 @@
     </ion-nav-title>
     <ion-nav-buttons side="secondary">
       <button class="button-share ng-hide" ng-show="showShareButton" ng-click="shareAddress()">
-        <i class="icon" 
+        <i class="icon"
           ng-class="{
-          'ion-ios-upload-outline': showShareButton == 'iOS', 
+          'ion-ios-upload-outline': showShareButton == 'iOS',
           'ion-android-share-alt': showShareButton != 'iOS'
           }"></i>
       </button>
@@ -23,7 +23,7 @@
       <div class="qr-code" copy-to-clipboard="copyToClipboard()">
         <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
       </div>
-      <div class="info"> 
+      <div class="info">
         <div class="item single-line" copy-to-clipboard="address">
           <span class="label" translate>Address</span>
           <span class="item-note ellipsis">
@@ -43,7 +43,7 @@
             </i>
             {{wallet.name}}
           </div>
-          <div class="label">Receive in</div>
+          <div class="label" translate>Receive in</div>
         </div>
       </div>
     </div>
