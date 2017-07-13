@@ -9,36 +9,129 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     return error;
   };
 
-  var _processTransactions = function(invoices, history) {
-    invoices = invoices ||  [];
-    for (var i = 0; i < invoices.length; i++) {
-      var matched = false;
-      for (var j = 0; j < history.length; j++) {
-        if (history[j].description[0] && history[j].description[0].indexOf(invoices[i].id) > -1) {
-          matched = true;
-        }
+  var _buildDate = function(date, time) {
+    date = date.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    time = time.match(/(\d{2})(\d{2})(\d{2})/);
+    var newDate = new Date(date[1] + '/' + date[2] + '/' + date[3]);
+    newDate.setHours(time[1], time[2], time[3]);
+    return newDate;
+  };
+
+  var _lowercaseMerchant = function(merchant) {
+    if (merchant.name && merchant.name.toLowerCase) {
+      merchant.name = merchant.name.toLowerCase();
+    }
+    if (merchant.city && merchant.city.toLowerCase) {
+      merchant.city = merchant.city.toLowerCase();
+    }
+
+    return merchant;
+  };
+
+  var _getMerchantInfo = function(tx) {
+    var bpTranCodes = root.bpTranCodes;
+    lodash.keys(bpTranCodes).forEach(function(code) {
+      if (tx.type.indexOf(code) === 0) {
+        lodash.assign(tx, bpTranCodes[code]);
       }
-      var isInvoiceLessThanOneDayOld = moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
-      if (!matched && isInvoiceLessThanOneDayOld) {
-        var isInvoiceUnderpaid = invoices[i].exceptionStatus === 'paidPartial';
+    });
+    return tx;
+  };
 
-        if (['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >= 0 ||
-          (invoices[i].status === 'invalid' || isInvoiceUnderpaid)) {
+  var _fromTransaction = function(txn, runningBalance) {
+    var dateTime = _buildDate(txn.date, txn.time);
+    var merchant = _lowercaseMerchant(txn.merchant);
+    return _getMerchantInfo({
+      date: txn.timestamp || dateTime,
+      category: txn.mcc,
+      merchant: merchant,
+      description: txn.description[0],
+      price: parseFloat(txn.amount) + parseFloat(txn.fee),
+      type: txn.type,
+      runningBalance: runningBalance
+    });
+  };
 
-          history.unshift({
-            timestamp: new Date(invoices[i].invoiceTime),
-            description: invoices[i].itemDesc,
-            amount: invoices[i].price,
-            type: '00611 = Client Funded Deposit',
-            pending: true,
-            status: invoices[i].status,
-            transactionId: invoices[i].transactions && invoices[i].transactions[0] ? invoices[i].transactions[0].txid : '',
-            exceptionStatus: invoices[i].exceptionStatus
-          });
+  var _processTransactions = function(invoices, history) {
+
+    var balance = history.endingBalance || history.currentCardBalance;
+    var runningBalance = parseFloat(balance);
+    var activityList = [];
+
+    if(history && history.transactionList){
+      for (var j = 0; j < history.transactionList.length; j++) {
+        runningBalance -= parseFloat(history.transactionList[j].amount);
+        activityList.push(_fromTransaction(history.transactionList[j], runningBalance));
+      }
+    }
+
+    if (activityList.length > 0) {
+
+      invoices = invoices ||  [];
+      for (var i = 0; i < invoices.length; i++) {
+        var matched = false;
+        for (var j = 0; j < history.transactionList.length; j++) {
+          var description = history.transactionList[j].description;
+          for (var k = 0; k < description.length; k++) {
+            if (description[k] && description[k].indexOf(invoices[i].id) > -1) {
+              matched = true;
+            }
+          }
+        }
+
+        var isInvoiceLessThanOneDayOld = moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
+
+        if (!matched && isInvoiceLessThanOneDayOld) {
+          var isInvoiceUnderpaid = invoices[i].exceptionStatus === 'paidPartial';
+
+          if (['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >= 0 ||
+            (invoices[i].status === 'invalid' || isInvoiceUnderpaid)) {
+
+            activityList.unshift(_getMerchantInfo({
+              date: new Date(invoices[i].invoiceTime),
+              category: '',
+              merchant: '',
+              description: invoices[i].itemDesc,
+              price: invoices[i].price,
+              type: '00611 = Client Funded Deposit',
+              runningBalance: null,
+              pending: true,
+              transactionId: invoices[i].transactions && invoices[i].transactions[0] ? invoices[i].transactions[0].txid : ''
+            }));
+          }
         }
       }
     }
-    return history;
+    return activityList;
+  };
+
+  root.filterTransactions = function(type, txns) {
+    var list,
+      getPreAuth = lodash.filter(txns, function(txn) {
+        return txn.type.indexOf('93') > -1;
+      }),
+      getPending = lodash.filter(txns, function(txn) {
+        return txn.pending;
+      }),
+      getCompleted = lodash.filter(txns, function(txn) {
+        return !txn.pending && txn.type.indexOf('93') == -1;
+      });
+
+    switch (type) {
+      case "preAuth":
+        list = lodash.filter(getPreAuth);
+        break;
+      case "confirming":
+        list = lodash.filter(getPending);
+        break;
+      case "completed":
+        list = lodash.filter(getCompleted);
+        break;
+      default:
+        // code...
+        break;
+    }
+    return list;
   };
 
   root.sync = function(apiContext, cb) {
@@ -91,12 +184,11 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
 
   // opts: range
   root.getHistory = function(cardId, opts, cb) {
-    var invoices, transactions;
+    var invoices, history;
     opts = opts || {};
 
     var json = {
-      method: 'getInvoiceHistory',
-      params: JSON.stringify(opts)
+      method: 'getInvoiceHistory'
     };
 
     appIdentityService.getIdentity(bitpayService.getEnvironment().network, function(err, appIdentity) {
@@ -123,17 +215,17 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
             method: 'getTransactionHistory',
             params: JSON.stringify(opts)
           };
-          // Get transactions list
+          // Get transactions History list
           bitpayService.post('/api/v2/' + card.token, json, function(data) {
-            $log.info('BitPay Get Transactions: SUCCESS');
-            transactions = data.data.data || {};
-            transactions['txs'] = _processTransactions(invoices, transactions.transactionList);
+            $log.info('BitPay Get History: SUCCESS');
+            history = data.data.data || {};
+            history['txs'] = _processTransactions(invoices, history);
 
-            root.setLastKnownBalance(cardId, transactions.currentCardBalance, function() {});
+            root.setLastKnownBalance(cardId, history.currentCardBalance, function() {});
 
-            return cb(data.data.error, transactions);
+            return cb(data.data.error, history);
           }, function(data) {
-            return cb(_setError('BitPay Card Error: Get Transactions', data));
+            return cb(_setError('BitPay Card Error: Get History', data));
           });
         }, function(data) {
           return cb(_setError('BitPay Card Error: Get Invoices', data));
@@ -338,7 +430,22 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
       category: 'bp002',
       description: ''
     },
-    '9991': { // General assignment of a fee for WC card
+    'load': {
+      merchant: {
+        name: 'BitPay',
+        city: 'Atlanta',
+        state: 'GA'
+      },
+      category: 'bp001',
+      description: 'Top-Up'
+    },
+    'unload | pos': {
+      description: 'Purchase'
+    },
+    'unload | epos': {
+      description: 'Online Purchase'
+    },
+    'transactionfee': {
       merchant: {
         name: 'Transaction Fee',
       },

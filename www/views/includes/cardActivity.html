@@ -8,7 +8,9 @@
     <div class="tx-title">
       <div class="ellipsis">
         <div class="tx-message ellipsis">{{tx.merchant.name || 'Unknown Merchant'}}</div>
-        <div class="tx-location ellipsis" ng-show="tx.merchant.city && tx.merchant.state">{{tx.merchant.location}}</div>
+        <div class="tx-location ellipsis" ng-show="tx.merchant.city && tx.merchant.state">
+          {{tx.merchant.location}}
+        </div>
         <div ng-show="tx.pending && tx.transactionId" class="size-12 tx-amount--pending">
           <div ng-click="bitpayCard.viewOnBlockchain(tx.transactionId)">View Confirmation Status</div>
         </div>
@@ -19,8 +21,8 @@
         {{tx.price | currency:bitpayCard.currencySymbol:2 }}
       </span>
       <div>
-        <time class="tx-time" ng-if="createdWithinPastDay(tx)">{{tx.timestamp | amTimeAgo}}</time>
-        <time class="tx-time" ng-if="!createdWithinPastDay(tx)">{{tx.timestamp | amDateFormat:'MMM D, YYYY'}}</time>
+        <time class="tx-time" ng-if="createdWithinPastDay(tx)">{{tx.date | amTimeAgo}}</time>
+        <time class="tx-time" ng-if="!createdWithinPastDay(tx)">{{tx.date | amDateFormat:'MMM D, YYYY'}}</time>
       </div>
     </span>
   </div>
