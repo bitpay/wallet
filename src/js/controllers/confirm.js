@@ -378,7 +378,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       defaultText: tx.description
     };
 
-    popupService.showPrompt(null, message, opts, function(res) {
+    popupService.showPrompt("Memo", message, opts, function(res) {
       if (typeof res != 'undefined') tx.description = res;
       $timeout(function() {
         $scope.$apply();

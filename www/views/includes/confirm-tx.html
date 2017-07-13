@@ -5,7 +5,7 @@
 </div>
 <div class="text-center">
   <div class="size-30">{{tx.amountStr}}</div>
-  <div class="size-12 label gray radius" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
+<!--   <div class="size-12 label gray radius" ng-show="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
   <i class="db fi-arrow-down size-24 m10v"></i>
   <div class="payment-proposal-to" copy-to-clipboard="tx.toAddress">
     <i class="fi-bitcoin left m10l"></i>
@@ -13,7 +13,7 @@
     <span ng-if="tx.hasMultiplesOutputs" translate>
       Multiple recipients
     </span>
-  </div>
+  </div> -->
   <div class="m10t size-12" ng-init="processFee(tx.amount, tx.fee)">
     <div ng-show="!showPercentage" ng-click="showPercentage = true">
       <span translate>Fee</span> <span class="tl">({{feeLevel|translate}})</span>:

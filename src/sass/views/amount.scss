@@ -37,6 +37,7 @@
   }
   @media(max-width: 320px) {
     .bitcoin-address {
+      font-size: 12px;
       & > span:last-child {
         margin-left: -2px;
       }

@@ -53,6 +53,11 @@
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" copy-to-clipboard="tx.toAddress">
 
+            <span class="recipient-address">
+              <img src="img/aureus.svg" ng-show="wallet.network === 'aureus'"/>
+              <img src="img/deuscoin.svg" ng-show="wallet.network === 'deuscoin'"/>
+              <img src="img/icon-bitcoin.svg" ng-show="wallet.network === 'livenet'"/> 
+            </span>
             <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>
             <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span>
           </span>
@@ -178,7 +183,8 @@
     ng-if="tx.pendingForUs && canSign && !paymentExpired && isCordova && !isWindowsPhoneApp"
     slide-on-confirm="onConfirm()"
     slide-send-status="sendStatus"
-    has-wallet-chosen="true">
+    has-wallet-chosen="true"
+    network="wallet.network || network">
     {{buttonText}}
   </slide-to-accept>
   <slide-to-accept-success

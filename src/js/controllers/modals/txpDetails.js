@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     $scope.isShared = $scope.wallet.credentials.n > 1;
     $scope.canSign = $scope.wallet.canSign() || $scope.wallet.isPrivKeyExternal();
     $scope.color = $scope.wallet.color;
+    $scope.network = $scope.wallet.network;
     $scope.data = {};
     displayFeeValues();
     initActionList();

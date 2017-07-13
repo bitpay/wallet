@@ -17,6 +17,9 @@
   .add-bottom-for-cta {
     bottom: 92px;
   }
+  img.recipient-address {
+    width: 20px;
+  }
   .head {
     padding: 30px $item-lateral-padding 3rem;
     border-top: 0;
@@ -117,7 +120,7 @@
     .payment-proposal-to {
       width: 100%;
       display: inline-block;
-      padding: 8px 13px;
+      padding: 8px 8px;
       background-color: rgba(203, 203, 203, .13);
       margin-top: 10px;
       margin-bottom: 5px;
@@ -140,8 +143,8 @@
         float: right;
       }
       contact {
-        margin-left: 15px;
-        font-size: 14px;
+        margin-left: 8px;
+        font-size: 13px;
         display: inline-block;
       }
     }
@@ -192,6 +195,10 @@
         padding-left: 1rem;
         margin-right: .5rem;
         position: relative;
+        img {
+          width: 45px;
+          margin-left: -0.6em;   
+        }
 
         &::before {
           content: '';
