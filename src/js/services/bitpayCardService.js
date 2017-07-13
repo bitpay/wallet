@@ -38,6 +38,27 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     return tx;
   };
 
+  var _getIconName = function(tx) {
+    var icon = tx.mcc || tx.category || null;
+    if (!icon || root.iconMap[icon] == undefined) return 'default';
+    return root.iconMap[icon];
+  };
+
+  var _processDescription = function(tx) {
+    if (lodash.isArray(tx.description)) {
+      return tx.description[0];
+    }
+    return tx.description;
+  };
+
+  var _processLocation = function(tx) {
+    if (tx.merchant.city && tx.merchant.state) {
+      return tx.merchant.city + ', ' + tx.merchant.state;
+    } else {
+      return tx.merchant.city || tx.merchant.state || '';
+    }
+  };
+
   var _fromTransaction = function(txn, runningBalance) {
     var dateTime = _buildDate(txn.date, txn.time);
     var merchant = _lowercaseMerchant(txn.merchant);
@@ -101,6 +122,11 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
           }
         }
       }
+    }
+    for (var i = 0; i < activityList.length; i++) {
+      activityList[i].icon = _getIconName(activityList[i]);
+      activityList[i].desc = _processDescription(activityList[i]);
+      activityList[i].merchant['location'] = _processLocation(activityList[i]);
     }
     return activityList;
   };
