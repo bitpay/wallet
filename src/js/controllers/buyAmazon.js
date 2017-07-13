@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
 
   var publishAndSign = function(wallet, txp, onSendStatusChange, cb) {
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-      var err = 'No signing proposal: No private key';
+      var err = gettextCatalog.getString('No signing proposal: No private key');
       $log.info(err);
       return cb(err);
     }
@@ -94,11 +94,11 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
         var err_msg;
         if (err && err.message && err.message.match(/suspended/i)) {
           err_title = gettextCatalog.getString('Service not available');
-          err_msg = gettextCatalog.getString('Amazon.com Gift Card Service is not available at this moment. Please try back later.');
+          err_msg = gettextCatalog.getString('Amazon.com is not available at this moment. Please try back later.');
         } else if (err && err.message) {
           err_msg = err.message;
         } else {
-          err_msg = gettextCatalog.getString('Could not access Gift Card Service');
+          err_msg = gettextCatalog.getString('Could not access to Amazon.com');
         };
 
         return cb({
@@ -235,7 +235,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
 
-      message = gettextCatalog.getString("Amazon.com Gift Card {{amountStr}}", {
+      message = gettextCatalog.getString("{{amountStr}} for Amazon.com Gift Card", {
         amountStr: $scope.amountUnitStr
       });
 
@@ -307,7 +307,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       return;
     }
     var title = gettextCatalog.getString('Confirm');
-    var okText = gettextCatalog.getString('Ok');
+    var okText = gettextCatalog.getString('OK');
     var cancelText = gettextCatalog.getString('Cancel');
     popupService.showConfirm(title, message, okText, cancelText, function(ok) {
       if (!ok) {
