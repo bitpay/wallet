@@ -62,8 +62,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         self.bitpayCardTransactionHistoryCompleted = null;
         self.bitpayCardTransactionHistoryConfirming = null;
         self.bitpayCardTransactionHistoryPreAuth = null;
-        self.underpaidInvoiceInList = null;
-        self.delayedInvoiceInList = null;
         self.balance = null;
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Could not get transactions'));
         return;
@@ -72,16 +70,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       setGetStarted(history, function() {
 
         var txs = lodash.clone(history.txs);
-        for (var i = 0; i < txs.length; i++) {
-          txs[i].icon = _getIconName(txs[i]);
-          txs[i].desc = _processDescription(txs[i]);
-
-          if (txs[i].merchant.city && txs[i].merchant.state) {
-            txs[i].merchant.location = txs[i].merchant.city + ', ' + txs[i].merchant.state;
-          } else {
-            txs[i].merchant.location = txs[i].merchant.city || txs[i].merchant.state || '';
-          }
-        }
 
         self.bitpayCardTransactionHistoryConfirming = bitpayCardService.filterTransactions('confirming', txs);
         self.bitpayCardTransactionHistoryCompleted = bitpayCardService.filterTransactions('completed', txs);
@@ -108,19 +96,6 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
         });
       });
     });
-  };
-
-  var _getIconName = function(tx) {
-    var icon = tx.mcc || tx.category || null;
-    if (!icon || bitpayCardService.iconMap[icon] == undefined) return 'default';
-    return bitpayCardService.iconMap[icon];
-  };
-
-  var _processDescription = function(tx) {
-    if (lodash.isArray(tx.description)) {
-      return tx.description[0];
-    }
-    return tx.description;
   };
 
   $scope.createdWithinPastDay = function(tx) {
