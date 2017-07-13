@@ -61,7 +61,7 @@
             <span ng-if="tx.toName && showAddress">{{tx.toAddress}}</span>
           </div>
         </div>
-        <a class="item item-icon-right" ng-hide="!wallets" ng-click="showWalletSelector()">
+        <a class="item item-icon-right" ng-hide="!wallet" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>
           <div class="wallet" ng-if="wallet">
             <i class="icon big-icon-svg">
@@ -107,7 +107,7 @@
   </ion-content>
   <click-to-accept
     ng-click="approve(tx, wallet, statusChangeHandler)"
-    ng-if="!isCordova || isWindowsPhoneApp"
+    ng-if="(!isCordova || isWindowsPhoneApp) && wallet"
     click-send-status="sendStatus"
     is-disabled="!wallet">
     {{buttonText}}

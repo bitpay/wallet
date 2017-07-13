@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   function setNoWallet(msg) {
     $scope.wallet = null;
-    $scope.noWalletMessage = gettextCatalog.getString(msg);
+    $scope.noWalletMessage = msg;
     $log.warn('Not ready to make the payment:' + msg);
     $timeout(function() {
       $scope.$apply();
@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
-        setNoWallet('No wallets available');
+        setNoWallet(gettextCatalog.getString('No wallets available'));
         return cb();
       }
 
@@ -109,7 +109,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
               return cb('Could not update any wallet');
 
             if (lodash.isEmpty(filteredWallets)) {
-              setNoWallet('Insufficent funds');
+              setNoWallet(gettextCatalog.getString('Insufficient funds'));
             }
             $scope.wallets = lodash.clone(filteredWallets);
             return cb();
@@ -272,7 +272,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           $log.debug('Send max info', sendMaxInfo);
 
           if (tx.sendMax && sendMaxInfo.amount == 0) {
-            setNoWallet('Insufficent funds');
+            setNoWallet(gettextCatalog.getString('Insufficient funds'));
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
             return cb('no_funds');
           }
