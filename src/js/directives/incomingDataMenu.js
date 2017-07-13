@@ -10,6 +10,8 @@ angular.module('copayApp.directives')
           $timeout(function() {
             scope.data = data.data;
             scope.type = data.type;
+            scope.network = data.network
+            scope.networkName = data.networkName || ""
             scope.showMenu = true;
             scope.https = false;
 

@@ -26,10 +26,12 @@
 
   <div ng-if="type === 'bitcoinAddress'">
     <div class="incoming-data-menu__item head">
-      <div class="incoming-data-menu__header" translate>Bitcoin Address</div>
+      <div class="incoming-data-menu__header">{{networkName}} <span translate>Address</span></div>
       <div class="incoming-data-menu__url">
         <div class="incoming-data-menu__url__icon">
-          <img src="img/icon-bitcoin-small.svg">
+          <img src="img/aureus.svg" ng-show="wallet.network === 'aureus' || network === 'aureus'"/>
+          <img src="img/deuscoin.svg" ng-show="wallet.network === 'deuscoin' || network === 'deuscoin'"/>
+          <img src="img/icon-bitcoin.svg" ng-show="wallet.network === 'livenet' || network === 'livenet'"/>
         </div>
         <div class="incoming-data-menu__url__text">
           {{data}}

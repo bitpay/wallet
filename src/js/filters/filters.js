@@ -17,6 +17,11 @@ angular.module('copayApp.filters', [])
       return false;
     };
   })
+  .filter('capitalize', function() {
+    return function(input) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    }
+   }) 
   .filter('removeEmpty', function() {
     return function(elements) {
       elements = elements || [];

@@ -84,11 +84,22 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     data = sanitizeUri(data);
 
     var isNetworkValid = false;
+    var network = 'livenet'
+    var networkName = 'Bitcoin';
+    console.log(data)
+        console.log(data)
+            console.log(data)
+                console.log(data)
+                    console.log(data)
+                        console.log(data)
+                            console.log(data)
+                                console.log(data)
     for(var i in CUSTOMNETWORKS) {
+      console.log(CUSTOMNETWORKS[i].name)
       if(bitcore.Address.isValid(data, CUSTOMNETWORKS[i].name)) {
-
-      console.log('it worked', data, CUSTOMNETWORKS[i].name)
-              isNetworkValid = true
+        isNetworkValid = true
+        network = CUSTOMNETWORKS[i].name
+        networkName = CUSTOMNETWORKS[i].alias
       }
     }
     // BIP21
@@ -96,6 +107,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var parsed = new bitcore.URI(data);
 
       var addr = parsed.address ? parsed.address.toString() : '';
+      console.log(addr)
       var message = parsed.message;
 
       var amount = parsed.amount ? parsed.amount : '';
@@ -131,7 +143,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       if ($state.includes('tabs.scan')) {
         root.showMenu({
           data: data,
-          type: 'bitcoinAddress'
+          type: 'bitcoinAddress',
+          network: network,
+          networkName: networkName
         });
       } else {
         goToAmountPage(data);
