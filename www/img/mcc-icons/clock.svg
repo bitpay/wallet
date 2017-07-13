@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="46px" height="46px" viewBox="0 0 46 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
-    <title>clock</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-weight="normal" font-family="SSGlyphish-Outlined, SS Glyphish" line-spacing="53" font-size="44">
-        <g id="-Transaction-icons" transform="translate(-139.000000, -849.000000)" stroke="#FFFFFF" stroke-width="0.8" fill="#9B9BAB">
-            <g id="clock" transform="translate(140.000000, 851.000000)">
-                <text>
-                    <tspan x="0" y="47">clock</tspan>
-                </text>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="49" height="49" viewBox="0 0 49 49" xmlns="http://www.w3.org/2000/svg"><g class="nc-icon-wrapper" fill="#444444"><title>clock</title><g transform="translate(1 1)" stroke="#444444" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square"><circle cx="23.336" cy="23.336" r="23.336"></circle><path d="M23.3361681 10.6073491L23.3361681 23.3361681 36.064987 23.3361681"></path></g></g></svg>

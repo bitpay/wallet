@@ -88,14 +88,18 @@
       margin: 0;
       border: 0;
 
-      &.send .svg #-Transaction-icons {
+      &.send svg .nc-icon-wrapper g,
+      &.send svg .nc-icon-wrapper path,
+      &.send .tx-icon .houston {
       }
-      &.receive .svg #-Transaction-icons,
+      &.receive svg .nc-icon-wrapper g,
+      &.receive svg .nc-icon-wrapper path,
       &.receive .tx-icon .houston {
         stroke: #09C286;
         color: #09C286;
       }
-      &.pending .svg #-Transaction-icons,
+      &.pending svg .nc-icon-wrapper g,
+      &.pending svg .nc-icon-wrapper path,
       &.pending .tx-icon .houston {
         stroke: $v-bitcoin-orange;
         color: $v-bitcoin-orange;
