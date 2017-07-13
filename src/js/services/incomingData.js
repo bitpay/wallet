@@ -86,16 +86,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     var isNetworkValid = false;
     var network = 'livenet'
     var networkName = 'Bitcoin';
-    console.log(data)
-        console.log(data)
-            console.log(data)
-                console.log(data)
-                    console.log(data)
-                        console.log(data)
-                            console.log(data)
-                                console.log(data)
+    $log.log(data)
+        $log.log(data)
+            $log.log(data)
+                $log.log(data)
+                    $log.log(data)
+                        $log.log(data)
+                            $log.log(data)
+                                $log.log(data)
     for(var i in CUSTOMNETWORKS) {
-      console.log(CUSTOMNETWORKS[i].name)
+      $log.log(CUSTOMNETWORKS[i].name)
       if(bitcore.Address.isValid(data, CUSTOMNETWORKS[i].name)) {
         isNetworkValid = true
         network = CUSTOMNETWORKS[i].name
@@ -107,7 +107,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var parsed = new bitcore.URI(data);
 
       var addr = parsed.address ? parsed.address.toString() : '';
-      console.log(addr)
+      $log.log(addr)
       var message = parsed.message;
 
       var amount = parsed.amount ? parsed.amount : '';
