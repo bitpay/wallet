@@ -12,6 +12,11 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
       value: config.pushNotificationsEnabled
     };
 
+    var isNotifyTxEnabled = config.notifyIfTxConfirmed ? config.notifyIfTxConfirmed.enabled : false;
+    $scope.notifyIfTxConfirmed = {
+      value: isNotifyTxEnabled
+    };
+
     $scope.latestEmail = {
       value: emailService.getEmailIfEnabled()
     };
@@ -39,6 +44,18 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
         pushNotificationsService.init();
       else
         pushNotificationsService.disable();
+    });
+  };
+
+  $scope.notifyIfTxConfirmedChange = function() {
+    if (!$scope.pushNotifications) return;
+    var opts = {
+      notifyIfTxConfirmed: {
+        enabled: $scope.notifyIfTxConfirmed.value
+      }
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
     });
   };
 
