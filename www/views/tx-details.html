@@ -108,7 +108,7 @@ This transaction amount is too small compared to current Bitcoin network fees. S
             </span>
           </span>
         </div>
-        <div ng-if="!notifyIfTxConfirmed">
+        <div ng-if="txsUnsubscribedForNotifications">
           <ion-toggle ng-show="!btx.confirmations || btx.confirmations == 0"
                       class="toggle-unconfirmed"
                       ng-model="txNotification.value"
