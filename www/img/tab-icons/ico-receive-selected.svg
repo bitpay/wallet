@@ -2,8 +2,8 @@
 <svg version="1.1" id="QR_Icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#D5DFFF;}
-	.st1{fill:#647ce8;}
+	.st0{fill:#7d59b5;}
+	.st1{fill:#333;}
 </style>
 <rect x="13.5" y="1.2" class="st0" width="7.3" height="7.3"/>
 <rect x="1.2" y="13.5" class="st0" width="7.3" height="7.3"/>
@@ -14,7 +14,7 @@
 <polygon class="st1" points="22,17.6 20.8,17.6 20.8,13.5 18.2,13.5 18.2,16.3 13.2,16.3 13.2,12.9 14.4,12.9 14.4,15.1 17,15.1
 	17,12.3 22,12.3 "/>
 <polygon class="st1" points="21.4,22 13.2,22 13.2,19.5 14.4,19.5 14.4,20.8 21.4,20.8 "/>
-<rect x="3.8" y="3.8" class="st1" width="2.2" height="2.2"/>
-<rect x="16" y="3.8" class="st1" width="2.2" height="2.2"/>
-<rect x="3.8" y="16" class="st1" width="2.2" height="2.2"/>
+<rect x="3.8" y="3.8" class="st2" width="2.2" height="2.2"/>
+<rect x="16" y="3.8" class="st2" width="2.2" height="2.2"/>
+<rect x="3.8" y="16" class="st2" width="2.2" height="2.2"/>
 </svg>

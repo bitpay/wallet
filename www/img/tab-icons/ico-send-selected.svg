@@ -2,8 +2,8 @@
 <svg version="1.1" id="Send_Icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 27 24" style="enable-background:new 0 0 27 24;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#647ce8;fill-opacity:0.4;stroke:#647ce8;stroke-width:1.4;}
-	.st1{fill:#D5DFFF;fill-opacity:0.7145;stroke:#647ce8;stroke-width:1.4;}
+	.st0{fill:#333;fill-opacity:0.4;stroke:#7d59b5;stroke-width:1.4;}
+	.st1{fill:#7d59b5;fill-opacity:0.7145;stroke:#7d59b5;stroke-width:1.4;}
 </style>
 <g>
 	<polyline class="st0" points="25.5,1.5 6.3,11.7 4.9,19.3 9.8,15.3 	"/>

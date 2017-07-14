@@ -7,8 +7,8 @@
 	.st0{opacity:0.3;fill:url(#SVGID_1_);enable-background:new    ;}
 	.st1{opacity:0.3;fill:url(#SVGID_2_);enable-background:new    ;}
 	.st2{opacity:0.3;}
-	.st3{fill:#13E5B6;}
-	.st4{opacity:0.64;fill:none;stroke:#9012FE;stroke-width:2;stroke-linecap:square;enable-background:new    ;}
+	.st3{fill:#3DB4EB;}
+	.st4{opacity:0.64;fill:none;stroke:#0A81B8;stroke-width:2;stroke-linecap:square;enable-background:new    ;}
 	.st5{fill:#1A2A71;stroke:#FFFFFF;stroke-width:3;}
 </style>
 <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-234.5445" y1="11.6925" x2="-234.5445" y2="12.5871" gradientTransform="matrix(247 0 0 247 58120 -2878.0242)">
@@ -20,7 +20,7 @@
 	<stop  offset="0" style="stop-color:#3950B5"/>
 	<stop  offset="1" style="stop-color:#202F77"/>
 </linearGradient>
-<polygon class="st1" points="54.3,137.3 97.7,107.8 140.1,129.9 184.6,90.7 222.9,90.7 247.7,57.5 280.8,77.2 321.2,66.1 375,45 
+<polygon class="st1" points="54.3,137.3 97.7,107.8 140.1,129.9 184.6,90.7 222.9,90.7 247.7,57.5 280.8,77.2 321.2,66.1 375,45
 	375,195 150.1,195 0.4,195 0,143.5 "/>
 <g class="st2">
 	<path class="st3" d="M300.2,195h-0.5v-4h0.5V195z M300.2,187h-0.5v-4h0.5V187z M300.2,179h-0.5v-4h0.5V179z M300.2,171h-0.5v-4h0.5
