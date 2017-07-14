@@ -19,8 +19,8 @@
         </div>
       </div>
 
-      <div ng-if="PNEnabledByUser">
-        <ion-toggle ng-model="notifyIfTxConfirmed.value" toggle-class="toggle-balanced" ng-change="notifyIfTxConfirmedChange()" ng-if="usePushNotifications" ng-show="pushNotifications.value">
+      <div ng-if="usePushNotifications && pushNotifications.value">
+        <ion-toggle ng-model="confirmedTxsNotifications.value" toggle-class="toggle-balanced" ng-change="confirmedTxsNotificationsChange()">
           <span class="toggle-label" translate>Notify me when transactions are confirmed</span>
         </ion-toggle>
       </div>

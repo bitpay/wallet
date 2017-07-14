@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.color = $scope.wallet.color;
     $scope.copayerId = $scope.wallet.credentials.copayerId;
     $scope.isShared = $scope.wallet.credentials.n > 1;
-    $scope.notifyIfTxConfirmed = config.notifyIfTxConfirmed ? config.notifyIfTxConfirmed.enabled : false;
+    $scope.txsUnsubscribedForNotifications = config.confirmedTxsNotifications ? !config.confirmedTxsNotifications.enabled : true;
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
       $scope.txNotification = {

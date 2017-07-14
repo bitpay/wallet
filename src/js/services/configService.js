@@ -80,7 +80,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     pushNotificationsEnabled: true,
 
-    notifyIfTxConfirmed: {
+    confirmedTxsNotifications: {
       enabled: true,
     },
 
