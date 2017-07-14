@@ -240,7 +240,7 @@
 }
 
 .wallet-not-backed-up-warning {
-  background: orange;
+  background: $wallet-backup-warning-color;
   text-align: center;
   color: white;
   font-size: 14px;
