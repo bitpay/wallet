@@ -511,7 +511,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           if (err) return setSendError(err);
           if (config.notifyIfTxConfirmed && config.notifyIfTxConfirmed.enabled) {
             txConfirmNotification.subscribe(wallet, {
-              txid: txp.id
+              txid: txp.txid
             });
           }
         }, onSendStatusChange);
