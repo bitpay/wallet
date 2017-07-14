@@ -1,0 +1,68 @@
+log-options {
+
+  $border-color: #EFEFEF;
+
+  .bp-action-sheet__sheet {
+    padding-left: 2rem;
+    padding-right: .75rem;
+  }
+
+  .log-options {
+    .option {
+      border: 0;
+      padding-right: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-bottom: 1px;
+      overflow: visible;
+
+      > i {
+        color: $v-accent-color;
+        padding: 0 0 5px 0;
+        margin-left: -5px;
+
+        > img {
+          height: 39px;
+          width: 39px;
+          padding: 4px;
+        }
+      }
+    }
+    .log-options-inner {
+      display: flex;
+      position: relative;
+      padding-top: 16px;
+      padding-bottom: 16px;
+
+      &::after {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: $border-color;
+        bottom: 0;
+        right: 0;
+        content: '';
+      }
+
+      .check {
+        padding: 0 1.2rem;
+      }
+    }
+    .log-options-details {
+      flex-grow: 1;
+
+      .log-options-name {
+        padding-bottom: 5px;
+      }
+    }
+
+    .log-level-slider {
+      width: 90%;
+      margin: auto;
+      font-size: 12px;
+      height: 90px;
+    }
+  }
+
+}

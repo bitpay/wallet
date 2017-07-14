@@ -75,6 +75,14 @@
       font-weight: bold;
     }
   }
+  .setting-range-hdist {
+    display: table;
+    width: 100%;
+    span {
+      display: table-cell;
+      text-align: center;
+    }
+  }
  .settings-list {
     .item {
       color: $v-dark-gray;
@@ -119,6 +127,10 @@
     color: #00901B;
    }
  }
+ .log-text {
+    font-size: 12px;
+    line-height: 18px;
+  }
 }
 
 #tab-settings {
