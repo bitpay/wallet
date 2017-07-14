@@ -1,0 +1,43 @@
+.check-slider {
+    position: relative;
+    .filling-bar {
+      position: absolute;
+      width:1px;
+      border: 3px solid $v-success-color;
+      top: 37px;
+      left: 44px;
+      z-index: 99;
+      border-radius: 10px;
+      -webkit-animation: increase 3s;
+      -moz-animation:    increase 3s;
+      -o-animation:      increase 3s;
+      animation:         increase 3s;
+      animation-fill-mode: forwards;
+    }
+    @keyframes increase {
+      100% {
+        width: 80%;
+      }
+    }
+    .base-bar {
+      position: absolute;
+      width: 80%;
+      border-bottom: 1px solid #f2f2f2;
+      top: 39px;
+      left: 44px;
+      z-index: 98;
+    }
+    &.list{
+      display: flex;
+      justify-content: space-between;
+      background-color: white;
+      .custom-checkbox {
+        text-align: -webkit-center;
+        .item {
+          border-style: none;
+          z-index: 999;
+          background-color: inherit;
+        }
+      }
+    }
+  }
