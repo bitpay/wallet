@@ -134,7 +134,7 @@ angular.module('copayApp.services')
         wallet.setNotificationsInterval(UPDATE_PERIOD);
         wallet.openWallet(function(err) {
           if (wallet.status !== true)
-            $log.log('Wallet + ' + walletId + ' status:' + wallet.status)
+            $log.debug('Wallet + ' + walletId + ' status:' + wallet.status)
         });
       });
 

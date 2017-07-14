@@ -1,8 +1,13 @@
-<ion-view class="settings" show-tabs>
+<ion-view class="settings" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Session Log' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="showOptionsMenu()">
+        <i class="icon ion-ios-more"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content>
     <div class="settings-button-group">
@@ -14,10 +19,10 @@
       </button>
     </div>
     <div class="list">
-      <div class="item item-text-wrap enable_text_select">
+      <div class="item item-text-wrap enable_text_select log-text">
         <ul>
-          <li ng-repeat="l in logs">
-            <span ng-class="{'energized': l.level=='warn', 'dark': l.level=='debug', 'positive': l.level=='info', 'assertive': l.level=='error' }">
+          <li ng-repeat="l in filteredLogs">
+            <span ng-class="{'energized': l.level=='warn', 'dark': l.level=='debug', 'positive': l.level=='info', 'assertive': l.level=='error'}">
               {{l.msg}}
             </span>
           </li>
@@ -25,4 +30,9 @@
       </div>
     </div>
   </ion-content>
+  <log-options
+    log-options-title="logOptionsTitle"
+    log-options-show="showOptions"
+    log-options="logOptions">
+  </log-options>
 </ion-view>
