@@ -80,6 +80,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     pushNotificationsEnabled: true,
 
+    confirmedTxsNotifications: {
+      enabled: true,
+    },
+
     emailNotifications: {
       enabled: false,
     },
