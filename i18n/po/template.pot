@@ -3201,6 +3201,10 @@ msgstr ""
 msgid "You control your bitcoin."
 msgstr ""
 
+#: www/views/modals/chooseFeeLevel.html:38
+msgid "You could not set a fee higher than 1000 satoshis/byte."
+msgstr ""
+
 #: www/views/modals/bitpay-card-confirmation.html:5
 msgid "You will need to log back for fill in your BitPay Card."
 msgstr ""
@@ -3221,12 +3225,8 @@ msgstr ""
 msgid "Your bitcoin wallet is ready!"
 msgstr ""
 
-#: www/views/modals/chooseFeeLevel.html:38
-msgid "Your could not set a fee higher than 1000 satoshis/byte."
-msgstr ""
-
 #: www/views/modals/chooseFeeLevel.html:34
-msgid "Your fee is lower than the recommended super economy fee ({{getMinimumRecommeded()}} satoshis/byte). Your transaction may never get confirmed."
+msgid "Your fee is lower than recommended super economy fee ({{getMinimumRecommeded()}} satoshis/byte). The transaction may never get confirmed."
 msgstr ""
 
 #: www/views/feedback/send.html:42

@@ -31,11 +31,11 @@
     </div>
     <div class="comment" ng-if="showMinWarning">
       <i class="icon"><img src="img/icon-warning.png"></i>
-      <span class="text" translate>Your fee is lower than the recommended super economy fee ({{getMinimumRecommeded()}} satoshis/byte). Your transaction may never get confirmed.</span>
+      <span class="text" translate>Your fee is lower than recommended super economy fee ({{getMinimumRecommeded()}} satoshis/byte). The transaction may never get confirmed.</span>
     </div>
     <div class="comment" ng-if="showMaxWarning">
       <i class="icon"><img src="img/icon-warning.png"></i>
-      <span class="text" translate>Your could not set a fee higher than 1000 satoshis/byte.</span>
+      <span class="text" translate>You could not set a fee higher than 1000 satoshis/byte.</span>
     </div>
   </ion-content>
 </ion-modal-view>
