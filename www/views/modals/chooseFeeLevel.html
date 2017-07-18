@@ -49,20 +49,22 @@
               <span class="unit">sat/byte</span>
             </label>
           </div>
-          <div class="error-fee" ng-if="showError">
-            <i class="icon ion-close-circled"></i>
-            <span translate>
-              Transactions without fee are not supported.
-            </span>
-          </div>
-          <div class="warning-fee" ng-if="showMinWarning || showMaxWarning">
-            <i class="icon ion-alert-circled"></i>
-            <span ng-if="showMinWarning" translate>
-              Your fee is lower than recommended.
-            </span>
-            <span ng-if="showMaxWarning" translate>
-              You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.
-            </span>
+          <div class="error-fee">
+            <div ng-if="showError">
+              <i class="icon ion-close-circled"></i>
+              <span translate>
+                Transactions without fee are not supported.
+              </span>
+            </div>
+            <div ng-if="showMinWarning || showMaxWarning">
+              <i class="icon ion-alert-circled"></i>
+              <span ng-if="showMinWarning" translate>
+                Your fee is lower than recommended.
+              </span>
+              <span ng-if="showMaxWarning" translate>
+                You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.
+              </span>
+            </div>
           </div>
         </div>
       </div>
