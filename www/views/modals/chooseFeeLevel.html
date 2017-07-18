@@ -1,41 +1,77 @@
-<ion-modal-view id="settings-fee" class="settings" ng-controller="preferencesFeeController">
+<ion-modal-view id="choose-fee-level" ng-controller="feeLevelsController">
   <ion-header-bar align-title="center" class="bar-royal">
     <div class="title">
       {{'Bitcoin Network Fee Policy'|translate}}
     </div>
-    <button ng-disabled="invalidCustomFeeEntered" class="button button-clear" ng-click="chooseNewFee()">
+    <button
+      ng-disabled="customFeePerKB &&
+      (!customSatPerByte.value ||
+      customSatPerByte.value > maxFeeRecommended || customSatPerByte.value < minFeeRecommended)"
+      class="button button-clear" ng-click="ok()" translate>
       OK
     </button>
   </ion-header-bar>
-  <ion-content ng-init="init()">
-    <div class="settings-explanation">
-      <div class="estimates">
-        <div>
-          <span translate>Average confirmation time</span>:
-          <span class="fee-minutes" ng-if="avgConfirmationTime && currentFeeLevel != 'custom'">{{avgConfirmationTime | amDurationFormat: 'minute'}}</span>
-          <span class="fee-minutes" ng-if="currentFeeLevel == 'custom' && !invalidCustomFeeEntered && !loadingFee" translate>Could not be estimated</span>
-          <span ng-if="loadingFee || invalidCustomFeeEntered">...</span>
+  <ion-content>
+    <div class="box-notification warning" ng-if="network!='livenet'">
+      Testnet
+    </div>
+    <div class="row selected-fee-level" ng-show="feeLevel">
+      <div class="col time" ng-if="!customFeePerKB">
+        <div class="value">
+          <span ng-if="avgConfirmationTime">
+            {{avgConfirmationTime | amDurationFormat: 'minute'}}
+          </span>
+          <span ng-if="loadingFee">...</span>
         </div>
-        <div>
-          <span translate>Current fee rate for this policy</span>:
-          <span class="fee-rate" ng-if="feePerSatByte && !invalidCustomFeeEntered && !loadingFee">{{feePerSatByte}} satoshis/byte</span>
-          <span ng-if="loadingFee || invalidCustomFeeEntered">...</span>
+        <span translate>Average confirmation time</span>
+      </div>
+      <div class="col rate" ng-class="{'separator': !customFeePerKB}">
+        <div ng-if="!customFeePerKB">
+          <div class="value">
+            <span ng-if="feePerSatByte && !loadingFee">
+              {{feePerSatByte}} sat/byte
+            </span>
+            <span ng-if="loadingFee">...</span>
+          </div>
+          <span translate>Current fee rate for this policy</span>
         </div>
-        <span ng-if="network!='livenet'">[{{network}}]</span>
+        <div ng-if="customFeePerKB">
+          <div class="list">
+            <label class="item item-input">
+              <input
+              type="number"
+              placeholder="{{'Enter custom fee'|translate}}"
+              min="minFeeRecommended"
+              max="maxFeeRecommended"
+              ng-change="checkFees(customSatPerByte.value)"
+              ng-model="customSatPerByte.value"
+              ng-required="customFeePerKB">
+              <span class="unit">sat/byte</span>
+            </label>
+          </div>
+          <div class="warning-fee">
+            <i ng-if="showMinWarning || showMaxWarning" class="icon ion-alert-circled"></i>
+            <span ng-if="showMinWarning" translate>
+              Your fee is lower than recommended.
+            </span>
+            <span ng-if="showMaxWarning" translate>
+              You could not set a fee higher than 1000 satoshis/byte.
+            </span>
+            &nbsp;
+          </div>
+        </div>
       </div>
     </div>
-    <div class="fee-policies">
-      <ion-radio ng-repeat="(fee, level) in feeOpts" ng-value="fee" ng-model="currentFeeLevel" ng-click="save(fee)">
-        {{level|translate}}
-      </ion-radio>
+
+    <div class="list" ng-show="feeLevel">
+      <label class="item item-input item-select">
+        <div class="input-label" translate>
+          Fee level
+        </div>
+        <select ng-options="fee as level for (fee,level) in feeOpts" ng-model="selectedFee.value">
+        </select>
+      </label>
     </div>
-    <div class="comment" ng-if="showMinWarning">
-      <i class="icon"><img src="img/icon-warning.png"></i>
-      <span class="text" translate>Your fee is lower than recommended super economy fee ({{getMinimumRecommeded()}} satoshis/byte). The transaction may never get confirmed.</span>
-    </div>
-    <div class="comment" ng-if="showMaxWarning">
-      <i class="icon"><img src="img/icon-warning.png"></i>
-      <span class="text" translate>You could not set a fee higher than 1000 satoshis/byte.</span>
-    </div>
+
   </ion-content>
 </ion-modal-view>
