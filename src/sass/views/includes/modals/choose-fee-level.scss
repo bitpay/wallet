@@ -2,7 +2,7 @@
   @extend .deflash-blue;
   .selected-fee-level {
     text-align: center;
-    background: #f2f2f2;
+    background: #f9f9f9;
     font-size: 11px;
     height: 120px;
     padding-top: 25px;
@@ -20,19 +20,39 @@
     .rate .list {
       margin-bottom: 0;
     }
-    .unit {
-      color: #9c9c9c;
-      background: #f2f2f2;
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding: 15px 10px 12px 10px;
+
+    .item-input {
+      input[type="number"] {
+        text-align: right;
+        padding-right: 90px;
+      }
+      .unit {
+        color: #9c9c9c;
+        background: #f2f2f2;
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 15px 10px 12px 10px;
+      }
     }
   }
   .warning-fee {
+    padding: 5px 10px;
     color: $v-warning-color;
     font-size: 12px;
-    text-align: left;
+    text-align: center;
+    i {
+      margin-right: 8px;
+    }
+  }
+  .error-fee {
+    padding: 5px 10px;
+    color: $v-error-color;
+    font-size: 12px;
+    text-align: center;
+    i {
+      margin-right: 8px;
+    }
   }
   .box-notification {
     margin: 0;

@@ -4,9 +4,7 @@
       {{'Bitcoin Network Fee Policy'|translate}}
     </div>
     <button
-      ng-disabled="customFeePerKB &&
-      (!customSatPerByte.value ||
-      customSatPerByte.value > maxFeeRecommended || customSatPerByte.value < minFeeRecommended)"
+      ng-disabled="customFeePerKB && !customSatPerByte.value"
       class="button button-clear" ng-click="ok()" translate>
       OK
     </button>
@@ -41,6 +39,8 @@
               <input
               type="number"
               placeholder="{{'Enter custom fee'|translate}}"
+              ng-min="0"
+              ng-max="maxFeeRecommended + 10000"
               min="minFeeRecommended"
               max="maxFeeRecommended"
               ng-change="checkFees(customSatPerByte.value)"
@@ -49,15 +49,20 @@
               <span class="unit">sat/byte</span>
             </label>
           </div>
-          <div class="warning-fee">
-            <i ng-if="showMinWarning || showMaxWarning" class="icon ion-alert-circled"></i>
+          <div class="error-fee" ng-if="showError">
+            <i class="icon ion-close-circled"></i>
+            <span translate>
+              Zero value for fee are not allowed.
+            </span>
+          </div>
+          <div class="warning-fee" ng-if="showMinWarning || showMaxWarning">
+            <i class="icon ion-alert-circled"></i>
             <span ng-if="showMinWarning" translate>
               Your fee is lower than recommended.
             </span>
             <span ng-if="showMaxWarning" translate>
-              You could not set a fee higher than 1000 satoshis/byte.
+              You should not set a fee higher than 1000 satoshis/byte.
             </span>
-            &nbsp;
           </div>
         </div>
       </div>
