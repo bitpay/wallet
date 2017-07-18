@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2017-06-29 07:15-0400\n"
+"PO-Revision-Date: 2017-07-18 13:18-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -43,11 +43,11 @@ msgstr "5つ星の評価をいただけると、もっとたくさんの人に�
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "ただちに開発メンバーでいただいた評価を拝読し参考にさせていただきます。"
 
-#: src/js/controllers/confirm.js:347
+#: src/js/controllers/confirm.js:351
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "注意：合計{{amountAboveMaxSizeStr}} を除外しました。取引に許可される最大サイズを超えました"
 
-#: src/js/controllers/confirm.js:341
+#: src/js/controllers/confirm.js:345
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "注意：合計 {{amountBelowFeeStr}} を除外しました。これらのビットコインは手数料よりも低い額となるため除外しました。"
 
@@ -56,8 +56,8 @@ msgstr "注意：合計 {{amountBelowFeeStr}} を除外しました。これら�
 msgid "About"
 msgstr "このアプリについて"
 
-#: src/js/controllers/modals/txpDetails.js:52
-#: src/js/controllers/tx-details.js:60
+#: src/js/controllers/modals/txpDetails.js:56
+#: src/js/controllers/tx-details.js:62
 msgid "Accepted"
 msgstr "承諾済"
 
@@ -117,7 +117,11 @@ msgstr "アカウントを追加"
 msgid "Add an optional password to secure the recovery phrase"
 msgstr "フレーズを守るために任意のパスワードをかけて下さい"
 
-#: src/js/controllers/confirm.js:370
+#: www/views/includes/incomingDataMenu.html:41
+msgid "Add as a contact"
+msgstr ""
+
+#: src/js/controllers/confirm.js:374
 msgid "Add description"
 msgstr "詳細を追加"
 
@@ -136,7 +140,6 @@ msgstr "ウォレットを追加"
 #: www/views/addressbook.view.html:26
 #: www/views/customAmount.html:28
 #: www/views/modals/paypro.html:24
-#: www/views/paymentUri.html:15
 msgid "Address"
 msgstr "アドレス"
 
@@ -194,10 +197,13 @@ msgstr "ほぼ完了!確認してみましょう。"
 msgid "Alternative Currency"
 msgstr "表示通貨"
 
+#: src/js/controllers/buyAmazon.js:97
+msgid "Amazon.com is not available at this moment. Please try back later."
+msgstr ""
+
 #: www/views/amount.html:44
 #: www/views/customAmount.html:34
 #: www/views/includes/output.html:7
-#: www/views/paymentUri.html:16
 msgid "Amount"
 msgstr "金額"
 
@@ -205,7 +211,7 @@ msgstr "金額"
 msgid "Amount below minimum allowed"
 msgstr "送金可能最少額を下回っています"
 
-#: src/js/controllers/confirm.js:188
+#: src/js/controllers/confirm.js:191
 msgid "Amount too big"
 msgstr "金額が大きすぎます"
 
@@ -247,11 +253,11 @@ msgid "Are you sure you want to delete this wallet?"
 msgstr "本当にこのウォレットを削除しても\n"
 "宜しいですか？"
 
-#: src/js/controllers/modals/txpDetails.js:144
+#: src/js/controllers/modals/txpDetails.js:148
 msgid "Are you sure you want to reject this transaction?"
 msgstr "この取引を却下してもよろしいですか?"
 
-#: src/js/controllers/modals/txpDetails.js:161
+#: src/js/controllers/modals/txpDetails.js:165
 msgid "Are you sure you want to remove this transaction?"
 msgstr "この取引を破棄してもよろしいですか?"
 
@@ -280,7 +286,7 @@ msgstr "即座送金可能"
 msgid "Available Balance"
 msgstr "送金可能残高"
 
-#: www/views/modals/chooseFeeLevel.html:14
+#: www/views/modals/chooseFeeLevel.html:24
 #: www/views/preferencesFee.html:15
 msgid "Average confirmation time"
 msgstr "平均承認時間"
@@ -292,7 +298,7 @@ msgstr "平均承認時間"
 msgid "BIP32 path for address derivation"
 msgstr "階級アドレス派生のパス"
 
-#: www/views/preferences.html:39
+#: www/views/preferences.html:34
 msgid "Backup"
 msgstr "バックアップ"
 
@@ -304,7 +310,7 @@ msgstr "要バックアップ"
 msgid "Backup all livenet wallets before using this function"
 msgstr "この機能を使う前に必ず全てのウォレットの復元フレーズのバックアップを取って下さい！"
 
-#: www/views/preferences.html:41
+#: www/views/preferences.html:36
 #: www/views/tab-settings.html:120
 msgid "Backup needed"
 msgstr "要バックアップ"
@@ -339,6 +345,7 @@ msgid "BitPay Visa&reg; Cards"
 msgstr "BitPayのVISA&reg; カード"
 
 #: www/views/addressbook.add.html:38
+#: www/views/includes/incomingDataMenu.html:29
 msgid "Bitcoin Address"
 msgstr "ビットコインアドレス"
 
@@ -347,10 +354,6 @@ msgstr "ビットコインアドレス"
 #: www/views/tab-settings.html:85
 msgid "Bitcoin Network Fee Policy"
 msgstr "ビットコインネットワークの手数料設定"
-
-#: www/views/paymentUri.html:10
-msgid "Bitcoin URI is NOT valid!"
-msgstr "Bitcoin URI が無効です！"
 
 #: www/views/tab-settings.html:63
 msgid "Bitcoin Unit"
@@ -372,12 +375,16 @@ msgstr "ビットコインは世界で<br>最も安全な仮想通貨。"
 msgid "Bitcoin transactions include a fee collected by miners on the network."
 msgstr "ビットコインの取引はネットワークの安全を守る「採掘者」と呼ばれる者達に送る手数料が含まれます。"
 
+#: www/views/buyAmazon.html:108
+msgid "Bought {{amountUnitStr}}"
+msgstr ""
+
 #: www/views/modals/txp-details.html:36
 msgid "Broadcast Payment"
 msgstr "取引送信"
 
-#: src/js/controllers/modals/txpDetails.js:54
-#: src/js/controllers/tx-details.js:62
+#: src/js/controllers/modals/txpDetails.js:58
+#: src/js/controllers/tx-details.js:64
 msgid "Broadcasted"
 msgstr "送信済み"
 
@@ -389,13 +396,21 @@ msgstr "取引送信中"
 msgid "Browser unsupported"
 msgstr "ブラウザ未対応"
 
-#: www/views/includes/buyAndSellCard.html:4
+#: www/views/buyAmazon.html:5
+msgid "Buy"
+msgstr ""
+
+#: www/views/includes/buyAndSellCard.html:3
 msgid "Buy &amp; Sell Bitcoin"
 msgstr "ビットコインの購入&amp;売却"
 
 #: www/views/tab-send.html:35
 msgid "Buy Bitcoin"
 msgstr "ビットコインを購入"
+
+#: src/js/controllers/buyAmazon.js:332
+msgid "Buy from"
+msgstr ""
 
 #: src/js/services/onGoingProcess.js:40
 msgid "Buying Bitcoin..."
@@ -405,18 +420,24 @@ msgstr "ビットコインを購入中..."
 msgid "Calculating fee"
 msgstr "手数料計算中..."
 
-#: src/js/controllers/confirm.js:491
-#: src/js/controllers/topup.js:277
-#: src/js/services/popupService.js:60
+#: src/js/controllers/buyAmazon.js:311
+#: src/js/controllers/confirm.js:495
+#: src/js/controllers/topup.js:285
+#: src/js/services/popupService.js:62
+#: src/js/services/popupService.js:73
 #: www/views/addressbook.add.html:10
 #: www/views/feedback/send.html:5
+#: www/views/includes/incomingDataMenu.html:22
+#: www/views/includes/incomingDataMenu.html:54
+#: www/views/includes/incomingDataMenu.html:73
+#: www/views/includes/incomingDataMenu.html:97
 #: www/views/includes/note.html:6
 #: www/views/modals/bitpay-card-confirmation.html:8
 #: www/views/modals/confirmation.html:13
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: www/views/copayers.html:37
+#: www/views/copayers.html:36
 msgid "Cancel invitation"
 msgstr "招待状のキャンセル"
 
@@ -428,7 +449,7 @@ msgstr "ウォレットを作成できません。"
 msgid "Cannot join the same wallet more that once"
 msgstr "同じ端末で同じウォレットに複数回参加することができません。"
 
-#: www/views/includes/bitpayCardsCard.html:4
+#: www/views/includes/bitpayCardsCard.html:2
 msgid "Cards"
 msgstr "カード"
 
@@ -460,12 +481,13 @@ msgstr "やり直し"
 msgid "Clear cache"
 msgstr "キャッシュを消去"
 
-#: src/js/controllers/modals/txpDetails.js:33
+#: src/js/controllers/modals/txpDetails.js:34
 msgid "Click"
 msgstr "クリックして"
 
 #: www/views/customAmount.html:4
 #: www/views/modals/paypro.html:4
+#: www/views/modals/pin.html:3
 #: www/views/modals/search.html:3
 #: www/views/modals/wallet-balance.html:3
 #: www/views/modals/wallets.html:5
@@ -480,7 +502,7 @@ msgstr "色"
 msgid "Commit hash"
 msgstr "コミットのハッシュ値"
 
-#: www/views/preferences.html:53
+#: www/views/preferences.html:48
 msgid "Complete the backup process to use this option"
 msgstr "この機能をご利用いただくにはバックアップを行う必要があります"
 
@@ -488,9 +510,10 @@ msgstr "この機能をご利用いただくにはバックアップを行う必
 msgid "Completed"
 msgstr "完了"
 
-#: src/js/controllers/confirm.js:490
+#: src/js/controllers/buyAmazon.js:309
+#: src/js/controllers/confirm.js:494
 #: src/js/controllers/copayers.js:55
-#: src/js/controllers/topup.js:275
+#: src/js/controllers/topup.js:283
 #: www/views/backup.html:53
 #: www/views/backup.html:72
 #: www/views/confirm.html:4
@@ -502,6 +525,10 @@ msgstr "確認"
 #: www/views/onboarding/disclaimer.html:44
 msgid "Confirm &amp; Finish"
 msgstr "承諾して終了する"
+
+#: www/views/buyAmazon.html:90
+msgid "Confirm purchase"
+msgstr ""
 
 #: www/views/modals/pin.html:10
 msgid "Confirm your PIN"
@@ -578,6 +605,9 @@ msgstr "クリップボードにコピーしました"
 msgid "Copy this text as it is to a safe place (notepad or email)"
 msgstr "このテキストを安全な場所に貼り付けて保管して下さい (メモ帳やメールの下書きなど)"
 
+#: www/views/includes/incomingDataMenu.html:51
+#: www/views/includes/incomingDataMenu.html:70
+#: www/views/includes/incomingDataMenu.html:94
 #: www/views/preferencesLogs.html:10
 #: www/views/tab-export-file.html:78
 msgid "Copy to clipboard"
@@ -587,15 +617,19 @@ msgstr "クリップボードへコピー"
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "サーバーにてウォレットの確認ができませんでした。こちらをご確認下さい:"
 
+#: src/js/controllers/buyAmazon.js:101
+msgid "Could not access to Amazon.com"
+msgstr ""
+
 #: src/js/services/profileService.js:493
 msgid "Could not access wallet"
 msgstr "ウォレットにアクセスできませんでした。"
 
-#: src/js/controllers/confirm.js:182
+#: src/js/controllers/confirm.js:185
 msgid "Could not add message to imported wallet without shared encrypting key"
 msgstr "共有キー無しでインポートされたウォレットへのメッセージの追加ができません"
 
-#: src/js/controllers/modals/txpDetails.js:189
+#: src/js/controllers/modals/txpDetails.js:193
 msgid "Could not broadcast payment"
 msgstr "送金を配信できませんでした。"
 
@@ -607,11 +641,12 @@ msgstr "取引を作成できませんでした。"
 msgid "Could not create address"
 msgstr "アドレスを生成できませんでした。"
 
-#: src/js/controllers/topup.js:86
+#: src/js/controllers/topup.js:91
 msgid "Could not create the invoice"
 msgstr "請求を作成できませんでした"
 
-#: src/js/controllers/topup.js:136
+#: src/js/controllers/buyAmazon.js:163
+#: src/js/controllers/topup.js:141
 msgid "Could not create transaction"
 msgstr "取引を作成できませんでした。"
 
@@ -631,23 +666,28 @@ msgstr "作成できません：ウォレットの復元フレーズが不正で
 msgid "Could not decrypt file, check your password"
 msgstr "複合化できませんでした。パスワードが正しいかご確認下さい。"
 
-#: src/js/controllers/modals/txpDetails.js:171
+#: src/js/controllers/modals/txpDetails.js:175
 msgid "Could not delete payment proposal"
 msgstr "送金の提案を削除できませんでした"
 
-#: src/js/services/feeService.js:68
+#: src/js/services/feeService.js:72
 msgid "Could not get dynamic fee"
 msgstr "手数料の金額を取得できませんでした。"
 
-#: src/js/services/feeService.js:38
+#: src/js/services/feeService.js:42
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "次の手数料レートを取得できませんでした: {{feeLevel}}"
 
-#: src/js/controllers/topup.js:94
+#: src/js/controllers/modals/feeLevels.js:113
+msgid "Could not get fee levels"
+msgstr ""
+
+#: src/js/controllers/buyAmazon.js:121
+#: src/js/controllers/topup.js:99
 msgid "Could not get the invoice"
 msgstr "請求の取得ができませんでした"
 
-#: src/js/controllers/bitpayCard.js:69
+#: src/js/controllers/bitpayCard.js:66
 msgid "Could not get transactions"
 msgstr "取引を取得できませんでした。"
 
@@ -665,7 +705,7 @@ msgstr "インポートできませんでした。入力ファイルとパスワ
 msgid "Could not join wallet"
 msgstr "ウォレットに参加できませんでした。"
 
-#: src/js/controllers/modals/txpDetails.js:151
+#: src/js/controllers/modals/txpDetails.js:155
 msgid "Could not reject payment"
 msgstr "送金を却下できませんでした。"
 
@@ -682,11 +722,12 @@ msgstr "カードを削除できませんでした。"
 msgid "Could not save preferences on the server"
 msgstr "設定をサーバーと同期できませんでした。"
 
-#: src/js/controllers/modals/txpDetails.js:137
+#: src/js/controllers/modals/txpDetails.js:141
 msgid "Could not send payment"
 msgstr "送金できませんでした。"
 
-#: src/js/controllers/topup.js:289
+#: src/js/controllers/buyAmazon.js:323
+#: src/js/controllers/topup.js:297
 msgid "Could not send transaction"
 msgstr "取引が送れませんでした"
 
@@ -740,14 +781,22 @@ msgstr "ウォレット作成中…"
 msgid "Creating transaction"
 msgstr "取引作成中…"
 
-#: www/views/modals/chooseFeeLevel.html:19
+#: www/views/modals/chooseFeeLevel.html:34
 #: www/views/preferencesFee.html:20
 msgid "Current fee rate for this policy"
 msgstr "この設定の現在の手数料レート"
 
+#: src/js/services/feeService.js:15
+msgid "Custom"
+msgstr ""
+
 #: www/views/customAmount.html:9
 msgid "Custom Amount"
 msgstr "金額を入力"
+
+#: src/js/controllers/preferencesFee.js:84
+msgid "Custom Fee"
+msgstr ""
 
 #: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
@@ -767,7 +816,7 @@ msgstr "送金の提案を削除"
 msgid "Delete Wallet"
 msgstr "ウォレットを削除"
 
-#: www/views/copayers.html:60
+#: www/views/copayers.html:59
 msgid "Delete it and create a new one"
 msgstr "削除して新規作成"
 
@@ -790,6 +839,7 @@ msgstr "派生パス"
 msgid "Derivation Strategy"
 msgstr "派生パス"
 
+#: www/views/buyAmazon.html:39
 #: www/views/topup.html:45
 msgid "Details"
 msgstr ""
@@ -834,7 +884,7 @@ msgstr "編集"
 msgid "Email"
 msgstr "電子メール"
 
-#: www/views/preferencesNotifications.html:36
+#: www/views/preferencesNotifications.html:42
 msgid "Email Address"
 msgstr "メールアドレス"
 
@@ -846,7 +896,7 @@ msgstr "未使用アドレスを生成しすぎたため、これ以上アドレ
 msgid "Enable camera access in your device settings to get started."
 msgstr "端末の設定でカメラの使用許可をしないとスキャンができません。"
 
-#: www/views/preferencesNotifications.html:23
+#: www/views/preferencesNotifications.html:29
 msgid "Enable email notifications"
 msgstr "メール通知を有効化"
 
@@ -870,6 +920,10 @@ msgstr "送金時のパスワード入力して下さい。"
 #: src/js/services/bitpayAccountService.js:110
 msgid "Enter Two Factor for your BitPay account"
 msgstr "BitPay アカウントの2段階認証コードを入力して下さい"
+
+#: www/views/modals/chooseFeeLevel.html:41
+msgid "Enter custom fee"
+msgstr ""
 
 #: src/js/services/walletService.js:1030
 msgid "Enter new spending password"
@@ -895,10 +949,12 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/addressbookView.js:29
 #: src/js/controllers/addresses.js:130
 #: src/js/controllers/addresses.js:131
-#: src/js/controllers/bitpayCard.js:69
+#: src/js/controllers/bitpayCard.js:66
 #: src/js/controllers/bitpayCardIntro.js:40
 #: src/js/controllers/bitpayCardIntro.js:81
-#: src/js/controllers/confirm.js:271
+#: src/js/controllers/buyAmazon.js:23
+#: src/js/controllers/buyAmazon.js:34
+#: src/js/controllers/confirm.js:276
 #: src/js/controllers/copayers.js:67
 #: src/js/controllers/create.js:155
 #: src/js/controllers/create.js:168
@@ -939,7 +995,8 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/join.js:165
 #: src/js/controllers/join.js:173
 #: src/js/controllers/join.js:191
-#: src/js/controllers/modals/txpDetails.js:130
+#: src/js/controllers/modals/feeLevels.js:10
+#: src/js/controllers/modals/txpDetails.js:134
 #: src/js/controllers/paperWallet.js:47
 #: src/js/controllers/preferencesBitpayCard.js:20
 #: src/js/controllers/preferencesBitpayServices.js:33
@@ -950,26 +1007,35 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/tab-send.js:132
 #: src/js/controllers/tabsController.js:36
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/topup.js:15
-#: src/js/controllers/topup.js:26
-#: src/js/controllers/tx-details.js:100
+#: src/js/controllers/topup.js:20
+#: src/js/controllers/topup.js:31
+#: src/js/controllers/tx-details.js:102
 #: src/js/services/incomingData.js:98
 msgid "Error"
 msgstr "エラー"
 
-#: src/js/controllers/confirm.js:443
+#: src/js/controllers/confirm.js:447
 msgid "Error at confirm"
 msgstr "確認のエラー"
+
+#: src/js/controllers/buyAmazon.js:178
+msgid "Error creating gift card"
+msgstr ""
+
+#: src/js/controllers/buyAmazon.js:93
+msgid "Error creating the invoice"
+msgstr ""
 
 #: src/js/services/profileService.js:396
 msgid "Error creating wallet"
 msgstr "ウォレット作成時にエラー"
 
-#: src/js/controllers/confirm.js:261
+#: src/js/controllers/confirm.js:266
 msgid "Error getting SendMax information"
 msgstr "全額送金データ取得時にエラー"
 
-#: src/js/controllers/topup.js:108
+#: src/js/controllers/buyAmazon.js:135
+#: src/js/controllers/topup.js:113
 msgid "Error in Payment Protocol"
 msgstr "支払い検証のエラー"
 
@@ -993,7 +1059,7 @@ msgstr "デビットカードの更新エラー"
 msgid "Exceeded daily limit of $500 per user"
 msgstr "ユーザーの1日当たりの制限 500 米ドルを超えました"
 
-#: src/js/controllers/confirm.js:407
+#: src/js/controllers/confirm.js:411
 #: www/views/confirm.html:27
 #: www/views/modals/txp-details.html:121
 msgid "Expired"
@@ -1027,8 +1093,8 @@ msgid "Extended Public Keys"
 msgstr "拡張公開鍵"
 
 #: src/js/services/onGoingProcess.js:20
-msgid "Extracting Wallet Information..."
-msgstr "ウォレット情報を抽出中…"
+msgid "Extracting Wallet information..."
+msgstr ""
 
 #: src/js/controllers/export.js:115
 #: src/js/controllers/export.js:126
@@ -1047,6 +1113,14 @@ msgstr "家族旅行貯金"
 msgid "Fee"
 msgstr "手数料"
 
+#: www/views/modals/chooseFeeLevel.html:73
+msgid "Fee level"
+msgstr ""
+
+#: src/js/controllers/modals/feeLevels.js:101
+msgid "Fee level is not defined"
+msgstr ""
+
 #: www/views/confirm.html:81
 #: www/views/modals/txp-details.html:101
 msgid "Fee:"
@@ -1061,8 +1135,8 @@ msgid "Fetching BitPay Account..."
 msgstr "BitPay アカウントを取得..."
 
 #: src/js/services/onGoingProcess.js:21
-msgid "Fetching Payment Information"
-msgstr "支払い情報要求しています…"
+msgid "Fetching payment information"
+msgstr ""
 
 #: www/views/export.html:14
 #: www/views/import.html:16
@@ -1084,6 +1158,8 @@ msgstr "完了"
 msgid "For audit purposes"
 msgstr "監査用機能"
 
+#: src/js/controllers/topup.js:306
+#: www/views/buyAmazon.html:29
 #: www/views/confirm.html:65
 #: www/views/modals/txp-details.html:74
 #: www/views/topup.html:34
@@ -1160,14 +1236,26 @@ msgstr "初めての連絡先を追加しましょう。"
 msgid "Getting fee levels..."
 msgstr "手数料レベルを取得しています…"
 
-#: src/js/controllers/bitpayCard.js:181
-#: src/js/controllers/bitpayCard.js:191
+#: www/views/buyAmazon.html:43
+msgid "Gift card"
+msgstr ""
+
+#: src/js/controllers/buyAmazon.js:203
+msgid "Gift card expired"
+msgstr ""
+
+#: www/views/buyAmazon.html:111
+msgid "Gift card generated and ready to use."
+msgstr ""
+
+#: src/js/controllers/bitpayCard.js:114
+#: src/js/controllers/bitpayCard.js:124
 #: src/js/controllers/onboarding/terms.js:23
 #: src/js/controllers/preferencesAbout.js:16
 #: src/js/controllers/preferencesLanguage.js:14
 #: src/js/controllers/tab-home.js:149
 #: src/js/controllers/tab-settings.js:48
-#: src/js/controllers/tx-details.js:174
+#: src/js/controllers/tx-details.js:176
 msgid "Go Back"
 msgstr "戻る"
 
@@ -1200,7 +1288,7 @@ msgstr "ハードウェアウォレット"
 msgid "Help & Support"
 msgstr "ヘルプ＆サポート"
 
-#: src/js/controllers/bitpayCard.js:179
+#: src/js/controllers/bitpayCard.js:112
 #: src/js/controllers/tab-settings.js:46
 msgid "Help and support information is available at the website."
 msgstr "サポートに関する情報はウェブサイトに掲載しております。"
@@ -1209,7 +1297,7 @@ msgstr "サポートに関する情報はウェブサイトに掲載しており
 msgid "Hide"
 msgstr "非表示"
 
-#: www/views/preferences.html:32
+#: www/views/preferences.html:27
 msgid "Hide Balance"
 msgstr "残高を非表示"
 
@@ -1284,7 +1372,7 @@ msgstr "自分のビットコインがこの端末に入っていて、外部の
 msgid "I've written it down"
 msgstr "紙に書き留めました"
 
-#: www/views/preferences.html:50
+#: www/views/preferences.html:45
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
 msgstr "有効にした場合は、このウォレットに関連する全ての秘密情報(秘密鍵と復元フレーズ)と履歴情報(送金やエクスポート)は守られます。"
 
@@ -1357,12 +1445,14 @@ msgstr "コードの形式が異なります"
 msgid "Incorrect network address"
 msgstr "サーバーのアドレスが不正です"
 
+#: src/js/controllers/confirm.js:112
+#: src/js/controllers/confirm.js:275
 #: src/js/services/bwcError.js:44
 msgid "Insufficient funds"
 msgstr "残高不足"
 
-#: src/js/controllers/topup.js:159
-#: src/js/controllers/topup.js:171
+#: src/js/controllers/topup.js:164
+#: src/js/controllers/topup.js:176
 #: src/js/services/bwcError.js:71
 msgid "Insufficient funds for fee"
 msgstr "手数料付けるには残高が足りません"
@@ -1371,7 +1461,8 @@ msgstr "手数料付けるには残高が足りません"
 msgid "Invalid"
 msgstr "無効"
 
-#: src/js/controllers/topup.js:109
+#: src/js/controllers/buyAmazon.js:136
+#: src/js/controllers/topup.js:114
 msgid "Invalid URL"
 msgstr "無効なURL"
 
@@ -1399,6 +1490,7 @@ msgstr "無効な派生パス"
 msgid "Invitation to share a {{appName}} Wallet"
 msgstr "{{appName}} 共有ウォレットへの招待"
 
+#: www/views/buyAmazon.html:49
 #: www/views/topup.html:56
 msgid "Invoice Fee"
 msgstr ""
@@ -1506,10 +1598,6 @@ msgstr "少額の入力"
 msgid "Low fees"
 msgstr "低手数料"
 
-#: www/views/paymentUri.html:13
-msgid "Make a payment to"
-msgstr "支払いは次の宛先へ"
-
 #: www/views/onboarding/tour.html:38
 msgid "Makes sense"
 msgstr "わかりました"
@@ -1527,7 +1615,7 @@ msgstr "自分"
 msgid "Meh - it's alright"
 msgstr "まあまあです"
 
-#: src/js/controllers/tx-details.js:146
+#: src/js/controllers/tx-details.js:148
 #: www/views/modals/paypro.html:48
 #: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
@@ -1538,10 +1626,6 @@ msgstr "メモ"
 msgid "Merchant Message"
 msgstr "お店からのメッセージ："
 
-#: www/views/paymentUri.html:17
-msgid "Message"
-msgstr "メッセージ"
-
 #: src/js/services/bwcError.js:134
 msgid "Missing parameter"
 msgstr "不足しているパラメータ"
@@ -1550,7 +1634,7 @@ msgstr "不足しているパラメータ"
 msgid "Missing private keys to sign"
 msgstr "署名するための秘密鍵がありません。"
 
-#: www/views/preferences.html:65
+#: www/views/preferences.html:60
 #: www/views/preferencesAdvanced.html:3
 msgid "More Options"
 msgstr "その他オプション"
@@ -1560,7 +1644,7 @@ msgstr "その他オプション"
 msgid "Moved"
 msgstr "移動済"
 
-#: src/js/controllers/tx-details.js:112
+#: src/js/controllers/tx-details.js:114
 msgid "Moved Funds"
 msgstr "資金を移動済み"
 
@@ -1579,10 +1663,7 @@ msgstr "注意：他アプリのウォレットをインポートする場合、
 msgid "Name"
 msgstr "名前"
 
-#: www/views/paymentUri.html:18
-msgid "Network"
-msgstr "ネットワーク"
-
+#: www/views/buyAmazon.html:55
 #: www/views/topup.html:63
 msgid "Network Fee"
 msgstr ""
@@ -1611,6 +1692,10 @@ msgstr "次のステップ"
 msgid "No Wallet"
 msgstr "ウォレットが無いよ…(´・ω・`)"
 
+#: src/js/controllers/buyAmazon.js:114
+msgid "No access key defined"
+msgstr ""
+
 #: www/views/onboarding/backupRequest.html:5
 msgid "No backup, no bitcoin."
 msgstr "バックアップは非常に重要です！"
@@ -1627,7 +1712,7 @@ msgstr "ハードウェア情報はありません"
 msgid "No hardware wallets supported on this device"
 msgstr "この端末ではハードウェアウォレットがサポートされていません"
 
-#: www/views/proposals.html:25
+#: www/views/proposals.html:24
 msgid "No pending proposals"
 msgstr "保留中の提案はありません"
 
@@ -1635,7 +1720,8 @@ msgstr "保留中の提案はありません"
 msgid "No recent transactions"
 msgstr "最近の取引がありません"
 
-#: src/js/controllers/topup.js:41
+#: src/js/controllers/buyAmazon.js:43
+#: src/js/controllers/topup.js:46
 msgid "No signing proposal: No private key"
 msgstr "提案に署名できない：秘密鍵がありません"
 
@@ -1651,7 +1737,9 @@ msgstr "ウォレットが見つかりません"
 msgid "No wallet selected"
 msgstr "ウォレットが選択されていません"
 
-#: src/js/controllers/topup.js:255
+#: src/js/controllers/buyAmazon.js:298
+#: src/js/controllers/confirm.js:83
+#: src/js/controllers/topup.js:263
 msgid "No wallets available"
 msgstr ""
 
@@ -1667,7 +1755,7 @@ msgstr "通常"
 msgid "Not authorized"
 msgstr "権限がありません。"
 
-#: src/js/controllers/confirm.js:271
+#: src/js/controllers/confirm.js:276
 msgid "Not enough funds for fee"
 msgstr "手数料含めたら残高が不足しています。"
 
@@ -1701,9 +1789,13 @@ msgstr "通知設定"
 msgid "Notifications by email"
 msgstr "メール通知"
 
-#: www/views/tx-details.html:116
+#: www/views/tx-details.html:117
 msgid "Notify me if confirmed"
 msgstr "取引承認時に通知"
+
+#: www/views/preferencesNotifications.html:24
+msgid "Notify me when transactions are confirmed"
+msgstr ""
 
 #: www/views/includes/backupNeededPopup.html:8
 msgid "Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
@@ -1713,9 +1805,13 @@ msgstr "お金を受け取る前に、このウォレットのバックアップ
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
 msgstr "今一度周りの環境をよく見てみましょう。隠しカメラ、窓、覗いてくる人などありませんか？"
 
-#: src/js/controllers/topup.js:276
+#: src/js/controllers/buyAmazon.js:310
+#: src/js/controllers/topup.js:284
 #: src/js/services/popupService.js:16
-#: src/js/services/popupService.js:59
+#: src/js/services/popupService.js:52
+#: src/js/services/popupService.js:61
+#: src/js/services/popupService.js:72
+#: www/views/modals/chooseFeeLevel.html:6
 msgid "OK"
 msgstr "OK"
 
@@ -1738,7 +1834,7 @@ msgstr "おっと!"
 msgid "On this screen you can see all your wallets, accounts, and assets."
 msgstr "この画面では、全てのウォレット、アカウント、資産が閲覧できます。"
 
-#: src/js/controllers/bitpayCard.js:180
+#: src/js/controllers/bitpayCard.js:113
 #: src/js/controllers/tab-settings.js:47
 msgid "Open"
 msgstr "開く"
@@ -1755,8 +1851,8 @@ msgstr "GitHubを開く"
 msgid "Open GitHub Project"
 msgstr "GitHub のプロジェクトを開く"
 
-#: src/js/controllers/bitpayCard.js:190
-#: src/js/controllers/tx-details.js:173
+#: src/js/controllers/bitpayCard.js:123
+#: src/js/controllers/tx-details.js:175
 msgid "Open Insight"
 msgstr "Insightを開く"
 
@@ -1775,6 +1871,10 @@ msgstr "サイトを開く"
 #: www/views/tab-receive.html:27
 msgid "Open wallet"
 msgstr "ウォレットを開く"
+
+#: www/views/includes/incomingDataMenu.html:19
+msgid "Open website"
+msgstr ""
 
 #: www/views/bitpayCardIntro.html:34
 msgid "Order the BitPay Card"
@@ -1811,6 +1911,7 @@ msgstr "0% 手数料でビットコインを米ドルに替える"
 msgid "Pay To"
 msgstr "支払い先"
 
+#: src/js/controllers/modals/txpDetails.js:45
 #: www/views/modals/tx-status.html:33
 msgid "Payment Accepted"
 msgstr "支払いが完了しました"
@@ -1848,9 +1949,9 @@ msgstr "送金が受領されました"
 msgid "Payment Rejected"
 msgstr "送金が却下されました"
 
+#: src/js/controllers/modals/txpDetails.js:42
 #: www/views/confirm.html:126
 #: www/views/includes/walletActivity.html:11
-#: www/views/modals/txp-details.html:188
 #: www/views/modals/txp-details.html:42
 msgid "Payment Sent"
 msgstr "送金が完了しました"
@@ -1871,7 +1972,7 @@ msgstr "支払いの詳細"
 msgid "Payment request"
 msgstr "支払い請求"
 
-#: www/views/proposals.html:5
+#: www/views/proposals.html:4
 msgid "Pending Proposals"
 msgstr "保留中の提案"
 
@@ -1932,13 +2033,17 @@ msgstr "アドレスを処理中…"
 msgid "Preparing backup..."
 msgstr "バックアップを準備中..."
 
-#: src/js/routes.js:1196
+#: src/js/routes.js:1188
 msgid "Press again to exit"
 msgstr "もう一度押して終了"
 
 #: src/js/services/feeService.js:11
 msgid "Priority"
 msgstr "優先"
+
+#: www/views/includes/incomingDataMenu.html:80
+msgid "Private Key"
+msgstr ""
 
 #: src/js/controllers/paperWallet.js:137
 msgid "Private key encrypted. Enter password"
@@ -1952,8 +2057,8 @@ msgstr "秘密鍵が暗号化されており署名できません。"
 msgid "Proposal Accepted"
 msgstr "提案が承諾されました"
 
-#: src/js/controllers/modals/txpDetails.js:51
-#: src/js/controllers/tx-details.js:59
+#: src/js/controllers/modals/txpDetails.js:55
+#: src/js/controllers/tx-details.js:61
 #: www/views/confirm.html:127
 msgid "Proposal Created"
 msgstr "提案が作成されました"
@@ -1969,6 +2074,10 @@ msgstr "提案が却下されました"
 #: www/views/walletDetails.html:178
 msgid "Proposals"
 msgstr "提案"
+
+#: src/js/controllers/buyAmazon.js:281
+msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
+msgstr ""
 
 #: www/views/onboarding/notifications.html:3
 msgid "Push Notifications"
@@ -2008,12 +2117,16 @@ msgstr "もっと読む"
 msgid "Receive"
 msgstr "受取"
 
+#: www/views/customAmount.html:46
+msgid "Receive in"
+msgstr ""
+
 #: www/views/includes/walletHistory.html:24
 #: www/views/tx-details.html:18
 msgid "Received"
 msgstr "受取済み"
 
-#: src/js/controllers/tx-details.js:111
+#: src/js/controllers/tx-details.js:113
 msgid "Received Funds"
 msgstr "受領した資金"
 
@@ -2058,8 +2171,8 @@ msgstr "再登録"
 msgid "Recreating Wallet..."
 msgstr "ウォレットを再作成中…"
 
-#: src/js/controllers/modals/txpDetails.js:53
-#: src/js/controllers/tx-details.js:61
+#: src/js/controllers/modals/txpDetails.js:57
+#: src/js/controllers/tx-details.js:63
 msgid "Rejected"
 msgstr "却下済み"
 
@@ -2101,7 +2214,7 @@ msgstr "パスワードを再入力"
 msgid "Repeat the password"
 msgstr "パスワードの再入力"
 
-#: www/views/preferences.html:60
+#: www/views/preferences.html:55
 msgid "Request Fingerprint"
 msgstr "指紋を要求"
 
@@ -2109,7 +2222,7 @@ msgstr "指紋を要求"
 msgid "Request Specific amount"
 msgstr "指定金額を要求"
 
-#: www/views/preferences.html:47
+#: www/views/preferences.html:42
 msgid "Request Spending Password"
 msgstr "送金時のパスワード入力"
 
@@ -2137,7 +2250,7 @@ msgstr "カメラを再試行"
 #: www/views/includes/note.html:9
 #: www/views/preferencesAlias.html:21
 #: www/views/preferencesBwsUrl.html:25
-#: www/views/preferencesNotifications.html:40
+#: www/views/preferencesNotifications.html:46
 msgid "Save"
 msgstr "保存"
 
@@ -2186,7 +2299,7 @@ msgstr "取引を検索"
 msgid "Search your currency"
 msgstr "通貨を検索"
 
-#: www/views/preferences.html:35
+#: www/views/preferences.html:30
 msgid "Security"
 msgstr "セキュリティ"
 
@@ -2195,7 +2308,6 @@ msgid "Select a backup file"
 msgstr "バックアップファイルを選択"
 
 #: src/js/controllers/tab-receive.js:133
-#: www/views/paymentUri.html:30
 msgid "Select a wallet"
 msgstr "ウォレットを選択"
 
@@ -2232,13 +2344,17 @@ msgstr "ビットコインアドレスをメールにて共有"
 msgid "Send by email"
 msgstr "メールで送信"
 
-#: src/js/controllers/confirm.js:148
+#: src/js/controllers/confirm.js:151
 msgid "Send from"
 msgstr "ここから送金"
 
 #: www/views/includes/itemSelector.html:8
 msgid "Send max amount"
 msgstr "全残高を送金"
+
+#: www/views/includes/incomingDataMenu.html:46
+msgid "Send payment to this address"
+msgstr ""
 
 #: www/views/feedback/rateApp.html:17
 msgid "Send us feedback instead"
@@ -2267,7 +2383,7 @@ msgstr "全残高を送金"
 msgid "Sending transaction"
 msgstr "取引送信中"
 
-#: src/js/controllers/confirm.js:486
+#: src/js/controllers/confirm.js:490
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr "ウォレット {{name}} から {{amountStr}} の送金を行います。"
 
@@ -2278,13 +2394,17 @@ msgstr "ウォレット {{name}} から {{amountStr}} の送金を行います�
 msgid "Sent"
 msgstr "送金済み"
 
-#: src/js/controllers/tx-details.js:110
+#: src/js/controllers/tx-details.js:112
 msgid "Sent Funds"
 msgstr "資金を送金済み"
 
 #: src/js/services/bwcError.js:38
 msgid "Server response could not be verified"
 msgstr "サーバーからの返答を検証できませんでした"
+
+#: src/js/controllers/buyAmazon.js:96
+msgid "Service not available"
+msgstr ""
 
 #: www/views/includes/homeIntegrations.html:3
 msgid "Services"
@@ -2302,6 +2422,10 @@ msgstr "セッションのログ"
 msgid "Set up a password"
 msgstr "パスワードを設定"
 
+#: src/js/controllers/preferencesFee.js:84
+msgid "Set your own fee in satoshis/byte"
+msgstr ""
+
 #: www/views/tab-settings.html:3
 #: www/views/tabs.html:19
 msgid "Settings"
@@ -2312,7 +2436,7 @@ msgstr "設定"
 msgid "Share the love by inviting your friends."
 msgstr "是非友達と共有して下さい"
 
-#: www/views/copayers.html:21
+#: www/views/copayers.html:20
 msgid "Share this invitation with your copayers"
 msgstr "ウォレット参加者に\n"
 "この招待コードを\n"
@@ -2375,9 +2499,13 @@ msgstr "単一アドレスウォレット"
 msgid "Skip"
 msgstr "スキップ"
 
-#: src/js/controllers/modals/txpDetails.js:33
+#: src/js/controllers/modals/txpDetails.js:34
 msgid "Slide"
 msgstr "スライドして"
+
+#: www/views/buyAmazon.html:96
+msgid "Slide to buy"
+msgstr ""
 
 #: src/js/controllers/create.js:83
 #: src/js/controllers/join.js:68
@@ -2404,10 +2532,6 @@ msgstr "この入力の組み合わせを送金するために膨大なビット
 msgid "Start sending bitcoin"
 msgstr "ビットコインの送金を始めましょう"
 
-#: src/js/routes.js:118
-msgid "Starting..."
-msgstr "開始中..."
-
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
 msgstr "起動ロック"
@@ -2424,6 +2548,7 @@ msgstr "超節約"
 msgid "Sweep"
 msgstr "全残高インポート"
 
+#: www/views/includes/incomingDataMenu.html:89
 #: www/views/paperWallet.html:3
 msgid "Sweep paper wallet"
 msgstr "ペーパーウォレットの全残高インポート"
@@ -2465,6 +2590,10 @@ msgstr "利用規約"
 #: www/views/tab-import-phrase.html:65
 msgid "Testnet"
 msgstr "テスト用ネットワーク"
+
+#: www/views/includes/incomingDataMenu.html:61
+msgid "Text"
+msgstr ""
 
 #: src/js/controllers/feedback/send.js:27
 #: src/js/controllers/feedback/send.js:76
@@ -2562,10 +2691,6 @@ msgstr "取引履歴は新規の取引が現れる度に端末にキャッシュ
 msgid "The wallet service URL"
 msgstr "ウォレットサービスのURL"
 
-#: www/views/paymentUri.html:23
-msgid "There are no wallets to make this payment"
-msgstr "送金可能なウォレットがありません"
-
 #: src/js/controllers/tab-home.js:38
 msgid "There is a new version of {{appName}} available"
 msgstr "{{appName}} の新しいバージョンがあります。"
@@ -2589,7 +2714,7 @@ msgstr "このアプリは素晴らしいです!"
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr "このアプリは、最先端のセキュリティであなたのビットコインをお守りします。"
 
-#: src/js/controllers/confirm.js:464
+#: src/js/controllers/confirm.js:468
 msgid "This bitcoin payment request has expired."
 msgstr "ビットコインペイメントの請求期限が切れています。"
 
@@ -2617,7 +2742,7 @@ msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). 
 msgstr "現在設定中のBitcore Wallet Service (BWS) サーバーにて、このウォレットの登録がありません。再登録を行うこともできます。"
 
 #: www/views/modals/txp-details.html:138
-#: www/views/tx-details.html:119
+#: www/views/tx-details.html:121
 msgid "Timeline"
 msgstr "履歴"
 
@@ -2646,10 +2771,11 @@ msgstr "{{reason}}：その前にBitPayアカウントを追加する必要が�
 msgid "Top up in progress..."
 msgstr "残高補充処理中..."
 
-#: src/js/controllers/topup.js:198
+#: src/js/controllers/topup.js:205
 msgid "Top up {{amountStr}} to debit card ({{cardLastNumber}})"
 msgstr "デビットカード ({{cardLastNumber}}) に {{amountStr}} の入金を行う"
 
+#: www/views/buyAmazon.html:61
 #: www/views/modals/wallet-balance.html:23
 #: www/views/topup.html:70
 msgid "Total"
@@ -2672,9 +2798,13 @@ msgstr "合計ウォレット入力"
 msgid "Touch ID Failed"
 msgstr "Touch ID が失敗しました。"
 
-#: src/js/controllers/tx-details.js:10
+#: src/js/controllers/tx-details.js:11
 msgid "Transaction"
 msgstr "取引"
+
+#: www/views/confirm.html:128
+msgid "Transaction Created"
+msgstr ""
 
 #: www/views/preferencesAdvanced.html:29
 #: www/views/preferencesHistory.html:3
@@ -2685,11 +2815,8 @@ msgstr "取引履歴"
 msgid "Transaction already broadcasted"
 msgstr "取引は既に配信されました。"
 
-#: www/views/confirm.html:128
-msgid "Transaction created"
-msgstr "取引情報を作成しました"
-
-#: src/js/controllers/topup.js:271
+#: src/js/controllers/buyAmazon.js:306
+#: src/js/controllers/topup.js:279
 msgid "Transaction has not been created"
 msgstr ""
 
@@ -2697,7 +2824,7 @@ msgstr ""
 msgid "Transaction initiated"
 msgstr "取引が開始されました"
 
-#: src/js/controllers/tx-details.js:100
+#: src/js/controllers/tx-details.js:102
 msgid "Transaction not available at this time"
 msgstr "現在この取引はご覧いただけません。"
 
@@ -2705,6 +2832,10 @@ msgstr "現在この取引はご覧いただけません。"
 #: src/js/controllers/tab-home.js:174
 msgid "Transaction not found"
 msgstr "取引は見つかりません"
+
+#: www/views/modals/chooseFeeLevel.html:54
+msgid "Transactions without fee are not supported."
+msgstr ""
 
 #: src/js/controllers/paperWallet.js:110
 msgid "Transfer to"
@@ -2754,7 +2885,7 @@ msgstr "未使用アドレス生成上限"
 msgid "Update Available"
 msgstr "利用可能なアップデートあり"
 
-#: www/views/proposals.html:15
+#: www/views/proposals.html:14
 msgid "Updating pending proposals. Please stand by"
 msgstr "協議中の送金提案を更新します。しばらくお待ちください。"
 
@@ -2799,8 +2930,8 @@ msgstr "全アドレスを表示"
 msgid "View Terms of Service"
 msgstr "サービス利用規約を表示"
 
-#: src/js/controllers/bitpayCard.js:189
-#: src/js/controllers/tx-details.js:172
+#: src/js/controllers/bitpayCard.js:122
+#: src/js/controllers/tx-details.js:174
 msgid "View Transaction on Insight"
 msgstr "Insightにて取引を表示"
 
@@ -2808,7 +2939,7 @@ msgstr "Insightにて取引を表示"
 msgid "View Update"
 msgstr "更新情報を表示"
 
-#: www/views/tx-details.html:145
+#: www/views/tx-details.html:147
 msgid "View on blockchain"
 msgstr "ブロックチェーンで詳細を閲覧"
 
@@ -2836,11 +2967,11 @@ msgstr "Ledger を待っています..."
 msgid "Waiting for Trezor..."
 msgstr "Trezor を待っています..."
 
-#: www/views/copayers.html:49
+#: www/views/copayers.html:48
 msgid "Waiting for copayers"
 msgstr "ウォレット参加者を待っています"
 
-#: www/views/copayers.html:54
+#: www/views/copayers.html:53
 msgid "Waiting..."
 msgstr "少々お待ち下さい…"
 
@@ -2932,7 +3063,7 @@ msgstr "Copay内の既存のウォレットです"
 msgid "Wallet created"
 msgstr "ウォレットが作成されました"
 
-#: www/views/copayers.html:59
+#: www/views/copayers.html:58
 msgid "Wallet incomplete and broken"
 msgstr "ウォレットが未完成で破損しています"
 
@@ -2991,8 +3122,8 @@ msgid "Wallets & Integrations"
 msgstr "ウォレットと連動"
 
 #: src/js/controllers/addressbookView.js:23
-#: src/js/controllers/modals/txpDetails.js:143
-#: src/js/controllers/modals/txpDetails.js:160
+#: src/js/controllers/modals/txpDetails.js:147
+#: src/js/controllers/modals/txpDetails.js:164
 #: src/js/controllers/preferencesDelete.js:25
 #: src/js/controllers/preferencesExternal.js:14
 #: www/views/preferencesDeleteWallet.html:11
@@ -3022,6 +3153,10 @@ msgstr "弊社では、{{appName}} を改善する方法を常に探していま
 #: src/js/controllers/feedback/send.js:83
 msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
 msgstr "常に{{appName}}を改善したく思っております。どのようにしたら改善できると思いますか？"
+
+#: www/views/includes/incomingDataMenu.html:6
+msgid "Website"
+msgstr ""
 
 #: www/views/preferencesLanguage.html:16
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
@@ -3099,11 +3234,15 @@ msgstr "米ドル、ユーロ、ポンドなど他の通貨との取引ができ
 msgid "You control your bitcoin."
 msgstr "ビットコインの自己管理"
 
+#: www/views/modals/chooseFeeLevel.html:63
+msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
+msgstr ""
+
 #: www/views/modals/bitpay-card-confirmation.html:5
 msgid "You will need to log back for fill in your BitPay Card."
 msgstr "BitPayカードに入金するためにログインする必要があります。"
 
-#: www/views/preferencesNotifications.html:28
+#: www/views/preferencesNotifications.html:34
 msgid "You'll receive email notifications about payments sent and received from your wallets."
 msgstr "メールアドレスにウォレットへの入金や出金に関する通知が送られます。"
 
@@ -3118,6 +3257,10 @@ msgstr "ビットコインウォレットがバックアップされました!"
 #: www/views/tab-home.html:36
 msgid "Your bitcoin wallet is ready!"
 msgstr "ビットコインウォレットが完成しました!"
+
+#: www/views/modals/chooseFeeLevel.html:60
+msgid "Your fee is lower than recommended."
+msgstr ""
 
 #: www/views/feedback/send.html:42
 msgid "Your ideas, feedback, or comments"
@@ -3135,6 +3278,14 @@ msgstr "自分のハンドルネーム"
 #: www/views/tab-import-file.html:20
 msgid "Your password"
 msgstr "パスワード"
+
+#: www/views/buyAmazon.html:102
+msgid "Your purchase could not be completed"
+msgstr ""
+
+#: www/views/buyAmazon.html:105
+msgid "Your purchase was added to the list of pending"
+msgstr ""
 
 #: www/views/onboarding/backupRequest.html:10
 msgid "Your wallet is never saved to cloud storage or standard device backups."
@@ -3173,25 +3324,29 @@ msgstr "name@example.com"
 msgid "preparing..."
 msgstr "準備中..."
 
-#: src/js/controllers/confirm.js:325
-#: src/js/controllers/modals/txpDetails.js:42
+#: src/js/controllers/confirm.js:329
+#: src/js/controllers/modals/txpDetails.js:44
 msgid "to accept"
 msgstr "承諾する"
 
-#: src/js/controllers/confirm.js:323
+#: src/js/controllers/confirm.js:327
 msgid "to pay"
 msgstr "支払う"
 
-#: src/js/controllers/confirm.js:327
-#: src/js/controllers/modals/txpDetails.js:40
+#: src/js/controllers/confirm.js:331
+#: src/js/controllers/modals/txpDetails.js:41
 msgid "to send"
 msgstr "送金する"
+
+#: src/js/controllers/buyAmazon.js:238
+msgid "{{amountStr}} for Amazon.com Gift Card"
+msgstr ""
 
 #: www/views/preferencesBwsUrl.html:21
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr "{{appName}}はブロックチェーンの情報を取得したり参加者を同期させたりするためにBitcore Wallet Service (BWS)に依存します。初期値としてBitPay社が提供する https://bws.bitpay.com (BitPay公式のBWSサーバー)を設定していますが、独自で運用してウォレットをそちらに接続しても構いません。"
 
-#: src/js/controllers/confirm.js:354
+#: src/js/controllers/confirm.js:358
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} のビットコインネットワーク手数料が差し引かれます。"
 
@@ -3203,7 +3358,7 @@ msgstr "送金額に対する {{tx.txp[wallet.id].feeRatePerStr}}"
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} 個の取引ダウンロード済み"
 
-#: www/views/copayers.html:47
+#: www/views/copayers.html:46
 #: www/views/includes/walletInfo.html:12
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
