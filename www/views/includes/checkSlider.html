@@ -1,20 +1,20 @@
-<div class="check-slider list">
-  <div class="filling-bar with"></div>
+<div class="check-slider list card">
+  <div ng-class="filledClass" class="initial-bar"></div>
   <div class="base-bar"></div>
-  <div class="custom-checkbox">
-    <label>Info</label>
-    <ion-checkbox ng-model="filterInfo"></ion-checkbox>
-  </div>
-  <div class="custom-checkbox">
-    <label>Warning</label>
-    <ion-checkbox ng-model="filterWarning"></ion-checkbox>
-  </div>
-  <div class="custom-checkbox">
-    <label>Error</label>
-    <ion-checkbox ng-model="filterError"></ion-checkbox>
-  </div>
-  <div class="custom-checkbox">
-    <label>Debug</label>
-    <ion-checkbox ng-model="filterDebug"></ion-checkbox>
+  <div class="custom-checkbox" ng-repeat="item in items track by $index">
+    <label>{{item}}</label>
+    <ion-checkbox ng-model="filter[$index]" ng-change="getFillClass($index)"></ion-checkbox>
   </div>
 </div>
+
+<!--
+  $scope.items = [
+      'info',
+      'warning',
+      'error',
+      'debug',
+    ];
+    $scope.getFillClass = function(index) {
+      $scope.filledClass = 'filling-bar--' + $scope.items[index];
+    }
+  -->

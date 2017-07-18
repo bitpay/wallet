@@ -1,31 +1,34 @@
-.check-slider {
+$bar-widths: (
+    info: 3rem,
+    warning: 35%,
+    error: 65%,
+    debug: 102%,
+  );
+
+  .check-slider {
     position: relative;
-    .filling-bar {
-      position: absolute;
-      width:1px;
-      border: 3px solid $v-success-color;
-      top: 37px;
-      left: 44px;
-      z-index: 99;
-      border-radius: 10px;
-      -webkit-animation: increase 3s;
-      -moz-animation:    increase 3s;
-      -o-animation:      increase 3s;
-      animation:         increase 3s;
-      animation-fill-mode: forwards;
-    }
-    @keyframes increase {
-      100% {
-        width: 80%;
+    @each $name, $bar-width in $bar-widths {
+      .initial-bar {
+        width: 0%;
+        border: 3px solid $v-success-color;
+        top: 37px;
+        left: -7px;
+        z-index: 99;
+        border-radius: 10px;
+        position: absolute;
+      }
+      .filling-bar--#{$name} {
+        width: $bar-width !important;
+        transition: width 1s;
       }
     }
     .base-bar {
       position: absolute;
-      width: 80%;
+      width: 100%;
       border-bottom: 1px solid #f2f2f2;
       top: 39px;
-      left: 44px;
       z-index: 98;
+      left: 0px;
     }
     &.list{
       display: flex;
@@ -41,3 +44,4 @@
       }
     }
   }
+  
