@@ -2,7 +2,9 @@
 
 angular.module('copayApp.controllers').controller('feeLevelsController', function($scope, $timeout, $log, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService) {
 
-  var MAX_RECOMMENDED_FEE = 1000;
+  var FEE_MULTIPLIER = 10;
+  var FEE_MIN = 0;
+  var FEE_MAX = 1000000;
 
   var showErrorAndClose = function(title, msg) {
     title = title || gettextCatalog.getString('Error');
@@ -21,7 +23,10 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
   };
 
   var getMaxRecommended = function() {
-    return MAX_RECOMMENDED_FEE;
+    var value = lodash.find($scope.feeLevels[$scope.network], {
+      level: 'urgent'
+    });
+    return parseInt((value.feePerKB / 1000).toFixed());
   };
 
   $scope.ok = function() {
@@ -30,18 +35,22 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
   };
 
   $scope.setFeesRecommended = function() {
-    $scope.maxFeeRecommended = getMaxRecommended();
+    $scope.minFeeAllowed = FEE_MIN;
+    $scope.maxFeeAllowed = FEE_MAX;
+    $scope.maxFeeRecommended = getMaxRecommended() * FEE_MULTIPLIER;
     $scope.minFeeRecommended = getMinRecommended();
   };
 
   $scope.checkFees = function(feePerSatByte) {
-    if (Number(feePerSatByte) == 0) $scope.showError = true;
+    var fee = Number(feePerSatByte);
+
+    if (fee <= $scope.minFeeAllowed) $scope.showError = true;
     else $scope.showError = false;
 
-    if (Number(feePerSatByte) < $scope.minFeeRecommended) $scope.showMinWarning = true;
+    if (fee > $scope.minFeeAllowed && fee < $scope.minFeeRecommended) $scope.showMinWarning = true;
     else $scope.showMinWarning = false;
 
-    if (Number(feePerSatByte) > $scope.maxFeeRecommended) $scope.showMaxWarning = true;
+    if (fee < $scope.maxFeeAllowed && fee > $scope.maxFeeRecommended) $scope.showMaxWarning = true;
     else $scope.showMaxWarning = false;
   };
 

@@ -39,8 +39,8 @@
               <input
               type="number"
               placeholder="{{'Enter custom fee'|translate}}"
-              ng-min="0"
-              ng-max="maxFeeRecommended + 10000"
+              ng-min="minFeeAllowed"
+              ng-max="maxFeeAllowed"
               min="minFeeRecommended"
               max="maxFeeRecommended"
               ng-change="checkFees(customSatPerByte.value)"
@@ -52,7 +52,7 @@
           <div class="error-fee" ng-if="showError">
             <i class="icon ion-close-circled"></i>
             <span translate>
-              Zero value for fee are not allowed.
+              Transactions without fee are not supported.
             </span>
           </div>
           <div class="warning-fee" ng-if="showMinWarning || showMaxWarning">
@@ -61,7 +61,7 @@
               Your fee is lower than recommended.
             </span>
             <span ng-if="showMaxWarning" translate>
-              You should not set a fee higher than 1000 satoshis/byte.
+              You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.
             </span>
           </div>
         </div>
