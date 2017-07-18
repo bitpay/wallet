@@ -9,11 +9,16 @@ angular.module('copayApp.directives')
       scope: {
         show: '=logOptionsShow',
         options: '=logOptions',
-        title: '=logOptionsTitle'
+        fillClass: '=logOptionsFillClass',
+        title: '=logOptionsTitle',
+        onSelect: '=logOptionsOnSelect'
       },
       link: function(scope, element, attrs) {
         scope.hide = function() {
           scope.show = false;
+        };
+        scope.getFillClass = function(index) {
+          scope.onSelect(index);
         };
       }
     };
