@@ -1,0 +1,20 @@
+<div class="check-slider list card">
+  <div ng-class="filledClass" class="initial-bar"></div>
+  <div class="base-bar"></div>
+  <div class="custom-checkbox" ng-repeat="item in items track by $index">
+    <label>{{item}}</label>
+    <ion-checkbox ng-model="filter[$index]" ng-change="getFillClass($index)"></ion-checkbox>
+  </div>
+</div>
+
+<!--
+  $scope.items = [
+      'info',
+      'warning',
+      'error',
+      'debug',
+    ];
+    $scope.getFillClass = function(index) {
+      $scope.filledClass = 'filling-bar--' + $scope.items[index];
+    }
+  -->
