@@ -4,10 +4,13 @@
     text-align: center;
     background: #f9f9f9;
     font-size: 11px;
-    height: 120px;
+    height: 140px;
     padding-top: 25px;
     .row {
       padding: 0;
+    }
+    .col {
+      padding-top: 15px;
     }
     .separator {
       border-left: 1px solid #d9d9df;
@@ -36,17 +39,8 @@
       }
     }
   }
-  .warning-fee {
-    padding: 5px 10px;
-    color: $v-warning-color;
-    font-size: 12px;
-    text-align: center;
-    i {
-      margin-right: 8px;
-    }
-  }
   .error-fee {
-    padding: 5px 10px;
+    padding: 8px 10px;
     color: $v-error-color;
     font-size: 12px;
     text-align: center;
