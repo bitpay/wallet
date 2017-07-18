@@ -4,7 +4,6 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
 
   var FEE_MULTIPLIER = 10;
   var FEE_MIN = 0;
-  var FEE_MAX = 1000000;
 
   var showErrorAndClose = function(title, msg) {
     title = title || gettextCatalog.getString('Error');
@@ -35,10 +34,10 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
   };
 
   $scope.setFeesRecommended = function() {
-    $scope.minFeeAllowed = FEE_MIN;
-    $scope.maxFeeAllowed = FEE_MAX;
-    $scope.maxFeeRecommended = getMaxRecommended() * FEE_MULTIPLIER;
+    $scope.maxFeeRecommended = getMaxRecommended();
     $scope.minFeeRecommended = getMinRecommended();
+    $scope.minFeeAllowed = FEE_MIN;
+    $scope.maxFeeAllowed = $scope.maxFeeRecommended * FEE_MULTIPLIER;
   };
 
   $scope.checkFees = function(feePerSatByte) {
