@@ -35,10 +35,13 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
   };
 
   $scope.checkFees = function(feePerSatByte) {
-    if (parseInt(feePerSatByte) < $scope.minFeeRecommended) $scope.showMinWarning = true;
+    if (Number(feePerSatByte) == 0) $scope.showError = true;
+    else $scope.showError = false;
+
+    if (Number(feePerSatByte) < $scope.minFeeRecommended) $scope.showMinWarning = true;
     else $scope.showMinWarning = false;
 
-    if (parseInt(feePerSatByte) > $scope.maxFeeRecommended) $scope.showMaxWarning = true;
+    if (Number(feePerSatByte) > $scope.maxFeeRecommended) $scope.showMaxWarning = true;
     else $scope.showMaxWarning = false;
   };
 
@@ -54,7 +57,7 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
       $scope.avgConfirmationTime = value.nbBlocks * 10;
     } else {
       $scope.avgConfirmationTime = null;
-      $scope.customSatPerByte = { value: parseInt($scope.feePerSatByte) };
+      $scope.customSatPerByte = { value: Number($scope.feePerSatByte) };
       $scope.customFeePerKB = ($scope.feePerSatByte * 1000).toFixed();
     }
 
