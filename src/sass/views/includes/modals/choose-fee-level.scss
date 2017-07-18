@@ -1,0 +1,43 @@
+#choose-fee-level {
+  @extend .deflash-blue;
+  .selected-fee-level {
+    text-align: center;
+    background: #f2f2f2;
+    font-size: 11px;
+    height: 120px;
+    padding-top: 25px;
+    .row {
+      padding: 0;
+    }
+    .separator {
+      border-left: 1px solid #d9d9df;
+      height: 75%;
+    }
+    .value {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .rate .list {
+      margin-bottom: 0;
+    }
+    .unit {
+      color: #9c9c9c;
+      background: #f2f2f2;
+      height: 50px;
+      position: absolute;
+      right: 0;
+      padding: 12px 10px 0 10px;
+    }
+  }
+  .warning-fee {
+    color: $v-warning-color;
+    font-size: 12px;
+    text-align: left;
+  }
+  .box-notification {
+    margin: 0;
+    padding: 1px;
+    text-align: center;
+  }
+
+}
