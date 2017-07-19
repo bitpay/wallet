@@ -5,10 +5,10 @@ angular.module('copayApp.services')
     var root = {};
 
     var levels = [
-      { level: 'info',  weight: 0, label: 'Info'},
+      { level: 'error', weight: 0, label: 'Error'},
       { level: 'warn',  weight: 1, label: 'Warning'},
-      { level: 'error', weight: 2, label: 'Error'},
-      { level: 'debug', weight: 3, label: 'Debug', default: true}
+      { level: 'info',  weight: 2, label: 'Info', default: true},
+      { level: 'debug', weight: 3, label: 'Debug'}
     ];
 
     // Create an array of level weights for performant filtering.
@@ -21,6 +21,12 @@ angular.module('copayApp.services')
       return levels;
     };
 
+    root.getLevel = function(level) {
+      return lodash.find(levels, function(l) {
+        return l.level == level;
+      });
+    };
+
     root.getDefaultLevel = function() {
       return lodash.find(levels, function(l) {
         return l.default;
@@ -29,6 +35,7 @@ angular.module('copayApp.services')
 
     root.add = function(level, msg) {
       logs.push({
+        timestamp: new Date().toISOString(),
         level: level,
         msg: msg,
       });

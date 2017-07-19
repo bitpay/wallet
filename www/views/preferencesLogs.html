@@ -9,20 +9,15 @@
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content>
-    <div class="settings-button-group">
-      <button class="button button-standard button-primary" copy-to-clipboard="prepare()">
-        <span translate>Copy to clipboard</span>
-      </button>
-      <button class="button button-standard button-secondary" ng-show="isCordova" ng-click="sendLogs()">
-        <span translate>Send by email</span>
-      </button>
-    </div>
+  <ion-content class="log-bg">
     <div class="list">
-      <div class="item item-text-wrap enable_text_select log-text">
-        <ul>
+      <div class="item item-text-wrap enable_text_select log-entry">
+        <div class="centered" ng-show="filteredLogs.length == 0" translate>No entries for this log level <a ng-click="showOptionsMenu()">filter setting</a>.</div>
+        <ul ng-show="filteredLogs.length > 0">
           <li ng-repeat="l in filteredLogs">
             <span ng-class="{'energized': l.level=='warn', 'dark': l.level=='debug', 'positive': l.level=='info', 'assertive': l.level=='error'}">
+              <span class="log-timestamp">[{{l.timestamp}}]</span>
+              <span class="log-level">[{{l.level}}]</span>
               {{l.msg}}
             </span>
           </li>
@@ -31,10 +26,11 @@
     </div>
   </ion-content>
   <log-options
-    log-options-title="logOptionsTitle"
     log-options-show="showOptions"
-    log-options-fill-class="fillClass"
     log-options="logOptions"
-    log-options-on-select="setOptionSelected">
+    log-options-fill-class="fillClass"
+    log-options-on-select="setOptionSelected"
+    log-options-on-copy="prepareLogs"
+    log-options-on-send="sendLogs">
   </log-options>
 </ion-view>

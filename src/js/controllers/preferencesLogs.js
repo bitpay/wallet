@@ -1,91 +1,73 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesLogs',
-  function($scope, historicLog, platformInfo, lodash, gettextCatalog) {
+  function($scope, historicLog, lodash, configService, gettextCatalog) {
 
+    var config = configService.getSync();
     var logLevels = historicLog.getLevels();
-    var defaultLevel = historicLog.getDefaultLevel();
+    var selectedLevel;
 
-    // Log level slider setup.
-    // var logLevelSliderInitialValue = logFilterWeight;
-    // var logLevelSliderCeil = logFilterWeight;
-    // var logLevelSliderStepsArray = [];
-    $scope.logOptions = {};
+    $scope.logOptions = lodash.indexBy(logLevels, 'level');
 
-    // for (var i = 0; i < logLevels.length; i++) {
-    //   logLevelSliderStepsArray.push({
-    //     value: logLevels[i].weight,
-    //     legend: logLevels[i].label
-    //   });
-    // }
+    var filterLogs = function(weight) {
+      $scope.filteredLogs = historicLog.get(weight);
+    };
 
     $scope.setOptionSelected = function(level) {
       var weight = $scope.logOptions[level].weight;
       $scope.fillClass = 'fill-bar-' + level;
-      $scope.filteredLogs = historicLog.get(weight);
+      filterLogs(weight);
       lodash.each($scope.logOptions, function(opt) {
         opt.selected = opt.weight <= weight ? true : false;
+        opt.head = opt.weight == weight;
+      });
+
+      // Save the setting.
+      var opts = {
+        log: {
+          filter: level
+        }
+      };
+      configService.set(opts, function(err) {
+        if (err) $log.debug(err);
       });
     };
 
-    // $scope.logOptions = {
-    //   logLevelSlider: {
-    //     value: logLevelSliderInitialValue,
-    //     opts: {
-    //       floor: 0,
-    //       ceil: logLevelSliderCeil,
-    //       step: 1,
-    //       hideLimitLabels: true,
-    //       hidePointerLabels: true,
-    //       showTicks: true,
-    //       showTicksValues: false,
-    //       showSelectionBar: true,
-    //       stepsArray: logLevelSliderStepsArray,
-    //       onEnd: function(sliderId, modelValue, highValue, pointerType) {
-    //         $scope.filteredLogs = historicLog.get(modelValue);
-    //       }
-    //     }
-    //   }
-    // };
+    $scope.prepareLogs = function() {
+      var log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
+      log += '\n\n';
+      log += historicLog.get().map(function(v) {
+        return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
+      }).join('\n');
+
+      return log;
+    };
+
+    $scope.sendLogs = function() {
+      var body = $scope.prepareLogs();
+
+      window.plugins.socialsharing.shareViaEmail(
+        body,
+        'Copay Logs',
+        null, // TO: must be null or an array
+        null, // CC: must be null or an array
+        null, // BCC: must be null or an array
+        null, // FILES: can be null, a string, or an array
+        function() {},
+        function() {}
+      );
+    };
+
+    $scope.showOptionsMenu = function() {
+      $scope.showOptions = true;
+    };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-      $scope.isCordova = platformInfo.isCordova;
-      $scope.logOptionsTitle = gettextCatalog.getString('Filter log');
-      $scope.logOptions = lodash.indexBy(logLevels, 'level');
-      $scope.setOptionSelected(defaultLevel.level);
+      selectedLevel = lodash.has(config, 'log.filter') ? historicLog.getLevel(config.log.filter) : historicLog.getDefaultLevel();
+      $scope.setOptionSelected(selectedLevel.level);
     });
 
     $scope.$on("$ionicView.enter", function(event, data) {
-      $scope.allLogs = historicLog.get();
-      $scope.filteredLogs = historicLog.get(defaultLevel.weight);
-
-      $scope.prepare = function() {
-        var log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
-        log += '\n\n';
-        log += $scope.allLogs.map(function(v) {
-          return v.msg;
-        }).join('\n');
-
-        return log;
-      };
-
-      $scope.sendLogs = function() {
-        var body = $scope.prepare();
-
-        window.plugins.socialsharing.shareViaEmail(
-          body,
-          'Copay Logs',
-          null, // TO: must be null or an array
-          null, // CC: must be null or an array
-          null, // BCC: must be null or an array
-          null, // FILES: can be null, a string, or an array
-          function() {},
-          function() {}
-        );
-      };
-
-      $scope.showOptionsMenu = function() {
-        $scope.showOptions = true;
-      };
+      filterLogs(selectedLevel.weight);
     });
   });

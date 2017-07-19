@@ -1,9 +1,10 @@
 #check-bar {
   $bar-widths: (
-    info: 3rem,
-    warn: 37%,
-    error: 65%,
-    debug: 104%,
+    // defined by user, example:
+    //   error: 10%,
+    //   warn: 37%,
+    //   info: 65%,
+    //   debug: 90%
   );
   .item {
     padding: 40px;
@@ -17,16 +18,17 @@
   }
   .check-bar {
     position: relative;
+    .initial-bar-default {
+      border: 2px solid $v-success-color;
+      width: 0%;
+      top: 40px;
+      z-index: 99;
+      border-radius: 10px;
+      position: absolute;
+    }
+    .initial-bar {
+    }
     @each $name, $bar-width in $bar-widths {
-      .initial-bar {
-        width: 0%;
-        border: 2px solid $v-success-color;
-        top: 40px;
-        left: -7px;
-        z-index: 99;
-        border-radius: 10px;
-        position: absolute;
-      }
       .fill-bar-#{$name} {
         width: $bar-width !important;
         transition: width .2s;

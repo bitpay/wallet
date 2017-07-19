@@ -137,7 +137,6 @@ module.exports = function(grunt) {
           'bower_components/angular-md5/angular-md5.js',
           'bower_components/angular-mocks/angular-mocks.js',
           'bower_components/ngtouch/src/ngTouch.js',
-          'bower_components/angularjs-slider/dist/rzslider.min.js',
           'angular-bitauth/angular-bitauth.js',
           'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js'
         ],
@@ -162,13 +161,6 @@ module.exports = function(grunt) {
           'node_modules/cordova-plugin-qrscanner/dist/cordova-plugin-qrscanner-lib.min.js'
         ],
         dest: 'www/js/app.js'
-      },
-      css: {
-        src: [
-          'www/css/main.css',
-          'bower_components/angularjs-slider/dist/rzslider.css'
-        ],
-        dest: 'www/css/main.css'
       }
     },
     uglify: {
