@@ -76,9 +76,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
                 console.log('Error at log decorator:', e);
                 v = 'undefined';
               }
-              var ts = '[' + new Date().toISOString() + ']';
-              var lvl = '[' + level + '] ';
-              return ts + lvl + v;
+              return v;
             });
 
             try {

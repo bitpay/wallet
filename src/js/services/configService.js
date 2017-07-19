@@ -83,6 +83,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     emailNotifications: {
       enabled: false,
     },
+
+    log: {
+      filter: 'debug',
+    },
   };
 
   var configCache = null;
