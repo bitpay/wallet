@@ -11,7 +11,6 @@
     "angular-gettext": "2.2.1",
     "angular-moment": "0.10.1",
     "angular-qrcode": "bitpay/angular-qrcode#~6.3.0",
-    "angularjs-slider": "^6.2.3",
     "ionic": "https://github.com/ionic-team/ionic-v1.git",
     "moment": "2.10.3",
     "ng-lodash": "0.2.3",
