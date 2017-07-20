@@ -1,0 +1,62 @@
+#check-bar {
+  $bar-widths: (
+    // defined by user, example:
+    //   error: 10%,
+    //   warn: 37%,
+    //   info: 65%,
+    //   debug: 90%
+  );
+  .item {
+    padding: 40px;
+  }
+  .checkbox-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .checkbox-icon:after {
+    border: none;
+  }
+  .check-bar {
+    position: relative;
+    .initial-bar-default {
+      border: 2px solid $v-success-color;
+      width: 0%;
+      top: 40px;
+      z-index: 99;
+      border-radius: 10px;
+      position: absolute;
+    }
+    .initial-bar {
+    }
+    @each $name, $bar-width in $bar-widths {
+      .fill-bar-#{$name} {
+        width: $bar-width !important;
+        transition: width .2s;
+      }
+    }
+    .base-bar {
+      position: absolute;
+      width: 100%;
+      border-bottom: 2px solid #f2f2f2;
+      top: 41px;
+      z-index: 98;
+      left: 0px;
+    }
+    &.list {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      .custom-checkbox {
+        text-align: -webkit-center;
+        .item {
+          border-style: none;
+          z-index: 999;
+          background-color: inherit;
+        }
+        label {
+          padding-top: 5px;
+        }
+      }
+    }
+  }
+}
