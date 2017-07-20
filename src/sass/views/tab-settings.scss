@@ -123,6 +123,20 @@
     color: #00901B;
    }
  }
+ .log-bg {
+    background: white;
+  }
+ .log-entry {
+    font-size: 12px;
+    line-height: 18px;
+    border: none;
+  }
+ .log-timestamp {
+    font-weight: bold;
+  }
+ .log-level {
+    font-weight: bold;
+  }
 }
 
 #tab-settings {

@@ -1,0 +1,10 @@
+<div id="check-bar">
+  <div class="check-bar list">
+    <div ng-class="fillClass" class="initial-bar-default initial-bar"></div>
+    <div class="base-bar"></div>
+    <div class="custom-checkbox" ng-repeat="option in options track by $index" ng-class="{'head': option.head}">
+      <label>{{option.label}}</label>
+      <ion-checkbox ng-model="option.selected" ng-change="getFillClass(option.level)"></ion-checkbox>
+    </div>
+  </div>
+</div>
