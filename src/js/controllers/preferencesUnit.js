@@ -8,13 +8,13 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
     shortName: 'μNAV',
     value: 100,
     decimals: 2,
-    code: 'bit',
+    code: 'unav',
   }, {
     name: 'NAV',
     shortName: 'NAV',
     value: 100000000,
     decimals: 8,
-    code: 'btc',
+    code: 'nav',
   }];
 
   $scope.save = function(newUnit) {

@@ -49,7 +49,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         unitName: 'NAV',
         unitToSatoshi: 100000000,
         unitDecimals: 8,
-        unitCode: 'btc',
+        unitCode: 'nav',
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
       }
