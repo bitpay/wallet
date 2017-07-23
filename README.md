@@ -81,6 +81,28 @@ npm run apply:copay
 npm run start:ios
 ```
 
+### Windows Phone
+
+Follow the [Cordova Windows Phone Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/win8/index.html) to set up your development environment.
+
+When your developement enviroment is ready, run the `start:ios` npm package script.
+
+- Go to app-template folder, search for config-template.xml and then remove this line:
+```sh
+<plugin name="cordova-plugin-qrscanner" spec="~2.5.0" />
+```
+and then enable this one:
+```sh
+<plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" />
+```
+- Run:
+```sh
+npm run clean-all
+npm run apply:copay
+npm run start:windows
+```
+- Then open the project file with VS inside cordova/platform/windows/
+
 ### Desktop (Linux, macOS, and Windows)
 
 The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
@@ -116,8 +138,22 @@ npm run final:ios
 
 ### Windows Phone
 
-- Install Visual Studio 2013 (or newer)
-- Run `make wp8-prod`
+- Install Visual Studio 2015 (or newer)
+- Go to app-template folder, search for config-template.xml and then remove this line:
+```sh
+<plugin name="cordova-plugin-qrscanner" spec="~2.5.0" />
+```
+and then enable this one:
+```sh
+<plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" />
+```
+- Run:
+```sh
+npm run clean-all
+npm run apply:copay
+npm run final:windows
+```
+- Then open the project file with VS inside cordova/platform/windows/
 
 ### Desktop (Linux, macOS, and Windows)
 
