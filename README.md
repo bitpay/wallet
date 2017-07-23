@@ -86,7 +86,7 @@ npm run start:ios
 
 Follow the [Cordova Windows Phone Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/win8/index.html) to set up your development environment.
 
-When your developement enviroment is ready, run the `start:ios` npm package script.
+When your developement enviroment is ready, follow this instructions:
 
 - Go to app-template folder, search for config-template.xml and then remove this line:
 ```sh
