@@ -27,20 +27,20 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
 
-      if ($scope.isNW) {
-        latestReleaseService.checkLatestRelease(function(err, newRelease) {
-          if (err) {
-            $log.warn(err);
-            return;
-          }
-          if (newRelease) {
-            $scope.newRelease = true;
-            $scope.updateText = gettextCatalog.getString('There is a new version of {{appName}} available', {
-              appName: $scope.name
-            });
-          }
-        });
-      }
+      // if ($scope.isNW) {
+      //   latestReleaseService.checkLatestRelease(function(err, newRelease) {
+      //     if (err) {
+      //       $log.warn(err);
+      //       return;
+      //     }
+      //     if (newRelease) {
+      //       $scope.newRelease = true;
+      //       $scope.updateText = gettextCatalog.getString('There is a new version of {{appName}} available', {
+      //         appName: $scope.name
+      //       });
+      //     }
+      //   });
+      // }
 
       storageService.getFeedbackInfo(function(error, info) {
 
