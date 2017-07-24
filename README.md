@@ -27,7 +27,8 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Push notifications (only available for ios and android versions)
 - Customizable wallet naming and background colors
 - Multiple languages supported
-- Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](http://www.windowsphone.com/en-us/store/app/copay-wallet/4372479b-a064-4d18-8bd3-74a3bdb81c3a), [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices
+- Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](https://www.microsoft.com/en-us/store/p/copay-secure-bitcoin-wallet/9nm8z2b0387b),
+ [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices
 
 ## Testing in a Browser
 
@@ -81,6 +82,28 @@ npm run apply:copay
 npm run start:ios
 ```
 
+### Windows Phone
+
+Follow the [Cordova Windows Phone Platform Guide](https://cordova.apache.org/docs/en/latest/guide/platforms/win8/index.html) to set up your development environment.
+
+When your developement enviroment is ready, follow this instructions:
+
+- Go to app-template folder, search for config-template.xml and then remove this line:
+```sh
+<plugin name="cordova-plugin-qrscanner" spec="~2.5.0" />
+```
+and then enable this one:
+```sh
+<plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" />
+```
+- Run:
+```sh
+npm run clean-all
+npm run apply:copay
+npm run start:windows
+```
+- Then open the project file with VS inside cordova/platform/windows/
+
 ### Desktop (Linux, macOS, and Windows)
 
 The desktop version of Copay currently uses NW.js, an app runtime based on Chromium. To get started, first install NW.js on your system from [the NW.js website](https://nwjs.io/).
@@ -116,8 +139,22 @@ npm run final:ios
 
 ### Windows Phone
 
-- Install Visual Studio 2013 (or newer)
-- Run `make wp8-prod`
+- Install Visual Studio 2015 (or newer)
+- Go to app-template folder, search for config-template.xml and then remove this line:
+```sh
+<plugin name="cordova-plugin-qrscanner" spec="~2.5.0" />
+```
+and then enable this one:
+```sh
+<plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" />
+```
+- Run:
+```sh
+npm run clean-all
+npm run apply:copay
+npm run final:windows
+```
+- Then open the project file with VS inside cordova/platform/windows/
 
 ### Desktop (Linux, macOS, and Windows)
 
