@@ -11,7 +11,7 @@
     </button>
   </ion-header-bar>
 
-  <ion-content ng-init="updateCopayerList()" ng-class="{'add-bottom-for-cta': tx.pendingForUs && canSign}">
+  <ion-content ng-init="updateCopayerList()" ng-class="{'add-bottom-for-cta': tx.pendingForUs && canSign && !paymentExpired}">
     <div class="list">
       <div class="item head">
         <div class="sending-label">
