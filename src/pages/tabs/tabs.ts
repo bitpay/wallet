@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
 
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
 import { HomePage } from '../home/home';
+import { ReceivePage } from '../receive/receive';
+import { SendPage } from '../send/send';
+import { SettingPage } from '../setting/setting';
 
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  homeRoot = HomePage;
+  receiveRoot = ReceivePage;
+  sendRoot = SendPage;
+  settingRoot = SettingPage;
 
   constructor() {
 
