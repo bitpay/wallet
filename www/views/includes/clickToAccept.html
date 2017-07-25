@@ -1,9 +1,0 @@
-<button ng-disabled="isDisabled" class="click-to-accept__button button button-standard button-primary" ng-class="{disable: sendStatus}">
-  <span ng-if="!sendStatus">
-    <ng-transclude></ng-transclude>
-  </span>
-  <span class="click-to-accept__status-text" ng-class="{enter: sendStatus}">
-    <img src="img/spinner.png">
-    {{displaySendStatus}}
-  </span>
-</button>
