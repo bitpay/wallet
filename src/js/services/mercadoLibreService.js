@@ -26,14 +26,14 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
 
   var homeItem = {
     name: 'mercadoLibre',
-    title: 'Mercado Libre',
+    title: 'Mercado Livre Brazil Gift Cards',
     icon: 'icon-ml',
     sref: 'tabs.giftcards.mercadoLibre',
   };
 
   var nextStepItem = {
     name: 'mercadoLibre',
-    title: 'Buy Mercado Libre Gift Cards',
+    title: 'Buy Mercado Livre Brazil Gift Cards',
     icon: 'icon-ml',
     sref: 'tabs.giftcards.mercadoLibre',
   };
@@ -112,7 +112,7 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
       $log.info('BitPay Create Invoice: SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('BitPay Create Invoice: ERROR ' + data.data.message);
+      $log.error('BitPay Create Invoice: ERROR', JSON.stringify(data.data));
       return cb(data.data);
     });
   };
@@ -122,8 +122,8 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
       $log.info('BitPay Get Invoice: SUCCESS');
       return cb(null, data.data.data);
     }, function(data) {
-      $log.error('BitPay Get Invoice: ERROR ' + data.data.error);
-      return cb(data.data.error);
+      $log.error('BitPay Get Invoice: ERROR', JSON.stringify(data.data));
+      return cb(data.data);
     });
   };
 
@@ -140,7 +140,7 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
       $log.info('Mercado Libre Gift Card Create/Update: ' + status);
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Mercado Libre Gift Card Create/Update: ', JSON.stringify(data.data));
+      $log.error('Mercado Libre Gift Card Create/Update: ERROR', JSON.stringify(data.data));
       return cb(data.data);
     });
   };

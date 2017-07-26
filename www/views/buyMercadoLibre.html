@@ -2,7 +2,9 @@
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>Buy</ion-nav-title>
+    <ion-nav-title>
+      {{'Buy'|translate}}
+    </ion-nav-title>
   </ion-nav-bar>
 
   <ion-content class="add-bottom-for-cta">
@@ -14,7 +16,7 @@
           <i class="icon big-icon-svg">
             <div class="bg icon-amazon"></div>
           </i>
-          <span>Mercado Libre Gift Card</span>
+          <span>Mercado Livre Brazil Gift Cards</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
@@ -60,13 +62,13 @@
     ng-click="buyConfirm()"
     ng-if="!isCordova"
     click-send-status="sendStatus">
-    Confirm purchase
+    {{'Confirm purchase'|translate}}
   </click-to-accept>
   <slide-to-accept
     ng-if="isCordova && wallet && totalAmountStr"
     slide-on-confirm="buyConfirm()"
     slide-send-status="sendStatus">
-    Slide to buy
+    {{'Slide to buy'|translate}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"

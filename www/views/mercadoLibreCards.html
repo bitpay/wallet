@@ -1,8 +1,10 @@
-<ion-view>
+<ion-view id="meli-list-cards">
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
-    <ion-nav-title>Your cards</ion-nav-title>
+    <ion-nav-title>
+      {{'Your Gift Cards'|translate}}
+    </ion-nav-title>
   </ion-nav-bar>
 
   <ion-content>
@@ -11,7 +13,7 @@
            ng-click="openCardModal(item)"
            class="item item-avatar"
            ng-hide="hideCards">
-        <img src="img/mercado-libre/icon-ml.svg" alt="{{id}}" width="40">
+        <img class="item-logo" src="img/mercado-libre/meli-card-24px.png" alt="{{id}}">
 
         <span class="item-note">
           <span class="assertive" ng-if="item.status == 'FAILURE'" translate>Error</span>

@@ -41,7 +41,8 @@
       }
 
       .big-icon-svg > .bg {
-        height: 27px;
+        height: 28px;
+        box-shadow: none;
       }
 
     }
@@ -142,6 +143,14 @@
         }
       }
     }
+  }
+}
+
+#meli-list-cards {
+  img.item-logo {
+    width: auto;
+    height: auto;
+    border-radius: 0;
   }
 }
 
