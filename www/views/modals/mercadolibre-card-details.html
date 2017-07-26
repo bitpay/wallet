@@ -1,6 +1,6 @@
 <ion-modal-view id="meli-card" ng-controller="mercadoLibreCardDetailsController">
   <ion-header-bar align-title="center" class="bar-royal">
-    <button class="button button-back button-clear" ng-click="cancel()" translate>
+    <button class="button button-back button-clear" ng-click="close()" translate>
       Close
     </button>
     <h1 class="title" translate>Details</h1>
@@ -9,7 +9,7 @@
   <ion-content>
 
     <div class="card-head">
-      <img src="img/mercado-libre/giftcard-pt.svg" alt="Mercado Libre Gift Card" width="230" ng-click="refreshGiftCard()">
+      <img src="img/mercado-libre/giftcard-pt.svg" alt="Mercado Livre Brazil Gift Card" width="230">
 
       <div class="amount">
         {{card.amount | currency : '' : 2}} {{card.currency}}
@@ -59,9 +59,9 @@
         </span>
       </div>
 
-      <div class="item item-icon-right" ng-click="openExternalLink(card.invoiceUrl)" translate>
+      <div class="item item-icon-right" ng-click="openExternalLink(card.invoiceUrl)">
         <i class="icon bp-arrow-right"></i>
-        See invoice
+        <span translate>See invoice</span>
       </div>
     </div>
 
