@@ -217,7 +217,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
 
   var initialize = function(wallet) {
     var parsedAmount = txFormatService.parseAmount(amount, currency);
-    $scope.currencyIsoCode = parsedAmount.alternativeIsoCode;
+    $scope.currencyIsoCode = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
       amount: parsedAmount.amount,
