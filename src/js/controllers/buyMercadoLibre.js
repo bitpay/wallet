@@ -14,6 +14,11 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     externalLinkService.open(url);
   };
 
+  var _resetValues = function() {
+    $scope.totalAmountStr = $scope.amount = $scope.invoiceFee = $scope.networkFee = $scope.totalAmount = $scope.wallet = null;
+    createdTx = message = invoiceId = null;
+  };
+
   var showErrorAndBack = function(title, msg) {
     title = title || gettextCatalog.getString('Error');
     $scope.sendStatus = '';
@@ -56,6 +61,30 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     } else if (showName) {
       $scope.sendStatus = showName;
     }
+  };
+
+  var satToFiat = function(sat, cb) {
+    txFormatService.toFiat(sat, $scope.currencyIsoCode, function(value) {
+      return cb(value);
+    });
+  };
+
+  var setTotalAmount = function(amountSat, invoiceFeeSat, networkFeeSat) {
+    satToFiat(amountSat, function(a) {
+      $scope.amount = Number(a);
+
+      satToFiat(invoiceFeeSat, function(i) {
+        $scope.invoiceFee = Number(i);
+
+        satToFiat(networkFeeSat, function(n) {
+          $scope.networkFee = Number(n);
+          $scope.totalAmount = $scope.amount + $scope.invoiceFee + $scope.networkFee;
+          $timeout(function() {
+            $scope.$digest();
+          });
+        });
+      });
+    });
   };
 
   var createInvoice = function(data, cb) {
@@ -184,7 +213,9 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     'leading': true
   });
 
-  var initialize = function(wallet, parsedAmount) {
+  var initialize = function(wallet) {
+    var parsedAmount = txFormatService.parseAmount(amount, currency);
+    $scope.currencyIsoCode = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
       amount: parsedAmount.amount,
@@ -198,16 +229,18 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
         showErrorAndBack(err.title, err.message);
         return;
       }
+      // Sometimes API does not return this element;
+      invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
+      var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
 
-      message = gettextCatalog.getString("Mercado Libre Gift Card {{amountStr}}", {
+      message = gettextCatalog.getString("{{amountStr}} for Mercado Livre Brazil Gift Card", {
         amountStr: $scope.amountUnitStr
       });
 
       createTx(wallet, invoice, message, function(err, ctxp) {
         ongoingProcess.set('loadingTxInfo', false);
         if (err) {
-          // Clear variables
-          createdTx = message = $scope.totalFeeStr = $scope.totalAmountStr = $scope.wallet = null;
+          _resetValues();
           showError(err.title, err.message);
           return;
         }
@@ -225,8 +258,8 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
         };
-        $scope.totalFeeStr = txFormatService.formatAmountStr(ctxp.fee);
-        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount + ctxp.fee);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
+        setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       });
     });
   };
@@ -295,8 +328,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
 
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
-    var parsedAmount = txFormatService.parseAmount(amount, currency);
-    initialize(wallet, parsedAmount);
+    initialize(wallet);
   };
 
   $scope.goBackHome = function() {
