@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { AppService } from '../../providers/app-service/app-service';
+
 import { AboutPage } from '../about/about';
 
 @Component({
@@ -8,27 +10,24 @@ import { AboutPage } from '../about/about';
   templateUrl: 'setting.html',
 })
 export class SettingPage {
-  items: Object[];
+  appName: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.items = [
-      {
-        name: 'Address book',
-        page: null
-      }, {
-        name: 'About Copay',
-        page: AboutPage
-      }
-    ];
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public appSrv: AppService
+  ) {
+    appSrv.getName().subscribe((data) => {
+      this.appName = data;
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingPage');
   }
 
-  openPage(page: any) {
-    if (!page) return;
-    this.navCtrl.push(page);
+  openAboutPage() {
+    this.navCtrl.push(AboutPage);
   }
 
 }
