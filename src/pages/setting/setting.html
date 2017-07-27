@@ -1,9 +1,3 @@
-<!--
-  Generated template for the SettingPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -13,12 +7,24 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="openPage(item.page)">
-      {{ item.name }}
-    </button>
+    <ion-item-divider color="light">&nbsp;</ion-item-divider>
+    <ion-item (click)="openAddressBookPage()">
+      <ion-icon name="contacts" item-start></ion-icon>
+      Address book
+    </ion-item>
+    <ion-item-divider color="light">Preferences</ion-item-divider>
+    <ion-item (click)="openNotificationPage()">
+      <ion-icon name="notifications" item-start></ion-icon>
+      Notification
+    </ion-item>
+    <ion-item-divider color="light">&nbsp;</ion-item-divider>
+    <ion-item (click)="openAboutPage()">
+      <ion-icon name="apps" item-start></ion-icon>
+      About {{appName}}
+    </ion-item>
   </ion-list>
 
 </ion-content>

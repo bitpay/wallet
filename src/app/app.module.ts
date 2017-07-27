@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Copay } from './app.component';
 
@@ -16,6 +17,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { WalletService } from '../providers/wallet-service/wallet-service';
 import { StorageService } from '../providers/storage-service/storage-service';
+import { AppService } from '../providers/app-service/app-service';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { StorageService } from '../providers/storage-service/storage-service';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(Copay)
   ],
   bootstrap: [IonicApp],
@@ -46,7 +49,8 @@ import { StorageService } from '../providers/storage-service/storage-service';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     WalletService,
-    StorageService
+    StorageService,
+    AppService
   ]
 })
 export class AppModule {}
