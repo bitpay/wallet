@@ -15,4 +15,10 @@
 
 <ion-content padding>
 
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="openPage(item.page)">
+      {{ item.name }}
+    </button>
+  </ion-list>
+
 </ion-content>

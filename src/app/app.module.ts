@@ -9,6 +9,8 @@ import { SendPage } from '../pages/send/send';
 import { SettingPage } from '../pages/setting/setting';
 import { TabsPage } from '../pages/tabs/tabs';
 
+import { AboutPage } from '../pages/about/about';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -22,6 +24,7 @@ import { StorageService } from '../providers/storage-service/storage-service';
     ReceivePage,
     SendPage,
     SettingPage,
+    AboutPage,
     TabsPage
   ],
   imports: [
@@ -35,6 +38,7 @@ import { StorageService } from '../providers/storage-service/storage-service';
     ReceivePage,
     SendPage,
     SettingPage,
+    AboutPage,
     TabsPage
   ],
   providers: [
