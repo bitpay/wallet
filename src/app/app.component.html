@@ -1,0 +1,80 @@
+<div class="header">
+  <div class="header-content">
+    <img class="bitpay-logo" src="assets/img/bitpay-logo-negative.svg" alt="Bitpay">
+    <div class="header-center">
+      <h3 class="header-title">Statistics</h3>
+      <div class="repository-link">
+        <a href="https://github.com/bitpay/copay" target="blank">
+          <img src="assets/img/github.png" alt="Github">
+        </a>
+      </div>
+    </div>
+    <img class="copay-logo" src="assets/img/copay-logo-negative.svg" alt="Copay">
+  </div>
+</div>
+<div class="sub-header">
+  <form class="form-inline" (ngSubmit)="onSubmitNgModel()">
+    <label class="mr-sm-2">From:</label>
+    <my-date-picker name="ngModelDate1" [options]="myDatePickerOptions" [selector]="selector" [(ngModel)]="model1" required></my-date-picker>
+    <label class="mr-sm-2">To:</label>
+    <my-date-picker name="ngModelDate2" [options]="myDatePickerOptions" [selector]="selector" [(ngModel)]="model2" required></my-date-picker>
+    <button type="submit" class="btn btn-outline-primary dates-search">Search</button>
+  </form>
+</div>
+<div class="container">
+  <div class="container-fluid">
+    <div class="row panels">
+      <div class="col card">
+        <span class="total-label">Wallets</span>
+        <span class="value">{{totals.totalWallets}}</span>
+      </div>
+      <div class="col card">
+        <span class="total-label">Proposal</span>
+        <span class="value">{{totals.totalTxps}}</span>
+      </div>
+      <div class="col card">
+        <span class="total-label">Amount (BTC)</span>
+        <span class="value">{{totals.totalAmount}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panels">
+  <div class="card">
+    <div class="selector-container">
+      <select class="large-2 left" name="list" (change)="walletsInterval($event.target.value)">
+        <option value="perDay" selected>Per day</option>
+        <option value="perWeek">Per week</option>
+        <option value="perMonth">Per month</option>
+      </select>
+    </div>
+    <h3 id="wallets" class="graphs-label">New Wallets</h3>
+    <div id="chart-wallets" class="chart panel"></div>
+  </div>
+</div>
+<div class="panels">
+  <div class="card">
+    <div class="selector-container">
+      <select class="large-2 left" name="list" (change)="proposalsInterval($event.target.value)">
+        <option value="perDay" selected>Per day</option>
+        <option value="perWeek">Per week</option>
+        <option value="perMonth">Per month</option>
+      </select>
+    </div>
+    <h3 id="proposals" class="graphs-label">Proposals</h3>
+    <div id="chart-txps" class="chart panel"></div>
+  </div>
+</div>
+<div class="panels">
+  <div class="card">
+    <div class="selector-container">
+      <select class="large-2 left" name="list" (change)="amountInterval($event.target.value)">
+        <option value="perDay" selected>Per day</option>
+        <option value="perWeek">Per week</option>
+        <option value="perMonth">Per month</option>
+      </select>
+    </div>
+    <h3 id="amount" class="graphs-label">Amount (BTC)</h3>
+    <div id="chart-amount" class="chart panel"></div>
+  </div>
+</div>
