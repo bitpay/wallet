@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Logger } from '@nsalaun/ng-logger';
-import { AppService } from '../providers/app-service/app-service';
+import { AppProvider } from '../providers/app-provider/app-provider';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -19,16 +19,16 @@ export class Copay {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     log: Logger,
-    appSrv: AppService
+    app: AppProvider
   ) {
     platform.ready().then(() => {
-      appSrv.getName().subscribe((name) => {
+      app.getName().subscribe((name) => {
         log.info('Name: ' + name);
       });
-      appSrv.getVersion().subscribe((version) => {
+      app.getVersion().subscribe((version) => {
         log.info('Version: ' + version);
       });
-      appSrv.getCommitHash().subscribe((commit) => {
+      app.getCommitHash().subscribe((commit) => {
         log.info('Commit Hash: #' + commit);
       });
       log.info('Platform: ' + platform.platforms());

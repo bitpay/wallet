@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { AppService } from '../../providers/app-service/app-service';
+import { AppProvider } from '../../providers/app-provider/app-provider';
 
 import { AboutPage } from '../about/about';
 
@@ -15,9 +15,9 @@ export class SettingPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public appSrv: AppService
+    public app: AppProvider
   ) {
-    appSrv.getName().subscribe((data) => {
+    app.getName().subscribe((data) => {
       this.appName = data;
     });
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class StorageService {
+export class StorageProvider {
 
   constructor() {
     console.log('Hello StorageService Provider');
