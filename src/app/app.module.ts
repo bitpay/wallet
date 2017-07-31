@@ -19,9 +19,9 @@ import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { WalletService } from '../providers/wallet-service/wallet-service';
-import { StorageService } from '../providers/storage-service/storage-service';
-import { AppService } from '../providers/app-service/app-service';
+import { WalletProvider } from '../providers/wallet-provider/wallet-provider';
+import { StorageProvider } from '../providers/storage-provider/storage-provider';
+import { AppProvider } from '../providers/app-provider/app-provider';
 
 // Set different log level depending on environment.
 const LOG_LEVEL = Level.LOG;
@@ -61,9 +61,9 @@ if (isDevMode()){
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    WalletService,
-    StorageService,
-    AppService
+    WalletProvider,
+    StorageProvider,
+    AppProvider
   ]
 })
 export class AppModule {}
