@@ -1,23 +1,23 @@
-Metti al sicuro i tuoi bitcoins, alle tue condizioni, con un portafoglio open source e multifirma realizzato da BitPay. 
-Gli utenti Copay possono gestire i propri fondi individualmente, o condividerli in maniera sicura con altri utenti grazie ai portafogli multifirma, che prevengono pagamenti non autorizzati richiedendo più approvazioni. Ecco alcuni modi per utilizzare Copay con altre persone:
+Metti al sicuro i tuoi nav coins, alle tue condizioni, con un portafoglio open source e multifirma realizzato da NavPay. 
+Gli utenti Navpay possono gestire i propri fondi individualmente, o condividerli in maniera sicura con altri utenti grazie ai portafogli multifirma, che prevengono pagamenti non autorizzati richiedendo più approvazioni. Ecco alcuni modi per utilizzare Navpay con altre persone:
 
 Per rismarmiare soldi per le vacanze o per acquisti congiunti con gli amici 
 Per tenere traccia di spese familiari o indennità
 Per gestire i fondi e le spese di aziende, club, or organizzazioni
 
-In questa versione di Copay abbiamo realizzato le seguenti funzioni per un portafoglio bitcoin che non comprometta sicurezza o accessibilità:
+In questa versione di Navpay abbiamo realizzato le seguenti funzioni per un portafoglio nav coin che non comprometta sicurezza o accessibilità:
 
 Creazione e gestione integrata di portafogli multipli 
 Sicurezza multifirma intuitiva per portafogli personali o condivisi
 Proposte di pagamento facili da iniziare per portafogli condivisi e pagamenti di gruppo
 Generazione di portafogli gerarchici deterministici (HD) e funzionalità di backup 
 Sicurezza integrata nel dispositivo: tutte le chiave private sono memorizzate localmente, non nel cloud
-Supporto per portafogli della testnet Bitcoin
+Supporto per portafogli della testnet Nav Coin
 Accesso sincrono in tutte le piattaforme mobile e desktop
-Supporto per il protocollo di pagamento (BIP70-BIP73): richieste di pagamento facilmente identificabili e pagamenti bitcoin sicuri e verificabili
-Supporto per 150+ valute e denominazione in BTC o bits
+Supporto per il protocollo di pagamento (BIP70-BIP73): richieste di pagamento facilmente identificabili e pagamenti nav coin sicuri e verificabili
+Supporto per 150+ valute e denominazione in NAV o bits
 Notifiche email per pagamenti o trasferimenti
 Colori di sfondo e nomi dei portafogli personalizzabli
 9 lingue supportate (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
-Copay è un software gratuito e open source che non dipende da server proprietari, pertanto il supporto del software non dipende da nessuna azienda. Chiunque può rivedere o contribuire al codice sorgente di Copay su GitHub (https://github.com/bitpay/copay). 
+Navpay è un software gratuito e open source che non dipende da server proprietari, pertanto il supporto del software non dipende da nessuna azienda. Chiunque può rivedere o contribuire al codice sorgente di Navpay su GitHub (https://github.com/navcoin/navpay). 

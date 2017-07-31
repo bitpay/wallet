@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Project-Id-Version: copay\n"
+"Project-Id-Version: navpay\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: crowdin.com\n"
-"X-Crowdin-Project: copay\n"
+"X-Crowdin-Project: navpay\n"
 "X-Crowdin-Language: es-ES\n"
 "X-Crowdin-File: template.pot\n"
 "Last-Translator: cmgustavo83\n"
@@ -85,8 +85,8 @@ msgid "Add Account"
 msgstr "Agregar Cuenta"
 
 #: src/js/services/bitpayAccountService.js:69
-msgid "Add BitPay Account?"
-msgstr "¿Agregar cuenta de BitPay?"
+msgid "Add NavPay Account?"
+msgstr "¿Agregar cuenta de NavPay?"
 
 #: www/views/addressbook.add.html:4
 #: www/views/addressbook.html:22
@@ -126,8 +126,8 @@ msgid "Add funds"
 msgstr "Agregar fondos"
 
 #: src/js/services/bitpayAccountService.js:78
-msgid "Add this BitPay account ({{email}})?"
-msgstr "¿Agregar esta cuenta BitPay ({{email}})?"
+msgid "Add this NavPay account ({{email}})?"
+msgstr "¿Agregar esta cuenta NavPay ({{email}})?"
 
 #: www/views/add.html:3
 msgid "Add wallet"
@@ -170,12 +170,12 @@ msgid "All Addresses"
 msgstr "Todas las direcciones"
 
 #: www/views/modals/wallet-balance.html:18
-msgid "All of your bitcoin wallet balance may not be available for immediate spending."
+msgid "All of your nav coin wallet balance may not be available for immediate spending."
 msgstr "Todo el balance de tu billetera puede que no esté disponible para su uso inmediato."
 
 #: www/views/tab-receive.html:25
-msgid "All signing devices must be added to this multisig wallet before bitcoin addresses can be created."
-msgstr "Todos los dispositivos de los firmantes deben ser agregados a esta billetera compartido antes de que se puedan crear direcciones bitcoin."
+msgid "All signing devices must be added to this multisig wallet before nav coin addresses can be created."
+msgstr "Todos los dispositivos de los firmantes deben ser agregados a esta billetera compartido antes de que se puedan crear direcciones nav coin."
 
 #: www/views/tab-scan.html:21
 msgid "Allow Camera Access"
@@ -218,19 +218,19 @@ msgid "An update to this app is available. For your security, please update to t
 msgstr "Actualización disponible. Por seguridad, actualiza a la versión más reciente."
 
 #: www/views/backupWarning.html:14
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
+msgid "Anyone with your backup phrase can access or spend your nav coin."
 msgstr "Cualquier persona con tu copia de seguridad puede gastar tus bitcoins."
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
-msgstr "Comisión aproximada de la red Bitcoin para transferir el saldo de esta billetera (con prioridad normal)"
+msgid "Approximate Nav Coin network fee to transfer wallet's balance (with normal priority)"
+msgstr "Comisión aproximada de la red Nav Coin para transferir el saldo de esta billetera (con prioridad normal)"
 
 #: www/views/backupWarning.html:10
 msgid "Are you being watched?"
 msgstr "¿Estás siendo observado?"
 
 #: src/js/controllers/preferencesExternal.js:15
-msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
+msgid "Are you being watched? Anyone with your recovery phrase can access or spend your nav coin."
 msgstr "¿Estás siendo observado? Cualquier persona con tu copia de seguridad puede gastar tus bitcoins."
 
 #: src/js/controllers/copayers.js:56
@@ -258,13 +258,13 @@ msgid "Are you sure you want to skip it?"
 msgstr "¿Estás seguro de omitirla?"
 
 #: www/views/modals/bitpay-card-confirmation.html:4
-msgid "Are you sure you would like to log out of your BitPay Card account?"
-msgstr "¿Está seguro que desea cerrar la sesión de su cuenta BitPay Card?"
+msgid "Are you sure you would like to log out of your NavPay Card account?"
+msgstr "¿Está seguro que desea cerrar la sesión de su cuenta NavPay Card?"
 
 #: src/js/controllers/preferencesBitpayCard.js:7
 #: src/js/controllers/preferencesBitpayServices.js:20
-msgid "Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?"
-msgstr "¿Estás seguro de quitar tu BitPay Card ({{lastFourDigits}}) de este dispositivo?"
+msgid "Are you sure you would like to remove your NavPay Card ({{lastFourDigits}}) from this device?"
+msgstr "¿Estás seguro de quitar tu NavPay Card ({{lastFourDigits}}) de este dispositivo?"
 
 #: www/views/includes/walletInfo.html:5
 msgid "Auditable"
@@ -333,41 +333,41 @@ msgid "Be sure to store your recovery phrase in a secure place. If this app is d
 msgstr "Asegúrate de guardar la frase de recuperación en un lugar seguro. Si se elimina esta aplicación, no se podrá recuperar el dinero."
 
 #: www/views/preferencesBitpayServices.html:9
-msgid "BitPay Visa&reg; Cards"
-msgstr "Tarjetas BitPay Visa&reg;"
+msgid "NavPay Visa&reg; Cards"
+msgstr "Tarjetas NavPay Visa&reg;"
 
 #: www/views/addressbook.add.html:38
-msgid "Bitcoin Address"
-msgstr "Dirección Bitcoin"
+msgid "Nav Coin Address"
+msgstr "Dirección Nav Coin"
 
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:85
-msgid "Bitcoin Network Fee Policy"
-msgstr "Política de Comisión de la Red Bitcoin"
+msgid "Nav Coin Network Fee Policy"
+msgstr "Política de Comisión de la Red Nav Coin"
 
 #: www/views/paymentUri.html:10
-msgid "Bitcoin URI is NOT valid!"
-msgstr "¡Bitcoin URI no es válida!"
+msgid "Nav Coin URI is NOT valid!"
+msgstr "¡Nav Coin URI no es válida!"
 
 #: www/views/tab-settings.html:63
-msgid "Bitcoin Unit"
-msgstr "Unidad de Bitcoin"
+msgid "Nav Coin Unit"
+msgstr "Unidad de Nav Coin"
 
 #: www/views/onboarding/tour.html:31
-msgid "Bitcoin is a currency."
-msgstr "Bitcoin es una moneda."
+msgid "Nav Coin is a currency."
+msgstr "Nav Coin es una moneda."
 
 #: www/views/onboarding/disclaimer.html:15
-msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "Bitcoin es diferente &ndash; no se puede resguardar con ningún servicio web o banco."
+msgid "Nav Coin is different &ndash; it cannot be safely held with a bank or web service."
+msgstr "Nav Coin es diferente &ndash; no se puede resguardar con ningún servicio web o banco."
 
 #: www/views/onboarding/tour.html:18
-msgid "Bitcoin is secure,<br>digital money."
-msgstr "Bitcoin es seguro,<br> dinero digital."
+msgid "Nav Coin is secure,<br>digital money."
+msgstr "Nav Coin es seguro,<br> dinero digital."
 
 #: www/views/preferencesFee.html:11
-msgid "Bitcoin transactions include a fee collected by miners on the network."
+msgid "Nav Coin transactions include a fee collected by miners on the network."
 msgstr "Las transacciones de bitcoins incluyen una comisión recogida por los mineros de la red."
 
 #: www/views/modals/txp-details.html:36
@@ -388,15 +388,15 @@ msgid "Browser unsupported"
 msgstr "Navegador no soportado"
 
 #: www/views/includes/buyAndSellCard.html:4
-msgid "Buy &amp; Sell Bitcoin"
-msgstr "Comprar &amp; Vender Bitcoin"
+msgid "Buy &amp; Sell Nav Coin"
+msgstr "Comprar &amp; Vender Nav Coin"
 
 #: www/views/tab-send.html:35
-msgid "Buy Bitcoin"
-msgstr "Comprar Bitcoin"
+msgid "Buy Nav Coin"
+msgstr "Comprar Nav Coin"
 
 #: src/js/services/onGoingProcess.js:40
-msgid "Buying Bitcoin..."
+msgid "Buying Nav Coin..."
 msgstr "Comprando Bitcoins..."
 
 #: src/js/services/onGoingProcess.js:12
@@ -519,8 +519,8 @@ msgid "Confirming"
 msgstr "Confirmando"
 
 #: www/views/bitpayCardIntro.html:37
-msgid "Connect my BitPay Card"
-msgstr "Conecte mi BitPay Card"
+msgid "Connect my NavPay Card"
+msgstr "Conecte mi NavPay Card"
 
 #: src/js/services/onGoingProcess.js:13
 msgid "Connecting to Coinbase..."
@@ -710,7 +710,7 @@ msgstr "Crear billetera compartida"
 #: www/views/onboarding/tour.html:51
 #: www/views/tab-home.html:77
 #: www/views/tab-send.html:36
-msgid "Create bitcoin wallet"
+msgid "Create nav coin wallet"
 msgstr "Crear billetera"
 
 #: www/views/tab-create-personal.html:129
@@ -816,7 +816,7 @@ msgid "Download"
 msgstr "Descargar"
 
 #: www/views/addresses.html:19
-msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
+msgid "Each nav coin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Cada billetera puede generar billones de direcciones desde sus 12 palabras. Se genera una nueva dirección automáticamente cada vez que se recibe un pago."
 
 #: src/js/services/feeService.js:13
@@ -866,8 +866,8 @@ msgid "Enter Spending Password"
 msgstr "Ingrese contraseña para pagos"
 
 #: src/js/services/bitpayAccountService.js:110
-msgid "Enter Two Factor for your BitPay account"
-msgstr "Ingrese Autenticación de Dos Pasos para su cuenta de BitPay"
+msgid "Enter Two Factor for your NavPay account"
+msgstr "Ingrese Autenticación de Dos Pasos para su cuenta de NavPay"
 
 #: src/js/services/walletService.js:1030
 msgid "Enter new spending password"
@@ -972,8 +972,8 @@ msgid "Error in Payment Protocol"
 msgstr "Error en el Protocolo de Pago"
 
 #: src/js/controllers/bitpayCardIntro.js:14
-msgid "Error pairing BitPay Account"
-msgstr "Error de sincronización con la cuenta de BitPay"
+msgid "Error pairing NavPay Account"
+msgstr "Error de sincronización con la cuenta de NavPay"
 
 #: src/js/controllers/paperWallet.js:41
 msgid "Error scanning funds:"
@@ -1055,8 +1055,8 @@ msgid "Feedback could not be submitted. Please try again later."
 msgstr "No se pudo enviar el comentario. Por favor intente nuevamente."
 
 #: src/js/services/onGoingProcess.js:42
-msgid "Fetching BitPay Account..."
-msgstr "Buscando Cuenta de BitPay..."
+msgid "Fetching NavPay Account..."
+msgstr "Buscando Cuenta de NavPay..."
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching Payment Information"
@@ -1090,8 +1090,8 @@ msgid "From"
 msgstr "Desde"
 
 #: src/js/controllers/bitpayCardIntro.js:71
-msgid "From BitPay account"
-msgstr "De la cuenta de BitPay"
+msgid "From NavPay account"
+msgstr "De la cuenta de NavPay"
 
 #: www/views/tab-import-phrase.html:54
 msgid "From Hardware Wallet"
@@ -1142,8 +1142,8 @@ msgid "Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible 
 msgstr "Consigue efectivo local dondequiera que vayas, desde cualquier ATM Visa<sup>&reg;</sup> compatible. Comisión de parte del ATM pueden ser aplicadas."
 
 #: www/views/onboarding/collectEmail.html:15
-msgid "Get news and updates from BitPay"
-msgstr "Recibir noticias y actualizaciones de BitPay"
+msgid "Get news and updates from NavPay"
+msgstr "Recibir noticias y actualizaciones de NavPay"
 
 #: www/views/bitpayCard.html:49
 #: www/views/onboarding/welcome.html:8
@@ -1271,7 +1271,7 @@ msgid "I understand"
 msgstr "Entiendo"
 
 #: www/views/onboarding/disclaimer.html:21
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
+msgid "I understand that if this app is moved to another device or deleted, my nav coin can only be recovered with the backup phrase."
 msgstr "Entiendo que si esta aplicación es borrada, mis fondos pueden recuperarse únicamente con la copia de seguridad."
 
 #: www/views/onboarding/disclaimer.html:18
@@ -1295,8 +1295,8 @@ msgid "If enabled, wallets will also try to spend unconfirmed funds. This option
 msgstr "Si se habilita, las billeteras podrán gastar los fondos sin confirmar. Esta opción puede causar demoras en la transacción."
 
 #: src/js/controllers/onboarding/backupRequest.js:18
-msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
-msgstr "Si pierdes este dispositivo o esta aplicación es eliminada, ni tú ni BitPay podrán recuperar el dinero."
+msgid "If this device is replaced or this app is deleted, neither you nor NavPay can recover your funds without a backup."
+msgstr "Si pierdes este dispositivo o esta aplicación es eliminada, ni tú ni NavPay podrán recuperar el dinero."
 
 #: www/views/feedback/complete.html:23
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1610,7 +1610,7 @@ msgid "No Wallet"
 msgstr "Sin billetera"
 
 #: www/views/onboarding/backupRequest.html:5
-msgid "No backup, no bitcoin."
+msgid "No backup, no nav coin."
 msgstr "Sin copia de seguridad, no hay bitcoins."
 
 #: www/views/addressbook.html:19
@@ -1670,8 +1670,8 @@ msgid "Not enough funds for fee"
 msgstr "No hay suficientes fondos para la comisión"
 
 #: www/views/onboarding/tour.html:50
-msgid "Not even BitPay can access it."
-msgstr "Ni siquiera BitPay puede acceder a ellos."
+msgid "Not even NavPay can access it."
+msgstr "Ni siquiera NavPay puede acceder a ellos."
 
 #: src/js/controllers/paperWallet.js:47
 msgid "Not funds found"
@@ -1687,8 +1687,8 @@ msgid "Note"
 msgstr "Nota"
 
 #: www/views/modals/wallets.html:25
-msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
-msgstr "Aviso: solo billeteras 1-1 (única firma) pueden ser utilizadas para vender bitcoin"
+msgid "Notice: only 1-1 (single signature) wallets can be used for sell nav coin"
+msgstr "Aviso: solo billeteras 1-1 (única firma) pueden ser utilizadas para vender nav coin"
 
 #: www/views/preferencesNotifications.html:3
 #: www/views/tab-settings.html:46
@@ -1775,8 +1775,8 @@ msgid "Open wallet"
 msgstr "Abrir billetera"
 
 #: www/views/bitpayCardIntro.html:34
-msgid "Order the BitPay Card"
-msgstr "Solicitar BitPay Card"
+msgid "Order the NavPay Card"
+msgstr "Solicitar NavPay Card"
 
 #: www/views/join.html:102
 #: www/views/join.html:93
@@ -1802,8 +1802,8 @@ msgid "Paste the backup plain text code"
 msgstr "Pegar copia de seguridad en texto plano"
 
 #: www/views/bitpayCardIntro.html:28
-msgid "Pay 0% fees to turn bitcoin into dollars."
-msgstr "Paga 0% de comisión para transformar tus bitcoin en dólares."
+msgid "Pay 0% fees to turn nav coin into dollars."
+msgstr "Paga 0% de comisión para transformar tus nav coin en dólares."
 
 #: www/views/modals/paypro.html:18
 msgid "Pay To"
@@ -1907,8 +1907,8 @@ msgid "Please tap each word in the correct order."
 msgstr "Escoje las palabras en el orden correcto."
 
 #: src/js/services/bwcError.js:101
-msgid "Please upgrade Copay to perform this action"
-msgstr "Por favor actualiza Copay para realizar esta acción"
+msgid "Please upgrade Navpay to perform this action"
+msgstr "Por favor actualiza Navpay para realizar esta acción"
 
 #: src/js/controllers/import.js:222
 msgid "Please, select your backup file"
@@ -2074,16 +2074,16 @@ msgid "Remove"
 msgstr "Remover"
 
 #: src/js/controllers/preferencesBitpayServices.js:7
-msgid "Remove BitPay Account?"
-msgstr "¿Eliminar Cuenta de BitPay?"
+msgid "Remove NavPay Account?"
+msgstr "¿Eliminar Cuenta de NavPay?"
 
 #: src/js/controllers/preferencesBitpayServices.js:19
-msgid "Remove BitPay Card?"
-msgstr "¿Eliminar BitPay Card?"
+msgid "Remove NavPay Card?"
+msgstr "¿Eliminar NavPay Card?"
 
 #: src/js/controllers/preferencesBitpayServices.js:8
-msgid "Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account ({{email}}) from this device?"
-msgstr "Al eliminar una cuenta de BitPay se eliminarán todos los datos asociados de este dispositivo. ¿Desea realmente eliminar la cuenta de BitPay ({{email}}) del dispositivo?"
+msgid "Removing your NavPay account will remove all associated NavPay account data from this device. Are you sure you would like to remove your NavPay Account ({{email}}) from this device?"
+msgstr "Al eliminar una cuenta de NavPay se eliminarán todos los datos asociados de este dispositivo. ¿Desea realmente eliminar la cuenta de NavPay ({{email}}) del dispositivo?"
 
 #: www/views/join.html:113
 #: www/views/join.html:121
@@ -2173,8 +2173,8 @@ msgid "Search Transactions"
 msgstr "Buscar transacciones"
 
 #: www/views/tab-send.html:13
-msgid "Search or enter bitcoin address"
-msgstr "Buscar o introducir dirección bitcoin"
+msgid "Search or enter nav coin address"
+msgstr "Buscar o introducir dirección nav coin"
 
 #: www/views/modals/search.html:16
 msgid "Search transactions"
@@ -2202,7 +2202,7 @@ msgid "Self-signed Certificate"
 msgstr "Certificado autofirmado"
 
 #: src/js/services/onGoingProcess.js:41
-msgid "Selling Bitcoin..."
+msgid "Selling Nav Coin..."
 msgstr "Vendiendo Bitcoins..."
 
 #: www/views/feedback/send.html:13
@@ -2342,8 +2342,8 @@ msgid "Show advanced options"
 msgstr "Mostrar opciones avanzadas"
 
 #: www/views/tab-send.html:37
-msgid "Show bitcoin address"
-msgstr "Mostrar dirección bitcoin"
+msgid "Show nav coin address"
+msgstr "Mostrar dirección nav coin"
 
 #: www/views/tab-send.html:59
 msgid "Show more"
@@ -2393,12 +2393,12 @@ msgid "Spending Password needed"
 msgstr "Se necesita la contraseña para pagos"
 
 #: www/views/walletDetails.html:162
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Nav Coin network fees"
 msgstr "Gastar este balance requiere de significativas comisiones de la red"
 
 #: www/views/tab-send.html:28
-msgid "Start sending bitcoin"
-msgstr "Empezar a enviar bitcoin"
+msgid "Start sending nav coin"
+msgstr "Empezar a enviar nav coin"
 
 #: src/js/routes.js:118
 msgid "Starting..."
@@ -2433,8 +2433,8 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ESTA ACCIÓN NO SE PUEDE REVERTIR"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
-msgstr "Toma control de tu dinero,<br>comienza a utilizar bitcoin."
+msgid "Take control of your money,<br>get started with nav coin."
+msgstr "Toma control de tu dinero,<br>comienza a utilizar nav coin."
 
 #: www/views/walletDetails.html:140
 #: www/views/walletDetails.html:60
@@ -2482,15 +2482,15 @@ msgid "The Ledger Chrome application is not installed"
 msgstr "La aplicación Ledger de Chrome no esta instalada"
 
 #: www/views/modals/wallet-balance.html:55
-msgid "The amount of bitcoin immediately spendable from this wallet."
+msgid "The amount of nav coin immediately spendable from this wallet."
 msgstr "Total de bitcoins disponibles en esta billetera para su uso inmediato."
 
 #: www/views/modals/wallet-balance.html:93
-msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgid "The amount of nav coin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
 msgstr "La cantidad de bitcoins almacenados en esta billetera que se utilizan como \"inputs\" en la transacción pendiente. Esa cantidad se determina en base a los \"unspent transaction outputs\" asociados con la billetera, estos pueden que sean mayor al monto enviado en la transacción en cuestión."
 
 #: www/views/modals/wallet-balance.html:74
-msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
+msgid "The amount of nav coin stored in this wallet with less than 1 blockchain confirmation."
 msgstr "La cantidad de bitcoins almacenados en esta billetera que poseen menos de 1 confirmación en \"Blockchain\"."
 
 #: www/views/tab-import-phrase.html:5
@@ -2510,8 +2510,8 @@ msgid "The maximum number of consecutive unused addresses (20) has been reached.
 msgstr "Se ha alcanzado el número máximo de direcciones consecutivas sin utilizar (20). Cuando una de sus direcciones reciba un pago, una nueva dirección se generará y se mostrará en la pestaña 'Recibir'."
 
 #: src/js/controllers/onboarding/terms.js:21
-msgid "The official English Terms of Service are available on the BitPay website."
-msgstr "Los términos y condiciones oficiales en inglés se encuentran disponibles en la web de BitPay."
+msgid "The official English Terms of Service are available on the NavPay website."
+msgstr "Los términos y condiciones oficiales en inglés se encuentran disponibles en la web de NavPay."
 
 #: www/views/tab-import-phrase.html:4
 msgid "The password of the recovery phrase (if set)"
@@ -2545,7 +2545,7 @@ msgid "The spend proposal is not pending"
 msgstr "La propuesta de gasto no esta pendiente"
 
 #: www/views/modals/wallet-balance.html:36
-msgid "The total amount of bitcoin stored in this wallet."
+msgid "The total amount of nav coin stored in this wallet."
 msgstr "El total de bitcoins almacenados en esta billetera."
 
 #: www/views/preferencesHistory.html:27
@@ -2580,11 +2580,11 @@ msgid "This app is fantastic!"
 msgstr "¡Esta aplicación es fantástica!"
 
 #: www/views/onboarding/tour.html:47
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your nav coin with cutting-edge security."
 msgstr "Esta aplicación almacena tus bitcoins con seguridad avanzada."
 
 #: src/js/controllers/confirm.js:464
-msgid "This bitcoin payment request has expired."
+msgid "This nav coin payment request has expired."
 msgstr "Esta solicitud de pago ha caducado."
 
 #: www/views/join.html:130
@@ -2598,8 +2598,8 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "Esta frase de recuperación fue creada con una contraseña. Para recuperar esta billetera, la frase de recuperación y la contraseña son necesarios."
 
 #: www/views/tx-details.html:93
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
-msgstr "Este monto en la transacción es demasiado bajo comparado con las comisiones de la red Bitcoin. Para gastar estos fondos se requiere disponer de un monto superior a la comisión requerida por la red Bitcoin."
+msgid "This transaction amount is too small compared to current Nav Coin network fees. Spending these funds will need a Nav Coin network fee cost comparable to the funds itself."
+msgstr "Este monto en la transacción es demasiado bajo comparado con las comisiones de la red Nav Coin. Para gastar estos fondos se requiere disponer de un monto superior a la comisión requerida por la red Nav Coin."
 
 #: www/views/tx-details.html:89
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
@@ -2625,16 +2625,16 @@ msgid "To"
 msgstr "Para"
 
 #: www/views/tab-send.html:32
-msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
-msgstr "Para empezar, compra bitcoin o comparte tu dirección. Puedes recibir bitcoin desde cualquier billetera o servicio."
+msgid "To get started, buy nav coin or share your address. You can receive nav coin from any wallet or service."
+msgstr "Para empezar, compra nav coin o comparte tu dirección. Puedes recibir nav coin desde cualquier billetera o servicio."
 
 #: www/views/tab-send.html:33
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
+msgid "To get started, you'll need to create a nav coin wallet and get some nav coin."
 msgstr "Para empezar, necesitarás crear una billetera y obtener bitcoins."
 
 #: src/js/services/bitpayAccountService.js:73
-msgid "To {{reason}} you must first add your BitPay account - {{email}}"
-msgstr "Para {{reason}} primero debes agregar tu cuenta de BitPay - {{email}}"
+msgid "To {{reason}} you must first add your NavPay account - {{email}}"
+msgstr "Para {{reason}} primero debes agregar tu cuenta de NavPay - {{email}}"
 
 #: src/js/services/onGoingProcess.js:48
 msgid "Top up in progress..."
@@ -2713,7 +2713,7 @@ msgid "Try again in {{expires}}"
 msgstr "Intenta de nuevo en {{expires}}"
 
 #: www/views/bitpayCardIntro.html:18
-msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
+msgid "Turn nav coin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
 msgstr "Convierta Bitcoins en Dólares, use Visa<sup>&reg;</sup>."
 
 #: www/views/tab-import-phrase.html:17
@@ -2919,8 +2919,8 @@ msgid "Wallet already exists"
 msgstr "La billetera ya existe"
 
 #: src/js/services/profileService.js:498
-msgid "Wallet already in Copay"
-msgstr "La billetera ya existe en Copay"
+msgid "Wallet already in Navpay"
+msgstr "La billetera ya existe en Navpay"
 
 #: www/views/includes/walletActivity.html:6
 msgid "Wallet created"
@@ -3070,16 +3070,16 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "Se pueden hacer contribuciones al registrarse en nuestro proyecto de traducciones en Crowdin. ¡Esperamos tener noticias tuyas!"
 
 #: www/views/tab-scan.html:16
-msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr "Puedes escanear direcciones bitcoin, solicitudes de pago, billeteras de papel y más."
+msgid "You can scan nav coin addresses, payment requests, paper wallets, and more."
+msgstr "Puedes escanear direcciones nav coin, solicitudes de pago, billeteras de papel y más."
 
 #: src/js/controllers/preferencesAbout.js:14
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "Puede ver las últimas novedades y contribuir a nuestra aplicación de código abierto visitando nuestro proyecto en GitHub."
 
 #: www/views/onboarding/tour.html:19
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "Puedes utilizar bitcoin en millones de páginas web y tiendas en todo el mundo."
+msgid "You can spend nav coin at millions of websites and stores worldwide."
+msgstr "Puedes utilizar nav coin en millones de páginas web y tiendas en todo el mundo."
 
 #: www/views/backup.html:12
 msgid "You can still export it from Advanced &gt; Export."
@@ -3090,28 +3090,28 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Puedes cambiarlo por otras monedas como Dólares, Euros o Libras."
 
 #: www/views/onboarding/tour.html:46
-msgid "You control your bitcoin."
+msgid "You control your nav coin."
 msgstr "Controlas tus bitcoins."
 
 #: www/views/modals/bitpay-card-confirmation.html:5
-msgid "You will need to log back for fill in your BitPay Card."
-msgstr "Tendrá que iniciar sesión para completar su BitPay Card."
+msgid "You will need to log back for fill in your NavPay Card."
+msgstr "Tendrá que iniciar sesión para completar su NavPay Card."
 
 #: www/views/preferencesNotifications.html:28
 msgid "You'll receive email notifications about payments sent and received from your wallets."
 msgstr "Recibirás notificaciones por correo electrónico acerca de pagos enviados y recibidos de tus billeteras."
 
 #: www/views/bitpayCard.html:50
-msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
-msgstr "Tu Tarjeta BitPay ya esta lista. Agrega fondos para comenzar a utilizarla en negocios y cajeros automáticos de todo el mundo."
+msgid "Your NavPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
+msgstr "Tu Tarjeta NavPay ya esta lista. Agrega fondos para comenzar a utilizarla en negocios y cajeros automáticos de todo el mundo."
 
 #: www/views/includes/confirmBackupPopup.html:6
-msgid "Your bitcoin wallet is backed up!"
-msgstr "¡Su billetera bitcoin está resguardada!"
+msgid "Your nav coin wallet is backed up!"
+msgstr "¡Su billetera nav coin está resguardada!"
 
 #: www/views/tab-home.html:36
-msgid "Your bitcoin wallet is ready!"
-msgstr "¡Su billetera bitcoin está lista!"
+msgid "Your nav coin wallet is ready!"
+msgstr "¡Su billetera nav coin está lista!"
 
 #: www/views/feedback/send.html:42
 msgid "Your ideas, feedback, or comments"
@@ -3148,8 +3148,8 @@ msgid "[Balance Hidden]"
 msgstr "[Balance Oculto]"
 
 #: src/js/controllers/bitpayCardIntro.js:11
-msgid "add your BitPay Visa card(s)"
-msgstr "agregar sus tarjetas BitPay Visa"
+msgid "add your NavPay Visa card(s)"
+msgstr "agregar sus tarjetas NavPay Visa"
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
@@ -3182,12 +3182,12 @@ msgid "to send"
 msgstr "para enviar"
 
 #: www/views/preferencesBwsUrl.html:21
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}} depende de Bitcore Wallet Service (BWS) para obtener información sobre blockchain y sincronización del Copayer. La configuración por defecto apunta a https://bws.bitpay.com (instancia pública de BitPay)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (NavPay's public BWS instance)."
+msgstr "{{appName}} depende de Bitcore Wallet Service (BWS) para obtener información sobre blockchain y sincronización del Copayer. La configuración por defecto apunta a https://bws.bitpay.com (instancia pública de NavPay)."
 
 #: src/js/controllers/confirm.js:354
-msgid "{{fee}} will be deducted for bitcoin networking fees."
-msgstr "{{fee}} se descontará por comisión de la red bitcoin."
+msgid "{{fee}} will be deducted for nav coin networking fees."
+msgstr "{{fee}} se descontará por comisión de la red nav coin."
 
 #: www/views/confirm.html:87
 msgid "{{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount"

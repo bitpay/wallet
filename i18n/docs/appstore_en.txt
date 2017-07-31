@@ -1,23 +1,23 @@
-Secure bitcoin on your own terms with an open source, multisignature wallet from BitPay. 
-Copay users can hold funds individually or share finances securely with other users with multisignature wallets, which prevent unauthorized payments by requiring multiple approvals. Here are some ways Copay can be used with others:
+Secure nav coin on your own terms with an open source, multisignature wallet from NavPay. 
+Navpay users can hold funds individually or share finances securely with other users with multisignature wallets, which prevent unauthorized payments by requiring multiple approvals. Here are some ways Navpay can be used with others:
 
 To save for vacations or joint purchases with friends 
 To track family spending and allowances
 To manage business, club, or organization funds and expenses
 
-We built the following features into this version of Copay for a bitcoin wallet that doesn't compromise on security or accessibility:
+We built the following features into this version of Navpay for a nav coin wallet that doesn't compromise on security or accessibility:
 
 Multiple wallet creation and management in-app 
 Intuitive multisignature security for personal or shared wallets
 Easy spending proposal flow for shared wallets and group payments
 Hierarchical deterministic (HD) address generation and wallet backups 
 Device-based security: all private keys are stored locally, not in the cloud
-Support for Bitcoin testnet wallets
+Support for Nav Coin testnet wallets
 Synchronous access across all major mobile and desktop platforms
-Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiably secure bitcoin payments
-Support for 150+ currency pricing options and unit denomination in BTC or bits
+Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiably secure nav coin payments
+Support for 150+ currency pricing options and unit denomination in NAV or bits
 Email notifications for payments and transfers
 Customizable wallet naming and background colors
 9 supported languages (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
-Copay is free and open source software run on non-proprietary servers, so there's no need to rely on any company for continuous support. Anyone can review or contribute to Copay's source code on GitHub (https://github.com/bitpay/copay). 
+Navpay is free and open source software run on non-proprietary servers, so there's no need to rely on any company for continuous support. Anyone can review or contribute to Navpay's source code on GitHub (https://github.com/navcoin/navpay). 

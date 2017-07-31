@@ -1,23 +1,23 @@
-Armazene bitcoin com seus próprios termos com uma carteira de multi-assinaturas, open source, do BitPay. 
-Usuários Copay podem manter fundos individualmente ou compartilhar finanças seguramente com outros usuários por meio de carteiras multi-assinadas, que previnem pagamentos não autorizados por meio de múltiplas aprovações. Algumas formas que a Copay pode ser usada com outros:
+Armazene nav coin com seus próprios termos com uma carteira de multi-assinaturas, open source, do NavPay. 
+Usuários Navpay podem manter fundos individualmente ou compartilhar finanças seguramente com outros usuários por meio de carteiras multi-assinadas, que previnem pagamentos não autorizados por meio de múltiplas aprovações. Algumas formas que a Navpay pode ser usada com outros:
 
 Para economizar para férias ou juntar compras com amigos 
 Para rastrear despesas familiares e descontos
 Para gerenciar negócios, clube ou organizar saldos e despesas
 
-Nós construímos as seguintes funcionalidades nesta versão da Copay para uma carteira bitcoin que não comprometa segurança ou acessibilidade:
+Nós construímos as seguintes funcionalidades nesta versão da Navpay para uma carteira nav coin que não comprometa segurança ou acessibilidade:
 
 Criação de múltiplas carteiras com gerenciamento no aplicativo 
 Segurança de multi-assinaturas intuitiva para carteiras pessoais ou compartilhadas
 Fácil fluxo de propostas de gastos para carteiras compartilhadas e pagamentos agrupados
 Geração de endereço Hierarchical deterministic (HD) e backups de carteiras 
 Segurança baseada em dispositivo: todas as chaves privadas são armazenadas localmente e não na nuvem
-Suporte para carteiras de testes na Bitcoin testnet
+Suporte para carteiras de testes na Nav Coin testnet
 Acesso síncrono entre todas as principais plataformas móveis e desktops
-Suporte a protocolo de pagamento (BIP70-BIP73): solicitações de pagamento facilmente identificadas e pagamentos seguros em bitcoins verificáveis
-Suporte para mais de 150 opções de moedas e denominação de unidades em BTC ou bits
+Suporte a protocolo de pagamento (BIP70-BIP73): solicitações de pagamento facilmente identificadas e pagamentos seguros em nav coins verificáveis
+Suporte para mais de 150 opções de moedas e denominação de unidades em NAV ou bits
 Notificações por e-mail para pagamentos e transferências
 Nomes e cores de fundo customizáveis para carteiras
 9 idiomas suportados (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
-Copay é gratuito e um software livre rodando em servidores não-proprietários, que não precisa de nenhuma empresa para o suporte contínuo. Qualquer um pode revisar ou contribuir para o código-fonte da Copay no GitHub (https://github.com/bitpay/copay). 
+Navpay é gratuito e um software livre rodando em servidores não-proprietários, que não precisa de nenhuma empresa para o suporte contínuo. Qualquer um pode revisar ou contribuir para o código-fonte da Navpay no GitHub (https://github.com/navcoin/navpay). 

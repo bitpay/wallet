@@ -1,23 +1,23 @@
-Sichere Bitcoins zu eigenen Bedingungen, mit einem quelloffenen Gemeinschaftswallet (elektronische Brieftasche mit Mehrfachunterschriften) von BitPay. 
-Copay Nutzer können ihre Beträge individuell speichern oder ihre Finanzen mit anderen Nutzern in Gemeinschaftswallets teilen, die je nach Einstellung mehrere Bestätigungen (elektronische Unterschriften) benötigen und so nichtautorisierte Zahlungen verhindern. Ein paar Einsatzmöglichkeiten, wie ein solches Wallet mit anderen Copayern genutzt werden kann:
+Sichere nav coins zu eigenen Bedingungen, mit einem quelloffenen Gemeinschaftswallet (elektronische Brieftasche mit Mehrfachunterschriften) von NavPay. 
+Navpay Nutzer können ihre Beträge individuell speichern oder ihre Finanzen mit anderen Nutzern in Gemeinschaftswallets teilen, die je nach Einstellung mehrere Bestätigungen (elektronische Unterschriften) benötigen und so nichtautorisierte Zahlungen verhindern. Ein paar Einsatzmöglichkeiten, wie ein solches Wallet mit anderen Copayern genutzt werden kann:
 
 Ansparen von Beträgen für Urlaub oder gemeinsame Anschaffungen (z.B. mit Freunden) 
 Überwachung von Ausgaben und Einkünften der Familie.
 Organisation der Ausgaben in Firmen, Vereinen oder Organisationen.
 
-Folgende Funktionen wurden in diese Version von Copay eingebaut um ein Bitcoin Wallet anzubieten, das keine Kompromisse in Sicherheit oder Zugänglichkeit eingeht:
+Folgende Funktionen wurden in diese Version von Navpay eingebaut um ein Nav Coin Wallet anzubieten, das keine Kompromisse in Sicherheit oder Zugänglichkeit eingeht:
 
 Anlage und Verwaltung von mehreren Wallets innerhalb der Anwendung 
 Intiutive mehrfachunterschriften Sicherheit für persönliche und geteilete Wallets
 Einfache Ausgabenvorschläge für geteilte Walltes und Gruppenzahlungen
 Hierarchische deterministische(HD) Adresserzeugung und Sicherung der Wallets 
 Gerätebasierte Sicherheit: Alle privaten Schlüssel werden auf dem Gerät und nicht in der Cloud gespreichert
-Unterstützung von Bitcoin Testnet Wallets
+Unterstützung von Nav Coin Testnet Wallets
 Gleichzeitiger Zugriff über alle wichtigen mobilen Systeme und Desktop-Plattformen
-Zahlungsprotokoll (BIP70-BIP73) Unterstützung: Leicht identifizierbare Zahlungsanforderungen und nachvollziehbare sichere Bitcoinzahlungen.
-Unterstützung von 150+ verschiedenen Währungen und Stückelung in BTC oder bits
+Zahlungsprotokoll (BIP70-BIP73) Unterstützung: Leicht identifizierbare Zahlungsanforderungen und nachvollziehbare sichere nav coinzahlungen.
+Unterstützung von 150+ verschiedenen Währungen und Stückelung in NAV oder bits
 E-Mail Benachrichtigung für Zahlungen und Transaktionen
 Anpasspare Wallets: Eigene Namen und Hintergrundfarben
 Unterstützung von 9 Sprachen (EN, CS, FR, DE, IT, ES, JA, PL, RU)
 
-Copay ist eine kostenlose und quelloffene Software, die auf nicht firmeneigenen Servern läuft und es somit nicht nötig ist, sich auf ein bestimmtes Unternehmen und dessen kontinuierliche Unterstützung zu verlassen. Jeder hat die Möglichkeit den Quelltext zu überprüfen oder auf GitHub (https://github.com/bitpay/copay) eigene Änderungen beizutragen und an der Weiterentwicklung mitzuwirken. 
+Navpay ist eine kostenlose und quelloffene Software, die auf nicht firmeneigenen Servern läuft und es somit nicht nötig ist, sich auf ein bestimmtes Unternehmen und dessen kontinuierliche Unterstützung zu verlassen. Jeder hat die Möglichkeit den Quelltext zu überprüfen oder auf GitHub (https://github.com/navcoin/navpay) eigene Änderungen beizutragen und an der Weiterentwicklung mitzuwirken. 
