@@ -7,4 +7,7 @@ export class StorageService {
     console.log('Hello StorageService Provider');
   }
 
+  public get(key:string):string {
+    return key;
+  }
 }
