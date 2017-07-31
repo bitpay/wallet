@@ -15,7 +15,7 @@
       <div class="integration-onboarding-logo">
         <img src="img/coinbase-logo.png">
       </div>
-      <div class="integration-onboarding-description" ng-hide="showOauthForm">Coinbase's exchange service is available in 33 countries, and can take 3-5 days to buy or sell Navcoin .</div>
+      <div class="integration-onboarding-description" ng-hide="showOauthForm">Coinbase's exchange service is available in 33 countries, and can take 3-5 days to buy or sell Nav Coin.</div>
       <div class="integration-onboarding-description" ng-show="showOauthForm">If you have trouble, contact Coinbase support for direct assistance.</div>
       <div class="integration-onboarding-cta" ng-show="!showOauthForm">
         <button class="button button-standard button-primary" ng-click="coinbase.openAuthenticateWindow()">Connect Coinbase Account</button>
@@ -52,9 +52,9 @@
     <div class="list card">
       <a class="item item-icon-right"
          href ui-sref="tabs.buyandsell.coinbase.amount({nextStep: 'tabs.buyandsell.coinbase.buy', currency: currency})">
-        <img src="img/buy-bitcoin.svg" alt="buy Navcoin " width="30" class="item-img-buy" style="vertical-align:
+        <img src="img/buy-bitcoin.svg" alt="buy Nav Coin" width="30" class="item-img-buy" style="vertical-align:
         text-bottom;">
-        Buy Navcoin
+        Buy Nav Coin
         <span class="item-note">
           <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice"></ion-spinner>
           <span ng-show="buyPrice">{{buyPrice.amount|currency:'$':2}} {{buyPrice.currency}}/NAV</span>
@@ -63,9 +63,9 @@
       </a>
       <a class="item item-icon-right"
          href ui-sref="tabs.buyandsell.coinbase.amount({nextStep: 'tabs.buyandsell.coinbase.sell', currency: currency})" no-low-fee>
-        <img src="img/sell-bitcoin.svg" alt="sell Navcoin " width="30" class="item-img-sell" style="vertical-align:
+        <img src="img/sell-bitcoin.svg" alt="sell Nav Coin" width="30" class="item-img-sell" style="vertical-align:
         text-bottom;">
-        Sell Navcoin
+        Sell Nav Coin
         <span class="item-note">
           <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!sellPrice"></ion-spinner>
           <span ng-show="sellPrice">{{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/NAV</span>

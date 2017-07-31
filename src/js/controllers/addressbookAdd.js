@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
     $timeout(function() {
       var form = addressbookForm;
       if (data && form) {
-        data = data.replace('Navcoin:', '');
+        data = data.replace('navcoin:', '');
         form.address.$setViewValue(data);
         form.address.$isValid = true;
         form.address.$render();

@@ -4,8 +4,8 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
   function($rootScope, $scope, $state, $timeout, $ionicHistory, bitpayAccountService, bitpayCardService, popupService, gettextCatalog) {
 
     $scope.removeAccount = function(account) {
-      var title = gettextCatalog.getString('Remove BitPay Account?');
-      var msg = gettextCatalog.getString('Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account ({{email}}) from this device?', {
+      var title = gettextCatalog.getString('Remove NavPay Account?');
+      var msg = gettextCatalog.getString('Removing your NavPay account will remove all associated NavPay account data from this device. Are you sure you would like to remove your NavPay Account ({{email}}) from this device?', {
         email: account.email
       });
       popupService.showConfirm(title, msg, null, null, function(res) {
@@ -16,8 +16,8 @@ angular.module('copayApp.controllers').controller('preferencesBitpayServicesCont
     };
 
     $scope.removeCard = function(card) {
-      var title = gettextCatalog.getString('Remove BitPay Card?');
-      var msg = gettextCatalog.getString('Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?', {
+      var title = gettextCatalog.getString('Remove NavPay Card?');
+      var msg = gettextCatalog.getString('Are you sure you would like to remove your NavPay Card ({{lastFourDigits}}) from this device?', {
         lastFourDigits: card.lastFourDigits
       });
       popupService.showConfirm(title, msg, null, null, function(res) {

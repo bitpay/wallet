@@ -136,6 +136,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.shareAddress = function() {
     if (!$scope.isCordova) return;
-    window.plugins.socialsharing.share('Navcoin:' + $scope.addr, null, null, null);
+    window.plugins.socialsharing.share('Nav Coin:' + $scope.addr, null, null, null);
   }
 });

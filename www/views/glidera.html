@@ -18,7 +18,7 @@
         <div class="integration-onboarding-logo">
           <img src="img/glidera-logo.png">
         </div>
-        <div class="integration-onboarding-description" ng-hide="showOauthForm">Glidera's exchange service is available in the United States, and can take 1-2 weeks to buy or sell Navcoin .</div>
+        <div class="integration-onboarding-description" ng-hide="showOauthForm">Glidera's exchange service is available in the United States, and can take 1-2 weeks to buy or sell Nav Coin .</div>
         <div class="integration-onboarding-description" ng-show="showOauthForm">If you have trouble, contact Glidera support for direct assistance.</div>
         <div class="integration-onboarding-cta" ng-show="!showOauthForm">
           <button class="button button-standard button-primary" ng-click="openAuthenticateWindow()">Connect to Glidera</button>
@@ -66,8 +66,8 @@
         <a ng-show="account.status.userCanBuy"
             class="item item-icon-right"
             href ui-sref="tabs.buyandsell.glidera.amount({nextStep: 'tabs.buyandsell.glidera.buy', currency: currency})">
-          <img src="img/buy-bitcoin.svg" alt="buy Navcoin " width="25" class="item-img-buy">
-          Buy Navcoin
+          <img src="img/buy-bitcoin.svg" alt="Buy Nav Coin" width="25" class="item-img-buy">
+          Buy Nav Coin
           <span class="item-note" ng-show="account.price.buy">
             ${{account.price.buy}}/NAV
           </span>
@@ -76,8 +76,8 @@
         <a class="item item-icon-right"
             ng-show="account.status.userCanSell"
             href ui-sref="tabs.buyandsell.glidera.amount({nextStep: 'tabs.buyandsell.glidera.sell', currency: currency})"  no-low-fee>
-          <img src="img/sell-bitcoin.svg" alt="buy Navcoin " width="25" class="item-img-sell">
-          Sell Navcoin
+          <img src="img/sell-bitcoin.svg" alt="Buy Nav Coin" width="25" class="item-img-sell">
+          Sell Nav Coin
           <span class="item-note" ng-show="account.price.sell">
             ${{account.price.sell}}/NAV
           </span>

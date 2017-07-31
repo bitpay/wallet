@@ -355,7 +355,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return warningMsg.join('\n');
     };
 
-    var msg = gettextCatalog.getString("{{fee}} will be deducted for Navcoin networking fees.", {
+    var msg = gettextCatalog.getString("{{fee}} will be deducted for Nav Coin networking fees.", {
       fee: txFormatService.formatAmountStr(sendMaxInfo.fee)
     });
     var warningMsg = verifyExcludedUtxos();
@@ -465,7 +465,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     if (!tx || !wallet) return;
 
     if ($scope.paymentExpired) {
-      popupService.showAlert(null, gettextCatalog.getString('This Navcoin payment request has expired.'));
+      popupService.showAlert(null, gettextCatalog.getString('This Nav Coin payment request has expired.'));
       $scope.sendStatus = '';
       $timeout(function() {
         $scope.$apply();

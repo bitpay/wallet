@@ -115,7 +115,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
   };
 
   $scope.sellConfirm = function() {
-    var message = 'Sell Navcoin for ' + amount + ' ' + currency;
+    var message = 'Sell Nav Coin for ' + amount + ' ' + currency;
     var okText = 'Confirm';
     var cancelText = 'Cancel';
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {
