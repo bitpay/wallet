@@ -1,5 +1,9 @@
 # Copay/BitPay Wallet Statistics
 
+## Public installation
+
+There is a public install of this software hosted at github at: https://bitpay.github.io/copay/
+
 ### Installation
  Get the source code:
 
