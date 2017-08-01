@@ -1,5 +1,5 @@
 {
-  "packageName": "navpay",
+  "packageName": "copay",
   "packageDescription": "Navpay Nav Coin Wallet",
   "packageNameId": "com.bitpay.navpay",
   "statusBarColor": "#192c3a",
