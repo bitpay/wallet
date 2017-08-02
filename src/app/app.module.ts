@@ -22,6 +22,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { WalletProvider } from '../providers/wallet-provider/wallet-provider';
 import { StorageProvider } from '../providers/storage-provider/storage-provider';
 import { AppProvider } from '../providers/app-provider/app-provider';
+import { PlatformProvider } from '../providers/platform/platform';
 
 // Set different log level depending on environment.
 const LOG_LEVEL = Level.LOG;
@@ -63,7 +64,8 @@ if (isDevMode()){
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     WalletProvider,
     StorageProvider,
-    AppProvider
+    AppProvider,
+    PlatformProvider
   ]
 })
 export class AppModule {}

@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Platform } from 'ionic-angular';
+
 
 @Injectable()
 export class StorageProvider {
-
-  constructor() {
-    console.log('Hello StorageService Provider');
-  }
-
-  public get(key:string):string {
-    return key;
+  storage: 
+  constructor(public platform: Platform) {
   }
 }

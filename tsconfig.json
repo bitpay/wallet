@@ -22,5 +22,9 @@
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
-  }
+  },
+  "types": [
+    "chrome",
+    "lodash"
+  ]
 }
