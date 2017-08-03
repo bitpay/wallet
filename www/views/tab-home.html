@@ -10,7 +10,7 @@
      spinner="ios-small"
      on-refresh="onRefresh()">
    </ion-refresher>
-   
+
     <div class="list card release ng-hide" ng-show="newRelease">
       <i class="item icon big-icon-svg">
         <img src="img/icon-update.svg" class="bg"/>
@@ -67,7 +67,7 @@
     <div class="list card">
       <div class="item item-icon-right item-heading">
         <span translate>Wallets</span>
-        <a ng-click="showReorderChange()" ng-if="wallets[0]"><i class="icon ion-ios-drag m55r"></i></a>
+        <i ng-click="showReorderChange()" ng-if="wallets[0] && wallets.length > 1" class="icon ion-ios-drag m55r pointer"></i>
         <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <a ng-if="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
@@ -104,7 +104,7 @@
           &nbsp;
           </p>
           <i class="icon bp-arrow-right"></i>
-          <ion-reorder-button class="ion-navicon" on-reorder="moveItem(wallet, $fromIndex, $toIndex)" on-touch="onReorderButtonTouch()" on-release="onReorderButtonRelease()"></ion-reorder-button>
+          <ion-reorder-button class="ion-navicon ion-ios-drag" on-reorder="moveItem(wallet, $fromIndex, $toIndex)" on-touch="onReorderButtonTouch()" on-release="onReorderButtonRelease()"></ion-reorder-button>
         </ion-item>
       </ion-list>
     </div>
