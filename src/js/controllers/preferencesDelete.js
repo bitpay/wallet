@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('preferencesDeleteWalletController',
   function($scope, $ionicHistory, gettextCatalog, lodash, profileService, $state, ongoingProcess, popupService, pushNotificationsService) {
-    
+
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       if (!data.stateParams || !data.stateParams.walletId) {
         popupService.showAlert(null, gettextCatalog.getString('No wallet selected'), function() {
@@ -17,8 +17,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
         });
         return;
       }
-      $scope.alias = lodash.isEqual($scope.wallet.name, $scope.wallet.credentials.walletName) ? null : $scope.wallet.name + ' ';
-      $scope.walletName = $scope.wallet.credentials.walletName;
+      $scope.walletName = $scope.wallet.name;
     });
 
     $scope.showDeletePopup = function() {
