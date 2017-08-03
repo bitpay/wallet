@@ -15,6 +15,19 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
+    $scope.showReorder = false;
+
+    $scope.showReorderChange = function() {
+      $scope.showReorder = !$scope.showReorder;
+    }
+
+    $scope.onReorderButtonTouch = function() {
+      $scope.reordering = true
+    }
+
+    $scope.onReorderButtonRelease = function() {
+      $scope.reordering = false
+    }
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -205,6 +218,14 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       })
     };
 
+    $scope.moveItem = function(item, fromIndex, toIndex) {
+      $scope.wallets.splice(fromIndex, 1);
+      $scope.wallets.splice(toIndex, 0, item);
+      lodash.each($scope.wallets, function(wallet, index) {
+        profileService.setWalletOrder(wallet.id, index);
+      });
+    };
+
     var updateAllWallets = function() {
       $scope.wallets = profileService.getWallets();
       if (lodash.isEmpty($scope.wallets)) return;
@@ -271,7 +292,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         })
       });
     };
-
 
     $scope.onRefresh = function() {
       $timeout(function() {
