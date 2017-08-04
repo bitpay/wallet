@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, bwcService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, bwcService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal, networkHelper) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.viewTitle = $scope.wallet.name || $scope.wallet.credentials.walletName;
     $scope.n = $scope.wallet.n;
@@ -98,7 +98,7 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     $scope.copyRecoveryPhrase = function() {
-      if ($scope.wallet.network == 'livenet') return null;
+      if (networkHelper.isLivenet($scope.wallet.network)) return null;
       else if (!$scope.wallet.credentials.mnemonic) return null;
       else return $scope.wallet.credentials.mnemonic;
     };

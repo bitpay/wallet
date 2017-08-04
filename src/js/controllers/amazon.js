@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('amazonController',
-  function($scope, $timeout, $ionicModal, $log, $state, $ionicHistory, lodash, amazonService, externalLinkService, popupService) {
+  function($scope, $timeout, $ionicModal, $log, $state, $ionicHistory, lodash, amazonService, externalLinkService, popupService, networkHelper) {
 
     $scope.openExternalLink = function(url) {
       externalLinkService.open(url);
@@ -21,4 +21,8 @@ angular.module('copayApp.controllers').controller('amazonController',
       $scope.network = amazonService.getNetwork();
       initAmazon();
     });
+
+    $scope.isTestnet = function(networkName) {
+      return networkHelper.isTestnet(networkName);
+    };
   });

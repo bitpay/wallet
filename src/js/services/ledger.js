@@ -45,13 +45,13 @@ angular.module('copayApp.services')
     };
 
     root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
-      // networkName not used for this hardware (always livenet)
+      // networkName not used for this hardware (always livenet/btc)
       root.getEntropySource(isMultisig, account, function(err, entropySource) {
         if (err) return callback(err);
 
         var opts = {};
         opts.entropySource = entropySource;
-        root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account), function(data) {
+        root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account, 'livenet/btc'), function(data) {
           if (!data.success) {
             $log.warn(data.message);
             return callback(data);
@@ -73,7 +73,7 @@ angular.module('copayApp.services')
       var tx = bwcService.getUtils().buildTx(txp);
       for (var i = 0; i < tx.inputs.length; i++) {
         redeemScripts.push(new ByteString(tx.inputs[i].redeemScript.toBuffer().toString('hex'), GP.HEX).toString());
-        paths.push(hwWallet.getAddressPath(root.description.id, isMultisig, account) + txp.inputs[i].path.substring(1));
+        paths.push(hwWallet.getAddressPath(root.description.id, isMultisig, account, 'livenet/btc') + txp.inputs[i].path.substring(1));
       }
       var splitTransaction = root._splitTransaction(new ByteString(tx.toString(), GP.HEX));
       var inputs = [];

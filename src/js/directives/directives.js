@@ -21,8 +21,9 @@ angular.module('copayApp.directives')
               var isUriValid = URI.isValid(value);
               if (isUriValid) {
                 uri = new URI(value);
-                isAddressValidLivenet = Address.isValid(uri.address.toString(), 'livenet')
-                isAddressValidTestnet = Address.isValid(uri.address.toString(), 'testnet')
+                // Must be valid on the btc blockchain.
+                isAddressValidLivenet = Address.isValid(uri.address.toString(), 'livenet/btc')
+                isAddressValidTestnet = Address.isValid(uri.address.toString(), 'testnet/btc')
               }
               ctrl.$setValidity('validAddress', isUriValid && (isAddressValidLivenet || isAddressValidTestnet));
               return value;
@@ -34,6 +35,8 @@ angular.module('copayApp.directives')
             }
 
             // Regular Address
+            // Detecting which blockchain is not important here.
+            // Is a valid address if it's valid on any blockchain we support.
             var regularAddressLivenet = Address.isValid(value, 'livenet');
             var regularAddressTestnet = Address.isValid(value, 'testnet');
             ctrl.$setValidity('validAddress', (regularAddressLivenet || regularAddressTestnet));

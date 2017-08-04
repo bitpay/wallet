@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   });
 
   $scope.init = function() {
-    $scope.network = $scope.network || 'livenet';
+    $scope.network = $scope.network || 'livenet/btc';
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel();
     $scope.loadingFee = true;

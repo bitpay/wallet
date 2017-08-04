@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService, networkHelper) {
 
   var txId;
   var listeners = [];
@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-        if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+        if (type == 'NewBlock' && n && n.data && networkHelper.isLivenet(n.data.network)) {
           updateTxDebounced({
             hideLoading: true
           });

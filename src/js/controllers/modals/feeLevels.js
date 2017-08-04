@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('feeLevelsController', function($scope, $timeout, $log, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService) {
+angular.module('copayApp.controllers').controller('feeLevelsController', function($scope, $timeout, $log, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService, networkHelper) {
 
   var FEE_MULTIPLIER = 10;
   var FEE_MIN = 0;
@@ -26,6 +26,10 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
       level: 'urgent'
     });
     return parseInt((value.feePerKB / 1000).toFixed());
+  };
+
+  $scope.isTestnet = function(networkName) {
+    return networkHelper.isTestnet(networkName);
   };
 
   $scope.ok = function() {

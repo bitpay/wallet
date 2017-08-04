@@ -142,7 +142,7 @@ angular.module('copayApp.services')
 
     function initSource(opts, callback) {
         var args = {
-          "Testnet" : (opts.networkName == 'livenet'? false : true),
+          "Testnet" : (opts.networkName == 'livenet/btc' ? false : true),
           "PINUnlockRequired" : false,
           "PINSignatureDataRequired" : false,
           "PINSignatureTransaction" : 0,

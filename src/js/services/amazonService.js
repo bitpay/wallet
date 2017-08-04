@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo, nextStepsService, homeIntegrationsService) {
+angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo, nextStepsService, homeIntegrationsService, networkHelper) {
   var root = {};
   var credentials = {};
 
@@ -9,10 +9,10 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
    * Development: 'testnet'
    * Production: 'livenet'
    */
-  credentials.NETWORK = 'livenet';
-  //credentials.NETWORK = 'testnet';
+  credentials.NETWORK = 'livenet/btc';
+  //credentials.NETWORK = 'testnet/btc';
 
-  if (credentials.NETWORK == 'testnet') {
+  if (networkHelper.isTestnet(credentials.NETWORK)) {
     credentials.BITPAY_API_URL = "https://test.bitpay.com";
   } else {
     credentials.BITPAY_API_URL = "https://bitpay.com";

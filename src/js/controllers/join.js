@@ -166,8 +166,8 @@ angular.module('copayApp.controllers').controller('joinController',
             return;
         }
 
-        // TODO: cannot currently join an intelTEE testnet wallet (need to detect from the secret)
-        src.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
+        // TODO: cannot currently join an intelTEE testnet/btc wallet (need to detect from the secret)
+        src.getInfoForNewWallet(true, account, 'livenet/btc', function(err, lopts) {
           ongoingProcess.set('connecting' + $scope.formData.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);

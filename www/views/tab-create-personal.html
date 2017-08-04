@@ -1,4 +1,4 @@
-<ion-view class="settings" show-tabs>
+<ion-view class="settings">
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Create Personal Wallet' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -36,7 +36,8 @@
             <div class="input-label" translate>
               Wallet Key
             </div>
-            <select class="m10t" ng-model="formData.seedSource" ng-options="seed as seed.label for seed in seedOptions" ng-change="resizeView()"></select>
+            <select class="m10t" ng-model="formData.seedSource" ng-options="seed as seed.label for seed in seedOptions"
+              ng-change="resizeView(); updateNetworkSelect();"></select>
           </label>
 
           <label class="item item-input item-stacked-label" ng-show="formData.seedSource.id == 'trezor' || formData.seedSource.id == 'ledger'">
@@ -112,9 +113,13 @@
             ng-model="formData.derivationPath">
           </label>
 
-          <ion-toggle ng-show="formData.seedSource.supportsTestnet" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
-            <span translate>Testnet</span>
-          </ion-toggle>
+          <label class="item item-input item-select">
+            <div class="input-label" translate>
+              Network
+            </div>
+            <select class="m10t" ng-model="formData.network" ng-options="network as network.label for network in networkOptions"
+              ng-change="resizeView(); setDerivationPath();"></select>
+          </label>
 
           <ion-toggle ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">
             <span translate>Single Address Wallet</span>

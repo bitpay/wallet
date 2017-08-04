@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, $state, sjcl, lodash, storageService, bwcService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, appConfigService) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, $state, sjcl, lodash, storageService, bwcService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, appConfigService, networkHelper) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -49,7 +49,7 @@ angular.module('copayApp.services')
     function _requiresBackup(wallet) {
       if (wallet.isPrivKeyExternal()) return false;
       if (!wallet.credentials.mnemonic) return false;
-      if (wallet.credentials.network == 'testnet') return false;
+      if (networkHelper.isTestnet(wallet.credentials.network)) return false;
 
       return true;
     };
@@ -111,7 +111,7 @@ angular.module('copayApp.services')
 
         $log.debug('BWC Notification:', n);
 
-        if (n.type == "NewBlock" && n.data.network == "testnet") {
+        if (n.type == "NewBlock" && networkHelper.isTestnet(n.data.network)) {
           throttledBwsEvent(n, wallet);
         } else newBwsEvent(n, wallet);
       });
@@ -318,7 +318,7 @@ angular.module('copayApp.services')
     var seedWallet = function(opts, cb) {
       opts = opts || {};
       var walletClient = bwcService.getClient(null, opts);
-      var network = opts.networkName || 'livenet';
+      var network = opts.networkName || 'livenet/btc';
 
       if (opts.mnemonic) {
         try {
@@ -683,7 +683,7 @@ angular.module('copayApp.services')
       var opts = {};
       opts.m = 1;
       opts.n = 1;
-      opts.networkName = 'livenet';
+      opts.networkName = 'livenet/btc';
       root.createWallet(opts, cb);
     };
 

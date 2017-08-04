@@ -42,7 +42,7 @@ angular.module('copayApp.services')
     };
 
     root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
-      // networkName not used for this hardware (always livenet)
+      // networkName not used for this hardware (always livenet/btc)
       var opts = {};
       root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);
@@ -50,7 +50,7 @@ angular.module('copayApp.services')
         $log.debug('Waiting TREZOR to settle...');
         $timeout(function() {
 
-          root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account), function(data) {
+          root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account, 'livenet/btc'), function(data) {
             if (!data.success)
               return callback(hwWallet._err(data));
 

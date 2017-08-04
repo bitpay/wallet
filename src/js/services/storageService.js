@@ -312,17 +312,29 @@ angular.module('copayApp.services')
       storage.remove('coinbaseToken-' + network, cb);
     };
 
-    root.setAddressbook = function(network, addressbook, cb) {
-      storage.set('addressbook-' + network, addressbook, cb);
+    root.setAddressbook = function(addressbook, cb) {
+      storage.set('addressbook', addressbook, cb);
     };
 
-    root.getAddressbook = function(network, cb) {
+    root.getAddressbook = function(cb) {
+      storage.get('addressbook', cb);
+    };
+
+    root.removeAddressbook = function(cb) {
+      storage.remove('addressbook', cb);
+    };
+
+    ///////////////////////////////////////////////////////
+    // TODO: remove in future release
+    root.getAddressbookLegacy = function(network, cb) {
       storage.get('addressbook-' + network, cb);
     };
 
-    root.removeAddressbook = function(network, cb) {
+    root.removeAddressbookLegacy = function(network, cb) {
       storage.remove('addressbook-' + network, cb);
     };
+    //
+    ///////////////////////////////////////////////////////
 
     root.setLastCurrencyUsed = function(lastCurrencyUsed, cb) {
       storage.set('lastCurrencyUsed', lastCurrencyUsed, cb)

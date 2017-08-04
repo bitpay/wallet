@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope, feeService) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope, feeService, networkHelper) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -35,10 +35,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var coinbase = $window.externalServices.coinbase;
 
     /*
-     * Development: 'testnet'
-     * Production: 'livenet'
+     * Development: 'testnet/btc'
+     * Production: 'livenet/btc'
      */
-    credentials.NETWORK = 'livenet';
+    credentials.NETWORK = 'livenet/btc';
 
     // Coinbase permissions
     credentials.SCOPE = '' +
@@ -62,7 +62,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       credentials.REDIRECT_URI = coinbase.redirect_uri.desktop;
     }
 
-    if (credentials.NETWORK == 'testnet') {
+    if (networkHelper.isTestnet(credentials.NETWORK)) {
       credentials.HOST = coinbase.sandbox.host;
       credentials.API = coinbase.sandbox.api;
       credentials.CLIENT_ID = coinbase.sandbox.client_id;
@@ -779,7 +779,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   register();
 
   $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-    if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+    if (type == 'NewBlock' && n && n.data && networkHelper.isLivenet(n.data.network)) {
       root.isActive(function(err, isActive) {
         // Update Coinbase
         if (isActive)

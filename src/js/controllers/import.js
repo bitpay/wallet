@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, networkHelper) {
 
     var reader = new FileReader();
     var defaults = configService.getDefaults();
@@ -83,7 +83,7 @@ angular.module('copayApp.controllers').controller('importController',
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Password required. Make sure to enter your password in advanced options'));
 
       $scope.formData.derivationPath = info.derivationPath;
-      $scope.formData.testnetEnabled = info.network == 'testnet' ? true : false;
+      $scope.formData.testnetEnabled = networkHelper.isTestnet(info.network) ? true : false;
 
       $timeout(function() {
         $scope.formData.words = info.data;
@@ -194,7 +194,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.setDerivationPath = function() {
-      $scope.formData.derivationPath = $scope.formData.testnetEnabled ? derivationPathHelper.defaultTestnet : derivationPathHelper.default;
+      $scope.formData.derivationPath = derivationPathHelper.getPath($scope.formData.network);
     };
 
     $scope.getFile = function() {
@@ -243,7 +243,7 @@ angular.module('copayApp.controllers').controller('importController',
       if ($scope.formData.bwsurl)
         opts.bwsurl = $scope.formData.bwsurl;
 
-      var pathData = derivationPathHelper.parse($scope.formData.derivationPath);
+      var pathData = derivationPathHelper.parse($scope.formData.derivationPath, networkHelper.getDefaultNetwork()); // default is btc
 
       if (!pathData) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
@@ -288,7 +288,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importTrezor = function(account, isMultisig) {
-      trezor.getInfoForNewWallet(isMultisig, account, 'livenet', function(err, lopts) {
+      trezor.getInfoForNewWallet(isMultisig, account, 'livenet/btc', function(err, lopts) {
         ongoingProcess.clear();
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err);
@@ -345,7 +345,7 @@ angular.module('copayApp.controllers').controller('importController',
     };
 
     $scope.importLedger = function(account) {
-      ledger.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
+      ledger.getInfoForNewWallet(true, account, 'livenet/btc', function(err, lopts) {
         ongoingProcess.clear();
         if (err) {
           popupService.showAlert(gettextCatalog.getString('Error'), err);

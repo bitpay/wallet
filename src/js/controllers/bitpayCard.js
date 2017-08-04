@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService, externalLinkService, timeService) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService, externalLinkService, timeService, networkHelper) {
 
   var self = this;
   $scope.dateRange = {
@@ -104,6 +104,10 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
       result = timeService.withinPastDay(tx.date);
     }
     return result;
+  };
+
+  this.isTestnet = function(networkName) {
+    return networkHelper.isTestnet(networkName);
   };
 
   this.openExternalLink = function(url) {
