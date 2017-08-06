@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "703103669941",
+    "firebase_url": "https://deuscoinwallet.firebaseio.com",
+    "project_id": "deuscoinwallet",
+    "storage_bucket": "deuscoinwallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703103669941:android:ed8410990e5d0af4",
+        "android_client_info": {
+          "package_name": "org.deuscoin.wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703103669941-sue380ruo1g5cpgv67a32mdu5r8e7jp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0JKVDhR4prohfCVIYz3Z5_IkvaZRDGEE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
