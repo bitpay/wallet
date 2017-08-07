@@ -214,6 +214,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           bitcore.Networks.add(CUSTOMNETWORKS[$scope.wallets[i].network])
         }
       }
+      for (var i in CUSTOMNETWORKS ) {
+        bitcore.Networks.add(CUSTOMNETWORKS[i])
+      }
+      console.log(bitcore.Networks, bitcore.Networks.get('deuscoin'))
       storageService.getCustomNetworks(function(err, networkListRaw) {
         if(!networkListRaw) {
           return;
