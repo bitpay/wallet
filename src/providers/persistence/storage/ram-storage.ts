@@ -1,6 +1,6 @@
-import { IStorage, KeyAlreadyExistsError } from './providers/storage/istorage';
+import { IStorage, KeyAlreadyExistsError } from './istorage';
 
-export class StorageMock implements IStorage {
+export class RamStorage implements IStorage {
   hash = {};
 
   get(k: string, cb: (err: Error, v: string) => void) {
