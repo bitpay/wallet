@@ -3,24 +3,7 @@
 
   angular.module('app.util')
         .constant('CUSTOMNETWORKS', {
-          deuscoin: {
-            'network': 'deuscoin',
-            'name': 'deuscoin',
-            'alias': 'Deuscoin',
-            'code': 'deus',
-            'symbol': 'DEUS',
-            'derivationCoinPath': 146,
-            'pubkeyhash': 0x1e,
-            'privatekey': 0x80,
-            'scripthash': 0x23,
-            'xpubkey': 0x0488b21e,
-            'xprivkey': 0x0488ade4,
-            'bwsUrl': 'https://bws.deuscoin.org/bws/api',
-            'port': 19697,
-            'networkMagic': 0x9ee8bc5a,
-            'explorer': 'https://explorer.deuscoin.org/'
-
-          },
+          
           livenet: {
             network: 'livenet',
             name: 'livenet',
