@@ -1,22 +1,21 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { StorageProvider } from './storage';
-import { LocalStorage } from './local-storage';
-import { IStorage, ISTORAGE } from './istorage';
-import * as Mocks from '../../mocks';
+import { PersistenceProvider } from './persistence';
+import { IStorage, ISTORAGE } from './storage/istorage';
+import { RamStorage } from './storage/ram-storage';
 
 describe('Storage Service', () => {
-  let storage: IStorage = new Mocks.StorageMock();
+  let storage: IStorage = new RamStorage();
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        StorageProvider,
+        PersistenceProvider,
         { provide: ISTORAGE, useValue: storage },
       ]
     });
   });
 
   describe('#profile', () => {
-    it('should correctly perform a profile roundtrip', inject([StorageProvider], (service: StorageProvider) => {
+    it('should correctly perform a profile roundtrip', inject([PersistenceProvider], (service: PersistenceProvider) => {
       var p = { name: 'My profile' };
       service.storeNewProfile(p, (err) => {
         expect(err).toBeNull;

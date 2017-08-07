@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlatformProvider } from '../platform/platform';
+import { PlatformProvider } from '../../platform/platform';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 

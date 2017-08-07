@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { InjectionToken, Inject } from '@angular/core';
-import { IStorage, ISTORAGE } from './istorage';
+import { IStorage, ISTORAGE } from './storage/istorage';
 
 @Injectable()
-export class StorageProvider {
+export class PersistenceProvider {
   constructor( @Inject(ISTORAGE) private storage: IStorage) {
   }
 

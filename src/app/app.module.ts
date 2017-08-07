@@ -22,7 +22,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { WalletProvider } from '../providers/wallet/wallet';
-import { StorageProvider } from '../providers/storage/storage';
+import { PersistenceProvider } from '../providers/persistence/persistence';
 import { AppProvider } from '../providers/app/app';
 import { PlatformProvider } from '../providers/platform/platform';
 
@@ -70,7 +70,7 @@ export function createTranslateLoader(http: Http) {
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     WalletProvider,
-    StorageProvider,
+    PersistenceProvider,
     AppProvider,
     PlatformProvider
   ]
