@@ -3,25 +3,27 @@ import { IStorage, KeyAlreadyExistsError } from './istorage';
 export class RamStorage implements IStorage {
   hash = {};
 
-  get(k: string, cb: (err: Error, v: string) => void) {
-    return cb(null, this.hash[k]);
+  get(k: string): Promise<any> {
+    return new Promise((resolve) => {
+      resolve(this.hash[k]);
+    });
   };
-  set(k: string, v: any, cb: (err: Error) => void) {
-    this.hash[k] = v;
-    return cb(null);
+  set(k: string, v: any): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.hash[k] = v;
+      resolve();
+    });
   };
-  remove(k: string, cb: (err: Error) => void) {
-    delete this.hash[k];
-    return cb(null);
+  remove(k: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      delete this.hash[k];
+      resolve();
+    });
   };
-  create(k: string, v: any, cb: (err: Error) => void) {
-    this.get(k,
-      (err, data) => {
-        if (data) {
-          return cb(new KeyAlreadyExistsError());
-        } else {
-          this.set(k, v, cb);
-        }
-      })
+  create(k: string, v: any): Promise<void> {
+    return this.get(k).then((data) => {
+      if (data) throw new KeyAlreadyExistsError();
+      this.set(k, v);
+    });
   };
 }
