@@ -1412,11 +1412,7 @@ msgstr "Ich verstehe"
 
 #: www/views/onboarding/disclaimer.html:21
 msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
-<<<<<<< HEAD
-msgstr "Ich verstehe, dass wenn diese App auf ein anderes Gerät verschoben oder gelöscht wird, meine Bitcoins nur mit der Wiederherstellungsphrase wiederhergestellt werden können."
-=======
 msgstr "Ich verstehe dass wenn diese App auf ein anderes Gerät verschoben oder gelöscht wird meine Cryptocurrency nur mit der Wiederherstellungsphrase wiederhergestellt werden können."
->>>>>>> i18n for german and spanish to remove bitcoin text
 
 #: www/views/onboarding/disclaimer.html:18
 msgid "I understand that my funds are held securely on this device, not by a company."
@@ -2446,17 +2442,12 @@ msgstr "Geld senden"
 msgid "Send addresses by email"
 msgstr "Adressen per e-Mail versenden"
 
-<<<<<<< HEAD
-#: www/views/includes/logOptions.html:17
-#: www/views/tab-export-file.html:82
-=======
 #: www/views/includes/confirm-tx.html:3
 msgid "Send bitcoin"
 msgstr "Cryptocurrency senden"
 
 #: www/views/preferencesLogs.html:13
 #: www/views/tab-export-file.html:82
->>>>>>> i18n for german and spanish to remove bitcoin text
 msgid "Send by email"
 msgstr "Per E-Mail versenden"
 
