@@ -4,19 +4,21 @@ import { IStorage, ISTORAGE } from './storage/istorage';
 
 @Injectable()
 export class PersistenceProvider {
-  constructor( @Inject(ISTORAGE) private storage: IStorage) {
+  constructor( @Inject(ISTORAGE) public storage: IStorage) {
   }
 
-  storeNewProfile(profile, cb) {
-    this.storage.create('profile', profile, cb);
+  storeNewProfile(profile): Promise<void> {
+    return this.storage.create('profile', profile);
   };
 
-  storeProfile(profile, cb) {
-    this.storage.set('profile', profile, cb);
+  storeProfile(profile): Promise<void> {
+    return this.storage.set('profile', profile);
   };
 
-  getProfile(cb) {
-    this.storage.get('profile', cb);
+  getProfile(): Promise<any> {
+    return this.storage.get('profile').then((profile) => {
+      return profile;
+    });
     // decryptOnMobile(str, function (err, str) {
     //   if (err) return cb(err);
     //   var p, err;

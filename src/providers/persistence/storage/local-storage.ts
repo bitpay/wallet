@@ -13,43 +13,43 @@ export class LocalStorage implements IStorage {
     if (!this.ls) throw new Error('localstorage not available');
   }
 
-  get(k: string, cb: (err: Error, v: any) => void) {
-    let v = this.ls.getItem(k);
-    if (!v) return cb(null, null);
-    if (!_.isString(v)) return cb(null, v);
-
-    try {
-      return cb(null, JSON.parse(v));
-    } catch (e) {
-      return cb(null, v);
-    }
+  get(k: string): Promise<any> {
+    return new Promise((resolve) => {
+      let v = this.ls.getItem(k);
+      if (!v) return resolve(null);
+      if (!_.isString(v)) return resolve(v);
+      let parsed: any;
+      try {
+        parsed = JSON.parse(v);
+      } catch (e) {
+      }
+      resolve(parsed || v);
+    });
   }
 
-  set(k: string, v: any, cb: (err: Error) => void) {
-    if (_.isObject(v)) {
-      v = JSON.stringify(v);
-    }
-    if (v && !_.isString(v)) {
-      v = v.toString();
-    }
+  set(k: string, v: any): Promise<void> {
+    return new Promise<void>(() => {
+      if (_.isObject(v)) {
+        v = JSON.stringify(v);
+      }
+      if (v && !_.isString(v)) {
+        v = v.toString();
+      }
 
-    this.ls.setItem(k, v);
-    return cb(null);
+      this.ls.setItem(k, v);
+    });
   }
 
-  remove(k: string, cb: (err: Error) => void) {
-    this.ls.removeItem(k);
-    return cb(null);
+  remove(k: string): Promise<void> {
+    return new Promise<void>(() => {
+      this.ls.removeItem(k);
+    });
   }
 
-  create(k: string, v: any, cb: (err: Error) => void) {
-    this.get(k,
-      (err, data) => {
-        if (data) {
-          return cb(new KeyAlreadyExistsError());
-        } else {
-          return this.set(k, v, cb);
-        }
-      })
+  create(k: string, v: any): Promise<void> {
+    return this.get(k).then((data) => {
+      if (data) throw new KeyAlreadyExistsError();
+      this.set(k, v);
+    });
   }
 }
