@@ -350,29 +350,33 @@ msgstr "Tarjetas BitPay Visa&reg;"
 #: www/views/addressbook.add.html:38
 #: www/views/includes/incomingDataMenu.html:29
 msgid "Bitcoin Address"
-msgstr "Dirección Bitcoin"
+msgstr "Dirección"
 
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:85
 msgid "Bitcoin Network Fee Policy"
-msgstr "Política de Comisión de la Red Bitcoin"
+msgstr "Política de Comisión de la Red"
+
+#: www/views/paymentUri.html:10
+msgid "Bitcoin URI is NOT valid!"
+msgstr "¡URI no es válida!"
 
 #: www/views/tab-settings.html:63
 msgid "Bitcoin Unit"
-msgstr "Unidad de Bitcoin"
+msgstr "Unidad"
 
 #: www/views/onboarding/tour.html:31
 msgid "Bitcoin is a currency."
-msgstr "Bitcoin es una moneda."
+msgstr "Cryptocurrency es una moneda."
 
 #: www/views/onboarding/disclaimer.html:15
 msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "Bitcoin es diferente &ndash; no se puede resguardar con ningún servicio web o banco."
+msgstr "Cryptocurrency es diferente &ndash; no se puede resguardar con ningún servicio web o banco."
 
 #: www/views/onboarding/tour.html:18
 msgid "Bitcoin is secure,<br>digital money."
-msgstr "Bitcoin es seguro,<br> dinero digital."
+msgstr "Cryptocurrency es seguro,<br> dinero digital."
 
 #: www/views/preferencesFee.html:11
 msgid "Bitcoin transactions include a fee collected by miners on the network."
@@ -406,11 +410,11 @@ msgstr "Comprar"
 
 #: www/views/includes/buyAndSellCard.html:3
 msgid "Buy &amp; Sell Bitcoin"
-msgstr "Comprar &amp; Vender Bitcoin"
+msgstr "Comprar &amp; Vender Cryptocurrency"
 
 #: www/views/tab-send.html:35
 msgid "Buy Bitcoin"
-msgstr "Comprar Bitcoin"
+msgstr "Comprar Cryptocurrency"
 
 #: www/views/mercadoLibre.html:22
 #: www/views/mercadoLibre.html:50
@@ -423,7 +427,7 @@ msgstr "Comprar desde"
 
 #: src/js/services/onGoingProcess.js:40
 msgid "Buying Bitcoin..."
-msgstr "Comprando Bitcoins..."
+msgstr "Comprando Cryptocurrency..."
 
 #: src/js/services/onGoingProcess.js:12
 msgid "Calculating fee"
@@ -2416,7 +2420,7 @@ msgstr "Certificado autofirmado"
 
 #: src/js/services/onGoingProcess.js:41
 msgid "Selling Bitcoin..."
-msgstr "Vendiendo Bitcoins..."
+msgstr "Vendiendo Crypto..."
 
 #: www/views/feedback/send.html:13
 #: www/views/feedback/send.html:43
@@ -2955,7 +2959,7 @@ msgstr "Intenta de nuevo en {{expires}}"
 
 #: www/views/bitpayCardIntro.html:18
 msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
-msgstr "Convierta Bitcoins en Dólares, use Visa<sup>&reg;</sup>."
+msgstr "Convierta Crypto en Dólares, use Visa<sup>&reg;</sup>."
 
 #: www/views/tab-import-phrase.html:17
 msgid "Type the Recovery Phrase (usually 12 words)"

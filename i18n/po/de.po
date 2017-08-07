@@ -179,11 +179,11 @@ msgstr "Alle Adressen"
 
 #: www/views/modals/wallet-balance.html:18
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
-msgstr "Möglicherweise kann nicht ihr gesamtes Bitcoin Guthaben sofort ausgegeben werden."
+msgstr "Möglicherweise kann nicht ihr gesamtes Cryptocurrency Guthaben sofort ausgegeben werden."
 
 #: www/views/tab-receive.html:25
 msgid "All signing devices must be added to this multisig wallet before bitcoin addresses can be created."
-msgstr "Alle unterzeichnenden Geräte müssen zu dieser Multi-Signatur Wallet hinzugefügt werden, bevor Bitcoin-Adressen erstellt werden können."
+msgstr "Alle unterzeichnenden Geräte müssen zu dieser Multi-Signatur Wallet hinzugefügt werden, bevor Adressen erstellt werden können."
 
 #: www/views/tab-scan.html:21
 msgid "Allow Camera Access"
@@ -230,7 +230,7 @@ msgstr "Ein Aktualisierung für diese App ist verfügbar. Zu Ihrer Sicherheit bi
 
 #: www/views/backupWarning.html:14
 msgid "Anyone with your backup phrase can access or spend your bitcoin."
-msgstr "Jeder mit Ihrer Wiederherstellungsphrase hat Zugriff auf ihre Bitcoins und kann diese ausgeben."
+msgstr "Jeder mit Ihrer Wiederherstellungsphrase hat Zugriff auf ihre Cryptocurrency und kann diese ausgeben."
 
 #: www/views/addresses.html:94
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
@@ -242,7 +242,7 @@ msgstr "Werden Sie beobachtet?"
 
 #: src/js/controllers/preferencesExternal.js:15
 msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr "Werden Sie beobachtet? Jeder der Ihre Wiederherstellungsphrase kennt, kann auf Ihre Bitcoin zugreifen und diese ausgeben."
+msgstr "Werden Sie beobachtet? Jeder der Ihre Wiederherstellungsphrase kennt, kann auf Ihre Cryptocurrency zugreifen und diese ausgeben."
 
 #: src/js/controllers/copayers.js:56
 msgid "Are you sure you want to cancel and delete this wallet?"
@@ -350,33 +350,37 @@ msgstr "BitPay Visa&reg; Karten"
 #: www/views/addressbook.add.html:38
 #: www/views/includes/incomingDataMenu.html:29
 msgid "Bitcoin Address"
-msgstr "Bitcoin-Adresse"
+msgstr "Adresse"
 
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:85
 msgid "Bitcoin Network Fee Policy"
-msgstr "Bitcoin-Netzwerk Gebührenübersicht"
+msgstr "Netzwerk Gebührenübersicht"
+
+#: www/views/paymentUri.html:10
+msgid "Bitcoin URI is NOT valid!"
+msgstr "Cryptocurrency URI ist NICHT gültig!"
 
 #: www/views/tab-settings.html:63
 msgid "Bitcoin Unit"
-msgstr "Bitcoin-Einheit"
+msgstr "Cryptocurrency Einheit"
 
 #: www/views/onboarding/tour.html:31
 msgid "Bitcoin is a currency."
-msgstr "Bitcoin ist eine Währung."
+msgstr "Cryptocoin ist eine Währung."
 
 #: www/views/onboarding/disclaimer.html:15
 msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "Bitcoins sind anders &ndash; sie können nicht sicher in einer Bank oder einem Onlinedienst aufbewahrt werden."
+msgstr "Cryptocurrency sind anders &ndash; sie können nicht sicher in einer Bank oder einem Onlinedienst aufbewahrt werden."
 
 #: www/views/onboarding/tour.html:18
 msgid "Bitcoin is secure,<br>digital money."
-msgstr "Bitcoin ist sicheres,<br>digitales Geld."
+msgstr "Cryptocurrency ist sicheres,<br>digitales Geld."
 
 #: www/views/preferencesFee.html:11
 msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr "Bitcoin Transaktionen enthalten eine Gebühr für die \"Miners\" im Netzwerk."
+msgstr "Cryptocurrency Transaktionen enthalten eine Gebühr für die \"Miners\" im Netzwerk."
 
 #: www/views/buyAmazon.html:108
 msgid "Bought {{amountUnitStr}}"
@@ -406,11 +410,11 @@ msgstr ""
 
 #: www/views/includes/buyAndSellCard.html:3
 msgid "Buy &amp; Sell Bitcoin"
-msgstr "Kaufe &amp; Verkaufe Bitcoins"
+msgstr "Kaufe &amp; Verkaufe Cryptocurrency"
 
 #: www/views/tab-send.html:35
 msgid "Buy Bitcoin"
-msgstr "Kaufe Bitcoins"
+msgstr "Kaufe Cryptocurrency"
 
 #: www/views/mercadoLibre.html:22
 #: www/views/mercadoLibre.html:50
@@ -423,7 +427,7 @@ msgstr ""
 
 #: src/js/services/onGoingProcess.js:40
 msgid "Buying Bitcoin..."
-msgstr "Kaufe Bitcoins..."
+msgstr "Kaufe Cryptocurrency..."
 
 #: src/js/services/onGoingProcess.js:12
 msgid "Calculating fee"
@@ -774,7 +778,7 @@ msgstr "Erstelle eine gemeinsame Wallet"
 #: www/views/tab-home.html:77
 #: www/views/tab-send.html:36
 msgid "Create bitcoin wallet"
-msgstr "Erstelle Bitcoin-Wallet"
+msgstr "Erstelle Wallet"
 
 #: www/views/tab-create-personal.html:129
 msgid "Create new wallet"
@@ -892,7 +896,7 @@ msgstr "Herunterladen"
 
 #: www/views/addresses.html:19
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
-msgstr "Jede Bitcoin-Wallet kann Milliarden von Adressen aus Ihrem 12-Wort Backup erzeugen. Jedesmal wenn Sie eine Zahlung erhalten wird neue Adresse automatisch generiert und dargestellten."
+msgstr "Jede Wallet kann Milliarden von Adressen aus Ihrem 12-Wort Backup erzeugen. Jedesmal wenn Sie eine Zahlung erhalten wird neue Adresse automatisch generiert und dargestellten."
 
 #: src/js/services/feeService.js:13
 msgid "Economy"
@@ -1408,7 +1412,11 @@ msgstr "Ich verstehe"
 
 #: www/views/onboarding/disclaimer.html:21
 msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
+<<<<<<< HEAD
 msgstr "Ich verstehe, dass wenn diese App auf ein anderes Gerät verschoben oder gelöscht wird, meine Bitcoins nur mit der Wiederherstellungsphrase wiederhergestellt werden können."
+=======
+msgstr "Ich verstehe dass wenn diese App auf ein anderes Gerät verschoben oder gelöscht wird meine Cryptocurrency nur mit der Wiederherstellungsphrase wiederhergestellt werden können."
+>>>>>>> i18n for german and spanish to remove bitcoin text
 
 #: www/views/onboarding/disclaimer.html:18
 msgid "I understand that my funds are held securely on this device, not by a company."
@@ -1561,7 +1569,7 @@ msgstr "Ist diese E-Mail Adresse korrekt?"
 
 #: www/views/addresses.html:25
 msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
-msgstr "Es ist eine gute Idee Adressen nicht wiederzuverwenden - dies schützt Ihre Privatsphäre und hält Ihre Bitcoins vor hypothetischen Angriffen durch Quanten-Computern sicher."
+msgstr "Es ist eine gute Idee Adressen nicht wiederzuverwenden - dies schützt Ihre Privatsphäre und hält Ihre Cryptocurrency vor hypothetischen Angriffen durch Quanten-Computern sicher."
 
 #: src/js/controllers/backup.js:76
 msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
@@ -1770,7 +1778,7 @@ msgstr ""
 
 #: www/views/onboarding/backupRequest.html:5
 msgid "No backup, no bitcoin."
-msgstr "Keine Sicherung, keine Bitcoins."
+msgstr "Keine Sicherung, keine Cryptocurrency."
 
 #: www/views/addressbook.html:19
 msgid "No contacts yet"
@@ -1855,7 +1863,7 @@ msgstr "Notiz"
 
 #: www/views/modals/wallets.html:25
 msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
-msgstr "Hinweis: nur 1-1 (Einzelunterschrift) Wallets können verwendet werden um Bitcoins zu verkaufen"
+msgstr "Hinweis: nur 1-1 (Einzelunterschrift) Wallets können verwendet werden um Cryptocurrency zu verkaufen"
 
 #: www/views/preferencesNotifications.html:3
 #: www/views/tab-settings.html:46
@@ -1986,7 +1994,7 @@ msgstr "Den Klartext der Sicherung einfügen"
 
 #: www/views/bitpayCardIntro.html:28
 msgid "Pay 0% fees to turn bitcoin into dollars."
-msgstr "Zahle 0 % Gebühren um Bitcoins in Dollar zu wechseln."
+msgstr "Zahle 0 % Gebühren um Cryptocurrency in Dollar zu wechseln."
 
 #: www/views/modals/paypro.html:18
 msgid "Pay To"
@@ -2384,7 +2392,7 @@ msgstr "Transaktionen durchsuchen"
 
 #: www/views/tab-send.html:13
 msgid "Search or enter bitcoin address"
-msgstr "Bitcoin-Adresse suchen oder eingeben"
+msgstr "Adresse suchen oder eingeben"
 
 #: www/views/modals/search.html:16
 msgid "Search transactions"
@@ -2416,7 +2424,7 @@ msgstr "Selbstsigniertes Zertifikat"
 
 #: src/js/services/onGoingProcess.js:41
 msgid "Selling Bitcoin..."
-msgstr "Verkauf von Bitcoins..."
+msgstr "Verkauf von Cryptocurrency..."
 
 #: www/views/feedback/send.html:13
 #: www/views/feedback/send.html:43
@@ -2438,8 +2446,17 @@ msgstr "Geld senden"
 msgid "Send addresses by email"
 msgstr "Adressen per e-Mail versenden"
 
+<<<<<<< HEAD
 #: www/views/includes/logOptions.html:17
 #: www/views/tab-export-file.html:82
+=======
+#: www/views/includes/confirm-tx.html:3
+msgid "Send bitcoin"
+msgstr "Cryptocurrency senden"
+
+#: www/views/preferencesLogs.html:13
+#: www/views/tab-export-file.html:82
+>>>>>>> i18n for german and spanish to remove bitcoin text
 msgid "Send by email"
 msgstr "Per E-Mail versenden"
 
@@ -2569,7 +2586,7 @@ msgstr "Erweiterte Optionen anzeigen"
 
 #: www/views/tab-send.html:37
 msgid "Show bitcoin address"
-msgstr "Bitcoin-Adresse anzeigen"
+msgstr "Adresse anzeigen"
 
 #: www/views/tab-send.html:59
 msgid "Show more"
@@ -2629,7 +2646,7 @@ msgstr ""
 
 #: www/views/tab-send.html:28
 msgid "Start sending bitcoin"
-msgstr "Starte mit dem Senden der Bitcoins"
+msgstr "Starte mit dem Senden der Cryptocurrency"
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
@@ -2667,7 +2684,7 @@ msgstr "DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN"
 
 #: www/views/onboarding/welcome.html:5
 msgid "Take control of your money,<br>get started with bitcoin."
-msgstr "Übernehmen Sie die Kontrolle über Ihr Geld, <br>Legen Sie los mit Bitcoins."
+msgstr "Übernehmen Sie die Kontrolle über Ihr Geld, <br>Legen Sie los mit Cryptocurrency."
 
 #: www/views/walletDetails.html:139
 #: www/views/walletDetails.html:59
@@ -2720,15 +2737,15 @@ msgstr "Die Chrome-Anwendung für Ledger ist nicht installiert"
 
 #: www/views/modals/wallet-balance.html:55
 msgid "The amount of bitcoin immediately spendable from this wallet."
-msgstr "Den Betrag an Bitcoins sofort aus dieser Wallet zahlen."
+msgstr "Den Betrag an Cryptocurrency sofort aus dieser Wallet zahlen."
 
 #: www/views/modals/wallet-balance.html:93
 msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr "Der Betrag an Bitcoins gespeichert in dieser Wallet ist zugewiesen als Einsatz für die ausstehende Transaktion. Dem Betrag wurde zugewiesen unverbrauchte Transaktions-Ausgänge zu verwenden, welche mit dieser Brieftasche verbunden sind, und entspricht möglicherweise mehr als die tatsächlichen Beträge welche im Zusammenhang mit Ihren ausstehenden Transaktions-Betrag stehen."
+msgstr "Der Betrag an Cryptocurrency gespeichert in dieser Wallet ist zugewiesen als Einsatz für die ausstehende Transaktion. Dem Betrag wurde zugewiesen unverbrauchte Transaktions-Ausgänge zu verwenden, welche mit dieser Brieftasche verbunden sind, und entspricht möglicherweise mehr als die tatsächlichen Beträge welche im Zusammenhang mit Ihren ausstehenden Transaktions-Betrag stehen."
 
 #: www/views/modals/wallet-balance.html:74
 msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
-msgstr "Die Menge an Bitcoins sind in dieser Geldbörse mit weniger als 1 Blockchain Bestätigung gespeichert."
+msgstr "Die Menge an Cryptocurrency sind in dieser Geldbörse mit weniger als 1 Blockchain Bestätigung gespeichert."
 
 #: www/views/tab-import-phrase.html:5
 msgid "The derivation path"
@@ -2783,7 +2800,7 @@ msgstr "Der Zahlungsvorschlag ist nicht ausstehend"
 
 #: www/views/modals/wallet-balance.html:36
 msgid "The total amount of bitcoin stored in this wallet."
-msgstr "Der Gesamtbetrag an Bitcoins vorrätig in dieser Wallet."
+msgstr "Der Gesamtbetrag an Cryptocurrency vorrätig in dieser Wallet."
 
 #: www/views/preferencesHistory.html:27
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
@@ -2814,11 +2831,11 @@ msgstr "Diese App ist fantastisch!"
 
 #: www/views/onboarding/tour.html:47
 msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Diese App speichert Ihre Bitcoins mit modernster Sicherheit."
+msgstr "Diese App speichert Ihre Cryptocurrency mit modernster Sicherheit."
 
 #: src/js/controllers/confirm.js:468
 msgid "This bitcoin payment request has expired."
-msgstr "Diese Bitcoin Zahlungsaufforderung ist abgelaufen."
+msgstr "Diese Cryptocurrency Zahlungsaufforderung ist abgelaufen."
 
 #: www/views/join.html:130
 #: www/views/tab-create-personal.html:101
@@ -2859,11 +2876,11 @@ msgstr "An"
 
 #: www/views/tab-send.html:32
 msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
-msgstr "Um loszulegen kaufe Bitcoins oder teilen Sie ihre Adresse. Sie können Bitcoins von jeder beliebigen Wallet oder von einem Dienstleister/Broker empfangen."
+msgstr "Um loszulegen kaufe Cryptocurrency oder teilen Sie ihre Adresse. Sie können Cryptocurrency von jeder beliebigen Wallet oder von einem Dienstleister/Broker empfangen."
 
 #: www/views/tab-send.html:33
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Um loszulegen müssen Sie eine Bitcoin-Wallet erstellen und einige Bitcoins erhalten."
+msgstr "Um loszulegen müssen Sie eine Wallet erstellen und einige Cryptocurrency erhalten."
 
 #: src/js/services/bitpayAccountService.js:73
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -2955,7 +2972,7 @@ msgstr "Versuchen Sie es erneut in {{expires}}"
 
 #: www/views/bitpayCardIntro.html:18
 msgid "Turn bitcoin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
-msgstr "Wechseln Sie Bitcoins in Dollar, wechseln Sie überall wo Visa<sup>&reg;</sup> akzeptiert wird."
+msgstr "Wechseln Sie Cryptocurrency in Dollar, wechseln Sie überall wo Visa<sup>&reg;</sup> akzeptiert wird."
 
 #: www/views/tab-import-phrase.html:17
 msgid "Type the Recovery Phrase (usually 12 words)"
@@ -3320,7 +3337,7 @@ msgstr "Sie können Beiträge leisten indem Sie sich auf unserer Crowdin Communi
 
 #: www/views/tab-scan.html:16
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr "Sie können Bitcoin-Adressen, Zahlungsaufforderungen, Papier-Wallets und mehr scannen."
+msgstr "Sie können Adressen, Zahlungsaufforderungen, Papier-Wallets und mehr scannen."
 
 #: src/js/controllers/preferencesAbout.js:14
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
@@ -3328,7 +3345,7 @@ msgstr "Sie können auf GitHub die neuesten Entwicklungen ansehen und zu dieser 
 
 #: www/views/onboarding/tour.html:19
 msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "Sie können Bitcoins auf Millionen von Webseiten und Shops weltweit ausgeben."
+msgstr "Sie können Cryptocurrency auf Millionen von Webseiten und Shops weltweit ausgeben."
 
 #: www/views/backup.html:12
 msgid "You can still export it from Advanced &gt; Export."
@@ -3340,7 +3357,7 @@ msgstr "Sie können auch mit andere Währungen wie US-Dollar, Euro oder Pfund ha
 
 #: www/views/onboarding/tour.html:46
 msgid "You control your bitcoin."
-msgstr "Sie kontrollieren Ihre Bitcoins."
+msgstr "Sie kontrollieren Ihre Cryptocurrency."
 
 #: www/views/modals/chooseFeeLevel.html:64
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
@@ -3365,11 +3382,11 @@ msgstr ""
 
 #: www/views/includes/confirmBackupPopup.html:6
 msgid "Your bitcoin wallet is backed up!"
-msgstr "Ihre Bitcoin-Wallet wurde gesichert!"
+msgstr "Ihre Wallet wurde gesichert!"
 
 #: www/views/tab-home.html:36
 msgid "Your bitcoin wallet is ready!"
-msgstr "Ihre Bitcoin-Wallet ist fertig!"
+msgstr "Ihre Wallet ist fertig!"
 
 #: www/views/modals/chooseFeeLevel.html:61
 msgid "Your fee is lower than recommended."
@@ -3465,7 +3482,7 @@ msgstr "{{appName}} hängt von Bitcore Wallet Service (BWS) ab bezüglich Blockc
 
 #: src/js/controllers/confirm.js:358
 msgid "{{fee}} will be deducted for bitcoin networking fees."
-msgstr "{{fee}} wird für Bitcoin-Netzwerkgebühren abgezogen werden."
+msgstr "{{fee}} wird für Netzwerkgebühren abgezogen werden."
 
 #: www/views/confirm.html:87
 msgid "{{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount"
