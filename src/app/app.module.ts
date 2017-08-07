@@ -19,15 +19,15 @@ import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { WalletProvider } from '../providers/wallet-provider/wallet-provider';
-import { StorageProvider } from '../providers/storage-provider/storage-provider';
-import { AppProvider } from '../providers/app-provider/app-provider';
+import { WalletProvider } from '../providers/wallet/wallet';
+import { StorageProvider } from '../providers/storage/storage';
+import { AppProvider } from '../providers/app/app';
 import { PlatformProvider } from '../providers/platform/platform';
 
 // Set different log level depending on environment.
 const LOG_LEVEL = Level.LOG;
-if (isDevMode()){
-    const LOG_LEVEL = Level.ERROR;
+if (isDevMode()) {
+  const LOG_LEVEL = Level.ERROR;
 }
 
 @NgModule({
@@ -61,11 +61,11 @@ if (isDevMode()){
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     WalletProvider,
     StorageProvider,
     AppProvider,
     PlatformProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }
