@@ -5,7 +5,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { TermsOfUsePage } from '../terms-of-use/terms-of-use';
 
-import { AppProvider } from '../../providers/app-provider/app-provider';
+import { AppProvider } from '../../providers/app/app';
 
 @Component({
   selector: 'page-about',
@@ -20,7 +20,7 @@ export class AboutPage {
     public navParams: NavParams,
     private app: AppProvider,
     private log: Logger
-  ) {}
+  ) { }
 
   ionViewDidLoad() {
     this.log.log('ionViewDidLoad AboutPage');

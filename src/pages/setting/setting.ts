@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { AppProvider } from '../../providers/app-provider/app-provider';
+import { AppProvider } from '../../providers/app/app';
 
 import { AboutPage } from '../about/about';
 

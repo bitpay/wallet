@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Logger } from '@nsalaun/ng-logger';
-import { AppProvider } from '../providers/app-provider/app-provider';
+import { AppProvider } from '../providers/app/app';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -12,7 +12,7 @@ import { TabsPage } from '../pages/tabs/tabs';
   templateUrl: 'app.html'
 })
 export class Copay {
-  rootPage:any = TabsPage;
+  rootPage: any = TabsPage;
 
   constructor(
     platform: Platform,
