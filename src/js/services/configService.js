@@ -17,6 +17,10 @@ angular.module('copayApp.services').factory('configService', function(appConfigS
     bws: {
       url: appConfigService.bwsUrl,
     },
+    // Bitcore wallet service URL
+    defaultNetwork: {
+      url: appConfigService.defaultNetwork,
+    },    
 
     download: {
       url: appConfigService.downloadUrl

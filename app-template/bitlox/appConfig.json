@@ -16,6 +16,7 @@
   "disclaimerUrl": "https://bitlox.io/",
   "url": "https://bitlox.io/",
   "bwsUrl": "https://bws.bitlox.com/bws/api",
+  "defaultNetwork": "livenet",
   "unitName": "BTC",
   "unitCode": "btc",
   "ratesUrl": "https://insight.bitpay.com:443/api/rates",

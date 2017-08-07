@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog, CUSTOMNETWORKS) {
-
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog, CUSTOMNETWORKS, configService) {
+  var defaults = configService.getDefaults()
   var root = {};
 
   root.showMenu = function(data) {
@@ -39,7 +39,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     function checkPrivateKey(privateKey) {
       try {
-        new bitcore.PrivateKey(privateKey, 'livenet');
+        new bitcore.PrivateKey(privateKey, defaults.defaultNetwork);
       } catch (err) {
         return false;
       }
@@ -86,14 +86,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     var isNetworkValid = false;
     var network = 'livenet'
     var networkName = 'Bitcoin';
-    $log.log(data)
-        $log.log(data)
-            $log.log(data)
-                $log.log(data)
-                    $log.log(data)
-                        $log.log(data)
-                            $log.log(data)
-                                $log.log(data)
     for(var i in CUSTOMNETWORKS) {
       $log.log(CUSTOMNETWORKS[i].name)
       if(bitcore.Address.isValid(data, CUSTOMNETWORKS[i].name)) {

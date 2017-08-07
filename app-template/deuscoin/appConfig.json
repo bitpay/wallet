@@ -18,6 +18,7 @@
   "bwsUrl": "https://bws.deuscoin.org/bws/api",
   "unitName": "DEU",
   "unitCode": "deu",
+  "defaultNetwork": "deuscoin",
   "ratesUrl": "https://insight.bitpay.com:443/api/rates",
   "releaseUrl": "https://api.github.com/repos/bitlox/copay/releases/latest",
   "downloadUrl": "https://bitlox.io",

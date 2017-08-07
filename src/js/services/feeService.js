@@ -3,9 +3,13 @@
 angular.module('copayApp.services').factory('feeService', function($log, $timeout, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog, CUSTOMNETWORKS) {
 
   var root = {};
+<<<<<<< HEAD
 
   var CACHE_TIME_TS = 60; // 1 min
 
+=======
+  var defaults = configService.getDefaults()
+>>>>>>> default network config
   // Constant fee options to translate
   root.feeOpts = {
     urgent: gettext('Urgent'),
@@ -24,17 +28,27 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     return configService.getSync().wallet.settings.feeLevel || 'normal';
   };
 
+<<<<<<< HEAD
 
   root.getFeeRate = function(network, feeLevel, cb) {
 
     if (feeLevel == 'custom') return cb();
 
     network = network || 'livenet';
+=======
+  root.getCurrentFeeValue = function(network, cb) {
+    network = network || defaults.defaultNetwork;
+    var feeLevel = root.getCurrentFeeLevel();
+>>>>>>> default network config
 
     root.getFeeLevels(function(err, levels, fromCache) {
       if (err) return cb(err);
 
+<<<<<<< HEAD
       var feeLevelRate = lodash.find(levels[network], {
+=======
+      var feeLevelValue = lodash.find(levels[defaults.defaultNetwork], { //hardcode livenet here
+>>>>>>> default network config
         level: feeLevel
       });
 
@@ -54,7 +68,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     });
   };
 
-<<<<<<< HEAD
+
   root.getCurrentFeeRate = function(network, cb) {
     return root.getFeeRatenetwork, root.getCurrentFeeLevel(), cb);
   };
@@ -65,7 +79,8 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       return cb(null, cache.data, true);
     }
 
-    network = network || 'livenet';
+    network = network || defaults.defaultNetwork;
+
     var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
 
     var unitName = configService.getSync().wallet.settings.unitName;
@@ -75,14 +90,16 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
         if (errLivenet || errTestnet) {
           return cb(gettextCatalog.getString('Could not get dynamic fee'));
         }
-
         cache.updateTs = Date.now();
-        cache.data = {
-          'livenet': levelsLivenet,
-          'testnet': levelsTestnet
-        };
-
-        return cb(null, cache.data);
+        walletClient.getFeeLevels(defaults.networkName, function(errDefaultnet, levelsDefaultnet) {
+          var retObj = {
+            'livenet': levelsLivenet,
+            'testnet': levelsTestnet
+          };
+          retObj[defaults.networkName] = levelsDefaultnet
+          
+          return cb(null, retObj);
+        });
       });
     });
   };

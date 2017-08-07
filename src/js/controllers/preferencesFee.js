@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService) {
+angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService) { 
+  var defaults = configService.getDefaults()
 
   $scope.save = function(newFee) {
 
@@ -32,7 +33,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   });
 
   $scope.init = function() {
-    $scope.network = $scope.network || 'livenet';
+    $scope.network = $scope.network || defaults.defaultNetwork.name;
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel();
     $scope.loadingFee = true;
@@ -53,7 +54,6 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
 
   var updateCurrentValues = function() {
     if (lodash.isEmpty($scope.feeLevels) || lodash.isEmpty($scope.currentFeeLevel)) return;
-
     var value = lodash.find($scope.feeLevels[$scope.network], {
       level: $scope.currentFeeLevel
     });

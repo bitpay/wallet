@@ -1,11 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-<<<<<<< HEAD
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS) {
-=======
-  function($scope, $rootScope, $timeout, $http, $q, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, bitcore, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, CUSTOMNETWORKS, customNetworkService) {
->>>>>>> make dropdown actually work
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS, customNetworkService) {
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -30,13 +26,14 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.account = 1;
       $scope.formData.bwsurl = defaults.bws.url;
       $scope.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
-      $scope.formData.derivationPath = derivationPathHelper.getDefault('livenet');
+      $scope.formData.totalCopayers = defaults.wallet.totalCopayers;
+      $scope.formData.derivationPath = derivationPathHelper.getDefault(defaults.defaultNetwork);
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);
       resetPasswordFields();
       $scope.networks = CUSTOMNETWORKS;
-      $scope.network = CUSTOMNETWORKS['livenet']
-    });
+      $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork]
+    };
 
     $scope.showNetworkSelector = function() {
       $scope.networkSelectorTitle = gettextCatalog.getString('Select currency');

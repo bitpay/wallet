@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('hwWallet', function($log, bwcService) {
+  .factory('hwWallet', function($log, bwcService, configService) {
     var root = {};
+
+    var defaults = configService.getDefaults()
 
     // Ledger magic number to get xPub without user confirmation
     root.ENTROPY_INDEX_PATH = "0xb11e/";
@@ -36,7 +38,7 @@ angular.module('copayApp.services')
     };
 
     root.getAddressPath = function(device, isMultisig, account, network) {
-      network = network || 'livenet';
+      network = network || defaults.defaultNetwork;
       var networkPath = root.LIVENET_PATH;
       if (network == 'testnet') {
         networkPath = root.TESTNET_PATH;
