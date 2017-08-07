@@ -3,7 +3,7 @@ import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class AppService {
+export class AppProvider {
   private jsonPath: string = '../assets/appConfig.json';
 
   constructor(public http: Http) {}
