@@ -3,13 +3,7 @@ import { PlatformProvider } from '../platform/platform';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
-import { IStorage } from './istorage';
-
-export class KeyAlreadyExistsError extends Error {
-  constructor() {
-    super('Key already exists');
-  }
-}
+import { IStorage, KeyAlreadyExistsError } from './istorage';
 
 @Injectable()
 export class LocalStorage implements IStorage {
@@ -19,8 +13,16 @@ export class LocalStorage implements IStorage {
     if (!this.ls) throw new Error('localstorage not available');
   }
 
-  get(k: string, cb: (err: Error, v: string) => void) {
-    return cb(null, this.ls.getItem(k));
+  get(k: string, cb: (err: Error, v: any) => void) {
+    let v = this.ls.getItem(k);
+    if (!v) return cb(null, null);
+    if (!_.isString(v)) return cb(null, v);
+
+    try {
+      return cb(null, JSON.parse(v));
+    } catch (e) {
+      return cb(null, v);
+    }
   }
 
   set(k: string, v: any, cb: (err: Error) => void) {
@@ -42,7 +44,7 @@ export class LocalStorage implements IStorage {
 
   create(k: string, v: any, cb: (err: Error) => void) {
     this.get(k,
-      function (err, data) {
+      (err, data) => {
         if (data) {
           return cb(new KeyAlreadyExistsError());
         } else {

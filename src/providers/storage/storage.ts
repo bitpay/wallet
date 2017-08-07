@@ -8,11 +8,11 @@ export class StorageProvider {
   }
 
   storeNewProfile(profile, cb) {
-    this.storage.create('profile', profile.toObj(), cb);
+    this.storage.create('profile', profile, cb);
   };
 
   storeProfile(profile, cb) {
-    this.storage.set('profile', profile.toObj(), cb);
+    this.storage.set('profile', profile, cb);
   };
 
   getProfile(cb) {
