@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
       switch ($scope.bwsurl.value) {
         case 'prod':
         case 'production':
-          bws = 'https://bws.bitlox.com/bws/api'
+          bws = defaults.bws.url
           break;
         case 'sta':
         case 'staging':

@@ -32,10 +32,13 @@ bwcModule.provider("bwcService", function() {
 
     service.getClient = function(walletData, opts) {
       opts = opts || {};
+      if(!opts.bwsurl) {
+        throw new Error("BWS URL not specified")
+      }
 
       //note opts use `bwsurl` all lowercase;
       var bwc = new Client({
-        baseUrl: opts.bwsurl || 'https://bws.bitlox.com/bws/api',
+        baseUrl: opts.bwsurl,
         verbose: opts.verbose,
         timeout: 100000,
         transports: ['polling'],

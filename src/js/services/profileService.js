@@ -317,7 +317,8 @@ angular.module('copayApp.services')
     };
 
     var seedWallet = function(opts, cb) {
-      opts = opts || {};
+      if(!opts || !opts.bwsurl) { opts = { bwsurl: defaults.bws.url } }
+
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || defaults.defaultNetwork;
       console.log(opts)
@@ -416,7 +417,9 @@ angular.module('copayApp.services')
 
     // joins and stores a wallet
     root.joinWallet = function(opts, cb) {
-      var walletClient = bwcService.getClient();
+      if(!opts || !opts.bwsurl) { opts = { bwsurl: defaults.bws.url } }
+
+      var walletClient = bwcService.getClient(null, opts);
       $log.debug('Joining Wallet:', opts);
 
       try {
