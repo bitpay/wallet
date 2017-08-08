@@ -321,7 +321,6 @@ angular.module('copayApp.services')
 
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || defaults.defaultNetwork.name;
-      console.log(opts)
 
       if (opts.mnemonic) {
         try {

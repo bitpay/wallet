@@ -114,6 +114,15 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
 
       configService.whenAvailable(function(config) {
+        config.defaultNetwork.pubkeyhash = parseInt(config.defaultNetwork.pubkeyhash,16)
+        config.defaultNetwork.privatekey = parseInt(config.defaultNetwork.privatekey,16)
+
+        config.defaultNetwork.scripthash = parseInt(config.defaultNetwork.scripthash,16)
+        config.defaultNetwork.xpubkey = parseInt(config.defaultNetwork.xpubkey,16)
+        config.defaultNetwork.xprivkey = parseInt(config.defaultNetwork.xprivkey,16)
+        config.defaultNetwork.networkMagic = parseInt(config.defaultNetwork.networkMagic,16)
+
+        bitcore.Networks.add(config.defaultNetwork)
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
         if ($scope.recentTransactionsEnabled) getNotifications();
 

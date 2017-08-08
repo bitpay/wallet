@@ -2,7 +2,7 @@
   'use strict'
 
   angular.module('app.util')
-        .constant('CUSTOMNETWORKS', {
+        .constant('CUSTOMNETWORKS', function() {
           
           livenet: {
             network: 'livenet',

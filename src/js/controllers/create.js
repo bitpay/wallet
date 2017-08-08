@@ -33,6 +33,7 @@ angular.module('copayApp.controllers').controller('createController',
       resetPasswordFields();
       $scope.networks = CUSTOMNETWORKS;
       $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork.name]
+      console.log($scope.network)
     };
 
     $scope.showNetworkSelector = function() {
