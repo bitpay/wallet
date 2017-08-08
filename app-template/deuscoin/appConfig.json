@@ -1,6 +1,6 @@
 {
   "packageName": "deuscoin",
-  "packageDescription": "Deuscoin Bitcoin Wallet",
+  "packageDescription": "Deuscoin Wallet",
   "packageNameId": "org.deuscoin.wallet",
   "userVisibleName": "Deuscoin",
   "purposeLine": "Deuscoin Wallet",
