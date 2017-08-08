@@ -4,21 +4,13 @@ export class RamStorage implements IStorage {
   hash = {};
 
   get(k: string): Promise<any> {
-    return new Promise((resolve) => {
-      resolve(this.hash[k]);
-    });
+    return Promise.resolve(this.hash[k]);
   };
   set(k: string, v: any): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.hash[k] = v;
-      resolve();
-    });
+    return Promise.resolve().then(() => this.hash[k] = v);
   };
   remove(k: string): Promise<void> {
-    return new Promise<void>((resolve) => {
-      delete this.hash[k];
-      resolve();
-    });
+    return Promise.resolve().then(() => { delete this.hash[k]; });
   };
   create(k: string, v: any): Promise<void> {
     return this.get(k).then((data) => {

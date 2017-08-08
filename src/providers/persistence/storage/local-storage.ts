@@ -28,7 +28,7 @@ export class LocalStorage implements IStorage {
   }
 
   set(k: string, v: any): Promise<void> {
-    return new Promise<void>(() => {
+    return new Promise((resolve) => {
       if (_.isObject(v)) {
         v = JSON.stringify(v);
       }
@@ -37,11 +37,12 @@ export class LocalStorage implements IStorage {
       }
 
       this.ls.setItem(k, v);
+      resolve();
     });
   }
 
   remove(k: string): Promise<void> {
-    return new Promise<void>(() => {
+    return Promise.resolve().then(() => {
       this.ls.removeItem(k);
     });
   }
