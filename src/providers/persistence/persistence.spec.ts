@@ -2,6 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { PersistenceProvider } from './persistence';
 import { IStorage, ISTORAGE, KeyAlreadyExistsError } from './storage/istorage';
 import { RamStorage } from './storage/ram-storage';
+import { Logger } from '@nsalaun/ng-logger';
 
 describe('Storage Service', () => {
   beforeEach(() => {
@@ -9,6 +10,7 @@ describe('Storage Service', () => {
       providers: [
         PersistenceProvider,
         { provide: ISTORAGE, useClass: RamStorage },
+        { provide: Logger },
       ]
     });
   });
@@ -19,7 +21,7 @@ describe('Storage Service', () => {
       service = pp;
     }));
     it('should correctly perform a profile roundtrip', () => {
-      var p = { name: 'My profile' };
+      let p = { name: 'My profile' };
       service.storeNewProfile(p).then(() => {
         service.getProfile().then((profile) => {
           expect(typeof profile).toEqual('object');
@@ -28,7 +30,7 @@ describe('Storage Service', () => {
       });
     });
     it('should fail to create a profile when one already exists', () => {
-      var p = { name: 'My profile' };
+      let p = { name: 'My profile' };
       service.storeNewProfile(p).then(() => {
         service.storeNewProfile(p).catch((err) => {
           expect(err.message).toEqual('Key already exists');
