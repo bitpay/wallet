@@ -1,0 +1,97 @@
+/*
+ * BitLox Distribution SCSS overrides
+ */
+
+/* Colors */
+$v-primary-color:                                    #00003a; /* #3a1919 */
+$v-secondary-color:                                  #00005b; /* 5b3131 */
+$v-accent-color:                                     #0000ff;
+
+$bar-royal-bg:                                       #000044 !default;
+$bar-royal-border:                                   #0000AA !default;
+
+$v-text-primary-color:                               #0000ff;
+$v-text-secondary-color:                             #c2c2d1;
+$v-text-accent-color:                                #0000bb;
+
+$v-success-color:                                    #1a42bb;
+$v-warning-color:                                    #31315b; //#b51abb
+
+$v-wallet-color-map: (
+   0: (color: #dd4b39, name: 'Cinnabar'),
+   1: (color: #f38f12, name: 'Flaming Carrot Orange'),
+   2: (color: #faa77f, name: 'Light Salmon'),
+   3: (color: #d0b136, name: 'Metallic Fool\'s Gold'),
+   4: (color: #9edd72, name: 'Feijoa'),
+   5: (color: #29bb9c, name: 'Shamrock'),
+   6: (color: #1a1a88, name: 'Observatory'),
+   7: (color: #77dada, name: 'Turquoise Blue'),
+   8: (color: #4a90e2, name: 'Cornflower Blue'),
+   9: (color: #484ed3, name: 'Free Speech Blue'),
+  10: (color: #9b59b6, name: 'Deep Lilac'),
+  11: (color: #e856ef, name: 'Free Speech Magenta'),
+  12: (color: #ff599e, name: 'Brilliant Rose'),
+  13: (color: #7a8c9e, name: 'Light Slate Grey')
+) !default;
+
+/* Theme */
+$v-default-wallet-color-index:                       6;
+$v-top-tabs-color:                                   $v-accent-color;
+$v-wallet-backup-phrase-color:                       $v-text-primary-color;
+$v-wallet-backup-select-phrase-color:                $v-secondary-color;
+$v-wallet-backup-select-word-bg:                     $v-accent-color;
+$v-wallet-backup-select-word-color:                  #FFF;
+$v-wallet-backup-select-word-disabled-color:         $v-accent-color;
+$v-tou-bg:                                           $v-secondary-color;
+$v-tou-color:                                        $v-text-secondary-color;
+$v-icon-border-radius:                               3px;
+$v-bitcoin-icon:                                     url('../img/app/icon-bitcoin.svg');
+
+$v-button-primary-outline-active-color:              $v-text-primary-color;
+
+$v-button-secondary-bg:                              $v-secondary-color;
+$v-button-secondary-color:                           $v-accent-color;
+$v-button-secondary-active-bg:                       darken($v-secondary-color, 10%);
+$v-button-secondary-clear-color:                     $v-accent-color;
+$v-button-secondary-outline-border:                  $v-accent-color;
+$v-button-secondary-outline-color:                   $v-accent-color;
+$v-button-secondary-outline-active-bg:               darken($v-accent-color, 10%);
+$v-button-secondary-outline-active-color:            $v-accent-color;
+
+/* Slide */
+
+$v-slide-bg-color:                                   $v-accent-color;
+$v-slider-bg-color:                                  lighten($v-accent-color, 20%);
+$v-slide-text-color:                                 #FFFFFF;
+
+/* Onboarding */
+$v-onboarding-welcome-bg:                            none;
+$v-onboarding-color:                                 $v-text-secondary-color;
+$v-onboarding-bar-header-color:                      $v-text-primary-color;
+$v-onboarding-bar-header-button-color:               $v-accent-color;
+
+$v-onboarding-tour-phone-bg:                         url(../img/app/onboarding/tour-phone.svg);
+$v-onboarding-tour-currency-bg:                      url(../img/app/onboarding/tour-currency.svg);
+$v-onboarding-tour-control-bg:                       url(../img/app/onboarding/tour-control.svg);
+$v-onboarding-push-notification-bg:                  url(../img/app/onboarding/push-notifications.svg);
+$v-onboarding-backup-warning-bg:                     url(../img/app/backup-warning.svg);
+
+$v-onboarding-button-back-color:                     $v-accent-color;
+
+$v-onboarding-button-secondary-bg:                   $v-secondary-color;
+$v-onboarding-button-secondary-color:                $v-accent-color;
+$v-onboarding-button-secondary-active-bg:            darken($v-secondary-color, 10%);
+$v-onboarding-button-secondary-clear-color:          $v-accent-color;
+$v-onboarding-button-secondary-outline-border:       $v-accent-color;
+$v-onboarding-button-secondary-outline-color:        $v-accent-color;
+$v-onboarding-button-secondary-outline-active-bg:    darken($v-accent-color, 10%);
+$v-onboarding-button-secondary-outline-active-color: $v-accent-color;
+
+/* Main tabs */
+$v-tab-home-selected-icon:                           url('../img/app/tab-icons/ico-home-selected.svg');
+$v-tab-receive-selected-icon:                        url('../img/app/tab-icons/ico-receive-selected.svg');
+$v-tab-settings-selected-icon:                       url('../img/app/tab-icons/ico-settings-selected.svg');
+$v-tab-scan-selected-icon:                           url('../img/app/tab-icons/ico-scan-selected.svg');
+$v-tab-send-selected-icon:                           url('../img/app/tab-icons/ico-send-selected.svg');
+
+$v-logo-height: 100%;
