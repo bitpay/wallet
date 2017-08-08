@@ -39,7 +39,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     function checkPrivateKey(privateKey) {
       try {
-        new bitcore.PrivateKey(privateKey, defaults.defaultNetwork);
+        new bitcore.PrivateKey(privateKey, defaults.defaultNetwork.name);
       } catch (err) {
         return false;
       }

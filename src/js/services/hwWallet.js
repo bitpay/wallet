@@ -38,7 +38,7 @@ angular.module('copayApp.services')
     };
 
     root.getAddressPath = function(device, isMultisig, account, network) {
-      network = network || defaults.defaultNetwork;
+      network = network || defaults.defaultNetwork.name;
       var networkPath = root.LIVENET_PATH;
       if (network == 'testnet') {
         networkPath = root.TESTNET_PATH;

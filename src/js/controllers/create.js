@@ -27,12 +27,12 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.bwsurl = defaults.bws.url;
       $scope.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
       $scope.formData.totalCopayers = defaults.wallet.totalCopayers;
-      $scope.formData.derivationPath = derivationPathHelper.getDefault(defaults.defaultNetwork);
+      $scope.formData.derivationPath = derivationPathHelper.getDefault(defaults.defaultNetwork.name);
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);
       resetPasswordFields();
       $scope.networks = CUSTOMNETWORKS;
-      $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork]
+      $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork.name]
     };
 
     $scope.showNetworkSelector = function() {

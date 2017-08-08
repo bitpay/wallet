@@ -169,7 +169,6 @@ angular.module('copayApp.controllers').controller('joinController',
         // TODO: cannot currently join an intelTEE testnet wallet (need to detect from the secret)
         src.getInfoForNewWallet(true, account, defaults.defaultNetwork.name, function(err, lopts) {
           ongoingProcess.set('connecting' + $scope.formData.seedSource.id, false);
-
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;

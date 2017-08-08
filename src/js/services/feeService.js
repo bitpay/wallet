@@ -3,13 +3,9 @@
 angular.module('copayApp.services').factory('feeService', function($log, $timeout, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog, CUSTOMNETWORKS) {
 
   var root = {};
-<<<<<<< HEAD
-
   var CACHE_TIME_TS = 60; // 1 min
-
-=======
   var defaults = configService.getDefaults()
->>>>>>> default network config
+
   // Constant fee options to translate
   root.feeOpts = {
     urgent: gettext('Urgent'),
@@ -28,27 +24,16 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     return configService.getSync().wallet.settings.feeLevel || 'normal';
   };
 
-<<<<<<< HEAD
-
   root.getFeeRate = function(network, feeLevel, cb) {
-
+    network = network || defaults.defaultNetwork.name;
     if (feeLevel == 'custom') return cb();
 
     network = network || 'livenet';
-=======
-  root.getCurrentFeeValue = function(network, cb) {
-    network = network || defaults.defaultNetwork;
-    var feeLevel = root.getCurrentFeeLevel();
->>>>>>> default network config
 
     root.getFeeLevels(function(err, levels, fromCache) {
       if (err) return cb(err);
 
-<<<<<<< HEAD
       var feeLevelRate = lodash.find(levels[network], {
-=======
-      var feeLevelValue = lodash.find(levels[defaults.defaultNetwork], { //hardcode livenet here
->>>>>>> default network config
         level: feeLevel
       });
 
@@ -79,8 +64,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       return cb(null, cache.data, true);
     }
 
-    network = network || defaults.defaultNetwork;
-
+    network = network || defaults.defaultNetwork.name;
     var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
 
     var unitName = configService.getSync().wallet.settings.unitName;

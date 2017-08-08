@@ -320,7 +320,7 @@ angular.module('copayApp.services')
       if(!opts || !opts.bwsurl) { opts = { bwsurl: defaults.bws.url } }
 
       var walletClient = bwcService.getClient(null, opts);
-      var network = opts.networkName || defaults.defaultNetwork;
+      var network = opts.networkName || defaults.defaultNetwork.name;
       console.log(opts)
 
       if (opts.mnemonic) {
@@ -689,7 +689,7 @@ angular.module('copayApp.services')
       var opts = {};
       opts.m = 1;
       opts.n = 1;
-      opts.networkName = defaults.defaultNetwork;
+      opts.networkName = defaults.defaultNetwork.name;
       root.createWallet(opts, cb);
     };
 
