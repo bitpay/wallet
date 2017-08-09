@@ -17,10 +17,10 @@
     "qrcode-decoder-js": "*",
     "trezor-connect": "https://github.com/trezor/connect.git#c1a00f9f0f4a13239ba13ddd589c6ca61f2e7876",
     "ng-csv": "~0.3.6",
-    "ionic-toast": "0.4.1",
-    "angular-clipboard": "1.4.2",
-    "angular-md5": "0.1.10",
-    "ngtouch": "1.0.1"
+    "ionic-toast": "^0.4.1",
+    "angular-clipboard": "^1.4.2",
+    "angular-md5": "^0.1.10",
+    "ngtouch": "^1.0.1"
   },
   "resolutions": {
     "angular": "1.5.3",
