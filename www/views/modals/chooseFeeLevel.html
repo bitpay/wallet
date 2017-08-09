@@ -75,7 +75,7 @@
         <div class="input-label" translate>
           Fee level
         </div>
-        <select ng-options="fee as level for (fee,level) in feeOpts" ng-model="selectedFee.value">
+        <select ng-options="fee as level | translate for (fee,level) in feeOpts" ng-model="selectedFee.value">
         </select>
       </label>
     </div>
