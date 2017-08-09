@@ -167,13 +167,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   var _getNetAmount = function(amount, cb) {
+    // Support only livenet/btc
+    var standardUnit = networkHelper.getStandardUnit('livenet/btc');
+
     // Fee Normal for a single transaction (450 bytes)
     var txNormalFeeKB = 450 / 1000;
-    feeService.getFeeRate(null, 'normal', function(err, feePerKB) {
+    // Support only livenet/btc
+    feeService.getFeeRate('livenet/btc', 'normal', function(err, feePerKB) {
       if (err) return cb(err);
-      var feeBTC = (feePerKB * txNormalFeeKB / 100000000).toFixed(8);
+      var feeAtomic = (feePerKB * txNormalFeeKB / standardUnit.value).toFixed(standardUnit.decimals);
 
-      return cb(null, amount - feeBTC, feeBTC);
+      return cb(null, amount - feeAtomic, feeAtomic);
     });
   };
 
@@ -681,7 +685,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var _sendToWallet = function(tx, accessToken, accountId, coinbasePendingTransactions) {
     if (!tx) return;
     var desc = appConfigService.nameCase + ' Wallet';
-    _getNetAmount(tx.amount.amount, function(err, amountBTC, feeBTC) {
+    _getNetAmount(tx.amount.amount, function(err, amountAtomic, feeAtomic) {
       if (err) {
         _savePendingTransaction(tx, {
           status: 'error',
@@ -695,10 +699,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
       var data = {
         to: tx.toAddr,
-        amount: amountBTC,
+        amount: amountAtomic,
         currency: tx.amount.currency,
         description: desc,
-        fee: feeBTC
+        fee: feeAtomic
       };
       root.sendTo(accessToken, accountId, data, function(err, res) {
         if (err) {

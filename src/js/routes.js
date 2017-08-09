@@ -287,7 +287,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('tabs.send.amount', {
-        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor',
+        url: '/amount/:networkName/:recipientType/:toAddress/:toName/:toEmail/:toColor',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
@@ -296,7 +296,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.send.confirm', {
-        url: '/confirm/:recipientType/:toAddress/:toName/:toAmount/:toEmail/:toColor/:description/:useSendMax',
+        url: '/confirm/:networkName/:recipientType/:toAddress/:toName/:toAmount/:toEmail/:toColor/:description/:useSendMax',
         views: {
           'tab-send@tabs': {
             controller: 'confirmController',
@@ -392,8 +392,26 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.networks', {
+        url: '/networks/:id',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesNetworksController',
+            templateUrl: 'views/preferencesNetworks.html'
+          }
+        }
+      })
+      .state('tabs.network-settings', {
+        url: '/network-settings/:networkName',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesNetworksController',
+            templateUrl: 'views/preferencesNetworks.html'
+          }
+        }
+      })
       .state('tabs.unit', {
-        url: '/unit',
+        url: '/unit/:networkName',
         views: {
           'tab-settings@tabs': {
             controller: 'preferencesUnitController',
@@ -402,7 +420,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.fee', {
-        url: '/fee',
+        url: '/fee/:networkName',
         views: {
           'tab-settings@tabs': {
             controller: 'preferencesFeeController',
@@ -411,7 +429,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.altCurrency', {
-        url: '/altCurrency',
+        url: '/altCurrency/:networkName',
         views: {
           'tab-settings@tabs': {
             controller: 'preferencesAltCurrencyController',

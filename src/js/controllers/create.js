@@ -121,11 +121,11 @@ angular.module('copayApp.controllers').controller('createController',
     };
 
     $scope.updateNetworkSelect = function() {
-      var networkOptions = networkHelper.getAllNetworks();
+      var networkOptions = networkHelper.getNetworks();
 
       var setSeed = $scope.formData.seedSource.id == 'set';
       if (setSeed) {
-        networkOptions = networkHelper.getLiveNetworks();
+        networkOptions = networkHelper.getNetworks();
       }
 
       $scope.formData.network = networkOptions[0];

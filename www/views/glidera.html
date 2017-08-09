@@ -69,7 +69,7 @@
           <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="25" class="item-img-buy">
           Buy Bitcoin
           <span class="item-note" ng-show="account.price.buy">
-            ${{account.price.buy}}/BTC
+            ${{account.price.buy}}/{{standardUnit.shortName}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
@@ -79,7 +79,7 @@
           <img src="img/sell-bitcoin.svg" alt="buy bitcoin" width="25" class="item-img-sell">
           Sell Bitcoin
           <span class="item-note" ng-show="account.price.sell">
-            ${{account.price.sell}}/BTC
+            ${{account.price.sell}}/{{standardUnit.shortName}}
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
@@ -111,7 +111,7 @@
           <h2>
             <span ng-show="tx.type == 'BUY'">Bought</span>
             <span ng-show="tx.type == 'SELL'">Sold</span>
-            <b>{{tx.qty}}</b> BTC
+            <b>{{tx.qty}}</b> {{standardUnit.shortName}}
           </h2>
           <p>
             {{tx.subtotal|currency:'':2}} {{tx.currency}}

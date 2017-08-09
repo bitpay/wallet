@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $ionicHistory, platformInfo, lodash, profileService, configService, $stateParams, $state, walletService) {
+  function($scope, $log, $ionicHistory, platformInfo, lodash, profileService, configService, $stateParams, $state, walletService, netorkHelper) {
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.wallet = wallet;
 
@@ -34,6 +34,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       var c = wallet.credentials;
       var basePath = c.getBaseAddressDerivationPath();
 
+      $scope.standardUnit = netorkHelper.getStandardUnit('livenet/btc');
       $scope.wallet = wallet;
       $scope.walletName = c.walletName;
       $scope.walletId = c.walletId;

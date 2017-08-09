@@ -210,6 +210,7 @@ angular.module('copayApp.services')
     var shouldSkipValidation = function(walletId) {
       return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWindowsPhoneApp;
     }
+
     // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
       if (!credentials.walletId || !credentials.m)
@@ -221,7 +222,6 @@ angular.module('copayApp.services')
         var defaults = configService.getDefaults();
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
       };
-
 
       var client = bwcService.getClient(JSON.stringify(credentials), {
         bwsurl: getBWSURL(credentials.walletId),
@@ -242,6 +242,16 @@ angular.module('copayApp.services')
         $log.debug('Preferences read');
         if (err) return cb(err);
 
+        function tryMigrateCredentials(credentials, cb) {
+          // Legacy network name
+          var networkName = networkHelper.getUpdatedNetworkName(credentials.network);
+          if (credentials.network != networkName) {
+            credentials.network = networkName;
+            return root.updateCredentials(credentials, cb(credentials));
+          }
+          return cb(credentials);
+        };
+
         function bindWallets(cb) {
           var l = root.profile.credentials.length;
           var i = 0,
@@ -250,13 +260,15 @@ angular.module('copayApp.services')
           if (!l) return cb();
 
           lodash.each(root.profile.credentials, function(credentials) {
-            root.bindWallet(credentials, function(err, bound) {
-              i++;
-              totalBound += bound;
-              if (i == l) {
-                $log.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
-                return cb();
-              }
+            tryMigrateCredentials(credentials, function(credentials) {
+              root.bindWallet(credentials, function(err, bound) {
+                i++;
+                totalBound += bound;
+                if (i == l) {
+                  $log.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
+                  return cb();
+                }
+              });
             });
           });
         }
@@ -318,13 +330,12 @@ angular.module('copayApp.services')
     var seedWallet = function(opts, cb) {
       opts = opts || {};
       var walletClient = bwcService.getClient(null, opts);
-      var network = opts.networkName || 'livenet/btc';
 
       if (opts.mnemonic) {
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, {
-            network: network,
+            network: opts.networkName,
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
@@ -356,7 +367,7 @@ angular.module('copayApp.services')
         var lang = uxLanguage.getCurrentLanguage();
         try {
           walletClient.seedFromRandomWithMnemonic({
-            network: network,
+            network: opts.networkName,
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
@@ -366,7 +377,7 @@ angular.module('copayApp.services')
           if (e.message.indexOf('language') > 0) {
             $log.info('Using default language for recovery phrase');
             walletClient.seedFromRandomWithMnemonic({
-              network: network,
+              network: opts.networkName,
               passphrase: opts.passphrase,
               account: 0,
             });
@@ -846,7 +857,7 @@ angular.module('copayApp.services')
         });
       };
 
-      function process(notifications) {
+      function process(notifications, networkName) {
         if (!notifications) return [];
 
         var shown = lodash.sortBy(notifications, 'createdOn').reverse();
@@ -859,7 +870,7 @@ angular.module('copayApp.services')
           x.types = [x.type];
 
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+            x.amountStr = txFormatService.formatAmountStr(networkName, x.data.amount);
 
           x.action = function() {
             // TODO?
@@ -937,7 +948,7 @@ angular.module('copayApp.services')
             notifications = lodash.sortBy(notifications, 'createdOn');
             notifications = lodash.compact(lodash.flatten(notifications)).slice(0, MAX);
             var total = notifications.length;
-            return cb(null, process(notifications), total);
+            return cb(null, process(notifications, wallet.network), total);
           };
         });
       });

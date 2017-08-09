@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog, networkHelper) {
 
   $scope.isCordova = platformInfo.isCordova;
   var cardId;
@@ -10,6 +10,10 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   var createdTx;
   var message;
   var configWallet = configService.getSync().wallet;
+
+  // Support only livenet/btc
+  var atomicUnit = networkHelper.getAtomicUnit('livenet/btc');
+  $scope.standardUnit = networkHelper.getStandardUnit('livenet/btc');
 
   var _resetValues = function() {
     $scope.totalAmountStr = $scope.amount = $scope.invoiceFee = $scope.networkFee = $scope.totalAmount = $scope.wallet = null;
@@ -35,8 +39,9 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     popupService.showAlert(title, msg, cb);
   };
 
-  var satToFiat = function(sat, cb) {
-    txFormatService.toFiat(sat, $scope.currencyIsoCode, function(value) {
+  var atomicToFiat = function(atomics, cb) {
+    // Support only livenet/btc
+    txFormatService.toFiat('livenet/btc', atomics, $scope.currencyIsoCode, function(value) {
       return cb(value);
     });
   };
@@ -66,14 +71,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
   };
 
-  var setTotalAmount = function(amountSat, invoiceFeeSat, networkFeeSat) {
-    satToFiat(amountSat, function(a) {
+  var setTotalAmount = function(amountAtomic, invoiceFeeAtomic, networkFeeAtomic) {
+    atomicToFiat(amountAtomic, function(a) {
       $scope.amount = Number(a);
 
-      satToFiat(invoiceFeeSat, function(i) {
+      atomicToFiat(invoiceFeeAtomic, function(i) {
         $scope.invoiceFee = Number(i);
 
-        satToFiat(networkFeeSat, function(n) {
+        atomicToFiat(networkFeeAtomic, function(n) {
           $scope.networkFee = Number(n);
           $scope.totalAmount = $scope.amount + $scope.invoiceFee + $scope.networkFee;
           $timeout(function() {
@@ -117,17 +122,17 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
     var outputs = [];
     var toAddress = invoice.bitcoinAddress;
-    var amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+    var amountAtomic = parseInt((invoice.btcDue * $scope.standardUnit.value).toFixed(atomicUnit.digits));
 
     outputs.push({
       'toAddress': toAddress,
-      'amount': amountSat,
+      'amount': amountAtomic,
       'message': message
     });
 
     var txp = {
       toAddress: toAddress,
-      amount: amountSat,
+      amount: amountAtomic,
       outputs: outputs,
       message: message,
       payProUrl: payProUrl,
@@ -164,19 +169,19 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
           return cb({message: gettextCatalog.getString('Insufficient funds for fee')});
         }
 
-        var maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
+        var maxAmountStandard = Number((maxValues.amount / $scope.standardUnit.value).toFixed($scope.standardUnit.decimals));
 
-        createInvoice({amount: maxAmountBtc, currency: 'BTC'}, function(err, inv) {
+        createInvoice({amount: maxAmountStandard, currency: $scope.standardUnit.shortName}, function(err, inv) {
           if (err) return cb(err);
 
-          var invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
-          var newAmountSat = maxValues.amount - invoiceFeeSat;
+          var invoiceFeeAtomic = parseInt((inv.buyerPaidBtcMinerFee * $scope.standardUnit.value).toFixed());
+          var newAmountAtomic = maxValues.amount - invoiceFeeAtomic;
 
-          if (newAmountSat <= 0) {
+          if (newAmountAtomic <= 0) {
             return cb({message: gettextCatalog.getString('Insufficient funds for fee')});
           }
 
-          return cb(null, newAmountSat, 'sat');
+          return cb(null, newAmountAtomic, atomicUnit.shortName);
         });
       });
     } else {
@@ -185,7 +190,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   var initializeTopUp = function(wallet, parsedAmount) {
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
     var dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency
@@ -200,10 +205,10 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
 
       // Sometimes API does not return this element;
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
+      var invoiceFeeAtomic = (invoice.buyerPaidBtcMinerFee * $scope.standardUnit.value).toFixed();
 
       message = gettextCatalog.getString("Top up {{amountStr}} to debit card ({{cardLastNumber}})", {
-        amountStr: $scope.amountUnitStr,
+        amountStr: $scope.amountAtomicStr,
         cardLastNumber: $scope.lastFourDigits
       });
 
@@ -218,9 +223,9 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         // Save TX in memory
         createdTx = ctxp;
 
-        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
+        $scope.totalAmountStr = txFormatService.formatAmountStr('livenet/btc', ctxp.amount); // Support only livenet/btc
 
-        setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
+        setTotalAmount(parsedAmount.amountAtomic, invoiceFeeAtomic, ctxp.fee);
 
       });
 
@@ -319,7 +324,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         });
         return;
       }
-      var parsedAmount = txFormatService.parseAmount(a, c);
+      var parsedAmount = txFormatService.parseAmount('livenet/btc', a, c); // Support only livenet/btc
       initializeTopUp(wallet, parsedAmount);
     });
   };

@@ -16,9 +16,8 @@ var RateService = function(opts) {
   opts = opts || {};
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
+  self.networkHelper = opts.networkHelper;
 
-  self.SAT_TO_BTC = 1 / 1e8;
-  self.BTC_TO_SAT = 1e8;
   self.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable() or use service.whenAvailable()';
   self.UNSUPPORTED_CURRENCY_ERROR = 'Currency not supported';
 
@@ -96,19 +95,20 @@ RateService.prototype.whenAvailable = function(callback) {
   }
 };
 
-RateService.prototype.toFiat = function(satoshis, code) {
+RateService.prototype.toFiat = function(networkName, atomics, code) {
   if (!this.isAvailable()) {
     return null;
   }
-
-  return satoshis * this.SAT_TO_BTC * this.getRate(code);
+  var asRatio = this.networkHelper.getASUnitRatio(networkName);
+  return atomics * asRatio * this.getRate(code);
 };
 
-RateService.prototype.fromFiat = function(amount, code) {
+RateService.prototype.fromFiat = function(networkName, amount, code) {
   if (!this.isAvailable()) {
     return null;
   }
-  return amount / this.getRate(code) * this.BTC_TO_SAT;
+  var asRatio = this.networkHelper.getASUnitRatio(networkName);
+  return amount / this.getRate(code) / asRatio;
 };
 
 RateService.prototype.listAlternatives = function(sort) {
@@ -131,14 +131,15 @@ RateService.prototype.listAlternatives = function(sort) {
   return self.lodash.uniq(alternatives, 'isoCode');
 };
 
-angular.module('copayApp.services').factory('rateService', function($http, lodash) {
+angular.module('copayApp.services').factory('rateService', function($http, lodash, networkHelper) {
   // var cfg = _.extend(config.rates, {
   //   httprequest: $http
   // });
 
   var cfg = {
     httprequest: $http,
-    lodash: lodash
+    lodash: lodash,
+    networkHelper: networkHelper
   };
   return RateService.singleton(cfg);
 });

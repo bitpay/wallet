@@ -1,9 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sellGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, txFormatService) {
+angular.module('copayApp.controllers').controller('sellGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, txFormatService, networkHelper) {
 
   var amount;
   var currency;
+
+  // Support only livenet/btc
+  var atomicUnit = networkHelper.getAtomicUnit('livenet/btc');
+  var standardUnit = networkHelper.getAtomicUnit('livenet/btc');
 
   $scope.isCordova = platformInfo.isCordova;
 
@@ -44,14 +48,21 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
+    var networkUnits = networkHelper.getNetworkByName('livenet/btc').units; // Support only livenet/btc
+    var foundCurrencyName = lodash.find(networkUnits, function(u) {
+      return u.shortName == data.stateParams.currency;
+    });
+
+    $scope.isFiat = !foundCurrencyName;
+
     var parsedAmount = txFormatService.parseAmount(
+      'livenet/btc', // Support only livenet/btc
       data.stateParams.amount, 
       data.stateParams.currency);
 
     amount = parsedAmount.amount;
     currency = parsedAmount.currency;
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
 
     $scope.network = glideraService.getNetwork();
     $scope.wallets = profileService.getWallets({
@@ -59,7 +70,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
       onlyComplete: true,
       network: $scope.network,
       hasFunds: true,
-      minAmount: parsedAmount.amountSat
+      minAmount: parsedAmount.amountAtomic
     });
 
     if (lodash.isEmpty($scope.wallets)) {
@@ -151,7 +162,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
                 showError(err);
                 return;
               }
-              var amount = parseInt(($scope.sellInfo.qty * 100000000).toFixed(0));
+              var amount = parseInt(($scope.sellInfo.qty * standardUnit.value).toFixed(atomicUnit.decimals));
               var comment = 'Glidera transaction';
 
               outputs.push({

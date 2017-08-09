@@ -8,6 +8,8 @@ angular.module('copayApp.controllers').controller('glideraController',
     };
 
     var init = function() {
+      $scope.standardUnit = networkHelper.standardUnit('livenet/btc'); // Support only livenet/btc
+
       ongoingProcess.set('connectingGlidera', true);
       glideraService.init(function(err, data) {
         ongoingProcess.set('connectingGlidera', false);

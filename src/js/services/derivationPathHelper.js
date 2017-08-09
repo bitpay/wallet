@@ -29,7 +29,7 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
       case "45'":
         return {
           derivationStrategy: 'BIP45',
-          networkName: networkHelper.getName(networkHelper.getLivenetForChain(network.chain)),
+          networkName: networkHelper.getName(networkHelper.getLivenetForCurrency(network.currency)),
           account: 0,
         }
         break;
@@ -42,10 +42,10 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
 
     switch (arr[2]) {
       case "0'":
-          ret.networkName = networkHelper.getName(networkHelper.getLivenetForChain(network.chain));
+          ret.networkName = networkHelper.getName(networkHelper.getLivenetForCurrency(network.currency));
         break;
       case "1'":
-          ret.networkName = networkHelper.getName(networkHelper.getTestnetForChain(network.chain));
+          ret.networkName = networkHelper.getName(networkHelper.getTestnetForCurrency(network.currency));
         break;
       default:
         return false;

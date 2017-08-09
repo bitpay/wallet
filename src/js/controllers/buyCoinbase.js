@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService) {
+angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService, networkHelper) {
 
   var amount;
   var currency;
@@ -42,16 +42,25 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
+    // Support only livenet/btc
+    var networkUnits = networkHelper.getNetworkByName('livenet/btc').units;
+    var foundCurrencyName = lodash.find(networkUnits, function(u) {
+      return u.shortName == currency;
+    });
+
+    $scope.standardUnit = networkHelper.getStandardUnit('livenet/btc'); // Support only livenet/btc
+
+    $scope.isFiat = !foundCurrencyName;
     var parsedAmount = txFormatService.parseAmount(
+      'livenet/btc', // Support only livenet/btc
       data.stateParams.amount,
       data.stateParams.currency);
 
-    // Buy always in BTC
-    amount = (parsedAmount.amountSat / 100000000).toFixed(8);
-    currency = 'BTC';
+    // Buy always in standard units
+    amount = (parsedAmount.amountAtomic / $scope.standardUnit.value).toFixed($scope.standardUnit.decimals);
+    currency = $scope.standardUnit.shortName;
 
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
 
     ongoingProcess.set('calculatingFee', true);
     coinbaseService.checkEnoughFundsForFee(amount, function(err) {
@@ -150,7 +159,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
   };
 
   $scope.buyConfirm = function() {
-    var message = 'Buy bitcoin for ' + $scope.amountUnitStr;
+    var message = 'Buy bitcoin for ' + $scope.amountAtomicStr;
     var okText = 'Confirm';
     var cancelText = 'Cancel';
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {

@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           // the 'buy bitcoins' message.
 
           $scope.hasFunds = true;
-        } else if (status.availableBalanceSat > 0) {
+        } else if (status.availableBalanceAtomic > 0) {
           $scope.hasFunds = true;
           $rootScope.everHasFunds = true;
         }
@@ -184,6 +184,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         $log.debug('Got toAddress:' + addr + ' | ' + item.name);
         return $state.transitionTo('tabs.send.amount', {
           recipientType: item.recipientType,
+          networkName: item.networkName,
           toAddress: addr,
           toName: item.name,
           toEmail: item.email,

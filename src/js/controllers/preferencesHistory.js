@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService, walletService) {
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService, walletService, networkHelper) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
     $scope.isCordova = platformInfo.isCordova;
@@ -43,9 +43,10 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         }
         $log.debug('Wallet Transaction History Length:', txs.length);
 
-        $scope.satToUnit = 1 / $scope.unitToSatoshi;
+        var standardUnit = networkHelper.getStandardUnit($scope.wallet.network);
+        var atomicToStandard = networkHelper.getASUnitRatio($scope.wallet.network);
+
         var data = txs;
-        var satToBtc = 1 / 100000000;
         $scope.csvContent = [];
         $scope.csvFilename = $scope.appName + '-' + $scope.wallet.name + '.csv';
         $scope.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
@@ -66,19 +67,19 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
             }
             _creator = (it.creatorName && it.creatorName != 'undefined') ? it.creatorName : '';
           }
-          _amount = (it.action == 'sent' ? '-' : '') + (amount * satToBtc).toFixed(8);
+          _amount = (it.action == 'sent' ? '-' : '') + (amount * atomicToStandard).toFixed(standardUnit.decimals);
           _note = it.message || '';
           _comment = it.note ? it.note.body : '';
 
           if (it.action == 'moved')
-            _note += ' Moved:' + (it.amount * satToBtc).toFixed(8)
+            _note += ' Moved:' + (it.amount * atomicToStandard).toFixed(standardUnit.decimals)
 
           $scope.csvContent.push({
             'Date': formatDate(it.time * 1000),
             'Destination': it.addressTo || '',
             'Description': _note,
             'Amount': _amount,
-            'Currency': 'BTC',
+            'Currency': standardUnit.shortName,
             'Txid': it.txid,
             'Creator': _creator,
             'Copayers': _copayers,
@@ -86,13 +87,13 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
           });
 
           if (it.fees && (it.action == 'moved' || it.action == 'sent')) {
-            var _fee = (it.fees * satToBtc).toFixed(8)
+            var _fee = (it.fees * atomicToStandard).toFixed(standardUnit.decimals)
             $scope.csvContent.push({
               'Date': formatDate(it.time * 1000),
               'Destination': 'Bitcoin Network Fees',
               'Description': '',
               'Amount': '-' + _fee,
-              'Currency': 'BTC',
+              'Currency': standardUnit.shortName,
               'Txid': '',
               'Creator': '',
               'Copayers': ''

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('tourController',
-  function($scope, $state, $log, $timeout, $filter, ongoingProcess, profileService, rateService, popupService, gettextCatalog) {
+  function($scope, $state, $log, $timeout, $filter, ongoingProcess, profileService, rateService, popupService, gettextCatalog, networkHelper) {
 
     $scope.data = {
       index: 0
@@ -24,12 +24,16 @@ angular.module('copayApp.controllers').controller('tourController',
     $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {});
 
     $scope.$on("$ionicView.enter", function(event, data) {
+
+      // Support only livenet/btc
+      $scope.standardUnit = networkHelper.getStandardUnit('livenet/btc');
+
       rateService.whenAvailable(function() {
         var localCurrency = 'USD';
-        var btcAmount = 1;
-        var rate = rateService.toFiat(btcAmount * 1e8, localCurrency);
+        var standardAmount = 1;
+        var rate = rateService.toFiat('livenet/btc', standardAmount * $scope.standardUnit.value, localCurrency); // Support only livenet/btc
         $scope.localCurrencySymbol = '$';
-        $scope.localCurrencyPerBtc = $filter('formatFiatAmount')(parseFloat(rate.toFixed(2), 10));
+        $scope.localCurrencyPerStandardUnit = $filter('formatFiatAmount')(parseFloat(rate.toFixed(2), 10));
         $timeout(function() {
           $scope.$apply();
         })

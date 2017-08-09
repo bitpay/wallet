@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService) {
+angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService, networkHelper) {
 
   var showErrorAndBack = function(title, msg) {
     popupService.showAlert(title, msg, function() {
@@ -29,25 +29,28 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       $scope.address = addr;
     
       var parsedAmount = txFormatService.parseAmount(
+        $scope.wallet.network,
         data.stateParams.amount, 
         data.stateParams.currency);
 
-      // Amount in USD or BTC
       var amount = parsedAmount.amount;
       var currency = parsedAmount.currency;
-      $scope.amountUnitStr = parsedAmount.amountUnitStr;
+      $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
 
-      if (currency != 'BTC') {
-        // Convert to BTC
-        var config = configService.getSync().wallet.settings;
-        var amountUnit = txFormatService.satToUnit(parsedAmount.amountSat);
-        var btcParsedAmount = txFormatService.parseAmount(amountUnit, config.unitName);
+      var standardUnit = networkHelper.getStandardUnit($scope.wallet.network);
+
+      if (currency != standardUnit.shortName) {
+        // Convert to standard units
+        var config = configService.getSync().currencyNetworks[$scope.wallet.network];
+
+        var amountAtomic = txFormatService.atomicToUnit($scope.wallet.network, parsedAmount.amountAtomic);
+        var stanardParsedAmount = txFormatService.parseAmount($scope.wallet.network, amountAtomic, config.unitName);
         
-        $scope.amountBtc = btcParsedAmount.amount;
-        $scope.altAmountStr = btcParsedAmount.amountUnitStr;
+        $scope.amountStandard = standardParsedAmount.amount;
+        $scope.altAmountStr = standardParsedAmount.amountAtomicStr;
       } else {
-        $scope.amountBtc = amount; // BTC
-        $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat);
+        $scope.amountStandard = amount;
+        $scope.altAmountStr = txFormatService.formatAlternativeStr($scope.wallet.network, parsedAmount.amountAtomic);
       }
     });
   });
@@ -61,12 +64,12 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
   $scope.shareAddress = function() {
     if (!platformInfo.isCordova) return;
-    var data = 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    var data = 'bitcoin:' + $scope.address + '?amount=' + $scope.amountStandard; // TODO - protocol
     window.plugins.socialsharing.share(data, null, null, null);
   }
 
   $scope.copyToClipboard = function() {
-    return 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    return 'bitcoin:' + $scope.address + '?amount=' + $scope.amountStandard; // TODO - protocol
   };
 
 });

@@ -243,7 +243,7 @@ angular.module('copayApp.controllers').controller('importController',
       if ($scope.formData.bwsurl)
         opts.bwsurl = $scope.formData.bwsurl;
 
-      var pathData = derivationPathHelper.parse($scope.formData.derivationPath, networkHelper.getDefaultNetwork()); // default is btc
+      var pathData = derivationPathHelper.parse($scope.formData.derivationPath, networkHelper.getDefaultNetwork()); // Default is livenet/btc
 
       if (!pathData) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));

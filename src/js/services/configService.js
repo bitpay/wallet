@@ -45,6 +45,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       spendUnconfirmed: false,
       reconnectDelay: 5000,
       idleDurationMin: 4,
+/*
+      // deprecated
       settings: {
         unitName: 'BTC',
         unitToSatoshi: 100000000,
@@ -53,6 +55,33 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         alternativeName: 'US Dollar',
         alternativeIsoCode: 'USD',
       }
+*/
+      ////
+    },
+
+    currencyNetworks: {
+/*
+      'livenet/btc': {
+        unitName: 'BTC',
+        unitToAtomicUnit: 100000000,
+        unitDecimals: 8,
+        unitCode: 'btc',
+        atomicUnitCode: 'satoshi',
+        alternativeName: 'US Dollar',
+        alternativeIsoCode: 'USD',
+        feeLevel: 'normal'
+      },
+      'livenet/bch': {
+        unitName: 'BCH',
+        unitToAtomicUnit: 100000000,
+        unitDecimals: 8,
+        unitCode: 'bch',
+        atomicUnitCode: 'satoshi',
+        alternativeName: 'US Dollar',
+        alternativeIsoCode: 'USD',
+        feeLevel: 'normal'
+      }
+*/
     },
 
     lock: {

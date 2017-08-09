@@ -42,11 +42,11 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             $state.go('tabs.home');
           } else {
             $scope.privateKey = privateKey;
-            $scope.balanceSat = balance;
-            if ($scope.balanceSat <= 0)
+            $scope.balanceAtomic = balance;
+            if ($scope.balanceAtomic <= 0)
               popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not funds found'));
             var config = configService.getSync().wallet.settings;
-            $scope.balance = txFormatService.formatAmount(balance) + ' ' + config.unitName;
+            $scope.balance = txFormatService.formatAmount('livenet/btc', balance) + ' ' + config.unitName; // TODO: support other than livenet/btc
           }
           $scope.$apply();
         });
@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, testTx) {
           if (err) return cb(err);
           var rawTxLength = testTx.serialize().length;
-          feeService.getCurrentFeeRate('livenet/btc', function(err, feePerKB) {
+          feeService.getCurrentFeeRate('livenet/btc', function(err, feePerKB) { // TODO: support other than livenet/btc
             var opts = {};
             opts.fee = Math.round((feePerKB * rawTxLength) / 2000);
             $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, opts, function(err, tx) {
@@ -119,7 +119,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
-        network: 'livenet/btc',
+        network: 'livenet/btc', // TODO: support other than livenet/btc
       });
       $scope.singleWallet = $scope.wallets.length == 1;
 

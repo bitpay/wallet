@@ -15,11 +15,11 @@
           <span>Buying</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{amountUnitStr}}</div>
+          <div class="amount">{{amountAtomicStr}}</div>
           <div class="alternative">
             <span ng-show="!isFiat">{{buyInfo.subtotal}} {{buyInfo.currency}}</span>
-            <span ng-show="isFiat">{{buyInfo.qty}} BTC</span>
-            @ ${{buyInfo.price}} per BTC
+            <span ng-show="isFiat">{{buyInfo.qty}} {{standardUnit.shortName}}</span>
+            @ ${{buyInfo.price}} per {{standardUnit.shortName}}
           </div>
         </div>
       </div>

@@ -51,14 +51,16 @@ angular.module('copayApp.directives')
     }
   ])
   .directive('validAmount', ['configService',
-    function(configService) {
+    function(configService, networkHelper) {
 
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var settings = configService.getSync().wallet.settings;
-            var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
+            // Support only livenet/btc
+            var atomicUnit = networkHelper.getAtomicUnit('livenet/btc');
+            var configNetwork = configService.getSync().currencyNetworks['livenet/btc'];
+            var vNum = Number((value * configNetwork.unitToAtomicUnit).toFixed(atomicUnit.decimals));
             if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
             }
@@ -69,7 +71,7 @@ angular.module('copayApp.directives')
               if (vNum > Number.MAX_SAFE_INTEGER) {
                 ctrl.$setValidity('validAmount', false);
               } else {
-                var decimals = Number(settings.unitDecimals);
+                var decimals = Number(configNetwork.unitDecimals);
                 var sep_index = ('' + value).indexOf('.');
                 var str_value = ('' + value).substring(sep_index + 1);
                 if (sep_index >= 0 && str_value.length > decimals) {

@@ -19,9 +19,9 @@
     </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content scroll="false">
-    <div class="address" ng-if="address && amountBtc">
+    <div class="address" ng-if="address && amountStandard">
       <div class="qr-code" copy-to-clipboard="copyToClipboard()">
-        <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
+        <qrcode size="220" data="bitcoin:{{address + '?amount=' + amountStandard}}" color="#334"></qrcode>
       </div>
       <div class="info">
         <div class="item single-line" copy-to-clipboard="address">
@@ -33,7 +33,7 @@
         <div class="item single-line">
           <span class="label" translate>Amount</span>
           <span class="item-note">
-            {{amountUnitStr}} - {{altAmountStr}}
+            {{amountAtomicStr}} - {{altAmountStr}}
           </span>
         </div>
         <div class="item single-line">

@@ -19,10 +19,10 @@
           <span>BitPay Visa&reg; Card ({{lastFourDigits}})</span>
         </div>
         <div class="amount-label">
-          <div class="amount-final">{{amountUnitStr}}</div>
-          <div class="alternative" ng-show="amountUnitStr">
+          <div class="amount-final">{{amountAtomicStr}}</div>
+          <div class="alternative" ng-show="amountAtomicStr">
             <span ng-if="rate">@
-              {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per BTC</span>
+              {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per {{standardUnit.shortName}}</span>
             <span ng-if="!rate">...</span>
           </div>
         </div>

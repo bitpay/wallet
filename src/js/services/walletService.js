@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, networkHelper) {
 
   // Ratio low amount warning (fee/amount) in incoming TX 
   var LOW_AMOUNT_RATIO = 0.15; 
@@ -185,7 +185,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     function cacheBalance(wallet, balance) {
       if (!balance) return;
 
-      var config = configService.getSync().wallet;
+      var configWallet = configService.getSync().wallet;
+      var configNetwork = configService.getSync().currencyNetworks[wallet.network];
 
       var cache = wallet.cachedStatus;
 
@@ -193,37 +194,37 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.balanceByAddress = balance.byAddress;
 
       // Total wallet balance is same regardless of 'spend unconfirmed funds' setting.
-      cache.totalBalanceSat = balance.totalAmount;
+      cache.totalBalanceAtomic = balance.totalAmount;
 
       // Spend unconfirmed funds
-      if (config.spendUnconfirmed) {
-        cache.lockedBalanceSat = balance.lockedAmount;
-        cache.availableBalanceSat = balance.availableAmount;
+      if (configWallet.spendUnconfirmed) {
+        cache.lockedBalanceAtomic = balance.lockedAmount;
+        cache.availableBalanceAtomic = balance.availableAmount;
         cache.totalBytesToSendMax = balance.totalBytesToSendMax;
         cache.pendingAmount = 0;
         cache.spendableAmount = balance.totalAmount - balance.lockedAmount;
       } else {
-        cache.lockedBalanceSat = balance.lockedConfirmedAmount;
-        cache.availableBalanceSat = balance.availableConfirmedAmount;
+        cache.lockedBalanceAtomic = balance.lockedConfirmedAmount;
+        cache.availableBalanceAtomic = balance.availableConfirmedAmount;
         cache.totalBytesToSendMax = balance.totalBytesToSendConfirmedMax;
         cache.pendingAmount = balance.totalAmount - balance.totalConfirmedAmount;
         cache.spendableAmount = balance.totalConfirmedAmount - balance.lockedAmount;
       }
 
       // Selected unit
-      cache.unitToSatoshi = config.settings.unitToSatoshi;
-      cache.satToUnit = 1 / cache.unitToSatoshi;
-      cache.unitName = config.settings.unitName;
+      cache.unitToAtomicUnit = configNetwork.unitToAtomicUnit;
+      cache.atomicToUnit = 1 / cache.unitToAtomicUnit;
+      cache.unitName = configNetwork.unitName;
 
       //STR
-      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
-      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
-      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
-      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + cache.unitName;
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
+      cache.totalBalanceStr = txFormatService.formatAmount(wallet.network, cache.totalBalanceAtomic) + ' ' + cache.unitName;
+      cache.lockedBalanceStr = txFormatService.formatAmount(wallet.network, cache.lockedBalanceAtomic) + ' ' + cache.unitName;
+      cache.availableBalanceStr = txFormatService.formatAmount(wallet.network, cache.availableBalanceAtomic) + ' ' + cache.unitName;
+      cache.spendableBalanceStr = txFormatService.formatAmount(wallet.network, cache.spendableAmount) + ' ' + cache.unitName;
+      cache.pendingBalanceStr = txFormatService.formatAmount(wallet.network, cache.pendingAmount) + ' ' + cache.unitName;
 
-      cache.alternativeName = config.settings.alternativeName;
-      cache.alternativeIsoCode = config.settings.alternativeIsoCode;
+      cache.alternativeName = configNetwork.alternativeName;
+      cache.alternativeIsoCode = configNetwork.alternativeIsoCode;
 
       // Check address
       root.isAddressUsed(wallet, balance.byAddress, function(err, used) {
@@ -238,11 +239,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       rateService.whenAvailable(function() {
 
-        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode);
-        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode);
-        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode);
-        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode);
-        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode);
+        var totalBalanceAlternative = rateService.toFiat(wallet.network, cache.totalBalanceAtomic, cache.alternativeIsoCode);
+        var pendingBalanceAlternative = rateService.toFiat(wallet.network, cache.pendingAmount, cache.alternativeIsoCode);
+        var lockedBalanceAlternative = rateService.toFiat(wallet.network, cache.lockedBalanceAtomic, cache.alternativeIsoCode);
+        var spendableBalanceAlternative = rateService.toFiat(wallet.network, cache.spendableAmount, cache.alternativeIsoCode);
+        var alternativeConversionRate = rateService.toFiat(wallet.network, configNetwork.unitToAtomicUnit, cache.alternativeIsoCode);
 
         cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
         cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);
@@ -269,7 +270,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     function walletStatusHash(status) {
-      return status ? status.balance.totalAmount : wallet.totalBalanceSat;
+      return status ? status.balance.totalAmount : wallet.totalBalanceAtomic;
     };
 
     function _getStatus(initStatusHash, tries, cb) {
@@ -359,7 +360,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   }
 
   var processNewTxs = function(wallet, txs) {
-    var config = configService.getSync().wallet.settings;
     var now = Math.floor(Date.now() / 1000);
     var txHistoryUnique = {};
     var ret = [];
@@ -400,7 +400,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var LIMIT = 50;
     var requestLimit = FIRST_LIMIT;
     var walletId = wallet.credentials.walletId;
-    var config = configService.getSync().wallet.settings;
+    var configWallet = configService.getSync().wallet;
+    var configNetwork = configService.getSync().currencyNetworks[wallet.network];
 
     var opts = opts || {};
     var progressFn = opts.progressFn || function() {};
@@ -416,15 +417,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       var cacheUnit = txs[0].amountStr.split(' ')[1];
 
-      if (cacheUnit == config.unitName)
+      if (cacheUnit == configNetwork.unitName)
         return;
 
-      var name = ' ' + config.unitName;
+      var name = ' ' + configNetwork.unitName;
 
       $log.debug('Fixing Tx Cache Unit to:' + name)
       lodash.each(txs, function(tx) {
-        tx.amountStr = txFormatService.formatAmount(tx.amount) + name;
-        tx.feeStr = txFormatService.formatAmount(tx.fees) + name;
+        tx.amountStr = txFormatService.formatAmount(tx.network, tx.amount) + name;
+        tx.feeStr = txFormatService.formatAmount(tx.network, tx.fees) + name;
       });
     };
 
@@ -783,12 +784,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     // Update this JIC.
     var config = configService.getSync();
-    var walletSettings = config.wallet.settings;
+    var configWallet = config.wallet.settings;
+    var configNetwork = configService.getSync().currencyNetworks[wallet.network];
 
     //prefs.email  (may come from arguments)
     prefs.email = config.emailNotifications.email;
     prefs.language = uxLanguage.getCurrentLanguage();
-    prefs.unit = walletSettings.unitCode;
+    prefs.unit = configNetwork.unitCode;
 
     updateRemotePreferencesFor(lodash.clone(clients), prefs, function(err) {
       if (err) return cb(err);
@@ -924,9 +926,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   // Approx utxo amount, from which the uxto is economically redeemable  
   root.getMinFee = function(wallet, feeLevels, nbOutputs) {
+    var atomicUnit = networkHelper.getAtomicUnit(wallet.network);
     var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
       level: 'normal',
-    }).feePerKB / 1000).toFixed(0);
+    }).feePerKB / 1000).toFixed(atomicUnit.decimals);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
     return size * lowLevelRate;
@@ -944,7 +947,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.getLowUtxos = function(wallet, levels, cb) {
 
     wallet.getUtxos({}, function(err, resp) {
-      if (err || !resp || !resp.length) return cb();
+      if (err || !resp || !resp.length) return cb('');
 
       var minFee = root.getMinFee(wallet, levels, resp.length);
 
