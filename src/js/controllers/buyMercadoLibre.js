@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
   };
 
   var _resetValues = function() {
-    $scope.totalAmountStr = $scope.amount = $scope.invoiceFee = $scope.networkFee = $scope.totalAmount = $scope.wallet = null;
+    $scope.totalAmountStr = $scope.amount = $scope.minerFee = $scope.totalAmount = $scope.wallet = null;
     createdTx = message = invoiceId = null;
   };
 
@@ -74,11 +74,9 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       $scope.amount = Number(a);
 
       satToFiat(invoiceFeeSat, function(i) {
-        $scope.invoiceFee = Number(i);
-
         satToFiat(networkFeeSat, function(n) {
-          $scope.networkFee = Number(n);
-          $scope.totalAmount = $scope.amount + $scope.invoiceFee + $scope.networkFee;
+          $scope.minerFee = Number(i) + Number(n);
+          $scope.totalAmount = $scope.amount + $scope.minerFee;
           $timeout(function() {
             $scope.$digest();
           });

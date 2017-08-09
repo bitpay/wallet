@@ -45,15 +45,9 @@
             </span>
           </div>
           <div class="item">
-            <span translate>Invoice Fee</span>
+            <span translate>Miner fee</span>
             <span class="item-note">
-              <span>{{invoiceFee | currency:'$ ':2}}<span ng-if="invoiceFee"> {{currencyIsoCode}}</span>
-            </span>
-          </div>
-          <div class="item">
-            <span translate>Network Fee</span>
-            <span class="item-note">
-              <span>{{networkFee | currency:'$ ':2}}<span ng-if="networkFee"> {{currencyIsoCode}}</span>
+              <span>{{minerFee | currency:'$ ':2}}<span ng-if="minerFee"> {{currencyIsoCode}}</span>
             </span>
           </div>
           <div class="item">
