@@ -1,0 +1,34 @@
+<ion-view id="meli-list-cards">
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>
+      {{'Your Gift Cards'|translate}}
+    </ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list card">
+      <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
+           ng-click="openCardModal(item)"
+           class="item item-avatar"
+           ng-hide="hideCards">
+        <img class="item-logo" src="img/mercado-libre/meli-card-24px.png" alt="{{id}}">
+
+        <span class="item-note">
+          <span class="assertive" ng-if="item.status == 'FAILURE'" translate>Error</span>
+          <span class="dark" ng-if="item.status == 'expired'" translate>Invoice expired</span>
+          <span class="calm" ng-if="item.status == 'invalid'" translate>Still pending</span>
+          <span class="positive" ng-if="item.status == 'PENDING'" translate>Pending</span>
+
+          <span class="assertive" ng-if="item.cardStatus == 'inactive'" translate>Inactive</span>
+          <span class="assertive" ng-if="item.cardStatus == 'expired'" translate>Expired</span>
+        </span>
+        <h2 ng-if="item.amount">
+          {{item.amount | currency : '' : 2}} {{item.currency}}
+        </h2>
+        <p class="dark">{{item.date | amTimeAgo}}</p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

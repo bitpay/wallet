@@ -4,6 +4,7 @@
 <div>
 <span ng-show="wallet.status.wallet.singleAddress" class="size-12"><span translate>Auditable</span></span>
 <img style="height:0.6em; margin-right: 1px;" ng-show="isTestnet(wallet.network)" src="img/icon-testnet-white.svg">
+<img style="height:0.6em; margin-right: 1px;" ng-show="isTestnet(wallet.network)" src="img/icon-text-testnet-white.svg">
 <img style="height:0.6em; margin-right: 1px;" ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" src="img/icon-read-only-white.svg">
 
 <img style="height:0.6em; margin-right: 1px;"  ng-show="wallet.getPrivKeyExternalSourceName() == 'trezor'" src="img/icon-trezor-white.svg">
