@@ -1,8 +1,10 @@
-import { NgModule, ErrorHandler, isDevMode } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Copay } from './app.component';
@@ -24,10 +26,8 @@ import { StorageProvider } from '../providers/storage/storage';
 import { AppProvider } from '../providers/app/app';
 import { PlatformProvider } from '../providers/platform/platform';
 
-// Set different log level depending on environment.
-const LOG_LEVEL = Level.LOG;
-if (isDevMode()) {
-  const LOG_LEVEL = Level.ERROR;
+export function createTranslateLoader(http: Http) {
+    return new TranslatePoHttpLoader(http, './assets/i18n/', '.po');
 }
 
 @NgModule({
@@ -44,7 +44,14 @@ if (isDevMode()) {
   imports: [
     BrowserModule,
     HttpModule,
-    NgLoggerModule.forRoot(LOG_LEVEL),
+    NgLoggerModule.forRoot(Level.LOG),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      }
+    }),
     IonicModule.forRoot(Copay)
   ],
   bootstrap: [IonicApp],
