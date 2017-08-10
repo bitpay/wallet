@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Home"
+msgstr ""
+
+msgid "Receive"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Setting"
+msgstr ""

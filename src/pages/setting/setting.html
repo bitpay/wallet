@@ -20,6 +20,16 @@
       <ion-icon name="notifications" item-start></ion-icon>
       Notification
     </ion-item>
+    <ion-item>
+      <ion-icon name="globe" item-start></ion-icon>
+      <ion-label>
+        Language
+      </ion-label>
+      <ion-select [(ngModel)]="language">
+        <ion-option value="en">English</ion-option>
+        <ion-option value="es">Spanish</ion-option>
+      </ion-select>
+    </ion-item>
     <ion-item-divider color="light">&nbsp;</ion-item-divider>
     <ion-item (click)="openAboutPage()">
       <ion-icon name="apps" item-start></ion-icon>
