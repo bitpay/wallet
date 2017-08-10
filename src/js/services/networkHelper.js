@@ -48,7 +48,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
           description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
         }
       },
-      getName: function() { return root.getName(this) },
+      getURI: function() { return root.getURI(this) },
       legacyName: 'livenet', // Used to update legacy wallets
       default:  true
     },
@@ -95,7 +95,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
           description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
         }
       },
-      getName: function() { return root.getName(this) },
+      getURI: function() { return root.getURI(this) },
       legacyName: 'testnet' // Used to update legacy wallets
     },
     {
@@ -141,7 +141,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
           description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
         }
       },
-      getName: function() { return root.getName(this) },
+      getURI: function() { return root.getURI(this) },
     },
     {
       currency: 'bch',
@@ -186,7 +186,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
           description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
         }
       },
-      getName: function() { return root.getName(this) },
+      getURI: function() { return root.getURI(this) },
     }
   ];
 
@@ -196,18 +196,20 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
 
       var existingConfig = Object.keys(config.currencyNetworks);
       var opts = {
-        currencyNetworks: {}
+        currencyNetworks: {
+          default: 'livenet/btc'
+        }
       };
 
       for (var i = 0; i < networks.length; i++) {
-        if (!existingConfig.includes(networks[i].getName())) {
+        if (!existingConfig.includes(networks[i].getURI())) {
           var unitDesc = networks[i].units[0]; // Initialize to first element in units list
-          opts.currencyNetworks[networks[i].getName()] = {
+          opts.currencyNetworks[networks[i].getURI()] = {
             unitName:           unitDesc.shortName,
             unitToAtomicUnit:   unitDesc.value,
             unitDecimals:       unitDesc.decimals,
             unitCode:           unitDesc.code,
-            atomicUnitCode:     root.getAtomicUnit(networks[i].getName()),
+            atomicUnitCode:     root.getAtomicUnit(networks[i].getURI()),
             alternativeName:    'US Dollar', // Default to using USD for alternative currency
             alternativeIsoCode: 'USD',
             feeLevel:           'normal'
@@ -245,78 +247,78 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
     });
   };
 
-  root.getNetworkByName = function(networkName) {
+  root.getNetworkByName = function(networkURI) {
     return lodash.find(networks, function(n) {
-      return n.getName() == networkName;
+      return n.getURI() == networkURI;
     });
-//    var currency = root.parseCurrency(networkName);
-//    var net = root.parseNet(networkName);
+//    var currency = root.parseCurrency(networkURI);
+//    var net = root.parseNet(networkURI);
 //    return lodash.find(networks, function(n) {
 //      return n.currency == currency && n.net == net;
 //    });
   };
 
-  root.getName = function(network) {
+  root.getURI = function(network) {
     return network.net + '/' + network.currency;
   };
 
-  root.getAtomicUnit = function(networkName) {
-    var n = root.getNetworkByName(networkName);
+  root.getAtomicUnit = function(networkURI) {
+    var n = root.getNetworkByName(networkURI);
     var unit = lodash.find(n.units, function(u) {
       return u.kind == 'atomic';
     });
     if (!unit) {
-      $log.error('No atomic currency unit defined for network \`' + networkName + '\`');
+      $log.error('No atomic currency unit defined for network \`' + networkURI + '\`');
     }    
     return unit;
   };
 
-  root.getStandardUnit = function(networkName) {
-    var n = root.getNetworkByName(networkName);
+  root.getStandardUnit = function(networkURI) {
+    var n = root.getNetworkByName(networkURI);
     var unit = lodash.find(n.units, function(u) {
       return u.kind == 'standard';
     });
     if (!unit) {
-      $log.error('No standard currency unit defined for network \`' + networkName + '\`');
+      $log.error('No standard currency unit defined for network \`' + networkURI + '\`');
     }    
     return unit;
   };
 
-  root.getASUnitRatio = function(networkName) {
-    var aUnit = root.getAtomicUnit(networkName);
-    var sUnit = root.getStandardUnit(networkName);
-    return aUnit / sUnit;
+  root.getASUnitRatio = function(networkURI) {
+    var aUnit = root.getAtomicUnit(networkURI);
+    var sUnit = root.getStandardUnit(networkURI);
+    return aUnit.value / sUnit.value;
   };
 
   // Update the specified legacy network name to use the newest format.
-  root.getUpdatedNetworkName = function(networkName) {
+  root.getUpdatednetworkURI = function(networkURI) {
     var network = lodash.find(networks, function(n) {
-      return n.legacyName == networkName;
+      return n.legacyName == networkURI;
     });
 
     if (network) {
-      return network.getName();
+      return network.getURI();
     } else {
-      return networkName;
+      return networkURI;
     }
   };
 
   // Parsers
 
-  root.parseCurrency = function(networkName) {
-    return networkName.trim().split('/')[1];
+  root.parseCurrency = function(networkURI) {
+    return networkURI.trim().split('/')[1];
   };
 
-  root.parseNet = function(networkName) {
-    return networkName.trim().split('/')[0];
+  root.parseNet = function(networkURI) {
+    return networkURI.trim().split('/')[0];
   };
 
-  root.isLivenet = function(networkName) {
-    return root.parseNet(networkName) == 'livenet';
+  root.isLivenet = function(networkURI) {
+    return root.parseNet(networkURI) == 'livenet';
   };
 
-  root.isTestnet = function(networkName) {
-    return root.parseNet(networkName) == 'testnet';
+  root.isTestnet = function(networkURI) {
+    return root.parseNet(networkURI) == 'testnet';
   };
 
   return root;

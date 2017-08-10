@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
     $state.go('tabs.send');
     $timeout(function() {
       $state.transitionTo('tabs.send.amount', {
+        networkURI: $scope.addressbookEntry.networkURI,
         toAddress: $scope.addressbookEntry.address,
         toName: $scope.addressbookEntry.name,
         toEmail: $scope.addressbookEntry.email

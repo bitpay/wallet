@@ -47,8 +47,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
   };
 
-  $scope.isTestnet = function(networkName) {
-    return networkHelper.isTestnet(networkName);
+  $scope.isTestnet = function(networkURI) {
+    return networkHelper.isTestnet(networkURI);
   };
 
   var analyzeUtxosDone;

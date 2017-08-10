@@ -24,8 +24,8 @@ angular.module('copayApp.controllers').controller('walletsController', function(
     $scope.walletsModal.hide();
   };
 
-  $scope.isTestnet = function(networkName) {
-    return networkHelper.isTestnet(networkName);
+  $scope.isTestnet = function(networkURI) {
+    return networkHelper.isTestnet(networkURI);
   };
 
 });

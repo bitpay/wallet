@@ -8,7 +8,7 @@
   </ion-nav-bar>
 
   <ion-content scroll="false" class="ng-hide" ng-show="!giftCards">
-    <div class="box-notification warning" ng-show="network == 'testnet'">
+    <div class="box-notification warning" ng-show="isTestnet(network)">
       Sandbox version. Only for testing purpose.
     </div>
     <div class="integration-onboarding">
@@ -31,7 +31,7 @@
     </div>
   </ion-content>
   <ion-content class="ng-hide" ng-show="giftCards">
-    <div class="box-notification warning" ng-show="network == 'testnet'">
+    <div class="box-notification warning" ng-show="isTestnet(network)">
       Sandbox version. Only for testing purpose.
     </div>
 

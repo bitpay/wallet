@@ -106,8 +106,8 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     return result;
   };
 
-  this.isTestnet = function(networkName) {
-    return networkHelper.isTestnet(networkName);
+  this.isTestnet = function(networkURI) {
+    return networkHelper.isTestnet(networkURI);
   };
 
   this.openExternalLink = function(url) {

@@ -6,8 +6,8 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
   root.Utils = bwcService.getUtils();
 
 
-  root.formatAmount = function(networkName, atomics, fullPrecision) {
-    var config = configService.getSync().currencyNetworks[networkName];
+  root.formatAmount = function(networkURI, atomics, fullPrecision) {
+    var config = configService.getSync().currencyNetworks[networkURI];
     if (config.unitCode == config.atomicUnitCode) return atomics;
 
     //TODO : now only works for english, specify opts to change thousand separator and decimal separator
@@ -17,16 +17,16 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return this.Utils.formatAmount(atomics, config.unitCode, opts);
   };
 
-  root.formatAmountStr = function(networkName, atomics) {
+  root.formatAmountStr = function(networkURI, atomics) {
     if (isNaN(atomics)) return;
-    var config = configService.getSync().currencyNetworks[networkName];
-    return root.formatAmount(networkName, atomics) + ' ' + config.unitName;
+    var config = configService.getSync().currencyNetworks[networkURI];
+    return root.formatAmount(networkURI, atomics) + ' ' + config.unitName;
   };
 
-  root.toFiat = function(networkName, atomics, code, cb) {
+  root.toFiat = function(networkURI, atomics, code, cb) {
     if (isNaN(atomics)) return;
     var val = function() {
-      var v1 = rateService.toFiat(networkName, atomics, code);
+      var v1 = rateService.toFiat(networkURI, atomics, code);
       if (!v1) return null;
 
       return v1.toFixed(2);
@@ -43,10 +43,10 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.formatToUSD = function(networkName, atomics, cb) {
+  root.formatToUSD = function(networkURI, atomics, cb) {
     if (isNaN(atomics)) return;
     var val = function() {
-      var v1 = rateService.toFiat(networkName, atomics, 'USD');
+      var v1 = rateService.toFiat(networkURI, atomics, 'USD');
       if (!v1) return null;
 
       return v1.toFixed(2);
@@ -63,12 +63,12 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.formatAlternativeStr = function(networkName, atomics, cb) {
+  root.formatAlternativeStr = function(networkURI, atomics, cb) {
     if (isNaN(atomics)) return;
-    var config = configService.getSync().currencyNetworks[networkName];
+    var config = configService.getSync().currencyNetworks[networkURI];
 
     var val = function() {
-      var v1 = parseFloat((rateService.toFiat(networkName, atomics, config.alternativeIsoCode)).toFixed(2));
+      var v1 = parseFloat((rateService.toFiat(networkURI, atomics, config.alternativeIsoCode)).toFixed(2));
       v1 = $filter('formatFiatAmount')(v1);
       if (!v1) return null;
 
@@ -180,36 +180,36 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return txps;
   };
 
-  root.parseAmount = function(networkName, amount, currency) {
-    var config = configService.getSync().currencyNetworks[networkName];
+  root.parseAmount = function(networkURI, amount, currency) {
+    var config = configService.getSync().currencyNetworks[networkURI];
     var unitToAtomicUnit = config.unitToAtomicUnit;
     var atomicToUnit = 1 / unitToAtomicUnit;
     var amountAtomicStr;
     var amountAtomic;
     var alternativeIsoCode = config.alternativeIsoCode;
 
-    var networkUnits = networkHelper.getNetworkByName(networkName).units;
+    var networkUnits = networkHelper.getNetworkByName(networkURI).units;
     var foundCurrencyName = lodash.find(networkUnits, function(u) {
       return u.shortName == currency;
     });
 
-    var atomicUnit = networkHelper.getAtomicUnit(networkName);
-    var standardUnit = networkHelper.getStandardUnit(networkName);
+    var atomicUnit = networkHelper.getAtomicUnit(networkURI);
+    var standardUnit = networkHelper.getStandardUnit(networkURI);
 
     if (!foundCurrencyName) { // Alternate currency
-      amountAtomic = rateService.fromFiat(networkName, amount, currency).toFixed(atomicUnit.decimals);
+      amountAtomic = rateService.fromFiat(networkURI, amount, currency).toFixed(atomicUnit.decimals);
       amountAtomicStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
 
     } else if (currency == atomicUnit.shortName) { // Atomic
       amountAtomic = amount;
-      amountAtomicStr = root.formatAmountStr(networkName, amountAtomic);
+      amountAtomicStr = root.formatAmountStr(networkURI, amountAtomic);
       // convert atomics to standard
       amount = (amountAtomic * atomicToUnit).toFixed(standardUnit.decimals);
       currency = standardUnit.shortName;
 
     } else if (currency == standardUnit.shortName) { // Standard
       amountAtomic = parseInt((amount * unitToAtomicUnit).toFixed(atomicUnit.decimals));
-      amountAtomicStr = root.formatAmountStr(networkName, amountAtomic);
+      amountAtomicStr = root.formatAmountStr(networkURI, amountAtomic);
       // convert atomics to standard
       amount = (amountAtomic * atomicToUnit).toFixed(standardUnit.decimals);
       currency = standardUnit.shortName;
@@ -224,8 +224,8 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.atomicToUnit = function(networkName, amount) {
-    var config = configService.getSync().currencyNetworks[networkName];
+  root.atomicToUnit = function(networkURI, amount) {
+    var config = configService.getSync().currencyNetworks[networkURI];
     var unitToAtomicUnit = config.unitToAtomicUnit;
     var atomicToUnit = 1 / unitToAtomicUnit;
     var unitDecimals = config.unitDecimals;

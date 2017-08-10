@@ -244,9 +244,9 @@ angular.module('copayApp.services')
 
         function tryMigrateCredentials(credentials, cb) {
           // Legacy network name
-          var networkName = networkHelper.getUpdatedNetworkName(credentials.network);
-          if (credentials.network != networkName) {
-            credentials.network = networkName;
+          var networkURI = networkHelper.getUpdatednetworkURI(credentials.network);
+          if (credentials.network != networkURI) {
+            credentials.network = networkURI;
             return root.updateCredentials(credentials, cb(credentials));
           }
           return cb(credentials);
@@ -335,7 +335,7 @@ angular.module('copayApp.services')
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, {
-            network: opts.networkName,
+            network: opts.networkURI,
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
@@ -367,7 +367,7 @@ angular.module('copayApp.services')
         var lang = uxLanguage.getCurrentLanguage();
         try {
           walletClient.seedFromRandomWithMnemonic({
-            network: opts.networkName,
+            network: opts.networkURI,
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
@@ -377,7 +377,7 @@ angular.module('copayApp.services')
           if (e.message.indexOf('language') > 0) {
             $log.info('Using default language for recovery phrase');
             walletClient.seedFromRandomWithMnemonic({
-              network: opts.networkName,
+              network: opts.networkURI,
               passphrase: opts.passphrase,
               account: 0,
             });
@@ -400,7 +400,7 @@ angular.module('copayApp.services')
           var myName = opts.myName || gettextCatalog.getString('me');
 
           walletClient.createWallet(name, myName, opts.m, opts.n, {
-            network: opts.networkName,
+            network: opts.networkURI,
             singleAddress: opts.singleAddress,
             walletPrivKey: opts.walletPrivKey,
           }, function(err, secret) {
@@ -440,7 +440,7 @@ angular.module('copayApp.services')
         $log.debug(ex);
         return cb(gettextCatalog.getString('Bad wallet invitation'));
       }
-      opts.networkName = walletData.network;
+      opts.networkURI = walletData.network;
       $log.debug('Joining Wallet:', opts);
 
       seedWallet(opts, function(err, walletClient) {
@@ -629,7 +629,7 @@ angular.module('copayApp.services')
 
       words = root._normalizeMnemonic(words);
       walletClient.importFromMnemonic(words, {
-        network: opts.networkName,
+        network: opts.networkURI,
         passphrase: opts.passphrase,
         entropySourcePath: opts.entropySourcePath,
         derivationStrategy: opts.derivationStrategy || 'BIP44',
@@ -694,7 +694,7 @@ angular.module('copayApp.services')
       var opts = {};
       opts.m = 1;
       opts.n = 1;
-      opts.networkName = 'livenet/btc';
+      opts.networkURI = 'livenet/btc';
       root.createWallet(opts, cb);
     };
 
@@ -859,7 +859,7 @@ angular.module('copayApp.services')
         });
       };
 
-      function process(notifications, networkName) {
+      function process(notifications, networkURI) {
         if (!notifications) return [];
 
         var shown = lodash.sortBy(notifications, 'createdOn').reverse();
@@ -872,7 +872,7 @@ angular.module('copayApp.services')
           x.types = [x.type];
 
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(networkName, x.data.amount);
+            x.amountStr = txFormatService.formatAmountStr(networkURI, x.data.amount);
 
           x.action = function() {
             // TODO?

@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       currencyNetworks: {}
     };
 
-    opts.currencyNetworks[$scope.networkName] = {
+    opts.currencyNetworks[$scope.networkURI] = {
       feeLevel: newFee
     };
 
@@ -28,16 +28,16 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.networkName = data.stateParams.networkName;
-    if (!$scope.networkName) {
+    $scope.networkURI = data.stateParams.networkURI;
+    if (!$scope.networkURI) {
       return;
     }
 
-    $scope.network = networkHelper.getNetworkByName($scope.networkName);
+    $scope.network = networkHelper.getNetworkByName($scope.networkURI);
     $scope.feeOpts = feeService.getFeeOpts($scope.network.getName());
-    $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel($scope.networkName);
+    $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel($scope.networkURI);
     $scope.loadingFee = true;
-    feeService.getFeeLevels($scope.networkName, function(err, levels) {
+    feeService.getFeeLevels($scope.networkURI, function(err, levels) {
       $scope.loadingFee = false;
       if (err) {
         //Error is already formatted
@@ -55,7 +55,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   var updateCurrentValues = function() {
     if (lodash.isEmpty($scope.feeLevels) || lodash.isEmpty($scope.currentFeeLevel)) return;
 
-    var value = lodash.find($scope.feeLevels[$scope.networkName], {
+    var value = lodash.find($scope.feeLevels[$scope.networkURI], {
       level: $scope.currentFeeLevel
     });
 
@@ -83,7 +83,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     $scope.showMaxWarning = false;
     $scope.showMinWarning = false;
 
-    var atomicName = networkHelper.getAtomicUnit($scope.networkName).shortName;
+    var atomicName = networkHelper.getAtomicUnit($scope.networkURI).shortName;
     popupService.showPrompt(gettextCatalog.getString('Custom Fee'), gettextCatalog.getString('Set your own fee in ' + atomicName + '/byte'), null, function(text) {
       if (!text || !parseInt(text) || parseInt(text) <= 0) return;
       $scope.feePerSmallestUnitByte = parseInt(text);
@@ -97,7 +97,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   };
 
   $scope.getMinimumRecommeded = function() {
-    var value = lodash.find($scope.feeLevels[$scope.networkName], {
+    var value = lodash.find($scope.feeLevels[$scope.networkURI], {
       level: 'superEconomy'
     });
     return parseInt((value.feePerKB / 1000).toFixed());

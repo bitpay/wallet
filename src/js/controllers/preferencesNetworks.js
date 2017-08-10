@@ -8,16 +8,16 @@ angular.module('copayApp.controllers').controller('preferencesNetworksController
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.title = gettextCatalog.getString('Currency Networks');
 
-      $scope.networkName = data.stateParams.networkName;
-      if (!$scope.networkName) {
+      $scope.networkURI = data.stateParams.networkURI;
+      if (!$scope.networkURI) {
         return;
       }
 
-      var network = networkHelper.getNetworkByName($scope.networkName);
+      var network = networkHelper.getNetworkByName($scope.networkURI);
 
       $scope.title = network.label;
-      $scope.feeOpts = feeService.getFeeOpts($scope.networkName);
-      $scope.currentFeeLevel = feeService.getCurrentFeeLevel($scope.networkName);
+      $scope.feeOpts = feeService.getFeeOpts($scope.networkURI);
+      $scope.currentFeeLevel = feeService.getCurrentFeeLevel($scope.networkURI);
 
       configService.whenAvailable(function(config) {
         $scope.unitName = config.currencyNetworks[network.getName()].unitName;

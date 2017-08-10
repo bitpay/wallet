@@ -39,7 +39,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     function checkPrivateKey(privateKey) {
       try {
-        new bitcore.PrivateKey(privateKey, 'livenet/btc');
+        new bitcore.PrivateKey(privateKey, 'livenet/btc'); // Need to support more than livenet/btc
       } catch (err) {
         return false;
       }
@@ -121,6 +121,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     } else if (bitcore.Address.isValid(data, 'livenet/btc') || bitcore.Address.isValid(data, 'testnet/btc')) {
       if ($state.includes('tabs.scan')) {
         root.showMenu({
+          networkURI: (bitcore.Address.isValid(data, 'livenet/btc') ? 'livenet/btc' : 'testnet/btc'),
           data: data,
           type: 'bitcoinAddress'
         });

@@ -28,8 +28,8 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
     return parseInt((value.feePerKB / 1000).toFixed());
   };
 
-  $scope.isTestnet = function(networkName) {
-    return networkHelper.isTestnet(networkName);
+  $scope.isTestnet = function(networkURI) {
+    return networkHelper.isTestnet(networkURI);
   };
 
   $scope.ok = function() {

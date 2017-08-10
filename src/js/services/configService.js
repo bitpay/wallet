@@ -61,6 +61,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     currencyNetworks: {
 /*
+      default: 'livenet/btc',
       'livenet/btc': {
         unitName: 'BTC',
         unitToAtomicUnit: 100000000,

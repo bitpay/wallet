@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('mercadoLibreController',
-  function($scope, $timeout, $log, mercadoLibreService, externalLinkService, popupService) {
+  function($scope, $timeout, $log, mercadoLibreService, externalLinkService, popupService, networkHelper) {
 
     $scope.openExternalLink = function(url) {
       externalLinkService.open(url);
@@ -21,4 +21,8 @@ angular.module('copayApp.controllers').controller('mercadoLibreController',
       $scope.network = mercadoLibreService.getNetwork();
       init();
     });
+
+    $scope.isTestnet = function(networkURI) {
+      return networkHelper.isTestnet(networkURI);
+    };
   });

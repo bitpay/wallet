@@ -145,7 +145,7 @@ angular.module('copayApp.controllers').controller('createController',
         m: $scope.formData.requiredCopayers,
         n: $scope.formData.totalCopayers,
         myName: $scope.formData.totalCopayers > 1 ? $scope.formData.myName : null,
-        networkName: networkHelper.getName($scope.formData.network),
+        networkURI: networkHelper.getName($scope.formData.network),
         bwsurl: $scope.formData.bwsurl,
         singleAddress: $scope.formData.singleAddressEnabled,
         walletPrivKey: $scope.formData._walletPrivKey, // Only for testing
@@ -169,7 +169,7 @@ angular.module('copayApp.controllers').controller('createController',
         }
 
         opts.account = pathData.account;
-        opts.networkName = pathData.networkName;
+        opts.networkURI = pathData.networkURI;
         opts.derivationStrategy = pathData.derivationStrategy;
 
       } else {
@@ -207,7 +207,7 @@ angular.module('copayApp.controllers').controller('createController',
             popupService.showAlert(gettextCatalog.getString('Error'), 'Invalid seed source id');
             return;
         }
-        src.getInfoForNewWallet(opts.n > 1, account, opts.networkName, function(err, lopts) {
+        src.getInfoForNewWallet(opts.n > 1, account, opts.networkURI, function(err, lopts) {
           ongoingProcess.set('connecting ' + $scope.formData.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);

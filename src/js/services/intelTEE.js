@@ -29,7 +29,7 @@ angular.module('copayApp.services')
       $log.error('Failed to create Intel Wallet enclave');
     }
 
-    root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
+    root.getInfoForNewWallet = function(isMultisig, account, networkURI, callback) {
       var opts = {};
       initSource(opts, function(err, opts) {
         if (err) return callback(err);
@@ -38,7 +38,7 @@ angular.module('copayApp.services')
           if (err) return callback(err);
 
           opts.entropySource = entropySource;
-          root.getXPubKey(opts.hwInfo.id, hwWallet.getAddressPath(root.description.id, isMultisig, account, networkName), function(data) {
+          root.getXPubKey(opts.hwInfo.id, hwWallet.getAddressPath(root.description.id, isMultisig, account, networkURI), function(data) {
             if (!data.success) {
               $log.warn(data.message);
               return callback(data);
@@ -142,7 +142,7 @@ angular.module('copayApp.services')
 
     function initSource(opts, callback) {
         var args = {
-          "Testnet" : (opts.networkName == 'livenet/btc' ? false : true),
+          "Testnet" : (opts.networkURI == 'livenet/btc' ? false : true),
           "PINUnlockRequired" : false,
           "PINSignatureDataRequired" : false,
           "PINSignatureTransaction" : 0,

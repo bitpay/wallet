@@ -168,7 +168,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.viewOnBlockchain = function() {
     var btx = $scope.btx;
-    var url = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid;
+    var url = 'https://' + ($scope.getShortnetworkURI() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid;
     var optIn = true;
     var title = null;
     var message = gettextCatalog.getString('View Transaction on Insight');
@@ -177,7 +177,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
-  $scope.getShortNetworkName = function() {
+  $scope.getShortnetworkURI = function() {
     var n = $scope.wallet.credentials.network;
     return n.substring(0, 4);
   };

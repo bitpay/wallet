@@ -8,10 +8,10 @@
   </ion-nav-bar>
   <ion-content>
 
-    <div class="settings-list list" ng-if="!networkName">
+    <div class="settings-list list" ng-if="!networkURI">
       <div class="item item-divider"></div>      
       <a class="item item-icon-left item-icon-right" ng-repeat="network in availableNetworks"
-        ui-sref="tabs.network-settings({'networkName': network.getName()})">
+        ui-sref="tabs.network-settings({'networkURI': network.getName()})">
         <i class="icon big-icon-svg">
           <img ng-src="img/currency-network-icons/{{network.currency}}.svg" class="bg"/>
         </i>
@@ -20,9 +20,9 @@
       </a>
     </div>
 
-    <div class="settings-list list" ng-if="networkName">
+    <div class="settings-list list" ng-if="networkURI">
       <div class="item item-divider"></div>
-      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.unit({'networkName': networkName})">
+      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.unit({'networkURI': networkURI})">
         <i class="icon big-icon-svg">
           <img src="img/icon-unit.svg" class="bg"/>
         </i>
@@ -32,7 +32,7 @@
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.altCurrency({'networkName': networkName})">
+      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.altCurrency({'networkURI': networkURI})">
         <i class="icon big-icon-svg">
           <img src="img/icon-alternative-currency.svg" class="bg"/>
         </i>
@@ -42,7 +42,7 @@
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.fee({'networkName': networkName})">
+      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.fee({'networkURI': networkURI})">
         <i class="icon big-icon-svg">
           <img src="img/icon-network.svg" class="bg"/>
         </i>

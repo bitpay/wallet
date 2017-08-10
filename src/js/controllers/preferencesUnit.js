@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
       currencyNetworks: {}
     };
 
-    opts.currencyNetworks[$scope.networkName] = {
+    opts.currencyNetworks[$scope.networkURI] = {
       unitName: newUnit.shortName,
       unitToAtomicUnit: newUnit.value,
       unitDecimals: newUnit.decimals,
@@ -20,17 +20,17 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
       if (err) $log.warn(err);
 
       $ionicHistory.goBack();
-//      walletService.updateRemotePreferences(profileService.getWallets());
+      walletService.updateRemotePreferences(profileService.getWallets());
     });
   };
 
   $scope.$on("$ionicView.enter", function(event, data) {
-    $scope.networkName = data.stateParams.networkName;
-    if (!$scope.networkName) {
+    $scope.networkURI = data.stateParams.networkURI;
+    if (!$scope.networkURI) {
       return;
     }
 
-    var network = networkHelper.getNetworkByName($scope.networkName);
+    var network = networkHelper.getNetworkByName($scope.networkURI);
     $scope.unitList = lodash.filter(network.units, function(n) {
       return n.userSelectable;
     });

@@ -122,7 +122,7 @@ angular.module('copayApp.controllers').controller('joinController',
           return;
         }
         opts.account = pathData.account;
-        opts.networkName = pathData.networkName;
+        opts.networkURI = pathData.networkURI;
         opts.derivationStrategy = pathData.derivationStrategy;
       } else {
         opts.passphrase = $scope.formData.createPassphrase;

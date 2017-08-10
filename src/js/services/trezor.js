@@ -41,8 +41,8 @@ angular.module('copayApp.services')
       return callback(opts);
     };
 
-    root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
-      // networkName not used for this hardware (always livenet/btc)
+    root.getInfoForNewWallet = function(isMultisig, account, networkURI, callback) {
+      // networkURI not used for this hardware (always livenet/btc)
       var opts = {};
       root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);

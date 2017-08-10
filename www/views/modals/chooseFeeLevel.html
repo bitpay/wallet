@@ -4,7 +4,7 @@
       {{'Network Fee Policy'|translate}}
     </div>
     <button
-      ng-disabled="customFeePerKB && !customSatPerByte.value"
+      ng-disabled="customFeePerKB && !customAtomicPerByte.value"
       class="button button-clear" ng-click="ok()" translate>
       OK
     </button>
@@ -43,8 +43,8 @@
               ng-max="maxFeeAllowed"
               min="minFeeRecommended"
               max="maxFeeRecommended"
-              ng-change="checkFees(customSatPerByte.value)"
-              ng-model="customSatPerByte.value"
+              ng-change="checkFees(customAtomicPerByte.value)"
+              ng-model="customAtomicPerByte.value"
               ng-required="customFeePerKB">
               <span class="unit">{{atomicUnit.shortName}}/byte</span>
             </label>

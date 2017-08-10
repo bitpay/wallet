@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('amazonController',
       initAmazon();
     });
 
-    $scope.isTestnet = function(networkName) {
-      return networkHelper.isTestnet(networkName);
+    $scope.isTestnet = function(networkURI) {
+      return networkHelper.isTestnet(networkURI);
     };
   });

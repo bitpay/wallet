@@ -16,7 +16,7 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
         }
         lodash.forEach(Object.keys(ab), function(addr) {
           // Assign netwrok name to each entry.
-          ab[addr].networkName = (new bitcore.Address(addr)).network.name;
+          ab[addr].networkURI = (new bitcore.Address(addr)).network.name;
         });
         storageService.setAddressbook(JSON.stringify(ab), function(err, ab) {
           if (err) {
@@ -106,7 +106,7 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
       ab = ab || {};
       if (lodash.isArray(ab)) ab = {}; // No array
       if (ab[entry.address]) return cb('Entry already exist');
-      entry.networkName = network;
+      entry.networkURI = network;
       ab[entry.address] = entry;
       storageService.setAddressbook(JSON.stringify(ab), function(err, ab) {
         if (err) return cb('Error adding new entry');

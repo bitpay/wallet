@@ -120,11 +120,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       description: data.stateParams.description,
       paypro: data.stateParams.paypro,
 
-      feeLevel: config.currencyNetworks[data.stateParams.networkName].feeLevel,
+      feeLevel: config.currencyNetworks[data.stateParams.networkURI].feeLevel,
       spendUnconfirmed: config.wallet.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
-      networkName: data.stateParams.networkName,
+      networkURI: data.stateParams.networkURI,
       recipientType: data.stateParams.recipientType || null,
       toName: data.stateParams.toName,
       toEmail: data.stateParams.toEmail,
@@ -329,26 +329,26 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
 
-  function showSendMaxWarning(sendMaxInfo, networkName) {
+  function showSendMaxWarning(sendMaxInfo, networkURI) {
 
     function verifyExcludedUtxos() {
       var warningMsg = [];
       if (sendMaxInfo.utxosBelowFee > 0) {
         warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-          amountBelowFeeStr: txFormatService.formatAmountStr(networkName, sendMaxInfo.amountBelowFee)
+          amountBelowFeeStr: txFormatService.formatAmountStr(networkURI, sendMaxInfo.amountBelowFee)
         }));
       }
 
       if (sendMaxInfo.utxosAboveMaxSize > 0) {
         warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
-          amountAboveMaxSizeStr: txFormatService.formatAmountStr(networkName, sendMaxInfo.amountAboveMaxSize)
+          amountAboveMaxSizeStr: txFormatService.formatAmountStr(networkURI, sendMaxInfo.amountAboveMaxSize)
         }));
       }
       return warningMsg.join('\n');
     };
 
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
-      fee: txFormatService.formatAmountStr(networkName, sendMaxInfo.fee)
+      fee: txFormatService.formatAmountStr(networkURI, sendMaxInfo.fee)
     });
     var warningMsg = verifyExcludedUtxos();
 

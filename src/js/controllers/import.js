@@ -251,7 +251,7 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       opts.account = pathData.account;
-      opts.networkName = pathData.networkName;
+      opts.networkURI = pathData.networkURI;
       opts.derivationStrategy = pathData.derivationStrategy;
 
       var words = $scope.formData.words || null;

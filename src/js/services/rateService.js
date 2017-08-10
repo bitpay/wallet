@@ -95,19 +95,19 @@ RateService.prototype.whenAvailable = function(callback) {
   }
 };
 
-RateService.prototype.toFiat = function(networkName, atomics, code) {
+RateService.prototype.toFiat = function(networkURI, atomics, code) {
   if (!this.isAvailable()) {
     return null;
   }
-  var asRatio = this.networkHelper.getASUnitRatio(networkName);
+  var asRatio = this.networkHelper.getASUnitRatio(networkURI);
   return atomics * asRatio * this.getRate(code);
 };
 
-RateService.prototype.fromFiat = function(networkName, amount, code) {
+RateService.prototype.fromFiat = function(networkURI, amount, code) {
   if (!this.isAvailable()) {
     return null;
   }
-  var asRatio = this.networkHelper.getASUnitRatio(networkName);
+  var asRatio = this.networkHelper.getASUnitRatio(networkURI);
   return amount / this.getRate(code) / asRatio;
 };
 

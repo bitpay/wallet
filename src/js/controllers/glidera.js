@@ -30,8 +30,8 @@ angular.module('copayApp.controllers').controller('glideraController',
       });
     };
 
-    $scope.isTestnet = function(networkName) {
-      return networkHelper.isTestnet(networkName);
+    $scope.isTestnet = function(networkURI) {
+      return networkHelper.isTestnet(networkURI);
     };
 
     $scope.update = function(opts) {

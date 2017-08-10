@@ -8,6 +8,7 @@ angular.module('copayApp.directives')
       link: function(scope, element, attrs) {
         $rootScope.$on('incomingDataMenu.showMenu', function(event, data) {
           $timeout(function() {
+            scope.networkURI = data.networkURI;
             scope.data = data.data;
             scope.type = data.type;
             scope.showMenu = true;
@@ -27,23 +28,25 @@ angular.module('copayApp.directives')
         scope.goToUrl = function(url) {
           externalLinkService.open(url);
         };
-        scope.sendPaymentToAddress = function(bitcoinAddress) {
+        scope.sendPaymentToAddress = function(networkURI, address) {
           scope.showMenu = false;
           $state.go('tabs.send').then(function() {
             $timeout(function() {
               $state.transitionTo('tabs.send.amount', {
-                toAddress: bitcoinAddress
+                networkURI: networkURI,
+                toAddress: address
               });
             }, 50);
           });
         };
-        scope.addToAddressBook = function(bitcoinAddress) {
+        scope.addToAddressBook = function(networkURI, address) {
           scope.showMenu = false;
           $timeout(function() {
             $state.go('tabs.send').then(function() {
               $timeout(function() {
                 $state.transitionTo('tabs.send.addressbook', {
-                  addressbookEntry: bitcoinAddress
+                  networkURI: networkURI,
+                  addressbookEntry: address
                 });
               });
             });

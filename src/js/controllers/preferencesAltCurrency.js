@@ -66,7 +66,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
         currencyNetworks: {}
       };
 
-      opts.currencyNetworks[$scope.networkName] = {
+      opts.currencyNetworks[$scope.networkURI] = {
         alternativeName: newAltCurrency.name,
         alternativeIsoCode: newAltCurrency.isoCode,
       };
@@ -89,12 +89,12 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-      $scope.networkName = data.stateParams.networkName;
-      if (!$scope.networkName) {
+      $scope.networkURI = data.stateParams.networkURI;
+      if (!$scope.networkURI) {
         return;
       }
 
-      var network = networkHelper.getNetworkByName($scope.networkName);
+      var network = networkHelper.getNetworkByName($scope.networkURI);
       $scope.currentCurrency = config.currencyNetworks[network.getName()].alternativeIsoCode;
 
       storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
