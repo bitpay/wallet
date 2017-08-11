@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { PersistenceProvider } from './persistence';
-import { IStorage, ISTORAGE, KeyAlreadyExistsError } from './storage/istorage';
+import { IStorage, ISTORAGE } from './storage/istorage';
 import { RamStorage } from './storage/ram-storage';
 import { LocalStorage } from './storage/local-storage';
 import { Logger, Level as LoggerLevel } from '@nsalaun/ng-logger';
