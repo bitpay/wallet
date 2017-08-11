@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { InjectionToken, Inject } from '@angular/core';
-import { IStorage, ISTORAGE } from './storage/istorage';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
+
+import { IStorage, ISTORAGE } from './storage/istorage';
+import { PlatformProvider } from '../platform/platform';
+import { LocalStorage } from './storage/local-storage';
+import { RamStorage } from './storage/ram-storage';
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
@@ -33,10 +37,15 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
 };
 
+export let persistenceProviderFactory = (platform: PlatformProvider, log: Logger) => {
+  let storage = new RamStorage(platform, log);
+  return new PersistenceProvider(storage, log);
+};
+
 @Injectable()
 export class PersistenceProvider {
   constructor( @Inject(ISTORAGE) public storage: IStorage, private log: Logger) {
-  }
+  };
 
   storeNewProfile(profile): Promise<void> {
     return this.storage.create(Keys.PROFILE, profile);
@@ -305,11 +314,8 @@ export class PersistenceProvider {
 
   removeAllWalletData(walletId: string): Promise<void> {
     return this.clearLastAddress(walletId)
-      .then(() => {
-        return this.removeTxHistory(walletId);
-      }).then(() => {
-        return this.clearBackupFlag(walletId);
-      });
+      .then(() => { return this.removeTxHistory(walletId); })
+      .then(() => { return this.clearBackupFlag(walletId); });
   };
 
   setAmazonGiftCards(network: string, gcs: any): Promise<void> {
@@ -394,12 +400,13 @@ export class PersistenceProvider {
   //   token: card token
   // ]
   setBitpayDebitCards(network: string, email: string, cards: any): Promise<void> {
-    return this.getBitpayAccounts(network).then(allAccounts => {
-      allAccounts = allAccounts || {};
-      if (!allAccounts[email]) throw new Error('Cannot set cards for unknown account ' + email);
-      allAccounts[email].cards = cards;
-      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
-    });
+    return this.getBitpayAccounts(network)
+      .then(allAccounts => {
+        allAccounts = allAccounts || {};
+        if (!allAccounts[email]) throw new Error('Cannot set cards for unknown account ' + email);
+        allAccounts[email].cards = cards;
+        return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
+      });
   };
 
   // cards: [
@@ -410,32 +417,34 @@ export class PersistenceProvider {
   //   email: account email
   // ]
   getBitpayDebitCards(network: string): Promise<any[]> {
-    return this.getBitpayAccounts(network).then(allAccounts => {
-      let allCards = [];
-      _.each(allAccounts, (account, email) => {
-        if (account.cards) {
-          // Add account's email to each card
-          var cards = _.clone(account.cards);
-          _.each(cards, function (x) {
-            x.email = email;
-          });
+    return this.getBitpayAccounts(network)
+      .then(allAccounts => {
+        let allCards = [];
+        _.each(allAccounts, (account, email) => {
+          if (account.cards) {
+            // Add account's email to each card
+            var cards = _.clone(account.cards);
+            _.each(cards, function (x) {
+              x.email = email;
+            });
 
-          allCards = allCards.concat(cards);
-        }
+            allCards = allCards.concat(cards);
+          }
+        });
+        return allCards;
       });
-      return allCards;
-    });
   };
 
   removeBitpayDebitCard(network: string, cardEid: string): Promise<void> {
-    return this.getBitpayAccounts(network).then(allAccounts => {
-      _.each(allAccounts, function (account) {
-        account.cards = _.reject(account.cards, {
-          eid: cardEid
+    return this.getBitpayAccounts(network)
+      .then(allAccounts => {
+        return _.each(allAccounts, function (account) {
+          account.cards = _.reject(account.cards, {
+            eid: cardEid
+          });
         });
+      }).then(allAccounts => {
+        return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
       });
-
-      return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
-    });
   };
 }
