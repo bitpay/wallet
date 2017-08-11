@@ -2,7 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
 
-import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
+import { NgLoggerModule, Logger, Level } from '@nsalaun/ng-logger';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 
@@ -22,12 +22,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { WalletProvider } from '../providers/wallet/wallet';
-import { PersistenceProvider } from '../providers/persistence/persistence';
+import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { AppProvider } from '../providers/app/app';
 import { PlatformProvider } from '../providers/platform/platform';
 
 export function createTranslateLoader(http: Http) {
-    return new TranslatePoHttpLoader(http, './assets/i18n/', '.po');
+  return new TranslatePoHttpLoader(http, './assets/i18n/', '.po');
 }
 
 @NgModule({
@@ -70,7 +70,7 @@ export function createTranslateLoader(http: Http) {
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     WalletProvider,
-    PersistenceProvider,
+    { provide: PersistenceProvider, useFactory: persistenceProviderFactory, deps: [PlatformProvider, Logger], multi: true },
     AppProvider,
     PlatformProvider
   ]
