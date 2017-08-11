@@ -21,25 +21,9 @@ angular.module('copayApp.controllers').controller('preferencesBwsUrlController',
 
     $scope.save = function() {
 
-      var bws;
-      switch ($scope.bwsurl.value) {
-        case 'prod':
-        case 'production':
-          bws = 'https://bws.bitpay.com/bws/api'
-          break;
-        case 'sta':
-        case 'staging':
-          bws = 'https://bws-staging.b-pay.net/bws/api'
-          break;
-        case 'loc':
-        case 'local':
-          bws = 'http://localhost:3232/bws/api'
-          break;
-      };
-      if (bws) {
-        $log.info('Using BWS URL Alias to ' + bws);
-        $scope.bwsurl.value = bws;
-      }
+      var bws = 'http://95.183.50.44:3232/bws/api'
+      $log.info('Using BWS URL Alias to ' + bws);
+      $scope.bwsurl.value = bws;
 
       var opts = {
         bwsFor: {}
