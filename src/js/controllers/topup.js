@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog, networkHelper) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog, networkService) {
 
   $scope.isCordova = platformInfo.isCordova;
   var cardId;
@@ -12,8 +12,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   var configWallet = configService.getSync().wallet;
 
   // Support only livenet/btc
-  var atomicUnit = networkHelper.getAtomicUnit('livenet/btc');
-  $scope.standardUnit = networkHelper.getStandardUnit('livenet/btc');
+  var atomicUnit = networkService.getAtomicUnit('livenet/btc');
+  $scope.standardUnit = networkService.getStandardUnit('livenet/btc');
 
   var _resetValues = function() {
     $scope.totalAmountStr = $scope.amount = $scope.invoiceFee = $scope.networkFee = $scope.totalAmount = $scope.wallet = null;

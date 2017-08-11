@@ -198,10 +198,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     }, 10);
   };
 
-  $scope.getShortnetworkURI = function() {
-    return $scope.wallet.credentials.networkURI.substring(0, 4);
-  };
-
   var updateTxInfo = function(eventName) {
     $scope.wallet.getTx($scope.tx.id, function(err, tx) {
       if (err) {

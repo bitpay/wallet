@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, platformInfo, txFormatService, networkHelper) {
+angular.module('copayApp.controllers').controller('buyGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, platformInfo, txFormatService, networkService) {
 
   var amount;
   var currency;
@@ -45,7 +45,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     // Support only livenet/btc
-    var networkUnits = networkHelper.getNetworkByName('livenet/btc').units;
+    var networkUnits = networkService.getNetworkByURI('livenet/btc').units;
     var foundCurrencyName = lodash.find(networkUnits, function(u) {
       return u.shortName == currency;
     });
@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
           return;
         }
         $scope.buyInfo = buy;
-        $scope.standardUnit = networkHelper.getStandardUnit('livenet/btc'); // Support only livenet/btc
+        $scope.standardUnit = networkService.getStandardUnit('livenet/btc'); // Support only livenet/btc
       });
     });
   });

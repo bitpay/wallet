@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, networkHelper) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, networkService) {
 
   // Ratio low amount warning (fee/amount) in incoming TX 
   var LOW_AMOUNT_RATIO = 0.15; 
@@ -769,6 +769,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     function updateRemotePreferencesFor(clients, prefs, next) {
       var wallet = clients.shift();
       if (!wallet) return next();
+
+      var configNetwork = configService.getSync().currencyNetworks[wallet.network];
+      prefs.unit = configNetwork.unitCode;
+
       $log.debug('Saving remote preferences', wallet.credentials.walletName, prefs);
 
       wallet.savePreferences(prefs, function(err) {
@@ -785,13 +789,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     // Update this JIC.
     var config = configService.getSync();
     var configWallet = config.wallet.settings;
-    var configNetwork = configService.getSync().currencyNetworks[wallet.network];
 
     //prefs.email  (may come from arguments)
     prefs.email = config.emailNotifications.email;
     prefs.language = uxLanguage.getCurrentLanguage();
-    prefs.unit = configNetwork.unitCode;
-
+  
     updateRemotePreferencesFor(lodash.clone(clients), prefs, function(err) {
       if (err) return cb(err);
 
@@ -926,7 +928,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   // Approx utxo amount, from which the uxto is economically redeemable  
   root.getMinFee = function(wallet, feeLevels, nbOutputs) {
-    var atomicUnit = networkHelper.getAtomicUnit(wallet.network);
+    var atomicUnit = networkService.getAtomicUnit(wallet.network);
     var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
       level: 'normal',
     }).feePerKB / 1000).toFixed(atomicUnit.decimals);

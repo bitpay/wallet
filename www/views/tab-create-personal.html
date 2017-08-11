@@ -118,7 +118,7 @@
               Network
             </div>
             <select class="m10t" ng-model="formData.network" ng-options="network as network.label for network in networkOptions"
-              ng-change="resizeView(); setDerivationPath();"></select>
+              ng-change="resizeView(); onNetworkChange();"></select>
           </label>
 
           <ion-toggle ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">

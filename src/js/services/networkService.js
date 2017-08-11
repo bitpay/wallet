@@ -1,14 +1,36 @@
 'use strict';
 
-angular.module('copayApp.services').factory('networkHelper', function($log, lodash, gettextCatalog, configService) {
+angular.module('copayApp.services').factory('networkService', function($log, lodash, gettextCatalog) {
   var root = {};
 
-  // Define all supported networks.
+  // Define all supported networks
+  //
   var networks = [
+    //
+    // Bitcoin livenet
+    //
     {
       currency: 'btc',
       net: 'livenet',
       label: gettextCatalog.getString('Bitcoin'),
+      bws: {
+        production: {
+          url: 'https://bws.bitpay.com/bws/api/'
+        },
+        staging: {
+          url: 'https://bws-staging.b-pay.net/bws/api/'
+        },
+        local: {
+          url: 'http://localhost:3232/bws/api/'
+        }
+      },
+      bex: {
+        production: {
+          label: gettextCatalog.getString('Insight'),
+          url: 'https://insight.bitpay.com/',
+          urlTx: 'https://insight.bitpay.com/tx/'
+        }
+      },
       units: [{
         name: 'BTC',
         shortName: 'BTC',
@@ -35,6 +57,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
         userSelectable: false
       }],
       feePolicy: {
+        default: 'normal',
         options: {
           urgent: gettextCatalog.getString('Urgent'),
           priority: gettextCatalog.getString('Priority'),
@@ -49,13 +72,33 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
         }
       },
       getURI: function() { return root.getURI(this) },
-      legacyName: 'livenet', // Used to update legacy wallets
-      default:  true
+      legacyName: 'livenet' // Used to update legacy wallets
     },
+    //
+    // Bitcoin testnet
+    //
     {
       currency: 'btc',
       net: 'testnet',
       label: gettextCatalog.getString('Bitcoin Testnet'),
+      bws: {
+        production: {
+          url: 'https://bws.bitpay.com/bws/api/'
+        },
+        staging: {
+          url: 'https://bws-staging.b-pay.net/bws/api/'
+        },
+        local: {
+          url: 'http://localhost:3232/bws/api/'
+        }
+      },
+      bex: {
+        production: {
+          label: gettextCatalog.getString('Insight'),
+          url: 'https://insight.bitpay.com/',
+          urlTx: 'https://insight.bitpay.com/tx/'
+        }
+      },
       units: [{
         name: 'BTC',
         shortName: 'BTC',
@@ -82,6 +125,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
         userSelectable: false
       }],
       feePolicy: {
+        default: 'normal',
         options: {
           urgent: gettextCatalog.getString('Urgent'),
           priority: gettextCatalog.getString('Priority'),
@@ -98,55 +142,31 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
       getURI: function() { return root.getURI(this) },
       legacyName: 'testnet' // Used to update legacy wallets
     },
+    //
+    // Bitcoin Cash livenet
+    //
     {
       currency: 'bch',
       net: 'livenet',
       label: gettextCatalog.getString('Bitcoin Cash'),
-      units: [{
-        name: 'BCH',
-        shortName: 'BCH',
-        value: 100000000,
-        decimals: 8,
-        code: 'bch',
-        kind: 'standard',
-        userSelectable: true
-      }, {
-        name: 'bits (1,000,000 bits = 1BCH)',
-        shortName: 'bits',
-        value: 100,
-        decimals: 2,
-        code: 'bit',
-        kind: 'alternative',
-        userSelectable: true
-      }, {
-        name: 'satoshi (100,000,000 satoshi = 1BTC)',
-        shortName: 'satoshis',
-        value: 1,
-        decimals: 0,
-        code: 'satoshi',
-        kind: 'atomic',
-        userSelectable: false
-      }],
-      feePolicy: {
-        options: {
-          urgent: gettextCatalog.getString('Urgent'),
-          priority: gettextCatalog.getString('Priority'),
-          normal: gettextCatalog.getString('Normal'),
-          economy: gettextCatalog.getString('Economy'),
-          superEconomy: gettextCatalog.getString('Super Economy'),
-          custom: gettextCatalog.getString('Custom')
+      bws: {
+        production: {
+          url: 'https://bws.bitpay.com/bws/api/'
         },
-        explainer: {
-          heading: gettextCatalog.getString('Bitcoin Cash transactions include a fee collected by miners on the network.'),
-          description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
+        staging: {
+          url: 'https://bws-staging.b-pay.net/bws/api/'
+        },
+        local: {
+          url: 'http://localhost:3232/bws/api/'
         }
       },
-      getURI: function() { return root.getURI(this) },
-    },
-    {
-      currency: 'bch',
-      net: 'testnet',
-      label: gettextCatalog.getString('Bitcoin Cash Testnet'),
+      bex: {
+        production: {
+          label: gettextCatalog.getString('Cash Explorer'),
+          url: 'https://cashexplorer.bitcoin.com/',
+          urlTx: 'https://cashexplorer.bitcoin.com/tx/'
+        }
+      },
       units: [{
         name: 'BCH',
         shortName: 'BCH',
@@ -173,6 +193,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
         userSelectable: false
       }],
       feePolicy: {
+        default: 'normal',
         options: {
           urgent: gettextCatalog.getString('Urgent'),
           priority: gettextCatalog.getString('Priority'),
@@ -190,40 +211,26 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
     }
   ];
 
-  // Initialize currency network settings if not present.
-  var initConfig = function() {
-    configService.whenAvailable(function(config) {
+  root.defaultConfig = function() {
+    var currencyNetworks = {
+      default: 'livenet/btc'
+    };
 
-      var existingConfig = Object.keys(config.currencyNetworks);
-      var opts = {
-        currencyNetworks: {
-          default: 'livenet/btc'
-        }
+    for (var i = 0; i < networks.length; i++) {
+      currencyNetworks[networks[i].getURI()] = {
+        bws:                networks[i].bws.production,
+        unitName:           networks[i].units[0].shortName,
+        unitToAtomicUnit:   networks[i].units[0].value,
+        unitDecimals:       networks[i].units[0].decimals,
+        unitCode:           networks[i].units[0].code,
+        atomicUnitCode:     root.getAtomicUnit(networks[i].getURI()).code,
+        feeLevel:           networks[i].feePolicy.default,
+        alternativeName:    'US Dollar', // Default to using USD for alternative currency
+        alternativeIsoCode: 'USD'
       };
-
-      for (var i = 0; i < networks.length; i++) {
-        if (!existingConfig.includes(networks[i].getURI())) {
-          var unitDesc = networks[i].units[0]; // Initialize to first element in units list
-          opts.currencyNetworks[networks[i].getURI()] = {
-            unitName:           unitDesc.shortName,
-            unitToAtomicUnit:   unitDesc.value,
-            unitDecimals:       unitDesc.decimals,
-            unitCode:           unitDesc.code,
-            atomicUnitCode:     root.getAtomicUnit(networks[i].getURI()),
-            alternativeName:    'US Dollar', // Default to using USD for alternative currency
-            alternativeIsoCode: 'USD',
-            feeLevel:           'normal'
-          };
-        }
-      }
-
-      configService.set(opts, function(err) {
-        if (err) $log.warn(err);
-      });
-    });
+    }
+    return currencyNetworks;
   };
-
-  initConfig();
 
   root.getNetworks = function() {
     return networks;
@@ -241,21 +248,22 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
     });
   };
 
-  root.getDefaultNetwork = function() {
+  root.getLivenetForCurrency = function(currency) {
     return lodash.find(networks, function(n) {
-      return n.default;
+      return (n.currency == currency) && (n.net == 'livenet');
     });
   };
 
-  root.getNetworkByName = function(networkURI) {
+  root.getTestnetForCurrency = function(currency) {
+    return lodash.find(networks, function(n) {
+      return (n.currency == currency) && (n.net == 'testnet');
+    });
+  };
+
+  root.getNetworkByURI = function(networkURI) {
     return lodash.find(networks, function(n) {
       return n.getURI() == networkURI;
     });
-//    var currency = root.parseCurrency(networkURI);
-//    var net = root.parseNet(networkURI);
-//    return lodash.find(networks, function(n) {
-//      return n.currency == currency && n.net == net;
-//    });
   };
 
   root.getURI = function(network) {
@@ -263,7 +271,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
   };
 
   root.getAtomicUnit = function(networkURI) {
-    var n = root.getNetworkByName(networkURI);
+    var n = root.getNetworkByURI(networkURI);
     var unit = lodash.find(n.units, function(u) {
       return u.kind == 'atomic';
     });
@@ -274,7 +282,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
   };
 
   root.getStandardUnit = function(networkURI) {
-    var n = root.getNetworkByName(networkURI);
+    var n = root.getNetworkByURI(networkURI);
     var unit = lodash.find(n.units, function(u) {
       return u.kind == 'standard';
     });
@@ -291,7 +299,7 @@ angular.module('copayApp.services').factory('networkHelper', function($log, loda
   };
 
   // Update the specified legacy network name to use the newest format.
-  root.getUpdatednetworkURI = function(networkURI) {
+  root.getUpdatedNetworkURI = function(networkURI) {
     var network = lodash.find(networks, function(n) {
       return n.legacyName == networkURI;
     });

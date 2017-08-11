@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('lockSetupController', function($state, $rootScope, $scope, $timeout, $log, configService, gettextCatalog, fingerprintService, profileService, lodash, applicationService, networkHelper) {
+angular.module('copayApp.controllers').controller('lockSetupController', function($state, $rootScope, $scope, $timeout, $log, configService, gettextCatalog, fingerprintService, profileService, lodash, applicationService, networkService) {
 
   function init() {
     $scope.options = [
@@ -75,9 +75,9 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
 
   function processWallets() {
     var wallets = profileService.getWallets();
-    var singleLivenetWallet = wallets.length == 1 && networkHelper.isLiveNet(wallets[0].network) && wallets[0].needsBackup;
+    var singleLivenetWallet = wallets.length == 1 && networkService.isLiveNet(wallets[0].network) && wallets[0].needsBackup;
     var atLeastOneLivenetWallet = lodash.any(wallets, function(w) {
-      return networkHelper.isLivenet(w.network) && w.needsBackup;
+      return networkService.isLivenet(w.network) && w.needsBackup;
     });
 
     if (singleLivenetWallet) {

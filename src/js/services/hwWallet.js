@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('hwWallet', function($log, bwcService, networkHelper) {
+  .factory('hwWallet', function($log, bwcService, networkService) {
     var root = {};
 
     // Ledger magic number to get xPub without user confirmation
@@ -37,7 +37,7 @@ angular.module('copayApp.services')
 
     root.getAddressPath = function(device, isMultisig, account, network) {
       var networkPath = root.LIVENET_PATH;
-      if (networkHelper.isTestnet(network)) {
+      if (networkService.isTestnet(network)) {
         networkPath = root.TESTNET_PATH;
       }
       return root.getRootPath(device, isMultisig, account) + "'/" + networkPath + "'/" + account + "'";

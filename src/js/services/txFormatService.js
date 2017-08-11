@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, lodash, networkHelper) {
+angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, lodash, networkService) {
   var root = {};
 
   root.Utils = bwcService.getUtils();
@@ -188,13 +188,13 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     var amountAtomic;
     var alternativeIsoCode = config.alternativeIsoCode;
 
-    var networkUnits = networkHelper.getNetworkByName(networkURI).units;
+    var networkUnits = networkService.getNetworkByURI(networkURI).units;
     var foundCurrencyName = lodash.find(networkUnits, function(u) {
       return u.shortName == currency;
     });
 
-    var atomicUnit = networkHelper.getAtomicUnit(networkURI);
-    var standardUnit = networkHelper.getStandardUnit(networkURI);
+    var atomicUnit = networkService.getAtomicUnit(networkURI);
+    var standardUnit = networkService.getStandardUnit(networkURI);
 
     if (!foundCurrencyName) { // Alternate currency
       amountAtomic = rateService.fromFiat(networkURI, amount, currency).toFixed(atomicUnit.decimals);

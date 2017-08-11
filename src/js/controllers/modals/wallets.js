@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletsController', function($scope, $timeout, bwcError, profileService, networkHelper) {
+angular.module('copayApp.controllers').controller('walletsController', function($scope, $timeout, bwcError, profileService, networkService) {
 
   $scope.selectWallet = function(walletId) {
 
@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('walletsController', function(
   };
 
   $scope.isTestnet = function(networkURI) {
-    return networkHelper.isTestnet(networkURI);
+    return networkService.isTestnet(networkURI);
   };
 
 });

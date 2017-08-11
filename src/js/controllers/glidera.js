@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('glideraController',
-  function($scope, $timeout, $ionicModal, $log, storageService, glideraService, ongoingProcess, platformInfo, externalLinkService, popupService, lodash, networkHelper) {
+  function($scope, $timeout, $ionicModal, $log, storageService, glideraService, ongoingProcess, platformInfo, externalLinkService, popupService, lodash, networkService) {
 
     $scope.openExternalLink = function(url) {
       externalLinkService.open(url);
     };
 
     var init = function() {
-      $scope.standardUnit = networkHelper.standardUnit('livenet/btc'); // Support only livenet/btc
+      $scope.standardUnit = networkService.standardUnit('livenet/btc'); // Support only livenet/btc
 
       ongoingProcess.set('connectingGlidera', true);
       glideraService.init(function(err, data) {
@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('glideraController',
     };
 
     $scope.isTestnet = function(networkURI) {
-      return networkHelper.isTestnet(networkURI);
+      return networkService.isTestnet(networkURI);
     };
 
     $scope.update = function(opts) {
@@ -85,7 +85,7 @@ angular.module('copayApp.controllers').controller('glideraController',
     }
 
     $scope.openLoginWindow = function() {
-      var glideraUrl = (networkHelper.isTestnet($scope.network)) ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login';
+      var glideraUrl = (networkService.isTestnet($scope.network)) ? 'https://sandbox.glidera.io/login' : 'https://glidera.io/login';
       $scope.openExternalLink(glideraUrl);
     }
 

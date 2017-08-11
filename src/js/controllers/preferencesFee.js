@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService, networkHelper) {
+angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService, networkService) {
 
   $scope.save = function(newFee) {
 
@@ -33,8 +33,8 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       return;
     }
 
-    $scope.network = networkHelper.getNetworkByName($scope.networkURI);
-    $scope.feeOpts = feeService.getFeeOpts($scope.network.getName());
+    $scope.network = networkService.getNetworkByURI($scope.networkURI);
+    $scope.feeOpts = feeService.getFeeOpts($scope.network.getURI());
     $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel($scope.networkURI);
     $scope.loadingFee = true;
     feeService.getFeeLevels($scope.networkURI, function(err, levels) {
@@ -83,7 +83,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     $scope.showMaxWarning = false;
     $scope.showMinWarning = false;
 
-    var atomicName = networkHelper.getAtomicUnit($scope.networkURI).shortName;
+    var atomicName = networkService.getAtomicUnit($scope.networkURI).shortName;
     popupService.showPrompt(gettextCatalog.getString('Custom Fee'), gettextCatalog.getString('Set your own fee in ' + atomicName + '/byte'), null, function(text) {
       if (!text || !parseInt(text) || parseInt(text) <= 0) return;
       $scope.feePerSmallestUnitByte = parseInt(text);

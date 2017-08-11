@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesNetworksController',
-  function($scope, networkHelper, configService, feeService, gettextCatalog) {
+  function($scope, networkService, configService, feeService, gettextCatalog) {
 
-    $scope.availableNetworks = networkHelper.getNetworks();
+    $scope.availableNetworks = networkService.getNetworks();
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.title = gettextCatalog.getString('Currency Networks');
@@ -13,18 +13,18 @@ angular.module('copayApp.controllers').controller('preferencesNetworksController
         return;
       }
 
-      var network = networkHelper.getNetworkByName($scope.networkURI);
+      var network = networkService.getNetworkByURI($scope.networkURI);
 
       $scope.title = network.label;
       $scope.feeOpts = feeService.getFeeOpts($scope.networkURI);
       $scope.currentFeeLevel = feeService.getCurrentFeeLevel($scope.networkURI);
 
       configService.whenAvailable(function(config) {
-        $scope.unitName = config.currencyNetworks[network.getName()].unitName;
+        $scope.unitName = config.currencyNetworks[network.getURI()].unitName;
 
         $scope.selectedAlternative = {
-          name: config.currencyNetworks[network.getName()].alternativeName,
-          isoCode: config.currencyNetworks[network.getName()].alternativeIsoCode
+          name: config.currencyNetworks[network.getURI()].alternativeName,
+          isoCode: config.currencyNetworks[network.getURI()].alternativeIsoCode
         };
       });
     });

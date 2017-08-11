@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, bwcService, configService, gettext, lodash, gettextCatalog, networkHelper) {
+angular.module('copayApp.services').factory('feeService', function($log, bwcService, configService, gettext, lodash, gettextCatalog, networkService) {
   var root = {};
 
   var CACHE_TIME_TS = 60; // 1 min
@@ -10,7 +10,7 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
   };
 
   root.getFeeOpts = function(networkURI, opt) {
-    var options = networkHelper.getNetworkByName(networkURI).feePolicy.options;
+    var options = networkService.getNetworkByURI(networkURI).feePolicy.options;
     if (!opt) {
       return options;
     } else {
@@ -43,7 +43,7 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
 
       var feeRate = feeLevelRate.feePerKB;
 
-      if (!fromCache) $log.debug('Dynamic fee: ' + feeLevel + '/' + networkURI + ' ' + (feeLevelRate.feePerKB / 1000).toFixed() + ' ' + networkHelper.getAtomicUnit(networkURI).shortname + ' / byte');
+      if (!fromCache) $log.debug('Dynamic fee: ' + feeLevel + '/' + networkURI + ' ' + (feeLevelRate.feePerKB / 1000).toFixed() + ' ' + networkService.getAtomicUnit(networkURI).shortname + ' / byte');
 
       return cb(null, feeRate);
     });

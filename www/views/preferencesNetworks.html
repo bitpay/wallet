@@ -11,7 +11,7 @@
     <div class="settings-list list" ng-if="!networkURI">
       <div class="item item-divider"></div>      
       <a class="item item-icon-left item-icon-right" ng-repeat="network in availableNetworks"
-        ui-sref="tabs.network-settings({'networkURI': network.getName()})">
+        ui-sref="tabs.network-settings({'networkURI': network.getURI()})">
         <i class="icon big-icon-svg">
           <img ng-src="img/currency-network-icons/{{network.currency}}.svg" class="bg"/>
         </i>

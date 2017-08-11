@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService, networkHelper) {
+angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService, networkService) {
 
   var amount;
   var currency;
@@ -43,12 +43,12 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     // Support only livenet/btc
-    var networkUnits = networkHelper.getNetworkByName('livenet/btc').units;
+    var networkUnits = networkService.getNetworkByURI('livenet/btc').units;
     var foundCurrencyName = lodash.find(networkUnits, function(u) {
       return u.shortName == currency;
     });
 
-    $scope.standardUnit = networkHelper.getStandardUnit('livenet/btc'); // Support only livenet/btc
+    $scope.standardUnit = networkService.getStandardUnit('livenet/btc'); // Support only livenet/btc
 
     $scope.isFiat = !foundCurrencyName;
     var parsedAmount = txFormatService.parseAmount(

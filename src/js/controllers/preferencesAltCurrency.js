@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, $timeout, $ionicHistory, configService, rateService, lodash, profileService, walletService, storageService, networkHelper) {
+  function($scope, $log, $timeout, $ionicHistory, configService, rateService, lodash, profileService, walletService, storageService, networkService) {
 
     var next = 10;
     var completeAlternativeList = [];
@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
       }];
 
       // Add all currency network standard units to the unused list.
-      var liveNetworks = networkHelper.getLiveNetworks();
+      var liveNetworks = networkService.getLiveNetworks();
       lodash.forEach(liveNetworks, function(n) {
         lodash.forEach(n.units, function(u) {
           if (u.kind == 'standard') {
@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
         $ionicHistory.goBack();
         saveLastUsed(newAltCurrency);
-//        walletService.updateRemotePreferences(profileService.getWallets());
+        walletService.updateRemotePreferences(profileService.getWallets());
       });
 
     };
@@ -94,8 +94,8 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
         return;
       }
 
-      var network = networkHelper.getNetworkByName($scope.networkURI);
-      $scope.currentCurrency = config.currencyNetworks[network.getName()].alternativeIsoCode;
+      var network = networkService.getNetworkByURI($scope.networkURI);
+      $scope.currentCurrency = config.currencyNetworks[network.getURI()].alternativeIsoCode;
 
       storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
         $scope.lastUsedAltCurrencyList = lastUsedAltCurrency ? JSON.parse(lastUsedAltCurrency) : [];

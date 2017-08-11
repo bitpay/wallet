@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService, networkHelper) {
+angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService, networkService) {
 
   var showErrorAndBack = function(title, msg) {
     popupService.showAlert(title, msg, function() {
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       var currency = parsedAmount.currency;
       $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
 
-      var standardUnit = networkHelper.getStandardUnit($scope.wallet.network);
+      var standardUnit = networkService.getStandardUnit($scope.wallet.network);
 
       if (currency != standardUnit.shortName) {
         // Convert to standard units

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService, walletService, networkHelper) {
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService, walletService, networkService) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
     $scope.isCordova = platformInfo.isCordova;
@@ -43,8 +43,8 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         }
         $log.debug('Wallet Transaction History Length:', txs.length);
 
-        var standardUnit = networkHelper.getStandardUnit($scope.wallet.network);
-        var atomicToStandard = networkHelper.getASUnitRatio($scope.wallet.network);
+        var standardUnit = networkService.getStandardUnit($scope.wallet.network);
+        var atomicToStandard = networkService.getASUnitRatio($scope.wallet.network);
 
         var data = txs;
         $scope.csvContent = [];

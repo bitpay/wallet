@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesUnitController', function($scope, $log, lodash, configService, $ionicHistory, gettextCatalog, walletService, profileService, networkHelper) {
+angular.module('copayApp.controllers').controller('preferencesUnitController', function($scope, $log, lodash, configService, $ionicHistory, gettextCatalog, walletService, profileService, networkService) {
 
   var config = configService.getSync();
 
@@ -30,11 +30,11 @@ angular.module('copayApp.controllers').controller('preferencesUnitController', f
       return;
     }
 
-    var network = networkHelper.getNetworkByName($scope.networkURI);
+    var network = networkService.getNetworkByURI($scope.networkURI);
     $scope.unitList = lodash.filter(network.units, function(n) {
       return n.userSelectable;
     });
 
-    $scope.currentUnit = config.currencyNetworks[network.getName()].unitCode;
+    $scope.currentUnit = config.currencyNetworks[network.getURI()].unitCode;
   });
 });

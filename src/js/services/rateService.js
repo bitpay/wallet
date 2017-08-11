@@ -16,7 +16,7 @@ var RateService = function(opts) {
   opts = opts || {};
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
-  self.networkHelper = opts.networkHelper;
+  self.networkService = opts.networkService;
 
   self.UNAVAILABLE_ERROR = 'Service is not available - check for service.isAvailable() or use service.whenAvailable()';
   self.UNSUPPORTED_CURRENCY_ERROR = 'Currency not supported';
@@ -99,7 +99,7 @@ RateService.prototype.toFiat = function(networkURI, atomics, code) {
   if (!this.isAvailable()) {
     return null;
   }
-  var asRatio = this.networkHelper.getASUnitRatio(networkURI);
+  var asRatio = this.networkService.getASUnitRatio(networkURI);
   return atomics * asRatio * this.getRate(code);
 };
 
@@ -107,7 +107,7 @@ RateService.prototype.fromFiat = function(networkURI, amount, code) {
   if (!this.isAvailable()) {
     return null;
   }
-  var asRatio = this.networkHelper.getASUnitRatio(networkURI);
+  var asRatio = this.networkService.getASUnitRatio(networkURI);
   return amount / this.getRate(code) / asRatio;
 };
 
@@ -131,7 +131,7 @@ RateService.prototype.listAlternatives = function(sort) {
   return self.lodash.uniq(alternatives, 'isoCode');
 };
 
-angular.module('copayApp.services').factory('rateService', function($http, lodash, networkHelper) {
+angular.module('copayApp.services').factory('rateService', function($http, lodash, networkService) {
   // var cfg = _.extend(config.rates, {
   //   httprequest: $http
   // });
@@ -139,7 +139,7 @@ angular.module('copayApp.services').factory('rateService', function($http, lodas
   var cfg = {
     httprequest: $http,
     lodash: lodash,
-    networkHelper: networkHelper
+    networkService: networkService
   };
   return RateService.singleton(cfg);
 });

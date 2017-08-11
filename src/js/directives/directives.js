@@ -51,14 +51,14 @@ angular.module('copayApp.directives')
     }
   ])
   .directive('validAmount', ['configService',
-    function(configService, networkHelper) {
+    function(configService, networkService) {
 
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
             // Support only livenet/btc
-            var atomicUnit = networkHelper.getAtomicUnit('livenet/btc');
+            var atomicUnit = networkService.getAtomicUnit('livenet/btc');
             var configNetwork = configService.getSync().currencyNetworks['livenet/btc'];
             var vNum = Number((value * configNetwork.unitToAtomicUnit).toFixed(atomicUnit.decimals));
             if (typeof value == 'undefined' || value == 0) {

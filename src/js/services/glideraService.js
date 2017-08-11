@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, $filter, platformInfo, storageService, buyAndSellService, lodash, configService, txFormatService, networkHelper) {
+angular.module('copayApp.services').factory('glideraService', function($http, $log, $window, $filter, platformInfo, storageService, buyAndSellService, lodash, configService, txFormatService, networkService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -20,7 +20,7 @@ angular.module('copayApp.services').factory('glideraService', function($http, $l
     credentials.NETWORK = 'livenet/btc';
     //credentials.NETWORK = 'testnet/btc';
 
-    if (networkHelper.isTestnet(credentials.NETWORK)) {
+    if (networkService.isTestnet(credentials.NETWORK)) {
       credentials.HOST = glidera.sandbox.host;
       if (isCordova) {
         credentials.REDIRECT_URI = glidera.sandbox.mobile.redirect_uri;

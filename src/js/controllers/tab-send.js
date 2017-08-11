@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, networkHelper) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, networkService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -54,7 +54,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
   var updateWalletsList = function() {
     var networkResult = lodash.countBy($scope.wallets, function(w) {
-      return networkHelper.parseNet(w.network);
+      return networkService.parseNet(w.network);
     });
 
     $scope.showTransferCard = $scope.hasWallets && (networkResult.livenet > 1 || networkResult.testnet > 1);
@@ -68,7 +68,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       }
       if (!(networkResult.testnet > 1)) {
         walletsToTransfer = lodash.filter(walletsToTransfer, function(item) {
-          return networkHelper.isLivenet(item.network);
+          return networkService.isLivenet(item.network);
         });
       }
       var walletList = [];

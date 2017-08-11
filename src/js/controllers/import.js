@@ -1,19 +1,25 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, networkHelper) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, networkService) {
 
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
+    var configNetwork = configService.getSync().currencyNetworks;
 
     $scope.init = function() {
       $scope.supportsLedger = platformInfo.supportsLedger;
       $scope.supportsTrezor = platformInfo.supportsTrezor;
       $scope.isCordova = platformInfo.isCordova;
       $scope.formData = {};
-      $scope.formData.bwsurl = defaults.bws.url;
-      $scope.formData.derivationPath = derivationPathHelper.default;
+
+      var defaultNetwork = networkService.getNetworkByURI(configNetwork.default);
+      $scope.formData.network = defaultNetwork;
+      $scope.networkOptions = networkService.getNetworks();
+      $scope.formData.bwsurl = configNetwork[$scope.formData.network.getURI()].bws.url;
+
+      $scope.formData.derivationPath = derivationPathHelper.getPath($scope.formData.network);
       $scope.formData.account = 1;
       $scope.importErr = false;
       $scope.isCopay = appConfigService.name == 'copay';
@@ -53,10 +59,14 @@ angular.module('copayApp.controllers').controller('importController',
       });
       $scope.formData.seedSourceAll = $scope.seedOptionsAll[0];
 
-
       $timeout(function() {
         $scope.$apply();
       });
+    };
+
+    $scope.onNetworkChange = function() {
+      $scope.formData.derivationPath = derivationPathHelper.getPath($scope.formData.network);
+      $scope.formData.bwsurl = configNetwork[$scope.formData.network.getURI()].bws.url;
     };
 
     $scope.processWalletInfo = function(code) {
@@ -83,7 +93,6 @@ angular.module('copayApp.controllers').controller('importController',
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Password required. Make sure to enter your password in advanced options'));
 
       $scope.formData.derivationPath = info.derivationPath;
-      $scope.formData.testnetEnabled = networkHelper.isTestnet(info.network) ? true : false;
 
       $timeout(function() {
         $scope.formData.words = info.data;
@@ -193,10 +202,6 @@ angular.module('copayApp.controllers').controller('importController',
       }, 100);
     };
 
-    $scope.setDerivationPath = function() {
-      $scope.formData.derivationPath = derivationPathHelper.getPath($scope.formData.network);
-    };
-
     $scope.getFile = function() {
       // If we use onloadend, we need to check the readyState.
       reader.onloadend = function(evt) {
@@ -243,8 +248,7 @@ angular.module('copayApp.controllers').controller('importController',
       if ($scope.formData.bwsurl)
         opts.bwsurl = $scope.formData.bwsurl;
 
-      var pathData = derivationPathHelper.parse($scope.formData.derivationPath, networkHelper.getDefaultNetwork()); // Default is livenet/btc
-
+      var pathData = derivationPathHelper.parse($scope.formData.derivationPath, $scope.formData.network);
       if (!pathData) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
         return;

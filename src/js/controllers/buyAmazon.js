@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService, networkHelper) {
+angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService, networkService) {
 
   var amount;
   var currency;
@@ -140,8 +140,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
     }
 
     // Support only livenet/btc
-    var atomicUnit = networkHelper.getAtomicUnit('livenet/btc').units;
-    var standardUnit = networkHelper.getStandardUnit('livenet/btc').units;
+    var atomicUnit = networkService.getAtomicUnit('livenet/btc').units;
+    var standardUnit = networkService.getStandardUnit('livenet/btc').units;
 
     var outputs = [];
     var toAddress = invoice.bitcoinAddress;
@@ -240,7 +240,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       }
 
       // Support only livenet/btc
-      var standardUnit = networkHelper.getStandardUnit('livenet/btc').units;
+      var standardUnit = networkService.getStandardUnit('livenet/btc').units;
 
       // Sometimes API does not return this element;
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;

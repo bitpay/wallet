@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sellCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, appConfigService, configService, txFormatService, networkHelper) {
+angular.module('copayApp.controllers').controller('sellCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, appConfigService, configService, txFormatService, networkService) {
 
   var amount;
   var currency;
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
   var checkTransaction = lodash.throttle(function(count, txp) {
     $log.warn('Check if transaction has been received by Coinbase. Try ' + count + '/5');
     // TX amount in standard units (BTC)
-    var standardUnit = networkHelper.getStandardUnit('livenet/btc'); // Support only livenet/btc
+    var standardUnit = networkService.getStandardUnit('livenet/btc'); // Support only livenet/btc
     var amountStandard = (txp.amount / standardUnit.value).toFixed(standardUnit.decimals);
     coinbaseService.init(function(err, res) {
       if (err) {
@@ -125,7 +125,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    var networkUnits = networkHelper.getNetworkByName('livenet/btc').units; // Support only livenet/btc
+    var networkUnits = networkService.getNetworkByURI('livenet/btc').units; // Support only livenet/btc
     var foundCurrencyName = lodash.find(networkUnits, function(u) {
       return u.shortName == data.stateParams.currency;
     });
@@ -266,8 +266,8 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
           }
 
           // Support only livenet/btc
-          var atomicUnit = networkHelper.getAtomicUnit('livenet/btc');
-          var standardUnit = networkHelper.getStandardUnit('livenet/btc');
+          var atomicUnit = networkService.getAtomicUnit('livenet/btc');
+          var standardUnit = networkService.getStandardUnit('livenet/btc');
 
           var outputs = [];
           var toAddress = data.data.address;

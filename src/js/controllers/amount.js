@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService, networkHelper) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService, networkService) {
   var _id;
   var atomicUnitToUnit;
   var atomicUnitDecimals;
@@ -68,12 +68,12 @@ angular.module('copayApp.controllers').controller('amountController', function($
     unitToAtomicUnit = configNetwork.unitToAtomicUnit;
     unitDecimals = configNetwork.unitDecimals;
     atomicUnitToUnit = 1 / unitToAtomicUnit;
-    atomicUnitDecimals = networkHelper.getAtomicUnit($scope.networkURI);
+    atomicUnitDecimals = networkService.getAtomicUnit($scope.networkURI);
 
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
     } else {
-      $scope.alternativeIsoCode = configNetwork.alternativeIsoCode || 'USD';      
+      $scope.alternativeIsoCode = configNetwork.alternativeIsoCode;
     }
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;

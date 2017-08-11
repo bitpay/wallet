@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sellGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, txFormatService, networkHelper) {
+angular.module('copayApp.controllers').controller('sellGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, txFormatService, networkService) {
 
   var amount;
   var currency;
 
   // Support only livenet/btc
-  var atomicUnit = networkHelper.getAtomicUnit('livenet/btc');
-  var standardUnit = networkHelper.getAtomicUnit('livenet/btc');
+  var atomicUnit = networkService.getAtomicUnit('livenet/btc');
+  var standardUnit = networkService.getAtomicUnit('livenet/btc');
 
   $scope.isCordova = platformInfo.isCordova;
 
@@ -48,7 +48,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    var networkUnits = networkHelper.getNetworkByName('livenet/btc').units; // Support only livenet/btc
+    var networkUnits = networkService.getNetworkByURI('livenet/btc').units; // Support only livenet/btc
     var foundCurrencyName = lodash.find(networkUnits, function(u) {
       return u.shortName == data.stateParams.currency;
     });

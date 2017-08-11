@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('copayApp.services').factory('derivationPathHelper', function(lodash, networkHelper) {
+angular.module('copayApp.services').factory('derivationPathHelper', function(lodash, networkService) {
   var root = {};
 
   var defaultPath = "m/44'/0'/0'";
   var defaultTestnetPath = "m/44'/1'/0'";
 
   root.getPath = function(network) {
-    if (networkHelper.isTestnet(network.net)) {
+    if (networkService.isTestnet(network.getURI())) {
       return defaultTestnetPath;
     } else {
       return defaultPath;
@@ -29,7 +29,7 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
       case "45'":
         return {
           derivationStrategy: 'BIP45',
-          networkURI: networkHelper.getName(networkHelper.getLivenetForCurrency(network.currency)),
+          networkURI: networkService.getURI(networkService.getLivenetForCurrency(network.currency)),
           account: 0,
         }
         break;
@@ -42,10 +42,10 @@ angular.module('copayApp.services').factory('derivationPathHelper', function(lod
 
     switch (arr[2]) {
       case "0'":
-          ret.networkURI = networkHelper.getName(networkHelper.getLivenetForCurrency(network.currency));
+          ret.networkURI = networkService.getURI(networkService.getLivenetForCurrency(network.currency));
         break;
       case "1'":
-          ret.networkURI = networkHelper.getName(networkHelper.getTestnetForCurrency(network.currency));
+          ret.networkURI = networkService.getURI(networkService.getTestnetForCurrency(network.currency));
         break;
       default:
         return false;

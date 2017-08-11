@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('feeLevelsController', function($scope, $timeout, $log, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService, networkHelper) {
+angular.module('copayApp.controllers').controller('feeLevelsController', function($scope, $timeout, $log, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService, networkService) {
 
   var FEE_MULTIPLIER = 10;
   var FEE_MIN = 0;
@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
   };
 
   $scope.isTestnet = function(networkURI) {
-    return networkHelper.isTestnet(networkURI);
+    return networkService.isTestnet(networkURI);
   };
 
   $scope.ok = function() {
@@ -101,7 +101,7 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
   // $scope.customFeePerKB
   // $scope.feePerAtomicByte
 
-  $scope.atomicUnit = networkHelper.getAtomicUnit($scope.network);
+  $scope.atomicUnit = networkService.getAtomicUnit($scope.network);
 
   if (lodash.isEmpty($scope.feeLevel)) showErrorAndClose(null, gettextCatalog.getString('Fee level is not defined') );
   $scope.selectedFee = { value: $scope.feeLevel };
