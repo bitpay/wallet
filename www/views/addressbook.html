@@ -36,11 +36,16 @@
     <ion-list>
       <ion-item ng-repeat="addrEntry in addressbook"
                 class="item-icon-right item-avatar"
-                ui-sref="tabs.addressbook.view({address:addrEntry.address, email: addrEntry.email, name: addrEntry.name})">
+                ui-sref="tabs.addressbook.view({networkURI:addrEntry.networkURI, address:addrEntry.address, email: addrEntry.email, name: addrEntry.name})">
         <img src="img/contact-placeholder.svg" class="bg"/ ng-if="isChromeApp">
         <gravatar name="{{addrEntry.name}}" width="50" email="{{addrEntry.email}}" ng-if="!isChromeApp"></gravatar>
         <h2>{{addrEntry.name}}</h2>
-        <p>{{addrEntry.address}}</p>
+        <div class="ellipsis">
+          <i class="icon-inline">
+            <img ng-src="img/currency-network-icons/{{currencyFor(addrEntry.networkURI)}}.svg"/>
+          </i>
+          <span>{{addrEntry.address}}</span>
+        </div>
         <i class="icon bp-arrow-right"></i>
       </ion-item>
     </ion-list>

@@ -1,12 +1,13 @@
 'use strict';
 angular.module('copayApp.directives')
-  .directive('validAddress', ['$rootScope', 'bitcore',
-    function($rootScope, bitcore) {
+  .directive('validAddress', ['$rootScope', 'networkService',
+    function($rootScope, networkService) {
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
+          var bitcore = networkService.bwcFor('livenet/btc').getBitcore(); // TODO: Support more than /btc
           var URI = bitcore.URI;
-          var Address = bitcore.Address
+          var Address = bitcore.Address;
           var validator = function(value) {
 
             // Regular url

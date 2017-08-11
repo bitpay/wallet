@@ -1,10 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookAddController', function($scope, $state, $stateParams, $timeout, $ionicHistory, gettextCatalog, addressbookService, popupService) {
+angular.module('copayApp.controllers').controller('addressbookAddController', function($scope, $state, $stateParams, $timeout, $ionicHistory, gettextCatalog, addressbookService, popupService, networkService) {
 
   $scope.fromSendTab = $stateParams.fromSendTab;
+  $scope.networkOptions = networkService.getLiveNetworks();
 
   $scope.addressbookEntry = {
+    'networkURI': '',
     'address': $stateParams.addressbookEntry || '',
     'name': '',
     'email': ''
@@ -14,7 +16,8 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
     $timeout(function() {
       var form = addressbookForm;
       if (data && form) {
-        data = data.replace('bitcoin:', '');
+        // Remove protocol if present
+        data = data.replace(/^.*:/, '');
         form.address.$setViewValue(data);
         form.address.$isValid = true;
         form.address.$render();
@@ -24,6 +27,10 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
   };
 
   $scope.add = function(addressbook) {
+    // Convert network to a URI
+    addressbook.networkURI = addressbook.network.getURI();
+    delete addressbook.network;
+
     $timeout(function() {
       addressbookService.add(addressbook, function(err, ab) {
         if (err) {

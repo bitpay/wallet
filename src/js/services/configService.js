@@ -11,12 +11,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       totalCopayers: 6,
       mPlusN: 100,
     },
-/*
-    // Bitcore wallet service URL
-    bws: {
-      url: 'https://bws.bitpay.com/bws/api',
-    },
-*/
+
     download: {
       bitpay: {
         url: 'https://bitpay.com/wallet'
@@ -63,11 +58,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     hideNextSteps: {
       enabled: isWindowsPhoneApp ? true : false,
     },
-/*
-    rates: {
-      url: 'https://insight.bitpay.com:443/api/rates',
-    },
-*/
+
     release: {
       url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
     },
@@ -113,20 +104,15 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         configCache = JSON.parse(localConfig);
 
         //these ifs are to avoid migration problems
-        if (!configCache.bws) {
-          configCache.bws = defaultConfig.bws;
+        if (!configCache.currencyNetworks) {
+          configCache.currencyNetworks = defaultConfig.currencyNetworks;
         }
         if (!configCache.wallet) {
           configCache.wallet = defaultConfig.wallet;
         }
-        if (!configCache.wallet.settings.unitCode) {
-          configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
-        }
-
         if (!configCache.hideNextSteps) {
           configCache.hideNextSteps = defaultConfig.hideNextSteps;
         }
-
         if (!configCache.recentTransactions) {
           configCache.recentTransactions = defaultConfig.recentTransactions;
         }

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('backupService', function backupServiceFactory($log, $timeout, $stateParams, profileService, sjcl, appConfigService) {
+  .factory('backupService', function backupServiceFactory($log, $timeout, $stateParams, profileService, appConfigService, networkService) {
 
     var root = {};
 
@@ -63,7 +63,7 @@ angular.module('copayApp.services')
         var b = wallet.export(opts);
         if (opts.addressBook) b = root.addMetadata(b, opts);
 
-        var e = sjcl.encrypt(password, b, {
+        var e = networkService.bwcFor(wallet.network).getSJCL().encrypt(password, b, {
           iter: 10000
         });
         return e;

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('copayApp.services').factory('pushNotificationsService', function pushNotificationsService($log, $state, $ionicHistory, sjcl, platformInfo, lodash, appConfigService, profileService, configService) {
+angular.module('copayApp.services').factory('pushNotificationsService', function pushNotificationsService($log, $state, $ionicHistory, platformInfo, lodash, appConfigService, profileService, configService, networkService) {
   var root = {};
   var isIOS = platformInfo.isIOS;
   var isAndroid = platformInfo.isAndroid;
@@ -83,6 +83,7 @@ angular.module('copayApp.services').factory('pushNotificationsService', function
   var _openWallet = function(walletIdHashed) {
     var wallets = profileService.getWallets();
     var wallet = lodash.find(wallets, function(w) {
+      var sjcl = networkService.bwcFor(w.network).getSJCL();
       return (lodash.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(w.id))));
     });
 

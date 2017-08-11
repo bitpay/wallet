@@ -1,12 +1,11 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, lodash, networkService) {
+angular.module('copayApp.services').factory('txFormatService', function($filter, rateService, configService, lodash, networkService) {
   var root = {};
 
-  root.Utils = bwcService.getUtils();
-
-
   root.formatAmount = function(networkURI, atomics, fullPrecision) {
+    var utils = networkService.bwcFor(networkURI).getUtils();
+
     var config = configService.getSync().currencyNetworks[networkURI];
     if (config.unitCode == config.atomicUnitCode) return atomics;
 
@@ -14,7 +13,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     var opts = {
       fullPrecision: !!fullPrecision
     };
-    return this.Utils.formatAmount(atomics, config.unitCode, opts);
+    return utils.formatAmount(atomics, config.unitCode, opts);
   };
 
   root.formatAmountStr = function(networkURI, atomics) {

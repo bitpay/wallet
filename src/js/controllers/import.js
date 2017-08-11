@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, networkService) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, ledger, trezor, derivationPathHelper, platformInfo, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, networkService) {
 
     var reader = new FileReader();
     var defaults = configService.getDefaults();
-    var errors = bwcService.getErrors();
+    var errors;
     var configNetwork = configService.getSync().currencyNetworks;
 
     $scope.init = function() {
@@ -18,6 +18,8 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.formData.network = defaultNetwork;
       $scope.networkOptions = networkService.getNetworks();
       $scope.formData.bwsurl = configNetwork[$scope.formData.network.getURI()].bws.url;
+
+      errors = networkService.bwcFor($scope.formData.network).getErrors();
 
       $scope.formData.derivationPath = derivationPathHelper.getPath($scope.formData.network);
       $scope.formData.account = 1;
@@ -67,6 +69,7 @@ angular.module('copayApp.controllers').controller('importController',
     $scope.onNetworkChange = function() {
       $scope.formData.derivationPath = derivationPathHelper.getPath($scope.formData.network);
       $scope.formData.bwsurl = configNetwork[$scope.formData.network.getURI()].bws.url;
+      errors = networkService.bwcFor($scope.formData.network).getErrors();
     };
 
     $scope.processWalletInfo = function(code) {
@@ -103,7 +106,7 @@ angular.module('copayApp.controllers').controller('importController',
     var _importBlob = function(str, opts) {
       var str2, err;
       try {
-        str2 = sjcl.decrypt($scope.formData.password, str);
+        str2 = networkService.bwcFor(opts.networkURI).getSJCL().decrypt($scope.formData.password, str);
       } catch (e) {
         err = gettextCatalog.getString('Could not decrypt file, check your password');
         $log.warn(e);

@@ -35,7 +35,7 @@
         </label>
         <div>
           <label class="item item-input item-stacked-label">
-            <span class="input-label" translate>Bitcoin Address</span>
+            <span class="input-label" translate>Address</span>
             <div class="input-notification">
               <i ng-show="!addressbookForm.address.$invalid" class="icon ion-checkmark-circled valid"></i>
               <i ng-show="addressbookForm.address.$invalid && addressbookEntry.address" class="icon ion-close-circled invalid"></i>
@@ -50,6 +50,14 @@
             <qr-scanner on-scan="onQrCodeScannedAddressBook(data, addressbookForm)"></qr-scanner>
           </div>
         </div>
+        <label class="item item-input item-select">
+          <div class="input-label" translate>
+            Network
+          </div>
+          <select class="m10t" ng-model="addressbookEntry.network"
+            ng-options="network as network.label for network in networkOptions" required></select>
+        </label>
+
       </div>
 
       <div class="padding">

@@ -3,6 +3,8 @@ angular.module('copayApp.services')
   .factory('bwcError', function bwcErrorService($log, gettextCatalog) {
     var root = {};
 
+    // This service applies to all network BWCs.
+
     root.msg = function(err, prefix) {
       if (!err)
         return 'Unknown error';

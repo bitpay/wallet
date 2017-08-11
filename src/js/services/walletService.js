@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, networkService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, popupService, networkService) {
 
   // Ratio low amount warning (fee/amount) in incoming TX 
   var LOW_AMOUNT_RATIO = 0.15; 
@@ -20,8 +20,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.WALLET_STATUS_DELAY_BETWEEN_TRIES = 1.4 * 1000;
   root.SOFT_CONFIRMATION_LIMIT = 12;
   root.SAFE_CONFIRMATIONS = 6;
-
-  var errors = bwcService.getErrors();
 
   var _signWithLedger = function(wallet, txp, cb) {
     $log.info('Requesting Ledger Chrome app to sign the transaction');
@@ -172,6 +170,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         twoStep: true
       }, function(err, ret) {
         if (err) {
+          var errors = networkService.bwcFor(wallet.network).getErrors();
           if (err instanceof errors.NOT_AUTHORIZED) {
             return cb('WALLET_NOT_REGISTERED');
           }
@@ -446,6 +445,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         getTxsFromServer(wallet, skip, endingTxid, requestLimit, function(err, res, shouldContinue) {
           if (err) {
             $log.warn(bwcError.msg(err, 'Server Error')); //TODO
+            var errors = networkService.bwcFor(wallet.network).getErrors();
             if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
               $log.info('Retrying history download in 5 secs...');
               return $timeout(function() {
@@ -859,6 +859,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.createAddress({}, function(err, addr) {
       if (err) {
         var prefix = gettextCatalog.getString('Could not create address');
+        var errors = networkService.bwcFor(wallet.network).getErrors();
         if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
           $log.warn(err);
           return $timeout(function() {
@@ -929,7 +930,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   // Approx utxo amount, from which the uxto is economically redeemable  
   root.getMinFee = function(wallet, feeLevels, nbOutputs) {
     var atomicUnit = networkService.getAtomicUnit(wallet.network);
-    var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
+    var lowLevelRate = (lodash.find(feeLevels, {
       level: 'normal',
     }).feePerKB / 1000).toFixed(atomicUnit.decimals);
 

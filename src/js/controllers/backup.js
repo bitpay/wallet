@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, bwcService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal, networkService) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal, networkService) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.viewTitle = $scope.wallet.name || $scope.wallet.credentials.walletName;
     $scope.n = $scope.wallet.n;
+
+    var configNetwork = configService.getSync().currencyNetworks;
     var keys;
 
     $scope.credentialsEncrypted = $scope.wallet.isPrivKeyEncrypted();
@@ -114,7 +116,11 @@ angular.module('copayApp.controllers').controller('backupController',
 
       $timeout(function() {
         if ($scope.mnemonicHasPassphrase) {
-          var walletClient = bwcService.getClient();
+          var opts = {
+            bwsurl: configNetwork[$scope.wallet.credentials.network].bws.url
+          };
+
+          var walletClient = networkService.bwcFor($scope.wallet.credentials.network).getClient(null, opts);
           var separator = $scope.useIdeograms ? '\u3000' : ' ';
           var customSentence = customWordList.join(separator);
           var passphrase = $scope.data.passphrase || '';

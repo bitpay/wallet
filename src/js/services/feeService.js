@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, bwcService, configService, gettext, lodash, gettextCatalog, networkService) {
+angular.module('copayApp.services').factory('feeService', function($log, configService, gettext, lodash, gettextCatalog, networkService) {
   var root = {};
 
   var CACHE_TIME_TS = 60; // 1 min
@@ -59,8 +59,13 @@ angular.module('copayApp.services').factory('feeService', function($log, bwcServ
       return cb(null, cache.data, true);
     }
 
-    var walletClient = bwcService.getClient();
-    walletClient.getFeeLevels(networkURI, function(err, levels) {
+    var opts = {
+      bwsurl: configService.getSync().currencyNetworks[networkURI].bws.url
+    };
+
+    var walletClient = networkService.bwcFor(networkURI).getClient(null, opts);
+
+    walletClient.getFeeLevels(networkService.parseNet(networkURI), function(err, levels) {
       if (err) {
         return cb(gettextCatalog.getString('Could not get dynamic fee'));
       }

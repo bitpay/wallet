@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('addressbookService', function(bitcore, storageService, lodash, $log) {
+angular.module('copayApp.services').factory('addressbookService', function(storageService, lodash, $log, networkService) {
   var root = {};
 
   ///////////////////////////////////////////////////////////////////////////
@@ -15,8 +15,9 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
           return $log.warn('Could not migrate addressbook format: ' + err);
         }
         lodash.forEach(Object.keys(ab), function(addr) {
-          // Assign netwrok name to each entry.
-          ab[addr].networkURI = (new bitcore.Address(addr)).network.name;
+          // Assign network URI to each entry.
+          // Okay to use /btc bitcore here since all legacy addresses are bitcoin addresses.
+          ab[addr].networkURI = networkService.bwcFor('livenet/btc').getBitcore().Address(addr).network.name + '/btc';
         });
         storageService.setAddressbook(JSON.stringify(ab), function(err, ab) {
           if (err) {
@@ -99,14 +100,12 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
   };
 
   root.add = function(entry, cb) {
-    var network = (new bitcore.Address(entry.address)).network.name;
     storageService.getAddressbook(function(err, ab) {
       if (err) return cb(err);
       if (ab) ab = JSON.parse(ab);
       ab = ab || {};
       if (lodash.isArray(ab)) ab = {}; // No array
       if (ab[entry.address]) return cb('Entry already exist');
-      entry.networkURI = network;
       ab[entry.address] = entry;
       storageService.setAddressbook(JSON.stringify(ab), function(err, ab) {
         if (err) return cb('Error adding new entry');
@@ -118,7 +117,6 @@ angular.module('copayApp.services').factory('addressbookService', function(bitco
   };
 
   root.remove = function(addr, cb) {
-    var network = (new bitcore.Address(addr)).network.name;
     storageService.getAddressbook(function(err, ab) {
       if (err) return cb(err);
       if (ab) ab = JSON.parse(ab);

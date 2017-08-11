@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('networkService', function($log, lodash, gettextCatalog) {
+angular.module('copayApp.services').factory('networkService', function($log, lodash, gettextCatalog, bwcService /*, bwcCashService */) {
   var root = {};
 
   // Define all supported networks
@@ -13,6 +13,9 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
       currency: 'btc',
       net: 'livenet',
       label: gettextCatalog.getString('Bitcoin'),
+      bwc: {
+        service: bwcService
+      },
       bws: {
         production: {
           url: 'https://bws.bitpay.com/bws/api/'
@@ -81,6 +84,9 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
       currency: 'btc',
       net: 'testnet',
       label: gettextCatalog.getString('Bitcoin Testnet'),
+      bwc: {
+        service: bwcService
+      },
       bws: {
         production: {
           url: 'https://bws.bitpay.com/bws/api/'
@@ -149,6 +155,9 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
       currency: 'bch',
       net: 'livenet',
       label: gettextCatalog.getString('Bitcoin Cash'),
+      bwc: {
+        service: bwcService // bwcCashService
+      },
       bws: {
         production: {
           url: 'https://bws.bitpay.com/bws/api/'
@@ -231,6 +240,19 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
     }
     return currencyNetworks;
   };
+
+  // Network service routing
+
+  root.bwcFor = function(networkOrURI) {
+    // Accepts network object or a network URI
+    var network = networkOrURI;
+    if (lodash.isString(networkOrURI)) {
+      network = root.getNetworkByURI(networkOrURI);
+    }
+    return network.bwc.service;
+  };
+
+  // Network queries
 
   root.getNetworks = function() {
     return networks;

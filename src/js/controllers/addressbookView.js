@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory, platformInfo, gettextCatalog) {
+angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory, platformInfo, gettextCatalog, networkService) {
   $scope.isChromeApp = platformInfo.isChromeApp;
   $scope.addressbookEntry = {};
   $scope.addressbookEntry.name = $stateParams.name;
   $scope.addressbookEntry.email = $stateParams.email;
+  $scope.addressbookEntry.networkURI = $stateParams.networkURI;
   $scope.addressbookEntry.address = $stateParams.address;
 
   $scope.sendTo = function() {
@@ -33,6 +34,10 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
         $ionicHistory.goBack();
       });
     }); 
+  };
+
+  $scope.currencyFor = function(networkURI) {
+    return networkService.parseCurrency(networkURI);
   };
 
 });

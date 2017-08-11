@@ -633,7 +633,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.addressbook.view', {
-        url: '/view/:address/:email/:name',
+        url: '/view/:networkURI/:address/:email/:name',
         views: {
           'tab-settings@tabs': {
             templateUrl: 'views/addressbook.view.html',

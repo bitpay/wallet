@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, $ionicHistory, feeService, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, feeService, popupService, gettextCatalog, platformInfo, configService, profileService, $state, ongoingProcess, txFormatService, $stateParams, walletService, networkService) {
 
     function _scanFunds(cb) {
       function getPrivateKey(scannedKey, isPkEncrypted, passphrase, cb) {
@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
       function checkPrivateKey(privateKey) {
         try {
-          new bitcore.PrivateKey(privateKey, 'livenet/btc');
+          networkService.bwcFor('livenet/btc').getBitcore().PrivateKey(privateKey, 'livenet/btc'); // TODO: support other than livenet/btc
         } catch (err) {
           return false;
         }

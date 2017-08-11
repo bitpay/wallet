@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, addressbookService, lodash, popupService, gettextCatalog, platformInfo) {
+angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, addressbookService, lodash, popupService, gettextCatalog, platformInfo, networkService) {
 
   var contacts;
 
@@ -17,6 +17,7 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
       lodash.each(ab, function(v, k) {
         contacts.push({
           name: lodash.isObject(v) ? v.name : v,
+          networkURI: lodash.isObject(v) ? v.networkURI : v,
           address: k,
           email: lodash.isObject(v) ? v.email : null
         });
@@ -52,5 +53,9 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
     $scope.addrSearch = { value: null };
     initAddressbook();
   });
+
+  $scope.currencyFor = function(networkURI) {
+    return networkService.parseCurrency(networkURI);
+  };
 
 });

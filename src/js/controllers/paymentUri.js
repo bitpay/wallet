@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.controllers').controller('paymentUriController',
-  function($rootScope, $scope, $stateParams, $location, $timeout, $ionicHistory, profileService, configService, lodash, bitcore, $state) {
+  function($rootScope, $scope, $stateParams, $location, $timeout, $ionicHistory, profileService, configService, lodash, $state, networkService) {
     function strip(number) {
       return (parseFloat(number.toPrecision(12)));
     };
@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('paymentUriController',
       var query = [];
       this.paymentURI = $stateParams.url;
 
-      var URI = bitcore.URI;
+      var URI = networkService.bwcFor('livenet/btc').getBitcore().URI; // Support only livenet/btc
       var isUriValid = URI.isValid(this.paymentURI);
       if (!URI.isValid(this.paymentURI)) {
         this.error = true;
