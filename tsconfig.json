@@ -25,7 +25,7 @@
   },
   "types": [
     "chrome",
-    "lodash"
+    "lodash",
     "node"
   ]
 }
