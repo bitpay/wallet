@@ -100,7 +100,6 @@ app-template/bitpay-wallet
 src/js/appConfig.js
 src/js/externalServices.js
 chrome-app/manifest.json
-www/img/app
 www/index.html
 
 ## Firebase
