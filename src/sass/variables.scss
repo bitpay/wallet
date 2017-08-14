@@ -24,7 +24,7 @@ $v-bitcoin-orange:                                   #ff9900;
 $v-dark-gray:                                        #445;
 $v-mid-gray:                                         #667;
 $v-light-gray:                                       #9b9bab;
-$v-subtle-gray:                                      darken(#ffffff, 5%);
+$v-subtle-gray:                                      darken(#FFFFFF, 5%);
 
 $v-primary-color:                                    $nav-purple-dark; // #1e3186;
 $v-secondary-color:                                  $nav-blue; // #111b49;
@@ -35,7 +35,7 @@ $wallet-icon-color-alt:                              $nav-blue;
 $wallet-backup-warning-color:                        red;
 
 $v-text-primary-color:                               #1e3186;
-$v-text-secondary-color:                             #ffffff;
+$v-text-secondary-color:                             #FFFFFF;
 $v-text-accent-color:                                $nav-blue; //#647ce8;
 
 $v-success-color:                                    $nav-blue;//#13e5b6;
@@ -70,14 +70,14 @@ $v-scanner-background-color:                         $v-primary-color;
 $v-scanner-guide-color:                              $v-accent-color;
 $v-top-tabs-color:                                   $v-primary-color;
 
-$v-wallet-backup-bg:                                 #ffffff;
+$v-wallet-backup-bg:                                 #FFFFFF;
 $v-wallet-backup-phrase-bg:                          $v-subtle-gray;
 $v-wallet-backup-phrase-color:                       $v-dark-gray;
 $v-wallet-backup-select-phrase-color:                $v-subtle-gray;
-$v-wallet-backup-select-word-bg:                     #ffffff;
+$v-wallet-backup-select-word-bg:                     #FFFFFF;
 $v-wallet-backup-select-word-color:                  $v-dark-gray;
 $v-wallet-backup-select-word-disabled-color:         $v-light-gray;
-$v-tou-bg:                                           #ffffff;
+$v-tou-bg:                                           #FFFFFF;
 $v-tou-color:                                        $v-dark-gray;
 $v-icon-color:                                       $nav-blue;
 $v-icon-negative-color:                              $nav-blue;
@@ -85,7 +85,7 @@ $v-icon-border-radius:                               10%;
 $v-bitcoin-icon:                                     url('../img/icon-bitcoin.svg');
 
 $v-button-primary-bg:                                $v-accent-color;
-$v-button-primary-color:                             #ffffff;
+$v-button-primary-color:                             #FFFFFF;
 $v-button-primary-border:                            transparent;
 $v-button-primary-active-bg:                         darken($v-accent-color, 10%);
 $v-button-primary-active-border:                     transparent;
@@ -95,10 +95,10 @@ $v-button-primary-outline-bg:                        transparent;
 $v-button-primary-outline-border:                    $v-accent-color;
 $v-button-primary-outline-color:                     $v-accent-color;
 $v-button-primary-outline-active-bg:                 $v-accent-color;
-$v-button-primary-outline-active-color:              #ffffff;
+$v-button-primary-outline-active-color:              #FFFFFF;
 
 $v-button-secondary-bg:                              $nav-blue;
-$v-button-secondary-color:                           #ffffff;
+$v-button-secondary-color:                           #FFFFFF;
 $v-button-secondary-border:                          transparent;
 $v-button-secondary-active-bg:                       $nav-blue-dark;
 $v-button-secondary-active-border:                   transparent;
@@ -108,27 +108,27 @@ $v-button-secondary-outline-border:                  $v-dark-gray;
 $v-button-secondary-outline-bg:                      transparent;
 $v-button-secondary-outline-color:                   $v-dark-gray;
 $v-button-secondary-outline-active-bg:               $v-dark-gray;
-$v-button-secondary-outline-active-color:            #ffffff;
+$v-button-secondary-outline-active-color:            #FFFFFF;
 
 /* Slide */
 
 $v-slide-bg-color:                                   $v-accent-color;
 $v-slider-bg-color:                                  #5063B9;
 $v-slide-text-color:                                 #FFFFFF;
-$v-success-bg-color:                                 #11D1A6;
+$v-success-bg-color:                                 $v-accent-color;
 
 /* Onboarding */
 $v-onboarding-pane-bg:                               $v-primary-color;
 $v-onboarding-gradient-top-color:                    $nav-purple-dark;
 $v-onboarding-gradient-bottom-color:                 $nav-blue;
 $v-onboarding-welcome-bg:                            url(../img/onboarding-welcome-bg.png);
-$v-onboarding-color:                                 #ffffff;
-$v-onboarding-bar-header-color:                      #ffffff;
-$v-onboarding-bar-header-button-color:               #ffffff;
+$v-onboarding-color:                                 #FFFFFF;
+$v-onboarding-bar-header-color:                      #FFFFFF;
+$v-onboarding-bar-header-button-color:               #FFFFFF;
 $v-onboarding-tour-swiper-pagination-bg:             $v-accent-color;
 $v-onboarding-backup-alert-icon-color:               $nav-blue-light;
-$v-onboarding-checkbox-off-border:                   $nav-blue-dark;
-$v-onboarding-checkbox-on-border:                    $nav-blue-dark;
+$v-onboarding-checkbox-off-border:                   $nav-blue-light;
+$v-onboarding-checkbox-on-border:                    $nav-blue-light;
 
 $v-onboarding-tour-phone-bg:                         url(../img/onboarding-tour-phone.svg);
 $v-onboarding-tour-currency-bg:                      url(../img/onboarding-tour-currency-bg.svg);
@@ -136,20 +136,20 @@ $v-onboarding-tour-control-bg:                       url(../img/onboarding-tour-
 $v-onboarding-push-notification-bg:                  url(../img/app/onboarding/push-notifications.svg);
 $v-onboarding-backup-warning-bg:                     url(../img/backup-warning.svg);
 
-$v-onboarding-button-back-color:                     #ffffff;
+$v-onboarding-button-back-color:                     #FFFFFF;
 
 $v-onboarding-button-secondary-bg:                   $nav-purple;
-$v-onboarding-button-secondary-color:                #ffffff;
+$v-onboarding-button-secondary-color:                #FFFFFF;
 $v-onboarding-button-secondary-border:               transparent;
 $v-onboarding-button-secondary-active-bg:            $nav-purple-dark;
 $v-onboarding-button-secondary-active-border:        transparent;
 $v-onboarding-button-secondary-clear-bg:             transparent;
-$v-onboarding-button-secondary-clear-color:          #ffffff;
-$v-onboarding-button-secondary-outline-border:       #ffffff;
+$v-onboarding-button-secondary-clear-color:          #FFFFFF;
+$v-onboarding-button-secondary-outline-border:       #FFFFFF;
 $v-onboarding-button-secondary-outline-bg:           transparent;
-$v-onboarding-button-secondary-outline-color:        #ffffff;
-$v-onboarding-button-secondary-outline-active-bg:    #ffffff;
-$v-onboarding-button-secondary-outline-active-color: #ffffff;
+$v-onboarding-button-secondary-outline-color:        #FFFFFF;
+$v-onboarding-button-secondary-outline-active-bg:    #FFFFFF;
+$v-onboarding-button-secondary-outline-active-color: #FFFFFF;
 
 
 /* Main tabs */
@@ -191,17 +191,17 @@ $input-border:                                       $v-light-gray;
 $input-label-color:                                  $v-mid-gray;
 $input-color-placeholder:                            lighten($v-dark-gray, 40%);
 
-$item-default-bg:                                    #ffffff;
+$item-default-bg:                                    #FFFFFF;
 $item-default-border:                                $v-subtle-gray;
 $item-default-text:                                  $v-dark-gray;
-$item-default-active-bg:                             darken(#ffffff, 7%);
+$item-default-active-bg:                             darken(#FFFFFF, 7%);
 $item-default-active-border:                         darken($v-subtle-gray, 7%);
 $item-divider-bg:                                    $v-subtle-gray;
 
 $bar-default-border:                                 $v-subtle-gray;
 $bar-royal-bg:                                       $v-primary-color;
 $bar-royal-border:                                   $v-primary-color;
-$bar-royal-text:                                     #ffffff;
+$bar-royal-text:                                     #FFFFFF;
 
 $tabs-icon-size:                                     22px;
 
