@@ -254,6 +254,11 @@ angular.module('copayApp.controllers').controller('importController',
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
 
+      if (pathData.derivationStrategy === 'BIP200') {
+        opts.contractId = pathData.contractId
+        opts.subContractIds = pathData.subContractIds
+      }
+
       var words = $scope.formData.words || null;
 
       if (!words) {

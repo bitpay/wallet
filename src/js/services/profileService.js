@@ -328,6 +328,8 @@ angular.module('copayApp.services')
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
+            contractId: opts.contractId,
+            subContractIds: opts.subContractIds
           });
 
         } catch (ex) {
@@ -623,6 +625,8 @@ angular.module('copayApp.services')
         entropySourcePath: opts.entropySourcePath,
         derivationStrategy: opts.derivationStrategy || 'BIP44',
         account: opts.account || 0,
+        contractId: opts.contractId,
+        subContractIds: opts.subContractIds,
       }, function(err) {
         if (err) {
           if (err instanceof errors.NOT_AUTHORIZED)

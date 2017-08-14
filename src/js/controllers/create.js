@@ -160,6 +160,10 @@ angular.module('copayApp.controllers').controller('createController',
         opts.networkName = pathData.networkName;
         opts.derivationStrategy = pathData.derivationStrategy;
 
+        if (pathData.derivationStrategy === 'BIP200') {
+          opts.contractId = pathData.contractId
+          opts.subContractIds = pathData.subContractIds
+        }
       } else {
         opts.passphrase = $scope.formData.createPassphrase;
       }
