@@ -72,6 +72,7 @@
     "angular2-template-loader": "0.6.2",
     "codecov": "2.2.0",
     "html-loader": "0.4.5",
+    "ionic": "3.7.0",
     "jasmine-core": "2.6.4",
     "jasmine-spec-reporter": "4.1.1",
     "karma": "1.7.0",
