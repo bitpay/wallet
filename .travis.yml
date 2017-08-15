@@ -1,4 +1,0 @@
-language: node_js
-os: osx
-node_js:
-  - '6'

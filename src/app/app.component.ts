@@ -12,7 +12,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 @Component({
   templateUrl: 'app.html'
 })
-export class Copay {
+export class CopayApp {
   rootPage: any = TabsPage;
 
   constructor(
