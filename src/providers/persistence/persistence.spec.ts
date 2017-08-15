@@ -15,7 +15,7 @@ describe('Storage Service', () => {
       providers: [
         PersistenceProvider,
         { provide: Logger, useValue: new Logger(LoggerLevel.DEBUG) },
-        { provide: ISTORAGE, useClass: FileStorage, deps: [Logger, Platform] },
+        { provide: ISTORAGE, useClass: RamStorage, deps: [Logger, Platform] },
         Platform,
       ]
     });
@@ -40,14 +40,14 @@ describe('Storage Service', () => {
         .then(done);
     });
 
-    // it('should fail to create a profile when one already exists', () => {
-    //   let p = { name: 'My profile' };
-    //   service.storeNewProfile(p)
-    //     .then(() => {
-    //       return service.storeNewProfile(p);
-    //     }).catch((err) => {
-    //       expect(err.message).toEqual('Key already exists');
-    //     });
-    // });
+    it('should fail to create a profile when one already exists', () => {
+      let p = { name: 'My profile' };
+      service.storeNewProfile(p)
+        .then(() => {
+          return service.storeNewProfile(p);
+        }).catch((err) => {
+          expect(err.message).toEqual('Key already exists');
+        });
+    });
   });
 });
