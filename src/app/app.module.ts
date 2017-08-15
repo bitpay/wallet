@@ -34,6 +34,8 @@ import { WalletProvider } from '../providers/wallet/wallet';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { AppProvider } from '../providers/app/app';
 import { PlatformProvider } from '../providers/platform/platform';
+import { ConfigProvider } from '../providers/config/config';
+import { LanguageProvider } from '../providers/language/language';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, './assets/i18n/', '.po');
@@ -86,6 +88,12 @@ export function createTranslateLoader(http: Http) {
       useClass: IonicErrorHandler
     },
     {
+      provide: APP_INITIALIZER,
+      useFactory: (language: LanguageProvider) => () => language.load(),
+      deps: [LanguageProvider],
+      multi: true
+    },
+    {
       provide: PersistenceProvider,
       useFactory: persistenceProviderFactory,
       deps: [PlatformProvider, Logger],
@@ -93,7 +101,9 @@ export function createTranslateLoader(http: Http) {
     },
     WalletProvider,
     AppProvider,
-    PlatformProvider
+    PlatformProvider,
+    ConfigProvider,
+    LanguageProvider
   ]
 })
 export class AppModule { }
