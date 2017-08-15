@@ -1,11 +1,13 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { Logger, Level as LoggerLevel } from '@nsalaun/ng-logger';
+import { Platform } from 'ionic-angular';
+
 import { PersistenceProvider } from './persistence';
 import { IStorage, ISTORAGE } from './storage/istorage';
 import { RamStorage } from './storage/ram-storage';
 import { LocalStorage } from './storage/local-storage';
-import { Logger, Level as LoggerLevel } from '@nsalaun/ng-logger';
-import { PlatformProvider } from '../platform/platform';
-import { Platform } from 'ionic-angular';
+import { ChromeStorage } from './storage/chrome-storage';
+import { FileStorage } from './storage/file-storage';
 
 describe('Storage Service', () => {
   beforeEach(() => {
@@ -13,8 +15,8 @@ describe('Storage Service', () => {
       providers: [
         PersistenceProvider,
         { provide: Logger, useValue: new Logger(LoggerLevel.DEBUG) },
-        { provide: PlatformProvider },
-        { provide: ISTORAGE, useClass: RamStorage, deps: [PlatformProvider, Logger] },
+        { provide: ISTORAGE, useClass: RamStorage, deps: [Logger, Platform] },
+        Platform,
       ]
     });
   });
@@ -24,7 +26,7 @@ describe('Storage Service', () => {
     beforeEach(inject([PersistenceProvider], (pp: PersistenceProvider) => {
       service = pp;
     }));
-    it('should correctly perform a profile roundtrip', () => {
+    it('should correctly perform a profile roundtrip', (done) => {
       let p = { name: 'My profile' };
       service.storeNewProfile(p)
         .catch((err) => expect(err).toBeNull)
@@ -34,7 +36,8 @@ describe('Storage Service', () => {
         .then((profile) => {
           expect(typeof profile).toEqual('object');
           expect(profile.name).toEqual('My profile');
-        });
+        })
+        .then(done);
     });
 
     it('should fail to create a profile when one already exists', () => {

@@ -30,6 +30,7 @@
     "@ionic-native/clipboard": "4.1.0",
     "@ionic-native/core": "3.12.1",
     "@ionic-native/social-sharing": "4.1.0",
+    "@ionic-native/file": "^4.1.0",
     "@ionic-native/splash-screen": "3.12.1",
     "@ionic-native/status-bar": "3.12.1",
     "@ionic-native/toast": "4.1.0",

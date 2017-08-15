@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { PlatformProvider } from '../../platform/platform';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -8,13 +7,13 @@ import { IStorage, KeyAlreadyExistsError } from './istorage';
 @Injectable()
 export class LocalStorage implements IStorage {
   ls: Storage;
-  constructor(private platform: PlatformProvider, private log: Logger) {
+  constructor(private log: Logger) {
     this.ls = (typeof window.localStorage !== "undefined") ? window.localStorage : null;
     if (!this.ls) throw new Error('localstorage not available');
   }
 
   get(k: string): Promise<any> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       let v = this.ls.getItem(k);
       if (!v) return resolve(null);
       if (!_.isString(v)) return resolve(v);
@@ -28,7 +27,7 @@ export class LocalStorage implements IStorage {
   }
 
   set(k: string, v: any): Promise<void> {
-    return Promise.resolve().then(() => {
+    return new Promise<void>(resolve => {
       if (_.isObject(v)) {
         v = JSON.stringify(v);
       }
@@ -37,12 +36,14 @@ export class LocalStorage implements IStorage {
       }
 
       this.ls.setItem(k, v);
+      resolve();
     });
   }
 
   remove(k: string): Promise<void> {
-    return Promise.resolve().then(() => {
+    return new Promise<void>(resolve => {
       this.ls.removeItem(k);
+      resolve();
     });
   }
 
