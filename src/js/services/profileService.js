@@ -48,7 +48,7 @@ angular.module('copayApp.services')
     function _requiresBackup(wallet) {
       if (wallet.isPrivKeyExternal()) return false;
       if (!wallet.credentials.mnemonic) return false;
-      if (networkService.isTestnet(wallet.credentials.network)) return false;
+      if (networkService.isTestnet(wallet.network)) return false;
 
       return true;
     };
@@ -329,14 +329,13 @@ angular.module('copayApp.services')
     var seedWallet = function(opts, cb) {
       var config = configService.getSync();
       opts = opts || {};
-      opts.bwsurl = config.currencyNetworks[opts.networkURI].bws.url;
-      var walletClient = networkService.bwcFor(opts.networkURI).getClient(null, opts);
+      var walletClient = networkService.bwcFor(opts.network.getURI()).getClient(null, opts);
 
       if (opts.mnemonic) {
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, {
-            network: opts.networkURI,
+            network: opts.network.getURI(),
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
@@ -368,7 +367,7 @@ angular.module('copayApp.services')
         var lang = uxLanguage.getCurrentLanguage();
         try {
           walletClient.seedFromRandomWithMnemonic({
-            network: opts.networkURI,
+            network: opts.network.getURI(),
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
@@ -378,7 +377,7 @@ angular.module('copayApp.services')
           if (e.message.indexOf('language') > 0) {
             $log.info('Using default language for recovery phrase');
             walletClient.seedFromRandomWithMnemonic({
-              network: opts.networkURI,
+              network: opts.network.getURI(),
               passphrase: opts.passphrase,
               account: 0,
             });
@@ -387,6 +386,7 @@ angular.module('copayApp.services')
           }
         }
       }
+
       return cb(null, walletClient);
     };
 
@@ -401,7 +401,7 @@ angular.module('copayApp.services')
           var myName = opts.myName || gettextCatalog.getString('me');
 
           walletClient.createWallet(name, myName, opts.m, opts.n, {
-            network: opts.networkURI,
+            network: opts.network.getURI(),
             singleAddress: opts.singleAddress,
             walletPrivKey: opts.walletPrivKey,
           }, function(err, secret) {
@@ -637,7 +637,7 @@ angular.module('copayApp.services')
 
       words = root._normalizeMnemonic(words);
       walletClient.importFromMnemonic(words, {
-        network: opts.networkURI,
+        network: networkService.parseNet(opts.networkURI),
         passphrase: opts.passphrase,
         entropySourcePath: opts.entropySourcePath,
         derivationStrategy: opts.derivationStrategy || 'BIP44',

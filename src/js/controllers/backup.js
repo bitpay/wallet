@@ -117,17 +117,17 @@ angular.module('copayApp.controllers').controller('backupController',
       $timeout(function() {
         if ($scope.mnemonicHasPassphrase) {
           var opts = {
-            bwsurl: configNetwork[$scope.wallet.credentials.network].bws.url
+            bwsurl: configNetwork[$scope.wallet.network].bws.url
           };
 
-          var walletClient = networkService.bwcFor($scope.wallet.credentials.network).getClient(null, opts);
+          var walletClient = networkService.bwcFor($scope.wallet.network).getClient(null, opts);
           var separator = $scope.useIdeograms ? '\u3000' : ' ';
           var customSentence = customWordList.join(separator);
           var passphrase = $scope.data.passphrase || '';
 
           try {
             walletClient.seedFromMnemonic(customSentence, {
-              network: $scope.wallet.credentials.network,
+              network: $scope.wallet.network,
               passphrase: passphrase,
               account: $scope.wallet.credentials.account
             });

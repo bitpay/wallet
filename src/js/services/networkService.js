@@ -13,6 +13,7 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
       currency: 'btc',
       net: 'livenet',
       label: gettextCatalog.getString('Bitcoin'),
+      legacyName: 'livenet', // Used to update legacy wallets
       bwc: {
         service: bwcService
       },
@@ -74,8 +75,7 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
           description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
         }
       },
-      getURI: function() { return root.getURI(this) },
-      legacyName: 'livenet' // Used to update legacy wallets
+      getURI: function() { return root.getURI(this) }
     },
     //
     // Bitcoin testnet
@@ -84,6 +84,7 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
       currency: 'btc',
       net: 'testnet',
       label: gettextCatalog.getString('Bitcoin Testnet'),
+      legacyName: 'testnet', // Used to update legacy wallets
       bwc: {
         service: bwcService
       },
@@ -145,8 +146,7 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
           description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
         }
       },
-      getURI: function() { return root.getURI(this) },
-      legacyName: 'testnet' // Used to update legacy wallets
+      getURI: function() { return root.getURI(this) }
     },
     //
     // Bitcoin Cash livenet
@@ -156,7 +156,7 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
       net: 'livenet',
       label: gettextCatalog.getString('Bitcoin Cash'),
       bwc: {
-        service: bwcService // bwcCashService
+        service: bwcService // TODO: bwcCashService
       },
       bws: {
         production: {
@@ -216,7 +216,7 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
           description: gettextCatalog.getString('The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy.')
         }
       },
-      getURI: function() { return root.getURI(this) },
+      getURI: function() { return root.getURI(this) }
     }
   ];
 
