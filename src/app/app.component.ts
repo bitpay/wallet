@@ -15,29 +15,28 @@ export class CopayApp {
   rootPage: any = TabsPage;
 
   constructor(
-    platform: Platform,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen,
-    log: Logger,
-    app: AppProvider
+    private platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private logger: Logger,
+    private app: AppProvider
   ) {
-    platform.ready().then(() => {
-      app.getName().subscribe((name) => {
-        log.info('Name: ' + name);
-      });
-      app.getVersion().subscribe((version) => {
-        log.info('Version: ' + version);
-      });
-      app.getCommitHash().subscribe((commit) => {
-        log.info('Commit Hash: #' + commit);
-      });
-      log.info('Platform: ' + platform.platforms());
-      log.info('Language: ' + platform.lang());
-      if (platform.is('cordova')) {
-        statusBar.styleDefault();
-        splashScreen.hide();
-      }
 
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.platform.ready().then((readySource) => {
+      this.logger.info(
+        'Platform ready (' + readySource + '): ' +
+        this.app.info.nameCase +
+        ' - v' + this.app.info.version +
+        ' #' + this.app.info.commitHash);
+
+      if (this.platform.is('cordova')) {
+        this.statusBar.styleLightContent();
+        this.splashScreen.hide();
+      }
     });
   }
 }

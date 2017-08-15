@@ -8,7 +8,7 @@ import * as _ from "lodash";
 
 @Injectable()
 export class LanguageProvider {
-  public availables: Array<any> = [
+  private languages: Array<any> = [
     {
       name: 'English',
       isoCode: 'en'
@@ -43,7 +43,7 @@ export class LanguageProvider {
       isoCode: 'pt',
     }
   ];
-  public current: string;
+  private current: string;
 
   constructor(
     private logger: Logger,
@@ -51,49 +51,57 @@ export class LanguageProvider {
     private config: ConfigProvider
   ) {
     this.logger.info('LanguageProvider initialized.');
+    this.translate.onLangChange.subscribe((event) => {
+      this.logger.info('Setting language changed to: ' + event.lang);
+    });
   }
 
-  load() {
-    return new Promise((resolve, reject) => {
-      // Get from browser
-      let browserLang = this.translate.getBrowserLang();
-      let validBrowserLang = this.getName(browserLang) ? true : false;
+  init(config: object) {
+    // Get from browser
+    let browserLang = this.translate.getBrowserLang();
+    let validBrowserLang = this.getName(browserLang) ? true : false;
 
-      this.config.load().then((config) => {
-        let configLanguage = config['wallet']['settings']['defaultLanguage'];
-        if (configLanguage) this.current = configLanguage;
-        else {
-          if (validBrowserLang) this.current = browserLang;
-          else this.current = this.getDefaultLanguage(); // default
-        }
-        this.translate.setDefaultLang(this.current);
-        resolve(true);
-      });
-    });
+    let configLanguage = config['wallet']['settings']['defaultLanguage']; // TODO
+    if (configLanguage) this.current = configLanguage;
+    else {
+      if (validBrowserLang) this.current = browserLang;
+      else this.current = this.getDefault();
+    }
+    this.translate.setDefaultLang(this.current);
   }
 
   set(lang: string) {
     this.current = lang;
     this.translate.use(lang);
-    this.config.set({language: lang});
+    this.config.set({wallet: { settings: { defaultLanguage: lang } } });
   }
 
   getName(lang: string) {
-    return _.result(_.find(this.availables, {
+    return _.result(_.find(this.languages, {
       'isoCode': lang
     }), 'name');
   }
 
-  getDefaultLanguage() {
-    return this.availables[0]['isoCode'];
+  getDefault() {
+    return this.languages[0]['isoCode'];
   }
 
-  getCurrentLanguage() {
+  getCurrent() {
     return this.current;
   }
 
-  getLanguages() {
-    return this.availables;
+  getCurrentName() {
+    return this.getName(this.current);
+  }
+
+  getCurrentInfo() {
+    return _.find(this.languages, {
+      'isoCode': this.current
+    });
+  }
+
+  getAvailables() {
+    return this.languages;
   }
 
 }

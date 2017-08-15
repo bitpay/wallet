@@ -10,11 +10,23 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-divider color="light">&nbsp;</ion-item-divider>
     <ion-item (click)="openAddressBookPage()">
       <ion-icon name="contacts" item-start></ion-icon>
       Address book
     </ion-item>
+    <ion-item (click)="help()">
+      <ion-icon name="help-circle" item-start></ion-icon>
+      Help &amp; support
+    </ion-item>
+    <ion-item (click)="feedback()">
+      <ion-icon name="mail" item-start></ion-icon>
+      Send feedback
+    </ion-item>
+    <ion-item (click)="share()">
+      <ion-icon name="heart" item-start></ion-icon>
+      Share {{ appName }}
+    </ion-item>
+
     <ion-item-divider color="light">Preferences</ion-item-divider>
     <ion-item (click)="openNotificationPage()">
       <ion-icon name="notifications" item-start></ion-icon>
@@ -25,12 +37,62 @@
       <ion-label>
         Language
       </ion-label>
-      <ion-select [(ngModel)]="language">
-        <ion-option value="en">English</ion-option>
-        <ion-option value="es">Spanish</ion-option>
+      <ion-select [(ngModel)]="currentLanguage" (ionChange)="setLanguage(currentLanguage)">
+        <ion-option *ngFor="let lang of languages" [value]="lang.isoCode">{{ lang.name }}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item-divider color="light">&nbsp;</ion-item-divider>
+    <ion-item>
+      <ion-icon name="calculator" item-start></ion-icon>
+      <ion-label>
+        Bitcoin unit
+      </ion-label>
+      <ion-select [(ngModel)]="currentUnitCode" (ionChange)="setUnit(currentUnitCode)">
+        <ion-option *ngFor="let unit of unitList" [value]="unit.code">{{ unit.shortName }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="cash" item-start></ion-icon>
+      <ion-label>
+        Alternative currency
+      </ion-label>
+      <ion-select>
+        <ion-option>USD</ion-option>
+        <ion-option>ARS</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="git-merge" item-start></ion-icon>
+      <ion-label>
+        Bitcoin network fee policy
+      </ion-label>
+      <ion-select>
+        <ion-option>Normal</ion-option>
+        <ion-option>Urgent</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="lock" item-start></ion-icon>
+      <ion-label>
+        Lock
+      </ion-label>
+      <ion-select>
+        <ion-option value="">Disabled</ion-option>
+        <ion-option value="pin">Lock by PIN</ion-option>
+        <ion-option value="finger">Lock by fingerprint</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item-divider color="light">Wallets &amp; integrations</ion-item-divider>
+    <ion-item>
+      <ion-icon name="folder" item-start></ion-icon>
+      Wallet 1
+    </ion-item>
+    <ion-item>
+      <ion-icon name="folder" item-start></ion-icon>
+      Wallet 2
+    </ion-item>
+
+    <ion-item-divider color="light">More</ion-item-divider>
     <ion-item (click)="openAboutPage()">
       <ion-icon name="apps" item-start></ion-icon>
       About {{appName}}

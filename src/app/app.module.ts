@@ -36,9 +36,10 @@ import { AppProvider } from '../providers/app/app';
 import { PlatformProvider } from '../providers/platform/platform';
 import { ConfigProvider } from '../providers/config/config';
 import { LanguageProvider } from '../providers/language/language';
+import { UnitProvider } from '../providers/unit/unit';
 
 export function createTranslateLoader(http: Http) {
-  return new TranslatePoHttpLoader(http, './assets/i18n/', '.po');
+  return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
 }
 
 @NgModule({
@@ -89,8 +90,8 @@ export function createTranslateLoader(http: Http) {
     },
     {
       provide: APP_INITIALIZER,
-      useFactory: (language: LanguageProvider) => () => language.load(),
-      deps: [LanguageProvider],
+      useFactory: (app: AppProvider) => () => app.load(),
+      deps: [AppProvider],
       multi: true
     },
     {
@@ -103,7 +104,8 @@ export function createTranslateLoader(http: Http) {
     AppProvider,
     PlatformProvider,
     ConfigProvider,
-    LanguageProvider
+    LanguageProvider,
+    UnitProvider
   ]
 })
 export class AppModule { }

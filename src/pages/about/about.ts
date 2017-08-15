@@ -24,12 +24,8 @@ export class AboutPage {
 
   ionViewDidLoad() {
     this.log.log('ionViewDidLoad AboutPage');
-    this.app.getCommitHash().subscribe((data) => {
-      this.commitHash = data;
-    });
-    this.app.getVersion().subscribe((data) => {
-      this.version = data;
-    });
+    this.commitHash = this.app.info.commitHash;
+    this.version = this.app.info.version;
   }
 
   openTermsOfUse() {
