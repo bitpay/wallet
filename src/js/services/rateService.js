@@ -46,7 +46,7 @@ RateService.prototype._fetchCurrencies = function() {
   var updateFrequencySeconds = 5 * 60;
   var btcRate
   var rateServiceUrl = 'https://bitpay.com/api/rates';
-  var navRateServiceUrl = 'http://api.coinmarketcap.com/v1/ticker/nav-coin/'
+  var navRateServiceUrl = 'https://api.coinmarketcap.com/v1/ticker/nav-coin/'
 
   var retrieve = function() {
     //log.info('Fetching exchange rates');
