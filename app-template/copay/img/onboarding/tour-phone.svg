@@ -1,39 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="247px" height="247px" viewBox="0 0 247 247" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <title>onboarding-tour-phone</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <linearGradient x1="50.0034413%" y1="-0.00291497976%" x2="50.0034413%" y2="75.267085%" id="linearGradient-1">
-            <stop stop-color="#192C3A" offset="0%"></stop>
-            <stop stop-color="#192C3A" offset="100%"></stop>
-        </linearGradient>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="onboarding-tour-phone">
-            <path d="M123.5,247 C191.7,247 247,191.7 247,123.5 C247,55.3 191.7,0 123.5,0 C55.3,0 0,55.3 0,123.5 C0,191.7 55.3,247 123.5,247 Z" id="Shape" fill="url(#linearGradient-1)" fill-rule="nonzero" opacity="0.3"></path>
-            <g id="Group" transform="translate(69.000000, 32.000000)" stroke="#707D89" stroke-width="2">
-                <path d="M8,0 L91.8,0 C96.2,0 99.8,3.6 99.8,8 L99.8,175.9 C99.8,180.3 96.2,183.9 91.8,183.9 L8,183.9 C3.6,183.9 0,180.3 0,175.9 L0,8 C0,3.6 3.6,0 8,0 Z" id="Shape" fill-opacity="0.6548" fill="#192C3A" fill-rule="nonzero"></path>
-                <path d="M0.5,156 L99.3,156" id="Shape" stroke-linecap="square"></path>
-                <path d="M44.1,170.3 L62.8,170.3" id="Shape" stroke-linecap="square"></path>
-            </g>
-            <g id="Group" transform="translate(102.000000, 66.000000)" fill-rule="nonzero" fill="#5BC2A7">
-                <path d="M31.8,0 L0,0 L0,31.8 L31.8,31.8 L31.8,0 L31.8,0 Z M27.3,27.3 L4.6,27.3 L4.6,4.5 L27.3,4.5 L27.3,27.3 L27.3,27.3 Z" id="Shape"></path>
-                <polygon id="Shape" points="65.9 90.9 61.4 90.9 61.4 100 100 100 100 95.5 65.9 95.5"></polygon>
-                <rect id="Rectangle-path" x="9.1" y="9.1" width="13.6" height="13.6"></rect>
-                <path d="M0,100 L31.8,100 L31.8,68.2 L0,68.2 L0,100 L0,100 Z M4.5,72.7 L27.2,72.7 L27.2,95.4 L4.5,95.4 L4.5,72.7 L4.5,72.7 Z" id="Shape"></path>
-                <rect id="Rectangle-path" x="9.1" y="77.3" width="13.6" height="13.6"></rect>
-                <path d="M68.2,0 L68.2,31.8 L100,31.8 L100,0 L68.2,0 L68.2,0 Z M95.5,27.3 L72.8,27.3 L72.8,4.5 L95.5,4.5 L95.5,27.3 L95.5,27.3 Z" id="Shape"></path>
-                <rect id="Rectangle-path" x="77.3" y="9.1" width="13.6" height="13.6"></rect>
-                <rect id="Rectangle-path" x="90.9" y="36.4" width="9.1" height="9.1"></rect>
-                <rect id="Rectangle-path" x="0" y="54.5" width="9.1" height="9.1"></rect>
-                <polygon id="Shape" points="47.7 36.4 29.5 36.4 29.5 40.9 52.3 40.9 52.3 31.8 52.3 27.3 56.8 27.3 56.8 18.2 52.3 18.2 47.7 18.2 43.2 18.2 43.2 9.1 47.7 9.1 47.7 13.6 63.6 13.6 63.6 0 59.1 0 59.1 9.1 52.3 9.1 52.3 0 50 0 40.9 0 38.6 0 38.6 22.7 47.7 22.7 47.7 27.3 38.6 27.3 38.6 31.8 47.7 31.8"></polygon>
-                <polygon id="Shape" points="6.8 50 15.9 50 20.5 50 22.7 50 22.7 54.5 13.6 54.5 13.6 59.1 22.7 59.1 22.7 63.6 40.9 63.6 40.9 59.1 27.3 59.1 27.3 54.5 27.3 45.5 20.5 45.5 20.5 38.6 15.9 38.6 15.9 45.5 11.4 45.5 11.4 36.4 0 36.4 0 40.9 6.8 40.9"></polygon>
-                <polygon id="Shape" points="50 90.9 50 79.5 40.9 79.5 40.9 70.5 36.4 70.5 36.4 84.1 45.5 84.1 45.5 90.9 36.4 90.9 36.4 95.5 45.5 95.5 45.5 100 56.8 100 56.8 95.5 50 95.5"></polygon>
-                <polygon id="Shape" points="72.7 45.5 63.6 45.5 63.6 34.1 59.1 34.1 59.1 50 81.8 50 81.8 45.5 77.3 45.5 77.3 40.9 84.1 40.9 84.1 36.4 77.3 36.4 72.7 36.4 68.2 36.4 68.2 40.9 72.7 40.9"></polygon>
-                <polygon id="Shape" points="68.2 86.4 75 86.4 75 90.9 84.1 90.9 84.1 86.4 84.1 81.8 84.1 75 75 75 75 81.8 68.2 81.8 68.2 75 63.6 75 63.6 81.8 59.1 81.8 59.1 63.6 54.5 63.6 54.5 59.1 50 59.1 50 45.5 34.1 45.5 34.1 54.5 38.6 54.5 38.6 50 45.5 50 45.5 59.1 45.5 68.2 54.5 68.2 54.5 81.8 54.5 86.4 59.1 86.4 63.6 86.4"></polygon>
-                <polygon id="Shape" points="95.5 56.8 88.6 56.8 84.1 56.8 72.7 56.8 72.7 65.9 68.2 65.9 68.2 56.8 63.6 56.8 63.6 70.5 77.3 70.5 77.3 61.4 84.1 61.4 84.1 68.2 88.6 68.2 88.6 61.4 95.5 61.4 95.5 75 88.6 75 88.6 88.6 100 88.6 100 84.1 93.2 84.1 93.2 79.5 100 79.5 100 61.4 100 56.8 100 50 95.5 50"></polygon>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 247 247" style="enable-background:new 0 0 247 247;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.3;fill:#523971;enable-background:new    ;}
+	.st1{fill:#523971;stroke:#7D5AB5;stroke-width:2;}
+	.st2{fill:none;stroke:#7D5AB5;stroke-width:2;stroke-linecap:square;}
+	.st3{fill:#44B4EA;}
+</style>
+<title>onboarding-tour-phone</title>
+<desc>Created with Sketch.</desc>
+<g id="Page-1">
+	<g id="onboarding-tour-phone">
+		<path id="Shape" class="st0" d="M123.5,247c68.2,0,123.5-55.3,123.5-123.5S191.7,0,123.5,0S0,55.3,0,123.5S55.3,247,123.5,247z"/>
+		<g id="Group" transform="translate(69.000000, 32.000000)">
+			<path id="Combined-Shape" class="st1" d="M8,0h83.8c4.4,0,8,3.6,8,8v167.9c0,4.4-3.6,8-8,8H8c-4.4,0-8-3.6-8-8V8C0,3.6,3.6,0,8,0
+				z"/>
+			<path id="Shape_2_" class="st2" d="M0.5,156h98.8"/>
+			<path id="Shape_3_" class="st2" d="M44.1,170.3h18.7"/>
+		</g>
+		<g id="Group_1_" transform="translate(102.000000, 66.000000)">
+			<path id="Shape_4_" class="st3" d="M31.8,0H0v31.8h31.8V0L31.8,0z M27.3,27.3H4.6V4.5h22.7V27.3L27.3,27.3z"/>
+			<polygon id="Shape_5_" class="st3" points="65.9,90.9 61.4,90.9 61.4,100 100,100 100,95.5 65.9,95.5 			"/>
+			<rect id="Rectangle-path" x="9.1" y="9.1" class="st3" width="13.6" height="13.6"/>
+			<path id="Shape_6_" class="st3" d="M0,100h31.8V68.2H0V100L0,100z M4.5,72.7h22.7v22.7H4.5V72.7L4.5,72.7z"/>
+			<rect id="Rectangle-path_1_" x="9.1" y="77.3" class="st3" width="13.6" height="13.6"/>
+			<path id="Shape_7_" class="st3" d="M68.2,0v31.8H100V0H68.2L68.2,0z M95.5,27.3H72.8V4.5h22.7V27.3L95.5,27.3z"/>
+			<rect id="Rectangle-path_2_" x="77.3" y="9.1" class="st3" width="13.6" height="13.6"/>
+			<rect id="Rectangle-path_3_" x="90.9" y="36.4" class="st3" width="9.1" height="9.1"/>
+			<rect id="Rectangle-path_4_" y="54.5" class="st3" width="9.1" height="9.1"/>
+			<polygon id="Shape_8_" class="st3" points="47.7,36.4 29.5,36.4 29.5,40.9 52.3,40.9 52.3,31.8 52.3,27.3 56.8,27.3 56.8,18.2 
+				52.3,18.2 47.7,18.2 43.2,18.2 43.2,9.1 47.7,9.1 47.7,13.6 63.6,13.6 63.6,0 59.1,0 59.1,9.1 52.3,9.1 52.3,0 50,0 40.9,0 
+				38.6,0 38.6,22.7 47.7,22.7 47.7,27.3 38.6,27.3 38.6,31.8 47.7,31.8 			"/>
+			<polygon id="Shape_9_" class="st3" points="6.8,50 15.9,50 20.5,50 22.7,50 22.7,54.5 13.6,54.5 13.6,59.1 22.7,59.1 22.7,63.6 
+				40.9,63.6 40.9,59.1 27.3,59.1 27.3,54.5 27.3,45.5 20.5,45.5 20.5,38.6 15.9,38.6 15.9,45.5 11.4,45.5 11.4,36.4 0,36.4 0,40.9 
+				6.8,40.9 			"/>
+			<polygon id="Shape_10_" class="st3" points="50,90.9 50,79.5 40.9,79.5 40.9,70.5 36.4,70.5 36.4,84.1 45.5,84.1 45.5,90.9 
+				36.4,90.9 36.4,95.5 45.5,95.5 45.5,100 56.8,100 56.8,95.5 50,95.5 			"/>
+			<polygon id="Shape_11_" class="st3" points="72.7,45.5 63.6,45.5 63.6,34.1 59.1,34.1 59.1,50 81.8,50 81.8,45.5 77.3,45.5 
+				77.3,40.9 84.1,40.9 84.1,36.4 77.3,36.4 72.7,36.4 68.2,36.4 68.2,40.9 72.7,40.9 			"/>
+			<polygon id="Shape_12_" class="st3" points="68.2,86.4 75,86.4 75,90.9 84.1,90.9 84.1,86.4 84.1,81.8 84.1,75 75,75 75,81.8 
+				68.2,81.8 68.2,75 63.6,75 63.6,81.8 59.1,81.8 59.1,63.6 54.5,63.6 54.5,59.1 50,59.1 50,45.5 34.1,45.5 34.1,54.5 38.6,54.5 
+				38.6,50 45.5,50 45.5,59.1 45.5,68.2 54.5,68.2 54.5,81.8 54.5,86.4 59.1,86.4 63.6,86.4 			"/>
+			<polygon id="Shape_13_" class="st3" points="95.5,56.8 88.6,56.8 84.1,56.8 72.7,56.8 72.7,65.9 68.2,65.9 68.2,56.8 63.6,56.8 
+				63.6,70.5 77.3,70.5 77.3,61.4 84.1,61.4 84.1,68.2 88.6,68.2 88.6,61.4 95.5,61.4 95.5,75 88.6,75 88.6,88.6 100,88.6 100,84.1 
+				93.2,84.1 93.2,79.5 100,79.5 100,61.4 100,56.8 100,50 95.5,50 			"/>
+		</g>
+	</g>
+</g>
 </svg>
