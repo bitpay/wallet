@@ -25,7 +25,6 @@
     "rewriteTsconfig": false
   },
   "types": [
-    "chrome",
     "lodash",
     "node"
   ]

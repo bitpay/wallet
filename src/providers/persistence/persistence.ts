@@ -38,7 +38,8 @@ const Keys = {
 };
 
 export let persistenceProviderFactory = (platform: PlatformProvider, log: Logger) => {
-  let storage = new RamStorage(platform, log);
+  // TODO: select appropriate storage service based on platform
+  let storage = new RamStorage(log);
   return new PersistenceProvider(storage, log);
 };
 
