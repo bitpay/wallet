@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Logger } from '@nsalaun/ng-logger';
 import { AppProvider } from '../providers/app/app';
-import { TranslateService } from '@ngx-translate/core';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -20,8 +19,7 @@ export class CopayApp {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     log: Logger,
-    app: AppProvider,
-    translate: TranslateService
+    app: AppProvider
   ) {
     platform.ready().then(() => {
       app.getName().subscribe((name) => {
@@ -40,8 +38,6 @@ export class CopayApp {
         splashScreen.hide();
       }
 
-      translate.setDefaultLang('en');
-      translate.use(platform.lang());
     });
   }
 }
