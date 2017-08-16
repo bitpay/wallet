@@ -209,21 +209,31 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
             });
           };
 
+          var _getBuyOrder = function() {
+            coinbaseService.getBuyOrder(accessToken, accountId, b.data.id, function (err, buyResp) {
+              if (err) {
+                ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
+                showError(err);
+                return;
+              }
+              var tx = buyResp.data ? buyResp.data.transaction : null;
+              if (tx && tx.id) {
+                processBuyTx(tx);
+              } else {
+                $timeout(function() {
+                  _getBuyOrder();
+                }, 5000);
+              }
+            });
+          }
+
           $timeout(function() {
             var tx = b.data ? b.data.transaction : null;
-            if (tx) {
+            if (tx && tx.id) {
               processBuyTx(tx);
             }
             else {
-              coinbaseService.getBuyOrder(accessToken, accountId, b.data.id, function (err, buyResp) {
-                if (err) {
-                  ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
-                  showError(err);
-                  return;
-                }
-                var tx = buyResp.data ? buyResp.data.transaction : null;
-                processBuyTx(tx);
-              });
+              _getBuyOrder();
             }
           }, 8000);
         });
