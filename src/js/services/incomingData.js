@@ -251,6 +251,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     });
     $timeout(function() {
       $state.transitionTo('tabs.send.amount', {
+        networkURI: (bitcoreBtc.Address.isValid(toAddress, 'livenet/btc') ? 'livenet/btc' : 'testnet/btc'),
         toAddress: toAddress
       });
     }, 100);

@@ -932,7 +932,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var atomicUnit = networkService.getAtomicUnit(wallet.network);
     var lowLevelRate = (lodash.find(feeLevels, {
       level: 'normal',
-    }).feePerKB / 1000).toFixed(atomicUnit.decimals);
+    }).feePerKb / 1000).toFixed(atomicUnit.decimals);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
     return size * lowLevelRate;

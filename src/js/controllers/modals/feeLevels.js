@@ -18,14 +18,14 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
     var value = lodash.find($scope.feeLevels[$scope.network], {
       level: 'superEconomy'
     });
-    return parseInt((value.feePerKB / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed());
   };
 
   var getMaxRecommended = function() {
     var value = lodash.find($scope.feeLevels[$scope.network], {
       level: 'urgent'
     });
-    return parseInt((value.feePerKB / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed());
   };
 
   $scope.isTestnet = function(networkURI) {
@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
     // If no custom fee
     if (value) {
       $scope.customFeePerKB = null;
-      $scope.feePerAtomicByte = (value.feePerKB / 1000).toFixed();
+      $scope.feePerAtomicByte = (value.feePerKb / 1000).toFixed();
       $scope.avgConfirmationTime = value.nbBlocks * 10;
     } else {
       $scope.avgConfirmationTime = null;

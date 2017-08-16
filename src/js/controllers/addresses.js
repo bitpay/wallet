@@ -68,9 +68,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       });
     });
 
-
-
-    feeService.getFeeLevels($scope.wallet.network, function(err, levels){
+    feeService.getFeeLevels($scope.wallet, function(err, levels){
       walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
         if (err || !resp) return;
 
