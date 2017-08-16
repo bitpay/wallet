@@ -54,7 +54,7 @@
     "angular": "1.4.6",
     "angular-mocks": "1.4.10",
     "bezier-easing": "^2.0.3",
-    "bhttp": "^1.2.1",
+    "bhttp": "1.2.1",
     "bitauth": "^0.2.1",
     "bitcore-wallet-client": "5.3.0",
     "bower": "^1.7.9",
