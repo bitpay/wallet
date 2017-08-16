@@ -1,0 +1,36 @@
+page-backup-warning-modal {
+  .popup-modal-header-warning {
+    background: #ffa500;
+  }
+  .popup-modal-header {
+    padding: 1rem;
+    border-radius: 12px 12px 0 0;
+    min-height: 120px;
+  }
+  .popup-modal-content-warning {
+    background-color: $v-onboarding-bar-header-color;
+    text-align: center;
+    height: 65%;
+    overflow-y: scroll;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    .popup-modal-heading {
+      font-weight: bold;
+      font-size: 2rem;
+      padding-bottom: 1rem;
+      color: $v-dark-gray;
+    }
+    .popup-modal-message {
+      padding: 1.5rem;
+      font-size: 1.6rem;
+      color: $v-mid-gray;
+    }
+    .button-clear {
+      padding-top: 2rem;
+      background: none;
+      color: $v-background-warning;
+      font-size: 1.6rem;
+    }
+  }
+}
