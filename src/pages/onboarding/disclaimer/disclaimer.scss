@@ -1,0 +1,54 @@
+page-disclaimer {
+  .disclaimer {
+    .options {
+      padding-top: 20px;
+    }
+    .item {
+      background-color: transparent;
+      color: $v-onboarding-color;
+    }
+    .item-md.item-block .item-inner {
+      border-bottom: 0;
+    }
+    ion-label {
+      white-space: normal;
+    }
+    #agree-to-terms {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 15px;
+      .item {
+        padding-left: 0px;
+      }
+      .terms-check {
+        text-align: left;
+        margin-bottom: 25px;
+        display: flex;
+        label {
+          font-size: 16px;
+          cursor: pointer;
+        }
+        a {
+          cursor: pointer;
+        }
+        .checkbox {
+          margin: auto;
+          padding: 5px;
+        }
+        .modal-text {
+          margin-left: 30px;
+        }
+      }
+    }
+  }
+
+  .navbarc {
+    .bar-button {
+      color: $v-accent-color;
+    }
+  }
+  .header-md::after {
+    background: none;
+  }
+}
