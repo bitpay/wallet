@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar transparent class="navbarc">
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="onboarding disclaimer">
+  <div id="onboarding-disclaimer-container">
+    <div *ngIf="resume" class="onboarding-topic" id="disclaimer-topic" translate>Quick review!</div>
+    <div *ngIf="!resume" class="onboarding-topic" id="disclaimer-topic" translate>Almost done! Let's review.</div>
+    <div class="onboarding-description" id="disclaimer-description" translate>Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</div>
+    <div class="options">
+      <ion-item>
+        <ion-label>I understand that my funds are held securely on this device, not by a company.</ion-label>
+        <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase.</ion-label>
+        <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
+      </ion-item>
+    </div>
+  </div>
+  <div id="agree-to-terms" *ngIf="accepted.first && accepted.second">
+    <div class="terms-check">
+      <ion-checkbox [(ngModel)]="terms.accepted"></ion-checkbox>
+      <div class="modal-text">
+        <label (click)="selectTerms()" translate>I have read, understood, and agree to the </label>
+        <a (click)="openModal()" translate>Terms of Use.</a>
+      </div>
+    </div>
+    <button class="primary" ion-button block [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()" translate>Confirm &amp; Finish</button>
+  </div>
+</ion-content>

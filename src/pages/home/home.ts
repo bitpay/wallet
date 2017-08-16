@@ -11,4 +11,7 @@ export class HomePage {
 
   }
 
+  showOnboardingFlow() {
+    this.navCtrl.push('WelcomePage');
+  }
 }

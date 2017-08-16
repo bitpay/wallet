@@ -1,0 +1,21 @@
+<ion-header>
+
+  <ion-navbar transparent hideBackButton>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="onboarding backup-request">
+  <div id="warning">
+    <img class="svg" src="assets/img/warning.svg" id="alert-icon" />
+    <div class="onboarding-topic" translate>No backup, no bitcoin.</div>
+    <div class="onboarding-description" id="backup-description" translate>Since only you control your money, you’ll need to save your backup phrase in case this app is deleted.</div>
+  </div>
+  <div class="buttons">
+    <ion-icon name="arrow-round-down"></ion-icon>
+    <div class="onboarding-tldr" id="backup-tldr" translate>Your wallet is never saved to cloud storage or standard device backups.</div>
+    <button class="primary" ion-button block (click)="initBackupFlow()" translate>Backup wallet</button>
+    <button class="secondary" ion-button block outline (click)="later()" translate>Do it later</button>
+  </div>
+</ion-content>
