@@ -177,6 +177,7 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
     });
   };
 
-  register();
+  // Hide Mercado Libre
+  // register();
   return root;
 });
