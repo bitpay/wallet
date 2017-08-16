@@ -209,7 +209,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
             });
           };
 
-          var _getBuyOrder = function() {
+          var _processBuyOrder = function() {
             coinbaseService.getBuyOrder(accessToken, accountId, b.data.id, function (err, buyResp) {
               if (err) {
                 ongoingProcess.set('buyingBitcoin', false, statusChangeHandler);
@@ -221,7 +221,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
                 processBuyTx(tx);
               } else {
                 $timeout(function() {
-                  _getBuyOrder();
+                  _processBuyOrder();
                 }, 5000);
               }
             });
@@ -233,7 +233,7 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
               processBuyTx(tx);
             }
             else {
-              _getBuyOrder();
+              _processBuyOrder();
             }
           }, 8000);
         });
