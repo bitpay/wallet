@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides, Navbar, AlertController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, Slides, Navbar, AlertController, ModalController, Modal } from 'ionic-angular';
 import * as _ from 'lodash';
 
 @IonicPage()
@@ -24,7 +24,7 @@ export class BackupGamePage {
   private keys: any;
   private useIdeograms: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController) {
     // TODO replace for the original wallet object
     this.wallet = {
       name: 'Wallet name',
@@ -197,12 +197,19 @@ export class BackupGamePage {
       });
       alert.present();
     } else {
-      const myModal = this.modalCtrl.create('BackupConfirmModalPage', {}, {
+      let self = this;
+      const myModal: Modal = self.modalCtrl.create('BackupConfirmModalPage', {}, {
         showBackdrop: true,
         enableBackdropDismiss: true,
         cssClass: "backup-modal-success"
       });
+
       myModal.present();
+
+      myModal.onDidDismiss(() => {
+        console.log('MODAL DISSMISED');
+        self.navCtrl.popToRoot(); // TODO NOT WORKING
+      });
     }
   };
 

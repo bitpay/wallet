@@ -14,11 +14,14 @@ export class BackupWarningPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BackupWarningPage');
   }
 
   openWarningModal() {
-    const myModal = this.modalCtrl.create('BackupWarningModalPage', {}, { showBackdrop: true, enableBackdropDismiss: true, cssClass: "backup-modal-warning" });
+    const myModal = this.modalCtrl.create('BackupWarningModalPage', {}, {
+      showBackdrop: true,
+      enableBackdropDismiss: true,
+      cssClass: "backup-modal-warning"
+    });
     myModal.present();
   }
 
