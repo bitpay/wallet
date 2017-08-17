@@ -1,0 +1,84 @@
+<ion-header>
+
+  <ion-navbar class="navbarc">
+    <ion-title>{{wallet.name || 'Backup'}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="deleted">
+    <div class="phrase-unavailable" translate>Wallet recovery phrase not available.</div>
+    <div class="phrase-unavailable-instructions" translate>You can still export it from Advanced &gt; Export.</div>
+  </div>
+
+  <ion-slides pager="true" class="pages" *ngIf="!deleted">
+    <ion-slide>
+      <div class="wallet-backup-phrase1" *ngIf="mnemonicWords[0] || !wallet.credentials.mnemonicEncrypted">
+        <div class="initial-prompt" translate>Please carefully write down this phrase.</div>
+        <div class="backup-phrase">
+          <!-- TODO copy-to-clipboard function -->
+          <!-- <div class="backup-phrase" copy-to-clipboard="copyRecoveryPhrase()"> -->
+          <div class="backup-phrase-content">
+            <span class="backup-phrase-content-word-readonly" *ngFor="let word of mnemonicWords">
+              <span style="white-space:nowrap">{{word}}</span>
+              <span *ngIf="useIdeograms">&#x3000;</span>
+            </span>
+          </div>
+        </div>
+        <div *ngIf="wallet.mnemonicHasPassphrase">
+          <div class="password-required" translate>
+            This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
+          </div>
+        </div>
+        <div class="cta-buttons">
+          <div class="tldr-prompt" translate>We'll confirm on the next screen.</div>
+          <button [disabled]="wallet.credentials.mnemonicEncrypted || error" class="button primary" (click)="slideNext()" translate>I've written it down</button>
+        </div>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <div class="wallet-backup-phrase1">
+        <div class="initial-prompt" translate>Let's verify your backup phrase.</div>
+        <div class="backup-phrase">
+          <div class="backup-phrase-content">
+            <button class="button select-word" *ngFor="let customWord of customWords; let i = index"
+              (click)="removeButton(i, customWord)">{{customWord.word}}
+            </button>
+          </div>
+        </div>
+        <div class="cta-buttons select-phrase">
+          <div *ngIf="!selectComplete" class="tldr-prompt" translate>Please tap each word in the correct order.</div>
+          <div *ngIf="selectComplete" class="tldr-prompt" translate>Is this correct?</div>
+          <div *ngIf="!selectComplete">
+            <button class="button select-word" *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index"
+              (click)="addButton(i, shuffledWord)"
+              [disabled]="shuffledWord.selected">{{shuffledWord.word}}
+            </button>
+          </div>
+          <div *ngIf="selectComplete">
+            <button class="button primary" (click)="slideNext();" translate>Confirm</button>
+            <button class="button button-clear" (click)="initFlow();" translate>Clear</button>
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+
+    <ion-slide *ngIf="wallet.mnemonicHasPassphrase">
+      <div class="wallet-backup-phrase1">
+        <div class="initial-prompt" translate>Enter your password</div>
+        <div class="password-prompt">
+          <div class="description" translate>In order to verify your wallet backup, please type your password.</div>
+          <div class="input">
+            <input type="password" id="passphrase" [(ngModel)]="passphrase" autocapitalize="off" spellcheck="false"/>
+          </div>
+        </div>
+        <div class="cta-buttons confirm">
+          <button [disabled]="!passphrase" class="button primary" (click)="finalStep();" translate>Confirm</button>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

@@ -1,0 +1,39 @@
+page-backup-confirm-modal {
+    .popup-modal-header-success {
+        background-color: $v-background-success;
+        display: flex;
+        justify-content: center;
+        padding: 1.5rem;
+        max-height: 10rem;
+        img {
+            max-height: 10rem;
+            height: 100%;
+        }
+    }
+    .popup-modal-content-success {
+        background-color: $v-onboarding-bar-header-color;
+        text-align: center;
+        height: 65%;
+        overflow-y: scroll;
+        padding: 3rem;
+        display: flex;
+        align-items: center;
+        .popup-modal-heading {
+            font-weight: bold;
+            font-size: 2rem;
+            padding-bottom: 1rem;
+            color: $v-dark-gray;
+        }
+        .popup-modal-message {
+            padding: 1.5rem;
+            font-size: 1.6rem;
+            color: $v-mid-gray;
+        }
+        .button-clear {
+            padding-top: 2rem;
+            background: none;
+            color: $v-background-success;
+            font-size: 1.6rem;
+        }
+    }
+}

@@ -21,7 +21,11 @@ $v-accent-color:                                     #1abb9b;
 $v-dark-gray:                                        #445 !default;
 $v-mid-gray:                                         #667 !default;
 $v-light-gray:                                       #9b9bab !default;
+$v-title-gray:                                       #c2c9d1 !default;
 $v-subtle-gray:                                      darken(#ffffff, 5%) !default;
+$v-btn-active-color:                                 #148e76;
+$v-background-warning:                               #ffa500;
+$v-background-success:                               #1abb9b;
 
 $v-onboarding-color:                                 #ffffff !default;
 $v-onboarding-bar-header-color:                      #ffffff !default;
@@ -34,33 +38,6 @@ $v-button-primary-bg:                                $v-accent-color !default;
 
 
 $v-visible-radius:                                   6px !default;
-
-// Shared Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass variables found in Ionic's source scss files.
-// To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/theming/overriding-ionic-variables/
-
-
-
-
-// Named Color Variables
-// --------------------------------------------------
-// Named colors makes it easy to reuse colors on various components.
-// It's highly recommended to change the default colors
-// to match your app's branding. Ionic uses a Sass map of
-// colors so you can add, rename and remove colors as needed.
-// The "primary" color is the only required color in the map.
-
-$colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
-);
-
 
 // App iOS Variables
 // --------------------------------------------------
@@ -137,6 +114,7 @@ $colors: (
   .onboarding-topic,
   .onboarding-description,
   .onboarding-tldr {
+    color: $v-title-gray;
     margin-left: 3rem;
     margin-right: 3rem;
   }

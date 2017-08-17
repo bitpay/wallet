@@ -14,4 +14,8 @@ export class HomePage {
   showOnboardingFlow() {
     this.navCtrl.push('WelcomePage');
   }
+
+  showBackupFlow() {
+    this.navCtrl.push('BackupWarningPage');
+  }
 }
