@@ -1533,12 +1533,6 @@ msgstr ""
 msgid "Invitation to share a {{appName}} Wallet"
 msgstr ""
 
-#: www/views/buyAmazon.html:49
-#: www/views/buyMercadoLibre.html:48
-#: www/views/topup.html:56
-msgid "Invoice Fee"
-msgstr ""
-
 #: www/views/mercadoLibreCards.html:20
 #: www/views/modals/mercadolibre-card-details.html:48
 msgid "Invoice expired"
@@ -1687,6 +1681,12 @@ msgstr ""
 msgid "Merchant Message"
 msgstr ""
 
+#: www/views/buyAmazon.html:55
+#: www/views/buyMercadoLibre.html:54
+#: www/views/topup.html:63
+msgid "Miner Fee"
+msgstr ""
+
 #: src/js/services/bwcError.js:134
 msgid "Missing parameter"
 msgstr ""
@@ -1724,10 +1724,10 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: www/views/buyAmazon.html:55
-#: www/views/buyMercadoLibre.html:54
-#: www/views/topup.html:63
-msgid "Network Fee"
+#: www/views/buyAmazon.html:49
+#: www/views/buyMercadoLibre.html:48
+#: www/views/topup.html:56
+msgid "Network Cost"
 msgstr ""
 
 #: src/js/services/bwcError.js:47
