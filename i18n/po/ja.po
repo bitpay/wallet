@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2017-07-18 13:18-0400\n"
+"PO-Revision-Date: 2017-08-16 09:23-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -37,6 +37,11 @@ msgstr "- {{tx.feeRateStr}}のレート"
 #: www/views/feedback/rateApp.html:7
 msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
 msgstr "5つ星の評価をいただけると、もっとたくさんの人にこのアプリを届けることができます。そして、ユーザーが増えればこのアプリの改善に当てられる人員やリソースも増えます。"
+
+#: www/views/mercadoLibre.html:18
+#: www/views/mercadoLibre.html:40
+msgid "<b>Only</b> redeemable on Mercado Livre (Brazil)"
+msgstr "Mercado Livre (ブラジル)<b>のみ</b>で引き換え可能"
 
 #: src/js/controllers/feedback/send.js:27
 #: www/views/feedback/complete.html:21
@@ -119,7 +124,7 @@ msgstr "フレーズを守るために任意のパスワードをかけて下さ
 
 #: www/views/includes/incomingDataMenu.html:41
 msgid "Add as a contact"
-msgstr ""
+msgstr "連絡先に追加"
 
 #: src/js/controllers/confirm.js:374
 msgid "Add description"
@@ -127,7 +132,7 @@ msgstr "詳細を追加"
 
 #: www/views/topup.html:6
 msgid "Add funds"
-msgstr ""
+msgstr "資金を追加"
 
 #: src/js/services/bitpayAccountService.js:78
 msgid "Add this BitPay account ({{email}})?"
@@ -199,7 +204,7 @@ msgstr "表示通貨"
 
 #: src/js/controllers/buyAmazon.js:97
 msgid "Amazon.com is not available at this moment. Please try back later."
-msgstr ""
+msgstr "Amazon.com は現在ご利用できません、また後でお試しください"
 
 #: www/views/amount.html:44
 #: www/views/customAmount.html:34
@@ -248,7 +253,7 @@ msgstr "本当にこのウォレットをキャンセルし、削除しても\n"
 msgid "Are you sure you want to delete this contact?"
 msgstr "本当にこの連絡先を削除しますか？"
 
-#: src/js/controllers/preferencesDelete.js:26
+#: src/js/controllers/preferencesDelete.js:25
 msgid "Are you sure you want to delete this wallet?"
 msgstr "本当にこのウォレットを削除しても\n"
 "宜しいですか？"
@@ -377,7 +382,7 @@ msgstr "ビットコインの取引はネットワークの安全を守る「採
 
 #: www/views/buyAmazon.html:108
 msgid "Bought {{amountUnitStr}}"
-msgstr ""
+msgstr "{{amountUnitStr}} 購入済み"
 
 #: www/views/modals/txp-details.html:36
 msgid "Broadcast Payment"
@@ -397,8 +402,9 @@ msgid "Browser unsupported"
 msgstr "ブラウザ未対応"
 
 #: www/views/buyAmazon.html:5
+#: www/views/buyMercadoLibre.html:6
 msgid "Buy"
-msgstr ""
+msgstr "購入"
 
 #: www/views/includes/buyAndSellCard.html:3
 msgid "Buy &amp; Sell Bitcoin"
@@ -408,9 +414,14 @@ msgstr "ビットコインの購入&amp;売却"
 msgid "Buy Bitcoin"
 msgstr "ビットコインを購入"
 
+#: www/views/mercadoLibre.html:22
+#: www/views/mercadoLibre.html:50
+msgid "Buy a Gift Card"
+msgstr "ギフトカードの購入"
+
 #: src/js/controllers/buyAmazon.js:332
 msgid "Buy from"
-msgstr ""
+msgstr "今すぐ購入"
 
 #: src/js/services/onGoingProcess.js:40
 msgid "Buying Bitcoin..."
@@ -421,6 +432,7 @@ msgid "Calculating fee"
 msgstr "手数料計算中..."
 
 #: src/js/controllers/buyAmazon.js:311
+#: src/js/controllers/buyMercadoLibre.js:305
 #: src/js/controllers/confirm.js:495
 #: src/js/controllers/topup.js:285
 #: src/js/services/popupService.js:62
@@ -486,6 +498,7 @@ msgid "Click"
 msgstr "クリックして"
 
 #: www/views/customAmount.html:4
+#: www/views/modals/mercadolibre-card-details.html:3
 #: www/views/modals/paypro.html:4
 #: www/views/modals/pin.html:3
 #: www/views/modals/search.html:3
@@ -511,6 +524,7 @@ msgid "Completed"
 msgstr "完了"
 
 #: src/js/controllers/buyAmazon.js:309
+#: src/js/controllers/buyMercadoLibre.js:303
 #: src/js/controllers/confirm.js:494
 #: src/js/controllers/copayers.js:55
 #: src/js/controllers/topup.js:283
@@ -527,8 +541,9 @@ msgid "Confirm &amp; Finish"
 msgstr "承諾して終了する"
 
 #: www/views/buyAmazon.html:90
+#: www/views/buyMercadoLibre.html:77
 msgid "Confirm purchase"
-msgstr ""
+msgstr "購入の確認"
 
 #: www/views/modals/pin.html:10
 msgid "Confirm your PIN"
@@ -608,10 +623,14 @@ msgstr "このテキストを安全な場所に貼り付けて保管して下さ
 #: www/views/includes/incomingDataMenu.html:51
 #: www/views/includes/incomingDataMenu.html:70
 #: www/views/includes/incomingDataMenu.html:94
-#: www/views/preferencesLogs.html:10
+#: www/views/includes/logOptions.html:9
 #: www/views/tab-export-file.html:78
 msgid "Copy to clipboard"
 msgstr "クリップボードへコピー"
+
+#: src/js/controllers/buyMercadoLibre.js:101
+msgid "Could not access Gift Card Service"
+msgstr "ギフトカードサービスにアクセスできません"
 
 #: www/views/tab-import-phrase.html:2
 msgid "Could not access the wallet at the server. Please check:"
@@ -619,7 +638,7 @@ msgstr "サーバーにてウォレットの確認ができませんでした。
 
 #: src/js/controllers/buyAmazon.js:101
 msgid "Could not access to Amazon.com"
-msgstr ""
+msgstr "Amazon.comにアクセスできませんでした。"
 
 #: src/js/services/profileService.js:493
 msgid "Could not access wallet"
@@ -646,6 +665,7 @@ msgid "Could not create the invoice"
 msgstr "請求を作成できませんでした"
 
 #: src/js/controllers/buyAmazon.js:163
+#: src/js/controllers/buyMercadoLibre.js:163
 #: src/js/controllers/topup.js:141
 msgid "Could not create transaction"
 msgstr "取引を作成できませんでした。"
@@ -678,11 +698,12 @@ msgstr "手数料の金額を取得できませんでした。"
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "次の手数料レートを取得できませんでした: {{feeLevel}}"
 
-#: src/js/controllers/modals/feeLevels.js:113
+#: src/js/controllers/modals/feeLevels.js:112
 msgid "Could not get fee levels"
-msgstr ""
+msgstr "手数料のレベルを取得できませんでした。"
 
 #: src/js/controllers/buyAmazon.js:121
+#: src/js/controllers/buyMercadoLibre.js:121
 #: src/js/controllers/topup.js:99
 msgid "Could not get the invoice"
 msgstr "請求の取得ができませんでした"
@@ -691,13 +712,13 @@ msgstr "請求の取得ができませんでした"
 msgid "Could not get transactions"
 msgstr "取引を取得できませんでした。"
 
-#: src/js/services/profileService.js:595
-#: src/js/services/profileService.js:629
-#: src/js/services/profileService.js:652
+#: src/js/services/profileService.js:597
+#: src/js/services/profileService.js:631
+#: src/js/services/profileService.js:654
 msgid "Could not import"
 msgstr "インポートできませんでした。"
 
-#: src/js/services/profileService.js:564
+#: src/js/services/profileService.js:566
 msgid "Could not import. Check input file and spending password"
 msgstr "インポートできませんでした。入力ファイルとパスワードが正しいかご確認下さい。"
 
@@ -727,11 +748,12 @@ msgid "Could not send payment"
 msgstr "送金できませんでした。"
 
 #: src/js/controllers/buyAmazon.js:323
+#: src/js/controllers/buyMercadoLibre.js:316
 #: src/js/controllers/topup.js:297
 msgid "Could not send transaction"
 msgstr "取引が送れませんでした"
 
-#: www/views/walletDetails.html:199
+#: www/views/walletDetails.html:198
 msgid "Could not update transaction history"
 msgstr "取引履歴を更新できませんでした。"
 
@@ -788,7 +810,7 @@ msgstr "この設定の現在の手数料レート"
 
 #: src/js/services/feeService.js:15
 msgid "Custom"
-msgstr ""
+msgstr "カスタム設定"
 
 #: www/views/customAmount.html:9
 msgid "Custom Amount"
@@ -796,8 +818,9 @@ msgstr "金額を入力"
 
 #: src/js/controllers/preferencesFee.js:84
 msgid "Custom Fee"
-msgstr ""
+msgstr "カスタム手数料"
 
+#: www/views/modals/mercadolibre-card-details.html:56
 #: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
@@ -840,9 +863,11 @@ msgid "Derivation Strategy"
 msgstr "派生パス"
 
 #: www/views/buyAmazon.html:39
+#: www/views/buyMercadoLibre.html:38
+#: www/views/modals/mercadolibre-card-details.html:6
 #: www/views/topup.html:45
 msgid "Details"
-msgstr ""
+msgstr "詳細"
 
 #: src/js/controllers/lockSetup.js:9
 #: src/js/controllers/tab-settings.js:60
@@ -908,10 +933,6 @@ msgstr "プッシュ通知を有効化"
 msgid "Enable the camera to get started."
 msgstr "始めるためにカメラを有効にして下さい。"
 
-#: www/views/amount.html:4
-msgid "Enter Amount"
-msgstr "金額を入力"
-
 #: src/js/services/walletService.js:1048
 #: src/js/services/walletService.js:1063
 msgid "Enter Spending Password"
@@ -921,9 +942,13 @@ msgstr "送金時のパスワード入力して下さい。"
 msgid "Enter Two Factor for your BitPay account"
 msgstr "BitPay アカウントの2段階認証コードを入力して下さい"
 
+#: www/views/amount.html:4
+msgid "Enter amount"
+msgstr "金額を入力"
+
 #: www/views/modals/chooseFeeLevel.html:41
 msgid "Enter custom fee"
-msgstr ""
+msgstr "カスタム手数料を入力"
 
 #: src/js/services/walletService.js:1030
 msgid "Enter new spending password"
@@ -954,6 +979,8 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/bitpayCardIntro.js:81
 #: src/js/controllers/buyAmazon.js:23
 #: src/js/controllers/buyAmazon.js:34
+#: src/js/controllers/buyMercadoLibre.js:23
+#: src/js/controllers/buyMercadoLibre.js:34
 #: src/js/controllers/confirm.js:276
 #: src/js/controllers/copayers.js:67
 #: src/js/controllers/create.js:155
@@ -995,13 +1022,13 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/join.js:165
 #: src/js/controllers/join.js:173
 #: src/js/controllers/join.js:191
-#: src/js/controllers/modals/feeLevels.js:10
+#: src/js/controllers/modals/feeLevels.js:9
 #: src/js/controllers/modals/txpDetails.js:134
 #: src/js/controllers/paperWallet.js:47
 #: src/js/controllers/preferencesBitpayCard.js:20
 #: src/js/controllers/preferencesBitpayServices.js:33
 #: src/js/controllers/preferencesBitpayServices.js:50
-#: src/js/controllers/preferencesDelete.js:37
+#: src/js/controllers/preferencesDelete.js:36
 #: src/js/controllers/preferencesExternal.js:20
 #: src/js/controllers/tab-home.js:174
 #: src/js/controllers/tab-send.js:132
@@ -1011,6 +1038,8 @@ msgstr "パスワードを入力して下さい。"
 #: src/js/controllers/topup.js:31
 #: src/js/controllers/tx-details.js:102
 #: src/js/services/incomingData.js:98
+#: www/views/mercadoLibreCards.html:19
+#: www/views/modals/mercadolibre-card-details.html:45
 msgid "Error"
 msgstr "エラー"
 
@@ -1020,11 +1049,12 @@ msgstr "確認のエラー"
 
 #: src/js/controllers/buyAmazon.js:178
 msgid "Error creating gift card"
-msgstr ""
+msgstr "ギフトカード作成時にエラー"
 
 #: src/js/controllers/buyAmazon.js:93
+#: src/js/controllers/buyMercadoLibre.js:93
 msgid "Error creating the invoice"
-msgstr ""
+msgstr "請求の作成中にエラー"
 
 #: src/js/services/profileService.js:396
 msgid "Error creating wallet"
@@ -1035,6 +1065,7 @@ msgid "Error getting SendMax information"
 msgstr "全額送金データ取得時にエラー"
 
 #: src/js/controllers/buyAmazon.js:135
+#: src/js/controllers/buyMercadoLibre.js:135
 #: src/js/controllers/topup.js:113
 msgid "Error in Payment Protocol"
 msgstr "支払い検証のエラー"
@@ -1061,6 +1092,8 @@ msgstr "ユーザーの1日当たりの制限 500 米ドルを超えました"
 
 #: src/js/controllers/confirm.js:411
 #: www/views/confirm.html:27
+#: www/views/mercadoLibreCards.html:25
+#: www/views/modals/mercadolibre-card-details.html:34
 #: www/views/modals/txp-details.html:121
 msgid "Expired"
 msgstr "期限切れ"
@@ -1094,7 +1127,7 @@ msgstr "拡張公開鍵"
 
 #: src/js/services/onGoingProcess.js:20
 msgid "Extracting Wallet information..."
-msgstr ""
+msgstr "ウォレット情報を抽出中…"
 
 #: src/js/controllers/export.js:115
 #: src/js/controllers/export.js:126
@@ -1113,13 +1146,13 @@ msgstr "家族旅行貯金"
 msgid "Fee"
 msgstr "手数料"
 
-#: www/views/modals/chooseFeeLevel.html:73
+#: www/views/modals/chooseFeeLevel.html:75
 msgid "Fee level"
-msgstr ""
+msgstr "手数料レベル"
 
-#: src/js/controllers/modals/feeLevels.js:101
+#: src/js/controllers/modals/feeLevels.js:100
 msgid "Fee level is not defined"
-msgstr ""
+msgstr "手数料レベルが定義されていません"
 
 #: www/views/confirm.html:81
 #: www/views/modals/txp-details.html:101
@@ -1136,12 +1169,16 @@ msgstr "BitPay アカウントを取得..."
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching payment information"
-msgstr ""
+msgstr "支払い情報要求しています…"
 
 #: www/views/export.html:14
 #: www/views/import.html:16
 msgid "File/Text"
 msgstr "ファイル/テキスト"
+
+#: www/views/preferencesLogs.html:17
+msgid "Filter setting"
+msgstr "フィルタ設定"
 
 #: src/js/services/fingerprintService.js:43
 #: src/js/services/fingerprintService.js:48
@@ -1160,6 +1197,7 @@ msgstr "監査用機能"
 
 #: src/js/controllers/topup.js:306
 #: www/views/buyAmazon.html:29
+#: www/views/buyMercadoLibre.html:28
 #: www/views/confirm.html:65
 #: www/views/modals/txp-details.html:74
 #: www/views/topup.html:34
@@ -1189,7 +1227,7 @@ msgstr "残高がありました:"
 
 #: www/views/topup.html:49
 msgid "Funds to be added"
-msgstr ""
+msgstr "追加する資金"
 
 #: www/views/paperWallet.html:53
 msgid "Funds transferred"
@@ -1223,8 +1261,12 @@ msgstr "Visa<sup>&reg;</sup>カード対応ATMから現地通貨をいつでも�
 msgid "Get news and updates from BitPay"
 msgstr "BitPay からのニュースや更新情報を受け取ります。"
 
-#: www/views/bitpayCard.html:49
 #: www/views/onboarding/welcome.html:8
+msgctxt "button"
+msgid "Get started"
+msgstr "始めよう"
+
+#: www/views/bitpayCard.html:49
 msgid "Get started"
 msgstr "始めよう"
 
@@ -1236,17 +1278,23 @@ msgstr "初めての連絡先を追加しましょう。"
 msgid "Getting fee levels..."
 msgstr "手数料レベルを取得しています…"
 
+#: www/views/modals/mercadolibre-card-details.html:30
+#: www/views/modals/mercadolibre-card-details.html:35
+msgid "Gift Card is not available to use anymore"
+msgstr "ギフトカードがもう使用できません。"
+
 #: www/views/buyAmazon.html:43
+#: www/views/buyMercadoLibre.html:42
 msgid "Gift card"
-msgstr ""
+msgstr "ギフトカード"
 
 #: src/js/controllers/buyAmazon.js:203
 msgid "Gift card expired"
-msgstr ""
+msgstr "期限切れのギフトカード"
 
 #: www/views/buyAmazon.html:111
 msgid "Gift card generated and ready to use."
-msgstr ""
+msgstr "ギフトカードが利用可能になりました。"
 
 #: src/js/controllers/bitpayCard.js:114
 #: src/js/controllers/bitpayCard.js:124
@@ -1421,6 +1469,11 @@ msgstr "ウォレットインポート中…"
 msgid "In order to verify your wallet backup, please type your password."
 msgstr "ウォレットのバックアップを確認するためには、復元フレーズ用のパスワードをご入力下さい。"
 
+#: www/views/mercadoLibreCards.html:24
+#: www/views/modals/mercadolibre-card-details.html:29
+msgid "Inactive"
+msgstr "非アクティブ"
+
 #: www/views/includes/walletItem.html:11
 #: www/views/includes/walletSelector.html:18
 #: www/views/tab-home.html:90
@@ -1462,6 +1515,7 @@ msgid "Invalid"
 msgstr "無効"
 
 #: src/js/controllers/buyAmazon.js:136
+#: src/js/controllers/buyMercadoLibre.js:136
 #: src/js/controllers/topup.js:114
 msgid "Invalid URL"
 msgstr "無効なURL"
@@ -1490,10 +1544,10 @@ msgstr "無効な派生パス"
 msgid "Invitation to share a {{appName}} Wallet"
 msgstr "{{appName}} 共有ウォレットへの招待"
 
-#: www/views/buyAmazon.html:49
-#: www/views/topup.html:56
-msgid "Invoice Fee"
-msgstr ""
+#: www/views/mercadoLibreCards.html:20
+#: www/views/modals/mercadolibre-card-details.html:48
+msgid "Invoice expired"
+msgstr "請求有効期限切れ"
 
 #: src/js/controllers/feedback/send.js:79
 msgid "Is there anything we could do better?"
@@ -1586,6 +1640,10 @@ msgstr "Locktime待ち中です。新しい送金の提案が作成できるま�
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime待ち中です。この送金の提案が削除できるまであとしばらくお待ち下さい。"
 
+#: www/views/includes/logOptions.html:3
+msgid "Log options"
+msgstr "ログの設定"
+
 #: www/views/modals/bitpay-card-confirmation.html:14
 msgid "Log out"
 msgstr "ログアウト"
@@ -1622,9 +1680,23 @@ msgstr "まあまあです"
 msgid "Memo"
 msgstr "メモ"
 
+#: www/views/mercadoLibre.html:6
+msgid "Mercado Livre Brazil Gift Cards"
+msgstr "Mercado Livre Brazil ギフトカード"
+
+#: src/js/controllers/buyMercadoLibre.js:97
+msgid "Mercadolibre Gift Card Service is not available at this moment. Please try back later."
+msgstr "Mercadolibre Gift Card Service は現在ご利用できません、また後でお試しください"
+
 #: www/views/modals/txp-details.html:133
 msgid "Merchant Message"
 msgstr "お店からのメッセージ："
+
+#: www/views/buyAmazon.html:55
+#: www/views/buyMercadoLibre.html:54
+#: www/views/topup.html:63
+msgid "Miner Fee"
+msgstr ""
 
 #: src/js/services/bwcError.js:134
 msgid "Missing parameter"
@@ -1663,9 +1735,10 @@ msgstr "注意：他アプリのウォレットをインポートする場合、
 msgid "Name"
 msgstr "名前"
 
-#: www/views/buyAmazon.html:55
-#: www/views/topup.html:63
-msgid "Network Fee"
+#: www/views/buyAmazon.html:49
+#: www/views/buyMercadoLibre.html:48
+#: www/views/topup.html:56
+msgid "Network Cost"
 msgstr ""
 
 #: src/js/services/bwcError.js:47
@@ -1693,8 +1766,9 @@ msgid "No Wallet"
 msgstr "ウォレットが無いよ…(´・ω・`)"
 
 #: src/js/controllers/buyAmazon.js:114
+#: src/js/controllers/buyMercadoLibre.js:114
 msgid "No access key defined"
-msgstr ""
+msgstr "アクセスキーが定義されていません"
 
 #: www/views/onboarding/backupRequest.html:5
 msgid "No backup, no bitcoin."
@@ -1703,6 +1777,10 @@ msgstr "バックアップは非常に重要です！"
 #: www/views/addressbook.html:19
 msgid "No contacts yet"
 msgstr "連絡先が無い"
+
+#: www/views/preferencesLogs.html:16
+msgid "No entries for this log level"
+msgstr "このレベルのログのエントリーがありません。"
 
 #: www/views/preferencesExternal.html:12
 msgid "No hardware information available."
@@ -1725,7 +1803,7 @@ msgstr "最近の取引がありません"
 msgid "No signing proposal: No private key"
 msgstr "提案に署名できない：秘密鍵がありません"
 
-#: www/views/walletDetails.html:193
+#: www/views/walletDetails.html:192
 msgid "No transactions yet"
 msgstr "取引がありません"
 
@@ -1738,10 +1816,11 @@ msgid "No wallet selected"
 msgstr "ウォレットが選択されていません"
 
 #: src/js/controllers/buyAmazon.js:298
+#: src/js/controllers/buyMercadoLibre.js:290
 #: src/js/controllers/confirm.js:83
 #: src/js/controllers/topup.js:263
 msgid "No wallets available"
-msgstr ""
+msgstr "利用可能なウォレットがありません"
 
 #: www/views/paperWallet.html:47
 msgid "No wallets available to receive funds"
@@ -1795,7 +1874,7 @@ msgstr "取引承認時に通知"
 
 #: www/views/preferencesNotifications.html:24
 msgid "Notify me when transactions are confirmed"
-msgstr ""
+msgstr "取引が承認されたら通知する。"
 
 #: www/views/includes/backupNeededPopup.html:8
 msgid "Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
@@ -1829,6 +1908,10 @@ msgstr "公式免責事項 (英語)"
 #: src/js/controllers/feedback/send.js:64
 msgid "Oh no!"
 msgstr "おっと!"
+
+#: src/js/controllers/buyMercadoLibre.js:304
+msgid "Ok"
+msgstr "OK"
 
 #: www/views/tab-home.html:39
 msgid "On this screen you can see all your wallets, accounts, and assets."
@@ -1874,7 +1957,7 @@ msgstr "ウォレットを開く"
 
 #: www/views/includes/incomingDataMenu.html:19
 msgid "Open website"
-msgstr ""
+msgstr "サイトを開く"
 
 #: www/views/bitpayCardIntro.html:34
 msgid "Order the BitPay Card"
@@ -1972,6 +2055,11 @@ msgstr "支払いの詳細"
 msgid "Payment request"
 msgstr "支払い請求"
 
+#: www/views/mercadoLibreCards.html:22
+#: www/views/modals/mercadolibre-card-details.html:39
+msgid "Pending"
+msgstr "未決"
+
 #: www/views/proposals.html:4
 msgid "Pending Proposals"
 msgstr "保留中の提案"
@@ -2033,7 +2121,7 @@ msgstr "アドレスを処理中…"
 msgid "Preparing backup..."
 msgstr "バックアップを準備中..."
 
-#: src/js/routes.js:1188
+#: src/js/routes.js:1240
 msgid "Press again to exit"
 msgstr "もう一度押して終了"
 
@@ -2043,7 +2131,7 @@ msgstr "優先"
 
 #: www/views/includes/incomingDataMenu.html:80
 msgid "Private Key"
-msgstr ""
+msgstr "秘密鍵"
 
 #: src/js/controllers/paperWallet.js:137
 msgid "Private key encrypted. Enter password"
@@ -2071,13 +2159,17 @@ msgstr "提案が削除されました"
 msgid "Proposal Rejected"
 msgstr "提案が却下されました"
 
-#: www/views/walletDetails.html:178
+#: www/views/walletDetails.html:177
 msgid "Proposals"
 msgstr "提案"
 
 #: src/js/controllers/buyAmazon.js:281
 msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
-msgstr ""
+msgstr "購入額が一日最大 {{limitPerDay}} {{currency}} になります。"
+
+#: src/js/controllers/buyMercadoLibre.js:280
+msgid "Purchase amount must be a value between 50 and 2000"
+msgstr "購入金額は 50〜2000 の間の値でなければなりません"
 
 #: www/views/onboarding/notifications.html:3
 msgid "Push Notifications"
@@ -2119,7 +2211,7 @@ msgstr "受取"
 
 #: www/views/customAmount.html:46
 msgid "Receive in"
-msgstr ""
+msgstr "通貨"
 
 #: www/views/includes/walletHistory.html:24
 #: www/views/tx-details.html:18
@@ -2162,7 +2254,7 @@ msgstr "受取人"
 msgid "Recovery phrase"
 msgstr "復元フレーズ"
 
-#: www/views/walletDetails.html:117
+#: www/views/walletDetails.html:116
 #: www/views/walletDetails.html:36
 msgid "Recreate"
 msgstr "再登録"
@@ -2170,6 +2262,10 @@ msgstr "再登録"
 #: src/js/services/onGoingProcess.js:26
 msgid "Recreating Wallet..."
 msgstr "ウォレットを再作成中…"
+
+#: www/views/modals/mercadolibre-card-details.html:22
+msgid "Redeem now"
+msgstr "今すぐ引き換えをする"
 
 #: src/js/controllers/modals/txpDetails.js:57
 #: src/js/controllers/tx-details.js:63
@@ -2185,6 +2281,7 @@ msgid "Release information"
 msgstr "リリース情報"
 
 #: www/views/addressbook.view.html:36
+#: www/views/modals/mercadolibre-card-details.html:69
 msgid "Remove"
 msgstr "削除"
 
@@ -2303,6 +2400,10 @@ msgstr "通貨を検索"
 msgid "Security"
 msgstr "セキュリティ"
 
+#: www/views/modals/mercadolibre-card-details.html:64
+msgid "See invoice"
+msgstr "請求書を表示"
+
 #: www/views/tab-import-file.html:7
 msgid "Select a backup file"
 msgstr "バックアップファイルを選択"
@@ -2339,7 +2440,7 @@ msgstr "送金する"
 msgid "Send addresses by email"
 msgstr "ビットコインアドレスをメールにて共有"
 
-#: www/views/preferencesLogs.html:13
+#: www/views/includes/logOptions.html:17
 #: www/views/tab-export-file.html:82
 msgid "Send by email"
 msgstr "メールで送信"
@@ -2354,7 +2455,7 @@ msgstr "全残高を送金"
 
 #: www/views/includes/incomingDataMenu.html:46
 msgid "Send payment to this address"
-msgstr ""
+msgstr "このアドレスへ送信して下さい"
 
 #: www/views/feedback/rateApp.html:17
 msgid "Send us feedback instead"
@@ -2403,8 +2504,9 @@ msgid "Server response could not be verified"
 msgstr "サーバーからの返答を検証できませんでした"
 
 #: src/js/controllers/buyAmazon.js:96
+#: src/js/controllers/buyMercadoLibre.js:96
 msgid "Service not available"
-msgstr ""
+msgstr "このサービスは利用できません"
 
 #: www/views/includes/homeIntegrations.html:3
 msgid "Services"
@@ -2424,7 +2526,7 @@ msgstr "パスワードを設定"
 
 #: src/js/controllers/preferencesFee.js:84
 msgid "Set your own fee in satoshis/byte"
-msgstr ""
+msgstr "カスタム手数料は satoshis/byte で指定"
 
 #: www/views/tab-settings.html:3
 #: www/views/tabs.html:19
@@ -2504,8 +2606,9 @@ msgid "Slide"
 msgstr "スライドして"
 
 #: www/views/buyAmazon.html:96
+#: www/views/buyMercadoLibre.html:83
 msgid "Slide to buy"
-msgstr ""
+msgstr "スライドして購入"
 
 #: src/js/controllers/create.js:83
 #: src/js/controllers/join.js:68
@@ -2524,7 +2627,7 @@ msgstr "送金の提案が見つかりませんでした。"
 msgid "Spending Password needed"
 msgstr "パスワードが必要"
 
-#: www/views/walletDetails.html:162
+#: www/views/walletDetails.html:161
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "この入力の組み合わせを送金するために膨大なビットコインネットワーク手数料を必要とします"
 
@@ -2535,6 +2638,11 @@ msgstr "ビットコインの送金を始めましょう"
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
 msgstr "起動ロック"
+
+#: www/views/mercadoLibreCards.html:21
+#: www/views/modals/mercadolibre-card-details.html:42
+msgid "Still pending"
+msgstr "まだ未決"
 
 #: www/views/topup.html:101
 msgid "Success"
@@ -2565,12 +2673,12 @@ msgstr "＊＊＊注意＊＊＊ このアクションを元に戻すことは�
 msgid "Take control of your money,<br>get started with bitcoin."
 msgstr "お金のコントロールを取り戻そう、<br>ビットコインをはじめよう"
 
-#: www/views/walletDetails.html:140
-#: www/views/walletDetails.html:60
+#: www/views/walletDetails.html:139
+#: www/views/walletDetails.html:59
 msgid "Tap and hold to show"
 msgstr "長押しで表示"
 
-#: www/views/walletDetails.html:112
+#: www/views/walletDetails.html:111
 #: www/views/walletDetails.html:31
 msgid "Tap to retry"
 msgstr "タップしてやり直し"
@@ -2593,7 +2701,7 @@ msgstr "テスト用ネットワーク"
 
 #: www/views/includes/incomingDataMenu.html:61
 msgid "Text"
-msgstr ""
+msgstr "テキスト"
 
 #: src/js/controllers/feedback/send.js:27
 #: src/js/controllers/feedback/send.js:76
@@ -2736,7 +2844,7 @@ msgstr "この取引の金額はビットコインネットワーク手数料よ
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
 msgstr "この取引は承認されるまで非常に時間のかかる可能性があります。承認されずにネットワークに捨てられてしまう危険性もありますので、承認されるまでお待ちいただくことを強くおすすめします。"
 
-#: www/views/walletDetails.html:116
+#: www/views/walletDetails.html:115
 #: www/views/walletDetails.html:35
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "現在設定中のBitcore Wallet Service (BWS) サーバーにて、このウォレットの登録がありません。再登録を行うこともできます。"
@@ -2776,12 +2884,13 @@ msgid "Top up {{amountStr}} to debit card ({{cardLastNumber}})"
 msgstr "デビットカード ({{cardLastNumber}}) に {{amountStr}} の入金を行う"
 
 #: www/views/buyAmazon.html:61
+#: www/views/buyMercadoLibre.html:60
 #: www/views/modals/wallet-balance.html:23
 #: www/views/topup.html:70
 msgid "Total"
 msgstr "合計"
 
-#: www/views/walletDetails.html:185
+#: www/views/walletDetails.html:184
 msgid "Total Locked Balance"
 msgstr "ロック中の残高"
 
@@ -2804,7 +2913,7 @@ msgstr "取引"
 
 #: www/views/confirm.html:128
 msgid "Transaction Created"
-msgstr ""
+msgstr "取引情報を作成しました"
 
 #: www/views/preferencesAdvanced.html:29
 #: www/views/preferencesHistory.html:3
@@ -2816,9 +2925,10 @@ msgid "Transaction already broadcasted"
 msgstr "取引は既に配信されました。"
 
 #: src/js/controllers/buyAmazon.js:306
+#: src/js/controllers/buyMercadoLibre.js:299
 #: src/js/controllers/topup.js:279
 msgid "Transaction has not been created"
-msgstr ""
+msgstr "取引が未作成です"
 
 #: www/views/topup.html:104
 msgid "Transaction initiated"
@@ -2833,9 +2943,9 @@ msgstr "現在この取引はご覧いただけません。"
 msgid "Transaction not found"
 msgstr "取引は見つかりません"
 
-#: www/views/modals/chooseFeeLevel.html:54
+#: www/views/modals/chooseFeeLevel.html:55
 msgid "Transactions without fee are not supported."
-msgstr ""
+msgstr "手数料なしの取引はサポートされていません。"
 
 #: src/js/controllers/paperWallet.js:110
 msgid "Transfer to"
@@ -2869,7 +2979,7 @@ msgstr "未承認"
 msgid "Unit"
 msgstr "単位"
 
-#: www/views/walletDetails.html:179
+#: www/views/walletDetails.html:178
 msgid "Unsent transactions"
 msgstr "未送信取引"
 
@@ -2889,7 +2999,7 @@ msgstr "利用可能なアップデートあり"
 msgid "Updating pending proposals. Please stand by"
 msgstr "協議中の送金提案を更新します。しばらくお待ちください。"
 
-#: www/views/walletDetails.html:211
+#: www/views/walletDetails.html:210
 msgid "Updating transaction history. Please stand by."
 msgstr "取引履歴を更新します。しばらくお待ちください。"
 
@@ -2943,7 +3053,11 @@ msgstr "更新情報を表示"
 msgid "View on blockchain"
 msgstr "ブロックチェーンで詳細を閲覧"
 
-#: www/views/walletDetails.html:171
+#: www/views/mercadoLibre.html:26
+msgid "Visit mercadolivre.com.br &rarr;"
+msgstr "mercadolivre.com.br を訪れる &rarr;"
+
+#: www/views/walletDetails.html:170
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "注意：このデバイスでは鍵の派生がちゃんと動いておりません。このウォレットは正常に動作しません。"
 
@@ -3056,8 +3170,8 @@ msgid "Wallet already exists"
 msgstr "既存のウォレットです"
 
 #: src/js/services/profileService.js:498
-msgid "Wallet already in Copay"
-msgstr "Copay内の既存のウォレットです"
+msgid "Wallet already in {{appName}}"
+msgstr "{{appName}}内の既存のウォレットです"
 
 #: www/views/includes/walletActivity.html:6
 msgid "Wallet created"
@@ -3089,7 +3203,7 @@ msgid "Wallet needs backup"
 msgstr "ウォレットバックアップが必要"
 
 #: www/views/tab-receive.html:59
-#: www/views/walletDetails.html:157
+#: www/views/walletDetails.html:156
 msgid "Wallet not backed up"
 msgstr "ウォレットがバックアップされていません"
 
@@ -3124,7 +3238,7 @@ msgstr "ウォレットと連動"
 #: src/js/controllers/addressbookView.js:23
 #: src/js/controllers/modals/txpDetails.js:147
 #: src/js/controllers/modals/txpDetails.js:164
-#: src/js/controllers/preferencesDelete.js:25
+#: src/js/controllers/preferencesDelete.js:24
 #: src/js/controllers/preferencesExternal.js:14
 #: www/views/preferencesDeleteWallet.html:11
 msgid "Warning!"
@@ -3156,7 +3270,7 @@ msgstr "常に{{appName}}を改善したく思っております。どのよう�
 
 #: www/views/includes/incomingDataMenu.html:6
 msgid "Website"
-msgstr ""
+msgstr "ウェブサイト"
 
 #: www/views/preferencesLanguage.html:16
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
@@ -3234,9 +3348,9 @@ msgstr "米ドル、ユーロ、ポンドなど他の通貨との取引ができ
 msgid "You control your bitcoin."
 msgstr "ビットコインの自己管理"
 
-#: www/views/modals/chooseFeeLevel.html:63
+#: www/views/modals/chooseFeeLevel.html:64
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr ""
+msgstr "{{maxFeeRecommended}} satoshis/byte より高い手数料を設定しない方が良いです。"
 
 #: www/views/modals/bitpay-card-confirmation.html:5
 msgid "You will need to log back for fill in your BitPay Card."
@@ -3250,6 +3364,11 @@ msgstr "メールアドレスにウォレットへの入金や出金に関する
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "BitPayカードの準備が整いました。入金して全世界のお店やATMでご利用下さい。"
 
+#: www/views/mercadoLibre.html:57
+#: www/views/mercadoLibreCards.html:6
+msgid "Your Gift Cards"
+msgstr "ギフトカード"
+
 #: www/views/includes/confirmBackupPopup.html:6
 msgid "Your bitcoin wallet is backed up!"
 msgstr "ビットコインウォレットがバックアップされました!"
@@ -3258,9 +3377,9 @@ msgstr "ビットコインウォレットがバックアップされました!"
 msgid "Your bitcoin wallet is ready!"
 msgstr "ビットコインウォレットが完成しました!"
 
-#: www/views/modals/chooseFeeLevel.html:60
+#: www/views/modals/chooseFeeLevel.html:61
 msgid "Your fee is lower than recommended."
-msgstr ""
+msgstr "手数料設定が推奨値より低くなっております。"
 
 #: www/views/feedback/send.html:42
 msgid "Your ideas, feedback, or comments"
@@ -3281,11 +3400,11 @@ msgstr "パスワード"
 
 #: www/views/buyAmazon.html:102
 msgid "Your purchase could not be completed"
-msgstr ""
+msgstr "購入が完了されませんでした。"
 
 #: www/views/buyAmazon.html:105
 msgid "Your purchase was added to the list of pending"
-msgstr ""
+msgstr "ご購入の品物が保留中のリストに追加されました。"
 
 #: www/views/onboarding/backupRequest.html:10
 msgid "Your wallet is never saved to cloud storage or standard device backups."
@@ -3299,8 +3418,8 @@ msgstr "ウォレットの鍵が暗号化されます。Copayでは送金時の�
 #: www/views/paperWallet.html:35
 #: www/views/tab-home.html:96
 #: www/views/tab-receive.html:74
-#: www/views/walletDetails.html:139
-#: www/views/walletDetails.html:59
+#: www/views/walletDetails.html:138
+#: www/views/walletDetails.html:58
 msgid "[Balance Hidden]"
 msgstr "[残高非表示中]"
 
@@ -3340,7 +3459,11 @@ msgstr "送金する"
 
 #: src/js/controllers/buyAmazon.js:238
 msgid "{{amountStr}} for Amazon.com Gift Card"
-msgstr ""
+msgstr "{{amountStr}} を Amazon.com ギフトカードに"
+
+#: src/js/controllers/buyMercadoLibre.js:236
+msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
+msgstr "{{amountStr}} を Mercado Livre Brazil ギフトカードに"
 
 #: www/views/preferencesBwsUrl.html:21
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
@@ -3354,12 +3477,12 @@ msgstr "{{fee}} のビットコインネットワーク手数料が差し引か�
 msgid "{{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount"
 msgstr "送金額に対する {{tx.txp[wallet.id].feeRatePerStr}}"
 
-#: www/views/walletDetails.html:212
+#: www/views/walletDetails.html:211
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} 個の取引ダウンロード済み"
 
 #: www/views/copayers.html:46
-#: www/views/includes/walletInfo.html:12
+#: www/views/includes/walletInfo.html:13
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
 
