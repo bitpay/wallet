@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Italian\n"
 "Language: it\n"
-"PO-Revision-Date: 2017-07-18 13:18-0400\n"
+"PO-Revision-Date: 2017-08-16 09:23-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -37,6 +37,11 @@ msgstr "- {{tx.feeRateStr}} della transazione"
 #: www/views/feedback/rateApp.html:7
 msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
 msgstr "Darci un voto a 5 stelle ci aiuta a portare {{appName}} a più mani, e più utenti significa più risorse possono essere impegnate sull'app!"
+
+#: www/views/mercadoLibre.html:18
+#: www/views/mercadoLibre.html:40
+msgid "<b>Only</b> redeemable on Mercado Livre (Brazil)"
+msgstr ""
 
 #: src/js/controllers/feedback/send.js:27
 #: www/views/feedback/complete.html:21
@@ -119,7 +124,7 @@ msgstr "Aggiungere una password facoltativa per proteggere la frase di recupero"
 
 #: www/views/includes/incomingDataMenu.html:41
 msgid "Add as a contact"
-msgstr ""
+msgstr "Aggiungi come contatto"
 
 #: src/js/controllers/confirm.js:374
 msgid "Add description"
@@ -199,7 +204,7 @@ msgstr "Valuta alternativa"
 
 #: src/js/controllers/buyAmazon.js:97
 msgid "Amazon.com is not available at this moment. Please try back later."
-msgstr ""
+msgstr "Ia tabella dei guadagni di Amazon.com non è disponibile al momento. Per favore riprova piu tardi."
 
 #: www/views/amount.html:44
 #: www/views/customAmount.html:34
@@ -229,7 +234,7 @@ msgstr "Qualcuno con il tuo backup phrase potrebbe avere accesso o spendere i tu
 
 #: www/views/addresses.html:94
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
-msgstr ""
+msgstr "La tariffa approssimativa della rete Bitcoin per il trasferimento del saldo del portafoglio ( con priorità normale)"
 
 #: www/views/backupWarning.html:10
 msgid "Are you being watched?"
@@ -247,7 +252,7 @@ msgstr "Sei sicuro di voler eliminare questo portafoglio?"
 msgid "Are you sure you want to delete this contact?"
 msgstr "Sei sicuro di voler cancellare questo contatto?"
 
-#: src/js/controllers/preferencesDelete.js:26
+#: src/js/controllers/preferencesDelete.js:25
 msgid "Are you sure you want to delete this wallet?"
 msgstr "Sei sicuro di voler eliminare questo portafoglio?"
 
@@ -375,7 +380,7 @@ msgstr "Le transazioni Bitcoin comprendono un supplemento che viene raccolto dai
 
 #: www/views/buyAmazon.html:108
 msgid "Bought {{amountUnitStr}}"
-msgstr ""
+msgstr "Comprato {{amountUnitStr}}"
 
 #: www/views/modals/txp-details.html:36
 msgid "Broadcast Payment"
@@ -395,8 +400,9 @@ msgid "Browser unsupported"
 msgstr "Browser non supportato"
 
 #: www/views/buyAmazon.html:5
+#: www/views/buyMercadoLibre.html:6
 msgid "Buy"
-msgstr ""
+msgstr "Acquista"
 
 #: www/views/includes/buyAndSellCard.html:3
 msgid "Buy &amp; Sell Bitcoin"
@@ -406,9 +412,14 @@ msgstr "Comprare &amp; Vendere Bitcoin"
 msgid "Buy Bitcoin"
 msgstr "Acquista Bitcoin"
 
+#: www/views/mercadoLibre.html:22
+#: www/views/mercadoLibre.html:50
+msgid "Buy a Gift Card"
+msgstr ""
+
 #: src/js/controllers/buyAmazon.js:332
 msgid "Buy from"
-msgstr ""
+msgstr "Acquista da"
 
 #: src/js/services/onGoingProcess.js:40
 msgid "Buying Bitcoin..."
@@ -419,6 +430,7 @@ msgid "Calculating fee"
 msgstr "Calcolo commissione"
 
 #: src/js/controllers/buyAmazon.js:311
+#: src/js/controllers/buyMercadoLibre.js:305
 #: src/js/controllers/confirm.js:495
 #: src/js/controllers/topup.js:285
 #: src/js/services/popupService.js:62
@@ -484,6 +496,7 @@ msgid "Click"
 msgstr "Click"
 
 #: www/views/customAmount.html:4
+#: www/views/modals/mercadolibre-card-details.html:3
 #: www/views/modals/paypro.html:4
 #: www/views/modals/pin.html:3
 #: www/views/modals/search.html:3
@@ -509,6 +522,7 @@ msgid "Completed"
 msgstr "Completato"
 
 #: src/js/controllers/buyAmazon.js:309
+#: src/js/controllers/buyMercadoLibre.js:303
 #: src/js/controllers/confirm.js:494
 #: src/js/controllers/copayers.js:55
 #: src/js/controllers/topup.js:283
@@ -525,8 +539,9 @@ msgid "Confirm &amp; Finish"
 msgstr "Confirm &amp; concludi"
 
 #: www/views/buyAmazon.html:90
+#: www/views/buyMercadoLibre.html:77
 msgid "Confirm purchase"
-msgstr ""
+msgstr "Conferma acquisto"
 
 #: www/views/modals/pin.html:10
 msgid "Confirm your PIN"
@@ -606,10 +621,14 @@ msgstr "Copia questo testo cosí com'è in un posto sicuro (blocco note o email)
 #: www/views/includes/incomingDataMenu.html:51
 #: www/views/includes/incomingDataMenu.html:70
 #: www/views/includes/incomingDataMenu.html:94
-#: www/views/preferencesLogs.html:10
+#: www/views/includes/logOptions.html:9
 #: www/views/tab-export-file.html:78
 msgid "Copy to clipboard"
 msgstr "Copia negli appunti"
+
+#: src/js/controllers/buyMercadoLibre.js:101
+msgid "Could not access Gift Card Service"
+msgstr ""
 
 #: www/views/tab-import-phrase.html:2
 msgid "Could not access the wallet at the server. Please check:"
@@ -617,7 +636,7 @@ msgstr "Non può accedere al portafoglio sul server. Si prega di controllare:"
 
 #: src/js/controllers/buyAmazon.js:101
 msgid "Could not access to Amazon.com"
-msgstr ""
+msgstr "Impossibile accedere ad Amazon.com"
 
 #: src/js/services/profileService.js:493
 msgid "Could not access wallet"
@@ -641,9 +660,10 @@ msgstr "Impossibile creare un indirizzo"
 
 #: src/js/controllers/topup.js:91
 msgid "Could not create the invoice"
-msgstr ""
+msgstr "Non è stato creata la fattura"
 
 #: src/js/controllers/buyAmazon.js:163
+#: src/js/controllers/buyMercadoLibre.js:163
 #: src/js/controllers/topup.js:141
 msgid "Could not create transaction"
 msgstr "Non è possibile creare la transazione"
@@ -676,26 +696,27 @@ msgstr "Impossibile avere commissioni dinamiche"
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "Impossibile avere la commissione per il livello: {{feeLevel}}"
 
-#: src/js/controllers/modals/feeLevels.js:113
+#: src/js/controllers/modals/feeLevels.js:112
 msgid "Could not get fee levels"
-msgstr ""
+msgstr "Livelli commissione non disponibile"
 
 #: src/js/controllers/buyAmazon.js:121
+#: src/js/controllers/buyMercadoLibre.js:121
 #: src/js/controllers/topup.js:99
 msgid "Could not get the invoice"
-msgstr ""
+msgstr "La fattura non puo essere creata"
 
 #: src/js/controllers/bitpayCard.js:66
 msgid "Could not get transactions"
 msgstr "Non è possibile ottenere le transazioni"
 
-#: src/js/services/profileService.js:595
-#: src/js/services/profileService.js:629
-#: src/js/services/profileService.js:652
+#: src/js/services/profileService.js:597
+#: src/js/services/profileService.js:631
+#: src/js/services/profileService.js:654
 msgid "Could not import"
 msgstr "Impossibile importare"
 
-#: src/js/services/profileService.js:564
+#: src/js/services/profileService.js:566
 msgid "Could not import. Check input file and spending password"
 msgstr "Impossibile importare. Controlla il file da importare e la password di spesa"
 
@@ -725,11 +746,12 @@ msgid "Could not send payment"
 msgstr "Impossibile inviare il pagamento"
 
 #: src/js/controllers/buyAmazon.js:323
+#: src/js/controllers/buyMercadoLibre.js:316
 #: src/js/controllers/topup.js:297
 msgid "Could not send transaction"
-msgstr ""
+msgstr "Non è possibile inviare la transazione"
 
-#: www/views/walletDetails.html:199
+#: www/views/walletDetails.html:198
 msgid "Could not update transaction history"
 msgstr "Impossibile aggiornare la cronologia delle transazioni"
 
@@ -786,7 +808,7 @@ msgstr "Attuale commissione con questa politica"
 
 #: src/js/services/feeService.js:15
 msgid "Custom"
-msgstr ""
+msgstr "Personalizzata"
 
 #: www/views/customAmount.html:9
 msgid "Custom Amount"
@@ -794,8 +816,9 @@ msgstr "Importo personalizzato"
 
 #: src/js/controllers/preferencesFee.js:84
 msgid "Custom Fee"
-msgstr ""
+msgstr "Commissione personalizzata"
 
+#: www/views/modals/mercadolibre-card-details.html:56
 #: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
@@ -838,6 +861,8 @@ msgid "Derivation Strategy"
 msgstr "Strategia di derivazione"
 
 #: www/views/buyAmazon.html:39
+#: www/views/buyMercadoLibre.html:38
+#: www/views/modals/mercadolibre-card-details.html:6
 #: www/views/topup.html:45
 msgid "Details"
 msgstr "Dettagli"
@@ -906,10 +931,6 @@ msgstr "Abilitare le notifiche push"
 msgid "Enable the camera to get started."
 msgstr "Abilita la fotocamera per iniziare."
 
-#: www/views/amount.html:4
-msgid "Enter Amount"
-msgstr "Inserisci importo"
-
 #: src/js/services/walletService.js:1048
 #: src/js/services/walletService.js:1063
 msgid "Enter Spending Password"
@@ -919,9 +940,13 @@ msgstr "Inserisci Password di spesa"
 msgid "Enter Two Factor for your BitPay account"
 msgstr "Inserisci Due Fattori per il tuo account BitPay"
 
+#: www/views/amount.html:4
+msgid "Enter amount"
+msgstr ""
+
 #: www/views/modals/chooseFeeLevel.html:41
 msgid "Enter custom fee"
-msgstr ""
+msgstr "Inserisci commissione personalizzata"
 
 #: src/js/services/walletService.js:1030
 msgid "Enter new spending password"
@@ -952,6 +977,8 @@ msgstr "Inserisci la tua password"
 #: src/js/controllers/bitpayCardIntro.js:81
 #: src/js/controllers/buyAmazon.js:23
 #: src/js/controllers/buyAmazon.js:34
+#: src/js/controllers/buyMercadoLibre.js:23
+#: src/js/controllers/buyMercadoLibre.js:34
 #: src/js/controllers/confirm.js:276
 #: src/js/controllers/copayers.js:67
 #: src/js/controllers/create.js:155
@@ -993,13 +1020,13 @@ msgstr "Inserisci la tua password"
 #: src/js/controllers/join.js:165
 #: src/js/controllers/join.js:173
 #: src/js/controllers/join.js:191
-#: src/js/controllers/modals/feeLevels.js:10
+#: src/js/controllers/modals/feeLevels.js:9
 #: src/js/controllers/modals/txpDetails.js:134
 #: src/js/controllers/paperWallet.js:47
 #: src/js/controllers/preferencesBitpayCard.js:20
 #: src/js/controllers/preferencesBitpayServices.js:33
 #: src/js/controllers/preferencesBitpayServices.js:50
-#: src/js/controllers/preferencesDelete.js:37
+#: src/js/controllers/preferencesDelete.js:36
 #: src/js/controllers/preferencesExternal.js:20
 #: src/js/controllers/tab-home.js:174
 #: src/js/controllers/tab-send.js:132
@@ -1009,6 +1036,8 @@ msgstr "Inserisci la tua password"
 #: src/js/controllers/topup.js:31
 #: src/js/controllers/tx-details.js:102
 #: src/js/services/incomingData.js:98
+#: www/views/mercadoLibreCards.html:19
+#: www/views/modals/mercadolibre-card-details.html:45
 msgid "Error"
 msgstr "Errore"
 
@@ -1018,11 +1047,12 @@ msgstr "Errore di conferma"
 
 #: src/js/controllers/buyAmazon.js:178
 msgid "Error creating gift card"
-msgstr ""
+msgstr "Errore nella creazione della Gift card"
 
 #: src/js/controllers/buyAmazon.js:93
+#: src/js/controllers/buyMercadoLibre.js:93
 msgid "Error creating the invoice"
-msgstr ""
+msgstr "Errore nella creazione della fattura"
 
 #: src/js/services/profileService.js:396
 msgid "Error creating wallet"
@@ -1030,9 +1060,10 @@ msgstr "Errore creazione portafoglio"
 
 #: src/js/controllers/confirm.js:266
 msgid "Error getting SendMax information"
-msgstr ""
+msgstr "Errore nel recupero di informazione SendMax"
 
 #: src/js/controllers/buyAmazon.js:135
+#: src/js/controllers/buyMercadoLibre.js:135
 #: src/js/controllers/topup.js:113
 msgid "Error in Payment Protocol"
 msgstr "Errore nel protocollo di pagamento"
@@ -1059,6 +1090,8 @@ msgstr "Superato il limite giornaliero di $500 per utente"
 
 #: src/js/controllers/confirm.js:411
 #: www/views/confirm.html:27
+#: www/views/mercadoLibreCards.html:25
+#: www/views/modals/mercadolibre-card-details.html:34
 #: www/views/modals/txp-details.html:121
 msgid "Expired"
 msgstr "Scaduta"
@@ -1092,7 +1125,7 @@ msgstr "Chiave pubblica estesa"
 
 #: src/js/services/onGoingProcess.js:20
 msgid "Extracting Wallet information..."
-msgstr ""
+msgstr "Recupero informazioni del portafoglio..."
 
 #: src/js/controllers/export.js:115
 #: src/js/controllers/export.js:126
@@ -1111,13 +1144,13 @@ msgstr "Fondi vacanza di famiglia"
 msgid "Fee"
 msgstr "Tassa"
 
-#: www/views/modals/chooseFeeLevel.html:73
+#: www/views/modals/chooseFeeLevel.html:75
 msgid "Fee level"
-msgstr ""
+msgstr "Livello della commissione"
 
-#: src/js/controllers/modals/feeLevels.js:101
+#: src/js/controllers/modals/feeLevels.js:100
 msgid "Fee level is not defined"
-msgstr ""
+msgstr "Livello commissione non definito"
 
 #: www/views/confirm.html:81
 #: www/views/modals/txp-details.html:101
@@ -1134,12 +1167,16 @@ msgstr "Recupero Account BitPay..."
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching payment information"
-msgstr ""
+msgstr "Recupero informazione del pagamento"
 
 #: www/views/export.html:14
 #: www/views/import.html:16
 msgid "File/Text"
 msgstr "File/Testo"
+
+#: www/views/preferencesLogs.html:17
+msgid "Filter setting"
+msgstr ""
 
 #: src/js/services/fingerprintService.js:43
 #: src/js/services/fingerprintService.js:48
@@ -1158,6 +1195,7 @@ msgstr "Per finalità di controllo"
 
 #: src/js/controllers/topup.js:306
 #: www/views/buyAmazon.html:29
+#: www/views/buyMercadoLibre.html:28
 #: www/views/confirm.html:65
 #: www/views/modals/txp-details.html:74
 #: www/views/topup.html:34
@@ -1221,8 +1259,12 @@ msgstr "Ottieni contante locale ovunque tu vada, da qualsiasi ATM bancomat compa
 msgid "Get news and updates from BitPay"
 msgstr "Ricevi notizie e aggiornamenti da BitPay"
 
-#: www/views/bitpayCard.html:49
 #: www/views/onboarding/welcome.html:8
+msgctxt "button"
+msgid "Get started"
+msgstr ""
+
+#: www/views/bitpayCard.html:49
 msgid "Get started"
 msgstr "Inizia"
 
@@ -1234,17 +1276,23 @@ msgstr "Inizia aggiungendo il tuo primo."
 msgid "Getting fee levels..."
 msgstr "Ottenendo i livelli di commissione..."
 
-#: www/views/buyAmazon.html:43
-msgid "Gift card"
+#: www/views/modals/mercadolibre-card-details.html:30
+#: www/views/modals/mercadolibre-card-details.html:35
+msgid "Gift Card is not available to use anymore"
 msgstr ""
+
+#: www/views/buyAmazon.html:43
+#: www/views/buyMercadoLibre.html:42
+msgid "Gift card"
+msgstr "Carta regalo"
 
 #: src/js/controllers/buyAmazon.js:203
 msgid "Gift card expired"
-msgstr ""
+msgstr "Carta regalo scaduta"
 
 #: www/views/buyAmazon.html:111
 msgid "Gift card generated and ready to use."
-msgstr ""
+msgstr "Carta regalo generata e pronta all'uso."
 
 #: src/js/controllers/bitpayCard.js:114
 #: src/js/controllers/bitpayCard.js:124
@@ -1419,6 +1467,11 @@ msgstr "Importazione del Portafoglio..."
 msgid "In order to verify your wallet backup, please type your password."
 msgstr "Per verificare il backup del tuo portafoglio, inserire la password."
 
+#: www/views/mercadoLibreCards.html:24
+#: www/views/modals/mercadolibre-card-details.html:29
+msgid "Inactive"
+msgstr ""
+
 #: www/views/includes/walletItem.html:11
 #: www/views/includes/walletSelector.html:18
 #: www/views/tab-home.html:90
@@ -1460,6 +1513,7 @@ msgid "Invalid"
 msgstr "Invalido"
 
 #: src/js/controllers/buyAmazon.js:136
+#: src/js/controllers/buyMercadoLibre.js:136
 #: src/js/controllers/topup.js:114
 msgid "Invalid URL"
 msgstr "URL non valido"
@@ -1488,9 +1542,9 @@ msgstr "Percorso di derivazione non valido"
 msgid "Invitation to share a {{appName}} Wallet"
 msgstr "Invito a condividere un {{appName}} portafoglio"
 
-#: www/views/buyAmazon.html:49
-#: www/views/topup.html:56
-msgid "Invoice Fee"
+#: www/views/mercadoLibreCards.html:20
+#: www/views/modals/mercadolibre-card-details.html:48
+msgid "Invoice expired"
 msgstr ""
 
 #: src/js/controllers/feedback/send.js:79
@@ -1584,13 +1638,17 @@ msgstr "Locktime in effetto. Si prega di attendere per creare una nuova proposta
 msgid "Locktime in effect. Please wait to remove this spend proposal"
 msgstr "Locktime in effetto. Si prega di attendere per rimuovere questa proposta di pagamento"
 
+#: www/views/includes/logOptions.html:3
+msgid "Log options"
+msgstr ""
+
 #: www/views/modals/bitpay-card-confirmation.html:14
 msgid "Log out"
 msgstr "Esci"
 
 #: www/views/addresses.html:87
 msgid "Low amount inputs"
-msgstr ""
+msgstr "Ingressi di quantità bassa"
 
 #: www/views/includes/walletHistory.html:27
 msgid "Low fees"
@@ -1620,9 +1678,23 @@ msgstr "Beh - è tutto ok"
 msgid "Memo"
 msgstr "Nota"
 
+#: www/views/mercadoLibre.html:6
+msgid "Mercado Livre Brazil Gift Cards"
+msgstr ""
+
+#: src/js/controllers/buyMercadoLibre.js:97
+msgid "Mercadolibre Gift Card Service is not available at this moment. Please try back later."
+msgstr ""
+
 #: www/views/modals/txp-details.html:133
 msgid "Merchant Message"
 msgstr "Messaggio dal commerciante"
+
+#: www/views/buyAmazon.html:55
+#: www/views/buyMercadoLibre.html:54
+#: www/views/topup.html:63
+msgid "Miner Fee"
+msgstr ""
 
 #: src/js/services/bwcError.js:134
 msgid "Missing parameter"
@@ -1661,10 +1733,11 @@ msgstr "Nota: Per importare un portafoglio da un software di terze parti, si pre
 msgid "Name"
 msgstr "Nome"
 
-#: www/views/buyAmazon.html:55
-#: www/views/topup.html:63
-msgid "Network Fee"
-msgstr "Commissione di rete"
+#: www/views/buyAmazon.html:49
+#: www/views/buyMercadoLibre.html:48
+#: www/views/topup.html:56
+msgid "Network Cost"
+msgstr ""
 
 #: src/js/services/bwcError.js:47
 msgid "Network error"
@@ -1691,8 +1764,9 @@ msgid "No Wallet"
 msgstr "Nessun Portafoglio"
 
 #: src/js/controllers/buyAmazon.js:114
+#: src/js/controllers/buyMercadoLibre.js:114
 msgid "No access key defined"
-msgstr ""
+msgstr "Nessuna chiave di accesso definita"
 
 #: www/views/onboarding/backupRequest.html:5
 msgid "No backup, no bitcoin."
@@ -1701,6 +1775,10 @@ msgstr "Nessun backup, nessun bitcoin."
 #: www/views/addressbook.html:19
 msgid "No contacts yet"
 msgstr "Ancora nessun contatto"
+
+#: www/views/preferencesLogs.html:16
+msgid "No entries for this log level"
+msgstr ""
 
 #: www/views/preferencesExternal.html:12
 msgid "No hardware information available."
@@ -1721,9 +1799,9 @@ msgstr "Nessuna transazione recente"
 #: src/js/controllers/buyAmazon.js:43
 #: src/js/controllers/topup.js:46
 msgid "No signing proposal: No private key"
-msgstr ""
+msgstr "Nessuna proposta di firma: nessuna chiave privata"
 
-#: www/views/walletDetails.html:193
+#: www/views/walletDetails.html:192
 msgid "No transactions yet"
 msgstr "Ancora nessuna transazione"
 
@@ -1736,6 +1814,7 @@ msgid "No wallet selected"
 msgstr "Nessun portafoglio selezionato"
 
 #: src/js/controllers/buyAmazon.js:298
+#: src/js/controllers/buyMercadoLibre.js:290
 #: src/js/controllers/confirm.js:83
 #: src/js/controllers/topup.js:263
 msgid "No wallets available"
@@ -1793,7 +1872,7 @@ msgstr "Notificami se confermato"
 
 #: www/views/preferencesNotifications.html:24
 msgid "Notify me when transactions are confirmed"
-msgstr ""
+msgstr "Avvisami quando le transazioni sono confermate"
 
 #: www/views/includes/backupNeededPopup.html:8
 msgid "Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
@@ -1827,6 +1906,10 @@ msgstr "Dichiarazione di esclusione di responsabilità ufficiale in inglese"
 #: src/js/controllers/feedback/send.js:64
 msgid "Oh no!"
 msgstr "Oh no!"
+
+#: src/js/controllers/buyMercadoLibre.js:304
+msgid "Ok"
+msgstr ""
 
 #: www/views/tab-home.html:39
 msgid "On this screen you can see all your wallets, accounts, and assets."
@@ -1872,7 +1955,7 @@ msgstr "Apri Portafoglio"
 
 #: www/views/includes/incomingDataMenu.html:19
 msgid "Open website"
-msgstr ""
+msgstr "Apri il sito"
 
 #: www/views/bitpayCardIntro.html:34
 msgid "Order the BitPay Card"
@@ -1970,6 +2053,11 @@ msgstr "Dettagli pagamento"
 msgid "Payment request"
 msgstr "Richiesta di pagamento"
 
+#: www/views/mercadoLibreCards.html:22
+#: www/views/modals/mercadolibre-card-details.html:39
+msgid "Pending"
+msgstr ""
+
 #: www/views/proposals.html:4
 msgid "Pending Proposals"
 msgstr "Proposte in attesa"
@@ -2017,7 +2105,7 @@ msgstr "Per favore, selezione il tuo file di backup"
 
 #: www/views/bitpayCard.html:81
 msgid "Pre-Auth Holds"
-msgstr ""
+msgstr "Detenzione pre-autorizzata"
 
 #: www/views/tab-settings.html:40
 msgid "Preferences"
@@ -2031,7 +2119,7 @@ msgstr "Preparazione indirizzi..."
 msgid "Preparing backup..."
 msgstr "Preparando il backup..."
 
-#: src/js/routes.js:1188
+#: src/js/routes.js:1240
 msgid "Press again to exit"
 msgstr "Premi ancora per uscire"
 
@@ -2041,7 +2129,7 @@ msgstr "Priorità"
 
 #: www/views/includes/incomingDataMenu.html:80
 msgid "Private Key"
-msgstr ""
+msgstr "Chiave Privata"
 
 #: src/js/controllers/paperWallet.js:137
 msgid "Private key encrypted. Enter password"
@@ -2069,12 +2157,16 @@ msgstr "Proposta eliminata"
 msgid "Proposal Rejected"
 msgstr "Proposta respinta"
 
-#: www/views/walletDetails.html:178
+#: www/views/walletDetails.html:177
 msgid "Proposals"
 msgstr "Proposte"
 
 #: src/js/controllers/buyAmazon.js:281
 msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
+msgstr "Importo di acquisto è limitato a {{limitPerDay}} di {{currency}} al giorno"
+
+#: src/js/controllers/buyMercadoLibre.js:280
+msgid "Purchase amount must be a value between 50 and 2000"
 msgstr ""
 
 #: www/views/onboarding/notifications.html:3
@@ -2117,7 +2209,7 @@ msgstr "Ricevi"
 
 #: www/views/customAmount.html:46
 msgid "Receive in"
-msgstr ""
+msgstr "Ricevere in"
 
 #: www/views/includes/walletHistory.html:24
 #: www/views/tx-details.html:18
@@ -2160,7 +2252,7 @@ msgstr "Destinatari"
 msgid "Recovery phrase"
 msgstr "Frase di Recupero"
 
-#: www/views/walletDetails.html:117
+#: www/views/walletDetails.html:116
 #: www/views/walletDetails.html:36
 msgid "Recreate"
 msgstr "Ricrea"
@@ -2168,6 +2260,10 @@ msgstr "Ricrea"
 #: src/js/services/onGoingProcess.js:26
 msgid "Recreating Wallet..."
 msgstr "Ricreando Portafoglio..."
+
+#: www/views/modals/mercadolibre-card-details.html:22
+msgid "Redeem now"
+msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:57
 #: src/js/controllers/tx-details.js:63
@@ -2183,6 +2279,7 @@ msgid "Release information"
 msgstr "Informazioni sul rilascio"
 
 #: www/views/addressbook.view.html:36
+#: www/views/modals/mercadolibre-card-details.html:69
 msgid "Remove"
 msgstr "Rimuovere"
 
@@ -2301,6 +2398,10 @@ msgstr "Cerca la tua valuta"
 msgid "Security"
 msgstr "Sicurezza"
 
+#: www/views/modals/mercadolibre-card-details.html:64
+msgid "See invoice"
+msgstr ""
+
 #: www/views/tab-import-file.html:7
 msgid "Select a backup file"
 msgstr "Seleziona un file di backup"
@@ -2337,7 +2438,7 @@ msgstr "Invia denaro"
 msgid "Send addresses by email"
 msgstr "Invia indirizzi via Email"
 
-#: www/views/preferencesLogs.html:13
+#: www/views/includes/logOptions.html:17
 #: www/views/tab-export-file.html:82
 msgid "Send by email"
 msgstr "Invia via email"
@@ -2352,7 +2453,7 @@ msgstr "Inviare l'importo massimo"
 
 #: www/views/includes/incomingDataMenu.html:46
 msgid "Send payment to this address"
-msgstr ""
+msgstr "Inviare il pagamento a questo indirizzo"
 
 #: www/views/feedback/rateApp.html:17
 msgid "Send us feedback instead"
@@ -2401,8 +2502,9 @@ msgid "Server response could not be verified"
 msgstr "La risposta del server non può essere verificata"
 
 #: src/js/controllers/buyAmazon.js:96
+#: src/js/controllers/buyMercadoLibre.js:96
 msgid "Service not available"
-msgstr ""
+msgstr "Servizio non disponibile"
 
 #: www/views/includes/homeIntegrations.html:3
 msgid "Services"
@@ -2422,7 +2524,7 @@ msgstr "Imposta una password"
 
 #: src/js/controllers/preferencesFee.js:84
 msgid "Set your own fee in satoshis/byte"
-msgstr ""
+msgstr "Impostare la propria commissione in satoshi/byte"
 
 #: www/views/tab-settings.html:3
 #: www/views/tabs.html:19
@@ -2500,8 +2602,9 @@ msgid "Slide"
 msgstr "Trascina"
 
 #: www/views/buyAmazon.html:96
+#: www/views/buyMercadoLibre.html:83
 msgid "Slide to buy"
-msgstr ""
+msgstr "Trascina per acquistare"
 
 #: src/js/controllers/create.js:83
 #: src/js/controllers/join.js:68
@@ -2520,9 +2623,9 @@ msgstr "Proposta di pagamento non trovata"
 msgid "Spending Password needed"
 msgstr "Necessaria password di spesa"
 
-#: www/views/walletDetails.html:162
+#: www/views/walletDetails.html:161
 msgid "Spending this balance will need significant Bitcoin network fees"
-msgstr ""
+msgstr "Per spendere questa quantità saranno necessarie significative commissioni di rete Bitcoin"
 
 #: www/views/tab-send.html:28
 msgid "Start sending bitcoin"
@@ -2532,9 +2635,14 @@ msgstr "Iniziare a inviare bitcoin"
 msgid "Startup Lock"
 msgstr "Blocco all'avvio"
 
+#: www/views/mercadoLibreCards.html:21
+#: www/views/modals/mercadolibre-card-details.html:42
+msgid "Still pending"
+msgstr ""
+
 #: www/views/topup.html:101
 msgid "Success"
-msgstr ""
+msgstr "Completato"
 
 #: src/js/services/feeService.js:14
 msgid "Super Economy"
@@ -2561,12 +2669,12 @@ msgstr "QUESTA AZIONE NON PUÒ ESSERE INVERTITA"
 msgid "Take control of your money,<br>get started with bitcoin."
 msgstr "Prendi il controllo del tuo denaro, <br>inizia con bitcoin."
 
-#: www/views/walletDetails.html:140
-#: www/views/walletDetails.html:60
+#: www/views/walletDetails.html:139
+#: www/views/walletDetails.html:59
 msgid "Tap and hold to show"
 msgstr "Toccare e tenere premuto per mostrare"
 
-#: www/views/walletDetails.html:112
+#: www/views/walletDetails.html:111
 #: www/views/walletDetails.html:31
 msgid "Tap to retry"
 msgstr "Tocca per riprovare"
@@ -2589,7 +2697,7 @@ msgstr "Testnet"
 
 #: www/views/includes/incomingDataMenu.html:61
 msgid "Text"
-msgstr ""
+msgstr "Testo"
 
 #: src/js/controllers/feedback/send.js:27
 #: src/js/controllers/feedback/send.js:76
@@ -2724,13 +2832,13 @@ msgstr "Questa frase di recupero è stata creata con una password. Per recuperar
 
 #: www/views/tx-details.html:93
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
-msgstr ""
+msgstr "Questo importo della transazione è troppo piccolo rispetto alle attuali commissioni della rete Bitcoin. Per spendere questi fondi sarà necessaria una commissione Bitcoin paragonabile ai fondi stessi."
 
 #: www/views/tx-details.html:89
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
 msgstr "Questa operazione potrebbe richiedere molto tempo per essere confermata o potrebbe essere abbandonata a causa delle commissioni basse impostate dal mittente"
 
-#: www/views/walletDetails.html:116
+#: www/views/walletDetails.html:115
 #: www/views/walletDetails.html:35
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "Questo portafoglio non è registrato al Bitcore Wallet Service (BWS). Puoi ricrearlo dalle informazioni locali."
@@ -2759,7 +2867,7 @@ msgstr "Per iniziare, è necessario che tu crei un portafoglio bitcoin e ottener
 
 #: src/js/services/bitpayAccountService.js:73
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
-msgstr ""
+msgstr "Per {{reason}} è necessario innanzitutto aggiungere il tuo account BitPay - {{email}}"
 
 #: src/js/services/onGoingProcess.js:48
 msgid "Top up in progress..."
@@ -2770,12 +2878,13 @@ msgid "Top up {{amountStr}} to debit card ({{cardLastNumber}})"
 msgstr "Ricaricare di {{amountStr}} sulla carta di debito ({{cardLastNumber}})"
 
 #: www/views/buyAmazon.html:61
+#: www/views/buyMercadoLibre.html:60
 #: www/views/modals/wallet-balance.html:23
 #: www/views/topup.html:70
 msgid "Total"
 msgstr "Totale"
 
-#: www/views/walletDetails.html:185
+#: www/views/walletDetails.html:184
 msgid "Total Locked Balance"
 msgstr "Totale Importo Bloccato"
 
@@ -2785,7 +2894,7 @@ msgstr "Numero totale di copayer"
 
 #: www/views/addresses.html:81
 msgid "Total wallet inputs"
-msgstr ""
+msgstr "Totale ingressi nel portafoglio"
 
 #: src/js/services/fingerprintService.js:63
 #: src/js/services/fingerprintService.js:68
@@ -2798,7 +2907,7 @@ msgstr "Transazione"
 
 #: www/views/confirm.html:128
 msgid "Transaction Created"
-msgstr ""
+msgstr "Transazione creata"
 
 #: www/views/preferencesAdvanced.html:29
 #: www/views/preferencesHistory.html:3
@@ -2810,13 +2919,14 @@ msgid "Transaction already broadcasted"
 msgstr "Transazione già trasmessa"
 
 #: src/js/controllers/buyAmazon.js:306
+#: src/js/controllers/buyMercadoLibre.js:299
 #: src/js/controllers/topup.js:279
 msgid "Transaction has not been created"
-msgstr ""
+msgstr "La transazione non è stata creata"
 
 #: www/views/topup.html:104
 msgid "Transaction initiated"
-msgstr ""
+msgstr "Transazione avviata"
 
 #: src/js/controllers/tx-details.js:102
 msgid "Transaction not available at this time"
@@ -2827,9 +2937,9 @@ msgstr "Transazione non disponibile in questo momento"
 msgid "Transaction not found"
 msgstr "Transazione non trovata"
 
-#: www/views/modals/chooseFeeLevel.html:54
+#: www/views/modals/chooseFeeLevel.html:55
 msgid "Transactions without fee are not supported."
-msgstr ""
+msgstr "Non sono supportate transazioni senza commissione."
 
 #: src/js/controllers/paperWallet.js:110
 msgid "Transfer to"
@@ -2863,7 +2973,7 @@ msgstr "Non confermato"
 msgid "Unit"
 msgstr "Unità"
 
-#: www/views/walletDetails.html:179
+#: www/views/walletDetails.html:178
 msgid "Unsent transactions"
 msgstr "Transazioni non inviate"
 
@@ -2883,7 +2993,7 @@ msgstr "Aggiornamento Disponibile"
 msgid "Updating pending proposals. Please stand by"
 msgstr "Aggiornamento in attesa di proposte. Si prega di attendere"
 
-#: www/views/walletDetails.html:211
+#: www/views/walletDetails.html:210
 msgid "Updating transaction history. Please stand by."
 msgstr "Aggiornamento cronologia delle transazioni. Siete pregati di attendere."
 
@@ -2937,7 +3047,11 @@ msgstr "Visualizza aggiornamenti"
 msgid "View on blockchain"
 msgstr "Mostra su blockchain"
 
-#: www/views/walletDetails.html:171
+#: www/views/mercadoLibre.html:26
+msgid "Visit mercadolivre.com.br &rarr;"
+msgstr ""
+
+#: www/views/walletDetails.html:170
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "ATTENZIONE: La derivazione della chiave non funziona su questo dispositivo/portafoglio. Le operazioni non possono essere eseguite su questo portafoglio."
 
@@ -2997,7 +3111,7 @@ msgstr "Informazioni sul portafoglio"
 
 #: www/views/addresses.html:76
 msgid "Wallet Inputs"
-msgstr ""
+msgstr "Ingressi nel portafoglio"
 
 #: www/views/join.html:26
 msgid "Wallet Invitation"
@@ -3050,8 +3164,8 @@ msgid "Wallet already exists"
 msgstr "Il portafoglio esiste già"
 
 #: src/js/services/profileService.js:498
-msgid "Wallet already in Copay"
-msgstr "Portafoglio già in Copay"
+msgid "Wallet already in {{appName}}"
+msgstr ""
 
 #: www/views/includes/walletActivity.html:6
 msgid "Wallet created"
@@ -3083,7 +3197,7 @@ msgid "Wallet needs backup"
 msgstr "Il portafoglio richiede password"
 
 #: www/views/tab-receive.html:59
-#: www/views/walletDetails.html:157
+#: www/views/walletDetails.html:156
 msgid "Wallet not backed up"
 msgstr "Portafoglio senza backup"
 
@@ -3118,7 +3232,7 @@ msgstr "Portafogli & integrazioni"
 #: src/js/controllers/addressbookView.js:23
 #: src/js/controllers/modals/txpDetails.js:147
 #: src/js/controllers/modals/txpDetails.js:164
-#: src/js/controllers/preferencesDelete.js:25
+#: src/js/controllers/preferencesDelete.js:24
 #: src/js/controllers/preferencesExternal.js:14
 #: www/views/preferencesDeleteWallet.html:11
 msgid "Warning!"
@@ -3150,7 +3264,7 @@ msgstr "Siamo sempre alla ricerca di modi per migliorare {{appName}}. Come potre
 
 #: www/views/includes/incomingDataMenu.html:6
 msgid "Website"
-msgstr ""
+msgstr "Sito Web"
 
 #: www/views/preferencesLanguage.html:16
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
@@ -3228,9 +3342,9 @@ msgstr "È possibile scambiarlo con altre valute come i dollari USA, Euro o Ster
 msgid "You control your bitcoin."
 msgstr "Controlli i tuoi bitcoin."
 
-#: www/views/modals/chooseFeeLevel.html:63
+#: www/views/modals/chooseFeeLevel.html:64
 msgid "You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte."
-msgstr ""
+msgstr "Non è necessario impostare una commissione maggiore di {{maxFeeRecommended}} satoshis/byte."
 
 #: www/views/modals/bitpay-card-confirmation.html:5
 msgid "You will need to log back for fill in your BitPay Card."
@@ -3244,6 +3358,11 @@ msgstr "Riceverai notifiche e-mail per i pagamenti inviati e ricevuti dai tuoi p
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
 msgstr "La carta BitPay è pronta. Aggiungi fondi alla tua carta per iniziare ad usarla presso i negozi e gli sportelli automatici in tutto il mondo."
 
+#: www/views/mercadoLibre.html:57
+#: www/views/mercadoLibreCards.html:6
+msgid "Your Gift Cards"
+msgstr ""
+
 #: www/views/includes/confirmBackupPopup.html:6
 msgid "Your bitcoin wallet is backed up!"
 msgstr "Il tuo portafoglio bitcoin ha eseguito il backup!"
@@ -3252,9 +3371,9 @@ msgstr "Il tuo portafoglio bitcoin ha eseguito il backup!"
 msgid "Your bitcoin wallet is ready!"
 msgstr "Il tuo portafoglio bitcoin è pronto!"
 
-#: www/views/modals/chooseFeeLevel.html:60
+#: www/views/modals/chooseFeeLevel.html:61
 msgid "Your fee is lower than recommended."
-msgstr ""
+msgstr "La tua commissione è inferiore a quella consigliata."
 
 #: www/views/feedback/send.html:42
 msgid "Your ideas, feedback, or comments"
@@ -3275,11 +3394,11 @@ msgstr "La tua password"
 
 #: www/views/buyAmazon.html:102
 msgid "Your purchase could not be completed"
-msgstr ""
+msgstr "Impossibile completare il tuo acquisto"
 
 #: www/views/buyAmazon.html:105
 msgid "Your purchase was added to the list of pending"
-msgstr ""
+msgstr "Il tuo acquisto è stato aggiunto alla lista d'attesa"
 
 #: www/views/onboarding/backupRequest.html:10
 msgid "Your wallet is never saved to cloud storage or standard device backups."
@@ -3293,8 +3412,8 @@ msgstr "La chiave del tuo portafoglio verrà cifrata. La Password Per Spendere n
 #: www/views/paperWallet.html:35
 #: www/views/tab-home.html:96
 #: www/views/tab-receive.html:74
-#: www/views/walletDetails.html:139
-#: www/views/walletDetails.html:59
+#: www/views/walletDetails.html:138
+#: www/views/walletDetails.html:58
 msgid "[Balance Hidden]"
 msgstr "[Fondi Nascosti]"
 
@@ -3334,6 +3453,10 @@ msgstr "per inviare"
 
 #: src/js/controllers/buyAmazon.js:238
 msgid "{{amountStr}} for Amazon.com Gift Card"
+msgstr "{{amountStr}} per una carta regalo Amazon.com"
+
+#: src/js/controllers/buyMercadoLibre.js:236
+msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr ""
 
 #: www/views/preferencesBwsUrl.html:21
@@ -3346,14 +3469,14 @@ msgstr "{{fee}} verranno detratti come commissione per il network."
 
 #: www/views/confirm.html:87
 msgid "{{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount"
-msgstr ""
+msgstr "{{tx.txp[wallet.id].feeRatePerStr}} dell'importo d'invio"
 
-#: www/views/walletDetails.html:212
+#: www/views/walletDetails.html:211
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transazioni scaricate"
 
 #: www/views/copayers.html:46
-#: www/views/includes/walletInfo.html:12
+#: www/views/includes/walletInfo.html:13
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-di-{{wallet.n}}"
 
