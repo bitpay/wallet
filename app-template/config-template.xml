@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.bitlox.*BUNDLENAME*"
+<widget id="*PACKAGENAMEID*"
   version="*VERSION*"
   android-versionCode="*ANDROIDVERSION*"
   ios-CFBundleVersion="*VERSION*">
@@ -7,8 +7,8 @@
     <description>
       *PURPOSELINE*
     </description>
-    <author email="support@bitlox.com" href="*URL*">
-        BitLox Ltd.
+    <author email="*SUPPORTEMAIL*" href="*URL*">
+        *COMPANYNAME*
     </author>
     <content src="index.html" />
     <access origin="*" />
