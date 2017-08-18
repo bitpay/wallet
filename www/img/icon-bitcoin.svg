@@ -1,112 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Layer_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 128 128"
-   xml:space="preserve"
-   sodipodi:docname="icon-bitcoin-Edited.svg"
-   width="128"
-   height="128"
-   inkscape:version="0.92.1 r15371"><metadata
-   id="metadata4536"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="1600"
-   inkscape:window-height="838"
-   id="namedview4534"
-   showgrid="false"
-   inkscape:zoom="4.627451"
-   inkscape:cx="57.476915"
-   inkscape:cy="67.276566"
-   inkscape:window-x="-8"
-   inkscape:window-y="-8"
-   inkscape:window-maximized="1"
-   inkscape:current-layer="Layer_1"
-   inkscape:pagecheckerboard="true" />
-<style
-   type="text/css"
-   id="style4515">
-	.st0{fill:url(#coin_1_);}
-	.st1{filter:url(#Adobe_OpacityMaskFilter);}
-	.st2{fill:#FFFFFF;}
-	.st3{mask:url(#mask-3);fill:#FFFFFF;stroke:#000000;}
-</style>
-<linearGradient
-   id="coin_1_"
-   gradientUnits="userSpaceOnUse"
-   x1="-273.82239"
-   y1="413.966"
-   x2="-274.172"
-   y2="414.57001"
-   gradientTransform="matrix(121.3881,0,0,-121.55503,33315.568,50406.262)">
-	<stop
-   offset="0"
-   style="stop-color:#ffffff"
-   id="stop4517" />
-	<stop
-   offset="1"
-   style="stop-color:#ffffff"
-   id="stop4519" />
-</linearGradient>
-
-<defs
-   id="defs4526">
-	<filter
-   id="Adobe_OpacityMaskFilter"
-   filterUnits="userSpaceOnUse"
-   x="15"
-   y="11"
-   width="21"
-   height="28.700001">
-		<feColorMatrix
-   type="matrix"
-   values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"
-   id="feColorMatrix4523" />
-	</filter>
-</defs>
-<mask
-   maskUnits="userSpaceOnUse"
-   x="15"
-   y="11"
-   width="21"
-   height="28.7"
-   id="mask-3">
-	<g
-   class="st1"
-   id="g4529"
-   style="filter:url(#Adobe_OpacityMaskFilter)">
-		<path
-   id="path-2"
-   class="st2"
-   d="M 26.2,50.4 C 40.1,50.4 51.4,39.1 51.4,25.2 51.4,11.3 40.1,0 26.2,0 12.3,0 1,11.3 1,25.2 1,39.1 12.3,50.4 26.2,50.4 Z"
-   inkscape:connector-curvature="0"
-   style="fill:#ffffff" />
-	</g>
-</mask>
-<path
-   id="BitPay-Bitcoin_Symbol"
-   class="st3"
-   d="M 33.5,19.1 C 32.9,16.1 30.2,15.3 27,15.2 L 26.5,11.176925 24,11.2 l 0.5,4.2 c -0.7,0.1 -1.3,0.1 -2,0.2 L 22,11.4 19.5,11.6 20,15.981658 c -0.5,0 -0.827808,0.07278 -1.6,0.118342 l -0.966281,0.108877 -2.134308,0.08225 L 15.3,19.2 c 0,0 1.568637,-0.07751 1.990534,-0.07278 C 18.238858,19.315584 18.394108,19.601669 18.6,20.1 L 19.1,25 19.246025,24.942259 19.1,25 l 0.8,6.8 c 0,0.3 -0.2,0.9 -0.8,0.9 l -1.8,0.2 -0.1,3.1 3.2,-0.3 c 0.6,0 1.2,-0.1 1.8,-0.1 l 0.444595,3.941881 0.544241,0.0103 2.059281,0.0035 L 24.7,35.4 c 0.7,0 1.4,-0.1 2,-0.1 L 27.182404,39.420677 29.7,39.3 29.2,35 c 4.2,-0.6 6.162605,-2.216102 6.30572,-6.181038 C 35.351694,25.708051 34.129873,24.551165 31.9,23.935064 33.2,22.935064 34,21.4 33.5,19.1 Z M 31,28.7 c 0.4,3.2 -5,3.3 -6.7,3.5 l -0.6,-5.7 c 1.8,-0.2 7,-1.2 7.3,2.2 z M 23.5,23.8 23,18.6 c 1.4,-0.1 5.8,-1 6.1,2.1 0.2,2.9 -4.2,3 -5.6,3.1 z"
-   mask="url(#mask-3)"
-   inkscape:connector-curvature="0"
-   style="fill:#ffffff;stroke:#000000;stroke-width:0.25191098;stroke-miterlimit:4;stroke-dasharray:none"
-   sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccccccccccc"
-   transform="matrix(3.9696563,0,0,3.9696563,-37.997103,-36.710858)" />
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="128px" height="128px" viewBox="0 0 128 128" enable-background="new 0 0 128 128" xml:space="preserve">
+<g>
+	<path fill="#FFFFFF" d="M104.106,77.705c-0.611-12.348-5.462-16.941-14.313-19.387c5.16-3.97,8.336-10.063,6.352-19.193
+		c-2.382-11.909-13.1-15.084-25.803-15.481l-1.984-15.97l-9.925,0.091l1.985,16.673c-2.779,0.397-5.16,0.397-7.939,0.794
+		L50.494,8.558l-9.924,0.794l1.985,17.394c-1.985,0-3.286,0.289-6.352,0.47l-3.835,0.432l-8.473,0.327l0.002,11.547
+		c0,0,6.227-0.309,7.901-0.289c3.765,0.748,4.381,1.883,5.198,3.861l1.985,19.451l3.176,26.994c0,1.191-0.794,3.572-3.176,3.572
+		l-7.146,0.795l-0.397,12.307l12.703-1.191c2.382,0,4.764-0.396,7.146-0.396l1.765,15.646l2.161,0.041l8.174,0.014l-2.176-16.496
+		c2.779,0,5.558-0.396,7.939-0.396l1.916,16.357l9.994-0.479l-1.985-17.07C95.748,99.861,103.539,93.445,104.106,77.705z
+		 M54.463,37.14c5.557-0.397,23.024-3.97,24.214,8.336c0.795,11.512-16.672,11.909-22.229,12.307L54.463,37.14z M59.624,91.127
+		L57.242,68.5c7.145-0.793,27.787-4.763,28.979,8.734C87.809,89.936,66.372,90.334,59.624,91.127z"/>
+</g>
 </svg>
