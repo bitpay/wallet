@@ -5,6 +5,8 @@
   "userVisibleName": "BitLox",
   "purposeLine": "BitLox Wallet",
   "bundleName": "mobilewallet",
+  "companyName": "BitLox, Ltd.",
+  "supportEmail": "support@bitlox.com",  
   "appUri": "bitlox",
   "name": "bitlox",
   "nameNoSpace": "bitlox",
