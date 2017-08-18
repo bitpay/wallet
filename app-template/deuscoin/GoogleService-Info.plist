@@ -17,11 +17,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bitlox.mobilewallet</string>
+	<string>org.deuscoin.wallet</string>
 	<key>PROJECT_ID</key>
-	<string>bitloxwallet</string>
+	<string>deuscoinwallet</string>
 	<key>STORAGE_BUCKET</key>
-	<string>bitloxwallet.appspot.com</string>
+	<string>deuscoinwallet.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -35,6 +35,6 @@
 	<key>GOOGLE_APP_ID</key>
 	<string>1:703103669941:ios:ed8410990e5d0af4</string>
 	<key>DATABASE_URL</key>
-	<string>https://bitloxwallet.firebaseio.com</string>
+	<string>https://deuscoinwallet.firebaseio.com</string>
 </dict>
 </plist>
