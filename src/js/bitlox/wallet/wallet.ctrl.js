@@ -75,27 +75,20 @@
           }).finally(function() {
 
           })
-
         }
-
-
-
         $scope.createWallet = function() {
             $ionicLoading.show({template: "Creating Wallet, Check Your BitLox"})
             $scope.creatingWallet = true;
-            bitloxWallet.create($scope.newWallet.number, $scope.newWallet).then(function(res) {
-
-              $ionicLoading.hide()
-
-              $timeout($scope.readWallets.bind(vm), 100)
-              bitloxWallet.getBip32().then(function() {
-                $timeout($scope.readWallets.bind(vm), 1000).then(function() {
-                  _importExtendedPublicKey(wallet)
-                  $scope.resetNewWallet()
-                });
-              })
-
-            }, function() {
+            bitloxWallet.create($scope.newWallet.number, $scope.newWallet).then(function(res) { 
+              $ionicLoading.hide();
+              if(res.type === api.TYPE_ERROR) {
+                popupService.showAlert(gettextCatalog.getString('Error'));
+                return false;
+              }
+              $scope.resetNewWallet()     
+              $ionicHistory.goBack(-1)
+            }, function(err) {
+              popupService.showAlert(gettextCatalog.getString('Error'), err);
               $ionicLoading.hide()
             }).finally(function(res) {
                 // reset();
@@ -134,7 +127,7 @@
 
 
         // dave says this comes from the import.js file by copay, with edits
-        var _importExtendedPublicKey = function(wallet) {
+        var _importExtendedPublicKey = function(wallet, cb) {
           $ionicLoading.show({
             template: 'Importing BitLox wallet...'
           });
