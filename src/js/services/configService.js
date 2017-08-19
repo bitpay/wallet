@@ -23,6 +23,9 @@ angular.module('copayApp.services').factory('configService', function(appConfigS
     download: {
       url: appConfigService.downloadUrl
     },
+    support: {
+      url: appConfigService.supportUrl
+    },
 
     rateApp: appConfigService.rateAppUrls,
     // wallet default config

@@ -7,6 +7,7 @@
   "bundleName": "mobilewallet",
   "companyName": "BitLox, Ltd.",
   "supportEmail": "support@bitlox.com",  
+  "supportUrl": "https://bitlox.io/support",
   "appUri": "bitlox",
   "name": "bitlox",
   "nameNoSpace": "bitlox",
