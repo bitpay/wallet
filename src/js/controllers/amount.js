@@ -16,6 +16,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    console.log('amountController beforeEnter', data);
     // Go to...
     _id = data.stateParams.id; // Optional (BitPay Card ID or Wallet ID)
     $scope.nextStep = data.stateParams.nextStep;
@@ -31,6 +32,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.showAlternativeAmount = !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
+    $scope.privateSend = data.stateParams.privateSend || false;
 
     if (!$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
@@ -239,7 +241,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
         toName: $scope.toName,
         toEmail: $scope.toEmail,
         toColor: $scope.toColor,
-        useSendMax: $scope.useSendMax
+        useSendMax: $scope.useSendMax,
+        privateSend: $scope.privateSend
       });
     }
     $scope.useSendMax = null;

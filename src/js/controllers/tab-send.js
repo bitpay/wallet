@@ -7,7 +7,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var currentContactsPage;
   $scope.isChromeApp = platformInfo.isChromeApp;
 
-
   var hasWallets = function() {
     $scope.wallets = profileService.getWallets({
       onlyComplete: true
@@ -152,8 +151,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.findContact = function(search) {
-
-    if (incomingData.redir(search)) {
+    var privateSend = $scope.formData.privateSend || false;
+    if (incomingData.redir(search, privateSend)) {
       return;
     }
 
@@ -164,7 +163,6 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       });
       return;
     }
-
     var result = lodash.filter(originalList, function(item) {
       var val = item.name;
       return lodash.includes(val.toLowerCase(), search.toLowerCase());
@@ -174,6 +172,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.goToAmount = function(item) {
+    console.log('goToAmount');
     $timeout(function() {
       item.getAddress(function(err, addr) {
         if (err || !addr) {

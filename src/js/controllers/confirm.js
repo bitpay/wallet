@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, navTechService) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -118,6 +118,20 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
     };
 
+    function setupPrivatePayment(amount, address) {
+      ongoingProcess.set('Finding NavTech Server', true);
+      navTechService.findNode(amount, address, function(success, data) {
+        ongoingProcess.set('Finding NavTech Server', false);
+        if (!success) {
+          //@TODO finish this tree
+          console.log('Something went wrong, do you want to send a regular transaction?');
+          return;
+        }
+        //@TODO setup the multiple transactions with the right data
+      });
+
+    }
+
     // Setup $scope
 
     // Grab stateParams
@@ -146,23 +160,29 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.isWindowsPhoneApp = isWindowsPhoneApp;
     $scope.showAddress = false;
 
-    updateTx(tx, null, {}, function() {
+    if(data.stateParams.privateSend === 'true') {
+      var amount = parseInt(data.stateParams.toAmount);
+      var address = data.stateParams.toAddress;
+      setupPrivatePayment(amount, address);
+    } else {
+      updateTx(tx, null, {}, function() {
 
-      $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
+        $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
-      setWalletSelector(tx.network, tx.toAmount, function(err) {
-        if (err) {
-          return exitWithError('Could not update wallets');
-        }
+        setWalletSelector(tx.network, tx.toAmount, function(err) {
+          if (err) {
+            return exitWithError('Could not update wallets');
+          }
 
-        if ($scope.wallets.length > 1) {
-          $scope.showWalletSelector();
-        } else if ($scope.wallets.length) {
-          setWallet($scope.wallets[0], tx);
-        }
+          if ($scope.wallets.length > 1) {
+            $scope.showWalletSelector();
+          } else if ($scope.wallets.length) {
+            setWallet($scope.wallets[0], tx);
+          }
+        });
+
       });
-
-    });
+    }
   });
 
 

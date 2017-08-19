@@ -14,6 +14,11 @@
             <i class="icon icon-svg qr abs-v-center separator-left" on-tap="openScanner()"><img src="img/scan-ico.svg"></i>
           </div>
         </div>
+        <div class="send-private-toggle">
+          <ion-toggle ng-model="formData.privateSend" toggle-class="toggle-balanced">
+            <span class="toggle-label" translate>Private Payment</span>
+          </ion-toggle>
+        </div>
       </div>
     </div>
 
