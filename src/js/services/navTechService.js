@@ -29,11 +29,13 @@ var NavTechService = function(opts) {
   self.delay = 20;
   self.encryptionLength = 344;
 
+  self.jsencrypt = new JSEncrypt();
+
   self.availableServers = [
-    '95.183.53.184:3000',
-    '95.183.52.55:3000',
-    '95.183.52.28:3000',
-    '95.183.52.29:3000'
+    //'95.183.53.184:3000',
+    //'95.183.52.28:3000',
+    //'95.183.52.29:3000',
+    '95.183.52.55:3000'
   ]
 };
 
@@ -47,12 +49,12 @@ NavTechService.singleton = function(opts) {
 };
 
 NavTechService.prototype._checkNode = function(availableServers, numAddresses, callback) {
-  if (!this.availableServers || this.availableServers.length === 0) {
-    this.runtime.callback(false, { message: 'No valid NavTech servers found' });
+  var self = this;
+
+  if (!self.availableServers || self.availableServers.length === 0) {
+    self.runtime.callback(false, { message: 'No valid NavTech servers found' });
     return;
   }
-
-  var self = this;
 
   var randomIndex = Math.floor(Math.random() * availableServers.length)
   var navtechServerUrl = 'https://' + availableServers[randomIndex] + '/api/check-node';
@@ -62,7 +64,7 @@ NavTechService.prototype._checkNode = function(availableServers, numAddresses, c
     self.httprequest.post(navtechServerUrl, { num_addresses: numAddresses }).success(function(res){
       if(res && res.type === 'SUCCESS' && res.data) {
         console.log('Success fetching navtech data from server ' + availableServers[randomIndex], res);
-        callback(res.data);
+        callback(res.data, self);
       } else {
         console.log('Bad response from navtech server ' + availableServers[randomIndex], res);
         availableServers.splice(randomIndex, 1);
@@ -95,17 +97,17 @@ NavTechService.prototype._splitPayment = function(amount) {
       var randSatoshis = Math.floor(Math.random() * (rangeTop - rangeBottom) + rangeBottom);
       if (randSatoshis > amount - runningTotal || i === numTxes - 1) {
         var remainingAmount = Math.round(amount - runningTotal);
-        amounts.push({ amount: remainingAmount });
+        amounts.push(remainingAmount);
         runningTotal += remainingAmount;
       } else {
-        amounts.push({ amount: randSatoshis });
+        amounts.push(randSatoshis);
         runningTotal += randSatoshis
       }
     }
   }
-  var sum = self.lodash.sumBy(amounts, function(o) { return o.amount });
-  if (sum === amount && amounts.length > 1) {
-    this.runtime.amounts = amounts;
+
+  if (runningTotal === amount && amounts.length > 1) {
+    self.runtime.amounts = amounts;
     return true;
   } else {
     self.runtime.callback(false, { message: 'Failed to split payment' });
@@ -113,15 +115,13 @@ NavTechService.prototype._splitPayment = function(amount) {
   }
 }
 
-NavTechService.prototype._encryptTransactions = function(navtechData) {
-  var self = this;
+NavTechService.prototype.encryptTransactions = function(navtechData, self) {
   var payments = [];
-  var numPayments = this.runtime.amounts.length;
+  var numPayments = self.runtime.amounts.length;
 
   for(var i=0; i<numPayments; i++) {
-    var payment = this.runtime.amounts[i];
+    var payment = self.runtime.amounts[i];
     try {
-      var pubKey = ursa.createPublicKey(navtechData.public_key);
       var timestamp = new Date().getUTCMilliseconds();
       var dataToEncrypt = {
         n: self.runtime.address,
@@ -131,26 +131,29 @@ NavTechService.prototype._encryptTransactions = function(navtechData) {
         u: timestamp,
       }
 
-      var encrypted = pubKey.encrypt(JSON.stringify(dataToEncrypt), 'utf8', 'base64', ursa.RSA_PKCS1_PADDING);
+      self.jsencrypt.setPublicKey(navtechData.public_key);
+
+      var encrypted = self.jsencrypt.encrypt(JSON.stringify(dataToEncrypt));
 
       if (encrypted.length !== self.encryptionLength) {
         console.log('Failed to encrypt the payment data', encrypted.length, encrypted);
-        this.runtime.callback(false, { message: 'Failed to encrypt the payment data' });
+        self.runtime.callback(false, { message: 'Failed to encrypt the payment data' });
         return;
       }
 
       payments.push({
-        amount: this.runtime.amounts[i],
+        amount: self.runtime.amounts[i],
         address: navtechData.nav_addresses[i],
         anonDestination: encrypted
       });
     } catch (err) {
       console.log('Threw error encrypting the payment data', err);
-      this.runtime.callback(false, { message: 'Threw error encrypting the payment data' });
+      self.runtime.callback(false, { message: 'Threw error encrypting the payment data' });
       return;
     }
   }
-  this.runtime.callback(true, payments);
+  console.log('payments', payments);
+  self.runtime.callback(true, payments);
 }
 
 NavTechService.prototype.findNode = function(amount, address, callback) {
@@ -158,11 +161,12 @@ NavTechService.prototype.findNode = function(amount, address, callback) {
     callback(false, { message: 'invalid params' });
     return;
   }
-  this.runtime = {};
-  this.runtime.callback = callback;
-  this.runtime.address = address;
+  var self = this;
+  self.runtime = {};
+  self.runtime.callback = callback;
+  self.runtime.address = address;
   if(self._splitPayment(amount)) {
-    self._checkNode(this.availableServers, this.runtime.amounts.length, self._encryptTransactions);
+    self._checkNode(self.availableServers, self.runtime.amounts.length, self.encryptTransactions);
   }
 }
 
@@ -171,5 +175,6 @@ angular.module('copayApp.services').factory('navTechService', function($http, lo
     httprequest: $http,
     lodash: lodash
   };
+
   return NavTechService.singleton(cfg);
 });
