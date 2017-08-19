@@ -18,6 +18,7 @@
   "disclaimerUrl": "https://bitlox.io/",
   "url": "https://bitlox.io/",
   "bwsUrl": "https://bws.bitlox.com/bws/api",
+  "ratesUrl": "https://bitpay.com/api/rates",
   "defaultNetwork": {
     "network": "livenet",
     "name": "livenet",
@@ -45,7 +46,6 @@
   },
   "unitName": "BTC",
   "unitCode": "btc",
-  "ratesUrl": "https://insight.bitpay.com:443/api/rates",
   "releaseUrl": "https://api.github.com/repos/bitlox/copay/releases/latest",
   "downloadUrl": "https://bitlox.io",
   "rateAppUrls": {

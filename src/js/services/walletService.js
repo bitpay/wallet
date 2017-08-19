@@ -630,11 +630,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     if (!wallet.isComplete()) return cb();
 
-    function isHistoryCached() {
-      return wallet.completeHistory && wallet.completeHistory.isValid;
-    };
+    // function isHistoryCached() {
+    //   return wallet.completeHistory && wallet.completeHistory.isValid;
+    // };
 
-    if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
+    // if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
 
     $log.debug('Updating Transaction History');
 

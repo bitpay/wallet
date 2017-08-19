@@ -341,25 +341,25 @@ msgstr ""
 #: www/views/addressbook.add.html:38
 #: www/views/includes/incomingDataMenu.html:29
 msgid "Bitcoin Address"
-msgstr "Cryptocurrency Address"
+msgstr ""
 
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:85
 msgid "Bitcoin Network Fee Policy"
-msgstr "Cryptocurrency Network Fee Policy"
+msgstr ""
 
 #: www/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr "Cryptocurrency URI is NOT valid!"
+msgstr ""
 
 #: www/views/tab-settings.html:63
 msgid "Bitcoin Unit"
-msgstr "Cryptocurrency Unit"
+msgstr ""
 
-#: www/views/onboarding/tour.html:31
-msgid "Bitcoin is a currency."
-msgstr "Cryptocoin is a currency."
+#: www/views/onboarding/tour.html:26
+msgid "Bitcoin is a cryptocurrency."
+msgstr ""
 
 #: www/views/onboarding/disclaimer.html:15
 msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."

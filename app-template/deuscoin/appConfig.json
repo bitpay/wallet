@@ -18,6 +18,7 @@
   "disclaimerUrl": "https://deuscoin.org/",
   "url": "https://deuscoin.org/",
   "bwsUrl": "https://bws.deuscoin.org/bws/api",
+  "ratesUrl": "https://btm.bitlox.com/rates/deuscoin.php",
   "unitName": "DEU",
   "unitCode": "deu",
   "defaultNetwork": {
@@ -37,7 +38,6 @@
     "networkMagic": "0x9ee8bc5a",
     "explorer": "https://explorer.deuscoin.org/"
   },
-  "ratesUrl": "https://insight.bitpay.com:443/api/rates",
   "releaseUrl": "https://api.github.com/repos/bitlox/copay/releases/latest",
   "downloadUrl": "https://bitlox.io",
   "rateAppUrls": {

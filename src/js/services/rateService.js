@@ -16,6 +16,7 @@ var RateService = function(opts) {
   opts = opts || {};
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
+  self.defaults = opts.defaults;
 
   self.SAT_TO_BTC = 1 / 1e8;
   self.BTC_TO_SAT = 1e8;
@@ -44,7 +45,7 @@ RateService.prototype._fetchCurrencies = function() {
 
   var backoffSeconds = 5;
   var updateFrequencySeconds = 5 * 60;
-  var rateServiceUrl = 'https://bitpay.com/api/rates';
+  var rateServiceUrl = this.defaults.rates.url;
 
   var retrieve = function() {
     //log.info('Fetching exchange rates');
@@ -131,14 +132,15 @@ RateService.prototype.listAlternatives = function(sort) {
   return self.lodash.uniq(alternatives, 'isoCode');
 };
 
-angular.module('copayApp.services').factory('rateService', function($http, lodash) {
+angular.module('copayApp.services').factory('rateService', function($http, lodash, configService) {
   // var cfg = _.extend(config.rates, {
   //   httprequest: $http
   // });
 
   var cfg = {
     httprequest: $http,
-    lodash: lodash
+    lodash: lodash,
+    defaults: configService.getDefaults()
   };
   return RateService.singleton(cfg);
 });
