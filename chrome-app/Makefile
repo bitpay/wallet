@@ -16,9 +16,7 @@ dir:
 	cp -vf $(INITIAL) $(BUILDDIR)
 
 files:
-	cd ../www && rsync -rLRv --exclude-from $(BASE)/exclude $(INCLUDE) $(BASE)/$(BUILDDIR) && cd -
-	cd .. && rsync -rLRv ./bower_components/trezor-connect/chrome/* $(BASE)/$(BUILDDIR)/ && cd -
-
+	cd ../www && rsync -rLRv --exclude-from $(BASE)/exclude $(INCLUDE) $(BASE)/$(BUILDDIR)
 
 $(ZIPFILE): dir files
 	cd $(BUILDDIR)
