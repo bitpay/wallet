@@ -9,6 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Toast } from '@ionic-native/toast';
 import { Clipboard } from '@ionic-native/clipboard';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { QRScanner } from '@ionic-native/qr-scanner';
 
 /* Modules */
 import { NgLoggerModule, Logger, Level } from '@nsalaun/ng-logger';
@@ -22,6 +23,7 @@ import { CopayApp } from './app.component';
 /* Pages */
 import { HomePage } from '../pages/home/home';
 import { ReceivePage } from '../pages/receive/receive';
+import { ScanPage } from '../pages/scan/scan';
 import { SendPage } from '../pages/send/send';
 import { SettingPage } from '../pages/setting/setting';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -37,6 +39,7 @@ import { PlatformProvider } from '../providers/platform/platform';
 import { ConfigProvider } from '../providers/config/config';
 import { LanguageProvider } from '../providers/language/language';
 import { UnitProvider } from '../providers/unit/unit';
+import { ScanProvider } from '../providers/scan/scan';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -48,6 +51,7 @@ export function createTranslateLoader(http: Http) {
     HomePage,
     ReceivePage,
     SendPage,
+    ScanPage,
     SettingPage,
     AboutPage,
     TermsOfUsePage,
@@ -72,6 +76,7 @@ export function createTranslateLoader(http: Http) {
     CopayApp,
     HomePage,
     ReceivePage,
+    ScanPage,
     SendPage,
     SettingPage,
     AboutPage,
@@ -105,7 +110,9 @@ export function createTranslateLoader(http: Http) {
     PlatformProvider,
     ConfigProvider,
     LanguageProvider,
-    UnitProvider
+    UnitProvider,
+    QRScanner,
+    ScanProvider
   ]
 })
 export class AppModule { }

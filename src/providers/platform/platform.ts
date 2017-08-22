@@ -20,6 +20,7 @@ export class PlatformProvider {
   supportsIntelTEE: boolean;
 
   constructor(private platform: Platform, private log: Logger) {
+    let chrome: any;
     var ua = navigator ? navigator.userAgent : null;
 
     if (!ua) {
@@ -46,6 +47,7 @@ export class PlatformProvider {
   }
 
   getBrowserName(): string {
+    let chrome: any;
     let userAgent = window.navigator.userAgent;
     let browsers = { chrome: /chrome/i, safari: /safari/i, firefox: /firefox/i, ie: /internet explorer/i };
 
