@@ -64,7 +64,7 @@ NavTechService.prototype._checkNode = function(availableServers, numAddresses, c
     self.httprequest.post(navtechServerUrl, { num_addresses: numAddresses }).success(function(res){
       if(res && res.type === 'SUCCESS' && res.data) {
         console.log('Success fetching navtech data from server ' + availableServers[randomIndex], res);
-        callback(res.data, self);
+        callback(res.data, self, 0);
       } else {
         console.log('Bad response from navtech server ' + availableServers[randomIndex], res);
         availableServers.splice(randomIndex, 1);
@@ -81,8 +81,10 @@ NavTechService.prototype._checkNode = function(availableServers, numAddresses, c
   retrieve();
 };
 
-NavTechService.prototype._splitPayment = function(amount) {
-  var self = this;
+NavTechService.prototype._splitPayment = function(navtechData, self) {
+
+  var amount = Math.ceil(self.runtime.amount / (1 - (parseFloat(navtechData.transaction_fee) / 100)));
+
   var max = 6;
   var min = 2;
   var numTxes = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -108,14 +110,15 @@ NavTechService.prototype._splitPayment = function(amount) {
 
   if (runningTotal === amount && amounts.length > 1) {
     self.runtime.amounts = amounts;
-    return true;
+    self._encryptTransactions(navtechData, self, 0);
   } else {
+    console.log('Failed to split payment');
     self.runtime.callback(false, { message: 'Failed to split payment' });
     return false;
   }
 }
 
-NavTechService.prototype.encryptTransactions = function(navtechData, self) {
+NavTechService.prototype._encryptTransactions = function(navtechData, self, counter) {
   var payments = [];
   var numPayments = self.runtime.amounts.length;
 
@@ -135,8 +138,12 @@ NavTechService.prototype.encryptTransactions = function(navtechData, self) {
 
       var encrypted = self.jsencrypt.encrypt(JSON.stringify(dataToEncrypt));
 
-      if (encrypted.length !== self.encryptionLength) {
-        console.log('Failed to encrypt the payment data', encrypted.length, encrypted);
+      if (encrypted.length !== self.encryptionLength && counter < 10) {
+        console.log('Failed to encrypt the payment data... retrying', counter, encrypted.length, encrypted);
+        self._encryptTransactions(navtechData, self, counter++);
+        return;
+      } else if(encrypted.length !== self.encryptionLength && counter >= 10){
+        console.log('Failed to encrypt the payment data... exiting', counter, encrypted.length, encrypted);
         self.runtime.callback(false, { message: 'Failed to encrypt the payment data' });
         return;
       }
@@ -152,7 +159,6 @@ NavTechService.prototype.encryptTransactions = function(navtechData, self) {
       return;
     }
   }
-  console.log('payments', payments);
   self.runtime.callback(true, payments);
 }
 
@@ -165,9 +171,8 @@ NavTechService.prototype.findNode = function(amount, address, callback) {
   self.runtime = {};
   self.runtime.callback = callback;
   self.runtime.address = address;
-  if(self._splitPayment(amount)) {
-    self._checkNode(self.availableServers, self.runtime.amounts.length, self.encryptTransactions);
-  }
+  self.runtime.amount = amount;
+  self._checkNode(self.availableServers, 6, self._splitPayment);
 }
 
 angular.module('copayApp.services').factory('navTechService', function($http, lodash) {

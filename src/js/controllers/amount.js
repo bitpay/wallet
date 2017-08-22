@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.showAlternativeAmount = !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
-    $scope.privateSend = data.stateParams.privateSend || false;
+    $scope.privatePayment = data.stateParams.privatePayment || false;
 
     if (!$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
@@ -234,7 +234,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
       });
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
-      $state.transitionTo('tabs.send.confirm', {
+      var confirmState = $scope.privatePayment === 'true' ? 'tabs.send.confirm-private' : 'tabs.send.confirm';
+      $state.transitionTo(confirmState, {
         recipientType: $scope.recipientType,
         toAmount: $scope.useSendMax ? null : (amount * unitToSatoshi).toFixed(0),
         toAddress: $scope.toAddress,
@@ -242,7 +243,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         toEmail: $scope.toEmail,
         toColor: $scope.toColor,
         useSendMax: $scope.useSendMax,
-        privateSend: $scope.privateSend
+        privatePayment: $scope.privatePayment
       });
     }
     $scope.useSendMax = null;

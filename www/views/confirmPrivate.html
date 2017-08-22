@@ -12,7 +12,7 @@
       <div class="item head">
         <div class="sending-label">
           <img src="img/icon-tx-sent-outline.svg">
-          <span translate ng-if="!tx.sendMax">Sending</span>
+          <span translate ng-if="tx.privatePayment">Private Payment</span>
           <span translate ng-if="tx.sendMax">Sending maximum amount</span>
         </div>
         <div class="amount-label">
@@ -33,7 +33,8 @@
             <img class="confirm-icon-small" src="img/icon-bitcoin-small.svg">
 
             <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
-              <contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>
+              <!--<contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>-->
+              <span class="m15l size-14" ng-if="!tx.toName">{{tx.toAddress}}</span>
               <span class="m15l size-14" ng-if="tx.toName">{{tx.toName}}</span>
             </div>
 
@@ -79,7 +80,8 @@
         </a>
         <div class="item item-icon-right" ng-if="wallet" ng-click="chooseFeeLevel(tx, wallet)">
           <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-          <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}} (transaction fee)</span>
+          <span class="m10l">{{navtechFee || '...'}} (navtech fee)</span>
+          <span class="m10l">{{navtechTxFee || '...'}} (transaction fee)</span>
           <span class="item-note m10l">
             <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
             <span class="fee-rate" ng-if="tx.txp[wallet.id].feeRatePerStr"> &middot;

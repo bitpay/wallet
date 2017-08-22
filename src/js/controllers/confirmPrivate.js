@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError) {
+angular.module('copayApp.controllers').controller('confirmPrivateController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, navTechService) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     function setWalletSelector(network, minAmount, cb) {
-
+      console.log('setWalletSelector');
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
 
@@ -118,6 +118,52 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
     };
 
+    function setupPrivatePayment(amount, address) {
+      ongoingProcess.set('Finding NavTech Server', true);
+      navTechService.findNode(amount, address, function(success, data) {
+        ongoingProcess.set('Finding NavTech Server', false);
+        if (!success) {
+          //@TODO finish this tree
+          console.log('Something went wrong, do you want to send a regular transaction?');
+          return;
+        }
+        ongoingProcess.set('Calculating Fees', true);
+        //@TODO setup the multiple transactions with the right data
+        var anonTxes = [];
+        var sum = 0;
+        for (var i=0; i<data.length; i++) {
+          var txPart = lodash.clone(tx);
+          txPart.toAmount = data[i].amount;
+          txPart.toAddress = data[i].address;
+          txPart.anonDestination = data[i].anonDestination;
+          anonTxes.push(txPart);
+          sum += data[i].amount;
+        }
+        $scope.navtechFeeTemp = (sum - amount) * satToUnit + ' ' + walletConfig.settings.unitName;
+        $scope.anonTxes = anonTxes;
+        tx.privatePayment = true;
+
+        $scope.tx = tx;
+
+        $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
+
+        setWalletSelector(tx.network, tx.toAmount, function(err) {
+          console.log('setWalletSelector', err);
+          if (err) {
+            return exitWithError('Could not update wallets');
+          }
+
+          if ($scope.wallets.length > 1) {
+            $scope.showWalletSelector();
+          } else if ($scope.wallets.length) {
+            setWallet($scope.wallets[0], tx, getFees);
+          }
+        });
+
+      });
+
+    }
+
     // Setup $scope
 
     // Grab stateParams
@@ -140,31 +186,104 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp: {},
     };
 
+    tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
+    tx.amountValueStr = tx.amountStr.split(' ')[0];
+    tx.amountUnitStr = tx.amountStr.split(' ')[1];
+    txFormatService.formatAlternativeStr(tx.toAmount, function(v) {
+      tx.alternativeAmountStr = v;
+    });
 
     // Other Scope vars
     $scope.isCordova = isCordova;
     $scope.isWindowsPhoneApp = isWindowsPhoneApp;
     $scope.showAddress = false;
 
-    updateTx(tx, null, {}, function() {
-
-      $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
-
-      setWalletSelector(tx.network, tx.toAmount, function(err) {
-        if (err) {
-          return exitWithError('Could not update wallets');
-        }
-
-        if ($scope.wallets.length > 1) {
-          $scope.showWalletSelector();
-        } else if ($scope.wallets.length) {
-          setWallet($scope.wallets[0], tx);
-        }
-      });
-
-    });
+    var amount = parseInt(data.stateParams.toAmount);
+    var address = data.stateParams.toAddress;
+    setupPrivatePayment(amount, address);
   });
 
+  function getFees() {
+    console.log('getFees');
+    var tx = $scope.tx;
+    var wallet = $scope.wallet;
+    feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
+      console.log('getFeeRate', err, feeRate);
+      if (err) return setSendError(err);
+
+      if (!usingCustomFee) tx.feeRate = feeRate;
+      tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
+      console.log('wallet', wallet);
+      if (!wallet) return setSendError(err);
+      getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
+        if (err) {
+          console.log('getSendMaxInfo.err', err);
+          var msg = gettextCatalog.getString('Error getting SendMax information');
+          return setSendError(msg);
+        }
+
+        if (sendMaxInfo) {
+
+          console.log('Send max info', sendMaxInfo);
+          console.log('tx.sendMax', tx.sendMax);
+
+          if (tx.sendMax && sendMaxInfo.amount == 0) {
+            setNoWallet('Insufficent funds');
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
+            return cb('no_funds');
+          }
+
+          tx.sendMaxInfo = sendMaxInfo;
+          tx.toAmount = tx.sendMaxInfo.amount;
+          updateAmount();
+          showSendMaxWarning(sendMaxInfo);
+        }
+        console.log('tx', tx);
+        $scope.formattedAnonTxes = [];
+        $scope.navtechTxFeeSatoshi = 0;
+        getEachFee(0, function(err){
+          ongoingProcess.set('Calculating Fees', false);
+          if (err) {
+            console.log('getEachFee.cb', err);
+            return;
+          }
+          $scope.navtechFee = $scope.navtechFeeTemp;
+          $scope.navtechTxFee = $scope.navtechTxFeeSatoshi * satToUnit + ' ' + walletConfig.settings.unitName;
+          console.log('$scope.formattedAnonTxes', $scope.formattedAnonTxes);
+        });
+      });
+    });
+  }
+
+  function getEachFee(i, cb) {
+    console.log('getEachFee', i);
+    var tx = $scope.anonTxes[i];
+    var wallet = $scope.wallet;
+    getTxp(lodash.clone(tx), wallet, true, function(err, txp) {
+      if (err) return cb(err);
+
+      txp.feeStr = txFormatService.formatAmountStr(txp.fee);
+      txFormatService.formatAlternativeStr(txp.fee, function(v) {
+        txp.alternativeFeeStr = v;
+      });
+
+      var per = (txp.fee / (txp.amount + txp.fee) * 100);
+      txp.feeRatePerStr = per.toFixed(2) + '%';
+      txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
+
+      tx.txp[wallet.id] = txp;
+      $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+      refresh();
+      $scope.navtechTxFeeSatoshi += tx.txp[wallet.id].fee;
+      $scope.formattedAnonTxes[i] = tx;
+      console.log('recursive condition', i, $scope.anonTxes.length);
+      if (i < $scope.anonTxes.length - 1) {
+        getEachFee(++i, cb);
+      } else {
+        cb(false);
+      }
+    });
+  }
 
   function getSendMaxInfo(tx, wallet, cb) {
     if (!tx.sendMax) return cb();
@@ -198,8 +317,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txp.outputs = [{
       'toAddress': tx.toAddress,
       'amount': tx.toAmount,
-      'message': tx.description,
-      'anonDestination': 'test-anon-destination-field'
+      'message': tx.description
     }];
 
     if (tx.sendMaxInfo) {
@@ -421,24 +539,21 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
-  function setWallet(wallet, tx) {
-
+  function setWallet(wallet, tx, cb) {
+    console.log('setWallet');
     $scope.wallet = wallet;
+    $scope.tx = tx;
 
     setButtonText(wallet.credentials.m > 1, !!tx.paypro);
 
     if (tx.paypro)
       _paymentTimeControl(tx.paypro.expires);
 
-    updateTx(tx, wallet, {
-      dryRun: true
-    }, function(err) {
-      $timeout(function() {
-        $ionicScrollDelegate.resize();
-        $scope.$apply();
-      }, 10);
-
-    });
+    $timeout(function() {
+      $ionicScrollDelegate.resize();
+      $scope.$apply();
+      return cb();
+    }, 10);
 
   };
 
@@ -467,6 +582,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (!tx || !wallet) return;
 
+      //set tx description to all anon txes
+
+    //loop through each anon tx and submit
+
     if ($scope.paymentExpired) {
       popupService.showAlert(null, gettextCatalog.getString('This Nav Coin payment request has expired.'));
       $scope.sendStatus = '';
@@ -476,7 +595,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       return;
     }
 
+    return;
+
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
+
     getTxp(lodash.clone(tx), wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;
@@ -501,20 +623,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         });
       };
 
-      function publishAndSign() {
-        if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-          $log.info('No signing proposal: No private key');
-
-          return walletService.onlyPublish(wallet, txp, function(err) {
-            if (err) setSendError(err);
-          }, onSendStatusChange);
-        }
-
-        walletService.publishAndSign(wallet, txp, function(err, txp) {
-          if (err) return setSendError(err);
-        }, onSendStatusChange);
-      };
-
       confirmTx(function(nok) {
         if (nok) {
           $scope.sendStatus = '';
@@ -523,10 +631,38 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           });
           return;
         }
-        publishAndSign();
+        publishEach(wallet, 0);
       });
-    });
   };
+
+  function publishEach(wallet, i) {
+    var tx = $scope.formattedAnonTxes[i];
+
+    getTxp(lodash.clone(tx), wallet, false, function(err, txp) {
+      if (err) return;
+      txp.message = $scope.tx.message;
+
+      function publishAndSign() {
+        if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+          $log.info('No signing proposal: No private key');
+
+          return walletService.onlyPublish(wallet, txp, function(err) {
+            if (err) setSendError(err);
+            if (i < $scope.formattedAnonTxes.length - 1) {
+              publishEach(wallet, ++i);
+            }
+          }, onSendStatusChange);
+        }
+
+        walletService.publishAndSign(wallet, txp, function(err, txp) {
+          if (err) return setSendError(err);
+          if (i < $scope.formattedAnonTxes.length - 1) {
+            publishEach(wallet, ++i);
+          }
+        }, onSendStatusChange);
+      };
+    });
+  }
 
   function statusChangeHandler(processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);

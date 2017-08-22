@@ -151,8 +151,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.findContact = function(search) {
-    var privateSend = $scope.formData.privateSend || false;
-    if (incomingData.redir(search, privateSend)) {
+    var privatePayment = $scope.formData.privatePayment || false;
+    if (incomingData.redir(search, privatePayment)) {
       return;
     }
 

@@ -8,7 +8,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
-  root.redir = function(data, privateSend) {
+  root.redir = function(data, privatePayment) {
     $log.debug('Processing incoming data: ' + data);
 
     function sanitizeUri(data) {
@@ -62,7 +62,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         } else {
           $state.transitionTo('tabs.send.amount', {
             toAddress: addr,
-            privateSend: privateSend,
+            privatePayment: privatePayment,
           });
         }
       }, 100);
@@ -126,7 +126,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           type: 'bitcoinAddress'
         });
       } else {
-        goToAmountPage(data, privateSend);
+        goToAmountPage(data, privatePayment);
       }
     } else if (data && data.indexOf(appConfigService.name + '://glidera') === 0) {
       var code = getParameterByName('code', data);
@@ -242,16 +242,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
   };
 
-  function goToAmountPage(toAddress, privateSend) {
+  function goToAmountPage(toAddress, privatePayment) {
     $state.go('tabs.send', {}, {
       'reload': true,
       'notify': $state.current.name == 'tabs.send' ? false : true
     });
     $timeout(function() {
-      console.log('incomingData goToAmountPage', privateSend);
+      console.log('incomingData goToAmountPage', privatePayment);
       $state.transitionTo('tabs.send.amount', {
         toAddress: toAddress,
-        privateSend: privateSend,
+        privatePayment: privatePayment,
       });
     }, 100);
   }
