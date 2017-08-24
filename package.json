@@ -40,6 +40,7 @@
         "@nsalaun/ng-logger": "2.0.1",
         "ajv": "5.2.2",
         "autoprefixer": "7.1.2",
+        "cordova-android": "^6.2.3",
         "cordova-clipboard": "1.0.0",
         "cordova-ios": "4.4.0",
         "cordova-plugin-console": "1.0.5",
@@ -60,8 +61,7 @@
         "ngx-qrcode2": "0.0.3",
         "rxjs": "5.4.0",
         "sw-toolbox": "3.6.0",
-        "zone.js": "0.8.12",
-        "cordova-android": "^6.2.3"
+        "zone.js": "0.8.12"
     },
     "devDependencies": {
         "@angular/cli": "1.3.0",

@@ -29,14 +29,6 @@ page-scan {
   #page-scan-camera-ready {
     // view background is transparent to show video preview
     background: none transparent;
-    .scanner-controls {
-      width: 100%;
-      text-align: center;
-      bottom: 0;
-      position: absolute;
-      left: 0;
-      right: 0;
-    }
     .guides {
       display: flex;
       position: absolute;
@@ -46,37 +38,45 @@ page-scan {
       justify-content: center;
       top: 0;
       left: 0;
-    }
-    .qr-scan-guides {
-      width: 60%;
-      max-width: 400px;
-      margin-bottom: 8em;
-      max-height: 50%;
-    }
-    .icon-flash, .icon-camera-toggle {
-      border-radius: 50%;
-      width: 4em;
-      height: 4em;
-      background-color: rgba(13, 13, 13, 0.79);
-      background-repeat: no-repeat;
-      background-clip: padding-box;
-      background-size: 100%;
-      display: inline-block;
-      margin: 2em 1em;
-      cursor: pointer;
-      // hover for desktop only
-      body:not(.platform-cordova) &:hover {
-        background-color: rgba(31, 40, 78, 0.79);
-      }
-      &.active, &:active {
-        background-color: rgba(100, 124, 232, 0.79);
+      .qr-scan-guides {
+        width: 60%;
+        max-width: 400px;
+        margin-bottom: 8em;
+        max-height: 50%;
       }
     }
-    .icon-flash {
-      background-image: url("assets/img/icon-flash.svg");
-    }
-    .icon-camera-toggle {
-      background-image: url("assets/img/icon-camera-toggle.svg");
+    .scanner-controls {
+      width: 100%;
+      text-align: center;
+      bottom: 0;
+      position: absolute;
+      left: 0;
+      right: 0;
+      .icon-flash, .icon-camera-toggle {
+        border-radius: 50%;
+        width: 4em;
+        height: 4em;
+        background-color: rgba(13, 13, 13, 0.79);
+        background-repeat: no-repeat;
+        background-clip: padding-box;
+        background-size: 100%;
+        display: inline-block;
+        margin: 2em 1em;
+        cursor: pointer;
+        // hover for desktop only
+        /*body:not(.platform-cordova) &:hover {
+          background-color: rgba(31, 40, 78, 0.79);
+        }*/
+        &.active, &:active {
+          background-color: rgba(100, 124, 232, 0.79);
+        }
+      }
+      .icon-flash {
+        background-image: url("../assets/img/icon-flash.svg");
+      }
+      .icon-camera-toggle {
+        background-image: url("../assets/img/icon-camera-toggle.svg");
+      }
     }
   }
 }

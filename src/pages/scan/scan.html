@@ -16,17 +16,14 @@
 <ion-content class="back-trasnparent" padding>
   <p>Scanner text: {{ text }}</p>
   <p>Scanner visible: {{ scannerVisible }}</p>
-  <div class="ng-hide" id="tab-scan-camera-ready" *ngIf="scannerVisible">
-    <button  type="button" (click)="ngOnInit()">Open camera</button>
+  <div class="ng-hide" id="page-scan-camera-ready" *ngIf="scannerVisible">
     <div class="guides">
       <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
     </div>
     <div class="scanner-controls">
-      <span ng-click="toggleLight()">
-        <ion-icon class="icon-flash" [ngClass]="{'active': lightActive}" name="flash"></ion-icon>
+      <span class="icon-flash" [ngClass]="{'active': lightActive}" (click)="toggleLight()">
       </span>
-      <span ng-click="toggleCamera()">
-        <ion-icon class="icon-camera-toggle" [ngClass]="{'active': lightActive}" name="reverse-camera"></ion-icon>
+      <span class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()">
       </span>
     </div>
   </div>
