@@ -17,10 +17,10 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return this.Utils.formatAmount(satoshis, config.unitCode, opts);
   };
 
-  root.formatAmountStr = function(satoshis) {
+  root.formatAmountStr = function(wallet, satoshis) {
+console.log('[txFormatService.js:20]',wallet); //TODO/
     if (isNaN(satoshis)) return;
-    var config = configService.getSync().wallet.settings;
-    return root.formatAmount(satoshis) + ' ' + config.unitName;
+    return root.formatAmount(satoshis) + ' ' + wallet.chain;
   };
 
   root.toFiat = function(satoshis, code, cb) {
@@ -86,7 +86,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.processTx = function(tx) {
+  root.processTx = function(wallet, tx) {
     if (!tx || tx.action == 'invalid')
       return tx;
 
@@ -101,7 +101,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
           tx.hasMultiplesOutputs = true;
         }
         tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-          o.amountStr = root.formatAmountStr(o.amount);
+          o.amountStr = root.formatAmountStr(wallet, o.amount);
           o.alternativeAmountStr = root.formatAlternativeStr(o.amount);
           return total + o.amount;
         }, 0);
@@ -109,9 +109,9 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
       tx.toAddress = tx.outputs[0].toAddress;
     }
 
-    tx.amountStr = root.formatAmountStr(tx.amount);
+    tx.amountStr = root.formatAmountStr(wallet, tx.amount);
     tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount);
-    tx.feeStr = root.formatAmountStr(tx.fee || tx.fees);
+    tx.feeStr = root.formatAmountStr(wallet, tx.fee || tx.fees);
 
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
@@ -145,8 +145,6 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
 
     lodash.each(txps, function(tx) {
 
-      tx = txFormatService.processTx(tx);
-
       // no future transactions...
       if (tx.createdOn > now)
         tx.createdOn = now;
@@ -156,6 +154,8 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
         $log.error("no wallet at txp?");
         return;
       }
+
+      tx = txFormatService.processTx(tx.wallet, tx);
 
       var action = lodash.find(tx.actions, {
         copayerId: tx.wallet.copayerId
@@ -180,7 +180,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return txps;
   };
 
-  root.parseAmount = function(amount, currency) {
+  root.parseAmount = function(wallet, amount, currency) {
     var config = configService.getSync().wallet.settings;
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = config.unitToSatoshi;
@@ -189,21 +189,21 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     var alternativeIsoCode = config.alternativeIsoCode;
 
     // If fiat currency
-    if (currency != 'bits' && currency != 'BTC' && currency != 'sat') {
+    if (currency != 'BCH' && currency != 'BTC' && currency != 'sat') {
       amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
       amountSat = rateService.fromFiat(amount, currency).toFixed(0);
     } else if (currency == 'sat') {
       amountSat = amount;
-      amountUnitStr = root.formatAmountStr(amountSat);
-      // convert sat to BTC
+      amountUnitStr = root.formatAmountStr(wallet, amountSat);
+      // convert sat to BTC or BCH
       amount = (amountSat * satToBtc).toFixed(8);
-      currency = 'BTC';
+      currency = wallet.chain;
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
-      amountUnitStr = root.formatAmountStr(amountSat);
-      // convert unit to BTC
+      amountUnitStr = root.formatAmountStr(wallet, amountSat);
+      // convert unit to BTC or BCH
       amount = (amountSat * satToBtc).toFixed(8);
-      currency = 'BTC';
+      currency = wallet.chain;
     }
 
     return {

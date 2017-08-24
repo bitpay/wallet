@@ -27,12 +27,10 @@ angular.module('copayApp.filters', [])
     }
   })
   .filter('formatFiatAmount', ['$filter', '$locale', 'configService',
-    function(filter, locale, configService) {
+    function(filter, locale) {
       var numberFilter = filter('number');
       var formats = locale.NUMBER_FORMATS;
-      var config = configService.getSync().wallet.settings;
       return function(amount) {
-        if (!config) return amount;
 
         var fractionSize = 2;
         var value = numberFilter(amount, fractionSize);

@@ -89,6 +89,7 @@ angular.module('copayApp.services')
       wallet.copayerId = wallet.credentials.copayerId;
       wallet.m = wallet.credentials.m;
       wallet.n = wallet.credentials.n;
+      wallet.chain = wallet.credentials.chain;
 
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;
@@ -222,10 +223,12 @@ angular.module('copayApp.services')
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
       };
 
-
       var client = bwcService.getClient(JSON.stringify(credentials), {
         bwsurl: getBWSURL(credentials.walletId),
       });
+
+      // TODO: Should return "chain" = "BTC" or "BCH"
+      client.credentials.chain = 'BTC';
 
       var skipKeyValidation = shouldSkipValidation(credentials.walletId);
       if (!skipKeyValidation)
@@ -749,6 +752,12 @@ angular.module('copayApp.services')
 
       var ret = lodash.values(root.wallet);
 
+      if (opts.chain) {
+        ret = lodash.filter(ret, function(x) {
+          return (x.credentials.chain == opts.chain);
+        });
+      }
+
       if (opts.network) {
         ret = lodash.filter(ret, function(x) {
           return (x.credentials.network == opts.network);
@@ -848,7 +857,7 @@ angular.module('copayApp.services')
         });
       };
 
-      function process(notifications) {
+      function process(wallet, notifications) {
         if (!notifications) return [];
 
         var shown = lodash.sortBy(notifications, 'createdOn').reverse();
@@ -861,7 +870,7 @@ angular.module('copayApp.services')
           x.types = [x.type];
 
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+            x.amountStr = txFormatService.formatAmountStr(wallet, x.data.amount);
 
           x.action = function() {
             // TODO?
@@ -939,7 +948,7 @@ angular.module('copayApp.services')
             notifications = lodash.sortBy(notifications, 'createdOn');
             notifications = lodash.compact(lodash.flatten(notifications)).slice(0, MAX);
             var total = notifications.length;
-            return cb(null, process(notifications), total);
+            return cb(null, process(wallet, notifications), total);
           };
         });
       });

@@ -21,6 +21,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.nextStep = data.stateParams.nextStep;
     $scope.currency = data.stateParams.currency;
     $scope.forceCurrency = data.stateParams.forceCurrency;
+    $scope.forceChain = data.stateParams.forceChain || null;
+    $scope.chain = $scope.forceChain || data.stateParams.chain || 'BTC';
 
     $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
@@ -63,7 +65,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     });
 
     var config = configService.getSync().wallet.settings;
-    $scope.unitName = config.unitName;
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
     } else {
@@ -122,6 +123,12 @@ angular.module('copayApp.controllers').controller('amountController', function($
       var amount = evaluate(format($scope.amount));
       $scope.globalResult = '= ' + processResult(amount);
     }
+  };
+
+  $scope.toggleChain = function() {
+    if ($scope.forceCurrency || $scope.forceChain) return;
+
+    $scope.chain = $scope.chain == 'BTC' ? 'BCH' : 'BTC';
   };
 
   function checkFontSize() {
@@ -227,7 +234,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $state.transitionTo($scope.nextStep, {
         id: _id,
         amount: $scope.useSendMax ? null : _amount,
-        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.unitName,
+        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.chain,
+        chain: $scope.chain,
         useSendMax: $scope.useSendMax
       });
     } else {
@@ -239,6 +247,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         toName: $scope.toName,
         toEmail: $scope.toEmail,
         toColor: $scope.toColor,
+        chain: $scope.chain,
         useSendMax: $scope.useSendMax
       });
     }

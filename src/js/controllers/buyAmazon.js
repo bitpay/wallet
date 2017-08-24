@@ -216,7 +216,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
   });
 
   var initialize = function(wallet) {
-    var parsedAmount = txFormatService.parseAmount(amount, currency);
+    var parsedAmount = txFormatService.parseAmount(wallet, amount, currency);
     $scope.currencyIsoCode = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
@@ -260,7 +260,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
         };
-        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(wallet, ctxp.amount);
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       });
     });
@@ -292,7 +292,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
       network: $scope.network,
-      hasFunds: true
+      hasFunds: true,
+      chain: 'BTC'
     });
     if (lodash.isEmpty($scope.wallets)) {
       showErrorAndBack(null, gettextCatalog.getString('No wallets available'));

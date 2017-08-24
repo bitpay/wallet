@@ -139,6 +139,19 @@
     }
   }
   .amount {
+    .icon-toggle {
+      font-size: 1.2em;
+      width: auto;
+      margin: 0.8em auto;
+      border: 1px solid $v-subtle-gray;
+      color: $v-dark-gray;
+      border-radius: 3px;
+      padding: 0 10px;
+      cursor: pointer;
+      @media(max-height: 280px) {
+        margin: 0.1em auto;
+      }
+    }
     &__editable {
       &--minimize {
         font-size: 22px;
@@ -196,7 +209,6 @@
     &__result-equiv {
       color: $v-mid-gray;
       font-size: 1.2em;
-      margin-top: 2rem;
       @media(max-height: 480px) {
         margin-top: 0;
         font-size: 16px;

@@ -218,7 +218,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         // Save TX in memory
         createdTx = ctxp;
 
-        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(wallet, ctxp.amount);
 
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
 
@@ -256,7 +256,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
         network: bitpayService.getEnvironment().network,
-        hasFunds: true
+        hasFunds: true,
+        chain: 'BTC'
       });
 
       if (lodash.isEmpty($scope.wallets)) {
@@ -319,7 +320,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         });
         return;
       }
-      var parsedAmount = txFormatService.parseAmount(a, c);
+      var parsedAmount = txFormatService.parseAmount(wallet, a, c);
       initializeTopUp(wallet, parsedAmount);
     });
   };
