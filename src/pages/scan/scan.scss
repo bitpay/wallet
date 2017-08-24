@@ -1,9 +1,9 @@
 $v-scanner-background-color: #1e3186;
 $v-scanner-guide-color: #647ce8;
 
-html , body, .back-trasnparent, ion-app  {
-    background: none !important;
-}
+html , body, .back-trasnparent, ion-app, .nav-decor {
+  background: none transparent !important;
+} 
 
 page-scan {
   color: #fff;
