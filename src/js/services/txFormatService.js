@@ -18,7 +18,6 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
   };
 
   root.formatAmountStr = function(wallet, satoshis) {
-console.log('[txFormatService.js:20]',wallet); //TODO/
     if (isNaN(satoshis)) return;
     return root.formatAmount(satoshis) + ' ' + wallet.chain;
   };
