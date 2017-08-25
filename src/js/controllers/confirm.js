@@ -138,7 +138,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
       network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
-      chain: data.stateParams.chain || 'BTC',
+      chain: data.stateParams.chain,
       txp: {},
     };
 
