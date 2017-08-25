@@ -43,12 +43,12 @@
           ng-style="{'transform': amountScale}"
           ng-class="{amount__balance: amountIsCollapsible}">
           <strong class="size-30">{{status.totalBalanceStr}}</strong>
-<!--           <div
+          <div
             class="size-14 amount-alternative"
             ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'"
             ng-style="{opacity: altAmountOpacity}">
             {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
-          </div> -->
+          </div>
         </div>
 
         <div ng-style="{'transform': amountScale}"
@@ -56,10 +56,10 @@
         ng-show="!updateStatusError && wallet.balanceHidden"
         on-hold="hideToggle()">
           <strong class="size-24" translate>[Balance Hidden]</strong>
-          <!--
+          
           <div ng-style="{opacity: altAmountOpacity}" class="size-14 amount-alternative" translate>
             Tap and hold to show
-          </div>-->
+          </div>
         </div>
 
         <div ng-if="!wallet.balanceHidden && showBalanceButton" ng-style="{'opacity': altAmountOpacity, 'transform': amountScale}">
@@ -68,10 +68,10 @@
             <strong>
               {{status.spendableBalanceStr}}
             </strong>
-<!--             &nbsp;
+            &nbsp;
             <span>
               {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
-            </span> -->
+            </span>
           </button>
         </div>
 
@@ -118,8 +118,8 @@
           </div>
 
           <div ng-click='updateAll(true)' ng-show="!updateStatusError && !wallet.balanceHidden" on-hold="hideToggle()" ng-style="{'transform': amountScale}">
-            <strong class="size-36">{{status.totalBalanceStr}}</strong>
-            <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
+            <strong class="size-30">{{status.totalBalanceStr}}</strong>
+            <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</div>
           </div>
 
           <div ng-if="!wallet.balanceHidden && showBalanceButton" ng-style="{'opacity': altAmountOpacity, 'transform': amountScale}">
@@ -128,10 +128,10 @@
               <strong>
                 {{status.spendableBalanceStr}}
               </strong>
-<!--               &nbsp;
+              &nbsp;
               <span>
                 {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
-              </span> -->
+              </span>
             </button>
           </div>
 
@@ -184,7 +184,7 @@
         <div class="item item-footer description" ng-show="status.lockedBalanceSat" style="background: white;">
           <span translate>Total Locked Balance</span>:
           <b>{{status.lockedBalanceStr}} </b>
-          <!-- <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span> -->
+          <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
         </div>
       </div>
 
