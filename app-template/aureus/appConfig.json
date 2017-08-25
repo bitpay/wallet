@@ -19,7 +19,7 @@
   "disclaimerUrl": "https://aureus.cc/",
   "url": "https://aureus.cc/",
   "bwsUrl": "https://bws.aureus.cc/bws/api",
-  "ratesUrl": "https://btm.bitlox.com/rates/aureus.php",
+  "ratesUrl": "https://seed.aureus.cc/rates",
   "unitName": "AUR",
   "unitCode": "aur",
   "defaultNetwork": {
