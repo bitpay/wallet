@@ -1,6 +1,6 @@
 <div class="wallet-item">
     <i class="icon big-icon-svg circle">
-    <img src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.chain == 'BTC' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
+    <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.chain == 'BTC' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
   </i>
   <div class="name">
     {{wallet.name || wallet.id}}

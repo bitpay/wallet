@@ -27,6 +27,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.bwsurl = defaults.bws.url;
       $scope.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
       $scope.formData.derivationPath = derivationPathHelper.default;
+      $scope.formData.coin = 'btc';
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);
       resetPasswordFields();
@@ -137,6 +138,7 @@ angular.module('copayApp.controllers').controller('createController',
         bwsurl: $scope.formData.bwsurl,
         singleAddress: $scope.formData.singleAddressEnabled,
         walletPrivKey: $scope.formData._walletPrivKey, // Only for testing
+        coin: $scope.formData.coin
       };
 
       var setSeed = $scope.formData.seedSource.id == 'set';

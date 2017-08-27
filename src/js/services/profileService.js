@@ -89,7 +89,10 @@ angular.module('copayApp.services')
       wallet.copayerId = wallet.credentials.copayerId;
       wallet.m = wallet.credentials.m;
       wallet.n = wallet.credentials.n;
-      wallet.chain = wallet.credentials.chain;
+      wallet.chain = wallet.credentials.chain ? (wallet.credentials.chain).toUpperCase() : 'BTC';
+
+      // TODO: Should return "chain" = "BTC" or "BCH"
+      client.credentials.chain = 'BTC';
 
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;
@@ -227,8 +230,7 @@ angular.module('copayApp.services')
         bwsurl: getBWSURL(credentials.walletId),
       });
 
-      // TODO: Should return "chain" = "BTC" or "BCH"
-      client.credentials.chain = 'BTC';
+
 
       var skipKeyValidation = shouldSkipValidation(credentials.walletId);
       if (!skipKeyValidation)
@@ -395,6 +397,7 @@ angular.module('copayApp.services')
             network: opts.networkName,
             singleAddress: opts.singleAddress,
             walletPrivKey: opts.walletPrivKey,
+            coin: opts.coin
           }, function(err, secret) {
             if (err) return bwcError.cb(err, gettextCatalog.getString('Error creating wallet'), cb);
             return cb(null, walletClient, secret);
@@ -687,6 +690,7 @@ angular.module('copayApp.services')
       opts.m = 1;
       opts.n = 1;
       opts.networkName = 'livenet';
+      opts.coin = 'btc';
       root.createWallet(opts, cb);
     };
 
