@@ -95,7 +95,7 @@
            ui-sref="tabs.preferences({'walletId': item.id})"
            ng-repeat="item in wallets track by $index">
          <i class="icon big-icon-svg circle">
-          <img ng-src="img/{{item.network == 'testnet' ? 'icon-wallet-testnet' : (item.chain == 'BTC' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !item.color}" ng-style="{'background-color': item.color}" class="bg"/>
+          <img ng-src="img/{{item.network == 'testnet' ? 'icon-wallet-testnet' : (item.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !item.color}" ng-style="{'background-color': item.color}" class="bg"/>
         </i>
         <span>
           {{item.name || item.id}}

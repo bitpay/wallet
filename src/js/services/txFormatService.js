@@ -19,7 +19,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
 
   root.formatAmountStr = function(wallet, satoshis) {
     if (isNaN(satoshis)) return;
-    return root.formatAmount(satoshis) + ' ' + wallet.chain;
+    return root.formatAmount(satoshis) + ' ' + wallet.coin;
   };
 
   root.toFiat = function(satoshis, code, cb) {
@@ -196,13 +196,13 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
       amountUnitStr = root.formatAmountStr(wallet, amountSat);
       // convert sat to BTC or BCH
       amount = (amountSat * satToBtc).toFixed(8);
-      currency = wallet.chain;
+      currency = (wallet.coin).toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
       amountUnitStr = root.formatAmountStr(wallet, amountSat);
       // convert unit to BTC or BCH
       amount = (amountSat * satToBtc).toFixed(8);
-      currency = wallet.chain;
+      currency = (wallet.coin).toUpperCase();
     }
 
     return {

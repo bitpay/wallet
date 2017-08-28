@@ -46,7 +46,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       return true;
     }
 
-    function goSend(addr, amount, message, chain) {
+    function goSend(addr, amount, message, coin) {
       $state.go('tabs.send', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.send' ? false : true
@@ -58,12 +58,12 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
             toAmount: amount,
             toAddress: addr,
             description: message,
-            chain: chain
+            coin: coin
           });
         } else {
           $state.transitionTo('tabs.send.amount', {
             toAddress: addr,
-            chain: chain
+            coin: coin
           });
         }
       }, 100);
@@ -92,17 +92,17 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       var message = parsed.message;
 
       var amount = parsed.amount ? parsed.amount : '';
-      var chain = parsed.extras && parsed.extras.chain ? (parsed.extras.chain).toUpperCase() : '';
+      var coin = parsed.extras && parsed.extras.coin ? (parsed.extras.coin).toUpperCase() : '';
 
       if (parsed.r) {
         payproService.getPayProDetails(parsed.r, function(err, details) {
           if (err) {
-            if (addr && amount) goSend(addr, amount, message, chain);
+            if (addr && amount) goSend(addr, amount, message, coin);
             else popupService.showAlert(gettextCatalog.getString('Error'), err);
           } else handlePayPro(details);
         });
       } else {
-        goSend(addr, amount, message, chain);
+        goSend(addr, amount, message, coin);
       }
       return true;
 

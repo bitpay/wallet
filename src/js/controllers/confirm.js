@@ -69,7 +69,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    function setWalletSelector(chain, network, minAmount, cb) {
+    function setWalletSelector(coin, network, minAmount, cb) {
 
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
@@ -77,7 +77,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
         network: network,
-        chain: chain
+        coin: coin
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
@@ -138,7 +138,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
       network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
-      chain: data.stateParams.chain,
+      coin: data.stateParams.coin,
       txp: {},
     };
 
@@ -151,7 +151,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
-    setWalletSelector(tx.chain, tx.network, tx.toAmount, function(err) {
+    setWalletSelector(tx.coin, tx.network, tx.toAmount, function(err) {
       if (err) {
         return exitWithError('Could not update wallets');
       }

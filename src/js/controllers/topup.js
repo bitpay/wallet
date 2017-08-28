@@ -257,7 +257,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         onlyComplete: true,
         network: bitpayService.getEnvironment().network,
         hasFunds: true,
-        chain: 'BTC'
+        coin: 'btc'
       });
 
       if (lodash.isEmpty($scope.wallets)) {

@@ -21,8 +21,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.nextStep = data.stateParams.nextStep;
     $scope.currency = data.stateParams.currency;
     $scope.forceCurrency = data.stateParams.forceCurrency;
-    $scope.forceChain = data.stateParams.forceChain || null;
-    $scope.chain = $scope.forceChain || data.stateParams.chain || 'BTC';
+    $scope.forceCoin = data.stateParams.forceCoin;
+    $scope.coin = data.stateParams.coin || 'btc';
 
     $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
@@ -125,10 +125,10 @@ angular.module('copayApp.controllers').controller('amountController', function($
     }
   };
 
-  $scope.toggleChain = function() {
-    if ($scope.forceCurrency || $scope.forceChain) return;
+  $scope.toggleCoin = function() {
+    if ($scope.forceCurrency || $scope.forceCoin) return;
 
-    $scope.chain = $scope.chain == 'BTC' ? 'BCH' : 'BTC';
+    $scope.coin = $scope.coin == 'btc' ? 'bch' : 'btc';
   };
 
   function checkFontSize() {
@@ -234,8 +234,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $state.transitionTo($scope.nextStep, {
         id: _id,
         amount: $scope.useSendMax ? null : _amount,
-        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.chain,
-        chain: $scope.chain,
+        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.coin,
+        coin: $scope.coin,
         useSendMax: $scope.useSendMax
       });
     } else {
@@ -247,7 +247,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
         toName: $scope.toName,
         toEmail: $scope.toEmail,
         toColor: $scope.toColor,
-        chain: $scope.chain,
+        coin: $scope.coin,
         useSendMax: $scope.useSendMax
       });
     }

@@ -1,13 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressesController', function($scope, $log, $stateParams, $state, $timeout, $ionicHistory, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, bwcError, platformInfo, appConfigService, txFormatService, feeService) {
+angular.module('copayApp.controllers').controller('addressesController', function($scope, $log, $stateParams, $state, $timeout, $ionicHistory, $ionicScrollDelegate, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, bwcError, platformInfo, appConfigService, txFormatService, feeService) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
-  var config = configService.getSync().wallet.settings;
-  var unitName = config.unitName;
-  var unitToSatoshi = config.unitToSatoshi;
-  var satToUnit = 1 / unitToSatoshi;
-  var unitDecimals = config.unitDecimals;
   var withBalance, cachedWallet;
 
   $scope.isCordova = platformInfo.isCordova;

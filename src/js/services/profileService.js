@@ -89,10 +89,11 @@ angular.module('copayApp.services')
       wallet.copayerId = wallet.credentials.copayerId;
       wallet.m = wallet.credentials.m;
       wallet.n = wallet.credentials.n;
-      wallet.chain = wallet.credentials.chain ? (wallet.credentials.chain).toUpperCase() : 'BTC';
+      wallet.coin = wallet.credentials.coin ? wallet.credentials.coin : 'btc';
+console.log('[profileService.js:92]',wallet); //TODO/
 
-      // TODO: Should return "chain" = "BTC" or "BCH"
-      client.credentials.chain = 'BTC';
+      // TODO: Should return "coin" = "btc" or "bch"
+      //client.credentials.coin = 'btc';
 
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;
@@ -756,9 +757,9 @@ angular.module('copayApp.services')
 
       var ret = lodash.values(root.wallet);
 
-      if (opts.chain) {
+      if (opts.coin) {
         ret = lodash.filter(ret, function(x) {
-          return (x.credentials.chain == opts.chain);
+          return (x.credentials.coin == opts.coin);
         });
       }
 

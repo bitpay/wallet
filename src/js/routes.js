@@ -287,7 +287,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('tabs.send.amount', {
-        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor/:chain',
+        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor/:coin',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
@@ -296,7 +296,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.send.confirm', {
-        url: '/confirm/:recipientType/:toAddress/:toName/:toAmount/:toEmail/:toColor/:description/:chain/:useSendMax',
+        url: '/confirm/:recipientType/:toAddress/:toName/:toAmount/:toEmail/:toColor/:description/:coin/:useSendMax',
         views: {
           'tab-send@tabs': {
             controller: 'confirmController',
@@ -672,7 +672,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
 
       .state('tabs.paymentRequest.amount', {
-        url: '/amount/:forceChain',
+        url: '/amount/:coin',
         views: {
           'tab-receive@tabs': {
             controller: 'amountController',
@@ -681,7 +681,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.paymentRequest.confirm', {
-        url: '/confirm/:amount/:currency/:chain',
+        url: '/confirm/:amount/:currency/:coin',
         views: {
           'tab-receive@tabs': {
             controller: 'customAmountController',
@@ -916,7 +916,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         },
         params: {
-          forceChain: 'BTC'
+          coin: 'btc',
+          forceCoin: true
         }
       })
       .state('tabs.buyandsell.glidera.amount', {
@@ -972,7 +973,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         },
         params: {
-          forceChain: 'BTC'
+          coin: 'btc',
+          forceCoin: true
         }
       })
       .state('tabs.preferences.coinbase', {
@@ -1062,7 +1064,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           nextStep: 'tabs.giftcards.mercadoLibre.buy',
           currency: 'BRL',
           forceCurrency: true,
-          forceChain: 'BTC'
+          coin: 'btc',
+          forceCoin: true
         }
       })
       .state('tabs.giftcards.mercadoLibre.buy', {
@@ -1114,7 +1117,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           nextStep: 'tabs.giftcards.amazon.buy',
           currency: 'USD',
           forceCurrency: true,
-          forceChain: 'BTC'
+          coin: 'btc',
+          forceCoin: true
         }
       })
       .state('tabs.giftcards.amazon.buy', {
@@ -1154,7 +1158,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           id: null,
           currency: 'USD',
-          forceChain: 'BTC',
+          coin: 'btc',
+          forceCoin: true,
           useSendMax: null
         }
       })

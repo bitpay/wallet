@@ -170,7 +170,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'BCH' && data.stateParams.currency != 'BTC' ? true : false;
+    $scope.isFiat = data.stateParams.currency != 'BTC' ? true : false;
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
 
@@ -183,7 +183,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
       onlyComplete: true,
       network: $scope.network,
       hasFunds: true,
-      chain: 'BTC'
+      coin: 'btc'
     });
 
     if (lodash.isEmpty($scope.wallets)) {

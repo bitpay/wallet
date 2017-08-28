@@ -215,11 +215,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.satToUnit = 1 / cache.unitToSatoshi;
 
       //STR
-      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + wallet.chain;
-      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + wallet.chain;
-      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + wallet.chain;
-      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + wallet.chain;
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + wallet.chain;
+      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + wallet.coin;
+      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + wallet.coin;
+      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + wallet.coin;
+      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + wallet.coin;
+      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + wallet.coin;
 
       cache.alternativeName = config.settings.alternativeName;
       cache.alternativeIsoCode = config.settings.alternativeIsoCode;
@@ -412,12 +412,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var fixTxsUnit = function(txs) {
       if (!txs || !txs[0] || !txs[0].amountStr) return;
 
-      var cacheChain = txs[0].amountStr.split(' ')[1];
+      var cacheCoin = txs[0].amountStr.split(' ')[1];
 
-      if (cacheChain == wallet.chain)
+      if (cacheCoin == wallet.coin)
         return;
 
-      $log.debug('Fixing Tx Cache Unit to: ' + wallet.chain)
+      $log.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
       lodash.each(txs, function(tx) {
         tx.amountStr = txFormatService.formatAmountStr(wallet, tx.amount);
         tx.feeStr = txFormatService.formatAmountStr(wallet, tx.fees);

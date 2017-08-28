@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'BCH' && data.stateParams.currency != 'BTC' ? true : false;
+    $scope.isFiat = data.stateParams.currency != 'BTC' ? true : false;
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
 
@@ -78,7 +78,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
       network: $scope.network,
-      chain: 'BTC'
+      coin: 'btc'
     });
 
     if (lodash.isEmpty($scope.wallets)) {

@@ -293,7 +293,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       onlyComplete: true,
       network: $scope.network,
       hasFunds: true,
-      chain: 'BTC'
+      coin: 'btc'
     });
     if (lodash.isEmpty($scope.wallets)) {
       showErrorAndBack(null, gettextCatalog.getString('No wallets available'));
