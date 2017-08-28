@@ -119,6 +119,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       });
     };
 
+    // TODO: Default fee level for BCH
+    if (data.stateParams.coin == 'bch') {
+      configFeeLevel = 'normal';
+    }
+
     // Setup $scope
 
     // Grab stateParams
@@ -142,12 +147,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp: {},
     };
 
-
     // Other Scope vars
     $scope.isCordova = isCordova;
     $scope.isWindowsPhoneApp = isWindowsPhoneApp;
     $scope.showAddress = false;
-
 
     $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
@@ -562,6 +565,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.chooseFeeLevel = function(tx, wallet) {
+
+    if (wallet.coin == 'bch') return;
 
     var scope = $rootScope.$new(true);
     scope.network = tx.network;

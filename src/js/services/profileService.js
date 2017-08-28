@@ -91,6 +91,9 @@ angular.module('copayApp.services')
       wallet.n = wallet.credentials.n;
       wallet.coin = wallet.credentials.coin ? wallet.credentials.coin : 'btc';
 
+      // TODO
+      if (wallet.id == 'bf338d5b-6b2e-4118-adb0-6208c2d22a81') wallet.credentials.coin = wallet.coin = 'bch';
+
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;
 
@@ -864,7 +867,7 @@ angular.module('copayApp.services')
         });
       };
 
-      function process(wallet, notifications) {
+      function process(notifications) {
         if (!notifications) return [];
 
         var shown = lodash.sortBy(notifications, 'createdOn').reverse();
@@ -877,7 +880,7 @@ angular.module('copayApp.services')
           x.types = [x.type];
 
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(wallet.coin, x.data.amount);
+            x.amountStr = txFormatService.formatAmountStr(x.wallet.coin, x.data.amount);
 
           x.action = function() {
             // TODO?
@@ -955,7 +958,7 @@ angular.module('copayApp.services')
             notifications = lodash.sortBy(notifications, 'createdOn');
             notifications = lodash.compact(lodash.flatten(notifications)).slice(0, MAX);
             var total = notifications.length;
-            return cb(null, process(wallet, notifications), total);
+            return cb(null, process(notifications), total);
           };
         });
       });
