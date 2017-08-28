@@ -881,7 +881,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
           x.types = [x.type];
 
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(wallet, x.data.amount);
+            x.amountStr = txFormatService.formatAmountStr(wallet.coin, x.data.amount);
 
           x.action = function() {
             // TODO?
