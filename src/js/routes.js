@@ -667,7 +667,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         abstract: true,
         params: {
           id: null,
-          nextStep: 'tabs.paymentRequest.confirm'
+          nextStep: 'tabs.paymentRequest.confirm',
+          forceCoin: true
         }
       })
 

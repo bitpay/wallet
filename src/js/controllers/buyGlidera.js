@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('buyGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, platformInfo, txFormatService) {
 
+  var coin = 'btc';
   var amount;
   var currency;
 
@@ -78,7 +79,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
       network: $scope.network,
-      coin: 'btc'
+      coin: coin
     });
 
     if (lodash.isEmpty($scope.wallets)) {
@@ -161,7 +162,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
     var parsedAmount = txFormatService.parseAmount(
-      wallet,
+      coin,
       amount,
       currency);
 

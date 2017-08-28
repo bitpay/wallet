@@ -118,9 +118,9 @@ console.log('[rateService.js.84:retry:] BCH'); //TODO
 };
 
 RateService.prototype.getRate = function(code, chain) {
-  if (chain = 'bch') 
+  if (chain == 'bch')
     return this._ratesBCH[code];
-  else 
+  else
     return this._rates[code];
 };
 

@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('buyMercadoLibreController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, mercadoLibreService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, txFormatService, gettextCatalog) {
 
+  var coin = 'btc';
   var amount;
   var currency;
   var createdTx;
@@ -64,7 +65,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
   };
 
   var satToFiat = function(sat, cb) {
-    txFormatService.toFiat(sat, $scope.currencyIsoCode, function(value) {
+    txFormatService.toFiat(coin, sat, $scope.currencyIsoCode, function(value) {
       return cb(value);
     });
   };
@@ -214,7 +215,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
   });
 
   var initialize = function(wallet) {
-    var parsedAmount = txFormatService.parseAmount(wallet, amount, currency);
+    var parsedAmount = txFormatService.parseAmount(coin, amount, currency);
     $scope.currencyIsoCode = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
@@ -258,7 +259,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
         };
-        $scope.totalAmountStr = txFormatService.formatAmountStr(wallet, ctxp.amount);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(coin, ctxp.amount);
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       });
     });
@@ -285,7 +286,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     $scope.wallets = profileService.getWallets({
       onlyComplete: true,
       network: $scope.network,
-      coin: 'btc'
+      coin: coin
     });
     if (lodash.isEmpty($scope.wallets)) {
       showErrorAndBack(null, gettextCatalog.getString('No wallets available'));

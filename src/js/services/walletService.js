@@ -130,7 +130,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       lodash.each(txps, function(tx) {
 
-        tx = txFormatService.processTx(wallet, tx);
+        tx = txFormatService.processTx(wallet.coin, tx);
 
         // no future transactions...
         if (tx.createdOn > now)
@@ -237,11 +237,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       rateService.whenAvailable(function() {
 
-        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode);
-        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode);
-        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode);
-        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode);
-        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode);
+        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
+        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
         cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
         cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);
@@ -365,7 +365,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, function(tx) {
-      tx = txFormatService.processTx(wallet, tx);
+      tx = txFormatService.processTx(wallet.coin, tx);
 
       // no future transactions...
       if (tx.time > now)
@@ -419,8 +419,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       $log.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
       lodash.each(txs, function(tx) {
-        tx.amountStr = txFormatService.formatAmountStr(wallet, tx.amount);
-        tx.feeStr = txFormatService.formatAmountStr(wallet, tx.fees);
+        tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.amount);
+        tx.feeStr = txFormatService.formatAmountStr(wallet.coin, tx.fees);
       });
     };
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -238,10 +238,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (!tx.toAmount) return;
 
       // Amount
-      tx.amountStr = txFormatService.formatAmountStr(wallet, tx.toAmount);
+      tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.toAmount);
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
-      txFormatService.formatAlternativeStr(tx.toAmount, function(v) {
+      txFormatService.formatAlternativeStr(wallet.coin, tx.toAmount, function(v) {
         tx.alternativeAmountStr = v;
       });
     }
@@ -292,8 +292,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
           if (err) return cb(err);
 
-          txp.feeStr = txFormatService.formatAmountStr(wallet, txp.fee);
-          txFormatService.formatAlternativeStr(txp.fee, function(v) {
+          txp.feeStr = txFormatService.formatAmountStr(wallet.coin, txp.fee);
+          txFormatService.formatAlternativeStr(wallet.coin, txp.fee, function(v) {
             txp.alternativeFeeStr = v;
           });
 
@@ -343,20 +343,20 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       var warningMsg = [];
       if (sendMaxInfo.utxosBelowFee > 0) {
         warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-          amountBelowFeeStr: txFormatService.formatAmountStr(wallet, sendMaxInfo.amountBelowFee)
+          amountBelowFeeStr: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.amountBelowFee)
         }));
       }
 
       if (sendMaxInfo.utxosAboveMaxSize > 0) {
         warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
-          amountAboveMaxSizeStr: txFormatService.formatAmountStr(wallet, sendMaxInfo.amountAboveMaxSize)
+          amountAboveMaxSizeStr: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.amountAboveMaxSize)
         }));
       }
       return warningMsg.join('\n');
     };
 
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
-      fee: txFormatService.formatAmountStr(wallet, sendMaxInfo.fee)
+      fee: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.fee)
     });
     var warningMsg = verifyExcludedUtxos();
 
@@ -483,7 +483,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (walletService.isEncrypted(wallet))
           return cb();
 
-        var amountUsd = parseFloat(txFormatService.formatToUSD(txp.amount));
+        var amountUsd = parseFloat(txFormatService.formatToUSD(wallet.coin, txp.amount));
         if (amountUsd <= CONFIRM_LIMIT_USD)
           return cb();
 

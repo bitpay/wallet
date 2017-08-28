@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('sellCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, appConfigService, configService, txFormatService) {
 
+  var coin = 'btc';
   var amount;
   var currency;
 
@@ -183,7 +184,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
       onlyComplete: true,
       network: $scope.network,
       hasFunds: true,
-      coin: 'btc'
+      coin: coin
     });
 
     if (lodash.isEmpty($scope.wallets)) {
@@ -304,7 +305,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
     var parsedAmount = txFormatService.parseAmount(
-      wallet,
+      coin,
       amount,
       currency);
 

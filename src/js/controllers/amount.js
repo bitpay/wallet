@@ -200,11 +200,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   function fromFiat(val) {
-    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals));
+    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode, $scope.coin) * satToUnit).toFixed(unitDecimals));
   };
 
   function toFiat(val) {
-    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2));
+    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode, $scope.coin)).toFixed(2));
   };
 
   function evaluate(val) {

@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService) {
 
+  var coin = 'btc';
   var amount;
   var currency;
   var createdTx;
@@ -64,7 +65,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
   };
 
   var satToFiat = function(sat, cb) {
-    txFormatService.toFiat(sat, $scope.currencyIsoCode, function(value) {
+    txFormatService.toFiat(coin, sat, $scope.currencyIsoCode, function(value) {
       return cb(value);
     });
   };
@@ -216,7 +217,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
   });
 
   var initialize = function(wallet) {
-    var parsedAmount = txFormatService.parseAmount(wallet, amount, currency);
+    var parsedAmount = txFormatService.parseAmount(coin, amount, currency);
     $scope.currencyIsoCode = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
@@ -260,7 +261,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
         };
-        $scope.totalAmountStr = txFormatService.formatAmountStr(wallet, ctxp.amount);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(coin, ctxp.amount);
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       });
     });
@@ -293,7 +294,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       onlyComplete: true,
       network: $scope.network,
       hasFunds: true,
-      coin: 'btc'
+      coin: coin
     });
     if (lodash.isEmpty($scope.wallets)) {
       showErrorAndBack(null, gettextCatalog.getString('No wallets available'));

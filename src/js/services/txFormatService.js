@@ -17,15 +17,15 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return this.Utils.formatAmount(satoshis, config.unitCode, opts);
   };
 
-  root.formatAmountStr = function(wallet, satoshis) {
+  root.formatAmountStr = function(coin, satoshis) {
     if (isNaN(satoshis)) return;
-    return root.formatAmount(satoshis) + ' ' + wallet.coin;
+    return root.formatAmount(satoshis) + ' ' + coin;
   };
 
-  root.toFiat = function(satoshis, code, cb) {
+  root.toFiat = function(coin, satoshis, code, cb) {
     if (isNaN(satoshis)) return;
     var val = function() {
-      var v1 = rateService.toFiat(satoshis, code);
+      var v1 = rateService.toFiat(satoshis, code, coin);
       if (!v1) return null;
 
       return v1.toFixed(2);
@@ -42,10 +42,10 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.formatToUSD = function(satoshis, cb) {
+  root.formatToUSD = function(coin, satoshis, cb) {
     if (isNaN(satoshis)) return;
     var val = function() {
-      var v1 = rateService.toFiat(satoshis, 'USD');
+      var v1 = rateService.toFiat(satoshis, 'USD', coin);
       if (!v1) return null;
 
       return v1.toFixed(2);
@@ -62,12 +62,12 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.formatAlternativeStr = function(satoshis, cb) {
+  root.formatAlternativeStr = function(coin, satoshis, cb) {
     if (isNaN(satoshis)) return;
     var config = configService.getSync().wallet.settings;
 
     var val = function() {
-      var v1 = parseFloat((rateService.toFiat(satoshis, config.alternativeIsoCode)).toFixed(2));
+      var v1 = parseFloat((rateService.toFiat(satoshis, config.alternativeIsoCode, coin)).toFixed(2));
       v1 = $filter('formatFiatAmount')(v1);
       if (!v1) return null;
 
@@ -85,7 +85,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.processTx = function(wallet, tx) {
+  root.processTx = function(coin, tx) {
     if (!tx || tx.action == 'invalid')
       return tx;
 
@@ -100,17 +100,17 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
           tx.hasMultiplesOutputs = true;
         }
         tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-          o.amountStr = root.formatAmountStr(wallet, o.amount);
-          o.alternativeAmountStr = root.formatAlternativeStr(o.amount);
+          o.amountStr = root.formatAmountStr(coin, o.amount);
+          o.alternativeAmountStr = root.formatAlternativeStr(coin, o.amount);
           return total + o.amount;
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
     }
 
-    tx.amountStr = root.formatAmountStr(wallet, tx.amount);
-    tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount);
-    tx.feeStr = root.formatAmountStr(wallet, tx.fee || tx.fees);
+    tx.amountStr = root.formatAmountStr(coin, tx.amount);
+    tx.alternativeAmountStr = root.formatAlternativeStr(coin, tx.amount);
+    tx.feeStr = root.formatAmountStr(coin, tx.fee || tx.fees);
 
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
@@ -154,7 +154,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
         return;
       }
 
-      tx = txFormatService.processTx(tx.wallet, tx);
+      tx = txFormatService.processTx(tx.wallet.coin, tx);
 
       var action = lodash.find(tx.actions, {
         copayerId: tx.wallet.copayerId
@@ -179,7 +179,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return txps;
   };
 
-  root.parseAmount = function(wallet, amount, currency) {
+  root.parseAmount = function(coin, amount, currency) {
     var config = configService.getSync().wallet.settings;
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = config.unitToSatoshi;
@@ -190,19 +190,19 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     // If fiat currency
     if (currency != 'BCH' && currency != 'BTC' && currency != 'sat') {
       amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
-      amountSat = rateService.fromFiat(amount, currency).toFixed(0);
+      amountSat = rateService.fromFiat(amount, currency, coin).toFixed(0);
     } else if (currency == 'sat') {
       amountSat = amount;
-      amountUnitStr = root.formatAmountStr(wallet, amountSat);
+      amountUnitStr = root.formatAmountStr(coin, amountSat);
       // convert sat to BTC or BCH
       amount = (amountSat * satToBtc).toFixed(8);
-      currency = (wallet.coin).toUpperCase();
+      currency = (coin).toUpperCase();
     } else {
       amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
-      amountUnitStr = root.formatAmountStr(wallet, amountSat);
+      amountUnitStr = root.formatAmountStr(coin, amountSat);
       // convert unit to BTC or BCH
       amount = (amountSat * satToBtc).toFixed(8);
-      currency = (wallet.coin).toUpperCase();
+      currency = (coin).toUpperCase();
     }
 
     return {

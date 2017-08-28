@@ -28,9 +28,9 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
       $scope.address = addr;
 
-      $scope.coin = (data.stateParams.coin).toLowerCase();
+      $scope.coin = data.stateParams.coin;
       var parsedAmount = txFormatService.parseAmount(
-        $scope.wallet,
+        $scope.wallet.coin,
         data.stateParams.amount,
         data.stateParams.currency);
 
@@ -43,13 +43,13 @@ angular.module('copayApp.controllers').controller('customAmountController', func
         // Convert to BTC or BCH
         var config = configService.getSync().wallet.settings;
         var amountUnit = txFormatService.satToUnit(parsedAmount.amountSat);
-        var btcParsedAmount = txFormatService.parseAmount($scope.wallet, amountUnit, $scope.wallet.coin);
+        var btcParsedAmount = txFormatService.parseAmount($scope.wallet.coin, amountUnit, $scope.wallet.coin);
 
         $scope.amountBtc = btcParsedAmount.amount;
         $scope.altAmountStr = btcParsedAmount.amountUnitStr;
       } else {
         $scope.amountBtc = amount; // BTC or BCH
-        $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat);
+        $scope.altAmountStr = txFormatService.formatAlternativeStr($scope.wallet.coin, parsedAmount.amountSat);
       }
     });
   });
@@ -63,12 +63,12 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
   $scope.shareAddress = function() {
     if (!platformInfo.isCordova) return;
-    var data = 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    var data = 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc + '&coin=' + $scope.wallet.coin;
     window.plugins.socialsharing.share(data, null, null, null);
   }
 
   $scope.copyToClipboard = function() {
-    return 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc + '&coin=' + $scope.coin;
+    return 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc + '&coin=' + $scope.wallet.coin;
   };
 
 });
