@@ -90,10 +90,6 @@ angular.module('copayApp.services')
       wallet.m = wallet.credentials.m;
       wallet.n = wallet.credentials.n;
       wallet.coin = wallet.credentials.coin ? wallet.credentials.coin : 'btc';
-console.log('[profileService.js:92]',wallet); //TODO/
-
-      // TODO: Should return "coin" = "btc" or "bch"
-      //client.credentials.coin = 'btc';
 
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;

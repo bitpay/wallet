@@ -922,7 +922,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.getMinFee = function(wallet, feeLevels, nbOutputs) {
     var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
       level: 'normal',
-    }).feePerKB / 1000).toFixed(0);
+    }).feePerKb / 1000).toFixed(0);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
     return size * lowLevelRate;
