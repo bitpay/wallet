@@ -26,6 +26,17 @@
         <qr-scanner class="qr-icon size-24" on-scan="processWalletInfo(data)"></qr-scanner>
       </div>
     </div>
+
+    <label class="item item-input item-select">
+      <div class="input-label" translate>
+        Coin
+      </div>
+      <select ng-model="formData.coin">
+        <option value="btc">BTC</option>
+        <option value="bch">BCH</option>
+      </select>
+    </label>
+
     <div class="item item-divider"></div>
 
     <a class="item" ng-click="showAdvChange()">

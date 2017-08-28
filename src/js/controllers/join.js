@@ -10,6 +10,7 @@ angular.module('copayApp.controllers').controller('joinController',
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.formData.account = 1;
       $scope.formData.secret = null;
+      $scope.formData.coin = 'btc';
       resetPasswordFields();
       updateSeedSourceSelect();
     });
@@ -103,7 +104,8 @@ angular.module('copayApp.controllers').controller('joinController',
       var opts = {
         secret: $scope.formData.secret,
         myName: $scope.formData.myName,
-        bwsurl: $scope.formData.bwsurl
+        bwsurl: $scope.formData.bwsurl,
+        coin: $scope.formData.coin
       }
 
       var setSeed = $scope.formData.seedSource.id == 'set';

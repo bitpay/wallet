@@ -334,6 +334,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
+            coin: opts.coin
           });
 
         } catch (ex) {
@@ -352,6 +353,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
           walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
+            coin: opts.coin
           });
           walletClient.credentials.hwInfo = opts.hwInfo;
         } catch (ex) {
@@ -366,6 +368,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
+            coin: opts.coin
           });
         } catch (e) {
           $log.info('Error creating recovery phrase: ' + e.message);
@@ -375,6 +378,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
               network: network,
               passphrase: opts.passphrase,
               account: 0,
+              coin: opts.coin
             });
           } else {
             return cb(e);
@@ -442,7 +446,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
       seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
-        walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
+        walletClient.joinWallet(opts.secret, opts.myName || 'me', { coin: opts.coin }, function(err) {
           if (err) return bwcError.cb(err, gettextCatalog.getString('Could not join wallet'), cb);
           addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
@@ -630,6 +634,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
         entropySourcePath: opts.entropySourcePath,
         derivationStrategy: opts.derivationStrategy || 'BIP44',
         account: opts.account || 0,
+        coin: opts.coin
       }, function(err) {
         if (err) {
           if (err instanceof errors.NOT_AUTHORIZED)
@@ -651,6 +656,7 @@ console.log('[profileService.js:92]',wallet); //TODO/
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
         account: opts.account || 0,
         derivationStrategy: opts.derivationStrategy || 'BIP44',
+        coin: opts.coin
       }, function(err) {
         if (err) {
 
