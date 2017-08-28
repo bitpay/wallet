@@ -234,7 +234,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $state.transitionTo($scope.nextStep, {
         id: _id,
         amount: $scope.useSendMax ? null : _amount,
-        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.coin,
+        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : ($scope.coin).toUpperCase(),
         coin: $scope.coin,
         useSendMax: $scope.useSendMax
       });
