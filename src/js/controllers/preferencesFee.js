@@ -67,7 +67,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
       return;
     }
 
-    $scope.feePerSmallestUnitByte = (value.feePerKB / 1000).toFixed();
+    $scope.feePerSmallestUnitByte = (value.feePerKb / 1000).toFixed();
     $scope.avgConfirmationTime = value.nbBlocks * 10;
     $scope.invalidCustomFeeEntered = false;
     setMinWarning();
@@ -100,7 +100,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     var value = lodash.find($scope.feeLevels[$scope.networkURI], {
       level: 'superEconomy'
     });
-    return parseInt((value.feePerKB / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed());
   };
 
   var setMinWarning = function() {

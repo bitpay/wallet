@@ -128,7 +128,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       lodash.each(txps, function(tx) {
 
-        tx = txFormatService.processTx(tx);
+        tx = txFormatService.processTx(tx, wallet.network);
 
         // no future transactions...
         if (tx.createdOn > now)
@@ -365,7 +365,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, function(tx) {
-      tx = txFormatService.processTx(tx);
+      tx = txFormatService.processTx(tx, wallet.network);
 
       // no future transactions...
       if (tx.time > now)
@@ -932,7 +932,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var atomicUnit = networkService.getAtomicUnit(wallet.network);
     var lowLevelRate = (lodash.find(feeLevels, {
       level: 'normal',
-    }).feePerKB / 1000).toFixed(atomicUnit.decimals);
+    }).feePerKb / 1000).toFixed(atomicUnit.decimals);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
     return size * lowLevelRate;
@@ -1194,7 +1194,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       }
     }
 
-    return cb(null, info.type + '|' + info.data + '|' + wallet.credentials.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase));
+    return cb(null, info.type + '|' + info.data + '|' + wallet.network.toLowerCase() + '|' + derivationPath + '|' + (wallet.credentials.mnemonicHasPassphrase));
   };
 
   root.setTouchId = function(wallet, enabled, cb) {

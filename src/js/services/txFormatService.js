@@ -85,7 +85,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.processTx = function(tx) {
+  root.processTx = function(tx, networkURI) {
     if (!tx || tx.action == 'invalid')
       return tx;
 
@@ -100,17 +100,17 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
           tx.hasMultiplesOutputs = true;
         }
         tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-          o.amountStr = root.formatAmountStr(tx.network, o.amount);
-          o.alternativeAmountStr = root.formatAlternativeStr(tx.network, o.amount);
+          o.amountStr = root.formatAmountStr(networkURI, o.amount);
+          o.alternativeAmountStr = root.formatAlternativeStr(networkURI, o.amount);
           return total + o.amount;
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
     }
 
-    tx.amountStr = root.formatAmountStr(tx.network, tx.amount);
-    tx.alternativeAmountStr = root.formatAlternativeStr(tx.network, tx.amount);
-    tx.feeStr = root.formatAmountStr(tx.network, tx.fee || tx.fees);
+    tx.amountStr = root.formatAmountStr(networkURI, tx.amount);
+    tx.alternativeAmountStr = root.formatAlternativeStr(networkURI, tx.amount);
+    tx.feeStr = root.formatAmountStr(networkURI, tx.fee || tx.fees);
 
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];

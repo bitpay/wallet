@@ -48,7 +48,7 @@ angular.module('copayApp.services')
     function _requiresBackup(wallet) {
       if (wallet.isPrivKeyExternal()) return false;
       if (!wallet.credentials.mnemonic) return false;
-      if (networkService.isTestnet(wallet.credentials.network)) return false;
+      if (networkService.isTestnet(wallet.network)) return false;
 
       return true;
     };

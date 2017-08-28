@@ -102,8 +102,8 @@ angular.module('copayApp.services').factory('networkService', function($log, lod
       bex: {
         production: {
           label: gettextCatalog.getString('Insight'),
-          url: 'https://insight.bitpay.com/',
-          urlTx: 'https://insight.bitpay.com/tx/'
+          url: 'https://test-insight.bitpay.com/',
+          urlTx: 'https://test-insight.bitpay.com/tx/'
         }
       },
       units: [{

@@ -56,7 +56,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var analyzeUtxos = function() {
     if (analyzeUtxosDone) return;
 
-    feeService.getFeeLevels($scope.wallet.network, function(err, levels) {
+    feeService.getFeeLevels($scope.wallet, function(err, levels) {
       if (err) return;
       walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
         if (err || !resp) return;
@@ -175,7 +175,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       });
     };
 
-    feeService.getFeeLevels($scope.wallet.network, function(err, levels) {
+    feeService.getFeeLevels($scope.wallet, function(err, levels) {
       walletService.getTxHistory($scope.wallet, {
         progressFn: progressFn,
         feeLevels: levels,
