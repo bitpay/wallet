@@ -27,9 +27,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     function setAvailableUnits() {
 
-      // TODO: Depends on the available wallets
-      // also, depends on forceCurrency & forceCoin
-      // Take this from somewhere elase
       availableUnits = [{
         name: 'Bitcoin',
         id: 'btc',
@@ -70,20 +67,18 @@ angular.module('copayApp.controllers').controller('amountController', function($
     _id = data.stateParams.id; // Optional (BitPay Card ID or Wallet ID)
     $scope.nextStep = data.stateParams.nextStep;
 
-    // TODO
-    $scope.currency = data.stateParams.currency;
     $scope.forceCurrency = data.stateParams.forceCurrency;
     $scope.forceCoin = data.stateParams.forceCoin;
 
-
-    // TODO
-    // if (data.stateParams.coin) {
-    //   unitIndex = lodash.indexOf(data.stateParams.coin.toUpperCase());
-    //   if (unitIndex < 0) {
-    //     $log.warn('Could not find desired coin:' + data.stateParams.coin)
-    //     unitIndex = 0;
-    //   }
-    // }
+    if (data.stateParams.coin) {
+       var index = lodash.findIndex(availableUnits, { id: data.stateParams.coin });
+ 
+       if (index < 0) {
+         $log.warn('Could not find desired coin:' + data.stateParams.coin)
+       } else {
+         unitIndex = index;
+       }
+    }
 
     setAvailableUnits();
     updateUnitUI();
@@ -172,11 +167,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
 
-  // TODO
   $scope.toggleAlternative = function() {
-    if ($scope.forceCurrency) return;
-    $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
-
     if ($scope.amount && isExpression($scope.amount)) {
       var amount = evaluate(format($scope.amount));
       $scope.globalResult = '= ' + processResult(amount);
@@ -193,8 +184,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.changeUnit = function() {
-    // TODO    
-    //    if ($scope.forceCurrency || $scope.forceCoin) return;
+    if ($scope.forceCurrency || $scope.forceCoin) return;
 
     unitIndex++;
     if (unitIndex >= availableUnits.length) unitIndex = 0;
@@ -334,27 +324,42 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.finish = function() {
+
+    var unit = availableUnits[unitIndex];
     var _amount = evaluate(format($scope.amount));
 
     if ($scope.nextStep) {
+
+      var coin = unit.id;
+      if (unit.isFiat) {
+        coin =  availableUnits[altUnitIndex].id;
+      }
+
       $state.transitionTo($scope.nextStep, {
         id: _id,
         amount: $scope.useSendMax ? null : _amount,
-        // TODO
-        currency: $scope.showAlternativeAmount ? fiatCode : (coin).toUpperCase(),
+        currency: unit.id.toUpperCase(),
         coin: coin,
         useSendMax: $scope.useSendMax
       });
     } else {
-      var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
+      var amount = _amount;
+
+      if (unit.isFiat) {
+        amount = fromFiat(_amount);
+      } else if ($scope.useSendMax){
+        amount = (amount * unitToSatoshi).toFixed(0);
+      }
+
+
       $state.transitionTo('tabs.send.confirm', {
         recipientType: $scope.recipientType,
-        toAmount: $scope.useSendMax ? null : (amount * unitToSatoshi).toFixed(0),
+        toAmount: amount,
         toAddress: $scope.toAddress,
         toName: $scope.toName,
         toEmail: $scope.toEmail,
         toColor: $scope.toColor,
-        coin: coin,
+        coin: unit.id,
         useSendMax: $scope.useSendMax
       });
     }

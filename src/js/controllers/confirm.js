@@ -74,6 +74,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
 
+console.log('[confirm.js.76]', network, coin); //TODO
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
         network: network,
