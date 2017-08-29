@@ -200,7 +200,7 @@
     &__result {
       color: $v-light-gray;
       font-size: .9em;
-      margin-bottom: -.9em;
+      //margin-bottom: -.9em;  TODO matias
       line-height: 1;
       @media(max-height: 480px) {
         margin-bottom: 0;

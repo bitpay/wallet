@@ -14,6 +14,10 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.hideNextSteps = {
       value: config.hideNextSteps.enabled
     };
+    $scope.cashSupport = {
+      value: config.cashSupport.enabled 
+    };
+ 
   };
 
   $scope.spendUnconfirmedChange = function() {
@@ -26,6 +30,19 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       if (err) $log.debug(err);
     });
   };
+
+
+  $scope.cashSupportChange = function() {
+    var opts = {
+      cashSupport: {
+        enabled: $scope.cashSupport.value
+      }
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
+    });
+  };
+
 
   $scope.nextStepsChange = function() {
     var opts = {
