@@ -15,14 +15,14 @@
       </label>
     </div>
     <div class="list" ng-if="lastUsedAltCurrencyList[0]">
-      <ion-radio ng-repeat="lastUsedAltCurrency in lastUsedAltCurrencyList" ng-value="lastUsedAltCurrency.isoCode" ng-model="currentCurrency"
-        ng-click="save(lastUsedAltCurrency)">{{lastUsedAltCurrency.name}}
+      <ion-radio class="alt-currency-radio" ng-repeat="lastUsedAltCurrency in lastUsedAltCurrencyList" ng-value="lastUsedAltCurrency.isoCode" ng-model="currentCurrency"
+        ng-click="save(lastUsedAltCurrency)">{{lastUsedAltCurrency.name}} <span class="item-note">{{lastUsedAltCurrency.isoCode}}</span>
       </ion-radio>
     </div>
     <div class="list">
-      <ion-radio ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency.isoCode" ng-model="currentCurrency"
-        ng-click="save(altCurrency)">{{altCurrency.name}}
-      </ion-radio>
+      <div class="item" ng-repeat="altCurrency in altCurrencyList" ng-value="altCurrency.isoCode" ng-model="currentCurrency"
+        ng-click="save(altCurrency)">{{altCurrency.name}} <span class="item-note">{{altCurrency.isoCode}}</span>
+      </div>
     </div>
     <ion-infinite-scroll
      ng-if="!listComplete"

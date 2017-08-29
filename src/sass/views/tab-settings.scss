@@ -137,6 +137,14 @@
  .log-level {
     font-weight: bold;
   }
+  .alt-currency-radio {
+    .item-content {
+      padding-right: 16px;
+    }
+    .radio-icon {
+      display: none;
+    }
+  }
 }
 
 #tab-settings {
