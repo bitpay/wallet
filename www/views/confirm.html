@@ -79,7 +79,6 @@
         </a>
         <div class="item item-icon-right" ng-if="wallet" ng-click="chooseFeeLevel(tx, wallet)">
           <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-          <span ng-if="wallet.coin == 'btc'">
             <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}}</span>
             <span class="item-note m10l">
               <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
@@ -90,7 +89,6 @@
               </span>
               </span>
             </span>
-          </span>
 
           <i ng-if="wallet.coin == 'btc'" class="icon bp-arrow-right"></i>
         </div>

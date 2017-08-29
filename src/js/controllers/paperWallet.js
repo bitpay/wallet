@@ -59,7 +59,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, testTx) {
           if (err) return cb(err);
           var rawTxLength = testTx.serialize().length;
-          feeService.getCurrentFeeRate('livenet', function(err, feePerKb) {
+          feeService.getCurrentFeeRate('btc', 'livenet', function(err, feePerKb) {
             var opts = {};
             opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
             $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, opts, function(err, tx) {

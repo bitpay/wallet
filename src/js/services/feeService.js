@@ -24,13 +24,13 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
   };
 
 
-  root.getFeeRate = function(network, feeLevel, cb) {
+  root.getFeeRate = function(coin, network, feeLevel, cb) {
 
     if (feeLevel == 'custom') return cb();
 
     network = network || 'livenet';
 
-    root.getFeeLevels(function(err, levels, fromCache) {
+    root.getFeeLevels(coin, function(err, levels, fromCache) {
       if (err) return cb(err);
 
       var feeLevelRate = lodash.find(levels[network], {
@@ -53,11 +53,12 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     });
   };
 
-  root.getCurrentFeeRate = function(network, cb) {
-    return root.getFeeRate(network, root.getCurrentFeeLevel(), cb);
+  root.getCurrentFeeRate = function(coin, network, cb) {
+    return root.getFeeRate(coin, network, root.getCurrentFeeLevel(), cb);
   };
 
-  root.getFeeLevels = function(cb) {
+  root.getFeeLevels = function(coin, cb) {
+    coin = coin || 'btc';
 
     if (cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
       return cb(null, cache.data, true);
@@ -65,7 +66,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
     var walletClient = bwcService.getClient();
 
-    walletClient.getFeeLevels('btc', 'livenet', function(errLivenet, levelsLivenet) {
+    walletClient.getFeeLevels(coin, 'livenet', function(errLivenet, levelsLivenet) {
       walletClient.getFeeLevels('btc', 'testnet', function(errTestnet, levelsTestnet) {
         if (errLivenet || errTestnet) {
           return cb(gettextCatalog.getString('Could not get dynamic fee'));

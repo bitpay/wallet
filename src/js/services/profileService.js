@@ -89,10 +89,7 @@ angular.module('copayApp.services')
       wallet.copayerId = wallet.credentials.copayerId;
       wallet.m = wallet.credentials.m;
       wallet.n = wallet.credentials.n;
-      wallet.coin = wallet.credentials.coin ? wallet.credentials.coin : 'btc';
-
-      // TODO
-      if (wallet.id == 'bf338d5b-6b2e-4118-adb0-6208c2d22a81') wallet.credentials.coin = wallet.coin = 'bch';
+      wallet.coin = wallet.credentials.coin;
 
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;

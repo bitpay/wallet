@@ -74,7 +74,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
 
-console.log('[confirm.js.76]', network, coin); //TODO
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
         network: network,
@@ -256,7 +255,7 @@ console.log('[confirm.js.76]', network, coin); //TODO
     // End of quick refresh, before wallet is selected.
     if (!wallet) return cb();
 
-    feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
+    feeService.getFeeRate(wallet.coin, tx.network, tx.feeLevel, function(err, feeRate) {
       if (err) return cb(err);
 
       if (!usingCustomFee) tx.feeRate = feeRate;
@@ -573,6 +572,7 @@ console.log('[confirm.js.76]', network, coin); //TODO
     scope.network = tx.network;
     scope.feeLevel = tx.feeLevel;
     scope.noSave = true;
+    scope.coin = wallet.coin;
 
     if (usingCustomFee) {
       scope.customFeePerKB = tx.feeRate;

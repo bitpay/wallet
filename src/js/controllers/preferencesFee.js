@@ -32,11 +32,12 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   });
 
   $scope.init = function() {
+    var coin = 'btc'; // TODO: only BTC in preferences
     $scope.network = $scope.network || 'livenet';
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel();
     $scope.loadingFee = true;
-    feeService.getFeeLevels(function(err, levels) {
+    feeService.getFeeLevels(coin, function(err, levels) {
       $scope.loadingFee = false;
       if (err) {
         //Error is already formatted

@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
 
 
 
-    feeService.getFeeLevels(function(err, levels){
+    feeService.getFeeLevels($scope.wallet.coin, function(err, levels){
       walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
         if (err) return;
 
