@@ -287,7 +287,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('tabs.send.amount', {
-        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor/:coin',
+        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor/:coin/:fixedUnit',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
@@ -668,7 +668,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           id: null,
           nextStep: 'tabs.paymentRequest.confirm',
-          forceCoin: true
         }
       })
 
@@ -918,7 +917,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         params: {
           coin: 'btc',
-          forceCoin: true
         }
       })
       .state('tabs.buyandsell.glidera.amount', {
@@ -975,7 +973,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         },
         params: {
           coin: 'btc',
-          forceCoin: true
         }
       })
       .state('tabs.preferences.coinbase', {
@@ -1064,9 +1061,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           nextStep: 'tabs.giftcards.mercadoLibre.buy',
           currency: 'BRL',
-          forceCurrency: true,
           coin: 'btc',
-          forceCoin: true
+          fixedUnit: 1,
         }
       })
       .state('tabs.giftcards.mercadoLibre.buy', {
@@ -1117,9 +1113,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         params: {
           nextStep: 'tabs.giftcards.amazon.buy',
           currency: 'USD',
-          forceCurrency: true,
           coin: 'btc',
-          forceCoin: true
+          fixedUnit: true,
         }
       })
       .state('tabs.giftcards.amazon.buy', {
@@ -1160,7 +1155,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           id: null,
           currency: 'USD',
           coin: 'btc',
-          forceCoin: true,
           useSendMax: null
         }
       })

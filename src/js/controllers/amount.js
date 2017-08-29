@@ -15,6 +15,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var availableUnits = [];
   var fiatCode;
 
+  var fixedUnit;
+
   $scope.isChromeApp = platformInfo.isChromeApp;
 
   $scope.$on('$ionicView.leave', function() {
@@ -33,8 +35,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
         shortName: 'BTC',
       }];
 
-     
-      var anyCashWallet = true;  // TODO!!
+
+      var anyCashWallet = true; // TODO!!
       if (anyCashWallet) {
         availableUnits.push({
           name: 'Bitcoin Cash',
@@ -43,12 +45,38 @@ angular.module('copayApp.controllers').controller('amountController', function($
         });
       };
 
+      unitIndex = 0;
 
+      if (data.stateParams.coin) {
+        var coins = data.stateParams.coin.split(',');
+        var newAvailableUnits = [];
+
+        lodash.each(coins, function(c) {
+          var coin = lodash.find(availableUnits, {
+            id: c
+          });
+          if (!coin) {
+            $log.warn('Could not find desired coin:' + data.stateParams.coin)
+          } else {
+            newAvailableUnits.push(coin);
+          }
+        });
+
+        if (newAvailableUnits.length>0) {
+          availableUnits = newAvailableUnits;
+        }
+      }
+
+
+      //  currency have preference
       var fiat;
       if (data.stateParams.currency) {
         fiat = data.stateParams.currency;
+        altUnitIndex = unitIndex
+        unitIndex = availableUnits.length;
       } else {
         fiat = config.fiat || 'USD';
+        altUnitIndex = availableUnits.length;
       }
 
       availableUnits.push({
@@ -58,27 +86,17 @@ angular.module('copayApp.controllers').controller('amountController', function($
         isFiat: true,
       });
 
-      unitIndex = 0;
-      altUnitIndex = availableUnits.length - 1;
       fiatCode = fiat;
+
+      if (data.stateParams.fixedUnit) {
+        fixedUnit = true;
+      }
     };
 
     // Go to...
     _id = data.stateParams.id; // Optional (BitPay Card ID or Wallet ID)
     $scope.nextStep = data.stateParams.nextStep;
 
-    $scope.forceCurrency = data.stateParams.forceCurrency;
-    $scope.forceCoin = data.stateParams.forceCoin;
-
-    if (data.stateParams.coin) {
-       var index = lodash.findIndex(availableUnits, { id: data.stateParams.coin });
- 
-       if (index < 0) {
-         $log.warn('Could not find desired coin:' + data.stateParams.coin)
-       } else {
-         unitIndex = index;
-       }
-    }
 
     setAvailableUnits();
     updateUnitUI();
@@ -175,16 +193,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   function updateUnitUI() {
-
     $scope.unit = availableUnits[unitIndex].shortName;
     $scope.alternativeUnit = availableUnits[altUnitIndex].shortName;
 
     processAmount();
-    $log.debug('Update unit coin @amount unit:' + $scope.unit + " alternativeUnit:" + $scope.alternativeUnit); //TODO
+    $log.debug('Update unit coin @amount unit:' + $scope.unit + " alternativeUnit:" + $scope.alternativeUnit);
   };
 
   $scope.changeUnit = function() {
-    if ($scope.forceCurrency || $scope.forceCoin) return;
+    if (fixedUnit) return;
 
     unitIndex++;
     if (unitIndex >= availableUnits.length) unitIndex = 0;
@@ -204,7 +221,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
 
   $scope.changeAlternativeUnit = function() {
-    console.log('[amount.js.215:changeAlternativeUnit:]'); //TODO
 
     // Do nothing is fiat is not main unit
     if (!availableUnits[unitIndex].isFiat) return;
@@ -332,7 +348,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
       var coin = unit.id;
       if (unit.isFiat) {
-        coin =  availableUnits[altUnitIndex].id;
+        coin = availableUnits[altUnitIndex].id;
       }
 
       $state.transitionTo($scope.nextStep, {
@@ -347,7 +363,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
       if (unit.isFiat) {
         amount = fromFiat(_amount);
-      } else if ($scope.useSendMax){
+      } else if ($scope.useSendMax) {
         amount = (amount * unitToSatoshi).toFixed(0);
       }
 
