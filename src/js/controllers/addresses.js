@@ -74,7 +74,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
         if (err) return;
 
-        if (resp.allUtxos && resp.allUtxos.length) {
+        if (resp && resp.allUtxos && resp.allUtxos.length) {
 
 
           var allSum = lodash.sum(resp.allUtxos || 0, 'satoshis');

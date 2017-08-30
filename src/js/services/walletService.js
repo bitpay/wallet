@@ -939,7 +939,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getLowUtxos = function(wallet, levels, cb) {
 
-    wallet.getUtxos({}, function(err, resp) {
+    wallet.getUtxos({coin: wallet.coin}, function(err, resp) {
       if (err || !resp || !resp.length) return cb();
 
       var minFee = root.getMinFee(wallet, levels, resp.length);
