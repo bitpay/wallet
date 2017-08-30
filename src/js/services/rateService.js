@@ -52,6 +52,7 @@ console.log('[rateService.js.44:updateRates:]'); //TODO
 
   function getBTC(cb, tries) {
     tries = tries || 0;
+    if (!self.httprequest) return;
     if (tries > 5) return cb('could not get BTC rates');
 
     //log.info('Fetching exchange rates');
@@ -78,10 +79,10 @@ console.log('[rateService.js.44:updateRates:]'); //TODO
 
   function getBCH(cb, tries) {
     tries = tries || 0;
+    if (!self.httprequest) return;
     if (tries > 5) return cb('could not get BCH rates');
 
     function retry(tries) {
-console.log('[rateService.js.84:retry:] BCH'); //TODO
       //log.debug('Error fetching exchange rates', err);
       setTimeout(function() {
         backoffSeconds *= 1.5;
