@@ -88,6 +88,27 @@
     padding: 1rem;
     background: #f8f8f9;
   }
+
+  &__no-transaction {
+    color: $v-mid-gray;
+    font-size: 12.5px;
+    text-align: center;
+    padding-top: 2rem;
+  }
+
+  &__no-update-history {
+    color: $v-error-color;
+    font-size: 12.5px;
+    text-align: center;
+    padding-top: 2rem;
+  }
+
+  &__updating-history {
+    color: $v-mid-gray;
+    font-size: 12.5px;
+    text-align: center;
+    padding-top: 1rem;
+  }
 }
 
 #walletDetails {
@@ -177,10 +198,6 @@
     align-items: center;
     justify-content: center;
 
-    &.collapsible {
-      margin-bottom: 10px;
-    }
-
     &__balance {
       -webkit-transform: scale3d(1, 1, 1) translateY(45px);
       transform: scale3d(1, 1, 1) translateY(45px);
@@ -200,6 +217,15 @@
       border: 1px solid rgba(255,255,255,0.25);
     }
 
+    &__error {
+      cursor: pointer;
+      font-size: 14px;
+      padding: 35px 20px;
+    }
+
+  }
+  .no-alternative {
+    padding-top: 45px;
   }
   .item.item-footer {
     font-weight: lighter;
