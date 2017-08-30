@@ -215,11 +215,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.satToUnit = 1 / cache.unitToSatoshi;
 
       //STR
-      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + wallet.coin;
-      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + wallet.coin;
-      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + wallet.coin;
-      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + wallet.coin;
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + wallet.coin;
+      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + (wallet.coin).toUpperCase();
+      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + (wallet.coin).toUpperCase();
+      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + (wallet.coin).toUpperCase();
+      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + (wallet.coin).toUpperCase();
+      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + (wallet.coin).toUpperCase();
 
       cache.alternativeName = config.settings.alternativeName;
       cache.alternativeIsoCode = config.settings.alternativeIsoCode;
