@@ -414,14 +414,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       var cacheCoin = txs[0].amountStr.split(' ')[1];
 
-      if (cacheCoin == wallet.coin)
-        return;
+      if (cacheCoin == 'bits') {
 
-      $log.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
-      lodash.each(txs, function(tx) {
-        tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.amount);
-        tx.feeStr = txFormatService.formatAmountStr(wallet.coin, tx.fees);
-      });
+        $log.debug('Fixing Tx Cache Unit to: ' + 'btc')
+        lodash.each(txs, function(tx) {
+          tx.amountStr = txFormatService.formatAmountStr('BTC', tx.amount);
+          tx.feeStr = txFormatService.formatAmountStr('BTC', tx.fees);
+        });
+      }
     };
 
     getSavedTxs(walletId, function(err, txsFromLocal) {
