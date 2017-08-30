@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService, platformInfo) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService, platformInfo, externalLinkService) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -15,9 +15,9 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       value: config.hideNextSteps.enabled
     };
     $scope.cashSupport = {
-      value: config.cashSupport.enabled 
+      value: config.cashSupport.enabled
     };
- 
+
   };
 
   $scope.spendUnconfirmedChange = function() {
@@ -64,6 +64,10 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
     });
+  };
+
+  $scope.openExternalLink = function(url) {
+    externalLinkService.open(url);
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {

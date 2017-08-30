@@ -62,7 +62,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     cashSupport: {
-      enabled: true,
+      enabled: false,
     },
 
     recentTransactions: {

@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('importController',
 
     var reader = new FileReader();
     var defaults = configService.getDefaults();
+    var config = configService.getSync();
     var errors = bwcService.getErrors();
 
     $scope.init = function() {
@@ -19,6 +20,8 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.importErr = false;
       $scope.isCopay = appConfigService.name == 'copay';
       $scope.fromHardwareWallet = { value: false };
+
+      if (config.cashSupport.enabled) $scope.enableCash = true;
 
       if ($stateParams.code)
         $scope.processWalletInfo($stateParams.code);
