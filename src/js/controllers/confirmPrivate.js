@@ -256,7 +256,8 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
   }
 
   function getEachFee(i, cb) {
-    console.log('getEachFee', i);
+    console.log('getEachFee', i, $scope.anonTxes[i]);
+    console.log('tx', $scope.tx);
     var tx = $scope.anonTxes[i];
     var wallet = $scope.wallet;
     getTxp(lodash.clone(tx), wallet, true, function(err, txp) {
@@ -633,6 +634,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         }
         publishEach(wallet, 0);
       });
+    });
   };
 
   function publishEach(wallet, i) {
