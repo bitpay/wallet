@@ -156,9 +156,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   var updateTxHistory = function(cb) {
     if (!cb) cb = function() {};
-    if ($scope.updatingTxHistory) return;
 
-    $scope.updatingTxHistory = true;
     $scope.updateTxHistoryError = false;
     $scope.updatingTxHistoryProgress = 0;
 
@@ -357,6 +355,8 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.wallet = profileService.getWallet($scope.walletId);
     if (!$scope.wallet) return;
     $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
+
+    $scope.updatingTxHistory = true;
 
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);

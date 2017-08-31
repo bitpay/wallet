@@ -1,5 +1,6 @@
 
-<ion-spinner class="spinner-dark recent right" icon="crescent" ng-show="updatingStatus || (updatingTxHistory && updatingTxHistoryProgress<=5)"   ></ion-spinner>
+<ion-spinner class="spinner-dark recent right" icon="crescent" ng-show="(updatingStatus || updatingTxHistory) &&
+  !walletNotRegistered && !updateStatusError && !updateTxHistoryError"></ion-spinner>
 
 <div>
 <span ng-show="wallet.status.wallet.singleAddress" class="size-12"><span translate>Auditable</span></span>
