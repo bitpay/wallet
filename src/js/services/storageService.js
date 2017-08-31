@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, platformInfo, $timeout) {
+  .factory('storageService', function(logHeader, fileStorageService, localStorageService, $log, lodash, platformInfo, $timeout, networkService) {
 
     var root = {};
     var storage;
@@ -68,7 +68,7 @@ angular.module('copayApp.services')
           return cb('Could not decrypt storage: could not get device ID');
 
         try {
-          text = sjcl.decrypt(uuid, text);
+          text = networkService.bwcFor('livenet/btc').getSJCL().decrypt(uuid, text); // Support only livenet/btc
 
           $log.info('Migrating to unencrypted profile');
           return storage.set('profile', text, function(err) {
@@ -312,17 +312,29 @@ angular.module('copayApp.services')
       storage.remove('coinbaseToken-' + network, cb);
     };
 
-    root.setAddressbook = function(network, addressbook, cb) {
-      storage.set('addressbook-' + network, addressbook, cb);
+    root.setAddressbook = function(addressbook, cb) {
+      storage.set('addressbook', addressbook, cb);
     };
 
-    root.getAddressbook = function(network, cb) {
+    root.getAddressbook = function(cb) {
+      storage.get('addressbook', cb);
+    };
+
+    root.removeAddressbook = function(cb) {
+      storage.remove('addressbook', cb);
+    };
+
+    ///////////////////////////////////////////////////////
+    // TODO: remove in future release
+    root.getAddressbookLegacy = function(network, cb) {
       storage.get('addressbook-' + network, cb);
     };
 
-    root.removeAddressbook = function(network, cb) {
+    root.removeAddressbookLegacy = function(network, cb) {
       storage.remove('addressbook-' + network, cb);
     };
+    //
+    ///////////////////////////////////////////////////////
 
     root.setLastCurrencyUsed = function(lastCurrencyUsed, cb) {
       storage.set('lastCurrencyUsed', lastCurrencyUsed, cb)

@@ -1,31 +1,33 @@
 'use strict';
 angular.module('copayApp.controllers').controller('paymentUriController',
-  function($rootScope, $scope, $stateParams, $location, $timeout, $ionicHistory, profileService, configService, lodash, bitcore, $state) {
+  function($rootScope, $scope, $stateParams, $location, $timeout, $ionicHistory, profileService, configService, lodash, $state, networkService) {
     function strip(number) {
       return (parseFloat(number.toPrecision(12)));
     };
 
-    // Build bitcoinURI with querystring
+    // Build paymentURI with querystring
     this.init = function() {
       var query = [];
-      this.bitcoinURI = $stateParams.url;
+      this.paymentURI = $stateParams.url;
 
-      var URI = bitcore.URI;
-      var isUriValid = URI.isValid(this.bitcoinURI);
-      if (!URI.isValid(this.bitcoinURI)) {
+      var URI = networkService.bwcFor('livenet/btc').getBitcore().URI; // Support only livenet/btc
+      var isUriValid = URI.isValid(this.paymentURI);
+      if (!URI.isValid(this.paymentURI)) {
         this.error = true;
         return;
       }
-      var uri = new URI(this.bitcoinURI);
+      var uri = new URI(this.paymentURI);
 
       if (uri && uri.address) {
-        var config = configService.getSync().wallet.settings;
-        var unitToSatoshi = config.unitToSatoshi;
-        var satToUnit = 1 / unitToSatoshi;
-        var unitName = config.unitName;
+        var configWallet = configService.getSync().wallet.settings;
+        var configNetwork = configService.getSync().currencyNetworks['livenet/btc']; // Support only livenet/btc
+
+        var unitToAtomicUnit = configNetwork.unitToAtomicUnit;
+        var atomicToUnit = 1 / unitToAtomicUnit;
+        var unitName = configNetwork.unitName;
 
         if (uri.amount) {
-          uri.amount = strip(uri.amount * satToUnit) + ' ' + unitName;
+          uri.amount = strip(uri.amount * atomicToUnit) + ' ' + unitName;
         }
         uri.network = uri.address.network.name;
         this.uri = uri;
@@ -50,7 +52,7 @@ angular.module('copayApp.controllers').controller('paymentUriController',
       $ionicHistory.removeBackView();
       $state.go('tabs.home');
       $timeout(function() {
-        $rootScope.$emit('paymentUri', self.bitcoinURI);
+        $rootScope.$emit('paymentUri', self.paymentURI);
       }, 1000);
     };
   });

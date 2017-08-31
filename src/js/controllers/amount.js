@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, amazonService, nodeWebkitService, networkService) {
   var _id;
-  var unitToSatoshi;
-  var satToUnit;
+  var atomicUnitToUnit;
+  var atomicUnitDecimals;
+  var unitToAtomicUnit;
   var unitDecimals;
-  var satToBtc;
   var SMALL_FONT_SIZE_LIMIT = 10;
   var LENGTH_EXPRESSION_LIMIT = 19;
   var isNW = platformInfo.isNW;
@@ -25,6 +25,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
     $scope.recipientType = data.stateParams.recipientType || null;
+    $scope.networkURI = data.stateParams.networkURI || configService.getSync().currencyNetworks.default;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
@@ -62,25 +63,25 @@ angular.module('copayApp.controllers').controller('amountController', function($
       });
     });
 
-    var config = configService.getSync().wallet.settings;
-    $scope.unitName = config.unitName;
+    var configNetwork = configService.getSync().currencyNetworks[$scope.networkURI];
+    $scope.unitName = configNetwork.unitName;
+    unitToAtomicUnit = configNetwork.unitToAtomicUnit;
+    unitDecimals = configNetwork.unitDecimals;
+    atomicUnitToUnit = 1 / unitToAtomicUnit;
+    atomicUnitDecimals = networkService.getAtomicUnit($scope.networkURI);
+
     if (data.stateParams.currency) {
       $scope.alternativeIsoCode = data.stateParams.currency;
     } else {
-      $scope.alternativeIsoCode = config.alternativeIsoCode || 'USD';
+      $scope.alternativeIsoCode = configNetwork.alternativeIsoCode;
     }
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;
-    unitToSatoshi = config.unitToSatoshi;
-    satToUnit = 1 / unitToSatoshi;
-    satToBtc = 1 / 100000000;
-    unitDecimals = config.unitDecimals;
-
     $scope.resetAmount();
 
-    // in SAT ALWAYS
+    // in atomicUnit ALWAYS
     if ($stateParams.toAmount) {
-      $scope.amount = (($stateParams.toAmount) * satToUnit).toFixed(unitDecimals);
+      $scope.amount = (($stateParams.toAmount) * atomicUnitToUnit).toFixed(unitDecimals);
     }
 
     processAmount();
@@ -181,7 +182,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     if (lodash.isNumber(result)) {
       $scope.globalResult = isExpression($scope.amount) ? '= ' + processResult(result) : '';
       $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
-      $scope.alternativeResult = txFormatService.formatAmount(fromFiat(result) * unitToSatoshi, true);
+      $scope.alternativeResult = txFormatService.formatAmount($scope.networkURI, fromFiat(result) * unitToAtomicUnit, true);
     }
   };
 
@@ -189,15 +190,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
     if ($scope.showAlternativeAmount)
       return $filter('formatFiatAmount')(val);
     else
-      return txFormatService.formatAmount(val.toFixed(unitDecimals) * unitToSatoshi, true);
+      return txFormatService.formatAmount($scope.networkURI, val.toFixed(unitDecimals) * unitToAtomicUnit, true);
   };
 
   function fromFiat(val) {
-    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals));
+    return parseFloat((rateService.fromFiat($scope.networkURI, val, $scope.alternativeIsoCode) * atomicUnitToUnit).toFixed(unitDecimals));
   };
 
   function toFiat(val) {
-    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2));
+    return parseFloat((rateService.toFiat($scope.networkURI, val * unitToAtomicUnit, $scope.alternativeIsoCode)).toFixed(2));
   };
 
   function evaluate(val) {
@@ -233,8 +234,9 @@ angular.module('copayApp.controllers').controller('amountController', function($
     } else {
       var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
       $state.transitionTo('tabs.send.confirm', {
+        networkURI: $scope.networkURI,
         recipientType: $scope.recipientType,
-        toAmount: $scope.useSendMax ? null : (amount * unitToSatoshi).toFixed(0),
+        toAmount: $scope.useSendMax ? null : (amount * unitToAtomicUnit).toFixed(atomicUnitDecimals),
         toAddress: $scope.toAddress,
         toName: $scope.toName,
         toEmail: $scope.toEmail,

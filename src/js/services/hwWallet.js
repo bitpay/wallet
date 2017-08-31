@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('hwWallet', function($log, bwcService) {
+  .factory('hwWallet', function($log, networkService) {
     var root = {};
 
     // Ledger magic number to get xPub without user confirmation
@@ -35,10 +35,9 @@ angular.module('copayApp.services')
       return path;
     };
 
-    root.getAddressPath = function(device, isMultisig, account, network) {
-      network = network || 'livenet';
+    root.getAddressPath = function(device, isMultisig, account, networkURI) {
       var networkPath = root.LIVENET_PATH;
-      if (network == 'testnet') {
+      if (networkService.isTestnet(networkURI)) {
         networkPath = root.TESTNET_PATH;
       }
       return root.getRootPath(device, isMultisig, account) + "'/" + networkPath + "'/" + account + "'";
@@ -64,9 +63,9 @@ angular.module('copayApp.services')
       return path + account + "'";
     };
 
-    root.pubKeyToEntropySource = function(xPubKey) {
-      var b = bwcService.getBitcore();
-      var x = b.HDPublicKey(xPubKey);
+    root.pubKeyToEntropySource = function(xPubKey, networkURI) {
+      var bitcore = networkService.bwcFor(networkURI).getBitcore();
+      var x = bitcore.HDPublicKey(xPubKey);
       return x.publicKey.toString();
     };
 

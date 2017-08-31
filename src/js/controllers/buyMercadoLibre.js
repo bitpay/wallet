@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyMercadoLibreController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, mercadoLibreService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, txFormatService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('buyMercadoLibreController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, mercadoLibreService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, txFormatService, gettextCatalog, networkService) {
 
   var amount;
   var currency;
@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
   var message;
   var invoiceId;
   var configWallet = configService.getSync().wallet;
+  var configNetwork = configService.getSync().currencyNetworks['livenet/btc']; // Support only livenet/btc
   $scope.isCordova = platformInfo.isCordova;
 
   $scope.openExternalLink = function(url) {
@@ -63,20 +64,21 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     }
   };
 
-  var satToFiat = function(sat, cb) {
-    txFormatService.toFiat(sat, $scope.currencyIsoCode, function(value) {
+  var atomicToFiat = function(atomics, cb) {
+    // Support only livenet/btc
+    txFormatService.toFiat('livenet/btc', atomics, $scope.currencyIsoCode, function(value) {
       return cb(value);
     });
   };
 
-  var setTotalAmount = function(amountSat, invoiceFeeSat, networkFeeSat) {
-    satToFiat(amountSat, function(a) {
+  var setTotalAmount = function(amountAtomic, invoiceFeeAtomic, networkFeeAtomic) {
+    atomicToFiat(amountAtomic, function(a) {
       $scope.amount = Number(a);
 
-      satToFiat(invoiceFeeSat, function(i) {
+      atomicToFiat(invoiceFeeAtomic, function(i) {
         $scope.invoiceFee = Number(i);
 
-        satToFiat(networkFeeSat, function(n) {
+        atomicToFiat(networkFeeAtomic, function(n) {
           $scope.networkFee = Number(n);
           $scope.totalAmount = $scope.amount + $scope.invoiceFee + $scope.networkFee;
           $timeout(function() {
@@ -137,24 +139,28 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       });
     }
 
+    // Support only livenet/btc
+    var atomicUnit = networkService.getAtomicUnit('livenet/btc').units;
+    var standardUnit = networkService.getStandardUnit('livenet/btc').units;
+
     var outputs = [];
     var toAddress = invoice.bitcoinAddress;
-    var amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
+    var amountAtomic = parseInt((invoice.btcDue * standardUnit.value).toFixed(atomicUnit.decimals));
 
     outputs.push({
       'toAddress': toAddress,
-      'amount': amountSat,
+      'amount': amountAtomic,
       'message': message
     });
 
     var txp = {
       toAddress: toAddress,
-      amount: amountSat,
+      amount: amountAtomic,
       outputs: outputs,
       message: message,
       payProUrl: payProUrl,
       excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-      feeLevel: configWallet.settings.feeLevel || 'normal'
+      feeLevel: configNetwork.feeLevel || 'normal'
     };
 
     walletService.createTx(wallet, txp, function(err, ctxp) {
@@ -216,7 +222,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
   var initialize = function(wallet) {
     var parsedAmount = txFormatService.parseAmount(amount, currency);
     $scope.currencyIsoCode = parsedAmount.currency;
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
     var dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
@@ -229,12 +235,16 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
         showErrorAndBack(err.title, err.message);
         return;
       }
+
+      // Support only livenet/btc
+      var standardUnit = networkService.getStandardUnit('livenet/btc').units;
+
       // Sometimes API does not return this element;
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
-      var invoiceFeeSat = (invoice.buyerPaidBtcMinerFee * 100000000).toFixed();
+      var invoiceFeeAtomic = (invoice.buyerPaidBtcMinerFee * standardUnit.value).toFixed();
 
       message = gettextCatalog.getString("{{amountStr}} for Mercado Livre Brazil Gift Card", {
-        amountStr: $scope.amountUnitStr
+        amountStr: $scope.amountAtomicStr
       });
 
       createTx(wallet, invoice, message, function(err, ctxp) {
@@ -258,8 +268,9 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
           invoiceUrl: invoice.url,
           invoiceTime: invoice.invoiceTime
         };
-        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
-        setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
+        // Support only livenet/btc
+        $scope.totalAmountStr = txFormatService.formatAmountStr('livenet/btc', ctxp.amount);
+        setTotalAmount(parsedAmount.amountAtomic, invoiceFeeAtomic, ctxp.fee);
       });
     });
   };

@@ -1,21 +1,13 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
   var FEE_TOO_HIGH_LIMIT_PER = 15;
 
   var tx = {};
-
-  // Config Related values
   var config = configService.getSync();
-  var walletConfig = config.wallet;
-  var unitToSatoshi = walletConfig.settings.unitToSatoshi;
-  var unitDecimals = walletConfig.settings.unitDecimals;
-  var satToUnit = 1 / unitToSatoshi;
-  var configFeeLevel = walletConfig.settings.feeLevel ? walletConfig.settings.feeLevel : 'normal';
-
 
   // Platform info
   var isChromeApp = platformInfo.isChromeApp;
@@ -69,14 +61,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    function setWalletSelector(network, minAmount, cb) {
+    function setWalletSelector(networkURI, minAmount, cb) {
 
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
 
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
-        network: network
+        network: networkURI
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
@@ -96,10 +88,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             walletsUpdated++;
             w.status = status;
 
-            if (!status.availableBalanceSat)
+            if (!status.availableBalanceAtomic)
               $log.debug('No balance available in: ' + w.name);
 
-            if (status.availableBalanceSat > minAmount) {
+            if (status.availableBalanceAtomic > minAmount) {
               filteredWallets.push(w);
             }
           }
@@ -128,15 +120,15 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       description: data.stateParams.description,
       paypro: data.stateParams.paypro,
 
-      feeLevel: configFeeLevel,
-      spendUnconfirmed: walletConfig.spendUnconfirmed,
+      feeLevel: config.currencyNetworks[data.stateParams.networkURI].feeLevel,
+      spendUnconfirmed: config.wallet.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
+      networkURI: data.stateParams.networkURI,
       recipientType: data.stateParams.recipientType || null,
       toName: data.stateParams.toName,
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
-      network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
       txp: {},
     };
 
@@ -150,7 +142,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
       $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
-      setWalletSelector(tx.network, tx.toAmount, function(err) {
+      setWalletSelector(tx.networkURI, tx.toAmount, function(err) {
         if (err) {
           return exitWithError('Could not update wallets');
         }
@@ -238,10 +230,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (!tx.toAmount) return;
 
       // Amount
-      tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
+      tx.amountStr = txFormatService.formatAmountStr(wallet.network, tx.toAmount);
       tx.amountValueStr = tx.amountStr.split(' ')[0];
-      tx.amountUnitStr = tx.amountStr.split(' ')[1];
-      txFormatService.formatAlternativeStr(tx.toAmount, function(v) {
+      tx.amountAtomicStr = tx.amountStr.split(' ')[1];
+      txFormatService.formatAlternativeStr(wallet.network, tx.toAmount, function(v) {
         tx.alternativeAmountStr = v;
       });
     }
@@ -252,11 +244,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     // End of quick refresh, before wallet is selected.
     if (!wallet) return cb();
 
-    feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
+    feeService.getFeeRate(tx.feeLevel, wallet, function(err, feeRate) {
       if (err) return cb(err);
 
       if (!usingCustomFee) tx.feeRate = feeRate;
-      tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
+      tx.feeLevelName = feeService.getFeeOpts(wallet.network, tx.feeLevel);
 
       if (!wallet)
         return cb();
@@ -280,7 +272,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           tx.sendMaxInfo = sendMaxInfo;
           tx.toAmount = tx.sendMaxInfo.amount;
           updateAmount();
-          showSendMaxWarning(sendMaxInfo);
+          showSendMaxWarning(sendMaxInfo, wallet.network);
         }
 
         // txp already generated for this wallet?
@@ -292,8 +284,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
           if (err) return cb(err);
 
-          txp.feeStr = txFormatService.formatAmountStr(txp.fee);
-          txFormatService.formatAlternativeStr(txp.fee, function(v) {
+          txp.feeStr = txFormatService.formatAmountStr(wallet.network, txp.fee);
+          txFormatService.formatAlternativeStr(wallet.network, txp.fee, function(v) {
             txp.alternativeFeeStr = v;
           });
 
@@ -337,26 +329,26 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
 
-  function showSendMaxWarning(sendMaxInfo) {
+  function showSendMaxWarning(sendMaxInfo, networkURI) {
 
     function verifyExcludedUtxos() {
       var warningMsg = [];
       if (sendMaxInfo.utxosBelowFee > 0) {
         warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-          amountBelowFeeStr: txFormatService.formatAmountStr(sendMaxInfo.amountBelowFee)
+          amountBelowFeeStr: txFormatService.formatAmountStr(networkURI, sendMaxInfo.amountBelowFee)
         }));
       }
 
       if (sendMaxInfo.utxosAboveMaxSize > 0) {
         warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
-          amountAboveMaxSizeStr: txFormatService.formatAmountStr(sendMaxInfo.amountAboveMaxSize)
+          amountAboveMaxSizeStr: txFormatService.formatAmountStr(networkURI, sendMaxInfo.amountAboveMaxSize)
         }));
       }
       return warningMsg.join('\n');
     };
 
     var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
-      fee: txFormatService.formatAmountStr(sendMaxInfo.fee)
+      fee: txFormatService.formatAmountStr(networkURI, sendMaxInfo.fee)
     });
     var warningMsg = verifyExcludedUtxos();
 
@@ -483,7 +475,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         if (walletService.isEncrypted(wallet))
           return cb();
 
-        var amountUsd = parseFloat(txFormatService.formatToUSD(txp.amount));
+        var amountUsd = parseFloat(txFormatService.formatToUSD(wallet.network, txp.amount));
         if (amountUsd <= CONFIRM_LIMIT_USD)
           return cb();
 
@@ -570,7 +562,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (usingCustomFee) {
       scope.customFeePerKB = tx.feeRate;
-      scope.feePerSatByte = tx.feeRate / 1000;
+      scope.feePerAtomicByte = tx.feeRate / 1000;
     }
 
     $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {

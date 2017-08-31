@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('intelTEE', function($log, $timeout, gettext, lodash, bitcore, hwWallet, bwcService, platformInfo) {
+  .factory('intelTEE', function($log, $timeout, gettext, lodash, hwWallet, platformInfo, networkService) {
 
     var root = {};
 
@@ -29,7 +29,7 @@ angular.module('copayApp.services')
       $log.error('Failed to create Intel Wallet enclave');
     }
 
-    root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
+    root.getInfoForNewWallet = function(isMultisig, account, networkURI, callback) {
       var opts = {};
       initSource(opts, function(err, opts) {
         if (err) return callback(err);
@@ -38,7 +38,7 @@ angular.module('copayApp.services')
           if (err) return callback(err);
 
           opts.entropySource = entropySource;
-          root.getXPubKey(opts.hwInfo.id, hwWallet.getAddressPath(root.description.id, isMultisig, account, networkName), function(data) {
+          root.getXPubKey(opts.hwInfo.id, hwWallet.getAddressPath(root.description.id, isMultisig, account, networkURI), function(data) {
             if (!data.success) {
               $log.warn(data.message);
               return callback(data);
@@ -82,7 +82,7 @@ angular.module('copayApp.services')
         if (!data.success)
           return callback(hwWallet._err(data));
 
-        return callback(null,  hwWallet.pubKeyToEntropySource(data.xpubkey));
+        return callback(null,  hwWallet.pubKeyToEntropySource(data.xpubkey, 'livenet/btc')); // Support only livenet/btc
       });
     };
 
@@ -114,7 +114,8 @@ angular.module('copayApp.services')
       var isMultisig = txp.requiredSignatures > 1;
       var basePath = hwWallet.getAddressPath(root.description.id, isMultisig, account, txp.network);
 
-      var rawTx = bwcService.Client.getRawTx(txp);
+      var rawTx = networkService.bwcFor(txp.network).Client.getRawTx(txp);
+
       var keypaths = lodash.map(lodash.pluck(txp.inputs, 'path'), function(path) {
         return path.replace('m', basePath);
       });
@@ -142,7 +143,7 @@ angular.module('copayApp.services')
 
     function initSource(opts, callback) {
         var args = {
-          "Testnet" : (opts.networkName == 'livenet'? false : true),
+          "Testnet" : (opts.networkURI == 'livenet/btc' ? false : true), // Support only /btc
           "PINUnlockRequired" : false,
           "PINSignatureDataRequired" : false,
           "PINSignatureTransaction" : 0,

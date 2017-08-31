@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService, feeService, appConfigService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService, feeService, appConfigService, networkService) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -47,12 +47,16 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.txps = lodash.sortBy(txps, 'createdOn').reverse();
   };
 
+  $scope.isTestnet = function(networkURI) {
+    return networkService.isTestnet(networkURI);
+  };
+
   var analyzeUtxosDone;
 
   var analyzeUtxos = function() {
     if (analyzeUtxosDone) return;
 
-    feeService.getFeeLevels(function(err, levels) {
+    feeService.getFeeLevels($scope.wallet, function(err, levels) {
       if (err) return;
       walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
         if (err || !resp) return;
@@ -169,7 +173,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       });
     };
 
-    feeService.getFeeLevels(function(err, levels) {
+    feeService.getFeeLevels($scope.wallet, function(err, levels) {
       walletService.getTxHistory($scope.wallet, {
         progressFn: progressFn,
         feeLevels: levels,
@@ -284,7 +288,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   function refreshAmountSection(scrollPos) {
     $scope.showBalanceButton = false;
     if ($scope.status) {
-      $scope.showBalanceButton = ($scope.status.totalBalanceSat != $scope.status.spendableAmount);
+      $scope.showBalanceButton = ($scope.status.totalBalanceAtomic != $scope.status.spendableAmount);
     }
     if (!$scope.amountIsCollapsible) {
       var t = ($scope.showBalanceButton ? 15 : 45);

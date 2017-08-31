@@ -17,7 +17,7 @@
           <span>Amazon.com Gift Card</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{amountUnitStr}}</div>
+          <div class="amount">{{amountAtomicStr}}</div>
           <div class="alternative">
             {{limitPerDayMessage}}
           </div>
@@ -106,7 +106,7 @@
       Your purchase was added to the list of pending
     </span>
     <span ng-show="amazonGiftCard.status == 'SUCCESS'" translate>
-      Bought {{amountUnitStr}}
+      Bought {{amountAtomicStr}}
     </span>
     <div class="m10 size-14" ng-show="amazonGiftCard.status == 'SUCCESS'" translate>
       Gift card generated and ready to use.

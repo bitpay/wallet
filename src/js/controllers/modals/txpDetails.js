@@ -23,11 +23,11 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   function displayFeeValues() {
-    txFormatService.formatAlternativeStr($scope.tx.fee, function(v) {
+    txFormatService.formatAlternativeStr($scope.tx.network, $scope.tx.fee, function(v) {
       $scope.tx.feeFiatStr = v;
     });
     $scope.tx.feeRateStr = ($scope.tx.fee / ($scope.tx.amount + $scope.tx.fee) * 100).toFixed(2) + '%';
-    $scope.tx.feeLevelStr = feeService.feeOpts[$scope.tx.feeLevel];
+    $scope.tx.feeLevelStr = feeService.getFeeOpts($scope.tx.network, $scope.tx.feeLevel);
   };
 
   function applyButtonText() {
@@ -198,10 +198,6 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     }, 10);
   };
 
-  $scope.getShortNetworkName = function() {
-    return $scope.wallet.credentials.networkName.substring(0, 4);
-  };
-
   var updateTxInfo = function(eventName) {
     $scope.wallet.getTx($scope.tx.id, function(err, tx) {
       if (err) {
@@ -219,7 +215,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         copayerId: $scope.wallet.credentials.copayerId
       });
 
-      $scope.tx = txFormatService.processTx(tx);
+      $scope.tx = txFormatService.processTx(tx, $scope.wallet.network);
 
       if (!action && tx.status == 'pending')
         $scope.tx.pendingForUs = true;

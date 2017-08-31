@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, platformInfo, txFormatService) {
+angular.module('copayApp.controllers').controller('buyGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, platformInfo, txFormatService, networkService) {
 
   var amount;
   var currency;
@@ -44,14 +44,21 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
+    // Support only livenet/btc
+    var networkUnits = networkService.getNetworkByURI('livenet/btc').units;
+    var foundCurrencyName = lodash.find(networkUnits, function(u) {
+      return u.shortName == currency;
+    });
+
+    $scope.isFiat = !foundCurrencyName;
     var parsedAmount = txFormatService.parseAmount(
+      'livenet/btc', // Support only livenet/btc
       data.stateParams.amount, 
       data.stateParams.currency);
 
     amount = parsedAmount.amount;
     currency = parsedAmount.currency;
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
 
     $scope.network = glideraService.getNetwork();
     $scope.wallets = profileService.getWallets({
@@ -86,6 +93,7 @@ angular.module('copayApp.controllers').controller('buyGlideraController', functi
           return;
         }
         $scope.buyInfo = buy;
+        $scope.standardUnit = networkService.getStandardUnit('livenet/btc'); // Support only livenet/btc
       });
     });
   });

@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog, networkService) {
 
   var root = {};
+
+  var bitcoreBtc = networkService.bwcFor('livenet/btc').getBitcore();
 
   root.showMenu = function(data) {
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
@@ -39,7 +41,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     function checkPrivateKey(privateKey) {
       try {
-        new bitcore.PrivateKey(privateKey, 'livenet');
+          bitcoreBtc.PrivateKey(privateKey, 'livenet/btc'); // Need to support more than livenet/btc
       } catch (err) {
         return false;
       }
@@ -83,8 +85,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     data = sanitizeUri(data);
 
     // BIP21
-    if (bitcore.URI.isValid(data)) {
-      var parsed = new bitcore.URI(data);
+    if (bitcoreBtc.URI.isValid(data)) {
+      var parsed = bitcoreBtc.URI(data);
 
       var addr = parsed.address ? parsed.address.toString() : '';
       var message = parsed.message;
@@ -118,9 +120,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         return true;
       });
       // Plain Address
-    } else if (bitcore.Address.isValid(data, 'livenet') || bitcore.Address.isValid(data, 'testnet')) {
+    } else if (bitcoreBtc.Address.isValid(data, 'livenet/btc') || bitcoreBtc.Address.isValid(data, 'testnet/btc')) {
       if ($state.includes('tabs.scan')) {
         root.showMenu({
+          networkURI: (bitcoreBtc.Address.isValid(data, 'livenet/btc') ? 'livenet/btc' : 'testnet/btc'),
           data: data,
           type: 'bitcoinAddress'
         });
@@ -248,6 +251,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     });
     $timeout(function() {
       $state.transitionTo('tabs.send.amount', {
+        networkURI: (bitcoreBtc.Address.isValid(toAddress, 'livenet/btc') ? 'livenet/btc' : 'testnet/btc'),
         toAddress: toAddress
       });
     }, 100);

@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('backupController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, bwcService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, lodash, profileService, walletService, ongoingProcess, popupService, gettextCatalog, $ionicModal, networkService) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.viewTitle = $scope.wallet.name || $scope.wallet.credentials.walletName;
     $scope.n = $scope.wallet.n;
+
+    var configNetwork = configService.getSync().currencyNetworks;
     var keys;
 
     $scope.credentialsEncrypted = $scope.wallet.isPrivKeyEncrypted();
@@ -98,7 +100,7 @@ angular.module('copayApp.controllers').controller('backupController',
     };
 
     $scope.copyRecoveryPhrase = function() {
-      if ($scope.wallet.network == 'livenet') return null;
+      if (networkService.isLivenet($scope.wallet.network)) return null;
       else if (!$scope.wallet.credentials.mnemonic) return null;
       else return $scope.wallet.credentials.mnemonic;
     };
@@ -114,14 +116,18 @@ angular.module('copayApp.controllers').controller('backupController',
 
       $timeout(function() {
         if ($scope.mnemonicHasPassphrase) {
-          var walletClient = bwcService.getClient();
+          var opts = {
+            bwsurl: configNetwork[$scope.wallet.network].bws.url
+          };
+
+          var walletClient = networkService.bwcFor($scope.wallet.network).getClient(null, opts);
           var separator = $scope.useIdeograms ? '\u3000' : ' ';
           var customSentence = customWordList.join(separator);
           var passphrase = $scope.data.passphrase || '';
 
           try {
             walletClient.seedFromMnemonic(customSentence, {
-              network: $scope.wallet.credentials.network,
+              network: $scope.wallet.network,
               passphrase: passphrase,
               account: $scope.wallet.credentials.account
             });

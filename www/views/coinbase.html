@@ -57,7 +57,7 @@
         Buy Bitcoin
         <span class="item-note">
           <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice"></ion-spinner>
-          <span ng-show="buyPrice">{{buyPrice.amount|currency:'$':2}} {{buyPrice.currency}}/BTC</span>
+          <span ng-show="buyPrice">{{buyPrice.amount|currency:'$':2}} {{buyPrice.currency}}/{{standardUnit.shortName}}</span>
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
@@ -68,7 +68,7 @@
         Sell Bitcoin
         <span class="item-note">
           <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!sellPrice"></ion-spinner>
-          <span ng-show="sellPrice">{{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/BTC</span>
+          <span ng-show="sellPrice">{{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/{{standardUnit.shortName}}</span>
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>

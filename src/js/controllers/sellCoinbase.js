@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('sellCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, appConfigService, configService, txFormatService) {
+angular.module('copayApp.controllers').controller('sellCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, appConfigService, configService, txFormatService, networkService) {
 
   var amount;
   var currency;
@@ -36,9 +36,9 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
 
   var checkTransaction = lodash.throttle(function(count, txp) {
     $log.warn('Check if transaction has been received by Coinbase. Try ' + count + '/5');
-    // TX amount in BTC
-    var satToBtc = 1 / 100000000;
-    var amountBTC = (txp.amount * satToBtc).toFixed(8);
+    // TX amount in standard units (BTC)
+    var standardUnit = networkService.getStandardUnit('livenet/btc'); // Support only livenet/btc
+    var amountStandard = (txp.amount / standardUnit.value).toFixed(standardUnit.decimals);
     coinbaseService.init(function(err, res) {
       if (err) {
         $log.error(err);
@@ -69,7 +69,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
           var ctx;
           for(var i = 0; i < coinbaseTransactions.length; i++) {
             ctx = coinbaseTransactions[i];
-            if (ctx.type == 'send' && ctx.from && ctx.amount.amount == amountBTC ) {
+            if (ctx.type == 'send' && ctx.from && ctx.amount.amount == amountStandard ) {
               $log.warn('Transaction found!', ctx);
               txFound = true;
               $log.debug('Saving transaction to process later...');
@@ -125,14 +125,21 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
+    var networkUnits = networkService.getNetworkByURI('livenet/btc').units; // Support only livenet/btc
+    var foundCurrencyName = lodash.find(networkUnits, function(u) {
+      return u.shortName == data.stateParams.currency;
+    });
+
+    $scope.isFiat = !foundCurrencyName;
+
     var parsedAmount = txFormatService.parseAmount(
+      'livenet/btc', //Support only livenet/btc
       data.stateParams.amount, 
       data.stateParams.currency);
 
     amount = parsedAmount.amount;
     currency = parsedAmount.currency;
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    $scope.amountAtomicStr = parsedAmount.amountAtomicStr;
 
     $scope.priceSensitivity = coinbaseService.priceSensitivity;
     $scope.selectedPriceSensitivity = { data: coinbaseService.selectedPriceSensitivity };
@@ -143,7 +150,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
       onlyComplete: true,
       network: $scope.network,
       hasFunds: true,
-      minAmount: parsedAmount.amountSat
+      minAmount: parsedAmount.amountAtomic
     });
 
     if (lodash.isEmpty($scope.wallets)) {
@@ -230,6 +237,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
     var config = configService.getSync();
     var configWallet = config.wallet;
     var walletSettings = configWallet.settings;
+    var networkSettings = config.currencyNetworks['livenet/btc']; // Support only livenet/btc
 
     var message = 'Selling bitcoin for ' + amount + ' ' + currency;
     var okText = 'Confirm';
@@ -256,25 +264,30 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
             showError(err);
             return;
           }
+
+          // Support only livenet/btc
+          var atomicUnit = networkService.getAtomicUnit('livenet/btc');
+          var standardUnit = networkService.getStandardUnit('livenet/btc');
+
           var outputs = [];
           var toAddress = data.data.address;
-          var amountSat = parseInt(($scope.sellRequestInfo.amount.amount * 100000000).toFixed(0));
+          var amountAtomic = parseInt(($scope.sellRequestInfo.amount.amount * standardUnit.value).toFixed(atomicUnit.decimals));
           var comment = 'Sell bitcoin (Coinbase)';
 
           outputs.push({
             'toAddress': toAddress,
-            'amount': amountSat,
+            'amount': amountAtomic,
             'message': comment
           });
 
           var txp = {
             toAddress: toAddress,
-            amount: amountSat,
+            amount: amountAtomic,
             outputs: outputs,
             message: comment,
             payProUrl: null,
             excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
-            feeLevel: walletSettings.feeLevel || 'normal'
+            feeLevel: networkSettings.feeLevel || 'normal'
           };
 
           walletService.createTx($scope.wallet, txp, function(err, ctxp) {

@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('trezor', function($log, $timeout, lodash, bitcore, hwWallet, platformInfo) {
+  .factory('trezor', function($log, $timeout, lodash, hwWallet, platformInfo, networkService) {
     var root = {};
+
+    var bitcoreBtc = networkService.bwcFor('livenet/btc').getBitcore();
 
     var SETTLE_TIME = 3000;
     root.callbacks = {};
@@ -22,7 +24,7 @@ angular.module('copayApp.services')
         if (!data.success)
           return callback(hwWallet._err(data));
 
-        return callback(null, hwWallet.pubKeyToEntropySource(data.xpubkey));
+        return callback(null, hwWallet.pubKeyToEntropySource(data.xpubkey, 'livenet/btc')); // Support only livenet/btc
       });
     };
 
@@ -41,8 +43,8 @@ angular.module('copayApp.services')
       return callback(opts);
     };
 
-    root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
-      // networkName not used for this hardware (always livenet)
+    root.getInfoForNewWallet = function(isMultisig, account, networkURI, callback) {
+      // networkURI not used for this hardware (always livenet/btc)
       var opts = {};
       root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);
@@ -50,7 +52,7 @@ angular.module('copayApp.services')
         $log.debug('Waiting TREZOR to settle...');
         $timeout(function() {
 
-          root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account), function(data) {
+          root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account, 'livenet/btc'), function(data) {
             if (!data.success)
               return callback(hwWallet._err(data));
 
@@ -73,7 +75,7 @@ angular.module('copayApp.services')
       path = path.join('/');
 
       var keys = lodash.map(xPubKeys, function(x) {
-        var pub = (new bitcore.HDPublicKey(x)).derive(path).publicKey;
+        var pub = bitcoreBtc.HDPublicKey(x).derive(path).publicKey;
         return {
           xpub: x,
           pub: pub.toString('hex'),

@@ -46,7 +46,7 @@
             </span>
           </div>
           <div class="size-12">{{w.m}} of {{w.n}}
-            <span ng-show="w.network=='testnet'">[Testnet]</span>
+            <span ng-show="isTestnet(w.network)">[Testnet]</span>
           </div>
         </a>
         </li>

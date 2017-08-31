@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService, networkService) {
 
   var txId;
   var listeners = [];
@@ -25,7 +25,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
     listeners = [
       $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-        if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+        if (type == 'NewBlock' && n && n.data && networkService.isLivenet(n.data.network)) {
           updateTxDebounced({
             hideLoading: true
           });
@@ -112,8 +112,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not available at this time'));
       }
 
-      $scope.btx = txFormatService.processTx(tx);
-      txFormatService.formatAlternativeStr(tx.fees, function(v) {
+      $scope.btx = txFormatService.processTx(tx, $scope.wallet.network);
+      txFormatService.formatAlternativeStr($scope.wallet.network, tx.fees, function(v) {
         $scope.btx.feeFiatStr = v;
         $scope.btx.feeRateStr = ($scope.btx.fees / ($scope.btx.amount + $scope.btx.fees) * 100).toFixed(2) + '%';
       });
@@ -131,7 +131,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.$digest();
       });
 
-      feeService.getFeeLevels(function(err, levels) {
+      feeService.getFeeLevels($scope.wallet, function(err, levels) {
         if (err) return;
         walletService.getLowAmount($scope.wallet, levels, function(err, amount) {
           if (err) return;
@@ -178,18 +178,14 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.viewOnBlockchain = function() {
     var btx = $scope.btx;
-    var url = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid;
+    var bex = networkService.getNetworkByURI($scope.wallet.network).bex.production;
+    var url = bex.urlTx + btx.txid;
     var optIn = true;
     var title = null;
-    var message = gettextCatalog.getString('View Transaction on Insight');
-    var okText = gettextCatalog.getString('Open Insight');
+    var message = gettextCatalog.getString('View Transaction on ' + bex.label);
+    var okText = gettextCatalog.getString('Open ' + bex.label);
     var cancelText = gettextCatalog.getString('Go Back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
-  };
-
-  $scope.getShortNetworkName = function() {
-    var n = $scope.wallet.credentials.network;
-    return n.substring(0, 4);
   };
 
   var getFiatRate = function() {

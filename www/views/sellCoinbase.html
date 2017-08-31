@@ -15,10 +15,10 @@
           <span>Selling</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{amountUnitStr}}</div>
+          <div class="amount">{{amountAtomicStr}}</div>
           <div class="alternative" ng-if="sellPrice">
             <span ng-show="isFiat">{{sellRequestInfo.amount.amount}} {{sellRequestInfo.amount.currency}}</span>
-            @ ${{sellPrice.amount}} per BTC
+            @ ${{sellPrice.amount}} per {{standardUnit.shortName}}
           </div>
         </div>
       </div>

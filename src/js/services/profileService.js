@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, $state, sjcl, lodash, storageService, bwcService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, appConfigService) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, $state, lodash, storageService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, appConfigService, networkService) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
@@ -9,7 +9,6 @@ angular.module('copayApp.services')
     var isIOS = platformInfo.isIOS;
 
     var root = {};
-    var errors = bwcService.getErrors();
     var usePushNotifications = isCordova && !isWindowsPhoneApp;
 
     var UPDATE_PERIOD = 15;
@@ -31,7 +30,7 @@ angular.module('copayApp.services')
     root.updateWalletSettings = function(wallet) {
       var defaults = configService.getDefaults();
       configService.whenAvailable(function(config) {
-        wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
+        wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.currencyNetworks[defaults.currencyNetworks.default].bws.url);
         wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
         wallet.color = (config.colorFor && config.colorFor[wallet.id]);
         wallet.email = config.emailFor && config.emailFor[wallet.id];
@@ -49,7 +48,7 @@ angular.module('copayApp.services')
     function _requiresBackup(wallet) {
       if (wallet.isPrivKeyExternal()) return false;
       if (!wallet.credentials.mnemonic) return false;
-      if (wallet.credentials.network == 'testnet') return false;
+      if (networkService.isTestnet(wallet.network)) return false;
 
       return true;
     };
@@ -111,7 +110,7 @@ angular.module('copayApp.services')
 
         $log.debug('BWC Notification:', n);
 
-        if (n.type == "NewBlock" && n.data.network == "testnet") {
+        if (n.type == "NewBlock" && networkService.isTestnet(n.data.network)) {
           throttledBwsEvent(n, wallet);
         } else newBwsEvent(n, wallet);
       });
@@ -210,21 +209,21 @@ angular.module('copayApp.services')
     var shouldSkipValidation = function(walletId) {
       return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWindowsPhoneApp;
     }
+
+    var getBWSURL = function(credentials) {
+      var config = configService.getSync();
+      var defaults = configService.getDefaults();
+      return ((config.bwsFor && config.bwsFor[credentials.walletId]) || defaults.currencyNetworks[credentials.network].bws.url);
+    };
+
     // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
       if (!credentials.walletId || !credentials.m)
         return cb('bindWallet should receive credentials JSON');
 
       // Create the client
-      var getBWSURL = function(walletId) {
-        var config = configService.getSync();
-        var defaults = configService.getDefaults();
-        return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
-      };
-
-
-      var client = bwcService.getClient(JSON.stringify(credentials), {
-        bwsurl: getBWSURL(credentials.walletId),
+      var client = networkService.bwcFor(credentials.network).getClient(JSON.stringify(credentials), {
+        bwsurl: getBWSURL(credentials)
       });
 
       var skipKeyValidation = shouldSkipValidation(credentials.walletId);
@@ -242,6 +241,16 @@ angular.module('copayApp.services')
         $log.debug('Preferences read');
         if (err) return cb(err);
 
+        function tryMigrateCredentials(credentials, cb) {
+          // Legacy network name
+          var networkURI = networkService.getUpdatedNetworkURI(credentials.network);
+          if (credentials.network != networkURI) {
+            credentials.network = networkURI;
+            return root.updateCredentials(credentials, cb(credentials));
+          }
+          return cb(credentials);
+        };
+
         function bindWallets(cb) {
           var l = root.profile.credentials.length;
           var i = 0,
@@ -250,13 +259,15 @@ angular.module('copayApp.services')
           if (!l) return cb();
 
           lodash.each(root.profile.credentials, function(credentials) {
-            root.bindWallet(credentials, function(err, bound) {
-              i++;
-              totalBound += bound;
-              if (i == l) {
-                $log.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
-                return cb();
-              }
+            tryMigrateCredentials(credentials, function(credentials) {
+              root.bindWallet(credentials, function(err, bound) {
+                i++;
+                totalBound += bound;
+                if (i == l) {
+                  $log.info('Bound ' + totalBound + ' out of ' + l + ' wallets');
+                  return cb();
+                }
+              });
             });
           });
         }
@@ -316,15 +327,15 @@ angular.module('copayApp.services')
     };
 
     var seedWallet = function(opts, cb) {
+      var config = configService.getSync();
       opts = opts || {};
-      var walletClient = bwcService.getClient(null, opts);
-      var network = opts.networkName || 'livenet';
+      var walletClient = networkService.bwcFor(opts.network.getURI()).getClient(null, opts);
 
       if (opts.mnemonic) {
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
           walletClient.seedFromMnemonic(opts.mnemonic, {
-            network: network,
+            network: opts.network.getURI(),
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
@@ -356,7 +367,7 @@ angular.module('copayApp.services')
         var lang = uxLanguage.getCurrentLanguage();
         try {
           walletClient.seedFromRandomWithMnemonic({
-            network: network,
+            network: opts.network.getURI(),
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
@@ -366,7 +377,7 @@ angular.module('copayApp.services')
           if (e.message.indexOf('language') > 0) {
             $log.info('Using default language for recovery phrase');
             walletClient.seedFromRandomWithMnemonic({
-              network: network,
+              network: opts.network.getURI(),
               passphrase: opts.passphrase,
               account: 0,
             });
@@ -375,6 +386,7 @@ angular.module('copayApp.services')
           }
         }
       }
+
       return cb(null, walletClient);
     };
 
@@ -389,7 +401,7 @@ angular.module('copayApp.services')
           var myName = opts.myName || gettextCatalog.getString('me');
 
           walletClient.createWallet(name, myName, opts.m, opts.n, {
-            network: opts.networkName,
+            network: opts.network.getURI(),
             singleAddress: opts.singleAddress,
             walletPrivKey: opts.walletPrivKey,
           }, function(err, secret) {
@@ -413,11 +425,14 @@ angular.module('copayApp.services')
 
     // joins and stores a wallet
     root.joinWallet = function(opts, cb) {
-      var walletClient = bwcService.getClient();
+      var config = configService.getSync();
+      opts = opts || {};
+      opts.bwsurl = config.currencyNetworks[opts.networkURI].bws.url;
+      var walletClient = networkService.bwcFor(opts.networkURI).getClient(null, opts);
       $log.debug('Joining Wallet:', opts);
 
       try {
-        var walletData = bwcService.parseSecret(opts.secret);
+        var walletData = networkService.bwcFor(opts.networkURI).parseSecret(opts.secret);
 
         // check if exist
         if (lodash.find(root.profile.credentials, {
@@ -429,7 +444,7 @@ angular.module('copayApp.services')
         $log.debug(ex);
         return cb(gettextCatalog.getString('Bad wallet invitation'));
       }
-      opts.networkName = walletData.network;
+      opts.networkURI = walletData.network;
       $log.debug('Joining Wallet:', opts);
 
       seedWallet(opts, function(err, walletClient) {
@@ -509,10 +524,10 @@ angular.module('copayApp.services')
       var saveBwsUrl = function(cb) {
         var defaults = configService.getDefaults();
         var bwsFor = {};
-        bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+        bwsFor[walletId] = opts.bwsurl || defaults.currencyNetworks[defaults.currencyNetworks.default].bws.url;
 
         // Dont save the default
-        if (bwsFor[walletId] == defaults.bws.url)
+        if (bwsFor[walletId] == defaults.currencyNetworks[defaults.currencyNetworks.default].bws.url)
           return cb();
 
         configService.set({
@@ -542,8 +557,8 @@ angular.module('copayApp.services')
     };
 
     root.importWallet = function(str, opts, cb) {
-
-      var walletClient = bwcService.getClient(null, opts);
+      // opts.bwsurl should be set by according to network.
+      var walletClient = networkService.bwcFor(opts.networkURI).getClient(null, opts);
 
       $log.debug('Importing Wallet:', opts);
 
@@ -586,11 +601,14 @@ angular.module('copayApp.services')
     };
 
     root.importExtendedPrivateKey = function(xPrivKey, opts, cb) {
-      var walletClient = bwcService.getClient(null, opts);
+      // opts.bwsurl should be set by according to network.
+      var walletClient = networkService.bwcFor(opts.networkURI).getClient(null, opts);
+
       $log.debug('Importing Wallet xPrivKey');
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, function(err) {
         if (err) {
+          var errors = networkService.bwcFor(opts.networkURI).getErrors();
           if (err instanceof errors.NOT_AUTHORIZED)
             return cb(err);
 
@@ -612,19 +630,21 @@ angular.module('copayApp.services')
     };
 
     root.importMnemonic = function(words, opts, cb) {
-      var walletClient = bwcService.getClient(null, opts);
+      // opts.bwsurl should be set by according to network.
+      var walletClient = networkService.bwcFor(opts.networkURI).getClient(null, opts);
 
       $log.debug('Importing Wallet Mnemonic');
 
       words = root._normalizeMnemonic(words);
       walletClient.importFromMnemonic(words, {
-        network: opts.networkName,
+        network: networkService.parseNet(opts.networkURI),
         passphrase: opts.passphrase,
         entropySourcePath: opts.entropySourcePath,
         derivationStrategy: opts.derivationStrategy || 'BIP44',
         account: opts.account || 0,
       }, function(err) {
         if (err) {
+          var errors = networkService.bwcFor(opts.networkURI).getErrors();
           if (err instanceof errors.NOT_AUTHORIZED)
             return cb(err);
 
@@ -638,7 +658,8 @@ angular.module('copayApp.services')
     };
 
     root.importExtendedPublicKey = function(opts, cb) {
-      var walletClient = bwcService.getClient(null, opts);
+      // opts.bwsurl should be set by according to network.
+      var walletClient = networkService.bwcFor(opts.networkURI).getClient(null, opts);
       $log.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
@@ -646,6 +667,7 @@ angular.module('copayApp.services')
         derivationStrategy: opts.derivationStrategy || 'BIP44',
       }, function(err) {
         if (err) {
+          var errors = networkService.bwcFor(opts.networkURI).getErrors();
 
           // in HW wallets, req key is always the same. They can't addAccess.
           if (err instanceof errors.NOT_AUTHORIZED)
@@ -683,7 +705,7 @@ angular.module('copayApp.services')
       var opts = {};
       opts.m = 1;
       opts.n = 1;
-      opts.networkName = 'livenet';
+      opts.networkURI = 'livenet/btc';
       root.createWallet(opts, cb);
     };
 
@@ -848,7 +870,7 @@ angular.module('copayApp.services')
         });
       };
 
-      function process(notifications) {
+      function process(notifications, networkURI) {
         if (!notifications) return [];
 
         var shown = lodash.sortBy(notifications, 'createdOn').reverse();
@@ -861,7 +883,7 @@ angular.module('copayApp.services')
           x.types = [x.type];
 
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+            x.amountStr = txFormatService.formatAmountStr(networkURI, x.data.amount);
 
           x.action = function() {
             // TODO?
@@ -895,8 +917,8 @@ angular.module('copayApp.services')
           }
         });
 
-        var u = bwcService.getUtils();
         lodash.each(finale, function(x) {
+          var u = networkService.bwcFor(x.wallet.network).getUtils();
           if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
             // TODO TODO TODO => BWC
             x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
@@ -939,7 +961,7 @@ angular.module('copayApp.services')
             notifications = lodash.sortBy(notifications, 'createdOn');
             notifications = lodash.compact(lodash.flatten(notifications)).slice(0, MAX);
             var total = notifications.length;
-            return cb(null, process(notifications), total);
+            return cb(null, process(notifications, wallet.network), total);
           };
         });
       });

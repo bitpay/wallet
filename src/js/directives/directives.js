@@ -1,12 +1,13 @@
 'use strict';
 angular.module('copayApp.directives')
-  .directive('validAddress', ['$rootScope', 'bitcore',
-    function($rootScope, bitcore) {
+  .directive('validAddress', ['$rootScope', 'networkService',
+    function($rootScope, networkService) {
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
+          var bitcore = networkService.bwcFor('livenet/btc').getBitcore(); // TODO: Support more than /btc
           var URI = bitcore.URI;
-          var Address = bitcore.Address
+          var Address = bitcore.Address;
           var validator = function(value) {
 
             // Regular url
@@ -21,8 +22,9 @@ angular.module('copayApp.directives')
               var isUriValid = URI.isValid(value);
               if (isUriValid) {
                 uri = new URI(value);
-                isAddressValidLivenet = Address.isValid(uri.address.toString(), 'livenet')
-                isAddressValidTestnet = Address.isValid(uri.address.toString(), 'testnet')
+                // Must be valid on the btc blockchain.
+                isAddressValidLivenet = Address.isValid(uri.address.toString(), 'livenet/btc')
+                isAddressValidTestnet = Address.isValid(uri.address.toString(), 'testnet/btc')
               }
               ctrl.$setValidity('validAddress', isUriValid && (isAddressValidLivenet || isAddressValidTestnet));
               return value;
@@ -34,6 +36,8 @@ angular.module('copayApp.directives')
             }
 
             // Regular Address
+            // Detecting which blockchain is not important here.
+            // Is a valid address if it's valid on any blockchain we support.
             var regularAddressLivenet = Address.isValid(value, 'livenet');
             var regularAddressTestnet = Address.isValid(value, 'testnet');
             ctrl.$setValidity('validAddress', (regularAddressLivenet || regularAddressTestnet));
@@ -48,14 +52,16 @@ angular.module('copayApp.directives')
     }
   ])
   .directive('validAmount', ['configService',
-    function(configService) {
+    function(configService, networkService) {
 
       return {
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-            var settings = configService.getSync().wallet.settings;
-            var vNum = Number((value * settings.unitToSatoshi).toFixed(0));
+            // Support only livenet/btc
+            var atomicUnit = networkService.getAtomicUnit('livenet/btc');
+            var configNetwork = configService.getSync().currencyNetworks['livenet/btc'];
+            var vNum = Number((value * configNetwork.unitToAtomicUnit).toFixed(atomicUnit.decimals));
             if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
             }
@@ -66,7 +72,7 @@ angular.module('copayApp.directives')
               if (vNum > Number.MAX_SAFE_INTEGER) {
                 ctrl.$setValidity('validAmount', false);
               } else {
-                var decimals = Number(settings.unitDecimals);
+                var decimals = Number(configNetwork.unitDecimals);
                 var sep_index = ('' + value).indexOf('.');
                 var str_value = ('' + value).substring(sep_index + 1);
                 if (sep_index >= 0 && str_value.length > decimals) {

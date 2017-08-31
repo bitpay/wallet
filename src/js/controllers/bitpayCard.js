@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService, externalLinkService, timeService) {
+angular.module('copayApp.controllers').controller('bitpayCardController', function($scope, $timeout, $log, $state, lodash, bitpayCardService, moment, popupService, gettextCatalog, $ionicHistory, bitpayService, externalLinkService, timeService, networkService) {
 
   var self = this;
   $scope.dateRange = {
@@ -106,6 +106,10 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     return result;
   };
 
+  this.isTestnet = function(networkURI) {
+    return networkService.isTestnet(networkURI);
+  };
+
   this.openExternalLink = function(url) {
     var optIn = true;
     var title = null;
@@ -116,11 +120,12 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
   };
 
   this.viewOnBlockchain = function(transactionId) {
-    var url = 'https://insight.bitpay.com/tx/' + transactionId;
+    var bex = networkService.getNetworkByURI('livenet/btc').bex.production; // Support only livenet/btc
+    var url = bex.urlTx + transactionId;
     var optIn = true;
     var title = null;
-    var message = gettextCatalog.getString('View Transaction on Insight');
-    var okText = gettextCatalog.getString('Open Insight');
+    var message = gettextCatalog.getString('View Transaction on ' + bex.label);
+    var okText = gettextCatalog.getString('Open ' + bex.label);
     var cancelText = gettextCatalog.getString('Go Back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };

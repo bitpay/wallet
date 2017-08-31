@@ -3,8 +3,8 @@
 angular.module('copayApp.services').factory('bitpayService', function($log, $http, appIdentityService, bitauthService) {
   var root = {};
 
-  var NETWORK = 'livenet';
-  var BITPAY_API_URL = NETWORK == 'livenet' ? 'https://bitpay.com' : 'https://test.bitpay.com';
+  var NETWORK = 'livenet/btc';
+  var BITPAY_API_URL = NETWORK == 'livenet/btc' ? 'https://bitpay.com' : 'https://test.bitpay.com';
 
   root.getEnvironment = function() {
     return {

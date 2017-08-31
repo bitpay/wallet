@@ -1,32 +1,31 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, lodash) {
+angular.module('copayApp.services').factory('txFormatService', function($filter, rateService, configService, lodash, networkService) {
   var root = {};
 
-  root.Utils = bwcService.getUtils();
+  root.formatAmount = function(networkURI, atomics, fullPrecision) {
+    var utils = networkService.bwcFor(networkURI).getUtils();
 
-
-  root.formatAmount = function(satoshis, fullPrecision) {
-    var config = configService.getSync().wallet.settings;
-    if (config.unitCode == 'sat') return satoshis;
+    var config = configService.getSync().currencyNetworks[networkURI];
+    if (config.unitCode == config.atomicUnitCode) return atomics;
 
     //TODO : now only works for english, specify opts to change thousand separator and decimal separator
     var opts = {
       fullPrecision: !!fullPrecision
     };
-    return this.Utils.formatAmount(satoshis, config.unitCode, opts);
+    return utils.formatAmount(atomics, config.unitCode, opts);
   };
 
-  root.formatAmountStr = function(satoshis) {
-    if (isNaN(satoshis)) return;
-    var config = configService.getSync().wallet.settings;
-    return root.formatAmount(satoshis) + ' ' + config.unitName;
+  root.formatAmountStr = function(networkURI, atomics) {
+    if (isNaN(atomics)) return;
+    var config = configService.getSync().currencyNetworks[networkURI];
+    return root.formatAmount(networkURI, atomics) + ' ' + config.unitName;
   };
 
-  root.toFiat = function(satoshis, code, cb) {
-    if (isNaN(satoshis)) return;
+  root.toFiat = function(networkURI, atomics, code, cb) {
+    if (isNaN(atomics)) return;
     var val = function() {
-      var v1 = rateService.toFiat(satoshis, code);
+      var v1 = rateService.toFiat(networkURI, atomics, code);
       if (!v1) return null;
 
       return v1.toFixed(2);
@@ -43,10 +42,10 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.formatToUSD = function(satoshis, cb) {
-    if (isNaN(satoshis)) return;
+  root.formatToUSD = function(networkURI, atomics, cb) {
+    if (isNaN(atomics)) return;
     var val = function() {
-      var v1 = rateService.toFiat(satoshis, 'USD');
+      var v1 = rateService.toFiat(networkURI, atomics, 'USD');
       if (!v1) return null;
 
       return v1.toFixed(2);
@@ -63,12 +62,12 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.formatAlternativeStr = function(satoshis, cb) {
-    if (isNaN(satoshis)) return;
-    var config = configService.getSync().wallet.settings;
+  root.formatAlternativeStr = function(networkURI, atomics, cb) {
+    if (isNaN(atomics)) return;
+    var config = configService.getSync().currencyNetworks[networkURI];
 
     var val = function() {
-      var v1 = parseFloat((rateService.toFiat(satoshis, config.alternativeIsoCode)).toFixed(2));
+      var v1 = parseFloat((rateService.toFiat(networkURI, atomics, config.alternativeIsoCode)).toFixed(2));
       v1 = $filter('formatFiatAmount')(v1);
       if (!v1) return null;
 
@@ -86,7 +85,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.processTx = function(tx) {
+  root.processTx = function(tx, networkURI) {
     if (!tx || tx.action == 'invalid')
       return tx;
 
@@ -101,21 +100,21 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
           tx.hasMultiplesOutputs = true;
         }
         tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-          o.amountStr = root.formatAmountStr(o.amount);
-          o.alternativeAmountStr = root.formatAlternativeStr(o.amount);
+          o.amountStr = root.formatAmountStr(networkURI, o.amount);
+          o.alternativeAmountStr = root.formatAlternativeStr(networkURI, o.amount);
           return total + o.amount;
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
     }
 
-    tx.amountStr = root.formatAmountStr(tx.amount);
-    tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount);
-    tx.feeStr = root.formatAmountStr(tx.fee || tx.fees);
+    tx.amountStr = root.formatAmountStr(networkURI, tx.amount);
+    tx.alternativeAmountStr = root.formatAlternativeStr(networkURI, tx.amount);
+    tx.feeStr = root.formatAmountStr(networkURI, tx.fee || tx.fees);
 
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
-      tx.amountUnitStr = tx.amountStr.split(' ')[1];
+      tx.amountAtomicStr = tx.amountStr.split(' ')[1];
     }
 
     return tx;
@@ -180,47 +179,56 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     return txps;
   };
 
-  root.parseAmount = function(amount, currency) {
-    var config = configService.getSync().wallet.settings;
-    var satToBtc = 1 / 100000000;
-    var unitToSatoshi = config.unitToSatoshi;
-    var amountUnitStr;
-    var amountSat;
+  root.parseAmount = function(networkURI, amount, currency) {
+    var config = configService.getSync().currencyNetworks[networkURI];
+    var unitToAtomicUnit = config.unitToAtomicUnit;
+    var atomicToUnit = 1 / unitToAtomicUnit;
+    var amountAtomicStr;
+    var amountAtomic;
     var alternativeIsoCode = config.alternativeIsoCode;
 
-    // If fiat currency
-    if (currency != 'bits' && currency != 'BTC' && currency != 'sat') {
-      amountUnitStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
-      amountSat = rateService.fromFiat(amount, currency).toFixed(0);
-    } else if (currency == 'sat') {
-      amountSat = amount;
-      amountUnitStr = root.formatAmountStr(amountSat);
-      // convert sat to BTC
-      amount = (amountSat * satToBtc).toFixed(8);
-      currency = 'BTC';
-    } else {
-      amountSat = parseInt((amount * unitToSatoshi).toFixed(0));
-      amountUnitStr = root.formatAmountStr(amountSat);
-      // convert unit to BTC
-      amount = (amountSat * satToBtc).toFixed(8);
-      currency = 'BTC';
+    var networkUnits = networkService.getNetworkByURI(networkURI).units;
+    var foundCurrencyName = lodash.find(networkUnits, function(u) {
+      return u.shortName == currency;
+    });
+
+    var atomicUnit = networkService.getAtomicUnit(networkURI);
+    var standardUnit = networkService.getStandardUnit(networkURI);
+
+    if (!foundCurrencyName) { // Alternate currency
+      amountAtomic = rateService.fromFiat(networkURI, amount, currency).toFixed(atomicUnit.decimals);
+      amountAtomicStr = $filter('formatFiatAmount')(amount) + ' ' + currency;
+
+    } else if (currency == atomicUnit.shortName) { // Atomic
+      amountAtomic = amount;
+      amountAtomicStr = root.formatAmountStr(networkURI, amountAtomic);
+      // convert atomics to standard
+      amount = (amountAtomic * atomicToUnit).toFixed(standardUnit.decimals);
+      currency = standardUnit.shortName;
+
+    } else if (currency == standardUnit.shortName) { // Standard
+      amountAtomic = parseInt((amount * unitToAtomicUnit).toFixed(atomicUnit.decimals));
+      amountAtomicStr = root.formatAmountStr(networkURI, amountAtomic);
+      // convert atomics to standard
+      amount = (amountAtomic * atomicToUnit).toFixed(standardUnit.decimals);
+      currency = standardUnit.shortName;
     }
 
     return {
       amount: amount,
       currency: currency,
       alternativeIsoCode: alternativeIsoCode,
-      amountSat: amountSat,
-      amountUnitStr: amountUnitStr
+      amountAtomic: amountAtomic,
+      amountAtomicStr: amountAtomicStr
     };
   };
 
-  root.satToUnit = function(amount) {
-    var config = configService.getSync().wallet.settings;
-    var unitToSatoshi = config.unitToSatoshi;
-    var satToUnit = 1 / unitToSatoshi;
+  root.atomicToUnit = function(networkURI, amount) {
+    var config = configService.getSync().currencyNetworks[networkURI];
+    var unitToAtomicUnit = config.unitToAtomicUnit;
+    var atomicToUnit = 1 / unitToAtomicUnit;
     var unitDecimals = config.unitDecimals;
-    return parseFloat((amount * satToUnit).toFixed(unitDecimals));
+    return parseFloat((amount * atomicToUnit).toFixed(unitDecimals));
   };
 
   return root;

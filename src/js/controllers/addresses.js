@@ -3,11 +3,6 @@
 angular.module('copayApp.controllers').controller('addressesController', function($scope, $log, $stateParams, $state, $timeout, $ionicHistory, $ionicScrollDelegate, configService, popupService, gettextCatalog, ongoingProcess, lodash, profileService, walletService, bwcError, platformInfo, appConfigService, txFormatService, feeService) {
   var UNUSED_ADDRESS_LIMIT = 5;
   var BALANCE_ADDRESS_LIMIT = 5;
-  var config = configService.getSync().wallet.settings;
-  var unitName = config.unitName;
-  var unitToSatoshi = config.unitToSatoshi;
-  var satToUnit = 1 / unitToSatoshi;
-  var unitDecimals = config.unitDecimals;
   var withBalance, cachedWallet;
 
   $scope.isCordova = platformInfo.isCordova;
@@ -55,7 +50,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
         $scope.latestWithBalance = lodash.slice(withBalance, 0, BALANCE_ADDRESS_LIMIT);
 
         lodash.each(withBalance, function(a) {
-          a.balanceStr = txFormatService.formatAmount(a.amount);
+          a.balanceStr = txFormatService.formatAmount($scope.wallet.network, a.amount);
         });
 
         $scope.viewAll = {
@@ -73,11 +68,9 @@ angular.module('copayApp.controllers').controller('addressesController', functio
       });
     });
 
-
-
-    feeService.getFeeLevels(function(err, levels){
+    feeService.getFeeLevels($scope.wallet, function(err, levels){
       walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
-        if (err) return;
+        if (err || !resp) return;
 
         if (resp.allUtxos && resp.allUtxos.length) {
 
@@ -88,9 +81,9 @@ angular.module('copayApp.controllers').controller('addressesController', functio
           $scope.lowWarning = resp.warning;
           $scope.lowUtxosNb = resp.lowUtxos.length;
           $scope.allUtxosNb = resp.allUtxos.length;
-          $scope.lowUtxosSum = txFormatService.formatAmountStr(lodash.sum(resp.lowUtxos || 0, 'satoshis'));
-          $scope.allUtxosSum = txFormatService.formatAmountStr(allSum);
-          $scope.minFee = txFormatService.formatAmountStr(resp.minFee || 0);
+          $scope.lowUtxosSum = txFormatService.formatAmountStr($scope.wallet.network, lodash.sum(resp.lowUtxos || 0, 'satoshis'));
+          $scope.allUtxosSum = txFormatService.formatAmountStr($scope.wallet.network, allSum);
+          $scope.minFee = txFormatService.formatAmountStr($scope.wallet.network, resp.minFee || 0);
           $scope.minFeePer = per.toFixed(2) + '%';
 
 

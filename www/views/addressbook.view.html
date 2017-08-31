@@ -24,7 +24,12 @@
       </div>
       <div class="item item-text-wrap" copy-to-clipboard="addressbookEntry.address">
         <span class="address-book-field-label" translate>Address</span>
-        <span>{{addressbookEntry.address}}</span>
+        <div class="ellipsis">
+          <i class="icon-inline">
+            <img ng-src="img/currency-network-icons/{{currencyFor(addressbookEntry.networkURI)}}.svg"/>
+          </i>
+          <span>{{addressbookEntry.address}}</span>
+        </div>
       </div>
       <div class="item item-divider"></div>
       <div class="item item-icon-right has-click" ng-click="sendTo()">

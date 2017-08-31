@@ -61,6 +61,10 @@
   i.icon>svg#Add_Contact path.st0 {
     stroke: $v-icon-negative-color;
   }
+  .icon-inline {
+    position: relative;
+    top: 2px;
+  }
   .list {
     .item {
       color: #444;
@@ -135,6 +139,10 @@
     font-size: 12px;
     display: block;
     color: $v-mid-gray;
+  }
+  .icon-inline {
+    position: relative;
+    top: 2px;
   }
   .big-icon-svg {
     padding: 0 7px;

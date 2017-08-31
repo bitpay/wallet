@@ -1,17 +1,27 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesAltCurrencyController',
-  function($scope, $log, $timeout, $ionicHistory, configService, rateService, lodash, profileService, walletService, storageService) {
+  function($scope, $log, $timeout, $ionicHistory, configService, rateService, lodash, profileService, walletService, storageService, networkService) {
 
     var next = 10;
     var completeAlternativeList = [];
+    var config = configService.getSync();
 
     function init() {
       var unusedCurrencyList = [{
         isoCode: 'LTL'
-      }, {
-        isoCode: 'BTC'
       }];
+
+      // Add all currency network standard units to the unused list.
+      var liveNetworks = networkService.getLiveNetworks();
+      lodash.forEach(liveNetworks, function(n) {
+        lodash.forEach(n.units, function(u) {
+          if (u.kind == 'standard') {
+            unusedCurrencyList.push({ isoCode: u.shortName});
+          };
+        });
+      });
+
       rateService.whenAvailable(function() {
 
         $scope.listComplete = false;
@@ -54,12 +64,12 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
 
     $scope.save = function(newAltCurrency) {
       var opts = {
-        wallet: {
-          settings: {
-            alternativeName: newAltCurrency.name,
-            alternativeIsoCode: newAltCurrency.isoCode,
-          }
-        }
+        currencyNetworks: {}
+      };
+
+      opts.currencyNetworks[$scope.networkURI] = {
+        alternativeName: newAltCurrency.name,
+        alternativeIsoCode: newAltCurrency.isoCode,
       };
 
       configService.set(opts, function(err) {
@@ -69,6 +79,7 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
         saveLastUsed(newAltCurrency);
         walletService.updateRemotePreferences(profileService.getWallets());
       });
+
     };
 
     function saveLastUsed(newAltCurrency) {
@@ -79,8 +90,13 @@ angular.module('copayApp.controllers').controller('preferencesAltCurrencyControl
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-      var config = configService.getSync();
-      $scope.currentCurrency = config.wallet.settings.alternativeIsoCode;
+      $scope.networkURI = data.stateParams.networkURI;
+      if (!$scope.networkURI) {
+        return;
+      }
+
+      var network = networkService.getNetworkByURI($scope.networkURI);
+      $scope.currentCurrency = config.currencyNetworks[network.getURI()].alternativeIsoCode;
 
       storageService.getLastCurrencyUsed(function(err, lastUsedAltCurrency) {
         $scope.lastUsedAltCurrencyList = lastUsedAltCurrency ? JSON.parse(lastUsedAltCurrency) : [];

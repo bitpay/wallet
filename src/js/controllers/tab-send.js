@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, networkService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           // the 'buy bitcoins' message.
 
           $scope.hasFunds = true;
-        } else if (status.availableBalanceSat > 0) {
+        } else if (status.availableBalanceAtomic > 0) {
           $scope.hasFunds = true;
           $rootScope.everHasFunds = true;
         }
@@ -53,8 +53,9 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   var updateWalletsList = function() {
-
-    var networkResult = lodash.countBy($scope.wallets, 'network');
+    var networkResult = lodash.countBy($scope.wallets, function(w) {
+      return networkService.parseNet(w.network);
+    });
 
     $scope.showTransferCard = $scope.hasWallets && (networkResult.livenet > 1 || networkResult.testnet > 1);
 
@@ -67,7 +68,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       }
       if (!(networkResult.testnet > 1)) {
         walletsToTransfer = lodash.filter(walletsToTransfer, function(item) {
-          return item.network == 'livenet';
+          return networkService.isLivenet(item.network);
         });
       }
       var walletList = [];
@@ -182,6 +183,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         }
         $log.debug('Got toAddress:' + addr + ' | ' + item.name);
         return $state.transitionTo('tabs.send.amount', {
+          networkURI: item.networkURI,
           recipientType: item.recipientType,
           toAddress: addr,
           toName: item.name,

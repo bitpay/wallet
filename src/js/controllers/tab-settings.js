@@ -4,8 +4,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
 
   var updateConfig = function() {
     $scope.currentLanguageName = uxLanguage.getCurrentLanguageName();
-    $scope.feeOpts = feeService.feeOpts;
-    $scope.currentFeeLevel = feeService.getCurrentFeeLevel();
     $scope.wallets = profileService.getWallets();
     $scope.buyAndSellServices = buyAndSellService.getLinked();
 

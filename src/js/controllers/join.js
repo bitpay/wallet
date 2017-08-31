@@ -1,13 +1,19 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService, networkService) {
+
+    var configNetwork = configService.getSync().currencyNetworks;
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       var defaults = configService.getDefaults();
       $scope.formData = {};
-      $scope.formData.bwsurl = defaults.bws.url;
-      $scope.formData.derivationPath = derivationPathHelper.default;
+
+      var defaultNetwork = networkService.getNetworkByURI(configNetwork.default);
+      $scope.formData.network = defaultNetwork;
+      $scope.formData.bwsurl = configNetwork[$scope.formData.network.getURI()].bws.url;
+
+      $scope.formData.derivationPath = derivationPathHelper.getPath($scope.formData.network);
       $scope.formData.account = 1;
       $scope.formData.secret = null;
       resetPasswordFields();
@@ -122,7 +128,7 @@ angular.module('copayApp.controllers').controller('joinController',
           return;
         }
         opts.account = pathData.account;
-        opts.networkName = pathData.networkName;
+        opts.networkURI = pathData.networkURI;
         opts.derivationStrategy = pathData.derivationStrategy;
       } else {
         opts.passphrase = $scope.formData.createPassphrase;
@@ -166,8 +172,8 @@ angular.module('copayApp.controllers').controller('joinController',
             return;
         }
 
-        // TODO: cannot currently join an intelTEE testnet wallet (need to detect from the secret)
-        src.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
+        // TODO: cannot currently join an intelTEE testnet/btc wallet (need to detect from the secret)
+        src.getInfoForNewWallet(true, account, 'livenet/btc', function(err, lopts) {
           ongoingProcess.set('connecting' + $scope.formData.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);

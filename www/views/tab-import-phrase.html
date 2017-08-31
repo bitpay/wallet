@@ -61,10 +61,13 @@
         <select class="m10t" ng-model="formData.seedSourceAll" ng-options="seed as seed.label for seed in seedOptionsAll"></select>
       </label>
 
-      <ion-toggle ng-model="formData.testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-positive">
-        <span translate>Testnet</span>
-      </ion-toggle>
-
+      <label class="item item-input item-select">
+        <div class="input-label" translate>
+          Network
+        </div>
+        <select class="m10t" ng-model="formData.network" ng-options="network as network.label for network in networkOptions"
+          ng-change="resizeView(); onNetworkChange();"></select>
+      </label>
 
       <label class="item item-input item-stacked-label">
         <span class="input-label" translate>Wallet Service URL</span>

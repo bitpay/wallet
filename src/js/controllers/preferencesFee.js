@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService) {
+angular.module('copayApp.controllers').controller('preferencesFeeController', function($scope, $timeout, $ionicHistory, lodash, gettextCatalog, configService, feeService, ongoingProcess, popupService, networkService) {
 
   $scope.save = function(newFee) {
 
@@ -12,11 +12,11 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     if ($scope.noSave) return;
 
     var opts = {
-      wallet: {
-        settings: {
-          feeLevel: newFee
-        }
-      }
+      currencyNetworks: {}
+    };
+
+    opts.currencyNetworks[$scope.networkURI] = {
+      feeLevel: newFee
     };
 
     configService.set(opts, function(err) {
@@ -28,15 +28,16 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.init();
-  });
+    $scope.networkURI = data.stateParams.networkURI;
+    if (!$scope.networkURI) {
+      return;
+    }
 
-  $scope.init = function() {
-    $scope.network = $scope.network || 'livenet';
-    $scope.feeOpts = feeService.feeOpts;
-    $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel();
+    $scope.network = networkService.getNetworkByURI($scope.networkURI);
+    $scope.feeOpts = feeService.getFeeOpts($scope.network.getURI());
+    $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel($scope.networkURI);
     $scope.loadingFee = true;
-    feeService.getFeeLevels(function(err, levels) {
+    feeService.getFeeLevels($scope.networkURI, function(err, levels) {
       $scope.loadingFee = false;
       if (err) {
         //Error is already formatted
@@ -49,24 +50,24 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
         $scope.$apply();
       });
     });
-  };
+  });
 
   var updateCurrentValues = function() {
     if (lodash.isEmpty($scope.feeLevels) || lodash.isEmpty($scope.currentFeeLevel)) return;
 
-    var value = lodash.find($scope.feeLevels[$scope.network], {
+    var value = lodash.find($scope.feeLevels[$scope.networkURI], {
       level: $scope.currentFeeLevel
     });
 
     if (lodash.isEmpty(value)) {
-      $scope.feePerSatByte = $scope.currentFeeLevel == 'custom' ? $scope.feePerSatByte : null;
+      $scope.feePerSmallestUnitByte = $scope.currentFeeLevel == 'custom' ? $scope.feePerSmallestUnitByte : null;
       $scope.avgConfirmationTime = null;
       setMinWarning();
       setMaxWarning();
       return;
     }
 
-    $scope.feePerSatByte = (value.feePerKB / 1000).toFixed();
+    $scope.feePerSmallestUnitByte = (value.feePerKb / 1000).toFixed();
     $scope.avgConfirmationTime = value.nbBlocks * 10;
     $scope.invalidCustomFeeEntered = false;
     setMinWarning();
@@ -81,10 +82,12 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     $scope.invalidCustomFeeEntered = true;
     $scope.showMaxWarning = false;
     $scope.showMinWarning = false;
-    popupService.showPrompt(gettextCatalog.getString('Custom Fee'), gettextCatalog.getString('Set your own fee in satoshis/byte'), null, function(text) {
+
+    var atomicName = networkService.getAtomicUnit($scope.networkURI).shortName;
+    popupService.showPrompt(gettextCatalog.getString('Custom Fee'), gettextCatalog.getString('Set your own fee in ' + atomicName + '/byte'), null, function(text) {
       if (!text || !parseInt(text) || parseInt(text) <= 0) return;
-      $scope.feePerSatByte = parseInt(text);
-      $scope.customFeePerKB = ($scope.feePerSatByte * 1000).toFixed();
+      $scope.feePerSmallestUnitByte = parseInt(text);
+      $scope.customFeePerKB = ($scope.feePerSmallestUnitByte * 1000).toFixed();
       setMaxWarning();
       setMinWarning();
       $timeout(function() {
@@ -94,19 +97,19 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
   };
 
   $scope.getMinimumRecommeded = function() {
-    var value = lodash.find($scope.feeLevels[$scope.network], {
+    var value = lodash.find($scope.feeLevels[$scope.networkURI], {
       level: 'superEconomy'
     });
-    return parseInt((value.feePerKB / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed());
   };
 
   var setMinWarning = function() {
-    if (parseInt($scope.feePerSatByte) < $scope.getMinimumRecommeded()) $scope.showMinWarning = true;
+    if (parseInt($scope.feePerSmallestUnitByte) < $scope.getMinimumRecommeded()) $scope.showMinWarning = true;
     else $scope.showMinWarning = false;
   };
 
   var setMaxWarning = function() {
-    if (parseInt($scope.feePerSatByte) > 1000) {
+    if (parseInt($scope.feePerSmallestUnitByte) > 1000) {
       $scope.showMaxWarning = true;
       $scope.invalidCustomFeeEntered = true;
     } else {

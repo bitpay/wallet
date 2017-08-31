@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope, feeService) {
+angular.module('copayApp.services').factory('coinbaseService', function($http, $log, $window, $filter, platformInfo, lodash, storageService, configService, appConfigService, txFormatService, buyAndSellService, $rootScope, feeService, networkService) {
   var root = {};
   var credentials = {};
   var isCordova = platformInfo.isCordova;
@@ -35,10 +35,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     var coinbase = $window.externalServices.coinbase;
 
     /*
-     * Development: 'testnet'
-     * Production: 'livenet'
+     * Development: 'testnet/btc'
+     * Production: 'livenet/btc'
      */
-    credentials.NETWORK = 'livenet';
+    credentials.NETWORK = 'livenet/btc';
 
     // Coinbase permissions
     credentials.SCOPE = '' +
@@ -63,7 +63,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       credentials.REDIRECT_URI = coinbase.redirect_uri.desktop;
     }
 
-    if (credentials.NETWORK == 'testnet') {
+    if (networkService.isTestnet(credentials.NETWORK)) {
       credentials.HOST = coinbase.sandbox.host;
       credentials.API = coinbase.sandbox.api;
       credentials.CLIENT_ID = coinbase.sandbox.client_id;
@@ -168,13 +168,17 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   };
 
   var _getNetAmount = function(amount, cb) {
+    // Support only livenet/btc
+    var standardUnit = networkService.getStandardUnit('livenet/btc');
+
     // Fee Normal for a single transaction (450 bytes)
     var txNormalFeeKB = 450 / 1000;
-    feeService.getFeeRate(null, 'normal', function(err, feePerKB) {
+    // Support only livenet/btc
+    feeService.getFeeRate('livenet/btc', 'normal', function(err, feePerKb) {
       if (err) return cb(err);
-      var feeBTC = (feePerKB * txNormalFeeKB / 100000000).toFixed(8);
+      var feeAtomic = (feePerKb * txNormalFeeKB / standardUnit.value).toFixed(standardUnit.decimals);
 
-      return cb(null, amount - feeBTC, feeBTC);
+      return cb(null, amount - feeAtomic, feeAtomic);
     });
   };
 
@@ -682,7 +686,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   var _sendToWallet = function(tx, accessToken, accountId, coinbasePendingTransactions) {
     if (!tx) return;
     var desc = appConfigService.nameCase + ' Wallet';
-    _getNetAmount(tx.amount.amount, function(err, amountBTC, feeBTC) {
+    _getNetAmount(tx.amount.amount, function(err, amountAtomic, feeAtomic) {
       if (err) {
         _savePendingTransaction(tx, {
           status: 'error',
@@ -696,10 +700,10 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
 
       var data = {
         to: tx.toAddr,
-        amount: amountBTC,
+        amount: amountAtomic,
         currency: tx.amount.currency,
         description: desc,
-        fee: feeBTC
+        fee: feeAtomic
       };
       root.sendTo(accessToken, accountId, data, function(err, res) {
         if (err) {
@@ -780,7 +784,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
   register();
 
   $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-    if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
+    if (type == 'NewBlock' && n && n.data && networkService.isLivenet(n.data.network)) {
       root.isActive(function(err, isActive) {
         // Update Coinbase
         if (isActive)

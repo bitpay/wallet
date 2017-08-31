@@ -1,5 +1,5 @@
 angular.module('copayApp.controllers').controller('paperWalletController',
-  function($scope, $timeout, $log, $ionicModal, $ionicHistory, feeService, popupService, gettextCatalog, platformInfo, configService, profileService, $state, bitcore, ongoingProcess, txFormatService, $stateParams, walletService) {
+  function($scope, $timeout, $log, $ionicModal, $ionicHistory, feeService, popupService, gettextCatalog, platformInfo, configService, profileService, $state, ongoingProcess, txFormatService, $stateParams, walletService, networkService) {
 
     function _scanFunds(cb) {
       function getPrivateKey(scannedKey, isPkEncrypted, passphrase, cb) {
@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
       function checkPrivateKey(privateKey) {
         try {
-          new bitcore.PrivateKey(privateKey, 'livenet');
+          networkService.bwcFor('livenet/btc').getBitcore().PrivateKey(privateKey, 'livenet/btc'); // TODO: support other than livenet/btc
         } catch (err) {
           return false;
         }
@@ -42,11 +42,11 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             $state.go('tabs.home');
           } else {
             $scope.privateKey = privateKey;
-            $scope.balanceSat = balance;
-            if ($scope.balanceSat <= 0)
+            $scope.balanceAtomic = balance;
+            if ($scope.balanceAtomic <= 0)
               popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not funds found'));
             var config = configService.getSync().wallet.settings;
-            $scope.balance = txFormatService.formatAmount(balance) + ' ' + config.unitName;
+            $scope.balance = txFormatService.formatAmount('livenet/btc', balance) + ' ' + config.unitName; // TODO: support other than livenet/btc
           }
           $scope.$apply();
         });
@@ -60,14 +60,14 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, testTx) {
           if (err) return cb(err);
           var rawTxLength = testTx.serialize().length;
-          feeService.getCurrentFeeRate('livenet', function(err, feePerKB) {
+          feeService.getCurrentFeeRate($scope.wallet, function(err, feePerKb) {
             var opts = {};
-            opts.fee = Math.round((feePerKB * rawTxLength) / 2000);
+            opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
             $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, opts, function(err, tx) {
               if (err) return cb(err);
               $scope.wallet.broadcastRawTx({
                 rawTx: tx.serialize(),
-                network: 'livenet'
+                network: 'livenet/btc'
               }, function(err, txid) {
                 if (err) return cb(err);
                 return cb(null, destinationAddress, txid);
@@ -119,7 +119,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
 
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
-        network: 'livenet',
+        network: 'livenet/btc', // TODO: support other than livenet/btc
       });
       $scope.singleWallet = $scope.wallets.length == 1;
 
