@@ -304,7 +304,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
       $scope.globalResult = isExpression($scope.amount) ? '= ' + processResult(result) : '';
 
       if (availableUnits[unitIndex].isFiat) {
-        $scope.alternativeAmount = txFormatService.formatAmount(fromFiat(result) * unitToSatoshi, true);
+
+        var a = fromFiat(result);
+        if (a) {
+          $scope.alternativeAmount = txFormatService.formatAmount(a * unitToSatoshi, true);
+        } else {
+          $scope.alternativeAmount = 'N/A'; //TODO 
+          $scope.allowSend = false;
+        }
       } else {
         $scope.alternativeAmount = $filter('formatFiatAmount')(toFiat(result));
       }
@@ -321,6 +328,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   function toFiat(val) {
+    if (!rateService.getRate(fiatCode)) return;
+
     return parseFloat((rateService.toFiat(val * unitToSatoshi, fiatCode, availableUnits[unitIndex].id)).toFixed(2));
   };
 
