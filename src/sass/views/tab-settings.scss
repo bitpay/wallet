@@ -34,6 +34,9 @@
         width: 20px;
       }
     }
+    a {
+      cursor: pointer;
+    }
   }
   &-explanation, &-button-group {
     padding: 0 1rem;
