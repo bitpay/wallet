@@ -215,6 +215,11 @@
     &__button-balance {
       background-color: transparent;
       border: 1px solid rgba(255,255,255,0.25);
+      margin-top: 10px;
+      i.icon {
+        margin-right: 7px;
+        vertical-align: middle;
+      }
     }
 
     &__error {
