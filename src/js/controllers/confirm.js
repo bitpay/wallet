@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification, CUSTOMNETWORKS) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -71,9 +71,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     function setWalletSelector(network, minAmount, cb) {
 
+      // no min amount? (sendMax) => look for no empty wallets
+      minAmount = minAmount || 1;
+
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
-        network: $scope.network
+        network: network
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
@@ -95,6 +98,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
             if (!status.availableBalanceSat)
               $log.debug('No balance available in: ' + w.name);
+
             if (status.availableBalanceSat > minAmount) {
               filteredWallets.push(w);
             }
@@ -182,7 +186,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $log.warn(msg);
       return setSendError(msg);
     }
-
 
     if (tx.toAmount > Number.MAX_SAFE_INTEGER) {
       var msg = gettextCatalog.getString('Amount too big');
@@ -331,11 +334,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.toggleAddress = function() {
     $scope.showAddress = !$scope.showAddress;
-  }
-  $scope.showWalletSelector = function() {
-    $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
-    if (!$scope.useSendMax && ($scope.insufficientFunds || $scope.noMatchingWallet)) return;
-    $scope.showWallets = true;
   };
 
 
@@ -378,7 +376,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       defaultText: tx.description
     };
 
-    popupService.showPrompt("Memo", message, opts, function(res) {
+    popupService.showPrompt(null, message, opts, function(res) {
       if (typeof res != 'undefined') tx.description = res;
       $timeout(function() {
         $scope.$apply();
@@ -446,7 +444,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $timeout(function() {
       $scope.$apply();
     });
-    popupService.showAlert(gettextCatalog.getString('Error sending transaction'), bwcError.msg(msg));
+    popupService.showAlert(gettextCatalog.getString('Error at confirm'), bwcError.msg(msg));
   };
 
   $scope.openPPModal = function() {
@@ -461,14 +459,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   $scope.cancel = function() {
     $scope.payproModal.hide();
   };
-  $scope.$on('destroy', function() {
-    destroyBitloxListeners();
-  })
-  function destroyBitloxListeners() {
-    if($rootScope.bitloxConnectErrorListener) {
-      $rootScope.bitloxConnectErrorListener();    
-    }    
-  }
 
   $scope.approve = function(tx, wallet, onSendStatusChange) {
 
@@ -540,6 +530,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
+
   function statusChangeHandler(processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
     if (
@@ -565,8 +556,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       disableAnimate: true,
       historyRoot: true
     });
-    $ionicHistory.clearHistory();
-    $rootScope.$broadcast('Local/TxAction', $scope.wallet.id);    
     $state.go('tabs.send').then(function() {
       $ionicHistory.clearHistory();
       $state.transitionTo('tabs.home');
@@ -584,6 +573,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       scope.customFeePerKB = tx.feeRate;
       scope.feePerSatByte = tx.feeRate / 1000;
     }
+
     $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
       scope: scope,
       backdropClickToClose: false,
@@ -614,4 +604,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
   };
 
+  $scope.$on('destroy', function() {
+    destroyBitloxListeners();
+  })
+  function destroyBitloxListeners() {
+    if($rootScope.bitloxConnectErrorListener) {
+      $rootScope.bitloxConnectErrorListener();    
+    }    
+  }
 });

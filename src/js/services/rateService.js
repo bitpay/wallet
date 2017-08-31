@@ -16,7 +16,7 @@ var RateService = function(opts) {
   opts = opts || {};
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
-  self.defaults = opts.defaults;
+  self.networks = opts.networks;
 
   self.SAT_TO_BTC = 1 / 1e8;
   self.BTC_TO_SAT = 1e8;
@@ -25,8 +25,8 @@ var RateService = function(opts) {
 
   self._isAvailable = false;
   self._rates = {'aur': 9, 'deus': 0.11};
-  self._alternatives = [];
-  self._queued = [];
+  self._alternatives = {};
+  self._queued = {};
 
   self._fetchCurrencies();
 };
@@ -45,44 +45,55 @@ RateService.prototype._fetchCurrencies = function() {
 
   var backoffSeconds = 5;
   var updateFrequencySeconds = 5 * 60;
-  var rateServiceUrl = this.defaults.rates.url;
 
-  var retrieve = function() {
+
+  var retrieveOne = function(network, cb) {
     //log.info('Fetching exchange rates');
-    self.httprequest.get(rateServiceUrl).success(function(res) {
+    self.httprequest.get(network.ratesUrl).success(function(res) {
       self.lodash.each(res, function(currency) {
-        self._rates[currency.code] = currency.rate;
-        self._alternatives.push({
+        self._rates[network.name][currency.code] = currency.rate;
+        self._alternatives[network.name].push({
           name: currency.name,
           isoCode: currency.code,
           rate: currency.rate
         });
       });
-      self._isAvailable = true;
-      self.lodash.each(self._queued, function(callback) {
-        setTimeout(callback, 1);
-      });
-      setTimeout(retrieve, updateFrequencySeconds * 1000);
+      cb()
     }).error(function(err) {
       //log.debug('Error fetching exchange rates', err);
-      setTimeout(function() {
-        backoffSeconds *= 1.5;
-        retrieve();
-      }, backoffSeconds * 1000);
-      return;
+      return cb(new Error("error retrieving at least one rate table"))
     });
-
   };
-
+  var retrieve = function() {
+    var length = Object.keys(self.networks).length;
+    var done = 0
+    for(var i in self.networks) {
+      retrieveOne(self.networks[i], function(err) {
+        done++
+        if(err) {
+          setTimeout(function() {
+            backoffSeconds *= 1.2
+            retrieve();
+          }, backoffSeconds * 1000);
+        } else if(done === length) {
+          self._isAvailable = true;
+          self.lodash.each(self._queued, function(callback) {
+            setTimeout(callback, 1);
+          });
+          setTimeout(retrieve, updateFrequencySeconds * 1000);          
+        }
+      })
+    }
+  }
   retrieve();
 };
 
-RateService.prototype.getRate = function(code) {
-  return this._rates[code];
+RateService.prototype.getRate = function(code, network) {
+  return this._rates[network.name][code];
 };
 
-RateService.prototype.getAlternatives = function() {
-  return this._alternatives;
+RateService.prototype.getAlternatives = function(network) {
+  return this._alternatives[network.name];
 };
 
 RateService.prototype.isAvailable = function() {
@@ -97,28 +108,28 @@ RateService.prototype.whenAvailable = function(callback) {
   }
 };
 
-RateService.prototype.toFiat = function(satoshis, code) {
+RateService.prototype.toFiat = function(satoshis, code, network) {
   if (!this.isAvailable()) {
     return null;
   }
 
-  return satoshis * this.SAT_TO_BTC * this.getRate(code);
+  return satoshis * this.SAT_TO_BTC * this.getRate(code, network);
 };
 
-RateService.prototype.fromFiat = function(amount, code) {
+RateService.prototype.fromFiat = function(amount, code, network) {
   if (!this.isAvailable()) {
     return null;
   }
-  return amount / this.getRate(code) * this.BTC_TO_SAT;
+  return amount / this.getRate(code, network) * this.BTC_TO_SAT;
 };
 
-RateService.prototype.listAlternatives = function(sort) {
+RateService.prototype.listAlternatives = function(sort, network) {
   var self = this;
   if (!this.isAvailable()) {
     return [];
   }
 
-  var alternatives = self.lodash.map(this.getAlternatives(), function(item) {
+  var alternatives = self.lodash.map(this.getAlternatives(network), function(item) {
     return {
       name: item.name,
       isoCode: item.isoCode
@@ -132,15 +143,32 @@ RateService.prototype.listAlternatives = function(sort) {
   return self.lodash.uniq(alternatives, 'isoCode');
 };
 
-angular.module('copayApp.services').factory('rateService', function($http, lodash, configService) {
+angular.module('copayApp.services').factory('rateService', function($http, lodash, configService, profileService, CUSTOMNETWORKS) {
   // var cfg = _.extend(config.rates, {
   //   httprequest: $http
   // });
-
+  var wallets = profileService.getWallets();
+  var rateServices = []
+  var defaults = configService.getDefaults()
+  var networks = {};
+  for(var i in wallets) {
+    if(CUSTOMNETWORKS[wallets[i].network]) {
+      networks[wallets[i].network] = CUSTOMNETWORKS[wallets[i].network]
+    }
+  }
+  storageService.getCustomNetworks(function(err, networkListRaw) {
+    if(!networkListRaw) {
+      return;
+    }
+    var networkList = JSON.parse(networkListRaw)
+    for (var n in networkList) {
+       networks[networkList[n].name] = networkList[n]
+    }
+  })
   var cfg = {
     httprequest: $http,
     lodash: lodash,
-    defaults: configService.getDefaults()
+    networks: networks
   };
   return RateService.singleton(cfg);
 });

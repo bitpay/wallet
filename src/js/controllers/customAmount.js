@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService) {
+angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService, CUSTOMNETWORKS) {
 
   var showErrorAndBack = function(title, msg) {
     popupService.showAlert(title, msg, function() {
@@ -50,7 +50,9 @@ angular.module('copayApp.controllers').controller('customAmountController', func
         $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat);
       }
     });
+
     $scope.network = $scope.wallet.network;
+    $scope.altAmountStr = txFormatService.formatAlternativeStr($scope.amount, CUSTOMNETWORKS[$scope.network]);
     if($scope.network === "livenet") {$scope.network = "bitcoin";}
   });
 
