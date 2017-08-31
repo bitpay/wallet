@@ -31,7 +31,7 @@
       <div class="info">
 
         <div class="item item-icon-right" ng-click="showWalletSelector()">
-          <div class="label" translate>From {{wallet.coin}}</div>
+          <div class="label" translate>From</div>
           <div class="wallet">
             <i class="icon big-icon-svg">
               <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg">
