@@ -442,7 +442,9 @@ angular.module('copayApp.services')
       seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
-        walletClient.joinWallet(opts.secret, opts.myName || 'me', { coin: opts.coin }, function(err) {
+        walletClient.joinWallet(opts.secret, opts.myName || 'me', {
+          coin: opts.coin
+        }, function(err) {
           if (err) return bwcError.cb(err, gettextCatalog.getString('Could not join wallet'), cb);
           addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
