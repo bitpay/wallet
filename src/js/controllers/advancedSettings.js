@@ -66,7 +66,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.learnMore = function() {
+  $scope.openBitcoinCashWeb = function() {
     var url = 'https://www.bitcoincash.org/';
     var optIn = true;
     var title = null;
