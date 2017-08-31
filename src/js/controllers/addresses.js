@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('addressesController', functio
         $scope.latestWithBalance = lodash.slice(withBalance, 0, BALANCE_ADDRESS_LIMIT);
 
         lodash.each(withBalance, function(a) {
-          a.balanceStr = txFormatService.formatAmount(a.amount);
+          a.balanceStr = txFormatService.formatAmountStr($scope.wallet.coin, a.amount);
         });
 
         $scope.viewAll = {

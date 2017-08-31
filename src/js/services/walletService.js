@@ -215,11 +215,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       cache.satToUnit = 1 / cache.unitToSatoshi;
 
       //STR
-      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + (wallet.coin).toUpperCase();
-      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + (wallet.coin).toUpperCase();
-      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + (wallet.coin).toUpperCase();
-      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + (wallet.coin).toUpperCase();
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + (wallet.coin).toUpperCase();
+      cache.totalBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.totalBalanceSat);
+      cache.lockedBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.lockedBalanceSat);
+      cache.availableBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.availableBalanceSat);
+      cache.spendableBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.spendableAmount);
+      cache.pendingBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.pendingAmount);
 
       cache.alternativeName = config.settings.alternativeName;
       cache.alternativeIsoCode = config.settings.alternativeIsoCode;
@@ -416,10 +416,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       if (cacheCoin == 'bits') {
 
-        $log.debug('Fixing Tx Cache Unit to: ' + 'btc')
+        $log.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
         lodash.each(txs, function(tx) {
-          tx.amountStr = txFormatService.formatAmountStr('BTC', tx.amount);
-          tx.feeStr = txFormatService.formatAmountStr('BTC', tx.fees);
+          tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.amount);
+          tx.feeStr = txFormatService.formatAmountStr(wallet.coin, tx.fees);
         });
       }
     };
