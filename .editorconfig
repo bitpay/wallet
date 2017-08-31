@@ -1,13 +1,3 @@
-# EditorConfig helps developers define and maintain consistent
-# coding styles between different editors and IDEs
-# http://editorconfig.org
-
-## Plugins
-# Atom (https://github.com/sindresorhus/atom-editorconfig)
-# Vim (https://github.com/editorconfig/editorconfig-vim)
-# Sublime (https://github.com/sindresorhus/editorconfig-sublime)
-;
-
 root = true
 
 [*]
@@ -27,4 +17,3 @@ indent_style = tab
 [**.html]
 max_char = 78
 brace_style = expand
-
