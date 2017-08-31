@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService, platformInfo) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService, platformInfo, externalLinkService, gettextCatalog) {
 
   var updateConfig = function() {
     var config = configService.getSync();
@@ -14,6 +14,10 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     $scope.hideNextSteps = {
       value: config.hideNextSteps.enabled
     };
+    $scope.cashSupport = {
+      value: config.cashSupport.enabled
+    };
+
   };
 
   $scope.spendUnconfirmedChange = function() {
@@ -26,6 +30,19 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       if (err) $log.debug(err);
     });
   };
+
+
+  $scope.cashSupportChange = function() {
+    var opts = {
+      cashSupport: {
+        enabled: $scope.cashSupport.value
+      }
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
+    });
+  };
+
 
   $scope.nextStepsChange = function() {
     var opts = {
@@ -47,6 +64,16 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
     });
+  };
+
+  $scope.learnMore = function() {
+    var url = 'https://www.bitcoincash.org/';
+    var optIn = true;
+    var title = null;
+    var message = gettextCatalog.getString('Open bitcoincash.org?');
+    var okText = gettextCatalog.getString('Open');
+    var cancelText = gettextCatalog.getString('Go Back');
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {

@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('sellCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, appConfigService, configService, txFormatService) {
 
+  var coin = 'btc';
   var amount;
   var currency;
 
@@ -34,124 +35,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
     }, onSendStatusChange);
   };
 
-  var checkTransaction = lodash.throttle(function(count, txp) {
-    $log.warn('Check if transaction has been received by Coinbase. Try ' + count + '/5');
-    // TX amount in BTC
-    var satToBtc = 1 / 100000000;
-    var amountBTC = (txp.amount * satToBtc).toFixed(8);
-    coinbaseService.init(function(err, res) {
-      if (err) {
-        $log.error(err);
-        checkTransaction(count, txp);
-        return;
-      }
-      var accessToken = res.accessToken;
-      var accountId = res.accountId; 
-      var sellPrice = null;
-        
-      coinbaseService.sellPrice(accessToken, coinbaseService.getAvailableCurrency(), function(err, sell) {
-        if (err) {
-          $log.debug(err);
-          checkTransaction(count, txp);
-          return;
-        }
-        sellPrice = sell.data;
-
-        coinbaseService.getTransactions(accessToken, accountId, function(err, ctxs) {
-          if (err) {
-            $log.debug(err);
-            checkTransaction(count, txp);
-            return;
-          }
-
-          var coinbaseTransactions = ctxs.data;
-          var txFound = false;
-          var ctx;
-          for(var i = 0; i < coinbaseTransactions.length; i++) {
-            ctx = coinbaseTransactions[i];
-            if (ctx.type == 'send' && ctx.from && ctx.amount.amount == amountBTC ) {
-              $log.warn('Transaction found!', ctx);
-              txFound = true;
-              $log.debug('Saving transaction to process later...');
-              ctx['payment_method'] = $scope.selectedPaymentMethodId.value;
-              ctx['status'] = 'pending'; // Forcing "pending" status to process later
-              ctx['price_sensitivity'] = $scope.selectedPriceSensitivity.data;
-              ctx['sell_price_amount'] = sellPrice ? sellPrice.amount : '';
-              ctx['sell_price_currency'] = sellPrice ? sellPrice.currency : 'USD';
-              ctx['description'] = appConfigService.nameCase + ' Wallet: ' + $scope.wallet.name;
-              coinbaseService.savePendingTransaction(ctx, null, function(err) {
-                ongoingProcess.set('sellingBitcoin', false, statusChangeHandler); 
-                if (err) $log.debug(err);
-              });
-              return;
-            }
-          }
-          if (!txFound) {
-            // Transaction sent, but could not be verified by Coinbase.com
-            $log.warn('Transaction not found in Coinbase.');
-            if (count < 5) {
-              checkTransaction(count + 1, txp);
-            } else {
-              ongoingProcess.set('sellingBitcoin', false, statusChangeHandler); 
-              showError('No transaction found');
-              return;
-            }
-          }
-        });
-      });
-    });
-  }, 8000, {
-    'leading': true
-  });
-
-  var statusChangeHandler = function (processName, showName, isOn) {
-    $log.debug('statusChangeHandler: ', processName, showName, isOn);
-    if ( processName == 'sellingBitcoin' && !isOn) {
-      $scope.sendStatus = 'success';
-      $timeout(function() {
-        $scope.$digest();
-      }, 100);
-    } else if (showName) {
-      $scope.sendStatus = showName;
-    }
-  };
-
-  $scope.$on("$ionicView.beforeLeave", function(event, data) {
-    $ionicConfig.views.swipeBackEnabled(true);
-  });
-
-  $scope.$on("$ionicView.enter", function(event, data) {
-    $ionicConfig.views.swipeBackEnabled(false);
-  });
-
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
-    var parsedAmount = txFormatService.parseAmount(
-      data.stateParams.amount, 
-      data.stateParams.currency);
-
-    amount = parsedAmount.amount;
-    currency = parsedAmount.currency;
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
-
-    $scope.priceSensitivity = coinbaseService.priceSensitivity;
-    $scope.selectedPriceSensitivity = { data: coinbaseService.selectedPriceSensitivity };
-    
-    $scope.network = coinbaseService.getNetwork();
-    $scope.wallets = profileService.getWallets({
-      m: 1, // Only 1-signature wallet
-      onlyComplete: true,
-      network: $scope.network,
-      hasFunds: true,
-      minAmount: parsedAmount.amountSat
-    });
-
-    if (lodash.isEmpty($scope.wallets)) {
-      showErrorAndBack('Insufficient funds');
-      return;
-    }
-    $scope.wallet = $scope.wallets[0]; // Default first wallet
-
+  var processPaymentInfo = function() {
     ongoingProcess.set('connectingCoinbase', true);
     coinbaseService.init(function(err, res) {
       if (err) {
@@ -193,7 +77,121 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
         if (!hasPrimary) $scope.selectedPaymentMethodId.value = $scope.paymentMethods[0].id;
         $scope.sellRequest();
       });
-    });   
+    });
+  };
+
+  var checkTransaction = lodash.throttle(function(count, txp) {
+    $log.warn('Check if transaction has been received by Coinbase. Try ' + count + '/5');
+    // TX amount in BTC
+    var satToBtc = 1 / 100000000;
+    var amountBTC = (txp.amount * satToBtc).toFixed(8);
+    coinbaseService.init(function(err, res) {
+      if (err) {
+        $log.error(err);
+        checkTransaction(count, txp);
+        return;
+      }
+      var accessToken = res.accessToken;
+      var accountId = res.accountId;
+      var sellPrice = null;
+
+      coinbaseService.sellPrice(accessToken, coinbaseService.getAvailableCurrency(), function(err, sell) {
+        if (err) {
+          $log.debug(err);
+          checkTransaction(count, txp);
+          return;
+        }
+        sellPrice = sell.data;
+
+        coinbaseService.getTransactions(accessToken, accountId, function(err, ctxs) {
+          if (err) {
+            $log.debug(err);
+            checkTransaction(count, txp);
+            return;
+          }
+
+          var coinbaseTransactions = ctxs.data;
+          var txFound = false;
+          var ctx;
+          for(var i = 0; i < coinbaseTransactions.length; i++) {
+            ctx = coinbaseTransactions[i];
+            if (ctx.type == 'send' && ctx.from && ctx.amount.amount == amountBTC ) {
+              $log.warn('Transaction found!', ctx);
+              txFound = true;
+              $log.debug('Saving transaction to process later...');
+              ctx['payment_method'] = $scope.selectedPaymentMethodId.value;
+              ctx['status'] = 'pending'; // Forcing "pending" status to process later
+              ctx['price_sensitivity'] = $scope.selectedPriceSensitivity.data;
+              ctx['sell_price_amount'] = sellPrice ? sellPrice.amount : '';
+              ctx['sell_price_currency'] = sellPrice ? sellPrice.currency : 'USD';
+              ctx['description'] = appConfigService.nameCase + ' Wallet: ' + $scope.wallet.name;
+              coinbaseService.savePendingTransaction(ctx, null, function(err) {
+                ongoingProcess.set('sellingBitcoin', false, statusChangeHandler);
+                if (err) $log.debug(err);
+              });
+              return;
+            }
+          }
+          if (!txFound) {
+            // Transaction sent, but could not be verified by Coinbase.com
+            $log.warn('Transaction not found in Coinbase.');
+            if (count < 5) {
+              checkTransaction(count + 1, txp);
+            } else {
+              ongoingProcess.set('sellingBitcoin', false, statusChangeHandler);
+              showError('No transaction found');
+              return;
+            }
+          }
+        });
+      });
+    });
+  }, 8000, {
+    'leading': true
+  });
+
+  var statusChangeHandler = function (processName, showName, isOn) {
+    $log.debug('statusChangeHandler: ', processName, showName, isOn);
+    if ( processName == 'sellingBitcoin' && !isOn) {
+      $scope.sendStatus = 'success';
+      $timeout(function() {
+        $scope.$digest();
+      }, 100);
+    } else if (showName) {
+      $scope.sendStatus = showName;
+    }
+  };
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isFiat = data.stateParams.currency != 'BTC' ? true : false;
+    amount = data.stateParams.amount;
+    currency = data.stateParams.currency;
+
+    $scope.priceSensitivity = coinbaseService.priceSensitivity;
+    $scope.selectedPriceSensitivity = { data: coinbaseService.selectedPriceSensitivity };
+
+    $scope.network = coinbaseService.getNetwork();
+    $scope.wallets = profileService.getWallets({
+      m: 1, // Only 1-signature wallet
+      onlyComplete: true,
+      network: $scope.network,
+      hasFunds: true,
+      coin: coin
+    });
+
+    if (lodash.isEmpty($scope.wallets)) {
+      showErrorAndBack('Insufficient funds');
+      return;
+    }
+    $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
   });
 
   $scope.sellRequest = function() {
@@ -236,7 +234,7 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
     var cancelText = 'Cancel';
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {
       if (!ok) return;
-      
+
       ongoingProcess.set('sellingBitcoin', true, statusChangeHandler);
       coinbaseService.init(function(err, res) {
         if (err) {
@@ -294,8 +292,8 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
               checkTransaction(1, txSent);
             });
           });
-        }); 
-      }); 
+        });
+      });
     });
   };
 
@@ -306,6 +304,15 @@ angular.module('copayApp.controllers').controller('sellCoinbaseController', func
 
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    var parsedAmount = txFormatService.parseAmount(
+      coin,
+      amount,
+      currency);
+
+    amount = parsedAmount.amount;
+    currency = parsedAmount.currency;
+    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    processPaymentInfo();
   };
 
   $scope.goBackHome = function() {

@@ -10,7 +10,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
     $scope.buyAndSellServices = buyAndSellService.getLinked();
 
     configService.whenAvailable(function(config) {
-      $scope.unitName = config.wallet.settings.unitName;
       $scope.selectedAlternative = {
         name: config.wallet.settings.alternativeName,
         isoCode: config.wallet.settings.alternativeIsoCode

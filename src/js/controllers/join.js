@@ -5,11 +5,14 @@ angular.module('copayApp.controllers').controller('joinController',
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       var defaults = configService.getDefaults();
+      var config = configService.getSync();
       $scope.formData = {};
       $scope.formData.bwsurl = defaults.bws.url;
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.formData.account = 1;
       $scope.formData.secret = null;
+      $scope.formData.coin = 'btc';
+      if (config.cashSupport.enabled) $scope.enableCash = true;
       resetPasswordFields();
       updateSeedSourceSelect();
     });
@@ -103,7 +106,8 @@ angular.module('copayApp.controllers').controller('joinController',
       var opts = {
         secret: $scope.formData.secret,
         myName: $scope.formData.myName,
-        bwsurl: $scope.formData.bwsurl
+        bwsurl: $scope.formData.bwsurl,
+        coin: $scope.formData.coin
       }
 
       var setSeed = $scope.formData.seedSource.id == 'set';

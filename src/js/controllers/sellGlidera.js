@@ -2,6 +2,7 @@
 
 angular.module('copayApp.controllers').controller('sellGlideraController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, glideraService, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, txFormatService) {
 
+  var coin = 'btc';
   var amount;
   var currency;
 
@@ -35,39 +36,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
     }
   };
 
-  $scope.$on("$ionicView.beforeLeave", function(event, data) {
-    $ionicConfig.views.swipeBackEnabled(true);
-  });
-
-  $scope.$on("$ionicView.enter", function(event, data) {
-    $ionicConfig.views.swipeBackEnabled(false);
-  });
-
-  $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    $scope.isFiat = data.stateParams.currency != 'bits' && data.stateParams.currency != 'BTC' ? true : false;
-    var parsedAmount = txFormatService.parseAmount(
-      data.stateParams.amount, 
-      data.stateParams.currency);
-
-    amount = parsedAmount.amount;
-    currency = parsedAmount.currency;
-    $scope.amountUnitStr = parsedAmount.amountUnitStr;
-
-    $scope.network = glideraService.getNetwork();
-    $scope.wallets = profileService.getWallets({
-      m: 1, // Only 1-signature wallet
-      onlyComplete: true,
-      network: $scope.network,
-      hasFunds: true,
-      minAmount: parsedAmount.amountSat
-    });
-
-    if (lodash.isEmpty($scope.wallets)) {
-      showErrorAndBack('Insufficient funds');
-      return;
-    }
-    $scope.wallet = $scope.wallets[0]; // Default first wallet
-
+  var processPaymentInfo = function() {
     ongoingProcess.set('connectingGlidera', true);
     glideraService.init(function(err, data) {
       if (err) {
@@ -91,6 +60,35 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
         $scope.sellInfo = sell;
       });
     });
+  };
+
+  $scope.$on("$ionicView.beforeLeave", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(true);
+  });
+
+  $scope.$on("$ionicView.enter", function(event, data) {
+    $ionicConfig.views.swipeBackEnabled(false);
+  });
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isFiat = data.stateParams.currency != 'BTC' ? true : false;
+    amount = data.stateParams.amount;
+    currency = data.stateParams.currency;
+
+    $scope.network = glideraService.getNetwork();
+    $scope.wallets = profileService.getWallets({
+      m: 1, // Only 1-signature wallet
+      onlyComplete: true,
+      network: $scope.network,
+      hasFunds: true,
+      coin: coin
+    });
+
+    if (lodash.isEmpty($scope.wallets)) {
+      showErrorAndBack('Insufficient funds');
+      return;
+    }
+    $scope.onWalletSelect($scope.wallets[0]); // Default first wallet
   });
 
   var ask2FaCode = function(mode, cb) {
@@ -108,7 +106,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
       popupService.showPrompt(title, message, null, function(twoFaCode) {
         if (typeof twoFaCode == 'undefined') return cb();
         return cb(twoFaCode);
-      });   
+      });
     } else {
       return cb();
     }
@@ -119,7 +117,7 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
     var okText = 'Confirm';
     var cancelText = 'Cancel';
     popupService.showConfirm(null, message, okText, cancelText, function(ok) {
-      if (!ok) return; 
+      if (!ok) return;
       ongoingProcess.set('sellingBitcoin', true, statusChangeHandler);
       glideraService.get2faCode($scope.token, function(err, tfa) {
         if (err) {
@@ -231,6 +229,15 @@ angular.module('copayApp.controllers').controller('sellGlideraController', funct
 
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    var parsedAmount = txFormatService.parseAmount(
+      coin,
+      amount,
+      currency);
+
+    amount = parsedAmount.amount;
+    currency = parsedAmount.currency;
+    $scope.amountUnitStr = parsedAmount.amountUnitStr;
+    processPaymentInfo();
   };
 
   $scope.goBackHome = function() {

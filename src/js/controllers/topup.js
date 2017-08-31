@@ -3,6 +3,7 @@
 angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog) {
 
   $scope.isCordova = platformInfo.isCordova;
+  var coin = 'btc';
   var cardId;
   var useSendMax;
   var amount;
@@ -36,7 +37,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
   };
 
   var satToFiat = function(sat, cb) {
-    txFormatService.toFiat(sat, $scope.currencyIsoCode, function(value) {
+    txFormatService.toFiat(coin, sat, $scope.currencyIsoCode, function(value) {
       return cb(value);
     });
   };
@@ -218,7 +219,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         // Save TX in memory
         createdTx = ctxp;
 
-        $scope.totalAmountStr = txFormatService.formatAmountStr(ctxp.amount);
+        $scope.totalAmountStr = txFormatService.formatAmountStr(coin, ctxp.amount);
 
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
 
@@ -256,7 +257,8 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
         network: bitpayService.getEnvironment().network,
-        hasFunds: true
+        hasFunds: true,
+        coin: coin
       });
 
       if (lodash.isEmpty($scope.wallets)) {
@@ -319,7 +321,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         });
         return;
       }
-      var parsedAmount = txFormatService.parseAmount(a, c);
+      var parsedAmount = txFormatService.parseAmount(coin, a, c);
       initializeTopUp(wallet, parsedAmount);
     });
   };

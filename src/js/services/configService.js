@@ -61,7 +61,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       bannedUntil: null,
     },
 
-    // External services
+    cashSupport: {
+      enabled: false,
+    },
+
     recentTransactions: {
       enabled: true,
     },
@@ -133,6 +136,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
           configCache.hideNextSteps = defaultConfig.hideNextSteps;
         }
 
+
+        if (!configCache.cashSupport) {
+          configCache.cashSupport = defaultConfig.cashSupport;
+        }
+
         if (!configCache.recentTransactions) {
           configCache.recentTransactions = defaultConfig.recentTransactions;
         }
@@ -141,6 +149,14 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         }
         if (!configCache.bitpayAccount) {
           configCache.bitpayAccount = defaultConfig.bitpayAccount;
+        }
+
+        if (configCache.wallet.settings.unitCode == 'bit') {
+          // Convert to BTC. Bits will be disabled
+          configCache.wallet.settings.unitName = defaultConfig.wallet.settings.unitName;
+          configCache.wallet.settings.unitToSatoshi = defaultConfig.wallet.settings.unitToSatoshi;
+          configCache.wallet.settings.unitDecimals = defaultConfig.wallet.settings.unitDecimals;
+          configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
 
       } else {

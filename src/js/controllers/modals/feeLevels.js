@@ -18,14 +18,14 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
     var value = lodash.find($scope.feeLevels[$scope.network], {
       level: 'superEconomy'
     });
-    return parseInt((value.feePerKB / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed());
   };
 
   var getMaxRecommended = function() {
     var value = lodash.find($scope.feeLevels[$scope.network], {
       level: 'urgent'
     });
-    return parseInt((value.feePerKB / 1000).toFixed());
+    return parseInt((value.feePerKb / 1000).toFixed());
   };
 
   $scope.ok = function() {
@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
     // If no custom fee
     if (value) {
       $scope.customFeePerKB = null;
-      $scope.feePerSatByte = (value.feePerKB / 1000).toFixed();
+      $scope.feePerSatByte = (value.feePerKb / 1000).toFixed();
       $scope.avgConfirmationTime = value.nbBlocks * 10;
     } else {
       $scope.avgConfirmationTime = null;
@@ -102,7 +102,7 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
 
   $scope.feeOpts = feeService.feeOpts;
   $scope.loadingFee = true;
-  feeService.getFeeLevels(function(err, levels) {
+  feeService.getFeeLevels($scope.coin, function(err, levels) {
     $scope.loadingFee = false;
     if (err || lodash.isEmpty(levels)) {
       showErrorAndClose(null, err);

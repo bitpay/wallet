@@ -9,6 +9,14 @@ angular.module('copayApp.controllers').controller('amountController', function($
   var SMALL_FONT_SIZE_LIMIT = 10;
   var LENGTH_EXPRESSION_LIMIT = 19;
   var isNW = platformInfo.isNW;
+
+  var unitIndex = 0;
+  var altUnitIndex = 0;
+  var availableUnits = [];
+  var fiatCode;
+
+  var fixedUnit;
+
   $scope.isChromeApp = platformInfo.isChromeApp;
 
   $scope.$on('$ionicView.leave', function() {
@@ -16,11 +24,82 @@ angular.module('copayApp.controllers').controller('amountController', function($
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+
+    var config = configService.getSync().wallet.settings;
+
+    function setAvailableUnits() {
+
+      availableUnits = [{
+        name: 'Bitcoin',
+        id: 'btc',
+        shortName: 'BTC',
+      }];
+
+
+      var anyCashWallet = true; // TODO!!
+      if (anyCashWallet) {
+        availableUnits.push({
+          name: 'Bitcoin Cash',
+          id: 'bch',
+          shortName: 'BCH',
+        });
+      };
+
+      unitIndex = 0;
+
+      if (data.stateParams.coin) {
+        var coins = data.stateParams.coin.split(',');
+        var newAvailableUnits = [];
+
+        lodash.each(coins, function(c) {
+          var coin = lodash.find(availableUnits, {
+            id: c
+          });
+          if (!coin) {
+            $log.warn('Could not find desired coin:' + data.stateParams.coin)
+          } else {
+            newAvailableUnits.push(coin);
+          }
+        });
+
+        if (newAvailableUnits.length>0) {
+          availableUnits = newAvailableUnits;
+        }
+      }
+
+
+      //  currency have preference
+      var fiat;
+      if (data.stateParams.currency) {
+        fiat = data.stateParams.currency;
+        altUnitIndex = unitIndex
+        unitIndex = availableUnits.length;
+      } else {
+        fiat = config.fiat || 'USD';
+        altUnitIndex = availableUnits.length;
+      }
+
+      availableUnits.push({
+        name: fiat, // TODO
+        id: fiat,
+        shortName: fiat,
+        isFiat: true,
+      });
+
+      fiatCode = fiat;
+
+      if (data.stateParams.fixedUnit) {
+        fixedUnit = true;
+      }
+    };
+
     // Go to...
     _id = data.stateParams.id; // Optional (BitPay Card ID or Wallet ID)
     $scope.nextStep = data.stateParams.nextStep;
-    $scope.currency = data.stateParams.currency;
-    $scope.forceCurrency = data.stateParams.forceCurrency;
+
+
+    setAvailableUnits();
+    updateUnitUI();
 
     $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' ||
       $ionicHistory.backView().stateName == 'tabs.bitpayCard');
@@ -28,7 +107,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
     $scope.toEmail = data.stateParams.toEmail;
-    $scope.showAlternativeAmount = !!$scope.nextStep;
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
@@ -61,14 +139,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
         $scope.$apply();
       });
     });
-
-    var config = configService.getSync().wallet.settings;
-    $scope.unitName = config.unitName;
-    if (data.stateParams.currency) {
-      $scope.alternativeIsoCode = data.stateParams.currency;
-    } else {
-      $scope.alternativeIsoCode = config.alternativeIsoCode || 'USD';
-    }
     $scope.specificAmount = $scope.specificAlternativeAmount = '';
     $scope.isCordova = platformInfo.isCordova;
     unitToSatoshi = config.unitToSatoshi;
@@ -114,13 +184,56 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.finish();
   };
 
-  $scope.toggleAlternative = function() {
-    if ($scope.forceCurrency) return;
-    $scope.showAlternativeAmount = !$scope.showAlternativeAmount;
 
+  $scope.toggleAlternative = function() {
     if ($scope.amount && isExpression($scope.amount)) {
       var amount = evaluate(format($scope.amount));
       $scope.globalResult = '= ' + processResult(amount);
+    }
+  };
+
+  function updateUnitUI() {
+    $scope.unit = availableUnits[unitIndex].shortName;
+    $scope.alternativeUnit = availableUnits[altUnitIndex].shortName;
+
+    processAmount();
+    $log.debug('Update unit coin @amount unit:' + $scope.unit + " alternativeUnit:" + $scope.alternativeUnit);
+  };
+
+  $scope.changeUnit = function() {
+    if (fixedUnit) return;
+
+    unitIndex++;
+    if (unitIndex >= availableUnits.length) unitIndex = 0;
+
+
+    if (availableUnits[unitIndex].isFiat) {
+      // Always return to BTC... TODO?
+      altUnitIndex = 0;
+    } else {
+      altUnitIndex = lodash.findIndex(availableUnits, {
+        isFiat: true
+      });
+    }
+
+    updateUnitUI();
+  };
+
+
+  $scope.changeAlternativeUnit = function() {
+
+    // Do nothing is fiat is not main unit
+    if (!availableUnits[unitIndex].isFiat) return;
+
+    var nextCoin = lodash.findIndex(availableUnits, function(x) {
+      if (x.isFiat) return false;
+      if (x.id == availableUnits[altUnitIndex].id) return false;
+      return true;
+    });
+
+    if (nextCoin >= 0) {
+      altUnitIndex = nextCoin;
+      updateUnitUI();
     }
   };
 
@@ -132,7 +245,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   $scope.pushDigit = function(digit) {
     if ($scope.amount && $scope.amount.length >= LENGTH_EXPRESSION_LIMIT) return;
     if ($scope.amount.indexOf('.') > -1 && digit == '.') return;
-    if ($scope.showAlternativeAmount && $scope.amount.indexOf('.') > -1 && $scope.amount[$scope.amount.indexOf('.') + 2]) return;
+    if (availableUnits[unitIndex].isFiat && $scope.amount.indexOf('.') > -1 && $scope.amount[$scope.amount.indexOf('.') + 2]) return;
 
     $scope.amount = ($scope.amount + digit).replace('..', '.');
     checkFontSize();
@@ -169,7 +282,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.resetAmount = function() {
-    $scope.amount = $scope.alternativeResult = $scope.amountResult = $scope.globalResult = '';
+    $scope.amount = $scope.alternativeAmount = $scope.globalResult = '';
     $scope.allowSend = false;
     checkFontSize();
   };
@@ -180,24 +293,28 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.allowSend = lodash.isNumber(result) && +result > 0;
     if (lodash.isNumber(result)) {
       $scope.globalResult = isExpression($scope.amount) ? '= ' + processResult(result) : '';
-      $scope.amountResult = $filter('formatFiatAmount')(toFiat(result));
-      $scope.alternativeResult = txFormatService.formatAmount(fromFiat(result) * unitToSatoshi, true);
+
+      if (availableUnits[unitIndex].isFiat) {
+        $scope.alternativeAmount = txFormatService.formatAmount(fromFiat(result) * unitToSatoshi, true);
+      } else {
+        $scope.alternativeAmount = $filter('formatFiatAmount')(toFiat(result));
+      }
     }
   };
 
   function processResult(val) {
-    if ($scope.showAlternativeAmount)
+    if (availableUnits[unitIndex].isFiat)
       return $filter('formatFiatAmount')(val);
     else
       return txFormatService.formatAmount(val.toFixed(unitDecimals) * unitToSatoshi, true);
   };
 
   function fromFiat(val) {
-    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode) * satToUnit).toFixed(unitDecimals));
+    return parseFloat((rateService.fromFiat(val, fiatCode, availableUnits[altUnitIndex].id) * satToUnit).toFixed(unitDecimals));
   };
 
   function toFiat(val) {
-    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode)).toFixed(2));
+    return parseFloat((rateService.toFiat(val * unitToSatoshi, fiatCode, availableUnits[unitIndex].id)).toFixed(2));
   };
 
   function evaluate(val) {
@@ -212,6 +329,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   function format(val) {
+    if (!val) return;
+
     var result = val.toString();
 
     if (isOperator(lodash.last(val)))
@@ -221,24 +340,42 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   $scope.finish = function() {
+
+    var unit = availableUnits[unitIndex];
     var _amount = evaluate(format($scope.amount));
 
     if ($scope.nextStep) {
+
+      var coin = unit.id;
+      if (unit.isFiat) {
+        coin = availableUnits[altUnitIndex].id;
+      }
+
       $state.transitionTo($scope.nextStep, {
         id: _id,
         amount: $scope.useSendMax ? null : _amount,
-        currency: $scope.showAlternativeAmount ? $scope.alternativeIsoCode : $scope.unitName,
+        currency: unit.id.toUpperCase(),
+        coin: coin,
         useSendMax: $scope.useSendMax
       });
     } else {
-      var amount = $scope.showAlternativeAmount ? fromFiat(_amount) : _amount;
+      var amount = _amount;
+
+      if (unit.isFiat) {
+        amount = fromFiat(_amount);
+      } else {
+        amount = (amount * unitToSatoshi).toFixed(0);
+      }
+
+
       $state.transitionTo('tabs.send.confirm', {
         recipientType: $scope.recipientType,
-        toAmount: $scope.useSendMax ? null : (amount * unitToSatoshi).toFixed(0),
+        toAmount: amount,
         toAddress: $scope.toAddress,
         toName: $scope.toName,
         toEmail: $scope.toEmail,
         toColor: $scope.toColor,
+        coin: unit.id,
         useSendMax: $scope.useSendMax
       });
     }

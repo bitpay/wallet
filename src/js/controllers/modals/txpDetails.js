@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   function displayFeeValues() {
-    txFormatService.formatAlternativeStr($scope.tx.fee, function(v) {
+    txFormatService.formatAlternativeStr($scope.wallet.coin, $scope.tx.fee, function(v) {
       $scope.tx.feeFiatStr = v;
     });
     $scope.tx.feeRateStr = ($scope.tx.fee / ($scope.tx.amount + $scope.tx.fee) * 100).toFixed(2) + '%';
@@ -219,7 +219,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
         copayerId: $scope.wallet.credentials.copayerId
       });
 
-      $scope.tx = txFormatService.processTx(tx);
+      $scope.tx = txFormatService.processTx($scope.wallet.coin, tx);
 
       if (!action && tx.status == 'pending')
         $scope.tx.pendingForUs = true;

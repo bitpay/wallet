@@ -2,8 +2,8 @@
 
 angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
 
-  // Ratio low amount warning (fee/amount) in incoming TX 
-  var LOW_AMOUNT_RATIO = 0.15; 
+  // Ratio low amount warning (fee/amount) in incoming TX
+  var LOW_AMOUNT_RATIO = 0.15;
 
   // Ratio of "many utxos" warning in total balance (fee/amount)
   var TOTAL_LOW_WARNING_RATIO = .3;
@@ -130,7 +130,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       lodash.each(txps, function(tx) {
 
-        tx = txFormatService.processTx(tx);
+        tx = txFormatService.processTx(wallet.coin, tx);
 
         // no future transactions...
         if (tx.createdOn > now)
@@ -213,14 +213,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       // Selected unit
       cache.unitToSatoshi = config.settings.unitToSatoshi;
       cache.satToUnit = 1 / cache.unitToSatoshi;
-      cache.unitName = config.settings.unitName;
 
       //STR
-      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
-      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
-      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
-      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + cache.unitName;
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
+      cache.totalBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.totalBalanceSat);
+      cache.lockedBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.lockedBalanceSat);
+      cache.availableBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.availableBalanceSat);
+      cache.spendableBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.spendableAmount);
+      cache.pendingBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.pendingAmount);
 
       cache.alternativeName = config.settings.alternativeName;
       cache.alternativeIsoCode = config.settings.alternativeIsoCode;
@@ -238,11 +237,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       rateService.whenAvailable(function() {
 
-        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode);
-        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode);
-        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode);
-        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode);
-        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode);
+        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
+        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
         cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
         cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);
@@ -366,7 +365,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, function(tx) {
-      tx = txFormatService.processTx(tx);
+      tx = txFormatService.processTx(wallet.coin, tx);
 
       // no future transactions...
       if (tx.time > now)
@@ -400,7 +399,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var LIMIT = 50;
     var requestLimit = FIRST_LIMIT;
     var walletId = wallet.credentials.walletId;
-    var config = configService.getSync().wallet.settings;
 
     var opts = opts || {};
     var progressFn = opts.progressFn || function() {};
@@ -414,18 +412,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var fixTxsUnit = function(txs) {
       if (!txs || !txs[0] || !txs[0].amountStr) return;
 
-      var cacheUnit = txs[0].amountStr.split(' ')[1];
+      var cacheCoin = txs[0].amountStr.split(' ')[1];
 
-      if (cacheUnit == config.unitName)
-        return;
+      if (cacheCoin == 'bits') {
 
-      var name = ' ' + config.unitName;
-
-      $log.debug('Fixing Tx Cache Unit to:' + name)
-      lodash.each(txs, function(tx) {
-        tx.amountStr = txFormatService.formatAmount(tx.amount) + name;
-        tx.feeStr = txFormatService.formatAmount(tx.fees) + name;
-      });
+        $log.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
+        lodash.each(txs, function(tx) {
+          tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.amount);
+          tx.feeStr = txFormatService.formatAmountStr(wallet.coin, tx.fees);
+        });
+      }
     };
 
     getSavedTxs(walletId, function(err, txsFromLocal) {
@@ -788,7 +784,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     //prefs.email  (may come from arguments)
     prefs.email = config.emailNotifications.email;
     prefs.language = uxLanguage.getCurrentLanguage();
-    prefs.unit = walletSettings.unitCode;
+    // prefs.unit = walletSettings.unitCode; // TODO: remove, not used
 
     updateRemotePreferencesFor(lodash.clone(clients), prefs, function(err) {
       if (err) return cb(err);
@@ -922,18 +918,18 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
 
-  // Approx utxo amount, from which the uxto is economically redeemable  
+  // Approx utxo amount, from which the uxto is economically redeemable
   root.getMinFee = function(wallet, feeLevels, nbOutputs) {
     var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
       level: 'normal',
-    }).feePerKB / 1000).toFixed(0);
+    }).feePerKb / 1000).toFixed(0);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
     return size * lowLevelRate;
   };
 
 
-  // Approx utxo amount, from which the uxto is economically redeemable  
+  // Approx utxo amount, from which the uxto is economically redeemable
   root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
     var minFee = root.getMinFee(wallet,feeLevels, nbOutputs);
     return parseInt( minFee / LOW_AMOUNT_RATIO);
@@ -943,7 +939,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getLowUtxos = function(wallet, levels, cb) {
 
-    wallet.getUtxos({}, function(err, resp) {
+    wallet.getUtxos({coin: wallet.coin}, function(err, resp) {
       if (err || !resp || !resp.length) return cb();
 
       var minFee = root.getMinFee(wallet, levels, resp.length);
