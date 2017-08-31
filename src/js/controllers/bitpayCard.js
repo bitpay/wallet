@@ -111,7 +111,7 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     var title = null;
     var message = gettextCatalog.getString('Help and support information is available at the website.');
     var okText = gettextCatalog.getString('Open');
-    var cancelText = gettextCatalog.getString('Go Back');
+    var cancelText = gettextCatalog.getString('Go back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
@@ -119,9 +119,9 @@ angular.module('copayApp.controllers').controller('bitpayCardController', functi
     var url = 'https://insight.bitpay.com/tx/' + transactionId;
     var optIn = true;
     var title = null;
-    var message = gettextCatalog.getString('View Transaction on Insight');
+    var message = gettextCatalog.getString('View transaction on Insight');
     var okText = gettextCatalog.getString('Open Insight');
-    var cancelText = gettextCatalog.getString('Go Back');
+    var cancelText = gettextCatalog.getString('Go back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 

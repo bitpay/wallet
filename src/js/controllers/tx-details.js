@@ -119,9 +119,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
       });
 
       if ($scope.btx.action != 'invalid') {
-        if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
-        if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
-        if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
+        if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent funds');
+        if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received funds');
+        if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved funds');
       }
 
       updateMemo();
@@ -181,9 +181,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     var url = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.txid;
     var optIn = true;
     var title = null;
-    var message = gettextCatalog.getString('View Transaction on Insight');
+    var message = gettextCatalog.getString('View transaction on Insight');
     var okText = gettextCatalog.getString('Open Insight');
-    var cancelText = gettextCatalog.getString('Go Back');
+    var cancelText = gettextCatalog.getString('Go back');
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 

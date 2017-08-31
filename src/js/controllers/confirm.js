@@ -302,7 +302,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
 
           tx.txp[wallet.id] = txp;
-          $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+          $log.debug('Confirm. TX fully updated for wallet:' + wallet.id, tx);
           refresh();
 
           return cb();

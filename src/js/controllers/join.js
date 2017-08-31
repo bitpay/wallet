@@ -65,7 +65,7 @@ angular.module('copayApp.controllers').controller('joinController',
         label: gettextCatalog.getString('Random'),
       }, {
         id: 'set',
-        label: gettextCatalog.getString('Specify Recovery Phrase...'),
+        label: gettextCatalog.getString('Specify recovery phrase...'),
       }];
       $scope.formData.seedSource = $scope.seedOptions[0];
       /*

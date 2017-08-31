@@ -81,7 +81,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     $scope.invalidCustomFeeEntered = true;
     $scope.showMaxWarning = false;
     $scope.showMinWarning = false;
-    popupService.showPrompt(gettextCatalog.getString('Custom Fee'), gettextCatalog.getString('Set your own fee in satoshis/byte'), null, function(text) {
+    popupService.showPrompt(gettextCatalog.getString('Custom fee'), gettextCatalog.getString('Set your own fee in satoshis/byte'), null, function(text) {
       if (!text || !parseInt(text) || parseInt(text) <= 0) return;
       $scope.feePerSatByte = parseInt(text);
       $scope.customFeePerKB = ($scope.feePerSatByte * 1000).toFixed();

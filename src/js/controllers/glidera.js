@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('glideraController',
 
         $scope.account['token'] = data.token;
         $scope.account['status'] = data.status;
-        $scope.account['txs'] = data.txs; 
+        $scope.account['txs'] = data.txs;
 
         $timeout(function() {
           $scope.$digest();
@@ -89,7 +89,7 @@ angular.module('copayApp.controllers').controller('glideraController',
       var title = 'Glidera Support';
       var message = 'You can email glidera at support@glidera.io for direct support, or you can contact Glidera on Twitter.';
       var okText = 'Tweet @GlideraInc';
-      var cancelText = 'Go Back';
+      var cancelText = 'Go back';
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
     }
 

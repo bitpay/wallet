@@ -39,10 +39,10 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
 
     if (lastSigner) {
       $scope.buttonText += gettextCatalog.getString('to send');
-      $scope.successText = gettextCatalog.getString('Payment Sent');
+      $scope.successText = gettextCatalog.getString('Payment sent');
     } else {
       $scope.buttonText += gettextCatalog.getString('to accept');
-      $scope.successText = gettextCatalog.getString('Payment Accepted');
+      $scope.successText = gettextCatalog.getString('Payment accepted');
     }
   };
 
@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
     if (!$scope.isShared) return;
 
     var actionDescriptions = {
-      created: gettextCatalog.getString('Proposal Created'),
+      created: gettextCatalog.getString('Proposal created'),
       accept: gettextCatalog.getString('Accepted'),
       reject: gettextCatalog.getString('Rejected'),
       broadcasted: gettextCatalog.getString('Broadcasted'),

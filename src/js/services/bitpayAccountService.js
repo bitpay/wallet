@@ -37,21 +37,21 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
   root.pair = function(pairData, pairingReason, cb) {
     checkOtp(pairData, function(otp) {
       pairData.otp = otp;
-	    var deviceName = 'Unknown device';
-	    if (platformInfo.isNW) {
-	      deviceName = require('os').platform();
-	    } else if (platformInfo.isCordova) {
-	      deviceName = device.model;
-	    }
-	    var json = {
-	      method: 'createToken',
-	      params: {
-	        secret: pairData.secret,
-	        version: 2,
-	        deviceName: deviceName,
-	        code: pairData.otp
-	      }
-	    };
+      var deviceName = 'Unknown device';
+      if (platformInfo.isNW) {
+        deviceName = require('os').platform();
+      } else if (platformInfo.isCordova) {
+        deviceName = device.model;
+      }
+      var json = {
+        method: 'createToken',
+        params: {
+          secret: pairData.secret,
+          version: 2,
+          deviceName: deviceName,
+          code: pairData.otp
+        }
+      };
 
       bitpayService.postAuth(json, function(data) {
         if (data && data.data.error) {
@@ -80,29 +80,29 @@ angular.module('copayApp.services').factory('bitpayAccountService', function($lo
             });
           }
 
-          var ok = gettextCatalog.getString('Add Account');
+          var ok = gettextCatalog.getString('Add account');
           var cancel = gettextCatalog.getString('Go back');
           popupService.showConfirm(title, msg, ok, cancel, function(res) {
-          	if (res) {
-  		        var acctData = {
+            if (res) {
+              var acctData = {
                 token: apiContext.token,
                 email: pairData.email,
                 givenName: basicInfo.givenName,
                 familyName: basicInfo.familyName
               };
-  						setBitpayAccount(acctData, function(err) {
-  			        return cb(err, true, apiContext);
-  						});
-          	} else {
-  				    $log.info('User cancelled BitPay pairing process');
-  		        return cb(null, false);
-          	}
+              setBitpayAccount(acctData, function(err) {
+                return cb(err, true, apiContext);
+              });
+            } else {
+              $log.info('User cancelled BitPay pairing process');
+              return cb(null, false);
+            }
           });
         });
       }, function(data) {
         return cb(_setError('BitPay service BitAuth create token: ERROR ', data));
-	    });
-	  });
+      });
+    });
   };
 
   var checkOtp = function(pairData, cb) {

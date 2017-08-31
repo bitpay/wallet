@@ -50,7 +50,9 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
 
   $scope.updateTransactions = function() {
     $log.debug('Getting transactions...');
-    $scope.pendingTransactions = { data: {} };
+    $scope.pendingTransactions = {
+      data: {}
+    };
     coinbaseService.getPendingTransactions($scope.pendingTransactions);
   };
 
@@ -92,10 +94,10 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
   this.openSupportWindow = function() {
     var url = coinbaseService.getSupportUrl();
     var optIn = true;
-    var title = 'Coinbase Support';
+    var title = 'Coinbase support';
     var message = 'You can email support@coinbase.com for direct support, or you can view their help center.';
-    var okText = 'Open Help Center';
-    var cancelText = 'Go Back';
+    var okText = 'Open help center';
+    var cancelText = 'Go back';
     externalLinkService.open(url, optIn, title, message, okText, cancelText);
   }
 

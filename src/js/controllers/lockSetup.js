@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('lockSetupController', functio
     if (fingerprintService.isAvailable()) {
       $scope.options.push({
         method: 'fingerprint',
-        label: gettextCatalog.getString('Lock by Fingerprint'),
+        label: gettextCatalog.getString('Lock by fingerprint'),
         needsBackup: false,
         disabled: false,
       });

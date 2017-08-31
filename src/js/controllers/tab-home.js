@@ -143,10 +143,10 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.openExternalLink = function() {
       var url = 'https://github.com/bitpay/copay/releases/latest';
       var optIn = true;
-      var title = gettextCatalog.getString('Update Available');
+      var title = gettextCatalog.getString('Update available');
       var message = gettextCatalog.getString('An update to this app is available. For your security, please update to the latest version.');
-      var okText = gettextCatalog.getString('View Update');
-      var cancelText = gettextCatalog.getString('Go Back');
+      var okText = gettextCatalog.getString('View update');
+      var cancelText = gettextCatalog.getString('Go back');
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
     };
 

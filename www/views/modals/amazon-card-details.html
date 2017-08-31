@@ -12,7 +12,7 @@
         <img src="img/a_generic.jpg" alt="Amazon.com Gift Card" width="230" ng-click="refreshGiftCard()">
 
         <div class="m10t">
-          Gift Card Amount:
+          Gift Card amount:
           <span class="text-bold">
             {{card.amount | currency : '$ ' : 2}}
           </span>
@@ -32,7 +32,7 @@
           <div class="m10t" ng-show="card.cardStatus == 'Fulfilled'">
             <button class="button button-positive"
                     ng-click="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode)">
-              Redeem Now
+              Redeem now
             </button>
           </div>
           <div class="m10t" ng-show="card.cardStatus == 'Canceled'">

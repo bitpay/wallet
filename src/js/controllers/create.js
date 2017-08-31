@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('createController',
         supportsTestnet: true
       }, {
         id: 'set',
-        label: gettextCatalog.getString('Specify Recovery Phrase...'),
+        label: gettextCatalog.getString('Specify recovery phrase...'),
         supportsTestnet: false
       }];
 
