@@ -41,7 +41,6 @@ RateService.singleton = function(opts) {
 };
 
 RateService.prototype.updateRates = function() {
-console.log('[rateService.js.44:updateRates:]'); //TODO
   var self = this;
 
   var backoffSeconds = 5;
