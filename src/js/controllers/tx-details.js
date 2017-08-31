@@ -40,6 +40,16 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     });
   });
 
+  $scope.readMore = function() {
+    var url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#amount-too-low-to-spend';
+    var optIn = true;
+    var title = null;
+    var message = gettextCatalog.getString('Read more in our Wiki');
+    var okText = gettextCatalog.getString('Open');
+    var cancelText = gettextCatalog.getString('Go Back');
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
+  };
+
   function updateMemo() {
     walletService.getTxNote($scope.wallet, $scope.btx.txid, function(err, note) {
       if (err) {
