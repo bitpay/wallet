@@ -24,9 +24,14 @@ var RateService = function(opts) {
   self.UNSUPPORTED_CURRENCY_ERROR = 'Currency not supported';
 
   self._isAvailable = false;
-  self._rates = {'aur': 9, 'deus': 0.11};
+  self._rates = {};
   self._alternatives = {};
-  self._queued = {};
+  self._queued = [];
+
+  for (var i in self.networks) {
+   self._rates[self.networks[i].name] = []
+   self._alternatives[self.networks[i].name] = []
+  }  
 
   self._fetchCurrencies();
 };
@@ -85,14 +90,21 @@ RateService.prototype._fetchCurrencies = function() {
       })
     }
   }
+  console.log('ooook',self.networks)
   retrieve();
 };
 
 RateService.prototype.getRate = function(code, network) {
+  if(!network) {
+    network = this.networks['livenet']
+  }
   return this._rates[network.name][code];
 };
 
 RateService.prototype.getAlternatives = function(network) {
+  if(!network) {
+    network = this.networks['livenet']
+  }  
   return this._alternatives[network.name];
 };
 
@@ -143,7 +155,7 @@ RateService.prototype.listAlternatives = function(sort, network) {
   return self.lodash.uniq(alternatives, 'isoCode');
 };
 
-angular.module('copayApp.services').factory('rateService', function($http, lodash, configService, profileService, CUSTOMNETWORKS) {
+angular.module('copayApp.services').factory('rateService', function($http, lodash, configService, profileService, CUSTOMNETWORKS, storageService) {
   // var cfg = _.extend(config.rates, {
   //   httprequest: $http
   // });
@@ -165,6 +177,10 @@ angular.module('copayApp.services').factory('rateService', function($http, lodas
        networks[networkList[n].name] = networkList[n]
     }
   })
+  for (var i in CUSTOMNETWORKS) {
+    networks[CUSTOMNETWORKS[i].name] = CUSTOMNETWORKS[i]
+  }
+
   var cfg = {
     httprequest: $http,
     lodash: lodash,
