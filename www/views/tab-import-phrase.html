@@ -64,7 +64,7 @@
         <select class="m10t" ng-model="formData.seedSourceAll" ng-options="seed as seed.label for seed in seedOptionsAll"></select>
       </label>
 
-      <ion-toggle ng-model="formData.testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-positive">
+      <ion-toggle ng-model="formData.testnetEnabled" ng-change="setDerivationPath()" toggle-class="toggle-positive" ng-if="formData.coin == 'btc'">
         <span translate>Testnet</span>
       </ion-toggle>
 
