@@ -290,7 +290,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
         // txp already generated for this wallet?
         if (tx.txp[wallet.id]) {
-console.log('[confirm.js:292] Ya existe la tx',tx); //TODO/
           ongoingProcess.set('calculatingFee', false);
           refresh();
           return cb();
