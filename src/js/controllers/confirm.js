@@ -69,7 +69,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    function setWalletSelector(coin, network, minAmount, sendMax, cb) {
+    function setWalletSelector(coin, network, minAmount, cb) {
 
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
@@ -77,7 +77,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       $scope.wallets = profileService.getWallets({
         onlyComplete: true,
         network: network,
-        coin: sendMax ? null : coin
+        coin: coin
       });
 
       if (!$scope.wallets || !$scope.wallets.length) {
@@ -129,7 +129,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       description: data.stateParams.description,
       paypro: data.stateParams.paypro,
 
-      feeLevel: data.stateParams.coin == 'bch' ? 'normal' : configFeeLevel,
+      feeLevel: configFeeLevel,
       spendUnconfirmed: walletConfig.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
@@ -142,6 +142,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       txp: {},
     };
 
+    if (tx.coin && tx.coin == 'bch') tx.feeLevel = 'normal';
+
     // Other Scope vars
     $scope.isCordova = isCordova;
     $scope.isWindowsPhoneApp = isWindowsPhoneApp;
@@ -149,7 +151,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
-    setWalletSelector(tx.coin, tx.network, tx.toAmount, tx.sendMax, function(err) {
+    setWalletSelector(tx.coin, tx.network, tx.toAmount, function(err) {
       if (err) {
         return exitWithError('Could not update wallets');
       }
