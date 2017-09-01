@@ -17,6 +17,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
   var cache = {
     updateTs: 0,
+    coin: ''
   };
 
   root.getCurrentFeeLevel = function() {
@@ -60,7 +61,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
   root.getFeeLevels = function(coin, cb) {
     coin = coin || 'btc';
 
-    if (cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
+    if (cache.coin == coin && cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
       return cb(null, cache.data, true);
     }
 
@@ -73,6 +74,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
         }
 
         cache.updateTs = Date.now();
+        cache.coin = coin;
         cache.data = {
           'livenet': levelsLivenet,
           'testnet': levelsTestnet
