@@ -304,27 +304,21 @@ angular.module('copayApp.controllers').controller('importController',
           }
         }
 
-<<<<<<< HEAD
-      opts.passphrase = $scope.formData.passphrase || null;
-
-      if ($scope.fromHardwareWallet.value) {
-        $log.debug('Importing seed from hardware wallet');
-        $log.warn('This wont work for Intel TEE wallets');
-
-        var id = $scope.formData.seedSourceAll.id;
-        var isMultisig = opts.derivationStrategy =='BIP48';
-        var account = opts.account;
-        opts.entropySourcePath = 'm/' + hwWallet.getEntropyPath(id, isMultisig, account);
-      }
-
-      _importMnemonic(words, opts);
-=======
         opts.passphrase = $scope.formData.passphrase || null;
-        _importMnemonic(words, opts);        
+
+        if ($scope.fromHardwareWallet.value) {
+          $log.debug('Importing seed from hardware wallet');
+          $log.warn('This wont work for Intel TEE wallets');
+
+          var id = $scope.formData.seedSourceAll.id;
+          var isMultisig = opts.derivationStrategy =='BIP48';
+          var account = opts.account;
+          opts.entropySourcePath = 'm/' + hwWallet.getEntropyPath(id, isMultisig, account);
+        }
+
+        _importMnemonic(words, opts);
       });
 
-
->>>>>>> ../src/js/bitlox/util/
     };
 
     $scope.importTrezor = function(account, isMultisig) {

@@ -55,7 +55,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
 
   root.getCurrentFeeRate = function(network, cb) {
-    return root.getFeeRatenetwork, root.getCurrentFeeLevel(), cb);
+    return root.getFeeRate(network, root.getCurrentFeeLevel(), cb);
   };
 
   root.getFeeLevels = function(cb) {

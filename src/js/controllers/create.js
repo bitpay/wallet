@@ -34,7 +34,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.networks = CUSTOMNETWORKS;
       $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork.name]
       console.log($scope.network)
-    };
+    });
 
     $scope.showNetworkSelector = function() {
       $scope.networkSelectorTitle = gettextCatalog.getString('Select currency');
