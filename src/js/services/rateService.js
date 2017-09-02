@@ -73,7 +73,6 @@ RateService.prototype._fetchCurrencies = function() {
     var length = Object.keys(self.networks).length;
     var done = 0
     for(var i in self.networks) {
-      console.log(self.networks[i])
       retrieveOne(self.networks[i], function(err) {
         done++
         if(err) {

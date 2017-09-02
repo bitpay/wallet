@@ -63,8 +63,6 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     }
 
     network = network || defaults.defaultNetwork.name;
-    console.log('get network',network)
-    console.log(CUSTOMNETWORKS[network])
     var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
 
     var unitName = configService.getSync().wallet.settings.unitName;
@@ -73,18 +71,27 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       walletClient.getFeeLevels('testnet', function(errTestnet, levelsTestnet) {
 
         cache.updateTs = Date.now();
-        walletClient.getFeeLevels(defaults.networkName, function(errDefaultnet, levelsDefaultnet) {
-          if (errLivenet || errTestnet || errDefaultnet) {
-            return cb(gettextCatalog.getString('Could not get dynamic fee'));
-          }
-          var retObj = {
-            'livenet': levelsLivenet,
-            'testnet': levelsTestnet
-          };
-          retObj[defaults.networkName] = levelsDefaultnet
-          
-          return cb(null, retObj);
-        });
+        var retObj = {
+          'livenet': levelsLivenet,
+          'testnet': levelsTestnet
+        };
+        var length = Object.keys(CUSTOMNETWORKS).length;
+        var count = 0;
+        for (var c in CUSTOMNETWORKS) {
+
+          walletClient.getFeeLevels(CUSTOMNETWORKS[c].name, function(errDefaultnet, levelsDefaultnet) {
+            count++
+            if (errLivenet || errTestnet || errDefaultnet) {
+              return cb(gettextCatalog.getString('Could not get dynamic fee'));
+            }
+
+            retObj[CUSTOMNETWORKS[c].name] = levelsDefaultnet
+            
+            if(count === length) { return cb(null, retObj); }
+          });
+        }
+
+
       });
     });
   };
