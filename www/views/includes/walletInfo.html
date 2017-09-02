@@ -4,7 +4,6 @@
 <div>
 <span ng-show="wallet.status.wallet.singleAddress" class="size-12"><span translate>Auditable</span></span>
 <img style="height:0.6em; margin-right: 1px;" ng-show="wallet.network === 'testnet'" src="img/icon-testnet-white.svg">
-fix wallet icon angular digest issue,
 <img style="height:0.6em; margin-right: 1px;" ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" src="img/icon-read-only-white.svg">
 
 <img style="height:0.6em; margin-right: 1px;"  ng-show="wallet.getPrivKeyExternalSourceName().indexOf('bitlox') > -1" src="img/icon-wallet-bitlox.svg">

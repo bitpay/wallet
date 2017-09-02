@@ -25,6 +25,7 @@ this.getCustomNetwork = function(customParam) {
             }
             // try getting it from bitlox website
             $http.get("https://btm.bitlox.com/coin/"+networkName+".php").then(function(response){
+              console.log(res)
               if(!response) {
                 def.reject();
               }

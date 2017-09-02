@@ -217,51 +217,53 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     var updateAllWallets = function() {
-      $scope.wallets = profileService.getWallets();
-      for(var i in $scope.wallets) {
-        if(CUSTOMNETWORKS[$scope.wallets[i].network]) {
-          bitcore.Networks.add(CUSTOMNETWORKS[$scope.wallets[i].network])
-        }
-      }
-      for (var i in CUSTOMNETWORKS ) {
-        bitcore.Networks.add(CUSTOMNETWORKS[i])
-      }
-      
+
       storageService.getCustomNetworks(function(err, networkListRaw) {
         if(!networkListRaw) {
           return;
         }
+        $scope.wallets = profileService.getWallets();
+        for(var i in $scope.wallets) {
+          if(CUSTOMNETWORKS[$scope.wallets[i].network]) {
+            bitcore.Networks.add(CUSTOMNETWORKS[$scope.wallets[i].network])
+          }
+        }
+        for (var i in CUSTOMNETWORKS ) {
+          bitcore.Networks.add(CUSTOMNETWORKS[i])
+        }
+
         var networkList = JSON.parse(networkListRaw)
         for (var n in networkList) {
           CUSTOMNETWORKS[n] = networkList[n]
           bitcore.Networks.add(networkList[n])
         }
-      })
-      if (lodash.isEmpty($scope.wallets)) return;
+        if (lodash.isEmpty($scope.wallets)) return;
 
-      var i = $scope.wallets.length;
-      var j = 0;
-      var timeSpan = 60 * 60 * 24 * 7;
+        var i = $scope.wallets.length;
+        var j = 0;
+        var timeSpan = 60 * 60 * 24 * 7;
 
-      lodash.each($scope.wallets, function(wallet) {
-        walletService.getStatus(wallet, {}, function(err, status) {
-          if (err) {
+        lodash.each($scope.wallets, function(wallet) {
+          walletService.getStatus(wallet, {}, function(err, status) {
+            if (err) {
 
-            wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') : bwcError.msg(err);
+              wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') : bwcError.msg(err);
 
-            $log.error(err);
-          } else {
-            wallet.error = null;
-            wallet.status = status;
+              $log.error(err);
+            } else {
+              wallet.error = null;
+              wallet.status = status;
 
-            // TODO service refactor? not in profile service
-            profileService.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr, function() {});
-          }
-          if (++j == i) {
-            updateTxps();
-          }
+              // TODO service refactor? not in profile service
+              profileService.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr, function() {});
+            }
+            if (++j == i) {
+              updateTxps();
+            }
+          });
         });
-      });
+      })
+
     };
 
     var updateWallet = function(wallet) {

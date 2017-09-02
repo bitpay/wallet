@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('preferencesFeeController', fu
     $scope.feeOpts = feeService.feeOpts;
     $scope.currentFeeLevel = $scope.feeLevel || feeService.getCurrentFeeLevel();
     $scope.loadingFee = true;
-    feeService.getFeeLevels(null, function(err, levels) {
+    feeService.getFeeLevels($scope.network, function(err, levels) {
       $scope.loadingFee = false;
       if (err) {
         //Error is already formatted

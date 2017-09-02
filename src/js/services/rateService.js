@@ -16,7 +16,10 @@ var RateService = function(opts) {
   opts = opts || {};
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
-  self.networks = opts.networks;
+  self.storageService = opts.storageService;
+  self.CUSTOMNETWORKS = opts.CUSTOMNETWORKS;
+  self.defaults = opts.defaults;
+  self.wallets = opts.wallets;
 
   self.SAT_TO_BTC = 1 / 1e8;
   self.BTC_TO_SAT = 1e8;
@@ -26,12 +29,9 @@ var RateService = function(opts) {
   self._isAvailable = false;
   self._rates = {};
   self._alternatives = {};
+  self.networks = {};
   self._queued = [];
 
-  for (var i in self.networks) {
-   self._rates[self.networks[i].name] = []
-   self._alternatives[self.networks[i].name] = []
-  }  
 
   self._fetchCurrencies();
 };
@@ -53,7 +53,7 @@ RateService.prototype._fetchCurrencies = function() {
 
 
   var retrieveOne = function(network, cb) {
-    //log.info('Fetching exchange rates');
+    console.info('Fetching exchange rates', network);
     self.httprequest.get(network.ratesUrl).success(function(res) {
       self.lodash.each(res, function(currency) {
         self._rates[network.name][currency.code] = currency.rate;
@@ -73,6 +73,7 @@ RateService.prototype._fetchCurrencies = function() {
     var length = Object.keys(self.networks).length;
     var done = 0
     for(var i in self.networks) {
+      console.log(self.networks[i])
       retrieveOne(self.networks[i], function(err) {
         done++
         if(err) {
@@ -90,13 +91,41 @@ RateService.prototype._fetchCurrencies = function() {
       })
     }
   }
-  console.log('ooook',self.networks)
-  retrieve();
+
+  self.storageService.getCustomNetworks(function(err, networkListRaw) {
+    if(!networkListRaw) {
+      return;
+    }
+
+    for(var i in self.wallets) {
+      if(self.CUSTOMNETWORKS[self.wallets[i].network]) {
+        self.networks[self.wallets[i].network] = self.CUSTOMNETWORKS[self.wallets[i].network]
+      }
+    }
+    for (var c in self.CUSTOMNETWORKS) {
+      self.networks[self.CUSTOMNETWORKS[c].name] = self.CUSTOMNETWORKS[c]
+    }
+
+    var networkList = JSON.parse(networkListRaw)
+    for (var n in networkList) {
+       self.networks[networkList[n].name] = networkList[n]
+    }
+    for (var i in self.networks) {
+     self._rates[self.networks[i].name] = []
+     self._alternatives[self.networks[i].name] = []
+    }  
+
+    retrieve();
+  })  
 };
 
 RateService.prototype.getRate = function(code, network) {
   if(!network) {
     network = this.networks['livenet']
+  }
+
+  if(!this._rates[network.name]) {
+    return console.error("rate service unavailable as yet.",network.name)
   }
   return this._rates[network.name][code];
 };
@@ -105,6 +134,9 @@ RateService.prototype.getAlternatives = function(network) {
   if(!network) {
     network = this.networks['livenet']
   }  
+  if(!this._alternatives[network.name]) {
+    return console.error("rate service unavailable as yet.",network.name)
+  }
   return this._alternatives[network.name];
 };
 
@@ -160,31 +192,15 @@ angular.module('copayApp.services').factory('rateService', function($http, lodas
   //   httprequest: $http
   // });
   var wallets = profileService.getWallets();
-  var rateServices = []
   var defaults = configService.getDefaults()
-  var networks = {};
-  for(var i in wallets) {
-    if(CUSTOMNETWORKS[wallets[i].network]) {
-      networks[wallets[i].network] = CUSTOMNETWORKS[wallets[i].network]
-    }
-  }
-  storageService.getCustomNetworks(function(err, networkListRaw) {
-    if(!networkListRaw) {
-      return;
-    }
-    var networkList = JSON.parse(networkListRaw)
-    for (var n in networkList) {
-       networks[networkList[n].name] = networkList[n]
-    }
-  })
-  for (var i in CUSTOMNETWORKS) {
-    networks[CUSTOMNETWORKS[i].name] = CUSTOMNETWORKS[i]
-  }
 
-  var cfg = {
-    httprequest: $http,
-    lodash: lodash,
-    networks: networks
-  };
-  return RateService.singleton(cfg);
-});
+    var cfg = {
+      httprequest: $http,
+      lodash: lodash,
+      CUSTOMNETWORKS: CUSTOMNETWORKS,
+      storageService: storageService,
+      defaults: defaults,
+      wallets: wallets
+    };
+    return RateService.singleton(cfg);    
+  });

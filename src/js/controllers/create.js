@@ -203,12 +203,6 @@ angular.module('copayApp.controllers').controller('createController',
 
       if($scope.formData.customParam) {
         networkName = $scope.formData.customParam
-        var customNet = CUSTOMNETWORKS[$scope.formData.customParam]
-        if(!customNet) {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid') + ": " + $scope.formData.customParam);
-          return;
-        }
-        bwsUrl = customNet.bwsUrl
       }
       var opts = {
         name: $scope.formData.walletName,
