@@ -219,9 +219,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     var updateAllWallets = function() {
 
       storageService.getCustomNetworks(function(err, networkListRaw) {
-        if(!networkListRaw) {
-          return;
-        }
+
         $scope.wallets = profileService.getWallets();
         for(var i in $scope.wallets) {
           if(CUSTOMNETWORKS[$scope.wallets[i].network]) {
@@ -232,10 +230,12 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           bitcore.Networks.add(CUSTOMNETWORKS[i])
         }
 
-        var networkList = JSON.parse(networkListRaw)
-        for (var n in networkList) {
-          CUSTOMNETWORKS[n] = networkList[n]
-          bitcore.Networks.add(networkList[n])
+        if(networkListRaw) {
+          var networkList = JSON.parse(networkListRaw)
+          for (var n in networkList) {
+            CUSTOMNETWORKS[n] = networkList[n]
+            bitcore.Networks.add(networkList[n])
+          }
         }
         if (lodash.isEmpty($scope.wallets)) return;
 

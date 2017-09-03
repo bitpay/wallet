@@ -31,7 +31,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }, 1);
   }
 
-
   $scope.showWalletSelector = function() {
     $scope.walletSelector = true;
     refresh();
@@ -147,7 +146,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.showAddress = false;
 
     updateTx(tx, null, {}, function() {
-
       $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
       setWalletSelector(tx.network, tx.toAmount, function(err) {
@@ -251,7 +249,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     // End of quick refresh, before wallet is selected.
     if (!wallet) return cb();
-
     feeService.getFeeRate(wallet.credentials.network, tx.feeLevel, function(err, feeRate) {
       if (err) return cb(err);
 
@@ -419,7 +416,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
   function setWallet(wallet, tx) {
-
     $scope.wallet = wallet;
 
     setButtonText(wallet.credentials.m > 1, !!tx.paypro);
@@ -532,6 +528,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
 
   function statusChangeHandler(processName, showName, isOn) {
+
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
     if (
       (

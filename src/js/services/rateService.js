@@ -92,9 +92,6 @@ RateService.prototype._fetchCurrencies = function() {
   }
 
   self.storageService.getCustomNetworks(function(err, networkListRaw) {
-    if(!networkListRaw) {
-      return;
-    }
 
     for(var i in self.wallets) {
       if(self.CUSTOMNETWORKS[self.wallets[i].network]) {
@@ -104,10 +101,11 @@ RateService.prototype._fetchCurrencies = function() {
     for (var c in self.CUSTOMNETWORKS) {
       self.networks[self.CUSTOMNETWORKS[c].name] = self.CUSTOMNETWORKS[c]
     }
-
-    var networkList = JSON.parse(networkListRaw)
-    for (var n in networkList) {
-       self.networks[networkList[n].name] = networkList[n]
+    if(networkListRaw) {
+      var networkList = JSON.parse(networkListRaw)
+      for (var n in networkList) {
+         self.networks[networkList[n].name] = networkList[n]
+      }      
     }
     for (var i in self.networks) {
      self._rates[self.networks[i].name] = []

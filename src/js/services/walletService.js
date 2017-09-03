@@ -1173,12 +1173,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
               ongoingProcess.set('broadcastingTx', false, customStatusHandler);
               if (err) return cb(bwcError.msg(err));
 
-              // $rootScope.$emit('Local/TxAction', wallet.id);
+              $rootScope.$emit('Local/TxAction', wallet.id);
               return cb(null, broadcastedTxp);
             });
           } else {
             $ionicLoading.hide();
-            // $rootScope.$emit('Local/TxAction', wallet.id);
+            $rootScope.$emit('Local/TxAction', wallet.id);
             return cb(null, signedTxp);
           }
         });
