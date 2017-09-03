@@ -53,7 +53,7 @@ RateService.prototype._fetchCurrencies = function() {
 
 
   var retrieveOne = function(network, cb) {
-    console.info('Fetching exchange rates', network);
+    // console.info('Fetching exchange rates', network);
     self.httprequest.get(network.ratesUrl).success(function(res) {
       self.lodash.each(res, function(currency) {
         self._rates[network.name][currency.code] = currency.rate;

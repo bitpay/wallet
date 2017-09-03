@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification, CUSTOMNETWORKS) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -119,7 +119,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     // Setup $scope
-
+    $scope.network = (new bitcore.Address(data.stateParams.toAddress)).network.name;
     // Grab stateParams
     tx = {
       toAmount: parseInt(data.stateParams.toAmount),
@@ -136,7 +136,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toName: data.stateParams.toName,
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
-      network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
+      network: $scope.network,
       txp: {},
     };
 
@@ -241,7 +241,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
-      txFormatService.formatAlternativeStr(tx.toAmount, function(v) {
+      txFormatService.formatAlternativeStr(tx.toAmount, CUSTOMNETWORKS[$scope.network], function(v) {
         tx.alternativeAmountStr = v;
       });
     }
@@ -252,7 +252,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     // End of quick refresh, before wallet is selected.
     if (!wallet) return cb();
 
-    feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
+    feeService.getFeeRate(wallet.credentials.network, tx.feeLevel, function(err, feeRate) {
       if (err) return cb(err);
 
       if (!usingCustomFee) tx.feeRate = feeRate;
@@ -293,7 +293,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           if (err) return cb(err);
 
           txp.feeStr = txFormatService.formatAmountStr(txp.fee);
-          txFormatService.formatAlternativeStr(txp.fee, function(v) {
+          txFormatService.formatAlternativeStr(txp.fee, CUSTOMNETWORKS[wallet.credentials.network], function(v) {
             txp.alternativeFeeStr = v;
           });
 
