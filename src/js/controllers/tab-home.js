@@ -237,6 +237,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             bitcore.Networks.add(networkList[n])
           }
         }
+      })
+
         if (lodash.isEmpty($scope.wallets)) return;
 
         var i = $scope.wallets.length;
@@ -262,8 +264,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             }
           });
         });
-      })
-
     };
 
     var updateWallet = function(wallet) {

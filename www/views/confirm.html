@@ -113,10 +113,7 @@
     ng-if="isCordova && !isWindowsPhoneApp && wallet"
     slide-on-confirm="approve(tx, wallet, statusChangeHandler)"
     slide-send-status="sendStatus"
-    is-disabled="!wallet"
-    has-wallet-chosen="wallet"
-    insufficient-funds="insufficientFunds"
-    no-matching-wallet="noMatchingWallet"
+    is-disabled="!wallet">
     {{buttonText}}
   </slide-to-accept>
   <slide-to-accept-success
@@ -135,5 +132,4 @@
     wallet-selector-show="walletSelector"
     wallet-selector-on-select="onWalletSelect">
   </wallet-selector>
-
 </ion-view>
