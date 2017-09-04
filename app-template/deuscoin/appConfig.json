@@ -20,7 +20,7 @@
   "disclaimerUrl": "https://deuscoin.org/",
   "url": "https://deuscoin.org/",
   "bwsUrl": "https://bws.deuscoin.org/bws/api",
-  "ratesUrl": "http://bws.deuscoin.org:8081/rates",
+  "ratesUrl": "https://bws.deuscoin.org:8443/rates",
   "unitName": "DEUS",
   "unitCode": "deus",
   "defaultNetwork": {
@@ -30,6 +30,7 @@
     "code": "deus",
     "symbol": "DEUS",
     "derivationCoinPath": 146,
+    "ratesUrl": "https://bws.deuscoin.org:8443/rates",
     "pubkeyhash": "0x1e",
     "privatekey": "0x80",
     "scripthash": "0x23",

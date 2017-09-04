@@ -34,6 +34,7 @@
     "xpubkey": "0x0488b21e",
     "xprivkey": "0x0488ade4",
     "networkMagic": "0xf9beb4d9",
+    "ratesUrl": "https://bitpay.com/api/rates",
     "port": 8333,
     "bwsUrl": "https://bws.bitlox.com/bws/api/",
     "explorer": "https://bitlox.io/",

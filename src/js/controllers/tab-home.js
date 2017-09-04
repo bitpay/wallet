@@ -114,6 +114,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
 
       configService.whenAvailable(function(config) {
+
         config.defaultNetwork.pubkeyhash = parseInt(config.defaultNetwork.pubkeyhash,16)
         config.defaultNetwork.privatekey = parseInt(config.defaultNetwork.privatekey,16)
 
@@ -121,8 +122,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         config.defaultNetwork.xpubkey = parseInt(config.defaultNetwork.xpubkey,16)
         config.defaultNetwork.xprivkey = parseInt(config.defaultNetwork.xprivkey,16)
         config.defaultNetwork.networkMagic = parseInt(config.defaultNetwork.networkMagic,16)
-
+        CUSTOMNETWORKS[config.defaultNetwork.name] = config.defaultNetwork;
         bitcore.Networks.add(config.defaultNetwork)
+
+        storageService.setCustomNetworks(JSON.stringify(CUSTOMNETWORKS));
+
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
         if ($scope.recentTransactionsEnabled) getNotifications();
 
