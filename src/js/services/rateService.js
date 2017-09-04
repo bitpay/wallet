@@ -70,50 +70,54 @@ RateService.prototype._fetchCurrencies = function() {
     });
   };
   var retrieve = function() {
-    var length = Object.keys(self.networks).length;
-    var done = 0
-    for(var i in self.networks) {
-      retrieveOne(self.networks[i], function(err) {
-        done++
-        if(err) {
-          setTimeout(function() {
-            backoffSeconds *= 1.2
-            retrieve();
-          }, backoffSeconds * 1000);
-        } else if(done === length) {
-          self._isAvailable = true;
-          self.lodash.each(self._queued, function(callback) {
-            setTimeout(callback, 1);
-          });
-          setTimeout(retrieve, updateFrequencySeconds * 1000);          
+
+    self.storageService.getCustomNetworks(function(err, networkListRaw) {
+
+      for(var i in self.wallets) {
+        if(self.CUSTOMNETWORKS[self.wallets[i].network]) {
+          self.networks[self.wallets[i].network] = self.CUSTOMNETWORKS[self.wallets[i].network]
         }
-      })
-    }
+      }
+      for (var c in self.CUSTOMNETWORKS) {
+        self.networks[self.CUSTOMNETWORKS[c].name] = self.CUSTOMNETWORKS[c]
+      }
+      if(networkListRaw) {
+        var networkList = JSON.parse(networkListRaw)
+        for (var n in networkList) {
+           self.networks[networkList[n].name] = networkList[n]
+        }      
+      }
+      for (var i in self.networks) {
+        if(!self._rates[self.networks[i].name]) {
+          self._rates[self.networks[i].name] = []
+          self._alternatives[self.networks[i].name] = []
+        }
+      }      
+      var length = Object.keys(self.networks).length;
+      var done = 0
+      for(var i in self.networks) {
+        retrieveOne(self.networks[i], function(err) {
+          done++
+          if(err) {
+            setTimeout(function() {
+              backoffSeconds *= 1.2
+              retrieve();
+            }, backoffSeconds * 1000);
+          } else if(done === length) {
+            self._isAvailable = true;
+            self.lodash.each(self._queued, function(callback) {
+              setTimeout(callback, 1);
+            });
+            setTimeout(retrieve, updateFrequencySeconds * 1000);          
+          }
+        })
+      }
+    })
   }
 
-  self.storageService.getCustomNetworks(function(err, networkListRaw) {
 
-    for(var i in self.wallets) {
-      if(self.CUSTOMNETWORKS[self.wallets[i].network]) {
-        self.networks[self.wallets[i].network] = self.CUSTOMNETWORKS[self.wallets[i].network]
-      }
-    }
-    for (var c in self.CUSTOMNETWORKS) {
-      self.networks[self.CUSTOMNETWORKS[c].name] = self.CUSTOMNETWORKS[c]
-    }
-    if(networkListRaw) {
-      var networkList = JSON.parse(networkListRaw)
-      for (var n in networkList) {
-         self.networks[networkList[n].name] = networkList[n]
-      }      
-    }
-    for (var i in self.networks) {
-     self._rates[self.networks[i].name] = []
-     self._alternatives[self.networks[i].name] = []
-    }  
 
-    retrieve();
-  })  
+  retrieve();
 };
 
 RateService.prototype.getRate = function(code, network) {

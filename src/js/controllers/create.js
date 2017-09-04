@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS, customNetworkService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS, customNetworkService, rateService) {
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -274,6 +274,7 @@ angular.module('copayApp.controllers').controller('createController',
             return;
         }
 
+        ongoingProcess.set('creatingWallet', true);
         src.getInfoForNewWallet(opts.n > 1, account, opts.networkName, function(err, lopts) {
           ongoingProcess.set('connecting ' + $scope.formData.seedSource.id, false);
           if (err) {
@@ -284,6 +285,8 @@ angular.module('copayApp.controllers').controller('createController',
           _prepareToCreate(opts);
         });
       } else {
+
+        ongoingProcess.set('creatingWallet', true);
         _prepareToCreate(opts);
       }
 
@@ -307,7 +310,6 @@ angular.module('copayApp.controllers').controller('createController',
     }
 
     function _create(opts) {
-      ongoingProcess.set('creatingWallet', true);
       $timeout(function() {
         profileService.createWallet(opts, function(err, client) {
           ongoingProcess.set('creatingWallet', false);
@@ -325,7 +327,7 @@ angular.module('copayApp.controllers').controller('createController',
           }
 
           $ionicHistory.removeBackView();
-
+          rateService._fetchCurrencies();
           if (!client.isComplete()) {
             $ionicHistory.nextViewOptions({
               disableAnimate: true
