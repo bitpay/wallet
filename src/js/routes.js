@@ -371,7 +371,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/bitlox/tab-create-bitlox-wallet.html',
           },
         }
-      })      
+      })
       .state('tabs.add.create-personal', {
         url: '/create-personal',
         views: {
@@ -1215,7 +1215,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     $ionicPlatform.ready(function() {
       if (screen.width < 768 && platformInfo.isCordova)
-        screen.lockOrientation('portrait');
+        screen.orientation.lock('portrait');
 
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard && !platformInfo.isWP) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
