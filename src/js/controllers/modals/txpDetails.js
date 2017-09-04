@@ -31,17 +31,23 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
   };
 
   function applyButtonText() {
-    $scope.buttonText = $scope.isCordova && !$scope.isWindowsPhoneApp ? gettextCatalog.getString('Slide') + ' ' : gettextCatalog.getString('Click') + ' ';
-
     var lastSigner = lodash.filter($scope.tx.actions, {
       type: 'accept'
     }).length == $scope.tx.requiredSignatures - 1;
 
     if (lastSigner) {
-      $scope.buttonText += gettextCatalog.getString('to send');
+      if ($scope.isCordova && !$scope.isWindowsPhoneApp) {
+        $scope.buttonText = gettextCatalog.getString('Slide to send');
+      } else {
+        $scope.buttonText = gettextCatalog.getString('Click to send');
+      }
       $scope.successText = gettextCatalog.getString('Payment Sent');
     } else {
-      $scope.buttonText += gettextCatalog.getString('to accept');
+      if ($scope.isCordova && !$scope.isWindowsPhoneApp) {
+        $scope.buttonText = gettextCatalog.getString('Slide to accept');
+      } else {
+        $scope.buttonText = gettextCatalog.getString('Click to accept');
+      }
       $scope.successText = gettextCatalog.getString('Payment Accepted');
     }
   };
