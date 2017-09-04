@@ -20,7 +20,7 @@
   "disclaimerUrl": "https://deuscoin.org/",
   "url": "https://deuscoin.org/",
   "bwsUrl": "https://bws.deuscoin.org/bws/api",
-  "ratesUrl": "https://btm.bitlox.com/rates/deuscoin.php",
+  "ratesUrl": "http://bws.deuscoin.org:8081/rates",
   "unitName": "DEUS",
   "unitCode": "deus",
   "defaultNetwork": {
