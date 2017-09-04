@@ -1,15 +1,15 @@
 <action-sheet action-sheet-show="show" class="network-selector">
-  <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()">
+  <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()"/>
   <div class="header">{{title}}</div>
   <a
     ng-repeat="(key,net) in networks"
     class="item item-icon-left item-big-icon-left item-icon-right wallet network"
     ng-click="selectNetwork(net)"
   >
-      <i class="icon big-icon-svg" wallet-icon data-wallet="net">
-      </i>
-      <span>{{net.alias}}</span>
-      <img class="check" src="img/check.png" ng-show="selectedNetwork.name === net.name">
+    <i class="icon big-icon-svg" wallet-icon data-wallet="net">
+    </i>
+    <span>{{net.alias}}</span>
+    <img class="check" src="img/check.png" ng-show="selectedNetwork.name === net.name"/>
 
-    </a>
+  </a>
 </action-sheet>

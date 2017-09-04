@@ -25,4 +25,11 @@
     <div ng-include="'views/tab-import-file.html'" ng-if="file"></div>
     <div ng-include="'views/tab-import-hardware.html'" ng-if="hardware"></div>
   </ion-content>
+  <network-selector
+      network-selector-title="networkSelectorTitle"
+      network-selector-networks="networks"
+      network-selector-selected-network="network"
+      network-selector-show="showNetworks"
+      network-selector-on-select="onNetworkSelect">
+    </network-selector>  
 </ion-view>

@@ -318,6 +318,7 @@ angular.module('copayApp.controllers').controller('createController',
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
+          console.log(client)
 
           walletService.updateRemotePreferences(client);
           pushNotificationsService.updateSubscription(client);

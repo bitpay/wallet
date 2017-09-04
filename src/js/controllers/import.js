@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.fromHardwareWallet = { value: false };
       $scope.networks = CUSTOMNETWORKS;
       $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork.name]
-
+      $scope.showNetworks = false
 
       if ($stateParams.code)
         $scope.processWalletInfo($stateParams.code);
@@ -91,7 +91,7 @@ angular.module('copayApp.controllers').controller('importController',
         derivationPath: parsedCode[3],
         hasPassphrase: parsedCode[4] == 'true' ? true : false
       };
-
+      console.log(info)
       if (info.type == 1 && info.hasPassphrase)
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Password required. Make sure to enter your password in advanced options'));
 
@@ -187,29 +187,21 @@ angular.module('copayApp.controllers').controller('importController',
       ongoingProcess.set('importingWallet', true);
 
       $timeout(function() {
-        customNetworkService.getCustomNetwork($scope.formData.customParam).then(function(customNet) {
-          if(customNet) {
-            opts.derivationStrategy = "BIP44";
-            opts.bwsurl = customNet.bwsUrl
-            opts.network = customNet.network
-            opts.networkName = customNet.network
-          }        
-          profileService.importMnemonic(words, opts, function(err, client) {
-            ongoingProcess.set('importingWallet', false);
+        profileService.importMnemonic(words, opts, function(err, client) {
+          ongoingProcess.set('importingWallet', false);
 
-            if (err) {
-              if (err instanceof errors.NOT_AUTHORIZED) {
-                $scope.importErr = true;
-              } else {
-                popupService.showAlert(gettextCatalog.getString('Error'), err);
-              }
-              return $timeout(function() {
-                $scope.$apply();
-              });
+          if (err) {
+            if (err instanceof errors.NOT_AUTHORIZED) {
+              $scope.importErr = true;
+            } else {
+              popupService.showAlert(gettextCatalog.getString('Error'), err);
             }
-            finish(client);
-          });
-        })
+            return $timeout(function() {
+              $scope.$apply();
+            });
+          }
+          finish(client);
+        });
       }, 100);
     };
 
@@ -271,7 +263,7 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       opts.account = pathData.account;
-      // opts.networkName = pathData.networkName;
+      opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
 
 
@@ -283,7 +275,6 @@ angular.module('copayApp.controllers').controller('importController',
         if(customNet) {
           opts.derivationStrategy = "BIP44";
           opts.bwsurl = customNet.bwsUrl
-          opts.network = customNet.name
           opts.networkName = customNet.name
         }          
         var words = $scope.formData.words || null;
@@ -315,6 +306,7 @@ angular.module('copayApp.controllers').controller('importController',
           var account = opts.account;
           opts.entropySourcePath = 'm/' + hwWallet.getEntropyPath(id, isMultisig, account);
         }
+        console.log(words,opts)
 
         _importMnemonic(words, opts);
       });
