@@ -21,11 +21,11 @@
       ng-class="{collapsible: amountIsCollapsible, 'wallet-background-color-default': !wallet.color, 'no-alternative': wallet.network != 'livenet'}"
     >
 
-      <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="updateStatusError" ng-click="updateAll(true)">
+      <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="updateStatusError">
         <span>{{updateStatusError}}</span>
       </div>
 
-      <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="walletNotRegistered" ng-click="recreate()">
+      <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="walletNotRegistered">
         <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
       </div>
 

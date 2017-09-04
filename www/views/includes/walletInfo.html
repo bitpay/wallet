@@ -1,4 +1,8 @@
 
+<div class="actions" ng-show="(walletNotRegistered || updateStatusError) && !(updatingStatus || updatingTxHistory)">
+  <a ng-show="walletNotRegistered" ng-click="recreate()" translate>Tap to recreate</a>
+  <a ng-show="updateStatusError" ng-click="updateAll(true)" translate>Tap to retry</a>
+</div>
 <ion-spinner class="spinner-dark recent right" icon="crescent" ng-show="(updatingStatus || updatingTxHistory) &&
   !walletNotRegistered && !updateStatusError && !updateTxHistoryError"></ion-spinner>
 
