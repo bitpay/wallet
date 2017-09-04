@@ -335,11 +335,23 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $scope.buttonText = gettextCatalog.getString(isCordova && !isWindowsPhoneApp ? 'Slide' : 'Click') + ' ';
 
     if (isPayPro) {
-      $scope.buttonText += gettextCatalog.getString('to pay');
+      if (isCordova && !isWindowsPhoneApp) {
+        $scope.buttonText = gettextCatalog.getString('Slide to pay');
+      } else {
+        $scope.buttonText = gettextCatalog.getString('Click to pay');
+      }
     } else if (isMultisig) {
-      $scope.buttonText += gettextCatalog.getString('to accept');
+      if (isCordova && !isWindowsPhoneApp) {
+        $scope.buttonText = gettextCatalog.getString('Slide to accept');
+      } else {
+        $scope.buttonText = gettextCatalog.getString('Click to accept');
+      }
     } else
-      $scope.buttonText += gettextCatalog.getString('to send');
+      if (isCordova && !isWindowsPhoneApp) {
+        $scope.buttonText = gettextCatalog.getString('Slide to send');
+      } else {
+        $scope.buttonText = gettextCatalog.getString('Click to send');
+      }
   };
 
 
