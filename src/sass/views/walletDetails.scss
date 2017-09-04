@@ -223,7 +223,6 @@
     }
 
     &__error {
-      cursor: pointer;
       font-size: 14px;
       padding: 35px 20px;
     }
@@ -268,6 +267,17 @@
   font-size: 20px;
   color: #fff;
   width:95%;
+
+  .actions{
+    float: right;
+    a {
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 5px;
+      line-height: 16px;
+    }
+  }
 }
 
 .wallet-not-backed-up-warning {
