@@ -1,47 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="247px" height="247px" viewBox="0 0 247 247" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <title>tour-control</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="89.4673583%" id="linearGradient-1">
-            <stop stop-color="#192C3A" offset="0%"></stop>
-            <stop stop-color="#192C3A" offset="100%"></stop>
-        </linearGradient>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="tour-control">
-            <g id="Onboarding">
-                <g id="0.2.3---Tour-3">
-                    <g id="bg-3">
-                        <path d="M123.5,247 C191.707167,247 247,191.707167 247,123.5 C247,55.2928334 191.707167,1.42108547e-14 123.5,1.42108547e-14 C55.2928334,1.42108547e-14 1.42108547e-14,55.2928334 1.42108547e-14,123.5 C1.42108547e-14,191.707167 55.2928334,247 123.5,247 Z" id="Oval-2" fill="url(#linearGradient-1)" fill-rule="nonzero" opacity="0.300000012"></path>
-                        <rect id="Combined-Shape" stroke="#707D89" stroke-width="2" fill-opacity="0.65" fill="#192C3A" fill-rule="nonzero" x="63" y="24" width="99.8310062" height="183.875349" rx="8"></rect>
-                        <path d="M63.5199532,180.634556 L162.311053,180.634556" id="Line" stroke="#707D89" stroke-width="2" stroke-linecap="square"></path>
-                        <path d="M104.076299,194.254952 L122.794613,194.254952" id="Line" stroke="#707D89" stroke-width="2" stroke-linecap="square"></path>
-                        <g id="Group-4" transform="translate(98.000000, 79.000000)" stroke="#FFFFFF">
-                            <g id="top-up">
-                                <g id="shopping-48px-outline_bitcoin" transform="translate(0.666667, 0.180606)">
-                                    <g id="Group" transform="translate(0.619048, 0.627502)">
-                                        <path d="M12.3809524,0 L12.3809524,7.5300202" id="Shape"></path>
-                                        <path d="M17.3333333,0 L17.3333333,7.5300202" id="Shape"></path>
-                                        <path d="M12.3809524,47.6901279 L12.3809524,55.2201481" id="Shape"></path>
-                                        <path d="M17.3333333,47.6901279 L17.3333333,55.2201481" id="Shape"></path>
-                                        <path d="M0,47.6901279 L7.42857143,47.6901279" id="Shape-Copy"></path>
-                                        <path d="M0,7.5300202 L7.42857143,7.5300202" id="Shape-Copy-2"></path>
-                                        <path d="M7.42857143,25.1000673 L7.42857143,7.5300202 L21.8042328,7.5300202 C26.9010582,7.5300202 30.952381,11.4205306 30.952381,16.3150438 C30.952381,21.2095569 26.9010582,25.1000673 21.8042328,25.1000673" id="Shape"></path>
-                                        <path d="M7.42857143,47.6901279 L7.42857143,25.1000673 L23.6785714,25.1000673 C29.0952381,25.1000673 33.4285714,30.1200808 33.4285714,36.3950976 C33.4285714,42.6701145 29.0952381,47.6901279 23.6785714,47.6901279 L7.42857143,47.6901279 Z" id="Shape"></path>
-                                    </g>
-                                </g>
-                            </g>
-                        </g>
-                        <g id="Group-3" transform="translate(125.000000, 122.000000)" stroke="#12E5B6" stroke-width="2">
-                            <rect id="Rectangle-path" fill="#192C3A" fill-rule="nonzero" x="0.00547760651" y="37.6483369" width="74.7600358" height="65.7214967" rx="4"></rect>
-                            <path d="M18.6954866,37.6483369 L18.6954866,18.8707664 C18.6954866,8.54310266 27.1059906,0.0931959432 37.3854955,0.0931959432 L37.3854955,0.0931959432 C47.6650004,0.0931959432 56.0755044,8.54310266 56.0755044,18.8707664 L56.0755044,37.6483369" id="Shape"></path>
-                            <path d="M36.6300769,65.8146926 L36.6300769,75.2034779" id="Shape" fill="#F9F9F9" fill-rule="nonzero"></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="247px" height="247px" viewBox="0 0 247 247" enable-background="new 0 0 247 247" xml:space="preserve">
+<title>bg-3</title>
+<desc>Created with Sketch.</desc>
+<linearGradient id="Oval-2_1_" gradientUnits="userSpaceOnUse" x1="-1756.0947" y1="408.4053" x2="-1756.0947" y2="409.2999" gradientTransform="matrix(247 0 0 247 433879 -100876)">
+	<stop  offset="0" style="stop-color:#3950B5"/>
+	<stop  offset="1" style="stop-color:#162360"/>
+</linearGradient>
+<path id="Oval-2" opacity="0.3" fill="url(#Oval-2_1_)" enable-background="new    " d="M123.5,247
+	c68.207,0,123.5-55.293,123.5-123.5S191.707,0,123.5,0S0,55.293,0,123.5S55.293,247,123.5,247z"/>
+<path id="Combined-Shape" fill="#253377" stroke="#647CE8" stroke-width="2" d="M71,24h83.831c4.418,0,8,3.582,8,8v167.875
+	c0,4.418-3.582,8-8,8H71c-4.418,0-8-3.582-8-8V32C63,27.582,66.582,24,71,24z"/>
+<path id="Line" fill="none" stroke="#647CE8" stroke-width="2" stroke-linecap="square" d="M63.52,180.635h98.791"/>
+<path id="Line_1_" fill="none" stroke="#647CE8" stroke-width="2" stroke-linecap="square" d="M104.076,194.255h18.718"/>
+<g id="Group-3" transform="translate(125.000000, 122.000000)">
+	<path id="Rectangle-path" fill="#1F2F7B" stroke="#12E5B6" stroke-width="2" d="M4.006,37.648h66.76c2.209,0,4,1.791,4,4V99.37
+		c0,2.209-1.791,4-4,4H4.006c-2.209,0-4-1.791-4-4V41.648C0.006,39.439,1.797,37.648,4.006,37.648z"/>
+	<path id="Shape_6_" fill="none" stroke="#12E5B6" stroke-width="2" d="M18.695,37.648V18.871c0-10.328,8.41-18.778,18.689-18.778
+		l0,0c10.279,0,18.69,8.45,18.69,18.778v18.777"/>
+	<path id="Shape_7_" fill="#F9F9F9" stroke="#12E5B6" stroke-width="2" d="M36.63,65.814v9.389"/>
+</g>
+<g>
+	<g>
+		<defs>
+			<rect id="SVGID_1_" x="80.854" y="64.559" width="64.123" height="64.123"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_1_"  overflow="visible"/>
+		</clipPath>
+		<path clip-path="url(#SVGID_2_)" fill="#FFFFFF" d="M85.775,110.146c0.983-0.745,1.966-1.496,2.956-2.229
+			c0.182-0.138,0.088-0.256,0.032-0.388c-1.535-3.326-2.349-6.82-2.417-10.477c-0.119-6.293,1.766-11.923,5.592-16.914
+			c0.062-0.082,0.138-0.163,0.207-0.244c0.031,0.013,0.062,0.025,0.1,0.031v25.412c4.991-3.444,10.207-6.293,15.756-8.51
+			c5.548-2.21,11.278-3.688,17.208-4.458c5.955-0.77,11.879-0.319,17.815,0.3c-0.945-9.418-7.608-20.527-20.051-24.892
+			c-12.405-4.352-26.357-0.363-34.492,10.526C80.54,88.943,81.367,101.943,85.775,110.146 M121.896,91.542
+			c-2.155,0.231-4.321,0.407-6.463,0.714c-4.439,0.632-8.779,1.729-13.013,3.206c-0.181,0.062-0.363,0.119-0.582,0.188V79.03h0.426
+			c2.398,0,4.803-0.013,7.202,0.007c2.003,0.012,3.989,0.219,5.892,0.883c3.288,1.146,5.198,3.525,6.137,6.8
+			c0.419,1.471,0.632,2.975,0.757,4.496C122.277,91.523,122.102,91.523,121.896,91.542"/>
+		<use xlink:href="#SVGID_1_"  overflow="visible" fill="none" stroke="#231F20" stroke-width="0.0509" stroke-miterlimit="10"/>
+	</g>
+	<g>
+		<defs>
+			<rect id="SVGID_3_" x="80.854" y="64.559" width="64.123" height="64.123"/>
+		</defs>
+		<clipPath id="SVGID_4_">
+			<use xlink:href="#SVGID_3_"  overflow="visible"/>
+		</clipPath>
+		<path clip-path="url(#SVGID_4_)" fill="#FF0000" d="M122.283,94.285L122.283,94.285C122.283,93.834,122.283,93.621,122.283,94.285
+			"/>
+	</g>
+	<g>
+		<defs>
+			<rect id="SVGID_5_" x="80.854" y="64.559" width="64.123" height="64.123"/>
+		</defs>
+		<clipPath id="SVGID_6_">
+			<use xlink:href="#SVGID_5_"  overflow="visible"/>
+		</clipPath>
+		<path clip-path="url(#SVGID_6_)" fill="#FFFFFF" d="M112.822,126.886c5.323,0,10.332-1.377,14.691-3.783
+			c10.438-5.673,15.83-16.557,15.762-26.244l-0.006,0.006c0-0.144,0.006-0.288,0.006-0.432h-3.921
+			c0,14.446-11.609,26.231-25.987,26.526c-1.459-0.006-2.924-0.106-4.408-0.308c-4.014-0.543-7.678-2.035-11.028-4.302
+			c-0.1-0.068-0.188-0.145-0.357-0.27h0.438c4.734,0,9.469,0.007,14.202,0c1.747-0.006,3.482-0.212,5.173-0.676
+			c5.799-1.59,9.819-5.272,12.387-10.613c1.848-3.846,2.573-7.947,2.654-12.181c0.013-0.727,0-1.071,0-1.829
+			c-3.476,0.307-6.812,0.564-10.138,1.516c0,0.47,0,1.202-0.006,1.447c-0.087,2.342-0.375,4.646-1.14,6.876
+			c-0.814,2.366-2.104,4.383-4.271,5.741c-1.885,1.184-3.983,1.641-6.174,1.673c-2.862,0.044-5.724,0.019-8.592,0.025
+			c-0.088,0-0.175-0.019-0.288-0.038c0-0.958,0.006-1.891-0.006-2.824l0.094-3.563c-4.296,2.856-8.585,6.325-12.411,9.807
+			l-1.24,0.964C93.797,121.964,102.746,126.886,112.822,126.886"/>
+	</g>
+</g>
 </svg>

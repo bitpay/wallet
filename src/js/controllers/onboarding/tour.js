@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('tourController',
       rateService.whenAvailable(function() {
         var localCurrency = 'USD';
         var btcAmount = 1;
-        var rate = rateService.toFiat(btcAmount * 1e8, localCurrency, defaults.defaultNetwork.name);
+        var rate = rateService.toFiat(btcAmount * 1e8, localCurrency, defaults.defaultNetwork);
 
         $scope.localCurrencySymbol = '$';
         $scope.localCurrencyPerBtc = $filter('formatFiatAmount')(parseFloat(rate.toFixed(2), 10));
