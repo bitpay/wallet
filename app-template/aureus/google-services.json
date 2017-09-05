@@ -1,16 +1,16 @@
 {
   "project_info": {
     "project_number": "703103669941",
-    "firebase_url": "https://deuscoinwallet.firebaseio.com",
-    "project_id": "deuscoinwallet",
-    "storage_bucket": "deuscoinwallet.appspot.com"
+    "firebase_url": "https://aureuswallet.firebaseio.com",
+    "project_id": "aureuswallet",
+    "storage_bucket": "aureuswallet.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:703103669941:android:ed8410990e5d0af4",
         "android_client_info": {
-          "package_name": "org.deuscoin.wallet"
+          "package_name": "cc.aureus.wallet"
         }
       },
       "oauth_client": [
