@@ -13,5 +13,5 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-msgid "Setting"
+msgid "Settings"
 msgstr ""

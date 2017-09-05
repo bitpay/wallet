@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Logger } from '@nsalaun/ng-logger';
 
-import { TermsOfUsePage } from '../terms-of-use/terms-of-use';
+import { TermsOfUsePage } from './terms-of-use/terms-of-use';
 
-import { AppProvider } from '../../providers/app/app';
+import { AppProvider } from '../../../providers/app/app';
 
+@IonicPage()
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',

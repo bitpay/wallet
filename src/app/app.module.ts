@@ -25,11 +25,11 @@ import { HomePage } from '../pages/home/home';
 import { ReceivePage } from '../pages/receive/receive';
 import { ScanPage } from '../pages/scan/scan';
 import { SendPage } from '../pages/send/send';
-import { SettingPage } from '../pages/setting/setting';
+import { SettingsPage } from '../pages/settings/settings';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { AboutPage } from '../pages/about/about';
-import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
+import { AboutPage } from '../pages/settings/about/about';
+import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 
 /* Providers */
 import { WalletProvider } from '../providers/wallet/wallet';
@@ -52,7 +52,7 @@ export function createTranslateLoader(http: Http) {
     ReceivePage,
     SendPage,
     ScanPage,
-    SettingPage,
+    SettingsPage,
     AboutPage,
     TermsOfUsePage,
     TabsPage
@@ -78,7 +78,7 @@ export function createTranslateLoader(http: Http) {
     ReceivePage,
     ScanPage,
     SendPage,
-    SettingPage,
+    SettingsPage,
     AboutPage,
     TermsOfUsePage,
     TabsPage

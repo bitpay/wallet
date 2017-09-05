@@ -52,7 +52,7 @@ export class LanguageProvider {
   ) {
     this.logger.info('LanguageProvider initialized.');
     this.translate.onLangChange.subscribe((event) => {
-      this.logger.info('Setting language changed to: ' + event.lang);
+      this.logger.info('Settings language changed to: ' + event.lang);
     });
   }
 
