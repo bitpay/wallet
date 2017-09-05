@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-
+import { IonicPage } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { ReceivePage } from '../receive/receive';
 import { ScanPage } from '../scan/scan';
 import { SendPage } from '../send/send';
-import { SettingPage } from '../setting/setting';
+import { SettingsPage } from '../settings/settings';
 
+@IonicPage()
 @Component({
   templateUrl: 'tabs.html'
 })
@@ -15,7 +16,7 @@ export class TabsPage {
   receiveRoot = ReceivePage;
   scanRoot = ScanPage;
   sendRoot = SendPage;
-  settingRoot = SettingPage;
+  settingsRoot = SettingsPage;
 
   constructor() {
 

@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
 import { UnitProvider } from '../../providers/unit/unit';
 
-import { AboutPage } from '../about/about';
+import { AboutPage } from './about/about';
 
+@IonicPage()
 @Component({
-  selector: 'page-setting',
-  templateUrl: 'setting.html',
+  selector: 'page-settings',
+  templateUrl: 'settings.html',
 })
-export class SettingPage {
+export class SettingsPage {
   appName: string;
   currentLanguage: string;
   currentUnitCode: string;
@@ -36,7 +37,7 @@ export class SettingPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingPage');
+    console.log('ionViewDidLoad SettingsPage');
   }
 
   setLanguage(lang: string) {
