@@ -17,6 +17,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
+    $scope.defaults = {};
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -114,6 +115,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
 
       configService.whenAvailable(function(config) {
+
+        $scope.defaults = configService.getDefaults();
 
         config.defaultNetwork.pubkeyhash = parseInt(config.defaultNetwork.pubkeyhash,16)
         config.defaultNetwork.privatekey = parseInt(config.defaultNetwork.privatekey,16)
