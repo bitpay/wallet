@@ -8,6 +8,7 @@ import { IStorage, KeyAlreadyExistsError } from './istorage';
 export class ChromeStorage implements IStorage {
   ls: chrome.storage.StorageArea;
   constructor(private log: Logger) {
+    let chrome: any;
     if (!chrome.storage || !chrome.storage.local) throw new Error('Chrome storage not supported');
     this.ls = chrome.storage.local;
   }
