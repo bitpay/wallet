@@ -21,6 +21,24 @@
     "networkMagic": 0x9ee8bc5a,
     "explorer": "https://explorer.deuscoin.org/"
   },
+  "aureus": {
+    "network": "aureus",
+    "name": "aureus",
+    "alias": "Aureus",
+    "code": "aurs",
+    "symbol": "AURS",
+    "derivationCoinPath": 145,
+    "ratesUrl": "https://seed.aureus.cc/rates",
+    "pubkeyhash": 0x17,
+    "privatekey": 0x80,
+    "scripthash": 0x1C,
+    "xpubkey": 0x0488b21e,
+    "xprivkey": 0x0488ade4,
+    "bwsUrl": "https://bws.aureus.cc/bws/api",
+    "port": "9697",
+    "networkMagic": 0x6ee58c2a,
+    "explorer": "https://explorer.aureus.cc/"
+  },  
           livenet: {
             network: 'livenet',
             name: 'livenet',
