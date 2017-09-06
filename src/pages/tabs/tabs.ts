@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { ReceivePage } from '../receive/receive';
 import { ScanPage } from '../scan/scan';

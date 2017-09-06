@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -8,14 +8,9 @@ import { IonicPage, NavController } from 'ionic-angular';
 export class HomePage {
 
   constructor(public navCtrl: NavController) {
-
   }
 
-  showOnboardingFlow() {
-    this.navCtrl.push('WelcomePage');
-  }
-
-  showBackupFlow() {
-    this.navCtrl.push('BackupWarningPage');
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad HomePage');
   }
 }
