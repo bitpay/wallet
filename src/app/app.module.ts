@@ -21,13 +21,14 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { CopayApp } from './app.component';
 
 /* Pages */
+import { TabsPage } from '../pages/tabs/tabs';
+/* Tabs */
 import { HomePage } from '../pages/home/home';
 import { ReceivePage } from '../pages/receive/receive';
 import { ScanPage } from '../pages/scan/scan';
 import { SendPage } from '../pages/send/send';
 import { SettingsPage } from '../pages/settings/settings';
-import { TabsPage } from '../pages/tabs/tabs';
-
+/* Settings */
 import { AboutPage } from '../pages/settings/about/about';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 

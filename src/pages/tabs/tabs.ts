@@ -6,7 +6,6 @@ import { ScanPage } from '../scan/scan';
 import { SendPage } from '../send/send';
 import { SettingsPage } from '../settings/settings';
 
-@IonicPage()
 @Component({
   templateUrl: 'tabs.html'
 })

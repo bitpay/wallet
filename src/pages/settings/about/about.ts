@@ -7,7 +7,6 @@ import { TermsOfUsePage } from './terms-of-use/terms-of-use';
 
 import { AppProvider } from '../../../providers/app/app';
 
-@IonicPage()
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',

@@ -7,7 +7,6 @@ import { UnitProvider } from '../../providers/unit/unit';
 
 import { AboutPage } from './about/about';
 
-@IonicPage()
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
