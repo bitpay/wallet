@@ -14,30 +14,33 @@ $app-direction: ltr;
 
 @import "ionic.globals";
 
-$v-primary-color:                                    #192c3a;
-$v-secondary-color:                                  #31465b;
-$v-accent-color:                                     #1abb9b;
 
-$v-dark-gray:                                        #445 !default;
-$v-mid-gray:                                         #667 !default;
-$v-light-gray:                                       #9b9bab !default;
-$v-title-gray:                                       #c2c9d1 !default;
-$v-subtle-gray:                                      darken(#ffffff, 5%) !default;
-$v-btn-active-color:                                 #148e76;
-$v-background-warning:                               #ffa500;
-$v-background-success:                               #1abb9b;
-
-$v-onboarding-color:                                 #ffffff !default;
-$v-onboarding-bar-header-color:                      #ffffff !default;
-$v-onboarding-bar-header-button-color:               #ffffff !default;
-$v-onboarding-gradient-top-color:                    $v-primary-color !default;
-$v-onboarding-gradient-bottom-color:                 $v-secondary-color !default;
-$v-onboarding-checkbox-on-border:                    $v-accent-color;
-
-$v-button-primary-bg:                                $v-accent-color !default;
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
 
-$v-visible-radius:                                   6px !default;
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary:    #488aff,
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222
+);
+
 
 // App iOS Variables
 // --------------------------------------------------
@@ -83,86 +86,3 @@ $v-visible-radius:                                   6px !default;
 
 @import "roboto";
 @import "noto-sans";
-
-
-// Onboarding ---------------------------------------
-.checkbox .checkbox-icon {
-  border-color: $v-accent-color !important;
-  position: relative !important;
-  width: 28px !important;
-  height: 28px !important;
-  display: block !important;
-  background: transparent !important;
-  -webkit-appearance: none !important;
-  border-radius: 50% !important;
-}
-
-.checkbox .checkbox-checked .checkbox-inner {
-  left: 40% !important;
-  top: 15% !important;
-  height: 15px !important;
-  border-color: $v-accent-color !important;
-}
-
-.onboarding {
-  color: $v-onboarding-color !important;
-  background: $v-onboarding-gradient-top-color;
-  background-image: linear-gradient(to bottom, $v-onboarding-gradient-top-color 0%, $v-onboarding-gradient-bottom-color 100%);
-  height: 100%;
-  text-align: center;
-
-  .onboarding-topic,
-  .onboarding-description,
-  .onboarding-tldr {
-    color: $v-title-gray;
-    margin-left: 3rem;
-    margin-right: 3rem;
-  }
-  .onboarding-topic {
-    font-size: 24px;
-    margin-top: .5rem;
-    line-height: 1.3;
-    @media(max-width: 350px) {
-      font-size: 20px;
-    }
-  }
-  .onboarding-description {
-    margin-top: 1rem;
-    font-size: 16px;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.5;
-    @media(max-width: 350px) {
-      line-height: 1.3;
-    }
-    @media(max-height: 480px) {
-      font-size: 16px;
-    }
-  }
-  .onboarding-tldr {
-    font-size: 18px;
-    margin-top: 1rem;
-    margin-bottom: 1em;
-    line-height: 1.3;
-    @media(max-width: 350px) {
-      font-size: 16px;
-    }
-    @media(max-height: 480px) {
-      font-size: 14px;
-    }
-  }
-  button {
-    &.primary {
-      border-color: transparent;
-      background-color: $v-accent-color;
-      color: $v-onboarding-color;
-    }
-    &.secondary {
-      background-color: transparent;
-      border-color: transparent;
-      color: $v-accent-color;
-    }
-  }
-  .swiper-pagination-bullet {
-    background-color: $v-accent-color;
-  }
-}
