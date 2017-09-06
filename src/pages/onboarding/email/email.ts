@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 
-@IonicPage()
+import { BackupRequestPage } from '../backup-request/backup-request';
+
 @Component({
   selector: 'page-email',
   templateUrl: 'email.html',
@@ -19,7 +20,7 @@ export class EmailPage {
   }
 
   skip() {
-    this.navCtrl.push('BackupRequestPage');
+    this.navCtrl.push(BackupRequestPage);
   }
 
   showActionSheet() {
@@ -44,6 +45,6 @@ export class EmailPage {
 
   save() {
     // TODO SAVE EMAIL
-    this.navCtrl.push('BackupRequestPage');
+    this.navCtrl.push(BackupRequestPage);
   }
 }

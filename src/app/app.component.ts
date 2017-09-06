@@ -8,6 +8,7 @@ import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { OnboardingPage } from '../pages/onboarding/onboarding';
 
 @Component({
   templateUrl: 'app.html'
@@ -47,7 +48,7 @@ export class CopayApp {
         } else {
           // TODO: go to onboarding page
           this.logger.warn('Profile does not exist. Go to Onboarding.');
-          this.rootPage = TabsPage;
+          this.rootPage = OnboardingPage;
         }
       });
     });

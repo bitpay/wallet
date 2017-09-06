@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
-import { ViewChild } from '@angular/core';
-import { Slides, Navbar } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, LoadingController, Slides, Navbar } from 'ionic-angular';
 
-@IonicPage()
+import { EmailPage } from '../email/email';
+
 @Component({
   selector: 'page-tour',
   templateUrl: 'tour.html',
@@ -28,7 +27,7 @@ export class TourPage {
   }
 
   skip() {
-    this.navCtrl.push('EmailPage');
+    this.navCtrl.push(EmailPage);
   }
 
   slidePrev() {
@@ -54,7 +53,7 @@ export class TourPage {
 
     setTimeout(() => {
       loading.dismiss();
-      this.navCtrl.push('EmailPage');
+      this.navCtrl.push(EmailPage);
     }, 1500);
   }
 

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController} from 'ionic-angular';
+import { NavController, NavParams} from 'ionic-angular';
 
-@IonicPage()
+import { TermsOfUsePage } from '../../settings/about/terms-of-use/terms-of-use';
+import { TabsPage } from '../../tabs/tabs';
+
 @Component({
   selector: 'page-disclaimer',
   templateUrl: 'disclaimer.html',
@@ -10,7 +12,7 @@ export class DisclaimerPage {
   public accepted: any;
   public terms: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.accepted = {
       first: false,
       second: false,
@@ -27,13 +29,13 @@ export class DisclaimerPage {
     this.terms.accepted = !this.terms.accepted;
   }
 
-  openModal() {
-    const myModal = this.modalCtrl.create('DisclaimerModalPage');
-    myModal.present();
+  openDisclaimer() {
+    this.navCtrl.push(TermsOfUsePage);
   }
 
   confirm() {
     // TODO accept disclaimer
+    this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot();
   }
 }

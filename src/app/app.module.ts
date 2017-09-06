@@ -22,6 +22,11 @@ import { CopayApp } from './app.component';
 
 /* Pages */
 import { TabsPage } from '../pages/tabs/tabs';
+import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { TourPage } from '../pages/onboarding/tour/tour';
+import { EmailPage } from '../pages/onboarding/email/email';
+import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
+import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 /* Tabs */
 import { HomePage } from '../pages/home/home';
 import { ReceivePage } from '../pages/receive/receive';
@@ -56,6 +61,11 @@ export function createTranslateLoader(http: Http) {
     SettingsPage,
     AboutPage,
     TermsOfUsePage,
+    OnboardingPage,
+    TourPage,
+    EmailPage,
+    BackupRequestPage,
+    DisclaimerPage,
     TabsPage
   ],
   imports: [
@@ -82,6 +92,11 @@ export function createTranslateLoader(http: Http) {
     SettingsPage,
     AboutPage,
     TermsOfUsePage,
+    OnboardingPage,
+    TourPage,
+    EmailPage,
+    BackupRequestPage,
+    DisclaimerPage,
     TabsPage
   ],
   providers: [

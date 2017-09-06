@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import { NavController, NavParams, AlertController} from 'ionic-angular';
 
-@IonicPage()
+import { DisclaimerPage } from '../disclaimer/disclaimer';
+
 @Component({
   selector: 'page-backup-request',
   templateUrl: 'backup-request.html',
@@ -22,7 +23,6 @@ export class BackupRequestPage {
 
   initBackupFlow() {
     // TODO navigate to backupFlow
-    this.navCtrl.push('BackupWarningPage');
   }
 
   later(confirmed: boolean) {
@@ -40,7 +40,7 @@ export class BackupRequestPage {
               this.later(true);
             }, 300);
           } else {
-            this.navCtrl.push('DisclaimerPage');
+            this.navCtrl.push(DisclaimerPage);
           }
         }
       }]
