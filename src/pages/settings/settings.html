@@ -42,15 +42,6 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-icon name="calculator" item-start></ion-icon>
-      <ion-label>
-        Bitcoin unit
-      </ion-label>
-      <ion-select [(ngModel)]="currentUnitCode" (ionChange)="setUnit(currentUnitCode)">
-        <ion-option *ngFor="let unit of unitList" [value]="unit.code">{{ unit.shortName }}</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
       <ion-icon name="cash" item-start></ion-icon>
       <ion-label>
         Alternative currency

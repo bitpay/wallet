@@ -39,7 +39,6 @@ import { AppProvider } from '../providers/app/app';
 import { PlatformProvider } from '../providers/platform/platform';
 import { ConfigProvider } from '../providers/config/config';
 import { LanguageProvider } from '../providers/language/language';
-import { UnitProvider } from '../providers/unit/unit';
 import { ScanProvider } from '../providers/scan/scan';
 
 export function createTranslateLoader(http: Http) {
@@ -111,7 +110,6 @@ export function createTranslateLoader(http: Http) {
     PlatformProvider,
     ConfigProvider,
     LanguageProvider,
-    UnitProvider,
     QRScanner,
     ScanProvider
   ]

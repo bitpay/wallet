@@ -4,7 +4,6 @@ import { Logger } from '@nsalaun/ng-logger';
 import 'rxjs/add/operator/map';
 
 import { LanguageProvider } from '../../providers/language/language';
-import { UnitProvider } from '../../providers/unit/unit';
 import { ConfigProvider } from '../../providers/config/config';
 
 interface App {
@@ -52,7 +51,6 @@ export class AppProvider {
     public http: Http,
     private logger: Logger,
     private language: LanguageProvider,
-    private unit: UnitProvider,
     private config: ConfigProvider
   ) {
     this.logger.info('AppProvider initialized.');
@@ -64,7 +62,6 @@ export class AppProvider {
         // storage -> config -> language -> unit -> app
         // Everything ok
         this.language.init(config);
-        this.unit.init(config);
         this.getInfo().subscribe((info) => {
           this.info = info;
           resolve(true);
