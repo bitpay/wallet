@@ -6,6 +6,8 @@ import * as _ from 'lodash';
 import { IStorage, ISTORAGE } from './storage/istorage';
 import { PlatformProvider } from '../platform/platform';
 import { LocalStorage } from './storage/local-storage';
+import { ChromeStorage } from './storage/chrome-storage';
+import { FileStorage } from './storage/file-storage';
 import { RamStorage } from './storage/ram-storage';
 
 const Keys = {
@@ -39,7 +41,18 @@ const Keys = {
 
 export let persistenceProviderFactory = (platform: PlatformProvider, log: Logger) => {
   // TODO: select appropriate storage service based on platform
-  let storage = new RamStorage(log);
+  let storage;
+  /*
+  if (this.platform.isChromeApp) {
+    storage = new ChromeStorage(log);
+  } else if (this.platform.isCordova) {
+    storage = new FileStorage(log);
+  } else {
+    storage = new LocalStorage(log);
+  }
+   */
+  // Testing in RAM
+  storage = new RamStorage(log);
   return new PersistenceProvider(storage, log);
 };
 

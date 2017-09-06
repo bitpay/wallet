@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Logger } from '@nsalaun/ng-logger';
 import { AppProvider } from '../providers/app/app';
+import { ProfileProvider } from '../providers/profile/profile';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -12,14 +13,15 @@ import { TabsPage } from '../pages/tabs/tabs';
   templateUrl: 'app.html'
 })
 export class CopayApp {
-  rootPage: any = TabsPage;
+  rootPage: any;
 
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private logger: Logger,
-    private app: AppProvider
+    private app: AppProvider,
+    private profile: ProfileProvider
   ) {
 
     this.initializeApp();
@@ -37,6 +39,17 @@ export class CopayApp {
         this.statusBar.styleLightContent();
         this.splashScreen.hide();
       }
+      // Check Profile
+      this.profile.get().then((profile: any) => {
+        if (profile) {
+          this.logger.info('Profile read. Go to HomePage.');
+          this.rootPage = TabsPage;
+        } else {
+          // TODO: go to onboarding page
+          this.logger.warn('Profile does not exist. Go to Onboarding.');
+          this.rootPage = TabsPage;
+        }
+      });
     });
   }
 }

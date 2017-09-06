@@ -40,6 +40,7 @@ import { PlatformProvider } from '../providers/platform/platform';
 import { ConfigProvider } from '../providers/config/config';
 import { LanguageProvider } from '../providers/language/language';
 import { ScanProvider } from '../providers/scan/scan';
+import { ProfileProvider } from '../providers/profile/profile';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -103,7 +104,7 @@ export function createTranslateLoader(http: Http) {
       provide: PersistenceProvider,
       useFactory: persistenceProviderFactory,
       deps: [PlatformProvider, Logger],
-      multi: true
+      multi: false
     },
     WalletProvider,
     AppProvider,
@@ -111,7 +112,8 @@ export function createTranslateLoader(http: Http) {
     ConfigProvider,
     LanguageProvider,
     QRScanner,
-    ScanProvider
+    ScanProvider,
+    ProfileProvider
   ]
 })
 export class AppModule { }
