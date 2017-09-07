@@ -135,7 +135,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           var txPart = lodash.clone(tx);
           txPart.toAmount = data[i].amount;
           txPart.toAddress = data[i].address;
-          txPart.anonDestination = data[i].anonDestination;
+          txPart.anondest = data[i].anondest;
           anonTxes.push(txPart);
           sum += data[i].amount;
         }

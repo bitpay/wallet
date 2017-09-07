@@ -199,7 +199,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       'toAddress': tx.toAddress,
       'amount': tx.toAmount,
       'message': tx.description,
-      'anonDestination': 'test-anon-destination-field'
     }];
 
     if (tx.sendMaxInfo) {
