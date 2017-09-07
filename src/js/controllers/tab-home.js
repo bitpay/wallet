@@ -44,6 +44,30 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           }
         });
       }
+      $scope.wallets = profileService.getWallets();
+      configService.whenAvailable(function(config) {
+
+        $scope.defaults = configService.getDefaults();
+
+        config.defaultNetwork.pubkeyhash = parseInt(config.defaultNetwork.pubkeyhash,16)
+        config.defaultNetwork.privatekey = parseInt(config.defaultNetwork.privatekey,16)
+
+        config.defaultNetwork.scripthash = parseInt(config.defaultNetwork.scripthash,16)
+        config.defaultNetwork.xpubkey = parseInt(config.defaultNetwork.xpubkey,16)
+        config.defaultNetwork.xprivkey = parseInt(config.defaultNetwork.xprivkey,16)
+        config.defaultNetwork.networkMagic = parseInt(config.defaultNetwork.networkMagic,16)
+        CUSTOMNETWORKS[config.defaultNetwork.name] = config.defaultNetwork;
+        bitcore.Networks.add(config.defaultNetwork)
+        console.log(bitcore.Networks.get(config.defaultNetwork.name))
+
+        storageService.setCustomNetworks(JSON.stringify(CUSTOMNETWORKS));
+        for(var i in $scope.wallets) {
+          if(CUSTOMNETWORKS[$scope.wallets[i].network]) {
+            bitcore.Networks.add(CUSTOMNETWORKS[$scope.wallets[i].network])
+          }
+        }
+
+      });
 
       storageService.getFeedbackInfo(function(error, info) {
 
@@ -115,21 +139,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
 
       configService.whenAvailable(function(config) {
-
-        $scope.defaults = configService.getDefaults();
-
-        config.defaultNetwork.pubkeyhash = parseInt(config.defaultNetwork.pubkeyhash,16)
-        config.defaultNetwork.privatekey = parseInt(config.defaultNetwork.privatekey,16)
-
-        config.defaultNetwork.scripthash = parseInt(config.defaultNetwork.scripthash,16)
-        config.defaultNetwork.xpubkey = parseInt(config.defaultNetwork.xpubkey,16)
-        config.defaultNetwork.xprivkey = parseInt(config.defaultNetwork.xprivkey,16)
-        config.defaultNetwork.networkMagic = parseInt(config.defaultNetwork.networkMagic,16)
-        CUSTOMNETWORKS[config.defaultNetwork.name] = config.defaultNetwork;
-        bitcore.Networks.add(config.defaultNetwork)
-
-        storageService.setCustomNetworks(JSON.stringify(CUSTOMNETWORKS));
-
         $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
         if ($scope.recentTransactionsEnabled) getNotifications();
 
@@ -224,27 +233,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     var updateAllWallets = function() {
-
-      storageService.getCustomNetworks(function(err, networkListRaw) {
-
-        $scope.wallets = profileService.getWallets();
-        for(var i in $scope.wallets) {
-          if(CUSTOMNETWORKS[$scope.wallets[i].network]) {
-            bitcore.Networks.add(CUSTOMNETWORKS[$scope.wallets[i].network])
-          }
-        }
-        for (var i in CUSTOMNETWORKS ) {
-          bitcore.Networks.add(CUSTOMNETWORKS[i])
-        }
-
-        if(networkListRaw) {
-          var networkList = JSON.parse(networkListRaw)
-          for (var n in networkList) {
-            CUSTOMNETWORKS[n] = networkList[n]
-            bitcore.Networks.add(networkList[n])
-          }
-        }
-      })
 
         if (lodash.isEmpty($scope.wallets)) return;
 

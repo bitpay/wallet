@@ -13,7 +13,6 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     var opts = {
       fullPrecision: !!fullPrecision
     };
-    console.log(config.unitCode)
     return this.Utils.formatAmount(satoshis, config.unitCode, opts);
   };
 
