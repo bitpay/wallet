@@ -287,7 +287,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           tx.toAmount = tx.sendMaxInfo.amount;
           updateAmount();
           ongoingProcess.set('calculatingFee', false);
-          showSendMaxWarning(wallet, sendMaxInfo);
+          $timeout(function() {
+            showSendMaxWarning(wallet, sendMaxInfo);
+          }, 200);
         }
 
         // txp already generated for this wallet?
@@ -347,11 +349,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         $scope.buttonText = gettextCatalog.getString('Click to accept');
       }
     } else
-      if (isCordova && !isWindowsPhoneApp) {
-        $scope.buttonText = gettextCatalog.getString('Slide to send');
-      } else {
-        $scope.buttonText = gettextCatalog.getString('Click to send');
-      }
+    if (isCordova && !isWindowsPhoneApp) {
+      $scope.buttonText = gettextCatalog.getString('Slide to send');
+    } else {
+      $scope.buttonText = gettextCatalog.getString('Click to send');
+    }
   };
 
 
