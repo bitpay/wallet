@@ -45,9 +45,9 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         });
       }
       $scope.wallets = profileService.getWallets();
-      configService.whenAvailable(function(config) {
+      $scope.defaults = configService.getDefaults();
+      configService.get(function(err, config) {
 
-        $scope.defaults = configService.getDefaults();
 
         config.defaultNetwork.pubkeyhash = parseInt(config.defaultNetwork.pubkeyhash,16)
         config.defaultNetwork.privatekey = parseInt(config.defaultNetwork.privatekey,16)
