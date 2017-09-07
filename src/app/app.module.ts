@@ -16,6 +16,7 @@ import { NgLoggerModule, Logger, Level } from '@nsalaun/ng-logger';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { MomentModule } from 'angular2-moment';
 
 /* Copay App */
 import { CopayApp } from './app.component';
@@ -50,6 +51,7 @@ import { ConfigProvider } from '../providers/config/config';
 import { LanguageProvider } from '../providers/language/language';
 import { ScanProvider } from '../providers/scan/scan';
 import { ProfileProvider } from '../providers/profile/profile';
+import { BwcProvider } from '../providers/bwc/bwc';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -79,6 +81,7 @@ export function createTranslateLoader(http: Http) {
     HttpModule,
     NgLoggerModule.forRoot(Level.LOG),
     NgxQRCodeModule,
+    MomentModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -136,7 +139,8 @@ export function createTranslateLoader(http: Http) {
     LanguageProvider,
     QRScanner,
     ScanProvider,
-    ProfileProvider
+    ProfileProvider,
+    BwcProvider
   ]
 })
 export class AppModule { }
