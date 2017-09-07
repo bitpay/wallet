@@ -37,6 +37,10 @@ import { SettingsPage } from '../pages/settings/settings';
 import { AboutPage } from '../pages/settings/about/about';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 
+/* Send */
+import { AmountPage } from '../pages/send/amount/amount';
+import { ConfirmPage } from '../pages/send/confirm/confirm';
+
 /* Providers */
 import { WalletProvider } from '../providers/wallet/wallet';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
@@ -66,7 +70,9 @@ export function createTranslateLoader(http: Http) {
     EmailPage,
     BackupRequestPage,
     DisclaimerPage,
-    TabsPage
+    TabsPage,
+    AmountPage,
+    ConfirmPage
   ],
   imports: [
     BrowserModule,
@@ -97,7 +103,9 @@ export function createTranslateLoader(http: Http) {
     EmailPage,
     BackupRequestPage,
     DisclaimerPage,
-    TabsPage
+    TabsPage,
+    AmountPage,
+    ConfirmPage
   ],
   providers: [
     StatusBar,

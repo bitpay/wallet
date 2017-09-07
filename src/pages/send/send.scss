@@ -1,3 +1,8 @@
 page-send {
-
+  .item-md ion-icon[item-left] + .item-inner {
+    margin: 0px;
+  }
+  .scanner-icon {
+    z-index: 99;
+  }
 }

@@ -3,6 +3,8 @@ import { NavController, NavParams } from 'ionic-angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
+import { AmountPage } from '../send/amount/amount';
+
 //import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
 
 @Component({
@@ -37,6 +39,8 @@ export class ScanPage {
     this.scanProvider.activate()
       .then(resp => {
         this.text = resp;
+        // TODO: implement incomingData
+        this.navCtrl.push(AmountPage, {address: this.text});
       })
       .catch(error => {
         console.log("error: " + error);
