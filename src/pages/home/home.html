@@ -5,4 +5,12 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-card *ngFor="let wallet of wallets">
+    <ion-card-header>
+      {{wallet.credentials.walletName}} {{wallet.credentials.m}}-{{wallet.credentials.n}}
+    </ion-card-header>
+    <ion-card-content>
+      {{wallet.credentials.coin}} - {{wallet.credentials.walletId}}
+    </ion-card-content>
+  </ion-card>
 </ion-content>

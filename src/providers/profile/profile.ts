@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Events } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { PersistenceProvider } from '../persistence/persistence';
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
+import { WalletProvider } from '../wallet/wallet';
 
 interface Profile {
   version: string;
@@ -32,6 +34,8 @@ export class ProfileProvider {
   public profile: Profile;
 
   constructor(
+    public events: Events,
+    private wallet: WalletProvider,
     private persistence: PersistenceProvider,
     private config: ConfigProvider,
     private bwc: BwcProvider
@@ -42,6 +46,7 @@ export class ProfileProvider {
   get() {
     return new Promise((resolve, reject) => {
       this.persistence.getProfile().then((profile: any) => {
+        this.profile = profile;
         resolve(profile);
       }, (error) => {
         reject(error);
@@ -52,42 +57,24 @@ export class ProfileProvider {
   create() {
     this.profile = new Profile();
 
-    console.log('[profile.ts:33]', this.profile); //TODO
-
     this.persistence.storeNewProfile(this.profile).then(() => {
-      // bindProfile (this.profile)
+      // TODO: bind?
     }, (error) => {
-      // Todo: error?
+      // TODO: error?
     });
   }
 
-  bind(profile: Profile) {
-    let l = profile.credentials.length;
-    let i = 0;
-    let totalBound = 0;
+  bind() {
+    let l = this.profile.credentials.length;
+    let wallets = new Array();
 
-    if (!l) return;
+    if (!l) return wallets;
+    let credentials = this.profile.credentials;
 
-    _.each(profile.credentials, function(credentials) {
-      this.bindWallet(credentials, function(err, bound) {
-        i++;
-        totalBound += bound;
-        if (i == l) {
-          console.log('Bound ' + totalBound + ' out of ' + l + ' wallets');
-          return;
-        }
-      });
+    _.each(credentials, (credential) => {
+      wallets.push(this.wallet.bind(credential));
     });
-  }
-
-  bindWallet(credentials) {
-    let defaults = this.config.get();
-
-    /*
-    let client = this.bwc.getClient(JSON.stringify(credentials), {
-      bwsurl: defaults['bws']['url'],
-    });
-     */
+    return wallets;
   }
 
 }
