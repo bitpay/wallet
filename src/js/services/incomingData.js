@@ -69,8 +69,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       }, 100);
     }
     // data extensions for Payment Protocol with non-backwards-compatible request
-    if ((/^bitcoin:\?r=[\w+]/).exec(data)) {
-      data = decodeURIComponent(data.replace('bitcoin:?r=', ''));
+    if ((/^bitcoin[cash]*:\?r=[\w+]/).exec(data)) {
+      data = decodeURIComponent(data.replace(/bitcoin[cash]*:?r=/, ''));
       $state.go('tabs.send', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.send' ? false : true
@@ -84,27 +84,38 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     data = sanitizeUri(data);
 
-    // BIP21
-    if (bitcore.URI.isValid(data)) {
-      var parsed = new bitcore.URI(data);
-
-      var addr = parsed.address ? parsed.address.toString() : '';
-      var message = parsed.message;
-
-      var amount = parsed.amount ? parsed.amount : '';
-      var coin = parsed.extras && parsed.extras.coin ? parsed.extras.coin : '';
-
-      if (parsed.r) {
-        payproService.getPayProDetails(parsed.r, function(err, details) {
-          if (err) {
-            if (addr && amount) goSend(addr, amount, message, coin);
-            else popupService.showAlert(gettextCatalog.getString('Error'), err);
-          } else handlePayPro(details);
-        });
-      } else {
-        goSend(addr, amount, message, coin);
+    // Bitcoin or Bitcoin Cash URL
+    if ((/^bitcoin[cash]*:/).exec(data)) {
+      var coin = 'btc';
+      if ((/^bitcoincash*:/).exec(data)) {
+        coin = 'bch';
+        data = data.replace(/bitcoincash*:/, 'bitcoin:');
       }
-      return true;
+console.log('[incomingData.js:93]', coin, data); //TODO/
+      if (bitcore.URI.isValid(data)) {
+        var parsed = new bitcore.URI(data);
+
+        var addr = parsed.address ? parsed.address.toString() : '';
+        var message = parsed.message;
+
+        var amount = parsed.amount ? parsed.amount : '';
+
+        if (parsed.r) {
+          payproService.getPayProDetails(parsed.r, function(err, details) {
+            if (err) {
+              if (addr && amount) goSend(addr, amount, message, coin);
+              else popupService.showAlert(gettextCatalog.getString('Error'), err);
+            } else handlePayPro(details);
+          });
+        } else {
+          goSend(addr, amount, message, coin);
+        }
+        return true;
+
+      } else {
+        $log.error('Invalid Bitcoin URL');
+        return false;
+      }
 
       // Plain URL
     } else if (/^https?:\/\//.test(data)) {
