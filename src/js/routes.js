@@ -244,15 +244,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.scan', {
-        url: '/scan',
-        views: {
-          'tab-scan': {
-            controller: 'tabScanController',
-            templateUrl: 'views/tab-scan.html',
-          }
-        }
-      })
       .state('scanner', {
         url: '/scanner',
         params: {
@@ -374,6 +365,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        *
        */
 
+      .state('tabs.preferencesCash', {
+        url: '/preferencesCash',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesCashController',
+            templateUrl: 'views/preferencesCash.html'
+          }
+        }
+      })
+
       .state('tabs.notifications', {
         url: '/notifications',
         views: {
@@ -464,16 +465,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
-      .state('tabs.cash', {
-        url: '/cash',
-        views: {
-          'tab-home@tabs': {
-            controller: 'cashController',
-            templateUrl: 'views/tab-cash.html'
-          }
-        }
-      })
- 
+
 
       /*
        *
@@ -589,6 +581,30 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+
+      .state('tabs.preferencesCash.scan', {
+        url: '/cashScan',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'cashScanController',
+            templateUrl: 'views/cashScan.html'
+          }
+        }
+      })
+
+
+  // TODO remove
+      .state('tabs.scan', {
+        url: '/cashScan2',
+        views: {
+          'tab-home@tabs': {
+            controller: 'cashScanController',
+            templateUrl: 'views/cashScan.html'
+          }
+        }
+      })
+
+ 
 
       /*
        *

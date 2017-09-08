@@ -13,6 +13,8 @@
   <div class="item item-icon-right item-heading">
     <span translate>BTC Wallets</span>
   </div>
+
+  <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
   <div>
     <div ng-repeat="wallet in wallets track by $index"
         class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
@@ -24,7 +26,7 @@
         {{wallet.name || wallet.id}}
       </span>
       <p>
-      <span > {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  ) }} </span>
+      <span > {{wallet.bchBalance  || 'Checking...'}} </span>
 
       <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
         {{wallet.m}}-of-{{wallet.n}}

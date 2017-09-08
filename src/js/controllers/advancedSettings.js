@@ -50,16 +50,6 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.openBitcoinCashWeb = function() {
-    var url = 'https://www.bitcoincash.org/';
-    var optIn = true;
-    var title = null;
-    var message = gettextCatalog.getString('Open bitcoincash.org?');
-    var okText = gettextCatalog.getString('Open');
-    var cancelText = gettextCatalog.getString('Go Back');
-    externalLinkService.open(url, optIn, title, message, okText, cancelText);
-  };
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     updateConfig();

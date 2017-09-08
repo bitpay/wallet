@@ -26,7 +26,7 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
       });
 
       $scope.cashSupport = {
-        value: config.cashSupport.enabled
+        value: config.cashSupport
       };
 
 
