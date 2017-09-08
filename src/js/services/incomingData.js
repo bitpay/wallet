@@ -91,7 +91,6 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         coin = 'bch';
         data = data.replace(/bitcoincash*:/, 'bitcoin:');
       }
-console.log('[incomingData.js:93]', coin, data); //TODO/
       if (bitcore.URI.isValid(data)) {
         var parsed = new bitcore.URI(data);
 
