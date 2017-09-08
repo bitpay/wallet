@@ -40,6 +40,7 @@
     "@nsalaun/ng-logger": "2.0.1",
     "ajv": "5.2.2",
     "angular2-moment": "1.7.0",
+    "asn1.js": "=4.5.2",
     "autoprefixer": "7.1.2",
     "bitcore-wallet-client": "6.0.0",
     "cordova-android": "6.2.3",
