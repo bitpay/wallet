@@ -25,6 +25,11 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         }, 10);
       });
 
+      $scope.cashSupport = {
+        value: config.cashSupport.enabled
+      };
+
+
       // TODO move this to a generic service
       bitpayCardService.getCards(function(err, cards) {
         if (err) $log.error(err);
@@ -61,6 +66,8 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         $scope.method = $scope.locked.charAt(0).toUpperCase() + config.lock.method.slice(1);
     });
   });
+
+
 
   $scope.$on("$ionicView.enter", function(event, data) {
     updateConfig();

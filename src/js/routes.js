@@ -464,6 +464,16 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.cash', {
+        url: '/cash',
+        views: {
+          'tab-home@tabs': {
+            controller: 'cashController',
+            templateUrl: 'views/tab-cash.html'
+          }
+        }
+      })
+ 
 
       /*
        *

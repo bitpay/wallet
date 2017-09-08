@@ -1,0 +1,41 @@
+<ion-view id="other-balance" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      <span translate>Bitcoin Cash (BCH) Balances</span>
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+
+<div class="list card">
+  <div class="item item-icon-right item-heading">
+    <span translate>BTC Wallets</span>
+  </div>
+  <div>
+    <div ng-repeat="wallet in wallets track by $index"
+        class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
+        >
+      <i class="icon big-icon-svg">
+        <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+      </i>
+      <span>
+        {{wallet.name || wallet.id}}
+      </span>
+      <p>
+      <span > {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  ) }} </span>
+
+      <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+        {{wallet.m}}-of-{{wallet.n}}
+      </span>
+      &nbsp;
+      </p>
+      <button ng-click="duplicate(wallet)"> 
+        Duplicate for BCH
+      </button> 
+    </div>
+  </div>
+</div>
+
+</ion-content>
