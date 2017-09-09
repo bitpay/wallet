@@ -124,8 +124,13 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     return wallet;
   }
 
+  var setProtocolHandler = function() {
+    $scope.protocolHandler = walletService.getProtocolHandler($scope.wallet);
+  }
+
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    setProtocolHandler();
     $scope.setAddress();
   };
 
@@ -137,6 +142,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.shareAddress = function() {
     if (!$scope.isCordova) return;
-    window.plugins.socialsharing.share('bitcoin:' + $scope.addr, null, null, null);
+    var protocol = 'bitcoin';
+    if ($scope.wallet.coin == 'bch') protocol += 'cash';
+    window.plugins.socialsharing.share(protocol + ':' + $scope.addr, null, null, null);
   }
 });
