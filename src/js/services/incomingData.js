@@ -69,8 +69,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       }, 100);
     }
     // data extensions for Payment Protocol with non-backwards-compatible request
-    if ((/^bitcoin[cash]*:\?r=[\w+]/).exec(data)) {
-      data = decodeURIComponent(data.replace(/bitcoin[cash]*:?r=/, ''));
+    if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
+      data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
       $state.go('tabs.send', {}, {
         'reload': true,
         'notify': $state.current.name == 'tabs.send' ? false : true
@@ -85,9 +85,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     data = sanitizeUri(data);
 
     // Bitcoin or Bitcoin Cash URL
-    if ((/^bitcoin[cash]*:/).exec(data)) {
+    if ((/^bitcoin(cash)?:/).exec(data)) {
       var coin = 'btc';
-      if ((/^bitcoincash*:/).exec(data)) {
+      if ((/^bitcoincash:/).exec(data)) {
         coin = 'bch';
         data = data.replace(/bitcoincash*:/, 'bitcoin:');
       }
