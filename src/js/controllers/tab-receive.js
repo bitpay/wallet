@@ -124,8 +124,13 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     return wallet;
   }
 
+  var setProtocolHandler = function() {
+    $scope.protocolHandler = walletService.getProtocolHandler($scope.wallet);
+  }
+
   $scope.onWalletSelect = function(wallet) {
     $scope.wallet = wallet;
+    setProtocolHandler();
     $scope.setAddress();
   };
 

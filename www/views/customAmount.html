@@ -21,7 +21,7 @@
   <ion-content scroll="false">
     <div class="address" ng-if="address && amountBtc">
       <div class="qr-code" copy-to-clipboard="copyToClipboard()">
-        <qrcode size="220" data="bitcoin{{ wallet.coin == 'bch' ? 'cash' : '' }}:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
+        <qrcode size="220" data="{{ protocolHandler }}:{{address + '?amount=' + amountBtc}}" color="#334"></qrcode>
       </div>
       <div class="info">
         <div class="item single-line" copy-to-clipboard="address">

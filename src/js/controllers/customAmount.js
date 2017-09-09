@@ -8,6 +8,10 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     });
   };
 
+  var setProtocolHandler = function() {
+    $scope.protocolHandler = walletService.getProtocolHandler($scope.wallet);
+  }
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     var walletId = data.stateParams.id;
 
@@ -19,6 +23,8 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;
 
     $scope.wallet = profileService.getWallet(walletId);
+
+    setProtocolHandler();
 
     walletService.getAddress($scope.wallet, false, function(err, addr) {
       if (!addr) {

@@ -1232,5 +1232,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getProtocolHandler = function(wallet) {
+    if (wallet.coin== 'bch') return 'bitcoincash';
+    else return 'bitcoin';
+  }
+
   return root;
 });
