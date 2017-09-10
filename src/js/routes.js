@@ -592,20 +592,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-
-  // TODO remove
-      .state('tabs.scan', {
-        url: '/cashScan2',
-        views: {
-          'tab-home@tabs': {
-            controller: 'cashScanController',
-            templateUrl: 'views/cashScan.html'
-          }
-        }
-      })
-
- 
-
       /*
        *
        * Addressbook

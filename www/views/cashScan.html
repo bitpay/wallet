@@ -14,6 +14,13 @@
     <span translate>BTC Wallets</span>
   </div>
 
+
+  <div class="item" ng-if="(!wallets || !wallets[0]) && !nonBIP44">
+    <span class="assertive" >No wallets elegible for Bitcoin Cash support</span>
+  </div>
+
+
+
   <div class="item" ng-if="error">
     <span class="assertive" >{{error}}</span>
   </div>
@@ -23,6 +30,7 @@
   </div>
 
   <div>
+
     <div ng-repeat="wallet in wallets track by $index"
         class="item item-sub item-icon-left item-big-icon-left item-button-right wallet"
         >
