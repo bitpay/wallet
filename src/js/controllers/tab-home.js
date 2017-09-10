@@ -224,6 +224,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             wallet.error = null;
             wallet.status = status;
 
+            wallet.updating = status && status.wallet && status.wallet.scanStatus == 'running';
             // TODO service refactor? not in profile service
             profileService.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr, function() {});
           }
@@ -242,6 +243,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
         wallet.status = status;
+        wallet.updating = status && status.wallet && status.wallet.scanStatus == 'running';
         updateTxps();
       });
     };

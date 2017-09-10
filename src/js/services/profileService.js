@@ -386,7 +386,6 @@ angular.module('copayApp.services')
           }
         }
       }
-      return cb(null, walletClient);
     };
 
     // Creates a wallet on BWC/BWS

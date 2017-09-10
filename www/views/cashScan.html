@@ -14,10 +14,17 @@
     <span translate>BTC Wallets</span>
   </div>
 
-  <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
+  <div class="item" ng-if="error">
+    <span class="assertive" >{{error}}</span>
+  </div>
+
+  <div class="item" ng-if="nonBIP44">
+    <span class="assertive" translate>Some of you wallets are not elegible for Bitcon Cash support because there where created before Copay v1.2. Please use our recovery tool to access your Bitcoin Cash balance for those wallets</span>
+  </div>
+
   <div>
     <div ng-repeat="wallet in wallets track by $index"
-        class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
+        class="item item-sub item-icon-left item-big-icon-left item-button-right wallet"
         >
       <i class="icon big-icon-svg">
         <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
@@ -26,16 +33,20 @@
         {{wallet.name || wallet.id}}
       </span>
       <p>
-      <span > {{wallet.bchBalance  || 'Checking...'}} </span>
 
+      <span class="balanced" > {{wallet.bchBalance  || 'Checking...'}} </span>
       <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
         {{wallet.m}}-of-{{wallet.n}}
       </span>
       &nbsp;
       </p>
-      <button ng-click="duplicate(wallet)"> 
-        Duplicate for BCH
-      </button> 
+
+
+      <div class="buttons">
+        <button ng-click="duplicate(wallet)" class="button button-small button-outline button-primary" translate> 
+          Duplicate for BCH
+        </button> 
+      </div>
     </div>
   </div>
 </div>

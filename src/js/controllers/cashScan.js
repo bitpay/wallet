@@ -1,48 +1,62 @@
-
 'use strict';
 
 angular.module('copayApp.controllers').controller('cashScanController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess,  profileService, walletService, configService, $log, txFormatService, bwcError, pushNotificationsService, bwcService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, txFormatService, bwcError, pushNotificationsService, bwcService) {
     var wallet;
     var errors = bwcService.getErrors();
-    $scope.error  = null;
+    $scope.error = null;
 
     $scope.$on("$ionicView.enter", function(event, data) {
       updateAllWallets();
     });
 
     var updateAllWallets = function() {
-      var wallets = profileService.getWallets({coin:'btc', onlyComplete:true, network: 'livenet'  });
+      var wallets1 = profileService.getWallets({
+        coin: 'btc',
+        onlyComplete: true,
+        network: 'livenet'
+      });
+
+      if (lodash.isEmpty(wallets1)) {
+        $state.go('tabs.home');
+        return;
+      }
+
+      // Filter out already duplicated wallets
+      var walletsBCH = profileService.getWallets({
+        coin: 'bch',
+        network: 'livenet'
+      });
+      var xPubKeyIndex = lodash.indexBy(walletsBCH, "credentials.xPubKey");
+
+      wallets1 = lodash.filter(wallets1, function(w) {
+        return !xPubKeyIndex[w.credentials.xPubKey];
+      });
 
 
-      var kk = lodash.indexBy(wallets,"credentials.xPubKey");
-
-
-      // TODO ?
-      if (lodash.isEmpty(wallets)) return;
-
-
-      var walletsBCH = profileService.getWallets({coin:'bch', network: 'livenet' });
-      var xPubKeyIndex = lodash.indexBy(walletsBCH,"credentials.xPubKey");
-
-//      wallets= lodash.filter(wallets,function(w) { return !xPubKeyIndex[w.credentials.xPubKey]; });
+      // Filter out non BIP44 wallets
+      var wallets = lodash.filter(wallets1, function(w) {
+        return w.credentials.derivationStrategy == 'BIP44'
+      });
 
       $scope.wallets = wallets;
+      $scope.nonBIP44 = wallets1.length != wallets.length;
 
       var i = wallets.length;
       var j = 0;
       lodash.each(wallets, function(wallet) {
-        walletService.getBalance(wallet, {coin:'bch'}, function(err, balance) {
+        walletService.getBalance(wallet, {
+          coin: 'bch'
+        }, function(err, balance) {
           if (err) {
 
             wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') : bwcError.msg(err);
 
             $log.error(err);
             return;
-          } 
-//
+          }
+          //
 
-console.log('[otherBalance.js.28:balance:]',balance); //TODO
           wallet.error = null;
           wallet.bchBalance = txFormatService.formatAmountStr('bch', balance.availableAmount);
           if (++j == i) {
@@ -58,24 +72,26 @@ console.log('[otherBalance.js.28:balance:]',balance); //TODO
     };
 
     $scope.duplicate = function(wallet) {
-      $scope.error  = null;
-      $log.debug('Duplicating wallet for BCH:' + wallet.id + ':' +  wallet.name);
+      $scope.error = null;
+      $log.debug('Duplicating wallet for BCH:' + wallet.id + ':' + wallet.name);
 
       var opts = {};
       opts.name = wallet.name + '[BCH]';
       opts.m = wallet.m;
       opts.n = wallet.n;
-      opts.myName = wallet.credentials.copayerName; 
+      opts.myName = wallet.credentials.copayerName;
       opts.networkName = wallet.network;
       opts.coin = 'bch';
+      opts.walletPrivKey = wallet.credentials.walletPrivKey;
+      opts.compliantDerivation = wallet.credentials.compliantDerivation;
 
-      // TODO: finger print / decrypt
-      $log.warn('TODO finger print / decrypt');
-      opts.extendedPrivateKey =  wallet.credentials.xPrivKey;
 
       function setErr(err, cb) {
-        $scope.error =  bwcError.cb(err, gettextCatalog.getString('Could not duplicate'), function() { 
-          return cb(err); 
+
+        if (!cb) cb = function() {};
+
+        $scope.error = bwcError.cb(err, gettextCatalog.getString('Could not duplicate'), function() {
+          return cb(err);
         });
         $timeout(function() {
           $rootScope.$apply();
@@ -83,35 +99,70 @@ console.log('[otherBalance.js.28:balance:]',balance); //TODO
       }
 
       function importOrCreate(cb) {
-        walletService.getStatus(wallet, {}, function(err, status){
+        walletService.getStatus(wallet, {}, function(err, status) {
           if (err) return cb(err);
 
-          opts.singleAddress =  status.wallet.singleAddress;
+          opts.singleAddress = status.wallet.singleAddress;
 
           // first try to import
-          profileService.importExtendedPrivateKey(opts.extendedPrivateKey, opts, function(err, client) {
-            if (err && !(err instanceof errors.NOT_AUTHORIZED) ) {
+          profileService.importExtendedPrivateKey(opts.extendedPrivateKey, opts, function(err, newWallet) {
+            if (err && !(err instanceof errors.NOT_AUTHORIZED)) {
               return setErr(err, cb);
             }
             if (err) {
               // create and store a wallet
-              return profileService.createWallet(opts, function(err, client) {
+              return profileService.createWallet(opts, function(err, newWallet) {
                 if (err) return setErr(err, cb);
-                return cb(null, client, true);
+                return cb(null, newWallet, true);
               });
             }
-            return cb(null, client);
+            return cb(null, newWallet);
           });
         });
       };
 
+      // Multisig wallets? add Copayers
+      function addCopayers(newWallet, isNew, cb) {
+        if (!isNew) return cb();
+        if (wallet.n == 1) return cb();
 
-      importOrCreate(function(err, client, isNew) {
-        if (err) return;
-        walletService.updateRemotePreferences(client);
-        pushNotificationsService.updateSubscription(client);
-        walletService.startScan(wallet, function() { });
-        $state.go('tabs.home');
+        $log.info('Adding copayers for BCH wallet config:' + wallet.m + '-' + wallet.n);
+
+        walletService.copyCopayers(wallet, newWallet, function(err) {
+          if (err) return setErr(err, cb);
+
+          return cb();
+        });
+      };
+
+      walletService.getKeys(wallet,function(err,keys) {
+        if (err) {
+          $scope.error = err;
+          return $timeout(function() {
+            $rootScope.$apply();
+          }, 10);
+        }
+        opts.extendedPrivateKey = keys.xPrivKey;
+        ongoingProcess.set('duplicatingWallet', true);
+        importOrCreate(function(err, newWallet, isNew) {
+          if (err) {
+            ongoingProcess.set('duplicatingWallet', false);
+            return;
+          }
+          walletService.updateRemotePreferences(newWallet);
+          pushNotificationsService.updateSubscription(newWallet);
+
+          addCopayers(newWallet, isNew, function(err) {
+            ongoingProcess.set('duplicatingWallet', false);
+            if (err)
+              return setErr(err);
+
+            if (isNew)
+              walletService.startScan(newWallet, function() {});
+
+            $state.go('tabs.home');
+          });
+        });
       });
     }
   });
