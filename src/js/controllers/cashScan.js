@@ -5,19 +5,20 @@ angular.module('copayApp.controllers').controller('cashScanController',
     var wallet;
     var errors = bwcService.getErrors();
     $scope.error = null;
+    $scope.walletDisabled = '#667';
 
-    $scope.$on("$ionicView.enter", function(event, data) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
       updateAllWallets();
     });
 
     var updateAllWallets = function() {
-      var wallets1 = profileService.getWallets({
+      var walletsBTC = profileService.getWallets({
         coin: 'btc',
         onlyComplete: true,
         network: 'livenet'
       });
 
-      if (lodash.isEmpty(wallets1)) {
+      if (lodash.isEmpty(walletsBTC)) {
         $state.go('tabs.home');
         return;
       }
@@ -29,18 +30,19 @@ angular.module('copayApp.controllers').controller('cashScanController',
       });
       var xPubKeyIndex = lodash.indexBy(walletsBCH, "credentials.xPubKey");
 
-      wallets1 = lodash.filter(wallets1, function(w) {
+      walletsBTC = lodash.filter(walletsBTC, function(w) {
         return !xPubKeyIndex[w.credentials.xPubKey];
       });
 
-
       // Filter out non BIP44 wallets
-      var wallets = lodash.filter(wallets1, function(w) {
+      var wallets = lodash.filter(walletsBTC, function(w) {
         return w.credentials.derivationStrategy == 'BIP44'
       });
 
       $scope.wallets = wallets;
-      $scope.nonBIP44 = wallets1.length != wallets.length;
+      $scope.nonBIP44Wallets = lodash.filter(walletsBTC, function(w) {
+        return w.credentials.derivationStrategy != 'BIP44';
+      });
 
       var i = wallets.length;
       var j = 0;
@@ -49,23 +51,18 @@ angular.module('copayApp.controllers').controller('cashScanController',
           coin: 'bch'
         }, function(err, balance) {
           if (err) {
-
             wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') : bwcError.msg(err);
-
             $log.error(err);
             return;
           }
-          //
 
           wallet.error = null;
           wallet.bchBalance = txFormatService.formatAmountStr('bch', balance.availableAmount);
           if (++j == i) {
-
             //Done
             $timeout(function() {
               $rootScope.$apply();
             }, 10);
-
           }
         });
       });
@@ -135,7 +132,7 @@ angular.module('copayApp.controllers').controller('cashScanController',
         });
       };
 
-      walletService.getKeys(wallet,function(err,keys) {
+      walletService.getKeys(wallet, function(err, keys) {
         if (err) {
           $scope.error = err;
           return $timeout(function() {

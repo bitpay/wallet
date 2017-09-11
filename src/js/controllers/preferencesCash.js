@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesCashController', function($scope, $log, $timeout, appConfigService, lodash, configService, gettextCatalog, externalLinkService) {
+angular.module('copayApp.controllers').controller('preferencesCashController', function($scope, $log, $timeout, appConfigService, configService, gettextCatalog, externalLinkService) {
   var updateConfig = function() {
 
     var config = configService.getSync();
@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('preferencesCashController', f
   };
 
 
-  $scope.$on("$ionicView.enter", function(event, data) {
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
     updateConfig();
   });
 });
