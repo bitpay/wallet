@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var currentContactsPage;
   $scope.isChromeApp = platformInfo.isChromeApp;
 
+
   var hasWallets = function() {
     $scope.wallets = profileService.getWallets({
       onlyComplete: true
@@ -18,6 +19,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   // does not has any other function.
 
   var updateHasFunds = function() {
+    $scope.nextDisabled = true;
 
     if ($rootScope.everHasFunds) {
       $scope.hasFunds = true;
@@ -148,11 +150,33 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     if ($scope.formData.search == null || $scope.formData.search.length == 0) {
       $scope.searchFocus = false;
     }
+    var privatePayment = $scope.formData.privatePayment || false;
+    if (incomingData.redir($scope.formData.search, privatePayment, true)) {
+      $scope.nextDisabled = false;
+      return;
+    } else {
+      $scope.nextDisabled = true;
+      return;
+    }
   };
+
+  $scope.nextClicked = function(search) {
+    var privatePayment = $scope.formData.privatePayment || false;
+    if (incomingData.redir(search, privatePayment, false)) {
+      return;
+    } else if (search) {
+      $scope.nextDisabled = true;
+      return;
+    }
+  }
 
   $scope.findContact = function(search) {
     var privatePayment = $scope.formData.privatePayment || false;
-    if (incomingData.redir(search, privatePayment)) {
+    if (incomingData.redir(search, privatePayment, true)) {
+      $scope.nextDisabled = false;
+      return;
+    } else if (search) {
+      $scope.nextDisabled = true;
       return;
     }
 

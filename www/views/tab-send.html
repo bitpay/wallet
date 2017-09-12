@@ -19,7 +19,13 @@
             <span class="toggle-label" translate>Private Payment</span>
           </ion-toggle>
         </div>
+        <div class="send-next-button">
+          <button ng-disabled="nextDisabled" class="button button-standard button-primary" ng-class="{disable: nextDisabled}" ng-click="nextClicked(formData.search)">
+            <span class="button-label" translate>Next</span>
+          </button>
+        </div>
       </div>
+
     </div>
 
     <div ng-if="!checkingBalance && (!hasFunds || !hasWallets)">

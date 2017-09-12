@@ -8,7 +8,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     $rootScope.$broadcast('incomingDataMenu.showMenu', data);
   };
 
-  root.redir = function(data, privatePayment) {
+  root.redir = function(data, privatePayment, stopRedirect) {
     $log.debug('Processing incoming data: ' + data);
 
     function sanitizeUri(data) {
@@ -126,7 +126,12 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           type: 'bitcoinAddress'
         });
       } else {
-        goToAmountPage(data, privatePayment);
+        if (!stopRedirect) {
+          goToAmountPage(data, privatePayment);
+          return false;
+        } else {
+          return true;
+        }
       }
     } else if (data && data.indexOf(appConfigService.name + '://glidera') === 0) {
       var code = getParameterByName('code', data);
