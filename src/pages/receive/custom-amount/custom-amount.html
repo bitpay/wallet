@@ -1,0 +1,25 @@
+<!--
+  Generated template for the CustomAmountPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>custom-amount</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <div class="qr-container">
+        <qr-code *ngIf="address" [value]="qrAddress" [level]="M" [size]="220" [foreground]="'#334'"></qr-code>
+        <ion-item-group class="custom-info">
+          <ion-item>Address: {{address}}</ion-item>
+          <ion-item>Amount: {{amount}} BTC</ion-item>
+          <ion-item>Receive in: Personal Wallet</ion-item>
+        </ion-item-group>
+    </div>
+</ion-content>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { ConfirmPage } from '../confirm/confirm';
+import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 
 @Component({
   selector: 'page-amount',
@@ -14,6 +15,7 @@ export class AmountPage {
   public smallFont: boolean;
   public allowSend: boolean;
   public globalResult: string;
+  public sending: boolean;
   
   private LENGTH_EXPRESSION_LIMIT = 19;
   private SMALL_FONT_SIZE_LIMIT = 10;
@@ -29,6 +31,7 @@ export class AmountPage {
     console.log('ionViewDidLoad AmountPage');
     console.log("this.navParams.data", this.navParams.data);
     this.address = this.navParams.data.address;
+    this.sending = this.navParams.data.sending;
   }
 
   pushDigit(digit: string) {
@@ -142,7 +145,12 @@ export class AmountPage {
   };
 
   finish() {
-    this.navCtrl.push(ConfirmPage, {address: this.address, amount: this.globalResult});
+    if(this.sending) {
+      this.navCtrl.push(ConfirmPage, {address: this.address, amount: this.globalResult});      
+    } else {
+      console.log("To do");
+      this.navCtrl.push(CustomAmountPage, {address: this.address, amount: this.globalResult});            
+    }
   }
 
 }
