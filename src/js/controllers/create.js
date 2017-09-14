@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.formData.coin = 'btc';
 
-      if (config.cashSupport.enabled) $scope.enableCash = true;
+      if (config.cashSupport) $scope.enableCash = true;
 
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);

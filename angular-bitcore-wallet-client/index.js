@@ -13,6 +13,10 @@ bwcModule.provider("bwcService", function() {
       return Client.Bitcore;
     };
 
+    service.getBitcoreCash = function() {
+      return Client.BitcoreCash;
+    };
+
     service.getErrors = function() {
       return Client.errors;
     };
