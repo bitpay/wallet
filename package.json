@@ -40,6 +40,7 @@
     "@nsalaun/ng-logger": "2.0.1",
     "ajv": "5.2.2",
     "angular2-moment": "1.7.0",
+    "angular2-qrcode": "^2.0.1",
     "asn1.js": "=4.5.2",
     "autoprefixer": "7.1.2",
     "bitcore-wallet-client": "6.0.0",
@@ -62,7 +63,6 @@
     "ionicons": "3.0.0",
     "lodash": "4.17.4",
     "ngx-clipboard": "8.0.3",
-    "ngx-qrcode2": "0.0.3",
     "rxjs": "5.4.0",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.12"

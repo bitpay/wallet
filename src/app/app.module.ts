@@ -15,7 +15,7 @@ import { QRScanner } from '@ionic-native/qr-scanner';
 import { NgLoggerModule, Logger, Level } from '@nsalaun/ng-logger';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { QRCodeModule } from 'angular2-qrcode';
 import { MomentModule } from 'angular2-moment';
 
 /* Copay App */
@@ -37,10 +37,12 @@ import { SettingsPage } from '../pages/settings/settings';
 /* Settings */
 import { AboutPage } from '../pages/settings/about/about';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
-
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
+/* Receive */
+import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
+
 
 /* Providers */
 import { WalletProvider } from '../providers/wallet/wallet';
@@ -74,14 +76,15 @@ export function createTranslateLoader(http: Http) {
     DisclaimerPage,
     TabsPage,
     AmountPage,
-    ConfirmPage
+    ConfirmPage,
+    CustomAmountPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     NgLoggerModule.forRoot(Level.LOG),
-    NgxQRCodeModule,
     MomentModule,
+    QRCodeModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -108,7 +111,8 @@ export function createTranslateLoader(http: Http) {
     DisclaimerPage,
     TabsPage,
     AmountPage,
-    ConfirmPage
+    ConfirmPage,
+    CustomAmountPage
   ],
   providers: [
     StatusBar,

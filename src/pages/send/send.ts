@@ -24,7 +24,7 @@ export class SendPage {
     // TODO: Improve this function
     console.log("Send search string", search);
     if (search.length === 34  && _.startsWith(search, '1')) {
-      this.navCtrl.push(AmountPage, {address: search});
+      this.navCtrl.push(AmountPage, {address: search, sending: true});
     }
   }
 
