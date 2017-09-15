@@ -160,6 +160,13 @@
         border-radius: 0;
         box-shadow: none;
        }
+       & > .bch {
+         background-color: #9b9bab;
+         border-radius: 1rem;
+       }
+       & > .bch-enabled {
+         background-color: #ff9900 !important;
+       }
        &.circle{
           left:8px;
           .bg {
