@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog) {
+angular.module('copayApp.services').factory('incomingData', function($log, $state, $timeout, $ionicHistory, bitcore, bitcoreCash, $rootScope, payproService, scannerService, appConfigService, popupService, gettextCatalog) {
 
   var root = {};
 
@@ -84,14 +84,9 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     data = sanitizeUri(data);
 
-    // Bitcoin or Bitcoin Cash URL
-    if ((/^bitcoin(cash)?:/).exec(data)) {
-      var coin = 'btc';
-      if ((/^bitcoincash:/).exec(data)) {
-        coin = 'bch';
-        data = data.replace(/bitcoincash:/, 'bitcoin:');
-      }
-      if (bitcore.URI.isValid(data)) {
+    // Bitcoin  URL
+    if (bitcore.URI.isValid(data)) {
+        var coin = 'btc';
         var parsed = new bitcore.URI(data);
 
         var addr = parsed.address ? parsed.address.toString() : '';
@@ -110,12 +105,76 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           goSend(addr, amount, message, coin);
         }
         return true;
+    // Cash URI
+    } else if (bitcoreCash.URI.isValid(data)) {
+        var coin = 'bch';
+        var parsed = new bitcoreCash.URI(data);
 
-      } else {
-        $log.error('Invalid Bitcoin URL');
-        return false;
-      }
+        var addr = parsed.address ? parsed.address.toString() : '';
+        var message = parsed.message;
 
+        var amount = parsed.amount ? parsed.amount : '';
+
+        // paypro not yet supported on cash
+        if (parsed.r) {
+          payproService.getPayProDetails(parsed.r, function(err, details) {
+            if (err) {
+              if (addr && amount) 
+                goSend(addr, amount, message, coin);
+              else 
+                popupService.showAlert(gettextCatalog.getString('Error'), err);
+            } 
+            handlePayPro(details, coin);
+          });
+        } else {
+          goSend(addr, amount, message, coin);
+        }
+        return true;
+
+    // Cash URI with bitcoin core address version number?
+    } else if (bitcore.URI.isValid(data.replace(/^bitcoincash:/,'bitcoin:'))) {
+        $log.debug('Handling bitcoincash URI with legacy address');
+        var coin = 'bch';
+        var parsed = new bitcore.URI(data.replace(/^bitcoincash:/,'bitcoin:'));
+
+        var oldAddr = parsed.address ? parsed.address.toString() : '';
+        if (!oldAddr) return false;
+
+        var addr = '';
+
+        var a = bitcore.Address(oldAddr).toObject();
+        addr = bitcoreCash.Address.fromObject(a).toString();
+
+        // Translate address
+        $log.debug('address transalated to:' + addr);
+        popupService.showConfirm(
+          gettextCatalog.getString('Bitcoin cash Payment'), 
+          gettextCatalog.getString('Payment address was translated to new Bitcoin Cash address format: ' + addr),
+          gettextCatalog.getString('OK'), 
+          gettextCatalog.getString('Cancel'), 
+          function(ret) {
+            if (!ret) return false;
+
+            var message = parsed.message;
+            var amount = parsed.amount ? parsed.amount : '';
+
+            // paypro not yet supported on cash
+            if (parsed.r) {
+              payproService.getPayProDetails(parsed.r, function(err, details) {
+                if (err) {
+                  if (addr && amount) 
+                    goSend(addr, amount, message, coin);
+                  else 
+                    popupService.showAlert(gettextCatalog.getString('Error'), err);
+                } 
+                handlePayPro(details, coin);
+              });
+            } else {
+              goSend(addr, amount, message, coin);
+            }
+          }
+        );
+      return true;
       // Plain URL
     } else if (/^https?:\/\//.test(data)) {
 
@@ -139,6 +198,16 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         });
       } else {
         goToAmountPage(data);
+      }
+    } else if (bitcoreCash.Address.isValid(data, 'livenet')) {
+      if ($state.includes('tabs.scan')) {
+        root.showMenu({
+          data: data,
+          type: 'bitcoinAddress',
+          coin: 'bch',
+        });
+      } else {
+        goToAmountPage(data, 'bch');
       }
     } else if (data && data.indexOf(appConfigService.name + '://glidera') === 0) {
       var code = getParameterByName('code', data);
@@ -249,29 +318,29 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         });
       }
     }
-
     return false;
-
   };
 
-  function goToAmountPage(toAddress) {
+  function goToAmountPage(toAddress, coin) {
     $state.go('tabs.send', {}, {
       'reload': true,
       'notify': $state.current.name == 'tabs.send' ? false : true
     });
     $timeout(function() {
       $state.transitionTo('tabs.send.amount', {
-        toAddress: toAddress
+        toAddress: toAddress,
+        coin: coin,
       });
     }, 100);
   }
 
-  function handlePayPro(payProDetails) {
+  function handlePayPro(payProDetails, coin) {
     var stateParams = {
       toAmount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
-      paypro: payProDetails
+      paypro: payProDetails,
+      coin: coin,
     };
     scannerService.pausePreview();
     $state.go('tabs.send', {}, {

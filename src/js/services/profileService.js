@@ -322,6 +322,7 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
 
+console.log('[profileService.js.324]'); //TODO
       if (opts.mnemonic) {
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
@@ -339,7 +340,12 @@ angular.module('copayApp.services')
         }
       } else if (opts.extendedPrivateKey) {
         try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
+          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey, {
+            network: network,
+            account: opts.account || 0,
+            derivationStrategy: opts.derivationStrategy || 'BIP44',
+            coin: opts.coin,
+          });
         } catch (ex) {
           $log.warn(ex);
           return cb(gettextCatalog.getString('Could not create using the specified extended private key'));
@@ -389,6 +395,7 @@ angular.module('copayApp.services')
       $log.debug('Creating Wallet:', opts);
       $timeout(function() {
         seedWallet(opts, function(err, walletClient) {
+console.log('[profileService.js.395:walletClient:]',walletClient); //TODO
           if (err) return cb(err);
 
           var name = opts.name || gettextCatalog.getString('Personal Wallet');
@@ -400,6 +407,7 @@ angular.module('copayApp.services')
             walletPrivKey: opts.walletPrivKey,
             coin: opts.coin
           }, function(err, secret) {
+console.log('[profileService.js.407:err:]',err); //TODO
             if (err) return bwcError.cb(err, gettextCatalog.getString('Error creating wallet'), cb);
             return cb(null, walletClient, secret);
           });

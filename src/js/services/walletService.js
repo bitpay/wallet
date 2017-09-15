@@ -259,6 +259,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     function cacheStatus(status) {
+      if (status.wallet && status.wallet.scanStatus == 'running') return;
+
       wallet.cachedStatus = status ||  {};
       var cache = wallet.cachedStatus;
       cache.statusUpdatedOn = Date.now();
@@ -302,6 +304,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         $log.debug('Got Wallet Status for:' + wallet.credentials.walletName);
 
         cacheStatus(status);
+
+        wallet.scanning = status.wallet && status.wallet.scanStatus == 'running';
 
         return cb(null, status);
       });
@@ -816,13 +820,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     $log.debug('Scanning wallet ' + wallet.id);
     if (!wallet.isComplete()) return;
 
-    wallet.updating = true;
-    ongoingProcess.set('scanning', true);
+    wallet.scanning = true;
     wallet.startScan({
       includeCopayerBranches: true,
     }, function(err) {
-      wallet.updating = false;
-      ongoingProcess.set('scanning', false);
       return cb(err);
     });
   };
@@ -931,15 +932,17 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   // Approx utxo amount, from which the uxto is economically redeemable
   root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
-    var minFee = root.getMinFee(wallet,feeLevels, nbOutputs);
-    return parseInt( minFee / LOW_AMOUNT_RATIO);
+    var minFee = root.getMinFee(wallet, feeLevels, nbOutputs);
+    return parseInt(minFee / LOW_AMOUNT_RATIO);
   };
 
 
 
   root.getLowUtxos = function(wallet, levels, cb) {
 
-    wallet.getUtxos({coin: wallet.coin}, function(err, resp) {
+    wallet.getUtxos({
+      coin: wallet.coin
+    }, function(err, resp) {
       if (err || !resp || !resp.length) return cb();
 
       var minFee = root.getMinFee(wallet, levels, resp.length);
@@ -955,7 +958,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       var totalLow = lodash.sum(lowUtxos, 'satoshis');
 
       return cb(err, {
-        allUtxos:  resp || [],
+        allUtxos: resp || [],
         lowUtxos: lowUtxos || [],
         warning: minFee / balance > TOTAL_LOW_WARNING_RATIO,
         minFee: minFee,
@@ -1236,6 +1239,34 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     if (wallet.coin== 'bch') return 'bitcoincash';
     else return 'bitcoin';
   }
+
+
+  root.copyCopayers = function(wallet, newWallet, cb) {
+    var c = wallet.credentials;
+
+    var walletPrivKey = bitcore.PrivateKey.fromString(c.walletPrivKey);
+
+    var copayer = 1,
+      i = 0,
+      l = c.publicKeyRing.length;
+    var mainErr = null;
+
+    lodash.each(c.publicKeyRing, function(item) {
+      var name = item.copayerName || ('copayer ' + copayer++);
+      newWallet._doJoinWallet(newWallet.credentials.walletId, walletPrivKey, item.xPubKey, item.requestPubKey, name, {
+        coin: newWallet.credentials.coin,
+      }, function(err) {
+        //Ignore error is copayer already in wallet
+        if (err && !(err instanceof errors.COPAYER_IN_WALLET)) {
+          mainErr = err;
+        }
+
+        if (++i == l) {
+          return cb(mainErr);
+        }
+      });
+    });
+  };
 
   return root;
 });
