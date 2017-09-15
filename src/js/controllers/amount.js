@@ -309,7 +309,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
         if (a) {
           $scope.alternativeAmount = txFormatService.formatAmount(a * unitToSatoshi, true);
         } else {
-          $scope.alternativeAmount = 'N/A'; //TODO
+          if (result) {
+            $scope.alternativeAmount = 'N/A'; 
+          } else {
+            $scope.alternativeAmount = null;
+          }
           $scope.allowSend = false;
         }
       } else {

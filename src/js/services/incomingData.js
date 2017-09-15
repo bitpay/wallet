@@ -105,7 +105,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           goSend(addr, amount, message, coin);
         }
         return true;
-
+    // Cash URI
     } else if (bitcoreCash.URI.isValid(data)) {
         var coin = 'bch';
         var parsed = new bitcoreCash.URI(data);
@@ -130,6 +130,51 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
           goSend(addr, amount, message, coin);
         }
         return true;
+
+    // Cash URI with bitcoin core address version number?
+    } else if (bitcore.URI.isValid(data.replace(/^bitcoincash:/,'bitcoin:'))) {
+        $log.debug('Handling bitcoincash URI with legacy address');
+        var coin = 'bch';
+        var parsed = new bitcore.URI(data.replace(/^bitcoincash:/,'bitcoin:'));
+
+        var oldAddr = parsed.address ? parsed.address.toString() : '';
+        if (!oldAddr) return false;
+
+        var addr = '';
+
+        var a = bitcore.Address(oldAddr).toObject();
+        addr = bitcoreCash.Address.fromObject(a).toString();
+
+        // Translate address
+        $log.debug('address transalated to:' + addr);
+        popupService.showConfirm(
+          gettextCatalog.getString('Bitcoin cash Payment'), 
+          gettextCatalog.getString('Payment address was translated to new Bitcoin Cash address format: ' + addr),
+          gettextCatalog.getString('OK'), 
+          gettextCatalog.getString('Cancel'), 
+          function(ret) {
+            if (!ret) return false;
+
+            var message = parsed.message;
+            var amount = parsed.amount ? parsed.amount : '';
+
+            // paypro not yet supported on cash
+            if (parsed.r) {
+              payproService.getPayProDetails(parsed.r, function(err, details) {
+                if (err) {
+                  if (addr && amount) 
+                    goSend(addr, amount, message, coin);
+                  else 
+                    popupService.showAlert(gettextCatalog.getString('Error'), err);
+                } 
+                handlePayPro(details, coin);
+              });
+            } else {
+              goSend(addr, amount, message, coin);
+            }
+          }
+        );
+      return true;
       // Plain URL
     } else if (/^https?:\/\//.test(data)) {
 
