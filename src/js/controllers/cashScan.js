@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('cashScanController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, txFormatService, bwcError, pushNotificationsService, bwcService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $ionicHistory, $window, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, txFormatService, bwcError, pushNotificationsService, bwcService) {
     var wallet;
     var errors = bwcService.getErrors();
     $scope.error = null;
@@ -11,6 +11,17 @@ angular.module('copayApp.controllers').controller('cashScanController',
       updateAllWallets();
     });
 
+    var goHome = function() {
+      $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        historyRoot: true
+      });
+      $ionicHistory.clearHistory();
+      $state.go('tabs.settings').then(function() {
+        $state.transitionTo('tabs.home');
+      });
+    }
+
     var updateAllWallets = function() {
       var walletsBTC = profileService.getWallets({
         coin: 'btc',
@@ -19,7 +30,7 @@ angular.module('copayApp.controllers').controller('cashScanController',
       });
 
       if (lodash.isEmpty(walletsBTC)) {
-        $state.go('tabs.home');
+        goHome();
         return;
       }
 
@@ -157,7 +168,7 @@ angular.module('copayApp.controllers').controller('cashScanController',
             if (isNew)
               walletService.startScan(newWallet, function() {});
 
-            $state.go('tabs.home');
+            goHome();
           });
         });
       });
