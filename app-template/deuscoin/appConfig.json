@@ -19,7 +19,7 @@
   "gitHubRepoBugs": "https://github.com/bitlox/copay/issues",
   "disclaimerUrl": "https://deuscoin.org/",
   "url": "https://deuscoin.org/",
-  "bwsUrl": "https://bws.deuscoin.org/bws/api",
+  "bwsUrl": "http://13.228.142.13:3001/bws/api",
   "ratesUrl": "https://bws.deuscoin.org:8443/rates",
   "unitName": "DEUS",
   "unitCode": "deus",
