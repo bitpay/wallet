@@ -91,10 +91,10 @@
             Incomplete
           </span>
           <span ng-if="wallet.isComplete()">
-            <span ng-if="!wallet.balanceHidden  && !wallet.updating"> {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  ) }} </span>
-            <span ng-if="wallet.updating" translate> Scanning for funds... </span>
+            <span ng-if="!wallet.balanceHidden  && !wallet.scanning"> {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  ) }} </span>
+            <span ng-if="wallet.scanning" translate> Scanning for funds... </span>
 
-            <span ng-if="wallet.balanceHidden && !wallet.updating" translate>[Balance Hidden]</span>
+            <span ng-if="wallet.balanceHidden && !wallet.scanning" translate>[Balance Hidden]</span>
             <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
               {{wallet.m}}-of-{{wallet.n}}
             </span>

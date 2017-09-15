@@ -305,6 +305,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
         cacheStatus(status);
 
+        wallet.scanning = status.wallet && status.wallet.scanStatus == 'running';
+
         return cb(null, status);
       });
     };
@@ -818,13 +820,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     $log.debug('Scanning wallet ' + wallet.id);
     if (!wallet.isComplete()) return;
 
-    wallet.updating = true;
-    ongoingProcess.set('scanning', true);
+    wallet.scanning = true;
     wallet.startScan({
       includeCopayerBranches: true,
     }, function(err) {
-      wallet.updating = false;
-      ongoingProcess.set('scanning', false);
       return cb(err);
     });
   };
