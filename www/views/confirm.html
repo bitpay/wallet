@@ -9,7 +9,7 @@
 
   <ion-content class="add-bottom-for-cta">
     <div class="list">
-      <div class="item head">
+      <div class="item head" ng-hide="criticalError">
         <div class="sending-label">
           <img src="img/icon-tx-sent-outline.svg">
           <span translate ng-if="!tx.sendMax">Sending</span>
@@ -27,7 +27,7 @@
           <span class="item-note" ng-if="paymentExpired" ng-style="{'color': 'red'}" translate>Expired</span>
         </div>
 
-        <div class="item">
+        <div class="item" ng-hide="criticalError">
           <span class="label" translate>To</span>
           <span class="payment-proposal-to" ng-if="!recipientType">
             <img src="img/icon-bitcoin-small.svg">
