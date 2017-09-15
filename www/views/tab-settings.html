@@ -41,8 +41,9 @@
 
 
       <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.preferencesCash">
-        <i class="icon ion-ios-locked-outline" ng-if="cashSupport.value"></i>
-        <i class="icon ion-ios-unlocked-outline" ng-if="!cashSupport.value"></i>
+        <i class="icon big-icon-svg">
+          <img src="img/icon-bch.svg" class="bg bch" ng-class="{'bch-enabled': cashSupport.value}"/>
+        </i>
         <span class="setting-title">{{'Bitcoin Cash Support' | translate}}</span>
         <span class="setting-value">
           <span translate ng-if="cashSupport.value">Enabled</span>
