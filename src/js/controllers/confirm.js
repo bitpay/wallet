@@ -121,7 +121,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     // Setup $scope
-    //
+    
+
     var B = data.stateParams.coin == 'bch' ? bitcoreCash : bitcore;
 
     // Grab stateParams
