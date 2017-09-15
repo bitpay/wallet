@@ -244,6 +244,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.scan', {
+        url: '/scan',
+        views: {
+          'tab-scan': {
+            controller: 'tabScanController',
+            templateUrl: 'views/tab-scan.html',
+          }
+        }
+      })
       .state('scanner', {
         url: '/scanner',
         params: {
