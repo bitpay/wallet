@@ -58,6 +58,7 @@
     "bhttp": "1.2.1",
     "bitauth": "^0.2.1",
     "bitcore-wallet-client": "git://github.com/bitlox/bitcore-wallet-client.git#customnet",
+    "bitcore-lib": "git+https://github.com/bitlox/bitcore-lib.git#bitlox-main",
     "bower": "^1.7.9",
     "cordova-android": "6.2.3",
     "cordova-custom-config": "^3.0.5",

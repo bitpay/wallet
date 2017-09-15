@@ -25,7 +25,7 @@ this.getCustomNetwork = function(customParam) {
             }
             // try getting it from bitlox website
             $http.get("https://btm.bitlox.com/coin/"+networkName+".php").then(function(response){
-              console.log(res)
+              console.log('got network from server', res)
               if(!response) {
                 def.reject();
               }
@@ -37,6 +37,7 @@ this.getCustomNetwork = function(customParam) {
               res.xprivkey = parseInt(res.xprivkey,16)
               res.networkMagic = parseInt(res.magic,16)
               res.port = parseInt(res.port, 10)
+              console.log('parsed network', res)
               customNetworkList[customParam] = res;
               CUSTOMNETWORKS[customParam] = res;
               storageService.setCustomNetworks(JSON.stringify(customNetworkList));

@@ -47,26 +47,24 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.wallets = profileService.getWallets();
       $scope.defaults = configService.getDefaults();
       configService.get(function(err, config) {
-
-
-        config.defaultNetwork.pubkeyhash = parseInt(config.defaultNetwork.pubkeyhash,16)
-        config.defaultNetwork.privatekey = parseInt(config.defaultNetwork.privatekey,16)
-
-        config.defaultNetwork.scripthash = parseInt(config.defaultNetwork.scripthash,16)
-        config.defaultNetwork.xpubkey = parseInt(config.defaultNetwork.xpubkey,16)
-        config.defaultNetwork.xprivkey = parseInt(config.defaultNetwork.xprivkey,16)
-        config.defaultNetwork.networkMagic = parseInt(config.defaultNetwork.networkMagic,16)
-        CUSTOMNETWORKS[config.defaultNetwork.name] = config.defaultNetwork;
-        bitcore.Networks.add(config.defaultNetwork)
-        console.log(bitcore.Networks.get(config.defaultNetwork.name))
-
+        console.log(config.defaultNetwork)
+        var defaultNetwork = lodash.clone(config.defaultNetwork)
+        // console.log(config.defaultNetwork.privatekey, typeof(config.defaultNetwork.privatekey))
+        defaultNetwork.pubkeyhash = parseInt(defaultNetwork.pubkeyhash,16)
+        defaultNetwork.privatekey = parseInt(defaultNetwork.privatekey,16)
+        defaultNetwork.scripthash = parseInt(defaultNetwork.scripthash,16)
+        defaultNetwork.xpubkey = parseInt(defaultNetwork.xpubkey,16)
+        defaultNetwork.xprivkey = parseInt(defaultNetwork.xprivkey,16)
+        defaultNetwork.networkMagic = parseInt(defaultNetwork.networkMagic,16)
+        CUSTOMNETWORKS[defaultNetwork.name] = defaultNetwork;
+        bitcore.Networks.add(defaultNetwork)
+        // console.log(bitcore.Networks.get(defaultNetwork.name))
         storageService.setCustomNetworks(JSON.stringify(CUSTOMNETWORKS));
         for(var i in $scope.wallets) {
-          if(CUSTOMNETWORKS[$scope.wallets[i].network]) {
+          if(CUSTOMNETWORKS[$scope.wallets[i].network] && !bitcore.Networks.get($scope.wallets[i].network)) {
             bitcore.Networks.add(CUSTOMNETWORKS[$scope.wallets[i].network])
           }
         }
-
       });
 
       storageService.getFeedbackInfo(function(error, info) {

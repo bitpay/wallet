@@ -142,55 +142,6 @@ angular.module('copayApp.controllers').controller('createController',
       updateSeedSourceSelect(tc);
     };
 
-    $scope.getCustomNetwork = function() {
-      var def = $q.defer();
-      if($scope.formData.customParam) {
-        networkName = $scope.formData.customParam
-        // check apple approved list on iOS, and the full list of whatever we can support for Android
-        var customNet = CUSTOMNETWORKS[$scope.formData.customParam]
-        if(customNet) {
-          def.resolve(customNet)
-        } else {
-          // check previously imported custom nets
-          var customNetworks = storageService.getCustomNetworks(function(err, customNetworkListRaw) {
-            if(!customNetworkListRaw) {
-              customNetworkList = {};
-            } else {
-              customNetworkList = JSON.parse(customNetworkListRaw)
-            }
-            // try getting it from bitlox website
-            $http.get("https://btm.bitlox.com/coin/"+networkName+".php").then(function(response){
-              if(!response) {
-                def.reject();
-              }
-              var res = response.data;
-              res.pubkeyhash = parseInt(res.pubkeyhash,16)
-              res.privatekey = parseInt(res.privatekey,16)
-              res.scripthash = parseInt(res.scripthash,16)
-              res.xpubkey = parseInt(res.xpubkey,16)
-              res.xprivkey = parseInt(res.xprivkey,16)
-              res.networkMagic = parseInt(res.magic,16)
-              res.port = parseInt(res.port, 10)
-              customNetworkList[$scope.formData.customParam] = res;
-              CUSTOMNETWORKS[$scope.formData.customParam] = res;
-              storageService.setCustomNetworks(JSON.stringify(customNetworkList));
-              bitcore.Networks.add(res)
-              def.resolve(res)
-            }, function(err) {
-              console.warn(err)
-              def.reject();
-            })
-
-          })
- 
-        }
-      } else {
-        return $q.resolve();
-      }
-      return def.promise;
-
-    }
-
     $scope.create = function(form) {
       if (form && form.$invalid) {
         popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the required fields'));

@@ -8,7 +8,6 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
   // Constant fee options to translate
   root.feeOpts = {
-    urgent: gettext('Urgent'),
     priority: gettext('Priority'),
     normal: gettext('Normal'),
     economy: gettext('Economy'),

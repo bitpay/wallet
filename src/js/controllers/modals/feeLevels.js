@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('feeLevelsController', functio
 
   var getMaxRecommended = function() {
     var value = lodash.find($scope.feeLevels[$scope.network], {
-      level: 'urgent'
+      level: 'priority'
     });
     return parseInt((value.feePerKB / 1000).toFixed());
   };
