@@ -29,7 +29,7 @@
     "alias": "Aureus",
     "code": "aurs",
     "symbol": "AURS",
-    "derivationCoinPath": 145,
+    "derivationCoinPath": 0,
     "ratesUrl": "https://seed.aureus.cc/rates",
     "pubkeyhash": "0x17",
     "privatekey": "0x80",

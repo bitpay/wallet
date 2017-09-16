@@ -29,7 +29,7 @@
     "alias": "Deuscoin",
     "code": "deus",
     "symbol": "DEUS",
-    "derivationCoinPath": 146,
+    "derivationCoinPath": 0,
     "ratesUrl": "https://bws.deuscoin.org:8443/rates",
     "pubkeyhash": "0x1e",
     "privatekey": "0x80",
