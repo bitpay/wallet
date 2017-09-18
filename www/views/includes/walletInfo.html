@@ -1,5 +1,5 @@
 
-<div class="actions" ng-show="(walletNotRegistered || updateStatusError) && !(updatingStatus || updatingTxHistory)">
+<div class="actions" ng-show="(walletNotRegistered || updateStatusError)">
   <a ng-show="walletNotRegistered" ng-click="recreate()" translate>Tap to recreate</a>
   <a ng-show="updateStatusError" ng-click="updateAll(true)" translate>Tap to retry</a>
 </div>
