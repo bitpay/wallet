@@ -16,7 +16,7 @@
     "scripthash": 0x23,
     "xpubkey": 0x0488b21e,
     "xprivkey": 0x0488ade4,
-    "bwsUrl": "http://13.228.142.13:3232/bws/api",
+    "bwsUrl": "https://deus.dlc.net/bws/api",
     "port": 19697,
     "networkMagic": 0x9ee8bc5a,
     "explorer": "https://explorer.deuscoin.org/"
@@ -34,7 +34,7 @@
     "scripthash": 0x1C,
     "xpubkey": 0x0488b21e,
     "xprivkey": 0x0488ade4,
-    "bwsUrl": "https://bws.aureus.cc/bws/api",
+    "bwsUrl": "https://aurs.dlc.net/bws/api",
     "port": "9697",
     "networkMagic": 0x6ee58c2a,
     "explorer": "https://explorer.aureus.cc/"
