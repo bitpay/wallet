@@ -517,8 +517,9 @@ angular.module('copayApp.services')
         bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
 
         // Dont save the default
-        if (bwsFor[walletId] == defaults.bws.url)
-          return cb();
+        // Dave says: DO save the default. SMH
+        // if (bwsFor[walletId] == defaults.bws.url)
+        //   return cb();
 
         configService.set({
           bwsFor: bwsFor,
@@ -627,7 +628,7 @@ angular.module('copayApp.services')
         passphrase: opts.passphrase,
         entropySourcePath: opts.entropySourcePath,
         derivationStrategy: opts.derivationStrategy || 'BIP44',
-        account: opts.account || 0,
+        account: opts.account || 0
       }, function(err) {
         if (err) {
           if (err instanceof errors.NOT_AUTHORIZED)
