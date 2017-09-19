@@ -24,7 +24,7 @@
                 <div class="pull-right"
                      ng-style="{'min-width': qrsize}">
                     <div uib-collapse="!showqr[address]">
-                        <qrcode data="bitcoin:{{address}}"
+                        <qrcode data="{{address}}"
                                 size="{{qrsize}}"
                                 error-correction-level="Q"></qrcode>
                     </div>

@@ -19,6 +19,8 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;
 
     $scope.wallet = profileService.getWallet(walletId);
+    $scope.network = $scope.wallet.network;
+    if($scope.network === "livenet") {$scope.network = "bitcoin";}
 
     walletService.getAddress($scope.wallet, false, function(err, addr) {
       if (!addr) {
@@ -51,9 +53,8 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       }
     });
 
-    $scope.network = $scope.wallet.network;
     $scope.altAmountStr = txFormatService.formatAlternativeStr($scope.amount, CUSTOMNETWORKS[$scope.network]);
-    if($scope.network === "livenet") {$scope.network = "bitcoin";}
+
   });
 
   $scope.close = function() {
@@ -65,12 +66,12 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
   $scope.shareAddress = function() {
     if (!platformInfo.isCordova) return;
-    var data = 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    var data = $scope.network + ':' + $scope.address + '?amount=' + $scope.amountBtc;
     window.plugins.socialsharing.share(data, null, null, null);
   }
 
   $scope.copyToClipboard = function() {
-    return 'bitcoin:' + $scope.address + '?amount=' + $scope.amountBtc;
+    return $scope.network + ':' + $scope.address + '?amount=' + $scope.amountBtc;
   };
 
 });
