@@ -47,7 +47,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       $scope.wallets = profileService.getWallets();
       $scope.defaults = configService.getDefaults();
       configService.get(function(err, config) {
-        console.log(config.defaultNetwork)
         var defaultNetwork = lodash.clone(config.defaultNetwork)
         // console.log(config.defaultNetwork.privatekey, typeof(config.defaultNetwork.privatekey))
         defaultNetwork.pubkeyhash = parseInt(defaultNetwork.pubkeyhash,16)

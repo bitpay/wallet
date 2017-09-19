@@ -3,6 +3,9 @@
 angular.module('copayApp.controllers').controller('termsController', function($scope, $log, $state, appConfigService, uxLanguage, profileService, externalLinkService, gettextCatalog) {
   $scope.lang = uxLanguage.currentLanguage;
 
+  $scope.namecase = appConfigService.nameCase;
+  $scope.namecaps = appConfigService.nameCase.toUpperCase();
+  $scope.companyname = appConfigService.companyName
   $scope.confirm = function() {
     profileService.setDisclaimerAccepted(function(err) {
       if (err) $log.error(err);
