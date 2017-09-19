@@ -8,7 +8,7 @@ angular.module('copayApp.services').factory('addressbookService', function($log,
     try {
       network = (new bitcore.Address(address)).network.name;
     } catch(e) {
-      $log.error('No valid bitcoin address. Trying bitcoin cash...');
+      $log.warn('No valid bitcoin address. Trying bitcoin cash...');
       network = (new bitcoreCash.Address(address)).network.name;
     }
     return network;
