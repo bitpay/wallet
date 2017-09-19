@@ -108,6 +108,7 @@
     &__logo {
       height: $v-logo-height;
       position: relative;
+      padding: 5px;
     }
     &__wallet {
       &__multisig-number {
