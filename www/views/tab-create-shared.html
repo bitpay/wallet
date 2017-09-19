@@ -49,6 +49,15 @@
         </label>
 
         <div class="item item-divider"></div>
+        <a class="item item-icon-left item-big-icon-left item-icon-right wallet" ng-hide="formData.customParam" ng-click="showNetworkSelector()">
+          <span class="label" translate>Currency</span>
+          <i class="icon big-icon-svg" wallet-icon data-wallet="network">
+          </i>
+          <div>{{network.alias}}</div>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+
+         <div class="item item-divider"></div>
 
         <a class="item" ng-click="showAdvChange()">
           <span translate ng-show="!showAdv">Show advanced options</span>
@@ -56,7 +65,13 @@
         </a>
 
         <div ng-show="showAdv">
+
           <label class="item item-input item-stacked-label">
+            <span class="input-label">Custom Wallet Parameter</span>
+            <input type="text" autocomplete="off" autocapitalize="off" ng-model="formData.customParam" placeholder="">
+          </label>
+
+          <label ng-hide="formData.customParam" class="item item-input item-stacked-label">
             <span class="input-label">Wallet Service URL</span>
             <input type="text" ng-model="formData.bwsurl">
           </label>
@@ -67,11 +82,11 @@
             </div>
             <select class="m10t" ng-model="formData.seedSource" ng-options="seed as seed.label for seed in seedOptions" ng-change="resizeView()"></select>
           </label>
-
+<!-- 
           <label class="item item-input item-stacked-label" ng-show="formData.seedSource.id == 'trezor' || formData.seedSource.id == 'ledger'">
             <span class="input-label" translate>Account Number</span>
             <input type="number" ng-model="formData.account" ignore-mouse-wheel>
-          </label>
+          </label> -->
 
           <label class="item item-input item-stacked-label" ng-show="formData.seedSource.id == 'set'">
             <span class="input-label" translate>Wallet Recovery Phrase</span>
@@ -134,17 +149,17 @@
             <span class="toggle-label" translate>I have written it down</span>
           </ion-checkbox>
 
-          <label class="item item-input item-stacked-label" ng-show="formData.seedSource.id  == 'set'">
+<!--           <label class="item item-input item-stacked-label" ng-show="formData.seedSource.id  == 'set'">
             <span class="input-label" translate>Derivation Path</span>
             <input type="text"
             placeholder="{{'BIP32 path for address derivation'|translate}}"
             ng-model="formData.derivationPath">
-          </label>
+          </label> -->
 
-          <ion-toggle ng-show="formData.seedSource.supportsTestnet" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
+<!--           <ion-toggle ng-show="formData.seedSource.supportsTestnet" ng-model="formData.testnetEnabled" toggle-class="toggle-positive">
             Testnet
           </ion-toggle>
-
+ -->
           <ion-toggle ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">
             <span translate>Single Address Wallet</span>
             <small translate>For audit purposes</small>
@@ -159,4 +174,12 @@
       </button>
     </form>
   </ion-content>
+  <network-selector
+      network-selector-title="networkSelectorTitle"
+      network-selector-networks="networks"
+      network-selector-selected-network="network"
+      network-selector-show="showNetworks"
+      network-selector-on-select="onNetworkSelect">
+    </network-selector>
+  
 </ion-view>
