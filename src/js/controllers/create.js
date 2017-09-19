@@ -177,7 +177,7 @@ angular.module('copayApp.controllers').controller('createController',
 
       if ($scope.formData.seedSource.id == walletService.externalSource.ledger.id || $scope.formData.seedSource.id == walletService.externalSource.trezor.id || $scope.formData.seedSource.id == walletService.externalSource.intelTEE.id) {
         if ($scope.formData.coin == 'bch') {
-          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Hardware wallet are yet not supported with Bitcoin Cash'));
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Hardware wallets are not yet supported with Bitcoin Cash'));
           return;
         }
 
