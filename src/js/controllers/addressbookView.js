@@ -1,11 +1,23 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, $stateParams, lodash, addressbookService, popupService, $ionicHistory, platformInfo, gettextCatalog) {
+angular.module('copayApp.controllers').controller('addressbookViewController', function($scope, $state, $timeout, lodash, addressbookService, popupService, $ionicHistory, platformInfo, gettextCatalog, bitcoreCash) {
   $scope.isChromeApp = platformInfo.isChromeApp;
   $scope.addressbookEntry = {};
-  $scope.addressbookEntry.name = $stateParams.name;
-  $scope.addressbookEntry.email = $stateParams.email;
-  $scope.addressbookEntry.address = $stateParams.address;
+  var coin;
+
+  $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.addressbookEntry = {};
+    $scope.addressbookEntry.name = data.stateParams.name;
+    $scope.addressbookEntry.email = data.stateParams.email;
+    $scope.addressbookEntry.address = data.stateParams.address;
+
+    var cashAddress = bitcoreCash.Address.isValid($scope.addressbookEntry.address, 'livenet');
+    if (cashAddress) {
+      coin = 'bch';
+    } else {
+      coin = 'btc';
+    }
+  });
 
   $scope.sendTo = function() {
     $ionicHistory.removeBackView();
@@ -14,7 +26,8 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
       $state.transitionTo('tabs.send.amount', {
         toAddress: $scope.addressbookEntry.address,
         toName: $scope.addressbookEntry.name,
-        toEmail: $scope.addressbookEntry.email
+        toEmail: $scope.addressbookEntry.email,
+        coin: coin
       });
     }, 100);
   };
@@ -31,7 +44,7 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
         }
         $ionicHistory.goBack();
       });
-    }); 
+    });
   };
 
 });
