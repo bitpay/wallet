@@ -62,7 +62,7 @@
           </div>
         </div>
 
-        <div ng-if="!wallet.balanceHidden && showBalanceButton" ng-style="{'opacity': altAmountOpacity, 'transform': amountScale}">
+        <div ng-if="!updateStatusError && !wallet.balanceHidden && showBalanceButton" ng-style="{'opacity': altAmountOpacity, 'transform': amountScale}">
           <button class="button button-standard button-primary amount__button-balance size-14" ng-click="openBalanceModal()">
             <i class="icon ion-ios-checkmark-outline"></i>
             <strong>
