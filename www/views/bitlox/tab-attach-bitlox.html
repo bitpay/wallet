@@ -86,7 +86,7 @@
       </div>
     <!-- </div> -->
 
-    <div class="list card" ng-if="api.getNumDevices() < 1">
+    <div class="list card"  ng-hide="bitlox.connected" ng-if="!bitlox.isMobile && timer">
       <a ng-click="openBitlox();"  ng-click="openBitlox($event)" class="open-bitlox item item-sub item-icon-left item-big-icon-left">
        <i class="icon big-icon-svg">
          <img src="img/icon-wallet-bitlox.svg" class="bg wallet icon-create-wallet"/>

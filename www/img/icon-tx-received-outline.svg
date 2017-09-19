@@ -1,22 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="150px" height="150px" viewBox="0 0 150 150" enable-background="new 0 0 150 150" xml:space="preserve">  <image id="image0" width="150" height="150" x="0" y="0"
-    xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWAgMAAABBb5lxAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAADFBMVEX/////AAD/AAD///9V
-uYPYAAAAAnRSTlMAAHaTzTgAAAABYktHRACIBR1IAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJ
-TUUH4QULFTkEHSlCzgAAAsFJREFUWMPtmEuOHCEMhmeTLHI/vOAIvg9HYFGcMrzxAzNEUxpFSpC6
-1V394QddBf798fHvjB+ODZ/K4NecwjC1EY7YoAQnMJ/WsDEgVHpMDIe3+iEamF82gLtlGPUEzBzF
-PDPAvlEM+SogMUcw4Mmx7wRDufTkAsGEsWouKgyksWpOYSiN0ZkLY6s+zUWBgbrH6to9AvPaJ/E6
-MVQJUK8D2/pcPga29blmDww3ebb8A8fCFvNt+sD2PovXh2Bg+BzzO+ZNDBPBrNCKgbCw/aq5Gc7A
-Hht7JmZn0C00zJuh9RwahmZo3cTnGCzMzqDH3TE7g2ajYnDEcGCnRFvgHTtQ9deKiUR9FFjoGE9U
-5A0DE9flfZATbFh8A8sxFQzEenwNk8smsfz7n2DPGctBFQzfxeIZy+tasPQuFj7B8BJ7MvbzLcw3
-zH0vljL265sxqNjzH/ursLadNoxsGRJrD3bD0MYaMN6DjYWBwRGLA/Pp5PQZGC3nQNyWrfzrb9HE
-fA2oYKyElFgrOgtGQ2vPAn0Aa3CFYJWmwmpw7RUJJh/nGlzGeHXr5VZTC+yMsdA0VrRAwXgRXDcu
-tg2WOryS8YhlbzElUXij2qJLcCnx0HY7eRVFoj5vGDs+utKKG4xOhY1m251ZWrL1M4sflCgV28TY
-XK9C257OoELrmCgJlIrdYygl0iwwRCji5OyYqGqUkprFz10phSoWsWzbMg+4z1nmXRaNlyUonLG7
-uneWx7fF9mXpfikELmXFpUiBO8lzK6DsHJgcs3Ng4u4gFTl2JTzNHISMtUQxclF8KbEvBbtL2yWR
-8t8ITjUTjNZEv0gbHdqrbnTctk38XRNm017ZtXTIXKfsH9pNbt9ucmLPNZpXohUGVivssrFWzcU1
-xWrTuXkOwanpx1uIdHlEQxIJFWzMLYr9JapZuqU01v0GJ7E3x2/Fk4dgp9kR0QAAACV0RVh0ZGF0
-ZTpjcmVhdGUAMjAxNy0wNS0xMVQyMTo1NzowNC0wNzowMBhW40MAAAAldEVYdGRhdGU6bW9kaWZ5
-ADIwMTctMDUtMTFUMjE6NTc6MDQtMDc6MDBpC1v/AAAAAElFTkSuQmCC" />
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 35 35" style="enable-background:new 0 0 35 35;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#0EC286;}
+</style>
+<g>
+	<path class="st0" d="M17.5,34.5c-9.4,0-17-7.6-17-17s7.6-17,17-17s17,7.6,17,17S26.9,34.5,17.5,34.5z M17.5,1.5
+		c-8.8,0-16,7.2-16,16s7.2,16,16,16s16-7.2,16-16S26.3,1.5,17.5,1.5z"/>
+</g>
+<path class="st0" d="M23.8,18.2c-0.3-0.3-0.8-0.3-1.1,0l-4.7,4.6V10.5c0-0.4-0.3-0.8-0.8-0.8s-0.8,0.3-0.8,0.8v12.1l-4.4-4.3
+	c-0.3-0.3-0.8-0.3-1.1,0c-0.3,0.3-0.3,0.8,0,1.1l5.8,5.6c0.1,0.1,0.3,0.2,0.5,0.2c0.2,0,0.4-0.1,0.5-0.2l5.9-5.8
+	C24.1,18.9,24.1,18.5,23.8,18.2z"/>
 </svg>

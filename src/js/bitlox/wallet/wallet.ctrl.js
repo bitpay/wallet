@@ -4,9 +4,9 @@
     angular.module('app.wallet')
         .controller('WalletCtrl', WalletCtrl);
 
-    WalletCtrl.$inject = ['$scope', '$rootScope', '$log', '$state', '$stateParams', '$timeout', '$ionicPopup', '$ionicModal', '$ionicLoading', 'MAX_WALLETS', 'bitloxWallet', 'Toast', 'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', '$ionicHistory', 'profileService',  'ongoingProcess', 'walletService', 'popupService', 'gettextCatalog', 'derivationPathHelper', 'bwcService', 'platformInfo', 'configService'];
+    WalletCtrl.$inject = ['$scope', '$rootScope', '$log', '$state', '$stateParams', '$timeout', '$ionicPopup', '$ionicModal', '$ionicLoading', 'MAX_WALLETS', 'bitloxWallet', 'Toast', 'bitloxHidChrome', 'bitloxHidWeb', 'bitloxBleApi', '$ionicHistory', 'profileService',  'ongoingProcess', 'walletService', 'popupService', 'gettextCatalog', 'derivationPathHelper', 'bwcService', 'platformInfo', 'configService', 'externalLinkService'];
 
-    function WalletCtrl($scope, $rootScope,  $log, $state, $stateParams, $timeout, $ionicPopup, $ionicModal, $ionicLoading, MAX_WALLETS, bitloxWallet, Toast, hidchrome, hidweb, bleapi, $ionicHistory, profileService, ongoingProcess, walletService, popupService, gettextCatalog, derivationPathHelper, bwcService, platformInfo, configService) {
+    function WalletCtrl($scope, $rootScope,  $log, $state, $stateParams, $timeout, $ionicPopup, $ionicModal, $ionicLoading, MAX_WALLETS, bitloxWallet, Toast, hidchrome, hidweb, bleapi, $ionicHistory, profileService, ongoingProcess, walletService, popupService, gettextCatalog, derivationPathHelper, bwcService, platformInfo, configService, externalLinkService) {
 
         var defaults = configService.getDefaults()
         var api = hidweb;
@@ -19,6 +19,15 @@
         }
         $scope.api = api;
 
+        $scope.openBitlox = function() {
+          var url = 'https://bitlox.com';
+          var optIn = true;
+          var title = gettextCatalog.getString('BitLox');
+          var message = gettextCatalog.getString('Do you want to visit BitLox.com?');
+          var okText = gettextCatalog.getString('Yes');
+          var cancelText = gettextCatalog.getString('Cancel');
+          externalLinkService.open(url, optIn, title, message, okText, cancelText);
+        }
 
 
         $scope.bitlox = {

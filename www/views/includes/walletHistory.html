@@ -26,7 +26,7 @@
           <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
           <span class="comment" translate>Low fees</span>
         </div>
-        <div class="low-fees" ng-if="btx.lowAmount" ng-if="wallet.credentials.network === 'livenet'">
+        <div class="low-fees" ng-if="btx.lowAmount && wallet.credentials.network === 'livenet'">
           <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
           <span class="comment" translate>Amount too low to spend</span>
         </div>
