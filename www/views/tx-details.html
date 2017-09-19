@@ -88,7 +88,7 @@
         </div>
         <div class="item low-fees" ng-if="btx.lowAmount">
           <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
-          <span translate>
+          <span translate ng-if="wallet.credentials.network === 'livenet'">
 This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself. </span>
         </div>
  
