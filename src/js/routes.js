@@ -705,7 +705,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
       })
 
       .state('tabs.paymentRequest.amount', {
-        url: '/amount',
+        url: '/amount/:toAddress',
         views: {
           'tab-receive@tabs': {
             controller: 'amountController',

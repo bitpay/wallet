@@ -8,7 +8,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
   $scope.requestSpecificAmount = function() {
     $state.go('tabs.paymentRequest.amount', {
-      id: $scope.wallet.credentials.walletId
+      id: $scope.wallet.credentials.walletId,
+      toAddress: $scope.addr
     });
   };
   $scope.setNetwork = function() {

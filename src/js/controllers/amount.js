@@ -34,7 +34,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.walletId = data.stateParams.walletId;
     $scope.wallet = data.stateParams.wallet;
     $scope.showSendMax = false;
-    $scope.sendAmount = 0;
 
     $scope.customAmount = data.stateParams.customAmount;
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
