@@ -45,19 +45,57 @@ angular.module('copayApp.controllers').controller('cashScanController',
         return !xPubKeyIndex[w.credentials.xPubKey];
       });
 
-      // Filter out non BIP44 wallets
-      var wallets = lodash.filter(walletsBTC, function(w) {
-        return w.credentials.derivationStrategy == 'BIP44'
-      });
+      var availableWallets = [];
+      var nonEligibleWallets = [];
 
-      $scope.wallets = wallets;
-      $scope.nonBIP44Wallets = lodash.filter(walletsBTC, function(w) {
+      function addToNonEligibleWallets(wallets) {
+        if (!wallets) return;
+        lodash.each(wallets, function(w) {
+          nonEligibleWallets.push(w);
+        });
+      };
+
+      // Filter out non BIP44 wallets
+      var nonBIP44Wallets = lodash.filter(walletsBTC, function(w) {
         return w.credentials.derivationStrategy != 'BIP44';
       });
 
-      var i = wallets.length;
+      if (!lodash.isEmpty(nonBIP44Wallets)) {
+        availableWallets = lodash.filter(walletsBTC, function(w) {
+          return w.credentials.derivationStrategy == 'BIP44';
+        });
+        addToNonEligibleWallets(nonBIP44Wallets);
+      }
+
+      // Filter out read only wallets
+      var readOnlyWallets = lodash.filter(availableWallets, function(w) {
+        return !w.canSign();
+      });
+
+      if (!lodash.isEmpty(readOnlyWallets)) {
+        availableWallets = lodash.filter(availableWallets, function(w) {
+          return w.canSign();
+        });
+        addToNonEligibleWallets(readOnlyWallets);
+      }
+
+      // Filter out non backed up wallets
+      $scope.nonBackedUpWallets = lodash.filter(availableWallets, function(w) {
+        return w.needsBackup;
+      });
+
+      if (!lodash.isEmpty($scope.nonBackedUpWallets)) {
+        availableWallets = lodash.filter(availableWallets, function(w) {
+          return !w.needsBackup;
+        });
+      }
+
+      $scope.nonEligibleWallets = nonEligibleWallets;
+      $scope.availableWallets = availableWallets;
+
+      var i = availableWallets.length;
       var j = 0;
-      lodash.each(wallets, function(wallet) {
+      lodash.each(availableWallets, function(wallet) {
         walletService.getBalance(wallet, {
           coin: 'bch'
         }, function(err, balance) {
