@@ -1,4 +1,22 @@
 #wallet-backup-phrase {
+  .comment {
+    color: #667;
+    font-size: 0.9em;
+  }
+  .item {
+    color: $v-dark-gray;
+    padding-top: 1.3rem;
+    padding-bottom: 1.3rem;
+    border: none;
+  }
+  .heading {
+    font-size: 17px;
+    color: $v-dark-gray;
+    margin: 1rem 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+  }
   h3 {
     padding: 15px;
   }

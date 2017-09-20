@@ -7,9 +7,16 @@
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="ng-hide" ng-show="deleted">
-        <div class="phrase-unavailable" translate>Wallet recovery phrase not available.</div>
-        <div class="phrase-unavailable-instructions" translate>You can still export it from Advanced &gt; Export.</div>
+    <div class="ng-hide list card" ng-show="deleted">
+      <div class="item heading">
+        <span translate>Wallet recovery phrase not available</span>
+      </div>
+      <div class="item">
+        <span class="comment" translate>You can still export it from Advanced &gt; Export.</span>
+      </div>
+    </div>
+    <div class="item">
+      <span class="comment" ng-if="wallet.coin == 'bch'" translate>Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase.</span>
     </div>
     <!--
       ## STEP 1
