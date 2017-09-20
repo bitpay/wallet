@@ -1,0 +1,22 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button (click)="goBack()" ion-button icon-only>
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Alternative currency</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-input type="search" placeholder="Search your currency" [(ngModel)]="searchedAltCurrency" (ngModelChange)="findCurrency(searchedAltCurrency)"></ion-input>
+  <ion-list>
+    <button ion-item *ngFor="let alt of altCurrencyList" (click)="altSelected(alt)">
+      {{ alt.name }} <span item-end>{{alt.isoCode}}</span>
+    </button>
+  </ion-list>
+</ion-content>

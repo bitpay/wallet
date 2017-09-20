@@ -37,6 +37,8 @@ import { SettingsPage } from '../pages/settings/settings';
 /* Settings */
 import { AboutPage } from '../pages/settings/about/about';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
+import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
+
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
@@ -54,6 +56,7 @@ import { LanguageProvider } from '../providers/language/language';
 import { ScanProvider } from '../providers/scan/scan';
 import { ProfileProvider } from '../providers/profile/profile';
 import { BwcProvider } from '../providers/bwc/bwc';
+import { RateProvider } from '../providers/rate/rate';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -77,7 +80,8 @@ export function createTranslateLoader(http: Http) {
     TabsPage,
     AmountPage,
     ConfirmPage,
-    CustomAmountPage
+    CustomAmountPage,
+    AltCurrencyPage
   ],
   imports: [
     BrowserModule,
@@ -112,7 +116,8 @@ export function createTranslateLoader(http: Http) {
     TabsPage,
     AmountPage,
     ConfirmPage,
-    CustomAmountPage
+    CustomAmountPage,
+    AltCurrencyPage
   ],
   providers: [
     StatusBar,
@@ -144,7 +149,8 @@ export function createTranslateLoader(http: Http) {
     QRScanner,
     ScanProvider,
     ProfileProvider,
-    BwcProvider
+    BwcProvider,
+    RateProvider
   ]
 })
 export class AppModule { }
