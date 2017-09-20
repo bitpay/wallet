@@ -29,6 +29,9 @@ bwcModule.provider("bwcService", function() {
     service.getUtils = function() {
       return Client.Utils;
     };
+    service.getConstants = function() {
+      return Client.Constants;
+    };    
 
     service.getClient = function(walletData, opts) {
       opts = opts || {};

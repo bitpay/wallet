@@ -38,8 +38,6 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       $scope.amountUnitStr = parsedAmount.amountUnitStr;
       $scope.amountBtc = parsedAmount.amount; // BTC
       $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat, CUSTOMNETWORKS[$scope.network]);
-
-      console.log($scope.network, parsedAmount, $scope.altAmountStr)
     });
   });
 

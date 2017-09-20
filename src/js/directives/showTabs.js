@@ -5,9 +5,11 @@ angular.module('copayApp.directives')
       restrict: 'A',
       link: function($scope, $el) {
         $scope.$on("$ionicView.beforeEnter", function(event, data) {
-          $rootScope.$apply(function() {
-            $rootScope.hideTabs = '';
-          });
+          // $timeout(function() {
+            $rootScope.$applyAsync(function() {
+              $rootScope.hideTabs = '';
+            });
+          // });
         });
       }
     };
