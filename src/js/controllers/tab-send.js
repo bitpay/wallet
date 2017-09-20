@@ -77,6 +77,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
           name: v.name,
           recipientType: 'wallet',
           coin: v.coin,
+          network: v.network,
           getAddress: function(cb) {
             walletService.getAddress(v, false, cb);
           },

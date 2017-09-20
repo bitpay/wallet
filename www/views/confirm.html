@@ -64,9 +64,7 @@
         <a class="item item-icon-right" ng-hide="!wallet" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>
           <div class="wallet" ng-if="wallet">
-            <i class="icon big-icon-svg">
-              <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
-            </i>
+            <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
             <div>{{wallet.name}}</div>
           </div>
           <div class="wallet" ng-if="!wallet">
