@@ -68,9 +68,7 @@
       </div>
       <div class="list">
         <a class="item item-icon-left item-icon-right" ng-repeat="item in list" ng-if="hasWallets && item.recipientType == 'wallet'" ng-click="goToAmount(item)">
-          <i class="icon big-icon-svg" ng-if="item.recipientType == 'wallet'">
-            <img ng-src="img/{{item.network == 'testnet' ? 'icon-wallet-testnet' : (item.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !item.color}" ng-style="{'background-color': item.color}" class="bg"/>
-          </i>
+          <i class="icon big-icon-svg" ng-if="item.recipientType == 'wallet'" ng-init="wallet = item" ng-include="'views/includes/walletIcon.html'"></i>
           {{item.name}}
           <i class="icon bp-arrow-right"></i>
         </a>
