@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('createController',
-  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS, customNetworkService, rateService) {
+  function($scope, $rootScope, $timeout, $log, lodash, $state, $ionicScrollDelegate, $ionicHistory, profileService, configService, gettextCatalog, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, storageService, popupService, appConfigService, pushNotificationsService, $http, $q, bitcore, CUSTOMNETWORKS, customNetworkService, rateService, platformInfo) {
 
     /* For compressed keys, m*73 + n*34 <= 496 */
     var COPAYER_PAIR_LIMITS = {
@@ -18,6 +18,7 @@ angular.module('copayApp.controllers').controller('createController',
       11: 1,
       12: 1,
     };
+    $scope.platformInfo = platformInfo
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.formData = {};
