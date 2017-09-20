@@ -21,8 +21,9 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     $scope.wallet = profileService.getWallet(walletId);
     $scope.network = $scope.wallet.network;
     if($scope.network === "livenet") {$scope.network = "bitcoin";}
-
+    console.log('the fuck')
     walletService.getAddress($scope.wallet, false, function(err, addr) {
+      console.log('hasdflkjasdfjkh')
       if (!addr) {
         showErrorAndBack('Error', 'Could not get the address');
         return;
@@ -34,23 +35,27 @@ angular.module('copayApp.controllers').controller('customAmountController', func
         data.stateParams.amount, 
         data.stateParams.currency);
 
-      // Amount in USD or BTC
-      var amount = parsedAmount.amount;
-      var currency = parsedAmount.currency;
-      $scope.amountUnitStr = parsedAmount.amountUnitStr;
+      $scope.amountBtc = amount; // BTC
+      $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat, CUSTOMNETWORKS[$scope.network]);
 
-      if (currency != 'BTC') {
-        // Convert to BTC
-        var config = configService.getSync().wallet.settings;
-        var amountUnit = txFormatService.satToUnit(parsedAmount.amountSat);
-        var btcParsedAmount = txFormatService.parseAmount(amountUnit, config.unitName);
+
+      // Amount in USD or BTC
+      // var amount = parsedAmount.amount;
+      // var currency = parsedAmount.currency;
+      // $scope.amountUnitStr = parsedAmount.amountUnitStr;
+
+      // if (currency != 'BTC') {
+      //   // Convert to BTC
+      //   var config = configService.getSync().wallet.settings;
+      //   var amountUnit = txFormatService.satToUnit(parsedAmount.amountSat);
+      //   var btcParsedAmount = txFormatService.parseAmount(amountUnit, config.unitName);
         
-        $scope.amountBtc = btcParsedAmount.amount;
-        $scope.altAmountStr = btcParsedAmount.amountUnitStr;
-      } else {
-        $scope.amountBtc = amount; // BTC
-        $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat, CUSTOMNETWORKS[$scope.network]);
-      }
+      //   $scope.amountBtc = btcParsedAmount.amount;
+      //   $scope.altAmountStr = btcParsedAmount.amountUnitStr;
+      // } else {
+      //   $scope.amountBtc = amount; // BTC
+      //   $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat, CUSTOMNETWORKS[$scope.network]);
+      // }
     });
 
     $scope.altAmountStr = txFormatService.formatAlternativeStr($scope.amount, CUSTOMNETWORKS[$scope.network]);
