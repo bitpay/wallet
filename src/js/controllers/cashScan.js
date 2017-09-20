@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('cashScanController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $ionicHistory, $window, gettextCatalog, lodash, popupService, ongoingProcess, profileService, walletService, configService, $log, txFormatService, bwcError, pushNotificationsService, bwcService) {
+  function($rootScope, $timeout, $scope, $state, $ionicHistory, gettextCatalog, lodash, ongoingProcess, profileService, walletService, $log, txFormatService, bwcError, pushNotificationsService, bwcService, externalLinkService) {
     var wallet;
     var errors = bwcService.getErrors();
     $scope.error = null;
@@ -10,6 +10,16 @@ angular.module('copayApp.controllers').controller('cashScanController',
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       updateAllWallets();
     });
+
+    $scope.openRecoveryToolLink = function() {
+      var url = 'https://bitpay.github.io/copay-recovery/';
+      var optIn = true;
+      var title = null;
+      var message = gettextCatalog.getString('Open the recovery tool.');
+      var okText = gettextCatalog.getString('Open');
+      var cancelText = gettextCatalog.getString('Go Back');
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    };
 
     var goHome = function() {
       $ionicHistory.nextViewOptions({
@@ -29,11 +39,6 @@ angular.module('copayApp.controllers').controller('cashScanController',
         network: 'livenet'
       });
 
-      if (lodash.isEmpty(walletsBTC)) {
-        goHome();
-        return;
-      }
-
       // Filter out already duplicated wallets
       var walletsBCH = profileService.getWallets({
         coin: 'bch',
@@ -48,50 +53,23 @@ angular.module('copayApp.controllers').controller('cashScanController',
       var availableWallets = [];
       var nonEligibleWallets = [];
 
-      function addToNonEligibleWallets(wallets) {
-        if (!wallets) return;
-        lodash.each(wallets, function(w) {
+      lodash.each(walletsBTC, function(w) {
+        if (w.credentials.derivationStrategy != 'BIP44') {
+          w.excludeReason = gettextCatalog.getString('Non BIP44 wallet');
           nonEligibleWallets.push(w);
-        });
-      };
-
-      // Filter out non BIP44 wallets
-      var nonBIP44Wallets = lodash.filter(walletsBTC, function(w) {
-        return w.credentials.derivationStrategy != 'BIP44';
+        } else if (!w.canSign()) {
+          w.excludeReason = gettextCatalog.getString('Read only wallet');
+          nonEligibleWallets.push(w);
+        } else if (w.needsBackup) {
+          w.excludeReason = gettextCatalog.getString('Backup needed');
+          nonEligibleWallets.push(w);
+        } else {
+          availableWallets.push(w);
+        }
       });
 
-      if (!lodash.isEmpty(nonBIP44Wallets)) {
-        availableWallets = lodash.filter(walletsBTC, function(w) {
-          return w.credentials.derivationStrategy == 'BIP44';
-        });
-        addToNonEligibleWallets(nonBIP44Wallets);
-      }
-
-      // Filter out read only wallets
-      var readOnlyWallets = lodash.filter(availableWallets, function(w) {
-        return !w.canSign();
-      });
-
-      if (!lodash.isEmpty(readOnlyWallets)) {
-        availableWallets = lodash.filter(availableWallets, function(w) {
-          return w.canSign();
-        });
-        addToNonEligibleWallets(readOnlyWallets);
-      }
-
-      // Filter out non backed up wallets
-      $scope.nonBackedUpWallets = lodash.filter(availableWallets, function(w) {
-        return w.needsBackup;
-      });
-
-      if (!lodash.isEmpty($scope.nonBackedUpWallets)) {
-        availableWallets = lodash.filter(availableWallets, function(w) {
-          return !w.needsBackup;
-        });
-      }
-
-      $scope.nonEligibleWallets = nonEligibleWallets;
       $scope.availableWallets = availableWallets;
+      $scope.nonEligibleWallets = nonEligibleWallets;
 
       var i = availableWallets.length;
       var j = 0;
