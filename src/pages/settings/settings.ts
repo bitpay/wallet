@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
+import { ModalController } from 'ionic-angular';
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
+import { RateProvider } from '../../providers/rate/rate';
+import { AltCurrencyPage } from './alt-currency/alt-currency';
 
 import { AboutPage } from './about/about';
 
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
+  providers: [RateProvider]
 })
 export class SettingsPage {
   appName: string;
@@ -16,10 +19,12 @@ export class SettingsPage {
   languages: Array<any>;
 
   constructor(
+    public modalCtrl: ModalController,
     public navCtrl: NavController,
     public navParams: NavParams,
     private app: AppProvider,
-    private language: LanguageProvider
+    private language: LanguageProvider,
+    private rate: RateProvider
   ) {
     this.appName = this.app.info.nameCase;
 
@@ -29,6 +34,11 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
+  }
+
+  altCurrencyModal() {
+    let modal = this.modalCtrl.create(AltCurrencyPage);
+    modal.present();
   }
 
   setLanguage(lang: string) {

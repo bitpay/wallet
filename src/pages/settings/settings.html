@@ -41,15 +41,11 @@
         <ion-option *ngFor="let lang of languages" [value]="lang.isoCode">{{ lang.name }}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item>
+    <ion-item (click)="altCurrencyModal()">
       <ion-icon name="cash" item-start></ion-icon>
       <ion-label>
         Alternative currency
       </ion-label>
-      <ion-select>
-        <ion-option>USD</ion-option>
-        <ion-option>ARS</ion-option>
-      </ion-select>
     </ion-item>
     <ion-item>
       <ion-icon name="git-merge" item-start></ion-icon>
