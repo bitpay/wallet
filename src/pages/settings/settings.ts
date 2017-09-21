@@ -7,6 +7,7 @@ import { RateProvider } from '../../providers/rate/rate';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
 
 import { AboutPage } from './about/about';
+import { AdvancedPage } from './advanced/advanced';
 
 @Component({
   selector: 'page-settings',
@@ -44,6 +45,10 @@ export class SettingsPage {
   setLanguage(lang: string) {
     this.currentLanguage = lang;
     this.language.set(lang);
+  }
+
+  openAdvancedPage() {
+    this.navCtrl.push(AdvancedPage);
   }
 
   openAboutPage() {
