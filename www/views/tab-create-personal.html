@@ -51,7 +51,7 @@
             <div class="input-label" translate>
               Wallet Key
             </div>
-            <select class="m10t" ng-model="formData.seedSource" ng-options="seed as seed.label for seed in seedOptions" ng-change="resizeView()"></select>
+            <select ng-model="formData.seedSource" ng-options="seed as seed.label for seed in seedOptions" ng-change="resizeView()"></select>
           </label>
 
           <label class="item item-input item-stacked-label" ng-show="formData.seedSource.id == 'trezor' || formData.seedSource.id == 'ledger'">
