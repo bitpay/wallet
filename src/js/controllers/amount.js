@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService, CUSTOMNETWORKS) {
+angular.module('copayApp.controllers').controller('amountController', function($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService, customNetworks) {
   var _id;
   var unitToSatoshi;
   var satToUnit;
@@ -38,9 +38,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.customAmount = data.stateParams.customAmount;
     $scope.network = (new bitcore.Address($scope.toAddress)).network.name;
     $scope.unitName = "BTC";
-    if(CUSTOMNETWORKS[$scope.network]) {
-      $scope.unitName = CUSTOMNETWORKS[$scope.network].symbol;
-    }
+    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+      if(CUSTOMNETWORKS[$scope.network]) {
+        $scope.unitName = CUSTOMNETWORKS[$scope.network].symbol;
+      }      
+    })
 
     if (!$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
@@ -203,11 +205,15 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   function fromFiat(val) {
-    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network]) * satToUnit).toFixed(unitDecimals));
+    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+      return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network]) * satToUnit).toFixed(unitDecimals));
+    })
   };
 
   function toFiat(val) {
-    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network])).toFixed(2));
+    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+      return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network])).toFixed(2));
+    })
   };
 
   function evaluate(val) {

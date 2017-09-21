@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification, CUSTOMNETWORKS) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, profileService, bitcore, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification, customNetworks) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -242,9 +242,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
-      txFormatService.formatAlternativeStr(tx.toAmount, CUSTOMNETWORKS[$scope.network], function(v) {
-        tx.alternativeAmountStr = v;
-      });
+      customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+        txFormatService.formatAlternativeStr(tx.toAmount, CUSTOMNETWORKS[$scope.network], function(v) {
+          tx.alternativeAmountStr = v;
+        });
+      })
     }
 
     updateAmount();
@@ -294,20 +296,22 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           if (err) return cb(err);
 
           txp.feeStr = txFormatService.formatAmountStr(txp.fee);
-          txFormatService.formatAlternativeStr(txp.fee, CUSTOMNETWORKS[wallet.credentials.network], function(v) {
-            txp.alternativeFeeStr = v;
+          customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+            txFormatService.formatAlternativeStr(txp.fee, CUSTOMNETWORKS[wallet.credentials.network], function(v) {
+              txp.alternativeFeeStr = v;
+            });
+
+            var per = (txp.fee / (txp.amount + txp.fee) * 100);
+            txp.feeRatePerStr = per.toFixed(2) + '%';
+            txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
+
+            tx.txp[wallet.id] = txp;
+            $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+            refresh();
+
+            return cb();
           });
-
-          var per = (txp.fee / (txp.amount + txp.fee) * 100);
-          txp.feeRatePerStr = per.toFixed(2) + '%';
-          txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
-
-          tx.txp[wallet.id] = txp;
-          $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
-          refresh();
-
-          return cb();
-        });
+        })          
       });
     });
   }

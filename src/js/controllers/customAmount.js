@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService, CUSTOMNETWORKS) {
+angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService, customNetworks) {
 
   var showErrorAndBack = function(title, msg) {
     popupService.showAlert(title, msg, function() {
@@ -37,7 +37,9 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
       $scope.amountUnitStr = parsedAmount.amountUnitStr + " " + data.stateParams.currency;
       $scope.amountBtc = parsedAmount.amount; // BTC
-      $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat, CUSTOMNETWORKS[$scope.network]);
+      customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+        $scope.altAmountStr = txFormatService.formatAlternativeStr(parsedAmount.amountSat, CUSTOMNETWORKS[$scope.network]);
+      })
     });
   });
 

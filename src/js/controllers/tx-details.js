@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService, CUSTOMNETWORKS, $ionicHistory) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService, customNetworks, $ionicHistory) {
 
   var txId;
   var listeners = [];
@@ -105,10 +105,12 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not available at this time'));
       }
       $scope.btx = txFormatService.processTx(tx, $scope.wallet.credentials.network);
-      txFormatService.formatAlternativeStr(tx.fees, CUSTOMNETWORKS[$scope.wallet.credentials.network], function(v) {
-        $scope.feeFiatStr = v;
-        $scope.btx.feeRateStr = ($scope.btx.fees / ($scope.btx.amount + $scope.btx.fees) * 100).toFixed(2) + '%';
-      });
+      customNetworks.then(function(CUSTOMNETWORKS) {
+        txFormatService.formatAlternativeStr(tx.fees, CUSTOMNETWORKS[$scope.wallet.credentials.network], function(v) {
+          $scope.feeFiatStr = v;
+          $scope.btx.feeRateStr = ($scope.btx.fees / ($scope.btx.amount + $scope.btx.fees) * 100).toFixed(2) + '%';
+        });
+      })
 
       if ($scope.btx.action != 'invalid') {
         if ($scope.btx.action == 'sent') $scope.title = gettextCatalog.getString('Sent Funds');
@@ -170,19 +172,21 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
 
   $scope.viewOnBlockchain = function() {
     var btx = $scope.btx;
-    var networkObj = CUSTOMNETWORKS[$scope.wallet.credentials.network];
-    var urlRoot = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'bitlox.io/';
-    if(networkObj) {
-      urlRoot = networkObj.explorer;
-    }
-    var url = urlRoot+'tx/' + btx.txid;
+    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+      var networkObj = CUSTOMNETWORKS[$scope.wallet.credentials.network];
+      var urlRoot = 'https://' + ($scope.getShortNetworkName() == 'test' ? 'test-' : '') + 'bitlox.io/';
+      if(networkObj) {
+        urlRoot = networkObj.explorer;
+      }
+      var url = urlRoot+'tx/' + btx.txid;
 
-    var optIn = true;
-    var title = null;
-    var message = gettextCatalog.getString('View Transaction on Block Explorer');
-    var okText = gettextCatalog.getString('Open Block Explorer');
-    var cancelText = gettextCatalog.getString('Go Back');
-    externalLinkService.open(url, optIn, title, message, okText, cancelText);
+      var optIn = true;
+      var title = null;
+      var message = gettextCatalog.getString('View Transaction on Block Explorer');
+      var okText = gettextCatalog.getString('Open Block Explorer');
+      var cancelText = gettextCatalog.getString('Go Back');
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);      
+    })
   };
 
   $scope.getShortNetworkName = function() {

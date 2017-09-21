@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, CUSTOMNETWORKS, customNetworkService) {
+  function($scope, $timeout, $log, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, profileService, configService, sjcl, ledger, trezor, derivationPathHelper, platformInfo, bwcService, ongoingProcess, walletService, popupService, gettextCatalog, appConfigService, hwWallet, customNetworks) {
     var reader = new FileReader();
     var defaults = configService.getDefaults();
     var errors = bwcService.getErrors();
@@ -18,8 +18,10 @@ angular.module('copayApp.controllers').controller('importController',
       $scope.isCopay = appConfigService.name == 'copay';
 
       $scope.fromHardwareWallet = { value: false };
-      $scope.networks = CUSTOMNETWORKS;
-      $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork.name]
+      customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+        $scope.networks = CUSTOMNETWORKS;
+        $scope.network = CUSTOMNETWORKS[defaults.defaultNetwork.name]
+      })
       $scope.showNetworks = false
 
       if ($stateParams.code)
@@ -271,7 +273,7 @@ angular.module('copayApp.controllers').controller('importController',
       if($scope.formData.customParam) {
         networkName = $scope.formData.customParam;
       }
-      customNetworkService.getCustomNetwork(networkName).then(function(customNet) {
+      customNetworks.getCustomNetwork(networkName).then(function(customNet) {
         if(customNet) {
           opts.derivationStrategy = "BIP44";
           opts.bwsurl = customNet.bwsUrl

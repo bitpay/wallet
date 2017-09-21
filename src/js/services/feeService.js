@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, $timeout, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog, CUSTOMNETWORKS) {
+angular.module('copayApp.services').factory('feeService', function($log, $timeout, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog, customNetworks) {
 
   var root = {};
   var CACHE_TIME_TS = 60; // 1 min
@@ -60,35 +60,24 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       return cb(null, cache.data, true);
     }
 
-    network = network || defaults.defaultNetwork.name;
-    var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
+    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
 
-    var unitName = configService.getSync().wallet.settings.unitName;
+      network = network || defaults.defaultNetwork.name;
+      var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
 
-    walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
-        if (errLivenet) {
-          return cb(gettextCatalog.getString('Could not get dynamic fee'));
-        }
-        cache.updateTs = Date.now();
-        var retObj = {}
-        retObj[network] = levelsLivenet;
-        cache.data = retObj;
-        return cb(null, retObj)
-        // var length = Object.keys(CUSTOMNETWORKS).length;
-        // var count = 0;        
-        // for (var c in CUSTOMNETWORKS) {
-        //   var thiswall = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[c].bwsUrl});
+      var unitName = configService.getSync().wallet.settings.unitName;
 
-        //   thiswall.getFeeLevels(CUSTOMNETWORKS[c].name, function(errDefaultnet, levelsDefaultnet) {
-        //     count++
-
-
-        //     retObj[CUSTOMNETWORKS[c].name] = levelsDefaultnet
-        //     cache.data = retObj;
-        //     if(count === length) { return cb(null, retObj); }
-        //   });
-        // }
-    });
+      walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
+          if (errLivenet) {
+            return cb(gettextCatalog.getString('Could not get dynamic fee'));
+          }
+          cache.updateTs = Date.now();
+          var retObj = {}
+          retObj[network] = levelsLivenet;
+          cache.data = retObj;
+          return cb(null, retObj)
+      });
+    })
   };
 
 

@@ -17,7 +17,7 @@ var RateService = function(opts) {
   self.httprequest = opts.httprequest; // || request;
   self.lodash = opts.lodash;
   self.storageService = opts.storageService;
-  self.CUSTOMNETWORKS = opts.CUSTOMNETWORKS;
+  self.customNetworks = opts.customNetworks;
   self.defaults = opts.defaults;
   self.wallets = opts.wallets;
 
@@ -31,7 +31,6 @@ var RateService = function(opts) {
   self._alternatives = {};
   self.networks = {};
   self._queued = [];
-
 
   self._fetchCurrencies();
 };
@@ -71,21 +70,14 @@ RateService.prototype._fetchCurrencies = function() {
   };
   var retrieve = function() {
 
-    self.storageService.getCustomNetworks(function(err, networkListRaw) {
-
-      for(var i in self.wallets) {
-        if(self.CUSTOMNETWORKS[self.wallets[i].network]) {
-          self.networks[self.wallets[i].network] = self.CUSTOMNETWORKS[self.wallets[i].network]
-        }
-      }
-      for (var c in self.CUSTOMNETWORKS) {
-        self.networks[self.CUSTOMNETWORKS[c].name] = self.CUSTOMNETWORKS[c]
-      }
-      if(networkListRaw) {
-        var networkList = JSON.parse(networkListRaw)
-        for (var n in networkList) {
-           self.networks[networkList[n].name] = networkList[n]
-        }      
+    self.customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+      // for(var i in self.wallets) {
+      //   if(CUSTOMNETWORKS[self.wallets[i].network]) {
+      //     self.networks[self.wallets[i].network] = CUSTOMNETWORKS[self.wallets[i].network]
+      //   }
+      // }
+      for (var c in CUSTOMNETWORKS) {
+        self.networks[CUSTOMNETWORKS[c].name] = CUSTOMNETWORKS[c]
       }
       for (var i in self.networks) {
         if(!self._rates[self.networks[i].name]) {
@@ -188,7 +180,7 @@ RateService.prototype.listAlternatives = function(sort, network) {
   return self.lodash.uniq(alternatives, 'isoCode');
 };
 
-angular.module('copayApp.services').factory('rateService', function($http, lodash, configService, profileService, CUSTOMNETWORKS, storageService) {
+angular.module('copayApp.services').factory('rateService', function($http, lodash, configService, profileService, customNetworks, storageService) {
   // var cfg = _.extend(config.rates, {
   //   httprequest: $http
   // });
@@ -198,7 +190,7 @@ angular.module('copayApp.services').factory('rateService', function($http, lodas
     var cfg = {
       httprequest: $http,
       lodash: lodash,
-      CUSTOMNETWORKS: CUSTOMNETWORKS,
+      customNetworks: customNetworks,
       storageService: storageService,
       defaults: defaults,
       wallets: wallets
