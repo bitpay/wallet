@@ -210,7 +210,6 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
       amountUnitStr = root.formatAmountStr(amountSat);
       // convert unit to BTC
       amount = (amountSat * satToBtc).toFixed(8);
-      currency = ''; //'BTC';
     }
 
     return {
