@@ -90,43 +90,42 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     if (!tx || tx.action == 'invalid')
       return tx;
 
-    return customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+    var CUSTOMNETWORKS = customNetworks.getStatic()
 
       var networkObj = CUSTOMNETWORKS[network];
       var unitSymbol = "BTC";
-      if(networkObj) {
-        unitSymbol = networkObj.symbol;
-      }
-      // New transaction output format
-      if (tx.outputs && tx.outputs.length) {
+    if(networkObj) {
+      unitSymbol = networkObj.symbol;
+    }
+    // New transaction output format
+    if (tx.outputs && tx.outputs.length) {
 
-        var outputsNr = tx.outputs.length;
+      var outputsNr = tx.outputs.length;
 
-        if (tx.action != 'received') {
-          if (outputsNr > 1) {
-            tx.recipientCount = outputsNr;
-            tx.hasMultiplesOutputs = true;
-          }
-          tx.amount = lodash.reduce(tx.outputs, function(total, o) {
-            o.amountStr = root.formatAmountStr(o.amount) + " " + unitSymbol;
-            o.alternativeAmountStr = root.formatAlternativeStr(o.amount, networkObj);
-            return total + o.amount;
-          }, 0);
+      if (tx.action != 'received') {
+        if (outputsNr > 1) {
+          tx.recipientCount = outputsNr;
+          tx.hasMultiplesOutputs = true;
         }
-        tx.toAddress = tx.outputs[0].toAddress;
+        tx.amount = lodash.reduce(tx.outputs, function(total, o) {
+          o.amountStr = root.formatAmountStr(o.amount) + " " + unitSymbol;
+          o.alternativeAmountStr = root.formatAlternativeStr(o.amount, networkObj);
+          return total + o.amount;
+        }, 0);
       }
+      tx.toAddress = tx.outputs[0].toAddress;
+    }
 
-      tx.amountStr = root.formatAmountStr(tx.amount) + " " + unitSymbol;
-      tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount, networkObj);
-      tx.feeStr = root.formatAmountStr(tx.fee || tx.fees) + " " + unitSymbol;
+    tx.amountStr = root.formatAmountStr(tx.amount) + " " + unitSymbol;
+    tx.alternativeAmountStr = root.formatAlternativeStr(tx.amount, networkObj);
+    tx.feeStr = root.formatAmountStr(tx.fee || tx.fees) + " " + unitSymbol;
 
-      if (tx.amountStr) {
-        tx.amountValueStr = tx.amountStr.split(' ')[0];
-        tx.amountUnitStr = tx.amountStr.split(' ')[1];
-      }
+    if (tx.amountStr) {
+      tx.amountValueStr = tx.amountStr.split(' ')[0];
+      tx.amountUnitStr = tx.amountStr.split(' ')[1];
+    }
 
-      return tx;
-    })
+    return tx;
   };
 
   root.formatPendingTxps = function(txps) {
