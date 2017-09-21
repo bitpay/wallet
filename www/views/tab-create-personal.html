@@ -71,7 +71,7 @@
             <ion-toggle class="has-comment" ng-model="encrypt" toggle-class="toggle-positive" ng-change="resizeView()">
               <span class="toggle-label" translate>Add a password</span>
             </ion-toggle>
-            <div class="comment">
+            <div class="comment text-italic">
               <span ng-show="formData.seedSource.id == 'new'" translate>Add an optional password to secure the recovery phrase</span>
               <span ng-show="formData.seedSource.id == 'set'" translate>The recovery phrase could require a password to be imported</span>
             </div>
@@ -127,10 +127,12 @@
             ng-model="formData.derivationPath">
           </label> -->
 
-          <ion-toggle ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">
-            <span translate>Single Address Wallet</span>
-            <small translate>For audit purposes</small>
+          <ion-toggle class="has-comment" ng-model="formData.singleAddressEnabled" toggle-class="toggle-positive">
+            <span class="toggle-label" translate>Single Address Wallet</span>
           </ion-toggle>
+          <div class="comment text-italic">
+            <span translate>For audit purposes</span>
+          </div>
 
         </div> <!-- advanced -->
       </div> <!-- list -->
