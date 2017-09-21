@@ -10,45 +10,55 @@
   <ion-content>
 
 <div class="list card">
-  <div class="item" ng-if="(!wallets || !wallets[0]) && !nonBIP44Wallets[0]">
-    <span class="assertive" translate>No wallets eligible for Bitcoin Cash support</span>
+  <div ng-if="!availableWallets[0]">
+    <div class="item">
+      <span class="assertive" translate>No wallets eligible for Bitcoin Cash support</span>
+    </div>
   </div>
 
   <div class="item" ng-if="error">
     <span class="assertive">{{error}}</span>
   </div>
 
-  <div class="item heading">
-    <span translate>BTC Wallets</span>
-  </div>
-
-  <div ng-repeat="wallet in wallets track by $index" class="item wallet supported">
-    <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
-    <div class="wallet-content">
-      <div>{{wallet.name || wallet.id}}</div>
-      <div class="balanced">{{wallet.bchBalance  || ('Checking...' | translate)}} </div>
-      <div class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1" translate>{{wallet.m}}-of-{{wallet.n}}</div>
+  <div ng-if="availableWallets[0]">
+    <div class="item heading">
+      <span translate>BTC wallets</span>
     </div>
 
-    <div class="duplicate-button">
-      <button ng-click="duplicate(wallet)" class="button button-small button-outline button-primary" translate>Duplicate for BCH</button>
+    <div ng-repeat="wallet in availableWallets track by $index" class="item wallet supported">
+      <i class="icon big-icon-svg">
+        <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+      </i>
+      <div class="wallet-content">
+        <div>{{wallet.name || wallet.id}}</div>
+        <div class="balanced">{{wallet.bchBalance  || ('Checking...' | translate)}} </div>
+        <div class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1" translate>{{wallet.m}}-of-{{wallet.n}}</div>
+      </div>
+
+      <div class="duplicate-button">
+        <button ng-click="duplicate(wallet)" class="button button-small button-outline button-primary" translate>Duplicate for BCH</button>
+      </div>
     </div>
   </div>
 
-  <div ng-if="nonBIP44Wallets[0]">
+  <div ng-if="nonEligibleWallets[0]">
     <div class="item item-divider"></div>
 
     <div class="item heading">
       <span translate>Non eligible BTC wallets</span>
     </div>
 
-    <div ng-repeat="wallet in nonBIP44Wallets track by $index" class="item item-sub item-icon-left item-big-icon-left item-button-right wallet">
-      <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
-      <span class="text-disabled">{{wallet.name || wallet.id}}</span>
+    <div ng-repeat="wallet in nonEligibleWallets track by $index" class="item item-sub item-icon-left item-big-icon-left item-button-right wallet">
+      <i class="icon big-icon-svg">
+        <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': walletDisabled}" class="bg wallet"/>
+      </i>
+      <div class="text-disabled">{{wallet.name || wallet.id}}</div>
+      <div class="text-disabled">{{wallet.excludeReason}}</div>
     </div>
 
     <div class="item">
-      <span class="comment">Some of you wallets are not eligible for Bitcon Cash support because there where created before Copay v1.2. Please use our recovery tool to access your Bitcoin Cash balance for those wallets</span>
+      <span class="comment" translate>Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the</span>
+      <a ng-click="openRecoveryToolLink()" translate>recovery tool.</a>
     </div>
   </div>
 </div>
