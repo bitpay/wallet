@@ -97,6 +97,7 @@ this.getAll = function() {
 }
 this.getCustomNetwork = function(customParam) {
       var def = $q.defer();
+      var self = this
       if(customParam) {
         var networkName = customParam
         this.getAll().then(function(CUSTOMNETWORKS) {
@@ -112,6 +113,7 @@ this.getCustomNetwork = function(customParam) {
                 customNetworkList = JSON.parse(customNetworkListRaw)
               }
               if(customNetworkList[customParam]) {
+                self.customNetworks[customParam] = customNetworkList[customParam]
                 // console.log('got network from storageService', customNetworkList[customParam])
                 def.resolve(customNetworkList[customParam])
               } else {
@@ -131,6 +133,7 @@ this.getCustomNetwork = function(customParam) {
                   res.port = parseInt(res.port, 10)
                   // console.log('parsed network from server', res)
                   customNetworkList[customParam] = res;
+                  self.customNetworks[customParam] = res;
                   storageService.setCustomNetworks(JSON.stringify(customNetworkList));
                   if(!bitcore.Networks.get(res.name)) { bitcore.Networks.add(res) }
                   def.resolve(res)
