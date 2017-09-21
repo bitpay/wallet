@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
-"PO-Revision-Date: 2017-08-16 09:23-0400\n"
+"PO-Revision-Date: 2017-09-20 16:53-0400\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -48,31 +48,31 @@ msgstr ""
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "Участник команды рассмотрит ваш отзыв при первой возможности."
 
-#: src/js/controllers/confirm.js:351
+#: src/js/controllers/confirm.js:380
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr "Всего {{amountAboveMaxSizeStr}} было исключено. Превышен максимальный размер, разрешенный для транзакции."
 
-#: src/js/controllers/confirm.js:345
+#: src/js/controllers/confirm.js:374
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr "Примечание: в общей сложности {{amountBelowFeeStr}} было исключено. Эти средства входят поступившие в UTXOs меньше чем комиссия сети."
 
 #: src/js/controllers/preferencesAbout.js:6
-#: www/views/tab-settings.html:156
+#: www/views/tab-settings.html:161
 msgid "About"
 msgstr "О проекте"
 
-#: src/js/controllers/modals/txpDetails.js:56
-#: src/js/controllers/tx-details.js:62
+#: src/js/controllers/modals/txpDetails.js:62
+#: src/js/controllers/tx-details.js:79
 msgid "Accepted"
 msgstr "Принято"
 
-#: www/views/preferencesInformation.html:66
+#: www/views/preferencesInformation.html:72
 msgid "Account"
 msgstr "Учётная запись"
 
-#: www/views/join.html:69
-#: www/views/tab-create-personal.html:43
-#: www/views/tab-create-shared.html:72
+#: www/views/join.html:72
+#: www/views/tab-create-personal.html:45
+#: www/views/tab-create-shared.html:74
 #: www/views/tab-import-hardware.html:19
 msgid "Account Number"
 msgstr "Номер учётной записи"
@@ -106,9 +106,9 @@ msgstr "Пополнить счёт"
 msgid "Add Memo"
 msgstr "Добавить памятку"
 
-#: www/views/join.html:84
-#: www/views/tab-create-personal.html:57
-#: www/views/tab-create-shared.html:86
+#: www/views/join.html:87
+#: www/views/tab-create-personal.html:59
+#: www/views/tab-create-shared.html:88
 msgid "Add a password"
 msgstr "Защитить паролем"
 
@@ -116,17 +116,17 @@ msgstr "Защитить паролем"
 msgid "Add account"
 msgstr "gfhcdtgfdth"
 
-#: www/views/join.html:87
-#: www/views/tab-create-personal.html:60
-#: www/views/tab-create-shared.html:89
+#: www/views/join.html:90
+#: www/views/tab-create-personal.html:62
+#: www/views/tab-create-shared.html:91
 msgid "Add an optional password to secure the recovery phrase"
 msgstr "Добавьте необязательный пароль для защиты ключевого словосочетания"
 
 #: www/views/includes/incomingDataMenu.html:41
 msgid "Add as a contact"
-msgstr ""
+msgstr "Добавить контакт"
 
-#: src/js/controllers/confirm.js:374
+#: src/js/controllers/confirm.js:403
 msgid "Add description"
 msgstr "Добавить описание"
 
@@ -153,7 +153,7 @@ msgstr "Адрес"
 msgid "Address Book"
 msgstr "Aдресная книга"
 
-#: www/views/preferencesInformation.html:35
+#: www/views/preferencesInformation.html:41
 msgid "Address Type"
 msgstr "Тип адреса"
 
@@ -161,7 +161,7 @@ msgstr "Тип адреса"
 msgid "Addresses With Balance"
 msgstr "Адреса с балансом"
 
-#: www/views/tab-settings.html:149
+#: www/views/tab-settings.html:154
 msgid "Advanced"
 msgstr "Дополнительные возможности"
 
@@ -198,11 +198,11 @@ msgid "Almost done! Let's review."
 msgstr "Почти готово! Давайте проверим."
 
 #: www/views/preferencesAltCurrency.html:4
-#: www/views/tab-settings.html:74
+#: www/views/tab-settings.html:79
 msgid "Alternative Currency"
 msgstr "Альтернативная валюта"
 
-#: src/js/controllers/buyAmazon.js:97
+#: src/js/controllers/buyAmazon.js:98
 msgid "Amazon.com is not available at this moment. Please try back later."
 msgstr ""
 
@@ -216,7 +216,7 @@ msgstr "Сумма"
 msgid "Amount below minimum allowed"
 msgstr "Сумма ниже допустимого минимума"
 
-#: src/js/controllers/confirm.js:191
+#: src/js/controllers/confirm.js:195
 msgid "Amount too big"
 msgstr "Слишком большая сумма"
 
@@ -256,11 +256,11 @@ msgstr "Вы действительно хотите удалить этот к�
 msgid "Are you sure you want to delete this wallet?"
 msgstr "Вы точно хотите удалить этот кошелёк?"
 
-#: src/js/controllers/modals/txpDetails.js:148
+#: src/js/controllers/modals/txpDetails.js:154
 msgid "Are you sure you want to reject this transaction?"
 msgstr "Вы точно хотите отклонить этот платёж?"
 
-#: src/js/controllers/modals/txpDetails.js:165
+#: src/js/controllers/modals/txpDetails.js:171
 msgid "Are you sure you want to remove this transaction?"
 msgstr "Вы точно хотите удалить эту транзакцию?"
 
@@ -277,7 +277,7 @@ msgstr ""
 msgid "Are you sure you would like to remove your BitPay Card ({{lastFourDigits}}) from this device?"
 msgstr "Вы уверены, что вы хотели бы удалить карточку BitPay Card ({{lastFourDigits}}) из этого устройства?"
 
-#: www/views/includes/walletInfo.html:5
+#: www/views/includes/walletInfo.html:10
 msgid "Auditable"
 msgstr "Проверяемый"
 
@@ -294,12 +294,16 @@ msgstr "Доступный баланс"
 msgid "Average confirmation time"
 msgstr "Среднее время подтверждения"
 
-#: www/views/join.html:140
-#: www/views/tab-create-personal.html:111
-#: www/views/tab-create-shared.html:140
-#: www/views/tab-import-phrase.html:48
+#: www/views/join.html:143
+#: www/views/tab-create-personal.html:113
+#: www/views/tab-create-shared.html:142
+#: www/views/tab-import-phrase.html:51
 msgid "BIP32 path for address derivation"
 msgstr "Укажите BIP32 для генерации адресов"
+
+#: www/views/cashScan.html:22
+msgid "BTC Wallets"
+msgstr ""
 
 #: www/views/preferences.html:34
 msgid "Backup"
@@ -314,7 +318,7 @@ msgid "Backup all livenet wallets before using this function"
 msgstr "Сделайте резервную копию всех livenet кошельков перед использованием этой функции"
 
 #: www/views/preferences.html:36
-#: www/views/tab-settings.html:120
+#: www/views/tab-settings.html:125
 msgid "Backup needed"
 msgstr "Требуется резервное копирование"
 
@@ -331,11 +335,11 @@ msgstr "Резервное копирование"
 msgid "Backup your wallet before using this function"
 msgstr "Сделайте резервную копию вашего кошелька перед использованием этой функции"
 
-#: src/js/services/profileService.js:430
+#: src/js/services/profileService.js:445
 msgid "Bad wallet invitation"
 msgstr "Недействительное приглашение"
 
-#: www/views/preferencesInformation.html:96
+#: www/views/preferencesInformation.html:102
 msgid "Balance By Address"
 msgstr "Баланс на адресах"
 
@@ -352,15 +356,24 @@ msgstr "BitPay Visa® картыllllll"
 msgid "Bitcoin Address"
 msgstr "Биткойн-адрес"
 
+#: www/views/cashScan.html:4
+msgid "Bitcoin Cash (BCH) Balances"
+msgstr ""
+
+#: www/views/preferencesCash.html:3
+#: www/views/tab-settings.html:47
+msgid "Bitcoin Cash Support"
+msgstr ""
+
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
-#: www/views/tab-settings.html:85
+#: www/views/tab-settings.html:90
 msgid "Bitcoin Network Fee Policy"
 msgstr "Политика комиссии сети Биткойн"
 
-#: www/views/tab-settings.html:63
-msgid "Bitcoin Unit"
-msgstr "Единица измерения"
+#: src/js/services/incomingData.js:151
+msgid "Bitcoin cash Payment"
+msgstr ""
 
 #: www/views/onboarding/tour.html:31
 msgid "Bitcoin is a currency."
@@ -386,8 +399,8 @@ msgstr ""
 msgid "Broadcast Payment"
 msgstr "Отправить платёж"
 
-#: src/js/controllers/modals/txpDetails.js:58
-#: src/js/controllers/tx-details.js:64
+#: src/js/controllers/modals/txpDetails.js:64
+#: src/js/controllers/tx-details.js:81
 msgid "Broadcasted"
 msgstr "Отправка"
 
@@ -415,11 +428,11 @@ msgstr "Купить биткойн"
 #: www/views/mercadoLibre.html:22
 #: www/views/mercadoLibre.html:50
 msgid "Buy a Gift Card"
-msgstr ""
+msgstr "Купить подарочную карту"
 
-#: src/js/controllers/buyAmazon.js:332
+#: src/js/controllers/buyAmazon.js:334
 msgid "Buy from"
-msgstr ""
+msgstr "Купить"
 
 #: src/js/services/onGoingProcess.js:40
 msgid "Buying Bitcoin..."
@@ -429,10 +442,11 @@ msgstr "Покупка биткойн..."
 msgid "Calculating fee"
 msgstr "Вычисление комиссии"
 
-#: src/js/controllers/buyAmazon.js:311
-#: src/js/controllers/buyMercadoLibre.js:305
-#: src/js/controllers/confirm.js:495
-#: src/js/controllers/topup.js:285
+#: src/js/controllers/buyAmazon.js:313
+#: src/js/controllers/buyMercadoLibre.js:307
+#: src/js/controllers/confirm.js:529
+#: src/js/controllers/topup.js:287
+#: src/js/services/incomingData.js:154
 #: src/js/services/popupService.js:62
 #: src/js/services/popupService.js:73
 #: www/views/addressbook.add.html:10
@@ -455,7 +469,7 @@ msgstr "Отменить приглашение?"
 msgid "Cannot Create Wallet"
 msgstr "Не удаётся создать кошелёк"
 
-#: src/js/services/profileService.js:426
+#: src/js/services/profileService.js:441
 msgid "Cannot join the same wallet more that once"
 msgstr "Нельзя присоединиться к одному и тому же кошельку более одного раза"
 
@@ -491,9 +505,19 @@ msgstr "Очистить"
 msgid "Clear cache"
 msgstr "Очистить кэш"
 
-#: src/js/controllers/modals/txpDetails.js:34
-msgid "Click"
-msgstr "Click"
+#: src/js/controllers/confirm.js:352
+#: src/js/controllers/modals/txpDetails.js:49
+msgid "Click to accept"
+msgstr "Подтвердить"
+
+#: src/js/controllers/confirm.js:346
+msgid "Click to pay"
+msgstr "Оплатить"
+
+#: src/js/controllers/confirm.js:358
+#: src/js/controllers/modals/txpDetails.js:42
+msgid "Click to send"
+msgstr "Отправить"
 
 #: www/views/customAmount.html:4
 #: www/views/modals/mercadolibre-card-details.html:3
@@ -505,6 +529,11 @@ msgstr "Click"
 msgid "Close"
 msgstr "Закрыть"
 
+#: www/views/includes/cash.html:2
+#: www/views/preferencesInformation.html:17
+msgid "Coin"
+msgstr ""
+
 #: www/views/preferences.html:22
 msgid "Color"
 msgstr "Цвет"
@@ -513,7 +542,7 @@ msgstr "Цвет"
 msgid "Commit hash"
 msgstr "Хэш версии"
 
-#: www/views/preferences.html:48
+#: www/views/preferences.html:49
 msgid "Complete the backup process to use this option"
 msgstr "Завершите процесс резервного копирования для использования этой опции"
 
@@ -521,11 +550,11 @@ msgstr "Завершите процесс резервного копирова�
 msgid "Completed"
 msgstr "Завершено"
 
-#: src/js/controllers/buyAmazon.js:309
-#: src/js/controllers/buyMercadoLibre.js:303
-#: src/js/controllers/confirm.js:494
+#: src/js/controllers/buyAmazon.js:311
+#: src/js/controllers/buyMercadoLibre.js:305
+#: src/js/controllers/confirm.js:528
 #: src/js/controllers/copayers.js:55
-#: src/js/controllers/topup.js:283
+#: src/js/controllers/topup.js:285
 #: www/views/backup.html:53
 #: www/views/backup.html:72
 #: www/views/confirm.html:4
@@ -541,17 +570,17 @@ msgstr "Подтвердить &amp; Завершить"
 #: www/views/buyAmazon.html:90
 #: www/views/buyMercadoLibre.html:77
 msgid "Confirm purchase"
-msgstr ""
+msgstr "Подтвердить покупку"
 
 #: www/views/modals/pin.html:10
 msgid "Confirm your PIN"
 msgstr "Подтвердите Ваш PIN-код"
 
-#: src/js/services/walletService.js:1034
+#: src/js/services/walletService.js:1033
 msgid "Confirm your new spending password"
 msgstr "Подтвердите ваш новый платёжный пароль"
 
-#: www/views/tx-details.html:98
+#: www/views/tx-details.html:100
 msgid "Confirmations"
 msgstr "Подтверждения"
 
@@ -604,7 +633,7 @@ msgstr "Несоответствие данных совладельца кош�
 msgid "Copayer joined"
 msgstr "Совладелец присоединился"
 
-#: www/views/preferencesInformation.html:88
+#: www/views/preferencesInformation.html:94
 msgid "Copayer {{$index}}"
 msgstr "Совладелец {{$index}}"
 
@@ -626,7 +655,7 @@ msgstr "Скопируйте этот текст как есть (в блокн�
 msgid "Copy to clipboard"
 msgstr "Скопировать в буфер обмена"
 
-#: src/js/controllers/buyMercadoLibre.js:101
+#: src/js/controllers/buyMercadoLibre.js:102
 msgid "Could not access Gift Card Service"
 msgstr ""
 
@@ -634,19 +663,19 @@ msgstr ""
 msgid "Could not access the wallet at the server. Please check:"
 msgstr "Не удалось получить доступ к кошельку на сервере. Проверьте, пожалуйста:"
 
-#: src/js/controllers/buyAmazon.js:101
+#: src/js/controllers/buyAmazon.js:102
 msgid "Could not access to Amazon.com"
 msgstr ""
 
-#: src/js/services/profileService.js:493
+#: src/js/services/profileService.js:510
 msgid "Could not access wallet"
 msgstr "Не удалось получить доступ к кошельку"
 
-#: src/js/controllers/confirm.js:185
+#: src/js/controllers/confirm.js:189
 msgid "Could not add message to imported wallet without shared encrypting key"
 msgstr "Не удалось добавить сообщение в импортированный кошелёк без общего ключа шифрования"
 
-#: src/js/controllers/modals/txpDetails.js:193
+#: src/js/controllers/modals/txpDetails.js:199
 msgid "Could not broadcast payment"
 msgstr "Не удалось отправить платёж"
 
@@ -654,45 +683,49 @@ msgstr "Не удалось отправить платёж"
 msgid "Could not build transaction"
 msgstr "Не удалось создать транзакцию"
 
-#: src/js/services/walletService.js:857
+#: src/js/services/walletService.js:854
 msgid "Could not create address"
 msgstr "Не удалось создать адрес"
 
-#: src/js/controllers/topup.js:91
+#: src/js/controllers/topup.js:92
 msgid "Could not create the invoice"
 msgstr ""
 
-#: src/js/controllers/buyAmazon.js:163
-#: src/js/controllers/buyMercadoLibre.js:163
-#: src/js/controllers/topup.js:141
+#: src/js/controllers/buyAmazon.js:164
+#: src/js/controllers/buyMercadoLibre.js:164
+#: src/js/controllers/topup.js:142
 msgid "Could not create transaction"
 msgstr ""
 
-#: src/js/services/profileService.js:342
+#: src/js/services/profileService.js:351
 msgid "Could not create using the specified extended private key"
 msgstr "Не удалось создать используя указанный расширенный закрытый ключ"
 
-#: src/js/services/profileService.js:353
+#: src/js/services/profileService.js:363
 msgid "Could not create using the specified extended public key"
 msgstr "Не удалось создать используя указанный расширенный открытый ключ"
 
-#: src/js/services/profileService.js:335
+#: src/js/services/profileService.js:339
 msgid "Could not create: Invalid wallet recovery phrase"
 msgstr "Не удалось создать: недействительное ключевое словосочетание"
 
-#: src/js/controllers/import.js:99
+#: src/js/controllers/import.js:114
 msgid "Could not decrypt file, check your password"
 msgstr "Не удалось расшифровать файл, проверьте пароль"
 
-#: src/js/controllers/modals/txpDetails.js:175
+#: src/js/controllers/modals/txpDetails.js:181
 msgid "Could not delete payment proposal"
 msgstr "Не удалось удалить предложенный платёж"
 
-#: src/js/services/feeService.js:72
+#: src/js/controllers/cashScan.js:101
+msgid "Could not duplicate"
+msgstr ""
+
+#: src/js/services/feeService.js:73
 msgid "Could not get dynamic fee"
 msgstr "Не удалось получить динамическую комиссию"
 
-#: src/js/services/feeService.js:42
+#: src/js/services/feeService.js:43
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
 msgstr "Не удалось получить динамическую комиссию для уровня: {{feeLevel}}"
 
@@ -700,9 +733,9 @@ msgstr "Не удалось получить динамическую комис
 msgid "Could not get fee levels"
 msgstr ""
 
-#: src/js/controllers/buyAmazon.js:121
-#: src/js/controllers/buyMercadoLibre.js:121
-#: src/js/controllers/topup.js:99
+#: src/js/controllers/buyAmazon.js:122
+#: src/js/controllers/buyMercadoLibre.js:122
+#: src/js/controllers/topup.js:100
 msgid "Could not get the invoice"
 msgstr ""
 
@@ -710,21 +743,21 @@ msgstr ""
 msgid "Could not get transactions"
 msgstr "Не удалось получить транзакции"
 
-#: src/js/services/profileService.js:597
-#: src/js/services/profileService.js:631
-#: src/js/services/profileService.js:654
+#: src/js/services/profileService.js:614
+#: src/js/services/profileService.js:649
+#: src/js/services/profileService.js:673
 msgid "Could not import"
 msgstr "Не удалось импортировать"
 
-#: src/js/services/profileService.js:566
+#: src/js/services/profileService.js:583
 msgid "Could not import. Check input file and spending password"
 msgstr "Не удалось импортировать. Проверьте импортируемый файл и платёжный пароль"
 
-#: src/js/services/profileService.js:439
+#: src/js/services/profileService.js:456
 msgid "Could not join wallet"
 msgstr "Не удалось присоединиться к кошельку"
 
-#: src/js/controllers/modals/txpDetails.js:155
+#: src/js/controllers/modals/txpDetails.js:161
 msgid "Could not reject payment"
 msgstr "Не удалось отклонить платёж"
 
@@ -741,22 +774,22 @@ msgstr "Не удалось удалить карту"
 msgid "Could not save preferences on the server"
 msgstr "Не удалось сохранить параметры на сервере"
 
-#: src/js/controllers/modals/txpDetails.js:141
+#: src/js/controllers/modals/txpDetails.js:147
 msgid "Could not send payment"
 msgstr "Не удалось отправить платёж"
 
-#: src/js/controllers/buyAmazon.js:323
-#: src/js/controllers/buyMercadoLibre.js:316
-#: src/js/controllers/topup.js:297
+#: src/js/controllers/buyAmazon.js:325
+#: src/js/controllers/buyMercadoLibre.js:318
+#: src/js/controllers/topup.js:299
 msgid "Could not send transaction"
 msgstr ""
 
-#: www/views/walletDetails.html:198
+#: www/views/walletDetails.html:210
 msgid "Could not update transaction history"
 msgstr "Не удалось обновить журнал транзакций"
 
-#: src/js/controllers/addresses.js:34
-#: src/js/controllers/addresses.js:42
+#: src/js/controllers/addresses.js:29
+#: src/js/controllers/addresses.js:37
 #: src/js/controllers/copayers.js:30
 #: src/js/controllers/walletDetails.js:78
 msgid "Could not update wallet"
@@ -776,7 +809,7 @@ msgstr "Создать общий кошелёк"
 msgid "Create bitcoin wallet"
 msgstr "Создать биткойн-кошелёк"
 
-#: www/views/tab-create-personal.html:129
+#: www/views/tab-create-personal.html:131
 msgid "Create new wallet"
 msgstr "Создать новый кошелёк"
 
@@ -784,7 +817,7 @@ msgstr "Создать новый кошелёк"
 msgid "Create shared wallet"
 msgstr "Создать общий кошелёк"
 
-#: www/views/tab-create-shared.html:158
+#: www/views/tab-create-shared.html:160
 msgid "Create {{formData.requiredCopayers}}-of-{{formData.totalCopayers}} wallet"
 msgstr "Создать кошелёк {{formData.requiredCopayers}}-из-{{formData.totalCopayers}}"
 
@@ -814,7 +847,7 @@ msgstr ""
 msgid "Custom Amount"
 msgstr "Сумма"
 
-#: src/js/controllers/preferencesFee.js:84
+#: src/js/controllers/preferencesFee.js:85
 msgid "Custom Fee"
 msgstr ""
 
@@ -849,14 +882,14 @@ msgstr "Удаление кошелька..."
 msgid "Deleting payment proposal"
 msgstr "Удаление предложенного платежа"
 
-#: www/views/join.html:138
-#: www/views/tab-create-personal.html:109
-#: www/views/tab-create-shared.html:138
-#: www/views/tab-import-phrase.html:46
+#: www/views/join.html:141
+#: www/views/tab-create-personal.html:111
+#: www/views/tab-create-shared.html:140
+#: www/views/tab-import-phrase.html:49
 msgid "Derivation Path"
 msgstr "Путь деривации"
 
-#: www/views/preferencesInformation.html:41
+#: www/views/preferencesInformation.html:47
 msgid "Derivation Strategy"
 msgstr "Стратегия деривации"
 
@@ -868,7 +901,8 @@ msgid "Details"
 msgstr "Подробности"
 
 #: src/js/controllers/lockSetup.js:9
-#: src/js/controllers/tab-settings.js:60
+#: src/js/controllers/tab-settings.js:64
+#: www/views/tab-settings.html:50
 msgid "Disabled"
 msgstr "Отключено"
 
@@ -890,6 +924,14 @@ msgstr "Не видите свой язык на Crowdin? Свяжитесь с 
 msgid "Download"
 msgstr "Скачать"
 
+#: www/views/cashScan.html:36
+msgid "Duplicate for BCH"
+msgstr ""
+
+#: src/js/services/onGoingProcess.js:49
+msgid "Duplicating wallet..."
+msgstr ""
+
 #: www/views/addresses.html:19
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Любой биткойн-кошелёк может создать миллиарды адресов из вашей ключевой фразы. Новый адрес автоматически генерируется каждый раз, когда вы получаете платеж."
@@ -900,7 +942,7 @@ msgstr "Экономичная"
 
 #: www/views/onboarding/collectEmail.html:27
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #: www/views/addressbook.add.html:29
 #: www/views/addressbook.view.html:22
@@ -914,6 +956,10 @@ msgstr "Email"
 #: src/js/services/bwcError.js:122
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Достигнут предел пустых адресов. Новые адреса больше не могут быть сгенерированы."
+
+#: www/views/preferencesCash.html:17
+msgid "Enable Bitcoin Cash wallet creation and operation within the App."
+msgstr ""
 
 #: www/views/tab-scan.html:19
 msgid "Enable camera access in your device settings to get started."
@@ -931,8 +977,12 @@ msgstr "Включить push-уведомления"
 msgid "Enable the camera to get started."
 msgstr "Чтобы начать, включите камеру."
 
-#: src/js/services/walletService.js:1048
-#: src/js/services/walletService.js:1063
+#: www/views/tab-settings.html:49
+msgid "Enabled"
+msgstr "Активировать"
+
+#: src/js/services/walletService.js:1047
+#: src/js/services/walletService.js:1062
 msgid "Enter Spending Password"
 msgstr "Введите платёжный пароль"
 
@@ -942,25 +992,25 @@ msgstr "Введите второй фактор вашей учётной за�
 
 #: www/views/amount.html:4
 msgid "Enter amount"
-msgstr ""
+msgstr "Введите сумму"
 
 #: www/views/modals/chooseFeeLevel.html:41
 msgid "Enter custom fee"
 msgstr ""
 
-#: src/js/services/walletService.js:1030
+#: src/js/services/walletService.js:1029
 msgid "Enter new spending password"
 msgstr "Введите новый платёжный пароль"
 
-#: www/views/join.html:76
-#: www/views/tab-create-personal.html:49
-#: www/views/tab-create-shared.html:78
+#: www/views/join.html:79
+#: www/views/tab-create-personal.html:51
+#: www/views/tab-create-shared.html:80
 msgid "Enter the recovery phrase (BIP39)"
 msgstr "Введите ключевое словосочетание (BIP39)"
 
 #: www/views/onboarding/collectEmail.html:13
 msgid "Enter your email"
-msgstr ""
+msgstr "Введите Ваш email"
 
 #: www/views/backup.html:62
 msgid "Enter your password"
@@ -970,23 +1020,24 @@ msgstr "Введите пароль"
 #: src/js/controllers/activity.js:45
 #: src/js/controllers/addressbookAdd.js:30
 #: src/js/controllers/addressbookView.js:29
-#: src/js/controllers/addresses.js:130
-#: src/js/controllers/addresses.js:131
+#: src/js/controllers/addresses.js:125
+#: src/js/controllers/addresses.js:126
 #: src/js/controllers/bitpayCard.js:66
 #: src/js/controllers/bitpayCardIntro.js:40
 #: src/js/controllers/bitpayCardIntro.js:81
-#: src/js/controllers/buyAmazon.js:23
-#: src/js/controllers/buyAmazon.js:34
-#: src/js/controllers/buyMercadoLibre.js:23
-#: src/js/controllers/buyMercadoLibre.js:34
-#: src/js/controllers/confirm.js:276
+#: src/js/controllers/buyAmazon.js:24
+#: src/js/controllers/buyAmazon.js:35
+#: src/js/controllers/buyMercadoLibre.js:24
+#: src/js/controllers/buyMercadoLibre.js:35
+#: src/js/controllers/confirm.js:286
 #: src/js/controllers/copayers.js:67
-#: src/js/controllers/create.js:155
-#: src/js/controllers/create.js:168
-#: src/js/controllers/create.js:175
-#: src/js/controllers/create.js:197
-#: src/js/controllers/create.js:204
-#: src/js/controllers/create.js:222
+#: src/js/controllers/create.js:161
+#: src/js/controllers/create.js:174
+#: src/js/controllers/create.js:180
+#: src/js/controllers/create.js:186
+#: src/js/controllers/create.js:208
+#: src/js/controllers/create.js:215
+#: src/js/controllers/create.js:233
 #: src/js/controllers/export.js:109
 #: src/js/controllers/export.js:115
 #: src/js/controllers/export.js:126
@@ -996,32 +1047,33 @@ msgstr "Введите пароль"
 #: src/js/controllers/export.js:47
 #: src/js/controllers/export.js:53
 #: src/js/controllers/feedback/send.js:23
-#: src/js/controllers/import.js:104
-#: src/js/controllers/import.js:116
-#: src/js/controllers/import.js:134
-#: src/js/controllers/import.js:185
-#: src/js/controllers/import.js:213
-#: src/js/controllers/import.js:222
-#: src/js/controllers/import.js:237
-#: src/js/controllers/import.js:249
-#: src/js/controllers/import.js:260
-#: src/js/controllers/import.js:270
-#: src/js/controllers/import.js:294
-#: src/js/controllers/import.js:307
-#: src/js/controllers/import.js:317
-#: src/js/controllers/import.js:327
-#: src/js/controllers/import.js:351
-#: src/js/controllers/import.js:364
-#: src/js/controllers/import.js:70
-#: src/js/controllers/import.js:83
-#: src/js/controllers/join.js:121
-#: src/js/controllers/join.js:135
-#: src/js/controllers/join.js:142
-#: src/js/controllers/join.js:165
-#: src/js/controllers/join.js:173
-#: src/js/controllers/join.js:191
+#: src/js/controllers/import.js:119
+#: src/js/controllers/import.js:131
+#: src/js/controllers/import.js:149
+#: src/js/controllers/import.js:200
+#: src/js/controllers/import.js:229
+#: src/js/controllers/import.js:238
+#: src/js/controllers/import.js:254
+#: src/js/controllers/import.js:266
+#: src/js/controllers/import.js:277
+#: src/js/controllers/import.js:287
+#: src/js/controllers/import.js:312
+#: src/js/controllers/import.js:325
+#: src/js/controllers/import.js:335
+#: src/js/controllers/import.js:345
+#: src/js/controllers/import.js:369
+#: src/js/controllers/import.js:382
+#: src/js/controllers/import.js:85
+#: src/js/controllers/import.js:98
+#: src/js/controllers/join.js:125
+#: src/js/controllers/join.js:139
+#: src/js/controllers/join.js:145
+#: src/js/controllers/join.js:151
+#: src/js/controllers/join.js:174
+#: src/js/controllers/join.js:182
+#: src/js/controllers/join.js:200
 #: src/js/controllers/modals/feeLevels.js:9
-#: src/js/controllers/modals/txpDetails.js:134
+#: src/js/controllers/modals/txpDetails.js:140
 #: src/js/controllers/paperWallet.js:47
 #: src/js/controllers/preferencesBitpayCard.js:20
 #: src/js/controllers/preferencesBitpayServices.js:33
@@ -1029,42 +1081,44 @@ msgstr "Введите пароль"
 #: src/js/controllers/preferencesDelete.js:36
 #: src/js/controllers/preferencesExternal.js:20
 #: src/js/controllers/tab-home.js:174
-#: src/js/controllers/tab-send.js:132
+#: src/js/controllers/tab-send.js:133
 #: src/js/controllers/tabsController.js:36
 #: src/js/controllers/tabsController.js:7
-#: src/js/controllers/topup.js:20
-#: src/js/controllers/topup.js:31
-#: src/js/controllers/tx-details.js:102
-#: src/js/services/incomingData.js:98
+#: src/js/controllers/topup.js:21
+#: src/js/controllers/topup.js:32
+#: src/js/controllers/tx-details.js:119
+#: src/js/services/incomingData.js:101
+#: src/js/services/incomingData.js:125
+#: src/js/services/incomingData.js:168
 #: www/views/mercadoLibreCards.html:19
 #: www/views/modals/mercadolibre-card-details.html:45
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/js/controllers/confirm.js:447
+#: src/js/controllers/confirm.js:481
 msgid "Error at confirm"
 msgstr "Ошибка при подтверждении"
 
-#: src/js/controllers/buyAmazon.js:178
+#: src/js/controllers/buyAmazon.js:179
 msgid "Error creating gift card"
-msgstr ""
+msgstr "Ошибка создания Подарочной карты"
 
-#: src/js/controllers/buyAmazon.js:93
-#: src/js/controllers/buyMercadoLibre.js:93
+#: src/js/controllers/buyAmazon.js:94
+#: src/js/controllers/buyMercadoLibre.js:94
 msgid "Error creating the invoice"
 msgstr ""
 
-#: src/js/services/profileService.js:396
+#: src/js/services/profileService.js:411
 msgid "Error creating wallet"
 msgstr "Ошибка создания кошелька"
 
-#: src/js/controllers/confirm.js:266
+#: src/js/controllers/confirm.js:275
 msgid "Error getting SendMax information"
 msgstr ""
 
-#: src/js/controllers/buyAmazon.js:135
-#: src/js/controllers/buyMercadoLibre.js:135
-#: src/js/controllers/topup.js:113
+#: src/js/controllers/buyAmazon.js:136
+#: src/js/controllers/buyMercadoLibre.js:136
+#: src/js/controllers/topup.js:114
 msgid "Error in Payment Protocol"
 msgstr ""
 
@@ -1076,7 +1130,7 @@ msgstr ""
 msgid "Error scanning funds:"
 msgstr "Ошибка сканирования кошелька:"
 
-#: src/js/controllers/paperWallet.js:91
+#: src/js/controllers/paperWallet.js:90
 msgid "Error sweeping wallet:"
 msgstr "Ошибка считывания кошелька:"
 
@@ -1088,7 +1142,7 @@ msgstr "Ошибка обновления Дебетовых Карт"
 msgid "Exceeded daily limit of $500 per user"
 msgstr "Превышен дневной лимит в 500$ на пользователя"
 
-#: src/js/controllers/confirm.js:411
+#: src/js/controllers/confirm.js:440
 #: www/views/confirm.html:27
 #: www/views/mercadoLibreCards.html:25
 #: www/views/modals/mercadolibre-card-details.html:34
@@ -1114,12 +1168,12 @@ msgstr "Экспорт в файл"
 msgid "Export wallet"
 msgstr "Экспорт кошелька"
 
-#: src/js/services/walletService.js:1175
+#: src/js/services/walletService.js:1174
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
 msgstr "Экспорт QR-кодом не поддерживается для этого кошелька"
 
-#: www/views/preferencesInformation.html:83
+#: www/views/preferencesInformation.html:89
 msgid "Extended Public Keys"
 msgstr "Расширенные открытые ключи"
 
@@ -1176,7 +1230,7 @@ msgstr "Файл/текст"
 
 #: www/views/preferencesLogs.html:17
 msgid "Filter setting"
-msgstr ""
+msgstr "Настройка фильтров"
 
 #: src/js/services/fingerprintService.js:43
 #: src/js/services/fingerprintService.js:48
@@ -1188,12 +1242,12 @@ msgstr "Не удалось сканировать отпечаток пальц
 msgid "Finish"
 msgstr "Готово"
 
-#: www/views/tab-create-personal.html:121
-#: www/views/tab-create-shared.html:150
+#: www/views/tab-create-personal.html:123
+#: www/views/tab-create-shared.html:152
 msgid "For audit purposes"
 msgstr "Для целей ревизии"
 
-#: src/js/controllers/topup.js:306
+#: src/js/controllers/topup.js:308
 #: www/views/buyAmazon.html:29
 #: www/views/buyMercadoLibre.html:28
 #: www/views/confirm.html:65
@@ -1207,7 +1261,7 @@ msgstr "От"
 msgid "From BitPay account"
 msgstr "С аккаунта BitPay"
 
-#: www/views/tab-import-phrase.html:54
+#: www/views/tab-import-phrase.html:57
 msgid "From Hardware Wallet"
 msgstr ""
 
@@ -1241,7 +1295,7 @@ msgstr "Средства будут переведены на"
 
 #: www/views/tab-receive.html:51
 msgid "Generate new address"
-msgstr ""
+msgstr "Сгенерировать новый адрес"
 
 #: src/js/services/onGoingProcess.js:22
 msgid "Generating .csv file..."
@@ -1262,7 +1316,7 @@ msgstr "Получать письма с новостями от BitPay"
 #: www/views/onboarding/welcome.html:8
 msgctxt "button"
 msgid "Get started"
-msgstr ""
+msgstr "Начать"
 
 #: www/views/bitpayCard.html:49
 msgid "Get started"
@@ -1286,7 +1340,7 @@ msgstr ""
 msgid "Gift card"
 msgstr "Подарочная карта"
 
-#: src/js/controllers/buyAmazon.js:203
+#: src/js/controllers/buyAmazon.js:204
 msgid "Gift card expired"
 msgstr ""
 
@@ -1297,11 +1351,14 @@ msgstr ""
 #: src/js/controllers/bitpayCard.js:114
 #: src/js/controllers/bitpayCard.js:124
 #: src/js/controllers/onboarding/terms.js:23
+#: src/js/controllers/preferences.js:67
 #: src/js/controllers/preferencesAbout.js:16
+#: src/js/controllers/preferencesCash.js:34
 #: src/js/controllers/preferencesLanguage.js:14
 #: src/js/controllers/tab-home.js:149
-#: src/js/controllers/tab-settings.js:48
-#: src/js/controllers/tx-details.js:176
+#: src/js/controllers/tab-settings.js:52
+#: src/js/controllers/tx-details.js:193
+#: src/js/controllers/tx-details.js:56
 msgid "Go Back"
 msgstr "Вернуться"
 
@@ -1317,8 +1374,8 @@ msgstr "Вернуться"
 msgid "Got it"
 msgstr "Понял"
 
-#: www/views/preferencesInformation.html:47
 #: www/views/preferencesInformation.html:53
+#: www/views/preferencesInformation.html:59
 msgid "Hardware Wallet"
 msgstr "Аппаратный кошелёк"
 
@@ -1330,12 +1387,17 @@ msgstr "Аппаратное обеспечение не подключено."
 msgid "Hardware wallet"
 msgstr "Аппаратный кошелёк"
 
+#: src/js/controllers/create.js:180
+#: src/js/controllers/join.js:145
+msgid "Hardware wallets are not yet supported with Bitcoin Cash"
+msgstr ""
+
 #: www/views/tab-settings.html:20
 msgid "Help & Support"
 msgstr "Помощь и поддержка"
 
 #: src/js/controllers/bitpayCard.js:112
-#: src/js/controllers/tab-settings.js:46
+#: src/js/controllers/tab-settings.js:50
 msgid "Help and support information is available at the website."
 msgstr "Информация о помощи и поддержке доступна на сайте."
 
@@ -1347,17 +1409,17 @@ msgstr "Спрятать"
 msgid "Hide Balance"
 msgstr "Скрыть баланс"
 
-#: www/views/advancedSettings.html:29
+#: www/views/advancedSettings.html:30
 msgid "Hide Next Steps Card"
 msgstr "Пропустить следующие шаги"
 
-#: www/views/join.html:46
-#: www/views/tab-create-personal.html:26
-#: www/views/tab-create-shared.html:55
+#: www/views/join.html:49
+#: www/views/tab-create-personal.html:28
+#: www/views/tab-create-shared.html:57
 #: www/views/tab-export-file.html:25
-#: www/views/tab-import-file.html:28
+#: www/views/tab-import-file.html:30
 #: www/views/tab-import-hardware.html:31
-#: www/views/tab-import-phrase.html:33
+#: www/views/tab-import-phrase.html:36
 msgid "Hide advanced options"
 msgstr "Скрыть дополнительные параметры"
 
@@ -1387,9 +1449,9 @@ msgstr "Я прочитал, понял, и соглашаюсь с <a ng-click=
 msgid "I have read, understood, and agree with the Terms of use."
 msgstr "Я прочитал, понял, и соглашаюсь с Условиями использования."
 
-#: www/views/join.html:134
-#: www/views/tab-create-personal.html:105
-#: www/views/tab-create-shared.html:134
+#: www/views/join.html:137
+#: www/views/tab-create-personal.html:107
+#: www/views/tab-create-shared.html:136
 msgid "I have written it down"
 msgstr "Я записал"
 
@@ -1422,11 +1484,11 @@ msgstr "Я записал"
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
 msgstr "Если включено, вся конфиденциальная информация (секретный ключ и фраза для восстановления) и действия (расходы и экспорт) связанные с этим кошельком будут защищены."
 
-#: www/views/advancedSettings.html:22
+#: www/views/advancedSettings.html:23
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
 msgstr "Если этот параметр включен, на вкладке Обзор будет отображаться список транзакций из всех кошельков."
 
-#: www/views/advancedSettings.html:13
+#: www/views/advancedSettings.html:14
 msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
 msgstr "Если этот параметр включен, {{appName}} будет пытаться тратить неподтверждённые средства, что может привезти к задержкам подтверждения транзакций."
 
@@ -1443,7 +1505,7 @@ msgid "If you take a screenshot, your backup may be viewed by other apps. You ca
 msgstr "Если вы сохраните скриншот, ваша резервная копия может быть просмотрена другими приложениями. Безопасный способ резервного копирования - ручка и бумага."
 
 #: www/views/tab-import-hardware.html:42
-#: www/views/tab-import-phrase.html:77
+#: www/views/tab-import-phrase.html:80
 msgid "Import"
 msgstr "Импорт"
 
@@ -1451,7 +1513,7 @@ msgstr "Импорт"
 msgid "Import Wallet"
 msgstr "Импорт кошелька"
 
-#: www/views/tab-import-file.html:39
+#: www/views/tab-import-file.html:41
 msgid "Import backup"
 msgstr "Импорт резервной копии"
 
@@ -1475,7 +1537,7 @@ msgstr ""
 #: www/views/includes/walletItem.html:11
 #: www/views/includes/walletSelector.html:18
 #: www/views/tab-home.html:90
-#: www/views/tab-settings.html:117
+#: www/views/tab-settings.html:122
 msgid "Incomplete"
 msgstr "Не все совладельцы присоединились"
 
@@ -1488,7 +1550,7 @@ msgid "Incorrect PIN, try again."
 msgstr "Неверный PIN-код, попробуйте снова."
 
 #. Trying to import a malformed wallet export QR code
-#: src/js/controllers/import.js:70
+#: src/js/controllers/import.js:85
 msgid "Incorrect code format"
 msgstr "Некорректный формат QR-кода"
 
@@ -1496,14 +1558,14 @@ msgstr "Некорректный формат QR-кода"
 msgid "Incorrect network address"
 msgstr ""
 
-#: src/js/controllers/confirm.js:112
-#: src/js/controllers/confirm.js:275
+#: src/js/controllers/confirm.js:114
+#: src/js/controllers/confirm.js:285
 #: src/js/services/bwcError.js:44
 msgid "Insufficient funds"
 msgstr "Недостаточно средств"
 
-#: src/js/controllers/topup.js:164
-#: src/js/controllers/topup.js:176
+#: src/js/controllers/topup.js:165
+#: src/js/controllers/topup.js:177
 #: src/js/services/bwcError.js:71
 msgid "Insufficient funds for fee"
 msgstr "Недостаточно средств на комиссию"
@@ -1512,15 +1574,15 @@ msgstr "Недостаточно средств на комиссию"
 msgid "Invalid"
 msgstr "Недействительно"
 
-#: src/js/controllers/buyAmazon.js:136
-#: src/js/controllers/buyMercadoLibre.js:136
-#: src/js/controllers/topup.js:114
+#: src/js/controllers/buyAmazon.js:137
+#: src/js/controllers/buyMercadoLibre.js:137
+#: src/js/controllers/topup.js:115
 msgid "Invalid URL"
 msgstr "Неверный URL"
 
-#: src/js/controllers/create.js:175
-#: src/js/controllers/import.js:327
-#: src/js/controllers/join.js:142
+#: src/js/controllers/create.js:186
+#: src/js/controllers/import.js:345
+#: src/js/controllers/join.js:151
 msgid "Invalid account number"
 msgstr "Недопустимый номер учётной записи"
 
@@ -1532,9 +1594,9 @@ msgstr "Неверный адрес"
 msgid "Invalid data"
 msgstr "Недопустимые данные"
 
-#: src/js/controllers/create.js:155
-#: src/js/controllers/import.js:249
-#: src/js/controllers/join.js:121
+#: src/js/controllers/create.js:161
+#: src/js/controllers/import.js:266
+#: src/js/controllers/join.js:125
 msgid "Invalid derivation path"
 msgstr "Недействительный путь деривации"
 
@@ -1567,7 +1629,7 @@ msgstr "Не используйте адреса повторно - это за�
 msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
 msgstr "Крайне важно правильно записать ваше ключевое словосочетание. Оно понадобится для восстановления доступа к деньгам, если что-то случится с вашим кошельком. Пожалуйста, перепроверьте записанное и попробуйте ещё раз."
 
-#: www/views/join.html:148
+#: www/views/join.html:151
 msgid "Join"
 msgstr "Присоединиться"
 
@@ -1593,13 +1655,19 @@ msgid "Key already associated with an existing wallet"
 msgstr "Ключ уже связан с существующим кошельком"
 
 #: www/views/preferencesLanguage.html:4
-#: www/views/tab-settings.html:53
+#: www/views/tab-settings.html:68
 msgid "Language"
 msgstr "Язык"
 
 #: www/views/bitpayCard.html:61
 msgid "Last Month"
 msgstr "Прошедший месяц"
+
+#: www/views/preferences.html:48
+#: www/views/preferencesCash.html:18
+#: www/views/tx-details.html:96
+msgid "Learn more"
+msgstr ""
 
 #: www/views/backup.html:36
 msgid "Let's verify your backup phrase."
@@ -1614,7 +1682,7 @@ msgstr "Загрузка адресов..."
 msgid "Loading transaction info..."
 msgstr "Загрузка транзакции..."
 
-#: www/views/tab-settings.html:95
+#: www/views/tab-settings.html:100
 msgid "Lock App"
 msgstr "Заблокировать приложение"
 
@@ -1663,7 +1731,7 @@ msgid "Matches:"
 msgstr "Совпадения:"
 
 #: www/views/includes/copayers.html:4
-#: www/views/preferencesInformation.html:79
+#: www/views/preferencesInformation.html:85
 msgid "Me"
 msgstr "Я"
 
@@ -1671,7 +1739,7 @@ msgstr "Я"
 msgid "Meh - it's alright"
 msgstr "Ну так, терпимо"
 
-#: src/js/controllers/tx-details.js:148
+#: src/js/controllers/tx-details.js:165
 #: www/views/modals/paypro.html:48
 #: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
@@ -1682,7 +1750,7 @@ msgstr "Памятка"
 msgid "Mercado Livre Brazil Gift Cards"
 msgstr ""
 
-#: src/js/controllers/buyMercadoLibre.js:97
+#: src/js/controllers/buyMercadoLibre.js:98
 msgid "Mercadolibre Gift Card Service is not available at this moment. Please try back later."
 msgstr ""
 
@@ -1704,7 +1772,7 @@ msgstr "Недостающий параметр"
 msgid "Missing private keys to sign"
 msgstr "Отсутствуют закрытые ключи для подписи"
 
-#: www/views/preferences.html:60
+#: www/views/preferences.html:61
 #: www/views/preferencesAdvanced.html:3
 msgid "More Options"
 msgstr "Дополнительные параметры"
@@ -1714,7 +1782,7 @@ msgstr "Дополнительные параметры"
 msgid "Moved"
 msgstr "Перемещено"
 
-#: src/js/controllers/tx-details.js:114
+#: src/js/controllers/tx-details.js:131
 msgid "Moved Funds"
 msgstr "Перемещённые средства"
 
@@ -1747,7 +1815,7 @@ msgstr "Ошибка сети"
 msgid "New Proposal"
 msgstr "Предложить платёж"
 
-#: src/js/controllers/addresses.js:131
+#: src/js/controllers/addresses.js:126
 msgid "New address could not be generated. Please try again."
 msgstr "Адрес не может быть сгенерирован. Попробуйте позже."
 
@@ -1763,8 +1831,8 @@ msgstr "Дальнейшие шаги"
 msgid "No Wallet"
 msgstr "Нет кошельков"
 
-#: src/js/controllers/buyAmazon.js:114
-#: src/js/controllers/buyMercadoLibre.js:114
+#: src/js/controllers/buyAmazon.js:115
+#: src/js/controllers/buyMercadoLibre.js:115
 msgid "No access key defined"
 msgstr ""
 
@@ -1796,12 +1864,12 @@ msgstr "Нет предложенных платежей"
 msgid "No recent transactions"
 msgstr "Нет недавних транзакций"
 
-#: src/js/controllers/buyAmazon.js:43
-#: src/js/controllers/topup.js:46
+#: src/js/controllers/buyAmazon.js:44
+#: src/js/controllers/topup.js:47
 msgid "No signing proposal: No private key"
 msgstr ""
 
-#: www/views/walletDetails.html:192
+#: www/views/walletDetails.html:204
 msgid "No transactions yet"
 msgstr "Транзакций пока не было"
 
@@ -1813,16 +1881,24 @@ msgstr "Кошельки не обнаружены"
 msgid "No wallet selected"
 msgstr "Не выбран кошелёк"
 
-#: src/js/controllers/buyAmazon.js:298
-#: src/js/controllers/buyMercadoLibre.js:290
-#: src/js/controllers/confirm.js:83
-#: src/js/controllers/topup.js:263
+#: src/js/controllers/buyAmazon.js:300
+#: src/js/controllers/buyMercadoLibre.js:292
+#: src/js/controllers/confirm.js:85
+#: src/js/controllers/topup.js:265
 msgid "No wallets available"
 msgstr ""
 
 #: www/views/paperWallet.html:47
 msgid "No wallets available to receive funds"
 msgstr "Некуда перевести средства"
+
+#: www/views/cashScan.html:14
+msgid "No wallets eligible for Bitcoin Cash support"
+msgstr ""
+
+#: www/views/cashScan.html:44
+msgid "Non eligible BTC wallets"
+msgstr ""
 
 #: src/js/services/feeService.js:12
 msgid "Normal"
@@ -1832,7 +1908,7 @@ msgstr "Обычная"
 msgid "Not authorized"
 msgstr "Не авторизован"
 
-#: src/js/controllers/confirm.js:276
+#: src/js/controllers/confirm.js:286
 msgid "Not enough funds for fee"
 msgstr "Недостаточно средств для уплаты комиссии"
 
@@ -1858,7 +1934,7 @@ msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
 msgstr "Внимание: только 1-1 кошельки (требующие одной подписи) могут быть использованы для продажи биткойн"
 
 #: www/views/preferencesNotifications.html:3
-#: www/views/tab-settings.html:46
+#: www/views/tab-settings.html:61
 msgid "Notifications"
 msgstr "Уведомления"
 
@@ -1866,7 +1942,7 @@ msgstr "Уведомления"
 msgid "Notifications by email"
 msgstr ""
 
-#: www/views/tx-details.html:117
+#: www/views/tx-details.html:119
 msgid "Notify me if confirmed"
 msgstr ""
 
@@ -1882,8 +1958,9 @@ msgstr "Если это устройство окажется утеряно, б
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
 msgstr "Самое время оценить окружение. Окна поблизости? Скрытые камеры? Плечешпионы?"
 
-#: src/js/controllers/buyAmazon.js:310
-#: src/js/controllers/topup.js:284
+#: src/js/controllers/buyAmazon.js:312
+#: src/js/controllers/topup.js:286
+#: src/js/services/incomingData.js:153
 #: src/js/services/popupService.js:16
 #: src/js/services/popupService.js:52
 #: src/js/services/popupService.js:61
@@ -1907,7 +1984,7 @@ msgstr "Официальный оригинал"
 msgid "Oh no!"
 msgstr "О, нет!"
 
-#: src/js/controllers/buyMercadoLibre.js:304
+#: src/js/controllers/buyMercadoLibre.js:306
 msgid "Ok"
 msgstr ""
 
@@ -1916,7 +1993,10 @@ msgid "On this screen you can see all your wallets, accounts, and assets."
 msgstr "На этой вкладке вы можете видеть все ваши кошельки, учетные записи и активы."
 
 #: src/js/controllers/bitpayCard.js:113
-#: src/js/controllers/tab-settings.js:47
+#: src/js/controllers/preferences.js:66
+#: src/js/controllers/preferencesCash.js:33
+#: src/js/controllers/tab-settings.js:51
+#: src/js/controllers/tx-details.js:55
 msgid "Open"
 msgstr "Открыть"
 
@@ -1933,7 +2013,7 @@ msgid "Open GitHub Project"
 msgstr "Откройте проект GitHub"
 
 #: src/js/controllers/bitpayCard.js:123
-#: src/js/controllers/tx-details.js:175
+#: src/js/controllers/tx-details.js:192
 msgid "Open Insight"
 msgstr "Открыть Insight"
 
@@ -1949,30 +2029,34 @@ msgstr "Редактировать перевод"
 msgid "Open Website"
 msgstr "Перейти на сайт"
 
+#: src/js/controllers/preferencesCash.js:32
+msgid "Open bitcoincash.org?"
+msgstr ""
+
 #: www/views/tab-receive.html:27
 msgid "Open wallet"
 msgstr "Открыть кошелёк"
 
 #: www/views/includes/incomingDataMenu.html:19
 msgid "Open website"
-msgstr ""
+msgstr "Открыть сайт"
 
 #: www/views/bitpayCardIntro.html:34
 msgid "Order the BitPay Card"
 msgstr "Заказать BitPay Card"
 
-#: www/views/join.html:102
-#: www/views/join.html:93
-#: www/views/tab-create-personal.html:67
-#: www/views/tab-create-personal.html:75
-#: www/views/tab-create-shared.html:104
-#: www/views/tab-create-shared.html:96
+#: www/views/join.html:105
+#: www/views/join.html:96
+#: www/views/tab-create-personal.html:69
+#: www/views/tab-create-personal.html:77
+#: www/views/tab-create-shared.html:106
+#: www/views/tab-create-shared.html:98
 #: www/views/tab-import-file.html:18
-#: www/views/tab-import-phrase.html:38
+#: www/views/tab-import-phrase.html:41
 msgid "Password"
 msgstr "Пароль"
 
-#: src/js/controllers/import.js:83
+#: src/js/controllers/import.js:98
 msgid "Password required. Make sure to enter your password in advanced options"
 msgstr "Необходим пароль. Убедитесь, что вы ввели ваш пароль в дополнительных настройках"
 
@@ -1992,7 +2076,7 @@ msgstr "Платите нулевую комиссию за конвертаци
 msgid "Pay To"
 msgstr "Отправить платёж"
 
-#: src/js/controllers/modals/txpDetails.js:45
+#: src/js/controllers/modals/txpDetails.js:51
 #: www/views/modals/tx-status.html:33
 msgid "Payment Accepted"
 msgstr "Платёж принят"
@@ -2030,7 +2114,7 @@ msgstr "Платёж получен"
 msgid "Payment Rejected"
 msgstr "Платёж отклонён"
 
-#: src/js/controllers/modals/txpDetails.js:42
+#: src/js/controllers/modals/txpDetails.js:44
 #: www/views/confirm.html:126
 #: www/views/includes/walletActivity.html:11
 #: www/views/modals/txp-details.html:42
@@ -2044,6 +2128,10 @@ msgstr "Платёж принят, но пока не отправлен"
 #: www/views/modals/txp-details.html:40
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
 msgstr "Платёж принят и будет отправлен Glidera. В случае проблем он может быть удалён спустя шесть часов после создания."
+
+#: src/js/services/incomingData.js:152
+msgid "Payment address was translated to new Bitcoin Cash address format:"
+msgstr ""
 
 #: www/views/modals/txp-details.html:109
 msgid "Payment details"
@@ -2066,7 +2154,7 @@ msgstr "Рассматриваемые платежи"
 msgid "Permanently delete this wallet."
 msgstr "Навсегда удалить этот кошелёк."
 
-#: src/js/services/profileService.js:388
+#: src/js/services/profileService.js:401
 msgid "Personal Wallet"
 msgstr "Личный кошелёк"
 
@@ -2078,12 +2166,12 @@ msgstr "Внимательно запишите ключевое словосо�
 msgid "Please connect a camera to get started."
 msgstr "Чтобы начать, подключите камеру."
 
-#: src/js/controllers/import.js:260
+#: src/js/controllers/import.js:277
 msgid "Please enter the recovery phrase"
 msgstr "Введите ключевое словосочетание"
 
-#: src/js/controllers/create.js:168
-#: src/js/controllers/join.js:135
+#: src/js/controllers/create.js:174
+#: src/js/controllers/join.js:139
 msgid "Please enter the wallet recovery phrase"
 msgstr "Введите ключевое словосочетание кошелька"
 
@@ -2099,7 +2187,12 @@ msgstr "Тапните каждое слово в правильном поря�
 msgid "Please upgrade Copay to perform this action"
 msgstr "Пожалуйста, обновите Copay для выполнения этого действия"
 
-#: src/js/controllers/import.js:222
+#: www/views/walletDetails.html:142
+#: www/views/walletDetails.html:62
+msgid "Please wait"
+msgstr "Пожалуйста, подождите"
+
+#: src/js/controllers/import.js:238
 msgid "Please, select your backup file"
 msgstr "Пожалуйста, выберите ваш файл резервной копии"
 
@@ -2119,7 +2212,7 @@ msgstr "Подготовка адресов..."
 msgid "Preparing backup..."
 msgstr "Подготовка резервной копии..."
 
-#: src/js/routes.js:1240
+#: src/js/routes.js:1261
 msgid "Press again to exit"
 msgstr "Нажмите еще раз для выхода"
 
@@ -2129,9 +2222,9 @@ msgstr "Приоритетная"
 
 #: www/views/includes/incomingDataMenu.html:80
 msgid "Private Key"
-msgstr ""
+msgstr "Приватный ключ"
 
-#: src/js/controllers/paperWallet.js:137
+#: src/js/controllers/paperWallet.js:136
 msgid "Private key encrypted. Enter password"
 msgstr "Приватный ключ зашифрован. Введите пароль"
 
@@ -2143,8 +2236,8 @@ msgstr "Закрытый ключ зашифрован, не удалось по
 msgid "Proposal Accepted"
 msgstr "Платёж принят"
 
-#: src/js/controllers/modals/txpDetails.js:55
-#: src/js/controllers/tx-details.js:61
+#: src/js/controllers/modals/txpDetails.js:61
+#: src/js/controllers/tx-details.js:78
 #: www/views/confirm.html:127
 msgid "Proposal Created"
 msgstr "Платёж создан"
@@ -2157,15 +2250,15 @@ msgstr "Платёж удалён"
 msgid "Proposal Rejected"
 msgstr "Платёж отклонён"
 
-#: www/views/walletDetails.html:177
+#: www/views/walletDetails.html:189
 msgid "Proposals"
 msgstr "Предложенные платежи"
 
-#: src/js/controllers/buyAmazon.js:281
+#: src/js/controllers/buyAmazon.js:282
 msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
 msgstr ""
 
-#: src/js/controllers/buyMercadoLibre.js:280
+#: src/js/controllers/buyMercadoLibre.js:281
 msgid "Purchase amount must be a value between 50 and 2000"
 msgstr ""
 
@@ -2185,8 +2278,8 @@ msgstr "QR-код"
 msgid "Quick review!"
 msgstr "Быстрый просмотр!"
 
-#: src/js/controllers/create.js:79
-#: src/js/controllers/join.js:65
+#: src/js/controllers/create.js:84
+#: src/js/controllers/join.js:68
 msgid "Random"
 msgstr "Случайное"
 
@@ -2202,6 +2295,11 @@ msgstr "Показать меньше"
 msgid "Read more"
 msgstr "Показать больше"
 
+#: src/js/controllers/preferences.js:65
+#: src/js/controllers/tx-details.js:54
+msgid "Read more in our Wiki"
+msgstr ""
+
 #: www/views/tab-receive.html:3
 #: www/views/tabs.html:7
 msgid "Receive"
@@ -2216,7 +2314,7 @@ msgstr ""
 msgid "Received"
 msgstr "Получено"
 
-#: src/js/controllers/tx-details.js:113
+#: src/js/controllers/tx-details.js:130
 msgid "Received Funds"
 msgstr "Полученные средства"
 
@@ -2230,7 +2328,7 @@ msgstr "Получение"
 msgid "Recent"
 msgstr "Недавние"
 
-#: www/views/advancedSettings.html:20
+#: www/views/advancedSettings.html:21
 msgid "Recent Transaction Card"
 msgstr "Недавние транзакции"
 
@@ -2252,11 +2350,6 @@ msgstr "Получатели"
 msgid "Recovery phrase"
 msgstr "Ключевое словосочетание"
 
-#: www/views/walletDetails.html:116
-#: www/views/walletDetails.html:36
-msgid "Recreate"
-msgstr "Создать заново"
-
 #: src/js/services/onGoingProcess.js:26
 msgid "Recreating Wallet..."
 msgstr "Воссоздаю кошелёк..."
@@ -2265,8 +2358,8 @@ msgstr "Воссоздаю кошелёк..."
 msgid "Redeem now"
 msgstr ""
 
-#: src/js/controllers/modals/txpDetails.js:57
-#: src/js/controllers/tx-details.js:63
+#: src/js/controllers/modals/txpDetails.js:63
+#: src/js/controllers/tx-details.js:80
 msgid "Rejected"
 msgstr "Отклонён"
 
@@ -2281,7 +2374,7 @@ msgstr "Информация о выпуске"
 #: www/views/addressbook.view.html:36
 #: www/views/modals/mercadolibre-card-details.html:69
 msgid "Remove"
-msgstr ""
+msgstr "Удалить"
 
 #: src/js/controllers/preferencesBitpayServices.js:7
 msgid "Remove BitPay Account?"
@@ -2295,12 +2388,12 @@ msgstr "Удалить BitPay карту?"
 msgid "Removing your BitPay account will remove all associated BitPay account data from this device. Are you sure you would like to remove your BitPay Account ({{email}}) from this device?"
 msgstr "Удаление учетной записи BitPay удалит все связанные данные учетной записи BitPay с этого устройства. Вы уверены, что вы хотели бы удалить свой BitPay аккаунт ({{email}}) с этого устройства?"
 
-#: www/views/join.html:113
-#: www/views/join.html:121
-#: www/views/tab-create-personal.html:84
-#: www/views/tab-create-personal.html:92
-#: www/views/tab-create-shared.html:113
-#: www/views/tab-create-shared.html:121
+#: www/views/join.html:116
+#: www/views/join.html:124
+#: www/views/tab-create-personal.html:86
+#: www/views/tab-create-personal.html:94
+#: www/views/tab-create-shared.html:115
+#: www/views/tab-create-shared.html:123
 #: www/views/tab-export-file.html:17
 msgid "Repeat password"
 msgstr "Повторите пароль"
@@ -2309,7 +2402,7 @@ msgstr "Повторите пароль"
 msgid "Repeat the password"
 msgstr "Повторите пароль"
 
-#: www/views/preferences.html:55
+#: www/views/preferences.html:56
 msgid "Request Fingerprint"
 msgstr "Запрос отпечатка пальца"
 
@@ -2321,7 +2414,7 @@ msgstr "Запросить определенную сумму"
 msgid "Request Spending Password"
 msgstr "Запрашивать платёжный пароль"
 
-#: www/views/tab-create-shared.html:42
+#: www/views/tab-create-shared.html:44
 msgid "Required number of signatures"
 msgstr "Требуемое число подписей"
 
@@ -2370,9 +2463,17 @@ msgstr ""
 msgid "Scan your fingerprint please"
 msgstr "Пожалуйста, отсканируйте ваш отпечаток пальца"
 
+#: www/views/preferencesCash.html:22
+msgid "Scan your wallets for Bitcoin Cash"
+msgstr ""
+
 #: src/js/services/onGoingProcess.js:30
 msgid "Scanning Wallet funds..."
 msgstr "Сканирование адресов кошелька..."
+
+#: www/views/tab-home.html:95
+msgid "Scanning funds..."
+msgstr ""
 
 #: www/views/includes/screenshotWarningModal.html:7
 msgid "Screenshots are not secure"
@@ -2406,7 +2507,7 @@ msgstr ""
 msgid "Select a backup file"
 msgstr "Выберите файл резервной копии"
 
-#: src/js/controllers/tab-receive.js:133
+#: src/js/controllers/tab-receive.js:139
 msgid "Select a wallet"
 msgstr "Выберите кошелёк"
 
@@ -2443,7 +2544,7 @@ msgstr "Отправить адреса по email"
 msgid "Send by email"
 msgstr "Отправить на email"
 
-#: src/js/controllers/confirm.js:151
+#: src/js/controllers/confirm.js:156
 msgid "Send from"
 msgstr "Отправить от"
 
@@ -2482,7 +2583,7 @@ msgstr "Отправляю максимальную сумму"
 msgid "Sending transaction"
 msgstr "Отправка транзакции"
 
-#: src/js/controllers/confirm.js:490
+#: src/js/controllers/confirm.js:524
 msgid "Sending {{amountStr}} from your {{name}} wallet"
 msgstr "Отправка {{amountStr}} из вашего кошелька {{name}}"
 
@@ -2493,7 +2594,7 @@ msgstr "Отправка {{amountStr}} из вашего кошелька {{name
 msgid "Sent"
 msgstr "Отправлено"
 
-#: src/js/controllers/tx-details.js:112
+#: src/js/controllers/tx-details.js:129
 msgid "Sent Funds"
 msgstr "Отправленные средства"
 
@@ -2501,8 +2602,8 @@ msgstr "Отправленные средства"
 msgid "Server response could not be verified"
 msgstr "Ответ сервера не может быть проверен"
 
-#: src/js/controllers/buyAmazon.js:96
-#: src/js/controllers/buyMercadoLibre.js:96
+#: src/js/controllers/buyAmazon.js:97
+#: src/js/controllers/buyMercadoLibre.js:97
 msgid "Service not available"
 msgstr ""
 
@@ -2522,7 +2623,7 @@ msgstr "Журнал сеанса"
 msgid "Set up a password"
 msgstr "Задайте пароль"
 
-#: src/js/controllers/preferencesFee.js:84
+#: src/js/controllers/preferencesFee.js:85
 msgid "Set your own fee in satoshis/byte"
 msgstr ""
 
@@ -2557,13 +2658,13 @@ msgstr "Показать фразу для восстановления"
 msgid "Show address"
 msgstr "Показать адрес"
 
-#: www/views/join.html:45
-#: www/views/tab-create-personal.html:25
-#: www/views/tab-create-shared.html:54
+#: www/views/join.html:48
+#: www/views/tab-create-personal.html:27
+#: www/views/tab-create-shared.html:56
 #: www/views/tab-export-file.html:24
-#: www/views/tab-import-file.html:27
+#: www/views/tab-import-file.html:29
 #: www/views/tab-import-hardware.html:30
-#: www/views/tab-import-phrase.html:32
+#: www/views/tab-import-phrase.html:35
 msgid "Show advanced options"
 msgstr "Показать дополнительные параметры"
 
@@ -2587,8 +2688,8 @@ msgstr "Подписание транзакции"
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
 msgstr "Так как кошелёк хранится только у вас, вам необходимо записать ключевую фразу на случай удаления {{appName}}."
 
-#: www/views/tab-create-personal.html:120
-#: www/views/tab-create-shared.html:149
+#: www/views/tab-create-personal.html:122
+#: www/views/tab-create-shared.html:151
 msgid "Single Address Wallet"
 msgstr "Кошелёк с одним адресом"
 
@@ -2597,17 +2698,27 @@ msgstr "Кошелёк с одним адресом"
 msgid "Skip"
 msgstr "Пропустить"
 
-#: src/js/controllers/modals/txpDetails.js:34
-msgid "Slide"
-msgstr "Сдвинуть"
+#: src/js/controllers/confirm.js:350
+#: src/js/controllers/modals/txpDetails.js:47
+msgid "Slide to accept"
+msgstr ""
 
 #: www/views/buyAmazon.html:96
 #: www/views/buyMercadoLibre.html:83
 msgid "Slide to buy"
 msgstr ""
 
-#: src/js/controllers/create.js:83
-#: src/js/controllers/join.js:68
+#: src/js/controllers/confirm.js:344
+msgid "Slide to pay"
+msgstr ""
+
+#: src/js/controllers/confirm.js:356
+#: src/js/controllers/modals/txpDetails.js:40
+msgid "Slide to send"
+msgstr ""
+
+#: src/js/controllers/create.js:88
+#: src/js/controllers/join.js:71
 msgid "Specify Recovery Phrase..."
 msgstr "Указать ключевое словосочетание..."
 
@@ -2623,7 +2734,7 @@ msgstr "Платёж не найден"
 msgid "Spending Password needed"
 msgstr "Необходим платёжный пароль"
 
-#: www/views/walletDetails.html:161
+#: www/views/walletDetails.html:173
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr ""
 
@@ -2642,11 +2753,15 @@ msgstr ""
 
 #: www/views/topup.html:101
 msgid "Success"
-msgstr ""
+msgstr "Успешно"
 
 #: src/js/services/feeService.js:14
 msgid "Super Economy"
 msgstr "Очень экономичная"
+
+#: www/views/preferencesCash.html:11
+msgid "Support Bitcoin Cash"
+msgstr ""
 
 #: www/views/paperWallet.html:7
 msgid "Sweep"
@@ -2669,13 +2784,16 @@ msgstr "ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
 msgid "Take control of your money,<br>get started with bitcoin."
 msgstr "Возьмите ваши финансы под контроль,<br>начните пользоваться Биткойн."
 
-#: www/views/walletDetails.html:139
-#: www/views/walletDetails.html:59
+#: www/views/walletDetails.html:132
+#: www/views/walletDetails.html:52
 msgid "Tap and hold to show"
 msgstr "Коснитесь и удерживайте, чтобы показать"
 
-#: www/views/walletDetails.html:111
-#: www/views/walletDetails.html:31
+#: www/views/includes/walletInfo.html:3
+msgid "Tap to recreate"
+msgstr ""
+
+#: www/views/includes/walletInfo.html:4
 msgid "Tap to retry"
 msgstr "Повторить"
 
@@ -2690,14 +2808,14 @@ msgstr "Условия использования"
 msgid "Terms of Use"
 msgstr "Условия использования"
 
-#: www/views/tab-create-personal.html:116
-#: www/views/tab-import-phrase.html:65
+#: www/views/tab-create-personal.html:118
+#: www/views/tab-import-phrase.html:68
 msgid "Testnet"
 msgstr "Testnet"
 
 #: www/views/includes/incomingDataMenu.html:61
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #: src/js/controllers/feedback/send.js:27
 #: src/js/controllers/feedback/send.js:76
@@ -2754,7 +2872,7 @@ msgstr "Официальные Условия обслуживания на ан
 msgid "The password of the recovery phrase (if set)"
 msgstr "Пароль ключевого словосочетания (если установлен)"
 
-#: src/js/services/walletService.js:1140
+#: src/js/services/walletService.js:1139
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "Платёж был создан, но не может быть завершен. Пожалуйста, вернитесь на вкладку Обзор и попробуйте снова"
 
@@ -2762,10 +2880,10 @@ msgstr "Платёж был создан, но не может быть заве
 msgid "The payment was removed by creator"
 msgstr "Платёж был удалён его создателем"
 
-#: www/views/join.html:88
-#: www/views/tab-create-personal.html:61
-#: www/views/tab-create-shared.html:90
-#: www/views/tab-import-phrase.html:40
+#: www/views/join.html:91
+#: www/views/tab-create-personal.html:63
+#: www/views/tab-create-shared.html:92
+#: www/views/tab-import-phrase.html:43
 msgid "The recovery phrase could require a password to be imported"
 msgstr "Для импортирования ключевого словосочетания может потребоваться пароль"
 
@@ -2797,9 +2915,9 @@ msgstr "Адрес сервера Bitcore"
 msgid "There is a new version of {{appName}} available"
 msgstr "Доступна новая версия {{appName}}"
 
-#: src/js/controllers/import.js:213
-#: src/js/controllers/import.js:237
-#: src/js/controllers/import.js:317
+#: src/js/controllers/import.js:229
+#: src/js/controllers/import.js:254
+#: src/js/controllers/import.js:335
 msgid "There is an error in the form"
 msgstr "Ошибка в форме"
 
@@ -2816,13 +2934,13 @@ msgstr "Замечательное приложение!"
 msgid "This app stores your bitcoin with cutting-edge security."
 msgstr ""
 
-#: src/js/controllers/confirm.js:468
+#: src/js/controllers/confirm.js:502
 msgid "This bitcoin payment request has expired."
 msgstr "Этот запрос платежа истёк."
 
-#: www/views/join.html:130
-#: www/views/tab-create-personal.html:101
-#: www/views/tab-create-shared.html:130
+#: www/views/join.html:133
+#: www/views/tab-create-personal.html:103
+#: www/views/tab-create-shared.html:132
 msgid "This password cannot be recovered. If the password is lost, there is no way you could recover your funds."
 msgstr ""
 
@@ -2838,13 +2956,13 @@ msgstr ""
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
 msgstr ""
 
-#: www/views/walletDetails.html:115
-#: www/views/walletDetails.html:35
+#: www/views/walletDetails.html:109
+#: www/views/walletDetails.html:29
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
 msgstr "Это кошелёк не зарегистрирован на данном сервере Bitcore. Вы можете воссоздать его из локальной информации."
 
 #: www/views/modals/txp-details.html:138
-#: www/views/tx-details.html:121
+#: www/views/tx-details.html:123
 msgid "Timeline"
 msgstr "Хронология"
 
@@ -2873,7 +2991,7 @@ msgstr ""
 msgid "Top up in progress..."
 msgstr ""
 
-#: src/js/controllers/topup.js:205
+#: src/js/controllers/topup.js:206
 msgid "Top up {{amountStr}} to debit card ({{cardLastNumber}})"
 msgstr ""
 
@@ -2884,11 +3002,11 @@ msgstr ""
 msgid "Total"
 msgstr "Баланс кошелька"
 
-#: www/views/walletDetails.html:184
+#: www/views/walletDetails.html:196
 msgid "Total Locked Balance"
 msgstr "Всего заблокировано средств"
 
-#: www/views/tab-create-shared.html:33
+#: www/views/tab-create-shared.html:35
 msgid "Total number of copayers"
 msgstr "Количество совладельцев"
 
@@ -2901,7 +3019,7 @@ msgstr ""
 msgid "Touch ID Failed"
 msgstr "Ошибка Touch ID"
 
-#: src/js/controllers/tx-details.js:11
+#: src/js/controllers/tx-details.js:12
 msgid "Transaction"
 msgstr "Транзакция"
 
@@ -2918,9 +3036,9 @@ msgstr "История транзакций"
 msgid "Transaction already broadcasted"
 msgstr "Транзакция уже отправлена"
 
-#: src/js/controllers/buyAmazon.js:306
-#: src/js/controllers/buyMercadoLibre.js:299
-#: src/js/controllers/topup.js:279
+#: src/js/controllers/buyAmazon.js:308
+#: src/js/controllers/buyMercadoLibre.js:301
+#: src/js/controllers/topup.js:281
 msgid "Transaction has not been created"
 msgstr ""
 
@@ -2928,7 +3046,7 @@ msgstr ""
 msgid "Transaction initiated"
 msgstr ""
 
-#: src/js/controllers/tx-details.js:102
+#: src/js/controllers/tx-details.js:119
 msgid "Transaction not available at this time"
 msgstr "Транзакция недоступна в данный момент"
 
@@ -2941,9 +3059,9 @@ msgstr "Транзакция не обнаружена"
 msgid "Transactions without fee are not supported."
 msgstr ""
 
-#: src/js/controllers/paperWallet.js:110
+#: src/js/controllers/paperWallet.js:109
 msgid "Transfer to"
-msgstr ""
+msgstr "Перевести в"
 
 #: www/views/tab-send.html:67
 msgid "Transfer to Wallet"
@@ -2965,15 +3083,11 @@ msgstr "Введите ключевое словосочетание (обычн
 msgid "Uh oh..."
 msgstr "Упс..."
 
-#: www/views/tx-details.html:100
+#: www/views/tx-details.html:102
 msgid "Unconfirmed"
 msgstr "Неподтверждено"
 
-#: www/views/preferencesUnit.html:4
-msgid "Unit"
-msgstr "Единица измерения"
-
-#: www/views/walletDetails.html:178
+#: www/views/walletDetails.html:190
 msgid "Unsent transactions"
 msgstr "Неотправленные транзакции"
 
@@ -2993,7 +3107,7 @@ msgstr "Доступно обновление"
 msgid "Updating pending proposals. Please stand by"
 msgstr "Обновление ожидающих рассмотрения платежей. Подождите, пожалуйста"
 
-#: www/views/walletDetails.html:210
+#: www/views/walletDetails.html:217
 msgid "Updating transaction history. Please stand by."
 msgstr "Обновление истории транзакций. Подождите, пожалуйста."
 
@@ -3005,7 +3119,7 @@ msgstr "Обновление... Подождите, пожалуйста"
 msgid "Urgent"
 msgstr "Срочно"
 
-#: www/views/advancedSettings.html:11
+#: www/views/advancedSettings.html:12
 msgid "Use Unconfirmed Funds"
 msgstr "Использовать неподтверждённые средства"
 
@@ -3015,7 +3129,7 @@ msgstr "Проверка ключевого словосочетания..."
 
 #: www/views/modals/fingerprintCheck.html:4
 msgid "Verify your identity"
-msgstr ""
+msgstr "Подтвердить личность"
 
 #: www/views/preferencesAbout.html:14
 #: www/views/preferencesExternal.html:25
@@ -3035,7 +3149,7 @@ msgid "View Terms of Service"
 msgstr "Посмотреть Условия обслуживания"
 
 #: src/js/controllers/bitpayCard.js:122
-#: src/js/controllers/tx-details.js:174
+#: src/js/controllers/tx-details.js:191
 msgid "View Transaction on Insight"
 msgstr "Просмотреть транзакцию на Insight"
 
@@ -3043,7 +3157,7 @@ msgstr "Просмотреть транзакцию на Insight"
 msgid "View Update"
 msgstr "Просмотреть обновление"
 
-#: www/views/tx-details.html:147
+#: www/views/tx-details.html:149
 msgid "View on blockchain"
 msgstr "Посмотреть в блокчейне"
 
@@ -3051,7 +3165,7 @@ msgstr "Посмотреть в блокчейне"
 msgid "Visit mercadolivre.com.br &rarr;"
 msgstr ""
 
-#: www/views/walletDetails.html:170
+#: www/views/walletDetails.html:182
 msgid "WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet."
 msgstr "ВНИМАНИЕ: Деривация ключей не работает на этом устройстве/кошельке. Никакие действия не могут быть произведены с этим кошельком."
 
@@ -3092,7 +3206,7 @@ msgstr "Адреса кошелька"
 msgid "Wallet Color"
 msgstr "Цвет кошелька"
 
-#: www/views/preferencesInformation.html:23
+#: www/views/preferencesInformation.html:29
 msgid "Wallet Configuration (m-n)"
 msgstr "Конфигурация кошелька (m-n)"
 
@@ -3100,7 +3214,7 @@ msgstr "Конфигурация кошелька (m-n)"
 msgid "Wallet Created"
 msgstr "Кошелёк создан"
 
-#: www/views/preferencesInformation.html:17
+#: www/views/preferencesInformation.html:23
 msgid "Wallet Id"
 msgstr "Идентификатор кошелька"
 
@@ -3117,9 +3231,9 @@ msgstr ""
 msgid "Wallet Invitation"
 msgstr "Приглашение присоединиться к кошельку"
 
-#: www/views/join.html:57
-#: www/views/tab-create-personal.html:36
-#: www/views/tab-create-shared.html:65
+#: www/views/join.html:60
+#: www/views/tab-create-personal.html:38
+#: www/views/tab-create-shared.html:67
 msgid "Wallet Key"
 msgstr "Ключевое словосочетание"
 
@@ -3131,13 +3245,13 @@ msgstr "Название кошелька"
 msgid "Wallet Name (at creation)"
 msgstr "Название кошелька (при создании)"
 
-#: www/views/preferencesInformation.html:29
+#: www/views/preferencesInformation.html:35
 msgid "Wallet Network"
 msgstr "Сеть кошелька"
 
-#: www/views/join.html:74
-#: www/views/tab-create-personal.html:48
-#: www/views/tab-create-shared.html:77
+#: www/views/join.html:77
+#: www/views/tab-create-personal.html:50
+#: www/views/tab-create-shared.html:79
 msgid "Wallet Recovery Phrase"
 msgstr "Ключевое словосочетание кошелька"
 
@@ -3146,7 +3260,7 @@ msgid "Wallet Recovery Phrase is invalid"
 msgstr "Ключевое словосочетание кошелька недействительно"
 
 #: www/views/preferencesAdvanced.html:25
-#: www/views/tab-import-phrase.html:70
+#: www/views/tab-import-phrase.html:73
 msgid "Wallet Service URL"
 msgstr "Адрес сервера Bitcore"
 
@@ -3155,7 +3269,7 @@ msgid "Wallet Settings"
 msgstr "Параметры кошелька"
 
 #: www/views/tab-import-hardware.html:11
-#: www/views/tab-import-phrase.html:58
+#: www/views/tab-import-phrase.html:61
 msgid "Wallet Type"
 msgstr "Тип кошелька"
 
@@ -3163,7 +3277,7 @@ msgstr "Тип кошелька"
 msgid "Wallet already exists"
 msgstr "Кошелёк уже существует"
 
-#: src/js/services/profileService.js:498
+#: src/js/services/profileService.js:515
 msgid "Wallet already in {{appName}}"
 msgstr ""
 
@@ -3197,7 +3311,7 @@ msgid "Wallet needs backup"
 msgstr "Необходимо создать резервную копию"
 
 #: www/views/tab-receive.html:59
-#: www/views/walletDetails.html:156
+#: www/views/walletDetails.html:169
 msgid "Wallet not backed up"
 msgstr "Резервное копирование не выполнено"
 
@@ -3205,6 +3319,7 @@ msgstr "Резервное копирование не выполнено"
 msgid "Wallet not found"
 msgstr "Кошелёк не найден"
 
+#: src/js/controllers/cashScan.js:65
 #: src/js/controllers/tab-home.js:220
 msgid "Wallet not registered"
 msgstr "Кошелёк не зарегистрирован"
@@ -3225,13 +3340,13 @@ msgstr "Сервер Bitcore не найден"
 msgid "Wallets"
 msgstr "Кошельки"
 
-#: www/views/tab-settings.html:102
+#: www/views/tab-settings.html:107
 msgid "Wallets & Integrations"
 msgstr "Кошельки и интеграция"
 
 #: src/js/controllers/addressbookView.js:23
-#: src/js/controllers/modals/txpDetails.js:147
-#: src/js/controllers/modals/txpDetails.js:164
+#: src/js/controllers/modals/txpDetails.js:153
+#: src/js/controllers/modals/txpDetails.js:170
 #: src/js/controllers/preferencesDelete.js:24
 #: src/js/controllers/preferencesExternal.js:14
 #: www/views/preferencesDeleteWallet.html:11
@@ -3264,7 +3379,7 @@ msgstr ""
 
 #: www/views/includes/incomingDataMenu.html:6
 msgid "Website"
-msgstr ""
+msgstr "Сайт"
 
 #: www/views/preferencesLanguage.html:16
 msgid "We’re always looking for translation contributions! You can make corrections or help to make this app available in your native language by joining our community on Crowdin."
@@ -3294,7 +3409,7 @@ msgstr ""
 msgid "Would you like to receive push notifications about payments?"
 msgstr "Вы хотели бы получать push-уведомления о платежах?"
 
-#: src/js/controllers/import.js:270
+#: src/js/controllers/import.js:287
 msgid "Wrong number of recovery words:"
 msgstr "Неподходящее количество слов в ключевом словосочетании:"
 
@@ -3361,7 +3476,7 @@ msgstr ""
 #: www/views/mercadoLibre.html:57
 #: www/views/mercadoLibreCards.html:6
 msgid "Your Gift Cards"
-msgstr ""
+msgstr "Мои подарочные карты"
 
 #: www/views/includes/confirmBackupPopup.html:6
 msgid "Your bitcoin wallet is backed up!"
@@ -3404,18 +3519,23 @@ msgstr ""
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Ваш кошелёк никогда не сохраняется в облачное хранилище или в резервные копии устройства."
 
-#: src/js/services/walletService.js:1031
+#: src/js/services/walletService.js:1030
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
 msgstr "Ваш кошелёк будет зашифрован. Платёжный пароль нельзя восстановить. Обязательно его запишите."
 
 #: www/views/includes/walletSelector.html:23
 #: www/views/paperWallet.html:35
-#: www/views/tab-home.html:96
+#: www/views/tab-home.html:97
 #: www/views/tab-receive.html:74
-#: www/views/walletDetails.html:138
-#: www/views/walletDetails.html:58
+#: www/views/walletDetails.html:131
+#: www/views/walletDetails.html:51
 msgid "[Balance Hidden]"
 msgstr "[Баланс скрыт]"
+
+#: www/views/walletDetails.html:141
+#: www/views/walletDetails.html:61
+msgid "[Scanning Funds]"
+msgstr ""
 
 #: src/js/controllers/bitpayCardIntro.js:11
 msgid "add your BitPay Visa card(s)"
@@ -3425,7 +3545,7 @@ msgstr "добавьте вашу BitPay Visa карту(ы)"
 msgid "locked by pending payments"
 msgstr "заблокировано неподтверждёнными платежами"
 
-#: src/js/services/profileService.js:389
+#: src/js/services/profileService.js:402
 msgid "me"
 msgstr "мне"
 
@@ -3437,25 +3557,11 @@ msgstr "name@example.com"
 msgid "preparing..."
 msgstr "Подготавливается..."
 
-#: src/js/controllers/confirm.js:329
-#: src/js/controllers/modals/txpDetails.js:44
-msgid "to accept"
-msgstr "принять"
-
-#: src/js/controllers/confirm.js:327
-msgid "to pay"
-msgstr "оплатить"
-
-#: src/js/controllers/confirm.js:331
-#: src/js/controllers/modals/txpDetails.js:41
-msgid "to send"
-msgstr "отправить"
-
-#: src/js/controllers/buyAmazon.js:238
+#: src/js/controllers/buyAmazon.js:239
 msgid "{{amountStr}} for Amazon.com Gift Card"
 msgstr ""
 
-#: src/js/controllers/buyMercadoLibre.js:236
+#: src/js/controllers/buyMercadoLibre.js:237
 msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr ""
 
@@ -3463,7 +3569,7 @@ msgstr ""
 msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
 msgstr "{{appName}} требует Bitcore для координации совладельцев и получения информации из блокчейна. По-умолчанию используется сервер https://bws.bitpay.com (публичный сервер Bitcore компании BitPay)."
 
-#: src/js/controllers/confirm.js:358
+#: src/js/controllers/confirm.js:387
 msgid "{{fee}} will be deducted for bitcoin networking fees."
 msgstr "{{fee}} будет использовано для оплаты комиссии."
 
@@ -3471,12 +3577,13 @@ msgstr "{{fee}} будет использовано для оплаты коми
 msgid "{{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount"
 msgstr ""
 
-#: www/views/walletDetails.html:211
+#: www/views/walletDetails.html:218
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} транзакций загружено"
 
+#: www/views/cashScan.html:32
 #: www/views/copayers.html:46
-#: www/views/includes/walletInfo.html:13
+#: www/views/includes/walletInfo.html:18
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-из-{{wallet.n}}"
 
