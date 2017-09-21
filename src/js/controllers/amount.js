@@ -205,15 +205,13 @@ angular.module('copayApp.controllers').controller('amountController', function($
   };
 
   function fromFiat(val) {
-    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
-      return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network]) * satToUnit).toFixed(unitDecimals));
-    })
+    var CUSTOMNETWORKS = customNetworks.getStatic();
+    return parseFloat((rateService.fromFiat(val, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network]) * satToUnit).toFixed(unitDecimals));
   };
 
   function toFiat(val) {
-    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
-      return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network])).toFixed(2));
-    })
+    var CUSTOMNETWORKS = customNetworks.getStatic();
+    return parseFloat((rateService.toFiat(val * unitToSatoshi, $scope.alternativeIsoCode, CUSTOMNETWORKS[$scope.network])).toFixed(2));
   };
 
   function evaluate(val) {
