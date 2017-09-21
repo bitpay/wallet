@@ -82,7 +82,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     }
 
     data = sanitizeUri(data);
-
+    var CUSTOMNETWORKS = customNetworks.getStatic()
     var isNetworkValid = false;
     var network = 'livenet'
     var networkName = 'Bitcoin';
