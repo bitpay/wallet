@@ -183,6 +183,7 @@
                     return;
                   }
                   $timeout(function() {
+                    walletService.updateRemotePreferences(walletId, {network: opts.network});
                     walletService.startScan(walletId);
                     $timeout(function() {
                       $scope.updateDeviceQr(walletId, function() {
@@ -196,6 +197,7 @@
                 return;
               }
               $timeout(function() {
+                walletService.updateRemotePreferences(walletId, {network: opts.network});
                 walletService.startScan(walletId);
                 $timeout(function() {
                   $scope.updateDeviceQr(walletId, function() {
