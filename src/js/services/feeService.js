@@ -62,21 +62,27 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
 
     var CUSTOMNETWORKS = customNetworks.getStatic()
 
-    network = network || defaults.defaultNetwork.name;
-    var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
+    var length = Object.keys(CUSTOMNETWORKS).length;
 
-    var unitName = configService.getSync().wallet.settings.unitName;
-
-    walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
-        if (errLivenet) {
+    var count = 0;
+    var retObj = {};        
+    for (var c in CUSTOMNETWORKS) {
+      // console.log(CUSTOMNETWORKS[c])
+      count++
+      var thiswall = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[c].bwsUrl});
+      thiswall.getFeeLevels(CUSTOMNETWORKS[c].name, function(errThis, levelsThis) { // getFeeLevels(CUSTOMNETWORKS[c].name
+        // console.log(CUSTOMNETWORKS[levelsThis.network].bwsUrl,levelsThis)
+        if (errThis) {
           return cb(gettextCatalog.getString('Could not get dynamic fee'));
-        }
-        cache.updateTs = Date.now();
-        var retObj = {}
-        retObj[network] = levelsLivenet;
+        }        
+        retObj[levelsThis.network] = levelsThis
         cache.data = retObj;
-        return cb(null, retObj)
-    });
+        if(count === length) { 
+          cache.updateTs = Date.now();
+          return cb(null, retObj); 
+        }
+      });
+    }
   };
 
 

@@ -173,6 +173,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     };
 
     feeService.getFeeLevels($scope.wallet.credentials.network, function(err, levels) {
+      console.log($scope.wallet.credentials.network,levels)
       walletService.getTxHistory($scope.wallet, {
         progressFn: progressFn,
         feeLevels: levels,
