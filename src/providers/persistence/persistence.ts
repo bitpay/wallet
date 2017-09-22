@@ -70,7 +70,11 @@ export class PersistenceProvider {
   };
 
   getProfile(): Promise<any> {
-    return this.storage.get(Keys.PROFILE);
+    return new Promise((resolve, reject) => {
+      this.storage.get(Keys.PROFILE).then((profile) => {
+        resolve(profile);
+      });
+    });
   };
 
   deleteProfile(): Promise<void> {
