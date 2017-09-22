@@ -60,7 +60,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
         $scope.wallet.buildTxFromPrivateKey($scope.privateKey, destinationAddress, null, function(err, testTx) {
           if (err) return cb(err);
           var rawTxLength = testTx.serialize().length;
-          feeService.getCurrentFeeValue(defaults.defaultNetwork.name, function(err, feePerKB) {
+          feeService.getCurrentFeeValue($scope.wallet.network, function(err, feePerKB) {
 
             var opts = {};
             opts.fee = Math.round((feePerKB * rawTxLength) / 2000);
@@ -68,7 +68,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
               if (err) return cb(err);
               $scope.wallet.broadcastRawTx({
                 rawTx: tx.serialize(),
-                network: defaults.defaultNetwork.name
+                network: $scope.wallet.network
               }, function(err, txid) {
                 if (err) return cb(err);
                 return cb(null, destinationAddress, txid);
@@ -119,8 +119,7 @@ angular.module('copayApp.controllers').controller('paperWalletController',
       $scope.error = false;
 
       $scope.wallets = profileService.getWallets({
-        onlyComplete: true,
-        network: defaults.defaultNetwork.name,
+        onlyComplete: true
       });
       $scope.singleWallet = $scope.wallets.length == 1;
 
