@@ -60,24 +60,23 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
       return cb(null, cache.data, true);
     }
 
-    customNetworks.getAll().then(function(CUSTOMNETWORKS) {
+    var CUSTOMNETWORKS = customNetworks.getStatic()
 
-      network = network || defaults.defaultNetwork.name;
-      var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
+    network = network || defaults.defaultNetwork.name;
+    var walletClient = bwcService.getClient(null, {bwsurl:CUSTOMNETWORKS[network].bwsUrl});
 
-      var unitName = configService.getSync().wallet.settings.unitName;
+    var unitName = configService.getSync().wallet.settings.unitName;
 
-      walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
-          if (errLivenet) {
-            return cb(gettextCatalog.getString('Could not get dynamic fee'));
-          }
-          cache.updateTs = Date.now();
-          var retObj = {}
-          retObj[network] = levelsLivenet;
-          cache.data = retObj;
-          return cb(null, retObj)
-      });
-    })
+    walletClient.getFeeLevels('livenet', function(errLivenet, levelsLivenet) {
+        if (errLivenet) {
+          return cb(gettextCatalog.getString('Could not get dynamic fee'));
+        }
+        cache.updateTs = Date.now();
+        var retObj = {}
+        retObj[network] = levelsLivenet;
+        cache.data = retObj;
+        return cb(null, retObj)
+    });
   };
 
 
