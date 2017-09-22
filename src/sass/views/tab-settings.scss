@@ -20,6 +20,12 @@
   .has-comment {
     border-bottom: 0 none;
   }
+  .scan-label {
+    cursor: pointer;
+    cursor: hand;
+    color: $link-color;
+    font-weight: bold;
+  }
   .comment {
     padding: 15px;
     background-color: #fff;
