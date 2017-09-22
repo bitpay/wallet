@@ -41,3 +41,12 @@
     @include button-outline($v-button-secondary-color);
   }
 }
+
+.refButtons {
+  color:#333344;
+  cursor:pointer;
+}
+
+.wallet-item .big-icon-svg.circle .bg {
+  padding:0.25rem !important;
+}
