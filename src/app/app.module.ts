@@ -36,6 +36,7 @@ import { SendPage } from '../pages/send/send';
 import { SettingsPage } from '../pages/settings/settings';
 /* Settings */
 import { AboutPage } from '../pages/settings/about/about';
+import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 
@@ -71,6 +72,7 @@ export function createTranslateLoader(http: Http) {
     ScanPage,
     SettingsPage,
     AboutPage,
+    AdvancedPage,
     TermsOfUsePage,
     OnboardingPage,
     TourPage,
@@ -107,6 +109,7 @@ export function createTranslateLoader(http: Http) {
     SendPage,
     SettingsPage,
     AboutPage,
+    AdvancedPage,
     TermsOfUsePage,
     OnboardingPage,
     TourPage,

@@ -80,6 +80,10 @@
     </ion-item>
 
     <ion-item-divider color="light">More</ion-item-divider>
+    <ion-item (click)="openAdvancedPage()">
+        <ion-icon name="hammer" item-start></ion-icon>
+        Advanced
+      </ion-item>
     <ion-item (click)="openAboutPage()">
       <ion-icon name="apps" item-start></ion-icon>
       About {{appName}}
