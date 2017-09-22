@@ -60,13 +60,21 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             bitcore.Networks.add(defaultNetwork)
             // console.log('added default network', bitcore.Networks.get(defaultNetwork.name))
           }
+          var walletNetworks = {};
+
           for(var i=0;i<$scope.wallets.length;i++) {
-            if(!bitcore.Networks.get($scope.wallets[i].network)) {
-              // console.log($scope.wallets[i])
-              customNetworks.getCustomNetwork($scope.wallets[i].network).then(function(fetchedNetwork) {
+            if(!$scope.wallets[i].network) { $scope.wallets[i].network = 'livenet'; } // for legacy bitlox wallets
+            walletNetworks[$scope.wallets[i].network] = $scope.wallets[i].network
+          }
+          for(var x in walletNetworks) {
+            if(!bitcore.Networks.get(walletNetworks[x])) {
+              // console.log('adding network', walletNetworks[x])
+              customNetworks.getCustomNetwork(walletNetworks[x]).then(function(fetchedNetwork) {
                 if(!bitcore.Networks.get(fetchedNetwork.name)) {
                   bitcore.Networks.add(fetchedNetwork)
                 }
+              }).catch(function(err) {
+                console.warn("could not get network " + walletNetworks[i])
               });
             }
           }

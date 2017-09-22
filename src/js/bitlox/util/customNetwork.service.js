@@ -102,45 +102,34 @@ this.getCustomNetwork = function(customParam) {
           // check apple approved list on iOS, and the full list of whatever we can support for Android
           var customNet = CUSTOMNETWORKS[customParam]
           if(customNet) {
+            // console.log('found in local cache')
             def.resolve(customNet)
           } else {
-            // check previously imported custom nets
-            var customNetworks = storageService.getCustomNetworks(function(err, customNetworkListRaw) {
-              var customNetworkList = {}
-              if(customNetworkListRaw) {
-                customNetworkList = JSON.parse(customNetworkListRaw)
+            // try getting it from bitlox website
+            $http.get("https://btm.bitlox.com/coin/"+networkName+".php").then(function(response){
+              console.log('got network from server', response)
+              if(!response) {
+                // console.log('no response from server')
+                def.reject();
               }
-              if(customNetworkList[customParam]) {
-                self.customNetworks[customParam] = customNetworkList[customParam]
-                // console.log('got network from storageService', customNetworkList[customParam])
-                def.resolve(customNetworkList[customParam])
-              } else {
-                // try getting it from bitlox website
-                $http.get("https://btm.bitlox.com/coin/"+networkName+".php").then(function(response){
-                  // console.log('got network from server', response)
-                  if(!response) {
-                    def.reject();
-                  }
-                  var res = response.data;
-                  res.pubkeyhash = parseInt(res.pubkeyhash,16)
-                  res.privatekey = parseInt(res.privatekey,16)
-                  res.scripthash = parseInt(res.scripthash,16)
-                  res.xpubkey = parseInt(res.xpubkey,16)
-                  res.xprivkey = parseInt(res.xprivkey,16)
-                  res.networkMagic = parseInt(res.networkMagic,16)
-                  res.port = parseInt(res.port, 10)
-                  // console.log('parsed network from server', res)
-                  customNetworkList[customParam] = res;
-                  self.customNetworks[customParam] = res;
-                  storageService.setCustomNetworks(JSON.stringify(customNetworkList));
-                  if(!bitcore.Networks.get(res.name)) { bitcore.Networks.add(res) }
-                  def.resolve(res)
-                }, function(err) {
-                  console.warn(err)
-                  def.reject();
-                })              
-              }
-            })
+              var res = response.data;
+              res.pubkeyhash = parseInt(res.pubkeyhash,16)
+              res.privatekey = parseInt(res.privatekey,16)
+              res.scripthash = parseInt(res.scripthash,16)
+              res.xpubkey = parseInt(res.xpubkey,16)
+              res.xprivkey = parseInt(res.xprivkey,16)
+              res.networkMagic = parseInt(res.networkMagic,16)
+              res.port = parseInt(res.port, 10)
+              // console.log('parsed network from server', res)
+              customNetworkList[customParam] = res;
+              self.customNetworks[customParam] = res;
+              storageService.setCustomNetworks(JSON.stringify(customNetworkList));
+              if(!bitcore.Networks.get(res.name)) { bitcore.Networks.add(res) }
+              def.resolve(res)
+            }, function(err) {
+              // console.warn('server network error', err)
+              def.reject();
+            })              
           }
         })        
       } else {
