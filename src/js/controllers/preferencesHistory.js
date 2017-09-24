@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesHistory',
-  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory, storageService, platformInfo, profileService, lodash, appConfigService, walletService) {
+  function($scope, $log, $stateParams, $timeout, $state, $ionicHistory,$ionicLoading, storageService, platformInfo, gettextCatalog, externalLinkService, profileService, lodash, appConfigService, walletService) {
     $scope.wallet = profileService.getWallet($stateParams.walletId);
     $scope.csvReady = false;
     $scope.isCordova = platformInfo.isCordova;
@@ -125,6 +125,19 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
     };
 
     $scope.clearTransactionHistory = function() {
+      // var url = 'https://bitlox.com';
+      // var optIn = true;
+      // var title = gettextCatalog.getString('Clearing History');
+      // var message = gettextCatalog.getString('Please wait...');
+      // var okText = gettextCatalog.getString(' ');
+      // var cancelText = gettextCatalog.getString(' ');
+      // externalLinkService.open(url, optIn, title, message, okText, cancelText);
+
+      var tmpl = '<div class="cacheClearLoader">' + 'Clearing history, please wait...' + '</div>';
+      $ionicLoading.show({
+        template: tmpl
+      });
+
       $log.info('Removing Transaction history ' + $scope.wallet.id);
 
       walletService.clearTxHistory($scope.wallet, function(err) {
@@ -137,12 +150,15 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         $log.info('Transaction history cleared for :' + $scope.wallet.id);
 
         $ionicHistory.removeBackView();
-        $state.go('tabs.home');
         $timeout(function() {
-          $state.transitionTo('tabs.wallet', {
-            walletId: $scope.wallet.id
-          });
-        }, 100);
+          $state.go('tabs.home'); 
+          $timeout(function() {
+            $state.transitionTo('tabs.wallet', {
+              walletId: $scope.wallet.id
+            });
+            $ionicLoading.hide();
+          }, 0);
+        }, 3000);
       });
     };
 

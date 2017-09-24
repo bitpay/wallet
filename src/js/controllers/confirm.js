@@ -385,7 +385,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (typeof res != 'undefined') tx.description = res;
       $timeout(function() {
         $scope.$apply();
-      });
+      }); 
     });
   };
 
