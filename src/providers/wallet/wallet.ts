@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
 
 import { PlatformProvider } from '../platform/platform';
 import { ConfigProvider } from '../config/config';
@@ -32,6 +33,7 @@ export class WalletProvider {
   public wallet: Object = new Object();
 
   constructor(
+    private logger: Logger,
     private platform: PlatformProvider,
     private config: ConfigProvider,
     private bwc: BwcProvider
@@ -45,6 +47,7 @@ export class WalletProvider {
     let wallet = this.bwc.getClient(JSON.stringify(credential), {
       bwsurl: defaults['bws']['url'],
     });
+    this.bindClient(wallet);
     return wallet;
   }
 
@@ -65,6 +68,14 @@ export class WalletProvider {
       });
     */
 
+    this.wallet[walletId].openWallet((err, ret) => {
+      if (this.wallet[walletId].status !== true)
+        this.logger.info('Wallet + ' + walletId + ' status: ' + this.wallet[walletId].status);
+    });
+
+
+
+    /*
     this.wallet[walletId].initialize({
       notificationIncludeOwn: true,
     }, function(err) {
@@ -78,6 +89,7 @@ export class WalletProvider {
           console.log('Wallet + ' + walletId + ' status:' + wallet.status)
       });
     });
+     */
   }
 
 }

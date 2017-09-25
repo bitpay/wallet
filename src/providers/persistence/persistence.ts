@@ -52,7 +52,7 @@ export let persistenceProviderFactory = (platform: PlatformProvider, log: Logger
   }
    */
   // Testing in RAM
-  storage = new RamStorage(log);
+  storage = new LocalStorage(log);
   return new PersistenceProvider(storage, log);
 };
 

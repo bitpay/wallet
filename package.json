@@ -43,7 +43,7 @@
     "angular2-qrcode": "^2.0.1",
     "asn1.js": "=4.5.2",
     "autoprefixer": "7.1.2",
-    "bitcore-wallet-client": "6.0.0",
+    "bitcore-wallet-client": "6.2.0",
     "cordova-android": "6.2.3",
     "cordova-clipboard": "1.0.0",
     "cordova-ios": "4.4.0",

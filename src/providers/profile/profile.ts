@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { PersistenceProvider } from '../persistence/persistence';
@@ -24,7 +25,6 @@ class Profile implements Profile {
     public disclaimerAccepted: boolean = false,
     public checked: Object = new Object()
   ) {
-    // Nothing to do
   }
 
 }
@@ -35,6 +35,7 @@ export class ProfileProvider {
 
   constructor(
     public events: Events,
+    private logger: Logger,
     private wallet: WalletProvider,
     private persistence: PersistenceProvider,
     private config: ConfigProvider,
@@ -58,9 +59,9 @@ export class ProfileProvider {
     this.profile = new Profile();
 
     this.persistence.storeNewProfile(this.profile).then(() => {
-      // TODO: bind?
+      this.logger.info('Profile created');
     }, (error) => {
-      // TODO: error?
+      this.logger.error(error);
     });
   }
 
