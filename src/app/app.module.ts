@@ -61,6 +61,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { RateProvider } from '../providers/rate/rate';
 import { ScanProvider } from '../providers/scan/scan';
 import { WalletProvider } from '../providers/wallet/wallet';
+import { LatestRelease } from '../providers/latestRelease/latestRelease';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -105,6 +106,7 @@ let providers: any = [
   SocialSharing,
   Toast,
   WalletProvider,
+  LatestRelease,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler

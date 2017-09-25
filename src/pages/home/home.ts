@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { LatestRelease } from '../../providers/latestRelease/latestRelease';
 
 @Component({
   selector: 'page-home',
@@ -11,13 +12,20 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
-    private profile: ProfileProvider
+    private profile: ProfileProvider,
+    private latestRelease: LatestRelease,
   ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
+
     this.wallets = this.profile.bind();
+    this.latestRelease.checkLatestRelease().then((response) => {
+      console.log('New release available: ', response);
+    }).catch((error) => {
+      console.log('Latest Release error: ', error);
+    });
     console.log('[home.ts:20]', this.wallets); //TODO
   }
 }
