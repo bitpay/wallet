@@ -18,6 +18,6 @@ export class HomePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
     this.wallets = this.profile.bind();
-    console.log('[home.ts:20]',this.wallets); //TODO
+    console.log('[home.ts:20]', this.wallets); //TODO
   }
 }
