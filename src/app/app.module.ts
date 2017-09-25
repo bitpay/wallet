@@ -123,22 +123,6 @@ let providers: any = [
   },
 ];
 
-let imports: any = [
-  BrowserModule,
-  IonicModule.forRoot(CopayApp),
-  HttpModule,
-  NgLoggerModule.forRoot(Level.LOG),
-  MomentModule,
-  QRCodeModule,
-  TranslateModule.forRoot({
-    loader: {
-      provide: TranslateLoader,
-      useFactory: createTranslateLoader,
-      deps: [Http]
-    }
-  }),
-];
-
 export function declarationsComponents() {
   return pages;
 }
@@ -151,13 +135,23 @@ export function providersComponents() {
   return providers;
 }
 
-export function importsComponents() {
-  return imports;
-}
-
 @NgModule({
   declarations: declarationsComponents(),
-  imports: importsComponents(),
+  imports: [
+    IonicModule.forRoot(CopayApp),
+    BrowserModule,
+    HttpModule,
+    NgLoggerModule.forRoot(Level.LOG),
+    MomentModule,
+    QRCodeModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [Http]
+      }
+    }),
+  ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),
   providers: providersComponents()
