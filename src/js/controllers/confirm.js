@@ -68,6 +68,28 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
+  function getNetwork(address) {
+    var network;
+    try {
+      network = (new bitcore.Address(address)).network.name;
+    } catch(e) {
+      network = (new bitcoreCash.Address(address)).network.name;
+    }
+    return network;
+  };
+
+  function getValidAddress(coin, address) {
+    var B = coin == 'bch' ? bitcoreCash : bitcore;
+    try {
+      return B.Address(address).toString();
+    } catch(e) {
+      $scope.legacyBitcoinAddress = address;
+      $log.warn('Convert to new bitcoin cash address format');
+      var a = bitcore.Address(address).toObject();
+      return bitcoreCash.Address.fromObject(a).toString();
+    };
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     function setWalletSelector(coin, network, minAmount, cb) {
@@ -121,15 +143,16 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     // Setup $scope
-    
 
-    var B = data.stateParams.coin == 'bch' ? bitcoreCash : bitcore;
+
+    var network = getNetwork(data.stateParams.toAddress);
+    var toAddress = getValidAddress(data.stateParams.coin, data.stateParams.toAddress);
 
     // Grab stateParams
     tx = {
       toAmount: parseInt(data.stateParams.toAmount),
       sendMax: data.stateParams.useSendMax == 'true' ? true : false,
-      toAddress: data.stateParams.toAddress,
+      toAddress: toAddress,
       description: data.stateParams.description,
       paypro: data.stateParams.paypro,
 
@@ -141,7 +164,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toName: data.stateParams.toName,
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
-      network: (new B.Address(data.stateParams.toAddress)).network.name,
+      network: network,
       coin: data.stateParams.coin,
       txp: {},
     };
