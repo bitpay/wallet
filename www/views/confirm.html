@@ -60,8 +60,8 @@
             <span ng-if="tx.toName && !showAddress">{{tx.toName}}</span>
             <span ng-if="tx.toName && showAddress">{{tx.toAddress}}</span>
           </div>
-          <div class="legacy-bitcoin-address" ng-if="legacyBitcoinAddress" copy-to-clipboard="legacyBitcoinAddress" translate>
-            Legacy Bitcoin address: {{legacyBitcoinAddress}}
+          <div class="legacy-bitcoin-address" ng-if="legacyBitcoinCashAddress" copy-to-clipboard="legacyBitcoinCashAddress" translate>
+            Legacy Bitcoin Cash address: {{legacyBitcoinCashAddress}}
           </div>
         </div>
         <a class="item item-icon-right" ng-hide="!wallet" ng-click="showWalletSelector()">

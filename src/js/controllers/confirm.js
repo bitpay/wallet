@@ -83,7 +83,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     try {
       return B.Address(address).toString();
     } catch(e) {
-      $scope.legacyBitcoinAddress = address;
+      $scope.legacyBitcoinCashAddress = address;
       $log.warn('Convert to new bitcoin cash address format');
       var a = bitcore.Address(address).toObject();
       return bitcoreCash.Address.fromObject(a).toString();
