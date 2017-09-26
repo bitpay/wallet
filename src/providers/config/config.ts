@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { Events } from 'ionic-angular';
+import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
 import * as _ from "lodash";
@@ -100,15 +101,19 @@ export class ConfigProvider {
   constructor(
     private logger: Logger,
     private events: Events,
-    private platform: PlatformProvider
+    private platform: PlatformProvider,
+    private persistence: PersistenceProvider
   ) {
     this.logger.debug('ConfigProvider initialized.');
   }
 
   public load() {
     return new Promise((resolve, reject) => {
-      this.configCache = _.clone(this.configDefault);
-      resolve(this.configCache);
+      this.persistence.getConfig().then((config: object) => {
+        if (!_.isEmpty(config)) this.configCache = _.clone(config);
+        else this.configCache = _.clone(this.configDefault);
+        resolve(this.configCache);
+      });
     });
   }
 
@@ -121,6 +126,9 @@ export class ConfigProvider {
 
     _.merge(config, this.configCache, newOpts);
     this.configCache = config;
+    this.persistence.storeConfig(this.configCache).then(() => {
+      this.logger.info('Config saved');
+    });
 
     this.events.publish('config:updated', this.configCache);
   }

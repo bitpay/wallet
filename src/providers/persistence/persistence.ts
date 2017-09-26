@@ -133,11 +133,11 @@ export class PersistenceProvider {
     return this.storage.remove(Keys.CLEAN_AND_SCAN_ADDRESSES);
   };
 
-  getConfig(): Promise<void> {
+  getConfig(): Promise<object> {
     return this.storage.get(Keys.CONFIG);
   };
 
-  storeConfig(config: any): Promise<void> {
+  storeConfig(config: object): Promise<void> {
     return this.storage.set(Keys.CONFIG, config);
   };
 
