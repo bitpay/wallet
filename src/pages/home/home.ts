@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { LatestRelease } from '../../providers/latestRelease/latestRelease';
+import { LatestReleaseProvider } from '../../providers/latestRelease/latestRelease';
 
 @Component({
   selector: 'page-home',
@@ -13,7 +13,7 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     private profile: ProfileProvider,
-    private latestRelease: LatestRelease,
+    private latestRelease: LatestReleaseProvider,
   ) {
   }
 

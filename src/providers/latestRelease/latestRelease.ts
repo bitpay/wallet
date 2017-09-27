@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { AppProvider } from '../../providers/app/app';
 
 @Injectable()
-export class LatestRelease {
+export class LatestReleaseProvider {
   private LATEST_RELEASE_URL: string;
   private appVersion: string;
 
