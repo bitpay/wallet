@@ -16,7 +16,7 @@
           <i class="icon big-icon-svg">
             <div class="bg icon-amazon"></div>
           </i>
-          <span>Mercado Livre Brazil Gift Cards</span>
+          <span>Vales-presente do Mercado Livre Brasil</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
@@ -74,29 +74,29 @@
     ng-click="buyConfirm()"
     ng-if="!isCordova"
     click-send-status="sendStatus">
-    {{'Confirm purchase'|translate}}
+    Confirmar compra
   </click-to-accept>
   <slide-to-accept
     ng-if="isCordova && wallet && totalAmountStr"
     slide-on-confirm="buyConfirm()"
     slide-send-status="sendStatus">
-    {{'Slide to buy'|translate}}
+    Deslize para comprar
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
     <span ng-show="mlGiftCard.status == 'FAILURE'">
-      Your purchase could not be completed
+      Sua compra não pôde ser completada
     </span>
     <span ng-show="mlGiftCard.status == 'PENDING'">
-      Your purchase was added to the list of pending
+      Sua compra foi adicionada à lista de pendentes
     </span>
     <span ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.status == 'active'">
-      Bought {{mlGiftCard.amount}} {{mlGiftCard.currency}}
+      Comprou {{mlGiftCard.amount}} {{mlGiftCard.currency}}
     </span>
     <div class="m10 size-14" ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.cardStatus == 'active'">
-      Gift card generated and ready to use.
+      Vale-presente gerado e pronto para usar
     </div>
   </slide-to-accept-success>
 
