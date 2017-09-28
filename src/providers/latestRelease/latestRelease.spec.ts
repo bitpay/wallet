@@ -1,4 +1,4 @@
-import { LatestReleaseProviderStub } from '../../mocks/latestRelease'
+import { LatestReleaseProviderStub } from '../../../test-config/mocks/latestRelease';
 
 describe('Latest Release Provider', () => {
   var currentVersion: string;
