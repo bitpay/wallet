@@ -23,6 +23,7 @@ export class RateProvider {
     this._ratesBCH = {};
     this.SAT_TO_BTC = 1 / 1e8;
     this.BTC_TO_SAT = 1e8;
+    this.updateRates();
   }
 
   updateRates(): Promise<any> {

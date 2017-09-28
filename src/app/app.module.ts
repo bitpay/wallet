@@ -53,6 +53,7 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { AppProvider } from '../providers/app/app';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { ConfigProvider } from '../providers/config/config';
+import { FilterProvider } from '../providers/filter/filter';
 import { LanguageProvider } from '../providers/language/language';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
@@ -60,6 +61,7 @@ import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { RateProvider } from '../providers/rate/rate';
 import { ScanProvider } from '../providers/scan/scan';
+import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 
 export function createTranslateLoader(http: Http) {
@@ -93,6 +95,7 @@ let providers: any = [
   BwcProvider,
   ConfigProvider,
   Clipboard,
+  FilterProvider,
   LanguageProvider,
   PlatformProvider,
   ProfileProvider,
@@ -104,6 +107,7 @@ let providers: any = [
   ScanProvider,
   SocialSharing,
   Toast,
+  TxFormatProvider,
   WalletProvider,
   {
     provide: ErrorHandler,
