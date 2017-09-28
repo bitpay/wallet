@@ -4,12 +4,14 @@ import { HttpModule, Http } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 /* Native modules */
+import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { Clipboard } from '@ionic-native/clipboard';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Toast } from '@ionic-native/toast';
+import { TouchID } from '@ionic-native/touch-id';
 
 /* Modules */
 import { MomentModule } from 'angular2-moment';
@@ -61,6 +63,7 @@ import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { RateProvider } from '../providers/rate/rate';
 import { ScanProvider } from '../providers/scan/scan';
+import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 
@@ -91,6 +94,7 @@ let pages: any = [
 ];
 
 let providers: any = [
+  AndroidFingerprintAuth,
   AppProvider,
   BwcProvider,
   ConfigProvider,
@@ -107,6 +111,8 @@ let providers: any = [
   ScanProvider,
   SocialSharing,
   Toast,
+  TouchID,
+  TouchIdProvider,
   TxFormatProvider,
   WalletProvider,
   {

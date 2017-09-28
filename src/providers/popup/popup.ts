@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
 @Injectable()
 export class PopupProvider {
-  constructor(private platform: Platform, public alertCtrl: AlertController) {
+  constructor(public alertCtrl: AlertController) {
   }
 
   ionicAlert(title, subTitle, okText): void {
