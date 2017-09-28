@@ -54,7 +54,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
 
   var statusChangeHandler = function(processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'buyingGiftCard' && !isOn) {
+    if (processName == 'Comprando Vale-presente' && !isOn) {
       $scope.sendStatus = 'success';
       $timeout(function() {
         $scope.$digest();
@@ -174,14 +174,14 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       $log.debug("creating gift card " + count);
       if (err) {
         $scope.sendStatus = '';
-        ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
+        ongoingProcess.set('Comprando Vale-presente', false, statusChangeHandler);
         giftCard = {};
         giftCard.status = 'FAILURE';
       }
 
       if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
         $scope.sendStatus = '';
-        ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
+        ongoingProcess.set('Comprando Vale-presente', false, statusChangeHandler);
         giftCard = {};
         giftCard.status = 'FAILURE';
       }
@@ -205,7 +205,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       newData['uuid'] = dataSrc.uuid;
 
       mercadoLibreService.savePendingGiftCard(newData, null, function(err) {
-        ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
+        ongoingProcess.set('Comprando Vale-presente', false, statusChangeHandler);
         $log.debug("Saving new gift card with status: " + newData.status);
         $scope.mlGiftCard = newData;
       });
@@ -311,10 +311,10 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
         return;
       }
 
-      ongoingProcess.set('buyingGiftCard', true, statusChangeHandler);
+      ongoingProcess.set('Comprando Vale-presente', true, statusChangeHandler);
       publishAndSign($scope.wallet, createdTx, function() {}, function(err, txSent) {
         if (err) {
-          ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
+          ongoingProcess.set('Comprando Vale-presente', false, statusChangeHandler);
           showError(gettextCatalog.getString('Could not send transaction'), err);
           return;
         }
