@@ -66,7 +66,7 @@ import { ScanProvider } from '../providers/scan/scan';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
-import { LatestReleaseProvider } from '../providers/latestRelease/latestRelease';
+import { ReleaseProvider } from '../providers/release/release';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -116,7 +116,7 @@ let providers: any = [
   TouchIdProvider,
   TxFormatProvider,
   WalletProvider,
-  LatestReleaseProvider,
+  ReleaseProvider,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler
