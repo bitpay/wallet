@@ -26,9 +26,7 @@
     </div>
 
     <div ng-repeat="wallet in availableWallets track by $index" class="item wallet supported">
-      <i class="icon big-icon-svg">
-        <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
-      </i>
+      <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
       <div class="wallet-content">
         <div>{{wallet.name || wallet.id}}</div>
         <div class="balanced">{{wallet.bchBalance  || ('Checking...' | translate)}} </div>
@@ -49,9 +47,7 @@
     </div>
 
     <div ng-repeat="wallet in nonEligibleWallets track by $index" class="item item-sub item-icon-left item-big-icon-left item-button-right wallet">
-      <i class="icon big-icon-svg">
-        <img ng-src="img/{{wallet.network == 'testnet' ? 'icon-wallet-testnet' : (wallet.coin == 'btc' ? 'icon-btc' : 'icon-bch')}}.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': walletDisabled}" class="bg wallet"/>
-      </i>
+      <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
       <div class="text-disabled">{{wallet.name || wallet.id}}</div>
       <div class="text-disabled">{{wallet.excludeReason}}</div>
     </div>
