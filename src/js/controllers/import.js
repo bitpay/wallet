@@ -270,6 +270,7 @@ angular.module('copayApp.controllers').controller('importController',
       opts.account = pathData.account;
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
+      opts.coin = $scope.formData.coin;
 
       var words = $scope.formData.words || null;
 
@@ -290,7 +291,6 @@ angular.module('copayApp.controllers').controller('importController',
       }
 
       opts.passphrase = $scope.formData.passphrase || null;
-      opts.coin = $scope.formData.coin;
 
       if ($scope.fromHardwareWallet.value) {
         $log.debug('Importing seed from hardware wallet');
