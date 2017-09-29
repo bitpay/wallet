@@ -16,7 +16,7 @@
           <i class="icon big-icon-svg">
             <div class="bg icon-amazon"></div>
           </i>
-          <span>Vales-presente do Mercado Livre Brasil</span>
+          <span>Vales-Presente do Mercado Livre Brasil</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amountUnitStr}}</div>
@@ -74,7 +74,7 @@
     ng-click="buyConfirm()"
     ng-if="!isCordova"
     click-send-status="sendStatus">
-    Confirmar compra
+    Confirmar a compra
   </click-to-accept>
   <slide-to-accept
     ng-if="isCordova && wallet && totalAmountStr"
@@ -87,7 +87,7 @@
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
     <span ng-show="mlGiftCard.status == 'FAILURE'">
-      Sua compra não pôde ser completada
+      Sua compra não pôde ser concluída
     </span>
     <span ng-show="mlGiftCard.status == 'PENDING'">
       Sua compra foi adicionada à lista de pendentes
@@ -96,7 +96,7 @@
       Comprou {{mlGiftCard.amount}} {{mlGiftCard.currency}}
     </span>
     <div class="m10 size-14" ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.cardStatus == 'active'">
-      Vale-presente gerado e pronto para usar
+      Vale-Presente gerado e pronto para usar
     </div>
   </slide-to-accept-success>
 

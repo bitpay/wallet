@@ -26,14 +26,14 @@ angular.module('copayApp.services').factory('mercadoLibreService', function($htt
 
   var homeItem = {
     name: 'mercadoLibre',
-    title: 'Vales-presente do Mercado Livre Brasil',
+    title: 'Vales-Presente do Mercado Livre Brasil',
     icon: 'icon-ml',
     sref: 'tabs.giftcards.mercadoLibre',
   };
 
   var nextStepItem = {
     name: 'mercadoLibre',
-    title: 'Vales-presente do Mercado Livre Brasil',
+    title: 'Comprar um Vale-Presente Mercado Livre',
     icon: 'icon-ml',
     sref: 'tabs.giftcards.mercadoLibre',
   };
