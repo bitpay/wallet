@@ -53,6 +53,8 @@ describe('Release Provider', () => {
   it('should check unsuccessfully the current app version format', () => {
     const result = service.checkForUpdates(latestAppVersion, 'V..3.3.3');
     
+    expect(result.updateAvailable).toBeNull;
+    expect(result.availabeVersion).toBeNull;
     expect(result.error).toBeDefined();
     expect(result.error).toMatch('Cannot');
     expect(result.error).toMatch('version tag');
