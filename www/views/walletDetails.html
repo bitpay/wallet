@@ -57,7 +57,7 @@
 
       <div ng-style="{'transform': amountScale}"
       class="amount__balance"
-      ng-show="wallet.scanning">
+      ng-show="!updateStatusError && wallet.scanning">
         <strong class="size-24" translate>[Scanning Funds]</strong>
         <div ng-style="{opacity: altAmountOpacity}" class="size-14 amount-alternative" translate>
           Please wait
@@ -137,7 +137,7 @@
 
       <div ng-style="{'transform': amountScale}"
       class="amount__balance"
-      ng-show="wallet.scanning">
+      ng-show="!updateStatusError && wallet.scanning">
         <strong class="size-24" translate>[Scanning Funds]</strong>
         <div ng-style="{opacity: altAmountOpacity}" class="size-14 amount-alternative" translate>
           Please wait
