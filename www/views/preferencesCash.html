@@ -18,8 +18,10 @@
           <a ng-click="openBitcoinCashWeb()" translate>Learn more</a>
       </div>
     </div>
-    <div class="padding"  ng-if="cashSupport.value">
-      <a class="button button-standard button-primary"  ui-sref="tabs.preferencesCash.scan" translate>Scan your wallets for Bitcoin Cash</a>
+    <div class="list" ng-if="cashSupport.value">
+      <div class="item scan-label" ui-sref="tabs.preferencesCash.scan">
+        <span translate>Scan your wallets for Bitcoin Cash</span>
+      </div>
     </div>
   </ion-content>
 </ion-view>
