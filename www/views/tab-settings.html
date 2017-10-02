@@ -107,19 +107,19 @@
       <div class="item item-divider" ng-show="wallets[0]">{{'Wallets & Integrations' | translate}}</div>
 
       <a class="item item-icon-left item-icon-right" href
-           ui-sref="tabs.preferences({'walletId': item.id})"
-           ng-repeat="item in wallets track by $index">
-        <i class="icon big-icon-svg circle" ng-init="wallet = item" ng-include="'views/includes/walletIcon.html'"></i>
+           ui-sref="tabs.preferences({'walletId': wallet.id})"
+           ng-repeat="wallet in wallets track by $index">
+        <i class="icon big-icon-svg circle" ng-include="'views/includes/walletIcon.html'"></i>
         <span>
-          {{item.name || item.id}}
-          <span class="size-12 text-light" ng-show="item.n > 1">
-            {{item.m}}-of-{{item.n}}
+          {{wallet.name || wallet.id}}
+          <span class="size-12 text-light" ng-show="wallet.n > 1">
+            {{wallet.m}}-of-{{wallet.n}}
           </span>
         </span>
-        <span class="right text-light assertive" ng-show="!item.isComplete()">
+        <span class="right text-light assertive" ng-show="!wallet.isComplete()">
           {{'Incomplete' | translate}}
         </span>
-        <span class="right text-light assertive" ng-show="item.isComplete() && item.needsBackup">
+        <span class="right text-light assertive" ng-show="wallet.isComplete() && wallet.needsBackup">
           {{'Backup needed' | translate}}
         </span>
         <i class="icon bp-arrow-right"></i>
