@@ -322,7 +322,6 @@ angular.module('copayApp.services')
       var walletClient = bwcService.getClient(null, opts);
       var network = opts.networkName || 'livenet';
 
-console.log('[profileService.js.324]'); //TODO
       if (opts.mnemonic) {
         try {
           opts.mnemonic = root._normalizeMnemonic(opts.mnemonic);
@@ -392,10 +391,13 @@ console.log('[profileService.js.324]'); //TODO
 
     // Creates a wallet on BWC/BWS
     var doCreateWallet = function(opts, cb) {
-      $log.debug('Creating Wallet:', opts);
+      var showOpts = lodash.clone(opts);
+      if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey='[hidden]';
+      if (showOpts.mnemonic) showOpts.mnemonic='[hidden]';
+
+      $log.debug('Creating Wallet:', showOpts);
       $timeout(function() {
         seedWallet(opts, function(err, walletClient) {
-console.log('[profileService.js.395:walletClient:]',walletClient); //TODO
           if (err) return cb(err);
 
           var name = opts.name || gettextCatalog.getString('Personal Wallet');
@@ -407,7 +409,6 @@ console.log('[profileService.js.395:walletClient:]',walletClient); //TODO
             walletPrivKey: opts.walletPrivKey,
             coin: opts.coin
           }, function(err, secret) {
-console.log('[profileService.js.407:err:]',err); //TODO
             if (err) return bwcError.cb(err, gettextCatalog.getString('Error creating wallet'), cb);
             return cb(null, walletClient, secret);
           });
