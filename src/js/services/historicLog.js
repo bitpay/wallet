@@ -34,6 +34,7 @@ angular.module('copayApp.services')
     };
 
     root.add = function(level, msg) {
+      msg = msg.replace('/xpriv.*/', 'xpriv[Hidden]');
       logs.push({
         timestamp: new Date().toISOString(),
         level: level,
