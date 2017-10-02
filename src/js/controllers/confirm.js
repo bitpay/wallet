@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, $stateParams, $window, $state, $log, profileService, bitcore, bitcoreCash, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, $stateParams, $window, $state, $log, profileService, bitcore, bitcoreCash, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification, externalLinkService) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -68,28 +68,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
-  function getNetwork(address) {
-    var network;
-    try {
-      network = (new bitcore.Address(address)).network.name;
-    } catch(e) {
-      network = (new bitcoreCash.Address(address)).network.name;
-    }
-    return network;
-  };
-
-  function getValidAddress(coin, address) {
-    var B = coin == 'bch' ? bitcoreCash : bitcore;
-    try {
-      return B.Address(address).toString();
-    } catch(e) {
-      $scope.legacyBitcoinCashAddress = address;
-      $log.warn('Convert to new bitcoin cash address format');
-      var a = bitcore.Address(address).toObject();
-      return bitcoreCash.Address.fromObject(a).toString();
-    };
-  };
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     function setWalletSelector(coin, network, minAmount, cb) {
@@ -144,15 +122,35 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     // Setup $scope
 
-
-    var network = getNetwork(data.stateParams.toAddress);
-    var toAddress = getValidAddress(data.stateParams.coin, data.stateParams.toAddress);
+    var B = data.stateParams.coin == 'bch' ? bitcoreCash : bitcore;
+    var networkName;
+    try {
+      networkName = (new B.Address(data.stateParams.toAddress)).network.name;
+    } catch(e) {
+      var message = gettextCatalog.getString('Copay only supports Bitcoin Cash using new version numbers addresses');
+      var okText = gettextCatalog.getString('Go back');
+      var cancelText = gettextCatalog.getString('Learn more');
+      popupService.showConfirm(null, message, okText, cancelText, function(back) {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true,
+          historyRoot: true
+        });
+        $state.go('tabs.send').then(function() {
+          $ionicHistory.clearHistory();
+          if (!back) {
+            var url = 'https://support.bitpay.com/hc/en-us/articles/115004671663';
+            externalLinkService.open(url); 
+          }
+        });
+      });
+      return;
+    }
 
     // Grab stateParams
     tx = {
       toAmount: parseInt(data.stateParams.toAmount),
       sendMax: data.stateParams.useSendMax == 'true' ? true : false,
-      toAddress: toAddress,
+      toAddress: data.stateParams.toAddress,
       description: data.stateParams.description,
       paypro: data.stateParams.paypro,
 
@@ -164,7 +162,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toName: data.stateParams.toName,
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
-      network: network,
+      network: networkName,
       coin: data.stateParams.coin,
       txp: {},
     };
