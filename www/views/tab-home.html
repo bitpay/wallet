@@ -3,7 +3,7 @@
     <ion-nav-title><img class="tab-home__logo" src="img/app/logo-negative.svg"></ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content>
+  <ion-content ng-class="{noscroll: reordering}">
     <ion-refresher
      ng-if="isAndroid"
      pulling-icon="ion-ios-refresh"
@@ -67,17 +67,18 @@
     <div class="list card">
       <div class="item item-icon-right item-heading">
         <span translate>Wallets</span>
+        <i ng-click="showReorderChange()" ng-if="wallets[0] && wallets.length > 1" class="icon ion-ios-drag m55r pointer"></i>
         <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
-      <div>
-        <a ng-if="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
-         <i class="icon big-icon-svg">
-           <img src="img/icon-wallet.svg" class="bg wallet icon-create-wallet"/>
-         </i>
-          <span translate>Create bitcoin wallet</span>
-          <i class="icon bp-arrow-right"></i>
-        </a>
-        <a ng-repeat="wallet in wallets track by $index"
+      <a ng-if="!wallets[0]" ui-sref="tabs.add" class="item item-icon-left item-big-icon-left item-icon-right next-step">
+       <i class="icon big-icon-svg">
+         <img src="img/icon-wallet.svg" class="bg wallet icon-create-wallet"/>
+       </i>
+        <span translate>Create bitcoin wallet</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+      <ion-list show-reorder="showReorder">
+        <ion-item ng-repeat="wallet in wallets track by $index"
            class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
            ng-click="openWallet(wallet)">
           <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
@@ -102,8 +103,9 @@
           &nbsp;
           </p>
           <i class="icon bp-arrow-right"></i>
-        </a>
-      </div>
+          <ion-reorder-button class="ion-navicon ion-ios-drag" on-reorder="moveItem(wallet, $fromIndex, $toIndex)" on-touch="onReorderButtonTouch()" on-release="onReorderButtonRelease()"></ion-reorder-button>
+        </ion-item>
+      </ion-list>
     </div>
     <div class="ng-hide list card" ng-show="wallets[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
     <div class="ng-hide list card" ng-show="wallets[0] && buyAndSellItems.length>0" ng-include="'views/includes/buyAndSellCard.html'"></div>

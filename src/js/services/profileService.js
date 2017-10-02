@@ -38,11 +38,26 @@ angular.module('copayApp.services')
       });
     }
 
+    root.setWalletOrder = function(walletId, index) {
+      storageService.setWalletOrder(walletId, index, function(err) {
+        if (err) $log.error(err);
+        $log.debug('Backup flag stored');
+        root.wallet[walletId].order = index;
+      });
+    };
+
     root.setBackupFlag = function(walletId) {
       storageService.setBackupFlag(walletId, function(err) {
         if (err) $log.error(err);
         $log.debug('Backup flag stored');
         root.wallet[walletId].needsBackup = false;
+      });
+    };
+
+    function _getWalletOrder(wallet, cb) {
+      storageService.getWalletOrder(wallet.credentials.walletId, function(err, val) {
+        if (err) $log.error(err);
+        return cb(val);
       });
     };
 
@@ -100,6 +115,10 @@ angular.module('copayApp.services')
 
       _balanceIsHidden(wallet, function(val) {
         wallet.balanceHidden = val;
+      });
+
+      _getWalletOrder(wallet, function(val) {
+        wallet.order = val;
       });
 
       wallet.removeAllListeners();
@@ -819,13 +838,7 @@ angular.module('copayApp.services')
         root.addLastKnownBalance(x, function() {});
       });
 
-
-      return lodash.sortBy(ret, [
-
-        function(x) {
-          return x.isComplete();
-        }, 'createdOn'
-      ]);
+      return lodash.sortBy(ret, 'order');
     };
 
     root.toggleHideBalanceFlag = function(walletId, cb) {

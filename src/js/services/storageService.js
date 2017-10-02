@@ -174,6 +174,14 @@ angular.module('copayApp.services')
       storage.remove('lastAddress-' + walletId, cb);
     };
 
+    root.setWalletOrder = function(walletId, index, cb) {
+      storage.set('order-' + walletId, index, cb);
+    };
+
+    root.getWalletOrder = function(walletId, cb) {
+      storage.get('order-' + walletId, cb);
+    };
+
     root.setBackupFlag = function(walletId, cb) {
       storage.set('backup-' + walletId, Date.now(), cb);
     };

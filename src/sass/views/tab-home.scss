@@ -1,5 +1,8 @@
 #tab-home {
   @extend .deflash-blue;
+  .noscroll {
+    pointer-events: none;
+  }
   .icon-create-wallet {
     background-color: #4A90E2; // default wallet color
   }
@@ -27,12 +30,25 @@
       padding: .25rem
     }
   }
+  ion-reorder-button {
+    opacity: 0.2;
+  }
   .card {
+    ion-item{
+      padding-left: 0;
+    }
     .item {
+      display: flex;
+      justify-content: space-between;
       color: #444;
       border-top:none;
       padding-bottom: 1rem;
       padding-top:1rem;
+      .item-content {
+        width: 100%;
+        padding: 0;
+        padding-left: 5rem;
+      }
       &.item-extra-padding {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
