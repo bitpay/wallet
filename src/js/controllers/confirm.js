@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, $stateParams, $window, $state, $log, profileService, bitcore, bitcoreCash, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification) {
+angular.module('copayApp.controllers').controller('confirmController', function($rootScope, $scope, $interval, $filter, $timeout, $ionicScrollDelegate, gettextCatalog, walletService, platformInfo, lodash, configService, $stateParams, $window, $state, $log, profileService, bitcore, bitcoreCash, txFormatService, ongoingProcess, $ionicModal, popupService, $ionicHistory, $ionicConfig, payproService, feeService, bwcError, txConfirmNotification, externalLinkService) {
 
   var countDown = null;
   var CONFIRM_LIMIT_USD = 20;
@@ -121,9 +121,30 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     };
 
     // Setup $scope
-    
 
     var B = data.stateParams.coin == 'bch' ? bitcoreCash : bitcore;
+    var networkName;
+    try {
+      networkName = (new B.Address(data.stateParams.toAddress)).network.name;
+    } catch(e) {
+      var message = gettextCatalog.getString('Copay only supports Bitcoin Cash using new version numbers addresses');
+      var backText = gettextCatalog.getString('Go back');
+      var learnText = gettextCatalog.getString('Learn more');
+      popupService.showConfirm(null, message, backText, learnText, function(back) {
+        $ionicHistory.nextViewOptions({
+          disableAnimate: true,
+          historyRoot: true
+        });
+        $state.go('tabs.send').then(function() {
+          $ionicHistory.clearHistory();
+          if (!back) {
+            var url = 'https://support.bitpay.com/hc/en-us/articles/115004671663';
+            externalLinkService.open(url); 
+          }
+        });
+      });
+      return;
+    }
 
     // Grab stateParams
     tx = {
@@ -141,7 +162,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toName: data.stateParams.toName,
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
-      network: (new B.Address(data.stateParams.toAddress)).network.name,
+      network: networkName,
       coin: data.stateParams.coin,
       txp: {},
     };
