@@ -59,6 +59,7 @@
             <gravatar class="send-gravatar" name="{{tx.toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
             <span ng-if="tx.toName && !showAddress">{{tx.toName}}</span>
             <span ng-if="tx.toName && showAddress">{{tx.toAddress}}</span>
+          </div>
         </div>
         <a class="item item-icon-right" ng-hide="!wallet" ng-click="showWalletSelector()">
           <span class="label" translate>From</span>
