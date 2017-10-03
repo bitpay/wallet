@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+
 import { BwcProvider } from '../bwc/bwc';
 import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
@@ -11,10 +10,9 @@ import * as _ from "lodash";
 export class TxFormatProvider {
 
   // TODO: implement configService
-  public pendingTxProposalsCountForUs: number
+  public pendingTxProposalsCountForUs: number;
 
   constructor(
-    public http: Http,
     private bwc: BwcProvider,
     private rate: RateProvider,
     private config: ConfigProvider,
@@ -25,7 +23,8 @@ export class TxFormatProvider {
   }
 
   formatAmount(satoshis: number, fullPrecision?: boolean) {
-    let settings = this.config.get()['wallet']['settings']; // TODO
+    let config_ : any = this.config.get();
+    let settings : any = config_.wallet.settings;
 
     if (settings.unitCode == 'sat') return satoshis;
 
@@ -64,12 +63,12 @@ export class TxFormatProvider {
   formatAlternativeStr(coin: string, satoshis: number) {
     return new Promise((resolve, reject) => {
       if (isNaN(satoshis)) resolve();
-      let settings = this.config.get()['wallet']['settings']; // TODO
+      let config_: any = this.config.get();
+      let settings = config_.wallet.settings;
 
       var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
       var v1FormatFiat = this.filter.formatFiatAmount(v1);
       if (!v1FormatFiat) resolve(null);
-
       resolve(v1FormatFiat + ' ' + settings.alternativeIsoCode);
     });
   };
@@ -177,7 +176,8 @@ export class TxFormatProvider {
   };
 
   parseAmount(coin: string, amount: any, currency: string) {
-    let settings = this.config.get()['wallet']['settings']; // TODO
+    let config_: any = this.config.get();
+    let settings = config_.wallet.settings;
 
     var satToBtc = 1 / 100000000;
     var unitToSatoshi = settings.unitToSatoshi;
@@ -213,7 +213,8 @@ export class TxFormatProvider {
   };
 
   satToUnit(amount: any) {
-    let settings = this.config.get()['wallet']['settings']; // TODO
+    let config_: any = this.config.get();
+    let settings = config_.wallet.settings;
 
     var unitToSatoshi = settings.unitToSatoshi;
     var satToUnit = 1 / unitToSatoshi;
