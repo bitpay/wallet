@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { AddPage } from "../add/add";
 import { ProfileProvider } from '../../providers/profile/profile';
 import { LatestReleaseProvider } from '../../providers/latestRelease/latestRelease';
 
@@ -27,5 +28,9 @@ export class HomePage {
       console.log('Latest Release error: ', error);
     });
     console.log('[home.ts:20]', this.wallets); //TODO
+  }
+
+  goToAddView() {
+    this.navCtrl.push(AddPage);
   }
 }
