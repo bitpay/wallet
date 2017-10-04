@@ -4,6 +4,66 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <form (ngSubmit)="create()">
+    <ion-item>
+      <ion-label>Wallet name</ion-label>
+      <ion-input type="text" [(ngModel)]="formData.walletName" name="walletName"></ion-input>
+    </ion-item>
+
+    <ion-item-divider color="light"></ion-item-divider>
+
+    <ion-item (click)="showAdvOpts = !showAdvOpts">
+      <ion-label *ngIf="!showAdvOpts">Show advanced options</ion-label>
+      <ion-label *ngIf="showAdvOpts">Hide advanced options</ion-label>
+    </ion-item>
+
+    <div *ngIf="showAdvOpts">
+      <ion-item>
+        <ion-label>Wallet service URL</ion-label>
+        <ion-input type="text" [(ngModel)]="formData.bwsURL" name="bwsURL"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Wallet key</ion-label>
+        <ion-select [(ngModel)]="formData.selectedSeed.id" name="selectedSeed" (ionChange)="seedOptionsChange(formData.selectedSeed.id)">
+          <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>Add a password</ion-label>
+        <ion-toggle [(ngModel)]="formData.addPassword" name="addPassword"></ion-toggle>
+      </ion-item>
+
+      <div *ngIf="formData.addPassword">
+        <ion-item>
+          <ion-label>Password</ion-label>
+          <ion-input type="password" [(ngModel)]="formData.passphrase" name="passphrase"></ion-input>
+        </ion-item>
   
+        <ion-item>
+          <ion-label>Repeat password</ion-label>
+          <ion-input type="password" [(ngModel)]="formData.repeatPassphrase" name="repeatPassphrase"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <div class="warning">
+            <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
+          </div>
+        </ion-item>
+      </div>
+
+      <ion-item>
+        <ion-label>Testnet</ion-label>
+        <ion-toggle [(ngModel)]="formData.testnet" name="testnet"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Single address</ion-label>
+        <ion-toggle [(ngModel)]="formData.singleAddress" name="singleAddress"></ion-toggle>
+      </ion-item>
+    </div>
+    <button ion-button type="submit" block>Add Todo</button>
+  </form>
 </ion-content>
