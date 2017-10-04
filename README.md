@@ -55,6 +55,10 @@ A watch task is also available to rebuild components of the app as changes are m
 npm run watch
 ```
 
+## Unit Tests (Karma and Jasmine)
+
+To run the tests, run npm run test.
+
 ## Testing on Real Devices
 
 It's recommended that all final testing be done on a real device – both to assess performance and to enable features that are unavailable to the emulator (e.g. a device camera).
