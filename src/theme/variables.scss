@@ -5,15 +5,12 @@
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
 
-
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-
 @import "ionic.globals";
-
 
 // Shared Variables
 // --------------------------------------------------
@@ -21,8 +18,6 @@ $app-direction: ltr;
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
-
-
 
 
 // Named Color Variables
@@ -77,13 +72,13 @@ $v-visible-radius:                                   6px !default;
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
-
+$item-md-detail-push-show: true;
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
 
+$item-wp-detail-push-show: true;
 
 
 

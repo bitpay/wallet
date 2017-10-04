@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add Wallet</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-item (click)="goToSingleWallet()" detail-push>
+      <span translate>New personal wallet</span>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item (click)="goToSharedWallet()" detail-push>
+      <span translate>Create shared wallet</span>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item (click)="goToJoinWallet()" detail-push>
+      <span translate>Join shared wallet</span>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item (click)="goToImportWallet()" detail-push>
+      <span translate>Import wallet</span>
+    </ion-item>
+  </ion-card>
+</ion-content>

@@ -5,6 +5,14 @@
 </ion-header>
 
 <ion-content padding>
+  <div *ngIf="!wallets || !wallets[0]">
+    <ion-card (click)="goToAddView()">
+      <ion-item detail-push>
+        <span translate>Create a new wallet</span>
+      </ion-item>
+    </ion-card>
+  </div>
+
   <ion-card *ngFor="let wallet of wallets">
     <ion-card-header>
       {{wallet.credentials.walletName}} {{wallet.credentials.m}}-{{wallet.credentials.n}}

@@ -24,6 +24,7 @@ import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 import { CopayApp } from './app.component';
 
 /* Pages */
+import { AddPage } from '../pages/add/add';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
@@ -73,6 +74,7 @@ export function createTranslateLoader(http: Http) {
 }
 
 let pages: any = [
+  AddPage,
   AboutPage,
   AdvancedPage,
   AltCurrencyPage,
