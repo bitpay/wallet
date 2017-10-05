@@ -329,6 +329,9 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-home@tabs': {
             templateUrl: 'views/add.html'
           }
+        },
+        params: {
+          coin: 'btc'
         }
       })
       .state('tabs.add.join', {

@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.bwsurl = defaults.bws.url;
       $scope.TCValues = lodash.range(2, defaults.limits.totalCopayers + 1);
       $scope.formData.derivationPath = derivationPathHelper.default;
-      $scope.formData.coin = 'btc';
+      $scope.formData.coin = data.stateParams.coin;
 
       if (config.cashSupport) $scope.enableCash = true;
 

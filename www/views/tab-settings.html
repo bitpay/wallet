@@ -104,26 +104,23 @@
         <i class="icon bp-arrow-right"></i>
       </a>
 
-      <div class="item item-divider" ng-show="wallets[0]">{{'Wallets & Integrations' | translate}}</div>
+      <div class="item item-divider" ng-show="walletsBtc[0]">{{'Bitcoin Wallets' | translate}}</div>
 
       <a class="item item-icon-left item-icon-right" href
            ui-sref="tabs.preferences({'walletId': wallet.id})"
-           ng-repeat="wallet in wallets track by $index">
-        <i class="icon big-icon-svg circle" ng-include="'views/includes/walletIcon.html'"></i>
-        <span>
-          {{wallet.name || wallet.id}}
-          <span class="size-12 text-light" ng-show="wallet.n > 1">
-            {{wallet.m}}-of-{{wallet.n}}
-          </span>
-        </span>
-        <span class="right text-light assertive" ng-show="!wallet.isComplete()">
-          {{'Incomplete' | translate}}
-        </span>
-        <span class="right text-light assertive" ng-show="wallet.isComplete() && wallet.needsBackup">
-          {{'Backup needed' | translate}}
-        </span>
-        <i class="icon bp-arrow-right"></i>
+           ng-repeat="wallet in walletsBtc track by $index">
+        <span ng-include="'views/includes/walletListSettings.html'"></span>
       </a>
+
+      <div class="item item-divider" ng-show="walletsBch[0]">{{'Bitcoin Cash Wallets' | translate}}</div>
+
+      <a class="item item-icon-left item-icon-right" href
+           ui-sref="tabs.preferences({'walletId': wallet.id})"
+           ng-repeat="wallet in walletsBch track by $index">
+        <span ng-include="'views/includes/walletListSettings.html'"></span>
+      </a>
+
+      <div class="item item-divider" ng-show="bitpayAccounts || buyAndSellServices[0]">{{'Integrations' | translate}}</div>
 
       <a class=" item item-icon-left item-icon-right"
          ng-if="bitpayAccounts || bitpayCards"
