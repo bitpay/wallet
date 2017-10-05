@@ -3,6 +3,7 @@ page-receive {
   .qr-container {
     text-align: center;
     margin: auto;
+    padding-top: 20%;
     .button-request {
       margin-top: 10px;
       background: transparent;
@@ -20,6 +21,72 @@ page-receive {
       border: none;
       font-size: 12px;
       color: $v-text-accent-color;
+    }
+  }
+  .wallets-container {
+    position: absolute;
+    bottom: 0rem;
+    width: 100%;
+    padding-left: 2rem;
+    border-top: solid 1px rgb(242, 242, 242);
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    .wallet-icon {
+      width: 4rem;
+      height: 4rem;
+      background-color: black;
+      border-radius: 3px;
+      box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+    }
+    .wallet-text {
+      padding-left: 1rem;
+    }
+  }
+}
+
+.wallets-btc-icon::before {
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  content: " ";
+  background: url('../assets/img/icon-btc.svg') no-repeat 0px 0px;
+  background-color: black;
+  border-radius: 3px;
+  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+}
+
+.wallets-bch-icon::before {
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  content: " ";
+  background: url('../assets/img/icon-bch.svg') no-repeat 0px 0px;
+  background-color: black;
+  border-radius: 3px;
+  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+}
+
+.wallets-testnet-icon::before {
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  content: " ";
+  background: url('../assets/img/icon-testnet-white.svg') no-repeat 0px 0px;
+  background-color: black;
+  border-radius: 3px;
+  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+}
+
+.action-sheet-container {
+  .action-sheet-button {
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    padding: 2.5rem;
+    .button-inner {
+      padding-left: 5rem;
     }
   }
 }

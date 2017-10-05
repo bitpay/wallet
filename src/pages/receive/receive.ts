@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AmountPage } from '../send/amount/amount';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { ActionSheetController } from 'ionic-angular';
 
 @Component({
   selector: 'page-receive',
@@ -11,8 +13,20 @@ export class ReceivePage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
+  public wallets: any;
+  public selectedWallet: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private profile: ProfileProvider,
+    public actionSheetCtrl: ActionSheetController
+  ) {
+    this.wallets = this.profile.bind();
+    this.selectedWallet = this.wallets[0].credentials;
+    console.log("Wallets", this.wallets);
+    console.log("selectedWallet", this.selectedWallet);
+
     this.protocolHandler = "bitcoin";
     this.address = "1FgGP9dKqtWC1Q9xGhPYVmAeyezeZCFjhf";
     this.updateQrAddress();
@@ -33,6 +47,45 @@ export class ReceivePage {
 
   updateQrAddress () {
     this.qrAddress = this.protocolHandler + ":" + this.address;
+  }
+
+  showWallets() {
+    let buttonsTest: Array<any> = [];
+    let coinClass: string = "";
+    let icon: string = "";
+
+    this.wallets.forEach((wallet, index) => {
+      if (wallet.credentials.coin === "btc") {
+        coinClass = "wallets-btc-icon";
+        if (wallet.credentials.network === "testnet") {
+          coinClass = "wallets-testnet-icon";
+        }
+      } else {
+        coinClass = "wallets-bch-icon";
+      }
+
+      let walletButton: Object = {
+        text: wallet.credentials.walletName,
+        cssClass: coinClass,
+        handler: () => {
+           console.log('clicked in: ', wallet.credentials.walletName);
+           this.updateSelectedWallet(wallet);
+         }
+      }
+      buttonsTest.push(walletButton);
+    });
+
+    const actionSheet = this.actionSheetCtrl.create({
+     title: 'Select a wallet',
+     buttons: buttonsTest
+   });
+
+   actionSheet.present();
+  }
+
+  updateSelectedWallet(wallet: any) {
+    this.selectedWallet = wallet.credentials;
+    this.setAddress();
   }
 
 }
