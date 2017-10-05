@@ -1,14 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyandsellController', function($scope, $ionicHistory, configService) {
+angular.module('copayApp.controllers').controller('buyandsellController', function($scope, $ionicHistory, buyAndSellService, lodash) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
-    configService.whenAvailable(function(config) {
-      $scope.isCoinbaseEnabled = config.coinbase.enabled;
-      $scope.isGlideraEnabled = config.glidera.enabled;
+    $scope.services = buyAndSellService.get();
 
-      if (!$scope.isCoinbaseEnabled && !$scope.isGlideraEnabled)
-        $ionicHistory.goBack();
-    });
+    if (lodash.isEmpty($scope.services))
+      $ionicHistory.goBack();
   });
 });

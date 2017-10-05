@@ -44,7 +44,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Insufficient funds');
             break;
           case 'CONNECTION_ERROR':
-            body = gettextCatalog.getString('Network connection error');
+            body = gettextCatalog.getString('Network error');
             break;
           case 'NOT_FOUND':
             body = gettextCatalog.getString('Wallet service not found');
@@ -110,7 +110,7 @@ angular.module('copayApp.services')
             body = gettextCatalog.getString('Amount below minimum allowed');
             break;
           case 'INCORRECT_ADDRESS_NETWORK':
-            body = gettextCatalog.getString('Incorrect address network');
+            body = gettextCatalog.getString('Incorrect network address');
             break;
           case 'COPAYER_REGISTERED':
             body = gettextCatalog.getString('Key already associated with an existing wallet');

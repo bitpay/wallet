@@ -1,15 +1,84 @@
 #custom-amount {
-  .share {
-    justify-content: center;
+  @extend .deflash-blue;
+  $item-lateral-padding: 20px;
+  $item-vertical-padding: 10px;
+  $item-label-color: #6C6C6E;
+  .button-share {
+    color: #fff;
+    box-shadow: none;
+    border-color: transparent;
+    background: transparent;
+    padding: 0 10px;
+    .icon:before {
+      font-size: 26px;
+    }
   }
-  .info {
-    .single-line {
-      display: flex;
-      align-items: center;
-      padding-top: 17px;
-      padding-bottom: 17px;
-      .item-note {
-        margin-left: 10px;
+  .address {
+    background: #fff;
+    overflow: auto;
+    height: 100%; 
+    .qr-code {
+      text-align: center;
+      margin-top: 24vh;
+      margin-bottom: 7vh;
+      @media(max-height: 800px) {
+        margin-top: 18vh;
+      }
+      @media(max-height: 700px) {
+        margin-top: 14vh;
+      }
+      @media(max-height: 600px) {
+        margin-top: 8vh;
+      }
+    }
+    .info { 
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      .badge {
+        border-radius: 0;
+        padding: .5rem;
+      }
+      .item {
+        color: #4A4A4A;
+        padding-top: $item-vertical-padding;
+        padding-bottom: $item-vertical-padding;
+        padding-left: $item-lateral-padding;
+
+        &:not(.item-icon-right) {
+          padding-right: $item-lateral-padding;
+        }
+
+        .item-note {
+          width: 75%;
+          text-align: right;
+        }
+
+        .label {
+          font-size: 14px;
+          color: $item-label-color;
+          margin-bottom: 8px;
+        }
+        .wallet {
+          float: right;
+          overflow: hidden;
+        }
+        .wallet .big-icon-svg > .bg {
+          height: 20px;
+          width: 20px;
+          padding: 1px;
+          box-shadow: none;
+          vertical-align: text-bottom;
+        }
+        .single-line {
+          display: flex;
+          align-items: center;
+          padding-top: 17px;
+          padding-bottom: 17px;
+          .item-note {
+            margin-left: 10px;
+          }
+        }
       }
     }
   }

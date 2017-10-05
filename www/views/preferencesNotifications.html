@@ -1,4 +1,4 @@
-<ion-view id="tab-notifications" class="settings">
+<ion-view id="tab-notifications" class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Notifications' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -7,8 +7,6 @@
 
   <ion-content>
     <div class="list">
-      <div class="item item-divider" translate>Notifications</div>
-
       <div ng-if="PNEnabledByUser">
         <ion-toggle ng-model="pushNotifications.value" toggle-class="toggle-balanced" ng-change="pushNotificationsChange()" ng-if="usePushNotifications">
           <span class="toggle-label" translate>Enable push notifications</span>
@@ -19,6 +17,12 @@
         <div class="padding text-light" translate>
           Push notifications for {{appName}} are currently disabled. Enable them in the Settings app.
         </div>
+      </div>
+
+      <div ng-if="usePushNotifications && pushNotifications.value">
+        <ion-toggle ng-model="confirmedTxsNotifications.value" toggle-class="toggle-balanced" ng-change="confirmedTxsNotificationsChange()">
+          <span class="toggle-label" translate>Notify me when transactions are confirmed</span>
+        </ion-toggle>
       </div>
 
       <ion-toggle ng-model="emailNotifications.value" toggle-class="toggle-balanced" ng-change="emailNotificationsChange()">
@@ -45,6 +49,8 @@
           </button>
         </form>
       </div>
+
+
     </div>
   </ion-content>
 </ion-view>

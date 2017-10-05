@@ -1,0 +1,41 @@
+<ion-view class="settings" show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{externalSource.longName}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+  <ion-content>
+    <div ng-include="'views/includes/walletItem.html'"></div>
+
+    <div ng-if="!externalSource.isEmbeddedHardware">
+      <div ng-if="!hardwareConnected" class="info centered">
+        <span translate>No hardware information available.</span>
+      </div>
+    </div>
+
+    <div ng-if="externalSource.isEmbeddedHardware">
+      <div ng-if="!hardwareConnected" class="warning centered">
+        <span translate>Hardware not connected.</span><br>
+        <span translate>Check installation and retry.</span>
+      </div>
+
+      <div ng-if="hardwareConnected">
+        <div class="list">
+          <div class="item">
+            <span translate>Version</span>
+            <span class="item-note">
+              {{externalSource.version || 'hardware disconnected'}}
+            </span>
+          </div>
+        </div>
+
+        <div class="padding">
+          <button class="button button-standard button-assertive" ng-click="showMneumonicFromHardwarePopup()">
+            {{'Show Recovery Phrase'|translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

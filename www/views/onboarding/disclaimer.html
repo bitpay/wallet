@@ -1,6 +1,6 @@
 <ion-pane class="pane-onboarding">
   <ion-view id="onboarding-disclaimer" class="onboarding" ng-class="{'shrink': shrinkView}">
-    <ion-nav-bar class="bar-stable" ng-if="backedUp == 'false'">
+    <ion-nav-bar class="bar-stable" ng-if="!backedUp">
       <ion-nav-title></ion-nav-title>
       <ion-nav-buttons side="primary">
         <button class="button back-button button-clear" ng-click="goBack()">
@@ -8,7 +8,7 @@
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content scroll="false" ng-class="{'has-header': backedUp == 'false'}">
+    <ion-content scroll="false" ng-class="{'has-header': !backedUp}">
       <div id="onboarding-disclaimer-container">
         <div ng-show="resume" class="onboarding-topic" id="disclaimer-topic" translate>Quick review!</div>
         <div ng-show="!resume" class="onboarding-topic" id="disclaimer-topic" translate>Almost done! Let's review.</div>
@@ -25,7 +25,7 @@
     </ion-content>
   </ion-view>
   <div id="terms-of-use" ng-class="{'slideUp': shrinkView}">
-    <ion-nav-bar class="bar-ligt">
+    <ion-nav-bar>
       <ion-nav-title>{{'Terms of Use' | translate}}</ion-nav-title>
       <ion-nav-buttons side="primary">
         <button class="button no-border" ng-click="openTerms()">
@@ -37,12 +37,11 @@
       <div ng-include="'views/includes/terms.html'" direction="y"></div>
     </div>
   </div>
-</div>
-  <div id="agree-to-terms" ng-if="accepted.first && accepted.second" ng-class="{'header-present': backedUp == 'false'}">
+  <div id="agree-to-terms" ng-if="accepted.first && accepted.second" ng-class="{'header-present': !backedUp}">
     <div id="agree-to-terms-content" class="center-block">
       <ion-checkbox ng-model="terms.accepted"></ion-checkbox>
       <p translate>I have read, understood, and agree to the <a ng-click="openTerms()" translate>Terms of Use</a>.</p>
-      <button ng-disabled="!accepted.first || !accepted.second || !terms.accepted" class="button button-block button-positive" ng-click="confirm()" translate>Confirm &amp; Finish</button>
+      <button ng-disabled="!accepted.first || !accepted.second || !terms.accepted" class="button button-block button-primary" ng-click="confirm()" translate>Confirm &amp; Finish</button>
     </div>
   </div>
 </ion-pane>

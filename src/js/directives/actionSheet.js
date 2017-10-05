@@ -11,8 +11,10 @@ angular.module('copayApp.directives')
       },
       link: function(scope, element, attrs) {
         scope.$watch('show', function() {
-          if(scope.show) {
-            $timeout(function() { scope.revealMenu = true; }, 100);
+          if (scope.show) {
+            $timeout(function() {
+              scope.revealMenu = true;
+            }, 100);
           } else {
             scope.revealMenu = false;
           }

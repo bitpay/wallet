@@ -1,13 +1,5 @@
 #complete {
   background-color: #fff;
-  .close-button {
-    color: $dark-gray;
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    padding: 15px;
-    font-size: 36px;
-  }
   .complete-layout {
     display: flex;
     flex-direction: column;
@@ -37,14 +29,14 @@
   .feedback-title {
     font-size: 20px;
     font-weight: bold;
-    color: $dark-gray;
+    color: $v-dark-gray;
     margin: 20px 10px;
     text-align: center;
   }
   .subtitle {
     padding: 10px 30px 20px;
     text-align: center;
-    color: $mid-gray;
+    color: $v-mid-gray;
   }
   .icon-svg > img {
     height: 16rem;
@@ -62,8 +54,9 @@
   }
   .share-buttons {
     padding: 50px 10px 30px;
-    background-color: $subtle-gray;
+    background-color: $v-subtle-gray;
     text-align: center;
+    -webkit-transform: translateY(100%);
     transform: translateY(100%);
     opacity: 0;
     animation-name: slideUpFadeIn;
@@ -74,7 +67,7 @@
   }
   .share-buttons__action {
     display: inline-block;
-    color: #667;
+    color: $v-mid-gray;
     font-size: .9rem;
     width: 90px;
     height: 90px;
@@ -84,10 +77,12 @@
 
 @keyframes slideUpFadeIn {
   from {
+    -webkit-transform: translateY(100%);
     transform: translateY(100%);
     opacity: 0;
   }
   to {
+    -webkit-transform: translateY(0);
     transform: translateY(0);
     opacity: 1;
   }

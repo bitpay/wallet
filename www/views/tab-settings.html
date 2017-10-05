@@ -1,4 +1,4 @@
-<ion-view id="tab-settings" class="settings">
+<ion-view id="tab-settings" class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Settings' | translate}}</ion-nav-title>
   </ion-nav-bar>
@@ -6,13 +6,6 @@
   <ion-content>
     <div class="settings-list list">
       <div class="item item-divider"></div>
-      <a class="ng-hide item item-icon-left item-icon-right" ng-hide="true">
-        <i class="icon big-icon-svg">
-          <img src="img/icon-exchange.svg" class="bg"/>
-        </i>
-        <span>{{'Bitcoin Exchanges' | translate}}</span>
-        <i class="icon bp-arrow-right"></i>
-      </a>
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.addressbook">
         <i class="icon big-icon-svg">
           <img src="img/icon-address-book.svg" class="bg"/>
@@ -36,15 +29,30 @@
         <span>{{'Send Feedback' | translate}}</span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a ng-if="isCordova" class="item item-icon-left item-icon-right" ui-sref="tabs.shareApp({score: 4, skipped: true, fromSettings: true})">
+      <a ng-if="isCordova && !isWindowsPhoneApp" class="item item-icon-left item-icon-right" ui-sref="tabs.shareApp({score: 4, skipped: true, fromSettings: true})">
         <i class="icon big-icon-svg">
           <img src="img/icon-heart.svg" class="bg"/>
         </i>
-        <span>{{'Share'|translate}} {{appName}}</span>
+        <span translate>Share {{appName}}</span>
         <i class="icon bp-arrow-right"></i>
       </a>
 
       <div class="item item-divider">{{'Preferences' | translate}}</div>
+
+
+      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.preferencesCash">
+        <i class="icon big-icon-svg">
+          <img src="img/icon-bch.svg" class="bg bch" ng-class="{'bch-enabled': cashSupport.value}"/>
+        </i>
+        <span class="setting-title">{{'Bitcoin Cash Support' | translate}}</span>
+        <span class="setting-value">
+          <span translate ng-if="cashSupport.value">Enabled</span>
+          <span translate ng-if="!cashSupport.value">Disabled</span>
+        </span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+
+
 
       <a class="item item-icon-left item-icon-right" ui-sref="tabs.notifications">
         <i class="icon big-icon-svg">
@@ -63,16 +71,6 @@
        </span>
        <i class="icon bp-arrow-right"></i>
      </a>
-      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.unit">
-        <i class="icon big-icon-svg">
-          <img src="img/icon-unit.svg" class="bg"/>
-        </i>
-        <span class="setting-title">{{'Bitcoin Unit' | translate}}</span>
-        <span class="setting-value">
-          {{unitName}}
-        </span>
-        <i class="icon bp-arrow-right"></i>
-      </a>
 
       <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.altCurrency">
         <i class="icon big-icon-svg">
@@ -96,49 +94,54 @@
         <i class="icon bp-arrow-right"></i>
       </a>
 
+      <a class="item has-setting-value item-icon-left item-icon-right" ui-sref="tabs.lockSetup" ng-if="(isCordova || isDevel) && !isWindowsPhoneApp">
+        <i class="icon ion-ios-locked-outline" ng-if="locked"></i>
+        <i class="icon ion-ios-unlocked-outline" ng-if="!locked"></i>
+        <span class="setting-title">{{'Lock App' | translate}}</span>
+        <span class="setting-value">
+          {{method}}
+        </span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
+
       <div class="item item-divider" ng-show="wallets[0]">{{'Wallets & Integrations' | translate}}</div>
 
       <a class="item item-icon-left item-icon-right" href
-           ui-sref="tabs.preferences({'walletId': item.id})"
-           ng-repeat="item in wallets track by $index">
-         <i class="icon big-icon-svg circle">
-          <img src="img/icon-wallet.svg" ng-style="{'background-color': item.color}" class="bg"/>
-        </i>
+           ui-sref="tabs.preferences({'walletId': wallet.id})"
+           ng-repeat="wallet in wallets track by $index">
+        <i class="icon big-icon-svg circle" ng-include="'views/includes/walletIcon.html'"></i>
         <span>
-          {{item.name || item.id}}
-          <span class="size-12 text-light" ng-show="item.n > 1">
-            {{item.m}}-of-{{item.n}}
+          {{wallet.name || wallet.id}}
+          <span class="size-12 text-light" ng-show="wallet.n > 1">
+            {{wallet.m}}-of-{{wallet.n}}
           </span>
         </span>
-        <span class="right text-light assertive" ng-show="!item.isComplete()">
+        <span class="right text-light assertive" ng-show="!wallet.isComplete()">
           {{'Incomplete' | translate}}
+        </span>
+        <span class="right text-light assertive" ng-show="wallet.isComplete() && wallet.needsBackup">
+          {{'Backup needed' | translate}}
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
 
       <a class=" item item-icon-left item-icon-right"
-         ng-if="bitpayCardEnabled && bitpayCards"
-         ui-sref="tabs.preferences.bitpayCard">
+         ng-if="bitpayAccounts || bitpayCards"
+         ui-sref="tabs.preferences.bitpayServices">
         <i class="icon big-icon-svg circle">
-          <div class="bg icon-bitpay-card"></div>
+          <div class="bg icon-bitpay"></div>
         </i>
-        <span>BitPay Visa&reg; Card</span>
+        <span>BitPay</span>
         <i class="icon bp-arrow-right"></i>
       </a>
 
-      <a class="item item-icon-right"
-         ng-if="glideraEnabled && glideraToken"
-         ui-sref="tabs.preferences.glidera">
-        <img src="img/glidera-logo.png" width="90"/>
-        <i class="icon bp-arrow-right"></i>
-      </a>
-
-      <a class="item item-icon-right"
-         ng-if="coinbaseEnabled && coinbaseToken"
-         ui-sref="tabs.preferences.coinbase">
-        <img src="img/coinbase-logo.png" width="90"/>
-        <i class="icon bp-arrow-right"></i>
-      </a>
+      <div ng-repeat="service in buyAndSellServices">
+        <a class="item item-icon-right"
+          ui-sref="{{service.configSref}}">
+          <img ng-src="{{service.logo}}" width="90">
+          <i class="icon bp-arrow-right"></i>
+        </a>
+      </div>
 
       <div class="item item-divider"></div>
 

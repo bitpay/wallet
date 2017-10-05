@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('rateAppController', function($scope, $state, $stateParams, $window, lodash, externalLinkService, configService, platformInfo, feedbackService, ongoingProcess, popupService) {
+angular.module('copayApp.controllers').controller('rateAppController', function($scope, $state, $stateParams, $window, lodash, externalLinkService, configService, platformInfo, feedbackService, ongoingProcess, popupService, appConfigService) {
   $scope.score = parseInt($stateParams.score);
+  $scope.appName = appConfigService.nameCase;
   var isAndroid = platformInfo.isAndroid;
   var isIOS = platformInfo.isIOS;
-  var isWP = platformInfo.isWP;
+
   var config = configService.getSync();
 
   $scope.skip = function() {
@@ -37,9 +38,11 @@ angular.module('copayApp.controllers').controller('rateAppController', function(
   $scope.goAppStore = function() {
     var defaults = configService.getDefaults();
     var url;
-    if (isAndroid) url = defaults.rateApp.android;
-    if (isIOS) url = defaults.rateApp.ios;
-    // if (isWP) url = defaults.rateApp.windows; // TODO
+    if (isAndroid)
+      url = $scope.appName == 'Copay' ? defaults.rateApp.copay.android : defaults.rateApp.bitpay.android;
+    if (isIOS)
+      url = $scope.appName == 'Copay' ? defaults.rateApp.copay.ios : defaults.rateApp.bitpay.ios;
+
     externalLinkService.open(url);
     $state.go('tabs.rate.complete', {
       score: $stateParams.score,

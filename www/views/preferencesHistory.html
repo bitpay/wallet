@@ -1,11 +1,11 @@
-<ion-view class="settings">
+<ion-view class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Transaction History' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
   <ion-content>
-    <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
+    <div ng-include="'views/includes/walletItem.html'"></div>
 
     <a class="item ng-hide" href ng-show="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="{{appName}}-{{wallet.name}}.csv">
       <span translate>Export to file</span>
@@ -19,7 +19,7 @@
         {{err | translate}}
       </span>
     </a>
-    <div class="item item-divider"></div>
+    <div ng-show="!isCordova" class="item item-divider"></div>
     <a class="item" ng-click="clearTransactionHistory()">
       <span translate>Clear cache</span>
     </a>

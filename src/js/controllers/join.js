@@ -1,62 +1,76 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, platformInfo, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
+  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
 
-    var isChromeApp = platformInfo.isChromeApp;
-    var isDevel = platformInfo.isDevel;
-
-    var self = this;
-    var defaults = configService.getDefaults();
-    $scope.bwsurl = defaults.bws.url;
-    $scope.derivationPath = derivationPathHelper.default;
-    $scope.account = 1;
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      var defaults = configService.getDefaults();
+      var config = configService.getSync();
+      $scope.formData = {};
+      $scope.formData.bwsurl = defaults.bws.url;
+      $scope.formData.derivationPath = derivationPathHelper.default;
+      $scope.formData.account = 1;
+      $scope.formData.secret = null;
+      $scope.formData.coin = 'btc';
+      if (config.cashSupport) $scope.enableCash = true;
+      resetPasswordFields();
+      updateSeedSourceSelect();
+    });
 
     $scope.showAdvChange = function() {
       $scope.showAdv = !$scope.showAdv;
+      $scope.encrypt = null;
       $scope.resizeView();
+    };
+
+    $scope.checkPassword = function(pw1, pw2) {
+      if (pw1 && pw1.length > 0) {
+        if (pw2 && pw2.length > 0) {
+          if (pw1 == pw2) $scope.result = 'correct';
+          else {
+            $scope.formData.passwordSaved = null;
+            $scope.result = 'incorrect';
+          }
+        } else
+          $scope.result = null;
+      } else
+        $scope.result = null;
     };
 
     $scope.resizeView = function() {
       $timeout(function() {
         $ionicScrollDelegate.resize();
       }, 10);
-      checkPasswordFields();
+      resetPasswordFields();
     };
 
-    function checkPasswordFields() {
-      if (!$scope.encrypt) {
-        $scope.passphrase = $scope.createPassphrase = $scope.passwordSaved = null;
-        $timeout(function() {
-          $scope.$apply();
-        });
-      }
+    function resetPasswordFields() {
+      $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = $scope.formData.repeatPassword = $scope.result = null;
+      $timeout(function() {
+        $scope.$apply();
+      });
     };
 
-    this.onQrCodeScannedJoin = function(data) {
-      $scope.secret = data;
-      if ($scope.joinForm) {
-        $scope.joinForm.secret.$setViewValue(data);
-        $scope.joinForm.secret.$render();
-      }
+    $scope.onQrCodeScannedJoin = function(data) {
+      $scope.formData.secret = data;
+      $scope.$apply();
     };
 
     if ($stateParams.url) {
       var data = $stateParams.url;
       data = data.replace('copay:', '');
-      this.onQrCodeScannedJoin(data);
+      $scope.onQrCodeScannedJoin(data);
     }
 
-    var updateSeedSourceSelect = function() {
-      self.seedOptions = [{
+    function updateSeedSourceSelect() {
+      $scope.seedOptions = [{
         id: 'new',
         label: gettextCatalog.getString('Random'),
       }, {
         id: 'set',
         label: gettextCatalog.getString('Specify Recovery Phrase...'),
       }];
-      $scope.seedSource = self.seedOptions[0];
-
+      $scope.formData.seedSource = $scope.seedOptions[0];
       /*
 
       Disable Hardware Wallets
@@ -64,53 +78,49 @@ angular.module('copayApp.controllers').controller('joinController',
       */
 
       if (appConfigService.name == 'copay') {
-        if (isChromeApp) {
-          self.seedOptions.push({
-            id: 'ledger',
-            label: 'Ledger Hardware Wallet',
+        if (walletService.externalSource.ledger.supported) {
+          $scope.seedOptions.push({
+            id: walletService.externalSource.ledger.id,
+            label: walletService.externalSource.ledger.longName
           });
         }
 
-        if (isChromeApp || isDevel) {
-          self.seedOptions.push({
-            id: 'trezor',
-            label: 'Trezor Hardware Wallet',
+        if (walletService.externalSource.trezor.supported) {
+          $scope.seedOptions.push({
+            id: walletService.externalSource.trezor.id,
+            label: walletService.externalSource.trezor.longName
+          });
+        }
+
+        if (walletService.externalSource.intelTEE.supported) {
+          $scope.seedOptions.push({
+            id: walletService.externalSource.intelTEE.id,
+            label: walletService.externalSource.intelTEE.longName
           });
         }
       }
     };
 
-    this.setSeedSource = function() {
-      self.seedSourceId = $scope.seedSource.id;
-
-      $timeout(function() {
-        $rootScope.$apply();
-      });
-    };
-
-    this.join = function(form) {
-      if (form && form.$invalid) {
-        popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Please enter the required fields'));
-        return;
-      }
+    $scope.join = function() {
 
       var opts = {
-        secret: form.secret.$modelValue,
-        myName: form.myName.$modelValue,
-        bwsurl: $scope.bwsurl,
+        secret: $scope.formData.secret,
+        myName: $scope.formData.myName,
+        bwsurl: $scope.formData.bwsurl,
+        coin: $scope.formData.coin
       }
 
-      var setSeed = self.seedSourceId == 'set';
+      var setSeed = $scope.formData.seedSource.id == 'set';
       if (setSeed) {
-        var words = form.privateKey.$modelValue;
+        var words = $scope.formData.privateKey;
         if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
           opts.extendedPrivateKey = words;
         } else {
           opts.mnemonic = words;
         }
-        opts.passphrase = form.passphrase.$modelValue;
+        opts.passphrase = $scope.formData.passphrase;
 
-        var pathData = derivationPathHelper.parse($scope.derivationPath);
+        var pathData = derivationPathHelper.parse($scope.formData.derivationPath);
         if (!pathData) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
           return;
@@ -119,7 +129,7 @@ angular.module('copayApp.controllers').controller('joinController',
         opts.networkName = pathData.networkName;
         opts.derivationStrategy = pathData.derivationStrategy;
       } else {
-        opts.passphrase = form.createPassphrase.$modelValue;
+        opts.passphrase = $scope.formData.createPassphrase;
       }
 
       opts.walletPrivKey = $scope._walletPrivKey; // Only for testing
@@ -130,36 +140,58 @@ angular.module('copayApp.controllers').controller('joinController',
         return;
       }
 
-      if (self.seedSourceId == 'ledger' || self.seedSourceId == 'trezor') {
-        var account = $scope.account;
+      if ($scope.formData.seedSource.id == walletService.externalSource.ledger.id || $scope.formData.seedSource.id == walletService.externalSource.trezor.id || $scope.formData.seedSource.id == walletService.externalSource.intelTEE.id) {
+        if ($scope.formData.coin == 'bch') {
+          popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Hardware wallets are not yet supported with Bitcoin Cash'));
+          return;
+        }
+
+        var account = $scope.formData.account;
         if (!account || account < 1) {
           popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid account number'));
           return;
         }
 
-        if (self.seedSourceId == 'trezor')
+        if ($scope.formData.seedSource.id == walletService.externalSource.trezor.id || $scope.formData.seedSource.id == walletService.externalSource.intelTEE.id)
           account = account - 1;
 
         opts.account = account;
-        ongoingProcess.set('connecting' + self.seedSourceId, true);
-        var src = self.seedSourceId == 'ledger' ? ledger : trezor;
+        opts.isMultisig = true;
+        ongoingProcess.set('connecting' + $scope.formData.seedSource.id, true);
 
-        src.getInfoForNewWallet(true, account, function(err, lopts) {
-          ongoingProcess.set('connecting' + self.seedSourceId, false);
+        var src;
+        switch ($scope.formData.seedSource.id) {
+          case walletService.externalSource.ledger.id:
+            src = ledger;
+            break;
+          case walletService.externalSource.trezor.id:
+            src = trezor;
+            break;
+          case walletService.externalSource.intelTEE.id:
+            src = intelTEE;
+            break;
+          default:
+            popupService.showAlert(gettextCatalog.getString('Error'), 'Invalid seed source id');
+            return;
+        }
+
+        // TODO: cannot currently join an intelTEE testnet wallet (need to detect from the secret)
+        src.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
+          ongoingProcess.set('connecting' + $scope.formData.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
             return;
           }
           opts = lodash.assign(lopts, opts);
-          self._join(opts);
+          _join(opts);
         });
       } else {
 
-        self._join(opts);
+        _join(opts);
       }
     };
 
-    this._join = function(opts) {
+    function _join(opts) {
       ongoingProcess.set('joiningWallet', true);
       $timeout(function() {
         profileService.joinWallet(opts, function(err, client) {
@@ -186,7 +218,4 @@ angular.module('copayApp.controllers').controller('joinController',
         });
       });
     };
-
-    updateSeedSourceSelect();
-    self.setSeedSource();
   });

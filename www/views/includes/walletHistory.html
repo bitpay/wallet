@@ -1,0 +1,79 @@
+<div class="wallet-details__group-label" ng-if="!isSearching ? isFirstInGroup($index) : false">
+  <span ng-if="isDateInCurrentMonth(getDate(btx.time))">
+    <span translate>Recent</span>
+  </span>
+
+  <span ng-if="!isDateInCurrentMonth(getDate(btx.time))">
+    {{getDate(btx.time) | amDateFormat:'MMMM'}}
+  </span>
+</div>
+
+<a class="wallet-details__item item">
+  <img class="wallet-details__tx-icon" src="img/icon-confirming.svg" width="40" ng-if="isUnconfirmed(btx)">
+  <span ng-if="!isUnconfirmed(btx)">
+    <img class="wallet-details__tx-icon" src="img/icon-tx-received-outline.svg" width="40" ng-if="btx.action == 'received'">
+    <img class="wallet-details__tx-icon" src="img/icon-tx-sent-outline.svg" width="40" ng-if="btx.action == 'sent'">
+    <img class="wallet-details__tx-icon" src="img/icon-tx-moved-outline.svg" width="40" ng-if="btx.action == 'moved'">
+  </span>
+
+  <div class="wallet-details__tx-content" ng-class="{'no-border': !isSearching ? isLastInGroup($index) : false}">
+
+    <div class="wallet-details__tx-title" ng-if="!isUnconfirmed(btx)">
+      <div ng-show="btx.action == 'received'" class="ellipsis">
+        <div ng-if="btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
+        <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate>Received</div>
+        <div class="low-fees" ng-if="btx.lowFees">
+          <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
+          <span class="comment" translate>Low fees</span>
+        </div>
+        <div class="low-fees" ng-if="btx.lowAmount">
+          <i class="icon"><img src="img/icon-warning.png" width="20px"></i>
+          <span class="comment" translate>Amount too low to spend</span>
+        </div>
+ 
+      </div>
+
+      <div ng-show="btx.action == 'sent'" class="ellipsis">
+        <div ng-if="btx.message" class="wallet-details__tx-message ellipsis">{{btx.message}}</div>
+        <div ng-if="!btx.message && btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
+        <div ng-if="!btx.message && !btx.note.body && addressbook[btx.addressTo]" class="wallet-details__tx-message ellipsis">
+          {{addressbook[btx.addressTo].name || addressbook[btx.addressTo]}}
+        </div>
+        <div ng-if="!btx.message && !btx.note.body && !addressbook[btx.addressTo]" translate>Sent</div>
+      </div>
+
+      <div ng-show="btx.action == 'moved'" class="ellipsis">
+        <div ng-if="btx.note.body" class="wallet-details__tx-message ellipsis">{{btx.note.body}}</div>
+        <div ng-if="!btx.note.body" class="wallet-details__tx-message ellipsis" translate>Moved</div>
+      </div>
+      <span class="label tu warning radius" ng-if="btx.action == 'invalid'" translate>Invalid</span>
+    </div>
+
+    <div class="wallet-details__tx-title" ng-if="isUnconfirmed(btx)">
+      <div class="ellipsis" style="color: #B4B4B4;">
+        <span ng-if="btx.action == 'sent' || btx.action == 'moved'">
+          {{addressbook[btx.addressTo].name || addressbook[btx.addressTo] || 'Sending'|translate}}
+        </span>
+        <span ng-if="btx.action == 'received'" translate>Receiving</span>
+      </div>
+    </div>
+
+    <span class="item-note text-right wallet-details__tx-amount">
+      <span class="wallet-details__tx-amount" ng-class="{'wallet-details__tx-amount--recent': btx.recent, 'wallet-details__tx-amount--received': btx.action == 'received', 'wallet-details__tx-amount--sent': btx.action == 'sent'}">
+        <span ng-if="btx.action == 'sent'">–</span>
+        <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+        (possible double spend)
+        </span>
+        <span  ng-if="btx.action != 'invalid'">
+        {{btx.amountStr}}
+        </span>
+      </span>
+      <div>
+        <time class="wallet-details__tx-time" ng-if="btx.time && createdWithinPastDay(btx.time * 1000)">{{btx.time * 1000 | amTimeAgo}}</time>
+        <time class="wallet-details__tx-time" ng-if="btx.time && !createdWithinPastDay(btx.time * 1000)">
+          {{btx.time * 1000 | amDateFormat:'MMM D, YYYY'}}
+        </time>
+      </div>
+    </span>
+  </div>
+</a>

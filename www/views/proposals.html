@@ -1,5 +1,4 @@
-
-<ion-view>
+<ion-view show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Pending Proposals'|translate}}
@@ -9,7 +8,7 @@
   </ion-nav-bar>
   <ion-content class="padding">
 
-    <div ng-if="fetchingProposals" class="updatingHistory">
+    <div ng-if="fetchingProposals" class="updating">
       <div class="text-center">
         <ion-spinner class="spinner-dark" icon="crescent"></ion-spinner>
         <div translate>Updating pending proposals. Please stand by</div>

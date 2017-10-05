@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout, $rootScope) {
+angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, $timeout, $rootScope, platformInfo) {
   var root = {};
+
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   var defaultConfig = {
     // wallet limits
@@ -16,15 +18,26 @@ angular.module('copayApp.services').factory('configService', function(storageSer
     },
 
     download: {
-      url: 'https://bitpay.com/wallet',
+      bitpay: {
+        url: 'https://bitpay.com/wallet'
+      },
+      copay: {
+        url: 'https://copay.io/#download'
+      }
     },
 
     rateApp: {
-      ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
-      android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
-      wp: ''
+      bitpay: {
+        ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+        android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+        wp: ''
+      },
+      copay: {
+        ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+        android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
+        wp: ''
+      }
     },
-
     // wallet default config
     wallet: {
       requiredCopayers: 2,
@@ -42,28 +55,20 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       }
     },
 
-    // External services
-    glidera: {
-      enabled: true,
-      testnet: false
+    lock: {
+      method: null,
+      value: null,
+      bannedUntil: null,
     },
 
-    coinbase: {
-      enabled: true,
-      testnet: false
-    },
-
-    bitpayCard: {
-      enabled: true
-    },
-
-    amazon: {
-      enabled: true
-    },
-
+    cashSupport: false,
 
     recentTransactions: {
       enabled: true,
+    },
+
+    hideNextSteps: {
+      enabled: isWindowsPhoneApp ? true : false,
     },
 
     rates: {
@@ -74,92 +79,22 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
     },
 
-    pushNotifications: {
+    pushNotificationsEnabled: true,
+
+    confirmedTxsNotifications: {
       enabled: true,
-      config: {
-        android: {
-          senderID: '1036948132229',
-          icon: 'push',
-          iconColor: '#2F4053'
-        },
-        ios: {
-          alert: 'true',
-          badge: 'true',
-          sound: 'true',
-        },
-        windows: {},
-      }
     },
 
     emailNotifications: {
       enabled: false,
     },
+
+    log: {
+      filter: 'debug',
+    },
   };
 
   var configCache = null;
-
-  var colorList = [
-    {
-      color: "#DD4B39",
-      name: "Cinnabar"
-  },
-    {
-      color: "#F38F12",
-      name: "Carrot Orange"
-  },
-    {
-      color: "#FAA77F",
-      name: "Light Salmon"
-  },
-    {
-      color: "#D0B136",
-      name: "Metallic Gold"
-  },
-    {
-      color: "#9EDD72",
-      name: "Feijoa"
-  },
-    {
-      color: "#29BB9C",
-      name: "Shamrock"
-  },
-    {
-      color: "#019477",
-      name: "Observatory"
-  },
-    {
-      color: "#77DADA",
-      name: "Turquoise Blue"
-  },
-    {
-      color: "#4A90E2",
-      name: "Cornflower Blue"
-  },
-    {
-      color: "#484ED3",
-      name: "Free Speech Blue"
-  },
-    {
-      color: "#9B59B6",
-      name: "Deep Lilac"
-  },
-    {
-      color: "#E856EF",
-      name: "Free Speech Magenta"
-  },
-    {
-      color: "#FF599E",
-      name: "Brilliant Rose"
-  },
-    {
-      color: "#7A8C9E",
-      name: "Light Slate Grey"
-  }
-    ];
-
-  root.getColorList = function() {
-    return colorList;
-  };
 
   root.getSync = function() {
     if (!configCache)
@@ -194,23 +129,32 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         if (!configCache.wallet.settings.unitCode) {
           configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
-        if (!configCache.glidera) {
-          configCache.glidera = defaultConfig.glidera;
+
+        if (!configCache.hideNextSteps) {
+          configCache.hideNextSteps = defaultConfig.hideNextSteps;
         }
-        if (!configCache.coinbase) {
-          configCache.coinbase = defaultConfig.coinbase;
+
+
+        if (!configCache.cashSupport) {
+          configCache.cashSupport = defaultConfig.cashSupport;
         }
-        if (!configCache.amazon) {
-          configCache.amazon = defaultConfig.amazon;
-        }
-        if (!configCache.bitpayCard) {
-          configCache.bitpayCard = defaultConfig.bitpayCard;
-        }
+
         if (!configCache.recentTransactions) {
           configCache.recentTransactions = defaultConfig.recentTransactions;
         }
         if (!configCache.pushNotifications) {
           configCache.pushNotifications = defaultConfig.pushNotifications;
+        }
+        if (!configCache.bitpayAccount) {
+          configCache.bitpayAccount = defaultConfig.bitpayAccount;
+        }
+
+        if (configCache.wallet.settings.unitCode == 'bit') {
+          // Convert to BTC. Bits will be disabled
+          configCache.wallet.settings.unitName = defaultConfig.wallet.settings.unitName;
+          configCache.wallet.settings.unitToSatoshi = defaultConfig.wallet.settings.unitToSatoshi;
+          configCache.wallet.settings.unitDecimals = defaultConfig.wallet.settings.unitDecimals;
+          configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
         }
 
       } else {

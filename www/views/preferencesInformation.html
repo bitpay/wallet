@@ -1,4 +1,4 @@
-<ion-view class="settings">
+<ion-view class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Wallet Information' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -6,11 +6,17 @@
   </ion-nav-bar>
   <ion-content>
     <div class="list">
-      <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
+      <div ng-include="'views/includes/walletItem.html'"></div>
       <div class="item" ng-click="saveBlack()">
         <span translate>Wallet Name (at creation)</span>
         <span class="item-note">
           {{walletName}}
+        </span>
+      </div>
+      <div class="item" copy-to-clipboard="walletId">
+        <span translate>Coin</span>
+        <span class="item-note">
+          {{wallet.coin}}
         </span>
       </div>
       <div class="item" copy-to-clipboard="walletId">
@@ -43,12 +49,19 @@
           {{derivationStrategy}}
         </span>
       </div>
-      <div class="item" ng-show="wallet.isPrivKeyExternal()">
+      <div class="item" ng-show="wallet.isPrivKeyExternal() && !externalSource.isEmbeddedHardware">
         <span translate>Hardware Wallet</span>
         <span class="item-note">
-        {{wallet.getPrivKeyExternalSourceName()}}
+          {{externalSource}}
         </span>
       </div>
+      <a class="item item-icon-right" href ui-sref="tabs.preferences.preferencesExternal" ng-show="wallet.isPrivKeyExternal() && externalSource.isEmbeddedHardware">
+        <span translate>Hardware Wallet</span>
+        <span class="item-note">
+          {{externalSource}}
+        </span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
       <div class="item" ng-show="!wallet.isPrivKeyExternal() && !wallet.canSign()">
         <span translate></span>
         <span class="item-note">

@@ -93,7 +93,7 @@ angular.module('copayApp.services')
             if (lodash.isObject(v))
               v = JSON.stringify(v);
 
-            if (!lodash.isString(v)) {
+            if (v && !lodash.isString(v)) {
               v = v.toString();
             }
 

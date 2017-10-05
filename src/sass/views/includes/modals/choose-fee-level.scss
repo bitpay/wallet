@@ -1,0 +1,57 @@
+#choose-fee-level {
+  @extend .deflash-blue;
+  .selected-fee-level {
+    text-align: center;
+    background: #f9f9f9;
+    font-size: 11px;
+    height: 140px;
+    padding-top: 25px;
+    .row {
+      padding: 0;
+    }
+    .col {
+      padding-top: 15px;
+    }
+    .separator {
+      border-left: 1px solid #d9d9df;
+      height: 75%;
+    }
+    .value {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .rate .list {
+      margin-bottom: 0;
+    }
+
+    .item-input {
+      input[type="number"] {
+        text-align: right;
+        padding-right: 90px;
+      }
+      .unit {
+        color: #9c9c9c;
+        background: #f2f2f2;
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 15px 10px 12px 10px;
+      }
+    }
+  }
+  .error-fee {
+    padding: 8px 10px;
+    color: $v-error-color;
+    font-size: 12px;
+    text-align: center;
+    i {
+      margin-right: 8px;
+    }
+  }
+  .box-notification {
+    margin: 0;
+    padding: 1px;
+    text-align: center;
+  }
+
+}

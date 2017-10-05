@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService) {
+angular.module('copayApp.services').factory('bitpayCardService', function($log, $rootScope, $filter, lodash, storageService, bitauthService, platformInfo, moment, appIdentityService, bitpayService, nextStepsService, txFormatService, appConfigService) {
   var root = {};
 
   var _setError = function(msg, e) {
@@ -9,37 +9,158 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     return error;
   };
 
-  var _processTransactions = function(invoices, history) {
-    invoices = invoices || [];
-    for (var i = 0; i < invoices.length; i++) {
-      var matched = false;
-      for (var j = 0; j < history.length; j++) {
-        if (history[j].description[0].indexOf(invoices[i].id) > -1) {
-          matched = true;
-        }
+  var _buildDate = function(date, time) {
+    date = date.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    time = time.match(/(\d{2})(\d{2})(\d{2})/);
+    var newDate = new Date(date[1] + '/' + date[2] + '/' + date[3]);
+    newDate.setHours(time[1], time[2], time[3]);
+    return newDate;
+  };
+
+  var _lowercaseMerchant = function(merchant) {
+    if (merchant.name && merchant.name.toLowerCase) {
+      merchant.name = merchant.name.toLowerCase();
+    }
+    if (merchant.city && merchant.city.toLowerCase) {
+      merchant.city = merchant.city.toLowerCase();
+    }
+
+    return merchant;
+  };
+
+  var _getMerchantInfo = function(tx) {
+    var bpTranCodes = root.bpTranCodes;
+    lodash.keys(bpTranCodes).forEach(function(code) {
+      if (tx.type.indexOf(code) === 0) {
+        lodash.assign(tx, bpTranCodes[code]);
       }
-      var isInvoiceLessThanOneDayOld = moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
-      if (!matched && isInvoiceLessThanOneDayOld) {
-        var isInvoiceUnderpaid = invoices[i].exceptionStatus === 'paidPartial';
+    });
+    return tx;
+  };
 
-        if(['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >= 0
-            || (invoices[i].status === 'invalid' || isInvoiceUnderpaid)) {
+  var _getIconName = function(tx) {
+    var icon = tx.mcc || tx.category || null;
+    if (!icon || root.iconMap[icon] == undefined) return 'default';
+    return root.iconMap[icon];
+  };
 
-          history.unshift({
-            timestamp: new Date(invoices[i].invoiceTime),
-            description: invoices[i].itemDesc,
-            amount: invoices[i].price,
-            type: '00611 = Client Funded Deposit',
-            pending: true,
-            status: invoices[i].status
-          });
+  var _processDescription = function(tx) {
+    if (lodash.isArray(tx.description)) {
+      return tx.description[0];
+    }
+    return tx.description;
+  };
+
+  var _processLocation = function(tx) {
+    if (tx.merchant.city && tx.merchant.state) {
+      return tx.merchant.city + ', ' + tx.merchant.state;
+    } else {
+      return tx.merchant.city || tx.merchant.state || '';
+    }
+  };
+
+  var _fromTransaction = function(txn, runningBalance) {
+    var dateTime = _buildDate(txn.date, txn.time);
+    var merchant = _lowercaseMerchant(txn.merchant);
+    return _getMerchantInfo({
+      date: txn.timestamp || dateTime,
+      category: txn.mcc,
+      merchant: merchant,
+      description: txn.description[0],
+      price: parseFloat(txn.amount) + parseFloat(txn.fee),
+      type: txn.type,
+      runningBalance: runningBalance
+    });
+  };
+
+  var _processTransactions = function(invoices, history) {
+
+    var balance = history.endingBalance || history.currentCardBalance;
+    var runningBalance = parseFloat(balance);
+    var activityList = [];
+
+    if(history && history.transactionList){
+      for (var j = 0; j < history.transactionList.length; j++) {
+        runningBalance -= parseFloat(history.transactionList[j].amount);
+        activityList.push(_fromTransaction(history.transactionList[j], runningBalance));
+      }
+    }
+
+    if (activityList.length > 0) {
+
+      invoices = invoices ||  [];
+      for (var i = 0; i < invoices.length; i++) {
+        var matched = false;
+        for (var j = 0; j < history.transactionList.length; j++) {
+          var description = history.transactionList[j].description;
+          for (var k = 0; k < description.length; k++) {
+            if (description[k] && description[k].indexOf(invoices[i].id) > -1) {
+              matched = true;
+            }
+          }
+        }
+
+        var isInvoiceLessThanOneDayOld = moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
+
+        if (!matched && isInvoiceLessThanOneDayOld) {
+          var isInvoiceUnderpaid = invoices[i].exceptionStatus === 'paidPartial';
+
+          if (['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >= 0 ||
+            (invoices[i].status === 'invalid' || isInvoiceUnderpaid)) {
+
+            activityList.unshift(_getMerchantInfo({
+              date: new Date(invoices[i].invoiceTime),
+              category: '',
+              merchant: '',
+              description: invoices[i].itemDesc,
+              price: invoices[i].price,
+              type: '00611 = Client Funded Deposit',
+              runningBalance: null,
+              pending: true,
+              transactionId: invoices[i].transactions && invoices[i].transactions[0] ? invoices[i].transactions[0].txid : ''
+            }));
+          }
         }
       }
     }
-    return history;
+    for (var i = 0; i < activityList.length; i++) {
+      activityList[i].icon = _getIconName(activityList[i]);
+      activityList[i].desc = _processDescription(activityList[i]);
+      activityList[i].merchant['location'] = _processLocation(activityList[i]);
+    }
+    return activityList;
   };
 
-  root.fetchBitpayDebitCards = function(apiContext, cb) {
+  root.filterTransactions = function(type, txns) {
+    var list,
+      getPreAuth = lodash.filter(txns, function(txn) {
+        return txn.type.indexOf('93') > -1;
+      }),
+      getPending = lodash.filter(txns, function(txn) {
+        return txn.pending;
+      }),
+      getCompleted = lodash.filter(txns, function(txn) {
+        return !txn.pending && txn.type.indexOf('93') == -1;
+      });
+
+    switch (type) {
+      case "preAuth":
+        list = lodash.filter(getPreAuth);
+        break;
+      case "confirming":
+        list = lodash.filter(getPending);
+        break;
+      case "completed":
+        list = lodash.filter(getCompleted);
+        break;
+      default:
+        // code...
+        break;
+    }
+    return list;
+  };
+
+  root.sync = function(apiContext, cb) {
     var json = {
       method: 'getDebitCards'
     };
@@ -47,65 +168,120 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     bitpayService.post('/api/v2/' + apiContext.token, json, function(data) {
       if (data && data.data.error) return cb(data.data.error);
       $log.info('BitPay Get Debit Cards: SUCCESS');
-      return cb(data.data.error, {token: apiContext.token, cards: data.data.data, email: apiContext.pairData.email});
+
+      var cards = [];
+
+      lodash.each(data.data.data, function(x) {
+        var n = {};
+
+        if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
+          $log.warn('BAD data from BitPay card' + JSON.stringify(x));
+          return;
+        }
+
+        n.eid = x.eid;
+        n.id = x.id;
+        n.lastFourDigits = x.lastFourDigits;
+        n.token = x.token;
+        n.currency = x.currency;
+        n.country = x.country;
+        cards.push(n);
+      });
+
+      storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, apiContext.pairData.email, cards, function(err) {
+        root.registerNextStep();
+        return cb(err, cards);
+      });
     }, function(data) {
       return cb(_setError('BitPay Card Error: Get Debit Cards', data));
     });
   };
 
-  root.getHistory = function(cardId, params, cb) {
-    var invoices, transactions;
-    params = params || {};
+  root.setCurrencySymbol = function(card) {
+    // Sets a currency symbol.
+    // Uses the currency code if no symbol is mapped (should never happen).
+    // Backaward compatibility for FirstView cards (all USD).
+    // This avoids users having to re-pair their account.
+    if (!card.currency) {
+      card.currency = 'USD';
+    }
+    card.currencySymbol = root.currencySymbols[card.currency] || card.currency + ' ';
+  };
+
+  // opts: range
+  root.getHistory = function(cardId, opts, cb) {
+    var invoices, history;
+    opts = opts || {};
+
     var json = {
-      method: 'getInvoiceHistory',
-      params: JSON.stringify(params)
+      method: 'getInvoiceHistory'
     };
+
     appIdentityService.getIdentity(bitpayService.getEnvironment().network, function(err, appIdentity) {
       if (err) return cb(err);
-      root.getBitpayDebitCards(function(err, data) {
+
+      root.getCards(function(err, data) {
         if (err) return cb(err);
-        var card = lodash.find(data, {id : cardId});
-        if (!card) return cb(_setError('Card not found'));
+        var card = lodash.find(data, {
+          id: cardId
+        });
+
+        if (!card)
+          return cb(_setError('Card not found'));
+
         // Get invoices
         bitpayService.post('/api/v2/' + card.token, json, function(data) {
           $log.info('BitPay Get Invoices: SUCCESS');
           invoices = data.data.data || [];
-          if (lodash.isEmpty(invoices)) $log.info('No invoices');
+
+          if (lodash.isEmpty(invoices))
+            $log.info('No invoices');
+
           json = {
             method: 'getTransactionHistory',
-            params: JSON.stringify(params)
+            params: JSON.stringify(opts)
           };
-          // Get transactions list
+          // Get transactions History list
           bitpayService.post('/api/v2/' + card.token, json, function(data) {
-            $log.info('BitPay Get Transactions: SUCCESS');
-            transactions = data.data.data || {};
-            transactions['txs'] = _processTransactions(invoices, transactions.transactionList);
-            return cb(data.data.error, transactions);
+            $log.info('BitPay Get History: SUCCESS');
+            history = data.data.data || {};
+            history['txs'] = _processTransactions(invoices, history);
+
+            root.setLastKnownBalance(cardId, history.currentCardBalance, function() {});
+
+            return cb(data.data.error, history);
           }, function(data) {
-            return cb(_setError('BitPay Card Error: Get Transactions', data));
+            return cb(_setError('BitPay Card Error: Get History', data));
           });
         }, function(data) {
-          return cb(_setError('BitPay Card Error: Get Invoices', data));          
+          return cb(_setError('BitPay Card Error: Get Invoices', data));
         });
       });
     });
   };
 
-  root.topUp = function(cardId, params, cb) {
-    params = params || {};
+  root.topUp = function(cardId, opts, cb) {
+    opts = opts || {};
     var json = {
       method: 'generateTopUpInvoice',
-      params: JSON.stringify(params)
+      params: JSON.stringify(opts)
     };
     appIdentityService.getIdentity(bitpayService.getEnvironment().network, function(err, appIdentity) {
       if (err) return cb(err);
-      root.getBitpayDebitCards(function(err, data) {
+
+      root.getCards(function(err, data) {
         if (err) return cb(err);
-        var card = lodash.find(data, {id : cardId});
-        if (!card) return cb(_setError('Card not found'));
+
+        var card = lodash.find(data, {
+          id: cardId
+        });
+
+        if (!card)
+          return cb(_setError('Card not found'));
+
         bitpayService.post('/api/v2/' + card.token, json, function(data) {
           $log.info('BitPay TopUp: SUCCESS');
-          if(data.data.error) {
+          if (data.data.error) {
             return cb(data.data.error);
           } else {
             return cb(null, data.data.data.invoice);
@@ -126,72 +302,45 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     });
   };
 
-  root.getBitpayDebitCards = function(cb) {
-    storageService.getBitpayDebitCards(bitpayService.getEnvironment().network, function(err, data) {
-      if (err) return cb(err);
-      if (lodash.isString(data)) {
-        data = JSON.parse(data);
-      }
-      data = data || {};
-      return cb(null, data);
-    });
+  // get all cards, for all accounts.
+  root.getCards = function(cb) {
+    storageService.getBitpayDebitCards(bitpayService.getEnvironment().network, cb);
   };
 
-  root.setBitpayDebitCards = function(data, cb) {
-    data = JSON.stringify(data);
-    storageService.setBitpayDebitCards(bitpayService.getEnvironment().network, data, function(err) {
-      if (err) return cb(err);
+  root.getLastKnownBalance = function(cardId, cb) {
+    storageService.getBalanceCache(cardId, cb);
+  };
+
+  root.addLastKnownBalance = function(card, cb) {
+    var now = Math.floor(Date.now() / 1000);
+    var showRange = 600; // 10min;
+
+    root.getLastKnownBalance(card.eid, function(err, data) {
+      if (data) {
+        data = JSON.parse(data);
+        card.balance = data.balance;
+        card.updatedOn = (data.updatedOn < now - showRange) ? data.updatedOn : null;
+      }
       return cb();
     });
   };
 
-  root.getBitpayDebitCardsHistory = function(cardId, cb) {
-    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment().network, function(err, data) {
-      if (err) return cb(err);
-      if (lodash.isString(data)) {
-        data = JSON.parse(data);
-      }
-      data = data || {};
-      if (cardId) data = data[cardId];
-      return cb(null, data);
-    });
+  root.setLastKnownBalance = function(cardId, balance, cb) {
+
+    storageService.setBalanceCache(cardId, {
+      balance: balance,
+      updatedOn: Math.floor(Date.now() / 1000),
+    }, cb);
   };
 
-  root.setBitpayDebitCardsHistory = function(cardId, data, opts, cb) {
-    storageService.getBitpayDebitCardsHistory(bitpayService.getEnvironment().network, function(err, oldData) {
-      if (lodash.isString(oldData)) {
-        oldData = JSON.parse(oldData);
-      }
-      if (lodash.isString(data)) {
-        data = JSON.parse(data);
-      }
-      var inv = oldData || {};
-      inv[cardId] = data;
-      if (opts && opts.remove) {
-        delete(inv[cardId]);
-      }
-      inv = JSON.stringify(inv);
-
-      storageService.setBitpayDebitCardsHistory(bitpayService.getEnvironment().network, inv, function(err) {
-        return cb(err);
-      });
-    });
-  };
-
-  root.remove = function(card, cb) {
-    storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, card, function(err) {
+  root.remove = function(cardId, cb) {
+    storageService.removeBitpayDebitCard(bitpayService.getEnvironment().network, cardId, function(err) {
       if (err) {
         $log.error('Error removing BitPay debit card: ' + err);
-        // Continue, try to remove/cleanup card history
+        return cb(err);
       }
-      storageService.removeBitpayDebitCardHistory(bitpayService.getEnvironment().network, card, function(err) {
-        if (err) {
-        $log.error('Error removing BitPay debit card transaction history: ' + err);
-          return cb(err);
-        }
-        $log.info('Successfully removed BitPay debit card');
-        return cb();
-      });
+      root.registerNextStep();
+      storageService.removeBalanceCache(cardId, cb);
     });
   };
 
@@ -204,9 +353,49 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     });
   };
 
+
+  root.get = function(opts, cb) {
+    root.getCards(function(err, cards) {
+      if (err) return;
+
+      if (lodash.isEmpty(cards)) {
+        return cb();
+      }
+
+      if (opts.cardId) {
+        cards = lodash.filter(cards, function(x) {
+          return opts.cardId == x.eid;
+        });
+      }
+
+      // Async, no problem
+      lodash.each(cards, function(x) {
+
+        root.setCurrencySymbol(x);
+        root.addLastKnownBalance(x, function() {});
+
+        // async refresh
+        if (!opts.noRefresh) {
+          root.getHistory(x.id, {}, function(err, data) {
+            if (err) return;
+            root.addLastKnownBalance(x, function() {});
+          });
+        }
+      });
+
+      return cb(null, cards);
+    });
+  };
+
   /*
    * CONSTANTS
    */
+
+  root.currencySymbols = {
+    'EUR': '€',
+    'GBP': '£',
+    'USD': '$'
+  };
 
   root.bpTranCodes = {
     '00611': {
@@ -221,6 +410,13 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     '602': {
       merchant: {
         name: 'ATM Withdrawal Fee',
+      },
+      category: 'bp002',
+      description: ''
+    },
+    '604': {
+      merchant: {
+        name: 'Foreign Transaction Fee',
       },
       category: 'bp002',
       description: ''
@@ -249,6 +445,35 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     '37': {
       merchant: {
         name: 'ACH / Payroll Deposit',
+      },
+      category: 'bp002',
+      description: ''
+    },
+    '10036': {
+      merchant: {
+        name: 'Inactivity Fee (90 days)',
+      },
+      category: 'bp002',
+      description: ''
+    },
+    'load': {
+      merchant: {
+        name: 'BitPay',
+        city: 'Atlanta',
+        state: 'GA'
+      },
+      category: 'bp001',
+      description: 'Top-Up'
+    },
+    'unload | pos': {
+      description: 'Purchase'
+    },
+    'unload | epos': {
+      description: 'Online Purchase'
+    },
+    'transactionfee': {
+      merchant: {
+        name: 'Transaction Fee',
       },
       category: 'bp002',
       description: ''
@@ -1241,6 +1466,27 @@ angular.module('copayApp.services').factory('bitpayCardService', function($log, 
     'bp002': 'default'
   };
 
+  var nextStepItem = {
+    name: 'bitpaycard',
+    title: 'Add BitPay Visa® Card',
+    icon: 'icon-bitpay-card',
+    sref: 'tabs.bitpayCardIntro',
+  };
+
+
+  root.registerNextStep = function() {
+    // Disable BitPay Card
+    if (!appConfigService._enabledExtensions.debitcard) return;
+    root.getCards(function(err, cards) {
+      if (lodash.isEmpty(cards)) {
+        nextStepsService.register(nextStepItem);
+      } else {
+        nextStepsService.unregister(nextStepItem.name);
+      }
+    });
+  };
+
+  root.registerNextStep();
   return root;
 
 });

@@ -3,6 +3,7 @@
 angular.module('copayApp.services').factory('ongoingProcess', function($log, $timeout, $filter, lodash, $ionicLoading, gettext, platformInfo) {
   var root = {};
   var isCordova = platformInfo.isCordova;
+  var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
   var ongoingProcess = {};
 
@@ -16,8 +17,8 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'creatingTx': gettext('Creating transaction'),
     'creatingWallet': gettext('Creating Wallet...'),
     'deletingWallet': gettext('Deleting Wallet...'),
-    'extractingWalletInfo': gettext('Extracting Wallet Information...'),
-    'fetchingPayPro': gettext('Fetching Payment Information'),
+    'extractingWalletInfo': gettext('Extracting Wallet information...'),
+    'fetchingPayPro': gettext('Fetching payment information'),
     'generatingCSV': gettext('Generating .csv file...'),
     'gettingFeeLevels': gettext('Getting fee levels...'),
     'importingWallet': gettext('Importing Wallet...'),
@@ -30,12 +31,10 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'sendingTx': gettext('Sending transaction'),
     'signingTx': gettext('Signing transaction'),
     'sweepingWallet': gettext('Sweeping Wallet...'),
-    'validatingWallet': gettext('Validating wallet integrity...'),
     'validatingWords': gettext('Validating recovery phrase...'),
     'loadingTxInfo': gettext('Loading transaction info...'),
     'sendingFeedback': gettext('Sending feedback...'),
     'generatingNewAddress': gettext('Generating new address...'),
-    'gettingAddresses': gettext('Getting addresses...'),
     'sendingByEmail': gettext('Preparing addresses...'),
     'sending2faCode': gettext('Sending 2FA code...'),
     'buyingBitcoin': gettext('Buying Bitcoin...'),
@@ -44,12 +43,15 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     'updatingGiftCards': 'Updating Gift Cards...',
     'updatingGiftCard': 'Updating Gift Card...',
     'cancelingGiftCard': 'Canceling Gift Card...',
-    'creatingGiftCard': 'Creating Gift Card...'
+    'creatingGiftCard': 'Creating Gift Card...',
+    'buyingGiftCard': 'Buying Gift Card...',
+    'topup': gettext('Top up in progress...'),
+    'duplicatingWallet': gettext('Duplicating wallet...'),
   };
 
   root.clear = function() {
     ongoingProcess = {};
-    if (isCordova) {
+    if (isCordova && !isWindowsPhoneApp) {
       window.plugins.spinnerDialog.hide();
     } else {
       $ionicLoading.hide();
@@ -79,17 +81,19 @@ angular.module('copayApp.services').factory('ongoingProcess', function($log, $ti
     if (customHandler) {
       customHandler(processName, showName, isOn);
     } else if (root.onGoingProcessName) {
-      if (isCordova) {
+      if (isCordova && !isWindowsPhoneApp) {
         window.plugins.spinnerDialog.show(null, showName, root.clear);
       } else {
 
-        var tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
+        var tmpl;
+        if (isWindowsPhoneApp) tmpl = '<div>' + showName + '</div>';
+        else tmpl = '<div class="item-icon-left">' + showName + '<ion-spinner class="spinner-stable" icon="lines"></ion-spinner></div>';
         $ionicLoading.show({
           template: tmpl
         });
       }
     } else {
-      if (isCordova) {
+      if (isCordova && !isWindowsPhoneApp) {
         window.plugins.spinnerDialog.hide();
       } else {
         $ionicLoading.hide();

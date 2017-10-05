@@ -3,11 +3,12 @@ i18n/po/*.mo
 i18n/crowdin_api_key.txt
 src/js/translations.js
 
+package-lock.json
+
+
 # cordova
 plugins
 platforms
-cordova/project-*/*
-cordova/*.keystore
 
 # node-webkit
 cache
@@ -85,6 +86,7 @@ Session.vim
 # SASS
 src/sass/*.css
 .sass-cache
+src/sass/app
 
 # copay www
 www/css/*
@@ -97,23 +99,14 @@ www/fonts
 /ionic.config.json
 /appConfig.json
 externalServices.json
-cordova/Makefile
-cordova/ProjectMakefile
 app-template/bitpay-wallet
-cordova/config.xml
-cordova/wp/Package.appxmanifest
 src/js/appConfig.js
 src/js/externalServices.js
 chrome-app/manifest.json
 www/img/app
 www/index.html
 
-
-cordova/android/res/
-cordova/wp/Assets/
-cordova/wp/*.png
-cordova/wp/*.jpg
-cordova/ios/splash/
-cordova/ios/icons/
-cordova/project/
+## Firebase
+/GoogleService-Info.plist
+/google-services.json
 

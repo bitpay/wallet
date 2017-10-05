@@ -1,0 +1,37 @@
+<ion-view id="bitpayServicesPreferences" show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>BitPay</ion-nav-title>
+  </ion-nav-bar>
+  <ion-content>
+    <div class="list" ng-if="bitpayCards.length > 0">
+      <div class="item item-divider" translate>
+        BitPay Visa&reg; Cards
+      </div>
+      <div class="item item-icon-right" ng-repeat="card in bitpayCards">
+        <span class="item-title">
+          xxxx-xxxx-xxxx-{{card.lastFourDigits}}
+        </span>
+        <span class="item-subtitle">
+          {{card.email}}
+        </span>
+        <div class="icon icon-unlink icon-hotspot" ng-click="removeCard(card)"></div>
+      </div>
+    </div>
+    <div class="list">
+      <div class="item item-divider" translate>
+        Accounts
+      </div>
+      <div class="item item-icon-right" ng-repeat="account in bitpayAccounts">
+        <span class="item-title">
+          {{account.givenName}} {{account.familyName}}
+        </span>
+        <span class="item-subtitle">
+          {{account.email}}
+        </span>
+        <div class="icon icon-unlink icon-hotspot" ng-click="removeAccount(account)"></div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

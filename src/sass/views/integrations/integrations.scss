@@ -1,0 +1,52 @@
+@import "coinbase";
+@import "glidera";
+@import "amazon";
+@import "mercadolibre";
+
+#coinbase, #glidera {
+  .button-small {
+    font-size: 13px;
+  }
+}
+
+.integration-onboarding {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  &-logo {
+    display: inline-block;
+    margin-bottom: 1em;
+    img {
+      max-width: 170px;
+    }
+  }
+  &-description {
+    margin-top: 0;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 130px;
+    opacity: .6;
+    max-width: 300px;
+  }
+  &-cta, &-oauthform {
+    position: absolute;
+    bottom: 5vh;
+    width: 100%;
+  }
+  &-oauthform {
+    .item {
+      border: 0 none;
+    }
+    .item-floating-label {
+      padding-left: 0;
+      margin-left: 2em;
+      margin-right: 2em;
+    }
+    input {
+      border-bottom: 2px solid $v-light-gray;
+    }
+  }
+}

@@ -1,0 +1,75 @@
+<ion-modal-view id="meli-card" ng-controller="mercadoLibreCardDetailsController">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button button-back button-clear" ng-click="close()" translate>
+      Close
+    </button>
+    <h1 class="title" translate>Details</h1>
+  </ion-header-bar>
+
+  <ion-content>
+
+    <div class="card-head">
+      <img src="img/mercado-libre/giftcard-pt.svg" alt="Mercado Livre Brazil Gift Card" width="230">
+
+      <div class="amount">
+        {{card.amount | currency : '' : 2}} {{card.currency}}
+      </div>
+    </div>
+
+    <div class="card-status">
+      <div ng-show="card.cardStatus == 'active'">
+        <div class="redeem-pin" copy-to-clipboard="card.pin">{{card.pin}}</div>
+        <button class="button-redeem"
+                ng-click="openExternalLink('https://www.mercadolivre.com.br/redeem?pin=' + card.pin)" translate>
+          Redeem now
+        </button>
+      </div>
+
+      <div ng-show="card.cardStatus == 'inactive'">
+        <span class="assertive" translate>Inactive</span>
+        <div class="card-status-desc" translate>Gift Card is not available to use anymore</div>
+      </div>
+
+      <div ng-show="card.cardStatus == 'expired'">
+        <span class="assertive" translate>Expired</span>
+        <div class="card-status-desc" translate>Gift Card is not available to use anymore</div>
+      </div>
+
+      <div ng-show="card.status">
+        <span class="positive" ng-show="card.status == 'PENDING'" translate>
+          Pending
+        </span>
+        <span class="calm" ng-show="card.status=='invalid'" translate>
+          Still pending
+        </span>
+        <span class="assertive" ng-show="card.status == 'FAILURE'" translate>
+          Error
+        </span>
+        <span class="dark" ng-show="card.status == 'expired'" translate>
+          Invoice expired
+        </span>
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="item">
+        <span translate>Date</span>
+        <span class="item-note">
+          {{card.date | amTimeAgo}}
+        </span>
+      </div>
+
+      <div class="item item-icon-right" ng-click="openExternalLink(card.invoiceUrl)">
+        <i class="icon bp-arrow-right"></i>
+        <span translate>See invoice</span>
+      </div>
+    </div>
+
+    <div class="card-remove" ng-show="card.status == 'FAILURE' || card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'">
+      <button class="button-remove" ng-click="remove()" translate>
+        Remove
+      </button>
+    </div>
+
+  </ion-content>
+</ion-modal-view>

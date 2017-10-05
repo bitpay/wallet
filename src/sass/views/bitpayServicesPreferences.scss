@@ -1,0 +1,26 @@
+#bitpayServicesPreferences {
+  .item {
+	  .item-title {
+	    display: block;
+	  }
+	  .item-subtitle {
+	  	display: block;
+	  	overflow: hidden;
+	  	text-overflow: ellipsis;
+	  	white-space: nowrap;
+	  	color: $v-light-gray;
+	  	font-size: 14px;
+	  }
+	  &.item-icon-right {
+		  .icon-hotspot {
+				right: 0px;
+    		padding-left: 50px;
+ 		  }
+	  }
+	  .icon-unlink {
+	    background-image: url("../img/icon-unlink.svg");
+	    background-repeat: no-repeat;
+	    background-position: center;
+	  }
+  }
+}

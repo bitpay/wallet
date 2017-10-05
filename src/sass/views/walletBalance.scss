@@ -5,7 +5,7 @@
     font-size: 16px;
 
     &--total {
-      color: $mid-gray;
+      color: $v-mid-gray;
     }
 
     &--available {
@@ -21,7 +21,7 @@
     }
 
     &--alternative {
-      color: $light-gray;
+      color: $v-light-gray;
       font-size: 14px;
     }
 
@@ -29,14 +29,14 @@
 
   &__title {
     flex-grow: 1;
-    color: $dark-gray;
+    color: $v-dark-gray;
     overflow: hidden;
   }
 
   &__icon {
     float: left;
     margin-right: 1rem;
-    color: $light-gray;
+    color: $v-light-gray;
     font-size: 24px;
   }
 
@@ -81,13 +81,13 @@
 
   &__heading {
     font-size: 17px;
-    color: #445;
+    color: $v-dark-gray;
     margin: 1rem 1rem 1rem 1rem;
   }
 
   &__description {
     font-size: 12.5px;
-    color: #667;
+    color: $v-mid-gray;
     margin: 0.7rem;
     line-height: 16px;
   }
@@ -97,7 +97,6 @@
 #wallet-balance {
   .bar-header {
     border: 0;
-    background: none;
     .title, .button {
       color: #fff;
     }

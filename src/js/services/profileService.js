@@ -1,16 +1,16 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, sjcl, lodash, storageService, bwcService, configService, pushNotificationsService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, $state) {
+  .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, $state, sjcl, lodash, storageService, bwcService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, appConfigService) {
 
 
     var isChromeApp = platformInfo.isChromeApp;
     var isCordova = platformInfo.isCordova;
-    var isWP = platformInfo.isWP;
+    var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     var isIOS = platformInfo.isIOS;
 
     var root = {};
     var errors = bwcService.getErrors();
-    var usePushNotifications = isCordova && !isWP;
+    var usePushNotifications = isCordova && !isWindowsPhoneApp;
 
     var UPDATE_PERIOD = 15;
 
@@ -33,7 +33,7 @@ angular.module('copayApp.services')
       configService.whenAvailable(function(config) {
         wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
         wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
-        wallet.color = (config.colorFor && config.colorFor[wallet.id]) || '#4A90E2';
+        wallet.color = (config.colorFor && config.colorFor[wallet.id]);
         wallet.email = config.emailFor && config.emailFor[wallet.id];
       });
     }
@@ -89,6 +89,7 @@ angular.module('copayApp.services')
       wallet.copayerId = wallet.credentials.copayerId;
       wallet.m = wallet.credentials.m;
       wallet.n = wallet.credentials.n;
+      wallet.coin = wallet.credentials.coin;
 
       root.updateWalletSettings(wallet);
       root.wallet[walletId] = wallet;
@@ -134,7 +135,7 @@ angular.module('copayApp.services')
         wallet.setNotificationsInterval(UPDATE_PERIOD);
         wallet.openWallet(function(err) {
           if (wallet.status !== true)
-            $log.log('Wallet + ' + walletId + ' status:' + wallet.status)
+            $log.debug('Wallet + ' + walletId + ' status:' + wallet.status)
         });
       });
 
@@ -207,6 +208,9 @@ angular.module('copayApp.services')
       }, delay);
     };
 
+    var shouldSkipValidation = function(walletId) {
+      return root.profile.isChecked(platformInfo.ua, walletId) || isIOS || isWindowsPhoneApp;
+    }
     // Used when reading wallets from the profile
     root.bindWallet = function(credentials, cb) {
       if (!credentials.walletId || !credentials.m)
@@ -219,12 +223,13 @@ angular.module('copayApp.services')
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
       };
 
-
       var client = bwcService.getClient(JSON.stringify(credentials), {
         bwsurl: getBWSURL(credentials.walletId),
       });
 
-      var skipKeyValidation = root.profile.isChecked(platformInfo.ua, credentials.walletId);
+
+
+      var skipKeyValidation = shouldSkipValidation(credentials.walletId);
       if (!skipKeyValidation)
         root.runValidation(client, 500);
 
@@ -274,9 +279,6 @@ angular.module('copayApp.services')
             if (!val) {
               return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
             }
-            var config = configService.getSync();
-            if (config.pushNotifications.enabled && usePushNotifications)
-              root.pushNotificationsInit();
             return cb();
           });
         });
@@ -290,35 +292,6 @@ angular.module('copayApp.services')
         return;
       }
       return cb();
-    };
-
-    root.pushNotificationsInit = function() {
-      var defaults = configService.getDefaults();
-      var push = pushNotificationsService.init(root.wallet);
-
-      if (!push) return;
-
-      push.on('notification', function(data) {
-        if (!data.additionalData.foreground) {
-          $log.debug('Push notification event: ', data.message);
-
-          $timeout(function() {
-            var wallets = root.getWallets();
-            var walletToFind = data.additionalData.walletId;
-
-            var walletFound = lodash.find(wallets, function(w) {
-              return (lodash.isEqual(walletToFind, sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(w.id))));
-            });
-
-            if (!walletFound) return $log.debug('Wallet not found');
-          }, 100);
-        }
-      });
-
-      push.on('error', function(e) {
-        $log.warn('Error with push notifications:' + e.message);
-      });
-
     };
 
     root.loadAndBindProfile = function(cb) {
@@ -357,6 +330,7 @@ angular.module('copayApp.services')
             passphrase: opts.passphrase,
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
+            coin: opts.coin
           });
 
         } catch (ex) {
@@ -365,7 +339,12 @@ angular.module('copayApp.services')
         }
       } else if (opts.extendedPrivateKey) {
         try {
-          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey);
+          walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey, {
+            network: network,
+            account: opts.account || 0,
+            derivationStrategy: opts.derivationStrategy || 'BIP44',
+            coin: opts.coin,
+          });
         } catch (ex) {
           $log.warn(ex);
           return cb(gettextCatalog.getString('Could not create using the specified extended private key'));
@@ -375,7 +354,9 @@ angular.module('copayApp.services')
           walletClient.seedFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
             account: opts.account || 0,
             derivationStrategy: opts.derivationStrategy || 'BIP44',
+            coin: opts.coin
           });
+          walletClient.credentials.hwInfo = opts.hwInfo;
         } catch (ex) {
           $log.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
           return cb(gettextCatalog.getString('Could not create using the specified extended public key'));
@@ -388,6 +369,7 @@ angular.module('copayApp.services')
             passphrase: opts.passphrase,
             language: lang,
             account: 0,
+            coin: opts.coin
           });
         } catch (e) {
           $log.info('Error creating recovery phrase: ' + e.message);
@@ -397,6 +379,7 @@ angular.module('copayApp.services')
               network: network,
               passphrase: opts.passphrase,
               account: 0,
+              coin: opts.coin
             });
           } else {
             return cb(e);
@@ -408,7 +391,11 @@ angular.module('copayApp.services')
 
     // Creates a wallet on BWC/BWS
     var doCreateWallet = function(opts, cb) {
-      $log.debug('Creating Wallet:', opts);
+      var showOpts = lodash.clone(opts);
+      if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey='[hidden]';
+      if (showOpts.mnemonic) showOpts.mnemonic='[hidden]';
+
+      $log.debug('Creating Wallet:', showOpts);
       $timeout(function() {
         seedWallet(opts, function(err, walletClient) {
           if (err) return cb(err);
@@ -420,6 +407,7 @@ angular.module('copayApp.services')
             network: opts.networkName,
             singleAddress: opts.singleAddress,
             walletPrivKey: opts.walletPrivKey,
+            coin: opts.coin
           }, function(err, secret) {
             if (err) return bwcError.cb(err, gettextCatalog.getString('Error creating wallet'), cb);
             return cb(null, walletClient, secret);
@@ -463,7 +451,9 @@ angular.module('copayApp.services')
       seedWallet(opts, function(err, walletClient) {
         if (err) return cb(err);
 
-        walletClient.joinWallet(opts.secret, opts.myName || 'me', {}, function(err) {
+        walletClient.joinWallet(opts.secret, opts.myName || 'me', {
+          coin: opts.coin
+        }, function(err) {
           if (err) return bwcError.cb(err, gettextCatalog.getString('Could not join wallet'), cb);
           addAndBindWalletClient(walletClient, {
             bwsurl: opts.bwsurl
@@ -481,11 +471,6 @@ angular.module('copayApp.services')
       var walletId = client.credentials.walletId;
 
       var config = configService.getSync();
-      if (config.pushNotifications.enabled)
-        pushNotificationsService.unsubscribe(root.getWallet(walletId), function(err) {
-          if (err) $log.warn('Unsubscription error: ' + err.message);
-          else $log.debug('Unsubscribed from push notifications service');
-        });
 
       $log.debug('Deleting Wallet:', client.credentials.walletName);
       client.removeAllListeners();
@@ -528,10 +513,12 @@ angular.module('copayApp.services')
       var walletId = client.credentials.walletId
 
       if (!root.profile.addWallet(JSON.parse(client.export())))
-        return cb(gettextCatalog.getString('Wallet already in Copay'));
+        return cb(gettextCatalog.getString("Wallet already in {{appName}}", {
+          appName: appConfigService.nameCase
+        }));
 
 
-      var skipKeyValidation = root.profile.isChecked(platformInfo.ua, walletId);
+      var skipKeyValidation = shouldSkipValidation(walletId);
       if (!skipKeyValidation)
         root.runValidation(client);
 
@@ -556,9 +543,6 @@ angular.module('copayApp.services')
 
       saveBwsUrl(function() {
         storageService.storeProfile(root.profile, function(err) {
-          var config = configService.getSync();
-          if (config.pushNotifications.enabled)
-            pushNotificationsService.enableNotifications(root.wallet);
           return cb(err, client);
         });
       });
@@ -654,7 +638,10 @@ angular.module('copayApp.services')
       walletClient.importFromMnemonic(words, {
         network: opts.networkName,
         passphrase: opts.passphrase,
+        entropySourcePath: opts.entropySourcePath,
+        derivationStrategy: opts.derivationStrategy || 'BIP44',
         account: opts.account || 0,
+        coin: opts.coin
       }, function(err) {
         if (err) {
           if (err instanceof errors.NOT_AUTHORIZED)
@@ -676,6 +663,7 @@ angular.module('copayApp.services')
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
         account: opts.account || 0,
         derivationStrategy: opts.derivationStrategy || 'BIP44',
+        coin: opts.coin
       }, function(err) {
         if (err) {
 
@@ -716,6 +704,7 @@ angular.module('copayApp.services')
       opts.m = 1;
       opts.n = 1;
       opts.networkName = 'livenet';
+      opts.coin = 'btc';
       root.createWallet(opts, cb);
     };
 
@@ -747,6 +736,31 @@ angular.module('copayApp.services')
       storageService.storeProfile(root.profile, cb);
     };
 
+    root.getLastKnownBalance = function(wid, cb) {
+      storageService.getBalanceCache(wid, cb);
+    };
+
+    root.addLastKnownBalance = function(wallet, cb) {
+      var now = Math.floor(Date.now() / 1000);
+      var showRange = 600; // 10min;
+
+      root.getLastKnownBalance(wallet.id, function(err, data) {
+        if (data) {
+          data = JSON.parse(data);
+          wallet.cachedBalance = data.balance;
+          wallet.cachedBalanceUpdatedOn = (data.updatedOn < now - showRange) ? data.updatedOn : null;
+        }
+        return cb();
+      });
+    };
+
+    root.setLastKnownBalance = function(wid, balance, cb) {
+      storageService.setBalanceCache(wid, {
+        balance: balance,
+        updatedOn: Math.floor(Date.now() / 1000),
+      }, cb);
+    };
+
     root.getWallets = function(opts) {
 
       if (opts && !lodash.isObject(opts))
@@ -755,6 +769,12 @@ angular.module('copayApp.services')
       opts = opts || {};
 
       var ret = lodash.values(root.wallet);
+
+      if (opts.coin) {
+        ret = lodash.filter(ret, function(x) {
+          return (x.credentials.coin == opts.coin);
+        });
+      }
 
       if (opts.network) {
         ret = lodash.filter(ret, function(x) {
@@ -774,11 +794,31 @@ angular.module('copayApp.services')
         });
       }
 
+      if (opts.hasFunds) {
+        ret = lodash.filter(ret, function(w) {
+          if (!w.status) return;
+          return (w.status.availableBalanceSat > 0);
+        });
+      }
+
+      if (opts.minAmount) {
+        ret = lodash.filter(ret, function(w) {
+          if (!w.status) return;
+          return (w.status.availableBalanceSat > opts.minAmount);
+        });
+      }
+
       if (opts.onlyComplete) {
         ret = lodash.filter(ret, function(w) {
           return w.isComplete();
         });
       } else {}
+
+      // Add cached balance async
+      lodash.each(ret, function(x) {
+        root.addLastKnownBalance(x, function() {});
+      });
+
 
       return lodash.sortBy(ret, [
 
@@ -796,7 +836,7 @@ angular.module('copayApp.services')
     root.getNotifications = function(opts, cb) {
       opts = opts || {};
 
-      var TIME_STAMP = 60 * 60 * 6; 
+      var TIME_STAMP = 60 * 60 * 6;
       var MAX = 30;
 
       var typeFilter = {
@@ -848,7 +888,7 @@ angular.module('copayApp.services')
           x.types = [x.type];
 
           if (x.data && x.data.amount)
-            x.amountStr = txFormatService.formatAmountStr(x.data.amount);
+            x.amountStr = txFormatService.formatAmountStr(x.wallet.coin, x.data.amount);
 
           x.action = function() {
             // TODO?

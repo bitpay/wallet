@@ -1,0 +1,27 @@
+<ion-view id="tab-notifications" class="settings" show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Bitcoin Cash Support' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list">
+      <ion-toggle class="has-comment" ng-model="cashSupport.value" toggle-class="toggle-balanced" ng-change="cashSupportChange()">
+        <span class="toggle-label" translate>Support Bitcoin Cash</span>
+      </ion-toggle>
+    </div>
+
+    <div class="settings-explanation">
+      <div class="settings-description" ng-show="!cashSupport.value">
+          <span translate>Enable Bitcoin Cash wallet creation and operation within the App.</span>
+          <a ng-click="openBitcoinCashWeb()" translate>Learn more</a>
+      </div>
+    </div>
+    <div class="list" ng-if="cashSupport.value">
+      <div class="item scan-label" ui-sref="tabs.preferencesCash.scan">
+        <span translate>Scan your wallets for Bitcoin Cash</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

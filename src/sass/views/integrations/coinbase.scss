@@ -9,7 +9,7 @@
     stroke: #0067c8;
     fill: #0067c8;
   }
-  
+
   .add-bottom-for-cta {
     bottom: 92px;
   }
@@ -27,10 +27,6 @@
         margin-right: 1rem;
         height: 35px;
         width: 35px;
-      }
-
-      span {
-        text-transform: capitalize;
       }
     }
     .amount-label{
@@ -73,7 +69,7 @@
         color: $item-label-color;
         margin-bottom: 8px;
       }
-      
+
       .capitalized {
         text-transform: capitalize;
       }

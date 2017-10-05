@@ -22,13 +22,19 @@
         <span class="address-book-field-label" translate>Email</span>
         <span>{{addressbookEntry.email}}</span>
       </div>
-      <div class="item item-text-wrap">
+      <div class="item item-text-wrap" copy-to-clipboard="addressbookEntry.address">
         <span class="address-book-field-label" translate>Address</span>
         <span>{{addressbookEntry.address}}</span>
       </div>
-    </div>
-    <button class="button button-standard button-primary" ng-click="sendTo()" translate>
-      Send Money
-    </button>
+      <div class="item item-divider"></div>
+      <div class="item item-icon-right has-click" ng-click="sendTo()">
+        <span class="positive" translate>Send Money</span>
+        <i class="icon bp-arrow-right"></i>
+      </div>
+      <div class="item item-divider"></div>
+      <div class="item has-click" ng-click="remove(addressbookEntry.address)">
+        <span class="assertive" translate>Remove</span>
+      </div>
+    </div> 
   </ion-content>
 </ion-view>

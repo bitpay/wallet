@@ -1,19 +1,22 @@
-
-<ion-view>
+<ion-view id="copayers-invitation" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>{{wallet.name}}</ion-nav-title>
     <ion-nav-buttons side="secondary">
-      <button class="button button-clear" ng-click="showDeletePopup()">
-        Cancel
+      <button class="button-share ng-hide" ng-show="isCordova && secret" ng-click="shareSecret()">
+        <i class="icon"
+           ng-class="{
+           'ion-ios-upload-outline': shareIcon == 'iOS',
+           'ion-android-share-alt': shareIcon != 'iOS'
+           }"></i>
       </button>
     </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
     <div ng-show="!wallet.notAuthorized">
-      <div class="list card text-center">
+      <div class="list text-center">
         <div class="item item-heading item-text-wrap" translate>
           Share this invitation with your copayers
         </div>
@@ -29,11 +32,8 @@
             {{secret || ('Loading...'|translate)}}
           </div>
           </div>
-          <button ng-if="isCordova && secret"
-                  class="button button-primary button-outline button-small"
-                  ng-click="shareSecret()">
-            <i class="icon ion-ios-upload-outline"></i>
-            <span translate>Share invitation</span>
+          <button ng-if="secret" class="button-cancel" ng-click="showDeletePopup()">
+            <span translate>Cancel invitation</span>
           </button>
         </div>
       </div>

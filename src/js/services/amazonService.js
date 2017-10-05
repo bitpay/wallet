@@ -1,24 +1,38 @@
 'use strict';
-angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo) {
+angular.module('copayApp.services').factory('amazonService', function($http, $log, lodash, moment, storageService, configService, platformInfo, nextStepsService, homeIntegrationsService) {
   var root = {};
   var credentials = {};
 
-  var _setCredentials = function() {
-    /*
-     * Development: 'testnet'
-     * Production: 'livenet'
-     */
-    credentials.NETWORK = 'livenet';
+  root.limitPerDay = 1000;
 
-    if (credentials.NETWORK == 'testnet') {
-      credentials.BITPAY_API_URL = "https://test.bitpay.com";
-    } else {
-      credentials.BITPAY_API_URL = "https://bitpay.com";
-    };
+  /*
+   * Development: 'testnet'
+   * Production: 'livenet'
+   */
+  credentials.NETWORK = 'livenet';
+  //credentials.NETWORK = 'testnet';
+
+  if (credentials.NETWORK == 'testnet') {
+    credentials.BITPAY_API_URL = "https://test.bitpay.com";
+  } else {
+    credentials.BITPAY_API_URL = "https://bitpay.com";
+  };
+
+  var homeItem = {
+    name: 'amazon',
+    title: 'Amazon.com Gift Cards',
+    icon: 'icon-amazon',
+    sref: 'tabs.giftcards.amazon',
+  };
+
+  var nextStepItem = {
+    name: 'amazon',
+    title: 'Buy Amazon.com Gift Cards',
+    icon: 'icon-amazon',
+    sref: 'tabs.giftcards.amazon',
   };
 
   var _getBitPay = function(endpoint) {
-    _setCredentials();
     return {
       method: 'GET',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -29,7 +43,6 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
   };
 
   var _postBitPay = function(endpoint, data) {
-    _setCredentials();
     return {
       method: 'POST',
       url: credentials.BITPAY_API_URL + endpoint,
@@ -40,13 +53,12 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     };
   };
 
-  root.getEnvironment = function() {
-    _setCredentials();
+  root.getNetwork = function() {
     return credentials.NETWORK;
   };
 
   root.savePendingGiftCard = function(gc, opts, cb) {
-    var network = root.getEnvironment();
+    var network = root.getNetwork();
     storageService.getAmazonGiftCards(network, function(err, oldGiftCards) {
       if (lodash.isString(oldGiftCards)) {
         oldGiftCards = JSON.parse(oldGiftCards);
@@ -62,19 +74,21 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
       if (opts && opts.remove) {
         delete(inv[gc.invoiceId]);
       }
+
       inv = JSON.stringify(inv);
 
+
       storageService.setAmazonGiftCards(network, inv, function(err) {
+
+        homeIntegrationsService.register(homeItem);
+        nextStepsService.unregister(nextStepItem.name);
         return cb(err);
       });
     });
-
-    // Show pending task from the UI
-    storageService.setNextStep('AmazonGiftCards', 'true', function(err) {});
   };
 
   root.getPendingGiftCards = function(cb) {
-    var network = root.getEnvironment();
+    var network = root.getNetwork();
     storageService.getAmazonGiftCards(network, function(err, giftCards) {
       var _gcds = giftCards ? JSON.parse(giftCards) : null;
       return cb(err, _gcds);
@@ -144,6 +158,16 @@ angular.module('copayApp.services').factory('amazonService', function($http, $lo
     });
   };
 
-  return root;
+  var register = function() {
+    storageService.getAmazonGiftCards(root.getNetwork(), function(err, giftCards) {
+      if (giftCards) {
+        homeIntegrationsService.register(homeItem);
+      } else {
+        nextStepsService.register(nextStepItem);
+      }
+    });
+  };
 
+  register();
+  return root;
 });

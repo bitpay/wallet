@@ -1,14 +1,24 @@
 'use strict';
 
 angular.module('copayApp.services')
-  .factory('trezor', function($log, $timeout, lodash, bitcore, hwWallet) {
+  .factory('trezor', function($log, $timeout, lodash, bitcore, hwWallet, platformInfo) {
     var root = {};
 
     var SETTLE_TIME = 3000;
     root.callbacks = {};
 
+    root.description = {
+      supported: platformInfo.supportsTrezor,
+      id: 'trezor',
+      name: 'Trezor',
+      longName: 'Trezor Hardware Wallet',
+      derivationStrategy: 'BIP48',
+      isEmbeddedHardware: false,
+      supportsTestnet: false
+    };
+
     root.getEntropySource = function(isMultisig, account, callback) {
-      root.getXPubKey(hwWallet.getEntropyPath('trezor', isMultisig, account), function(data) {
+      root.getXPubKey(hwWallet.getEntropyPath(root.description.id, isMultisig, account), function(data) {
         if (!data.success)
           return callback(hwWallet._err(data));
 
@@ -26,8 +36,13 @@ angular.module('copayApp.services')
       }
     };
 
+    root.initSource = function(opts, callback) {
+      // No initialization for this hardware source.
+      return callback(opts);
+    };
 
-    root.getInfoForNewWallet = function(isMultisig, account, callback) {
+    root.getInfoForNewWallet = function(isMultisig, account, networkName, callback) {
+      // networkName not used for this hardware (always livenet)
       var opts = {};
       root.getEntropySource(isMultisig, account, function(err, data) {
         if (err) return callback(err);
@@ -35,13 +50,12 @@ angular.module('copayApp.services')
         $log.debug('Waiting TREZOR to settle...');
         $timeout(function() {
 
-          root.getXPubKey(hwWallet.getAddressPath('trezor', isMultisig, account), function(data) {
+          root.getXPubKey(hwWallet.getAddressPath(root.description.id, isMultisig, account), function(data) {
             if (!data.success)
               return callback(hwWallet._err(data));
 
             opts.extendedPublicKey = data.xpubkey;
-            opts.externalSource = 'trezor';
-            opts.account = account;
+            opts.externalSource = root.description.id;
 
             if (isMultisig)
               opts.derivationStrategy = 'BIP48';
@@ -78,7 +92,6 @@ angular.module('copayApp.services')
       var inputs = [],
         outputs = [];
       var tmpOutputs = [];
-
 
       if (txp.type && txp.type != 'simple') {
         return callback('Only TXPs type SIMPLE are supported in TREZOR');
@@ -156,7 +169,6 @@ angular.module('copayApp.services')
           return '';
         });
 
-
         inputs = lodash.map(txp.inputs, function(i) {
           $log.debug("Trezor TX input path:", i.path);
           var pathArr = i.path.split('/');
@@ -166,12 +178,12 @@ angular.module('copayApp.services')
           inAmount += i.satoshis;
 
           var orderedPubKeys = root._orderPubKeys(xPubKeys, np);
-          var pubkeys = lodash(orderedPubKeys.map(function(v) {
+          var pubkeys = orderedPubKeys.map(function(v) {
             return {
               node: v,
               address_n: np,
             };
-          }));
+          });
 
           return {
             address_n: n,
@@ -194,12 +206,12 @@ angular.module('copayApp.services')
           var np = n.slice(3);
 
           var orderedPubKeys = root._orderPubKeys(xPubKeys, np);
-          var pubkeys = lodash(orderedPubKeys.map(function(v) {
+          var pubkeys = orderedPubKeys.map(function(v) {
             return {
               node: v,
               address_n: np,
             };
-          }));
+          });
 
           tmpOutputs.push({
             address_n: n,

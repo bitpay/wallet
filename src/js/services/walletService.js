@@ -1,9 +1,20 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
-  // `wallet` is a decorated version of client.
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
+
+  // Ratio low amount warning (fee/amount) in incoming TX
+  var LOW_AMOUNT_RATIO = 0.15;
+
+  // Ratio of "many utxos" warning in total balance (fee/amount)
+  var TOTAL_LOW_WARNING_RATIO = .3;
 
   var root = {};
+
+  root.externalSource = {
+    ledger: ledger.description,
+    trezor: trezor.description,
+    intelTEE: intelTEE.description
+  }
 
   root.WALLET_STATUS_MAX_TRIES = 7;
   root.WALLET_STATUS_DELAY_BETWEEN_TRIES = 1.4 * 1000;
@@ -38,6 +49,43 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       txp.signatures = result.signatures;
       return wallet.signTxProposal(txp, cb);
     });
+  };
+
+  var _signWithIntelTEE = function(wallet, txp, cb) {
+    $log.info('Requesting Intel TEE to sign the transaction');
+
+    intelTEE.signTx(wallet.credentials.hwInfo.id, txp, function(err, result) {
+      if (err) return cb(err);
+
+      $log.debug('Intel TEE response', result);
+      txp.signatures = result.Signatures;
+      return wallet.signTxProposal(txp, cb);
+    });
+  };
+
+  root.showMneumonicFromHardware = function(wallet, cb) {
+    switch (wallet.getPrivKeyExternalSourceName()) {
+      case root.externalSource.intelTEE.id:
+        return intelTEE.showMneumonic(wallet.credentials.hwInfo.id, cb);
+        break;
+      default:
+        cb('Error: unrecognized external source');
+        break;
+    }
+  };
+
+  root.showReceiveAddressFromHardware = function(wallet, address, cb) {
+    switch (wallet.getPrivKeyExternalSourceName()) {
+      case root.externalSource.intelTEE.id:
+        root.getAddressObj(wallet, address, function(err, addrObj) {
+          if (err) return cb(err);
+          return intelTEE.showReceiveAddress(wallet.credentials.hwInfo.id, addrObj, cb);
+        });
+        break;
+      default:
+        cb('Error: unrecognized external source');
+        break;
+    }
   };
 
   root.invalidateCache = function(wallet) {
@@ -82,7 +130,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       lodash.each(txps, function(tx) {
 
-        tx = txFormatService.processTx(tx);
+        tx = txFormatService.processTx(wallet.coin, tx);
 
         // no future transactions...
         if (tx.createdOn > now)
@@ -165,14 +213,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       // Selected unit
       cache.unitToSatoshi = config.settings.unitToSatoshi;
       cache.satToUnit = 1 / cache.unitToSatoshi;
-      cache.unitName = config.settings.unitName;
 
       //STR
-      cache.totalBalanceStr = txFormatService.formatAmount(cache.totalBalanceSat) + ' ' + cache.unitName;
-      cache.lockedBalanceStr = txFormatService.formatAmount(cache.lockedBalanceSat) + ' ' + cache.unitName;
-      cache.availableBalanceStr = txFormatService.formatAmount(cache.availableBalanceSat) + ' ' + cache.unitName;
-      cache.spendableBalanceStr = txFormatService.formatAmount(cache.spendableAmount) + ' ' + cache.unitName;
-      cache.pendingBalanceStr = txFormatService.formatAmount(cache.pendingAmount) + ' ' + cache.unitName;
+      cache.totalBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.totalBalanceSat);
+      cache.lockedBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.lockedBalanceSat);
+      cache.availableBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.availableBalanceSat);
+      cache.spendableBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.spendableAmount);
+      cache.pendingBalanceStr = txFormatService.formatAmountStr(wallet.coin, cache.pendingAmount);
 
       cache.alternativeName = config.settings.alternativeName;
       cache.alternativeIsoCode = config.settings.alternativeIsoCode;
@@ -190,11 +237,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       rateService.whenAvailable(function() {
 
-        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode);
-        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode);
-        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode);
-        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode);
-        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode);
+        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
+        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
         cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
         cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);
@@ -212,6 +259,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     function cacheStatus(status) {
+      if (status.wallet && status.wallet.scanStatus == 'running') return;
+
       wallet.cachedStatus = status ||  {};
       var cache = wallet.cachedStatus;
       cache.statusUpdatedOn = Date.now();
@@ -255,6 +304,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         $log.debug('Got Wallet Status for:' + wallet.credentials.walletName);
 
         cacheStatus(status);
+
+        wallet.scanning = status.wallet && status.wallet.scanStatus == 'running';
 
         return cb(null, status);
       });
@@ -318,7 +369,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, function(tx) {
-      tx = txFormatService.processTx(tx);
+      tx = txFormatService.processTx(wallet.coin, tx);
 
       // no future transactions...
       if (tx.time > now)
@@ -352,28 +403,29 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var LIMIT = 50;
     var requestLimit = FIRST_LIMIT;
     var walletId = wallet.credentials.walletId;
-    var config = configService.getSync().wallet.settings;
 
     var opts = opts || {};
     var progressFn = opts.progressFn || function() {};
     var foundLimitTx = false;
 
+
+    if (opts.feeLevels) {
+      opts.lowAmount = root.getLowAmount(wallet, opts.feeLevels);
+    }
+
     var fixTxsUnit = function(txs) {
       if (!txs || !txs[0] || !txs[0].amountStr) return;
 
-      var cacheUnit = txs[0].amountStr.split(' ')[1];
+      var cacheCoin = txs[0].amountStr.split(' ')[1];
 
-      if (cacheUnit == config.unitName)
-        return;
+      if (cacheCoin == 'bits') {
 
-      var name = ' ' + config.unitName;
-
-      $log.debug('Fixing Tx Cache Unit to:' + name)
-      lodash.each(txs, function(tx) {
-
-        tx.amountStr = txFormatService.formatAmount(tx.amount) + name;
-        tx.feeStr = txFormatService.formatAmount(tx.fees) + name;
-      });
+        $log.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
+        lodash.each(txs, function(tx) {
+          tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.amount);
+          tx.feeStr = txFormatService.formatAmountStr(wallet.coin, tx.fees);
+        });
+      }
     };
 
     getSavedTxs(walletId, function(err, txsFromLocal) {
@@ -420,7 +472,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
             if (foundLimitTx) {
               $log.debug('Found limitTX: ' + opts.limitTx);
-              return next(null, newTxs);
+              return next(null, [foundLimitTx]);
             }
           }
           // </HACK>
@@ -467,6 +519,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             return cb2();
           });
         }
+
+        function updateLowAmount(txs) {
+          if (!opts.lowAmount) return;
+
+          lodash.each(txs, function(tx) {
+            tx.lowAmount = tx.amount < opts.lowAmount;
+          });
+        };
+
+        updateLowAmount(txs);
 
         updateNotes(function() {
 
@@ -523,32 +585,27 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getTx = function(wallet, txid, cb) {
-    var tx;
 
-    if (wallet.completeHistory && wallet.completeHistory.isValid) {
-      tx = lodash.find(wallet.completeHistory, {
+    function finish(list) {
+      var tx = lodash.find(list, {
         txid: txid
       });
 
-      finish();
+      if (!tx) return cb('Could not get transaction');
+      return cb(null, tx);
+    };
+
+    if (wallet.completeHistory && wallet.completeHistory.isValid) {
+      finish(wallet.completeHistory);
     } else {
       root.getTxHistory(wallet, {
         limitTx: txid
       }, function(err, txHistory) {
         if (err) return cb(err);
 
-        tx = lodash.find(txHistory, {
-          txid: txid
-        });
-
-        finish();
+        finish(txHistory);
       });
     }
-
-    function finish() {
-      if (tx) return cb(null, tx);
-      else return cb();
-    };
   };
 
 
@@ -564,7 +621,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
- 
+
 
   root.getTxHistory = function(wallet, opts, cb) {
     opts = opts || {};
@@ -634,10 +691,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     if (wallet.isPrivKeyExternal()) {
       switch (wallet.getPrivKeyExternalSourceName()) {
-        case 'ledger':
+        case root.externalSource.ledger.id:
           return _signWithLedger(wallet, txp, cb);
-        case 'trezor':
+        case root.externalSource.trezor.id:
           return _signWithTrezor(wallet, txp, cb);
+        case root.externalSource.intelTEE.id:
+          return _signWithIntelTEE(wallet, txp, cb);
         default:
           var msg = 'Unsupported External Key:' + wallet.getPrivKeyExternalSourceName();
           $log.error(msg);
@@ -723,11 +782,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     // Update this JIC.
-    var config = configService.getSync().wallet.settings;
+    var config = configService.getSync();
+    var walletSettings = config.wallet.settings;
 
     //prefs.email  (may come from arguments)
+    prefs.email = config.emailNotifications.email;
     prefs.language = uxLanguage.getCurrentLanguage();
-    prefs.unit = config.unitCode;
+    // prefs.unit = walletSettings.unitCode; // TODO: remove, not used
 
     updateRemotePreferencesFor(lodash.clone(clients), prefs, function(err) {
       if (err) return cb(err);
@@ -759,13 +820,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     $log.debug('Scanning wallet ' + wallet.id);
     if (!wallet.isComplete()) return;
 
-    wallet.updating = true;
-    ongoingProcess.set('scanning', true);
+    wallet.scanning = true;
     wallet.startScan({
       includeCopayerBranches: true,
     }, function(err) {
-      wallet.updating = false;
-      ongoingProcess.set('scanning', false);
       return cb(err);
     });
   };
@@ -794,13 +852,13 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     wallet.createAddress({}, function(err, addr) {
       if (err) {
         var prefix = gettextCatalog.getString('Could not create address');
-        if (err.error && err.error.match(/locked/gi)) {
-          $log.debug(err.error);
+        if (err instanceof errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
+          $log.warn(err);
           return $timeout(function() {
             createAddress(wallet, cb);
           }, 5000);
-        } else if (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED') {
-          $log.warn(err.message);
+        } else if (err instanceof errors.MAIN_ADDRESS_GAP_REACHED || (err.message && err.message == 'MAIN_ADDRESS_GAP_REACHED')) {
+          $log.warn(err);
           prefix = null;
           wallet.getMainAddresses({
             reverse: true,
@@ -831,6 +889,83 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+
+  // These 2 functions were taken from
+  // https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js#L243
+
+  function getEstimatedSizeForSingleInput(wallet) {
+    switch (wallet.credentials.addressType) {
+      case 'P2PKH':
+        return 147;
+      default:
+      case 'P2SH':
+        return wallet.m * 72 + wallet.n * 36 + 44;
+    }
+  };
+
+
+  root.getEstimatedTxSize = function(wallet, nbOutputs) {
+    // Note: found empirically based on all multisig P2SH inputs and within m & n allowed limits.
+    var safetyMargin = 0.02;
+
+    var overhead = 4 + 4 + 9 + 9;
+    var inputSize = getEstimatedSizeForSingleInput(wallet);
+    var outputSize = 34;
+    var nbInputs = 1; //Assume 1 input
+    var nbOutputs = nbOutputs || 2; // Assume 2 outputs
+
+    var size = overhead + inputSize * nbInputs + outputSize * nbOutputs;
+    return parseInt((size * (1 + safetyMargin)).toFixed(0));
+  };
+
+
+  // Approx utxo amount, from which the uxto is economically redeemable
+  root.getMinFee = function(wallet, feeLevels, nbOutputs) {
+    var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
+      level: 'normal',
+    }).feePerKb / 1000).toFixed(0);
+
+    var size = root.getEstimatedTxSize(wallet, nbOutputs);
+    return size * lowLevelRate;
+  };
+
+
+  // Approx utxo amount, from which the uxto is economically redeemable
+  root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
+    var minFee = root.getMinFee(wallet, feeLevels, nbOutputs);
+    return parseInt(minFee / LOW_AMOUNT_RATIO);
+  };
+
+
+
+  root.getLowUtxos = function(wallet, levels, cb) {
+
+    wallet.getUtxos({
+      coin: wallet.coin
+    }, function(err, resp) {
+      if (err || !resp || !resp.length) return cb();
+
+      var minFee = root.getMinFee(wallet, levels, resp.length);
+
+      var balance = lodash.sum(resp, 'satoshis');
+
+      // for 2 outputs
+      var lowAmount = root.getLowAmount(wallet, levels);
+      var lowUtxos = lodash.filter(resp, function(x) {
+        return x.satoshis < lowAmount;
+      });
+
+      var totalLow = lodash.sum(lowUtxos, 'satoshis');
+
+      return cb(err, {
+        allUtxos: resp || [],
+        lowUtxos: lowUtxos || [],
+        warning: minFee / balance > TOTAL_LOW_WARNING_RATIO,
+        minFee: minFee,
+      });
+    });
+  };
+
   root.getAddress = function(wallet, forceNew, cb) {
     storageService.getLastAddress(wallet.id, function(err, addr) {
       if (err) return cb(err);
@@ -850,6 +985,21 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getAddressObj = function(wallet, address, cb) {
+    wallet.getMainAddresses({
+      reverse: true
+    }, function(err, addr) {
+      if (err) return cb(err);
+      var addrObj = lodash.find(addr, function(a) {
+        return a.address == address;
+      });
+      var err = null;
+      if (!addrObj) {
+        err = 'Error: specified address not in wallet';
+      }
+      return cb(err, addrObj);
+    });
+  };
 
   root.isReady = function(wallet, cb) {
     if (!wallet.isComplete())
@@ -880,8 +1030,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var warnMsg = gettextCatalog.getString('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
     askPassword(warnMsg, title, function(password) {
       if (!password) return cb('no password');
-      title = gettextCatalog.getString('Confirm you new spending password');
-      askPassword(warnMsg, gettextCatalog.getString('Confirm you new spending password'), function(password2) {
+      title = gettextCatalog.getString('Confirm your new spending password');
+      askPassword(warnMsg, title, function(password2) {
         if (!password2 || password != password2)
           return cb('password mismatch');
 
@@ -1082,6 +1232,39 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     opts = opts || {};
     wallet.getSendMaxInfo(opts, function(err, res) {
       return cb(err, res);
+    });
+  };
+
+  root.getProtocolHandler = function(wallet) {
+    if (wallet.coin== 'bch') return 'bitcoincash';
+    else return 'bitcoin';
+  }
+
+
+  root.copyCopayers = function(wallet, newWallet, cb) {
+    var c = wallet.credentials;
+
+    var walletPrivKey = bitcore.PrivateKey.fromString(c.walletPrivKey);
+
+    var copayer = 1,
+      i = 0,
+      l = c.publicKeyRing.length;
+    var mainErr = null;
+
+    lodash.each(c.publicKeyRing, function(item) {
+      var name = item.copayerName || ('copayer ' + copayer++);
+      newWallet._doJoinWallet(newWallet.credentials.walletId, walletPrivKey, item.xPubKey, item.requestPubKey, name, {
+        coin: newWallet.credentials.coin,
+      }, function(err) {
+        //Ignore error is copayer already in wallet
+        if (err && !(err instanceof errors.COPAYER_IN_WALLET)) {
+          mainErr = err;
+        }
+
+        if (++i == l) {
+          return cb(mainErr);
+        }
+      });
     });
   };
 

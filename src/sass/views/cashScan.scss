@@ -1,0 +1,43 @@
+#cash-scan {
+  .comment {
+    color: #667;
+    font-size: 0.9em;
+  }
+
+  .item {
+    color: $v-dark-gray;
+    padding-top: 1.3rem;
+    padding-bottom: 1.3rem;
+  }
+
+  .heading {
+    font-size: 17px;
+    color: $v-dark-gray;
+    margin: 1rem 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+  }
+
+  .text-disabled {
+    color: $v-light-gray;
+  }
+
+  .supported {
+    display: flex;
+
+    .wallet-content {
+      padding-left: 7px;
+    }
+  }
+
+  .duplicate-button {
+    position: absolute;
+    right: 15px;
+    padding-top: .5rem;
+  }
+
+  a {
+    cursor: pointer;
+  }
+}

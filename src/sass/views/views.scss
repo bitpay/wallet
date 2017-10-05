@@ -9,12 +9,14 @@
 @import "tab-scan";
 @import "tab-send";
 @import "tab-settings";
+@import "wallet-colors";
 @import "walletBalance";
 @import "walletDetails";
 @import "advancedSettings";
 @import "bitpayCard";
 @import "bitpayCardIntro";
-@import "bitpayCardPreferences";
+@import "buyandsell";
+@import "bitpayServicesPreferences";
 @import "address-book";
 @import "addresses";
 @import "wallet-backup-phrase";
@@ -32,6 +34,7 @@
 @import "includes/walletActivity";
 @import "includes/wallets";
 @import "includes/modals/modals";
+@import "includes/modals/choose-fee-level";
 @import "includes/clickToAccept";
 @import "includes/incomingDataMenu";
 @import "includes/slideToAccept";
@@ -41,6 +44,10 @@
 @import "includes/tx-status";
 @import "includes/itemSelector";
 @import "includes/walletSelector";
-@import "integrations/coinbase";
-@import "integrations/glidera";
+@import "includes/accountSelector";
+@import "integrations/integrations";
 @import "custom-amount";
+@import "includes/pin";
+@import "includes/logOptions";
+@import "includes/checkBar";
+@import "cashScan";

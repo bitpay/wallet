@@ -8,40 +8,44 @@ angular.module('copayApp.services')
     root.availableLanguages = [{
       name: 'English',
       isoCode: 'en',
-        }, {
+    }, {
       name: 'Español',
       isoCode: 'es',
-        }, {
+    }, {
       name: 'Français',
       isoCode: 'fr',
-        }, {
+    }, {
+      name: 'Italiano',
+      isoCode: 'it',
+    }, {
+      name: 'Nederlands',
+      isoCode: 'nl',
+    }, {
+      name: 'Polski',
+      isoCode: 'pl',
+    }, {
       name: 'Deutsch',
       isoCode: 'de',
-       }, {
+    }, {
+      name: '日本語',
+      isoCode: 'ja',
+      useIdeograms: true,
+    }, {
       name: '中文（简体）',
       isoCode: 'zh',
       useIdeograms: true,
-      }];
+    }, {
+      name: 'Pусский',
+      isoCode: 'ru',
+    }, {
+      name: 'Português',
+      isoCode: 'pt',
+    }];
 
     // }, {
     //   name: 'Český',
     //   isoCode: 'cs',
-    // }, {
-    //   name: 'Italiano',
-    //   isoCode: 'it',
-    //   name: '日本語',
-    //   isoCode: 'ja',
-    //   useIdeograms: true,
-    // }, {
-    //   name: '中文（简体）',
-    //   isoCode: 'zh',
-    //   useIdeograms: true,
-    // }, {
-    //   name: 'Polski',
-    //   isoCode: 'pl',
-    // }, {
-    //   name: 'Pусский',
-    //   isoCode: 'ru',
+    // }
 
     root._detect = function(cb) {
       var userLang, androidLang;

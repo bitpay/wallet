@@ -1,0 +1,63 @@
+<ion-view>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>
+      {{'Mercado Livre Brazil Gift Cards'|translate}}
+    </ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content scroll="false" class="ng-hide" ng-show="!giftCards">
+    <div class="box-notification warning" ng-show="network == 'testnet'">
+      Sandbox version. Only for testing purpose.
+    </div>
+    <div class="integration-onboarding">
+      <div class="integration-onboarding-logo">
+        <img src="img/mercado-libre/mlbr.svg" alt="Mercado Libre" width="250">
+      </div>
+      <div class="integration-onboarding-description" translate>
+        <b>Only</b> redeemable on Mercado Livre (Brazil)
+      </div>
+      <div class="integration-onboarding-cta" ng-show="!showOauthForm">
+        <button class="button button-standard button-primary" ui-sref="tabs.giftcards.mercadoLibre.amount" no-low-fee
+          translate>
+          Buy a Gift Card
+        </button>
+        <button class="button button-standard button-secondary"
+          ng-click="openExternalLink('https://www.mercadolivre.com.br')" translate>
+          Visit mercadolivre.com.br &rarr;
+        </button>
+      </div>
+    </div>
+  </ion-content>
+  <ion-content class="ng-hide" ng-show="giftCards">
+    <div class="box-notification warning" ng-show="network == 'testnet'">
+      Sandbox version. Only for testing purpose.
+    </div>
+
+    <div class="m20t text-center">
+      <img src="img/mercado-libre/mlbr.svg" alt="Mercado Libre" width="250">
+      <div class="size-12 m10t" translate>
+        <b>Only</b> redeemable on Mercado Livre (Brazil)
+      </div>
+    </div>
+
+    <div class="m20t" ng-if="giftCards">
+      <div class="list card">
+        <a class="item item-icon-left item-icon-right" href
+          ui-sref="tabs.giftcards.mercadoLibre.amount"  no-low-fee>
+          <i class="icon ion-ios-pricetags-outline"></i>
+          <span translate>Buy a Gift Card</span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+
+        <a class="item item-icon-right item-icon-left"
+           ui-sref="tabs.giftcards.mercadoLibre.cards">
+          <i class="icon ion-ios-folder-outline"></i>
+          <span translate>Your Gift Cards</span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

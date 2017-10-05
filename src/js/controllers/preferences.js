@@ -1,14 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $timeout, $log, $stateParams, $ionicHistory, configService, profileService, fingerprintService, walletService) {
-    var wallet = profileService.getWallet($stateParams.walletId);
-    var walletId = wallet.credentials.walletId;
-    $scope.wallet = wallet;
-
-    $scope.encryptEnabled = {
-      value: walletService.isEncrypted(wallet)
-    };
+  function($scope, $rootScope, $timeout, $log, $ionicHistory, configService, profileService, fingerprintService, walletService, platformInfo, externalLinkService, gettextCatalog) {
+    var wallet;
+    var walletId;
 
     $scope.hiddenBalanceChange = function() {
       var opts = {
@@ -63,6 +58,16 @@ angular.module('copayApp.controllers').controller('preferencesController',
       }
     };
 
+    $scope.openWikiSpendingPassword = function() {
+      var url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#what-the-spending-password-does';
+      var optIn = true;
+      var title = null;
+      var message = gettextCatalog.getString('Read more in our Wiki');
+      var okText = gettextCatalog.getString('Open');
+      var cancelText = gettextCatalog.getString('Go Back');
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    };
+
     $scope.touchIdChange = function() {
       var newStatus = $scope.touchIdEnabled.value;
       walletService.setTouchId(wallet, !!newStatus, function(err) {
@@ -78,6 +83,10 @@ angular.module('copayApp.controllers').controller('preferencesController',
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+      wallet = profileService.getWallet(data.stateParams.walletId);
+      walletId = wallet.credentials.walletId;
+      $scope.wallet = wallet;
+      $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
       $scope.externalSource = null;
 
       if (!wallet)
@@ -89,8 +98,9 @@ angular.module('copayApp.controllers').controller('preferencesController',
         value: $scope.wallet.balanceHidden
       };
 
-      if (wallet.isPrivKeyExternal)
-        $scope.externalSource = wallet.getPrivKeyExternalSourceName() == 'ledger' ? 'Ledger' : 'Trezor';
+      $scope.encryptEnabled = {
+        value: walletService.isEncrypted(wallet)
+      };
 
       $scope.touchIdAvailable = fingerprintService.isAvailable();
       $scope.touchIdEnabled = {

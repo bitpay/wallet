@@ -18,22 +18,22 @@ angular.module('copayApp.directives')
         var msg = gettextCatalog.getString('Copied to clipboard');
         elem.bind('click', function() {
           var data = scope.copyToClipboard;
+          if (!data) return;
+
           if (isCordova) {
-            window.cordova.plugins.clipboard.copy(data);
-            window.plugins.toast.showShortCenter(msg);
+            cordova.plugins.clipboard.copy(data);
           } else if (isNW) {
             nodeWebkitService.writeToClipboard(data);
-            scope.$apply(function() {
-              ionicToast.show(msg, 'bottom', false, 1000);
-            });
           } else if (clipboard.supported) {
             clipboard.copyText(data);
-            scope.$apply(function() {
-              ionicToast.show(msg, 'bottom', false, 1000);
-            });
+          } else {
+            // No supported
+            return;
           }
+          scope.$apply(function() {
+            ionicToast.show(msg, 'bottom', false, 1000);
+          });
         });
       }
     }
   });
-

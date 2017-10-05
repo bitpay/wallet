@@ -1,16 +1,17 @@
-<ion-view hide-tabs id="addresses" class="addr">
+<ion-view id="addresses" class="addr" hide-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Wallet Addresses' | translate}}</ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
+    <ion-nav-buttons side="secondary">
+      <button class="button back-button" ng-click="init()">
+        <i class="icon ion-ios-refresh-empty"></i>
+      </button>
+    </ion-nav-buttons>
   </ion-nav-bar>
 
   <ion-content>
-    <div class="text-center banner-icon">
-      <i class="icon zero-state-icon">
-        <img src="img/tab-icons/ico-receive-selected.svg"/>
-      </i>
-    </div>
+    <div ng-include="'views/includes/walletItem.html'"></div>
 
     <div class="addr-list">
       <div class="addr-explanation">
@@ -26,20 +27,22 @@
       </div>
 
       <div class="list">
-        <div class="item item-icon-right view-all" ng-click="requestSpecificAmount()">
-          <span translate>Request Specific amount</span>
-          <i class="icon ion-ios-arrow-thin-right"></i>
+        <div class="item view-all" ng-click="scan()">
+          <span translate>Scan addresses for funds</span>
         </div>
-        <div class="item item-icon-right view-all" ng-show="viewAll.value" ng-click="viewAllAddresses()">
+        <div class="item item-icon-right view-all" ng-if="viewAll.value" ng-click="viewAllAddresses()">
           <span translate>View All Addresses</span>
           <i class="icon ion-ios-arrow-thin-right"></i>
         </div>
-        <div class="item view-all" ng-show="latestWithBalance[0]" ng-click="scan()">
-          <span translate>Scan addresses for funds</span>
-        </div>
-        <div class="item item-divider item-icon-right" ng-click="newAddress()">
+
+        <div class="item item-divider item-icon-right"  ng-click="newAddress()">
           <span translate>Unused Addresses</span>
           <i class="icon ion-ios-plus-empty"></i>
+        </div>
+
+        <div ng-if="loading" class="updating">
+          <ion-spinner class="spinner-dark recent" icon="crescent"></ion-spinner>
+          <span translate>Loading addresses...</span>
         </div>
 
         <div ng-if="latestUnused[0]">
@@ -66,6 +69,34 @@
             {{w.address}}
             <div class="addr-balance">{{w.balanceStr}}</div>
           </div>
+        </div>
+
+
+        <div ng-if="allUtxosNb">
+          <div class="item item-divider" translate>
+            Wallet Inputs
+          </div>
+
+          <div class="item" >
+            <span translate> Total wallet inputs </span>
+            <div class="addr-path">
+              {{allUtxosNb}} [{{allUtxosSum}}]
+            </div>
+          </div>
+          <div class="item" >
+            <span  translate> Low amount inputs </span>
+            <div class="addr-path">
+              {{lowUtxosNb}} [{{ lowUtxosSum }}]
+            </div>
+          </div>
+
+          <div class="item" >
+            <span translate> Approximate Bitcoin network fee to transfer wallet's balance (with normal priority) </span>
+            <div class="addr-path">
+              {{minFeePer}} [{{minFee}}]
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

@@ -1,0 +1,12 @@
+<div ng-controller="buyAndSellCardController">
+  <div class="item item-sub item-icon-right item-heading">
+    <span translate>Buy &amp; Sell Bitcoin</span>
+    <a ui-sref="tabs.buyandsell"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+  </div>
+  <div ng-repeat="service in services">
+    <a  ui-sref="{{service.sref}}" class="item item-extra-padding item-sub item-icon-right">
+      <img ng-src="{{service.logo}}" width="90">
+      <i class="icon bp-arrow-right"></i>
+    </a>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<button ng-disabled="!hasWalletChosen || insufficientFunds || noMatchingWallet" class="click-to-accept__button button button-standard button-primary" ng-class="{disable: sendStatus}">
+<button ng-disabled="isDisabled" class="click-to-accept__button button button-standard button-primary" ng-class="{disable: sendStatus}">
   <span ng-if="!sendStatus">
     <ng-transclude></ng-transclude>
   </span>

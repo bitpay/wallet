@@ -1,60 +1,52 @@
-<ion-view id="coinbase">
+<ion-view id="coinbase" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-back-button>
     </ion-nav-back-button>
     <ion-nav-title>Coinbase</ion-nav-title>
   </ion-nav-bar>
-
-  <ion-content>
-
-    <div ng-if="!accessToken" ng-init="showOauthForm = false">
-      <div class="text-center m20v">
-        <img src="img/coinbase-logo.png" width="200">
+  <ion-nav-buttons side="secondary">
+    <button class="button button-clear button-small ng-hide" ng-show="!accessToken" ng-click="coinbase.toggleOauthForm()">
+      <span ng-hide="showOauthForm">Enter Code</span>
+      <span ng-show="showOauthForm">Restart</span>
+    </button>
+  </ion-nav-buttons>
+  <ion-content scroll="false" class="ng-hide" ng-show="!accessToken">
+    <div class="integration-onboarding">
+      <div class="integration-onboarding-logo">
+        <img src="img/coinbase-logo.png">
       </div>
-      <div class="text-center small-10 small-centered columns" ng-show="!showOauthForm">
-
-        <p class="m20t text-gray size-12">Connect your Coinbase account to get started</p>
-
-        <button class="button button-standard button-primary"
-          ng-click="coinbase.openAuthenticateWindow()">
-          Connect to Coinbase
-        </button>
-        <div class="m20t">
-          <a href ng-click="showOauthForm = true" class="text-gray size-12">
-            Do you already have the Oauth Code?
-          </a>
-        </div>
+      <div class="integration-onboarding-description" ng-hide="showOauthForm">Coinbase's exchange service is available in 33 countries, and can take 3-5 days to buy or sell bitcoin.</div>
+      <div class="integration-onboarding-description" ng-show="showOauthForm">If you have trouble, contact Coinbase support for direct assistance.</div>
+      <div class="integration-onboarding-cta" ng-show="!showOauthForm">
+        <button class="button button-standard button-primary" ng-click="coinbase.openAuthenticateWindow()">Connect Coinbase Account</button>
+        <button class="button button-standard button-secondary" ng-click="coinbase.openSignupWindow()">Sign Up for Coinbase</button>
       </div>
-      <div ng-show="showOauthForm">
+
+      <div ng-show="showOauthForm" class="integration-onboarding-oauthform">
         <form name="oauthCodeForm" ng-submit="coinbase.submitOauthCode(code)" novalidate>
-          <div class="list settings-input-group">
-            <label class="item item-input item-stacked-label">
+          <div class="list">
+            <label class="item item-input item-floating-label">
               <span class="input-label">OAuth Code</span>
               <input type="text"
                      ng-model="code"
-                     ng-attr-placeholder="{{'Paste the authorization code here'}}" required>
+                     placeholder="{{'Enter OAuth Code'}}" required>
             </label>
           </div>
           <input
             class="button button-standard button-primary"
             type="submit" value="Connect Coinbase Account" ng-disabled="oauthCodeForm.$invalid">
+          <button type="button" class="button button-standard button-secondary" ng-click="coinbase.openSupportWindow()">Coinbase Support &rarr;</button>
         </form>
       </div>
     </div>
+  </ion-content>
 
-  <div ng-if="accessToken">
+  <ion-content class="ng-hide" ng-show="accessToken">
+
+  <div>
 
     <div class="m20t text-center" ng-click="updateTransactions()">
       <img src="img/coinbase-logo.png" width="200">
-    </div>
-
-    <div class="m10t size-12 text-center text-gray">
-      <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice || !sellPrice"></ion-spinner>
-      <span ng-show="buyPrice && sellPrice">
-        {{buyPrice.amount}} {{buyPrice.currency}}
-         | 
-        {{sellPrice.amount}} {{sellPrice.currency}}
-      </span>
     </div>
 
     <div class="list card">
@@ -63,13 +55,21 @@
         <img src="img/buy-bitcoin.svg" alt="buy bitcoin" width="30" class="item-img-buy" style="vertical-align:
         text-bottom;">
         Buy Bitcoin
+        <span class="item-note">
+          <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!buyPrice"></ion-spinner>
+          <span ng-show="buyPrice">{{buyPrice.amount|currency:'$':2}} {{buyPrice.currency}}/BTC</span>
+        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
       <a class="item item-icon-right"
-         href ui-sref="tabs.buyandsell.coinbase.amount({nextStep: 'tabs.buyandsell.coinbase.sell', currency: currency})">
+         href ui-sref="tabs.buyandsell.coinbase.amount({nextStep: 'tabs.buyandsell.coinbase.sell', currency: currency})" no-low-fee>
         <img src="img/sell-bitcoin.svg" alt="sell bitcoin" width="30" class="item-img-sell" style="vertical-align:
         text-bottom;">
         Sell Bitcoin
+        <span class="item-note">
+          <ion-spinner class="spinner-dark recent" icon="crescent" ng-show="!sellPrice"></ion-spinner>
+          <span ng-show="sellPrice">{{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/BTC</span>
+        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
     </div>
@@ -77,7 +77,7 @@
     <div class="list card">
       <div class="item item-heading" ng-click="updateTransactions()">
         Activity
-      </div> 
+      </div>
       <a class="item"
          ng-if="pendingTransactions.data && !error"
          ng-repeat="(id, tx) in pendingTransactions.data | orderObjectBy:'updated_at':true track by $index"

@@ -1,17 +1,17 @@
 <ion-modal-view>
   <ion-content ng-controller="bitpayCardConfirmationController">
     <div class="text-center">
-      <h1 class="text-center m20b p20h">Are you sure you would like to log out of your Bitpay Card account?</h1>
-      <p class="text-gray p20h">You will need to log back for fill in your Bitpay Card.</p>
+      <h1 class="text-center m20b p20h" translate>Are you sure you would like to log out of your BitPay Card account?</h1>
+      <p class="text-gray p20h" translate>You will need to log back for fill in your BitPay Card.</p>
       <div class="row">
         <div class="col">
-          <button class="button button-block button-stable" ng-click="cancel()">
+          <button class="button button-block button-stable" ng-click="cancel()" translate>
             Cancel
           </button>
         </div>
         <div class="col">
           <button class="button button-block button-assertive" ng-click="ok()">
-            <span>Log out</span>
+            <span translate>Log out</span>
           </button>
         </div>
       </div>

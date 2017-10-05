@@ -1,4 +1,4 @@
-<ion-view class="settings">
+<ion-view class="settings" show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>
       {{'Wallet Settings'|translate}}
@@ -9,26 +9,17 @@
   <ion-content>
     <div class="list settings-list">
 
-      <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
+      <div ng-include="'views/includes/walletItem.html'"></div>
 
       <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesAlias">
         <span translate>Name</span>
-        <span class="item-note">
+        <span class="item-note ellipsis">
           {{wallet.name}}
         </span>
         <i class="icon bp-arrow-right"></i>
       </a>
-      <a class="item" ng-show="wallet.isPrivKeyExternal()">
-        <span translate>Hardware Wallet</span>
-        <span class="item-note">
-          {{externalSource}}
-        </span>
-      </a>
-      <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
+      <a ng-if="!isWindowsPhoneApp" class="item item-icon-right" ui-sref="tabs.preferences.preferencesColor">
         <span translate>Color</span>
-        <span class="item-note">
-          <span class="settings-color-block" ng-style="{'background-color': wallet.color, 'color': wallet.color}"></span>
-        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
 
@@ -36,17 +27,29 @@
         <span class="toggle-label" translate>Hide Balance</span>
       </ion-toggle>
 
-      <div class="item item-divider" translate>
+      <div class="item item-divider" ng-hide="wallet.isPrivKeyExternal() || !wallet.canSign()" translate>
         Security
       </div>
       <a class="item item-icon-right" ui-sref="tabs.preferences.backupWarning({from: 'tabs.preferences'})" ng-hide="wallet.isPrivKeyExternal()">
         <span translate>Backup</span>
+        <span class="right text-light assertive" ng-show="wallet.needsBackup">
+          {{'Backup needed' | translate}}
+        </span>
         <i class="icon bp-arrow-right"></i>
       </a>
       <div ng-show="wallet.canSign()">
-        <ion-toggle ng-model="encryptEnabled.value" toggle-class="toggle-balanced" ng-change="encryptChange()">
-          <span class="toggle-label" translate>Request Spending Password</span>
+        <ion-toggle ng-model="encryptEnabled.value" toggle-class="toggle-balanced" ng-change="encryptChange()" ng-disabled="wallet.needsBackup">
+          <span ng-class="{'disabled': wallet.needsBackup}" class="toggle-label" translate>Request Spending Password</span>
         </ion-toggle>
+        <div class="comment">
+          <span translate>
+            If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected.
+          </span>
+          <a ng-click="openWikiSpendingPassword()" translate>Learn more</a>
+          <div class="text-light assertive" ng-show="wallet.needsBackup" translate>
+            Complete the backup process to use this option
+          </div>
+        </div>
       </div>
       <div ng-show="wallet.canSign() && touchIdAvailable">
         <ion-toggle  ng-model="touchIdEnabled.value" toggle-class="toggle-balanced" ng-change="touchIdChange()">

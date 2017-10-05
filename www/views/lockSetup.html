@@ -1,0 +1,17 @@
+<ion-view class="settings" show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>{{'Startup Lock' | translate}}</ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content>
+    <ion-radio ng-repeat="opt in options" ng-value="opt" ng-model="currentOption" ng-click="select(opt.method)" ng-disabled="opt.needsBackup || opt.disabled">
+      <span ng-class="{'disabled': opt.needsBackup || opt.disabled}">{{opt.label}}</span>
+    </ion-radio>
+
+    <div class="assertive" style="text-align: center; margin: 4rem" ng-if="errorMsg">
+      {{errorMsg}}
+    </div>
+  </ion-content>
+</ion-view>

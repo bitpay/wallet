@@ -1,7 +1,5 @@
 <div class="wallet-item">
-    <i class="icon big-icon-svg circle">
-    <img src="img/icon-wallet.svg" ng-style="{'background-color': wallet.color}" class="bg"/>
-  </i>
+  <i class="icon big-icon-svg circle" ng-include="'views/includes/walletIcon.html'"></i>
   <div class="name">
     {{wallet.name || wallet.id}}
     <span class="size-12 text-light" ng-show="wallet.n > 1">
@@ -12,4 +10,3 @@
     </span>
   </div>
 </div>
-

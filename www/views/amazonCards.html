@@ -1,0 +1,43 @@
+<ion-view show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>Your cards</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list card">
+      <div ng-repeat="(id, item) in giftCards | orderObjectBy:'date':true track by $index"
+           ng-click="openCardModal(item)"
+           class="item item-avatar"
+           ng-hide="hideCards">
+        <img src="img/a-smile_color_btn.png" alt="{{id}}" width="40">
+        <ion-spinner class="spinner-dark recent right m10 size-16" icon="crescent" ng-show="updatingPending[item.invoiceId]">
+        </ion-spinner>
+        <h2 ng-if="item.amount">
+          {{item.amount | currency : '$ ' : 2}} {{item.currency}}
+        </h2>
+        <p>
+          <span class="assertive" ng-if="item.status == 'FAILURE' || item.status == 'RESEND'">Error</span>
+          <span class="assertive" ng-if="item.status == 'expired'">Expired</span>
+          <span class="assertive" ng-if="item.status == 'invalid'">Still waiting confirmation<br> (Use higher fees setting to faster delivery)</span>
+          <span class="text-gray" ng-if="item.status == 'PENDING'">Pending to confirmation</span>
+          <span class="assertive" ng-if="item.status == 'SUCCESS' && item.cardStatus == 'Canceled'">Canceled</span>
+          <span class="text-gray">{{item.date | amTimeAgo}}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="size-12 p15h">
+      * <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion.
+        Except as required by law, <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>
+        Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases of
+        eligible goods at <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its
+        affiliated websites. For complete terms and conditions, see
+        <a ng-click="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>.
+        GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP
+        of <a ng-click="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates.
+        No expiration date or service fees.
+    </div>
+  </ion-content>
+</ion-view>

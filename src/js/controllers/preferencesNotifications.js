@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesNotificationsController', function($scope, $log, $timeout, appConfigService, lodash, configService, platformInfo, pushNotificationsService, profileService, emailService) {
+angular.module('copayApp.controllers').controller('preferencesNotificationsController', function($scope, $log, $timeout, appConfigService, lodash, configService, platformInfo, pushNotificationsService, emailService) {
   var updateConfig = function() {
     var config = configService.getSync();
     $scope.appName = appConfigService.nameCase;
@@ -9,11 +9,16 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
     $scope.isIOSApp = platformInfo.isIOS && platformInfo.isCordova;
 
     $scope.pushNotifications = {
-      value: config.pushNotifications.enabled
+      value: config.pushNotificationsEnabled
+    };
+
+    var isConfirmedTxsNotificationsEnabled = config.confirmedTxsNotifications ? config.confirmedTxsNotifications.enabled : false;
+    $scope.confirmedTxsNotifications = {
+      value: isConfirmedTxsNotificationsEnabled
     };
 
     $scope.latestEmail = {
-      value: getLatestEmailConfig()
+      value: emailService.getEmailIfEnabled()
     };
 
     $scope.newEmail = lodash.clone($scope.latestEmail);
@@ -31,48 +36,44 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
   $scope.pushNotificationsChange = function() {
     if (!$scope.pushNotifications) return;
     var opts = {
-      pushNotifications: {
-        enabled: $scope.pushNotifications.value
+      pushNotificationsEnabled: $scope.pushNotifications.value
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
+      if (opts.pushNotificationsEnabled)
+        pushNotificationsService.init();
+      else
+        pushNotificationsService.disable();
+    });
+  };
+
+  $scope.confirmedTxsNotificationsChange = function() {
+    if (!$scope.pushNotifications) return;
+    var opts = {
+      confirmedTxsNotifications: {
+        enabled: $scope.confirmedTxsNotifications.value
       }
     };
     configService.set(opts, function(err) {
-      if (opts.pushNotifications.enabled)
-        profileService.pushNotificationsInit();
-      else
-        pushNotificationsService.disableNotifications(profileService.getWallets());
       if (err) $log.debug(err);
     });
   };
 
   $scope.emailNotificationsChange = function() {
     var opts = {
-      emailNotifications: {
-        enabled: $scope.emailNotifications.value
-      }
+      enabled: $scope.emailNotifications.value,
+      email: $scope.newEmail.value
     };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
 
     $scope.latestEmail = {
-      value: getLatestEmailConfig()
+      value: emailService.getEmailIfEnabled()
     };
 
-    $scope.newEmail = lodash.clone($scope.latestEmail);
-
-    if (!$scope.emailNotifications.value) {
-      emailService.enableEmailNotifications({
-        enabled: $scope.emailNotifications.value,
-        email: null
-      });
-    }
-    $timeout(function() {
-      $scope.$apply();
-    });
+    emailService.updateEmail(opts);
   };
 
   $scope.save = function() {
-    emailService.enableEmailNotifications({
+    emailService.updateEmail({
       enabled: $scope.emailNotifications.value,
       email: $scope.newEmail.value
     });
@@ -84,11 +85,6 @@ angular.module('copayApp.controllers').controller('preferencesNotificationsContr
     $timeout(function() {
       $scope.$apply();
     });
-  };
-
-  function getLatestEmailConfig() {
-    var config = configService.getSync();
-    return config.emailFor ? lodash.values(config.emailFor)[0] : null;
   };
 
   $scope.$on("$ionicView.enter", function(event, data) {

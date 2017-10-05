@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $ionicHistory, platformInfo, lodash, profileService, configService, $stateParams, $state) {
+  function($scope, $log, $ionicHistory, platformInfo, lodash, profileService, configService, $stateParams, $state, walletService) {
     var wallet = profileService.getWallet($stateParams.walletId);
     $scope.wallet = wallet;
 
@@ -44,5 +44,13 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $scope.M = c.m;
       $scope.N = c.n;
       $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
+      $scope.externalSource = null;
+
+      if (wallet.isPrivKeyExternal()) {
+        $scope.externalSource = lodash.find(walletService.externalSource, function(source) {
+          return source.id == wallet.getPrivKeyExternalSourceName();
+        }).name;
+      }
     });
+
   });

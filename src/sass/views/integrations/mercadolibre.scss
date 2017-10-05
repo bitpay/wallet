@@ -1,0 +1,202 @@
+#mercadolibre {
+  $item-lateral-padding: 20px;
+  $item-vertical-padding: 10px;
+  $item-border-color: #EFEFEF;
+  $item-label-color: #6C6C6E;
+  @extend .deflash-blue;
+  .icon-amazon {
+    background-image: url("../img/mercado-libre/icon-ml.svg");
+  }
+  .spinner svg {
+    stroke: black;
+    fill: black;
+  }
+
+  .add-bottom-for-cta {
+    bottom: 92px;
+  }
+  .head {
+    padding: 30px $item-lateral-padding 4rem;
+    border-top: 0;
+
+    .sending-label {
+      display: flex;
+      font-size: 18px;
+      align-items: center;
+      margin-bottom: 1.8rem;
+
+      img {
+        margin-right: 1rem;
+        height: 35px;
+        width: 35px;
+      }
+
+      span {
+        text-transform: capitalize;
+      }
+
+      .big-icon-svg {
+        padding: 0 7px 0 0;
+        margin-right: 0.6rem;
+      }
+
+      .big-icon-svg > .bg {
+        height: 28px;
+        box-shadow: none;
+      }
+
+    }
+    .amount-label{
+      line-height: 30px;
+      .amount{
+        font-size: 38px;
+        margin-bottom: .5rem;
+
+        > .unit {
+          font-family: "Roboto-Light";
+        }
+      }
+      .alternative {
+        font-size: 12px;
+        font-family: "Roboto-Light";
+        color: #9B9B9B;
+      }
+    }
+  }
+  .item {
+    border-color: $item-border-color;
+  }
+  .info {
+    .badge {
+      border-radius: 0;
+      padding: .5rem;
+    }
+    .item {
+      color: #4A4A4A;
+      padding-top: $item-vertical-padding;
+      padding-bottom: $item-vertical-padding;
+      padding-left: $item-lateral-padding;
+
+      &:not(.item-icon-right) {
+        padding-right: $item-lateral-padding;
+      }
+
+      .label {
+        font-size: 14px;
+        color: $item-label-color;
+        margin-bottom: 8px;
+      }
+
+      .capitalized {
+        text-transform: capitalize;
+      }
+
+      .wallet .big-icon-svg > .bg {
+        height: 24px;
+        width: 24px;
+        padding: 2px;
+        box-shadow: none;
+        vertical-align: middle;
+      }
+
+      .total-amount {
+        font-weight: bold;
+      }
+
+      &.single-line {
+        display: flex;
+        align-items: center;
+        padding-top: 17px;
+        padding-bottom: 17px;
+
+        .label {
+          margin: 0;
+          flex-grow: 1;
+        }
+      }
+    }
+    .item-divider {
+      padding-top: 1.2rem;
+      color: $item-label-color;
+      font-size: 15px;
+    }
+    .wallet {
+      display: flex;
+      align-items: center;
+      padding: .2rem 0;
+      margin-bottom: 5px;
+
+      ~ .bp-arrow-right {
+        top: 14px;
+      }
+
+      > i {
+        padding: 0;
+        position: static;
+
+        > img {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+          margin-right: .7rem;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+
+#meli-list-cards {
+  img.item-logo {
+    width: auto;
+    height: auto;
+    border-radius: 0;
+  }
+}
+
+#meli-card {
+  .card-head {
+    margin: 20px 0;
+    text-align: center;
+    .date {
+      font-size: 12px;
+      margin: 10px 0;
+    }
+    .amount {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+  .card-status {
+    text-align: center;
+    margin-bottom: 25px;
+    .card-status-desc {
+      margin-top: 5px;
+      font-size: 12px;
+      color: $v-text-secondary-color;
+    }
+    .redeem-pin {
+      font-weight: bold;
+      font-size: 22px;
+    }
+    .button-redeem {
+      margin-top: 10px;
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      color: $v-text-accent-color;
+    }
+  }
+  .card-remove {
+    text-align: center;
+    margin-top: 30px;
+    .button-remove {
+      margin-top: 10px;
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      color: red;
+    }
+  }
+
+}

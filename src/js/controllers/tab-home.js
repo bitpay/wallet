@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, bitpayCardService, startupService, addressbookService, feedbackService, bwcError, coinbaseService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.homeTip = $stateParams.fromOnboarding;
     $scope.isCordova = platformInfo.isCordova;
     $scope.isAndroid = platformInfo.isAndroid;
+    $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
 
@@ -32,12 +33,21 @@ angular.module('copayApp.controllers').controller('tabHomeController',
             $log.warn(err);
             return;
           }
-
-          if (newRelease) $scope.newRelease = true;
+          if (newRelease) {
+            $scope.newRelease = true;
+            $scope.updateText = gettextCatalog.getString('There is a new version of {{appName}} available', {
+              appName: $scope.name
+            });
+          }
         });
       }
 
       storageService.getFeedbackInfo(function(error, info) {
+
+        if ($scope.isWindowsPhoneApp) {
+          $scope.showRateCard.value = false;
+          return;
+        }
         if (!info) {
           initFeedBackInfo();
         } else {
@@ -83,10 +93,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           var wallet = profileService.getWallet(walletId);
           updateWallet(wallet);
           if ($scope.recentTransactionsEnabled) getNotifications();
-          if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
-            // Update Coinbase
-            coinbaseService.updatePendingTransactions();
-          }
+
         }),
         $rootScope.$on('Local/TxAction', function(e, walletId) {
           $log.debug('Got action for wallet ' + walletId);
@@ -96,31 +103,30 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         })
       ];
 
-      configService.whenAvailable(function() {
-        nextStep(function() {
-          var config = configService.getSync();
-          var isWindowsPhoneApp = platformInfo.isWP && platformInfo.isCordova;
 
-          $scope.glideraEnabled = config.glidera.enabled && !isWindowsPhoneApp;
-          $scope.coinbaseEnabled = config.coinbase.enabled && !isWindowsPhoneApp;
-          $scope.amazonEnabled = config.amazon.enabled;
-          $scope.bitpayCardEnabled = config.bitpayCard.enabled;
+      $scope.buyAndSellItems = buyAndSellService.getLinked();
+      $scope.homeIntegrations = homeIntegrationsService.get();
 
-          var buyAndSellEnabled = !$scope.externalServices.BuyAndSell && ($scope.glideraEnabled || $scope.coinbaseEnabled);
-          var amazonEnabled = !$scope.externalServices.AmazonGiftCards && $scope.amazonEnabled;
-          var bitpayCardEnabled = !$scope.externalServices.BitpayCard && $scope.bitpayCardEnabled;
+      bitpayCardService.get({}, function(err, cards) {
+        $scope.bitpayCardItems = cards;
+      });
 
-          $scope.nextStepEnabled = buyAndSellEnabled || amazonEnabled || bitpayCardEnabled;
-          $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
+      configService.whenAvailable(function(config) {
+        $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
+        if ($scope.recentTransactionsEnabled) getNotifications();
 
-          if ($scope.recentTransactionsEnabled) getNotifications();
+        if (config.hideNextSteps.enabled) {
+          $scope.nextStepsItems = null;
+        } else {
+          $scope.nextStepsItems = nextStepsService.get();
+        }
 
-          if ($scope.bitpayCardEnabled) bitpayCardCache();
-          $timeout(function() {
-            $ionicScrollDelegate.resize();
-            $scope.$apply();
-          }, 10);
-        });
+        pushNotificationsService.init();
+
+        $timeout(function() {
+          $ionicScrollDelegate.resize();
+          $scope.$apply();
+        }, 10);
       });
     });
 
@@ -131,9 +137,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     });
 
     $scope.createdWithinPastDay = function(time) {
-      var now = new Date();
-      var date = new Date(time * 1000);
-      return (now.getTime() - date.getTime()) < (1000 * 60 * 60 * 24);
+      return timeService.withinPastDay(time);
     };
 
     $scope.openExternalLink = function() {
@@ -213,12 +217,15 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
 
-            wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') :  bwcError.msg(err);
+            wallet.error = (err === 'WALLET_NOT_REGISTERED') ? gettextCatalog.getString('Wallet not registered') : bwcError.msg(err);
 
             $log.error(err);
           } else {
             wallet.error = null;
             wallet.status = status;
+
+            // TODO service refactor? not in profile service
+            profileService.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr, function() {});
           }
           if (++j == i) {
             updateTxps();
@@ -265,43 +272,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       });
     };
 
-    var nextStep = function(cb) {
-      var i = 0;
-      var services = ['AmazonGiftCards', 'BitpayCard', 'BuyAndSell'];
-      lodash.each(services, function(service) {
-        storageService.getNextStep(service, function(err, value) {
-          $scope.externalServices[service] = value == 'true' ? true : false;
-          if (++i == services.length) return cb();
-        });
-      });
-    };
-
-    $scope.shouldHideNextSteps = function() {
-      $scope.hideNextSteps = !$scope.hideNextSteps;
-      $timeout(function() {
-        $ionicScrollDelegate.resize();
-        $scope.$apply();
-      }, 10);
-    };
-
-    var bitpayCardCache = function() {
-      bitpayCardService.getBitpayDebitCards(function(err, data) {
-        if (err) return;
-        if (lodash.isEmpty(data)) {
-          $scope.bitpayCards = null;
-          return;
-        }
-        $scope.bitpayCards = data;
-      });
-      bitpayCardService.getBitpayDebitCardsHistory(null, function(err, data) {
-        if (err) return;
-        if (lodash.isEmpty(data)) {
-          $scope.cardsHistory = null;
-          return;
-        }
-        $scope.cardsHistory = data;
-      });
-    };
 
     $scope.onRefresh = function() {
       $timeout(function() {

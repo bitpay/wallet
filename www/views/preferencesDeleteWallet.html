@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view show-tabs>
   <ion-nav-bar class="bar-royal">
     <ion-nav-title>{{'Delete Wallet' | translate}}</ion-nav-title>
     <ion-nav-back-button>
@@ -6,7 +6,7 @@
   </ion-nav-bar>
   <ion-content>
     <div class="list" ng-show="wallet">
-      <div class="wallet-item" ng-include="'views/includes/walletItem.html'"></div>
+      <div ng-include="'views/includes/walletItem.html'"></div>
 
       <h1 class="text-center assertive" translate>Warning!</h1>
       <div class="padding text-center">
@@ -18,7 +18,7 @@
         </p>
       </div>
       <button class="button button-standard button-assertive" ng-click="showDeletePopup()">
-        {{'Delete'|translate}} <span ng-show="alias">{{alias}}</span>{{walletName}}
+        {{'Delete'|translate}} {{walletName}}
       </button>
     </div>
   </ion-content>

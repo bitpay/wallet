@@ -1,10 +1,16 @@
 #txp-details,
 #view-confirm {
+  @extend .deflash-blue;
   $item-lateral-padding: 20px;
   $item-vertical-padding: 10px;
   $item-border-color: #EFEFEF;
   $item-label-color: #6C6C6E;
-
+  .item-note {
+    float: none;
+    .fee-rate {
+      display: inline-block;
+    }
+  }
   .list {
     background: #f5f5f5;
   }
@@ -26,10 +32,6 @@
         height: 35px;
         width: 35px;
       }
-
-      span {
-        text-transform: capitalize;
-      }
     }
     .amount-label{
       line-height: 30px;
@@ -50,6 +52,9 @@
   }
   .item {
     border-color: $item-border-color;
+    &-note {
+      word-break: keep-all;
+    }
   }
   .info {
     span {
@@ -86,6 +91,26 @@
           flex-grow: 1;
         }
       }
+      &.low-fees {
+        display: flex;
+        font-size: 14px;
+        color: #777;
+        align-items: center;
+        i {
+          padding-right: 20px;
+        }
+        span {
+          display: inline;
+        }
+      }
+    }
+    .toggle-unconfirmed {
+      padding-bottom: 15px;
+    }
+    .toggle-label {
+      margin-top: 5px;
+      font-size: 14px;
+      color: $item-label-color;
     }
     .item-divider {
       padding-top: 1.2rem;
@@ -127,10 +152,6 @@
       align-items: center;
       padding: .2rem 0;
       margin-bottom: 5px;
-
-      ~ .bp-arrow-right {
-        top: 14px;
-      }
 
       > i {
         padding: 0;
@@ -199,8 +220,8 @@
         }
 
         > div {
-          border: 3px solid #13e5b6;
-          border-radius: 50%;
+          border: 3px solid $v-success-color;
+          border-radius: $v-icon-border-radius;
           display: flex;
           height: 26px;
           width: 26px;
@@ -209,7 +230,7 @@
           justify-content: center;
           font-weight: 600;
           vertical-align: middle;
-          color: #13e5b6;
+          color: $v-success-color;
 
           &.rejected {
             background: #E15061;
@@ -260,6 +281,6 @@
   .glidera-description {
     text-align: center;
     font-size: 12px;
-    color: $mid-gray;
+    color: $v-mid-gray;
   }
 }

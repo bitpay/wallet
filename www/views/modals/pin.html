@@ -1,0 +1,74 @@
+<ion-modal-view id="pin" ng-controller="pinController">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button ng-if="action != 'check'" class="button button-back button-clear" ng-click="hideModal()" translate>
+      Close
+    </button>
+  </ion-header-bar>
+  <div class="content">
+    <div class="block-text row">
+      <div class="message" ng-if="!confirmPin && !error" translate>Please enter your PIN</div>
+      <div class="message" ng-if="confirmPin && !error" translate>Confirm your PIN</div>
+      <div class="message error" ng-if="error">
+        <div ng-if="!expires" translate>Incorrect PIN, try again.</div>
+        <time ng-if="expires" translate>Try again in {{expires}}</time>
+      </div>
+    </div>
+    <div class="app-icon">
+      <i class="icon big-icon-svg">
+        <div class="bg"></div>
+      </i>
+    </div>
+    <div class="block-code">
+      <div class="row">
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(1)"></div>
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(2)"></div>
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(3)"></div>
+        <div class="col circle-{{appName}}" ng-class="getFilledClass(4)"></div>
+      </div>
+    </div>
+    <div class="block-buttons">
+      <div class="row">
+        <div class="col" ng-click="updatePin('1')">
+          <div class="keyboard">1</div>
+        </div>
+        <div class="col" ng-click="updatePin('2')">
+          <div class="keyboard">2</div>
+        </div>
+        <div class="col" ng-click="updatePin('3')">
+          <div class="keyboard">3</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" ng-click="updatePin('4')">
+          <div class="keyboard">4</div>
+        </div>
+        <div class="col" ng-click="updatePin('5')">
+          <div class="keyboard">5</div>
+        </div>
+        <div class="col" ng-click="updatePin('6')">
+          <div class="keyboard">6</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" ng-click="updatePin('7')">
+          <div class="keyboard">7</div>
+        </div>
+        <div class="col" ng-click="updatePin('8')">
+          <div class="keyboard">8</div>
+        </div>
+        <div class="col" ng-click="updatePin('9')">
+          <div class="keyboard">9</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col" ng-click="updatePin('0')">
+          <div class="">0</div>
+        </div>
+        <div class="col" ng-click="delete()">
+          <div class="keyboard icon ion-arrow-left-a"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-modal-view>

@@ -1,29 +1,20 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $rootScope, $log, $window, lodash, configService, uxLanguage, platformInfo, pushNotificationsService, profileService, feeService, storageService, $ionicHistory, $timeout, $ionicScrollDelegate) {
+angular.module('copayApp.controllers').controller('advancedSettingsController', function($scope, $log, configService, platformInfo, externalLinkService, gettextCatalog) {
 
   var updateConfig = function() {
-
     var config = configService.getSync();
 
     $scope.spendUnconfirmed = {
       value: config.wallet.spendUnconfirmed
     };
-    $scope.bitpayCardEnabled = {
-      value: config.bitpayCard.enabled
-    };
-    $scope.amazonEnabled = {
-      value: config.amazon.enabled
-    };
-    $scope.glideraEnabled = {
-      value: config.glidera.enabled
-    };
-    $scope.coinbaseEnabled = {
-      value: config.coinbase.enabled
-    };
     $scope.recentTransactionsEnabled = {
       value: config.recentTransactions.enabled
     };
+    $scope.hideNextSteps = {
+      value: config.hideNextSteps.enabled
+    };
+
   };
 
   $scope.spendUnconfirmedChange = function() {
@@ -37,44 +28,11 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
     });
   };
 
-  $scope.bitpayCardChange = function() {
+  $scope.nextStepsChange = function() {
     var opts = {
-      bitpayCard: {
-        enabled: $scope.bitpayCardEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.amazonChange = function() {
-    var opts = {
-      amazon: {
-        enabled: $scope.amazonEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.glideraChange = function() {
-    var opts = {
-      glidera: {
-        enabled: $scope.glideraEnabled.value
-      }
-    };
-    configService.set(opts, function(err) {
-      if (err) $log.debug(err);
-    });
-  };
-
-  $scope.coinbaseChange = function() {
-    var opts = {
-      coinbase: {
-        enabled: $scope.coinbaseEnabled.value
-      }
+      hideNextSteps: {
+        enabled: $scope.hideNextSteps.value
+      },
     };
     configService.set(opts, function(err) {
       if (err) $log.debug(err);
@@ -93,6 +51,7 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     updateConfig();
   });
 

@@ -1,0 +1,21 @@
+<action-sheet action-sheet-show="show" class="log-options">
+  <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()">
+  <div class="header" translate="">Log options</div>
+  <div ng-include="'views/includes/checkBar.html'"></div>
+  <a class="item item-icon-left entry no-border" copy-to-clipboard="onCopy()" ng-click="hide()">
+    <i class="icon ion-clipboard"></i>
+    <div class="entry-inner">
+      <div class="entry-details">
+        <div class="entry-name" translate>Copy to clipboard</div>
+      </div>
+    </div>
+  </a>
+  <a class="item item-icon-left entry no-border" ng-click="onSend(); hide()" ng-show="isCordova">
+    <i class="icon ion-ios-email-outline"></i>
+    <div class="entry-inner">
+      <div class="entry-details">
+        <div class="entry-name" translate>Send by email</div>
+      </div>
+    </div>
+  </a>
+</action-sheet>

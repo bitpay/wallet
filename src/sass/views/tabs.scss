@@ -4,47 +4,44 @@
     background-position: center;
     margin: 6px 0 2px;
     &.ico-home {
-      background-image: url('../img/tab-icons/ico-home.svg');
+      background-image: $v-tab-home-icon;
     }
     &.ico-home-selected {
-      background-image: url('../img/tab-icons/ico-home-selected.svg');
+      background-image: $v-tab-home-selected-icon;
     }
     &.ico-receive {
-      background-image: url('../img/tab-icons/ico-receive.svg');
+      background-image: $v-tab-receive-icon;
     }
     &.ico-receive-selected {
-      background-image: url('../img/tab-icons/ico-receive-selected.svg');
+      background-image: $v-tab-receive-selected-icon;
     }
     &.ico-settings {
-      background-image: url('../img/tab-icons/ico-settings.svg');
+      background-image: $v-tab-settings-icon;
     }
     &.ico-settings-selected {
-      background-image: url('../img/tab-icons/ico-settings-selected.svg');
+      background-image: $v-tab-settings-selected-icon;
     }
     &.ico-scan {
-      background-image: url('../img/tab-icons/ico-scan.svg');
+      background-image: $v-tab-scan-icon;
     }
     &.ico-scan-selected {
-      background-image: url('../img/tab-icons/ico-scan-selected.svg');
+      background-image: $v-tab-scan-selected-icon;
     }
     &.ico-send {
-      background-image: url('../img/tab-icons/ico-send.svg');
+      background-image: $v-tab-send-icon;
     }
     &.ico-send-selected {
-      background-image: url('../img/tab-icons/ico-send-selected.svg');
+      background-image: $v-tab-send-selected-icon;
     }
   }
 }
 
 #tab-home, #tab-send {
   .card, .list {
-    .icon {
-      color: $light-gray;
-    }
     & > .item-heading {
       font-weight: 700;
       .icon {
-        color: $mid-gray;
+        color: $v-mid-gray;
       }
     }
   }
