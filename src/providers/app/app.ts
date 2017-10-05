@@ -75,6 +75,6 @@ export class AppProvider {
 
   getInfo() {
     return this.http.get(this.jsonPath)
-      .map((res:Response) => res.json());
+      .map((res: Response) => res.json());
   }
 }

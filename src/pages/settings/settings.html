@@ -57,18 +57,12 @@
         <ion-option>Urgent</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item>
+    <ion-item (click)="openLockPage()">
       <ion-icon name="lock" item-start></ion-icon>
       <ion-label>
         Lock
       </ion-label>
-      <ion-select>
-        <ion-option value="">Disabled</ion-option>
-        <ion-option value="pin">Lock by PIN</ion-option>
-        <ion-option value="finger">Lock by fingerprint</ion-option>
-      </ion-select>
     </ion-item>
-
     <ion-item-divider color="light">Wallets &amp; integrations</ion-item-divider>
     <ion-item>
       <ion-icon name="folder" item-start></ion-icon>
@@ -81,9 +75,9 @@
 
     <ion-item-divider color="light">More</ion-item-divider>
     <ion-item (click)="openAdvancedPage()">
-        <ion-icon name="hammer" item-start></ion-icon>
-        Advanced
-      </ion-item>
+      <ion-icon name="hammer" item-start></ion-icon>
+      Advanced
+    </ion-item>
     <ion-item (click)="openAboutPage()">
       <ion-icon name="apps" item-start></ion-icon>
       About {{appName}}

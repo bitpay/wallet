@@ -42,6 +42,8 @@ import { SettingsPage } from '../pages/settings/settings';
 import { AboutPage } from '../pages/settings/about/about';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
+import { LockPage } from '../pages/settings/lock/lock';
+import { PinModalPage } from '../pages/pin/pin';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 
 /* Send */
@@ -84,7 +86,9 @@ let pages: any = [
   DisclaimerPage,
   EmailPage,
   HomePage,
+  LockPage,
   OnboardingPage,
+  PinModalPage,
   ReceivePage,
   SendPage,
   ScanPage,

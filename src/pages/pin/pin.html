@@ -1,0 +1,46 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button *ngIf="action === 'pinSetUp'" (click)="goBack()" ion-button icon-only>
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-title *ngIf="!confirmingPin">Please enter your PIN</ion-title>
+    <ion-title *ngIf="confirmingPin">Confirm your PIN</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <div class="block-code">
+    <div class="circle-{{appName}}" [ngClass]="getFilledClass(1)"></div>
+    <div class="circle-{{appName}}" [ngClass]="getFilledClass(2)"></div>
+    <div class="circle-{{appName}}" [ngClass]="getFilledClass(3)"></div>
+    <div class="circle-{{appName}}" [ngClass]="getFilledClass(4)"></div>
+  </div>
+  <div class="block-buttons">
+    <div class="row">
+      <div (click)="newEntry('1')">1</div>
+      <div (click)="newEntry('2')">2</div>
+      <div (click)="newEntry('3')">3</div>
+    </div>
+    <div class="row">
+      <div (click)="newEntry('4')">4</div>
+      <div (click)="newEntry('5')">5</div>
+      <div (click)="newEntry('6')">6</div>
+    </div>
+    <div class="row">
+      <div (click)="newEntry('7')">7</div>
+      <div (click)="newEntry('8')">8</div>
+      <div (click)="newEntry('9')">9</div>
+    </div>
+    <div class="row">
+      <div></div>
+      <div (click)="newEntry('0')">0</div>
+      <div (click)="delete()">
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </div>
+    </div>
+  </div>
+</ion-content>

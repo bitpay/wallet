@@ -123,7 +123,6 @@ export class ConfigProvider {
     if (_.isString(newOpts)) {
       newOpts = JSON.parse(newOpts);
     }
-
     _.merge(config, this.configCache, newOpts);
     this.configCache = config;
     this.persistence.storeConfig(this.configCache).then(() => {
