@@ -69,6 +69,6 @@
         <ion-toggle [(ngModel)]="formData.singleAddress" formControlName="singleAddress"></ion-toggle>
       </ion-item>
     </div>
-    <button ion-button block type="submit" [disabled]="!createForm.valid || (formData.addPassword && !formData.writtenDown)">Create wallet</button>
+    <button ion-button block type="submit" [disabled]="!createForm.valid || validatePasswords()">Create wallet</button>
   </form>
 </ion-content>

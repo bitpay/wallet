@@ -62,6 +62,16 @@ export class SingleWalletPage implements OnInit{
     })
   }
 
+  validatePasswords() {
+    if (this.formData.addPassword) {
+      if (this.formData.password == this.formData.confirmPassword) {
+        if (this.formData.writtenDown) return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
   updateSeedSourceSelect(n: number) {
     this.seedOptions = [{
       id: 'new',
