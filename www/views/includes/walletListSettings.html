@@ -1,0 +1,14 @@
+<i class="icon big-icon-svg circle" ng-include="'views/includes/walletIcon.html'"></i>
+<span>
+  {{wallet.name || wallet.id}}
+  <span class="size-12 text-light" ng-show="wallet.n > 1">
+    {{wallet.m}}-of-{{wallet.n}}
+  </span>
+</span>
+<span class="right text-light assertive" ng-show="!wallet.isComplete()">
+  {{'Incomplete' | translate}}
+</span>
+<span class="right text-light assertive" ng-show="wallet.isComplete() && wallet.needsBackup">
+  {{'Backup needed' | translate}}
+</span>
+<i class="icon bp-arrow-right"></i>
