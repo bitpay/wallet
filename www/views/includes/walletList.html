@@ -1,0 +1,22 @@
+<i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
+<span>
+  {{wallet.name || wallet.id}}
+</span>
+<p>
+  <span ng-if="!wallet.isComplete()" class="assertive" translate>
+    Incomplete
+  </span>
+  <span ng-if="wallet.isComplete()">
+    <span ng-if="!wallet.balanceHidden  && !wallet.scanning"> {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  ) }} </span>
+    <span ng-if="wallet.scanning" translate> Scanning funds... </span>
+
+    <span ng-if="wallet.balanceHidden && !wallet.scanning" translate>[Balance Hidden]</span>
+    <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+      {{wallet.m}}-of-{{wallet.n}}
+    </span>
+    <i ng-if="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
+    <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
+  </span>
+  &nbsp;
+</p>
+<i class="icon bp-arrow-right"></i>

@@ -206,14 +206,24 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     };
 
     var updateAllWallets = function() {
-      $scope.wallets = profileService.getWallets();
-      if (lodash.isEmpty($scope.wallets)) return;
+      var wallets = [];
+      $scope.walletsBtc = profileService.getWallets({coin: 'btc'});
+      $scope.walletsBch = profileService.getWallets({coin: 'bch'});
 
-      var i = $scope.wallets.length;
+      lodash.each($scope.walletsBtc, function(wBtc) {
+        wallets.push(wBtc);
+      });
+
+      lodash.each($scope.walletsBch, function(wBch) {
+        wallets.push(wBch);
+      });
+
+      if (lodash.isEmpty(wallets)) return;
+
+      var i = wallets.length;
       var j = 0;
-      var timeSpan = 60 * 60 * 24 * 7;
 
-      lodash.each($scope.wallets, function(wallet) {
+      lodash.each(wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
 
