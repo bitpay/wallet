@@ -24,8 +24,6 @@ export class ReceivePage {
   ) {
     this.wallets = this.profile.bind();
     this.selectedWallet = this.wallets[0].credentials;
-    console.log("Wallets", this.wallets);
-    console.log("selectedWallet", this.selectedWallet);
 
     this.protocolHandler = "bitcoin";
     this.address = "1FgGP9dKqtWC1Q9xGhPYVmAeyezeZCFjhf";
@@ -52,7 +50,6 @@ export class ReceivePage {
   showWallets() {
     let buttonsTest: Array<any> = [];
     let coinClass: string = "";
-    let icon: string = "";
 
     this.wallets.forEach((wallet, index) => {
       if (wallet.credentials.coin === "btc") {
@@ -68,7 +65,6 @@ export class ReceivePage {
         text: wallet.credentials.walletName,
         cssClass: coinClass,
         handler: () => {
-           console.log('clicked in: ', wallet.credentials.walletName);
            this.updateSelectedWallet(wallet);
          }
       }
