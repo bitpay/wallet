@@ -48,7 +48,7 @@ msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTX
 msgstr ""
 
 #: src/js/controllers/preferencesAbout.js:6
-#: www/views/tab-settings.html:159
+#: www/views/tab-settings.html:156
 msgid "About"
 msgstr ""
 
@@ -152,7 +152,7 @@ msgstr ""
 msgid "Addresses With Balance"
 msgstr ""
 
-#: www/views/tab-settings.html:152
+#: www/views/tab-settings.html:149
 msgid "Advanced"
 msgstr ""
 
@@ -309,8 +309,8 @@ msgid "Backup all livenet wallets before using this function"
 msgstr ""
 
 #: src/js/controllers/cashScan.js:64
+#: www/views/includes/walletListSettings.html:12
 #: www/views/preferences.html:36
-#: www/views/tab-settings.html:123
 msgid "Backup needed"
 msgstr ""
 
@@ -357,10 +357,20 @@ msgstr ""
 msgid "Bitcoin Cash Support"
 msgstr ""
 
+#: www/views/tab-home.html:98
+#: www/views/tab-settings.html:115
+msgid "Bitcoin Cash Wallets"
+msgstr ""
+
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:90
 msgid "Bitcoin Network Fee Policy"
+msgstr ""
+
+#: www/views/tab-home.html:83
+#: www/views/tab-settings.html:107
+msgid "Bitcoin Wallets"
 msgstr ""
 
 #: src/js/services/incomingData.js:151
@@ -799,7 +809,7 @@ msgid "Create Shared Wallet"
 msgstr ""
 
 #: www/views/onboarding/tour.html:51
-#: www/views/tab-home.html:77
+#: www/views/tab-home.html:75
 #: www/views/tab-send.html:36
 msgid "Create bitcoin wallet"
 msgstr ""
@@ -896,7 +906,7 @@ msgid "Details"
 msgstr ""
 
 #: src/js/controllers/lockSetup.js:9
-#: src/js/controllers/tab-settings.js:64
+#: src/js/controllers/tab-settings.js:65
 #: www/views/tab-settings.html:50
 msgid "Disabled"
 msgstr ""
@@ -1308,12 +1318,12 @@ msgstr ""
 msgid "Get news and updates from BitPay"
 msgstr ""
 
-#: www/views/bitpayCard.html:49
+#: www/views/onboarding/welcome.html:8
+msgctxt "button"
 msgid "Get started"
 msgstr ""
 
-#: www/views/onboarding/welcome.html:8
-msgctxt "button"
+#: www/views/bitpayCard.html:49
 msgid "Get started"
 msgstr ""
 
@@ -1352,7 +1362,7 @@ msgstr ""
 #: src/js/controllers/preferencesCash.js:34
 #: src/js/controllers/preferencesLanguage.js:14
 #: src/js/controllers/tab-home.js:149
-#: src/js/controllers/tab-settings.js:52
+#: src/js/controllers/tab-settings.js:53
 #: src/js/controllers/tx-details.js:193
 #: src/js/controllers/tx-details.js:56
 msgid "Go Back"
@@ -1394,7 +1404,7 @@ msgid "Help & Support"
 msgstr ""
 
 #: src/js/controllers/bitpayCard.js:112
-#: src/js/controllers/tab-settings.js:50
+#: src/js/controllers/tab-settings.js:51
 msgid "Help and support information is available at the website."
 msgstr ""
 
@@ -1532,9 +1542,9 @@ msgid "Inactive"
 msgstr ""
 
 #: www/views/includes/walletItem.html:9
+#: www/views/includes/walletList.html:6
+#: www/views/includes/walletListSettings.html:9
 #: www/views/includes/walletSelector.html:16
-#: www/views/tab-home.html:88
-#: www/views/tab-settings.html:120
 msgid "Incomplete"
 msgstr ""
 
@@ -1565,6 +1575,10 @@ msgstr ""
 #: src/js/controllers/topup.js:177
 #: src/js/services/bwcError.js:71
 msgid "Insufficient funds for fee"
+msgstr ""
+
+#: www/views/tab-settings.html:123
+msgid "Integrations"
 msgstr ""
 
 #: www/views/includes/walletHistory.html:49
@@ -2002,7 +2016,7 @@ msgstr ""
 #: src/js/controllers/cashScan.js:19
 #: src/js/controllers/preferences.js:66
 #: src/js/controllers/preferencesCash.js:33
-#: src/js/controllers/tab-settings.js:51
+#: src/js/controllers/tab-settings.js:52
 #: src/js/controllers/tx-details.js:55
 msgid "Open"
 msgstr ""
@@ -2223,7 +2237,7 @@ msgstr ""
 msgid "Preparing backup..."
 msgstr ""
 
-#: src/js/routes.js:1261
+#: src/js/routes.js:1264
 msgid "Press again to exit"
 msgstr ""
 
@@ -2486,7 +2500,7 @@ msgstr ""
 msgid "Scanning Wallet funds..."
 msgstr ""
 
-#: www/views/tab-home.html:93
+#: www/views/includes/walletList.html:11
 msgid "Scanning funds..."
 msgstr ""
 
@@ -3338,7 +3352,7 @@ msgid "Wallet not found"
 msgstr ""
 
 #: src/js/controllers/cashScan.js:81
-#: src/js/controllers/tab-home.js:220
+#: src/js/controllers/tab-home.js:230
 msgid "Wallet not registered"
 msgstr ""
 
@@ -3356,10 +3370,6 @@ msgstr ""
 
 #: www/views/tab-home.html:69
 msgid "Wallets"
-msgstr ""
-
-#: www/views/tab-settings.html:107
-msgid "Wallets & Integrations"
 msgstr ""
 
 #: src/js/controllers/addressbookView.js:36
@@ -3541,9 +3551,9 @@ msgstr ""
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
 msgstr ""
 
+#: www/views/includes/walletList.html:13
 #: www/views/includes/walletSelector.html:21
 #: www/views/paperWallet.html:33
-#: www/views/tab-home.html:95
 #: www/views/tab-receive.html:72
 #: www/views/walletDetails.html:131
 #: www/views/walletDetails.html:51
