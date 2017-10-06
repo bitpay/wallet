@@ -267,7 +267,7 @@ module.exports = function(grunt) {
   grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux']);
   grunt.registerTask('osx', ['prod', 'nwjs', 'exec:macos', 'exec:osxsign']);
   grunt.registerTask('osx-debug', ['default', 'nwjs']);
-  grunt.registerTask('chrome', ['exec:chrome']);
+  grunt.registerTask('chrome', ['default','exec:chrome']);
   grunt.registerTask('wp', ['prod', 'exec:wp']);
   grunt.registerTask('wp-copy', ['default', 'exec:wpcopy']);
   grunt.registerTask('wp-init', ['default', 'exec:wpinit']);
