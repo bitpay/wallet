@@ -48,7 +48,7 @@ export class ReceivePage {
   }
 
   showWallets() {
-    let buttonsTest: Array<any> = [];
+    let buttons: Array<any> = [];
     let coinClass: string = "";
 
     this.wallets.forEach((wallet, index) => {
@@ -68,12 +68,12 @@ export class ReceivePage {
            this.updateSelectedWallet(wallet);
          }
       }
-      buttonsTest.push(walletButton);
+      buttons.push(walletButton);
     });
 
     const actionSheet = this.actionSheetCtrl.create({
      title: 'Select a wallet',
-     buttons: buttonsTest
+     buttons: buttons
    });
 
    actionSheet.present();

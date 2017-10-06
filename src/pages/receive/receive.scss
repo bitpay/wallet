@@ -46,37 +46,28 @@ page-receive {
   }
 }
 
+@mixin wallets-list {
+    height: 4rem;
+    width: 4rem;
+    content: " ";
+    position: absolute;
+    border-radius: 3px;
+    box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+}
+
 .wallets-btc-icon::before {
-  height: 4rem;
-  width: 4rem;
-  position: absolute;
-  content: " ";
-  background: url('../assets/img/icon-btc.svg') no-repeat 0px 0px;
-  background-color: black;
-  border-radius: 3px;
-  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+  @include wallets-list;
+  background: black url('../assets/img/icon-btc.svg') no-repeat 0px 0px;
 }
 
 .wallets-bch-icon::before {
-  height: 4rem;
-  width: 4rem;
-  position: absolute;
-  content: " ";
-  background: url('../assets/img/icon-bch.svg') no-repeat 0px 0px;
-  background-color: black;
-  border-radius: 3px;
-  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+  @include wallets-list;
+  background: black url('../assets/img/icon-bch.svg') no-repeat 0px 0px;
 }
 
 .wallets-testnet-icon::before {
-  height: 4rem;
-  width: 4rem;
-  position: absolute;
-  content: " ";
-  background: url('../assets/img/icon-testnet-white.svg') no-repeat 0px 0px;
-  background-color: black;
-  border-radius: 3px;
-  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+  @include wallets-list;
+  background: black url('../assets/img/icon-testnet-white.svg') no-repeat 0px 0px;
 }
 
 .action-sheet-container {
