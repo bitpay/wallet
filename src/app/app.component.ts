@@ -7,13 +7,16 @@ import { Logger } from '@nsalaun/ng-logger';
 import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ConfigProvider } from '../providers/config/config';
+import { TouchIdProvider } from '../providers/touchid/touchid';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PinModalPage } from '../pages/pin/pin';
+import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [TouchIdProvider]
 })
 export class CopayApp {
   rootPage: any;
@@ -61,13 +64,19 @@ export class CopayApp {
 
   openLockModal() {
     let config = this.config.get();
-    let lockMethod = config['lock'] && config['lock']['method'];
-    if (!config['lock']['method']) return;
-    if (config['lock']['method'] == 'PIN') this.openPINModal('checkPin');
+    let lockMethod = config['lock']['method'];
+    if (!lockMethod) return;
+    if (lockMethod == 'PIN') this.openPINModal('checkPin');
+    if (lockMethod == 'Fingerprint') this.openFingerprintModal();
   }
 
   openPINModal(action) {
     let modal = this.modalCtrl.create(PinModalPage, { action }, { showBackdrop: false, enableBackdropDismiss: false });
+    modal.present();
+  }
+
+  openFingerprintModal() {
+    let modal = this.modalCtrl.create(FingerprintModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 }

@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-buttons start>
-      <button *ngIf="action === 'pinSetUp'" (click)="goBack()" ion-button icon-only>
+      <button *ngIf="action === 'pinSetUp' || action === 'removeLock'" (click)="goBack()" ion-button icon-only>
           <ion-icon name="arrow-back"></ion-icon>
         </button>
     </ion-buttons>
@@ -13,6 +13,10 @@
 </ion-header>
 
 <ion-content padding>
+  <div *ngIf="disableButtons">
+    <div *ngIf="!expires" translate>Incorrect PIN, try again.</div>
+    <time *ngIf="expires" translate>Try again in {{expires}}</time>
+  </div>
   <div class="block-code">
     <div class="circle-{{appName}}" [ngClass]="getFilledClass(1)"></div>
     <div class="circle-{{appName}}" [ngClass]="getFilledClass(2)"></div>
