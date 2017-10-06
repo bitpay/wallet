@@ -55,17 +55,12 @@ page-receive {
     box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
 }
 
-.wallets-btc-icon::before {
+.wallets-livenet::before {
   @include wallets-list;
-  background: black url('../assets/img/icon-btc.svg') no-repeat 0px 0px;
+  background: black url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
 }
 
-.wallets-bch-icon::before {
-  @include wallets-list;
-  background: black url('../assets/img/icon-bch.svg') no-repeat 0px 0px;
-}
-
-.wallets-testnet-icon::before {
+.wallets-testnet::before {
   @include wallets-list;
   background: black url('../assets/img/icon-testnet-white.svg') no-repeat 0px 0px;
 }

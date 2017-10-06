@@ -32,9 +32,8 @@
   </div>
   <div *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()">
     <div class="wallet-icon">
-      <img *ngIf="selectedWallet.coin === 'btc' && selectedWallet.network!='testnet'" src='assets/img/icon-btc.svg'/>
-      <img *ngIf="selectedWallet.coin === 'bch'" src='assets/img/icon-bch.svg'/>
-      <img *ngIf="selectedWallet.network ==='testnet'" src='assets/img/icon-testnet-white.svg'/>
+      <img *ngIf="selectedWallet.network != 'testnet'" src='assets/img/icon-wallet.svg'/>
+      <img *ngIf="selectedWallet.network === 'testnet'" src='assets/img/icon-testnet-white.svg'/>
     </div>
     <div class="wallet-text">
       <div>{{selectedWallet.walletName}}</div>

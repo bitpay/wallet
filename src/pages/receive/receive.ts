@@ -53,13 +53,10 @@ export class ReceivePage {
     let coinClass: string = "";
 
     this.wallets.forEach((wallet, index) => {
-      if (wallet.credentials.coin === "btc") {
-        coinClass = "wallets-btc-icon";
-        if (wallet.credentials.network === "testnet") {
-          coinClass = "wallets-testnet-icon";
-        }
-      } else {
-        coinClass = "wallets-bch-icon";
+      if (wallet.credentials.network === "livenet") {
+        coinClass = "wallets-livenet";
+      } else if (wallet.credentials.network === "testnet") {
+        coinClass = "wallets-testnet";
       }
 
       let walletButton: Object = {
