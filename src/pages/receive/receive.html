@@ -8,7 +8,12 @@
 
 
 <ion-content>
-  <div class="qr-container">
+  <ion-card *ngIf="!wallets[0]">
+    <ion-card-content>
+      No Wallet
+    </ion-card-content>
+  </ion-card>
+  <div *ngIf="wallets[0]" class="qr-container">
       <qr-code *ngIf="address" [value]="qrAddress" [level]="M" [size]="220" [foreground]="'#334'"></qr-code>
       <div>
         <span>{{ address }}</span>
@@ -25,7 +30,7 @@
         </button>
       </div>
   </div>
-  <div class="wallets-container" (click)="showWallets()">
+  <div *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()">
     <div class="wallet-icon">
       <img *ngIf="selectedWallet.coin === 'btc' && selectedWallet.network!='testnet'" src='assets/img/icon-btc.svg'/>
       <img *ngIf="selectedWallet.coin === 'bch'" src='assets/img/icon-bch.svg'/>

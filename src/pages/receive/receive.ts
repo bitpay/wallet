@@ -23,11 +23,12 @@ export class ReceivePage {
     public actionSheetCtrl: ActionSheetController
   ) {
     this.wallets = this.profile.bind();
-    this.selectedWallet = this.wallets[0].credentials;
-
     this.protocolHandler = "bitcoin";
     this.address = "1FgGP9dKqtWC1Q9xGhPYVmAeyezeZCFjhf";
     this.updateQrAddress();
+    if (this.wallets && this.wallets[0]) {
+      this.selectedWallet = this.wallets[0].credentials;
+    };
   }
 
   ionViewDidLoad() {
