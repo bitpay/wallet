@@ -13,12 +13,22 @@
     </ion-card>
   </div>
 
-  <ion-card *ngFor="let wallet of wallets">
-    <ion-card-header>
-      {{wallet.credentials.walletName}} {{wallet.credentials.m}}-{{wallet.credentials.n}}
-    </ion-card-header>
-    <ion-card-content>
-      {{wallet.credentials.coin}} - {{wallet.credentials.walletId}}
-    </ion-card-content>
+  <ion-card>
+    <ion-item>
+      Wallets
+      <button ion-button outline item-end icon-left (click)="goToAddView()">
+        <ion-icon name="md-add"></ion-icon>
+      </button>
+    </ion-item>
+
+    <ion-list *ngIf="wallets && wallets[0]">
+      <button ion-item *ngFor="let wallet of wallets">
+        <ion-icon item-start>
+          <img src="../../assets/icon/icon-wallet.svg" class="icon-wallet">
+        </ion-icon>
+        <h2>{{wallet.credentials.walletName}} {{wallet.credentials.m}}-{{wallet.credentials.n}}</h2>
+        <p>{{wallet.credentials.coin}} - 10 BTC</p>
+      </button>
+    </ion-list>
   </ion-card>
 </ion-content>
