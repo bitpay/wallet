@@ -190,19 +190,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   });
 
-
-  function getSendMaxInfo(tx, wallet, cb) {
-    if (!tx.sendMax) return cb();
-
-    //ongoingProcess.set('retrievingInputs', true);
-    walletService.getSendMaxInfo(wallet, {
-      feePerKb: tx.feeRate,
-      excludeUnconfirmedUtxos: !tx.spendUnconfirmed,
-      returnInputs: true,
-    }, cb);
-  };
-
-
   function getTxp(tx, wallet, dryRun, cb) {
 
     // ToDo: use a credential's (or fc's) function for this
@@ -251,8 +238,21 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     });
   };
 
+  function getSendMaxInfo(wallet, opts, cb) {
+    walletService.getSendMaxInfo(wallet, {
+      feePerKb: opts.feeRate,
+      excludeUnconfirmedUtxos: !opts.spendUnconfirmed,
+      returnInputs: true,
+    }, cb);
+  };
+
   function updateTx(tx, wallet, opts, cb) {
     ongoingProcess.set('calculatingFee', true);
+
+    if (!wallet) {
+      ongoingProcess.set('calculatingFee', false);
+      return cb();
+    }
 
     if (opts.clearCache) {
       tx.txp = {};
@@ -275,12 +275,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     updateAmount();
     refresh();
 
-    // End of quick refresh, before wallet is selected.
-    if (!wallet) {
-      ongoingProcess.set('calculatingFee', false);
-      return cb();
-    }
-
     feeService.getFeeRate(wallet.coin, tx.network, tx.feeLevel, function(err, feeRate) {
       if (err) {
         ongoingProcess.set('calculatingFee', false);
@@ -290,33 +284,69 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       if (!usingCustomFee) tx.feeRate = feeRate;
       tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
 
-      getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
-        if (err) {
-          ongoingProcess.set('calculatingFee', false);
-          var msg = gettextCatalog.getString('Error getting SendMax information');
-          return setSendError(msg);
-        }
+      if (tx.sendMax) {
+        var txOpts = {
+          feeRate: tx.feeRate,
+          spendUnconfirmed: !tx.spendUnconfirmed
+        };
 
-        if (sendMaxInfo) {
+        getSendMaxInfo(wallet, txOpts, function(err, sendMaxInfo) {
+          if (err || !sendMaxInfo) {
+            ongoingProcess.set('calculatingFee', false);
+            setSendError(gettextCatalog.getString('Error getting maximum amount information'));
+            return cb();
+          }
 
           $log.debug('Send max info', sendMaxInfo);
 
-          if (tx.sendMax && sendMaxInfo.amount == 0) {
+          if (sendMaxInfo.amount == 0) {
             ongoingProcess.set('calculatingFee', false);
             setNoWallet(gettextCatalog.getString('Insufficient funds'));
-            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
+            popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('No funds available to complete this transaction.'));
             return cb('no_funds');
           }
 
           tx.sendMaxInfo = sendMaxInfo;
           tx.toAmount = tx.sendMaxInfo.amount;
           updateAmount();
-          ongoingProcess.set('calculatingFee', false);
-          $timeout(function() {
-            showSendMaxWarning(wallet, sendMaxInfo);
-          }, 200);
-        }
 
+          function verifyExcludedUtxos() {
+            var warningMsg = [];
+
+            if (sendMaxInfo.utxosBelowFee > 0) {
+              warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
+                amountBelowFeeStr: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.amountBelowFee)
+              }));
+            }
+
+            if (sendMaxInfo.utxosAboveMaxSize > 0) {
+              warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
+                amountAboveMaxSizeStr: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.amountAboveMaxSize)
+              }));
+            }
+            return warningMsg.join('\n');
+          };
+
+          var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
+            fee: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.fee)
+          });
+          var warningMsg = verifyExcludedUtxos();
+
+          if (!lodash.isEmpty(warningMsg))
+            msg += '\n' + warningMsg;
+
+          $timeout(function() {
+            ongoingProcess.set('calculatingFee', false);
+            popupService.showAlert(null, msg);
+          }, 200);
+
+          buildTx();
+        });
+      } else {
+        buildTx();
+      }
+
+      function buildTx() {
         // txp already generated for this wallet?
         if (tx.txp[wallet.id]) {
           ongoingProcess.set('calculatingFee', false);
@@ -345,7 +375,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
           return cb();
         });
-      });
+      }
     });
   }
 
@@ -384,36 +414,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.toggleAddress = function() {
     $scope.showAddress = !$scope.showAddress;
-  };
-
-
-  function showSendMaxWarning(wallet, sendMaxInfo) {
-
-    function verifyExcludedUtxos() {
-      var warningMsg = [];
-      if (sendMaxInfo.utxosBelowFee > 0) {
-        warningMsg.push(gettextCatalog.getString("A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided.", {
-          amountBelowFeeStr: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.amountBelowFee)
-        }));
-      }
-
-      if (sendMaxInfo.utxosAboveMaxSize > 0) {
-        warningMsg.push(gettextCatalog.getString("A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded.", {
-          amountAboveMaxSizeStr: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.amountAboveMaxSize)
-        }));
-      }
-      return warningMsg.join('\n');
-    };
-
-    var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees.", {
-      fee: txFormatService.formatAmountStr(wallet.coin, sendMaxInfo.fee)
-    });
-    var warningMsg = verifyExcludedUtxos();
-
-    if (!lodash.isEmpty(warningMsg))
-      msg += '\n' + warningMsg;
-
-    popupService.showAlert(null, msg, function() {});
   };
 
   $scope.onWalletSelect = function(wallet) {
@@ -620,31 +620,31 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     if (wallet.coin == 'bch') return;
 
-    var scope = $rootScope.$new(true);
-    scope.network = tx.network;
-    scope.feeLevel = tx.feeLevel;
-    scope.noSave = true;
-    scope.coin = wallet.coin;
+    $scope.network = tx.network;
+    $scope.currentFeeLevel = tx.feeLevel || 'normal';
+    $scope.coin = wallet.coin;
 
     if (usingCustomFee) {
-      scope.customFeePerKB = tx.feeRate;
-      scope.feePerSatByte = tx.feeRate / 1000;
+      $scope.customFee = {
+        value: tx.feeRate / 1000
+      };
     }
 
     $ionicModal.fromTemplateUrl('views/modals/chooseFeeLevel.html', {
-      scope: scope,
+      scope: $scope,
       backdropClickToClose: false,
       hardwareBackButtonClose: false
     }).then(function(modal) {
-      scope.chooseFeeLevelModal = modal;
-      scope.openModal();
+      $scope.chooseFeeLevelModal = modal;
+      $scope.openModal();
     });
-    scope.openModal = function() {
-      scope.chooseFeeLevelModal.show();
+
+    $scope.openModal = function() {
+      $scope.chooseFeeLevelModal.show();
     };
 
-    scope.hideModal = function(newFeeLevel, customFeePerKB) {
-      scope.chooseFeeLevelModal.hide();
+    $scope.hideModal = function(newFeeLevel, customFeePerKB) {
+      $scope.chooseFeeLevelModal.hide();
       $log.debug('New fee level choosen:' + newFeeLevel + ' was:' + tx.feeLevel);
 
       usingCustomFee = newFeeLevel == 'custom' ? true : false;
