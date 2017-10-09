@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AddPage } from "../add/add";
 import { ProfileProvider } from '../../providers/profile/profile';
-import { LatestReleaseProvider } from '../../providers/latestRelease/latestRelease';
+import { ReleaseProvider } from '../../providers/release/release';
 
 @Component({
   selector: 'page-home',
@@ -14,19 +14,22 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     private profile: ProfileProvider,
-    private latestRelease: LatestReleaseProvider,
+    private release: ReleaseProvider,
   ) {
+    this.release.getLatestAppVersion()
+    .catch((err) => {
+      console.log('Error:', err)})
+    .then((version) => {
+      console.log('Current app version:',version);
+      var result = this.release.checkForUpdates(version);
+      console.log('Update available:', result.updateAvailable);
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
 
     this.wallets = this.profile.bind();
-    this.latestRelease.checkLatestRelease().then((response) => {
-      console.log('New release available: ', response);
-    }).catch((error) => {
-      console.log('Latest Release error: ', error);
-    });
     console.log('[home.ts:20]', this.wallets); //TODO
   }
 
