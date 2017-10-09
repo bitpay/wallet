@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Create personal wallet</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="createForm" (ngSubmit)="create()">
+    <ion-item>
+      <ion-label stacked>Wallet name</ion-label>
+      <ion-input type="text" [(ngModel)]="formData.walletName" formControlName="walletName" required></ion-input>
+    </ion-item>
+
+    <ion-item-divider color="light"></ion-item-divider>
+
+    <ion-item (click)="showAdvOpts = !showAdvOpts">
+      <ion-label *ngIf="!showAdvOpts">Show advanced options</ion-label>
+      <ion-label *ngIf="showAdvOpts">Hide advanced options</ion-label>
+    </ion-item>
+
+    <div *ngIf="showAdvOpts">
+      <ion-item>
+        <ion-label stacked>Wallet service URL</ion-label>
+        <ion-input type="text" [(ngModel)]="formData.bwsURL" formControlName="bwsURL"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Wallet key</ion-label>
+        <ion-select [(ngModel)]="formData.selectedSeed.id" formControlName="selectedSeed" (ionChange)="seedOptionsChange(formData.selectedSeed.id)">
+          <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label stacked>Add a password</ion-label>
+        <ion-toggle [(ngModel)]="formData.addPassword" formControlName="addPassword" (ionChange)="resetPasswordFields()"></ion-toggle>
+      </ion-item>
+
+      <div *ngIf="formData.addPassword">
+        <ion-item>
+          <ion-label stacked>Password</ion-label>
+          <ion-input type="password" [(ngModel)]="formData.password" formControlName="password"></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label stacked>Confirm password</ion-label>
+          <ion-input type="password" [(ngModel)]="formData.confirmPassword" formControlName="confirmPassword"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <div class="warning">
+            <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label stacked>I have written it down</ion-label>
+          <ion-checkbox [(ngModel)]="formData.writtenDown" formControlName="writtenDown" checked="false"></ion-checkbox>
+        </ion-item>
+      </div>
+
+      <ion-item>
+        <ion-label stacked>Testnet</ion-label>
+        <ion-toggle [(ngModel)]="formData.testnet" formControlName="testnet"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Single address</ion-label>
+        <ion-toggle [(ngModel)]="formData.singleAddress" formControlName="singleAddress"></ion-toggle>
+      </ion-item>
+    </div>
+    <button ion-button block type="submit" [disabled]="!createForm.valid || validatePasswords()">Create wallet</button>
+  </form>
+</ion-content>

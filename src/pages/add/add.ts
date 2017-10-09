@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { SingleWalletPage } from "./single-wallet/single-wallet";
 
 @Component({
   selector: 'page-add',
@@ -13,7 +14,7 @@ export class AddPage {
   }
 
   goToSingleWallet() {
-    // this.navCtrl.push();
+    this.navCtrl.push(SingleWalletPage);
   }
 
   goToSharedeWallet() {
