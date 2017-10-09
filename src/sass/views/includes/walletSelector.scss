@@ -7,6 +7,17 @@ wallet-selector {
     padding-right: .75rem;
   }
 
+  .subheader {
+    margin: 20px 0 10px 0;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EFEFEF;
+    .wallet-coin-logo {
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+  }
+
   .wallet-selector {
     .wallet {
       border: 0;
