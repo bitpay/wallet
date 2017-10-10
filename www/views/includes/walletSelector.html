@@ -1,8 +1,48 @@
-<action-sheet action-sheet-show="show" class="wallet-selector">
+<action-sheet action-sheet-show="show" class="wallet-selector" ng-init="walletsBtc = []; walletsBch = []">
   <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()">
-  <div class="header">{{title}}</div>
+
+  <span ng-repeat="wallet in wallets track by $index"
+    ng-init="wallet.coin == 'btc' ? walletsBtc.push(wallet) : walletsBch.push(wallet)"></span>
+
+  <div class="header" ng-show="!walletsBtc[0] || !walletsBch[0]">{{title}}</div>
+
+  <div class="subheader" ng-if="walletsBtc[0] && walletsBch[0]" translate>
+    <img class="wallet-coin-logo" src="img/icon-bitcoin.svg" width="18">
+    <span translate>Bitcoin Wallets</span>
+  </div>
   <a
-    ng-repeat="wallet in wallets track by $index"
+    ng-repeat="wallet in walletsBtc track by $index"
+    class="item item-icon-left item-big-icon-left item-icon-right wallet"
+    ng-click="selectWallet(wallet)"
+  >
+      <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
+      <div class="wallet-inner">
+        <div class="wallet-details">
+          <div class="wallet-name">
+            {{wallet.name}}
+          </div>
+          <p class="wallet-balance">
+            <span ng-if="!wallet.isComplete()" class="assertive" translate>
+              Incomplete
+            </span>
+            <span ng-if="wallet.isComplete()">
+              <span ng-if="!wallet.balanceHidden">{{wallet.status.availableBalanceStr}}</span>
+              <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+            </span>
+          </span>
+          &nbsp;
+          </p>
+        </div>
+        <img class="check" src="img/icon-check-selected.svg" ng-show="selectedWallet === wallet">
+      </div>
+    </a>
+
+  <div class="subheader" ng-if="walletsBch[0] && walletsBtc[0]">
+    <img class="wallet-coin-logo" src="img/bitcoin-cash-logo.svg" width="22">
+    <span translate>Bitcoin Cash Wallets</span>
+  </div>
+  <a
+    ng-repeat="wallet in walletsBch track by $index"
     class="item item-icon-left item-big-icon-left item-icon-right wallet"
     ng-click="selectWallet(wallet)"
   >
