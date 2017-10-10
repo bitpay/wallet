@@ -1,0 +1,5 @@
+{
+  "name": "*USERVISIBLENAME*",
+  "app_id": "com.bitpay.*BUNDLENAME*",
+  "type": "ionic-angular"
+}
