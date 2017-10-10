@@ -1335,14 +1335,14 @@ msgstr ""
 msgid "Getting fee levels..."
 msgstr ""
 
+#: www/views/buyAmazon.html:43
+#: www/views/buyMercadoLibre.html:42
+msgid "Gift Card"
+msgstr ""
+
 #: www/views/modals/mercadolibre-card-details.html:30
 #: www/views/modals/mercadolibre-card-details.html:35
 msgid "Gift Card is not available to use anymore"
-msgstr ""
-
-#: www/views/buyAmazon.html:43
-#: www/views/buyMercadoLibre.html:42
-msgid "Gift card"
 msgstr ""
 
 #: src/js/controllers/buyAmazon.js:204
