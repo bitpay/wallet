@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Create personal wallet</ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -10,6 +10,27 @@
       <ion-label stacked>Wallet name</ion-label>
       <ion-input type="text" [(ngModel)]="formData.walletName" formControlName="walletName" required></ion-input>
     </ion-item>
+
+    <div *ngIf="isShared">
+      <ion-item>
+        <ion-label stacked>Your name</ion-label>
+        <ion-input type="text" [(ngModel)]="formData.copayerName" formControlName="copayerName" required></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label stacked>Total number of copayers</ion-label>
+        <ion-select [(ngModel)]="formData.copayerSelected" formControlName="copayerSelected" (ionChange)="copayersChange(formData.copayerSelected)">
+          <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
+        </ion-select>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label stacked>Required number of signatures</ion-label>
+        <ion-select [(ngModel)]="formData.signatureSelected" formControlName="signatureSelected" (ionChange)="signaturesChange(formData.signatureSelected)">
+          <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </div>
 
     <ion-item-divider color="light"></ion-item-divider>
 

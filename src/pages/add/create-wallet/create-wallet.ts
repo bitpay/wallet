@@ -1,17 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { AppProvider } from '../../../../providers/app/app';
+import { AppProvider } from '../../../providers/app/app';
+import * as _ from 'lodash';
 
 @Component({
-  selector: 'page-single-wallet',
-  templateUrl: 'single-wallet.html'
+  selector: 'page-create-wallet',
+  templateUrl: 'create-wallet.html'
 })
-export class SingleWalletPage implements OnInit{
+export class CreateWalletPage implements OnInit{
   public formData: any;
   public showAdvOpts: boolean;
+  public COPAYER_PAIR_LIMITS: Array<any>;
+  public copayers: any;
+  public signatures: any;
   public seedOptions: any;
+  public isShared: boolean;
+  public title: string;
 
   private appName: string;
   private derivationPathByDefault: string;
@@ -20,14 +26,23 @@ export class SingleWalletPage implements OnInit{
 
   constructor(
     public navCtrl: NavController, 
+    public navParams: NavParams, 
     private app: AppProvider,
     private fb: FormBuilder
   ) {
+    this.isShared = navParams.get('isShared');
+    this.title = this.isShared ? 'Create shared wallet' : 'Create personal wallet';
     this.derivationPathByDefault = "m/44'/0'/0'";
     this.derivationPathForTestnet = "m/44'/1'/0'";
     this.showAdvOpts = false;
+    this.COPAYER_PAIR_LIMITS = [2, 3, 4, 5, 6];
+    this.copayers = _.clone(this.COPAYER_PAIR_LIMITS);
+    this.signatures = _.clone(this.COPAYER_PAIR_LIMITS);
     this.formData = {
       walletName: null,
+      copayerName: null,
+      copayerSelected: this.copayers[0],
+      signatureSelected: this.copayers[0],
       bwsURL: 'https://bws.bitpay.com/bws/api',
       recoveryPhrase: null,
       addPassword: false,
@@ -45,6 +60,9 @@ export class SingleWalletPage implements OnInit{
   ngOnInit() {
     this.createForm = this.fb.group({
       walletName: ['', Validators.required],
+      copayerName: [''],
+      copayerSelected: [''],
+      signatureSelected: [''],
       bwsURL: [''],
       selectedSeed: [''],
       recoveryPhrase: [''],
@@ -56,6 +74,10 @@ export class SingleWalletPage implements OnInit{
       testnet: [''],
       singleAddress: [''],
     });
+
+    if (this.isShared) {
+      this.createForm.get('copayerName').setValidators([Validators.required]);
+    }
 
     this.createForm.get('addPassword').valueChanges.subscribe((addPassword: boolean) => {
       if (addPassword) {
@@ -130,6 +152,15 @@ export class SingleWalletPage implements OnInit{
     this.formData.derivationPath = this.derivationPathByDefault;
     this.resetFormFields();
   }
+
+  copayersChange(copayer: any) {
+    console.log(copayer);
+  }
+
+  signaturesChange(signature: any) {
+    // TODO modify based on copayers
+    console.log(signature);
+  }  
 
   resetFormFields() {
     this.formData.password = null;
