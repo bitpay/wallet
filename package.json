@@ -1,12 +1,28 @@
 {
   "name": "copay",
-  "description": "Copay Bitcoin Wallet",
-  "version": "0.0.1",
+  "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "homepage": "https://copay.io/",
-  "private": true,
+  "version": "1.0.0",
+  "keywords": [
+    "bitcoin",
+    "wallet",
+    "bitpay",
+    "copay",
+    "multisignature",
+    "bitcore"
+  ],
+  "homepage": "https://copay,io",
+  "license": "MIT",
+  "repository": {
+    "url": "git://github.com/bitpay/copay.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/bitpay/copay/issues"
+  },
   "scripts": {
-    "clean": "ionic-app-scripts clean",
+    "start": "ionic serve",
+    "clean": "trash platforms && trash plugins && ionic cordova prepare",
     "clean-all": "git clean -dfx",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
@@ -14,7 +30,23 @@
     "ionic:serve": "ionic-app-scripts serve",
     "test": "karma start ./test-config/karma.conf.js",
     "test-ci": "karma start ./test-config/karma.conf.js --single-run",
-    "extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/app.pot --clean --sort --format pot"
+    "extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/app.pot --clean --sort --format pot",
+    "start:ios": "ionic build && npm run build:ios && npm run open:ios",
+    "start:android": "ionic build && npm run build:android && npm run run:android",
+    "build:ios": "ionic cordova prepare ios && ionic cordova build ios --debug",
+    "build:android": "ionic cordova prepare android && ionic cordova build android --debug",
+    "build:ios-release": "ionic cordova prepare ios && ionic cordova build ios --prod --release",
+    "build:android-release": "ionic cordova prepare android && ionic cordova build android --prod --release",
+    "open:ios": "open platforms/ios/*.xcodeproj",
+    "open:android": "open -a open -a /Applications/Android\\ Studio.app platforms/android",
+    "final:ios": "ionic build && npm run build:ios-release && npm run open:ios",
+    "final:android": "ionic build && npm run build:android-release && npm run sign:android && npm run run:android-release",
+    "run:android": "ionic cordova run android --device",
+    "run:android-release": "ionic cordova run android --device --release",
+    "log:android": "adb logcat | grep chromium",
+    "sign:android": "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && $ANDROID_HOME/build-tools/26.0.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
+    "apply:copay": "npm i fs-extra && cd app-template && node apply.js copay && npm i",
+    "apply:bitpay": "npm i fs-extra && cd app-template && node apply.js bitpay && npm i"
   },
   "dependencies": {
     "@angular/common": "4.1.3",
@@ -82,6 +114,7 @@
     "@types/lodash": "4.14.71",
     "angular2-template-loader": "0.6.2",
     "codecov": "2.2.0",
+    "fs-extra": "^4.0.2",
     "html-loader": "0.4.5",
     "ionic": "3.12.0",
     "jasmine-core": "2.6.4",
@@ -96,6 +129,7 @@
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "2.0.4",
     "null-loader": "0.1.1",
+    "path": "^0.12.7",
     "ts-loader": "2.0.3",
     "ts-node": "3.3.0",
     "tslint": "5.5.0",
