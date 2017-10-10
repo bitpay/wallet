@@ -6,13 +6,13 @@
 
 <ion-content padding>
   <ion-card>
-    <ion-item (click)="goToSingleWallet()" detail-push>
+    <ion-item (click)="goToCreateWallet(false)" detail-push>
       <span translate>New personal wallet</span>
     </ion-item>
   </ion-card>
 
   <ion-card>
-    <ion-item (click)="goToSharedWallet()" detail-push>
+    <ion-item (click)="goToCreateWallet(true)" detail-push>
       <span translate>Create shared wallet</span>
     </ion-item>
   </ion-card>

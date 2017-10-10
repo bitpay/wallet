@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { SingleWalletPage } from "./create-wallet/single-wallet/single-wallet";
+import { CreateWalletPage } from "./create-wallet/create-wallet";
 
 @Component({
   selector: 'page-add',
@@ -13,12 +13,8 @@ export class AddPage {
     console.log('ionViewDidLoad AddPage');
   }
 
-  goToSingleWallet() {
-    this.navCtrl.push(SingleWalletPage);
-  }
-
-  goToSharedeWallet() {
-    // this.navCtrl.push();
+  goToCreateWallet(isShared: boolean) {
+    this.navCtrl.push(CreateWalletPage, {isShared: isShared});
   }
 
   goToJoinWallet() {
