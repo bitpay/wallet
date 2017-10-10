@@ -13,17 +13,17 @@ log.txt
 npm-debug.log*
 package-lock.json
 
-# Notifications service
-GoogleService-Info.plist
-google-services.json
+# Firebase
+/GoogleService-Info.plist
+/google-services.json
 
 ## App
 
-desktop
-chrome-app
+/desktop
+/chrome-app
 
-config.xml
-ionic.config.json
+/config.xml
+/ionic.config.json
 
 src/assets/appConfig.json
 src/assets/externalServices.json

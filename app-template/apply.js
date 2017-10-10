@@ -91,7 +91,7 @@ try {
       location = location.replace(/^\~/, process.env.HOME || process.env.USERPROFILE);
     }
     console.log('Found at: ' + location);
-    console.log('Copying ' + location + ' to root');
+    console.log('Copying ' + location + ' to assets');
     externalServices = fs.readFileSync(location, 'utf8');
   } else {
     throw externalServicesConf + ' environment variable not set.';
