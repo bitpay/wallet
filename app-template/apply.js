@@ -5,7 +5,6 @@
 //
 
 var templates = {
-//  'package-template.json': '/',
   'index-template.html': 'src/',
   'config-template.xml': '/',
   'ionic.config-template.json': '/',
