@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { CreateWalletPage } from "./create-wallet/create-wallet";
+import { ImportWalletPage } from "./import-wallet/import-wallet";
 
 @Component({
   selector: 'page-add',
@@ -22,6 +23,6 @@ export class AddPage {
   }
 
   goToImportWallet() {
-    // this.navCtrl.push();
+    this.navCtrl.push(ImportWalletPage);
   }
 }

@@ -26,6 +26,7 @@ import { CopayApp } from './app.component';
 /* Pages */
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
+import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
@@ -77,6 +78,7 @@ export function createTranslateLoader(http: Http) {
 let pages: any = [
   AddPage,
   CreateWalletPage,
+  ImportWalletPage,
   AboutPage,
   AdvancedPage,
   AltCurrencyPage,

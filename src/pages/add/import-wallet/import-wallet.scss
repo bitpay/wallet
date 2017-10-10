@@ -1,0 +1,14 @@
+.tabs {
+  display: flex;
+  text-align: center;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.tab {
+  width: 100%;
+}
+
+.selected {
+  border-bottom: 2px solid;
+}
