@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "ionic serve",
-    "clean": "trash platforms && trash plugins && ionic cordova prepare",
+    "clean": "trash platforms && trash plugins",
     "clean-all": "git clean -dfx",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
@@ -130,6 +130,7 @@
     "karma-webpack": "2.0.4",
     "null-loader": "0.1.1",
     "path": "^0.12.7",
+    "trash-cli": "^1.4.0",
     "ts-loader": "2.0.3",
     "ts-node": "3.3.0",
     "tslint": "5.5.0",
