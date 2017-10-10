@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { AppProvider } from '../../../providers/app/app';
+import { AppProvider } from '../../../../providers/app/app';
 
 @Component({
   selector: 'page-single-wallet',
@@ -14,6 +14,8 @@ export class SingleWalletPage implements OnInit{
   public seedOptions: any;
 
   private appName: string;
+  private derivationPathByDefault: string;
+  private derivationPathForTestnet: string;
   private createForm: FormGroup;
 
   constructor(
@@ -21,14 +23,18 @@ export class SingleWalletPage implements OnInit{
     private app: AppProvider,
     private fb: FormBuilder
   ) {
+    this.derivationPathByDefault = "m/44'/0'/0'";
+    this.derivationPathForTestnet = "m/44'/1'/0'";
     this.showAdvOpts = false;
     this.formData = {
       walletName: null,
       bwsURL: 'https://bws.bitpay.com/bws/api',
+      recoveryPhrase: null,
       addPassword: false,
       password: null,
       confirmPassword: null,
-      writtenDown: false,
+      recoveryPhraseBackedUp: null,
+      derivationPath: this.derivationPathByDefault,
       testnet: false,
       singleAddress: false,
     };
@@ -41,10 +47,12 @@ export class SingleWalletPage implements OnInit{
       walletName: ['', Validators.required],
       bwsURL: [''],
       selectedSeed: [''],
+      recoveryPhrase: [''],
       addPassword: [''],
       password: [''],
       confirmPassword: [''],
-      writtenDown: ['false'],
+      recoveryPhraseBackedUp: [''],
+      derivationPath: [''],
       testnet: [''],
       singleAddress: [''],
     });
@@ -65,7 +73,7 @@ export class SingleWalletPage implements OnInit{
   validatePasswords() {
     if (this.formData.addPassword) {
       if (this.formData.password == this.formData.confirmPassword) {
-        if (this.formData.writtenDown) return false;
+        if (this.formData.recoveryPhraseBackedUp) return false;
       }
       return true;
     }
@@ -79,7 +87,7 @@ export class SingleWalletPage implements OnInit{
       supportsTestnet: true
     }, {
       id: 'set',
-      label: 'Specify Recovery Phrase...',
+      label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
     this.formData.selectedSeed = {
@@ -118,13 +126,20 @@ export class SingleWalletPage implements OnInit{
 
   seedOptionsChange(seed: any) {
     this.formData.selectedSeed.id = seed;
-    this.resetPasswordFields();
+    this.formData.testnet = false;
+    this.formData.derivationPath = this.derivationPathByDefault;
+    this.resetFormFields();
   }
 
-  resetPasswordFields() {
+  resetFormFields() {
     this.formData.password = null;
     this.formData.confirmPassword = null;
-    this.formData.writtenDown = false;
+    this.formData.recoveryPhraseBackedUp = null;
+    this.formData.recoveryPhrase = null;
+  }
+
+  setDerivationPath() {
+    this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
 
   create() {

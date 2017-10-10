@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { SingleWalletPage } from "./single-wallet/single-wallet";
+import { SingleWalletPage } from "./create-wallet/single-wallet/single-wallet";
 
 @Component({
   selector: 'page-add',
