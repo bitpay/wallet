@@ -90,7 +90,7 @@
     "cordova-plugin-statusbar": "2.2.2",
     "cordova-plugin-touch-id": "3.2.0",
     "cordova-plugin-whitelist": "1.3.1",
-    "cordova-plugin-wkwebview-engine": "git+https://github.com/ionic-team/cordova-plugin-wkwebview-engine.git",
+    "cordova-plugin-wkwebview-engine": "https://github.com/driftyco/cordova-plugin-wkwebview-engine.git#4221015eb3f309fe593a7d81205b691e27088743",
     "cordova-plugin-x-socialsharing": "5.1.8",
     "cordova-plugin-x-toast": "2.6.0",
     "cordova-sqlite-storage": "2.0.4",
@@ -101,8 +101,17 @@
     "lodash": "4.17.4",
     "ngx-clipboard": "8.0.3",
     "rxjs": "5.4.0",
+    "simple-plist": "^0.2.1",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.12"
+    "zone.js": "0.8.12",
+    "cordova-plugin-spinner-dialog": "1.3.1",
+    "cordova-plugin-dialogs": "1.3.0",
+    "cordova-plugin-network-information": "1.3.0",
+    "cordova-plugin-uniquedeviceid": "1.3.2",
+    "cordova-plugin-file": "4.3.0",
+    "cordova-plugin-transport-security": "0.1.2",
+    "cordova-ios-requires-fullscreen": "0.0.2",
+    "cordova-plugin-screen-orientation": "1.4.2"
   },
   "devDependencies": {
     "@angular/cli": "1.3.0",
@@ -151,9 +160,17 @@
       "cordova-plugin-x-toast": {},
       "cordova-plugin-x-socialsharing": {},
       "cordova-plugin-qrscanner": {},
-      "cordova-plugin-wkwebview-engine": {},
       "cordova-plugin-touch-id": {},
-      "cordova-plugin-android-fingerprint-auth": {}
+      "cordova-plugin-android-fingerprint-auth": {},
+      "cordova-plugin-wkwebview-engine": {},
+      "cordova-plugin-spinner-dialog": {},
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-uniquedeviceid": {},
+      "cordova-plugin-file": {},
+      "cordova-plugin-transport-security": {},
+      "cordova-ios-requires-fullscreen": {},
+      "cordova-plugin-screen-orientation": {}
     },
     "platforms": [
       "android",
