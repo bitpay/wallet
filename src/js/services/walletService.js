@@ -104,7 +104,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getStatus = function(wallet, opts, cb) {
     opts = opts || {};
-
+    var walletId = wallet.id;
 
     function processPendingTxps(status) {
       var txps = status.pendingTxps;
