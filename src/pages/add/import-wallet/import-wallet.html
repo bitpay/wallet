@@ -8,7 +8,6 @@
   <div class="tabs">
     <div class="tab" [ngClass]="{'selected': selectedTab == 'words'}" (click)="selectTab('words')"><span>Recovery phrase</span></div>
     <div class="tab" [ngClass]="{'selected': selectedTab == 'file'}" (click)="selectTab('file')"><span>File/Text</span></div>
-    <div class="tab" [ngClass]="{'selected': selectedTab == 'hw'}" (click)="selectTab('hw')" *ngIf="appName == 'copay'"><span>Hardware wallet</span></div>
   </div>
 
   <form [formGroup]="importForm" (ngSubmit)="import()">
@@ -29,25 +28,6 @@
       </ion-item>
     </div>
 
-    <div *ngIf="selectedTab == 'hw'">
-      <ion-item>
-        <ion-label stacked>Wallet type</ion-label>
-        <ion-select [(ngModel)]="formData.selectedSeed.id" formControlName="selectedSeed" (ionChange)="seedOptionsChange(formData.selectedSeed.id)">
-          <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label stacked>Account number</ion-label>
-        <ion-input type="number" [(ngModel)]="formData.account" formControlName="account"></ion-input>
-      </ion-item>
-
-      <ion-item *ngIf="formData.selectedSeed.id == 'trezor'">
-        <ion-label stacked>Shared wallet</ion-label>
-        <ion-toggle [(ngModel)]="formData.isShared" formControlName="isShared"></ion-toggle>
-      </ion-item>
-    </div>
-
     <ion-item-divider color="light"></ion-item-divider>
 
     <ion-item (click)="showAdvOpts = !showAdvOpts">
@@ -65,11 +45,6 @@
         <ion-item>
           <ion-label stacked>Derivation path</ion-label>
           <ion-input type="text" [(ngModel)]="formData.derivationPath" formControlName="derivationPath"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label stacked>From hardware wallet</ion-label>
-          <ion-toggle [(ngModel)]="formData.fromHW" formControlName="fromHW"></ion-toggle>
         </ion-item>
 
         <ion-item>

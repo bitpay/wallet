@@ -70,6 +70,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 import { ReleaseProvider } from '../providers/release/release';
+import { DerivationPathHelperProvider } from '../providers/derivationPathHelper/derivationPathHelper';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -123,6 +124,7 @@ let providers: any = [
   TxFormatProvider,
   WalletProvider,
   ReleaseProvider,
+  DerivationPathHelperProvider,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler

@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { AppProvider } from '../../../providers/app/app';
-import * as _ from 'lodash';
+import { BwcProvider } from '../../../providers/bwc/bwc';
+import { WalletProvider } from '../../../providers/wallet/wallet';
+import { DerivationPathHelperProvider } from '../../../providers/derivationPathHelper/derivationPathHelper';
+import { ConfigProvider } from '../../../providers/config/config';
 
 @Component({
   selector: 'page-import-wallet',
@@ -15,68 +17,43 @@ export class ImportWalletPage implements OnInit{
   public selectedTab: string;
   public seedOptions: any;
 
-  private appName: string;
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
   private importForm: FormGroup;
 
   constructor(
     public navCtrl: NavController,
-    private app: AppProvider,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private bwc: BwcProvider,
+    private dpHelper: DerivationPathHelperProvider,
+    private wp: WalletProvider,
+    private cp: ConfigProvider,
   ) {
     this.selectedTab = 'words';
-    this.derivationPathByDefault = "m/44'/0'/0'";
-    this.derivationPathForTestnet = "m/44'/1'/0'";
+    this.derivationPathByDefault = this.dpHelper.default;
+    this.derivationPathForTestnet = this.dpHelper.defaultTestnet;
     this.showAdvOpts = false;
     this.formData = {
       words: null,
-      text: null,
-      filePassword: null,
-      selectedSeed: null,
-      isShared: null,
-      account: 1,
       mnemonicPassword: null,
+      file: null,
+      filePassword: null,
       derivationPath: this.derivationPathByDefault,
-      fromHW: false,
       testnet: false,
-      bwsURL: 'https://bws.bitpay.com/bws/api',
+      bwsURL: this.cp.get()['bws']['url'],
     };
-    this.appName = this.app.info.name;
-    this.updateSeedSourceSelect();
   }
 
   ngOnInit() {
     this.importForm = this.fb.group({
       words: ['', Validators.required],
+      mnemonicPassword: [''],
       file: [''],
       filePassword: [''],
-      selectedSeed: [''],
-      isShared: [''],
-      account: [''],
-      mnemonicPassword: [''],
       derivationPath: [''],
-      fromHW: [''],
       testnet: [''],
       bwsURL: [''],
     });
-  }
-
-  updateSeedSourceSelect() {
-    if (this.appName === 'bitpay') return;
-
-    this.seedOptions = [{
-      id: 'trezor',
-      label: 'Trezor hardware wallet',
-      supportsTestnet: false
-    }, {
-      id: 'ledger',
-      label: 'Ledger hardware wallet',
-      supportsTestnet: false
-    }];
-    this.formData.selectedSeed = {
-      id: this.seedOptions[0].id
-    };
   }
 
   selectTab(tab: string) {
@@ -105,13 +82,17 @@ export class ImportWalletPage implements OnInit{
       this.importForm.get('filePassword').updateValueAndValidity();
   }
 
-  seedOptionsChange(id: string) {
-    if (id === 'trezor') this.formData.isShared = null;
-  }
-
   setDerivationPath() {
     this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
+  
+  normalizeMnemonic(words: string) {
+    if (!words || !words.indexOf) return words;
+    var isJA = words.indexOf('\u3000') > -1;
+    var wordList = words.split(/[\u3000\s]+/);
+
+    return wordList.join(isJA ? '\u3000' : ' ');
+  };
 
   import() {
     console.log(this.formData);
