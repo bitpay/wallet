@@ -25,6 +25,7 @@
   "description": "A Secure Bitcoin Wallet",
   "version": "3.8.2",
   "androidVersion": "382001",
+  "commitHash": "1234",
   "_extraCSS": null,
   "_enabledExtensions": {
     "coinbase": true,
