@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Import wallet</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="tabs">
+    <div class="tab" [ngClass]="{'selected': selectedTab == 'words'}" (click)="selectTab('words')"><span>Recovery phrase</span></div>
+    <div class="tab" [ngClass]="{'selected': selectedTab == 'file'}" (click)="selectTab('file')"><span>File/Text</span></div>
+  </div>
+
+  <form [formGroup]="importForm" (ngSubmit)="import()">
+    <ion-item *ngIf="selectedTab == 'words'">
+      <ion-label stacked>Type the recovery phrase (usually 12 words)</ion-label>
+      <ion-textarea [(ngModel)]="formData.words" formControlName="words"></ion-textarea>
+    </ion-item>
+
+    <div *ngIf="selectedTab == 'file'">
+      <ion-item>
+        <ion-label stacked>Choose a backup file from your computer</ion-label>
+        <ion-input type="file" [(ngModel)]="formData.file" formControlName="file"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="formData.filePassword" formControlName="filePassword"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-item-divider color="light"></ion-item-divider>
+
+    <ion-item (click)="showAdvOpts = !showAdvOpts">
+      <ion-label *ngIf="!showAdvOpts">Show advanced options</ion-label>
+      <ion-label *ngIf="showAdvOpts">Hide advanced options</ion-label>
+    </ion-item>
+
+    <div *ngIf="showAdvOpts">
+      <div *ngIf="selectedTab == 'words'">
+        <ion-item>
+          <ion-label stacked>Password</ion-label>
+          <ion-input type="password" [(ngModel)]="formData.mnemonicPassword" formControlName="mnemonicPassword"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label stacked>Derivation path</ion-label>
+          <ion-input type="text" [(ngModel)]="formData.derivationPath" formControlName="derivationPath"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label stacked>Testnet</ion-label>
+          <ion-toggle [(ngModel)]="formData.testnet" formControlName="testnet" (ionChange)="setDerivationPath()"></ion-toggle>
+        </ion-item>
+      </div>
+
+      <ion-item>
+        <ion-label stacked>Wallet service URL</ion-label>
+        <ion-input type="text" [(ngModel)]="formData.bwsURL" formControlName="bwsURL"></ion-input>
+      </ion-item>
+    </div>
+    <button ion-button block type="submit" [disabled]="!importForm.valid">Import wallet</button>
+  </form>
+</ion-content>

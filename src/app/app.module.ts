@@ -26,6 +26,7 @@ import { CopayApp } from './app.component';
 /* Pages */
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
+import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
@@ -69,6 +70,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 import { ReleaseProvider } from '../providers/release/release';
+import { DerivationPathHelperProvider } from '../providers/derivationPathHelper/derivationPathHelper';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -77,6 +79,7 @@ export function createTranslateLoader(http: Http) {
 let pages: any = [
   AddPage,
   CreateWalletPage,
+  ImportWalletPage,
   AboutPage,
   AdvancedPage,
   AltCurrencyPage,
@@ -121,6 +124,7 @@ let providers: any = [
   TxFormatProvider,
   WalletProvider,
   ReleaseProvider,
+  DerivationPathHelperProvider,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler
