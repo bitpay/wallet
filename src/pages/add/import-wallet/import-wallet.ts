@@ -23,15 +23,15 @@ export class ImportWalletPage implements OnInit{
 
   constructor(
     public navCtrl: NavController,
-    private fb: FormBuilder,
+    private form: FormBuilder,
     private bwc: BwcProvider,
-    private dpHelper: DerivationPathHelperProvider,
-    private wp: WalletProvider,
-    private cp: ConfigProvider,
+    private pathHelper: DerivationPathHelperProvider,
+    private walletProvider: WalletProvider,
+    private configProvider: ConfigProvider,
   ) {
     this.selectedTab = 'words';
-    this.derivationPathByDefault = this.dpHelper.default;
-    this.derivationPathForTestnet = this.dpHelper.defaultTestnet;
+    this.derivationPathByDefault = this.pathHelper.default;
+    this.derivationPathForTestnet = this.pathHelper.defaultTestnet;
     this.showAdvOpts = false;
     this.formData = {
       words: null,
@@ -40,12 +40,12 @@ export class ImportWalletPage implements OnInit{
       filePassword: null,
       derivationPath: this.derivationPathByDefault,
       testnet: false,
-      bwsURL: this.cp.get()['bws']['url'],
+      bwsURL: this.configProvider.get()['bws']['url'],
     };
   }
 
   ngOnInit() {
-    this.importForm = this.fb.group({
+    this.importForm = this.form.group({
       words: ['', Validators.required],
       mnemonicPassword: [''],
       file: [''],
