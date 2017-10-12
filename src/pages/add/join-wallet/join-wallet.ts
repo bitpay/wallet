@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { AppProvider } from '../../../providers/app/app';
-import * as _ from 'lodash';
+import { DerivationPathHelperProvider } from '../../../providers/derivationPathHelper/derivationPathHelper';
+import { ConfigProvider } from '../../../providers/config/config';
 
 @Component({
   selector: 'page-join-wallet',
@@ -14,23 +14,23 @@ export class JoinWalletPage implements OnInit{
   public showAdvOpts: boolean;
   public seedOptions: any;
 
-  private appName: string;
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
   private joinForm: FormGroup;
 
   constructor(
     public navCtrl: NavController,
-    private app: AppProvider,
-    private fb: FormBuilder
+    private form: FormBuilder, 
+    private pathHelper: DerivationPathHelperProvider,
+    private configProvider: ConfigProvider,
   ) {
-    this.derivationPathByDefault = "m/44'/0'/0'";
-    this.derivationPathForTestnet = "m/44'/1'/0'";
+    this.derivationPathByDefault = this.pathHelper.default;
+    this.derivationPathForTestnet = this.pathHelper.defaultTestnet;
     this.showAdvOpts = false;
     this.formData = {
       copayerName: null,
       invitationCode: null,
-      bwsURL: 'https://bws.bitpay.com/bws/api',
+      bwsURL: this.configProvider.get()['bws']['url'],
       recoveryPhrase: null,
       addPassword: false,
       password: null,
@@ -53,7 +53,7 @@ export class JoinWalletPage implements OnInit{
   }
 
   ngOnInit() {
-    this.joinForm = this.fb.group({
+    this.joinForm = this.form.group({
       copayerName: ['', Validators.required],
       invitationCode: ['', Validators.required],
       bwsURL: [''],
