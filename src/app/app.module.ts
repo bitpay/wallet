@@ -27,6 +27,7 @@ import { CopayApp } from './app.component';
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
+import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
@@ -80,6 +81,7 @@ let pages: any = [
   AddPage,
   CreateWalletPage,
   ImportWalletPage,
+  JoinWalletPage,
   AboutPage,
   AdvancedPage,
   AltCurrencyPage,
