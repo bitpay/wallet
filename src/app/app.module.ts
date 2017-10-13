@@ -61,7 +61,7 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 /* Providers */
 import { AppProvider } from '../providers/app/app';
 import { BwcProvider } from '../providers/bwc/bwc';
-import { BwcErrorProvider } from '../providers/bwc-error/bwc-error'; 
+import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
 import { DerivationPathHelperProvider } from '../providers/derivationPathHelper/derivationPathHelper';
 import { FilterProvider } from '../providers/filter/filter';
@@ -136,7 +136,7 @@ let providers: any = [
   TouchID,
   TouchIdProvider,
   TxFormatProvider,
-  WalletProvider
+  WalletProvider,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler

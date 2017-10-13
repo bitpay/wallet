@@ -37,32 +37,35 @@ export class PopupProvider {
     confirm.present();
   };
 
-  ionicPrompt(title, message, okText, cancelText, opts) {
-    opts = opts || {};
-    let prompt = this.alertCtrl.create({
-      title: title,
-      message: message,
-      inputs: [
-        {
-          name: 'title',
-          placeholder: 'Title'
-        },
-      ],
-      buttons: [
-        {
-          text: cancelText,
-          handler: data => {
-            console.log('Cancel clicked');
+  ionicPrompt(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let prompt = this.alertCtrl.create({
+        title: title,
+        message: message,
+        inputs: [
+          {
+            name: 'title',
+            placeholder: 'Title'
+          },
+        ],
+        buttons: [
+          {
+            text: cancelText,
+            handler: data => {
+              console.log('Cancel clicked');
+              reject(data);
+            }
+          },
+          {
+            text: okText,
+            handler: data => {
+              console.log('Saved clicked');
+              resolve(data);
+            }
           }
-        },
-        {
-          text: okText,
-          handler: data => {
-            console.log('Saved clicked');
-          }
-        }
-      ]
+        ]
+      });
+      prompt.present();
     });
-    prompt.present();
   }
 }
