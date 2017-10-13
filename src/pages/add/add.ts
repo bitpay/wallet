@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { CreateWalletPage } from "./create-wallet/create-wallet";
 import { ImportWalletPage } from "./import-wallet/import-wallet";
+import { JoinWalletPage } from "./join-wallet/join-wallet";
 
 @Component({
   selector: 'page-add',
@@ -19,7 +20,7 @@ export class AddPage {
   }
 
   goToJoinWallet() {
-    // this.navCtrl.push();
+    this.navCtrl.push(JoinWalletPage);
   }
 
   goToImportWallet() {
