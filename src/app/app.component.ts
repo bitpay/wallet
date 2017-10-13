@@ -1,17 +1,22 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Logger } from '@nsalaun/ng-logger';
 import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
+import { ConfigProvider } from '../providers/config/config';
+import { TouchIdProvider } from '../providers/touchid/touchid';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { PinModalPage } from '../pages/pin/pin';
+import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [TouchIdProvider]
 })
 export class CopayApp {
   rootPage: any;
@@ -22,7 +27,9 @@ export class CopayApp {
     private splashScreen: SplashScreen,
     private logger: Logger,
     private app: AppProvider,
-    private profile: ProfileProvider
+    private profile: ProfileProvider,
+    private config: ConfigProvider,
+    private modalCtrl: ModalController
   ) {
 
     this.initializeApp();
@@ -44,6 +51,7 @@ export class CopayApp {
       this.profile.get().then((profile: any) => {
         if (profile) {
           this.logger.info('Profile read. Go to HomePage.');
+          this.openLockModal();
           this.rootPage = TabsPage;
         } else {
           // TODO: go to onboarding page
@@ -52,5 +60,23 @@ export class CopayApp {
         }
       });
     });
+  }
+
+  openLockModal() {
+    let config = this.config.get();
+    let lockMethod = config['lock']['method'];
+    if (!lockMethod) return;
+    if (lockMethod == 'PIN') this.openPINModal('checkPin');
+    if (lockMethod == 'Fingerprint') this.openFingerprintModal();
+  }
+
+  openPINModal(action) {
+    let modal = this.modalCtrl.create(PinModalPage, { action }, { showBackdrop: false, enableBackdropDismiss: false });
+    modal.present();
+  }
+
+  openFingerprintModal() {
+    let modal = this.modalCtrl.create(FingerprintModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+    modal.present();
   }
 }

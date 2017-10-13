@@ -7,13 +7,15 @@ import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 @Injectable()
 export class TouchIdProvider {
 
-    private _isAvailable: any = false;
+    private _isAvailable: boolean = false;
 
-    constructor(private touchId: TouchID, private androidFingerprintAuth: AndroidFingerprintAuth, private platform: PlatformProvider) {
-        this.checkDeviceFingerprint();
-    }
+    constructor(
+        private touchId: TouchID,
+        private androidFingerprintAuth: AndroidFingerprintAuth,
+        private platform: PlatformProvider
+    ) { }
 
-    checkDeviceFingerprint() {
+    init() {
         if (this.platform.isAndroid) this.checkAndroid();
         if (this.platform.isIOS) this.checkIOS();
     }
@@ -21,7 +23,7 @@ export class TouchIdProvider {
     checkIOS() {
         this.touchId.isAvailable()
             .then(
-            res => this._isAvailable = 'IOS',
+            res => this._isAvailable = true,
             err => console.log("Fingerprint is not available")
             );
     }
@@ -30,7 +32,7 @@ export class TouchIdProvider {
         this.androidFingerprintAuth.isAvailable()
             .then(
             res => {
-                if (res.isAvailable) this._isAvailable = 'ANDROID'
+                if (res.isAvailable) this._isAvailable = true
                 else console.log("Fingerprint is not available")
             });
     }
@@ -39,8 +41,8 @@ export class TouchIdProvider {
         return new Promise((resolve, reject) => {
             this.touchId.verifyFingerprint('Scan your fingerprint please')
                 .then(
-                res => resolve(true),
-                err => reject(false)
+                res => resolve(),
+                err => reject()
                 );
         });
     }
@@ -51,19 +53,19 @@ export class TouchIdProvider {
                 .then(result => {
                     if (result.withFingerprint) {
                         console.log('Successfully authenticated with fingerprint.');
-                        resolve(true);
+                        resolve();
                     } else if (result.withBackup) {
                         console.log('Successfully authenticated with backup password!');
-                        resolve(true);
+                        resolve();
                     } else console.log('Didn\'t authenticate!');
                 })
                 .catch(error => {
                     if (error === this.androidFingerprintAuth.ERRORS.FINGERPRINT_CANCELLED) {
                         console.log('Fingerprint authentication cancelled');
-                        reject(false);
+                        reject();
                     } else {
                         console.error(error);
-                        resolve(false);
+                        resolve();
                     }
                 });
         });
@@ -76,22 +78,22 @@ export class TouchIdProvider {
     check(): Promise<any> {
         return new Promise((resolve, reject) => {
             if (!this.isAvailable()) reject();
-            if (this.isAvailable() == 'IOS') {
+            if (this.platform.isIOS) {
                 this.verifyIOSFingerprint()
-                    .then((success) => {
-                        resolve(success);
+                    .then(() => {
+                        resolve();
                     })
-                    .catch(err => {
-                        reject(err);
+                    .catch(() => {
+                        reject();
                     });
             }
-            if (this.isAvailable() == 'ANDROID') {
+            if (this.platform.isAndroid) {
                 this.verifyAndroidFingerprint()
-                    .then((success) => {
-                        resolve(success);
+                    .then(() => {
+                        resolve();
                     })
-                    .catch(err => {
-                        reject(err);
+                    .catch(() => {
+                        reject();
                     });
             }
         });

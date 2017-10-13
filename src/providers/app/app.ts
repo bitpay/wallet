@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 
 import { LanguageProvider } from '../../providers/language/language';
 import { ConfigProvider } from '../../providers/config/config';
+import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 interface App {
   WindowsStoreDisplayName: string;
@@ -51,7 +52,8 @@ export class AppProvider {
     public http: Http,
     private logger: Logger,
     private language: LanguageProvider,
-    private config: ConfigProvider
+    private config: ConfigProvider,
+    private touchid: TouchIdProvider
   ) {
     this.logger.info('AppProvider initialized.');
   }
@@ -62,6 +64,7 @@ export class AppProvider {
         // storage -> config -> language -> unit -> app
         // Everything ok
         this.language.init(config);
+        this.touchid.init();
         this.getInfo().subscribe((info) => {
           this.info = info;
           resolve(true);
@@ -75,6 +78,6 @@ export class AppProvider {
 
   getInfo() {
     return this.http.get(this.jsonPath)
-      .map((res:Response) => res.json());
+      .map((res: Response) => res.json());
   }
 }

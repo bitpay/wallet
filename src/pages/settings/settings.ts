@@ -5,7 +5,7 @@ import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
 import { RateProvider } from '../../providers/rate/rate';
 import { AltCurrencyPage } from './alt-currency/alt-currency';
-
+import { LockPage } from './lock/lock';
 import { AboutPage } from './about/about';
 import { AdvancedPage } from './advanced/advanced';
 
@@ -53,6 +53,10 @@ export class SettingsPage {
 
   openAboutPage() {
     this.navCtrl.push(AboutPage);
+  }
+
+  openLockPage() {
+    this.navCtrl.push(LockPage);
   }
 
 }

@@ -1,0 +1,41 @@
+page-pin {
+  .block-code {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+    margin: auto;
+  }
+  .block-buttons {
+    .row {
+        font-size: 1.7rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-around;
+        div {
+          padding: 40px;
+        }
+    }
+  }
+  @mixin circle {
+    border-radius: 50%;
+    box-shadow: 0 0 3px 0px #5b5b5b;
+    transition: background-color .2s ease-in-out;
+    width: 5rem;
+    height: 5rem;
+    margin: 10px;
+  }
+  .circle-copay {
+    @include circle;
+    border: 1px solid #1f3598;
+  }
+  .circle-bitpay {
+    @include circle;
+    border: 1px solid #1f3598;
+  }
+  .filled-copay {
+    background-color: #1f3598;
+  }
+  .filled-bitpay {
+    background-color: #1f3598;
+  }
+}
