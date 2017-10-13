@@ -72,9 +72,9 @@ export class ProfileProvider {
     if (!l) return wallets;
     let credentials = this.profile.credentials;
 
-    _.each(credentials, (credential) => {
+    /*_.each(credentials, (credential) => {
       wallets.push(this.wallet.bind(credential));
-    });
+    }); */
     return wallets;
   }
 

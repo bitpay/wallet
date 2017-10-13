@@ -61,20 +61,22 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 /* Providers */
 import { AppProvider } from '../providers/app/app';
 import { BwcProvider } from '../providers/bwc/bwc';
+import { BwcErrorProvider } from '../providers/bwc-error/bwc-error'; 
 import { ConfigProvider } from '../providers/config/config';
+import { DerivationPathHelperProvider } from '../providers/derivationPathHelper/derivationPathHelper';
 import { FilterProvider } from '../providers/filter/filter';
 import { LanguageProvider } from '../providers/language/language';
+import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { RateProvider } from '../providers/rate/rate';
+import { ReleaseProvider } from '../providers/release/release';
 import { ScanProvider } from '../providers/scan/scan';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
-import { ReleaseProvider } from '../providers/release/release';
-import { DerivationPathHelperProvider } from '../providers/derivationPathHelper/derivationPathHelper';
 
 export function createTranslateLoader(http: Http) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -113,15 +115,19 @@ let providers: any = [
   AndroidFingerprintAuth,
   AppProvider,
   BwcProvider,
+  BwcErrorProvider,
   ConfigProvider,
   Clipboard,
+  DerivationPathHelperProvider,
   FilterProvider,
   LanguageProvider,
+  OnGoingProcessProvider,
   PlatformProvider,
   ProfileProvider,
   PopupProvider,
   QRScanner,
   RateProvider,
+  ReleaseProvider,
   StatusBar,
   SplashScreen,
   ScanProvider,
@@ -130,9 +136,7 @@ let providers: any = [
   TouchID,
   TouchIdProvider,
   TxFormatProvider,
-  WalletProvider,
-  ReleaseProvider,
-  DerivationPathHelperProvider,
+  WalletProvider
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler

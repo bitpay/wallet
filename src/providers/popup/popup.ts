@@ -6,7 +6,7 @@ export class PopupProvider {
   constructor(public alertCtrl: AlertController) {
   }
 
-  ionicAlert(title, subTitle, okText): void {
+  ionicAlert(title: string, subTitle?: string, okText?: string): void {
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,

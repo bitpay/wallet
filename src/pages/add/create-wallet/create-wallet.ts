@@ -115,35 +115,6 @@ export class CreateWalletPage implements OnInit{
     this.formData.selectedSeed = {
       id: this.seedOptions[0].id
     };
-
-    /* Disable Hardware Wallets for BitPay distribution */
-    var opts = [];
-
-    if (this.appName == 'copay') {
-      // if (n > 1 && walletService.externalSource.ledger.supported)
-      //   opts.push({
-      //     id: walletService.externalSource.ledger.id,
-      //     label: walletService.externalSource.ledger.longName,
-      //     supportsTestnet: walletService.externalSource.ledger.supportsTestnet
-      //   });
-
-      // if (walletService.externalSource.trezor.supported) {
-      //   opts.push({
-      //     id: walletService.externalSource.trezor.id,
-      //     label: walletService.externalSource.trezor.longName,
-      //     supportsTestnet: walletService.externalSource.trezor.supportsTestnet
-      //   });
-      // }
-
-      // if (walletService.externalSource.intelTEE.supported) {
-      //   opts.push({
-      //     id: walletService.externalSource.intelTEE.id,
-      //     label: walletService.externalSource.intelTEE.longName,
-      //     supportsTestnet: walletService.externalSource.intelTEE.supportsTestnet
-      //   });
-      // }
-    }
-    this.seedOptions = this.seedOptions.concat(opts);
   };
 
   seedOptionsChange(seed: any) {

@@ -12,10 +12,11 @@ export class RateProvider {
   private _ratesBCH: Object;
   private SAT_TO_BTC: any;
   private BTC_TO_SAT: any;
+  private _isAvailable: boolean = false;
 
   private rateServiceUrl = 'https://bitpay.com/api/rates';
   private bchRateServiceUrl = 'https://api.kraken.com/0/public/Ticker?pair=BCHUSD,BCHEUR';
-
+  
   constructor(public http: Http) {
     console.log('Hello RateProvider Provider');
     this._rates = {};
@@ -48,6 +49,7 @@ export class RateProvider {
             self._ratesBCH[code] = rate;
           });
 
+          this._isAvailable = true;
           resolve();
         })
         .catch((errorBCH) => {
@@ -111,5 +113,18 @@ export class RateProvider {
     }
     return _.uniqBy(alternatives, 'isoCode');
   };
+
+  //TODO IMPROVE WHEN AVAILABLE
+  whenAvailable() { 
+    return new Promise((resolve, reject)=> {
+      if (this._isAvailable) resolve();
+      else {
+       this.updateRates().then(()=>{
+          resolve();
+        });
+      }
+    });
+
+  }
 
 }
