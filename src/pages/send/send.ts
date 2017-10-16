@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
 import { AmountPage } from './amount/amount';
 
@@ -8,11 +8,13 @@ import { AmountPage } from './amount/amount';
   templateUrl: 'send.html',
 })
 export class SendPage {
+  public search: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController) {
   }
-
+  
   ionViewDidLoad() {
+    this.search = '';
     console.log('ionViewDidLoad SendPage');
   }
 
@@ -23,7 +25,7 @@ export class SendPage {
   findContact(search: string) {
     // TODO: Improve this function
     console.log("Send search string", search);
-    if (search.length === 34  && _.startsWith(search, '1')) {
+    if (search.length === 34) {
       this.navCtrl.push(AmountPage, {address: search, sending: true});
     }
   }
