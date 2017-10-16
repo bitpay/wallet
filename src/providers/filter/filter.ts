@@ -4,12 +4,12 @@ import 'rxjs/add/operator/map';
 import * as _ from "lodash";
 
 @Injectable()
-export class FilterProvider {
+export class Filter {
 
   public formats: any;
 
   constructor(public http: Http) {
-    console.log('Hello FilterProvider Provider');
+    console.log('Hello Filter Provider');
     this.formats = {
       CURRENCY_SYM: "$",
       DECIMAL_SEP: ".",

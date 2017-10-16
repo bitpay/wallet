@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import { BwcProvider } from '../bwc/bwc';
 import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
-import { FilterProvider } from '../filter/filter';
+import { Filter } from '../filter/filter';
 import * as _ from "lodash";
 
 @Injectable()
@@ -18,7 +18,7 @@ export class TxFormatProvider {
     private bwc: BwcProvider,
     private rate: RateProvider,
     private config: ConfigProvider,
-    private filter: FilterProvider
+    private filter: Filter
   ) {
     console.log('Hello TxFormatProvider Provider');
     console.log("configProvider", this.config.get());
@@ -42,7 +42,7 @@ export class TxFormatProvider {
   }
 
   toFiat(coin: string, satoshis: number, code: string): Promise<any> {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (isNaN(satoshis)) resolve();
       var v1;
       v1 = this.rate.toFiat(satoshis, code, coin);
@@ -52,7 +52,7 @@ export class TxFormatProvider {
   }
 
   formatToUSD(coin: string, satoshis: number) {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       var v1;
       if (isNaN(satoshis)) resolve();
       v1 = this.rate.toFiat(satoshis, 'USD', coin);
@@ -62,7 +62,7 @@ export class TxFormatProvider {
   };
 
   formatAlternativeStr(coin: string, satoshis: number) {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (isNaN(satoshis)) resolve();
       let settings = this.config.get()['wallet']['settings']; // TODO
 
@@ -88,7 +88,7 @@ export class TxFormatProvider {
           tx.recipientCount = outputsNr;
           tx.hasMultiplesOutputs = true;
         }
-        tx.amount = _.reduce(tx.outputs, function(total: any, o: any) {
+        tx.amount = _.reduce(tx.outputs, function (total: any, o: any) {
           o.amountStr = this.formatAmountStr(coin, o.amount);
           o.alternativeAmountStr = this.formatAlternativeStr(coin, o.amount);
           return total + o.amount;
@@ -131,7 +131,7 @@ export class TxFormatProvider {
     txps.push(txp);
     */
 
-    _.each(txps, function(tx) {
+    _.each(txps, function (tx) {
 
       // no future transactions...
       if (tx.createdOn > now)
