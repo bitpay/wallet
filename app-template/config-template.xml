@@ -62,6 +62,8 @@
     <plugin name="cordova-ios-requires-fullscreen" spec="0.0.2" />
     <plugin name="cordova-plugin-screen-orientation" spec="1.4.3" />
 
+    <plugin name="cordova-plugin-ionic-webview" spec="1.1.15" />
+
     <!-- Platform Specific Settings -->
     <platform name="ios">
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@3x.png" width="180" height="180" />
