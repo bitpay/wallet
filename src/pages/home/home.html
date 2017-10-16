@@ -13,7 +13,7 @@
     </ion-card>
   </div>
 
-  <ion-card>
+  <ion-card *ngIf="wallets && wallets[0]">
     <ion-item>
       Wallets
       <button ion-button outline item-end icon-left (click)="goToAddView()">
@@ -21,7 +21,7 @@
       </button>
     </ion-item>
 
-    <ion-list *ngIf="wallets && wallets[0]">
+    <ion-list>
       <button ion-item *ngFor="let wallet of wallets">
         <ion-icon item-start>
           <img src="assets/img/icon-wallet.svg" class="icon-wallet">
