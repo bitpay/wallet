@@ -1,6 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Logger, Level as LoggerLevel } from '@nsalaun/ng-logger';
 import { Platform } from 'ionic-angular';
+import {} from 'jasmine';
 
 import { PersistenceProvider } from './persistence';
 import { IStorage, ISTORAGE } from './storage/istorage';

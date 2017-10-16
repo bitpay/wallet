@@ -11,7 +11,25 @@ log.txt
 *.sublime-workspace
 .vscode/
 npm-debug.log*
-package-lock.json
+
+# Firebase
+/GoogleService-Info.plist
+/google-services.json
+
+## App
+
+/desktop
+/chrome-app
+
+/config.xml
+/ionic.config.json
+
+src/assets/appConfig.json
+src/assets/externalServices.json
+src/assets/img/app
+src/index.html
+src/manifest.json
+src/theme/overrides.scss
 
 .sourcemaps/
 .idea/

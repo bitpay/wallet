@@ -24,7 +24,7 @@
     <ion-list *ngIf="wallets && wallets[0]">
       <button ion-item *ngFor="let wallet of wallets">
         <ion-icon item-start>
-          <img src="../../assets/icon/icon-wallet.svg" class="icon-wallet">
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet">
         </ion-icon>
         <h2>{{wallet.credentials.walletName}} {{wallet.credentials.m}}-{{wallet.credentials.n}}</h2>
         <p>{{wallet.credentials.coin}} - 10 BTC</p>

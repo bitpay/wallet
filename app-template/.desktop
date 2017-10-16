@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=*VERSION*
+Name=*USERVISIBLENAME*
+Comment=*PURPOSELINE*
+Exec=*PACKAGENAME*
+Icon=icon-256.png
+Terminal=false
+Categories=Finance
+X-Ubuntu-Touch=true
+X-Ubuntu-StageHint=SideStage
