@@ -12,12 +12,7 @@ export class PlatformProvider {
   isNW: boolean;
   ua: string;
   isMobile: boolean;
-  isChromeApp: boolean;
   isDevel: boolean;
-  supportsLedger: boolean;
-  supportsTrezor: boolean;
-  versionIntelTEE: string;
-  supportsIntelTEE: boolean;
 
   constructor(private platform: Platform, private log: Logger) {
     let chrome: any;
@@ -38,12 +33,7 @@ export class PlatformProvider {
     this.isCordova = platform.is('cordova');
     this.isNW = this.isNodeWebkit();
     this.isMobile = platform.is('mobile');
-    this.isChromeApp = this.getBrowserName() == 'chrome' && chrome && chrome.runtime && chrome.runtime.id && !this.isNW;
-    this.isDevel = !this.isMobile && !this.isChromeApp && !this.isNW;
-    this.supportsLedger = this.isChromeApp;
-    this.supportsTrezor = this.isChromeApp || this.isDevel;
-    this.versionIntelTEE = this.getVersionIntelTee();
-    this.supportsIntelTEE = this.versionIntelTEE.length > 0;
+    this.isDevel = !this.isMobile && !this.isNW;
   }
 
   getBrowserName(): string {
@@ -69,27 +59,5 @@ export class PlatformProvider {
         return false;
       }
     }
-  }
-
-  getVersionIntelTee(): string {
-    let v = '';
-    let isWindows = navigator.platform.indexOf('Win') > -1;
-
-    if (!this.isNodeWebkit() || !isWindows) {
-      return v;
-    }
-
-    try {
-      var IntelWallet = require('intelWalletCon');
-      if (IntelWallet.getVersion) {
-        v = IntelWallet.getVersion();
-      } else {
-        v = 'Alpha';
-      }
-      if (v.length > 0) {
-        this.log.info('Intel TEE library ' + v);
-      }
-    } catch (e) { }
-    return v;
   }
 }
