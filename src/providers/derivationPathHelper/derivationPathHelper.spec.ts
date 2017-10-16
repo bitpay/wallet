@@ -1,0 +1,79 @@
+import { TestBed, inject } from '@angular/core/testing';
+import { DerivationPathHelperProvider } from './derivationPathHelper';
+
+describe('Derivation Path Helper Provider', () => {
+  let service: DerivationPathHelperProvider;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        DerivationPathHelperProvider
+      ]
+    });
+  });
+
+  beforeEach(inject([DerivationPathHelperProvider], (pathHelper: DerivationPathHelperProvider) => {
+    service = pathHelper;
+  }));
+
+  /* default paths */
+  it('should get successfully the default derivation paths for livenet and testnet networks', () => {
+    const livenet = service.default;
+    const testnet = service.defaultTestnet;
+
+    expect(livenet).toBeDefined();
+    expect(livenet).toEqual("m/44'/0'/0'");
+    expect(testnet).toBeDefined();
+    expect(testnet).toEqual("m/44'/1'/0'");
+  });
+
+  /* BIP44 */
+  it('should parse successfully the livenet path for BIP44 derivation strategy', () => {
+    const result: any = service.parse("m/44'/0'/0'");
+    expect(result).toBeDefined();
+    expect(result.derivationStrategy).toEqual('BIP44');
+    expect(result.networkName).toEqual('livenet');
+    expect(result.account).toEqual(0);
+  });
+
+  it('should parse successfully the testnet path for BIP44 derivation strategy', () => {
+    const result: any = service.parse("m/44'/1'/0'");
+    expect(result).toBeDefined();
+    expect(result.derivationStrategy).toEqual('BIP44');
+    expect(result.networkName).toEqual('testnet');
+    expect(result.account).toEqual(0);
+  });
+
+  /* BIP45 */
+  it('should parse successfully the livenet path for BIP45 derivation strategy', () => {
+    const result: any = service.parse("m/45'/0'/0'");
+    expect(result).toBeDefined();
+    expect(result.derivationStrategy).toEqual('BIP45');
+    expect(result.networkName).toEqual('livenet');
+    expect(result.account).toEqual(0);
+  });
+
+  /* BIP48 */
+  it('should parse successfully the livenet path for BIP48 derivation strategy', () => {
+    const result: any = service.parse("m/48'/0'/0'");
+    expect(result).toBeDefined();
+    expect(result.derivationStrategy).toEqual('BIP48');
+    expect(result.networkName).toEqual('livenet');
+    expect(result.account).toEqual(0);
+  });
+
+  it('should parse successfully the testnet path for BIP48 derivation strategy', () => {
+    const result: any = service.parse("m/48'/1'/0'");
+    expect(result).toBeDefined();
+    expect(result.derivationStrategy).toEqual('BIP48');
+    expect(result.networkName).toEqual('testnet');
+    expect(result.account).toEqual(0);
+  });
+
+  /* Unsupported paths */
+  it('should fail trying to parse an unsupported derivation path', () => {
+    const result: any = service.parse("p/145'/0'/0'");
+    expect(result).toBeDefined();
+    expect(result).toBeFalsy;
+  });
+});
