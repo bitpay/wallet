@@ -4,7 +4,7 @@ import { TxFormatProvider } from "./tx-format";
 import { BwcProvider } from '../bwc/bwc';
 import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
-import { FilterProvider } from '../filter/filter';
+import { Filter } from '../filter/filter';
 import * as _ from "lodash";
 
 describe('Tx Format Provider',() => {
@@ -48,7 +48,7 @@ describe('Tx Format Provider',() => {
     }
   };
 
-  class FilterProviderMock {
+  class FilterMock {
     formatFiatAmount(amount: number) {
       return amount.toFixed(2);
     }
@@ -61,7 +61,7 @@ describe('Tx Format Provider',() => {
         { provide: BwcProvider, useClass: BwcProviderMock },
         { provide: RateProvider, useClass: RateProviderMock },
         { provide: ConfigProvider, useClass: ConfigProviderMock },
-        { provide: FilterProvider, useClass: FilterProviderMock },
+        { provide: Filter, useClass: FilterMock },
         { provide: _ },
       ]
     });
@@ -71,17 +71,13 @@ describe('Tx Format Provider',() => {
     service = txService;
   }));
 
-  /**
-   * formatAmount
-   */
+  /* formatAmount */
   it('should return successfully format from satoshis to btc', () => {
     const result = service.formatAmount(5000);
     expect(result).toEqual(0.00005);
   });
 
-  /**
-   * formatAmountStr
-   */
+  /* formatAmountStr */
   it('should return successfully format from satoshis to unit string', () => {
     const result = service.formatAmountStr('btc', 5000);
     expect(result).toEqual('0.00005 BTC');
@@ -92,9 +88,7 @@ describe('Tx Format Provider',() => {
     expect(result).toBeNull;
   });
 
-  /**
-   * toFiat
-   */
+  /* toFiat */
   it('should return successfully format from satoshis to fiat amount', () => {
     service.toFiat('btc', 5000, 'USD')
       .catch((err) => expect(err).toBeNull)
@@ -112,9 +106,7 @@ describe('Tx Format Provider',() => {
       });
   });
 
-  /**
-   * formatToUSD
-   */
+  /* formatToUSD */
   it('should format successfully to amount in USD', () => {
     service.formatToUSD('btc', 5000)
       .catch((err) => expect(err).toBeNull)
@@ -132,9 +124,7 @@ describe('Tx Format Provider',() => {
       });
   });
 
-  /**
-   * formatAlternativeStr
-   */
+  /* formatAlternativeStr */
   it('should format successfully the alternative amount string',() => {    
     service.formatAlternativeStr('btc', 5000)
       .catch((err) => expect(err).toBeNull)
@@ -152,8 +142,7 @@ describe('Tx Format Provider',() => {
       });
   });
   
-  /**
-   * ####### PENDING ########
+  /* ####### PENDING ######## 
    * 
    * ProcessTx
    * formatPendingTxps
@@ -161,9 +150,7 @@ describe('Tx Format Provider',() => {
    * ########################
    */
   
-  /**
-   * parseAmount
-   */
+  /* parseAmount */
   it('should parse the amount based on USD currency', () => {
     const result = service.parseAmount('btc', 5000, 'USD');
     
@@ -197,10 +184,7 @@ describe('Tx Format Provider',() => {
     expect(result.amountUnitStr).toEqual('5 BTC');
   });
   
-  /**
-   * satToUnit
-   */
-  
+  /* satToUnit */
   it('should convert sat to unit', () => {
     const result = service.satToUnit(5000);
     expect(result).toEqual(0.00005);
