@@ -63,9 +63,14 @@
         <i class="icon bp-arrow-right"></i>
         <span translate>See invoice</span>
       </div>
+
+      <div ng-show="card.status == 'FAILURE'" class="item item-icon-right" ng-click="openSupportWebsite()">
+        <i class="icon bp-arrow-right"></i>
+        <span>{{'Help & Support' | translate }}</span>
+      </div>
     </div>
 
-    <div class="card-remove" ng-show="card.status == 'FAILURE' || card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'">
+    <div class="card-remove" ng-show="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'">
       <button class="button-remove" ng-click="remove()" translate>
         Remove
       </button>
