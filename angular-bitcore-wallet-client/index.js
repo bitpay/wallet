@@ -34,8 +34,10 @@ bwcModule.provider("bwcService", function() {
         };
 
         service.getClient = function(walletData, opts) {
-            if (!opts || !opts.bwsurl)
+            if (!opts || !opts.bwsurl) {
+                console.log("opts", opts);
                 throw "error config bws url";
+            }
             opts = opts || {};
 
             //note opts use `bwsurl` all lowercase;
