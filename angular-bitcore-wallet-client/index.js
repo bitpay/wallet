@@ -4,51 +4,53 @@ var Client = require('../node_modules/bitcore-wallet-client');
 bwcModule.constant('MODULE_VERSION', '1.0.0');
 
 bwcModule.provider("bwcService", function() {
-  var provider = {};
+    var provider = {};
 
-  provider.$get = function() {
-    var service = {};
+    provider.$get = function() {
+        var service = {};
 
-    service.getBitcore = function() {
-      return Client.Bitcore;
+        service.getBitcore = function() {
+            return Client.Bitcore;
+        };
+
+        service.getBitcoreCash = function() {
+            return Client.BitcoreCash;
+        };
+
+        service.getErrors = function() {
+            return Client.errors;
+        };
+
+        service.getSJCL = function() {
+            return Client.sjcl;
+        };
+
+        service.buildTx = Client.buildTx;
+        service.parseSecret = Client.parseSecret;
+        service.Client = Client;
+
+        service.getUtils = function() {
+            return Client.Utils;
+        };
+
+        service.getClient = function(walletData, opts) {
+            if (!opts || !opts.bwsurl)
+                throw "error config bws url";
+            opts = opts || {};
+
+            //note opts use `bwsurl` all lowercase;
+            var bwc = new Client({
+                baseUrl: opts.bwsurl || 'https://eeee/api',
+                verbose: opts.verbose,
+                timeout: 100000,
+                transports: ['polling'],
+            });
+            if (walletData)
+                bwc.import(walletData, opts);
+            return bwc;
+        };
+        return service;
     };
 
-    service.getBitcoreCash = function() {
-      return Client.BitcoreCash;
-    };
-
-    service.getErrors = function() {
-      return Client.errors;
-    };
-
-    service.getSJCL = function() {
-      return Client.sjcl;
-    };
-
-    service.buildTx = Client.buildTx;
-    service.parseSecret = Client.parseSecret;
-    service.Client = Client;
-
-    service.getUtils = function() {
-      return Client.Utils;
-    };
-
-    service.getClient = function(walletData, opts) {
-      opts = opts || {};
-
-      //note opts use `bwsurl` all lowercase;
-      var bwc = new Client({
-        baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
-        verbose: opts.verbose,
-        timeout: 100000,
-        transports: ['polling'],
-      });
-      if (walletData)
-        bwc.import(walletData, opts);
-      return bwc;
-    };
-    return service;
-  };
-
-  return provider;
+    return provider;
 });
