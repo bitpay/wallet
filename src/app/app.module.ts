@@ -64,9 +64,9 @@ import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
 import { DerivationPathHelperProvider } from '../providers/derivationPathHelper/derivationPathHelper';
-import { FilterProvider } from '../providers/filter/filter';
+import { Filter } from '../providers/filter/filter';
 import { LanguageProvider } from '../providers/language/language';
-import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
+import { OnGoingProcess } from '../providers/on-going-process/on-going-process';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
@@ -119,9 +119,9 @@ let providers: any = [
   ConfigProvider,
   Clipboard,
   DerivationPathHelperProvider,
-  FilterProvider,
+  Filter,
   LanguageProvider,
-  OnGoingProcessProvider,
+  OnGoingProcess,
   PlatformProvider,
   ProfileProvider,
   PopupProvider,
