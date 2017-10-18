@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
     $stateParams, $timeout, $ionicHistory,
     gettextCatalog,
     addressbookService,
+    bitcore,
     popupService) {
 
     $scope.fromSendTab = $stateParams.fromSendTab;
@@ -29,6 +30,7 @@ angular.module('copayApp.controllers').controller('addressbookAddController', fu
     };
 
     $scope.add = function(addressbook) {
+
         $timeout(function() {
             addressbookService.add(addressbook, function(err, ab) {
                 if (err) {

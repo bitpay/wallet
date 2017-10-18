@@ -677,8 +677,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
         wallet.publishTxProposal({
             txp: txp
         }, function(err, publishedTx) {
-            if (err) return cb(err);
-            else {
+            if (err) {
+                return cb(err);
+            } else {
                 $log.debug('Transaction published');
                 return cb(null, publishedTx);
             }
@@ -1128,13 +1129,14 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
                 if (err) return cb(bwcError.msg(err));
 
                 ongoingProcess.set('signingTx', true, customStatusHandler);
+                console.log("signTx", wallet, publishedTxp);
                 root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
                     ongoingProcess.set('signingTx', false, customStatusHandler);
                     root.invalidateCache(wallet);
 
 
                     if (err) {
-                        $log.warn('sign error:' + err);
+                        $log.warn('sign error:', err);
                         var msg = err && err.message ?
                             err.message :
                             gettextCatalog.getString('The payment was created but could not be completed. Please try again from home screen');

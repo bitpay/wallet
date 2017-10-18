@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, addressbookService, lodash, popupService, gettextCatalog, platformInfo) {
+angular.module('copayApp.controllers').controller('addressbookListController', function($scope, $log, $timeout, bitcore, addressbookService, lodash, popupService, gettextCatalog, platformInfo) {
 
     var contacts;
 
     var initAddressbook = function() {
         addressbookService.list(function(err, ab) {
+            console.log("addressbookService", ab);
             if (err) $log.error(err);
 
             $scope.isEmptyList = lodash.isEmpty(ab);
@@ -15,9 +16,17 @@ angular.module('copayApp.controllers').controller('addressbookListController', f
 
             contacts = [];
             lodash.each(ab, function(v, k) {
+                if (!v.coin || !v.network) {
+                    var addr = new bitcore.Address(k);
+                    v.coin = addr.network.coin;
+                    v.network = addr.network.name;
+                }
+
                 contacts.push({
                     name: lodash.isObject(v) ? v.name : v,
                     address: k,
+                    coin: v.coin,
+                    network: v.network,
                     email: lodash.isObject(v) ? v.email : null
                 });
             });
