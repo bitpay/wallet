@@ -8,39 +8,35 @@ import { ConfigProvider } from '../../providers/config/config';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 interface App {
-  WindowsStoreDisplayName: string;
-  WindowsStoreIdentityName: string;
-  androidVersion: string;
-  appDescription: string;
-  appUri: string;
+  packageName: string;
+  packageDescription: string;
+  packageNameId: string;
+  themeColor: string;
+  userVisibleName: string;
+  purposeLine: string;
   bundleName: string;
-  commitHash: string;
-  description: string;
-  disclaimerUrl: string;
-  gitHubRepoBugs: string;
-  gitHubRepoName: string;
-  gitHubRepoUrl: string;
+  appUri: string;
   name: string;
+  nameNoSpace: string;
   nameCase: string;
   nameCaseNoSpace: string;
-  nameNoSpace: string;
-  packageDescription: string;
-  packageName: string;
-  packageNameId: string;
-  purposeLine: string;
-  pushSenderId: string;
-  statusBarColor: string;
+  gitHubRepoName: string;
+  gitHubRepoUrl: string;
+  gitHubRepoBugs: string;
+  disclaimerUrl: string;
   url: string;
-  userVisibleName: string;
-  version: string;
+  appDescription: string;
   winAppName: string;
+  WindowsStoreIdentityName: string;
+  WindowsStoreDisplayName: string;
   windowsAppId: string;
-  _enabledExtensions: {
-    amazon: boolean;
-    coinbase: boolean;
-    glidera: boolean;
-  }
+  pushSenderId: string;
+  description: string;
+  version: string;
+  androidVersion: string;
+  commitHash: string;
   _extraCSS: string;
+  _enabledExtensions: object;
 }
 
 @Injectable()
@@ -60,23 +56,21 @@ export class AppProvider {
 
   public load() {
     return new Promise((resolve, reject) => {
-      this.config.load().then((config) => {
-        // storage -> config -> language -> unit -> app
-        // Everything ok
-        this.language.init(config);
+      this.config.load().then(() => {
+        this.language.load();
         this.touchid.init();
         this.getInfo().subscribe((info) => {
           this.info = info;
-          resolve(true);
+          resolve();
         });
       }).catch((err) => {
-        // Something may be wrong
-        reject(err);
+        this.logger.error(err);
+        reject();
       });
     });
   }
 
-  getInfo() {
+  private getInfo() {
     return this.http.get(this.jsonPath)
       .map((res: Response) => res.json());
   }

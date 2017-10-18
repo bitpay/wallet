@@ -7,7 +7,6 @@ import { Logger } from '@nsalaun/ng-logger';
 import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ConfigProvider } from '../providers/config/config';
-import { TouchIdProvider } from '../providers/touchid/touchid';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
@@ -15,8 +14,7 @@ import { PinModalPage } from '../pages/pin/pin';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 
 @Component({
-  templateUrl: 'app.html',
-  providers: [TouchIdProvider]
+  templateUrl: 'app.html'
 })
 export class CopayApp {
   rootPage: any;

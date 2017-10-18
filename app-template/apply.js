@@ -74,7 +74,6 @@ Object.keys(templates).forEach(function(k) {
 
 /////////////////
 console.log('Copying ' + configDir + '/appConfig.json' + ' to assets');
-configBlob = configBlob.replace('{', JSONheader);
 fs.writeFileSync('../src/assets/appConfig.json', configBlob, 'utf8');
 
 ////////////////
