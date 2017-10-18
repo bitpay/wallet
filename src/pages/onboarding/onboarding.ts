@@ -26,7 +26,7 @@ export class OnboardingPage {
 
   createProfile() {
     // TODO: create a new profile
-    this.profile.create();
+    this.profile.createProfile();
   }
 
   getStarted() {

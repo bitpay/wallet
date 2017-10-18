@@ -4,7 +4,7 @@ import { Events } from 'ionic-angular';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
-import * as _ from "lodash";
+import * as lodash from "lodash";
 
 @Injectable()
 export class ConfigProvider {
@@ -110,30 +110,34 @@ export class ConfigProvider {
   public load() {
     return new Promise((resolve, reject) => {
       this.persistence.getConfig().then((config: object) => {
-        if (!_.isEmpty(config)) this.configCache = _.clone(config);
-        else this.configCache = _.clone(this.configDefault);
+        if (!lodash.isEmpty(config)) this.configCache = lodash.clone(config);
+        else this.configCache = lodash.clone(this.configDefault);
         resolve(this.configCache);
       });
     });
   }
 
-  set(newOpts: object) {
-    let config = _.cloneDeep(this.configDefault);
+  public set(newOpts: object) {
+    let config = lodash.cloneDeep(this.configDefault);
 
-    if (_.isString(newOpts)) {
+    if (lodash.isString(newOpts)) {
       newOpts = JSON.parse(newOpts);
     }
-    _.merge(config, this.configCache, newOpts);
+    lodash.merge(config, this.configCache, newOpts);
     this.configCache = config;
+    this.events.publish('config:updated', this.configCache);
+
     this.persistence.storeConfig(this.configCache).then(() => {
       this.logger.info('Config saved');
     });
-
-    this.events.publish('config:updated', this.configCache);
   }
 
-  get() {
+  public get(): Object {
     return this.configCache;
+  }
+
+  public getDefaults(): Object {
+    return this.configDefault;
   }
 
 }

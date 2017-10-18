@@ -48,7 +48,7 @@ export class CopayApp {
         this.splashScreen.hide();
       }
       // Check Profile
-      this.profile.get().then((profile: any) => {
+      this.profile.loadAndBindProfile().then((profile: any) => {
         if (profile) {
           this.logger.info('Profile read. Go to HomePage.');
           this.openLockModal();
@@ -58,6 +58,8 @@ export class CopayApp {
           this.logger.warn('Profile does not exist. Go to Onboarding.');
           this.rootPage = OnboardingPage;
         }
+      }).catch((err: any) => {
+        console.log(err);
       });
     });
   }
