@@ -3,7 +3,7 @@ var DEFAULT_CONFIG = {
     coin: 'ven',
     bwsurl: 'http://localhost:3232/bws/api',
     showMoney: false,
-    networks: ['livenet', 'ventas']
+    networks: ['livenet', 'ventas', 'litecoin']
 }
 var COIN_CONFIG = {
     btc: {
