@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { InjectionToken, Inject } from '@angular/core';
+import { Inject } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 import { IStorage, ISTORAGE } from './storage/istorage';
 import { PlatformProvider } from '../platform/platform';
 import { LocalStorage } from './storage/local-storage';
-import { ChromeStorage } from './storage/chrome-storage';
 import { FileStorage } from './storage/file-storage';
 import { RamStorage } from './storage/ram-storage';
 
