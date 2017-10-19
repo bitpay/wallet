@@ -11,8 +11,7 @@ var templates = {
   'manifest.ionic-template.json': 'src/',
   '.desktop': 'desktop/',
   'setup-win.iss': 'desktop/',
-  'build-macos.sh': 'desktop/',
-  'manifest-template.json': 'chrome-app/'
+  'build-macos.sh': 'desktop/'
 };
 var configDir = process.argv[2] || 'copay';
 var JSONheader = ' { ' + "\n" + '  "//":"Changes to this file will be overwritten",' + "\n" + '  "//":"        Modify it in the app-template directory", ' + "\n";
@@ -75,7 +74,6 @@ Object.keys(templates).forEach(function(k) {
 
 /////////////////
 console.log('Copying ' + configDir + '/appConfig.json' + ' to assets');
-configBlob = configBlob.replace('{', JSONheader);
 fs.writeFileSync('../src/assets/appConfig.json', configBlob, 'utf8');
 
 ////////////////

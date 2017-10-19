@@ -7,7 +7,6 @@ import { PersistenceProvider } from './persistence';
 import { IStorage, ISTORAGE } from './storage/istorage';
 import { RamStorage } from './storage/ram-storage';
 import { LocalStorage } from './storage/local-storage';
-import { ChromeStorage } from './storage/chrome-storage';
 import { FileStorage } from './storage/file-storage';
 
 describe('Storage Service', () => {

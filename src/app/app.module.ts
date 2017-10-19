@@ -152,7 +152,7 @@ let providers: any = [
     useFactory: persistenceProviderFactory,
     deps: [PlatformProvider, Logger],
     multi: false
-  },
+  }
 ];
 
 export function declarationsComponents() {

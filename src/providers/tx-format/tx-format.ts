@@ -21,11 +21,10 @@ export class TxFormatProvider {
     private filter: Filter
   ) {
     console.log('Hello TxFormatProvider Provider');
-    console.log("configProvider", this.config.get());
   }
 
   formatAmount(satoshis: number, fullPrecision?: boolean) {
-    let settings = this.config.get()['wallet']['settings']; // TODO
+    let settings = this.config.get().wallet.settings;
 
     if (settings.unitCode == 'sat') return satoshis;
 
@@ -64,7 +63,7 @@ export class TxFormatProvider {
   formatAlternativeStr(coin: string, satoshis: number) {
     return new Promise((resolve, reject) => {
       if (isNaN(satoshis)) resolve();
-      let settings = this.config.get()['wallet']['settings']; // TODO
+      let settings = this.config.get().wallet.settings;
 
       var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
       var v1FormatFiat = this.filter.formatFiatAmount(v1);

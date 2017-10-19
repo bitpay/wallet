@@ -56,14 +56,13 @@ export class LanguageProvider {
     });
   }
 
-  init(config: object) {
-    // Get from browser
-    let browserLang = this.translate.getBrowserLang();
-    let validBrowserLang = this.getName(browserLang) ? true : false;
-
-    let configLanguage = config['wallet']['settings']['defaultLanguage']; // TODO
-    if (configLanguage) this.current = configLanguage;
+  public load() {
+    let lang = this.config.get().wallet.settings.defaultLanguage;
+    if (!_.isEmpty(lang)) this.current = lang;
     else {
+      // Get from browser
+      let browserLang = this.translate.getBrowserLang();
+      let validBrowserLang = this.getName(browserLang) ? true : false;
       if (validBrowserLang) this.current = browserLang;
       else this.current = this.getDefault();
     }

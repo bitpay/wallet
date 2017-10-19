@@ -1,0 +1,21 @@
+/*
+ * BitPay Distribution SCSS overrides
+ */
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary:    #1e3186,
+  secondary:  #111b49,
+  danger:     #ffa500,
+  light:      #f4f4f4,
+  dark:       #222
+);
+
+$text-color: #1e3186;
