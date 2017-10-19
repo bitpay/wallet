@@ -48,23 +48,21 @@ export class CopayApp {
         this.splashScreen.hide();
       }
       // Check Profile
-      this.profile.get().then((profile: any) => {
-        if (profile) {
-          this.logger.info('Profile read. Go to HomePage.');
-          this.openLockModal();
-          this.rootPage = TabsPage;
-        } else {
-          // TODO: go to onboarding page
-          this.logger.warn('Profile does not exist. Go to Onboarding.');
-          this.rootPage = OnboardingPage;
-        }
+      this.profile.loadAndBindProfile().then((profile: any) => {
+        this.logger.info('Profile read. Go to HomePage.');
+        this.openLockModal();
+        if (profile) this.rootPage = TabsPage;
+      }).catch((err: any) => {
+        if (!err) this.profile.createProfile();
+        this.logger.warn(err);
+        this.rootPage = OnboardingPage;
       });
     });
   }
 
   openLockModal() {
-    let config = this.config.get();
-    let lockMethod = config['lock']['method'];
+    let config: any = this.config.get();
+    let lockMethod = config.lock.method;
     if (!lockMethod) return;
     if (lockMethod == 'PIN') this.openPINModal('checkPin');
     if (lockMethod == 'Fingerprint') this.openFingerprintModal();

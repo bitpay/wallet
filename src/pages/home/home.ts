@@ -17,19 +17,20 @@ export class HomePage {
     private release: ReleaseProvider,
   ) {
     this.release.getLatestAppVersion()
-    .catch((err) => {
-      console.log('Error:', err)})
-    .then((version) => {
-      console.log('Current app version:',version);
-      var result = this.release.checkForUpdates(version);
-      console.log('Update available:', result.updateAvailable);
-    });
+      .catch((err) => {
+        console.log('Error:', err)
+      })
+      .then((version) => {
+        console.log('Current app version:', version);
+        var result = this.release.checkForUpdates(version);
+        console.log('Update available:', result.updateAvailable);
+      });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
 
-    this.wallets = this.profile.bind();
+    this.wallets = this.profile.getWallets();
     console.log('[home.ts:20]', this.wallets); //TODO
   }
 

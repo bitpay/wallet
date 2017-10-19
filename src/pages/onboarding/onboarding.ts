@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { ProfileProvider } from '../../providers/profile/profile';
-
 import { TourPage } from './tour/tour';
 import { TabsPage } from '../tabs/tabs';
 
@@ -14,19 +12,12 @@ export class OnboardingPage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
-    private profile: ProfileProvider
+    public navParams: NavParams
   ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OnboardingPage');
-    this.createProfile();
-  }
-
-  createProfile() {
-    // TODO: create a new profile
-    this.profile.create();
   }
 
   getStarted() {

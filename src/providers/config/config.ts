@@ -117,7 +117,7 @@ export class ConfigProvider {
     });
   }
 
-  set(newOpts: object) {
+  public set(newOpts: object) {
     let config = _.cloneDeep(this.configDefault);
 
     if (_.isString(newOpts)) {
@@ -125,15 +125,19 @@ export class ConfigProvider {
     }
     _.merge(config, this.configCache, newOpts);
     this.configCache = config;
+    this.events.publish('config:updated', this.configCache);
+
     this.persistence.storeConfig(this.configCache).then(() => {
       this.logger.info('Config saved');
     });
-
-    this.events.publish('config:updated', this.configCache);
   }
 
-  get() {
+  public get(): Object {
     return this.configCache;
+  }
+
+  public getDefaults(): Object {
+    return this.configDefault;
   }
 
 }
