@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
-import * as lodash from 'lodash';
+import * as _ from 'lodash';
 import { PersistenceProvider } from '../persistence/persistence';
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
@@ -35,7 +35,7 @@ export class ProfileProvider {
     private languageProvider: LanguageProvider,
     private txFormatProvider: TxFormatProvider
   ) {
-    this.throttledBwsEvent = lodash.throttle((n, wallet) => {
+    this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
   }
@@ -385,7 +385,7 @@ export class ProfileProvider {
         } catch (ex) {
           this.logger.warn(ex);
         }
-        let mergeAddressBook = lodash.merge(addressBook, localAddressBook1);
+        let mergeAddressBook = _.merge(addressBook, localAddressBook1);
         this.persistenceProvider.setAddressbook(wallet.credentials.network, JSON.stringify(addressBook)).then(() => {
           return resolve();
         }).catch((err: any) => {
@@ -516,7 +516,7 @@ export class ProfileProvider {
         });
       }).catch((err) => {
         if (err && err.toString().match('NONAGREEDDISCLAIMER')) {
-          return resolve();
+          return reject();
         }
         return reject(err);
       });
@@ -538,7 +538,7 @@ export class ProfileProvider {
             return resolve();
           }
 
-          lodash.each(profile.credentials, (credentials) => {
+          _.each(profile.credentials, (credentials) => {
             this.bindWallet(credentials).then((bound: number) => {
               i++;
               totalBound += bound;
@@ -709,7 +709,7 @@ export class ProfileProvider {
   private doCreateWallet(opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let showOpts = lodash.clone(opts);
+      let showOpts = _.clone(opts);
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
       if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
 
@@ -767,7 +767,7 @@ export class ProfileProvider {
         var walletData = this.bwcProvider.parseSecret(opts.secret);
 
         // check if exist
-        if (lodash.find(this.profile.credentials, {
+        if (_.find(this.profile.credentials, {
           'walletId': walletData.walletId
         })) {
           return reject('Cannot join the same wallet more that once'); // TODO getTextCatalog
@@ -859,63 +859,63 @@ export class ProfileProvider {
 
   public getWallets(opts?: any) {
 
-    if (opts && !lodash.isObject(opts)) throw "bad argument";
+    if (opts && !_.isObject(opts)) throw "bad argument";
 
     opts = opts || {};
 
-    let ret = lodash.values(this.wallet);
+    let ret = _.values(this.wallet);
 
     if (opts.coin) {
-      ret = lodash.filter(ret, (x: any) => {
+      ret = _.filter(ret, (x: any) => {
         return (x.credentials.coin == opts.coin);
       });
     }
 
     if (opts.network) {
-      ret = lodash.filter(ret, (x: any) => {
+      ret = _.filter(ret, (x: any) => {
         return (x.credentials.network == opts.network);
       });
     }
 
     if (opts.n) {
-      ret = lodash.filter(ret, (w: any) => {
+      ret = _.filter(ret, (w: any) => {
         return (w.credentials.n == opts.n);
       });
     }
 
     if (opts.m) {
-      ret = lodash.filter(ret, (w: any) => {
+      ret = _.filter(ret, (w: any) => {
         return (w.credentials.m == opts.m);
       });
     }
 
     if (opts.hasFunds) {
-      ret = lodash.filter(ret, (w: any) => {
+      ret = _.filter(ret, (w: any) => {
         if (!w.status) return;
         return (w.status.availableBalanceSat > 0);
       });
     }
 
     if (opts.minAmount) {
-      ret = lodash.filter(ret, (w: any) => {
+      ret = _.filter(ret, (w: any) => {
         if (!w.status) return;
         return (w.status.availableBalanceSat > opts.minAmount);
       });
     }
 
     if (opts.onlyComplete) {
-      ret = lodash.filter(ret, (w: any) => {
+      ret = _.filter(ret, (w: any) => {
         return w.isComplete();
       });
     } else { }
 
     // Add cached balance async
-    lodash.each(ret, (x: any) => {
+    _.each(ret, (x: any) => {
       this.addLastKnownBalance(x);
     });
 
 
-    return lodash.sortBy(ret, [(x: any) => {
+    return _.sortBy(ret, [(x: any) => {
       return x.isComplete();
     }, 'createdOn']);
   }
@@ -944,7 +944,7 @@ export class ProfileProvider {
       };
 
       let w = this.getWallets();
-      if (lodash.isEmpty(w)) return resolve();
+      if (_.isEmpty(w)) return resolve();
 
       let l = w.length;
       let j = 0;
@@ -983,11 +983,11 @@ export class ProfileProvider {
       let process = (notifications: any): Array<any> => {
         if (!notifications) return [];
 
-        let shown = lodash.sortBy(notifications, 'createdOn').reverse();
+        let shown = _.sortBy(notifications, 'createdOn').reverse();
 
         shown = shown.splice(0, opts.limit || MAX);
 
-        lodash.each(shown, (x: any) => {
+        _.each(shown, (x: any) => {
           x.txpId = x.data ? x.data.txProposalId : null;
           x.txid = x.data ? x.data.txid : null;
           x.types = [x.type];
@@ -1013,10 +1013,10 @@ export class ProfileProvider {
         // Item grouping... DISABLED.
 
         // REMOVE (if we want 1-to-1 notification) ????
-        lodash.each(shown, (x: any) => {
+        _.each(shown, (x: any) => {
           if (prev && prev.walletId === x.walletId && prev.txpId && prev.txpId === x.txpId && prev.creatorId && prev.creatorId === x.creatorId) {
             prev.types.push(x.type);
-            prev.data = lodash.assign(prev.data, x.data);
+            prev.data = _.assign(prev.data, x.data);
             prev.txid = prev.txid || x.txid;
             prev.amountStr = prev.amountStr || x.amountStr;
             prev.creatorName = prev.creatorName || x.creatorName;
@@ -1027,7 +1027,7 @@ export class ProfileProvider {
         });
 
         let u = this.bwcProvider.getUtils();
-        lodash.each(finale, (x: any) => {
+        _.each(finale, (x: any) => {
           if (x.data && x.data.message && x.wallet && x.wallet.credentials.sharedEncryptingKey) {
             // TODO TODO TODO => BWC
             x.message = u.decryptMessage(x.data.message, x.wallet.credentials.sharedEncryptingKey);
@@ -1037,21 +1037,21 @@ export class ProfileProvider {
         return finale;
       }
 
-      lodash.each(w, (wallet: any) => {
+      _.each(w, (wallet: any) => {
         updateNotifications(wallet).then(() => {
           j++;
-          let n = lodash.filter(wallet.cachedActivity.n, (x: any) => {
+          let n = _.filter(wallet.cachedActivity.n, (x: any) => {
             return typeFilter[x.type];
           });
 
           let idToName = {};
           if (wallet.cachedStatus) {
-            lodash.each(wallet.cachedStatus.wallet.copayers, (c: any) => {
+            _.each(wallet.cachedStatus.wallet.copayers, (c: any) => {
               idToName[c.id] = c.name;
             });
           }
 
-          lodash.each(n, (x: any) => {
+          _.each(n, (x: any) => {
             x.wallet = wallet;
             if (x.creatorId && wallet.cachedStatus) {
               x.creatorName = idToName[x.creatorId];
@@ -1061,8 +1061,8 @@ export class ProfileProvider {
           notifications.push(n);
 
           if (j == l) {
-            notifications = lodash.sortBy(notifications, 'createdOn');
-            notifications = lodash.compact(lodash.flatten(notifications)).slice(0, MAX);
+            notifications = _.sortBy(notifications, 'createdOn');
+            notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
             let total = notifications.length;
             return resolve({ processArray: process(notifications), total: total });
           };
@@ -1079,19 +1079,19 @@ export class ProfileProvider {
       opts = opts ? opts : {};
 
       let w = this.getWallets();
-      if (lodash.isEmpty(w)) {
+      if (_.isEmpty(w)) {
         return reject('No wallets available');
       }
 
       let txps = [];
 
-      lodash.each(w, (x: any) => {
+      _.each(w, (x: any) => {
         if (x.pendingTxps)
           txps = txps.concat(x.pendingTxps);
       });
       let n = txps.length;
-      txps = lodash.sortBy(txps, 'pendingForUs', 'createdOn');
-      txps = lodash.compact(lodash.flatten(txps)).slice(0, opts.limit || MAX);
+      txps = _.sortBy(txps, 'pendingForUs', 'createdOn');
+      txps = _.compact(_.flatten(txps)).slice(0, opts.limit || MAX);
       return resolve({ txps: txps, n: n });
     });
   };

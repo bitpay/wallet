@@ -4,7 +4,7 @@ import { Events } from 'ionic-angular';
 import { PersistenceProvider } from '../persistence/persistence';
 import { PlatformProvider } from '../platform/platform';
 
-import * as lodash from "lodash";
+import * as _ from "lodash";
 
 @Injectable()
 export class ConfigProvider {
@@ -110,20 +110,20 @@ export class ConfigProvider {
   public load() {
     return new Promise((resolve, reject) => {
       this.persistence.getConfig().then((config: object) => {
-        if (!lodash.isEmpty(config)) this.configCache = lodash.clone(config);
-        else this.configCache = lodash.clone(this.configDefault);
+        if (!_.isEmpty(config)) this.configCache = _.clone(config);
+        else this.configCache = _.clone(this.configDefault);
         resolve(this.configCache);
       });
     });
   }
 
   public set(newOpts: object) {
-    let config = lodash.cloneDeep(this.configDefault);
+    let config = _.cloneDeep(this.configDefault);
 
-    if (lodash.isString(newOpts)) {
+    if (_.isString(newOpts)) {
       newOpts = JSON.parse(newOpts);
     }
-    lodash.merge(config, this.configCache, newOpts);
+    _.merge(config, this.configCache, newOpts);
     this.configCache = config;
     this.events.publish('config:updated', this.configCache);
 
