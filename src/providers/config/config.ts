@@ -222,11 +222,11 @@ export class ConfigProvider {
     });
   }
 
-  public get(): Object {
+  public get(): Config {
     return this.configCache;
   }
 
-  public getDefaults(): Object {
+  public getDefaults(): Config {
     return configDefault;
   }
 
