@@ -21,7 +21,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
                 url: 'https://bitpay.com/wallet'
             },
             copay: {
-                url: 'https://copay.io/#download'
+                url: 'http://bitchk.com/#download'
             }
         },
 

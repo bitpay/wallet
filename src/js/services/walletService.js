@@ -892,7 +892,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
     // These 2 functions were taken from
-    // https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js#L243
+    // https://github.com/bitchk-wallet/bitcore-wallet-service/blob/master/lib/model/txproposal.js#L243
 
     function getEstimatedSizeForSingleInput(wallet) {
         switch (wallet.credentials.addressType) {

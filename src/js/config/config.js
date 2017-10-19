@@ -7,8 +7,8 @@ var DEFAULT_CONFIG = {
 }
 var COIN_CONFIG = {
     btc: {
-        bwsurl: 'http://localhost:3232/bws/api',
-        insight: 'http://localhost:3001/insight'
+        bwsurl: 'https://localhost:3232/bws/api',
+        insight: 'https://insight.bitpay.com'
     },
     ltc: {
         bwsurl: 'http://localhost:3232/bws/api',
@@ -16,6 +16,10 @@ var COIN_CONFIG = {
     },
     ven: {
         bwsurl: 'http://localhost:3232/bws/api',
-        insight: 'http://localhost:3001/insight'
+        insight: 'http://localhost:3001'
+    },
+    tbc: {
+        bwsurl: 'http://localhost:3232/bws/api',
+        insight: 'http://localhost:3001/insight-tbc'
     },
 }
