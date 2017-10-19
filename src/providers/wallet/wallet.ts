@@ -1054,7 +1054,7 @@ export class WalletProvider {
     });
   }
 
-  public return reject(wallet: any, txp: any): Promise<any> {
+  public reject(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.ongoingProcess.set('rejectTx', true);
       this.rejectTx(wallet, txp).then((txpr: any) => {
