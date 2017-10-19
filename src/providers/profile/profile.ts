@@ -15,7 +15,7 @@ import { Profile } from '../../models/profile/profile.model';
 @Injectable()
 export class ProfileProvider {
   public wallet: any = {};
-  public profile: Profile;
+  public profile: Profile = new Profile();
 
   private UPDATE_PERIOD = 15;
   private throttledBwsEvent: any;
@@ -35,8 +35,6 @@ export class ProfileProvider {
     private languageProvider: LanguageProvider,
     private txFormatProvider: TxFormatProvider
   ) {
-    this.profile = new Profile;
-    console.log('Hello ProfileProvider Provider');
     this.throttledBwsEvent = lodash.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
     }, 10000);
@@ -527,14 +525,12 @@ export class ProfileProvider {
 
   public bindProfile(profile: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.profile = profile;
-
       let config = this.configProvider.get();
 
       let bindWallets = (): Promise<any> => {
         return new Promise((resolve, reject) => {
 
-          let l = this.profile.credentials.length;
+          let l = profile.credentials.length;
           let i = 0;
           let totalBound = 0;
 
@@ -542,7 +538,7 @@ export class ProfileProvider {
             return resolve();
           }
 
-          lodash.each(this.profile.credentials, (credentials) => {
+          lodash.each(profile.credentials, (credentials) => {
             this.bindWallet(credentials).then((bound: number) => {
               i++;
               totalBound += bound;
@@ -558,11 +554,10 @@ export class ProfileProvider {
       };
 
       bindWallets().then(() => {
-        this.isDisclaimerAccepted().then((val) => {
-          if (!val) {
-            return reject(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
-          }
+        this.isDisclaimerAccepted().then(() => {
           return resolve();
+        }).catch(() => {
+          return reject(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
         });
       }).catch((err: any) => {
         return reject(err);
@@ -574,13 +569,13 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
 
       let disclaimerAccepted = this.profile && this.profile.disclaimerAccepted;
-      if (disclaimerAccepted) return resolve(true);
+      if (disclaimerAccepted) return resolve();
 
       // OLD flag
       this.persistenceProvider.getCopayDisclaimerFlag().then((val) => {
         if (val) {
           this.profile.disclaimerAccepted = true;
-          return resolve(true);
+          return resolve();
         } else {
           return reject();
         }
@@ -619,13 +614,12 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getProfile().then((profile: any) => {
         if (!profile) {
-          resolve(profile);
-          return reject('NOPROFILE: No profile');
+          return reject();
         }
         // Deprecated: storageService.tryToMigrate
         this.logger.debug('Profile read');
         this.bindProfile(profile).then(() => {
-          return resolve(profile);
+          return resolve();
         }).catch((err: any) => {
           return reject(err);
         });
