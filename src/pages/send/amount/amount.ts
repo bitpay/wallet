@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 import { ConfirmPage } from '../confirm/confirm';
@@ -21,17 +21,34 @@ export class AmountPage {
   private SMALL_FONT_SIZE_LIMIT = 10;
   private availableUnits: Array<any> = [];
   private unitIndex: number = 0;
+  private reNr: RegExp = /^[1234567890\.]$/;
+  private reOp: RegExp = /^[\*\+\-\/]$/;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.amount = "";
+    this.amount = '';
     this.allowSend = false;
   }
-
+  
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AmountPage');
-    console.log("this.navParams.data", this.navParams.data);
+    console.log('Params', this.navParams.data);
     this.address = this.navParams.data.address;
     this.sending = this.navParams.data.sending;
+  }
+  
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
+    if (!event.key) return;
+    if (event.which === 8) {
+      event.preventDefault();
+      this.removeDigit();
+    }
+
+    if (event.key.match(this.reNr)) {
+      this.pushDigit(event.key);
+    } else if (event.key.match(this.reOp)) {
+      this.pushOperator(event.key);
+    } else if (event.keyCode === 86) {
+      // if (event.ctrlKey || event.metaKey) processClipboard();
+    } else if (event.keyCode === 13) this.finish();
   }
 
   pushDigit(digit: string) {
@@ -41,7 +58,6 @@ export class AmountPage {
     //if (this.availableUnits[this.unitIndex].isFiat && this.amount.indexOf('.') > -1 && this.amount[this.amount.indexOf('.') + 2]) return;
 
     this.amount = (this.amount + digit).replace('..', '.');
-    console.log("this.amount", this.amount);
     this.checkFontSize();
     this.processAmount();
   };
@@ -57,7 +73,7 @@ export class AmountPage {
     this.amount = this._pushOperator(this.amount, operator);
   };
 
-  _pushOperator(val: string, operator: string) {
+  private _pushOperator(val: string, operator: string) {
     if (!this.isOperator(_.last(val))) {
       return val + operator;
     } else {
@@ -66,12 +82,12 @@ export class AmountPage {
   };
 
   isOperator(val: string) {
-    var regex = /[\/\-\+\x\*]/;
+    const regex = /[\/\-\+\x\*]/;
     return regex.test(val);
   };
 
   isExpression(val: string) {
-    var regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
+    const regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
     return regex.test(val);
   };
 
@@ -122,7 +138,6 @@ export class AmountPage {
       return 0;
     }
     if (!_.isFinite(result)) return 0;
-    console.log("evaluate result: ", result);
     return result;
   };
 
@@ -152,5 +167,4 @@ export class AmountPage {
       this.navCtrl.push(CustomAmountPage, {address: this.address, amount: this.globalResult});            
     }
   }
-
 }
