@@ -14,9 +14,8 @@ export class Profile {
     this.version = '1.0.0';
   }
 
-  public create(opts?: any): Profile {
+  public create(opts?: any): any {
     opts = opts ? opts : {};
-
     let x = new Profile();
     x.createdOn = Date.now();
     x.credentials = opts.credentials || [];
@@ -25,7 +24,7 @@ export class Profile {
     return x;
   };
 
-  public fromObj(obj: any): Profile {
+  public fromObj(obj: any): any {
     let x = new Profile();
 
     x.createdOn = obj.createdOn;
@@ -40,7 +39,7 @@ export class Profile {
     return x;
   };
 
-  public fromString(str: string): Profile {
+  public fromString(str: string): any {
     return this.fromObj(JSON.parse(str));
   };
 
