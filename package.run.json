@@ -1,8 +1,9 @@
 {
-    "name": "*PACKAGENAME*",
-    "description": "*DESCRIPTION*",
-    "author": "BitChk",
-    "version": "*VERSION*",
+    "//": "        Modify it in the app-template directory",
+    "name": "copay",
+    "description": "A Secure Bitcoin Wallet",
+    "author": "BitPay",
+    "version": "3.8.2",
     "keywords": [
         "bitcoin",
         "wallet",
@@ -12,9 +13,9 @@
         "bitcore"
     ],
     "main": "www/index.html",
-    "title": "*USERVISIBLENAME*",
+    "title": "Copay",
     "window": {
-        "title": "*USERVISIBLENAME* - *PURPOSELINE*",
+        "title": "Copay - Copay Bitcoin Wallet",
         "icon": "www/img/app/icon.png",
         "toolbar": false,
         "show": true,
@@ -36,14 +37,14 @@
     },
     "dom_storage_quota": 200,
     "id": "jid1-x7bV5evAaI1P9Q",
-    "homepage": "*URL*",
+    "homepage": "https://copay.io",
     "license": "MIT",
     "repository": {
-        "url": "*GITHUBREPOURL*",
+        "url": "git://github.com/bitchk-wallet/copay.git",
         "type": "git"
     },
     "bugs": {
-        "url": "*GITHUBREPOBUGS*"
+        "url": "https://github.com/bitchk-wallet/copay/issues"
     },
     "engines": {
         "node": "6",
@@ -56,11 +57,11 @@
         "bezier-easing": "^2.0.3",
         "bhttp": "1.2.1",
         "bitauth": "^0.2.1",
-        "bitcore-wallet-client": "https://github.com/bitchk-wallet/bitcore-wallet-client.git#bitchk",
+        "bitcore-wallet-client": "git://gitbhub.com/bitchk-wallet/bitcore-wallet-client.git#bitchk",
         "bower": "^1.7.9",
         "cordova-android": "5.1.1",
-        "cordova-custom-config": "^3.0.5",
-        "cordova-plugin-qrscanner": "^2.5.0",
+        "cordova-custom-config": "~3.0.5",
+        "cordova-plugin-qrscanner": "~2.5.0",
         "coveralls": "^2.11.9",
         "express": "^4.11.2",
         "fs": "0.0.2",
@@ -77,7 +78,34 @@
         "grunt-nw-builder": "^2.0.3",
         "grunt-sass": "^1.2.0",
         "load-grunt-tasks": "^3.5.0",
-        "shelljs": "^0.3.0"
+        "shelljs": "^0.3.0",
+        "cordova-ios": "~4.2.1",
+        "cordova-windows": "~5.0.0",
+        "cordova-plugin-device": "~1.1.3",
+        "cordova-plugin-globalization": "~1.0.4",
+        "cordova-plugin-splashscreen": "~4.0.0",
+        "cordova-plugin-statusbar": "~2.2.0",
+        "cordova-plugin-inappbrowser": "~1.5.0",
+        "cordova-plugin-x-toast": "~2.5.2",
+        "com.verso.cordova.clipboard": "https://github.com/Visigo/CordovaClipboard",
+        "cordova-plugin-x-socialsharing": "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
+        "cordova-plugin-spinner-dialog": "~1.3.1",
+        "cordova-plugin-dialogs": "~1.3.0",
+        "cordova-plugin-network-information": "~1.3.0",
+
+        "cordova-plugin-uniquedeviceid": "~1.3.2",
+        "cordova-plugin-file": "~4.3.0",
+        "cordova-plugin-touch-id": "~3.2.0",
+        "cordova-plugin-transport-security": "~0.1.2",
+        "cordova-ios-requires-fullscreen": "~0.0.2",
+        "cordova-plugin-android-fingerprint-auth": "~0.2.0",
+        "cordova-plugin-screen-orientation": "~1.4.2",
+        "ionic-plugin-keyboard": "~2.2.1",
+        "cordova-plugin-whitelist": "~1.3.0",
+        "cordova-plugin-wkwebview-engine": "https://github.com/driftyco/cordova-plugin-wkwebview-engine.git#4221015eb3f309fe593a7d81205b691e27088743",
+        "cordova-plugin-customurlscheme": "https://github.com/cmgustavo/Custom-URL-scheme.git",
+        "cordova-plugin-queries-schemes": "~0.1.5",
+        "cordova-plugin-fcm": "https://github.com/cmgustavo/cordova-plugin-fcm.git"
     },
     "scripts": {
         "postinstall": "bower install",
@@ -116,12 +144,52 @@
         "clean-all": "git clean -dfx"
     },
     "devDependencies": {
-        "cordova": "^6.3.1",
+        "cordova": "6.3.1",
         "grunt": "^1.0.1",
         "ionic": "^3.6.0",
         "trash-cli": "^1.4.0",
         "lodash": "^4.17.4",
         "pre-commit": "^1.1.3"
     },
-    "pre-commit": "unstage-package"
+    "pre-commit": "unstage-package",
+    "cordova": {
+        "platforms": [
+            "ios",
+            "android",
+            "windows"
+        ],
+        "plugins": {
+            "cordova-plugin-device": {},
+            "cordova-plugin-globalization": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-inappbrowser": {},
+            "cordova-plugin-x-toast": {},
+            "com.verso.cordova.clipboard": {},
+            "cordova-plugin-x-socialsharing": {},
+            "cordova-plugin-spinner-dialog": {},
+            "cordova-plugin-dialogs": {},
+            "cordova-plugin-network-information": {},
+            "cordova-plugin-console": {},
+            "cordova-plugin-uniquedeviceid": {},
+            "cordova-plugin-file": {},
+            "cordova-plugin-touch-id": {},
+            "cordova-plugin-transport-security": {},
+            "cordova-ios-requires-fullscreen": {},
+            "cordova-plugin-android-fingerprint-auth": {},
+            "cordova-plugin-screen-orientation": {},
+            "ionic-plugin-keyboard": {},
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-wkwebview-engine": {},
+            "cordova-plugin-qrscanner": {},
+            "cordova-plugin-customurlscheme": {
+                "URL_SCHEME": "bitcoin",
+                "SECOND_URL_SCHEME": "copay",
+                "THIRD_URL_SCHEME": "bitcoincash"
+            },
+            "cordova-custom-config": {},
+            "cordova-plugin-queries-schemes": {},
+            "cordova-plugin-fcm": {}
+        }
+    }
 }
