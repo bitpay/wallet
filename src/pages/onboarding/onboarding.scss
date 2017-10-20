@@ -1,16 +1,13 @@
 page-onboarding {
   .logo-tagline {
-
+    text-align: center;
     img {
-      width: 50%;
       max-width: 200px;
-      margin: 5rem auto 0;
+      margin: 5rem 0;
     }
-
     p {
       line-height: 1.6;
       font-size: 18px;
-      text-align: center;
     }
   }
 
