@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head ng-controller="headController">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <title>Copay - Copay Bitcoin Wallet</title>
+    <link rel="shortcut icon" href="img/app/favicon.ico">
+</head>
+
+<body>
+
+    <!-- Workaround to prevent autofill -->
+    <div style="display: none;">
+        <input type="text" id="PreventChromeAutocomplete" name="PreventChromeAutocomplete" autocomplete="address-level4" />
+    </div>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script>
+        var initBoot = function() {
+            document.addEventListener("deviceready", function() {
+                console.log("remote", REMOTE_LOAD);
+                if (location.href.startsWith("file://")) {
+                    jQuery.ajax({
+                        url: DEPLOY_SERVER + "/assets/js/config.js",
+                        dataType: 'script',
+                        success: function(data) {
+                            console.log("load suc")
+                            load(); //환경설정이 서버로 변경되었다.
+                        },
+                        error: function(error) {
+                            console.log("error", error);
+                            load(); //실패했다, 그냥 로드한다.
+                        },
+                        async: true
+                    });
+                } else {
+                    load();
+                }
+            }, false);
+        }
+        var load = function() {
+            var remoteUrl = "../index.html";
+            console.log("remote", REMOTE_LOAD);
+            if (REMOTE_LOAD && location.href.startsWith("file://")) {
+                if (window.cordova.platformId == "android")
+                    remoteUrl = DEPLOY_SERVER + "/and.html";
+                else {
+                    remoteUrl = DEPLOY_SERVER + "/ios.html";
+                }
+            }
+            location.href = remoteUrl;
+        }
+        initBoot();
+    </script>
+
+</body>
+
+</html>
