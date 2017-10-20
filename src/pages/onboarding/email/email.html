@@ -1,29 +1,45 @@
-<ion-content class="email">
-  <div id="success-container">
-    <img src="assets/img/onboarding-success.svg" id="success-image" />
-    <div id="success-message" translate>Wallet Created</div>
-  </div>
+<ion-header>
 
-  <div id="collect-email">
-    <div id="collect-email-inner" *ngIf="!showConfirmForm">
-      <div class="heading" translate>Notifications by email</div>
-      <div class="prompt" translate>Where would you like to receive email notifications about payments?</div>
+  <ion-navbar hideBackButton="true" transparent>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="skip()">
+        Skip
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 
-      <form id="email-form" name="emailForm" (ngSubmit)="showConfirm()" novalidate>
-        <label class="item item-input" id="email-label">
-          <ion-input type="email" placeholder="Email Input" name="email" [(ngModel)]="data.email"></ion-input>
-        </label>
-        <ion-item>
-          <ion-label class="prompt">Get news and updates from BitPay</ion-label>
-          <ion-checkbox name="accept" [(ngModel)]="data.accept"></ion-checkbox>
-        </ion-item>
-        <button class="primary" ion-button block type="submit">Continue &rarr;</button>
-      </form>
+</ion-header>
+
+<ion-content>
+  <div class="email-title" translate>Wallet Created</div>
+
+  <div *ngIf="!showConfirmForm">
+    <div class="email-content">
+      <p translate>Notifications by email</p>
+      <p translate>Where would you like to receive email notifications about payments?</p>
     </div>
 
-    <div id="collect-email-confirm" *ngIf="showConfirmForm">
-      <p translate class="confirm">Is this email address correct?</p>
-      <p class="user-email">{{data.email}}</p>
+    <form (ngSubmit)="showConfirm()" novalidate>
+      <ion-item>
+        <ion-label>Email</ion-label>
+        <ion-input type="email" [(ngModel)]="data.email" name="email" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label >Get news and updates from BitPay</ion-label>
+        <ion-checkbox name="accept" [(ngModel)]="data.accept"></ion-checkbox>
+      </ion-item>
+      <div class="buttons">
+        <button ion-button block type="submit">Continue &rarr;</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="showConfirmForm">
+    <div class="email-content">
+      <p translate>Is this email address correct?</p>
+      <p>{{data.email}}</p>
+    </div>
+    <div class="buttons">
       <div class="row">
         <div class="col col-50">
           <button class="primary" block ion-button (click)="showConfirm()">Edit</button>
@@ -33,11 +49,5 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="overlay collect-overlay">
-    <button (click)="skip()">
-      Skip
-    </button>
   </div>
 </ion-content>
