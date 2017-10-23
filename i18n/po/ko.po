@@ -565,29 +565,29 @@ msgstr ""
 #: www/views/modals/terms.html:26
 #: www/views/onboarding/disclaimer.html:44
 msgid "Confirm &amp; Finish"
-msgstr ""
+msgstr "확인 &amp; 완료"
 
 #: www/views/buyAmazon.html:90
 #: www/views/buyMercadoLibre.html:77
 msgid "Confirm purchase"
-msgstr ""
+msgstr "구매 확인"
 
 #: www/views/modals/pin.html:10
 msgid "Confirm your PIN"
-msgstr ""
+msgstr "PIN 확인"
 
 #: src/js/services/walletService.js:1033
 msgid "Confirm your new spending password"
-msgstr ""
+msgstr "새로운 지불 암호 확인"
 
 #: www/views/tx-details.html:100
 msgid "Confirmations"
-msgstr ""
+msgstr "컨펌들"
 
 #: www/views/bitpayCard.html:68
 #: www/views/modals/wallet-balance.html:61
 msgid "Confirming"
-msgstr ""
+msgstr "컨펌중"
 
 #: www/views/bitpayCardIntro.html:37
 msgid "Connect my BitPay Card"
@@ -603,15 +603,15 @@ msgstr ""
 
 #: src/js/services/bwcError.js:53
 msgid "Connection reset by peer"
-msgstr ""
+msgstr "연결이 상대방으로 부터 재설정되었습니다."
 
 #: www/views/tab-send.html:45
 msgid "Contacts"
-msgstr ""
+msgstr "연락처들"
 
 #: www/views/onboarding/notifications.html:9
 msgid "Continue"
-msgstr ""
+msgstr "계속"
 
 #: www/views/preferencesLanguage.html:26
 msgid "Contribute Translations"
@@ -619,7 +619,7 @@ msgstr ""
 
 #: src/js/services/bwcError.js:62
 msgid "Copayer already in this wallet"
-msgstr ""
+msgstr "지갑에 Copayer 가 이미 존재합니다"
 
 #: src/js/services/bwcError.js:77
 msgid "Copayer already voted on this spend proposal"
@@ -641,7 +641,7 @@ msgstr ""
 #: src/js/controllers/export.js:193
 #: www/views/includes/copyToClipboard.html:4
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "클립보드로 복사되었습니다"
 
 #: www/views/tab-export-file.html:94
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -1311,16 +1311,16 @@ msgstr ""
 
 #: www/views/onboarding/collectEmail.html:15
 msgid "Get news and updates from BitPay"
-msgstr ""
+msgstr "비체크로부터 새로운 뉴스와 업데이트 정보를 받겠습니다"
 
 #: www/views/onboarding/welcome.html:8
 msgctxt "button"
 msgid "Get started"
-msgstr ""
+msgstr "시작하기"
 
 #: www/views/bitpayCard.html:49
 msgid "Get started"
-msgstr ""
+msgstr "시작하기"
 
 #: www/views/addressbook.html:20
 msgid "Get started by adding your first one."
@@ -1443,11 +1443,11 @@ msgstr ""
 
 #: www/views/onboarding/disclaimer.html:43
 msgid "I have read, understood, and agree to the <a ng-click=\"openTerms()\" translate=\"\">Terms of Use</a>."
-msgstr ""
+msgstr "나는 <a ng-click=\"openTerms()\" translate=\"\">약관</a>을 읽고, 이해했으며,이 약관에 동의합니다."
 
 #: www/views/modals/terms.html:22
 msgid "I have read, understood, and agree with the Terms of use."
-msgstr ""
+msgstr "나는 약관을 읽고, 이해했으며, 이 약관에 동의합니다."
 
 #: www/views/join.html:137
 #: www/views/tab-create-personal.html:107
@@ -1466,19 +1466,19 @@ msgstr ""
 #: src/js/controllers/onboarding/backupRequest.js:19
 #: www/views/includes/screenshotWarningModal.html:9
 msgid "I understand"
-msgstr ""
+msgstr "이해했습니다."
 
 #: www/views/onboarding/disclaimer.html:21
 msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
-msgstr ""
+msgstr "만약 이 앱이 다른 단말로 이동하거나, 삭제된 경우 내 코인들은 백업된 문장으로만 복구가 가능함을 이해했습니다."
 
 #: www/views/onboarding/disclaimer.html:18
 msgid "I understand that my funds are held securely on this device, not by a company."
-msgstr ""
+msgstr "내 자금은 이 장비에서만 안전하며, 회사가 관리하지 않음을 이해했습니다."
 
 #: www/views/backup.html:29
 msgid "I've written it down"
-msgstr ""
+msgstr "문구들을 적어 놓았습니다"
 
 #: www/views/preferences.html:45
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
@@ -1940,15 +1940,15 @@ msgstr ""
 
 #: www/views/onboarding/collectEmail.html:9
 msgid "Notifications by email"
-msgstr ""
+msgstr "이메일 알림"
 
 #: www/views/tx-details.html:119
 msgid "Notify me if confirmed"
-msgstr ""
+msgstr "확정된 거래 알림 받기"
 
 #: www/views/preferencesNotifications.html:24
 msgid "Notify me when transactions are confirmed"
-msgstr ""
+msgstr "거래 확정시 알림 받기"
 
 #: www/views/includes/backupNeededPopup.html:8
 msgid "Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
@@ -2054,19 +2054,19 @@ msgstr ""
 #: www/views/tab-import-file.html:18
 #: www/views/tab-import-phrase.html:41
 msgid "Password"
-msgstr ""
+msgstr "암호"
 
 #: src/js/controllers/import.js:98
 msgid "Password required. Make sure to enter your password in advanced options"
-msgstr ""
+msgstr "암호가 필요합니다. 확장옵션에서 여러분의 암호를 저장하세요"
 
 #: www/views/join.html:33
 msgid "Paste invitation here"
-msgstr ""
+msgstr "여기에 초대를 붙여넣으세요"
 
 #: www/views/tab-import-file.html:13
 msgid "Paste the backup plain text code"
-msgstr ""
+msgstr "백업된 문자열을 붙여넣으세요"
 
 #: www/views/bitpayCardIntro.html:28
 msgid "Pay 0% fees to turn bitcoin into dollars."
@@ -2074,16 +2074,16 @@ msgstr ""
 
 #: www/views/modals/paypro.html:18
 msgid "Pay To"
-msgstr ""
+msgstr "지불대상"
 
 #: src/js/controllers/modals/txpDetails.js:51
 #: www/views/modals/tx-status.html:33
 msgid "Payment Accepted"
-msgstr ""
+msgstr "거래가 받아들여짐"
 
 #: www/views/confirm.html:25
 msgid "Payment Expires:"
-msgstr ""
+msgstr "거래가 파기됨:"
 
 #: www/views/modals/txp-details.html:6
 msgid "Payment Proposal"
@@ -2107,27 +2107,27 @@ msgstr ""
 
 #: www/views/includes/walletActivity.html:20
 msgid "Payment Received"
-msgstr ""
+msgstr "결재 수신됨"
 
 #: www/views/modals/tx-status.html:43
 #: www/views/modals/txp-details.html:43
 msgid "Payment Rejected"
-msgstr ""
+msgstr "결재 거부됨"
 
 #: src/js/controllers/modals/txpDetails.js:44
 #: www/views/confirm.html:126
 #: www/views/includes/walletActivity.html:11
 #: www/views/modals/txp-details.html:42
 msgid "Payment Sent"
-msgstr ""
+msgstr "결재 전송됨"
 
 #: www/views/modals/txp-details.html:32
 msgid "Payment accepted, but not yet broadcasted"
-msgstr ""
+msgstr "결재가 승인되었지만 아직 전파되지 않았읏빈다."
 
 #: www/views/modals/txp-details.html:40
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr ""
+msgstr "결재가 승인되었습니다. Glidera 서비스에 의해 전파될 예정입니다. 문제가 발생한 경우 6시간후에 삭제됩니다."
 
 #: src/js/services/incomingData.js:152
 msgid "Payment address was translated to new Bitcoin Cash address format:"
@@ -2135,11 +2135,11 @@ msgstr ""
 
 #: www/views/modals/txp-details.html:109
 msgid "Payment details"
-msgstr ""
+msgstr "결재 상세정보들"
 
 #: www/views/modals/paypro.html:6
 msgid "Payment request"
-msgstr ""
+msgstr "결제 요청"
 
 #: www/views/mercadoLibreCards.html:22
 #: www/views/modals/mercadolibre-card-details.html:39
@@ -2156,45 +2156,45 @@ msgstr ""
 
 #: src/js/services/profileService.js:401
 msgid "Personal Wallet"
-msgstr ""
+msgstr "개인지갑"
 
 #: www/views/backup.html:18
 msgid "Please carefully write down this phrase."
-msgstr ""
+msgstr "정확한 단어들을 아래에 적어주세요."
 
 #: www/views/tab-scan.html:20
 msgid "Please connect a camera to get started."
-msgstr ""
+msgstr "시작되면 카메라를 연력해주세요."
 
 #: src/js/controllers/import.js:277
 msgid "Please enter the recovery phrase"
-msgstr ""
+msgstr "복구단어를 입력해주세요"
 
 #: src/js/controllers/create.js:174
 #: src/js/controllers/join.js:139
 msgid "Please enter the wallet recovery phrase"
-msgstr ""
+msgstr "지갑복수 문구를 입력해주세요"
 
 #: www/views/modals/pin.html:9
 msgid "Please enter your PIN"
-msgstr ""
+msgstr "PIN 번호를 입력해주세요"
 
 #: www/views/backup.html:46
 msgid "Please tap each word in the correct order."
-msgstr ""
+msgstr "정확한 순서대로 각 단어들을 탭 해주세요."
 
 #: src/js/services/bwcError.js:101
 msgid "Please upgrade Copay to perform this action"
-msgstr ""
+msgstr 이 작업을 위해서 어플리케이션을 upgrade 해야 합니다.""
 
 #: www/views/walletDetails.html:142
 #: www/views/walletDetails.html:62
 msgid "Please wait"
-msgstr ""
+msgstr "잠시만 기다려주세요"
 
 #: src/js/controllers/import.js:238
 msgid "Please, select your backup file"
-msgstr ""
+msgstr "백업파일을 선택해 주세요"
 
 #: www/views/bitpayCard.html:81
 msgid "Pre-Auth Holds"
@@ -2202,35 +2202,35 @@ msgstr ""
 
 #: www/views/tab-settings.html:40
 msgid "Preferences"
-msgstr ""
+msgstr "환경설정"
 
 #: src/js/services/onGoingProcess.js:38
 msgid "Preparing addresses..."
-msgstr ""
+msgstr "주소들 준비중..."
 
 #: src/js/controllers/export.js:198
 msgid "Preparing backup..."
-msgstr ""
+msgstr "백업 준비중..."
 
 #: src/js/routes.js:1261
 msgid "Press again to exit"
-msgstr ""
+msgstr "종료하기 위해서 한번더 해주세요"
 
 #: src/js/services/feeService.js:11
 msgid "Priority"
-msgstr ""
+msgstr "우선순위"
 
 #: www/views/includes/incomingDataMenu.html:80
 msgid "Private Key"
-msgstr ""
+msgstr "개인키"
 
 #: src/js/controllers/paperWallet.js:136
 msgid "Private key encrypted. Enter password"
-msgstr ""
+msgstr "개인키가 암호화되었습니다. 암호를 입력해주세요"
 
 #: src/js/services/bwcError.js:35
 msgid "Private key is encrypted, cannot sign"
-msgstr ""
+msgstr "개인키가 암호화되어 있어서 서명을 할수 없습니다"
 
 #: www/views/includes/walletActivity.html:51
 msgid "Proposal Accepted"
@@ -2276,7 +2276,7 @@ msgstr ""
 
 #: www/views/onboarding/disclaimer.html:13
 msgid "Quick review!"
-msgstr ""
+msgstr "간략한 안내!"
 
 #: src/js/controllers/create.js:84
 #: src/js/controllers/join.js:68
@@ -2420,7 +2420,7 @@ msgstr ""
 
 #: www/views/onboarding/welcome.html:9
 msgid "Restore from backup"
-msgstr ""
+msgstr "백업으로 부터 다시 시작"
 
 #: src/js/services/onGoingProcess.js:29
 msgid "Retrieving inputs information"
@@ -2781,7 +2781,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
+msgid "여러분의 코인을 관ㄹ,<br>get started with bitcoin."
 msgstr ""
 
 #: www/views/walletDetails.html:132
@@ -3212,7 +3212,7 @@ msgstr ""
 
 #: www/views/onboarding/collectEmail.html:5
 msgid "Wallet Created"
-msgstr ""
+msgstr "지갑이 생성되었습니다."
 
 #: www/views/preferencesInformation.html:23
 msgid "Wallet Id"
@@ -3395,11 +3395,11 @@ msgstr ""
 
 #: www/views/onboarding/collectEmail.html:10
 msgid "Where would you like to receive email notifications about payments?"
-msgstr ""
+msgstr "결재들에 대한 알림을 이메일로 받고 싶으세요?"
 
 #: www/views/addresses.html:19
 msgid "Why?"
-msgstr ""
+msgstr "왜 그럴까요??"
 
 #: www/views/feedback/rateApp.html:10
 msgid "Would you be willing to rate {{appName}} in the app store?"
@@ -3407,7 +3407,7 @@ msgstr ""
 
 #: www/views/onboarding/notifications.html:4
 msgid "Would you like to receive push notifications about payments?"
-msgstr ""
+msgstr "결재들에 대한 알림을 푸시아림으로 받고 싶으세요?"
 
 #: src/js/controllers/import.js:287
 msgid "Wrong number of recovery words:"

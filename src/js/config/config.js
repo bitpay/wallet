@@ -1,25 +1,25 @@
 var DEFAULT_CONFIG = {
     networkName: 'ventas',
     coin: 'ven',
-    bwsurl: 'http://localhost:3232/bws/api',
+    bwsurl: 'http://bws-m.bitchk.com/bws/api',
     showMoney: false,
     networks: ['livenet', 'ventas', 'litecoin']
 }
 var COIN_CONFIG = {
     btc: {
-        bwsurl: 'https://localhost:3232/bws/api',
+        bwsurl: 'http://bws-m.bitchk.com/bws/api',
         insight: 'https://insight.bitpay.com'
     },
     ltc: {
-        bwsurl: 'http://localhost:3232/bws/api',
-        insight: 'http://localhost:3001/insight'
+        bwsurl: 'http://bws-m.bitchk.com/bws/api',
+        insight: 'http://insight-ltc.bitchk.com/insight'
     },
     ven: {
-        bwsurl: 'http://localhost:3232/bws/api',
-        insight: 'http://localhost:3001'
+        bwsurl: 'http://bws-m.bitchk.com/bws/api',
+        insight: 'http://insight.ventasnu.com'
     },
     tbc: {
-        bwsurl: 'http://localhost:3232/bws/api',
-        insight: 'http://localhost:3001/insight-tbc'
+        bwsurl: 'http://bws-m.bitchk.com/bws/api',
+        insight: 'http://insight.teracoex.com'
     },
 }
