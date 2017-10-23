@@ -81,11 +81,10 @@ module.exports = function(grunt) {
                 files: ['src/sass/**/**/*.scss'],
                 tasks: ['sass']
             },
-            config: {
-                files: ['src/js/config/config.js']
-            },
+
             main: {
                 files: [
+                    'src/js/config/config.js',
                     'src/js/init.js',
                     'src/js/app.js',
                     'src/js/directives/*.js',
