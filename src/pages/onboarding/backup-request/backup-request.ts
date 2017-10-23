@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController} from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 import { DisclaimerPage } from '../disclaimer/disclaimer';
 
@@ -10,7 +11,12 @@ import { DisclaimerPage } from '../disclaimer/disclaimer';
 export class BackupRequestPage {
   private opts: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public alertCtrl: AlertController,
+    private log: Logger
+  ) {
     this.opts = {
       title: '',
       message: '',
@@ -19,13 +25,14 @@ export class BackupRequestPage {
   }
 
   ionViewDidLoad() {
+    this.log.info('ionViewDidLoad BackupRequestPage');
   }
 
   initBackupFlow() {
     // TODO navigate to backupFlow
   }
 
-  later(confirmed: boolean) {
+  doBackupLater(confirmed: boolean) {
     this.opts.title = !confirmed ? '¡Watch Out!' : 'Are you sure you want to skip it?';
     this.opts.message = !confirmed ? 'If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup.' : 'You can create a backup later from your wallet settings.';
     this.opts.buttons = [{
@@ -37,7 +44,7 @@ export class BackupRequestPage {
         handler: () => {
           if (!confirmed) {
             setTimeout(() => {
-              this.later(true);
+              this.doBackupLater(true);
             }, 300);
           } else {
             this.navCtrl.push(DisclaimerPage);

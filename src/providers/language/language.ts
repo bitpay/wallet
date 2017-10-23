@@ -46,13 +46,13 @@ export class LanguageProvider {
   private current: string;
 
   constructor(
-    private logger: Logger,
+    private log: Logger,
     private translate: TranslateService,
     private config: ConfigProvider
   ) {
-    this.logger.info('LanguageProvider initialized.');
+    this.log.info('LanguageProvider initialized.');
     this.translate.onLangChange.subscribe((event) => {
-      this.logger.info('Settings language changed to: ' + event.lang);
+      this.log.info('Setting new default language to: ' + event.lang);
     });
   }
 
@@ -66,6 +66,7 @@ export class LanguageProvider {
       if (validBrowserLang) this.current = browserLang;
       else this.current = this.getDefault();
     }
+    this.log.info('Default language: ' + this.current);
     this.translate.setDefaultLang(this.current);
   }
 

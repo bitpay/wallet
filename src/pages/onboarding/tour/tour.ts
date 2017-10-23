@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, LoadingController, Slides, Navbar } from 'ionic-angular';
+import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 import { EmailPage } from '../email/email';
 
@@ -11,19 +12,27 @@ export class TourPage {
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Navbar) navBar: Navbar;
 
-  public currentIndex: number;
+  public currentIndex: number = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController) {
+  constructor(
+    public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
+    private log: Logger
+  ) {
   }
 
   ionViewDidLoad() {
+    this.log.info('ionViewDidLoad TourPage');
   }
 
   ngOnInit() {
-    this.currentIndex = this.slides.getActiveIndex() || 0;
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.slidePrev();
     }
+  }
+
+  slideChanged() {
+    this.currentIndex = this.slides.getActiveIndex();
   }
 
   skip() {
@@ -34,13 +43,11 @@ export class TourPage {
     if (this.currentIndex == 0) this.navCtrl.pop();
     else {
       this.slides.slidePrev();
-      this.currentIndex = this.slides.getActiveIndex();
     }
   }
 
   slideNext() {
     this.slides.slideNext();
-    this.currentIndex = this.slides.getActiveIndex();
   }
 
   createDefaultWallet() {

@@ -1,11 +1,5 @@
 page-tour {
-  position: relative;
-
-  .pages {
-    position: absolute;
-  }
   .buttons {
-    padding: 15px;
     width: 100%;
     position: absolute;
     bottom: 0px;
@@ -13,18 +7,5 @@ page-tour {
   }
   .slide-zoom {
     height: inherit;
-    img {
-      padding-top: 10%;
-      width: 65%;
-    }
-  }
-
-  .navbarc {
-    .bar-button {
-      color: $v-accent-color;
-    }
-  }
-  .header-md::after {
-    background: none;
   }
 }

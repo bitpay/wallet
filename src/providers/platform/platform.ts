@@ -15,7 +15,6 @@ export class PlatformProvider {
   isDevel: boolean;
 
   constructor(private platform: Platform, private log: Logger) {
-    let chrome: any;
     var ua = navigator ? navigator.userAgent : null;
 
     if (!ua) {
@@ -34,6 +33,8 @@ export class PlatformProvider {
     this.isNW = this.isNodeWebkit();
     this.isMobile = platform.is('mobile');
     this.isDevel = !this.isMobile && !this.isNW;
+
+    this.log.info('PlatformProvider initialized.');
   }
 
   getBrowserName(): string {

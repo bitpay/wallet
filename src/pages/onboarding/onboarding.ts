@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 import { TourPage } from './tour/tour';
 import { TabsPage } from '../tabs/tabs';
@@ -12,12 +13,12 @@ export class OnboardingPage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams
+    private log: Logger
   ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OnboardingPage');
+    this.log.info('ionViewDidLoad OnboardingPage');
   }
 
   getStarted() {
@@ -28,8 +29,8 @@ export class OnboardingPage {
     // TODO navigate to backupFlow
   }
 
-  // TODO: Testing purpose
   skipOnboarding() {
+    // TODO: Testing purpose
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot();
   }
