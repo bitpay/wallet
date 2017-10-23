@@ -15,7 +15,7 @@
     "moment": "2.10.3",
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*",
-    "trezor-connect": "https://github.com/trezor/connect.git#c1a00f9f0f4a13239ba13ddd589c6ca61f2e7876",
+    "trezor-connect": "https://github.com/trezor/connect.git#6797f60f3fd0ee4b3957a31700832cd7fdad6038",
     "ng-csv": "~0.3.6",
     "ionic-toast": "^0.4.1",
     "angular-clipboard": "^1.4.2",
