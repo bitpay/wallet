@@ -41,7 +41,6 @@
     <!-- Plugins -->
     <plugin name="cordova-clipboard" spec="1.1.0" />
     <plugin name="cordova-plugin-android-fingerprint-auth" spec="1.4.0" />
-    <plugin name="cordova-plugin-console" spec="1.1.0" />
     <plugin name="cordova-plugin-device" spec="1.1.6" />
     <plugin name="cordova-plugin-qrscanner" spec="2.5.0" />
     <plugin name="cordova-plugin-splashscreen" spec="4.0.3" />
@@ -62,7 +61,7 @@
     <plugin name="cordova-ios-requires-fullscreen" spec="0.0.2" />
     <plugin name="cordova-plugin-screen-orientation" spec="1.4.3" />
     <plugin name="cordova-custom-config" spec="4.0.2" />
-    <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/cmgustavo/Custom-URL-scheme.git">
+    <plugin name="cordova-plugin-customurlscheme" spec="https://github.com/cmgustavo/Custom-URL-scheme.git#v4.0">
       <variable name="URL_SCHEME" value="bitcoin" />
       <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
       <variable name="THIRD_URL_SCHEME" value="bitcoincash" />
@@ -76,6 +75,10 @@
       <config-file platform="ios" target="*-Info.plist" parent="UIStatusBarHidden"><true/></config-file>
       <config-file platform="ios" target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance"><false/></config-file>
       <config-file target="*-Info.plist" parent="ITSAppUsesNonExemptEncryption"><false/></config-file>
+
+      <preference name="ios-XCBuildConfiguration-CODE\_SIGN\_IDENTITY" value="" buildType="debug" xcconfigEnforce="false" />
+      <preference name="ios-XCBuildConfiguration-CODE\_SIGN\_IDENTITY" value="" buildType="release" xcconfigEnforce="false" />
+
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@3x.png" width="180" height="180" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60.png" width="60" height="60" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-60@2x.png" width="120" height="120" />
