@@ -59,7 +59,9 @@ angular.module('copayApp.services')
       scope.checkFingerprint = function() {
         fingerprintService.check('unlockingApp', function(err) {
           if (err) return;
-          scope.hideModal();
+          $timeout(function() {
+            scope.hideModal();
+          }, 200);
         });
       }
     };
