@@ -76,7 +76,7 @@
     <!-- <plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" /> -->
 
     <!-- Supported Platforms -->
-    <engine name="ios" spec="~4.2.1" />
+    <engine name="ios" spec="~4.5.2" />
     <engine name="android" spec="~6.2.3" />
     <engine name="windows" spec="~5.0.0" />
 
@@ -102,6 +102,7 @@
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-small@3x.png" width="87" height="87" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-50.png" width="50" height="50" />
       <icon src="resources/*PACKAGENAME*/ios/icon/icon-50@2x.png" width="100" height="100" />
+      <icon src="resources/*PACKAGENAME*/ios/icon/icon-1024.png" width="1024" height="1024" />
 
       <splash src="resources/*PACKAGENAME*/ios/splash/Default~iphone.png" width="320" height="480"/>
       <splash src="resources/*PACKAGENAME*/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
