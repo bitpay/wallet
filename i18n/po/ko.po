@@ -3470,7 +3470,7 @@ msgstr ""
 
 #: www/views/preferencesNotifications.html:34
 msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr "귀의 지갑들의 결재에 관련된 알림을 이메일로 수신하게 됩니다."
+msgstr "귀하의 지갑들의 결재에 관련된 알림을 이메일로 수신하게 됩니다."
 
 #: www/views/bitpayCard.html:50
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
