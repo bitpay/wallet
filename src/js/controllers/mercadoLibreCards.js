@@ -34,8 +34,9 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardsController',
             mercadoLibreService.createGiftCard(dataFromStorage, function(err, giftCard) {
 
               if (err) {
-                popupService.showAlert('Error creating gift card', err);
-                return;
+                $log.error('Error creating gift card:', (err.message || err));
+                giftCard = {};
+                giftCard.status = 'FAILURE';
               }
 
               if (giftCard.status != 'PENDING') {
