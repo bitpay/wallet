@@ -21,6 +21,7 @@
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script>
         var initBoot = function() {
+
             document.addEventListener("deviceready", function() {
                 console.log("remote", REMOTE_LOAD);
                 if (location.href.startsWith("file://")) {
