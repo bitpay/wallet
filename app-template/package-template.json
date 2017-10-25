@@ -57,7 +57,7 @@
     "bhttp": "1.2.1",
     "bitauth": "^0.2.1",
     "bitcore-wallet-client": "6.2.1",
-    "bower": "^1.7.9",
+    "bower": "^1.8.2",
     "cordova-android": "5.1.1",
     "cordova-custom-config": "^3.0.5",
     "cordova-plugin-qrscanner": "^2.5.0",
