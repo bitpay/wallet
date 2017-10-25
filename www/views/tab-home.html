@@ -1,6 +1,6 @@
 <ion-view id="tab-home" show-tabs>
     <ion-nav-bar class="bar-royal">
-        <ion-nav-title><img class="tab-home__logo" src="img/bitchk/bcheck_barlogo.png"></ion-nav-title>
+        <ion-nav-title><img class="tab-home__logo" src="img/bitchk/bar_icon.png"></ion-nav-title>
     </ion-nav-bar>
 
     <ion-content>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="list card">
-            <div class="item item-icon-right item-heading">
+            <div class="item item-icon-right item-heading item-head-red">
                 <span translate>Wallets</span>
                 <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
             </div>
@@ -102,7 +102,7 @@
         <div class="ng-hide list card" ng-show="wallets[0] && bitpayCardItems.length>0" ng-include="'views/includes/bitpayCardsCard.html'"></div>
         <div class="ng-hide list card" ng-show="wallets[0] && buyAndSellItems.length>0" ng-include="'views/includes/buyAndSellCard.html'"></div>
         <div class="ng-hide list card" ng-show="homeIntegrations.length>0" ng-include="'views/includes/homeIntegrations.html'"></div>
-        <div class="ng-hide list card" ng-show="nextStepsItems.length>0 && !isWindowsPhoneApp" ng-include="'views/includes/nextSteps.html'"></div>
+        <!-- <div class="ng-hide list card" ng-show="nextStepsItems.length>0 && !isWindowsPhoneApp" ng-include="'views/includes/nextSteps.html'"></div> -->
 
     </ion-content>
 </ion-view>

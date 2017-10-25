@@ -60,14 +60,14 @@ angular.module('copayApp.services').factory('configService', function(storageSer
             bannedUntil: null,
         },
 
-        cashSupport: false,
+        cashSupport: true,
 
         recentTransactions: {
             enabled: true,
         },
 
         hideNextSteps: {
-            enabled: isWindowsPhoneApp ? true : false,
+            enabled: isWindowsPhoneApp ? false : false,
         },
 
         rates: {

@@ -46,15 +46,15 @@ msgstr ""
 #: src/js/controllers/feedback/send.js:27
 #: www/views/feedback/complete.html:21
 msgid "A member of the team will review your feedback as soon as possible."
-msgstr ""
+msgstr "저희 팀에서 귀하의 의견에 가능한 빨리 확인하겠습니다"
 
 #: src/js/controllers/confirm.js:380
 msgid "A total of {{amountAboveMaxSizeStr}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr ""
+msgstr "전체 {{amountAboveMaxSizeStr}} 이 포함되었습니다. 거래의 최대 크기에 도달했습니다"
 
 #: src/js/controllers/confirm.js:374
 msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr ""
+msgstr "전체 {{amountBelowFeeStr}} 이 포함되었습니다. 이 자금은 제안된 네트웍 수수료가 작습니다"
 
 #: src/js/controllers/preferencesAbout.js:6
 #: www/views/tab-settings.html:161
@@ -68,26 +68,26 @@ msgstr ""
 
 #: www/views/preferencesInformation.html:72
 msgid "Account"
-msgstr ""
+msgstr "계정"
 
 #: www/views/join.html:72
 #: www/views/tab-create-personal.html:45
 #: www/views/tab-create-shared.html:74
 #: www/views/tab-import-hardware.html:19
 msgid "Account Number"
-msgstr ""
+msgstr "계정번호"
 
 #: www/views/preferencesBitpayServices.html:23
 msgid "Accounts"
-msgstr ""
+msgstr "계정들"
 
 #: www/views/bitpayCard.html:56
 msgid "Activity"
-msgstr ""
+msgstr "활동"
 
 #: src/js/services/bitpayAccountService.js:83
 msgid "Add Account"
-msgstr ""
+msgstr "계정 추가"
 
 #: src/js/services/bitpayAccountService.js:69
 msgid "Add BitPay Account?"
@@ -96,86 +96,86 @@ msgstr ""
 #: www/views/addressbook.add.html:4
 #: www/views/addressbook.html:22
 msgid "Add Contact"
-msgstr ""
+msgstr "연락처 추가"
 
 #: www/views/bitpayCard.html:28
 msgid "Add Funds"
-msgstr ""
+msgstr "자금 추가"
 
 #: www/views/confirm.html:96
 msgid "Add Memo"
-msgstr ""
+msgstr "메모 추가"
 
 #: www/views/join.html:87
 #: www/views/tab-create-personal.html:59
 #: www/views/tab-create-shared.html:88
 msgid "Add a password"
-msgstr ""
+msgstr "암호 추가"
 
 #: www/views/includes/accountSelector.html:27
 msgid "Add account"
-msgstr ""
+msgstr "계정 추기"
 
 #: www/views/join.html:90
 #: www/views/tab-create-personal.html:62
 #: www/views/tab-create-shared.html:91
 msgid "Add an optional password to secure the recovery phrase"
-msgstr ""
+msgstr "복구 암호 보호를 위한 암호 추가"
 
 #: www/views/includes/incomingDataMenu.html:41
 msgid "Add as a contact"
-msgstr ""
+msgstr "주소록에 추가"
 
 #: src/js/controllers/confirm.js:403
 msgid "Add description"
-msgstr ""
+msgstr "설명 추가"
 
 #: www/views/topup.html:6
 msgid "Add funds"
-msgstr ""
+msgstr "자금 추가"
 
 #: src/js/services/bitpayAccountService.js:78
 msgid "Add this BitPay account ({{email}})?"
-msgstr ""
+msgstr "이메일을 BitChk 계정에 추가 ({{email}})?"
 
 #: www/views/add.html:3
 msgid "Add wallet"
-msgstr ""
+msgstr "지갑 추가"
 
 #: www/views/addressbook.view.html:26
 #: www/views/customAmount.html:28
 #: www/views/modals/paypro.html:24
 msgid "Address"
-msgstr ""
+msgstr "주소"
 
 #: www/views/addressbook.html:6
 #: www/views/tab-settings.html:13
 msgid "Address Book"
-msgstr ""
+msgstr "주소록"
 
 #: www/views/preferencesInformation.html:41
 msgid "Address Type"
-msgstr ""
+msgstr "주소 종류"
 
 #: www/views/addresses.html:64
 msgid "Addresses With Balance"
-msgstr ""
+msgstr "주소들 (잔액)"
 
 #: www/views/tab-settings.html:154
 msgid "Advanced"
-msgstr ""
+msgstr "고급"
 
 #: www/views/advancedSettings.html:3
 msgid "Advanced Settings"
-msgstr ""
+msgstr "고급설정들"
 
 #: www/views/bitpayCard.html:62
 msgid "All"
-msgstr ""
+msgstr "전체"
 
 #: www/views/allAddresses.html:3
 msgid "All Addresses"
-msgstr ""
+msgstr "전체 주소들"
 
 #: www/views/modals/wallet-balance.html:18
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
@@ -187,20 +187,20 @@ msgstr ""
 
 #: www/views/tab-scan.html:21
 msgid "Allow Camera Access"
-msgstr ""
+msgstr "카메라 접근 허용"
 
 #: www/views/onboarding/notifications.html:7
 msgid "Allow notifications"
-msgstr ""
+msgstr "알림 허용"
 
 #: www/views/onboarding/disclaimer.html:14
 msgid "Almost done! Let's review."
-msgstr ""
+msgstr "거의 완료되었습니다! 둘어보기 시작합니다."
 
 #: www/views/preferencesAltCurrency.html:4
 #: www/views/tab-settings.html:79
 msgid "Alternative Currency"
-msgstr ""
+msgstr "다른 화패단위"
 
 #: src/js/controllers/buyAmazon.js:98
 msgid "Amazon.com is not available at this moment. Please try back later."
@@ -210,19 +210,19 @@ msgstr ""
 #: www/views/customAmount.html:34
 #: www/views/includes/output.html:7
 msgid "Amount"
-msgstr ""
+msgstr "금액"
 
 #: src/js/services/bwcError.js:110
 msgid "Amount below minimum allowed"
-msgstr ""
+msgstr "최소 허용 금액보다 낮습니다"
 
 #: src/js/controllers/confirm.js:195
 msgid "Amount too big"
-msgstr ""
+msgstr "금액이 너무 큽니다"
 
 #: www/views/includes/walletHistory.html:31
 msgid "Amount too low to spend"
-msgstr ""
+msgstr "사용하기에 금액이 너무 적습니다"
 
 #: src/js/controllers/tab-home.js:147
 msgid "An update to this app is available. For your security, please update to the latest version."
@@ -230,7 +230,7 @@ msgstr ""
 
 #: www/views/backupWarning.html:14
 msgid "Anyone with your backup phrase can access or spend your bitcoin."
-msgstr ""
+msgstr "누구나 당신의 백업 문구로 귀하의 코인에 접근하고, 사용할수 있습니다."
 
 #: www/views/addresses.html:94
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
@@ -238,35 +238,35 @@ msgstr ""
 
 #: www/views/backupWarning.html:10
 msgid "Are you being watched?"
-msgstr ""
+msgstr "누가 지켜보고 있습니까?"
 
 #: src/js/controllers/preferencesExternal.js:15
 msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr ""
+msgstr "귀하는 지켜보고 있습니까? 귀하의 복구암호로 누구나 뒤하의 코인을 접근하고, 사용할수 있습니다"
 
 #: src/js/controllers/copayers.js:56
 msgid "Are you sure you want to cancel and delete this wallet?"
-msgstr ""
+msgstr "정말로 취소하고, 이 지갑을 삭제하시겠습니까?"
 
 #: src/js/controllers/addressbookView.js:24
 msgid "Are you sure you want to delete this contact?"
-msgstr ""
+msgstr "이 연락처를 진짜로 삭제하시겠습니까?"
 
 #: src/js/controllers/preferencesDelete.js:25
 msgid "Are you sure you want to delete this wallet?"
-msgstr ""
+msgstr "이 지갑을 정말로 삭제하시겠습니까?"
 
 #: src/js/controllers/modals/txpDetails.js:154
 msgid "Are you sure you want to reject this transaction?"
-msgstr ""
+msgstr "정말로 이 거래를 거절하시겠습니까?"
 
 #: src/js/controllers/modals/txpDetails.js:171
 msgid "Are you sure you want to remove this transaction?"
-msgstr ""
+msgstr "정말로 이거래를 제거하시겠습니까?"
 
 #: src/js/controllers/onboarding/backupRequest.js:23
 msgid "Are you sure you want to skip it?"
-msgstr ""
+msgstr "정말로 건너띄시겠습니다."
 
 #: www/views/modals/bitpay-card-confirmation.html:4
 msgid "Are you sure you would like to log out of your BitPay Card account?"
@@ -283,16 +283,16 @@ msgstr ""
 
 #: www/views/modals/wallet-balance.html:42
 msgid "Available"
-msgstr ""
+msgstr "사용가능"
 
 #: www/views/includes/available-balance.html:3
 msgid "Available Balance"
-msgstr ""
+msgstr "사용가능 잔액"
 
 #: www/views/modals/chooseFeeLevel.html:24
 #: www/views/preferencesFee.html:15
 msgid "Average confirmation time"
-msgstr ""
+msgstr "평균 확정 시간"
 
 #: www/views/join.html:143
 #: www/views/tab-create-personal.html:113
@@ -307,11 +307,11 @@ msgstr "BTC 지갑들"
 
 #: www/views/preferences.html:34
 msgid "Backup"
-msgstr ""
+msgstr "백업"
 
 #: www/views/includes/backupNeededPopup.html:7
 msgid "Backup Needed"
-msgstr ""
+msgstr "백업이 필요함"
 
 #: src/js/controllers/lockSetup.js:87
 msgid "Backup all livenet wallets before using this function"
@@ -320,32 +320,32 @@ msgstr ""
 #: www/views/preferences.html:36
 #: www/views/tab-settings.html:125
 msgid "Backup needed"
-msgstr ""
+msgstr "백업이 필요함"
 
 #: www/views/includes/backupNeededPopup.html:9
 msgid "Backup now"
-msgstr ""
+msgstr "지금 백업"
 
 #: www/views/onboarding/backupRequest.html:11
 #: www/views/tab-export-file.html:89
 msgid "Backup wallet"
-msgstr ""
+msgstr "지갑 백업하기"
 
 #: src/js/controllers/lockSetup.js:84
 msgid "Backup your wallet before using this function"
-msgstr ""
+msgstr "이 기능을 사용하기 전에 귀하의 지갑을 백업하세요"
 
 #: src/js/services/profileService.js:445
 msgid "Bad wallet invitation"
-msgstr ""
+msgstr "잘못된 지갑초대"
 
 #: www/views/preferencesInformation.html:102
 msgid "Balance By Address"
-msgstr ""
+msgstr "주소의 잔액"
 
 #: www/views/includes/confirmBackupPopup.html:7
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
-msgstr ""
+msgstr "안전한 장소에 복구 문장을 보관하세요. 만약에 앱이 삭제되었을 경우 복구 문장이 없으면 귀하의 자금은 복구할수 없습니다."
 
 #: www/views/preferencesBitpayServices.html:9
 msgid "BitPay Visa&reg; Cards"
@@ -354,7 +354,7 @@ msgstr ""
 #: www/views/addressbook.add.html:38
 #: www/views/includes/incomingDataMenu.html:29
 msgid "Bitcoin Address"
-msgstr ""
+msgstr "코인 주소"
 
 #: www/views/cashScan.html:4
 msgid "Bitcoin Cash (BCH) Balances"
@@ -369,7 +369,7 @@ msgstr ""
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:90
 msgid "Bitcoin Network Fee Policy"
-msgstr ""
+msgstr "코인 네트웍 거래 수수료"
 
 #: src/js/services/incomingData.js:151
 msgid "Bitcoin cash Payment"
@@ -377,15 +377,15 @@ msgstr ""
 
 #: www/views/onboarding/tour.html:31
 msgid "Bitcoin is a currency."
-msgstr ""
+msgstr "비트코인은 통화입니다."
 
 #: www/views/onboarding/disclaimer.html:15
 msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr ""
+msgstr "비트코인은 다릅니다 &ndash; 은행이나 웹서비스 들처럼 관리하지 않습니다."
 
 #: www/views/onboarding/tour.html:18
 msgid "Bitcoin is secure,<br>digital money."
-msgstr ""
+msgstr "비트코인은 안전한,<br> 디지털 통화입니다."
 
 #: www/views/preferencesFee.html:11
 msgid "Bitcoin transactions include a fee collected by miners on the network."
@@ -397,33 +397,33 @@ msgstr ""
 
 #: www/views/modals/txp-details.html:36
 msgid "Broadcast Payment"
-msgstr ""
+msgstr "결재 전파"
 
 #: src/js/controllers/modals/txpDetails.js:64
 #: src/js/controllers/tx-details.js:81
 msgid "Broadcasted"
-msgstr ""
+msgstr "전파됨"
 
 #: src/js/services/onGoingProcess.js:11
 msgid "Broadcasting transaction"
-msgstr ""
+msgstr "트랜젹션 전파중"
 
 #: www/views/unsupported.html:6
 msgid "Browser unsupported"
-msgstr ""
+msgstr "미지원 브라우저"
 
 #: www/views/buyAmazon.html:5
 #: www/views/buyMercadoLibre.html:6
 msgid "Buy"
-msgstr ""
+msgstr "구매"
 
 #: www/views/includes/buyAndSellCard.html:3
 msgid "Buy &amp; Sell Bitcoin"
-msgstr ""
+msgstr "Bitcoin 사고 팔기"
 
 #: www/views/tab-send.html:35
 msgid "Buy Bitcoin"
-msgstr ""
+msgstr "비트코인 사기"
 
 #: www/views/mercadoLibre.html:22
 #: www/views/mercadoLibre.html:50
@@ -440,7 +440,7 @@ msgstr ""
 
 #: src/js/services/onGoingProcess.js:12
 msgid "Calculating fee"
-msgstr ""
+msgstr "수수료 계산중"
 
 #: src/js/controllers/buyAmazon.js:313
 #: src/js/controllers/buyMercadoLibre.js:307
@@ -459,15 +459,15 @@ msgstr ""
 #: www/views/modals/bitpay-card-confirmation.html:8
 #: www/views/modals/confirmation.html:13
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: www/views/copayers.html:36
 msgid "Cancel invitation"
-msgstr ""
+msgstr "초대취소"
 
 #: src/js/controllers/onboarding/tour.js:52
 msgid "Cannot Create Wallet"
-msgstr ""
+msgstr "지갑을 생성할수 없습니다"
 
 #: src/js/services/profileService.js:441
 msgid "Cannot join the same wallet more that once"
@@ -483,27 +483,27 @@ msgstr ""
 
 #: www/views/preferencesExternal.html:19
 msgid "Check installation and retry."
-msgstr ""
+msgstr "설치를 확인하시고, 다시 시도하세요."
 
 #: www/views/tab-import-file.html:4
 msgid "Choose a backup file from your computer"
-msgstr ""
+msgstr "귀하의 컴퓨터로 부터 백업파일을 선택하세요"
 
 #: www/views/modals/wallets.html:9
 msgid "Choose your destination wallet"
-msgstr ""
+msgstr "대상 지갑을 선택하세요"
 
 #: www/views/modals/wallets.html:10
 msgid "Choose your source wallet"
-msgstr ""
+msgstr "귀하의 안전한 지갑 선택"
 
 #: www/views/backup.html:54
 msgid "Clear"
-msgstr ""
+msgstr "지우기"
 
 #: www/views/preferencesHistory.html:24
 msgid "Clear cache"
-msgstr ""
+msgstr "캐시 지우기"
 
 #: src/js/controllers/confirm.js:352
 #: src/js/controllers/modals/txpDetails.js:49
@@ -527,7 +527,7 @@ msgstr ""
 #: www/views/modals/wallet-balance.html:3
 #: www/views/modals/wallets.html:5
 msgid "Close"
-msgstr ""
+msgstr "닫기"
 
 #: www/views/includes/cash.html:2
 #: www/views/preferencesInformation.html:17
@@ -536,7 +536,7 @@ msgstr ""
 
 #: www/views/preferences.html:22
 msgid "Color"
-msgstr ""
+msgstr "색상"
 
 #: www/views/preferencesAbout.html:21
 msgid "Commit hash"
@@ -544,11 +544,11 @@ msgstr ""
 
 #: www/views/preferences.html:49
 msgid "Complete the backup process to use this option"
-msgstr ""
+msgstr "백업과정을 완료하기 위해서 이 옵션을 사용하세요"
 
 #: www/views/bitpayCard.html:93
 msgid "Completed"
-msgstr ""
+msgstr "완료"
 
 #: src/js/controllers/buyAmazon.js:311
 #: src/js/controllers/buyMercadoLibre.js:305
@@ -560,7 +560,7 @@ msgstr ""
 #: www/views/confirm.html:4
 #: www/views/onboarding/collectEmail.html:32
 msgid "Confirm"
-msgstr ""
+msgstr "확인"
 
 #: www/views/modals/terms.html:26
 #: www/views/onboarding/disclaimer.html:44
@@ -645,7 +645,7 @@ msgstr "클립보드로 복사되었습니다"
 
 #: www/views/tab-export-file.html:94
 msgid "Copy this text as it is to a safe place (notepad or email)"
-msgstr ""
+msgstr "이 문장을 안전에 장소에 복사하세요 (메모장 또는 이메일)"
 
 #: www/views/includes/incomingDataMenu.html:51
 #: www/views/includes/incomingDataMenu.html:70
@@ -653,7 +653,7 @@ msgstr ""
 #: www/views/includes/logOptions.html:9
 #: www/views/tab-export-file.html:78
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "클립보드 복사"
 
 #: src/js/controllers/buyMercadoLibre.js:102
 msgid "Could not access Gift Card Service"
@@ -661,7 +661,7 @@ msgstr ""
 
 #: www/views/tab-import-phrase.html:2
 msgid "Could not access the wallet at the server. Please check:"
-msgstr ""
+msgstr "서버에서 지갑에 접근할수 없습니다. 다시한번 확인해 주시기 바랍니다"
 
 #: src/js/controllers/buyAmazon.js:102
 msgid "Could not access to Amazon.com"
@@ -669,7 +669,7 @@ msgstr ""
 
 #: src/js/services/profileService.js:510
 msgid "Could not access wallet"
-msgstr ""
+msgstr "지갑에 접근할수 없습니다"
 
 #: src/js/controllers/confirm.js:189
 msgid "Could not add message to imported wallet without shared encrypting key"
@@ -677,15 +677,15 @@ msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:199
 msgid "Could not broadcast payment"
-msgstr ""
+msgstr "결재를 전파할수 없습니다"
 
 #: src/js/services/bwcError.js:41
 msgid "Could not build transaction"
-msgstr ""
+msgstr "거래를 만들수 없습니다"
 
 #: src/js/services/walletService.js:854
 msgid "Could not create address"
-msgstr ""
+msgstr "주소를 생성할수 없습니다"
 
 #: src/js/controllers/topup.js:92
 msgid "Could not create the invoice"
@@ -695,23 +695,23 @@ msgstr ""
 #: src/js/controllers/buyMercadoLibre.js:164
 #: src/js/controllers/topup.js:142
 msgid "Could not create transaction"
-msgstr ""
+msgstr "거래를 생성할수 없습니다"
 
 #: src/js/services/profileService.js:351
 msgid "Could not create using the specified extended private key"
-msgstr ""
+msgstr "특별한 확장 비밀키를 이용해서 생성할수 없습니다"
 
 #: src/js/services/profileService.js:363
 msgid "Could not create using the specified extended public key"
-msgstr ""
+msgstr "특별한 확장공개키을 사용해서 생성할수 없습니다"
 
 #: src/js/services/profileService.js:339
 msgid "Could not create: Invalid wallet recovery phrase"
-msgstr ""
+msgstr "생성할수 없습니다: 잘못된 지갑 복구 단어"
 
 #: src/js/controllers/import.js:114
 msgid "Could not decrypt file, check your password"
-msgstr ""
+msgstr "복구할수 없습니다, 암호를 확인해주시기 바랍니다"
 
 #: src/js/controllers/modals/txpDetails.js:181
 msgid "Could not delete payment proposal"
@@ -719,11 +719,11 @@ msgstr ""
 
 #: src/js/controllers/cashScan.js:101
 msgid "Could not duplicate"
-msgstr ""
+msgstr "복사할수 없습니다"
 
 #: src/js/services/feeService.js:73
 msgid "Could not get dynamic fee"
-msgstr ""
+msgstr "변동수수료를 가져올수 없습니다"
 
 #: src/js/services/feeService.js:43
 msgid "Could not get dynamic fee for level: {{feeLevel}}"
@@ -731,7 +731,7 @@ msgstr ""
 
 #: src/js/controllers/modals/feeLevels.js:112
 msgid "Could not get fee levels"
-msgstr ""
+msgstr "수수료 레벨을 가져올수 없습니다"
 
 #: src/js/controllers/buyAmazon.js:122
 #: src/js/controllers/buyMercadoLibre.js:122
@@ -741,13 +741,13 @@ msgstr ""
 
 #: src/js/controllers/bitpayCard.js:66
 msgid "Could not get transactions"
-msgstr ""
+msgstr "거래내역을 가져올수 없습니다"
 
 #: src/js/services/profileService.js:614
 #: src/js/services/profileService.js:649
 #: src/js/services/profileService.js:673
 msgid "Could not import"
-msgstr ""
+msgstr "가려올수 없습니다"
 
 #: src/js/services/profileService.js:583
 msgid "Could not import. Check input file and spending password"
@@ -755,15 +755,15 @@ msgstr ""
 
 #: src/js/services/profileService.js:456
 msgid "Could not join wallet"
-msgstr ""
+msgstr "지갑에 참가할수 없습니다"
 
 #: src/js/controllers/modals/txpDetails.js:161
 msgid "Could not reject payment"
-msgstr ""
+msgstr "결재를 거절할수 없습니다"
 
 #: src/js/controllers/preferencesBitpayServices.js:33
 msgid "Could not remove account"
-msgstr ""
+msgstr "계정을 삭제할수 없습니다"
 
 #: src/js/controllers/preferencesBitpayCard.js:20
 #: src/js/controllers/preferencesBitpayServices.js:50
@@ -772,28 +772,28 @@ msgstr ""
 
 #: src/js/services/walletService.js:776
 msgid "Could not save preferences on the server"
-msgstr ""
+msgstr "설정을 서버에 저장할수 없습니다"
 
 #: src/js/controllers/modals/txpDetails.js:147
 msgid "Could not send payment"
-msgstr ""
+msgstr "결재를 전송할수 없습니다"
 
 #: src/js/controllers/buyAmazon.js:325
 #: src/js/controllers/buyMercadoLibre.js:318
 #: src/js/controllers/topup.js:299
 msgid "Could not send transaction"
-msgstr ""
+msgstr "거래를 전송할수 없습니다"
 
 #: www/views/walletDetails.html:210
 msgid "Could not update transaction history"
-msgstr ""
+msgstr "거래 이력을 업데이트 할 수 없습니다"
 
 #: src/js/controllers/addresses.js:29
 #: src/js/controllers/addresses.js:37
 #: src/js/controllers/copayers.js:30
 #: src/js/controllers/walletDetails.js:78
 msgid "Could not update wallet"
-msgstr ""
+msgstr "지갑을 업데이트 할수 없습니다"
 
 #: www/views/tab-create-personal.html:3
 msgid "Create Personal Wallet"
@@ -955,7 +955,7 @@ msgstr "이메일 주소"
 
 #: src/js/services/bwcError.js:122
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr ""
+msgstr "빈 주소생성 한계에 도달했습니다.새로운 주소를 더이상 생성할수 없습니다"
 
 #: www/views/preferencesCash.html:17
 msgid "Enable Bitcoin Cash wallet creation and operation within the App."
@@ -967,11 +967,11 @@ msgstr ""
 
 #: www/views/preferencesNotifications.html:29
 msgid "Enable email notifications"
-msgstr ""
+msgstr "이메일 알림 사용"
 
 #: www/views/preferencesNotifications.html:12
 msgid "Enable push notifications"
-msgstr ""
+msgstr "푸시 암림 사용"
 
 #: www/views/tab-scan.html:18
 msgid "Enable the camera to get started."
@@ -979,12 +979,12 @@ msgstr ""
 
 #: www/views/tab-settings.html:49
 msgid "Enabled"
-msgstr ""
+msgstr "가능함"
 
 #: src/js/services/walletService.js:1047
 #: src/js/services/walletService.js:1062
 msgid "Enter Spending Password"
-msgstr ""
+msgstr "전송 암호를 입력하세요"
 
 #: src/js/services/bitpayAccountService.js:110
 msgid "Enter Two Factor for your BitPay account"
@@ -992,29 +992,29 @@ msgstr ""
 
 #: www/views/amount.html:4
 msgid "Enter amount"
-msgstr ""
+msgstr "수량을 입력하세요"
 
 #: www/views/modals/chooseFeeLevel.html:41
 msgid "Enter custom fee"
-msgstr ""
+msgstr "사용자 수수료를 입력하세요"
 
 #: src/js/services/walletService.js:1029
 msgid "Enter new spending password"
-msgstr ""
+msgstr "새로운 전송 암호를 입력하세요"
 
 #: www/views/join.html:79
 #: www/views/tab-create-personal.html:51
 #: www/views/tab-create-shared.html:80
 msgid "Enter the recovery phrase (BIP39)"
-msgstr ""
+msgstr "복구 단어를 입력하세요 (BIP39)"
 
 #: www/views/onboarding/collectEmail.html:13
 msgid "Enter your email"
-msgstr ""
+msgstr "이메일을 입력하세요"
 
 #: www/views/backup.html:62
 msgid "Enter your password"
-msgstr ""
+msgstr "암호를 입력하세요"
 
 #. Trying to import a malformed wallet export QR code
 #: src/js/controllers/activity.js:45
@@ -1093,11 +1093,11 @@ msgstr ""
 #: www/views/mercadoLibreCards.html:19
 #: www/views/modals/mercadolibre-card-details.html:45
 msgid "Error"
-msgstr ""
+msgstr "오류"
 
 #: src/js/controllers/confirm.js:481
 msgid "Error at confirm"
-msgstr ""
+msgstr "확정시 오류"
 
 #: src/js/controllers/buyAmazon.js:179
 msgid "Error creating gift card"
@@ -1106,33 +1106,33 @@ msgstr ""
 #: src/js/controllers/buyAmazon.js:94
 #: src/js/controllers/buyMercadoLibre.js:94
 msgid "Error creating the invoice"
-msgstr ""
+msgstr "송장 생성 오류"
 
 #: src/js/services/profileService.js:411
 msgid "Error creating wallet"
-msgstr ""
+msgstr "지갑 생성 오류"
 
 #: src/js/controllers/confirm.js:275
 msgid "Error getting SendMax information"
-msgstr ""
+msgstr "최대전송 정보 수신 오류"
 
 #: src/js/controllers/buyAmazon.js:136
 #: src/js/controllers/buyMercadoLibre.js:136
 #: src/js/controllers/topup.js:114
 msgid "Error in Payment Protocol"
-msgstr ""
+msgstr "결재 프로토콜 오류"
 
 #: src/js/controllers/bitpayCardIntro.js:14
 msgid "Error pairing BitPay Account"
-msgstr ""
+msgstr "BitChk 계정 동기화 오류:"
 
 #: src/js/controllers/paperWallet.js:41
 msgid "Error scanning funds:"
-msgstr ""
+msgstr "자금 스캔 오류:"
 
 #: src/js/controllers/paperWallet.js:90
 msgid "Error sweeping wallet:"
-msgstr ""
+msgstr "지갑 청소 오류:"
 
 #: src/js/controllers/bitpayCardIntro.js:20
 msgid "Error updating Debit Cards"
@@ -1148,38 +1148,38 @@ msgstr ""
 #: www/views/modals/mercadolibre-card-details.html:34
 #: www/views/modals/txp-details.html:121
 msgid "Expired"
-msgstr ""
+msgstr "만료됨"
 
 #: www/views/modals/paypro.html:54
 #: www/views/modals/txp-details.html:127
 msgid "Expires"
-msgstr ""
+msgstr "만료"
 
 #: www/views/preferencesAdvanced.html:21
 msgid "Export Wallet"
-msgstr ""
+msgstr "지갑 내보내기"
 
 #: www/views/preferencesHistory.html:11
 #: www/views/preferencesHistory.html:14
 msgid "Export to file"
-msgstr ""
+msgstr "파일로 내보내기"
 
 #: www/views/export.html:3
 msgid "Export wallet"
-msgstr ""
+msgstr "지갑 내보내기"
 
 #: src/js/services/walletService.js:1174
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
-msgstr ""
+msgstr "QR 로 내보내기는 이 지갑을 지원하지 않습니다"
 
 #: www/views/preferencesInformation.html:89
 msgid "Extended Public Keys"
-msgstr ""
+msgstr "확장 공개키들"
 
 #: src/js/services/onGoingProcess.js:20
 msgid "Extracting Wallet information..."
-msgstr ""
+msgstr "지갑 정보 추출중..."
 
 #: src/js/controllers/export.js:115
 #: src/js/controllers/export.js:126
@@ -1187,33 +1187,33 @@ msgstr ""
 #: src/js/controllers/export.js:171
 #: www/views/tab-export-file.html:4
 msgid "Failed to export"
-msgstr ""
+msgstr "내보내기 실패"
 
 #: www/views/tab-create-personal.html:14
 #: www/views/tab-create-shared.html:14
 msgid "Family vacation funds"
-msgstr ""
+msgstr "가족여행 자금"
 
 #: www/views/tx-details.html:81
 msgid "Fee"
-msgstr ""
+msgstr "수주료"
 
 #: www/views/modals/chooseFeeLevel.html:75
 msgid "Fee level"
-msgstr ""
+msgstr "수수료 레벨"
 
 #: src/js/controllers/modals/feeLevels.js:100
 msgid "Fee level is not defined"
-msgstr ""
+msgstr "수수료 레벨이 정의되어 있지 않습니다"
 
 #: www/views/confirm.html:81
 #: www/views/modals/txp-details.html:101
 msgid "Fee:"
-msgstr ""
+msgstr "수수료:"
 
 #: src/js/controllers/feedback/send.js:23
 msgid "Feedback could not be submitted. Please try again later."
-msgstr ""
+msgstr "의견 전송에 실패했습니다. 잠시후 다시 시도해 주세요."
 
 #: src/js/services/onGoingProcess.js:42
 msgid "Fetching BitPay Account..."
@@ -1221,12 +1221,12 @@ msgstr ""
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching payment information"
-msgstr ""
+msgstr "결재 정보 수신중"
 
 #: www/views/export.html:14
 #: www/views/import.html:16
 msgid "File/Text"
-msgstr ""
+msgstr "파일/문장"
 
 #: www/views/preferencesLogs.html:17
 msgid "Filter setting"
@@ -1235,17 +1235,17 @@ msgstr ""
 #: src/js/services/fingerprintService.js:43
 #: src/js/services/fingerprintService.js:48
 msgid "Finger Scan Failed"
-msgstr ""
+msgstr "지문 스캔 실폐"
 
 #: src/js/controllers/feedback/send.js:34
 #: www/views/feedback/complete.html:7
 msgid "Finish"
-msgstr ""
+msgstr "완료"
 
 #: www/views/tab-create-personal.html:123
 #: www/views/tab-create-shared.html:152
 msgid "For audit purposes"
-msgstr ""
+msgstr "감사 목적을 위하야"
 
 #: src/js/controllers/topup.js:308
 #: www/views/buyAmazon.html:29
@@ -1283,7 +1283,7 @@ msgstr ""
 
 #: www/views/paperWallet.html:53
 msgid "Funds transferred"
-msgstr ""
+msgstr "자금 전송됨"
 
 #: www/views/topup.html:103
 msgid "Funds were added to debit card"
@@ -1295,15 +1295,15 @@ msgstr ""
 
 #: www/views/tab-receive.html:51
 msgid "Generate new address"
-msgstr ""
+msgstr "새로운 주소 생성"
 
 #: src/js/services/onGoingProcess.js:22
 msgid "Generating .csv file..."
-msgstr ""
+msgstr ".csv 파일 생성중..."
 
 #: src/js/services/onGoingProcess.js:37
 msgid "Generating new address..."
-msgstr ""
+msgstr "새로운 주소 생성중입니다..."
 
 #: www/views/bitpayCardIntro.html:23
 msgid "Get local cash anywhere you go, from any Visa<sup>&reg;</sup> compatible ATM. ATM bank fees may apply."
@@ -1322,13 +1322,16 @@ msgstr "시작하기"
 msgid "Get started"
 msgstr "시작하기"
 
+msgid "Take control of your money,<br />get started with bitcoin."
+msgstr "시작하세요"
+
 #: www/views/addressbook.html:20
 msgid "Get started by adding your first one."
-msgstr ""
+msgstr "첫번째 연락처를 등록하여 시작하세요"
 
 #: src/js/services/onGoingProcess.js:23
 msgid "Getting fee levels..."
-msgstr ""
+msgstr "수수료 레벨 가져오는중..."
 
 #: www/views/modals/mercadolibre-card-details.html:30
 #: www/views/modals/mercadolibre-card-details.html:35
@@ -1360,19 +1363,19 @@ msgstr ""
 #: src/js/controllers/tx-details.js:193
 #: src/js/controllers/tx-details.js:56
 msgid "Go Back"
-msgstr ""
+msgstr "되돌아가기"
 
 #: src/js/controllers/onboarding/backupRequest.js:20
 #: src/js/controllers/onboarding/backupRequest.js:26
 #: src/js/services/bitpayAccountService.js:84
 msgid "Go back"
-msgstr ""
+msgstr "되돌아가기"
 
 #: www/views/backupWarning.html:15
 #: www/views/includes/confirmBackupPopup.html:8
 #: www/views/onboarding/tour.html:23
 msgid "Got it"
-msgstr ""
+msgstr "알겠습니다"
 
 #: www/views/preferencesInformation.html:53
 #: www/views/preferencesInformation.html:59
@@ -1394,24 +1397,24 @@ msgstr ""
 
 #: www/views/tab-settings.html:20
 msgid "Help & Support"
-msgstr ""
+msgstr "도움 & 지원"
 
 #: src/js/controllers/bitpayCard.js:112
 #: src/js/controllers/tab-settings.js:50
 msgid "Help and support information is available at the website."
-msgstr ""
+msgstr "웹사이트에서 도움말과 지원정보를 확인할수 있습니다."
 
 #: www/views/addresses.html:25
 msgid "Hide"
-msgstr ""
+msgstr "숨기기"
 
 #: www/views/preferences.html:27
 msgid "Hide Balance"
-msgstr ""
+msgstr "잔액 숨기기"
 
 #: www/views/advancedSettings.html:30
 msgid "Hide Next Steps Card"
-msgstr ""
+msgstr "다음 할일들 카드 숨기기"
 
 #: www/views/join.html:49
 #: www/views/tab-create-personal.html:28
@@ -1421,7 +1424,7 @@ msgstr ""
 #: www/views/tab-import-hardware.html:31
 #: www/views/tab-import-phrase.html:36
 msgid "Hide advanced options"
-msgstr ""
+msgstr "고급옵션들 숨기기"
 
 #: www/views/tabs.html:3
 msgid "Home"
@@ -1435,11 +1438,11 @@ msgstr ""
 
 #: www/views/feedback/rateCard.html:3
 msgid "How do you like {{appName}}?"
-msgstr ""
+msgstr "{{appName}} 을 좋아헤세요?"
 
 #: src/js/controllers/feedback/rateCard.js:29
 msgid "I don't like it"
-msgstr ""
+msgstr "좋아하지 않습니다"
 
 #: www/views/onboarding/disclaimer.html:43
 msgid "I have read, understood, and agree to the <a ng-click=\"openTerms()\" translate=\"\">Terms of Use</a>."
@@ -1453,15 +1456,15 @@ msgstr "나는 약관을 읽고, 이해했으며, 이 약관에 동의합니다.
 #: www/views/tab-create-personal.html:107
 #: www/views/tab-create-shared.html:136
 msgid "I have written it down"
-msgstr ""
+msgstr "나는 문구들을 써 놓았습니다."
 
 #: src/js/controllers/feedback/rateCard.js:35
 msgid "I like the app"
-msgstr ""
+msgstr "이 앱을 좋아합니다"
 
 #: src/js/controllers/feedback/rateCard.js:26
 msgid "I think this app is terrible."
-msgstr ""
+msgstr "이 앱은 최악이라고 생각합니다."
 
 #: src/js/controllers/onboarding/backupRequest.js:19
 #: www/views/includes/screenshotWarningModal.html:9
@@ -1470,11 +1473,11 @@ msgstr "이해했습니다."
 
 #: www/views/onboarding/disclaimer.html:21
 msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase."
-msgstr "만약 이 앱이 다른 단말로 이동하거나, 삭제된 경우 내 코인들은 백업된 문장으로만 복구가 가능함을 이해했습니다."
+msgstr "만약 이 앱이 다른 단말로 이동하거나, 삭제된 경우 귀하의 코인들은 백업된 문장으로만 복구가 가능함을 이해했습니다."
 
 #: www/views/onboarding/disclaimer.html:18
 msgid "I understand that my funds are held securely on this device, not by a company."
-msgstr "내 자금은 이 장비에서만 안전하며, 회사가 관리하지 않음을 이해했습니다."
+msgstr "귀하의 자금은 이 장비에서만 안전하며, 회사가 관리하지 않음을 이해했습니다."
 
 #: www/views/backup.html:29
 msgid "I've written it down"
@@ -1615,11 +1618,11 @@ msgstr ""
 
 #: www/views/backup.html:47
 msgid "Is this correct?"
-msgstr ""
+msgstr "내역이 옳바릅니까?"
 
 #: www/views/onboarding/collectEmail.html:22
 msgid "Is this email address correct?"
-msgstr ""
+msgstr "아래 이메일 주소가 맞습니까?"
 
 #: www/views/addresses.html:25
 msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
@@ -1631,7 +1634,7 @@ msgstr ""
 
 #: www/views/join.html:151
 msgid "Join"
-msgstr ""
+msgstr "참가"
 
 #: src/js/controllers/copayers.js:85
 msgid "Join my {{appName}} Wallet. Here is the invitation code: {{secret}} You can download {{appName}} for your phone or desktop at {{appUrl}}"
@@ -1640,11 +1643,11 @@ msgstr ""
 #: www/views/add.html:30
 #: www/views/join.html:5
 msgid "Join shared wallet"
-msgstr ""
+msgstr "공유 지갑 참가하기"
 
 #: src/js/services/onGoingProcess.js:25
 msgid "Joining Wallet..."
-msgstr ""
+msgstr "지갑에 참가중..."
 
 #: www/views/onboarding/tour.html:22
 msgid "Just scan the code to pay."
@@ -1667,36 +1670,36 @@ msgstr ""
 #: www/views/preferencesCash.html:18
 #: www/views/tx-details.html:96
 msgid "Learn more"
-msgstr ""
+msgstr "조금더 알아보기"
 
 #: www/views/backup.html:36
 msgid "Let's verify your backup phrase."
-msgstr ""
+msgstr "백업문구 확인을 시작합니다."
 
 #: www/views/addresses.html:45
 #: www/views/allAddresses.html:14
 msgid "Loading addresses..."
-msgstr ""
+msgstr "주소를 불러오는중..."
 
 #: src/js/services/onGoingProcess.js:35
 msgid "Loading transaction info..."
-msgstr ""
+msgstr "거래 정보 불러오는중..."
 
 #: www/views/tab-settings.html:100
 msgid "Lock App"
-msgstr ""
+msgstr "앱 잠그기"
 
 #: src/js/controllers/lockSetup.js:23
 msgid "Lock by Fingerprint"
-msgstr ""
+msgstr "지문으로 잠그기"
 
 #: src/js/controllers/lockSetup.js:14
 msgid "Lock by PIN"
-msgstr ""
+msgstr "PIN 번호로 잠그기"
 
 #: www/views/modals/wallet-balance.html:80
 msgid "Locked"
-msgstr ""
+msgstr "잠김"
 
 #: src/js/services/bwcError.js:86
 msgid "Locktime in effect. Please wait to create a new spend proposal"
@@ -1720,7 +1723,7 @@ msgstr ""
 
 #: www/views/includes/walletHistory.html:27
 msgid "Low fees"
-msgstr ""
+msgstr "적은 수수료"
 
 #: www/views/onboarding/tour.html:38
 msgid "Makes sense"
@@ -1733,7 +1736,7 @@ msgstr ""
 #: www/views/includes/copayers.html:4
 #: www/views/preferencesInformation.html:85
 msgid "Me"
-msgstr ""
+msgstr "나"
 
 #: src/js/controllers/feedback/rateCard.js:32
 msgid "Meh - it's alright"
@@ -1744,7 +1747,7 @@ msgstr ""
 #: www/views/modals/txp-details.html:95
 #: www/views/tx-details.html:74
 msgid "Memo"
-msgstr ""
+msgstr "메모"
 
 #: www/views/mercadoLibre.html:6
 msgid "Mercado Livre Brazil Gift Cards"
@@ -1762,20 +1765,20 @@ msgstr ""
 #: www/views/buyMercadoLibre.html:54
 #: www/views/topup.html:63
 msgid "Miner Fee"
-msgstr ""
+msgstr "마이닝 수수료"
 
 #: src/js/services/bwcError.js:134
 msgid "Missing parameter"
-msgstr ""
+msgstr "잘못된 인자"
 
 #: src/js/services/bwcError.js:32
 msgid "Missing private keys to sign"
-msgstr ""
+msgstr "서명하기에 잘못된 개인키"
 
 #: www/views/preferences.html:61
 #: www/views/preferencesAdvanced.html:3
 msgid "More Options"
-msgstr ""
+msgstr "추가 옵션들"
 
 #: www/views/includes/walletHistory.html:47
 #: www/views/tx-details.html:19
@@ -1788,28 +1791,28 @@ msgstr ""
 
 #: www/views/modals/txp-details.html:57
 msgid "Multiple recipients"
-msgstr ""
+msgstr "여러 수신인들"
 
 #: www/views/tab-import-phrase.html:8
 msgid "NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery Phrase there."
-msgstr ""
+msgstr "NOTE: 제3의 소프트웨어로 지갑을 가져오기 위해서는 , 지갑추가 &gt; 지갑생성 , 그리고 복구 문장을 입력하시기 바랍니다."
 
 #: www/views/addressbook.add.html:21
 #: www/views/addressbook.view.html:18
 #: www/views/preferences.html:15
 #: www/views/preferencesAlias.html:17
 msgid "Name"
-msgstr ""
+msgstr "이름"
 
 #: www/views/buyAmazon.html:49
 #: www/views/buyMercadoLibre.html:48
 #: www/views/topup.html:56
 msgid "Network Cost"
-msgstr ""
+msgstr "전송 비용"
 
 #: src/js/services/bwcError.js:47
 msgid "Network error"
-msgstr ""
+msgstr "네트웍 오류"
 
 #: www/views/includes/walletActivity.html:43
 msgid "New Proposal"
@@ -1817,24 +1820,24 @@ msgstr ""
 
 #: src/js/controllers/addresses.js:126
 msgid "New address could not be generated. Please try again."
-msgstr ""
+msgstr "새로운 주소를 생성할수 없습니다. 다시 시도해 주시기 바랍니다."
 
 #: www/views/add.html:14
 msgid "New personal wallet"
-msgstr ""
+msgstr "개인 지갑 새로 만들기"
 
 #: www/views/includes/nextSteps.html:3
 msgid "Next steps"
-msgstr ""
+msgstr "다음 할일"
 
 #: www/views/tab-receive.html:16
 msgid "No Wallet"
-msgstr ""
+msgstr "지갑 없음"
 
 #: src/js/controllers/buyAmazon.js:115
 #: src/js/controllers/buyMercadoLibre.js:115
 msgid "No access key defined"
-msgstr ""
+msgstr "접근키가 정의되어 있지 않음"
 
 #: www/views/onboarding/backupRequest.html:5
 msgid "No backup, no bitcoin."
@@ -1842,7 +1845,7 @@ msgstr ""
 
 #: www/views/addressbook.html:19
 msgid "No contacts yet"
-msgstr ""
+msgstr "연락처가 아직 없습니다"
 
 #: www/views/preferencesLogs.html:16
 msgid "No entries for this log level"
@@ -1858,11 +1861,11 @@ msgstr ""
 
 #: www/views/proposals.html:24
 msgid "No pending proposals"
-msgstr ""
+msgstr "지연된 제안 없음"
 
 #: www/views/activity.html:25
 msgid "No recent transactions"
-msgstr ""
+msgstr "최근 거래 없음"
 
 #: src/js/controllers/buyAmazon.js:44
 #: src/js/controllers/topup.js:47
@@ -1871,26 +1874,26 @@ msgstr ""
 
 #: www/views/walletDetails.html:204
 msgid "No transactions yet"
-msgstr ""
+msgstr "아직 거래가 없습니다"
 
 #: src/js/controllers/preferencesDelete.js:15
 msgid "No wallet found"
-msgstr ""
+msgstr "지갑 자금 없음"
 
 #: src/js/controllers/preferencesDelete.js:8
 msgid "No wallet selected"
-msgstr ""
+msgstr "지갑이 선택되지 않음"
 
 #: src/js/controllers/buyAmazon.js:300
 #: src/js/controllers/buyMercadoLibre.js:292
 #: src/js/controllers/confirm.js:85
 #: src/js/controllers/topup.js:265
 msgid "No wallets available"
-msgstr ""
+msgstr "가능한 지갑없음"
 
 #: www/views/paperWallet.html:47
 msgid "No wallets available to receive funds"
-msgstr ""
+msgstr "자금 수신을 위한 지갑이 없음"
 
 #: www/views/cashScan.html:14
 msgid "No wallets eligible for Bitcoin Cash support"
@@ -1902,15 +1905,15 @@ msgstr ""
 
 #: src/js/services/feeService.js:12
 msgid "Normal"
-msgstr ""
+msgstr "보통"
 
 #: src/js/services/bwcError.js:80
 msgid "Not authorized"
-msgstr ""
+msgstr "미인증"
 
 #: src/js/controllers/confirm.js:286
 msgid "Not enough funds for fee"
-msgstr ""
+msgstr "수수료를 위한 자금이 부족합니다"
 
 #: www/views/onboarding/tour.html:50
 msgid "Not even BitPay can access it."
@@ -1918,12 +1921,12 @@ msgstr ""
 
 #: src/js/controllers/paperWallet.js:47
 msgid "Not funds found"
-msgstr ""
+msgstr "자금을 찾을수 없음"
 
 #: www/views/feedback/rateApp.html:3
 #: www/views/onboarding/notifications.html:8
 msgid "Not now"
-msgstr ""
+msgstr "아직"
 
 #: www/views/includes/output.html:15
 msgid "Note"
@@ -1936,7 +1939,7 @@ msgstr ""
 #: www/views/preferencesNotifications.html:3
 #: www/views/tab-settings.html:61
 msgid "Notifications"
-msgstr ""
+msgstr "알림들"
 
 #: www/views/onboarding/collectEmail.html:9
 msgid "Notifications by email"
@@ -1952,11 +1955,11 @@ msgstr "거래 확정시 알림 받기"
 
 #: www/views/includes/backupNeededPopup.html:8
 msgid "Now is a good time to backup your wallet. If this device is lost, it is impossible to access your funds without a backup."
-msgstr ""
+msgstr "귀하의 지갑을 백업하기에 좋은 시점입니다. 만약 귀하의 단말을 분실하다면, 귀하의 자금은 백업없이는 접근할수 없습니다."
 
 #: www/views/backupWarning.html:11
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
-msgstr ""
+msgstr "귀하의 주변에서 훔쳐보기 좋은 시점입니다. 주면에 창이 있니끼? 숨겨진 카메라? 어깨뒤의 사람이 있습니까? "
 
 #: src/js/controllers/buyAmazon.js:312
 #: src/js/controllers/topup.js:286
@@ -1986,11 +1989,11 @@ msgstr ""
 
 #: src/js/controllers/buyMercadoLibre.js:306
 msgid "Ok"
-msgstr ""
+msgstr "확인"
 
 #: www/views/tab-home.html:39
 msgid "On this screen you can see all your wallets, accounts, and assets."
-msgstr ""
+msgstr "이 화면에서 귀하의 모든 지갑들,주소들, 그리고 자산을 볼수 있습니다."
 
 #: src/js/controllers/bitpayCard.js:113
 #: src/js/controllers/preferences.js:66
@@ -2218,7 +2221,7 @@ msgstr "종료하기 위해서 한번더 해주세요"
 
 #: src/js/services/feeService.js:11
 msgid "Priority"
-msgstr "우선순위"
+msgstr "높음"
 
 #: www/views/includes/incomingDataMenu.html:80
 msgid "Private Key"
@@ -2396,11 +2399,11 @@ msgstr ""
 #: www/views/tab-create-shared.html:123
 #: www/views/tab-export-file.html:17
 msgid "Repeat password"
-msgstr ""
+msgstr "암호를 다시 입력해 주세요"
 
 #: www/views/tab-export-file.html:16
 msgid "Repeat the password"
-msgstr ""
+msgstr "암호를 다시 입력해 주세요"
 
 #: www/views/preferences.html:56
 msgid "Request Fingerprint"
@@ -2412,7 +2415,7 @@ msgstr "지정된 금액 요청"
 
 #: www/views/preferences.html:42
 msgid "Request Spending Password"
-msgstr ""
+msgstr "전송 암로 요청"
 
 #: www/views/tab-create-shared.html:44
 msgid "Required number of signatures"
@@ -2428,11 +2431,11 @@ msgstr ""
 
 #: src/js/controllers/onboarding/tour.js:56
 msgid "Retry"
-msgstr ""
+msgstr "재시도"
 
 #: www/views/tab-scan.html:23
 msgid "Retry Camera"
-msgstr ""
+msgstr "카메라 재시도"
 
 #: www/views/addressbook.add.html:56
 #: www/views/includes/note.html:9
@@ -2440,28 +2443,28 @@ msgstr ""
 #: www/views/preferencesBwsUrl.html:25
 #: www/views/preferencesNotifications.html:46
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 #: www/views/tab-scan.html:3
 #: www/views/tabs.html:11
 msgid "Scan"
-msgstr ""
+msgstr "스캔"
 
 #: www/views/tab-scan.html:15
 msgid "Scan QR Codes"
-msgstr ""
+msgstr "QR 코드 스캔"
 
 #: www/views/addresses.html:31
 msgid "Scan addresses for funds"
-msgstr ""
+msgstr "주소 스캔"
 
 #: www/views/modals/fingerprintCheck.html:11
 msgid "Scan again"
-msgstr ""
+msgstr "다시 스캔"
 
 #: src/js/services/fingerprintService.js:56
 msgid "Scan your fingerprint please"
-msgstr ""
+msgstr "지문은 스캔해 주세요"
 
 #: www/views/preferencesCash.html:22
 msgid "Scan your wallets for Bitcoin Cash"
@@ -2469,35 +2472,35 @@ msgstr ""
 
 #: src/js/services/onGoingProcess.js:30
 msgid "Scanning Wallet funds..."
-msgstr ""
+msgstr "지갑 자금 조사중..."
 
 #: www/views/tab-home.html:95
 msgid "Scanning funds..."
-msgstr ""
+msgstr "자금 스캔중..."
 
 #: www/views/includes/screenshotWarningModal.html:7
 msgid "Screenshots are not secure"
-msgstr ""
+msgstr "스크린샷은 안전하지 않습니다"
 
 #: www/views/modals/search.html:6
 msgid "Search Transactions"
-msgstr ""
+msgstr "거래내역 검색"
 
 #: www/views/tab-send.html:13
 msgid "Search or enter bitcoin address"
-msgstr ""
+msgstr "검색 또는 코인주소 입력"
 
 #: www/views/modals/search.html:16
 msgid "Search transactions"
-msgstr ""
+msgstr "거래 검색"
 
 #: www/views/preferencesAltCurrency.html:14
 msgid "Search your currency"
-msgstr ""
+msgstr "통화 검색"
 
 #: www/views/preferences.html:30
 msgid "Security"
-msgstr ""
+msgstr "보안"
 
 #: www/views/modals/mercadolibre-card-details.html:64
 msgid "See invoice"
@@ -2505,11 +2508,11 @@ msgstr ""
 
 #: www/views/tab-import-file.html:7
 msgid "Select a backup file"
-msgstr ""
+msgstr "백업파일 선택"
 
 #: src/js/controllers/tab-receive.js:139
 msgid "Select a wallet"
-msgstr ""
+msgstr "지갑 선택"
 
 #: www/views/modals/paypro.html:38
 msgid "Self-signed Certificate"
@@ -2524,37 +2527,37 @@ msgstr ""
 #: www/views/tab-send.html:3
 #: www/views/tabs.html:15
 msgid "Send"
-msgstr ""
+msgstr "보내기"
 
 #: www/views/feedback/send.html:3
 #: www/views/tab-settings.html:29
 msgid "Send Feedback"
-msgstr ""
+msgstr "의견 전송"
 
 #: www/views/addressbook.view.html:31
 msgid "Send Money"
-msgstr ""
+msgstr "자금 전송"
 
 #: www/views/allAddresses.html:19
 msgid "Send addresses by email"
-msgstr ""
+msgstr "이메일로 주소 보내기"
 
 #: www/views/includes/logOptions.html:17
 #: www/views/tab-export-file.html:82
 msgid "Send by email"
-msgstr ""
+msgstr "이메일로 전송"
 
 #: src/js/controllers/confirm.js:156
 msgid "Send from"
-msgstr ""
+msgstr "전송됨"
 
 #: www/views/includes/itemSelector.html:8
 msgid "Send max amount"
-msgstr ""
+msgstr "최대 자금 전송"
 
 #: www/views/includes/incomingDataMenu.html:46
 msgid "Send payment to this address"
-msgstr ""
+msgstr "이 주소로 결재 전송"
 
 #: www/views/feedback/rateApp.html:17
 msgid "Send us feedback instead"
@@ -2565,42 +2568,42 @@ msgstr ""
 #: www/views/modals/txp-details.html:19
 #: www/views/tx-details.html:23
 msgid "Sending"
-msgstr ""
+msgstr "전송중"
 
 #: src/js/services/onGoingProcess.js:39
 msgid "Sending 2FA code..."
-msgstr ""
+msgstr "이단계 인증코드 전송중"
 
 #: src/js/services/onGoingProcess.js:36
 msgid "Sending feedback..."
-msgstr ""
+msgstr "의견 전송중"
 
 #: www/views/confirm.html:16
 msgid "Sending maximum amount"
-msgstr ""
+msgstr "최대 자금 전송중"
 
 #: src/js/services/onGoingProcess.js:31
 msgid "Sending transaction"
-msgstr ""
+msgstr "거래 전송중"
 
 #: src/js/controllers/confirm.js:524
 msgid "Sending {{amountStr}} from your {{name}} wallet"
-msgstr ""
+msgstr "귀의 {{name}} 지갑으로 부터 {{amountStr}} 전송중"
 
 #: www/views/includes/walletHistory.html:42
 #: www/views/modals/tx-status.html:9
 #: www/views/topup.html:100
 #: www/views/tx-details.html:17
 msgid "Sent"
-msgstr ""
+msgstr "전송됨"
 
 #: src/js/controllers/tx-details.js:129
 msgid "Sent Funds"
-msgstr ""
+msgstr "자금 전송됨"
 
 #: src/js/services/bwcError.js:38
 msgid "Server response could not be verified"
-msgstr ""
+msgstr "서버의 응답을 확인할수 없습니다"
 
 #: src/js/controllers/buyAmazon.js:97
 #: src/js/controllers/buyMercadoLibre.js:97
@@ -2621,16 +2624,16 @@ msgstr ""
 
 #: www/views/tab-export-file.html:10
 msgid "Set up a password"
-msgstr ""
+msgstr "암로 설정"
 
 #: src/js/controllers/preferencesFee.js:85
 msgid "Set your own fee in satoshis/byte"
-msgstr ""
+msgstr "귀하의 수수료를 satoshis/byte 로 설정합니다"
 
 #: www/views/tab-settings.html:3
 #: www/views/tabs.html:19
 msgid "Settings"
-msgstr ""
+msgstr "설정"
 
 #: www/views/feedback/complete.html:17
 #: www/views/feedback/complete.html:26
@@ -2648,15 +2651,15 @@ msgstr ""
 
 #: www/views/tab-import-hardware.html:24
 msgid "Shared Wallet"
-msgstr ""
+msgstr "지갑 공유"
 
 #: www/views/preferencesExternal.html:34
 msgid "Show Recovery Phrase"
-msgstr ""
+msgstr "복구 암호 보기"
 
 #: www/views/tab-receive.html:34
 msgid "Show address"
-msgstr ""
+msgstr "주소 보기"
 
 #: www/views/join.html:48
 #: www/views/tab-create-personal.html:27
@@ -2666,27 +2669,27 @@ msgstr ""
 #: www/views/tab-import-hardware.html:30
 #: www/views/tab-import-phrase.html:35
 msgid "Show advanced options"
-msgstr ""
+msgstr "추가 옵션 보기"
 
 #: www/views/tab-send.html:37
 msgid "Show bitcoin address"
-msgstr ""
+msgstr "코인주소 보기"
 
 #: www/views/tab-send.html:59
 msgid "Show more"
-msgstr ""
+msgstr "더 보기"
 
 #: src/js/services/bwcError.js:104
 msgid "Signatures rejected by server"
-msgstr ""
+msgstr "서버로 부터 서명이 거절됨"
 
 #: src/js/services/onGoingProcess.js:32
 msgid "Signing transaction"
-msgstr ""
+msgstr "거래 서명중"
 
 #: www/views/onboarding/backupRequest.html:6
 msgid "Since only you control your money, you’ll need to save your backup phrase in case this app is deleted."
-msgstr ""
+msgstr "귀하가 자금을 관리하기 시작하면서, 이 앱이 삭제될때를 대비해서 복구암호를 별도로 저장하여 관리해야 합니다."
 
 #: www/views/tab-create-personal.html:122
 #: www/views/tab-create-shared.html:151
@@ -2696,7 +2699,7 @@ msgstr ""
 #: www/views/onboarding/collectEmail.html:40
 #: www/views/onboarding/tour.html:11
 msgid "Skip"
-msgstr ""
+msgstr "건너띄기"
 
 #: src/js/controllers/confirm.js:350
 #: src/js/controllers/modals/txpDetails.js:47
@@ -2732,81 +2735,81 @@ msgstr ""
 
 #: src/js/services/bwcError.js:137
 msgid "Spending Password needed"
-msgstr ""
+msgstr "전송 암호가 필요함"
 
 #: www/views/walletDetails.html:173
 msgid "Spending this balance will need significant Bitcoin network fees"
-msgstr ""
+msgstr "자금을 전송하려면 코인네트웍의 수수료가 필요합니다"
 
 #: www/views/tab-send.html:28
 msgid "Start sending bitcoin"
-msgstr ""
+msgstr "비트코인 전송 시작하기"
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
-msgstr ""
+msgstr "시작시 잠금"
 
 #: www/views/mercadoLibreCards.html:21
 #: www/views/modals/mercadolibre-card-details.html:42
 msgid "Still pending"
-msgstr ""
+msgstr "작업 진행중"
 
 #: www/views/topup.html:101
 msgid "Success"
-msgstr ""
+msgstr "성공"
 
 #: src/js/services/feeService.js:14
 msgid "Super Economy"
-msgstr ""
+msgstr "초 절약"
 
 #: www/views/preferencesCash.html:11
 msgid "Support Bitcoin Cash"
-msgstr ""
+msgstr "비트코인 캐시 지원"
 
 #: www/views/paperWallet.html:7
 msgid "Sweep"
-msgstr ""
+msgstr "청소"
 
 #: www/views/includes/incomingDataMenu.html:89
 #: www/views/paperWallet.html:3
 msgid "Sweep paper wallet"
-msgstr ""
+msgstr "종이 지갑 청소"
 
 #: src/js/services/onGoingProcess.js:33
 msgid "Sweeping Wallet..."
-msgstr ""
+msgstr "지갑 청소중..."
 
 #: www/views/preferencesDeleteWallet.html:16
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
 #: www/views/onboarding/welcome.html:5
-msgid "여러분의 코인을 관ㄹ,<br>get started with bitcoin."
-msgstr ""
+msgid "Take control of your money,<br>get started with bitcoin."
+msgstr "자금을 관리하세요,<br>비트코인을 시작합니다"
 
 #: www/views/walletDetails.html:132
 #: www/views/walletDetails.html:52
 msgid "Tap and hold to show"
-msgstr ""
+msgstr "보기 위해서 탬한후 누르고 계세요"
 
 #: www/views/includes/walletInfo.html:3
 msgid "Tap to recreate"
-msgstr ""
+msgstr "다시 만들기 위해서 탬하세요"
 
 #: www/views/includes/walletInfo.html:4
 msgid "Tap to retry"
-msgstr ""
+msgstr "재시도하기 위해서 탭하세요."
 
 #: www/views/termsOfUse.html:3
 msgid "Terms Of Use"
-msgstr ""
+msgstr "이용 약관"
 
 #: www/views/modals/terms.html:3
 #: www/views/onboarding/disclaimer.html:29
 #: www/views/onboarding/disclaimer.html:43
 #: www/views/preferencesAbout.html:30
 msgid "Terms of Use"
-msgstr ""
+msgstr "이용약관"
 
 #: www/views/tab-create-personal.html:118
 #: www/views/tab-import-phrase.html:68
@@ -2822,11 +2825,11 @@ msgstr ""
 #: www/views/feedback/complete.html:20
 #: www/views/feedback/rateApp.html:4
 msgid "Thank you!"
-msgstr ""
+msgstr "감사합니다!"
 
 #: src/js/controllers/feedback/send.js:72
 msgid "Thanks!"
-msgstr ""
+msgstr "감사합니다!"
 
 #: src/js/controllers/feedback/send.js:73
 msgid "That's exciting to hear. We'd love to earn that fifth star from you – how could we improve your experience?"
@@ -2885,7 +2888,7 @@ msgstr ""
 #: www/views/tab-create-shared.html:92
 #: www/views/tab-import-phrase.html:43
 msgid "The recovery phrase could require a password to be imported"
-msgstr ""
+msgstr "가져오기 위해서 복구 단어는 암호가 필요할수 있습니다"
 
 #: src/js/services/bwcError.js:56
 msgid "The request could not be understood by the server"
@@ -2913,7 +2916,7 @@ msgstr ""
 
 #: src/js/controllers/tab-home.js:38
 msgid "There is a new version of {{appName}} available"
-msgstr ""
+msgstr "새로운 버전을 사용할수 있습니다"
 
 #: src/js/controllers/import.js:229
 #: src/js/controllers/import.js:254
@@ -2936,17 +2939,17 @@ msgstr ""
 
 #: src/js/controllers/confirm.js:502
 msgid "This bitcoin payment request has expired."
-msgstr ""
+msgstr "이 비트코인 결재 요청은 만료되었습니다"
 
 #: www/views/join.html:133
 #: www/views/tab-create-personal.html:103
 #: www/views/tab-create-shared.html:132
 msgid "This password cannot be recovered. If the password is lost, there is no way you could recover your funds."
-msgstr ""
+msgstr "이 암호는 복구될수 없습니다. 만역 암호를 잃어버렸으면, 귀하의 자금을 복구할수 있는 방법은 하나도 없습니다."
 
 #: www/views/backup.html:24
 msgid "This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed."
-msgstr ""
+msgstr "이 복구 문장은 암호로 부터 생성되었습니다. 이 지갑을 복구하기 위해서는 복구문장과 암호가 필요합니다."
 
 #: www/views/tx-details.html:93
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
@@ -2977,11 +2980,11 @@ msgstr ""
 
 #: www/views/tab-send.html:32
 msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
-msgstr ""
+msgstr "시작하기 위해서 코인을 사거나, 귀하의 주소를 공유하세요. 귀하의 코인은 어떤 지갑 또는 서비스를 이용해서도 받을수 있습니다."
 
 #: www/views/tab-send.html:33
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr ""
+msgstr "시작하기 위해서 귀하는 코인지갑을 생성하고, 약간의 코인을 받아야 합니다"
 
 #: src/js/services/bitpayAccountService.js:73
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -3017,38 +3020,38 @@ msgstr ""
 #: src/js/services/fingerprintService.js:63
 #: src/js/services/fingerprintService.js:68
 msgid "Touch ID Failed"
-msgstr ""
+msgstr "터치아이디 인증에 실패했습니다"
 
 #: src/js/controllers/tx-details.js:12
 msgid "Transaction"
-msgstr ""
+msgstr "거래"
 
 #: www/views/confirm.html:128
 msgid "Transaction Created"
-msgstr ""
+msgstr "거래 생성됨"
 
 #: www/views/preferencesAdvanced.html:29
 #: www/views/preferencesHistory.html:3
 msgid "Transaction History"
-msgstr ""
+msgstr "거래 이력"
 
 #: src/js/services/bwcError.js:83
 msgid "Transaction already broadcasted"
-msgstr ""
+msgstr "거래가 이미 전파됨"
 
 #: src/js/controllers/buyAmazon.js:308
 #: src/js/controllers/buyMercadoLibre.js:301
 #: src/js/controllers/topup.js:281
 msgid "Transaction has not been created"
-msgstr ""
+msgstr "거래가 생성되지 않음"
 
 #: www/views/topup.html:104
 msgid "Transaction initiated"
-msgstr ""
+msgstr "거래 초기화됨"
 
 #: src/js/controllers/tx-details.js:119
 msgid "Transaction not available at this time"
-msgstr ""
+msgstr "지금 거래를 할수 없습니다."
 
 #: src/js/controllers/activity.js:45
 #: src/js/controllers/tab-home.js:174
@@ -3057,7 +3060,7 @@ msgstr ""
 
 #: www/views/modals/chooseFeeLevel.html:55
 msgid "Transactions without fee are not supported."
-msgstr ""
+msgstr "수수료 없는 거래, 지원하지 않음"
 
 #: src/js/controllers/paperWallet.js:109
 msgid "Transfer to"
@@ -3077,7 +3080,7 @@ msgstr ""
 
 #: www/views/tab-import-phrase.html:17
 msgid "Type the Recovery Phrase (usually 12 words)"
-msgstr ""
+msgstr "복구문장을 입력하세요 (보통 12개의 단어입니다.)"
 
 #: src/js/controllers/backup.js:75
 msgid "Uh oh..."
@@ -3085,19 +3088,19 @@ msgstr ""
 
 #: www/views/tx-details.html:102
 msgid "Unconfirmed"
-msgstr ""
+msgstr "미확인"
 
 #: www/views/walletDetails.html:190
 msgid "Unsent transactions"
-msgstr ""
+msgstr "미전송 거래"
 
 #: www/views/addresses.html:39
 msgid "Unused Addresses"
-msgstr ""
+msgstr "미사용 주소"
 
 #: www/views/addresses.html:50
 msgid "Unused Addresses Limit"
-msgstr ""
+msgstr "미사용 주소 한계"
 
 #: src/js/controllers/tab-home.js:146
 msgid "Update Available"
@@ -3117,41 +3120,41 @@ msgstr ""
 
 #: src/js/services/feeService.js:10
 msgid "Urgent"
-msgstr ""
+msgstr "긴급"
 
 #: www/views/advancedSettings.html:12
 msgid "Use Unconfirmed Funds"
-msgstr ""
+msgstr "미확정 자금 사용"
 
 #: src/js/services/onGoingProcess.js:34
 msgid "Validating recovery phrase..."
-msgstr ""
+msgstr "복구 문장 검증중..."
 
 #: www/views/modals/fingerprintCheck.html:4
 msgid "Verify your identity"
-msgstr ""
+msgstr "귀의 신원 확인"
 
 #: www/views/preferencesAbout.html:14
 #: www/views/preferencesExternal.html:25
 msgid "Version"
-msgstr ""
+msgstr "버전"
 
 #: www/views/tab-export-file.html:69
 msgid "View"
-msgstr ""
+msgstr "보기"
 
 #: www/views/addresses.html:34
 msgid "View All Addresses"
-msgstr ""
+msgstr "모든 주소 보기"
 
 #: src/js/controllers/onboarding/terms.js:20
 msgid "View Terms of Service"
-msgstr ""
+msgstr "서비스 이용약관 보기"
 
 #: src/js/controllers/bitpayCard.js:122
 #: src/js/controllers/tx-details.js:191
 msgid "View Transaction on Insight"
-msgstr ""
+msgstr "Insight 에서 거래 보기"
 
 #: src/js/controllers/tab-home.js:148
 msgid "View Update"
@@ -3159,7 +3162,7 @@ msgstr ""
 
 #: www/views/tx-details.html:149
 msgid "View on blockchain"
-msgstr ""
+msgstr "블럭체인에서 보기"
 
 #: www/views/mercadoLibre.html:26
 msgid "Visit mercadolivre.com.br &rarr;"
@@ -3179,7 +3182,7 @@ msgstr ""
 
 #: www/views/modals/paypro.html:42
 msgid "WARNING: UNTRUSTED CERTIFICATE"
-msgstr ""
+msgstr "경고: 신뢰되지 않은 인증"
 
 #: src/js/services/onGoingProcess.js:15
 msgid "Waiting for Ledger..."
@@ -3239,25 +3242,25 @@ msgstr ""
 
 #: www/views/preferencesAlias.html:4
 msgid "Wallet Name"
-msgstr ""
+msgstr "지갑 이름"
 
 #: www/views/preferencesInformation.html:11
 msgid "Wallet Name (at creation)"
-msgstr ""
+msgstr "지갑 이름(초기생성시)"
 
 #: www/views/preferencesInformation.html:35
 msgid "Wallet Network"
-msgstr ""
+msgstr "지갑 네트웍"
 
 #: www/views/join.html:77
 #: www/views/tab-create-personal.html:50
 #: www/views/tab-create-shared.html:79
 msgid "Wallet Recovery Phrase"
-msgstr ""
+msgstr "지갑 복구 문장"
 
 #: src/js/services/bwcError.js:26
 msgid "Wallet Recovery Phrase is invalid"
-msgstr ""
+msgstr "지갑 복구 문장이 잘못되었습니다"
 
 #: www/views/preferencesAdvanced.html:25
 #: www/views/tab-import-phrase.html:73
@@ -3266,71 +3269,71 @@ msgstr ""
 
 #: www/views/preferences.html:4
 msgid "Wallet Settings"
-msgstr ""
+msgstr "지갑 설정"
 
 #: www/views/tab-import-hardware.html:11
 #: www/views/tab-import-phrase.html:61
 msgid "Wallet Type"
-msgstr ""
+msgstr "지갑 타입"
 
 #: src/js/services/bwcError.js:59
 msgid "Wallet already exists"
-msgstr ""
+msgstr "지갑이 이미 존재합니다"
 
 #: src/js/services/profileService.js:515
 msgid "Wallet already in {{appName}}"
-msgstr ""
+msgstr "지갑이 {{appName}} 에 존재합니다"
 
 #: www/views/includes/walletActivity.html:6
 msgid "Wallet created"
-msgstr ""
+msgstr "지갑 생성됨"
 
 #: www/views/copayers.html:58
 msgid "Wallet incomplete and broken"
-msgstr ""
+msgstr "지갑이 잘못되었거나 깨짐"
 
 #: src/js/services/bwcError.js:65
 msgid "Wallet is full"
-msgstr ""
+msgstr "지갑이 꽉참"
 
 #: src/js/services/bwcError.js:125
 msgid "Wallet is locked"
-msgstr ""
+msgstr "지갑이 잠김"
 
 #: src/js/services/bwcError.js:128
 msgid "Wallet is not complete"
-msgstr ""
+msgstr "지갑이 완료되지 않음"
 
 #: www/views/tab-create-personal.html:12
 #: www/views/tab-create-shared.html:12
 msgid "Wallet name"
-msgstr ""
+msgstr "지갑 이름"
 
 #: src/js/services/bwcError.js:131
 msgid "Wallet needs backup"
-msgstr ""
+msgstr "지갑 백업이 필요합니다"
 
 #: www/views/tab-receive.html:59
 #: www/views/walletDetails.html:169
 msgid "Wallet not backed up"
-msgstr ""
+msgstr "지갑이 백업되지 않았습니다"
 
 #: src/js/services/bwcError.js:68
 msgid "Wallet not found"
-msgstr ""
+msgstr "지갑을 찾을수 없습니다"
 
 #: src/js/controllers/cashScan.js:65
 #: src/js/controllers/tab-home.js:220
 msgid "Wallet not registered"
-msgstr ""
+msgstr "지갑이 등록되어 있지 않습니다"
 
 #: src/js/services/bwcError.js:29
 msgid "Wallet not registered at the wallet service. Recreate it from \"Create Wallet\" using \"Advanced Options\" to set your recovery phrase"
-msgstr ""
+msgstr "지갑 서비스에 지갑이 등록되어 있지 않습니다. \"지갑생성\" \"고급옵션\" 에서 복구 문장을 설정하세요"
 
 #: www/views/backup.html:11
 msgid "Wallet recovery phrase not available."
-msgstr ""
+msgstr "지갑 복구 문장을 사용할수 없습니다."
 
 #: src/js/services/bwcError.js:50
 msgid "Wallet service not found"
@@ -3342,7 +3345,7 @@ msgstr "지갑들"
 
 #: www/views/tab-settings.html:107
 msgid "Wallets & Integrations"
-msgstr ""
+msgstr "지갑 & 통합"
 
 #: src/js/controllers/addressbookView.js:23
 #: src/js/controllers/modals/txpDetails.js:153
@@ -3351,15 +3354,15 @@ msgstr ""
 #: src/js/controllers/preferencesExternal.js:14
 #: www/views/preferencesDeleteWallet.html:11
 msgid "Warning!"
-msgstr ""
+msgstr "경고!"
 
 #: www/views/modals/txp-details.html:47
 msgid "Warning: this transaction has unconfirmed inputs"
-msgstr ""
+msgstr "경고: 이 거래는 미확정 거래를 사용합니다"
 
 #: src/js/controllers/onboarding/backupRequest.js:17
 msgid "Watch out!"
-msgstr ""
+msgstr "조심하세요!"
 
 #: src/js/controllers/feedback/send.js:69
 msgid "We'd love to do better."
@@ -3367,15 +3370,15 @@ msgstr ""
 
 #: www/views/backup.html:28
 msgid "We'll confirm on the next screen."
-msgstr ""
+msgstr "다음 화면에서 확인합니다."
 
 #: src/js/controllers/feedback/send.js:77
 msgid "We're always looking for ways to improve {{appName}}."
-msgstr ""
+msgstr "하{{appName}} 을 더 낳아지게 할수 있는 방법을 찾고 있습니다"
 
 #: src/js/controllers/feedback/send.js:83
 msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
-msgstr ""
+msgstr "저희는 항상 {{appName}} 을 더 낳아지게 할수 있는 방법을 찾고 있습니다."
 
 #: www/views/includes/incomingDataMenu.html:6
 msgid "Website"
@@ -3467,7 +3470,7 @@ msgstr ""
 
 #: www/views/preferencesNotifications.html:34
 msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr ""
+msgstr "귀의 지갑들의 결재에 관련된 알림을 이메일로 수신하게 됩니다."
 
 #: www/views/bitpayCard.html:50
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
@@ -3480,32 +3483,32 @@ msgstr ""
 
 #: www/views/includes/confirmBackupPopup.html:6
 msgid "Your bitcoin wallet is backed up!"
-msgstr ""
+msgstr "당시늬 코인 지갑이 백업되었습니다!"
 
 #: www/views/tab-home.html:36
 msgid "Your bitcoin wallet is ready!"
-msgstr ""
+msgstr "귀하의 코인 지갑이 준비되었습니다."
 
 #: www/views/modals/chooseFeeLevel.html:61
 msgid "Your fee is lower than recommended."
-msgstr ""
+msgstr "수수로가 너무 적습니다"
 
 #: www/views/feedback/send.html:42
 msgid "Your ideas, feedback, or comments"
-msgstr ""
+msgstr "귀하의 의견,또는 요구사항"
 
 #: www/views/tab-create-shared.html:22
 msgid "Your name"
-msgstr ""
+msgstr "귀하의 이름"
 
 #: www/views/join.html:16
 msgid "Your nickname"
-msgstr ""
+msgstr "귀하의 별명"
 
 #: www/views/tab-export-file.html:11
 #: www/views/tab-import-file.html:20
 msgid "Your password"
-msgstr ""
+msgstr "귀하의 암호"
 
 #: www/views/buyAmazon.html:102
 msgid "Your purchase could not be completed"
@@ -3517,7 +3520,7 @@ msgstr ""
 
 #: www/views/onboarding/backupRequest.html:10
 msgid "Your wallet is never saved to cloud storage or standard device backups."
-msgstr ""
+msgstr "귀하의 지감은 클라우드 저장소나 표준백업장비에 저장되지 않습니다."
 
 #: src/js/services/walletService.js:1030
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
