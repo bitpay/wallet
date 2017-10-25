@@ -1245,7 +1245,7 @@ msgstr "완료"
 #: www/views/tab-create-personal.html:123
 #: www/views/tab-create-shared.html:152
 msgid "For audit purposes"
-msgstr "감사 목적을 위하야"
+msgstr "감사 목적을 위하여"
 
 #: src/js/controllers/topup.js:308
 #: www/views/buyAmazon.html:29
@@ -2694,7 +2694,7 @@ msgstr "귀하가 자금을 관리하기 시작하면서, 이 앱이 삭제될�
 #: www/views/tab-create-personal.html:122
 #: www/views/tab-create-shared.html:151
 msgid "Single Address Wallet"
-msgstr ""
+msgstr "단일 주소 지갑"
 
 #: www/views/onboarding/collectEmail.html:40
 #: www/views/onboarding/tour.html:11
