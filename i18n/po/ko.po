@@ -1485,7 +1485,7 @@ msgstr "문구들을 적어 놓았습니다"
 
 #: www/views/preferences.html:45
 msgid "If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected."
-msgstr ""
+msgstr "만약에 활성화 되어 있으면 모든 민감한 정보(개인키,복구 문장) 과 사용하기,내보내기 등 이 지갑과 관련된 행동은 보호됩니다"
 
 #: www/views/advancedSettings.html:23
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
@@ -2001,7 +2001,7 @@ msgstr "이 화면에서 귀하의 모든 지갑들,주소들, 그리고 자산�
 #: src/js/controllers/tab-settings.js:51
 #: src/js/controllers/tx-details.js:55
 msgid "Open"
-msgstr ""
+msgstr "열기"
 
 #: src/js/controllers/preferencesLanguage.js:13
 msgid "Open Crowdin"
@@ -2009,20 +2009,20 @@ msgstr ""
 
 #: src/js/controllers/preferencesAbout.js:15
 msgid "Open GitHub"
-msgstr ""
+msgstr "깃허브 열기"
 
 #: src/js/controllers/preferencesAbout.js:13
 msgid "Open GitHub Project"
-msgstr ""
+msgstr "깃허브 프로젝트 열기"
 
 #: src/js/controllers/bitpayCard.js:123
 #: src/js/controllers/tx-details.js:192
 msgid "Open Insight"
-msgstr ""
+msgstr "인사이트 열기"
 
 #: www/views/tab-scan.html:22
 msgid "Open Settings"
-msgstr ""
+msgstr "설정 열기"
 
 #: src/js/controllers/preferencesLanguage.js:11
 msgid "Open Translation Community"
@@ -2038,7 +2038,7 @@ msgstr ""
 
 #: www/views/tab-receive.html:27
 msgid "Open wallet"
-msgstr ""
+msgstr "지갑 열기"
 
 #: www/views/includes/incomingDataMenu.html:19
 msgid "Open website"
@@ -2296,12 +2296,12 @@ msgstr ""
 
 #: www/views/addresses.html:51
 msgid "Read more"
-msgstr ""
+msgstr "더 알아보기"
 
 #: src/js/controllers/preferences.js:65
 #: src/js/controllers/tx-details.js:54
 msgid "Read more in our Wiki"
-msgstr ""
+msgstr "우리의 위키에서 더 알아보기"
 
 #: www/views/tab-receive.html:3
 #: www/views/tabs.html:7
@@ -2415,7 +2415,7 @@ msgstr "지정된 금액 요청"
 
 #: www/views/preferences.html:42
 msgid "Request Spending Password"
-msgstr "전송 암로 요청"
+msgstr "사용시 암호 설정"
 
 #: www/views/tab-create-shared.html:44
 msgid "Required number of signatures"
@@ -3414,23 +3414,23 @@ msgstr "결재들에 대한 알림을 푸시아림으로 받고 싶으세요?"
 
 #: src/js/controllers/import.js:287
 msgid "Wrong number of recovery words:"
-msgstr ""
+msgstr "복구문장의 갯수가 잘못됨:"
 
 #: src/js/services/bwcError.js:140
 msgid "Wrong spending password"
-msgstr ""
+msgstr "잘못된 암호"
 
 #: www/views/modals/confirmation.html:7
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: src/js/controllers/onboarding/backupRequest.js:25
 msgid "Yes, skip"
-msgstr ""
+msgstr "예, 건너띄기"
 
 #: src/js/controllers/onboarding/backupRequest.js:24
 msgid "You can create a backup later from your wallet settings."
-msgstr ""
+msgstr "귀하의 지갑 설정에서 나중에 백업을 생성할수 있습니다."
 
 #: src/js/controllers/preferencesLanguage.js:12
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
@@ -3438,7 +3438,7 @@ msgstr ""
 
 #: www/views/tab-scan.html:16
 msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr ""
+msgstr "지불요청,종이지갑 등에서 코인주소를 스캔할수 있습니다"
 
 #: src/js/controllers/preferencesAbout.js:14
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
