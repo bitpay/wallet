@@ -86,15 +86,15 @@
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
-    <span class="assertive" ng-show="mlGiftCard.status == 'FAILURE'">
+    <div class="assertive" ng-show="mlGiftCard.status == 'FAILURE'">
       Sua compra não pôde ser concluída
-    </span>
-    <span ng-show="mlGiftCard.status == 'PENDING'">
+    </div>
+    <div ng-show="mlGiftCard.status == 'PENDING'">
       Sua compra foi adicionada à lista de pendentes
-    </span>
-    <span ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.status == 'active'">
+    </div>
+    <div ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.status == 'active'">
       Comprou {{mlGiftCard.amount}} {{mlGiftCard.currency}}
-    </span>
+    </div>
     <div ng-show="mlGiftCard.status == 'SUCCESS' || mlGiftCard.cardStatus == 'active'">
       Vale-Presente gerado e pronto para usar
     </div>
