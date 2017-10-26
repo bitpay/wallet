@@ -1,33 +1,29 @@
-.popup-modal-header-success {
-  background-color: green;
-  display: flex;
-  justify-content: center;
-  padding: 1.5rem;
-  max-height: 10rem;
-  img {
-    max-height: 10rem;
-    height: 100%;
-  }
+.confirm-modal-header {
+  background: green;
+  padding: 1rem;
+  border-radius: 12px 12px 0 0;
+  min-height: 120px;
 }
-.popup-modal-content-success {
+.confirm-modal-content {
   text-align: center;
   height: 65%;
   overflow-y: scroll;
-  padding: 3rem;
+  padding: 1rem;
   display: flex;
   align-items: center;
-  .popup-modal-heading {
-      font-weight: bold;
-      font-size: 2rem;
-      padding-bottom: 1rem;
+  .confirm-modal-heading {
+    font-weight: bold;
+    font-size: 2rem;
+    padding-bottom: 1rem;
   }
-  .popup-modal-message {
-      padding: 1.5rem;
-      font-size: 1.6rem;
+  .confirm-modal-message {
+    padding: 1.5rem;
+    font-size: 1.6rem;
   }
-  .button-clear {
-      padding-top: 2rem;
-      background: none;
-      font-size: 1.6rem;
+  button {
+    padding-top: 2rem;
+    background: none;
+    font-size: 1.6rem;
   }
 }
+

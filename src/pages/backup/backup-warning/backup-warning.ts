@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { BackupWarningModalPage } from '../backup-warning-modal/backup-warning-modal';
 
 @Component({
@@ -7,20 +7,14 @@ import { BackupWarningModalPage } from '../backup-warning-modal/backup-warning-m
   templateUrl: 'backup-warning.html',
 })
 export class BackupWarningPage {
-
   public currentIndex: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
-  }
-
-  ionViewDidLoad() {
-  }
+  constructor(public modalCtrl: ModalController) {}
 
   openWarningModal() {
     const myModal = this.modalCtrl.create(BackupWarningModalPage, {}, {
       showBackdrop: true,
       enableBackdropDismiss: true,
-      cssClass: "backup-modal-warning"
     });
     myModal.present();
   }

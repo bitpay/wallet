@@ -1,20 +1,16 @@
-<ion-header>
-</ion-header>
-
-
 <ion-content>
-  <div class="popup-modal-header popup-modal-header-warning">
+  <div class="warning-modal-header">
     <img src='assets/img/no-screenshot.svg'/>
   </div>
-  <div class="popup-modal-content popup-modal-content-warning">
+  <div class="warning-modal-content">
     <div>
-      <div class="popup-modal-heading">
+      <div class="warning-modal-heading">
         <span translate>Screenshots are not secure</span>
       </div>
-      <div class="popup-modal-message">
+      <div class="warning-modal-message">
         <span translate>If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen.</span>
       </div>
-      <button class="button button-clear" (click)="close()" translate>I understand</button>
+      <button (click)="close()" translate>I understand</button>
     </div>
   </div>
 </ion-content>

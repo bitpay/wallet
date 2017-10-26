@@ -25,7 +25,11 @@ export class BackupGamePage {
   private keys: any;
   private useIdeograms: any;
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController) {
+  constructor(
+    public navCtrl: NavController, 
+    public alertCtrl: AlertController, 
+    public modalCtrl: ModalController
+  ) {
     // TODO replace for the original wallet object
     this.wallet = {
       name: 'Wallet name',
@@ -35,10 +39,8 @@ export class BackupGamePage {
         mnemonicEncrypted: false,
       },
       n: 1,
-      // isPrivKeyEncrypted: this.isPrivKeyEncrypted(),
-      // mnemonicHasPassphrase: this.mnemonicHasPassphrase(),
-      isPrivKeyEncrypted: false,
-      mnemonicHasPassphrase: false,
+      isPrivKeyEncrypted: this.isPrivKeyEncrypted(),
+      mnemonicHasPassphrase: this.mnemonicHasPassphrase(),
       network: 'livenet',
     };
 
@@ -75,7 +77,6 @@ export class BackupGamePage {
 
     // var words = keys.mnemonic;
     var words = this.wallet.credentials.mnemonic;
-    // $scope.data = {};
 
     this.mnemonicWords = words.split(/[\u3000\s]+/);
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
@@ -85,7 +86,6 @@ export class BackupGamePage {
     this.selectComplete = false;
     this.error = false;
 
-    // words = _.repeat('x', 300);
     if (this.currentIndex == 2) this.slidePrev();
   };
 
@@ -201,16 +201,10 @@ export class BackupGamePage {
       let self = this;
       const myModal: Modal = self.modalCtrl.create(BackupConfirmModalPage, {}, {
         showBackdrop: true,
-        enableBackdropDismiss: true,
-        cssClass: "backup-modal-success"
+        enableBackdropDismiss: false,
       });
 
       myModal.present();
-
-      myModal.onDidDismiss(() => {
-        this.navCtrl.setRoot(TabsPage);
-        this.navCtrl.popToRoot();
-      });
     }
   };
 

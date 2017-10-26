@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
+import { TabsPage } from '../../tabs/tabs';
 
 @Component({
   selector: 'page-backup-confirm-modal',
@@ -7,24 +8,16 @@ import { ViewController } from 'ionic-angular';
 })
 export class BackupConfirmModalPage {
 
-  constructor(public viewCtrl: ViewController) {
-  }
-
-  ionViewDidLoad() {
-  }
+  constructor(
+    public navCtrl: NavController,
+    public viewCtrl: ViewController
+  ) {}
 
   closeBackupResultModal() {
-    // TODO waiting for bwc
-    // profileService.isDisclaimerAccepted(function(val) {
-    //   if (val) {
-    //     $ionicHistory.removeBackView();
-    //     $state.go('tabs.home');
-    //   } else $state.go('onboarding.disclaimer', {
-    //     walletId: $stateParams.walletId,
-    //     backedUp: true
-    //   });
-    // });
+    // TODO Set disclaimer accepted
     this.viewCtrl.dismiss();
+    this.navCtrl.setRoot(TabsPage);
+    this.navCtrl.popToRoot();
   }
 
 }

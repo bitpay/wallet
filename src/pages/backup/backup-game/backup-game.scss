@@ -1,156 +1,39 @@
-page-backup-game {
-  font-size: 16px;
-
-  .header-md::after {
-    background: none;
-  }
-
+.backup {
   .pages {
-
     .swiper-pagination {
       display: none;
     }
-
     .slide-zoom {
       height: 100%;
-
-      .wallet-backup-phrase1 {
-        height: 70%;
-        color: #445;
-
-        .initial-prompt {
-          padding: 3rem;
-        }
-
-        .backup-phrase {
-          background: #f2f2f2;
-          margin: auto;
-          border: 2px dashed #d9d9d9;
-          border-radius: 3px;
-          color: #445;
-          text-align: center;
-          max-width: 500px;
-          min-height: 12rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .password-required {
-          padding: 2rem;
-          font-size: 14px;
-          color: #DB5B44;
-        }
-
-        .password-prompt {
-          background-color: #f2f2f2;
-          padding: 2rem;
-
-          .description {
-            padding-bottom: 3rem;
-          }
-        }
-
-        .cta-buttons {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          padding-bottom: 5vh;
-
-          .tldr-prompt {
-            padding: 1rem;
-          }
-
-          &.select-phrase {
-            background: #f2f2f2;
-          }
-
-          &.confirm {
-            margin-top: 1rem;
-          }
-        }
-
-        .button.primary {
-          width: 85%;
-          max-width: 300px;
-          min-height: 5rem;
-          font-size: 1.6rem;
-          border-radius: 3px;
-          cursor: pointer;
-          border-color: transparent;
-        }
-
-        .button.button-clear {
-          width: 85%;
-          margin-top: 0.6rem;
-          max-width: 300px;
-          min-height: 5rem;
-          font-size: 1.6rem;
-          border-radius: 3px;
-          cursor: pointer;
-          border-color: transparent;
-          background-color: inherit;
-          &:active {
-            opacity: 0.5;
-          }
-        }
-
-        .button.select-word {
-          background: #1abb9b;
-          color: #192c3a;
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-          display: inline-block;
-          margin: 3px 2px;
-          min-height: 35px;
-          line-height: 33px;
-          padding: 0 8px;
-          border-width: 1px;
-          border-color: transparent;
-          border-style: solid;
-          border-radius: 3px;
-          vertical-align: top;
-          text-align: center;
-          text-overflow: ellipsis;
-          font-size: 16px;
-        }
-      }
     }
-  }
-}
-
-@media not all and (min-height: 600px) and (min-width: 768px) {
-  .backup-modal-success ion-backdrop {
-    visibility: visible;
-    z-index: 0;
-  }
-  .backup-modal-success {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .modal-wrapper {
-      width: 90%;
-      max-width: 350px;
-      height: 40%;
-      min-height: 350px;
+    .password-required {
+      padding: 2rem;
+      font-size: 14px;
+      color: #DB5B44;
     }
-  }
-}
-
-.backup-modal-success {
-  .modal-wrapper {
-    max-height: 40rem;
-    ion-content {
-      max-height: 40rem;
+    .password {
+      background-color: #f2f2f2;
+      padding: 2rem;
+    }
+    .phrase {
+      display: -webkit-box;
+      background: #f2f2f2;
+      border: 2px dashed #d9d9d9;
+      border-radius: 3px;
+      color: #445;
       text-align: center;
-      border-radius: 12px;
-      .scroll-content {
-        overflow-y: hidden;
-        border-radius: 12px;
-        padding: 0rem;
-        .popup-modal-content-success {
-          overflow-y: hidden;
-        }
+      max-width: 500px;
+      min-height: 12rem;
+      align-items: center;
+    }
+    .buttons {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding-bottom: 5vh;
+      .tldr {
+        padding: 1rem;
       }
     }
   }

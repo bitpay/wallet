@@ -8,15 +8,13 @@ import { BackupGamePage } from '../backup-game/backup-game';
 })
 export class BackupWarningModalPage {
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController) {
-  }
-
-  ionViewDidLoad() {
-  }
-
+  constructor(
+    public navCtrl: NavController, 
+    public viewCtrl: ViewController
+  ) {}
+  
   close() {
     this.navCtrl.push(BackupGamePage);
     this.viewCtrl.dismiss();
   }
-
 }
