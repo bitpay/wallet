@@ -15,15 +15,6 @@ page-backup-warning {
       max-width: 400px;
     }
   }
-
-  .navbarc {
-    .bar-button {
-        color: $v-accent-color;
-    }
-  }
-  .header-md::after {
-    background: none;
-  }
 }
 
 @media not all and (min-height: 600px) and (min-width: 768px) {

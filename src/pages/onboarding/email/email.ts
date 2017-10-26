@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '@nsalaun/ng-logger';
 
 import { BackupRequestPage } from '../backup-request/backup-request';
@@ -9,21 +10,31 @@ import { BackupRequestPage } from '../backup-request/backup-request';
   templateUrl: 'email.html',
 })
 export class EmailPage {
-  public data: any;
+  public formData: any;
   public showConfirmForm: boolean;
+  
+  private emailForm: FormGroup;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public actionSheet: ActionSheetController,
-    private log: Logger
+    private log: Logger,
+    private fb: FormBuilder
   ) {
-    this.data = {
+    this.formData = {
       accept: true,
-      email: '',
+      email: null,
     };
     this.showConfirmForm = false;
   }
+
+  ngOnInit() {
+    this.emailForm = this.fb.group({
+      email: ['', Validators.required, this.validateEmail()],
+      accept: [''],
+    });
+  };
 
   ionViewDidLoad() {
     this.log.info('ionViewDidLoad EmailPage');
@@ -31,6 +42,11 @@ export class EmailPage {
 
   skip() {
     this.navCtrl.push(BackupRequestPage);
+  }
+
+  validateEmail() {
+    var regex = /^[a-zA-Z0-9.!#$%&*+=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return regex.test(this.formData.email);
   }
 
   showActionSheet() {
@@ -50,7 +66,7 @@ export class EmailPage {
 
   showConfirm() {
     // TODO Fix form validation
-    if (!this.data.email) return;
+    if (!this.formData.email) return;
     this.showConfirmForm = !this.showConfirmForm;
   }
 

@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController} from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 import { DisclaimerPage } from '../disclaimer/disclaimer';
+import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 
 @Component({
   selector: 'page-backup-request',
@@ -29,7 +30,7 @@ export class BackupRequestPage {
   }
 
   initBackupFlow() {
-    // TODO navigate to backupFlow
+    this.navCtrl.push(BackupWarningPage);
   }
 
   doBackupLater(confirmed: boolean) {

@@ -1,51 +1,48 @@
 <ion-header>
 
-  <ion-navbar hideBackButton="true" transparent>
+  <ion-navbar hideBackButton="true">
     <ion-buttons end>
-      <button ion-button icon-only (click)="skip()">
-        Skip
-      </button>
+      <button ion-button icon-only (click)="skip()" translate>Skip</button>
     </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content>
-  <div class="email-title" translate>Wallet Created</div>
+  <div translate>Wallet Created</div>
 
   <div *ngIf="!showConfirmForm">
-    <div class="email-content">
+    <div>
       <p translate>Notifications by email</p>
       <p translate>Where would you like to receive email notifications about payments?</p>
     </div>
 
-    <form (ngSubmit)="showConfirm()" novalidate>
+    <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
       <ion-item>
-        <ion-label>Email</ion-label>
-        <ion-input type="email" [(ngModel)]="data.email" name="email" required></ion-input>
+        <ion-input type="email" [(ngModel)]="formData.email" formControlName="email" placeholder="Email Input"></ion-input>
       </ion-item>
+
       <ion-item>
-        <ion-label >Get news and updates from BitPay</ion-label>
-        <ion-checkbox name="accept" [(ngModel)]="data.accept"></ion-checkbox>
+        <ion-label translate>Get news and updates from BitPay</ion-label>
+        <ion-checkbox [(ngModel)]="formData.accept" formControlName="accept" checked="true"></ion-checkbox>
       </ion-item>
-      <div class="buttons">
-        <button ion-button block type="submit">Continue &rarr;</button>
-      </div>
+      
+      <button ion-button block type="submit" [disabled]="!validateEmail()" translate>Continue &rarr;</button>
     </form>
   </div>
 
   <div *ngIf="showConfirmForm">
-    <div class="email-content">
+    <div>
       <p translate>Is this email address correct?</p>
-      <p>{{data.email}}</p>
+      <p>{{formData.email}}</p>
     </div>
     <div class="buttons">
       <div class="row">
         <div class="col col-50">
-          <button class="primary" block ion-button (click)="showConfirm()">Edit</button>
+          <button block ion-button (click)="showConfirm()" translate>Edit</button>
         </div>
         <div class="col col-50">
-          <button class="primary" block ion-button (click)="save()">Confirm</button>
+          <button block ion-button (click)="save()" translate>Confirm</button>
         </div>
       </div>
     </div>

@@ -9,7 +9,6 @@ page-amount {
     position: absolute;
     bottom: 0;
     width: 100%;
-    color: $v-mid-gray;
 
     .row {
       padding: 0 !important;
@@ -21,13 +20,8 @@ page-amount {
     }
 
     .operator {
-      background-color: $v-subtle-gray;
       font-weight: normal;
       cursor: pointer;
-
-      &:active {
-        background-color: $v-light-gray;
-      }
     }
 
     .operator-row {
@@ -48,16 +42,10 @@ page-amount {
 
     .digit{
       cursor: pointer;
-      border-top: 1px solid $v-subtle-gray;
-      border-left: 1px solid $v-subtle-gray;
-      &:active {
-        background-color: $v-subtle-gray;
-      }
     }
 
     @media(max-height: 480px) {
       font-size: 12px;
-
     }
   }
 }

@@ -4,23 +4,6 @@ page-backup-game {
   .header-md::after {
     background: none;
   }
-  .navbarc {
-    .bar-button {
-      color: $v-onboarding-bar-header-button-color;
-    }
-    .toolbar-background {
-      background: $v-primary-color;
-    }
-    .toolbar-content {
-      .title {
-        text-align: center;
-        margin-right: 56px;
-        .toolbar-title {
-          color: $v-onboarding-bar-header-color;
-        }
-      }
-    }
-  }
 
   .pages {
 
@@ -96,11 +79,6 @@ page-backup-game {
           border-radius: 3px;
           cursor: pointer;
           border-color: transparent;
-          background-color: $v-accent-color;
-          color: $v-onboarding-color;
-          &:active {
-            background-color: $v-btn-active-color;
-          }
         }
 
         .button.button-clear {
@@ -113,7 +91,6 @@ page-backup-game {
           cursor: pointer;
           border-color: transparent;
           background-color: inherit;
-          color: $v-accent-color;
           &:active {
             opacity: 0.5;
           }
@@ -136,9 +113,6 @@ page-backup-game {
           text-align: center;
           text-overflow: ellipsis;
           font-size: 16px;
-          &:active {
-            background-color: $v-btn-active-color;
-          }
         }
       }
     }

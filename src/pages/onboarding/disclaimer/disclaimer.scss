@@ -1,17 +1,15 @@
-page-disclaimer {
-  .terms {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    padding: 15px 15px 4vh 15px;
-    .link {
-      font-size: 2vh;
-      cursor: pointer;
-    }
+.terms {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  padding: 15px 15px 4vh 15px;
+  .link {
+    font-size: 2vh;
+    cursor: pointer;
   }
-  .content {
-    padding-top: 5vh;
-    text-align: center;
-    font-size: 3vh;
-  }
+}
+.content {
+  padding-top: 5vh;
+  text-align: center;
+  font-size: 3vh;
 }
