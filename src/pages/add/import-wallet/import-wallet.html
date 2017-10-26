@@ -5,11 +5,15 @@
 </ion-header>
 
 <ion-content>
-  <div class="tabs">
-    <div class="tab" [ngClass]="{'selected': selectedTab == 'words'}" (click)="selectTab('words')"><span>Recovery phrase</span></div>
-    <div class="tab" [ngClass]="{'selected': selectedTab == 'file'}" (click)="selectTab('file')"><span>File/Text</span></div>
-  </div>
-
+  <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
+    <ion-segment-button value="words" translate>
+      Words
+    </ion-segment-button>
+    <ion-segment-button value="file" translate>
+      File
+    </ion-segment-button>
+  </ion-segment>
+  
   <form [formGroup]="importForm" (ngSubmit)="import()">
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>Type the recovery phrase (usually 12 words)</ion-label>
