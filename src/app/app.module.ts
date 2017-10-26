@@ -24,6 +24,7 @@ import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 import { CopayApp } from './app.component';
 
 /* Pages */
+import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -32,8 +33,11 @@ import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-req
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
-import { TabsPage } from '../pages/tabs/tabs';
 import { TourPage } from '../pages/onboarding/tour/tour';
+import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
+import { BackupWarningModalPage } from '../pages/backup/backup-warning-modal/backup-warning-modal';
+import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
+import { BackupConfirmModalPage } from '../pages/backup/backup-confirm-modal/backup-confirm-modal';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -87,6 +91,10 @@ let pages: any = [
   CreateWalletPage,
   ImportWalletPage,
   JoinWalletPage,
+  BackupWarningPage,
+  BackupWarningModalPage,
+  BackupGamePage,
+  BackupConfirmModalPage,
   AboutPage,
   AdvancedPage,
   AltCurrencyPage,

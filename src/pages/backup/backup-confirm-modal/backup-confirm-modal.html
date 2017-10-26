@@ -1,22 +1,18 @@
-<ion-header>
-</ion-header>
-
-
 <ion-content>
-    <div class="popup-modal-header popup-modal-header-success">
-      <div class="popup-modal-header-img-success popup-modal-header-img">
-        <img src='assets/img/onboarding-success.svg'/>
-      </div>
+  <div class="confirm-modal-header">
+    <div>
+      <img src='assets/img/onboarding-success.svg'/>
     </div>
-    <div class="popup-modal-content popup-modal-content-success">
-      <div>
-        <div class="popup-modal-heading">
-          <span translate>Your bitcoin wallet is backed up!</span>
-        </div>
-        <div class="popup-modal-message">
-          <span translate>Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.</span>
-        </div>
-        <button class="button button-clear" (click)="closeBackupResultModal()" translate>Got it</button>
+  </div>
+  <div class="confirm-modal-content">
+    <div>
+      <div class="confirm-modal-heading">
+        <span translate>Your bitcoin wallet is backed up!</span>
       </div>
+      <div class="confirm-modal-message">
+        <span translate>Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.</span>
+      </div>
+      <button (click)="closeBackupResultModal()" translate>Got it</button>
     </div>
+  </div>
 </ion-content>

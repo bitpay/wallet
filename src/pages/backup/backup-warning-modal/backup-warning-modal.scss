@@ -1,32 +1,28 @@
-page-backup-warning-modal {
-  .popup-modal-header-warning {
-    background: #ffa500;
+.warning-modal-header {
+  background: orange;
+  padding: 1rem;
+  border-radius: 12px 12px 0 0;
+  min-height: 120px;
+}
+.warning-modal-content {
+  text-align: center;
+  height: 65%;
+  overflow-y: scroll;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  .warning-modal-heading {
+    font-weight: bold;
+    font-size: 2rem;
+    padding-bottom: 1rem;
   }
-  .popup-modal-header {
-    padding: 1rem;
-    border-radius: 12px 12px 0 0;
-    min-height: 120px;
+  .warning-modal-message {
+    padding: 1.5rem;
+    font-size: 1.6rem;
   }
-  .popup-modal-content-warning {
-    text-align: center;
-    height: 65%;
-    overflow-y: scroll;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    .popup-modal-heading {
-      font-weight: bold;
-      font-size: 2rem;
-      padding-bottom: 1rem;
-    }
-    .popup-modal-message {
-      padding: 1.5rem;
-      font-size: 1.6rem;
-    }
-    .button-clear {
-      padding-top: 2rem;
-      background: none;
-      font-size: 1.6rem;
-    }
+  button {
+    padding-top: 2rem;
+    background: none;
+    font-size: 1.6rem;
   }
 }
