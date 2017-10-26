@@ -4,6 +4,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { TourPage } from './tour/tour';
 import { TabsPage } from '../tabs/tabs';
+import { ImportWalletPage } from '../add/import-wallet/import-wallet';
 
 @Component({
   selector: 'page-onboarding',
@@ -26,7 +27,7 @@ export class OnboardingPage {
   }
 
   restoreFromBackup() {
-    // TODO navigate to backupFlow
+    this.navCtrl.push(ImportWalletPage, {fromOnboarding: true});
   }
 
   skipOnboarding() {

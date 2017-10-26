@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BwcProvider } from '../../../providers/bwc/bwc';
@@ -12,6 +12,7 @@ import { ConfigProvider } from '../../../providers/config/config';
   templateUrl: 'import-wallet.html'
 })
 export class ImportWalletPage implements OnInit{
+  public fromOnboarding: boolean;
   public formData: any;
   public showAdvOpts: boolean;
   public selectedTab: string;
@@ -23,12 +24,14 @@ export class ImportWalletPage implements OnInit{
 
   constructor(
     public navCtrl: NavController,
+    private navParams: NavParams,
     private form: FormBuilder,
     private bwc: BwcProvider,
     private pathHelper: DerivationPathHelperProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
   ) {
+    this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.selectedTab = 'words';
     this.derivationPathByDefault = this.pathHelper.default;
     this.derivationPathForTestnet = this.pathHelper.defaultTestnet;

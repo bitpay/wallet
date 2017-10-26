@@ -35,10 +35,6 @@ export class TourPage {
     this.currentIndex = this.slides.getActiveIndex();
   }
 
-  skip() {
-    this.navCtrl.push(EmailPage);
-  }
-
   slidePrev() {
     if (this.currentIndex == 0) this.navCtrl.pop();
     else {
