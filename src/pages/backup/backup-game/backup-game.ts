@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Slides, Navbar, AlertController, ModalController, Modal } from 'ionic-angular';
+import { NavController, Slides, Navbar, AlertController, ModalController, Modal } from 'ionic-angular';
+import { TabsPage } from '../../tabs/tabs';
+import { BackupConfirmModalPage } from '../backup-confirm-modal/backup-confirm-modal';
 import * as _ from 'lodash';
 
-@IonicPage()
 @Component({
   selector: 'page-backup-game',
   templateUrl: 'backup-game.html',
@@ -198,7 +199,7 @@ export class BackupGamePage {
       alert.present();
     } else {
       let self = this;
-      const myModal: Modal = self.modalCtrl.create('BackupConfirmModalPage', {}, {
+      const myModal: Modal = self.modalCtrl.create(BackupConfirmModalPage, {}, {
         showBackdrop: true,
         enableBackdropDismiss: true,
         cssClass: "backup-modal-success"
@@ -207,8 +208,8 @@ export class BackupGamePage {
       myModal.present();
 
       myModal.onDidDismiss(() => {
-        console.log('MODAL DISSMISED');
-        self.navCtrl.popToRoot(); // TODO NOT WORKING
+        this.navCtrl.setRoot(TabsPage);
+        this.navCtrl.popToRoot();
       });
     }
   };

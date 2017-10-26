@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ViewController } from 'ionic-angular';
+import { NavController, ViewController } from 'ionic-angular';
+import { BackupGamePage } from '../backup-game/backup-game';
 
-@IonicPage()
 @Component({
   selector: 'page-backup-warning-modal',
   templateUrl: 'backup-warning-modal.html',
@@ -15,7 +15,7 @@ export class BackupWarningModalPage {
   }
 
   close() {
-    this.navCtrl.push('BackupGamePage');
+    this.navCtrl.push(BackupGamePage);
     this.viewCtrl.dismiss();
   }
 
