@@ -1,5 +1,4 @@
 #custom-amount {
-  @extend .deflash-blue;
   $item-lateral-padding: 20px;
   $item-vertical-padding: 10px;
   $item-label-color: #6C6C6E;
@@ -16,7 +15,7 @@
   .address {
     background: #fff;
     overflow: auto;
-    height: 100%; 
+    height: 100%;
     .qr-code {
       text-align: center;
       margin-top: 24vh;
@@ -31,7 +30,7 @@
         margin-top: 8vh;
       }
     }
-    .info { 
+    .info {
       position: absolute;
       width: 100%;
       bottom: 0;
