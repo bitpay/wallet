@@ -21,28 +21,6 @@ $app-direction: ltr;
 
 // TODO: Custom variables (backward compatibilities). Will be REMOVED
 
-$v-primary-color:                                    #192c3a;
-$v-secondary-color:                                  #31465b;
-$v-accent-color:                                     #1abb9b;
-
-$v-dark-gray:                                        #445 !default;
-$v-mid-gray:                                         #667 !default;
-$v-light-gray:                                       #9b9bab !default;
-$v-title-gray:                                       #c2c9d1 !default;
-$v-subtle-gray:                                      darken(#ffffff, 5%) !default;
-$v-btn-active-color:                                 #148e76;
-$v-background-warning:                               #ffa500;
-$v-background-success:                               #1abb9b;
-
-$v-onboarding-color:                                 #ffffff !default;
-$v-onboarding-bar-header-color:                      #ffffff !default;
-$v-onboarding-bar-header-button-color:               #ffffff !default;
-$v-onboarding-gradient-top-color:                    $v-primary-color !default;
-$v-onboarding-gradient-bottom-color:                 $v-secondary-color !default;
-$v-onboarding-checkbox-on-border:                    $v-accent-color;
-
-$v-button-primary-bg:                                $v-accent-color !default;
-$v-visible-radius:                                   6px !default;
 
 // App iOS Variables
 // --------------------------------------------------

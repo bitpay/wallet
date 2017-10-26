@@ -8,7 +8,6 @@ page-backup-warning-modal {
     min-height: 120px;
   }
   .popup-modal-content-warning {
-    background-color: $v-onboarding-bar-header-color;
     text-align: center;
     height: 65%;
     overflow-y: scroll;
@@ -19,17 +18,14 @@ page-backup-warning-modal {
       font-weight: bold;
       font-size: 2rem;
       padding-bottom: 1rem;
-      color: $v-dark-gray;
     }
     .popup-modal-message {
       padding: 1.5rem;
       font-size: 1.6rem;
-      color: $v-mid-gray;
     }
     .button-clear {
       padding-top: 2rem;
       background: none;
-      color: $v-background-warning;
       font-size: 1.6rem;
     }
   }
