@@ -37,8 +37,9 @@ angular.module('copayApp.controllers').controller('amazonCardsController',
 
               $scope.updatingPending[dataFromStorage.invoiceId] = false;
               if (err) {
-                popupService.showAlert('Error creating gift card', err);
-                return;
+                $log.error('Error creating gift card:', err);
+                giftCard = {};
+                giftCard.status = 'FAILURE';
               }
 
               if (giftCard.status != 'PENDING') {
