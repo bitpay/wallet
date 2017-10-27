@@ -224,7 +224,7 @@ angular.module('copayApp.controllers').controller('txpDetailsController', functi
             var action = lodash.find(tx.actions, {
                 copayerId: $scope.wallet.credentials.copayerId
             });
-            console.log(tx);
+
             $scope.tx = txFormatService.processTx($scope.wallet.coin, tx);
 
             if (!action && tx.status == 'pending')

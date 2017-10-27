@@ -3566,8 +3566,8 @@ msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr "梅尔卡多里弗巴西礼品卡 {{amountStr}}"
 
 #: www/views/preferencesBwsUrl.html:21
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}} 中的区块链信息依赖于 Bitcore Wallet Service (BWS)、网络和 Copayer synchronization。默认配置指向 https://bws.bitpay.com (BitPay 的公共 BWS 实例)。"
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitchk.com (BitPay's public BWS instance)."
+msgstr "{{appName}} 中的区块链信息依赖于 Bitcore Wallet Service (BWS)、网络和 Copayer synchronization。默认配置指向 https://bws.bitchk.com (BitPay 的公共 BWS 实例)。"
 
 #: src/js/controllers/confirm.js:387
 msgid "{{fee}} will be deducted for bitcoin networking fees."

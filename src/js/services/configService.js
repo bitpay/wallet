@@ -17,25 +17,17 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         },
 
         download: {
-            bitpay: {
-                url: 'https://bitpay.com/wallet'
-            },
-            copay: {
-                url: 'http://bitchk.com/#download'
+            bitchk: {
+                url: 'https://bitchk.com'
             }
         },
 
         rateApp: {
-            bitpay: {
-                ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
-                android: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
-                wp: ''
+            bitchk: {
+                ios1: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1149581638&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
+                android1: 'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
+                wp1: ''
             },
-            copay: {
-                ios: 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=951330296&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8',
-                android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
-                wp: ''
-            }
         },
         // wallet default config
         wallet: {
@@ -49,8 +41,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
                 unitToSatoshi: 100000000,
                 unitDecimals: 8,
                 unitCode: 'btc',
-                alternativeName: 'US Dollar',
-                alternativeIsoCode: 'USD',
+                alternativeName: 'KR Won',
+                alternativeIsoCode: 'KRW',
             }
         },
 
@@ -71,11 +63,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         },
 
         rates: {
-            url: 'https://insight.bitpay.com:443/api/rates',
+            url: 'http://insight-btc.bitchk.com/api/rates',
         },
 
         release: {
-            url: 'https://api.github.com/repos/bitpay/copay/releases/latest'
+            url: 'https://api.github.com/repos/bitchk-wallet/copay/releases/latest'
         },
 
         pushNotificationsEnabled: true,

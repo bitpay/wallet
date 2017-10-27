@@ -8,12 +8,12 @@ var DEFAULT_CONFIG = {
 var COIN_CONFIG = {
     btc: {
         bwsurl: 'http://bws.bitchk.com/bws/api',
-        insight: 'https://insight.bitpay.com',
+        insight: 'http://insight-btc.bitchk.com',
         network: 'litvenet'
     },
     ltc: {
         bwsurl: 'http://bws.bitchk.com/bws/api',
-        insight: 'http://localhost:3001/insight',
+        insight: 'http://insight-ltc.bitchk.com/insight',
         network: 'ltcnet'
     },
     ven: {

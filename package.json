@@ -1,6 +1,6 @@
 {
     "//": "        Modify it in the app-template directory",
-    "name": "copay",
+    "name": "BeCheck",
     "description": "A Secure Bitcoin Wallet",
     "author": "BitPay",
     "version": "3.8.2",
@@ -184,8 +184,8 @@
             "cordova-plugin-qrscanner": {},
             "cordova-plugin-customurlscheme": {
                 "URL_SCHEME": "bitcoin",
-                "SECOND_URL_SCHEME": "copay",
-                "THIRD_URL_SCHEME": "bitcoincash"
+                "SECOND_URL_SCHEME": "ventas",
+                "THIRD_URL_SCHEME": "litecoin"
             },
             "cordova-custom-config": {},
             "cordova-plugin-queries-schemes": {},

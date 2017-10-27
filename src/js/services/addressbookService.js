@@ -6,7 +6,7 @@ angular.module('copayApp.services').factory('addressbookService', function($log,
 
     var getNetwork = function(address) {
         var network;
-        console.log("address", address);
+
         try {
             network = (new bitcore.Address(address)).network.name;
         } catch (e) {

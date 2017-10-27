@@ -3566,8 +3566,8 @@ msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr "{{amountStr}} en Tarjeta de Regalo Mercado Livre Brasil"
 
 #: www/views/preferencesBwsUrl.html:21
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
-msgstr "{{appName}} depende de Bitcore Wallet Service (BWS) para obtener información sobre blockchain y sincronización del Copayer. La configuración por defecto apunta a https://bws.bitpay.com (instancia pública de BitPay)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitchk.com (BitPay's public BWS instance)."
+msgstr "{{appName}} depende de Bitcore Wallet Service (BWS) para obtener información sobre blockchain y sincronización del Copayer. La configuración por defecto apunta a https://bws.bitchk.com (instancia pública de BitPay)."
 
 #: src/js/controllers/confirm.js:387
 msgid "{{fee}} will be deducted for bitcoin networking fees."

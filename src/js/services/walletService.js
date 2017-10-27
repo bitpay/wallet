@@ -922,7 +922,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     // Approx utxo amount, from which the uxto is economically redeemable
     root.getMinFee = function(wallet, feeLevels, nbOutputs) {
-        console.log(wallet, feeLevels);
         var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
             level: 'normal',
         }).feePerKb / 1000).toFixed(0);
@@ -1129,7 +1128,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
                 if (err) return cb(bwcError.msg(err));
 
                 ongoingProcess.set('signingTx', true, customStatusHandler);
-                console.log("signTx", wallet, publishedTxp);
+
                 root.signTx(wallet, publishedTxp, password, function(err, signedTxp) {
                     ongoingProcess.set('signingTx', false, customStatusHandler);
                     root.invalidateCache(wallet);

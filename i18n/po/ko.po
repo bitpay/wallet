@@ -28,11 +28,11 @@ msgstr "* 결재 제안은 1) 당신이 생성한 사람이고, 코페이어가 
 
 #: www/views/tx-details.html:84
 msgid "- {{btx.feeRateStr}} of the transaction"
-msgstr "- {{btx.feeRateStr}} of the transaction"
+msgstr "해당 트랜잭션의 {{btx.feeRateStr}}"
 
 #: www/views/modals/txp-details.html:104
 msgid "- {{tx.feeRateStr}} of the transaction"
-msgstr ""
+msgstr "- 해당 트랜잭션의 {{tx.feeRateStr}}"
 
 #: www/views/feedback/rateApp.html:7
 msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
@@ -508,16 +508,16 @@ msgstr "캐시 지우기"
 #: src/js/controllers/confirm.js:352
 #: src/js/controllers/modals/txpDetails.js:49
 msgid "Click to accept"
-msgstr ""
+msgstr "받아들이기"
 
 #: src/js/controllers/confirm.js:346
 msgid "Click to pay"
-msgstr ""
+msgstr "지불하기"
 
 #: src/js/controllers/confirm.js:358
 #: src/js/controllers/modals/txpDetails.js:42
 msgid "Click to send"
-msgstr ""
+msgstr "전송하기"
 
 #: www/views/customAmount.html:4
 #: www/views/modals/mercadolibre-card-details.html:3
@@ -2873,7 +2873,7 @@ msgstr ""
 
 #: www/views/tab-import-phrase.html:4
 msgid "The password of the recovery phrase (if set)"
-msgstr ""
+msgstr "복구 문장의 암호(만약 설정되었으면)"
 
 #: src/js/services/walletService.js:1139
 msgid "The payment was created but could not be completed. Please try again from home screen"
@@ -3374,7 +3374,7 @@ msgstr "다음 화면에서 확인합니다."
 
 #: src/js/controllers/feedback/send.js:77
 msgid "We're always looking for ways to improve {{appName}}."
-msgstr "하{{appName}} 을 더 낳아지게 할수 있는 방법을 찾고 있습니다"
+msgstr "저희는 항상 {{appName}} 을 더 낳아지게 할수 있는 방법을 찾고 있습니다"
 
 #: src/js/controllers/feedback/send.js:83
 msgid "We're always looking for ways to improve {{appName}}. How could we improve your experience?"
@@ -3524,7 +3524,7 @@ msgstr "귀하의 지감은 클라우드 저장소나 표준백업장비에 저�
 
 #: src/js/services/walletService.js:1030
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
-msgstr ""
+msgstr "귀하의 지갑키가 암호화됩니다. 전송 암호는 복구될수 없습니다. 아래의 문장을 확인하세요."
 
 #: www/views/includes/walletSelector.html:23
 #: www/views/paperWallet.html:35
@@ -3533,12 +3533,12 @@ msgstr ""
 #: www/views/walletDetails.html:131
 #: www/views/walletDetails.html:51
 msgid "[Balance Hidden]"
-msgstr ""
+msgstr "[잔액 숨겨짐]"
 
 #: www/views/walletDetails.html:141
 #: www/views/walletDetails.html:61
 msgid "[Scanning Funds]"
-msgstr ""
+msgstr "[자금 검사중]"
 
 #: src/js/controllers/bitpayCardIntro.js:11
 msgid "add your BitPay Visa card(s)"
@@ -3546,11 +3546,11 @@ msgstr ""
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
-msgstr ""
+msgstr "지연된 결재로 잠김"
 
 #: src/js/services/profileService.js:402
 msgid "me"
-msgstr ""
+msgstr "나에게"
 
 #: www/views/addressbook.add.html:32
 msgid "name@example.com"
@@ -3558,7 +3558,7 @@ msgstr ""
 
 #: www/views/preferencesHistory.html:15
 msgid "preparing..."
-msgstr ""
+msgstr "준비중..."
 
 #: src/js/controllers/buyAmazon.js:239
 msgid "{{amountStr}} for Amazon.com Gift Card"
@@ -3569,16 +3569,16 @@ msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr ""
 
 #: www/views/preferencesBwsUrl.html:21
-msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitchk.com (BitPay's public BWS instance)."
 msgstr ""
 
 #: src/js/controllers/confirm.js:387
 msgid "{{fee}} will be deducted for bitcoin networking fees."
-msgstr ""
+msgstr "{{fee}} 가(이) 코인 네트웍 수수수료로 검색되었습니다."
 
 #: www/views/confirm.html:87
 msgid "{{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount"
-msgstr ""
+msgstr "전송 금액의 {{tx.txp[wallet.id].feeRatePerStr}}"
 
 #: www/views/walletDetails.html:218
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
