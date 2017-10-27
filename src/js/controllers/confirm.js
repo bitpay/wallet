@@ -46,8 +46,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.enter", function(event, data) {
     $ionicConfig.views.swipeBackEnabled(false);
-    tx.time = Math.round(new Date().getTime() / 1000);
-      console.log("setting time "+tx.time);
   });
 
 
@@ -142,9 +140,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
       network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
+      tx.time = Math.round(new Date().getTime() / 1000);
       txp: {},
     };
-
+    
+    console.log("setting time "+tx.time);
 
     // Other Scope vars
     $scope.isCordova = isCordova;
