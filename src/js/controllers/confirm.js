@@ -200,6 +200,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     var txp = {};
 
+    console.log("received in gettxp "+tx.time + " - " + tx);
+    
     txp.time = tx.time;
     
     console.log("txp.time = "+time);
@@ -297,6 +299,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           refresh();
           return cb();
         }
+        
+        console.log("updatetx tx = "+tx.time + " - " + tx);
 
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
           if (err) return cb(err);
@@ -471,8 +475,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.approve = function(tx, wallet, onSendStatusChange) {
 
-    debugger
-
     if (!tx || !wallet) return;
 
     if ($scope.paymentExpired) {
@@ -485,6 +487,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
+    console.log("approve tx = "+tx.time + " - " + tx);
     getTxp(lodash.clone(tx), wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;
