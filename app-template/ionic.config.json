@@ -1,4 +1,4 @@
 {
-  "name": "*USERVISIBLENAME*",
-  "app_id": "com.bitpay.*BUNDLENAME*"
+    "name": "*USERVISIBLENAME*",
+    "app_id": "com.bitchk.*BUNDLENAME*"
 }
