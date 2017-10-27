@@ -140,7 +140,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
       network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
-      time = Math.round(new Date().getTime() / 1000);
+      time = Math.round(new Date().getTime() / 1000),
       txp: {},
     };
     
