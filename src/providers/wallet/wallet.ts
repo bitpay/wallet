@@ -16,7 +16,6 @@ import * as lodash from 'lodash';
 
 
 /* TODO LIST:
-  - Bwc Error provider
   - onGoingProcess provider
 */
 
