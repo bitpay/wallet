@@ -8,6 +8,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   var tx = {};
 
+  var time;
+
   // Config Related values
   var config = configService.getSync();
   var walletConfig = config.wallet;
@@ -43,6 +45,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.enter", function(event, data) {
     $ionicConfig.views.swipeBackEnabled(false);
+    time = Math.round(new Date().getTime() / 1000);
   });
 
 
@@ -194,6 +197,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     var txp = {};
+
+    txp.time = time;
 
     txp.outputs = [{
       'toAddress': tx.toAddress,
@@ -461,6 +466,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
   };
 
   $scope.approve = function(tx, wallet, onSendStatusChange) {
+
+    debugger
 
     if (!tx || !wallet) return;
 
