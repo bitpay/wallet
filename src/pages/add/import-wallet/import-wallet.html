@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
+  <ion-segment [(ngModel)]="selectedTab" color="accent" (ionChange)="selectTab(selectedTab)">
     <ion-segment-button value="words" translate>
       Words
     </ion-segment-button>
@@ -53,7 +53,7 @@
 
         <ion-item>
           <ion-label stacked>Testnet</ion-label>
-          <ion-toggle [(ngModel)]="formData.testnet" formControlName="testnet" (ionChange)="setDerivationPath()"></ion-toggle>
+          <ion-toggle [(ngModel)]="formData.testnet" color="accent" formControlName="testnet" (ionChange)="setDerivationPath()"></ion-toggle>
         </ion-item>
       </div>
 

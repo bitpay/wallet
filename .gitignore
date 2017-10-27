@@ -28,7 +28,7 @@ src/assets/externalServices.json
 src/assets/img/app
 src/index.html
 src/manifest.json
-src/theme/overrides.scss
+src/theme/_overrides.scss
 
 .sourcemaps/
 .idea/

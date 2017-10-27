@@ -178,7 +178,13 @@ export function providersComponents() {
 @NgModule({
   declarations: declarationsComponents(),
   imports: [
-    IonicModule.forRoot(CopayApp, { tabsHideOnSubPages: true }),
+    IonicModule.forRoot(CopayApp, { 
+      tabsHideOnSubPages: true,
+      modalEnter: 'modal-slide-in',
+      modalLeave: 'modal-slide-out',
+      tabsPlacement: 'bottom',
+      pageTransition: 'ios-transition'
+    }),
     BrowserModule,
     HttpModule,
     NgLoggerModule.forRoot(Level.LOG),
