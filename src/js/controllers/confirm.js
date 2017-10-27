@@ -46,8 +46,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   $scope.$on("$ionicView.enter", function(event, data) {
     $ionicConfig.views.swipeBackEnabled(false);
-    time = time ? time : Math.round(new Date().getTime() / 1000);
-      console.log("setting time "+time);
+    tx.time = Math.round(new Date().getTime() / 1000);
+      console.log("setting time "+tx.time);
   });
 
 
@@ -200,7 +200,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     var txp = {};
 
-    txp.time = time;
+    txp.time = tx.time;
     
     console.log("txp.time = "+time);
 
