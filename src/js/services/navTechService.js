@@ -12,6 +12,8 @@
   This class lets interfaces with a NavTech Server's API.
 */
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 var NavTechService = function(opts) {
   var self = this;
 
