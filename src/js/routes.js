@@ -286,7 +286,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('tabs.send.amount', {
-        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor',
+        url: '/amount/:recipientType/:toAddress/:toName/:toEmail/:toColor/:privatePayment',
         views: {
           'tab-send@tabs': {
             controller: 'amountController',
@@ -300,6 +300,18 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-send@tabs': {
             controller: 'confirmController',
             templateUrl: 'views/confirm.html'
+          }
+        },
+        params: {
+          paypro: null
+        }
+      })
+      .state('tabs.send.confirm-private', {
+        url: '/confirm-private/:recipientType/:toAddress/:toName/:toAmount/:toEmail/:toColor/:description/:useSendMax/:privatePayment',
+        views: {
+          'tab-send@tabs': {
+            controller: 'confirmPrivateController',
+            templateUrl: 'views/confirmPrivate.html'
           }
         },
         params: {

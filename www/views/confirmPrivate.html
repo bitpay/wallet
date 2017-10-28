@@ -1,0 +1,141 @@
+<ion-view id="view-confirm" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title>
+      {{'Confirm'|translate}}
+    </ion-nav-title>
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-content class="add-bottom-for-cta">
+    <div class="list">
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/icon-tx-sent-outline.svg">
+          <span translate ng-if="tx.privatePayment">Private Payment</span>
+          <span translate ng-if="tx.sendMax">Sending maximum amount</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{tx.amountValueStr || '...'}} <span class="unit">{{tx.amountUnitStr}}</span></div>
+          <div class="alternative">{{tx.alternativeAmountStr || '...'}}</div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="item single-line" ng-if="tx.paypro">
+          <span class="label" translate>Payment Expires:</span>
+          <span class="item-note" ng-if="!paymentExpired">{{remainingTimeStr}}</span>
+          <span class="item-note" ng-if="paymentExpired" ng-style="{'color': 'red'}" translate>Expired</span>
+        </div>
+
+        <div class="item">
+          <span class="label" translate>To</span>
+          <span class="payment-proposal-to" ng-if="!recipientType">
+            <img class="confirm-icon-small" src="img/icon-bitcoin-small.svg">
+
+            <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
+              <!--<contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>-->
+              <span class="m15l size-14" ng-if="!tx.toName">{{tx.toAddress}}</span>
+              <span class="m15l size-14" ng-if="tx.toName">{{tx.toName}}</span>
+            </div>
+
+            <div ng-if="tx.paypro" ng-click="openPPModal(tx.paypro)" class="m15l size-14 w100p pointer">
+              <i ng-show="tx.paypro.verified && tx.paypro.caTrusted" class="ion-locked" style="color:green"></i>
+              <i ng-show="!tx.paypro.caTrusted" class="ion-unlocked" style="color:red"></i>
+              <span class="ellipsis" ng-show="!tx.toName">{{tx.paypro.domain || tx.paypro.toAddress}}</span>
+              <span ng-show="tx.toName">{{tx.toName}}</span>
+            </div>
+            <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>
+            <span ng-if="tx.hasMultiplesOutputs" translate>Multiple recipients</span> -->
+          </span>
+          <div class="wallet" ng-if="recipientType == 'wallet'">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}" class="bg"/>
+            </i>
+            <div copy-to-clipboard="tx.toAddress" class="ellipsis">
+              <contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>
+              <span ng-if="tx.toName" class="wallet-name">{{tx.toName}}</span>
+            </div>
+          </div>
+          <div ng-if="recipientType == 'contact' && !isChromeApp" class="gravatar-contact toggle" ng-click="toggleAddress()">
+            <gravatar class="send-gravatar" name="{{tx.toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
+            <span ng-if="tx.toName && !showAddress">{{tx.toName}}</span>
+            <span ng-if="tx.toName && showAddress">{{tx.toAddress}}</span>
+          </div>
+        </div>
+        <a class="item item-icon-right" ng-hide="!wallets" ng-click="showWalletSelector()">
+          <span class="label" translate>From</span>
+          <div class="wallet" ng-if="wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg"/>
+            </i>
+            <div>{{wallet.name}}</div>
+          </div>
+          <div class="wallet" ng-if="!wallet">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-style="{'background-color': 'grey'}" class="bg"/>
+            </i>
+            <div>...</div>
+          </div>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <div class="item item-icon-right" ng-if="wallet" ng-click="chooseFeeLevel(tx, wallet)">
+          <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
+          <span class="m10l">{{navtechFee || '...'}} (navtech fee)</span>
+          <span class="m10l">{{navtechTxFee || '...'}} (transaction fee)</span>
+          <span class="item-note m10l">
+            <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
+            <span class="fee-rate" ng-if="tx.txp[wallet.id].feeRatePerStr"> &middot;
+                <i class="ion-alert-circled warn" ng-show="tx.txp[wallet.id].feeToHigh"></i> &nbsp;
+                <span class="fee-rate" ng-class="{'warn':tx.txp[wallet.id].feeToHigh}" translate> {{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount </span>
+
+            </span>
+          </span>
+          </span>
+
+          <i class="icon bp-arrow-right"></i>
+        </div>
+        <a class="item item-icon-right" ng-if="wallet" ng-click="showDescriptionPopup(tx)">
+          <span class="label" translate>Add Memo</span>
+          <span class="item-note m10l">
+            {{tx.description}}
+          </span>
+          <i class="icon bp-arrow-right"></i>
+        </a>
+        <div class="text-center" ng-show="noWalletMessage">
+          <span class="badge badge-energized">{{noWalletMessage}}</span>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <click-to-accept
+    ng-click="approve(tx, wallet, statusChangeHandler)"
+    ng-if="!isCordova || isWindowsPhoneApp"
+    click-send-status="sendStatus"
+    is-disabled="!wallet">
+    {{buttonText}}
+  </click-to-accept>
+  <slide-to-accept
+    ng-if="isCordova && !isWindowsPhoneApp && wallet"
+    slide-on-confirm="approve(tx, wallet, statusChangeHandler)"
+    slide-send-status="sendStatus"
+    is-disabled="!wallet">
+    {{buttonText}}
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="onSuccessConfirm()"
+    slide-success-hide-on-confirm="true">
+    <span ng-show="wallet.m == 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Payment Sent</span>
+    <span ng-show="wallet.m > 1 && (wallet.canSign() || wallet.isPrivKeyExternal())" translate>Proposal Created</span>
+    <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction Created</span>
+  </slide-to-accept-success>
+
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="walletSelector"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector>
+
+</ion-view>

@@ -209,7 +209,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     txp.outputs = [{
       'toAddress': tx.toAddress,
       'amount': tx.toAmount,
-      'message': tx.description
+      'message': tx.description,
     }];
 
     if (tx.sendMaxInfo) {
@@ -247,6 +247,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
     function updateAmount() {
       if (!tx.toAmount) return;
+
+      console.log(tx);
 
       // Amount
       tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);

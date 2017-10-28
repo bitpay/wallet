@@ -14,7 +14,18 @@
             <i class="icon icon-svg qr abs-v-center separator-left" on-tap="openScanner()"><img src="img/scan-ico.svg"></i>
           </div>
         </div>
+        <div class="send-private-toggle">
+          <ion-toggle ng-model="formData.privatePayment" toggle-class="toggle-balanced">
+            <span class="toggle-label" translate>Private Payment</span>
+          </ion-toggle>
+        </div>
+        <div class="send-next-button">
+          <button ng-disabled="nextDisabled" class="button button-standard button-primary" ng-class="{disable: nextDisabled}" ng-click="nextClicked(formData.search)">
+            <span class="button-label" translate>Next</span>
+          </button>
+        </div>
       </div>
+
     </div>
 
     <div ng-if="!checkingBalance && (!hasFunds || !hasWallets)">
@@ -32,7 +43,7 @@
           <span ng-show="hasWallets" translate>To get started, buy Nav Coin or share your address. You can receive Nav Coin from any wallet or service.</span>
           <span ng-show="!hasWallets" translate>To get started, you'll need to create a Nav Coin wallet and get some Nav Coin.</span>
           <div class="padding">
-            <button class="button button-standard button-primary" ng-click="buyBitcoin()" ng-show="hasWallets" translate>Buy Nav Coin</button>
+            <a class="button button-standard button-primary" ng-show="hasWallets" href="https://navcoin.org/buy-nav" target="e" translate>Buy Nav Coin</a>
             <button class="button button-standard button-primary" ng-click="createWallet()" ng-show="!hasWallets" translate>Create Nav Coin wallet</button>
             <button class="button button-standard button-secondary" ui-sref="tabs.receive" ng-show="hasWallets" translate>Show Nav Coin address</button>
           </div>

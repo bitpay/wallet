@@ -5,6 +5,14 @@
       <div id="success-message" translate>Wallet Created</div>
     </div>
     <div id="collect-email">
+      <div id="collect-email-no">
+        <button class="button button-standard button-primary" ng-click="goNextView()">
+          Continue &rarr;
+        </button>
+      </div>
+    </div>
+    <!--
+    <div id="collect-email">
       <div id="collect-email-inner" ng-if="!confirmation">
         <div translate class="heading" translate>Notifications by email</div>
         <div translate class="prompt" translate>Where would you like to receive email notifications about payments?</div>
@@ -12,7 +20,7 @@
           <label class="item item-input" id="email-label">
             <input type="email" name="email" ng-model="data.email" placeholder="{{'Enter your email'|translate}}" required></input>
           </label>
-          <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from BitPay</span></ion-checkbox>
+          <ion-checkbox ng-model="data.accept"><span translate>Get news and updates from Nav Coin</span></ion-checkbox>
           <button class="button button-standard button-primary" ng-disabled="emailForm.$invalid">
             Continue &rarr;
           </button>
@@ -35,6 +43,7 @@
         </div>
       </div>
     </div>
+    -->
     <div class="overlay collect-overlay">
       <button class="button button-stable button-clear" ng-click="goNextView()">
         {{'Skip' | translate}}
