@@ -87,12 +87,17 @@ NavTechService.prototype._splitPayment = function(navtechData, self) {
 
   var max = 6;
   var min = 2;
-  var numTxes = Math.floor(Math.random() * (max - min + 1)) + min;
+  var numTxes = 1; // Math.floor(Math.random() * (max - min + 1)) + min;
   var runningTotal = 0;
   var rangeMiddle = amount / numTxes;
   var rangeTop = Math.floor(rangeMiddle * 1.5);
   var rangeBottom = Math.floor(rangeMiddle * 0.5);
-  var amounts = [];
+  var amounts = [amount];
+  
+  self.runtime.amounts = amounts;
+  self._encryptTransactions(navtechData, self, 0);
+  
+  return;
 
   for (let i = 0; i < numTxes; i++) {
     if (runningTotal < amount) {
