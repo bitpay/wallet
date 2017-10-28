@@ -12,6 +12,9 @@ log.txt
 .vscode/
 npm-debug.log*
 
+# No package-lock
+package-lock.json
+
 # Firebase
 /GoogleService-Info.plist
 /google-services.json
