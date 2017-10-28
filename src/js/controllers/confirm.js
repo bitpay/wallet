@@ -8,6 +8,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
   var tx = {};
 
+  var time;
+  console.log("intialazing time "+time);
+
   // Config Related values
   var config = configService.getSync();
   var walletConfig = config.wallet;
@@ -137,9 +140,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
       network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
+      time: Math.round(new Date().getTime() / 1000),
       txp: {},
     };
-
+    
+    console.log("setting time "+tx.time);
 
     // Other Scope vars
     $scope.isCordova = isCordova;
@@ -194,6 +199,12 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     var txp = {};
+
+    console.log("received in gettxp "+tx.time + " - " + tx);
+    
+    txp.time = tx.time;
+    
+    console.log("txp.time = "+time);
 
     txp.outputs = [{
       'toAddress': tx.toAddress,
@@ -290,6 +301,8 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           refresh();
           return cb();
         }
+        
+        console.log("updatetx tx = "+tx.time + " - " + tx);
 
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
           if (err) return cb(err);
@@ -476,6 +489,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
+    console.log("approve tx = "+tx.time + " - " + tx);
     getTxp(lodash.clone(tx), wallet, false, function(err, txp) {
       ongoingProcess.set('creatingTx', false, onSendStatusChange);
       if (err) return;
