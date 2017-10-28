@@ -26,7 +26,7 @@
         
         <div class="buttons">
           <div class="tldr" translate>We'll confirm on the next screen.</div>
-          <button [disabled]="wallet.credentials.mnemonicEncrypted || error" (click)="slideNext()" translate>I've written it down</button>
+          <button ion-button block [disabled]="wallet.credentials.mnemonicEncrypted || error" (click)="slideNext()" translate>I've written it down</button>
         </div>
       </div>
     </ion-slide>
@@ -35,13 +35,13 @@
       <div>
         <div translate>Let's verify your backup phrase.</div>
         <div class="phrase">
-          <button *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
+          <button ion-button outline *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
         </div>
         <div class="buttons">
           <div *ngIf="!selectComplete">
             <div class="tldr" translate>Please tap each word in the correct order.</div>
             <div>
-              <button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index"
+              <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index"
                 (click)="addButton(i, shuffledWord)"
                 [disabled]="shuffledWord.selected">{{shuffledWord.word}}
               </button>
@@ -51,8 +51,8 @@
           <div *ngIf="selectComplete">
             <div class="tldr" translate>Is this correct?</div>
             <div>
-              <button (click)="slideNext();" translate>Confirm</button>
-              <button (click)="initFlow();" translate>Clear</button>
+              <button ion-button block (click)="slideNext();" translate>Confirm</button>
+              <button ion-button block outline (click)="initFlow();" translate>Clear</button>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@
       </div>
 
       <div class="buttons">
-        <button [disabled]="!passphrase" (click)="finalStep();" translate>Confirm</button>
+        <button ion-button block [disabled]="!passphrase" (click)="finalStep();" translate>Confirm</button>
       </div>
     </ion-slide>
   </ion-slides>
