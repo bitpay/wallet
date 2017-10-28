@@ -7,6 +7,8 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
   var FEE_TOO_HIGH_LIMIT_PER = 15;
 
   var tx = {};
+  
+  var time;
 
   // Config Related values
   var config = configService.getSync();
@@ -183,6 +185,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       toEmail: data.stateParams.toEmail,
       toColor: data.stateParams.toColor,
       network: (new bitcore.Address(data.stateParams.toAddress)).network.name,
+      time: Math.round(new Date().getTime() / 1000),
       txp: {},
     };
 
@@ -314,6 +317,8 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     }
 
     var txp = {};
+    
+    txp.time = tx.time;
 
     txp.outputs = [{
       'toAddress': tx.toAddress,
