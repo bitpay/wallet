@@ -10,7 +10,7 @@
     <author email="support@bitchk.com" href="*URL*">
         BitCheck
     </author>
-    <content src="index.html" />
+    <content src="boot.html" />
     <access origin="*" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
@@ -71,7 +71,7 @@
     <plugin name="cordova-custom-config" spec="~3.0.5" />
     <plugin name="cordova-plugin-queries-schemes" spec="~0.1.5" />
     <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git" />
-
+    <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
     <!--  Delete cordova-plugin-qrscanner plugin and enable phonegap-plugin-barcodescanner to build cordova windows-->
     <!-- <plugin name="phonegap-plugin-barcodescanner" spec="https://github.com/phonegap/phonegap-plugin-barcodescanner.git" /> -->
 

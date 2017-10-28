@@ -7,6 +7,9 @@
 var templates = {
     'package-template.json': '/',
     'index.html': 'www/',
+    'ios.html': 'www/',
+    'and.html': 'www/',
+    'boot.html': 'www/',
     'config-template.xml': '/',
     'ionic.config.json': '/',
     '.desktop': 'webkitbuilds/',

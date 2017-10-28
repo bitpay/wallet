@@ -29,7 +29,6 @@
                     url: "http://192.168.0.12:8200/config/config.js",
                     dataType: 'script',
                     success: function(data) {
-                        console.log("load suc");
                         load(); //환경설정이 서버로 변경되었다.
                     },
                     error: function(error) {
@@ -51,6 +50,7 @@
                     remoteUrl = DEPLOY_SERVER + "/ios.html";
                 }
             }
+
             location.href = remoteUrl;
         }
         initBoot();
