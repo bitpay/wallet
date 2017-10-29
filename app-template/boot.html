@@ -8,7 +8,7 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <title>Copay - Copay Bitcoin Wallet</title>
+    <title>*USERVISIBLENAME* - *PURPOSELINE*</title>
     <link rel="shortcut icon" href="img/app/favicon.ico">
 </head>
 
@@ -20,13 +20,13 @@
     </div>
     <script type="text/javascript" charset="utf-8" src="lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8" src="deploy_config.js"></script>
 
     <script>
-        var REMOTE_LOAD = false;
         var initBoot = function() {
             document.addEventListener("deviceready", function() {
                 jQuery.ajax({
-                    url: "http://192.168.0.12:8200/config/config.js",
+                    url: DEPLOY_URL + "app_config.js",
                     dataType: 'script',
                     success: function(data) {
                         load(); //환경설정이 서버로 변경되었다.
@@ -45,9 +45,9 @@
             //ionic web view url
             if (REMOTE_LOAD && (location.href.startsWith("file://") || location.href.startsWith("http://ionic.local"))) {
                 if (window.cordova.platformId == "android")
-                    remoteUrl = DEPLOY_SERVER + "/and.html";
+                    remoteUrl = DEPLOY_URL + "/and.html";
                 else {
-                    remoteUrl = DEPLOY_SERVER + "/ios.html";
+                    remoteUrl = DEPLOY_URL + "/ios.html";
                 }
             }
 

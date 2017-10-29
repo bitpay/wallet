@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>574421125911-2lo0lr3oa0mp2ahqhgssca786ho3pdlt.apps.googleusercontent.com</string>
+	<string>143239831537-tb54d5ubsge46tshng1o67mu3se51aek.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.574421125911-2lo0lr3oa0mp2ahqhgssca786ho3pdlt</string>
+	<string>com.googleusercontent.apps.143239831537-tb54d5ubsge46tshng1o67mu3se51aek</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAXD0Ja5EiWd3W7aLXFBnLtw70vBbix3q0</string>
+	<string>AIzaSyAu_Ym6T5drQe-fzeZghckUZBIjHhZENEg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>574421125911</string>
+	<string>143239831537</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bitchk.wallet</string>
+	<string>com.bitchk.bitchk</string>
 	<key>PROJECT_ID</key>
-	<string>bitchk-wallet</string>
+	<string>bitchk-bitchk</string>
 	<key>STORAGE_BUCKET</key>
-	<string>bitchk-wallet.appspot.com</string>
+	<string>bitchk-bitchk.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:574421125911:ios:33a359229f0c5af0</string>
+	<string>1:143239831537:ios:ca8036f135a7caf5</string>
 	<key>DATABASE_URL</key>
-	<string>https://bitchk-wallet.firebaseio.com</string>
+	<string>https://bitchk-bitchk.firebaseio.com</string>
 </dict>
 </plist>

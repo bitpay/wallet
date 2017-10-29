@@ -41,7 +41,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
                 unitToSatoshi: 100000000,
                 unitDecimals: 8,
                 unitCode: 'btc',
-                alternativeName: 'KR Won',
+                alternativeName: 'South Korean Won',
                 alternativeIsoCode: 'KRW',
             }
         },
