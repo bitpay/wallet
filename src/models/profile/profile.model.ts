@@ -14,7 +14,7 @@ export class Profile {
     this.version = '1.0.0';
   }
 
-  public create(opts?: any): any {
+  public create(opts?: any): Profile {
     opts = opts ? opts : {};
     let x = new Profile();
     x.createdOn = Date.now();
@@ -24,7 +24,7 @@ export class Profile {
     return x;
   };
 
-  public fromObj(obj: any): any {
+  public fromObj(obj: any): Profile {
     let x = new Profile();
 
     x.createdOn = obj.createdOn;
@@ -35,11 +35,10 @@ export class Profile {
 
     if (x.credentials[0] && typeof x.credentials[0] != 'object')
       throw ("credentials should be an object");
-
     return x;
   };
 
-  public fromString(str: string): any {
+  public fromString(str: string): Profile {
     return this.fromObj(JSON.parse(str));
   };
 
@@ -47,7 +46,6 @@ export class Profile {
     delete this.dirty;
     return JSON.stringify(this);
   };
-
 
   public hasWallet(walletId: string): boolean {
     for (let i in this.credentials) {

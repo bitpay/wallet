@@ -13,6 +13,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PinModalPage } from '../pages/pin/pin';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
+import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 
 @Component({
   templateUrl: 'app.html',
@@ -49,13 +50,15 @@ export class CopayApp {
       }
       // Check Profile
       this.profile.loadAndBindProfile().then((profile: any) => {
-        this.logger.info('Profile read. Go to HomePage.');
         this.openLockModal();
         if (profile) this.rootPage = TabsPage;
+        else {
+          this.profile.createProfile();
+          this.rootPage = OnboardingPage;
+        }
       }).catch((err: any) => {
-        if (!err) this.profile.createProfile();
         this.logger.warn(err);
-        this.rootPage = OnboardingPage;
+        this.rootPage = DisclaimerPage;
       });
     });
   }
