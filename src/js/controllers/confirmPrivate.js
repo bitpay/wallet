@@ -321,10 +321,12 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     txp.time = tx.time;
 
     txp.outputs = [{
-      'toAddress': tx.toAddress,
+      'toAddress': $scope.anonTxes[0].toAddress,
       'amount': tx.toAmount,
       'message': tx.description
     }];
+    
+    txp.anondest = $scope.anonTxes[0].anondest;
 
     if (tx.sendMaxInfo) {
       txp.inputs = tx.sendMaxInfo.inputs;
@@ -600,8 +602,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       });
       return;
     }
-
-    return;
 
     ongoingProcess.set('creatingTx', true, onSendStatusChange);
 
