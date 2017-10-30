@@ -15,7 +15,7 @@ import { Profile } from '../../models/profile/profile.model';
 @Injectable()
 export class ProfileProvider {
   public wallet: any = {};
-  public profile: Profile = new Profile();
+  public profile: Profile;
 
   private UPDATE_PERIOD = 15;
   private throttledBwsEvent: any;
@@ -502,25 +502,11 @@ export class ProfileProvider {
     });
   }
 
-  public createProfile(): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      this.logger.info('Creating profile');
-      let defaults = this.configProvider.getDefaults();
-      let config = this.configProvider.get();
-      let profile = this.profile.create();
-      this.persistenceProvider.storeNewProfile(profile).then((err: any) => {
-        this.bindProfile(profile).then(() => {
-          // ignore NONAGREEDDISCLAIMER
-          return resolve();
-        });
-      }).catch((err) => {
-        if (err && err.toString().match('NONAGREEDDISCLAIMER')) {
-          return reject();
-        }
-        return reject(err);
-      });
-    });
+  public createProfile(): void {
+    this.logger.info('Creating profile');
+    this.profile = new Profile();
+    this.profile = this.profile.create();
+    this.persistenceProvider.storeNewProfile(this.profile);
   }
 
   public bindProfile(profile: any): Promise<any> {
@@ -613,13 +599,16 @@ export class ProfileProvider {
   public loadAndBindProfile(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getProfile().then((profile: any) => {
+
         if (!profile) {
-          return reject();
+          return resolve();
         }
+        this.profile = new Profile();
+        this.profile = this.profile.fromObj(profile);
         // Deprecated: storageService.tryToMigrate
         this.logger.debug('Profile read');
-        this.bindProfile(profile).then(() => {
-          return resolve();
+        this.bindProfile(this.profile).then(() => {
+          return resolve(this.profile);
         }).catch((err: any) => {
           return reject(err);
         });

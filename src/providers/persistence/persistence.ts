@@ -55,8 +55,9 @@ export let persistenceProviderFactory = (platform: PlatformProvider, log: Logger
 
 @Injectable()
 export class PersistenceProvider {
-  constructor( @Inject(ISTORAGE) public storage: IStorage, private log: Logger) {
-    this.log.info('PersistenceProvider initialized.');
+
+  constructor( @Inject(ISTORAGE) public storage: IStorage, private logger: Logger) {
+    this.logger.info('PersistenceProvider initialized.');
   };
 
   storeNewProfile(profile): Promise<void> {
@@ -158,6 +159,10 @@ export class PersistenceProvider {
   getHideBalanceFlag(walletId: string): Promise<any> {
     return this.storage.get(Keys.HIDE_BALANCE(walletId));
   };
+
+  setDisclaimerAccepted(): Promise<any> {
+    return this.storage.set(Keys.AGREE_DISCLAIMER, true);
+  }
 
   //for compatibility
   getCopayDisclaimerFlag(): Promise<any> {
@@ -283,14 +288,14 @@ export class PersistenceProvider {
       block += '12345678901234567890123456789012345678901234567890';
     }
     this.storage.set('test', block).catch(err => {
-      this.log.error('CheckQuota Return:' + err);
+      this.logger.error('CheckQuota Return:' + err);
     });
   };
 
   setTxHistory(walletId: string, txs: any): Promise<void> {
     return this.storage.set(Keys.TX_HISTORY(walletId), txs).catch(err => {
-      this.log.error('Error saving tx History. Size:' + txs.length);
-      this.log.error(err);
+      this.logger.error('Error saving tx History. Size:' + txs.length);
+      this.logger.error(err);
     });
   }
 
@@ -395,7 +400,7 @@ export class PersistenceProvider {
         account.givenName = data.givenName;
         allAccounts[data.email] = account;
 
-        this.log.info('Storing BitPay accounts with new account:' + data.email);
+        this.logger.info('Storing BitPay accounts with new account:' + data.email);
         return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
       });
   };
