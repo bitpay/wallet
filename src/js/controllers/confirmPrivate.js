@@ -543,22 +543,24 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
   };
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
+  function setWallet(wallet, tx) {
 
-  function setWallet(wallet, tx, cb) {
-    console.log('setWallet');
     $scope.wallet = wallet;
-    $scope.tx = tx;
 
     setButtonText(wallet.credentials.m > 1, !!tx.paypro);
 
     if (tx.paypro)
       _paymentTimeControl(tx.paypro.expires);
 
-    $timeout(function() {
-      $ionicScrollDelegate.resize();
-      $scope.$apply();
-      return cb();
-    }, 10);
+    updateTx(tx, wallet, {
+      dryRun: true
+    }, function(err) {
+      $timeout(function() {
+        $ionicScrollDelegate.resize();
+        $scope.$apply();
+      }, 10);
+
+    });
 
   };
 
