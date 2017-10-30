@@ -165,7 +165,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         //@TODO finish this tree
         console.log('Something went wrong, do you want to send a regular transaction?');         return;
       }
-      ongoingProcess.set('Calculating Fees', true);
       //@TODO setup the multiple transactions with the right data
       var anonTxes = [];
       var sum = 0;
