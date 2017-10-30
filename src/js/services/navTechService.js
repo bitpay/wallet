@@ -32,10 +32,10 @@ var NavTechService = function(opts) {
   self.jsencrypt = new JSEncrypt();
 
   self.availableServers = [
-    'navtech1.navcoin.org',
-    'navtech2.navcoin.org',
-    'navtech3.navcoin.org',
-    'navtech4.navcoin.org'
+    'navtech1.navcoin.org:3000',
+    'navtech2.navcoin.org:3000',
+    'navtech3.navcoin.org:3000',
+    'navtech4.navcoin.org:3000'
   ]
 };
 
