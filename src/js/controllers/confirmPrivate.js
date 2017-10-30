@@ -180,7 +180,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $scope.anonTxes = anonTxes;
       tx.privatePayment = true;
       tx.toAddress = data[0].address;
-      tx.anondest = data[0].anondest;
+      tx.anondest = data[0].anonDestination;
     });
     
     updateTx(tx, null, {}, function() {
