@@ -163,6 +163,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       ongoingProcess.set('Finding NavTech Server', false);
       if (!success) {
         //@TODO finish this tree
+        setNoWallet('Could not connect to NavTech servers. Only normal transactions are available right now.');
         console.log('Something went wrong, do you want to send a regular transaction?');         return;
       }
       //@TODO setup the multiple transactions with the right data
