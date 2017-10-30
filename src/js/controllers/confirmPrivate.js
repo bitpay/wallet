@@ -137,7 +137,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           var txPart = lodash.clone(tx);
           txPart.toAmount = data[i].amount;
           txPart.toAddress = data[i].address;
-          txPart.anondest = data[i].anondest;
+          txPart.anondest = data[i].anonDestination;
           anonTxes.push(txPart);
           sum += data[i].amount;
         }
@@ -344,6 +344,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     }
     txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
     txp.dryRun = dryRun;
+    console.log("Creating txp:", txp);
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
         setSendError(err);
@@ -588,7 +589,10 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
   $scope.approve = function(tx, wallet, onSendStatusChange) {
 
-    if (!tx || !wallet) return;
+    if (!tx || !wallet) {
+      popupService.showAlert(null, gettextCatalog.getString('Internal error.'));
+      return;
+    }
 
       //set tx description to all anon txes
 
