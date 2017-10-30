@@ -120,30 +120,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       });
     };
 
-    function setupPrivatePayment(amount, address) {
-      
-
-        $scope.tx = tx;
-
-        $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
-
-        setWalletSelector(tx.network, tx.toAmount, function(err) {
-          console.log('setWalletSelector', err);
-          if (err) {
-            return exitWithError('Could not update wallets');
-          }
-
-          if ($scope.wallets.length > 1) {
-            $scope.showWalletSelector();
-          } else if ($scope.wallets.length) {
-            setWallet($scope.wallets[0], tx, getFees);
-          }
-        });
-
-      });
-
-    }
-
     // Setup $scope
 
     // Grab stateParams
