@@ -241,7 +241,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         console.log('tx', tx);
         $scope.formattedAnonTxes = [];
         $scope.navtechTxFeeSatoshi = 0;
-        getEachFee(0, function(err){
+        getEachFee(function(err){
           ongoingProcess.set('Calculating Fees', false);
           if (err) {
             console.log('getEachFee.cb', err);
@@ -255,10 +255,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     });
   }
 
-  function getEachFee(i, cb) {
-    console.log('getEachFee', i, $scope.anonTxes[i]);
-    console.log('tx', $scope.tx);
-    var tx = $scope.anonTxes[i];
+  function getEachFee(cb) {
     var wallet = $scope.wallet;
     getTxp(lodash.clone(tx), wallet, true, function(err, txp) {
       if (err) return cb(err);
@@ -276,13 +273,8 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
       refresh();
       $scope.navtechTxFeeSatoshi += tx.txp[wallet.id].fee;
-      $scope.formattedAnonTxes[i] = tx;
       console.log('recursive condition', i, $scope.anonTxes.length);
-      if (i < $scope.anonTxes.length - 1) {
-        getEachFee(++i, cb);
-      } else {
-        cb(false);
-      }
+      cb(false);
     });
   }
 
