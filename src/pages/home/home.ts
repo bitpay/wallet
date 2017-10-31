@@ -23,7 +23,6 @@ export class HomePage {
   ) {
     this.checkUpdate();
     this.wallets = this.profileProvider.getWallets();
-    console.log(this.wallets);
     this.updateAllWallets();
   }
 

@@ -223,6 +223,8 @@ export class WalletProvider {
 
           cache.alternativeBalanceAvailable = true;
           cache.isRateAvailable = true;
+        }).catch((err) => {
+          console.log(err);
         });
       };
 
@@ -290,7 +292,7 @@ export class WalletProvider {
         resolve(status);
       }).catch((err) => {
         return reject(err);
-      });;
+      });
 
     });
   }
@@ -309,7 +311,7 @@ export class WalletProvider {
     });
   }
 
-  private getAddress(wallet: any, forceNew: boolean): Promise<any> {
+  public getAddress(wallet: any, forceNew: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getLastAddress(wallet.id).then((addr) => {
         if (!forceNew && addr) return resolve(addr);

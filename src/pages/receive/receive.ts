@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AmountPage } from '../send/amount/amount';
+import { WalletProvider } from '../../providers/wallet/wallet';
+import { ProfileProvider } from '../../providers/profile/profile';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-receive',
@@ -11,27 +15,57 @@ export class ReceivePage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
+  public wallets: any;
+  public wallet: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.protocolHandler = "bitcoin";
-    this.address = "1FgGP9dKqtWC1Q9xGhPYVmAeyezeZCFjhf";
+  constructor(
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private profileProvider: ProfileProvider,
+    private walletProvider: WalletProvider
+  ) {
+    this.wallets = this.profileProvider.getWallets();
     this.updateQrAddress();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReceivePage');
+    this.onSelect(this.checkSelectedWallet(this.wallet, this.wallets));
   }
 
-  requestSpecificAmount() {
-    this.navCtrl.push(AmountPage, {address: this.address, sending: false});
+  private onSelect(wallet: any): any {
+    this.wallet = wallet;
+    this.setProtocolHandler();
+    this.setAddress();
   }
 
-  setAddress() {
-    this.address = this.address === "1FgGP9dKqtWC1Q9xGhPYVmAeyezeZCFjhf" ? "1RTes3reeRTs1Q9xGhPYVmQFrdUyCr3EsX" : "1FgGP9dKqtWC1Q9xGhPYVmAeyezeZCFjhf";
-    this.updateQrAddress();
+  private setProtocolHandler(): void {
+    this.protocolHandler = this.walletProvider.getProtocolHandler(this.wallet);
   }
 
-  updateQrAddress () {
+  private checkSelectedWallet(wallet: any, wallets: any): any {
+    if (!wallet) return wallets[0];
+    let w = _.find(wallets, (w: any) => {
+      return w.id == wallet.id;
+    });
+    if (!w) return wallets[0];
+    return wallet;
+  }
+
+  public requestSpecificAmount(): void {
+    this.navCtrl.push(AmountPage, { address: this.address, sending: false });
+  }
+
+  private setAddress(newAddr?: boolean): void {
+    this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
+      this.address = addr;
+      this.updateQrAddress();
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  private updateQrAddress(): void {
     this.qrAddress = this.protocolHandler + ":" + this.address;
   }
 

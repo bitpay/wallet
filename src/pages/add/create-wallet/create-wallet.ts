@@ -76,7 +76,7 @@ export class CreateWalletPage implements OnInit {
       confirmPassword: [''],
       recoveryPhraseBackedUp: [''],
       derivationPath: [''],
-      testnet: [''],
+      testnetEnabled: [''],
       singleAddress: [''],
     });
 
@@ -162,9 +162,7 @@ export class CreateWalletPage implements OnInit {
       coin: this.formData.coin
     };
 
-    console.log(opts);
     this.profileProvider.createWallet(opts).then((wallet) => {
-      console.log(wallet);
       this.navCtrl.setRoot(HomePage);
       this.navCtrl.popToRoot();
     });

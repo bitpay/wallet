@@ -71,7 +71,7 @@ export class ProfileProvider {
   private needsBackup(wallet: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (!this.requiresBackup(wallet)) {
-        return reject(false);
+        return resolve(false);
       }
 
       this.persistenceProvider.getBackupFlag(wallet.credentials.walletId).then((val: string) => {
@@ -218,13 +218,13 @@ export class ProfileProvider {
         }
         return resolve();
       }).catch((err: any) => {
-        return reject(err);
+        console.log(err);
       });
     });
   }
 
   public setLastKnownBalance(wid: string, balance: number): void {
-    this.persistenceProvider.setBalanceCache(wid, { balance: balance, updatedOn: Math.floor(Date.now() / 1000), });
+    this.persistenceProvider.setBalanceCache(wid, { balance: balance, updatedOn: Math.floor(Date.now() / 1000) });
   }
 
   private runValidation(wallet: any, delay?: number, retryDelay?: number) {

@@ -87,7 +87,7 @@
 
       <ion-item *ngIf="formData.selectedSeed.id == 'new'">
         <ion-label stacked>Testnet</ion-label>
-        <ion-toggle [(ngModel)]="formData.testnet" formControlName="testnet" (ionChange)="setDerivationPath()"></ion-toggle>
+        <ion-toggle [(ngModel)]="formData.testnetEnabled" formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="formData.selectedSeed.id == 'set'">
