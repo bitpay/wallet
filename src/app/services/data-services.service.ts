@@ -6,44 +6,53 @@ import * as nv from 'nvd3';
 @Injectable()
 export class DataServicesService {
 
-  constructor() {
-  }
+  constructor() {}
+
   fetch(opts, cb) {
-    var utl = opts.url + '/v1/stats/?network=' + opts.network + '&from=' + opts.from + '&to=' + opts.to;
+    const url = opts.url + '/v1/stats/?network=' + opts.network + '&coin=' + opts.coin + '&from=' + opts.from + '&to=' + opts.to;
 
-    d3.json(utl)
+    d3.json(url)
       .get((err, data) => {
-        if (err) return cb(err);
-        if (!data || _.isEmpty(data)) return cb('No data');
+        if (err) {
+          return cb(err);
+        }
+        if (!data || _.isEmpty(data)) {
+          return cb('No data');
+        }
 
-        console.log(data);
-        let info = this.transform(data);
-        console.log(info);
+        const info = this.transform(data);
+        console.log('### INFO: ', info);
         return cb(null, info);
       });
-  };
+  }
 
   transform(data) {
-    var parseDate = d3.time.format('%Y%m%d').parse;
+    const parseDate = d3.time.format('%Y%m%d').parse;
+    const result = {};
 
-    var result = {};
     _.each(data.newWallets.byDay, (d) => {
-      if (!result[d.day]) result[d.day] = {};
+      if (!result[d.day]) {
+        result[d.day] = {};
+      }
       result[d.day].walletCount = d.count;
     });
 
     _.each(data.txProposals.amountByDay, (d) => {
-      if (!result[d.day]) result[d.day] = {};
+      if (!result[d.day]) {
+        result[d.day] = {};
+      }
       result[d.day].txAmount = d.amount / 1e8;
     });
 
     _.each(data.txProposals.nbByDay, (d) => {
-      if (!result[d.day]) result[d.day] = {};
+      if (!result[d.day]) {
+        result[d.day] = {};
+      }
       result[d.day].txCount = d.count;
     });
 
     return _.map(result, (v: any, k: any) => {
-      var d = new Date(parseDate(k));
+      const d = new Date(parseDate(k));
       return {
         date: parseDate(k),
         amount: v.txAmount,
@@ -53,27 +62,27 @@ export class DataServicesService {
         month: d.getFullYear() + '-' + d.getMonth()
       };
     });
-  };
+  }
 
   getWeek(d) {
-    var onejan: any = new Date(d.getFullYear(), 0, 1);
+    const onejan: any = new Date(d.getFullYear(), 0, 1);
     return Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
   }
 
   getTotals(data) {
     function addCommas(nStr) {
       nStr += '';
-      var x = nStr.split('.');
-      var x1 = x[0];
-      var x2 = x.length > 1 ? '.' + x[1] : '';
-      var rgx = /(\d+)(\d{3})/;
+      const x = nStr.split('.');
+      let x1 = x[0];
+      const x2 = x.length > 1 ? '.' + x[1] : '';
+      const rgx = /(\d+)(\d{3})/;
       while (rgx.test(x1)) {
         x1 = x1.replace(rgx, '$1' + ',' + '$2');
       }
       return x1 + x2;
-    };
+    }
 
-    var total = _.reduce(data, (memo, d: any) => {
+    const total = _.reduce(data, (memo, d: any) => {
       memo.wallets += (d.wallets || 0);
       memo.txps += (d.txps || 0);
       memo.amount += (d.amount || 0);
@@ -89,59 +98,59 @@ export class DataServicesService {
       totalTxps: total.txps,
       totalAmount: total.amount.toFixed(2)
     };
-  };
+  }
 
   getCoords(data, graph) {
-    var opts: any = {};
+    const opts: any = {};
 
-    if (graph == 'wallets') {
+    if (graph === 'wallets') {
       opts.yValue = 'wallets';
       opts.key = '# of New wallets';
-    } else if (graph == 'proposals') {
+    } else if (graph === 'proposals') {
       opts.yValue = 'txps';
       opts.key = '# of Proposals';
-    } else if (graph == 'amount') {
+    } else if (graph === 'amount') {
       opts.yValue = 'amount';
       opts.key = 'Amount sent';
     }
 
-    var byMonth = _.groupBy(data, 'month');
-    var byMonthGrouped = _.map(byMonth, (v: any, k) => {
+    const byMonth = _.groupBy(data, 'month');
+    const byMonthGrouped = _.map(byMonth, (v: any, k) => {
       return {
         x: v[0].date,
         y: _.sumBy(v, opts.yValue)
-      }
+      };
     });
 
-    var byWeek = _.groupBy(data, 'week');
-    var byWeekGrouped = _.map(byWeek, (v: any, k) => {
+    const byWeek = _.groupBy(data, 'week');
+    const byWeekGrouped = _.map(byWeek, (v: any, k) => {
       return {
         x: v[0].date,
         y: _.sumBy(v, opts.yValue)
-      }
+      };
     });
 
-    var coordsPerMonth = [{
+    const coordsPerMonth = [{
       key: opts.key + ' per month',
       values: byMonthGrouped
     }];
 
-    var coordsPerWeek = [{
+    const coordsPerWeek = [{
       key: opts.key + ' per week',
       values: byWeekGrouped
     }];
 
-    var dataCoords = _.map(data, (d) => {
+    const dataCoords = _.map(data, (d) => {
       return _.pick(d, ['date', opts.yValue]);
     });
 
-    var coordsPerDay = [{
+    const coordsPerDay = [{
       key: opts.key + ' per day',
       values: _.map(dataCoords, (d: any) => {
         return {
           x: d.date,
           y: d[opts.yValue]
-        }
+        };
       })
     }];
 
@@ -150,29 +159,28 @@ export class DataServicesService {
       perWeek: coordsPerWeek,
       perDay: coordsPerDay
     };
-  };
+  }
 
   show(dataSet, config) {
-
-    var coords = this.getCoords(dataSet, config.graph);
+    const coords = this.getCoords(dataSet, config.graph);
     console.log(coords);
     nv.addGraph(() => {
-      var opts: any = {};
+      const opts: any = {};
 
-      if (config.interval == 'perDay') {
+      if (config.interval === 'perDay') {
         opts.coords = coords.perDay;
         opts.format = '%b %d';
         opts.label = coords.perDay[0].key;
-      } else if (config.interval == 'perMonth') {
+      } else if (config.interval === 'perMonth') {
         opts.coords = coords.perMonth;
         opts.format = '%b';
         opts.label = coords.perMonth[0].key;
-      } else if (config.interval == 'perWeek') {
+      } else if (config.interval === 'perWeek') {
         opts.coords = coords.perWeek;
         opts.format = '%W';
         opts.label = coords.perWeek[0].key;
       }
-      var chart = nv.models.lineChart()
+      const chart = nv.models.lineChart()
         .useInteractiveGuideline(true);
 
       chart.xAxis
@@ -195,7 +203,7 @@ export class DataServicesService {
 
       return chart;
     });
-  };
+  }
 
   initGraphs(data) {
     this.show(data, {
@@ -213,6 +221,5 @@ export class DataServicesService {
       interval: 'perDay',
       chart: '#chart-amount'
     });
-    // $rootScope.$emit('Data/Finish');
-  };
+  }
 }
