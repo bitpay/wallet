@@ -80,8 +80,9 @@
         </a>
         <div class="item item-icon-right" ng-if="wallet" ng-click="chooseFeeLevel(tx, wallet)">
           <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-          <span class="m10l">{{navtechFee || '...'}} (navtech fee)</span>
-          <span class="m10l">{{navtechTxFee || '...'}} (transaction fee)</span>
+          <span class="m10l">{{tx.txp[wallet.id].feeTotalStr || '...'}} Total fee</span>
+          <span class="m10l">{{tx.txp[wallet.id].feeNavtechStr || '...'}} (navtech fee)</span>
+          <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}} (transaction fee)</span>
           <span class="item-note m10l">
             <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
             <span class="fee-rate" ng-if="tx.txp[wallet.id].feeRatePerStr"> &middot;
