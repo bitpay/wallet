@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Receive</ion-title>
+    <ion-title>{{ "Receive" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -12,17 +12,21 @@
     </div>
     <div>
       <button [hidden]="!address" class="button-request" (click)="requestSpecificAmount()">
-        <span>Request Specific amount</span>
+        <span translate>Request Specific amount</span>
         <ion-icon name="arrow-forward"></ion-icon> 
       </button>
     </div>
     <div>
       <button [hidden]="!address" class="button-address" (click)="setAddress(true)">
-        <span>Generate new address</span>
+        <span translate>Generate new address</span>
         </button>
     </div>
   </div>
   <div *ngIf="!wallet">
-    <span>No wallet</span>
+    <ion-card>
+      <ion-item>
+        <span translate>No Wallet</span>
+      </ion-item>
+    </ion-card>
   </div>
 </ion-content>
