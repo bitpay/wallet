@@ -24,19 +24,24 @@ export class ReceivePage {
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider
   ) {
-    this.wallets = this.profileProvider.getWallets();
-    this.updateQrAddress();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReceivePage');
+  }
+
+  ionViewDidEnter() {
+    this.wallets = this.profileProvider.getWallets();
+    this.updateQrAddress();
     this.onSelect(this.checkSelectedWallet(this.wallet, this.wallets));
   }
 
   private onSelect(wallet: any): any {
     this.wallet = wallet;
-    this.setProtocolHandler();
-    this.setAddress();
+    if (this.wallet) {
+      this.setProtocolHandler();
+      this.setAddress();
+    }
   }
 
   private setProtocolHandler(): void {
