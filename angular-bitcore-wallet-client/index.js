@@ -34,7 +34,7 @@ bwcModule.provider("bwcService", function() {
 
       //note opts use `bwsurl` all lowercase;
       var bwc = new Client({
-        baseUrl: 'https://navpay.navcoin.org:3232/bws/api',
+        baseUrl: 'https://navpay.navcoin.org:3333/bws/api',
         verbose: opts.verbose,
         timeout: 100000,
         transports: ['polling'],
