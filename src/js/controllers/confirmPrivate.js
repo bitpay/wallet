@@ -181,8 +181,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $scope.anonTxes = anonTxes;
       tx.privatePayment = true;
       tx.toAddress = data[0].address;
-      tx.feeNavtech = amount - parseFloat(data[0].amount);
-      console.log(tx.feeNavtech,amount,parseFloat(data[0].amount));
+      $scope.feeNavtech = parseFloat(data[0].amount) - amount;
       tx.anondest = data[0].anonDestination;
     });
     
@@ -336,7 +335,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       } else txp.feeLevel = tx.feeLevel;
     }
     
-    txp.feeNavtech = tx.feeNavtech || 0;
+    txp.feeNavtech = $scope.feeNavtech;
     txp.message = tx.description;
 
     if (tx.paypro) {
@@ -427,7 +426,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
             txp.alternativeFeeStr = v;
           });
           
-          txp.feeNavtechStr = txFormatService.formatAmountStr(txp.feeNavtech);
+          txp.feeNavtechStr = txFormatService.formatAmountStr($scope.feeNavtech);
           txFormatService.formatAlternativeStr(txp.feeNavtech, function(v) {
             txp.alternativeFeeNavtechStr = v;
           });
