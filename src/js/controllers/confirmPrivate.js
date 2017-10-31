@@ -192,11 +192,13 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         if (err) {
           return exitWithError('Could not update wallets');
         }
+        
+        getFees();
 
         if ($scope.wallets.length > 1) {
           $scope.showWalletSelector();
         } else if ($scope.wallets.length) {
-          setWallet($scope.wallets[0], tx, getFees);
+          setWallet($scope.wallets[0], tx);
         }
       });
 
