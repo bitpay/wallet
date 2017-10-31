@@ -538,7 +538,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
   };
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
-  function setWallet(wallet, tx, cb) {
+  function setWallet(wallet, tx) {
 
     $scope.wallet = wallet;
 
@@ -553,7 +553,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $timeout(function() {
         $ionicScrollDelegate.resize();
         $scope.$apply();
-        cb();
       }, 10);
 
     });
