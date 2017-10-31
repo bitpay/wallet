@@ -14,19 +14,19 @@
     <div *ngIf="isShared">
       <ion-item>
         <ion-label stacked>Your name</ion-label>
-        <ion-input type="text" [(ngModel)]="formData.copayerName" formControlName="copayerName" required></ion-input>
+        <ion-input type="text" [(ngModel)]="formData.myName" formControlName="myName" required></ion-input>
       </ion-item>
-  
+
       <ion-item>
         <ion-label stacked>Total number of copayers</ion-label>
-        <ion-select [(ngModel)]="formData.copayerSelected" formControlName="copayerSelected" (ionChange)="copayersChange(formData.copayerSelected)">
+        <ion-select [(ngModel)]="formData.totalCopayers" formControlName="totalCopayers" (ionChange)="copayersChange(formData.totalCopayers)">
           <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
         </ion-select>
       </ion-item>
-  
+
       <ion-item>
         <ion-label stacked>Required number of signatures</ion-label>
-        <ion-select [(ngModel)]="formData.signatureSelected" formControlName="signatureSelected" (ionChange)="signaturesChange(formData.signatureSelected)">
+        <ion-select [(ngModel)]="formData.requiredCopayers" formControlName="requiredCopayers" (ionChange)="signaturesChange(formData.requiredCopayers)">
           <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
         </ion-select>
       </ion-item>
@@ -51,12 +51,12 @@
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>
-      
+
       <ion-item *ngIf="formData.selectedSeed.id == 'set'">
         <ion-label stacked>Wallet recovery phrase</ion-label>
         <ion-input type="text" [(ngModel)]="formData.recoveryPhrase" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
-      
+
       <ion-item>
         <ion-label stacked>Add a password</ion-label>
         <ion-toggle [(ngModel)]="formData.addPassword" formControlName="addPassword" (ionChange)="resetFormFields()"></ion-toggle>
@@ -67,7 +67,7 @@
           <ion-label stacked>Password</ion-label>
           <ion-input type="password" [(ngModel)]="formData.password" formControlName="password"></ion-input>
         </ion-item>
-  
+
         <ion-item>
           <ion-label stacked>Confirm password</ion-label>
           <ion-input type="password" [(ngModel)]="formData.confirmPassword" formControlName="confirmPassword"></ion-input>

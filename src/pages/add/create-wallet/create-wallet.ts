@@ -3,13 +3,17 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { AppProvider } from '../../../providers/app/app';
+import { ProfileProvider } from '../../../providers/profile/profile';
+
+import { HomePage } from '../../../pages/home/home';
+
 import * as _ from 'lodash';
 
 @Component({
   selector: 'page-create-wallet',
   templateUrl: 'create-wallet.html'
 })
-export class CreateWalletPage implements OnInit{
+export class CreateWalletPage implements OnInit {
   public formData: any;
   public showAdvOpts: boolean;
   public COPAYER_PAIR_LIMITS: Array<any>;
@@ -25,24 +29,25 @@ export class CreateWalletPage implements OnInit{
   private createForm: FormGroup;
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
+    private navCtrl: NavController,
+    private navParams: NavParams,
     private app: AppProvider,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private profileProvider: ProfileProvider
   ) {
     this.isShared = navParams.get('isShared');
     this.title = this.isShared ? 'Create shared wallet' : 'Create personal wallet';
     this.derivationPathByDefault = "m/44'/0'/0'";
     this.derivationPathForTestnet = "m/44'/1'/0'";
     this.showAdvOpts = false;
-    this.COPAYER_PAIR_LIMITS = [2, 3, 4, 5, 6];
+    this.COPAYER_PAIR_LIMITS = [1, 2, 3, 4, 5, 6];
     this.copayers = _.clone(this.COPAYER_PAIR_LIMITS);
     this.signatures = _.clone(this.COPAYER_PAIR_LIMITS);
     this.formData = {
       walletName: null,
-      copayerName: null,
-      copayerSelected: this.copayers[0],
-      signatureSelected: this.copayers[0],
+      myName: null,
+      totalCopayers: 1,
+      requiredCopayers: 1,
       bwsURL: 'https://bws.bitpay.com/bws/api',
       recoveryPhrase: null,
       addPassword: false,
@@ -50,7 +55,7 @@ export class CreateWalletPage implements OnInit{
       confirmPassword: null,
       recoveryPhraseBackedUp: null,
       derivationPath: this.derivationPathByDefault,
-      testnet: false,
+      testnetEnabled: false,
       singleAddress: false,
     };
     this.appName = this.app.info.name;
@@ -60,9 +65,9 @@ export class CreateWalletPage implements OnInit{
   ngOnInit() {
     this.createForm = this.fb.group({
       walletName: ['', Validators.required],
-      copayerName: [''],
-      copayerSelected: [''],
-      signatureSelected: [''],
+      myName: [''],
+      totalCopayers: [''],
+      requiredCopayers: [''],
       bwsURL: [''],
       selectedSeed: [''],
       recoveryPhrase: [''],
@@ -76,14 +81,14 @@ export class CreateWalletPage implements OnInit{
     });
 
     if (this.isShared) {
-      this.createForm.get('copayerName').setValidators([Validators.required]);
+      this.createForm.get('myName').setValidators([Validators.required]);
     }
 
     this.createForm.get('addPassword').valueChanges.subscribe((addPassword: boolean) => {
       if (addPassword) {
         this.createForm.get('password').setValidators([Validators.required]);
         this.createForm.get('confirmPassword').setValidators([Validators.required]);
-      }else {
+      } else {
         this.createForm.get('password').clearValidators();
         this.createForm.get('confirmPassword').clearValidators();
       }
@@ -131,7 +136,7 @@ export class CreateWalletPage implements OnInit{
   signaturesChange(signature: any) {
     // TODO modify based on copayers
     console.log(signature);
-  }  
+  }
 
   resetFormFields() {
     this.formData.password = null;
@@ -145,6 +150,23 @@ export class CreateWalletPage implements OnInit{
   }
 
   create() {
-    console.log(this.formData);
+    var opts = {
+      name: this.formData.walletName,
+      m: this.formData.requiredCopayers,
+      n: this.formData.totalCopayers,
+      myName: this.formData.totalCopayers > 1 ? this.formData.myName : null,
+      networkName: this.formData.testnetEnabled && this.formData.coin != 'bch' ? 'testnet' : 'livenet',
+      bwsurl: this.formData.bwsurl,
+      singleAddress: this.formData.singleAddressEnabled,
+      walletPrivKey: this.formData._walletPrivKey, // Only for testing
+      coin: this.formData.coin
+    };
+
+    console.log(opts);
+    this.profileProvider.createWallet(opts).then((wallet) => {
+      console.log(wallet);
+      this.navCtrl.setRoot(HomePage);
+      this.navCtrl.popToRoot();
+    });
   }
 }
