@@ -181,6 +181,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $scope.anonTxes = anonTxes;
       tx.privatePayment = true;
       tx.toAddress = data[0].address;
+      tx.navtechFee = tx.amount - data[0].amount;
       tx.anondest = data[0].anonDestination;
     });
     
@@ -192,8 +193,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         if (err) {
           return exitWithError('Could not update wallets');
         }
-        
-        getFees();
 
         if ($scope.wallets.length > 1) {
           $scope.showWalletSelector();
@@ -243,7 +242,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         console.log('tx', tx);
         $scope.formattedAnonTxes = [];
         $scope.navtechTxFeeSatoshi = 0;
-        getEachFee(function(err){
+        getEachFee(0, function(err){
           ongoingProcess.set('Calculating Fees', false);
           if (err) {
             console.log('getEachFee.cb', err);
@@ -257,7 +256,10 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     });
   }
 
-  function getEachFee(cb) {
+  function getEachFee(i, cb) {
+    console.log('getEachFee', i, $scope.anonTxes[i]);
+    console.log('tx', $scope.tx);
+    var tx = $scope.anonTxes[i];
     var wallet = $scope.wallet;
     getTxp(lodash.clone(tx), wallet, true, function(err, txp) {
       if (err) return cb(err);
@@ -275,8 +277,13 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
       refresh();
       $scope.navtechTxFeeSatoshi += tx.txp[wallet.id].fee;
+      $scope.formattedAnonTxes[i] = tx;
       console.log('recursive condition', i, $scope.anonTxes.length);
-      cb(false);
+      if (i < $scope.anonTxes.length - 1) {
+        getEachFee(++i, cb);
+      } else {
+        cb(false);
+      }
     });
   }
 
@@ -327,7 +334,8 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         txp.feePerKb = tx.feeRate;
       } else txp.feeLevel = tx.feeLevel;
     }
-
+    
+    txp.feeNavtech = tx.feeNavtech;
     txp.message = tx.description;
 
     if (tx.paypro) {
@@ -417,8 +425,13 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           txFormatService.formatAlternativeStr(txp.fee, function(v) {
             txp.alternativeFeeStr = v;
           });
+          
+          txp.feeNavtechStr = txFormatService.formatAmountStr(txp.feeNavtech);
+          txFormatService.formatAlternativeStr(txp.feeNavtech, function(v) {
+            txp.alternativeFeeNavtechStr = v;
+          });
 
-          var per = (txp.fee / (txp.amount + txp.fee) * 100);
+          var per = ((txp.fee + txp.feeNavtech) / (txp.amount + txp.fee) * 100);
           txp.feeRatePerStr = per.toFixed(2) + '%';
           txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
 
