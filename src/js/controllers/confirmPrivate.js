@@ -181,7 +181,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $scope.anonTxes = anonTxes;
       tx.privatePayment = true;
       tx.toAddress = data[0].address;
-      tx.navtechFee = tx.amount - data[0].amount;
+      tx.feeNavtech = tx.amount - parseFloat(data[0].amount);
       tx.anondest = data[0].anonDestination;
     });
     
