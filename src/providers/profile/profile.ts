@@ -71,7 +71,7 @@ export class ProfileProvider {
   private needsBackup(wallet: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (!this.requiresBackup(wallet)) {
-        return reject(false);
+        return resolve(false);
       }
 
       this.persistenceProvider.getBackupFlag(wallet.credentials.walletId).then((val: string) => {
@@ -111,6 +111,7 @@ export class ProfileProvider {
     wallet.m = wallet.credentials.m;
     wallet.n = wallet.credentials.n;
     wallet.coin = wallet.credentials.coin;
+    wallet.status = {};
 
     this.updateWalletSettings(wallet);
     this.wallet[walletId] = wallet;
@@ -155,7 +156,7 @@ export class ProfileProvider {
       wallet.setNotificationsInterval(this.UPDATE_PERIOD);
       wallet.openWallet((err: any) => {
         if (wallet.status !== true)
-          this.logger.debug('Wallet + ' + walletId + ' status:' + wallet.status)
+          this.logger.debug('Wallet + ' + walletId + ' status:' + JSON.stringify(wallet.status));
       });
     });
 
@@ -209,24 +210,21 @@ export class ProfileProvider {
       let now = Math.floor(Date.now() / 1000);
       let showRange = 600; // 10min;
 
-      this.getLastKnownBalance(wallet.id).then((data: string) => {
+      this.getLastKnownBalance(wallet.id).then((data: any) => {
         if (data) {
-          let parseData: any = JSON.parse(data);
+          let parseData: any = data;
           wallet.cachedBalance = parseData.balance;
           wallet.cachedBalanceUpdatedOn = (parseData.updatedOn < now - showRange) ? parseData.updatedOn : null;
         }
         return resolve();
       }).catch((err: any) => {
-        return reject(err);
+        console.log(err);
       });
     });
   }
 
-  public setLastKnownBalance(wid: string, balance: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.persistenceProvider.setBalanceCache(wid, { balance: balance, updatedOn: Math.floor(Date.now() / 1000), });
-      return resolve();
-    });
+  public setLastKnownBalance(wid: string, balance: number): void {
+    this.persistenceProvider.setBalanceCache(wid, { balance: balance, updatedOn: Math.floor(Date.now() / 1000) });
   }
 
   private runValidation(wallet: any, delay?: number, retryDelay?: number) {

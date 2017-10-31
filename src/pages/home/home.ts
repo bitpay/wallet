@@ -3,38 +3,58 @@ import { NavController } from 'ionic-angular';
 import { AddPage } from "../add/add";
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
+import { WalletProvider } from '../../providers/wallet/wallet';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  public wallets;
+  public wallets: any;
 
   constructor(
-    public navCtrl: NavController,
-    private profile: ProfileProvider,
-    private release: ReleaseProvider,
+    private navCtrl: NavController,
+    private profileProvider: ProfileProvider,
+    private releaseProvider: ReleaseProvider,
+    private walletProvider: WalletProvider,
+    private bwcErrorProvider: BwcErrorProvider
   ) {
-    this.release.getLatestAppVersion()
-      .catch((err) => {
-        console.log('Error:', err)
-      })
-      .then((version) => {
-        console.log('Current app version:', version);
-        var result = this.release.checkForUpdates(version);
-        console.log('Update available:', result.updateAvailable);
-      });
+    this.checkUpdate();
+    this.wallets = this.profileProvider.getWallets();
+    this.updateAllWallets();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
-
-    this.wallets = this.profile.getWallets();
-    console.log('[home.ts:20]', this.wallets); //TODO
   }
 
-  goToAddView() {
+  private updateAllWallets(): void {
+    _.each(this.wallets, (wallet: any) => {
+      this.walletProvider.getStatus(wallet, {}).then((status: any) => {
+        wallet.status = status;
+        this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr);
+      }).catch((err) => {
+        wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
+        console.log(err);
+      });
+    });
+  }
+
+  private checkUpdate(): void {
+    this.releaseProvider.getLatestAppVersion()
+      .then((version) => {
+        console.log('Current app version:', version);
+        var result = this.releaseProvider.checkForUpdates(version);
+        console.log('Update available:', result.updateAvailable);
+      })
+      .catch((err) => {
+        console.log('Error:', err);
+      })
+  }
+
+  public goToAddView(): void {
     this.navCtrl.push(AddPage);
   }
 }

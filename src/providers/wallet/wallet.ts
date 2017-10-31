@@ -144,7 +144,7 @@ export class WalletProvider {
               }
               return reject(err);
             }
-            return resolve(null);
+            return resolve(ret);
           });
         })
       };
@@ -223,6 +223,8 @@ export class WalletProvider {
 
           cache.alternativeBalanceAvailable = true;
           cache.isRateAvailable = true;
+        }).catch((err) => {
+          console.log(err);
         });
       };
 
@@ -246,8 +248,10 @@ export class WalletProvider {
       };
 
       let _getStatus = (initStatusHash: any, tries: number): Promise<any> => {
+
         return new Promise((resolve, reject) => {
           if (isStatusCached() && !opts.force) {
+
             this.logger.debug('Wallet status cache hit:' + wallet.id);
             cacheStatus(wallet.cachedStatus);
             processPendingTxps(wallet.cachedStatus);
@@ -258,6 +262,7 @@ export class WalletProvider {
 
           this.logger.debug('Updating Status:', wallet.credentials.walletName, tries);
           get().then((status) => {
+
             let currentStatusHash = walletStatusHash(status);
             this.logger.debug('Status update. hash:' + currentStatusHash + ' Try:' + tries);
             if (opts.untilItChanges && initStatusHash == currentStatusHash && tries < this.WALLET_STATUS_MAX_TRIES && walletId == wallet.credentials.walletId) {
@@ -283,7 +288,11 @@ export class WalletProvider {
         });
       };
 
-      _getStatus(walletStatusHash(null), 0);
+      _getStatus(walletStatusHash(null), 0).then((status) => {
+        resolve(status);
+      }).catch((err) => {
+        return reject(err);
+      });
 
     });
   }
@@ -302,7 +311,7 @@ export class WalletProvider {
     });
   }
 
-  private getAddress(wallet: any, forceNew: boolean): Promise<any> {
+  public getAddress(wallet: any, forceNew: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getLastAddress(wallet.id).then((addr) => {
         if (!forceNew && addr) return resolve(addr);
