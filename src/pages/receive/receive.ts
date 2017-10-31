@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AmountPage } from '../send/amount/amount';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { ActionSheetController } from 'ionic-angular';
 
 @Component({
   selector: 'page-receive',
@@ -11,11 +13,22 @@ export class ReceivePage {
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
+  public wallets: any;
+  public selectedWallet: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private profile: ProfileProvider,
+    public actionSheetCtrl: ActionSheetController
+  ) {
+    this.wallets = this.profile.bind();
     this.protocolHandler = "bitcoin";
     this.address = "1FgGP9dKqtWC1Q9xGhPYVmAeyezeZCFjhf";
     this.updateQrAddress();
+    if (this.wallets && this.wallets[0]) {
+      this.selectedWallet = this.wallets[0].credentials;
+    };
   }
 
   ionViewDidLoad() {
@@ -33,6 +46,40 @@ export class ReceivePage {
 
   updateQrAddress () {
     this.qrAddress = this.protocolHandler + ":" + this.address;
+  }
+
+  showWallets() {
+    let buttons: Array<any> = [];
+    let coinClass: string = "";
+
+    this.wallets.forEach((wallet, index) => {
+      if (wallet.credentials.network === "livenet") {
+        coinClass = "wallets-livenet";
+      } else if (wallet.credentials.network === "testnet") {
+        coinClass = "wallets-testnet";
+      }
+
+      let walletButton: Object = {
+        text: wallet.credentials.walletName,
+        cssClass: coinClass,
+        handler: () => {
+           this.updateSelectedWallet(wallet);
+         }
+      }
+      buttons.push(walletButton);
+    });
+
+    const actionSheet = this.actionSheetCtrl.create({
+     title: 'Select a wallet',
+     buttons: buttons
+   });
+
+   actionSheet.present();
+  }
+
+  updateSelectedWallet(wallet: any) {
+    this.selectedWallet = wallet.credentials;
+    this.setAddress();
   }
 
 }
