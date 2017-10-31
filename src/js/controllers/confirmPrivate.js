@@ -328,6 +328,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
     if (tx.sendMaxInfo) {
       txp.inputs = tx.sendMaxInfo.inputs;
+      console.log($scope.feeNavtech);
       txp.fee = tx.sendMaxInfo.fee;
     } else {
       if (usingCustomFee) {
@@ -431,7 +432,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
             txp.alternativeFeeNavtechStr = v;
           });
 
-          var per = ((txp.fee + txp.feeNavtech) / (txp.amount + txp.fee) * 100);
+          var per = ((txp.fee) / (txp.amount + txp.fee) * 100);
           txp.feeRatePerStr = per.toFixed(2) + '%';
           txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
 
