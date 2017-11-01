@@ -1,8 +1,13 @@
 img {
   &.icon-wallet {
     width: 35px !important;
-    background-color: #647ce8;
-  } 
+    background-color: color($colors, accent);
+  }
+}
+
+/* Android fix */
+.item-md [item-start] {
+  margin: 0 !important;
 }
 
 .header-icon {
