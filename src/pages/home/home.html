@@ -15,9 +15,9 @@
 
   <ion-card *ngIf="wallets && wallets[0]">
     <ion-item>
-      Wallets
-      <button ion-button outline item-end icon-left (click)="goToAddView()">
-        <ion-icon name="md-add"></ion-icon>
+      <span translate>Wallets</span>
+      <button ion-button clear item-end class="header-icon" (click)="goToAddView()">
+        <ion-icon name="ios-add"></ion-icon>
       </button>
     </ion-item>
 
