@@ -51,19 +51,52 @@ describe('Profile Provider', () => {
     });
     profileProvider = TestBed.get(ProfileProvider);
     profileProvider.wallet = {
-      api:
-      {
+      api1: {
         id: 'eabee25b-d6ab-4b11-8b76-88570d826914',
         cachedBalance: "10.00 BTC",
         cachedBalanceUpdatedOn: null,
         credentials: {
           coin: 'btc',
-          network: 'testnet',
+          network: 'livenet',
           n: 1,
           m: 1,
         },
         status: {
           availableBalanceSat: 1000000000 // 10 BTC
+        },
+        isComplete: function () {
+          return true;
+        }
+      },
+      api2: {
+        id: 'zxccv25b-d6ab-4b11-8b76-88570d822222',
+        cachedBalance: "5.00 BCH",
+        cachedBalanceUpdatedOn: null,
+        credentials: {
+          coin: 'bch',
+          network: 'livenet',
+          n: 1,
+          m: 1,
+        },
+        status: {
+          availableBalanceSat: 500000000 // 5 BCH
+        },
+        isComplete: function () {
+          return true;
+        }
+      },
+      api3: {
+        id: 'qwert25b-d6ab-4b11-8b76-88570d833333',
+        cachedBalance: "1.50 BTC",
+        cachedBalanceUpdatedOn: null,
+        credentials: {
+          coin: 'btc',
+          network: 'testnet',
+          n: 2,
+          m: 2,
+        },
+        status: {
+          availableBalanceSat: 150000000 // 1.50 BTC
         },
         isComplete: function () {
           return true;
@@ -76,7 +109,6 @@ describe('Profile Provider', () => {
 
     it('should get successfully all wallets when no opts', () => {
       const wallets = profileProvider.getWallets();
-      expect(wallets).toBeDefined();
       expect(wallets).toEqual(_.values(profileProvider.wallet));
     });
 
@@ -84,24 +116,23 @@ describe('Profile Provider', () => {
       const opts = {
         coin: 'btc',
         network: 'testnet',
-        n: 1,
-        m: 1,
+        n: 2,
+        m: 2,
         hasFunds: true,
         minAmount: 0,
         onlyComplete: true
       };
       const wallets = profileProvider.getWallets(opts);
-      expect(wallets).toBeDefined();
-      expect(wallets).toEqual(_.values(profileProvider.wallet));
+      expect(wallets).toEqual([profileProvider.wallet.api3]);
     });
 
     it('should not return any wallet when there is no wallets validating provided opts', () => {
       const opts = {
         coin: 'bch',
         network: 'livenet',
+        minAmount: 1000000000,
       };
       const wallets = profileProvider.getWallets(opts);
-      expect(wallets).toBeDefined();
       expect(wallets).toEqual([]);
     });
   });
