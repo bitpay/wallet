@@ -6,6 +6,7 @@ import { ReleaseProvider } from '../../providers/release/release';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'page-home',
@@ -33,6 +34,10 @@ export class HomePage {
   private updateAllWallets(): void {
     _.each(this.wallets, (wallet: any) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
+        const balanceStr = status.totalBalanceStr ? wallet.status.totalBalanceStr : '';
+        const cachedBalanceStr = wallet.cachedBalance ? wallet.cachedBalance : '';
+        const cachedBalanceUpdateOn = wallet.cachedBalanceUpdatedOn ? ' - ' + moment(wallet.cachedBalanceUpdatedOn * 1000).fromNow() : '';
+        wallet.statusStr = balanceStr || cachedBalanceStr + cachedBalanceUpdateOn;
         wallet.status = status;
         this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr);
       }).catch((err) => {

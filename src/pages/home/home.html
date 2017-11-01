@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title translate>Home</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -26,9 +26,10 @@
         <ion-icon item-start>
           <img src="assets/img/icon-wallet.svg" class="icon-wallet">
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}} {{wallet.credentials.m}}-{{wallet.credentials.n}}</h2>
-        <p *ngIf="!wallet.scanning">{{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  )}}</p>
-        <span *ngIf="wallet.scanning"> Scanning funds... </span>        
+        <h2>{{wallet.credentials.walletName}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
+        <span *ngIf="wallet.scanning" translate>Scanning funds</span>        
+        <p *ngIf="!wallet.scanning">{{wallet.statusStr}}</p>
+        <p *ngIf="wallet.error" class="error">{{wallet.error}}</p>
       </button>
     </ion-list>
   </ion-card>

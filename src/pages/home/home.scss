@@ -11,3 +11,7 @@ img {
   margin: 0 !important;
   padding: 10px !important;
 }
+
+.error {
+  color: color($colors, danger) !important;
+}
