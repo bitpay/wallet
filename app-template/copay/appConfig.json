@@ -1,5 +1,5 @@
 {
-  "packageName": "copay",
+  "packageName": "navpay",
   "packageDescription": "Navpay Nav Coin Wallet",
   "packageNameId": "com.bitpay.navpay",
   "statusBarColor": "#192c3a",
@@ -11,7 +11,7 @@
   "nameNoSpace": "navpay",
   "nameCase": "Navpay",
   "nameCaseNoSpace": "Navpay",
-  "gitHubRepoName": "copay",
+  "gitHubRepoName": "navpay",
   "gitHubRepoUrl": "git://github.com/navcoin/copay.git",
   "gitHubRepoBugs": "https://github.com/navcoin/copay/issues",
   "disclaimerUrl": "https://copay.io/disclaimer",
