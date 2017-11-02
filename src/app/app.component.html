@@ -41,7 +41,7 @@
         <span class="value">{{totals.totalTxps}}</span>
       </div>
       <div class="col card">
-        <span class="total-label">Amount (BTC)</span>
+        <span class="total-label">Amount ({{coin}})</span>
         <span class="value">{{totals.totalAmount}}</span>
       </div>
     </div>
@@ -82,7 +82,7 @@
         <option value="perMonth">Per month</option>
       </select>
     </div>
-    <h3 id="amount" class="graphs-label">Amount (BTC)</h3>
+    <h3 id="amount" class="graphs-label">Amount ({{coin}})</h3>
     <div id="chart-amount" class="chart panel"></div>
   </div>
 </div>

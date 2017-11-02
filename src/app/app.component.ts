@@ -13,6 +13,7 @@ import * as moment from 'moment';
 })
 export class AppComponent implements OnInit {
   public totals: any;
+  public coin: string;
 
   private opts: any;
   private config: any;
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
   ) {
     const defaultDateFrom = '2015-01-01';
     const defaultDateTo = moment().format('YYYY-MM-DD');
+    this.coin = 'BTC';
     this.dateFrom.formatted = defaultDateFrom;
     this.dateTo.formatted = defaultDateTo;
     this.selector = 0;
@@ -67,6 +69,7 @@ export class AppComponent implements OnInit {
   }
 
   getStatsFromCoin(coin: string) {
+    this.coin = coin.toUpperCase();
     this.opts.from = this.dateFrom.formatted;
     this.opts.to = this.dateTo.formatted;
     this.fetch(coin);
