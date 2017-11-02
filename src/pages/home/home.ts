@@ -21,9 +21,11 @@ export class HomePage {
     private releaseProvider: ReleaseProvider,
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider
-  ) {
-    this.checkUpdate();
+  ) {}
+
+  ionViewDidEnter() {
     this.wallets = this.profileProvider.getWallets();
+    this.checkUpdate();
     this.updateAllWallets();
   }
 
