@@ -27,6 +27,7 @@ import { CopayApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
+import { CopayersPage } from '../pages/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
@@ -89,6 +90,7 @@ export function createTranslateLoader(http: Http) {
 let pages: any = [
   AddPage,
   CreateWalletPage,
+  CopayersPage,
   ImportWalletPage,
   JoinWalletPage,
   BackupWarningPage,
@@ -178,7 +180,7 @@ export function providersComponents() {
 @NgModule({
   declarations: declarationsComponents(),
   imports: [
-    IonicModule.forRoot(CopayApp, { 
+    IonicModule.forRoot(CopayApp, {
       tabsHideOnSubPages: true,
       modalEnter: 'modal-slide-in',
       modalLeave: 'modal-slide-out',

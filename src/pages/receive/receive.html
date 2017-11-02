@@ -1,25 +1,50 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ "Receive" | translate }}</ion-title>
+    <ion-title>{{'Receive'|translate}}</ion-title>
+    <ion-buttons *ngIf="showShareButton" (click)="shareAddress()" end>
+      <ion-icon name="share"></ion-icon>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div *ngIf="wallet" class="qr-container">
+<ion-content>
+  <div ng-if="wallet && wallet.isComplete() && wallet.needsBackup" (click)="openBackupNeededModal()" class="needs-backup-container">
+    <div class="backup">
+      <ion-icon name="alert"></ion-icon>
+      <span translate>Wallet not backed up</span>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </div>
+  </div>
+  <div *ngIf="wallet && wallet.isComplete()" class="qr-container">
     <qr-code *ngIf="address" [value]="qrAddress" [level]="M" [size]="220" [foreground]="'#334'"></qr-code>
     <div>
       <span>{{ address }}</span>
     </div>
     <div>
       <button [hidden]="!address" class="button-request" (click)="requestSpecificAmount()">
-        <span translate>Request Specific amount</span>
-        <ion-icon name="arrow-forward"></ion-icon> 
-      </button>
+          <span translate>Request Specific amount</span>
+          <ion-icon name="arrow-forward"></ion-icon> 
+        </button>
     </div>
     <div>
       <button [hidden]="!address" class="button-address" (click)="setAddress(true)">
-        <span translate>Generate new address</span>
+          <span translate>Generate new address</span>
         </button>
+    </div>
+  </div>
+  <div *ngIf="wallet && !wallet.isComplete()" class="incomplete-wallet-container">
+    <div class="title">
+      <span translate>Incomplete wallet</span>
+    </div>
+    <div class="subtitle">
+      <span translate>All signing devices must be added to this multisig wallet before bitcoin addresses can be created.</span>
+    </div>
+    <button ion-button (click)="goCopayers()" translate>Open wallet</button>
+  </div>
+  <div *ngIf="wallets" class="wallets-container" (click)="showWallets()">
+    <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+    <div class="wallet-text">
+      <div>{{wallet.name}}</div>
     </div>
   </div>
   <div *ngIf="!wallet">
