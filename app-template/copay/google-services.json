@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:149194066736:android:6de8942b48fea047",
         "android_client_info": {
-          "package_name": "com.bitpay.copay"
+          "package_name": "org.navcoin.navpay"
         }
       },
       "oauth_client": [
