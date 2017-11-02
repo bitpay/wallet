@@ -45,7 +45,7 @@ export class ReceivePage {
   }
 
   private setProtocolHandler(): void {
-    this.protocolHandler = this.walletProvider.getProtocolHandler(this.wallet);
+    this.protocolHandler = this.walletProvider.getProtocolHandler(this.wallet.coin);
   }
 
   private checkSelectedWallet(wallet: any, wallets: any): any {

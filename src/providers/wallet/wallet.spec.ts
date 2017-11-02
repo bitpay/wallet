@@ -98,4 +98,20 @@ describe('Provider: Wallet Provider', () => {
     })
 
   });
+
+  describe('Function: Get Protocol Handler Function', () => {
+
+    it('should return bitcoincash if coin is bch', () => {
+      let coin = 'bch';
+      let protocol = walletProvider.getProtocolHandler(coin);
+      expect(protocol).toEqual('bitcoincash');
+    })
+
+    it('should return bitcoin if coin is btc', () => {
+      let coin = 'btc';
+      let protocol = walletProvider.getProtocolHandler(coin);
+      expect(protocol).toEqual('bitcoin');
+    })
+
+  });
 });
