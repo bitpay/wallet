@@ -6,11 +6,11 @@ $white: #ffffff;
 $bodyBackgroundColor: #F1f3f5;
 
 @mixin gradient {
-    background: $bitpayColor; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(left, $bitpayColor , $copayColorOld); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(right, $bitpayColor, $copayColorOld); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(right, $bitpayColor, $copayColorOld); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to right, $bitpayColor , $copayColorOld); /* Standard syntax */
+  background: $bitpayColor; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, $bitpayColor , $copayColorOld); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, $bitpayColor, $copayColorOld); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, $bitpayColor, $copayColorOld); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, $bitpayColor , $copayColorOld); /* Standard syntax */
 }
 
 html {
@@ -38,32 +38,32 @@ body {
 }
 
 .header {
-    height: 8rem;
-    @include gradient;
-    .header-content {
-        display: flex;
-        justify-content: space-around;
-        padding-top: 2.6rem;
-        .bitpay-logo, .copay-logo {
-            max-height: 3rem;
-        }
-        .header-center {
-            font-size: 1.6rem;
-            .header-title {
-                margin: 0rem;
-                color: $white;
-                text-shadow: 1px 1px $copayColor;
-                text-transform: uppercase;
-                font-size: 1.2rem;
-            }
-            .repository-link {
-                text-align: center;
-                img {
-                    width: 1.5rem;
-                }
-            }
-        }
+  height: 8rem;
+  @include gradient;
+  .header-content {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 2.6rem;
+    .bitpay-logo, .copay-logo {
+      max-height: 3rem;
     }
+    .header-center {
+      font-size: 1.6rem;
+      .header-title {
+        margin: 0rem;
+        color: $white;
+        text-shadow: 1px 1px $copayColor;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+      }
+      .repository-link {
+        text-align: center;
+        img {
+          width: 1.5rem;
+        }
+      }
+    }
+  }
 }
 
 .panels {
@@ -119,6 +119,9 @@ my-date-picker {
 
 .sub-header {
   @include gradient;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   form {
     margin-right: 20px;
     display: flex;
@@ -135,6 +138,9 @@ my-date-picker {
     label {
       color: $white;
     }
+  }
+  select {
+
   }
 }
 svg {

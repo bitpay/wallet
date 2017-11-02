@@ -13,13 +13,21 @@
   </div>
 </div>
 <div class="sub-header">
-  <form class="form-inline" (ngSubmit)="onSubmitNgModel()">
-    <label class="mr-sm-2">From:</label>
-    <my-date-picker name="ngModelDate1" [options]="myDatePickerOptions" [selector]="selector" [(ngModel)]="model1" required></my-date-picker>
-    <label class="mr-sm-2">To:</label>
-    <my-date-picker name="ngModelDate2" [options]="myDatePickerOptions" [selector]="selector" [(ngModel)]="model2" required></my-date-picker>
-    <button type="submit" class="btn btn-outline-primary dates-search">Search</button>
-  </form>
+  <div>
+    <form class="form-inline" (ngSubmit)="onSubmitNgModel()">
+      <label class="mr-sm-2">From:</label>
+      <my-date-picker name="dateFrom" [options]="datePickerOptions" [selector]="selector" [(ngModel)]="dateFrom" required></my-date-picker>
+      <label class="mr-sm-2">To:</label>
+      <my-date-picker name="dateTo" [options]="datePickerOptions" [selector]="selector" [(ngModel)]="dateTo" required></my-date-picker>
+      <button type="submit" class="btn btn-outline-primary dates-search">Search</button>
+    </form>
+  </div>
+  <div>
+    <select class="large-2 left" name="list" (change)="getStatsFromCoin($event.target.value)">
+      <option value="btc" selected>Bitcoin - BTC</option>
+      <option value="bch">Bitcoin Cash - BCH</option>
+    </select>
+  </div>
 </div>
 <div class="container">
   <div class="container-fluid">
