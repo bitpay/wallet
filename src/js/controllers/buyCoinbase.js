@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService) {
+angular.module('copayApp.controllers').controller('buyCoinbaseController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicConfig, lodash, coinbaseService, popupService, profileService, ongoingProcess, walletService, txFormatService, externalLinkService) {
 
   var coin = 'btc';
   var amount;
@@ -71,7 +71,13 @@ angular.module('copayApp.controllers').controller('buyCoinbaseController', funct
         }
         if (lodash.isEmpty($scope.paymentMethods)) {
           ongoingProcess.set('connectingCoinbase', false);
-          showErrorAndBack('No payment method available to buy');
+          var url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
+          var msg = 'No payment method available to buy';
+          var okText = 'More info';
+          var cancelText = 'Go Back';
+          externalLinkService.open(url, true, null, msg, okText, cancelText, function() {
+            $ionicHistory.goBack(-2);
+          });
           return;
         }
         if (!hasPrimary) $scope.selectedPaymentMethodId.value = $scope.paymentMethods[0].id;
