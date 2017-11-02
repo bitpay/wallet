@@ -3084,7 +3084,7 @@ msgid "You can see the latest developments and contribute to this open source ap
 msgstr "GitHubのページにて最近の開発動向を見たり、改善案のソースコードの貢献したりすることができます。"
 
 #: www/views/onboarding/tour.html:19
-msgid "You can spend nav coin at millions of websites and stores worldwide."
+msgid "You can spend Nav Coin at stores and websites worldwide."
 msgstr "世界中のECサイトや店舗でナブコインを使って支払いができます。"
 
 #: www/views/backup.html:12

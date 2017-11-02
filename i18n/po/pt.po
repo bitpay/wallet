@@ -3078,7 +3078,7 @@ msgid "You can see the latest developments and contribute to this open source ap
 msgstr "Você pode ver os mais recentes desenvolvimentos e contribuir para este aplicativo de código aberto, visitando nosso projeto no GitHub."
 
 #: www/views/onboarding/tour.html:19
-msgid "You can spend nav coin at millions of websites and stores worldwide."
+msgid "You can spend Nav Coin at stores and websites worldwide."
 msgstr "Você pode gastar bitcoins em milhões de sites e lojas em todo o mundo."
 
 #: www/views/backup.html:12
