@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>{{'Home' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -15,9 +15,9 @@
 
   <ion-card *ngIf="wallets && wallets[0]">
     <ion-item>
-      Wallets
-      <button ion-button outline item-end icon-left (click)="goToAddView()">
-        <ion-icon name="md-add"></ion-icon>
+      <span translate>Wallets</span>
+      <button ion-button clear item-end class="header-icon" (click)="goToAddView()">
+        <ion-icon name="ios-add"></ion-icon>
       </button>
     </ion-item>
 
@@ -26,9 +26,10 @@
         <ion-icon item-start>
           <img src="assets/img/icon-wallet.svg" class="icon-wallet">
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}} {{wallet.credentials.m}}-{{wallet.credentials.n}}</h2>
-        <p *ngIf="!wallet.scanning">{{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : ( wallet.cachedBalance ? wallet.cachedBalance   + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  )}}</p>
-        <span *ngIf="wallet.scanning"> Scanning funds... </span>        
+        <h2>{{wallet.credentials.walletName}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
+        <span *ngIf="wallet.scanning" translate>Scanning funds</span>        
+        <p *ngIf="!wallet.scanning">{{wallet.statusStr}}</p>
+        <p *ngIf="wallet.error" class="error">{{wallet.error}}</p>
       </button>
     </ion-list>
   </ion-card>

@@ -1,15 +1,22 @@
 img {
   &.icon-wallet {
     width: 35px !important;
-    background-color: #647ce8;
-  } 
+    background-color: color($colors, accent);
+  }
 }
 
-.button-outline-md {
-  margin-right: auto !important;
-  border: none;
-  color: #488aff;
-  background-color: transparent;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+/* Android fix */
+.item-md [item-start] {
+  margin: 0 !important;
+}
+
+.header-icon {
+  font-size: 1.7rem !important;
+  color: silver;
+  margin: 0 !important;
+  padding: 10px !important;
+}
+
+.error {
+  color: color($colors, danger) !important;
 }

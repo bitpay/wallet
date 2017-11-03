@@ -70,6 +70,12 @@ $checkbox-md-item-start-margin-end: 20px;
 $alert-ios-button-text-color: color($colors, accent);
 $alert-md-button-text-color: color($colors, accent);
 
+/* tabs */
+$tabs-ios-tab-color-active: color($colors, accent);
+$tabs-md-tab-color-active: color($colors, accent);
+$tabs-wp-tab-color-active: color($colors, accent);
+
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
