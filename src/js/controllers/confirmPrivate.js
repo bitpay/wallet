@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
   var FEE_TOO_HIGH_LIMIT_PER = 15;
 
   var tx = {};
-  
+
   var time;
 
   // Config Related values
@@ -56,7 +56,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         historyRoot: true
       });
       $ionicHistory.clearHistory();
-      $state.go('tabs.send');
+      $state.go('tabs.send', { address: undefined });
     });
   };
 
@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       $scope.feeNavtech = parseFloat(data[0].amount) - amount;
       tx.anondest = data[0].anonDestination;
     });
-    
+
     updateTx(tx, null, {}, function() {
 
       $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
@@ -315,7 +315,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     }
 
     var txp = {};
-    
+
     txp.time = tx.time;
 
     txp.outputs = [{
@@ -323,7 +323,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       'amount': tx.toAmount,
       'message': tx.description
     }];
-    
+
     txp.anondest = tx.anondest;
 
     if (tx.sendMaxInfo) {
@@ -335,7 +335,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         txp.feePerKb = tx.feeRate;
       } else txp.feeLevel = tx.feeLevel;
     }
-    
+
     txp.feeNavtech = $scope.feeNavtech;
     txp.message = tx.description;
 
@@ -426,7 +426,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           txFormatService.formatAlternativeStr(txp.fee, function(v) {
             txp.alternativeFeeStr = v;
           });
-          
+
           txp.feeNavtechStr = txFormatService.formatAmountStr($scope.feeNavtech);
           txFormatService.formatAlternativeStr(txp.feeNavtech, function(v) {
             txp.alternativeFeeNavtechStr = v;

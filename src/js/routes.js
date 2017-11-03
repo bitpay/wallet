@@ -244,7 +244,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.scan', {
-        url: '/scan',
+        url: '/scan/:returnRoute',
         views: {
           'tab-scan': {
             controller: 'tabScanController',
@@ -261,12 +261,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         templateUrl: 'views/tab-scan.html'
       })
       .state('tabs.send', {
-        url: '/send',
+        url: '/send/:address',
         views: {
           'tab-send': {
             controller: 'tabSendController',
             templateUrl: 'views/tab-send.html',
           }
+        },
+        params: {
+          address: null,
         }
       })
       .state('tabs.settings', {
