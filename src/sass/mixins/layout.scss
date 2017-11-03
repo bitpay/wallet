@@ -18,3 +18,7 @@
 .absolute-center{
   @include absolute-center();
 }
+
+.scroll {
+  padding-top: 20px;
+}
