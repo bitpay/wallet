@@ -14,15 +14,15 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
     // Bitcore wallet service URL
     bws: {
-      url: 'http://95.183.50.44:3232/bws/api',
+      url: 'http://navpay.navcoin.org',
     },
 
     download: {
       bitpay: {
-        url: 'https://bitpay.com/wallet'
+        url: 'https://github.com/NAVCoin/NavPay'
       },
       copay: {
-        url: 'https://copay.io/#download'
+        url: 'https://github.com/NAVCoin/NavPay'
       }
     },
 
