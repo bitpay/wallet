@@ -75,9 +75,9 @@
     "ajv": "5.2.2",
     "angular2-moment": "1.7.0",
     "angular2-qrcode": "2.0.1",
-    "asn1.js": "4.5.2",
     "autoprefixer": "7.1.2",
     "bitcore-wallet-client": "6.4.0",
+    "preconditions": "2.2.0",
     "buffer-compare": "1.1.1",
     "cordova-android": "6.2.3",
     "cordova-clipboard": "^1.1.0",
@@ -91,6 +91,8 @@
     "cordova-plugin-dialogs": "^1.3.3",
     "cordova-plugin-fcm": "https://github.com/cmgustavo/cordova-plugin-fcm.git",
     "cordova-plugin-file": "^4.3.3",
+    "cordova-plugin-globalization": "^1.0.7",
+    "cordova-plugin-inappbrowser": "^1.7.1",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-network-information": "^1.3.3",
     "cordova-plugin-qrscanner": "^2.5.0",
@@ -129,7 +131,7 @@
     "codecov": "2.2.0",
     "fs-extra": "^4.0.2",
     "html-loader": "0.4.5",
-    "ionic": "3.15.2",
+    "ionic": "3.16.0",
     "jasmine-core": "2.6.4",
     "jasmine-spec-reporter": "4.1.1",
     "karma": "1.7.0",
@@ -180,7 +182,9 @@
         "SECOND_URL_SCHEME": "copay",
         "THIRD_URL_SCHEME": "bitcoincash"
       },
-      "cordova-plugin-fcm": {}
+      "cordova-plugin-fcm": {},
+      "cordova-plugin-globalization": {},
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "android",
