@@ -41,6 +41,7 @@ import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { AddressbookPage } from '../pages/addressbook/addressbook';
 import { AddressbookAddPage } from '../pages/addressbook/add/add';
 import { AddressbookViewPage } from '../pages/addressbook/view/view';
+import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -141,6 +142,7 @@ let pages: any = [
   TermsOfUsePage,
   TourPage,
   TabsPage,
+  WalletDetailsPage,
 ];
 
 let providers: any = [
