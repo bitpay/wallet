@@ -64,6 +64,8 @@ import { ConfirmPage } from '../pages/send/confirm/confirm';
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 
 /* Providers */
+
+import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AppProvider } from '../providers/app/app';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
@@ -124,6 +126,7 @@ let pages: any = [
 ];
 
 let providers: any = [
+  AddressBookProvider,
   AndroidFingerprintAuth,
   AppProvider,
   BwcProvider,

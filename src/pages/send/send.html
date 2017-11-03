@@ -9,13 +9,35 @@
 
 <ion-content padding>
   <ion-list>
-
     <ion-label>Recipient</ion-label>
-    <ion-item>
+    <ion-item *ngIf="hasWallets">
       <ion-icon name="logo-bitcoin" item-left></ion-icon>
       <ion-input type="text" placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
       <ion-icon class="scanner-icon" name="md-qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
-
   </ion-list>
+  <div *ngIf="contactsList">
+    <ion-list>
+      <ion-label>Contacts</ion-label>
+      <ion-item *ngFor="let item of contactsList" (click)="goToAmount(item)">
+        {{item.name}}
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="walletList">
+    <ion-list>
+      <ion-label>Transfer to Wallet</ion-label>
+      <ion-item *ngFor="let item of walletList" (click)="goToAmount(item)">
+        {{item.name}}
+      </ion-item>
+    </ion-list>
+  </div>
+  <ion-card *ngIf="!hasWallets">
+    <ion-card-header>
+      <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
+    </ion-card-header>
+    <ion-card-content>
+      <button ion-button (click)="createWallet()" translate>Create bitcoin wallet</button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Events, NavController } from 'ionic-angular';
+import { Injectable, Injector, ViewChild } from '@angular/core';
+import { Events, NavController, App } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -18,10 +18,10 @@ import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
 
 @Injectable()
 export class IncomingDataProvider {
-
+  private navCtrl: NavController;
   constructor(
+    private app: App,
     private events: Events,
-    private navCtrl: NavController,
     private bwcProvider: BwcProvider,
     private payproProvider: PayproProvider,
     private scanProvider: ScanProvider,
@@ -29,6 +29,8 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider
   ) {
+    //TODO Injecting NavController in constructor of service fails with no provider error
+    this.navCtrl = app.getActiveNav();
     console.log('Hello IncomingDataProvider Provider');
   }
 
