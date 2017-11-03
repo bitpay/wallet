@@ -1,22 +1,25 @@
-img {
-  &.icon-wallet {
-    width: 35px !important;
-    background-color: color($colors, accent);
+page-home {
+   img {
+
+    &.icon-wallet {
+      width: 35px !important;
+      background-color: color($colors, accent);
+    }
   }
-}
 
-/* Android fix */
-.item-md [item-start] {
-  margin: 0 !important;
-}
+  /* Android fix */
+  .item-md [item-start] {
+    margin: 0 !important;
+  }
 
-.header-icon {
-  font-size: 1.7rem !important;
-  color: silver;
-  margin: 0 !important;
-  padding: 10px !important;
-}
+  .header-icon {
+    font-size: 1.7rem !important;
+    color: silver;
+    margin: 0 !important;
+    padding: 10px !important;
+  }
 
-.error {
-  color: color($colors, danger) !important;
+  .error {
+    color: color($colors, danger) !important;
+  }
 }
