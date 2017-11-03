@@ -22,7 +22,7 @@
     </ion-item>
 
     <ion-list>
-      <button ion-item *ngFor="let wallet of wallets">
+      <button ion-item *ngFor="let wallet of wallets" (click)="goToWalletDetails(wallet)">
         <ion-icon item-start>
           <img src="assets/img/icon-wallet.svg" class="icon-wallet">
         </ion-icon>
