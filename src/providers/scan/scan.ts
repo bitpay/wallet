@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { PlatformProvider } from '../platform/platform';
 import 'rxjs/add/operator/map';
@@ -14,13 +13,20 @@ export class ScanProvider {
 
   private scanSub: any;
 
-  constructor(public http: Http, private qrScanner: QRScanner, private platform: PlatformProvider) {
+  constructor(
+    private qrScanner: QRScanner,
+    private platform: PlatformProvider
+  ) {
     this.scannerVisible = false;
     this.lightEnabled = false;
     this.frontCameraEnabled = false;
   }
 
-  activate(): Promise<any> {
+  public pausePreview(): void {
+    this.qrScanner.pausePreview();
+  };
+
+  public activate(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.platform.isCordova) {
         this.qrScanner.show();
@@ -31,7 +37,7 @@ export class ScanProvider {
           this.text = text;
           resolve(this.text);
           this.scannerVisible = false;
-          this.qrScanner.pausePreview();
+          this.pausePreview();
           this.scanSub.unsubscribe(); // stop scanning
         });
       } else {
@@ -43,13 +49,13 @@ export class ScanProvider {
   deactivate(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.platform.isCordova) {
-          if (this.lightEnabled) {
-            this.scanSub.unsubscribe();
-            this.qrScanner.disableLight();
-            this.lightEnabled = false;
-          }
-          this.qrScanner.hide(); // hide camera preview
-        } else {
+        if (this.lightEnabled) {
+          this.scanSub.unsubscribe();
+          this.qrScanner.disableLight();
+          this.lightEnabled = false;
+        }
+        this.qrScanner.hide(); // hide camera preview
+      } else {
         reject("ERROR - No Cordova device");
       }
     });
@@ -66,7 +72,7 @@ export class ScanProvider {
             console.log(resp);
           })
           .catch(err => {
-            console.log("Error: ",err);
+            console.log("Error: ", err);
             reject(err);
           });
       } else {
@@ -95,7 +101,7 @@ export class ScanProvider {
             console.log(resp);
           })
           .catch(err => {
-            console.log("Error: ",err);
+            console.log("Error: ", err);
             reject(err);
           });
       } else {
@@ -106,7 +112,7 @@ export class ScanProvider {
             console.log(resp);
           })
           .catch(err => {
-            console.log("Error: ",err);
+            console.log("Error: ", err);
             reject(err);
           });
       }

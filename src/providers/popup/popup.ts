@@ -6,7 +6,7 @@ export class PopupProvider {
   constructor(public alertCtrl: AlertController) {
   }
 
-  ionicAlert(title: string, subTitle?: string, okText?: string): void {
+  public ionicAlert(title: string, subTitle?: string, okText?: string): void {
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,
@@ -15,29 +15,33 @@ export class PopupProvider {
     alert.present();
   };
 
-  ionicConfirm(title, message, okText, cancelText): void {
-    let confirm = this.alertCtrl.create({
-      title: title,
-      message: message,
-      buttons: [
-        {
-          text: cancelText,
-          handler: () => {
-            console.log('Disagree clicked');
+  public ionicConfirm(title, message, okText, cancelText): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let confirm = this.alertCtrl.create({
+        title: title,
+        message: message,
+        buttons: [
+          {
+            text: cancelText,
+            handler: () => {
+              console.log('Disagree clicked');
+              reject();
+            }
+          },
+          {
+            text: okText,
+            handler: () => {
+              console.log('Agree clicked');
+              resolve();
+            }
           }
-        },
-        {
-          text: okText,
-          handler: () => {
-            console.log('Agree clicked');
-          }
-        }
-      ]
+        ]
+      });
+      confirm.present();
     });
-    confirm.present();
   };
 
-  ionicPrompt(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
+  public ionicPrompt(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let prompt = this.alertCtrl.create({
         title: title,

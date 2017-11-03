@@ -36,7 +36,7 @@ interface App {
   androidVersion: string;
   commitHash: string;
   _extraCSS: string;
-  _enabledExtensions: object;
+  _enabledExtensions: any;
 }
 
 @Injectable()

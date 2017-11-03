@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { DerivationPathHelperProvider } from '../../../providers/derivationPathHelper/derivationPathHelper';
+import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ConfigProvider } from '../../../providers/config/config';
 
 @Component({
   selector: 'page-join-wallet',
   templateUrl: 'join-wallet.html'
 })
-export class JoinWalletPage implements OnInit{
+export class JoinWalletPage implements OnInit {
   public formData: any;
   public showAdvOpts: boolean;
   public seedOptions: any;
@@ -20,7 +20,7 @@ export class JoinWalletPage implements OnInit{
 
   constructor(
     public navCtrl: NavController,
-    private form: FormBuilder, 
+    private form: FormBuilder,
     private pathHelper: DerivationPathHelperProvider,
     private configProvider: ConfigProvider,
   ) {
@@ -70,7 +70,7 @@ export class JoinWalletPage implements OnInit{
       if (addPassword) {
         this.joinForm.get('password').setValidators([Validators.required]);
         this.joinForm.get('confirmPassword').setValidators([Validators.required]);
-      }else {
+      } else {
         this.joinForm.get('password').clearValidators();
         this.joinForm.get('confirmPassword').clearValidators();
       }

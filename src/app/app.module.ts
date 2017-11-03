@@ -68,10 +68,12 @@ import { AppProvider } from '../providers/app/app';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
-import { DerivationPathHelperProvider } from '../providers/derivationPathHelper/derivationPathHelper';
+import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 import { Filter } from '../providers/filter/filter';
+import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
 import { OnGoingProcess } from '../providers/on-going-process/on-going-process';
+import { PayproProvider } from '../providers/paypro/paypro';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
@@ -130,8 +132,10 @@ let providers: any = [
   Clipboard,
   DerivationPathHelperProvider,
   Filter,
+  IncomingDataProvider,
   LanguageProvider,
   OnGoingProcess,
+  PayproProvider,
   PlatformProvider,
   ProfileProvider,
   PopupProvider,
