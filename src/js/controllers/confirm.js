@@ -57,7 +57,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         historyRoot: true
       });
       $ionicHistory.clearHistory();
-      $state.go('tabs.send');
+      $state.go('tabs.send', { address: undefined });
     });
   };
 
@@ -143,7 +143,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       time: Math.round(new Date().getTime() / 1000),
       txp: {},
     };
-    
+
     console.log("setting time "+tx.time);
 
     // Other Scope vars
@@ -201,9 +201,9 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var txp = {};
 
     console.log("received in gettxp "+tx.time + " - " + tx);
-    
+
     txp.time = tx.time;
-    
+
     console.log("txp.time = "+time);
 
     txp.outputs = [{
@@ -301,7 +301,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           refresh();
           return cb();
         }
-        
+
         console.log("updatetx tx = "+tx.time + " - " + tx);
 
         getTxp(lodash.clone(tx), wallet, opts.dryRun, function(err, txp) {
@@ -566,7 +566,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       disableAnimate: true,
       historyRoot: true
     });
-    $state.go('tabs.send').then(function() {
+    $state.go('tabs.send', { address: undefined }).then(function() {
       $ionicHistory.clearHistory();
       $state.transitionTo('tabs.home');
     });

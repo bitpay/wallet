@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, $window) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -124,7 +124,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     var isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
 
     if (!isWindowsPhoneApp) {
-      $state.go('tabs.scan');
+      $state.go('tabs.scan', { returnRoute: 'tabs.send' });
       return;
     }
 
@@ -229,10 +229,12 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+
     $scope.checkingBalance = true;
     $scope.formData = {
       search: null
     };
+
     originalList = [];
     CONTACTS_SHOW_LIMIT = 10;
     currentContactsPage = 0;
@@ -244,7 +246,19 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $scope.checkingBalance = false;
       return;
     }
+
     updateHasFunds();
+
+    if (data.stateParams.address) {
+      $scope.formData.search = data.stateParams.address;
+      $timeout(function() {
+        $scope.searchFocus = true;
+        var element = $window.document.getElementById('tab-send-address');
+        if(element) element.focus();
+        $scope.searchBlurred();
+      });
+    }
+
     updateWalletsList();
     updateContactsList(function() {
       updateList();

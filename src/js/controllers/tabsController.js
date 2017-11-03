@@ -2,6 +2,11 @@
 
 angular.module('copayApp.controllers').controller('tabsController', function($rootScope, $log, $scope, $state, $stateParams, $timeout, platformInfo, incomingData, lodash, popupService, gettextCatalog, scannerService) {
 
+  $scope.goSend = function() {
+    $state.go('tabs.send', { address: undefined });
+    return;
+  }
+
   $scope.onScan = function(data) {
     if (!incomingData.redir(data)) {
       popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid data'));
