@@ -1252,8 +1252,8 @@ export class WalletProvider {
     });
   };
 
-  public getProtocolHandler(wallet: any): string {
-    if (wallet.coin == 'bch') return 'bitcoincash';
+  public getProtocolHandler(coin: string): string {
+    if (coin == 'bch') return 'bitcoincash';
     else return 'bitcoin';
   }
 

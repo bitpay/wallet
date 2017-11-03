@@ -1,5 +1,27 @@
 page-receive {
   $v-text-accent-color: #1abb9b;
+  .incomplete-wallet-container {
+    .title {
+      padding-top: 10%;
+      font-size: 25px;
+      color: #444;
+      text-align: center;
+    }
+    .subtitle {
+      padding: 20px;
+      color: #444;
+      margin-top: 10%;
+      text-align: center;
+    }
+  }
+  .needs-backup-container {
+    .backup {
+      cursor: pointer;
+      background-color: orange;
+      color: #fff;
+      padding: 5px 0;
+    }
+  }
   .qr-container {
     text-align: center;
     margin: auto;
@@ -22,4 +44,47 @@ page-receive {
       color: $v-text-accent-color;
     }
   }
+  .wallets-container {
+        position: absolute;
+        bottom: 0rem;
+        width: 100%;    
+        border-top: solid 1px rgb(242, 242, 242);
+        min-height: 78px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        img.icon-wallet {
+          width: 35px !important;
+          background-color: #647ce8;
+       }
+        .wallet-text {
+          padding-left: 1rem;
+        }
+      }
+    }
+    
+    @mixin wallets-list {
+        height: 4rem;
+        width: 4rem;
+        content: " ";
+        position: absolute;
+        border-radius: 3px;
+        box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+    }
+    
+    .wallets::before {
+      @include wallets-list;
+      background: #647ce8 url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
+    }
+    
+    .action-sheet-container {
+      .action-sheet-button {
+        display: flex;
+        justify-content: baseline;
+        align-items: center;
+        padding: 2.5rem;
+        .button-inner {
+          padding-left: 5rem;
+        }
+      }
 }
