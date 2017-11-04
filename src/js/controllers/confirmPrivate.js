@@ -159,13 +159,16 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     var address = data.stateParams.toAddress;
 
     ongoingProcess.set('Finding NavTech Server', true);
-    navTechService.findNode(amount, address, function(success, data) {
+    navTechService.findNode(amount, address, function(success, data, serverInfo) {
       ongoingProcess.set('Finding NavTech Server', false);
       if (!success) {
         //@TODO finish this tree
         setNoWallet('Could not connect to NavTech servers. Only normal transactions are available right now.');
         console.log('Something went wrong, do you want to send a regular transaction?');         return;
       }
+
+      $scope.navtechFeePercent = serverInfo.navtechFeePercent;
+
       //@TODO setup the multiple transactions with the right data
       var anonTxes = [];
       var sum = 0;
@@ -177,32 +180,46 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         anonTxes.push(txPart);
         sum += data[i].amount;
       }
-      $scope.navtechFeeTemp = (sum - amount) * satToUnit + ' ' + walletConfig.settings.unitName;
+
+      $scope.originalAddress = tx.toAddress;
+
       $scope.anonTxes = anonTxes;
       tx.privatePayment = true;
       tx.toAddress = data[0].address;
-      $scope.feeNavtech = parseFloat(data[0].amount) - amount;
+      $scope.feeNavtech = amount * (serverInfo.navtechFeePercent / 100);
       tx.anondest = data[0].anonDestination;
-    });
 
-    updateTx(tx, null, {}, function() {
+      $scope.feeNavtechDisplay = $scope.feeNavtech * satToUnit + ' ' + walletConfig.settings.unitName;
+      $scope.amountStr = amount * satToUnit + ' ' + walletConfig.settings.unitName;
+      tx.toAmount = $scope.feeNavtech + amount;
 
-      $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
+      updateTx(tx, null, {}, function() {
 
-      setWalletSelector(tx.network, tx.toAmount, function(err) {
-        if (err) {
-          return exitWithError('Could not update wallets');
-        }
+        $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
 
-        if ($scope.wallets.length > 1) {
-          $scope.showWalletSelector();
-        } else if ($scope.wallets.length) {
-          setWallet($scope.wallets[0], tx);
-        }
-      });
+        setWalletSelector(tx.network, tx.toAmount, function(err) {
+          if (err) {
+            return exitWithError('Could not update wallets');
+          }
 
+          if ($scope.wallets.length > 1) {
+            $scope.showWalletSelector();
+          } else if ($scope.wallets.length) {
+            setWallet($scope.wallets[0], tx);
+          }
+        });
+
+      }); //updateTx
     });
   });
+
+  $scope.calculateTotal = function(tx) {
+    if(!$scope.wallet || !tx || !tx.txp || !tx.txp[$scope.wallet.id]) return false;
+    console.log(tx.txp[$scope.wallet.id].fee);
+    var txTotal = tx.toAmount + tx.txp[$scope.wallet.id].fee;
+    var txTotalDisplay = txTotal * satToUnit + ' ' + walletConfig.settings.unitName;
+    return txTotalDisplay;
+  }
 
   function getFees() {
     console.log('getFees');

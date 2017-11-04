@@ -64,6 +64,12 @@ NavTechService.prototype._checkNode = function(availableServers, numAddresses, c
     self.httprequest.post(navtechServerUrl, { num_addresses: numAddresses }).success(function(res){
       if(res && res.type === 'SUCCESS' && res.data) {
         console.log('Success fetching navtech data from server ' + availableServers[randomIndex], res);
+        //@TODO check if amount is larger than server max amount
+        self.runtime.serverInfo = {
+          maxAmount: res.data.max_amount,
+          minAmount: res.data.min_amount,
+          navtechFeePercent: res.data.transaction_fee,
+        }
         callback(res.data, self, 0);
       } else {
         console.log('Bad response from navtech server ' + availableServers[randomIndex], res);
@@ -87,16 +93,16 @@ NavTechService.prototype._splitPayment = function(navtechData, self) {
 
   var max = 6;
   var min = 2;
-  var numTxes = 1; // Math.floor(Math.random() * (max - min + 1)) + min;
+  var numTxes = Math.floor(Math.random() * (max - min + 1)) + min;
   var runningTotal = 0;
   var rangeMiddle = amount / numTxes;
   var rangeTop = Math.floor(rangeMiddle * 1.5);
   var rangeBottom = Math.floor(rangeMiddle * 0.5);
   var amounts = [amount];
-  
+
   self.runtime.amounts = amounts;
   self._encryptTransactions(navtechData, self, 0);
-  
+
   return;
 
   for (let i = 0; i < numTxes; i++) {
@@ -164,7 +170,7 @@ NavTechService.prototype._encryptTransactions = function(navtechData, self, coun
       return;
     }
   }
-  self.runtime.callback(true, payments);
+  self.runtime.callback(true, payments, self.runtime.serverInfo);
 }
 
 NavTechService.prototype.findNode = function(amount, address, callback) {
