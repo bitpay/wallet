@@ -57,8 +57,7 @@ export class CopayApp {
         }
         else {
           this.logger.info('No profile exists.');
-          // TODO: testing onboarding
-          //this.profile.createProfile();
+          this.profile.createProfile();
           this.rootPage = OnboardingPage;
         }
       }).catch((err: any) => {

@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides, Navbar, AlertController, ModalController, Modal } from 'ionic-angular';
+import { NavController, Slides, Navbar, AlertController } from 'ionic-angular';
 import { TabsPage } from '../../tabs/tabs';
-import { BackupConfirmModalPage } from '../backup-confirm-modal/backup-confirm-modal';
 import * as _ from 'lodash';
 
 @Component({
@@ -26,9 +25,8 @@ export class BackupGamePage {
   private useIdeograms: any;
 
   constructor(
-    public navCtrl: NavController, 
-    public alertCtrl: AlertController, 
-    public modalCtrl: ModalController
+    public navCtrl: NavController,
+    public alertCtrl: AlertController
   ) {
     // TODO replace for the original wallet object
     this.wallet = {
@@ -198,13 +196,18 @@ export class BackupGamePage {
       });
       alert.present();
     } else {
-      let self = this;
-      const myModal: Modal = self.modalCtrl.create(BackupConfirmModalPage, {}, {
-        showBackdrop: true,
-        enableBackdropDismiss: false,
-      });
-
-      myModal.present();
+      let opts = {
+        title: 'Your bitcoin wallet is backed up!',
+        message: 'Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.',
+        buttons: [{
+          text: 'Got it',
+          handler: () => {
+            this.navCtrl.setRoot(TabsPage);
+            this.navCtrl.popToRoot();
+          }
+        }],
+      }
+      this.alertCtrl.create(opts).present();
     }
   };
 

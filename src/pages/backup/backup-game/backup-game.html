@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
 
   <ion-navbar>
     <ion-title>{{wallet.name || 'Backup'}}</ion-title>
@@ -7,24 +7,24 @@
 </ion-header>
 
 
-<ion-content class="backup">
+<ion-content>
   <div *ngIf="deleted">
-    <div translate>Wallet recovery phrase not available.</div>
-    <div translate>You can still export it from Advanced &gt; Export.</div>
+    <h1 translate>Wallet recovery phrase not available.</h1>
+    <p translate>You can still export it from Advanced &gt; Export.</p>
   </div>
 
-  <ion-slides class="pages" pager="true" *ngIf="!deleted">
+  <ion-slides pager="true" *ngIf="!deleted">
     <ion-slide>
       <div *ngIf="mnemonicWords[0] || !wallet.credentials.mnemonicEncrypted">
-        <div translate>Please carefully write down this phrase.</div>
+        <h4 translate>Please carefully write down this phrase.</h4>
         <div class="phrase">
           <span *ngFor="let word of mnemonicWords">
             <span>{{word}}</span>
             <span *ngIf="useIdeograms">&#x3000;</span>
           </span>
         </div>
-        
-        <div class="buttons">
+
+        <div class="bottom-absolute">
           <div class="tldr" translate>We'll confirm on the next screen.</div>
           <button ion-button block [disabled]="wallet.credentials.mnemonicEncrypted || error" (click)="slideNext()" translate>I've written it down</button>
         </div>
@@ -37,7 +37,7 @@
         <div class="phrase">
           <button ion-button outline *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
         </div>
-        <div class="buttons">
+        <div class="bottom-absolute">
           <div *ngIf="!selectComplete">
             <div class="tldr" translate>Please tap each word in the correct order.</div>
             <div>
@@ -47,7 +47,7 @@
               </button>
             </div>
           </div>
-          
+
           <div *ngIf="selectComplete">
             <div class="tldr" translate>Is this correct?</div>
             <div>
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="buttons">
+      <div class="bottom-absolute">
         <button ion-button block [disabled]="!passphrase" (click)="finalStep();" translate>Confirm</button>
       </div>
     </ion-slide>
