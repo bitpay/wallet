@@ -1,39 +1,41 @@
-.backup {
-  .pages {
-    .swiper-pagination {
-      display: none;
-    }
-    .slide-zoom {
-      height: 100%;
-    }
-    .password-required {
-      padding: 2rem;
-      font-size: 14px;
-      color: color($colors, danger);
-    }
-    .password {
-      background-color: color($colors, light);
-      padding: 2rem;
-    }
-    .phrase {
-      display: -webkit-box;
-      background: color($colors, light);
-      border: 2px dashed #d9d9d9;
-      border-radius: 3px;
-      color: color($colors, secondary);
-      text-align: center;
-      max-width: 500px;
-      min-height: 12rem;
-      align-items: center;
-    }
-    .buttons {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding-bottom: 5vh;
-      .tldr {
-        padding: 1rem;
+page-backup-game {
+  .backup {
+    .pages {
+      .swiper-pagination {
+        display: none;
+      }
+      .slide-zoom {
+        height: 100%;
+      }
+      .password-required {
+        padding: 2rem;
+        font-size: 14px;
+        color: color($colors, danger);
+      }
+      .password {
+        background-color: color($colors, light);
+        padding: 2rem;
+      }
+      .phrase {
+        display: -webkit-box;
+        background: color($colors, light);
+        border: 2px dashed #d9d9d9;
+        border-radius: 3px;
+        color: color($colors, secondary);
+        text-align: center;
+        max-width: 500px;
+        min-height: 12rem;
+        align-items: center;
+      }
+      .buttons {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding-bottom: 5vh;
+        .tldr {
+          padding: 1rem;
+        }
       }
     }
   }
