@@ -1,4 +1,7 @@
 page-onboarding {
+  ion-content {
+    background: url(../assets/img/onboarding-welcome-bg.png);
+  }
   .logo-tagline {
     text-align: center;
     img {
@@ -9,12 +12,5 @@ page-onboarding {
       line-height: 1.6;
       font-size: 18px;
     }
-  }
-
-  .buttons {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    padding: 15px 15px 4vw 15px;
   }
 }

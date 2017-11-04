@@ -1,0 +1,16 @@
+
+// Position
+// --------------------------------------------------
+
+.bottom-absolute {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  padding: 15px 15px 1vw 15px;
+  .button {
+    margin: 1.2rem 0.2rem;
+  }
+  .text {
+    font-size: 70%;
+  }
+}

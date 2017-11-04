@@ -51,9 +51,14 @@ export class CopayApp {
       // Check Profile
       this.profile.loadAndBindProfile().then((profile: any) => {
         this.openLockModal();
-        if (profile) this.rootPage = TabsPage;
+        if (profile) {
+          this.logger.info('Profile exists.');
+          this.rootPage = TabsPage;
+        }
         else {
-          this.profile.createProfile();
+          this.logger.info('No profile exists.');
+          // TODO: testing onboarding
+          //this.profile.createProfile();
           this.rootPage = OnboardingPage;
         }
       }).catch((err: any) => {

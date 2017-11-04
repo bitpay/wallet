@@ -1,5 +1,4 @@
 page-receive {
-  $v-text-accent-color: #1abb9b;
   .incomplete-wallet-container {
     .title {
       padding-top: 10%;
@@ -30,7 +29,7 @@ page-receive {
       background: transparent;
       border: none;
       font-size: 12px;
-      color: $v-text-accent-color;
+      color: color($colors, primary);
       ion-icon {
         vertical-align: middle;
         padding-left: 5px;
@@ -41,13 +40,13 @@ page-receive {
       background: transparent;
       border: none;
       font-size: 12px;
-      color: $v-text-accent-color;
+      color: color($colors, primary);
     }
   }
   .wallets-container {
         position: absolute;
         bottom: 0rem;
-        width: 100%;    
+        width: 100%;
         border-top: solid 1px rgb(242, 242, 242);
         min-height: 78px;
         display: flex;
@@ -62,7 +61,7 @@ page-receive {
         }
       }
     }
-    
+
     @mixin wallets-list {
         height: 4rem;
         width: 4rem;
@@ -71,12 +70,12 @@ page-receive {
         border-radius: 3px;
         box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
     }
-    
+
     .wallets::before {
       @include wallets-list;
       background: #647ce8 url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
     }
-    
+
     .action-sheet-container {
       .action-sheet-button {
         display: flex;

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
 
   <ion-navbar>
     <ion-buttons end>
@@ -13,26 +13,22 @@
 <ion-content>
   <ion-slides pager="true" (ionSlideDidChange)="slideChanged()">
     <ion-slide>
-      <div>
-        <p translate>Bitcoin is secure,<br/>digital money.</p>
-        <p translate>You can spend bitcoin at millions of websites and stores worldwide.</p>
-      </div>
+      <h1 translate>Bitcoin is secure,<br/>digital money.</h1>
+      <p translate>You can spend bitcoin at millions of websites and stores worldwide.</p>
       <img src='assets/img/app/onboarding/tour-phone.svg' />
-      <div class="buttons">
-        <div translate>Just scan the code to pay.</div>
+      <div class="bottom-absolute">
+        <div class="text" translate>Just scan the code to pay.</div>
         <button ion-button block (click)="slideNext()" translate>Got it</button>
       </div>
     </ion-slide>
 
     <ion-slide>
-      <div>
-        <p translate>Bitcoin is a currency.</p>
-        <p translate>You can trade it for other currencies like US Dollars, Euros, or Pounds.</p>
-      </div>
+      <h1 translate>Bitcoin is a currency.</h1>
+      <p translate>You can trade it for other currencies like US Dollars, Euros, or Pounds.</p>
       <img src='assets/img/app/onboarding/tour-currency.svg' />
       <p>1 BTC = 6000 USD</p>
-      <div class="buttons">
-        <div translate>The exchange rate changes with the market.</div>
+      <div class="bottom-absolute">
+        <div class="text" translate>The exchange rate changes with the market.</div>
         <button ion-button block (click)="slideNext()" translate>
           Makes sense
         </button>
@@ -40,13 +36,11 @@
     </ion-slide>
 
     <ion-slide>
-      <div>
-        <p translate>You control your bitcoin.</p>
-        <p translate>This app stores your bitcoin with cutting-edge security.</p>
-      </div>
+      <h1 translate>You control your bitcoin.</h1>
+      <p translate>This app stores your bitcoin with cutting-edge security.</p>
       <img src='assets/img/app/onboarding/tour-control.svg' />
-      <div class="buttons">
-        <div translate>Not even BitPay can access it.</div>
+      <div class="bottom-absolute">
+        <div class="text" translate>Not even BitPay can access it.</div>
         <button ion-button block (click)="createDefaultWallet()" translate>
           Create bitcoin wallet
         </button>

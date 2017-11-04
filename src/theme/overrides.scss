@@ -1,5 +1,5 @@
 /*
- * BitPay Distribution SCSS overrides
+ * Copay Distribution SCSS overrides
  */
 
 // Named Color Variables
@@ -11,9 +11,8 @@
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #1e3186,
-  secondary:  #111b49,
-  accent:     #647ce8,
+  primary:    #1abb9b,
+  secondary:  #31465b,
   warning:    #EBA133,
   danger:     #bb331a,
   success:    #7BC94D,
@@ -21,4 +20,3 @@ $colors: (
   dark:       #222,
 );
 
-$text-color: #1e3186;

@@ -1,15 +1,9 @@
 page-home {
    img {
-
     &.icon-wallet {
       width: 35px !important;
-      background-color: color($colors, accent);
+      background-color: color($colors, primary);
     }
-  }
-
-  /* Android fix */
-  .item-md [item-start] {
-    margin: 0 !important;
   }
 
   .header-icon {
