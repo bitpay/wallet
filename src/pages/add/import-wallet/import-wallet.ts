@@ -4,14 +4,14 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BwcProvider } from '../../../providers/bwc/bwc';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-import { DerivationPathHelperProvider } from '../../../providers/derivationPathHelper/derivationPathHelper';
+import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
 import { ConfigProvider } from '../../../providers/config/config';
 
 @Component({
   selector: 'page-import-wallet',
   templateUrl: 'import-wallet.html'
 })
-export class ImportWalletPage implements OnInit{
+export class ImportWalletPage implements OnInit {
   public fromOnboarding: boolean;
   public formData: any;
   public showAdvOpts: boolean;
@@ -68,27 +68,27 @@ export class ImportWalletPage implements OnInit{
         this.importForm.get('file').clearValidators();
         this.importForm.get('filePassword').clearValidators();
         break;
-        case 'file':
+      case 'file':
         this.importForm.get('file').setValidators([Validators.required]);
         this.importForm.get('filePassword').setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
         break;
-        
-        default:
+
+      default:
         this.importForm.get('words').clearValidators();
         this.importForm.get('file').clearValidators();
         this.importForm.get('filePassword').clearValidators();
         break;
-      }
-      this.importForm.get('words').updateValueAndValidity();
-      this.importForm.get('file').updateValueAndValidity();
-      this.importForm.get('filePassword').updateValueAndValidity();
+    }
+    this.importForm.get('words').updateValueAndValidity();
+    this.importForm.get('file').updateValueAndValidity();
+    this.importForm.get('filePassword').updateValueAndValidity();
   }
 
   setDerivationPath() {
     this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
-  
+
   normalizeMnemonic(words: string) {
     if (!words || !words.indexOf) return words;
     var isJA = words.indexOf('\u3000') > -1;

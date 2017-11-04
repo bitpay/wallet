@@ -3,6 +3,7 @@ import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular'
 import { Logger } from '@nsalaun/ng-logger';
 
 import { EmailPage } from '../email/email';
+import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
   selector: 'page-tour',
@@ -17,12 +18,13 @@ export class TourPage {
   constructor(
     public navCtrl: NavController,
     public loadingCtrl: LoadingController,
-    private log: Logger
+    private logger: Logger,
+    private profileProvider: ProfileProvider
   ) {
   }
 
   ionViewDidLoad() {
-    this.log.info('ionViewDidLoad TourPage');
+    this.logger.info('ionViewDidLoad TourPage');
   }
 
   ngOnInit() {
@@ -54,10 +56,10 @@ export class TourPage {
     });
     loading.present();
 
-    setTimeout(() => {
+    this.profileProvider.createDefaultWallet().then(() => {
       loading.dismiss();
       this.navCtrl.push(EmailPage);
-    }, 1500);
+    })
   }
 
 }

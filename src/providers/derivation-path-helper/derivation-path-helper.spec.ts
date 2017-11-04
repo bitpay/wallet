@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { DerivationPathHelperProvider } from './derivationPathHelper';
+import { DerivationPathHelperProvider } from './derivation-path-helper';
 
 describe('Derivation Path Helper Provider', () => {
   let service: DerivationPathHelperProvider;
