@@ -3,6 +3,8 @@
 angular.module('copayApp.controllers').controller('joinController',
   function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
 
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       var defaults = configService.getDefaults();
       $scope.formData = {};
