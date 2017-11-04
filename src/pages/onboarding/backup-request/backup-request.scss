@@ -1,17 +1,12 @@
 page-backup-request {
-  .buttons {
-    text-align: center;
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    padding: 15px 15px 4vh 15px;
+  text-align: center;
+  .toolbar-background{
+    background-color: transparent;
   }
-  .header {
-    margin: 5vh 3vh;
-    text-align: center;
-    font-size: 3vh;
-    img {
-      width: 50px;
-    }
+  p {
+    line-height: 1.6;
+    font-size: 18px;
+    margin-right: 10px;
+    margin-left: 10px;
   }
 }

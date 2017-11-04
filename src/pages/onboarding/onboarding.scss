@@ -1,6 +1,9 @@
 page-onboarding {
-  ion-content {
+  & > ion-content {
     background: url(../assets/img/onboarding-welcome-bg.png);
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
   .logo-tagline {
     text-align: center;

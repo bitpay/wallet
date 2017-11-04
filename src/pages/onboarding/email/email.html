@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-border>
 
   <ion-navbar hideBackButton="true">
     <ion-buttons end>
@@ -9,26 +9,27 @@
 </ion-header>
 
 <ion-content>
-  <div translate>Wallet Created</div>
+  <h1 translate>Wallet Created</h1>
 
   <div *ngIf="!showConfirmForm">
-    <div>
-      <p translate>Notifications by email</p>
+    <p translate>Notifications by email</p>
+    <img src='assets/img/app/onboarding/push-notifications.svg' />
+
+    <div class="bottom-absolute">
       <p translate>Where would you like to receive email notifications about payments?</p>
+      <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
+        <ion-item>
+          <ion-input type="email" [(ngModel)]="formData.email" formControlName="email" placeholder="Email Input"></ion-input>
+        </ion-item>
+
+        <ion-item no-lines>
+          <ion-label translate>Get news and updates from BitPay</ion-label>
+          <ion-checkbox [(ngModel)]="formData.accept" formControlName="accept" checked="true"></ion-checkbox>
+        </ion-item>
+
+        <button ion-button block type="submit" [disabled]="!validateEmail()" translate>Continue &rarr;</button>
+      </form>
     </div>
-
-    <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
-      <ion-item>
-        <ion-input type="email" [(ngModel)]="formData.email" formControlName="email" placeholder="Email Input"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label translate>Get news and updates from BitPay</ion-label>
-        <ion-checkbox [(ngModel)]="formData.accept" formControlName="accept" checked="true"></ion-checkbox>
-      </ion-item>
-      
-      <button ion-button block type="submit" [disabled]="!validateEmail()" translate>Continue &rarr;</button>
-    </form>
   </div>
 
   <div *ngIf="showConfirmForm">

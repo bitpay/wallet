@@ -1,15 +1,16 @@
-.terms {
-  width: 100%;
-  position: absolute;
-  bottom: 0px;
-  padding: 15px 15px 4vh 15px;
+page-disclaimer {
+  text-align: center;
+  .toolbar-background{
+    background-color: transparent;
+  }
   .link {
     font-size: 2vh;
     cursor: pointer;
   }
-}
-.content {
-  padding-top: 5vh;
-  text-align: center;
-  font-size: 3vh;
+  p {
+    line-height: 1.6;
+    font-size: 18px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
 }

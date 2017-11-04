@@ -49,7 +49,9 @@ export class TourPage {
   }
 
   createDefaultWallet() {
-    // TODO replace for bwc method
+    // TODO for testing
+    this.navCtrl.push(EmailPage);
+    return;
 
     let loading = this.loadingCtrl.create({
       content: 'Creating Personal Wallet...'

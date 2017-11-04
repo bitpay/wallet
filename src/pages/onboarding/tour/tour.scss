@@ -12,4 +12,8 @@ page-tour {
   .swiper-pagination-bullet-active {
     background: color($colors, primary);
   }
+  p {
+    line-height: 1.6;
+    font-size: 18px;
+  }
 }
