@@ -22,10 +22,10 @@
     "resizable": true,
     "frame": true,
     "width": 650,
-    "height": 450,
+    "height": 650,
     "min_width": 400,
     "max_width": 800,
-    "min_height": 450,
+    "min_height": 650,
     "position": "center",
     "fullscreen": false
   },
