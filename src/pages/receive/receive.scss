@@ -13,34 +13,28 @@ page-receive {
       text-align: center;
     }
   }
-  .needs-backup-container {
-    .backup {
-      cursor: pointer;
-      background-color: orange;
-      color: #fff;
-      padding: 5px 0;
+  .backup {
+    color: color($colors, light);
+    cursor: pointer;
+    background-color: color($colors, warning);
+    padding: 10px 0;
+    text-align: center;
+    .icon {
+      vertical-align: middle;
+      margin: 0 5px;
     }
   }
   .qr-container {
     text-align: center;
-    margin: auto;
-    .button-request {
-      margin-top: 10px;
-      background: transparent;
-      border: none;
-      font-size: 12px;
-      color: color($colors, primary);
-      ion-icon {
-        vertical-align: middle;
-        padding-left: 5px;
-      }
+    margin: 10px auto;
+    .icon {
+      vertical-align: middle;
+      margin: 0 10px;
     }
-    .button-address {
-      margin-top: 10px;
-      background: transparent;
-      border: none;
+    .text-address {
+      margin: 5px 0 10px 0;
       font-size: 12px;
-      color: color($colors, primary);
+      color: color($colors, secondary);
     }
   }
   .wallets-container {

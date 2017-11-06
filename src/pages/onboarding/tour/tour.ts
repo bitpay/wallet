@@ -54,9 +54,9 @@ export class TourPage {
     });
     loading.present();
 
-    this.profileProvider.createDefaultWallet().then(() => {
+    this.profileProvider.createDefaultWallet().then((wallet) => {
       loading.dismiss();
-      this.navCtrl.push(EmailPage);
+      this.navCtrl.push(EmailPage, {walletId: wallet.id});
     })
   }
 

@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides, Navbar, AlertController, NavParams } from 'ionic-angular';
 import { TabsPage } from '../../tabs/tabs';
+import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
@@ -15,6 +16,7 @@ export class BackupGamePage {
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Navbar) navBar: Navbar;
 
+  private fromOnboarding: boolean;
 
   public currentIndex: number;
   public deleted: boolean;
@@ -32,7 +34,6 @@ export class BackupGamePage {
   private wallet: any;
   private keys: any;
   private credentialsEncrypted: any;
-  private viewTitle: string;
   private n: number;
 
   private useIdeograms: any;
@@ -47,8 +48,8 @@ export class BackupGamePage {
     private bwcProvider: BwcProvider
   ) {
     this.walletId = this.navParams.get('walletId');
+    this.fromOnboarding = this.navParams.get('fromOnboarding');
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.viewTitle = this.wallet.name || this.wallet.credentials.walletName;
     this.n = this.wallet.n;
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
 
@@ -120,6 +121,18 @@ export class BackupGamePage {
     // ongoingProcess.set('validatingWords', false);
     this.logger.error('Failed to verify backup: ', err);
     this.error = true;
+    let showError = this.alertCtrl.create({
+      title: "Failed to verify backup",
+      subTitle: err,
+      buttons: [{
+        text: 'Try again',
+        role: 'cancel',
+        handler: () => {
+          this.setFlow();
+        }
+      }]
+    });
+    showError.present();
   };
 
   private showBackupResult() {
@@ -143,8 +156,11 @@ export class BackupGamePage {
         buttons: [{
           text: 'Got it',
           handler: () => {
-            this.navCtrl.setRoot(TabsPage);
-            this.navCtrl.popToRoot();
+            if (this.fromOnboarding) {
+              this.navCtrl.push(DisclaimerPage);
+            } else  {
+              this.navCtrl.popToRoot();
+            }
           }
         }],
       }
@@ -170,11 +186,12 @@ export class BackupGamePage {
   }
 
   private slideNext() {
-    this.slides.lockSwipes(false);
-    if (this.currentIndex == 1 && !this.wallet.mnemonicHasPassphrase)
+    if (this.currentIndex == 1 && !this.mnemonicHasPassphrase)
       this.finalStep();
-    else
+    else {
+      this.slides.lockSwipes(false);
       this.slides.slideNext();
+    }
 
     this.currentIndex = this.slides.getActiveIndex();
     this.slides.lockSwipes(true);
@@ -252,9 +269,7 @@ export class BackupGamePage {
       //ongoingProcess.set('validatingWords', false);
       this.showBackupResult();
     }).catch((err) => {
-      if (err) {
-        this.backupError(err);
-      }
+      this.backupError(err);
     });
   };
 

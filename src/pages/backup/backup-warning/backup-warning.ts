@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { BackupGamePage } from '../backup-game/backup-game';
 
 @Component({
@@ -8,12 +8,18 @@ import { BackupGamePage } from '../backup-game/backup-game';
 })
 export class BackupWarningPage {
   public currentIndex: number;
+  private walletId: string;
+  private fromOnboarding: boolean;
 
   constructor(
     public navCtrl: NavController,
+    public navParams: NavParams,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController
-  ) {}
+  ) {
+    this.walletId = this.navParams.get('walletId');
+    this.fromOnboarding = this.navParams.get('fromOnboarding');
+  }
 
   openWarningModal() {
 
@@ -23,7 +29,7 @@ export class BackupWarningPage {
       buttons: [{
         text: 'I understand',
         handler: () => {
-          this.navCtrl.push(BackupGamePage);
+          this.navCtrl.push(BackupGamePage, {walletId: this.walletId, fromOnboarding: this.fromOnboarding});
         }
       }],
     }

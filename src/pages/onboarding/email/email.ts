@@ -12,7 +12,8 @@ import { BackupRequestPage } from '../backup-request/backup-request';
 export class EmailPage {
   public formData: any;
   public showConfirmForm: boolean;
-  
+
+  private walletId: string;
   private emailForm: FormGroup;
 
   constructor(
@@ -22,6 +23,7 @@ export class EmailPage {
     private log: Logger,
     private fb: FormBuilder
   ) {
+    this.walletId = this.navParams.get('walletId');
     this.formData = {
       accept: true,
       email: null,
@@ -41,7 +43,7 @@ export class EmailPage {
   }
 
   skip() {
-    this.navCtrl.push(BackupRequestPage);
+    this.navCtrl.push(BackupRequestPage, {walletId: this.walletId});
   }
 
   validateEmail() {
@@ -72,6 +74,6 @@ export class EmailPage {
 
   save() {
     // TODO SAVE EMAIL
-    this.navCtrl.push(BackupRequestPage);
+    this.navCtrl.push(BackupRequestPage, {walletId: this.walletId});
   }
 }
