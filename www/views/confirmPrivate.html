@@ -16,7 +16,7 @@
           <span translate ng-if="tx.sendMax">Sending maximum amount</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{tx.amountValueStr || '...'}} <span class="unit">{{tx.amountUnitStr}}</span></div>
+          <div class="amount">{{amountStr || '...'}} <span class="unit">{{tx.amountUnitStr}}</span></div>
           <div class="alternative">{{tx.alternativeAmountStr || '...'}}</div>
         </div>
       </div>
@@ -34,8 +34,7 @@
 
             <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
               <!--<contact ng-if="!tx.toName" address="{{tx.toAddress}}"></contact>-->
-              <span class="m15l size-14" ng-if="!tx.toName">{{tx.toAddress}}</span>
-              <span class="m15l size-14" ng-if="tx.toName">{{tx.toName}}</span>
+              <span class="m15l size-14" ng-if="!tx.toName">{{originalAddress}}</span>
             </div>
 
             <div ng-if="tx.paypro" ng-click="openPPModal(tx.paypro)" class="m15l size-14 w100p pointer">
@@ -80,7 +79,8 @@
         </a>
         <div class="item item-icon-right" ng-if="wallet">
           <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-          <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}} (transaction fee)</span>
+          <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}} (Transaction fee)</span>
+          <span class="m10l">{{feeNavtechDisplay || '...'}} (NavTech fee @ {{navtechFeePercent}}%)</span>
           <span class="item-note m10l">
             <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
             <span class="fee-rate" ng-if="tx.txp[wallet.id].feeRatePerStr"> &middot;
@@ -91,6 +91,11 @@
           </span>
           </span>
 
+          <i class="icon bp-arrow-right"></i>
+        </div>
+        <div class="item item-icon-right" ng-if="wallet">
+          <span class="label">{{'Total Including Fees:' | translate}}</span>
+          <span class="m10l">{{calculateTotal(tx) || '...'}}</span>
           <i class="icon bp-arrow-right"></i>
         </div>
         <a class="item item-icon-right" ng-if="wallet" ng-click="showDescriptionPopup(tx)">
