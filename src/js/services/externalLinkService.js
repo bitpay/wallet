@@ -8,7 +8,7 @@ angular.module('copayApp.services').service('externalLinkService', function(plat
     }, 500);
   };
 
-  this.open = function(url, optIn, title, message, okText, cancelText) {
+  this.open = function(url, optIn, title, message, okText, cancelText, cb) {
     var old = $window.handleOpenURL;
 
     $window.handleOpenURL = function(url) {
@@ -23,6 +23,7 @@ angular.module('copayApp.services').service('externalLinkService', function(plat
       if (optIn) {
         var openBrowser = function(res) {
           if (res) window.open(url, '_system');
+          if (cb) return cb();
           _restoreHandleOpenURL(old);
         };
         popupService.showConfirm(title, message, okText, cancelText, openBrowser);
