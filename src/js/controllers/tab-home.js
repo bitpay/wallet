@@ -15,6 +15,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
+    $scope.cardInfo = {};
+
+    $scope.closeCardInfo = function() {
+      console.log('Card info closed');
+    };
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -25,6 +30,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
         storageService.getHomeTipAccepted(function(error, value) {
           $scope.homeTip = (value == 'accepted') ? false : true;
         });
+      }
+// TODO replace values for bws response
+      if (true) {
+        $scope.cardInfo.title = 'Bitcoin protocol changes in progress';
+        $scope.cardInfo.color = '#EBA133';
+        $scope.cardInfo.content = 'The Bitcoin network is currently undergoing disruptions due to Bitcoin protocol changes. Click "Learn more" to learn how to protect your funds.';
+        $scope.cardInfo.button = 'Learn more';
       }
 
       if ($scope.isNW) {

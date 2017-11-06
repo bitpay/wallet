@@ -1,0 +1,12 @@
+<i class="item icon ion-ios-close-empty close" ng-click="closeCardInfo()"></i>
+
+<i class="item icon big-icon-svg">
+  <img src="img/warning-circle.svg" class="bg"/>
+</i>
+
+<div class="item title" ng-style="cardInfo">{{cardInfo.title}}</div>
+<div class="item text-content">{{cardInfo.content}}</div>
+
+<div class="button" ng-click="openExternalLink()">
+  <span translate>{{cardInfo.button}}</span>
+</div>

@@ -11,7 +11,7 @@
      on-refresh="onRefresh()">
    </ion-refresher>
 
-    <div class="list card release ng-hide" ng-show="newRelease">
+    <div class="list card card-info ng-hide" ng-show="newRelease">
       <i class="item icon big-icon-svg">
         <img src="img/icon-update.svg" class="bg"/>
       </i>
@@ -21,6 +21,10 @@
       <div class="button" ng-click="openExternalLink()">
         <span translate>Download</span>
       </div>
+    </div>
+
+    <div class="list card card-info">
+      <div ng-include="'views/includes/card-info.html'"></div>
     </div>
 
     <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div>

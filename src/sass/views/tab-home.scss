@@ -129,14 +129,13 @@
       }
     }
   }
-  .release {
+  .card-info {
     text-align: center;
     .item {
       width: 100%;
     }
     .title {
       font-weight: 700;
-      color: #444;
     }
     .button {
       width: 100%;
@@ -148,6 +147,19 @@
       }
       padding-top: 2rem;
       padding-bottom: 0;
+    }
+    i {
+      &.close {
+        position: absolute;
+        z-index: 10;
+        width: auto;
+        border: none;
+        right: 0;
+        padding-top: 10px;
+        padding-right: 15px;
+        font-size: 30px;
+        cursor: pointer;
+      }
     }
   }
 
