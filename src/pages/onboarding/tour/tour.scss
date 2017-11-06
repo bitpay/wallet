@@ -1,11 +1,19 @@
 page-tour {
-  .buttons {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    padding: 15px 15px 9vh 15px;
+  .toolbar-background{
+    background-color: transparent;
+  }
+  .bottom-absolute {
+    padding: 15px 15px 5vh 15px;
   }
   .slide-zoom {
     height: inherit;
+  }
+  /* pagination bullets */
+  .swiper-pagination-bullet-active {
+    background: color($colors, primary);
+  }
+  p {
+    line-height: 1.6;
+    font-size: 18px;
   }
 }

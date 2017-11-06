@@ -36,9 +36,7 @@ import { EmailPage } from '../pages/onboarding/email/email';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
-import { BackupWarningModalPage } from '../pages/backup/backup-warning-modal/backup-warning-modal';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
-import { BackupConfirmModalPage } from '../pages/backup/backup-confirm-modal/backup-confirm-modal';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -98,9 +96,7 @@ let pages: any = [
   ImportWalletPage,
   JoinWalletPage,
   BackupWarningPage,
-  BackupWarningModalPage,
   BackupGamePage,
-  BackupConfirmModalPage,
   AboutPage,
   AdvancedPage,
   AltCurrencyPage,
@@ -189,10 +185,7 @@ export function providersComponents() {
   imports: [
     IonicModule.forRoot(CopayApp, {
       tabsHideOnSubPages: true,
-      modalEnter: 'modal-slide-in',
-      modalLeave: 'modal-slide-out',
-      tabsPlacement: 'bottom',
-      pageTransition: 'ios-transition'
+      tabsPlacement: 'bottom'
     }),
     BrowserModule,
     HttpModule,

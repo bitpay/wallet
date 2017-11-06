@@ -1,30 +1,30 @@
-<ion-header>
+<ion-header no-border>
 
   <ion-navbar>
-    <ion-title>{{wallet.name || 'Backup'}}</ion-title>
+    <ion-title>{{'Backup' | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content class="backup">
+<ion-content>
   <div *ngIf="deleted">
-    <div translate>Wallet recovery phrase not available.</div>
-    <div translate>You can still export it from Advanced &gt; Export.</div>
+    <h1 translate>Wallet recovery phrase not available.</h1>
+    <p translate>You can still export it from Advanced &gt; Export.</p>
   </div>
 
-  <ion-slides class="pages" pager="true" *ngIf="!deleted">
+  <ion-slides pager="true" *ngIf="!deleted">
     <ion-slide>
       <div *ngIf="mnemonicWords[0] || !wallet.credentials.mnemonicEncrypted">
-        <div translate>Please carefully write down this phrase.</div>
+        <h4 translate>Please carefully write down this phrase.</h4>
         <div class="phrase">
           <span *ngFor="let word of mnemonicWords">
             <span>{{word}}</span>
             <span *ngIf="useIdeograms">&#x3000;</span>
           </span>
         </div>
-        
-        <div class="buttons">
+
+        <div class="bottom-absolute">
           <div class="tldr" translate>We'll confirm on the next screen.</div>
           <button ion-button block [disabled]="wallet.credentials.mnemonicEncrypted || error" (click)="slideNext()" translate>I've written it down</button>
         </div>
@@ -32,49 +32,43 @@
     </ion-slide>
 
     <ion-slide>
-      <div>
-        <div translate>Let's verify your backup phrase.</div>
-        <div class="phrase">
-          <button ion-button outline *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
-        </div>
-        <div class="buttons">
-          <div *ngIf="!selectComplete">
-            <div class="tldr" translate>Please tap each word in the correct order.</div>
-            <div>
-              <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index"
-                (click)="addButton(i, shuffledWord)"
-                [disabled]="shuffledWord.selected">{{shuffledWord.word}}
-              </button>
-            </div>
+      <h1 translate>Let's verify your backup phrase.</h1>
+      <div class="phrase">
+        <button ion-button outline *ngFor="let customWord of customWords; let i = index" (click)="removeButton(i, customWord)">{{customWord.word}}</button>
+      </div>
+      <div class="bottom-absolute">
+        <div *ngIf="!selectComplete">
+          <div class="tldr" translate>Please tap each word in the correct order.</div>
+          <div>
+            <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index"
+              (click)="addButton(i, shuffledWord)"
+              [disabled]="shuffledWord.selected">{{shuffledWord.word}}
+            </button>
           </div>
-          
-          <div *ngIf="selectComplete">
-            <div class="tldr" translate>Is this correct?</div>
-            <div>
-              <button ion-button block (click)="slideNext();" translate>Confirm</button>
-              <button ion-button block outline (click)="initFlow();" translate>Clear</button>
-            </div>
+        </div>
+
+        <div *ngIf="selectComplete">
+          <div class="tldr" translate>Is this correct?</div>
+          <div>
+            <button ion-button block (click)="slideNext();" translate>Confirm</button>
+            <button ion-button block outline (click)="setFlow();" translate>Clear</button>
           </div>
         </div>
       </div>
     </ion-slide>
 
     <ion-slide *ngIf="wallet.mnemonicHasPassphrase">
-      <div translate>Enter your password</div>
-      <div>
-        <div translate>In order to verify your wallet backup, please type your password.</div>
-        <div class="input">
-          <input type="password" id="passphrase" [(ngModel)]="passphrase" autocapitalize="off" spellcheck="false"/>
-        </div>
+      <h1 translate>Enter your password</h1>
+      <p translate>In order to verify your wallet backup, please type your password.</p>
+      <div class="input">
+        <input type="password" id="passphrase" [(ngModel)]="passphrase" autocapitalize="off" spellcheck="false"/>
       </div>
 
-      <div>
-        <div class="password-required" translate>
-          This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
-        </div>
+      <div class="password-required" translate>
+        This recovery phrase was created with a password. To recover this wallet both the recovery phrase and password are needed.
       </div>
 
-      <div class="buttons">
+      <div class="bottom-absolute">
         <button ion-button block [disabled]="!passphrase" (click)="finalStep();" translate>Confirm</button>
       </div>
     </ion-slide>

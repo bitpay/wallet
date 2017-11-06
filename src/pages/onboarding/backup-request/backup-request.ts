@@ -11,6 +11,7 @@ import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 })
 export class BackupRequestPage {
   private opts: any;
+  private walletId: string;
 
   constructor(
     public navCtrl: NavController,
@@ -18,6 +19,7 @@ export class BackupRequestPage {
     public alertCtrl: AlertController,
     private log: Logger
   ) {
+    this.walletId = this.navParams.get('walletId');
     this.opts = {
       title: '',
       message: '',
@@ -30,7 +32,7 @@ export class BackupRequestPage {
   }
 
   initBackupFlow() {
-    this.navCtrl.push(BackupWarningPage);
+    this.navCtrl.push(BackupWarningPage, {walletId: this.walletId, fromOnboarding: true});
   }
 
   doBackupLater(confirmed: boolean) {

@@ -108,7 +108,7 @@ export class TouchIdProvider {
 
   checkWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!this.isAvailable()) reject();
+      if (!this.isAvailable()) return resolve();
       if (this.isNeeded(wallet)) {
         this.check().then(() => {
           resolve();

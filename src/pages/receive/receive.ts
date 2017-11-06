@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ActionSheetController, ModalController } from 'ionic-angular';
+import { NavController, Events, ActionSheetController, AlertController} from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -7,7 +7,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 //pages
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from '../copayers/copayers';
-import { BackupWarningModalPage } from '../backup/backup-warning-modal/backup-warning-modal';
+import { BackupGamePage } from '../backup/backup-game/backup-game';
 //providers
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -31,15 +31,14 @@ export class ReceivePage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
+    private alertCtrl: AlertController,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
     private events: Events,
     private actionSheetCtrl: ActionSheetController,
-    private socialSharing: SocialSharing,
-    private modalCtrl: ModalController
+    private socialSharing: SocialSharing
   ) {
   }
 
@@ -137,12 +136,18 @@ export class ReceivePage {
     this.navCtrl.push(CopayersPage, { walletId: this.wallet.credentials.walletId });
   };
 
-  public openBackupNeededModal(): void {
-    const myModal = this.modalCtrl.create(BackupWarningModalPage, {}, {
-      showBackdrop: true,
-      enableBackdropDismiss: true,
-    });
-    myModal.present();
+  public goToBackup(): void {
+    let opts = {
+      title: 'Screenshots are not secure',
+      message: 'If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen',
+      buttons: [{
+        text: 'I understand',
+        handler: () => {
+          this.navCtrl.push(BackupGamePage, {walletId: this.wallet.credentials.walletId});
+        }
+      }],
+    }
+    this.alertCtrl.create(opts).present();
   }
 
 }

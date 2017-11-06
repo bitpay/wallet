@@ -8,29 +8,21 @@
 </ion-header>
 
 <ion-content>
-  <div ng-if="wallet && wallet.isComplete() && wallet.needsBackup" (click)="openBackupNeededModal()" class="needs-backup-container">
-    <div class="backup">
-      <ion-icon name="alert"></ion-icon>
-      <span translate>Wallet not backed up</span>
-      <ion-icon name="arrow-forward"></ion-icon>
-    </div>
+  <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" (click)="goToBackup()" class="backup">
+    <ion-icon name="alert"></ion-icon>
+    <span translate>Wallet not backed up</span>
+    <ion-icon name="arrow-forward"></ion-icon>
   </div>
   <div *ngIf="wallet && wallet.isComplete()" class="qr-container">
     <qr-code *ngIf="address" [value]="qrAddress" [level]="M" [size]="220" [foreground]="'#334'"></qr-code>
-    <div>
-      <span>{{ address }}</span>
-    </div>
-    <div>
-      <button [hidden]="!address" class="button-request" (click)="requestSpecificAmount()">
-          <span translate>Request Specific amount</span>
-          <ion-icon name="arrow-forward"></ion-icon> 
-        </button>
-    </div>
-    <div>
-      <button [hidden]="!address" class="button-address" (click)="setAddress(true)">
-          <span translate>Generate new address</span>
-        </button>
-    </div>
+    <div class="text-address">{{ address }}</div>
+    <button ion-button block clear [hidden]="!address" (click)="requestSpecificAmount()">
+      <span translate>Request Specific amount</span>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+    <button ion-button block clear [hidden]="!address" (click)="setAddress(true)">
+      <span translate>Generate new address</span>
+    </button>
   </div>
   <div *ngIf="wallet && !wallet.isComplete()" class="incomplete-wallet-container">
     <div class="title">

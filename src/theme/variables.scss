@@ -23,58 +23,6 @@ $app-direction: ltr;
 // Override - Homogenized ionic component styles
 @import 'overrides';
 
-/* filled button */
-$button-ios-background-color: color($colors, accent);
-$button-md-background-color: color($colors, accent);
-$button-wp-background-color: color($colors, accent);
-
-/* outline button */
-$button-ios-outline-text-color: color($colors, accent) !important;
-$button-md-outline-text-color: color($colors, accent) !important;
-$button-wp-outline-text-color: color($colors, accent) !important;
-
-/* pagination bullets */
-.swiper-pagination-bullet-active {
-  background: color($colors, accent) !important;
-}
-
-/* checkbox */
-$checkbox-ios-icon-border-color-off: color($colors, accent);
-$checkbox-md-icon-border-color-off: color($colors, accent);
-$checkbox-wp-icon-border-color-off: color($colors, accent);
-
-$checkbox-ios-icon-border-color-on: color($colors, accent);
-$checkbox-md-icon-border-color-on: color($colors, accent);
-$checkbox-wp-icon-border-color-on: color($colors, accent);
-
-$checkbox-ios-background-color-on: color($colors, accent);
-$checkbox-md-icon-background-color-on: color($colors, accent);
-$checkbox-wp-icon-background-color-on: color($colors, accent);
-
-$checkbox-md-icon-border-radius: 50%;
-$checkbox-wp-icon-border-radius: 50%;
-
-$checkbox-md-icon-size: 21px;
-$checkbox-wp-icon-size: 21px;
-
-$checkbox-md-item-start-margin-end: 20px;
-
-.checkbox-md, .checkbox-wp {
-  .checkbox-checked .checkbox-inner {
-    margin-top: 2px;
-    margin-left: 2px;
-  }
-}
-
-/* alert buttons */
-$alert-ios-button-text-color: color($colors, accent);
-$alert-md-button-text-color: color($colors, accent);
-
-/* tabs */
-$tabs-ios-tab-color-active: color($colors, accent);
-$tabs-md-tab-color-active: color($colors, accent);
-$tabs-wp-tab-color-active: color($colors, accent);
-
 
 // App iOS Variables
 // --------------------------------------------------
@@ -104,6 +52,7 @@ $item-wp-detail-push-show: true;
 // default are overridden.
 
 @import "ionic.theme.default";
+@import "global";
 
 
 // Ionicons

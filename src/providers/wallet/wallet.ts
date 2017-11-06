@@ -852,7 +852,7 @@ export class WalletProvider {
         this.logger.debug('Transaction removed');
 
         this.invalidateCache(wallet);
-        // $rootScope.$emit('Local/TxAction', wallet.id);   
+        // $rootScope.$emit('Local/TxAction', wallet.id);
         return resolve(err);
       });
     });
@@ -1053,7 +1053,7 @@ export class WalletProvider {
 
   public handleEncryptedWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!this.isEncrypted(wallet)) return reject();
+      if (!this.isEncrypted(wallet)) return resolve();
       this.askPassword(wallet.name, 'Enter Spending Password').then((password: string) => { //TODO gettextcatalog
         if (!password) return reject('No password');
         if (!wallet.checkPassword(password)) return reject('Wrong password');

@@ -42,7 +42,6 @@ export class DisclaimerPage {
   }
 
   confirm() {
-    // TODO accept disclaimer
     this.persistenceProvider.setDisclaimerAccepted();
     this.navCtrl.setRoot(TabsPage);
     this.navCtrl.popToRoot();
