@@ -1,0 +1,36 @@
+page-wallet-details {
+  .header {
+    color: color($colors, light);
+    background-color: color($colors, primary);
+  }
+  
+  .toolbar {
+    background: transparent;
+  }
+  
+  .bar-button {
+    color: color($colors, light);
+  }
+  
+  .toolbar-title {
+    color: color($colors, light);
+  }
+  
+  .balance-header {
+    color: color($colors, light);
+    background-color: color($colors, primary);
+    height: 25%;
+    text-align: center;
+  }
+
+  .balance-str {
+   padding-top: 10%;
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .balance-alt-str {
+    font-size: 20px;
+    font-weight: 500;
+  }
+}

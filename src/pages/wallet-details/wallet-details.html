@@ -1,9 +1,16 @@
-<ion-header>
-  <ion-navbar>
+<ion-header no-border>
+  <ion-navbar transparent>
     <ion-title>{{wallet.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  hello
+  <div class="balance-header">
+    <div class="balance-str">{{wallet.status.availableBalanceStr}}</div>
+    <div class="balance-alt-str">{{alternativeBalanceStr}}</div>
+  </div>
+  
+  <div class="history">
+    
+  </div>
 </ion-content>

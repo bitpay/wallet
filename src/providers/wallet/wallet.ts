@@ -375,13 +375,11 @@ export class WalletProvider {
       this.logger.debug('Updating Transaction History');
 
       this.getTxsFromLocal(wallet.credentials.walletId).then((txsFromLocal) => {
-        console.log('TX FROM LOCAL:', txsFromLocal);
         if (!lodash.isEmpty(txsFromLocal) && !opts.force) return resolve(txsFromLocal);
 
         this.getTxsFromServer(wallet, 0, null, 10).then((txsFromServer) => {
-          console.log('TX FROM SERVER:', txsFromServer);
 
-          this.updateTxHistory(wallet, txsFromLocal, txsFromServer);
+          this.updateTxHistory_(wallet, txsFromLocal, txsFromServer);
         }).catch((err) => {
           this.logger.debug('Error getting txs from server');
           return reject(err);
@@ -393,7 +391,7 @@ export class WalletProvider {
     });
   }
 
-  private updateTxHistory(wallet: any, txsFromLocal: any, txsFromServer?: any) {
+  private updateTxHistory_(wallet: any, txsFromLocal: any, txsFromServer?: any) {
     let array = lodash.compact(txsFromLocal.concat(txsFromServer));
     let newHistory = lodash.uniqBy(array, (x: any) => {
       return x.txid;
@@ -455,53 +453,6 @@ export class WalletProvider {
         };
 
         return resolve(result);
-      });
-    });
-  }
-
-  private updateLocalTxHistory_(wallet: any, opts: any) {
-    return new Promise((resolve, reject) => {
-      opts = opts ? opts : {};
-      let FIRST_LIMIT = 5;
-      let LIMIT = 50;
-      let requestLimit = FIRST_LIMIT;
-      let walletId = wallet.credentials.walletId;
-      let progressFn = opts.progressFn || function () { };
-      let foundLimitTx = [];
-
-      // if (opts.feeLevels) {
-      //   opts.lowAmount = this.getLowAmount(wallet, opts.feeLevels);
-      // };
-
-      // let fixTxsUnit = (txs: any): void => {
-      //   if (!txs || !txs[0] || !txs[0].amountStr) return;
-
-      //   let cacheCoin: string = txs[0].amountStr.split(' ')[1];
-
-      //   if (cacheCoin == 'bits') {
-
-      //     this.logger.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
-      //     lodash.each(txs, (tx: any) => {
-      //       tx.amountStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.amount);
-      //       tx.feeStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.fees);
-      //     });
-      //   };
-      // };
-
-      this.getTxsFromLocal(walletId).then((txsFromLocal: any) => {
-        if (lodash.isEmpty(txsFromLocal)) {
-          console.log('No local transactions available');
-          return resolve(null);
-        }
-        // fixTxsUnit(txsFromLocal);
-        // First update
-        // progressFn(txsFromLocal, 0);
-        wallet.completeHistory = txsFromLocal;
-
-        // Second update
-
-      }).catch((err) => {
-        return reject(err);
       });
     });
   }

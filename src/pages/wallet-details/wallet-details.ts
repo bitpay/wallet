@@ -8,6 +8,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 })
 export class WalletDetailsPage {
   public wallet: any;
+  public alternativeBalanceStr: string;
 
   constructor(
     private navParams: NavParams,
@@ -29,6 +30,7 @@ export class WalletDetailsPage {
   getTxHistory(force?: boolean) {
     this.walletProvider.getTxHistory_(this.wallet, {force: force}).then((txh) => {
       this.wallet.completeHistory = txh;
+      this.alternativeBalanceStr = this.wallet.status.totalBalanceAlternative + ' USD'; //TODO use tx-format provider
     }).catch((err) => {
       console.log(err);
     });
