@@ -30,7 +30,7 @@ export class BwcProvider {
     return BWC.Utils;
   }
 
-  getClient(walletData, opts) {
+  getClient(walletData?, opts?) {
     opts = opts || {};
 
     //note opts use `bwsurl` all lowercase;

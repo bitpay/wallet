@@ -1,6 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides, Navbar, AlertController } from 'ionic-angular';
+import { NavController, Slides, Navbar, AlertController, NavParams } from 'ionic-angular';
 import { TabsPage } from '../../tabs/tabs';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { WalletProvider } from '../../../providers/wallet/wallet';
+import { BwcProvider } from '../../../providers/bwc/bwc';
+import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 @Component({
@@ -11,9 +15,9 @@ export class BackupGamePage {
   @ViewChild(Slides) slides: Slides;
   @ViewChild(Navbar) navBar: Navbar;
 
+
   public currentIndex: number;
   public deleted: boolean;
-  public wallet: any;
   public mnemonicWords: Array<String>;
   public shuffledMnemonicWords: Array<any>;
   public passphrase: String;
@@ -21,42 +25,49 @@ export class BackupGamePage {
   public selectComplete: boolean;
   public error: boolean;
 
+  private mnemonicHasPassphrase: any;
+
+  private data: any;
+  private walletId: string;
+  private wallet: any;
   private keys: any;
+  private credentialsEncrypted: any;
+  private viewTitle: string;
+  private n: number;
+
   private useIdeograms: any;
 
   constructor(
-    public navCtrl: NavController,
-    public alertCtrl: AlertController
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private alertCtrl: AlertController,
+    private logger: Logger,
+    private profileProvider: ProfileProvider,
+    private walletProvider: WalletProvider,
+    private bwcProvider: BwcProvider
   ) {
-    // TODO replace for the original wallet object
-    this.wallet = {
-      name: 'Wallet name',
-      credentials: {
-        mnemonic: 'uno dos tres cuatro cinco seis siete ocho nueve diez once doce',
-        //mnemonic: 'turtle provide boat sick popular brisk test devote gossip embark endorse corn',
-        mnemonicEncrypted: false,
-      },
-      n: 1,
-      isPrivKeyEncrypted: this.isPrivKeyEncrypted(),
-      mnemonicHasPassphrase: this.mnemonicHasPassphrase(),
-      network: 'livenet',
-    };
+    this.walletId = this.navParams.get('walletId');
+    this.wallet = this.profileProvider.getWallet(this.walletId);
+    this.viewTitle = this.wallet.name || this.wallet.credentials.walletName;
+    this.n = this.wallet.n;
+    this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
 
-    // TODO waiting for bwc
-    // walletService.getKeys($scope.wallet, function(err, k) {
-    //   if (err || !k) {
-    //     $log.error('Could not get keys: ', err);
-    //     $ionicHistory.goBack();
-    //     return;
-    //   }
-    //   $scope.credentialsEncrypted = false;
-    //   keys = k;
-    //   $scope.initFlow();
-    // });
-    this.keys = null;
+    this.deleted = this.isDeletedSeed();
+    if (this.deleted) {
+      this.logger.debug('no mnemonics');
+      return;
+    }
 
-    // this.deleted = this.isDeletedSeed();
-    this.deleted = false;
+    this.walletProvider.getKeys(this.wallet).then((keys) => {
+      if (_.isEmpty(keys)) {
+        this.logger.error('Empty keys');
+      }
+      this.credentialsEncrypted = false;
+      this.keys = keys;
+      this.setFlow();
+    }).catch((err) => {
+      this.logger.error('Could not get keys: ', err);
+    });
   }
 
   ngOnInit() {
@@ -64,30 +75,13 @@ export class BackupGamePage {
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.slidePrev();
     }
-    this.initFlow();
   }
 
   ionViewDidLoad() {
+    this.slides.lockSwipes(true);
   }
 
-  initFlow() {
-    // if (!this.keys) return;
-
-    // var words = keys.mnemonic;
-    var words = this.wallet.credentials.mnemonic;
-
-    this.mnemonicWords = words.split(/[\u3000\s]+/);
-    this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
-    this.useIdeograms = words.indexOf("\u3000") >= 0;
-    this.passphrase = null;
-    this.customWords = [];
-    this.selectComplete = false;
-    this.error = false;
-
-    if (this.currentIndex == 2) this.slidePrev();
-  };
-
-  shuffledWords(words: Array<String>) {
+  private shuffledWords(words: Array<String>) {
     var sort = _.sortBy(words);
 
     return _.map(sort, (w) => {
@@ -98,7 +92,7 @@ export class BackupGamePage {
     });
   };
 
-  addButton(index: number, item: any) {
+  private addButton(index: number, item: any) {
     var newWord = {
       word: item.word,
       prevIndex: index
@@ -108,80 +102,27 @@ export class BackupGamePage {
     this.shouldContinue();
   };
 
-  removeButton(index: number, item: any) {
+  private removeButton(index: number, item: any) {
     // if ($scope.loading) return;
     this.customWords.splice(index, 1);
     this.shuffledMnemonicWords[item.prevIndex].selected = false;
     this.shouldContinue();
   };
 
-  shouldContinue() {
+  private shouldContinue() {
     if (this.customWords.length == this.shuffledMnemonicWords.length)
       this.selectComplete = true;
     else
       this.selectComplete = false;
   };
 
-  finalStep() {
-    // ongoingProcess.set('validatingWords', true);
-    this.confirm((err) => {
-      // ongoingProcess.set('validatingWords', false);
-      if (err) {
-        this.backupError(err);
-      }
-      setTimeout(() => {
-        this.showBackupResult();
-        return;
-      });
-    });
-  };
-
-  confirm(cb: Function) {
-    this.error = false;
-
-    var customWordList = _.map(this.customWords, 'word');
-
-    if (!_.isEqual(this.mnemonicWords, customWordList)) {
-      return cb('Mnemonic string mismatch');
-    }
-
-    setTimeout(() => {
-      // TODO waiting for bwc
-      // if (this.mnemonicHasPassphrase) {
-      //   var walletClient = bwcService.getClient();
-      //   var separator = this.useIdeograms ? '\u3000' : ' ';
-      //   var customSentence = customWordList.join(separator);
-      //   var passphrase = this.data.passphrase || '';
-      //
-      //   try {
-      //     walletClient.seedFromMnemonic(customSentence, {
-      //       network: this.wallet.credentials.network,
-      //       passphrase: passphrase,
-      //       account: this.wallet.credentials.account
-      //     });
-      //   } catch (err) {
-      //     walletClient.credentials.xPrivKey = _.repeat('x', 64);
-      //     return cb(err);
-      //   }
-      //
-      //   if (walletClient.credentials.xPrivKey.substr(walletClient.credentials.xPrivKey) != keys.xPrivKey) {
-      //     delete walletClient.credentials;
-      //     return cb('Private key mismatch');
-      //   }
-      // }
-
-      // profileService.setBackupFlag($scope.wallet.credentials.walletId);
-      return cb();
-    });
-  };
-
-  backupError(err: any) {
+  private backupError(err: any) {
     // ongoingProcess.set('validatingWords', false);
-    console.log('Failed to verify backup: ', err);
+    this.logger.error('Failed to verify backup: ', err);
     this.error = true;
   };
 
-  showBackupResult() {
+  private showBackupResult() {
     if (this.error) {
       let alert = this.alertCtrl.create({
         title: "Uh oh...",
@@ -190,7 +131,7 @@ export class BackupGamePage {
           text: 'Ok',
           role: 'cancel',
           handler: () => {
-            this.initFlow();
+            this.setFlow();
           }
         }]
       });
@@ -211,44 +152,110 @@ export class BackupGamePage {
     }
   };
 
-  /*********************************
-  * Hardcoded methods
-  */
-
-  mnemonicHasPassphrase() {
-    return false;
-  }
-
-  isPrivKeyEncrypted() {
-    return false;
-  }
-
-  /*
-  * Hardcoded methods
-  *********************************/
-
-  isDeletedSeed() {
+  private isDeletedSeed() {
     if (!this.wallet.credentials.mnemonic && !this.wallet.credentials.mnemonicEncrypted)
       return true;
 
     return false;
   }
 
-  slidePrev() {
+  private slidePrev() {
+    this.slides.lockSwipes(false);
     if (this.currentIndex == 0) this.navCtrl.pop();
     else {
       this.slides.slidePrev();
       this.currentIndex = this.slides.getActiveIndex();
     }
+    this.slides.lockSwipes(true);
   }
 
-  slideNext() {
+  private slideNext() {
+    this.slides.lockSwipes(false);
     if (this.currentIndex == 1 && !this.wallet.mnemonicHasPassphrase)
       this.finalStep();
     else
       this.slides.slideNext();
 
     this.currentIndex = this.slides.getActiveIndex();
+    this.slides.lockSwipes(true);
   }
+
+  private setFlow() {
+    if (!this.keys) return;
+
+    let words = this.keys.mnemonic;
+    this.data = {};
+
+    this.mnemonicWords = words.split(/[\u3000\s]+/);
+    this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
+    this.mnemonicHasPassphrase = this.wallet.mnemonicHasPassphrase();
+    this.useIdeograms = words.indexOf("\u3000") >= 0;
+    this.data['passphrase'] = null;
+    this.customWords = [];
+    this.selectComplete = false;
+    this.error = false;
+
+    words = _.repeat('x', 300);
+
+    if (this.currentIndex == 2) this.slidePrev();
+
+  };
+
+
+  private copyRecoveryPhrase = function() {
+    if (this.wallet.network == 'livenet') return null;
+    else if (!this.wallet.credentials.mnemonic) return null;
+    else return this.wallet.credentials.mnemonic;
+  };
+
+  private confirm() {
+    return new Promise((resolve, reject) => {
+      this.error = false;
+
+      let customWordList = _.map(this.customWords, 'word');
+
+      if (!_.isEqual(this.mnemonicWords, customWordList)) {
+        return reject('Mnemonic string mismatch');
+      }
+
+      if (this.mnemonicHasPassphrase) {
+        let walletClient = this.bwcProvider.getClient();
+        let separator = this.useIdeograms ? '\u3000' : ' ';
+        let customSentence = customWordList.join(separator);
+        let passphrase = this.data.passphrase || '';
+
+        try {
+          walletClient.seedFromMnemonic(customSentence, {
+            network: this.wallet.credentials.network,
+            passphrase: passphrase,
+            account: this.wallet.credentials.account
+          });
+        } catch (err) {
+          walletClient.credentials.xPrivKey = _.repeat('x', 64);
+          return reject(err);
+        }
+
+        if (walletClient.credentials.xPrivKey.substr(walletClient.credentials.xPrivKey) != this.keys.xPrivKey) {
+          delete walletClient.credentials;
+          return reject('Private key mismatch');
+        }
+      }
+
+      this.profileProvider.setBackupFlag(this.wallet.credentials.walletId);
+      return resolve();
+    });
+  };
+
+  private finalStep() {
+    //ongoingProcess.set('validatingWords', true);
+    this.confirm().then(() => {
+      //ongoingProcess.set('validatingWords', false);
+      this.showBackupResult();
+    }).catch((err) => {
+      if (err) {
+        this.backupError(err);
+      }
+    });
+  };
 
 }

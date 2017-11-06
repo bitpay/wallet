@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <div ng-if="wallet && wallet.isComplete() && wallet.needsBackup" (click)="openBackupNeededModal()" class="needs-backup-container">
+  <div ng-if="wallet && wallet.isComplete() && wallet.needsBackup" (click)="goToBackup()" class="needs-backup-container">
     <div class="backup">
       <ion-icon name="alert"></ion-icon>
       <span translate>Wallet not backed up</span>
@@ -23,7 +23,7 @@
     <div>
       <button [hidden]="!address" class="button-request" (click)="requestSpecificAmount()">
           <span translate>Request Specific amount</span>
-          <ion-icon name="arrow-forward"></ion-icon> 
+          <ion-icon name="arrow-forward"></ion-icon>
         </button>
     </div>
     <div>
