@@ -15,7 +15,7 @@
   "gitHubRepoUrl": "git://github.com/navcoin/navpay.git",
   "gitHubRepoBugs": "https://github.com/navcoin/navpay/issues",
   "disclaimerUrl": "https://copay.io/disclaimer",
-  "url": "https://copay.io",
+  "url": "https://navcoin.org",
   "appDescription": "Navpay Nav Coin Wallet",
   "winAppName": "NavpayWallet",
   "WindowsStoreIdentityName": "18C7659D.NavPay-SecureNavCoinWallet",
