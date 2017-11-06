@@ -23,14 +23,17 @@ export class WalletDetailsPage {
       return;
     };
     
-    console.log('Wallet:', this.wallet);
     this.getTxHistory();
+  }
+
+  goToTxDetails(txid: string) {
+    return;
   }
 
   getTxHistory(force?: boolean) {
     this.walletProvider.getTxHistory_(this.wallet, {force: force}).then((txh) => {
       this.wallet.completeHistory = txh;
-      this.alternativeBalanceStr = this.wallet.status.totalBalanceAlternative + ' USD'; //TODO use tx-format provider
+      this.alternativeBalanceStr = this.wallet.status.totalBalanceAlternative || '0.00' + ' USD'; //TODO use tx-format provider
     }).catch((err) => {
       console.log(err);
     });
