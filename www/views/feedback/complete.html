@@ -23,10 +23,10 @@
             <div class="subtitle" translate>If you have additional feedback, please let us know by tapping the "Send feedback" option in the Settings tab.</div>
             <img src="img/illustration-send-feedback.png" class="send-feedback-illustration"/>
           </div>
-          <div class="subtitle" ng-if="score > 3 && socialsharing" translate>Share the love by inviting your friends.</div>
+          <div class="subtitle" ng-if="socialsharing" translate>Share the love by inviting your friends via your installed apps.</div>
         </div>
       </div>
-      <div class="share-buttons" ng-if="score > 3 && socialsharing" ng-class="{'slide-up': socialsharing }">
+      <div class="share-buttons" ng-if="socialsharing" ng-class="{'slide-up': socialsharing }">
         <div class="share-buttons__action" ng-show="facebook" ng-click="shareFacebook()">
           <i class="icon socialsharing-icon">
             <img src="img/social-icons/ico-social-facebook.svg"/>
