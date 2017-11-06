@@ -176,4 +176,15 @@
     }
   }
   .scroll{height: 100%;}
+  .important-message {
+    width: 100%;
+    cursor: pointer;
+    background-color: #f5a623;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    i {
+      margin: 0 10px;
+    }
+  }
 }

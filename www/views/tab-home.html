@@ -11,14 +11,28 @@
      on-refresh="onRefresh()">
    </ion-refresher>
 
-    <div class="list card release ng-hide" ng-show="newRelease">
+   <div class="list card important-message ng-hide" ng-show="serverMessage">
+     <div class="close-button" ng-click="serverMessage = null"><i class="icon ion-ios-close-empty"></i></div>
+     <i class="item big-icon-svg">
+       <img src="img/alert.svg" width="50" />
+     </i>
+
+     <div class="item alert">{{serverMessage.title}}</div>
+     <div class="item message">{{serverMessage.body}}</div>
+
+     <div class="button" ng-click="openServerMessageLink()">
+       <span translate>Learn more</span>
+     </div>
+   </div>
+
+    <div class="list card important-message ng-hide" ng-show="newRelease">
       <i class="item icon big-icon-svg">
         <img src="img/icon-update.svg" class="bg"/>
       </i>
 
       <div class="item title">{{updateText}}</div>
 
-      <div class="button" ng-click="openExternalLink()">
+      <div class="button" ng-click="goToDownload()">
         <span translate>Download</span>
       </div>
     </div>

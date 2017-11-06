@@ -4,6 +4,11 @@
   </ion-nav-bar>
   <ion-content>
 
+    <div class="important-message" ng-if="serverMessage" ng-click="openServerMessageLink()">
+      <span>{{serverMessage.title}}</span>
+      <i class="icon ion-ios-arrow-thin-right"></i>
+    </div>
+
     <div ng-if="hasFunds">
       <div class="send-header-wrapper">
         <div class="item item-heading send-heading"><span translate>Recipient</span></div>

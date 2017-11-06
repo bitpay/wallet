@@ -129,7 +129,7 @@
       }
     }
   }
-  .release {
+  .important-message {
     text-align: center;
     .item {
       width: 100%;
@@ -137,6 +137,23 @@
     .title {
       font-weight: 700;
       color: #444;
+    }
+    .alert {
+      font-weight: 900;
+      font-size: 22px;
+      color: #f5a623;
+    }
+    .close-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 10px 20px;
+      z-index: 10;
+      cursor: pointer;
+      .icon {
+        font-size: 32px;
+        color: gray;
+      }
     }
     .button {
       width: 100%;
