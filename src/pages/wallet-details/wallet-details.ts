@@ -22,7 +22,7 @@ export class WalletDetailsPage {
       console.log('Wallet incomplete');
       return;
     };
-    
+    this.alternativeBalanceStr = this.wallet.status.totalBalanceAlternative + ' ' + this.wallet.status.alternativeIsoCode;
     this.getTxHistory();
   }
 
@@ -31,9 +31,9 @@ export class WalletDetailsPage {
   }
 
   getTxHistory(force?: boolean) {
+    let self = this;
     this.walletProvider.getTxHistory_(this.wallet, {force: force}).then((txh) => {
-      this.wallet.completeHistory = txh;
-      this.alternativeBalanceStr = this.wallet.status.totalBalanceAlternative || '0.00' + ' USD'; //TODO use tx-format provider
+      self.wallet.completeHistory = txh;
     }).catch((err) => {
       console.log(err);
     });

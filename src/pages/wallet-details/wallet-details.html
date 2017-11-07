@@ -7,7 +7,7 @@
 <ion-content>
   <div class="balance-header">
     <div class="balance-str">{{wallet.status.availableBalanceStr}}</div>
-    <div class="balance-alt-str">{{alternativeBalanceStr}}</div>
+    <div class="balance-alt-str">{{alternativeBalanceStr || '...'}}</div>
   </div>
 
   <ion-list>
