@@ -1,13 +1,40 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Confirm</ion-title>
+    <ion-title>{{ 'Confirm' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list>
+    <ion-label>Sending</ion-label>
+    <ion-item *ngIf="!criticalError">
+      <!--<ion-icon ios="ios-arrow-up" md="md-arrow-up" item-left></ion-icon>-->
+      <div class="sending-label">
+        <img src="assets/img/icon-tx-sent-outline.svg">
+        <span translate *ngIf="!tx.sendMax">Sending</span>
+        <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
+      </div>
+      <div class="amount-label">
+        <div class="amount">{{tx.amountValueStr || '...'}} <span class="unit">{{tx.amountUnitStr}}</span></div>
+        <div class="alternative">{{tx.alternativeAmountStr || '...'}}</div>
+      </div>
+    </ion-item>
+    <ion-item *ngIf="!criticalError">
+      <a [hidden]="!wallet" ng-click="showWalletSelector()">
+        <span translate>From</span>
+        <div class="wallet" *ngIf="wallet">
+          <div>{{wallet.name}}</div>
+        </div>
+        <div class="wallet" *ngIf="!wallet">
+          <img src="assets/img/icon-wallet.svg"/>
+          <div>...</div>
+        </div>
+      </a>
+    </ion-item>
+  </ion-list>
   <div>To: {{address}}</div>
   <div>Amount: {{amount}}</div>
 </ion-content>

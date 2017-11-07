@@ -124,9 +124,9 @@ export class ConfirmPage {
 
     // Grab stateParams
     let tx: any = {
-      toAmount: parseInt(this.navParams.data.toAmount),
+      toAmount: parseFloat(this.navParams.data.amount),
       sendMax: this.navParams.data.useSendMax == 'true' ? true : false,
-      toAddress: this.navParams.data.toAddress,
+      toAddress: this.navParams.data.address,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
 
@@ -319,8 +319,7 @@ export class ConfirmPage {
       }
 
       this.tx = tx;
-
-      function updateAmount() {
+      let updateAmount = (): void => {
         if (!tx.toAmount) return;
 
         // Amount

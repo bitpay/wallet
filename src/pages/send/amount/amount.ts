@@ -160,11 +160,21 @@ export class AmountPage {
   };
 
   finish() {
+    let data: any = {
+      recipientType: null,
+      amount: this.globalResult,
+      address: this.address,
+      toName: null,
+      toEmail: null,
+      toColor: 'red',
+      coin: 'btc',
+      useSendMax: false
+    }
     if (this.fromSend) {
-      this.navCtrl.push(ConfirmPage, { address: this.address, amount: this.globalResult });
+      this.navCtrl.push(ConfirmPage, data);
     } else {
       console.log("To do");
-      this.navCtrl.push(CustomAmountPage, { address: this.address, amount: this.globalResult });
+      this.navCtrl.push(CustomAmountPage, data);
     }
   }
 }

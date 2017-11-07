@@ -41,10 +41,17 @@ export class FeeProvider {
       if (feeLevel == 'custom') return resolve();
       network = network || 'livenet';
       this.getFeeLevels(coin).then((response: any) => {
-        let feeLevelRate: any = _.find(response.levels[network], {
-          level: feeLevel
-        });
+        let feeLevelRate: any;
 
+        if (response.fromCache) {
+          feeLevelRate = _.find(response.levels[network], {
+            level: feeLevel
+          });
+        } else {
+          feeLevelRate = _.find(response[network], {
+            level: feeLevel
+          });
+        }
         if (!feeLevelRate || !feeLevelRate.feePerKb) {
           let msg = "Could not get dynamic fee for level: " + feeLevel; //TODO gettextcatalog
           return reject(msg);
