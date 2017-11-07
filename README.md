@@ -139,6 +139,12 @@ make
 
 On success, the Chrome extension will be located at: `browser-extensions/chrome/copay-chrome-extension`.  To install it go to `chrome://extensions/` in your browser and ensure you have the 'developer mode' option enabled in the settings.  Then click on "Load unpacked chrome extension" and choose the directory mentioned above.
 
+## Create the Windows Installer
+1. Ensure you have NSIS installed.
+1. Copy `icon.ico` and `installer.nsi` to `/webkitbuilds/NavPay/win64` (the Windows build dir)
+1. If you've updated the version number, make sure to adjust the version numbers listed in `installer.nsi`
+1. Open `installer.nsi` in NSIS and it will create the installer.
+
 ## Configuration
 
 ### Enable External Services
