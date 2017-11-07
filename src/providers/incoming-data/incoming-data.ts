@@ -29,8 +29,6 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider
   ) {
-    //TODO Injecting NavController in constructor of service fails with no provider error
-    this.navCtrl = app.getActiveNav();
     console.log('Hello IncomingDataProvider Provider');
   }
 
@@ -40,6 +38,8 @@ export class IncomingDataProvider {
   }
 
   public redir(data: any): boolean {
+    //TODO Injecting NavController in constructor of service fails with no provider error
+    this.navCtrl = this.app.getActiveNav();
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
       data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
@@ -112,7 +112,8 @@ export class IncomingDataProvider {
 
       // Translate address
       this.logger.debug('address transalated to:' + addr);
-      this.popupProvider.ionicConfirm('Bitcoin cash Payment', 'Payment address was translated to new Bitcoin Cash address format: ' + addr, 'OK', 'Cancel').then(() => {
+      this.popupProvider.ionicConfirm('Bitcoin cash Payment', 'Payment address was translated to new Bitcoin Cash address format: ' + addr, 'OK', 'Cancel').then((res: boolean) => {
+        if (!res) return false;
 
         let message = parsed.message;
         let amount = parsed.amount ? parsed.amount : '';
@@ -130,8 +131,6 @@ export class IncomingDataProvider {
         } else {
           this.goSend(addr, amount, message, coin);
         }
-      }).catch(() => {
-        return false;
       });
       return true;
       // Plain URL
@@ -266,30 +265,31 @@ export class IncomingDataProvider {
     if (amount) {
       this.navCtrl.push(ConfirmPage, {
         toAmount: amount,
-        toAddress: addr,
+        address: addr,
         description: message,
         coin: coin
       });
     } else {
       this.navCtrl.push(AmountPage, {
-        toAddress: addr,
+        address: addr,
         coin: coin
       });
     }
   }
 
-  private goToAmountPage(toAddress: string, coin?: string) {
-    this.navCtrl.push(SendPage, {});
+  private goToAmountPage(address: string, coin?: string) {
+    let fromSend = this.navCtrl.getActive().name === 'SendPage';
     this.navCtrl.push(AmountPage, {
-      toAddress: toAddress,
-      coin: coin
+      address: address,
+      coin: coin,
+      fromSend: fromSend
     });
   }
 
   private handlePayPro(payProDetails: any, coin?: string): void {
     var stateParams = {
       toAmount: payProDetails.amount,
-      toAddress: payProDetails.toAddress,
+      address: payProDetails.toAddress,
       description: payProDetails.memo,
       paypro: payProDetails,
       coin: coin,

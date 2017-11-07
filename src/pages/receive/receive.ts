@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ActionSheetController, AlertController} from 'ionic-angular';
+import { NavController, Events, ActionSheetController, AlertController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -83,7 +83,7 @@ export class ReceivePage {
   }
 
   public requestSpecificAmount(): void {
-    this.navCtrl.push(AmountPage, { address: this.address, sending: false });
+    this.navCtrl.push(AmountPage, { address: this.address, fromSend: false });
   }
 
   private setAddress(newAddr?: boolean): void {
@@ -143,7 +143,7 @@ export class ReceivePage {
       buttons: [{
         text: 'I understand',
         handler: () => {
-          this.navCtrl.push(BackupGamePage, {walletId: this.wallet.credentials.walletId});
+          this.navCtrl.push(BackupGamePage, { walletId: this.wallet.credentials.walletId });
         }
       }],
     }

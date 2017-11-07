@@ -13,19 +13,20 @@ interface Config {
 
   wallet: {
     requiredCopayers: number;
-      totalCopayers: number;
-      spendUnconfirmed: boolean;
-      reconnectDelay: number;
-      idleDurationMin: number;
-      settings: {
-        unitName: string;
-        unitToSatoshi: number;
-        unitDecimals: number;
-        unitCode: string;
-        alternativeName: string;
-        alternativeIsoCode: string;
-        defaultLanguage: string;
-      };
+    totalCopayers: number;
+    spendUnconfirmed: boolean;
+    reconnectDelay: number;
+    idleDurationMin: number;
+    settings: {
+      unitName: string;
+      unitToSatoshi: number;
+      unitDecimals: number;
+      unitCode: string;
+      alternativeName: string;
+      alternativeIsoCode: string;
+      defaultLanguage: string;
+      feeLevel: string;
+    };
   };
 
   bws: {
@@ -112,7 +113,8 @@ const configDefault: Config = {
       unitCode: 'btc',
       alternativeName: 'US Dollar',
       alternativeIsoCode: 'USD',
-      defaultLanguage: ''
+      defaultLanguage: '',
+      feeLevel: 'normal'
     }
   },
 

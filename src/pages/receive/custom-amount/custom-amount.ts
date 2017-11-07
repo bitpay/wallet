@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the CustomAmountPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-custom-amount',
@@ -30,7 +24,7 @@ export class CustomAmountPage {
     this.updateQrAddress();
   }
 
-  updateQrAddress () {
+  updateQrAddress() {
     this.qrAddress = this.protocolHandler + ":" + this.address + "?amount=" + this.amount;
   }
 

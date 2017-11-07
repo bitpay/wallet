@@ -6,13 +6,23 @@ export class PopupProvider {
   constructor(public alertCtrl: AlertController) {
   }
 
-  public ionicAlert(title: string, subTitle?: string, okText?: string): void {
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: subTitle,
-      buttons: [okText]
+  public ionicAlert(title: string, subTitle?: string, okText?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let alert = this.alertCtrl.create({
+        title: title,
+        subTitle: subTitle,
+        buttons: [
+          {
+            text: okText,
+            handler: () => {
+              console.log('Ok clicked');
+              resolve();
+            }
+          }
+        ]
+      });
+      alert.present();
     });
-    alert.present();
   };
 
   public ionicConfirm(title, message, okText, cancelText): Promise<any> {
@@ -25,14 +35,14 @@ export class PopupProvider {
             text: cancelText,
             handler: () => {
               console.log('Disagree clicked');
-              reject();
+              resolve(false);
             }
           },
           {
             text: okText,
             handler: () => {
               console.log('Agree clicked');
-              resolve();
+              resolve(true);
             }
           }
         ]
@@ -41,30 +51,30 @@ export class PopupProvider {
     });
   };
 
-  public ionicPrompt(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
+  public ionicPrompt(title: string, message: string, opts: any, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let prompt = this.alertCtrl.create({
         title: title,
         message: message,
         inputs: [
           {
-            name: 'title',
-            placeholder: 'Title'
+            value: opts.defaultText,
+            placeholder: opts.placeholder
           },
         ],
         buttons: [
           {
-            text: cancelText,
+            text: cancelText ? cancelText : 'Cancel',
             handler: data => {
               console.log('Cancel clicked');
-              reject(data);
+              resolve(null);
             }
           },
           {
-            text: okText,
+            text: okText ? okText : 'OK',
             handler: data => {
               console.log('Saved clicked');
-              resolve(data);
+              resolve(data[0]);
             }
           }
         ]

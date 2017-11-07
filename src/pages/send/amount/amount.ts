@@ -15,8 +15,8 @@ export class AmountPage {
   public smallFont: boolean;
   public allowSend: boolean;
   public globalResult: string;
-  public sending: boolean;
-  
+  public fromSend: boolean;
+
   private LENGTH_EXPRESSION_LIMIT = 19;
   private SMALL_FONT_SIZE_LIMIT = 10;
   private availableUnits: Array<any> = [];
@@ -28,13 +28,13 @@ export class AmountPage {
     this.amount = '';
     this.allowSend = false;
   }
-  
+
   ionViewDidLoad() {
     console.log('Params', this.navParams.data);
     this.address = this.navParams.data.address;
-    this.sending = this.navParams.data.sending;
+    this.fromSend = this.navParams.data.fromSend;
   }
-  
+
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
     if (!event.key) return;
     if (event.which === 8) {
@@ -160,11 +160,11 @@ export class AmountPage {
   };
 
   finish() {
-    if(this.sending) {
-      this.navCtrl.push(ConfirmPage, {address: this.address, amount: this.globalResult});      
+    if (this.fromSend) {
+      this.navCtrl.push(ConfirmPage, { address: this.address, amount: this.globalResult });
     } else {
       console.log("To do");
-      this.navCtrl.push(CustomAmountPage, {address: this.address, amount: this.globalResult});            
+      this.navCtrl.push(CustomAmountPage, { address: this.address, amount: this.globalResult });
     }
   }
 }

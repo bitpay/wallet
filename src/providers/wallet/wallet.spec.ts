@@ -10,7 +10,7 @@ import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { RateProvider } from '../rate/rate';
 import { Filter } from '../filter/filter';
 import { PopupProvider } from '../popup/popup';
-import { OnGoingProcess } from '../on-going-process/on-going-process';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
 
 describe('Provider: Wallet Provider', () => {
@@ -49,7 +49,7 @@ describe('Provider: Wallet Provider', () => {
         { provide: RateProvider },
         { provide: Filter },
         { provide: PopupProvider },
-        { provide: OnGoingProcess },
+        { provide: OnGoingProcessProvider },
         { provide: TouchIdProvider },
       ],
     });

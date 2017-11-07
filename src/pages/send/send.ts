@@ -137,7 +137,7 @@ export class SendPage {
     }
   }
 
-  findContact(search: string): void {
+  public findContact(search: string): void {
     if (this.incomingDataProvider.redir(search)) return;
     if (!search || search.length < 2) {
       this.updateContactsList();
@@ -160,7 +160,7 @@ export class SendPage {
       this.logger.debug('Got toAddress:' + addr + ' | ' + item.name);
       this.navCtrl.push(AmountPage, {
         recipientType: item.recipientType,
-        toAddress: addr,
+        address: addr,
         toName: item.name,
         toEmail: item.email,
         toColor: item.color,

@@ -69,10 +69,13 @@ import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
+import { ExternalLinkProvider } from '../providers/external-link/external-link';
+import { FeeProvider } from '../providers/fee/fee';
 import { Filter } from '../providers/filter/filter';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
-import { OnGoingProcess } from '../providers/on-going-process/on-going-process';
+import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
+import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../providers/paypro/paypro';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
@@ -82,6 +85,7 @@ import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
 import { ScanProvider } from '../providers/scan/scan';
 import { TouchIdProvider } from '../providers/touchid/touchid';
+import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 
@@ -130,10 +134,13 @@ let providers: any = [
   ConfigProvider,
   Clipboard,
   DerivationPathHelperProvider,
+  ExternalLinkProvider,
+  FeeProvider,
   Filter,
   IncomingDataProvider,
   LanguageProvider,
-  OnGoingProcess,
+  NodeWebkitProvider,
+  OnGoingProcessProvider,
   PayproProvider,
   PlatformProvider,
   ProfileProvider,
@@ -148,6 +155,7 @@ let providers: any = [
   Toast,
   TouchID,
   TouchIdProvider,
+  TxConfirmNotificationProvider,
   TxFormatProvider,
   WalletProvider,
   {

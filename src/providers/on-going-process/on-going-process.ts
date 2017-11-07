@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class OnGoingProcess {
+export class OnGoingProcessProvider {
 
   constructor() {
-    console.log('Hello OnGoingProcess Provider');
+    console.log('Hello OnGoingProcessProvider Provider');
   }
 
   public set(processName: string, isOn: boolean, customHandler?: any) {
-    console.log('TODO: OnGoingProcess set()...');
+    console.log('TODO: OnGoingProcessProvider set()...');
   }
 
 }
