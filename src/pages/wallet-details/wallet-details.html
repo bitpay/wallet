@@ -19,7 +19,7 @@
       </ion-icon>
       <div class="action">{{tx.action}}</div>
       <div class="detail">
-        <div class="amount">{{tx.amount}}</div>
+        <div class="amount">{{amountStr | toFiat : tx.amount : unitCode}}</div>
         <div class="date">{{tx.time * 1000 | amTimeAgo}}</div>
       </div>
     </button>

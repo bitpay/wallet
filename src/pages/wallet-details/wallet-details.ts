@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { ConfigProvider } from '../../providers/config/config';
 
 @Component({
   selector: 'page-wallet-details',
@@ -8,13 +9,16 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 })
 export class WalletDetailsPage {
   public wallet: any;
+  public unitCode: string;
   public alternativeBalanceStr: string;
 
   constructor(
     private navParams: NavParams,
     private walletProvider: WalletProvider,
+    private configProvider: ConfigProvider,
   ) {
     this.wallet = this.navParams.data.wallet;
+    this.unitCode = this.configProvider.get()['wallet']['settings'].unitCode;
   }
 
   ionViewDidEnter() {

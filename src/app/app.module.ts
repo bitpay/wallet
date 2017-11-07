@@ -67,8 +67,10 @@ import { ChooseFeeLevelPage } from '../pages/choose-fee-level/choose-fee-level';
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 
-/* Providers */
+/* Pipes */
+import { ToFiatPipe } from '../pipes/toFiat';
 
+/* Providers */
 import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AppProvider } from '../providers/app/app';
 import { BwcProvider } from '../providers/bwc/bwc';
@@ -196,8 +198,18 @@ let providers: any = [
   }
 ];
 
+let pipes = [
+  ToFiatPipe,
+];
+
 export function declarationsComponents() {
-  return pages.concat(directives);
+  let declarations = [];
+  
+  declarations = declarations.concat(pages);
+  declarations = declarations.concat(directives);
+  declarations = declarations.concat(pipes);
+
+  return declarations;
 }
 
 export function entryComponents() {
