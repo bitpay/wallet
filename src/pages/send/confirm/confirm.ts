@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 // Pages
 import { SendPage } from '../../send/send';
 import { HomePage } from '../../home/home';
+import { PayProPage } from '../../paypro/paypro';
+import { ChooseFeeLevelPage } from '../../choose-fee-level/choose-fee-level';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -80,7 +82,8 @@ export class ConfirmPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private txFormatProvider: TxFormatProvider,
     private feeProvider: FeeProvider,
-    private txConfirmNotificationProvider: TxConfirmNotificationProvider
+    private txConfirmNotificationProvider: TxConfirmNotificationProvider,
+    private modalCtrl: ModalController
   ) {
     this.config = this.configProvider.get();
     this.walletConfig = this.config.wallet;
@@ -616,6 +619,48 @@ export class ConfirmPage {
     this.sendStatus = '';
     this.navCtrl.setRoot(HomePage);
     this.navCtrl.popToRoot();
+  };
+
+  public openPPModal(): void {
+    const myModal = this.modalCtrl.create(PayProPage, {}, {
+      showBackdrop: true,
+      enableBackdropDismiss: true,
+    });
+  };
+
+  public chooseFeeLevel(tx: any, wallet: any): void {
+
+    if (wallet.coin == 'bch') return;
+
+    let txObject: any = {};
+    txObject.network = tx.network;
+    txObject.feeLevel = tx.feeLevel;
+    txObject.noSave = true;
+    txObject.coin = wallet.coin;
+
+    if (this.usingCustomFee) {
+      txObject.customFeePerKB = tx.feeRate;
+      txObject.feePerSatByte = tx.feeRate / 1000;
+    }
+
+    const myModal = this.modalCtrl.create(ChooseFeeLevelPage, txObject, {
+      showBackdrop: true,
+      enableBackdropDismiss: true,
+    });
+
+    myModal.onDidDismiss((data: any) => {
+
+      this.logger.debug('New fee level choosen:' + data.newFeeLevel + ' was:' + tx.feeLevel);
+
+      this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
+
+      if (tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) return;
+
+      tx.feeLevel = data.newFeeLevel;
+      if (this.usingCustomFee) tx.feeRate = parseInt(data.customFeePerKB);
+
+      this.updateTx(tx, wallet, { clearCache: true, dryRun: true });
+    });
   };
 
 }

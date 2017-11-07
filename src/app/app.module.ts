@@ -34,6 +34,7 @@ import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-req
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { PayProPage } from '../pages/paypro/paypro';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
@@ -57,6 +58,7 @@ import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-us
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
+import { ChooseFeeLevelPage } from '../pages/choose-fee-level/choose-fee-level';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
@@ -95,6 +97,7 @@ export function createTranslateLoader(http: Http) {
 
 let pages: any = [
   AddPage,
+  ChooseFeeLevelPage,
   CreateWalletPage,
   CopayersPage,
   ImportWalletPage,
@@ -115,6 +118,7 @@ let pages: any = [
   HomePage,
   LockPage,
   OnboardingPage,
+  PayProPage,
   PinModalPage,
   ReceivePage,
   SendPage,
