@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, bitcoreCash) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, bitcoreCash, externalLinkService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
   var currentContactsPage;
   $scope.isChromeApp = platformInfo.isChromeApp;
-
+  $scope.serverMessage = null;
 
   var hasWallets = function() {
     $scope.wallets = profileService.getWallets({
@@ -26,6 +26,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     }
 
     $scope.hasFunds = false;
+    var foundMessage = false;
     var index = 0;
     lodash.each($scope.wallets, function(w) {
       walletService.getStatus(w, {}, function(err, status) {
@@ -40,6 +41,11 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         } else if (status.availableBalanceSat > 0) {
           $scope.hasFunds = true;
           $rootScope.everHasFunds = true;
+
+          if (!foundMessage && !lodash.isEmpty(status.serverMessage)) {
+            $scope.serverMessage = status.serverMessage;
+            foundMessage = true;
+          }
         }
 
         if (index == $scope.wallets.length) {
@@ -202,6 +208,11 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         })
       });
     });
+  };
+
+  $scope.openServerMessageLink = function() {
+    var url = $scope.serverMessage.link;
+    externalLinkService.open(url);
   };
 
   // This could probably be enhanced refactoring the routes abstract states

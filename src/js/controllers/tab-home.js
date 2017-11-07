@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;
     $scope.isNW = platformInfo.isNW;
     $scope.showRateCard = {};
+    $scope.serverMessage = null;
 
     $scope.$on("$ionicView.afterEnter", function() {
       startupService.ready();
@@ -140,7 +141,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       return timeService.withinPastDay(time);
     };
 
-    $scope.openExternalLink = function() {
+    $scope.goToDownload = function() {
       var url = 'https://github.com/bitpay/copay/releases/latest';
       var optIn = true;
       var title = gettextCatalog.getString('Update Available');
@@ -148,6 +149,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       var okText = gettextCatalog.getString('View Update');
       var cancelText = gettextCatalog.getString('Go Back');
       externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    };
+
+    $scope.openServerMessageLink = function() {
+      var url = $scope.serverMessage.link;
+      externalLinkService.open(url);
     };
 
     $scope.openNotificationModal = function(n) {
@@ -223,6 +229,8 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       var i = wallets.length;
       var j = 0;
 
+      var foundMessage = false;
+
       lodash.each(wallets, function(wallet) {
         walletService.getStatus(wallet, {}, function(err, status) {
           if (err) {
@@ -233,6 +241,11 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           } else {
             wallet.error = null;
             wallet.status = status;
+
+            if (!foundMessage && !lodash.isEmpty(status.serverMessage)) {
+              $scope.serverMessage = status.serverMessage;
+              foundMessage = true;
+            }
 
             // TODO service refactor? not in profile service
             profileService.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr, function() {});
