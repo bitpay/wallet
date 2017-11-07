@@ -189,8 +189,8 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     ongoingProcess.set('Finding NavTech Server', false);
     if (!success) {
       //@TODO finish this tree
-      setNoWallet('Could not connect to NavTech servers. Only normal transactions are available right now.');
-      console.log('Something went wrong, do you want to send a regular transaction?');         return;
+      setNoWallet('NavTech Error: ' + data.message);
+      return;
     }
 
     $scope.navtechFeePercent = serverInfo.navtechFeePercent;
@@ -223,7 +223,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       tx.toAmount = Math.floor($scope.feeNavtech + tx.toAmount);
     }
 
-    console.log('amountUnsafe', amountUnsafe, $scope.countDecimals(amountUnsafe));
     if ($scope.countDecimals(amountUnsafe) > 8) {
       $scope.amountStr = $filter('number')(amountUnsafe, 8);
     } else {

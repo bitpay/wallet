@@ -70,6 +70,7 @@ NavTechService.prototype._checkNode = function(availableServers, numAddresses, c
           minAmount: res.data.min_amount,
           navtechFeePercent: res.data.transaction_fee,
         }
+
         callback(res.data, self, 0);
       } else {
         console.log('Bad response from navtech server ' + availableServers[randomIndex], res);
@@ -178,6 +179,17 @@ NavTechService.prototype.findNode = function(amount, address, callback) {
     callback(false, { message: 'invalid params' });
     return;
   }
+
+  if (amount < 5 * 1e8) { //@TODO move this to the server response.
+    callback(false, { message: 'Amount is too small, minimum is 5 NAV' });
+    return;
+  }
+
+  if(amount > 10000 * 1e8) { //@TODO move this to the server response.
+    callback(false, { message: 'Amount is too large, maximum is 10,000 NAV' });
+    return;
+  }
+
   var self = this;
   self.runtime = {};
   self.runtime.callback = callback;
