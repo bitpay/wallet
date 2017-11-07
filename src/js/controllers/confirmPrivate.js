@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-    function setWalletSelector(network, minAmount, cb) {
+    $scope.setWalletSelector = function(network, minAmount, cb) {
       console.log('setWalletSelector');
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
@@ -158,60 +158,103 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     var amount = parseInt(data.stateParams.toAmount);
     var address = data.stateParams.toAddress;
 
-    ongoingProcess.set('Finding NavTech Server', true);
-    navTechService.findNode(amount, address, function(success, data, serverInfo) {
-      ongoingProcess.set('Finding NavTech Server', false);
-      if (!success) {
-        //@TODO finish this tree
-        setNoWallet('Could not connect to NavTech servers. Only normal transactions are available right now.');
-        console.log('Something went wrong, do you want to send a regular transaction?');         return;
-      }
-
-      $scope.navtechFeePercent = serverInfo.navtechFeePercent;
-
-      //@TODO setup the multiple transactions with the right data
-      var anonTxes = [];
-      var sum = 0;
-      for (var i=0; i<data.length; i++) {
-        var txPart = lodash.clone(tx);
-        txPart.toAmount = data[i].amount;
-        txPart.toAddress = data[i].address;
-        txPart.anondest = data[i].anonDestination;
-        anonTxes.push(txPart);
-        sum += data[i].amount;
-      }
-
-      $scope.originalAddress = tx.toAddress;
-
-      $scope.anonTxes = anonTxes;
-      tx.privatePayment = true;
-      tx.toAddress = data[0].address;
-      $scope.feeNavtech = amount * (serverInfo.navtechFeePercent / 100);
-      tx.anondest = data[0].anonDestination;
-
-      $scope.feeNavtechDisplay = $scope.feeNavtech * satToUnit + ' ' + walletConfig.settings.unitName;
-      $scope.amountStr = amount * satToUnit + ' ' + walletConfig.settings.unitName;
-      tx.toAmount = $scope.feeNavtech + amount;
-
+    if (tx.sendMax) {
+      ongoingProcess.set('Calculating Transaction Fees', true);
       updateTx(tx, null, {}, function() {
-
         $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
-
-        setWalletSelector(tx.network, tx.toAmount, function(err) {
+        $scope.setWalletSelector(tx.network, tx.toAmount, function(err) {
           if (err) {
             return exitWithError('Could not update wallets');
           }
-
           if ($scope.wallets.length > 1) {
             $scope.showWalletSelector();
+            console.log('if scope.wallets > 1');
           } else if ($scope.wallets.length) {
+            console.log('$scope.wallets.length');
             setWallet($scope.wallets[0], tx);
           }
         });
-
       }); //updateTx
-    });
+    } else {
+      console.log('else maxAmount');
+      $scope.tx = tx;
+      ongoingProcess.set('Finding NavTech Server', true);
+      navTechService.findNode(amount, address, $scope.foundNode);
+    }
   });
+
+  $scope.foundNode = function(success, data, serverInfo) {
+    console.log('foundNode');
+    var tx = $scope.tx;
+    ongoingProcess.set('Finding NavTech Server', false);
+    if (!success) {
+      //@TODO finish this tree
+      setNoWallet('Could not connect to NavTech servers. Only normal transactions are available right now.');
+      console.log('Something went wrong, do you want to send a regular transaction?');         return;
+    }
+
+    $scope.navtechFeePercent = serverInfo.navtechFeePercent;
+
+    //@TODO setup the multiple transactions with the right data
+    var anonTxes = [];
+    var sum = 0;
+    for (var i=0; i<data.length; i++) {
+      var txPart = lodash.clone(tx);
+      txPart.toAmount = data[i].amount;
+      txPart.toAddress = data[i].address;
+      txPart.anondest = data[i].anonDestination;
+      anonTxes.push(txPart);
+      sum += data[i].amount;
+    }
+
+    $scope.originalAddress = tx.toAddress;
+
+    $scope.anonTxes = anonTxes;
+    tx.privatePayment = true;
+    tx.toAddress = data[0].address;
+    tx.anondest = data[0].anonDestination;
+
+    if (tx.sendMax) {
+      $scope.feeNavtech = tx.toAmount - Math.floor(tx.toAmount / (1 + (serverInfo.navtechFeePercent / 100)));
+      var amountUnsafe = (tx.toAmount - $scope.feeNavtech) * satToUnit;
+    } else {
+      $scope.feeNavtech = Math.floor(tx.toAmount * (serverInfo.navtechFeePercent / 100));
+      var amountUnsafe = tx.toAmount * satToUnit;
+      tx.toAmount = Math.floor($scope.feeNavtech + tx.toAmount);
+    }
+
+    console.log('amountUnsafe', amountUnsafe, $scope.countDecimals(amountUnsafe));
+    if ($scope.countDecimals(amountUnsafe) > 8) {
+      $scope.amountStr = $filter('number')(amountUnsafe, 8);
+    } else {
+      $scope.amountStr = amountUnsafe;
+    }
+
+    $scope.feeNavtechDisplay = $filter('number')($scope.feeNavtech * satToUnit, 8) + ' ' + walletConfig.settings.unitName;
+
+    updateTx(tx, null, {}, function() {
+
+      $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
+
+      $scope.setWalletSelector(tx.network, tx.toAmount, function(err) {
+        if (err) {
+          return exitWithError('Could not update wallets');
+        }
+
+        if ($scope.wallets.length > 1) {
+          $scope.showWalletSelector();
+        } else if ($scope.wallets.length) {
+          setWallet($scope.wallets[0], tx);
+        }
+      });
+
+    }); //updateTx
+  }
+
+  $scope.countDecimals = function(number) {
+    if(Math.floor(number.valueOf()) === number.valueOf()) return 0;
+    return number.toString().split(".")[1].length || 0;
+  }
 
   $scope.calculateTotal = function(tx) {
     if(!$scope.wallet || !tx || !tx.txp || !tx.txp[$scope.wallet.id]) return false;
@@ -409,6 +452,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         return cb();
 
       getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
+        ongoingProcess.set('Calculating Transaction Fees', false);
         if (err) {
           var msg = gettextCatalog.getString('Error getting SendMax information');
           return setSendError(msg);
@@ -426,6 +470,13 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
           tx.sendMaxInfo = sendMaxInfo;
           tx.toAmount = tx.sendMaxInfo.amount;
+
+          if (!tx.anondest) {
+            $scope.tx = tx;
+            ongoingProcess.set('Finding NavTech Server', true);
+            navTechService.findNode(tx.toAmount, tx.toAddress, $scope.foundNode);
+          }
+
           updateAmount();
           showSendMaxWarning(sendMaxInfo);
         }
@@ -515,7 +566,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     if (!lodash.isEmpty(warningMsg))
       msg += '\n' + warningMsg;
 
-    popupService.showAlert(null, msg, function() {});
+    // popupService.showAlert(null, msg, function() {});
   };
 
   $scope.onWalletSelect = function(wallet) {

@@ -13,7 +13,7 @@
         <div class="sending-label">
           <img src="img/icon-tx-sent-outline.svg">
           <span translate ng-if="tx.privatePayment">Private Payment</span>
-          <span translate ng-if="tx.sendMax">Sending maximum amount</span>
+          <span translate ng-if="tx.privatePayment && tx.sendMax">&nbsp;- Sending maximum amount</span>
         </div>
         <div class="amount-label">
           <div class="amount">{{amountStr || '...'}} <span class="unit">{{tx.amountUnitStr}}</span></div>
