@@ -41,6 +41,14 @@
         </div>
       </a>
     </ion-item>
+    <div *ngIf="walletSelector">
+      <ion-list>
+        <ion-label>Send from</ion-label>
+        <ion-item *ngFor="let item of wallets" (click)="onWalletSelect(item)">
+          {{item.name}}
+        </ion-item>
+      </ion-list>
+    </div>
   </ion-list>
   <button ion-button full (click)="approve(tx, wallet, statusChangeHandler)" [disabled]="!wallet">Send</button>
 </ion-content>

@@ -143,6 +143,8 @@ export class ConfirmPage {
       txp: {},
     };
 
+    this.tx = tx;
+
     if (tx.coin && tx.coin == 'bch') tx.feeLevel = 'normal';
 
     this.showAddress = false;
@@ -241,7 +243,8 @@ export class ConfirmPage {
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
   private setWallet(wallet: any, tx: any): void {
-
+    console.log("&&&& wallet", wallet);
+    console.log("&&&& tx", tx);
     this.wallet = wallet;
 
     // If select another wallet
