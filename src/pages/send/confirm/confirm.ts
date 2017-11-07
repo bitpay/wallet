@@ -124,7 +124,7 @@ export class ConfirmPage {
 
     // Grab stateParams
     let tx: any = {
-      toAmount: parseFloat(this.navParams.data.amount),
+      toAmount: parseFloat(this.navParams.data.amount) * 100000000, // TODO review this line '* 100000000' convert satoshi to BTC
       sendMax: this.navParams.data.useSendMax == 'true' ? true : false,
       toAddress: this.navParams.data.address,
       description: this.navParams.data.description,
@@ -559,7 +559,7 @@ export class ConfirmPage {
           let okText = 'Confirm'; // TODO gettextCatalog
           let cancelText = 'Cancel'; // TODO gettextCatalog
           this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
-            return reject(!ok);
+            return resolve(!ok);
           });
         });
       };
@@ -580,18 +580,21 @@ export class ConfirmPage {
               txid: txp.txid
             });
           }
+          this.onSuccessConfirm(); // TODO review this line
         }).catch((err: any) => {
           this.setSendError(err);
           return;
         });
       };
 
-      confirmTx().then(() => {
-        publishAndSign();
-      }).catch((nok: boolean) => {
+      confirmTx().then((nok: boolean) => {
         if (nok) {
           this.sendStatus = '';
+          return;
         }
+        publishAndSign();
+      }).catch((err: any) => {
+        this.logger.warn(err);
         return;
       });
     }).catch((err: any) => {

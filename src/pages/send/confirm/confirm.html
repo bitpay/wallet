@@ -9,7 +9,6 @@
 
 <ion-content>
   <ion-list>
-    <ion-label>Sending</ion-label>
     <ion-item *ngIf="!criticalError">
       <!--<ion-icon ios="ios-arrow-up" md="md-arrow-up" item-left></ion-icon>-->
       <div class="sending-label">
@@ -23,7 +22,15 @@
       </div>
     </ion-item>
     <ion-item *ngIf="!criticalError">
-      <a [hidden]="!wallet" ng-click="showWalletSelector()">
+      <div [hidden]="!wallet">
+        <span translate>To</span>
+        <div *ngIf="address">
+          <div>{{address}}</div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item *ngIf="!criticalError">
+      <a [hidden]="!wallet" (click)="showWalletSelector()">
         <span translate>From</span>
         <div class="wallet" *ngIf="wallet">
           <div>{{wallet.name}}</div>
@@ -35,6 +42,5 @@
       </a>
     </ion-item>
   </ion-list>
-  <div>To: {{address}}</div>
-  <div>Amount: {{amount}}</div>
+  <button ion-button full (click)="approve(tx, wallet, statusChangeHandler)" [disabled]="!wallet">Send</button>
 </ion-content>
