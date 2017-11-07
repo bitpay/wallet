@@ -164,7 +164,8 @@ export class SendPage {
         toName: item.name,
         toEmail: item.email,
         toColor: item.color,
-        coin: item.coin
+        coin: item.coin,
+        fromSend: true
       });
       return;
     }).catch((err: any) => {
