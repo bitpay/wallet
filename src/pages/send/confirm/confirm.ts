@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 
 // Pages
 import { SendPage } from '../../send/send';
+import { HomePage } from '../../home/home';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -610,5 +611,11 @@ export class ConfirmPage {
       this.sendStatus = showName;
     }
   }
+
+  public onSuccessConfirm(): void {
+    this.sendStatus = '';
+    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.popToRoot();
+  };
 
 }
