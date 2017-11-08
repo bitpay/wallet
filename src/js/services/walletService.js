@@ -636,8 +636,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
         if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
 
-        $log.debug('Updating Transaction History');
-
         updateLocalTxHistory(wallet, opts, function(err, txs) {
             if (err) return cb(err);
 
