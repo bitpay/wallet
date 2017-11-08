@@ -30,7 +30,7 @@ import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-not
 export class ConfirmPage {
 
   public data: any;
-  public address: string;
+  public toAddress: string;
   public amount: string;
   public coin: string;
 
@@ -96,7 +96,7 @@ export class ConfirmPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConfirmPage');
     this.data = this.navParams.data;
-    this.address = this.navParams.data.address;
+    this.toAddress = this.navParams.data.toAddress;
     this.amount = this.navParams.data.amount;
     this.coin = this.navParams.data.coin;
   }
@@ -106,7 +106,7 @@ export class ConfirmPage {
     let B = this.coin == 'bch' ? this.bwcProvider.getBitcoreCash() : this.bwcProvider.getBitcore();
     let networkName;
     try {
-      networkName = (new B.Address(this.address)).network.name;
+      networkName = (new B.Address(this.toAddress)).network.name;
     } catch (e) {
       let message = 'Copay only supports Bitcoin Cash using new version numbers addresses'; // TODO gettextCatalog
       let backText = 'Go back'; // TODO gettextCatalog
@@ -124,9 +124,9 @@ export class ConfirmPage {
 
     // Grab stateParams
     let tx: any = {
-      toAmount: parseFloat(this.navParams.data.amount) * 100000000, // TODO review this line '* 100000000' convert satoshi to BTC
+      amount: parseFloat(this.navParams.data.amount) * 100000000, // TODO review this line '* 100000000' convert satoshi to BTC
       sendMax: this.navParams.data.useSendMax == 'true' ? true : false,
-      toAddress: this.navParams.data.address,
+      toAddress: this.navParams.data.toAddress,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
 
@@ -135,9 +135,9 @@ export class ConfirmPage {
 
       // Vanity tx info (not in the real tx)
       recipientType: this.navParams.data.recipientType || null,
-      toName: this.navParams.data.toName,
-      toEmail: this.navParams.data.toEmail,
-      toColor: this.navParams.data.toColor,
+      name: this.navParams.data.name,
+      email: this.navParams.data.email,
+      color: this.navParams.data.color,
       network: networkName,
       coin: this.navParams.data.coin,
       txp: {},
@@ -151,7 +151,7 @@ export class ConfirmPage {
 
     this.walletSelectorTitle = 'Send from'; // TODO gettextCatalog
 
-    this.setWalletSelector(tx.coin, tx.network, tx.toAmount).then(() => {
+    this.setWalletSelector(tx.coin, tx.network, tx.amount).then(() => {
       if (this.wallets.length > 1) {
         this.showWalletSelector();
       } else if (this.wallets.length) {
@@ -323,13 +323,13 @@ export class ConfirmPage {
 
       this.tx = tx;
       let updateAmount = (): void => {
-        if (!tx.toAmount) return;
+        if (!tx.amount) return;
 
         // Amount
-        tx.amountStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.toAmount);
+        tx.amountStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.amount);
         tx.amountValueStr = tx.amountStr.split(' ')[0];
         tx.amountUnitStr = tx.amountStr.split(' ')[1];
-        this.txFormatProvider.formatAlternativeStr(wallet.coin, tx.toAmount).then((v: string) => {
+        this.txFormatProvider.formatAlternativeStr(wallet.coin, tx.amount).then((v: string) => {
           tx.alternativeAmountStr = v;
         });
       }
@@ -363,7 +363,7 @@ export class ConfirmPage {
             }
 
             tx.sendMaxInfo = sendMaxInfo;
-            tx.toAmount = tx.sendMaxInfo.amount;
+            tx.amount = tx.sendMaxInfo.amount;
             updateAmount();
             this.onGoingProcessProvider.set('calculatingFee', false);
             setTimeout(() => {
@@ -462,7 +462,7 @@ export class ConfirmPage {
         return reject(msg);
       }
 
-      if (tx.toAmount > Number.MAX_SAFE_INTEGER) {
+      if (tx.amount > Number.MAX_SAFE_INTEGER) {
         let msg = 'Amount too big'; // TODO gettextCatalog
         this.logger.warn(msg);
         this.setSendError(msg);
@@ -473,7 +473,7 @@ export class ConfirmPage {
 
       txp.outputs = [{
         'toAddress': tx.toAddress,
-        'amount': tx.toAmount,
+        'amount': tx.amount,
         'message': tx.description
       }];
 
@@ -485,7 +485,7 @@ export class ConfirmPage {
           txp.feePerKb = tx.feeRate;
         } else txp.feeLevel = tx.feeLevel;
       }
-
+      txp.feeLevel = 'normal';
       txp.message = tx.description;
 
       if (tx.paypro) {
@@ -493,6 +493,7 @@ export class ConfirmPage {
       }
       txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
       txp.dryRun = dryRun;
+
       this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
         return resolve(ctxp);
       }).catch((err: any) => {

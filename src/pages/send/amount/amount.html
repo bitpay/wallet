@@ -10,57 +10,58 @@
 <ion-content>
   <ion-list>
     <ion-label padding>Recipient</ion-label>
-      <ion-item>
-        <ion-icon name="contact" item-left></ion-icon>
-        <span>{{ address }}</span>
-      </ion-item>
-    </ion-list>
-    <div>
-      <div padding>
-        <div>
-          <span>Amount</span>
-        </div>
-        <div>
-          <span>{{ amount || "0.00" }}</span>
-        </div>
-        <div [hidden]="!globalResult">
-          = {{globalResult|| "0.00" }}
-        </div>
+    <ion-item>
+      <ion-icon name="contact" item-left></ion-icon>
+      <span>{{ toAddress }}</span>
+    </ion-item>
+  </ion-list>
+  <div>
+    <div padding>
+      <div>
+        <span>Amount</span>
       </div>
-      <div class="keypad">
-        <div class="operator-row">
-          <div class="col operator-send"
-              [hidden]="!allowSend" (click)="finish()">
-            <ion-icon name="arrow-round-forward"></ion-icon>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col digit" (click)="pushDigit('7')">7</div>
-          <div class="col digit" (click)="pushDigit('8')">8</div>
-          <div class="col digit" (click)="pushDigit('9')">9</div>
-          <div class="col operator" (click)="pushOperator('/')">&#247;</div>
-        </div>
-
-        <div class="row">
-          <div class="col digit" (click)="pushDigit('4')">4</div>
-          <div class="col digit" (click)="pushDigit('5')">5</div>
-          <div class="col digit" (click)="pushDigit('6')">6</div>
-          <div class="col operator" (click)="pushOperator('x')">&#215;</div>
-        </div>
-
-        <div class="row">
-          <div class="col digit" (click)="pushDigit('1')">1</div>
-          <div class="col digit" (click)="pushDigit('2')">2</div>
-          <div class="col digit" (click)="pushDigit('3')">3</div>
-          <div class="col operator" (click)="pushOperator('+')">&#43;</div>
-        </div>
-
-        <div class="row">
-          <div class="col digit" (click)="pushDigit('.')">.</div>
-          <div class="col digit" (click)="pushDigit('0')">0</div>
-          <div class="col digit" (click)="removeDigit()"><ion-icon name="backspace"></ion-icon></div>
-          <div class="col operator" (click)="pushOperator('-')">&#45;</div>
-        </div>
+      <div>
+        <span>{{ amountStr || "0.00" }}</span>
+      </div>
+      <div [hidden]="!globalResult">
+        = {{globalResult|| "0.00" }}
       </div>
     </div>
+    <div class="keypad">
+      <div class="operator-row">
+        <div class="col operator-send" [hidden]="!allowSend" (click)="finish()">
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col digit" (click)="pushDigit('7')">7</div>
+        <div class="col digit" (click)="pushDigit('8')">8</div>
+        <div class="col digit" (click)="pushDigit('9')">9</div>
+        <div class="col operator" (click)="pushOperator('/')">&#247;</div>
+      </div>
+
+      <div class="row">
+        <div class="col digit" (click)="pushDigit('4')">4</div>
+        <div class="col digit" (click)="pushDigit('5')">5</div>
+        <div class="col digit" (click)="pushDigit('6')">6</div>
+        <div class="col operator" (click)="pushOperator('x')">&#215;</div>
+      </div>
+
+      <div class="row">
+        <div class="col digit" (click)="pushDigit('1')">1</div>
+        <div class="col digit" (click)="pushDigit('2')">2</div>
+        <div class="col digit" (click)="pushDigit('3')">3</div>
+        <div class="col operator" (click)="pushOperator('+')">&#43;</div>
+      </div>
+
+      <div class="row">
+        <div class="col digit" (click)="pushDigit('.')">.</div>
+        <div class="col digit" (click)="pushDigit('0')">0</div>
+        <div class="col digit" (click)="removeDigit()">
+          <ion-icon name="backspace"></ion-icon>
+        </div>
+        <div class="col operator" (click)="pushOperator('-')">&#45;</div>
+      </div>
+    </div>
+  </div>
 </ion-content>

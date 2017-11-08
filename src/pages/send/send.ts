@@ -157,13 +157,13 @@ export class SendPage {
         this.popupProvider.ionicAlert('Error - no address');
         return;
       }
-      this.logger.debug('Got toAddress:' + addr + ' | ' + item.name);
+      this.logger.debug('Got address:' + addr + ' | ' + item.name);
       this.navCtrl.push(AmountPage, {
         recipientType: item.recipientType,
-        address: addr,
-        toName: item.name,
-        toEmail: item.email,
-        toColor: item.color,
+        toAddress: addr,
+        name: item.name,
+        email: item.email,
+        color: item.color,
         coin: item.coin,
         fromSend: true
       });
