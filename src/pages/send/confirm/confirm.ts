@@ -625,6 +625,7 @@ export class ConfirmPage {
     this.sendStatus = '';
     this.navCtrl.setRoot(HomePage);
     this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
   };
 
   public openPPModal(): void {
