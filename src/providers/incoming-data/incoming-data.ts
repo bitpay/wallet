@@ -264,23 +264,23 @@ export class IncomingDataProvider {
     this.navCtrl.push(SendPage, {});
     if (amount) {
       this.navCtrl.push(ConfirmPage, {
-        toAmount: amount,
-        address: addr,
+        amount: amount,
+        toAddress: addr,
         description: message,
         coin: coin
       });
     } else {
       this.navCtrl.push(AmountPage, {
-        address: addr,
+        toAddress: addr,
         coin: coin
       });
     }
   }
 
-  private goToAmountPage(address: string, coin?: string) {
+  private goToAmountPage(toAddress: string, coin?: string) {
     let fromSend = this.navCtrl.getActive().name === 'SendPage';
     this.navCtrl.push(AmountPage, {
-      address: address,
+      toAddress: toAddress,
       coin: coin,
       fromSend: fromSend
     });
@@ -288,8 +288,8 @@ export class IncomingDataProvider {
 
   private handlePayPro(payProDetails: any, coin?: string): void {
     var stateParams = {
-      toAmount: payProDetails.amount,
-      address: payProDetails.toAddress,
+      amount: payProDetails.amount,
+      toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
       paypro: payProDetails,
       coin: coin,
