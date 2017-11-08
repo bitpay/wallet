@@ -2,10 +2,13 @@
   <div class="input-label" translate>
     Coin
   </div>
-  <select ng-model="formData.coin" ng-change="switchTestnetOff()">
-    <option value="btc">BITCOIN</option>
-    <option value="ven">VENAS</option>
-    <option value="ltc">LiteCoin</option>
+  <select ng-model="formData.coin" ng-change="switchTestnetOff()"
+     >
+     <option
+     value="{{config.coin}}"
+     ng-repeat="config in COIN_CONFIG">
+     {{config.displayName}}
+   </option>
     <!-- <option value="bch">BCH</option> -->
   </select>
 </label>
