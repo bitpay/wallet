@@ -18,6 +18,11 @@ var COIN_CONFIG = {
         bwsurl: 'http://192.168.0.12:3232/bws/api',
         insight: 'http://192.168.0.12:3001'
     },
+
+    yng: {
+        bwsurl: 'http://192.168.0.12:3232/bws/api',
+        insight: 'http://192.168.0.12:23080'
+    },
     tbc: {
         bwsurl: 'http://192.168.0.12:3232/bws/api',
         insight: 'http://192.168.0.12:3001/insight-tbc'
