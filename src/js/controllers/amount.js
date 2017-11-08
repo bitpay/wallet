@@ -28,12 +28,11 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         var config = configService.getSync().wallet.settings;
-        console.log("amount", config, data);
+
         this.coin = data.stateParams.coin;
 
         function setAvailableUnits() {
             var networks = bitcore.Networks.networks;
-            for (var index in networks) {}
             availableUnits = [];
 
             var hasBTCWallets = profileService.getWallets({
