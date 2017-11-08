@@ -129,7 +129,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             */
 
             lodash.each(txps, function(tx) {
-
                 tx = txFormatService.processTx(wallet.coin, tx);
 
                 // no future transactions...
@@ -236,21 +235,27 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
             });
 
             rateService.whenAvailable(function() {
+                var cfg = DEFAULT_CONFIG[wallet.coin];
+                if (cfg && cfg.showRate) {
+                    var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
+                    var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
+                    var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
+                    var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+                    var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
-                var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
-                var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
-                var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
-                var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
-                var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
+                    cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
+                    cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);
+                    cache.lockedBalanceAlternative = $filter('formatFiatAmount')(lockedBalanceAlternative);
+                    cache.spendableBalanceAlternative = $filter('formatFiatAmount')(spendableBalanceAlternative);
+                    cache.alternativeConversionRate = $filter('formatFiatAmount')(alternativeConversionRate);
 
-                cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
-                cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);
-                cache.lockedBalanceAlternative = $filter('formatFiatAmount')(lockedBalanceAlternative);
-                cache.spendableBalanceAlternative = $filter('formatFiatAmount')(spendableBalanceAlternative);
-                cache.alternativeConversionRate = $filter('formatFiatAmount')(alternativeConversionRate);
-
-                cache.alternativeBalanceAvailable = true;
-                cache.isRateAvailable = true;
+                    cache.alternativeBalanceAvailable = true;
+                    cache.isRateAvailable = true;
+                } else {
+                    cache.alternativeBalanceAvailable = false;
+                    cache.isRateAvailable = false;
+                    cache.totalBalanceAlternative = 0;
+                }
             });
         };
 
