@@ -96,6 +96,13 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['concat:js']
             },
+            wallet: {
+                files: [
+                    'angular-bitcore-wallet-client/angular-bitcore-wallet-client.js',
+                    'angular-bitcore-wallet-client/index.js'
+                ],
+                tasks: ['concat:angular', 'browserify:dist']
+            },
             gettext: {
                 files: [
                     'i18n/po/*.po',
