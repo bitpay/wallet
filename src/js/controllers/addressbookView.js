@@ -15,19 +15,13 @@ angular.module('copayApp.controllers').controller('addressbookViewController', f
         $scope.addressbookEntry.network = data.stateParams.network;
         $scope.addressbookEntry.coin = data.stateParams.coin;
 
-        var cashAddress = bitcoreCash.Address.isValid($scope.addressbookEntry.address, 'livenet');
-        if (cashAddress) {
-            coin = 'bch';
-        } else {
-            console.log(bitcore, bitcore.Network);
-            var _net = bitcore.Networks.get(data.stateParams.network, 'name');
-            console.log(_net);
-            if (_net) {
 
-                coin = _net.coin;
-            } else
-                coin = 'btc';
-        }
+        var _net = bitcore.Networks.get(data.stateParams.network, 'name');
+        if (_net) {
+            coin = _net.coin;
+        } else
+            coin = 'btc';
+
     });
 
     $scope.sendTo = function() {
