@@ -398,6 +398,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return ret;
   };
 
+  var updateOnProgress = {};
   var updateLocalTxHistory = function(wallet, opts, cb) {
     var FIRST_LIMIT = 5;
     var LIMIT = 50;
@@ -428,8 +429,18 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       }
     };
 
+    if (updateOnProgress[wallet.id]) {
+      $log.warn('History update already on progress for: '+ wallet.credentials.walletName);
+      return cb();
+    }
+
+    updateOnProgress[wallet.id] = true;
+
     getSavedTxs(walletId, function(err, txsFromLocal) {
-      if (err) return cb(err);
+      if (err)  {
+        updateOnProgress[wallet.id] = false;
+        return cb(err);
+      }
 
       fixTxsUnit(txsFromLocal);
 
@@ -489,7 +500,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       };
 
       getNewTxs([], 0, function(err, txs) {
-        if (err) return cb(err);
+        if (err)  {
+          updateOnProgress[wallet.id] = false;
+          return cb(err);
+        }
 
         var newHistory = lodash.uniq(lodash.compact(txs.concat(confirmedTxs)), function(x) {
           return x.txid;
@@ -535,6 +549,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           // <HACK>
           if (foundLimitTx) {
             $log.debug('Tx history read until limitTx: ' + opts.limitTx);
+            updateOnProgress[wallet.id] = false;
             return cb(null, newHistory);
           }
           // </HACK>
@@ -554,6 +569,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           return storageService.setTxHistory(historyToSave, walletId, function() {
             $log.debug('Tx History saved.');
+            updateOnProgress[wallet.id] = false;
 
             return cb();
           });
@@ -636,7 +652,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
 
-    $log.debug('Updating Transaction History');
+    $log.debug('Updating Transaction History: ' + wallet.credentials.walletName);
 
     updateLocalTxHistory(wallet, opts, function(err, txs) {
       if (err) return cb(err);
