@@ -855,11 +855,11 @@ msgstr ""
 #: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
-msgstr ""
+msgstr "날자"
 
 #: www/views/preferencesDeleteWallet.html:21
 msgid "Delete"
-msgstr ""
+msgstr "삭제"
 
 #: www/views/modals/txp-details.html:166
 msgid "Delete Payment Proposal"
@@ -868,15 +868,15 @@ msgstr ""
 #: www/views/preferencesAdvanced.html:33
 #: www/views/preferencesDeleteWallet.html:3
 msgid "Delete Wallet"
-msgstr ""
+msgstr "지갑 삭제"
 
 #: www/views/copayers.html:59
 msgid "Delete it and create a new one"
-msgstr ""
+msgstr "지우고 새롭게 만들기"
 
 #: src/js/services/onGoingProcess.js:19
 msgid "Deleting Wallet..."
-msgstr ""
+msgstr "지갑 삭제중"
 
 #: src/js/services/onGoingProcess.js:28
 msgid "Deleting payment proposal"
@@ -898,7 +898,7 @@ msgstr ""
 #: www/views/modals/mercadolibre-card-details.html:6
 #: www/views/topup.html:45
 msgid "Details"
-msgstr "상세들"
+msgstr "상세"
 
 #: src/js/controllers/lockSetup.js:9
 #: src/js/controllers/tab-settings.js:64
@@ -926,7 +926,7 @@ msgstr ""
 
 #: www/views/cashScan.html:36
 msgid "Duplicate for BCH"
-msgstr "BCH 복사"
+msgstr "BCH 복제"
 
 #: src/js/services/onGoingProcess.js:49
 msgid "Duplicating wallet..."
@@ -934,7 +934,7 @@ msgstr "지갑 복사중"
 
 #: www/views/addresses.html:19
 msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
-msgstr ""
+msgstr "각 코인 지갑은 12 단어 백업에서 수십억 개의 주소를 생성 할 수 있습니다. 지불 받을 때마다 새 주소가 자동으로 생성되어 표시됩니다."
 
 #: src/js/services/feeService.js:13
 msgid "Economy"
@@ -963,7 +963,7 @@ msgstr ""
 
 #: www/views/tab-scan.html:19
 msgid "Enable camera access in your device settings to get started."
-msgstr ""
+msgstr "시작하려면 기기 설정에서 카메라 액세스를 사용 설정하세요."
 
 #: www/views/preferencesNotifications.html:29
 msgid "Enable email notifications"
@@ -975,7 +975,7 @@ msgstr "푸시 암림 사용"
 
 #: www/views/tab-scan.html:18
 msgid "Enable the camera to get started."
-msgstr ""
+msgstr "카메라 사용을 활성화 해주세요"
 
 #: www/views/tab-settings.html:49
 msgid "Enabled"
@@ -2147,15 +2147,15 @@ msgstr "결제 요청"
 #: www/views/mercadoLibreCards.html:22
 #: www/views/modals/mercadolibre-card-details.html:39
 msgid "Pending"
-msgstr ""
+msgstr "처리중"
 
 #: www/views/proposals.html:4
 msgid "Pending Proposals"
-msgstr ""
+msgstr "제안 처리중"
 
 #: www/views/preferencesDeleteWallet.html:13
 msgid "Permanently delete this wallet."
-msgstr ""
+msgstr "이 지갑을 영구적으로 삭제합니다."
 
 #: src/js/services/profileService.js:401
 msgid "Personal Wallet"
@@ -2267,11 +2267,11 @@ msgstr ""
 
 #: www/views/onboarding/notifications.html:3
 msgid "Push Notifications"
-msgstr ""
+msgstr "푸시 알림들"
 
 #: www/views/preferencesNotifications.html:17
 msgid "Push notifications for {{appName}} are currently disabled. Enable them in the Settings app."
-msgstr ""
+msgstr "{{appName}} 을위한 푸시 알림이 중지되어 있습니다.앱 설정에서 활성화해주세요."
 
 #: www/views/export.html:17
 msgid "QR Code"
@@ -2284,24 +2284,24 @@ msgstr "간략한 안내!"
 #: src/js/controllers/create.js:84
 #: src/js/controllers/join.js:68
 msgid "Random"
-msgstr ""
+msgstr "랜덤"
 
 #: www/views/feedback/rateApp.html:14
 msgid "Rate on the app store"
-msgstr ""
+msgstr "앱스토어에서 평가하기"
 
 #: www/views/addresses.html:52
 msgid "Read less"
-msgstr ""
+msgstr "조금 읽어보기"
 
 #: www/views/addresses.html:51
 msgid "Read more"
-msgstr "더 알아보기"
+msgstr "좀더 읽어보기"
 
 #: src/js/controllers/preferences.js:65
 #: src/js/controllers/tx-details.js:54
 msgid "Read more in our Wiki"
-msgstr "우리의 위키에서 더 알아보기"
+msgstr "위키 페이지에서 더 알아보기"
 
 #: www/views/tab-receive.html:3
 #: www/views/tabs.html:7
@@ -2781,16 +2781,16 @@ msgstr "지갑 청소중..."
 
 #: www/views/preferencesDeleteWallet.html:16
 msgid "THIS ACTION CANNOT BE REVERSED"
-msgstr ""
+msgstr "식제하시면 되돌릴 수 없습니다"
 
 #: www/views/onboarding/welcome.html:5
 msgid "Take control of your money,<br>get started with bitcoin."
-msgstr "자금을 관리하세요,<br>비트코인을 시작합니다"
+msgstr "자금을 관리하세요,<br>비트코인 시작하기"
 
 #: www/views/walletDetails.html:132
 #: www/views/walletDetails.html:52
 msgid "Tap and hold to show"
-msgstr "보기 위해서 탬한후 누르고 계세요"
+msgstr "표시하려면 길게 누릅니다"
 
 #: www/views/includes/walletInfo.html:3
 msgid "Tap to recreate"
@@ -3203,11 +3203,11 @@ msgstr ""
 #: www/views/addresses.html:3
 #: www/views/preferencesAdvanced.html:17
 msgid "Wallet Addresses"
-msgstr ""
+msgstr "지갑 주소들"
 
 #: www/views/preferencesColor.html:4
 msgid "Wallet Color"
-msgstr ""
+msgstr "지갑 색상"
 
 #: www/views/preferencesInformation.html:29
 msgid "Wallet Configuration (m-n)"
@@ -3219,12 +3219,12 @@ msgstr "지갑이 생성되었습니다."
 
 #: www/views/preferencesInformation.html:23
 msgid "Wallet Id"
-msgstr ""
+msgstr "지갑 Id"
 
 #: www/views/preferencesAdvanced.html:13
 #: www/views/preferencesInformation.html:3
 msgid "Wallet Information"
-msgstr ""
+msgstr "지갑 정보"
 
 #: www/views/addresses.html:76
 msgid "Wallet Inputs"
@@ -3589,3 +3589,6 @@ msgstr ""
 #: www/views/includes/walletInfo.html:18
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr ""
+
+msgid "Coin"
+msgstr "코인"
