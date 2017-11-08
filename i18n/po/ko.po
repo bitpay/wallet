@@ -179,11 +179,11 @@ msgstr "전체 주소들"
 
 #: www/views/modals/wallet-balance.html:18
 msgid "All of your bitcoin wallet balance may not be available for immediate spending."
-msgstr ""
+msgstr "귀하의 모든 코인 지갑 잔액은 바로 사용이 가능하지 않을수 있습니다."
 
 #: www/views/tab-receive.html:25
 msgid "All signing devices must be added to this multisig wallet before bitcoin addresses can be created."
-msgstr ""
+msgstr "코인 주소를 만들기 전에 모든 서명 장치를이 다중서명 지갑에 추가해야합니다."
 
 #: www/views/tab-scan.html:21
 msgid "Allow Camera Access"
@@ -238,11 +238,11 @@ msgstr ""
 
 #: www/views/backupWarning.html:10
 msgid "Are you being watched?"
-msgstr "누가 지켜보고 있습니까?"
+msgstr "누군가 지켜보고 있습니까?"
 
 #: src/js/controllers/preferencesExternal.js:15
 msgid "Are you being watched? Anyone with your recovery phrase can access or spend your bitcoin."
-msgstr "귀하는 지켜보고 있습니까? 귀하의 복구암호로 누구나 뒤하의 코인을 접근하고, 사용할수 있습니다"
+msgstr "귀하를 누군가 지켜보고 있습니까? 귀하의 복구암호로 누구나 귀하의 코인을 접근하고, 사용할수 있습니다"
 
 #: src/js/controllers/copayers.js:56
 msgid "Are you sure you want to cancel and delete this wallet?"
@@ -1489,11 +1489,11 @@ msgstr "만약에 활성화 되어 있으면 모든 민감한 정보(개인키,�
 
 #: www/views/advancedSettings.html:23
 msgid "If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab."
-msgstr ""
+msgstr "이 옵션을 사용하면 최근 거래 카드 (모든 지갑에서 발생하는 트랜잭션 목록)가 홈 탭에 나타납니다."
 
 #: www/views/advancedSettings.html:14
 msgid "If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays."
-msgstr ""
+msgstr "이 옵션을 사용하면 지갑에서 미확인 자금을 사용합니다.이 옵션을 사용하면 거래 지연이 발생할 수 있습니다."
 
 #: src/js/controllers/onboarding/backupRequest.js:18
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
@@ -1959,7 +1959,7 @@ msgstr "귀하의 지갑을 백업하기에 좋은 시점입니다. 만약 귀�
 
 #: www/views/backupWarning.html:11
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
-msgstr "귀하의 주변에서 훔쳐보기 좋은 시점입니다. 주면에 창이 있니끼? 숨겨진 카메라? 어깨뒤의 사람이 있습니까? "
+msgstr "주변을 확인하세요. 주변에 창이 있습니끼? 숨겨진 카메라? 등뒤에 사람이 있습니까? "
 
 #: src/js/controllers/buyAmazon.js:312
 #: src/js/controllers/topup.js:286
@@ -3341,7 +3341,7 @@ msgstr "지갑 서비를 찾을수 없습니다."
 
 #: www/views/tab-home.html:69
 msgid "Wallets"
-msgstr "지갑들"
+msgstr "지갑 목록"
 
 #: www/views/tab-settings.html:107
 msgid "Wallets & Integrations"
