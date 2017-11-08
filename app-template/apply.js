@@ -109,7 +109,7 @@ function copyDir(from, to) {
     fs.copySync(from, to);
 }
 copyDir(configDir + '/app_config.js', '../www/app_config.js');
-copyDir(configDir + '/config', '../src/');
+copyDir(configDir + '/config', '../src/js');
 // Push Notification
 fs.copySync(configDir + '/GoogleService-Info.plist', '../GoogleService-Info.plist');
 fs.copySync(configDir + '/google-services.json', '../google-services.json');
