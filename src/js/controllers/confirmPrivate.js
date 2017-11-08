@@ -72,7 +72,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     $scope.setWalletSelector = function(network, minAmount, cb) {
-      console.log('setWalletSelector');
       // no min amount? (sendMax) => look for no empty wallets
       minAmount = minAmount || 1;
 
@@ -176,7 +175,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         });
       }); //updateTx
     } else {
-      console.log('else maxAmount');
       $scope.tx = tx;
       ongoingProcess.set('Finding NavTech Server', true);
       navTechService.findNode(amount, address, $scope.foundNode);
@@ -184,7 +182,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
   });
 
   $scope.foundNode = function(success, data, serverInfo) {
-    console.log('foundNode');
     var tx = $scope.tx;
     ongoingProcess.set('Finding NavTech Server', false);
     if (!success) {
@@ -257,23 +254,19 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
   $scope.calculateTotal = function(tx) {
     if(!$scope.wallet || !tx || !tx.txp || !tx.txp[$scope.wallet.id]) return false;
-    console.log(tx.txp[$scope.wallet.id].fee);
     var txTotal = tx.toAmount + tx.txp[$scope.wallet.id].fee;
     var txTotalDisplay = txTotal * satToUnit + ' ' + walletConfig.settings.unitName;
     return txTotalDisplay;
   }
 
   function getFees() {
-    console.log('getFees');
     var tx = $scope.tx;
     var wallet = $scope.wallet;
     feeService.getFeeRate(tx.network, tx.feeLevel, function(err, feeRate) {
-      console.log('getFeeRate', err, feeRate);
       if (err) return setSendError(err);
 
       if (!usingCustomFee) tx.feeRate = feeRate;
       tx.feeLevelName = feeService.feeOpts[tx.feeLevel];
-      console.log('wallet', wallet);
       if (!wallet) return setSendError(err);
       getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
         if (err) {
@@ -283,9 +276,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         }
 
         if (sendMaxInfo) {
-
-          console.log('Send max info', sendMaxInfo);
-          console.log('tx.sendMax', tx.sendMax);
 
           if (tx.sendMax && sendMaxInfo.amount == 0) {
             setNoWallet('Insufficent funds');
@@ -298,7 +288,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           updateAmount();
           showSendMaxWarning(sendMaxInfo);
         }
-        console.log('tx', tx);
         $scope.formattedAnonTxes = [];
         $scope.navtechTxFeeSatoshi = 0;
         getEachFee(0, function(err){
@@ -309,15 +298,12 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           }
           $scope.navtechFee = $scope.navtechFeeTemp;
           $scope.navtechTxFee = $scope.navtechTxFeeSatoshi * satToUnit + ' ' + walletConfig.settings.unitName;
-          console.log('$scope.formattedAnonTxes', $scope.formattedAnonTxes);
         });
       });
     });
   }
 
   function getEachFee(i, cb) {
-    console.log('getEachFee', i, $scope.anonTxes[i]);
-    console.log('tx', $scope.tx);
     var tx = $scope.anonTxes[i];
     var wallet = $scope.wallet;
     getTxp(lodash.clone(tx), wallet, true, function(err, txp) {
@@ -337,7 +323,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       refresh();
       $scope.navtechTxFeeSatoshi += tx.txp[wallet.id].fee;
       $scope.formattedAnonTxes[i] = tx;
-      console.log('recursive condition', i, $scope.anonTxes.length);
       if (i < $scope.anonTxes.length - 1) {
         getEachFee(++i, cb);
       } else {
@@ -387,7 +372,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
     if (tx.sendMaxInfo) {
       txp.inputs = tx.sendMaxInfo.inputs;
-      console.log($scope.feeNavtech);
       txp.fee = tx.sendMaxInfo.fee;
     } else {
       if (usingCustomFee) {
@@ -403,7 +387,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     }
     txp.excludeUnconfirmedUtxos = !tx.spendUnconfirmed;
     txp.dryRun = dryRun;
-    console.log("Creating txp:", txp);
     walletService.createTx(wallet, txp, function(err, ctxp) {
       if (err) {
         setSendError(err);
@@ -423,8 +406,6 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
     function updateAmount() {
       if (!tx.toAmount) return;
-
-      console.log(tx);
 
       // Amount
       tx.amountStr = txFormatService.formatAmountStr(tx.toAmount);
