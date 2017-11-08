@@ -63,7 +63,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
         },
 
         rates: {
-            url: 'http://insight-btc.bitchk.com/api/rates',
+            url: '',
         },
 
         release: {

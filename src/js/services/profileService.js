@@ -233,7 +233,7 @@ angular.module('copayApp.services')
             if (!skipKeyValidation)
                 root.runValidation(client, 500);
 
-            $log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
+            //$log.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
             return cb(null, root.bindWalletClient(client));
         };
 
