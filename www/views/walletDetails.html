@@ -10,13 +10,9 @@
       </button>
         </ion-nav-buttons>
     </ion-nav-bar>
-
     <div class="bp-content" ng-class="{'status-bar': isCordova}">
-
         <div class="amount-wrapper" ng-show="wallet && wallet.isComplete() && amountIsCollapsible" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}">
-
             <div ng-style="{'background-color':wallet.color, 'height': amountHeight}" class="amount" ng-class="{collapsible: amountIsCollapsible, 'wallet-background-color-default': !wallet.color, }">
-
                 <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="updateStatusError">
                     <span>{{updateStatusError}}</span>
                 </div>
@@ -27,7 +23,7 @@
 
                 <div ng-click='updateAll(true)' ng-show="!updateStatusError && !wallet.balanceHidden && !wallet.scanning" on-hold="hideToggle()" ng-style="{'transform': amountScale}" ng-class="{amount__balance: amountIsCollapsible}">
                     <strong class="size-36">{{status.totalBalanceStr}}</strong>
-                    <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'" ng-style="{opacity: altAmountOpacity}">
+                    <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative &&status.alternativeBalanceAvailable" ng-style="{opacity: altAmountOpacity}">
                         {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
                     </div>
                 </div>
@@ -50,15 +46,15 @@
 
                 <div ng-if="!wallet.balanceHidden && !wallet.scanning && showBalanceButton" ng-style="{'opacity': altAmountOpacity, 'transform': amountScale}">
                     <button class="button button-standard button-primary amount__button-balance size-14" ng-click="openBalanceModal()">
-          <i class="icon ion-ios-checkmark-outline"></i>
-          <strong>
-            {{status.spendableBalanceStr}}
-          </strong>
-          &nbsp;
-          <span>
-            {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
-          </span>
-        </button>
+                      <i class="icon ion-ios-checkmark-outline"></i>
+                      <strong>
+                        {{status.spendableBalanceStr}}
+                      </strong>
+                      &nbsp;
+                      <span ng-show="status.alternativeBalanceAvailable">
+                        {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
+                      </span>
+                    </button>
                 </div>
 
             </div>
@@ -70,11 +66,10 @@
         <ion-content ng-style="{'margin-top': contentMargin}" ng-class="{collapsible: amountIsCollapsible}">
             <ion-refresher ng-if="isAndroid" pulling-icon="ion-ios-refresh" spinner="ios-small" on-refresh="onRefresh()">
             </ion-refresher>
-
             <!-- Start Balance view duplicate (for Android compatibility) -->
             <div class="amount-wrapper" ng-show="wallet && wallet.isComplete() && !amountIsCollapsible" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color':wallet.color}">
 
-                <div ng-style="{'background-color':wallet.color, 'height': amountHeight}" class="amount" ng-class="{collapsible: amountIsCollapsible, 'wallet-background-color-default': !wallet.color, 'no-alternative': wallet.network != 'livenet'}">
+                <div ng-style="{'background-color':wallet.color, 'height': amountHeight}" class="amount" ng-class="{collapsible: amountIsCollapsible, 'wallet-background-color-default': !wallet.color, 'no-alternative': true}">
 
                     <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="updateStatusError">
                         <span>{{updateStatusError}}</span>
@@ -87,7 +82,7 @@
                     <div ng-click='updateAll(true)' ng-show="!updateStatusError && !wallet.balanceHidden && !wallet.scanning" on-hold="hideToggle()" ng-style="{'transform': amountScale}" ng-class="{amount__balance: amountIsCollapsible}">
                         <strong class="size-36">{{status.totalBalanceStr}}</strong>
                         <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'" ng-style="{opacity: altAmountOpacity}">
-                            {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
+                            {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}} cccccc
                         </div>
                     </div>
 
@@ -108,18 +103,16 @@
 
 
                     <div ng-if="!wallet.balanceHidden && !wallet.scanning && showBalanceButton" ng-style="{'opacity': altAmountOpacity, 'transform': amountScale}">
-                        <button class="button button-standard button-primary amount__button-balance size-14" ng-click="openBalanceModal()">
-          <i class="icon ion-ios-checkmark-outline"></i>
-          <strong>
-            {{status.spendableBalanceStr}}
-          </strong>
-          &nbsp;
-          <span>
-            {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
-          </span>
-        </button>
+                        <button class="button button-standard button-primary amount__button-balance size-14" ng-click="openBalanceModal()"><i class="icon ion-ios-checkmark-outline"></i>
+                        <strong>
+                          {{status.spendableBalanceStr}}
+                        </strong>
+                        &nbsp;
+                        <span>
+                          {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}} aaaaa
+                        </span>
+                      </button>
                     </div>
-
                 </div>
                 <div class="wallet-details-wallet-info" ng-style="{opacity: altAmountOpacity}">
                     <span ng-include="'views/includes/walletInfo.html'"></span>
@@ -128,22 +121,17 @@
             <!-- End Balance view duplicate (for Android compatibility) -->
 
 
-            <a class="wallet-not-backed-up-warning" ng-if="wallet.needsBackup" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet'})" translate>
-      Wallet not backed up
-    </a>
+            <a class="wallet-not-backed-up-warning" ng-if="wallet.needsBackup" ui-sref="tabs.wallet.backupWarning({from: 'tabs.wallet'})" translate>Wallet not backed up</a>
 
             <a class="wallet-not-backed-up-warning" ng-if="lowUtxosWarning" ui-sref="tabs.wallet.addresses({walletId:wallet.id,from: 'tabs.wallet'})" translate>
-      Spending this balance will need significant Bitcoin network fees
-    </a>
+              Spending this balance will need significant Bitcoin network fees</a>
 
 
             <div ng-if="wallet &&  wallet.isComplete() && !walletNotRegistered">
                 <div class="wallet-details__incorrect-derivation" ng-show="wallet.incorrectDerivation">
                     <div class="text-center text-warning">
                         <i class="fi-alert"></i>
-                        <span translate>
-            WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
-          </span>
+                        <span translate>WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.</span>
                     </div>
                 </div>
                 <div ng-if="txps[0]">
@@ -157,7 +145,7 @@
                     <div class="item item-footer description" ng-show="status.lockedBalanceSat" style="background: white;">
                         <span translate>Total Locked Balance</span>:
                         <b>{{status.lockedBalanceStr}} </b>
-                        <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
+                        <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} bbbbbb </span>
                     </div>
                 </div>
 
