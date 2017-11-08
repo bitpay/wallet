@@ -19,6 +19,12 @@ export class TxDetailsPage {
     this.fiatAmountStr = this.txFormatProvider.formatAlternativeStr('btc', this.tx.amount);
   }
 
+  ionViewDidEnter() {
+    if (this.tx.action == 'sent') this.title = 'Sent Funds';
+    if (this.tx.action == 'received') this.title = 'Received Funds';
+    if (this.tx.action == 'moved') this.title = 'Moved Funds';
+  }
+
   addMemo() {
     return;
   }

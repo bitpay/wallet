@@ -29,7 +29,15 @@
         <img src="assets/img/icon-wallet.svg" class="icon-wallet">
       </ion-avatar>
       <h2 translate>To</h2>
-      <p>{{destinationAddress || '...'}}</p>
+      <p>{{destinationAddress || '...address to send...'}}</p>
+    </ion-item>
+
+    <ion-item *ngIf="tx.action != 'received'">
+      <ion-avatar item-start>
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+      </ion-avatar>
+      <h2 translate>From</h2>
+      <p>{{destinationAddress || '...address from was sent...'}}</p>
     </ion-item>
 
     <ion-item>
@@ -41,6 +49,11 @@
 
     <button ion-item (click)="addMemo()">
       <ion-label>{{'Memo' | translate}}</ion-label>
+      <span>{{tx.message}}</span>
+    </button>
+
+    <button ion-item (click)="addMemo()" *ngIf="tx.action != 'received'">
+      <ion-label>{{'Fee' | translate}}</ion-label>
       <span>{{tx.message}}</span>
     </button>
 
