@@ -8,6 +8,11 @@
         "postinstall": "npm run apply:bitchk && echo && echo \"Repo configured for standard Copay distribution. To switch to the BitPay distribution, run 'npm run apply:bitpay'.\" && echo",
         "start": "echo && echo \"Choose a distribution by running 'npm run apply:copay' or 'npm run apply:bitpay'.\" && echo",
         "apply:bitchk": "npm i fs-extra@0.30 && cd app-template && node apply.js bitchk && cd .. && npm i",
+        "apply:yangcoin": "npm i fs-extra@0.30 && cd app-template && node apply.js yangcoin && cd .. && npm i",
+        "apply:qcity": "npm i fs-extra@0.30 && cd app-template && node apply.js qcity && cd .. && npm i",
+        "apply:quasar": "npm i fs-extra@0.30 && cd app-template && node apply.js quasar && cd .. && npm i",
+        "apply:paxcoin": "npm i fs-extra@0.30 && cd app-template && node apply.js paxcoin && cd .. && npm i",
+        "apply:searchcoin": "npm i fs-extra@0.30 && cd app-template && node apply.js searchcoin && cd .. && npm i",
 
         "unstage-package": "git reset package.json",
         "clean-all": "git clean -dfx"
