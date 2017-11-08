@@ -60,8 +60,7 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
     };
 
     root.getFeeLevels = function(coin, cb) {
-        coin = coin || 'btc';
-
+        coin = coin || DEFAULT_CONFIG.coin;
         if (cache.coin == coin && cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
             return cb(null, cache.data, true);
         }
@@ -74,13 +73,13 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
         }
         var walletClient = bwcService.getClient(null, opts);
         var _net = bitcore.Networks.get(coin, 'coin');
-        var network = (coin == 'btc') ? 'livenet' : _net.name;
-        walletClient.getFeeLevels(coin, network, function(errLivenet, levelsLivenet) {
+        var netName = (coin == 'btc') ? 'livenet' : _net.name;
 
+        walletClient.getFeeLevels(coin, netName, function(errLivenet, levelsLivenet) {
             cache.updateTs = Date.now();
             cache.coin = coin;
             cache.data = {};
-            cache.data[network] = levelsLivenet;
+            cache.data[netName] = levelsLivenet;
 
             return cb(null, cache.data);
 
