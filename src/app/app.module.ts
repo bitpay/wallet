@@ -42,6 +42,7 @@ import { AddressbookPage } from '../pages/addressbook/addressbook';
 import { AddressbookAddPage } from '../pages/addressbook/add/add';
 import { AddressbookViewPage } from '../pages/addressbook/view/view';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { TxDetailsPage } from '../pages/tx-details/tx-details';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -68,6 +69,7 @@ import { ChooseFeeLevelPage } from '../pages/choose-fee-level/choose-fee-level';
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 
 /* Pipes */
+import { ToUnitPipe } from '../pipes/toUnit';
 import { ToFiatPipe } from '../pipes/toFiat';
 
 /* Providers */
@@ -144,6 +146,7 @@ let pages: any = [
   TermsOfUsePage,
   TourPage,
   TabsPage,
+  TxDetailsPage,
   WalletDetailsPage,
 ];
 
@@ -199,6 +202,7 @@ let providers: any = [
 ];
 
 let pipes = [
+  ToUnitPipe,
   ToFiatPipe,
 ];
 

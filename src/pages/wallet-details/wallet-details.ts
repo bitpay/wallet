@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ConfigProvider } from '../../providers/config/config';
+import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 
 @Component({
   selector: 'page-wallet-details',
@@ -13,6 +14,7 @@ export class WalletDetailsPage {
   public alternativeBalanceStr: string;
 
   constructor(
+    private navCtrl: NavController,
     private navParams: NavParams,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
@@ -20,20 +22,19 @@ export class WalletDetailsPage {
     this.wallet = this.navParams.data.wallet;
     this.unitCode = this.configProvider.get()['wallet']['settings'].unitCode;
   }
-
+  
   ionViewDidEnter() {
     if (!this.wallet.isComplete()) {
       console.log('Wallet incomplete');
       return;
     };
-    this.alternativeBalanceStr = this.wallet.status.totalBalanceAlternative + ' ' + this.wallet.status.alternativeIsoCode;
     this.getTxHistory();
   }
-
-  goToTxDetails(txid: string) {
-    return;
+  
+  goToTxDetails(tx: any) {
+    this.navCtrl.push(TxDetailsPage, {tx: tx});
   }
-
+  
   getTxHistory(force?: boolean) {
     let self = this;
     this.walletProvider.getTxHistory_(this.wallet, {force: force}).then((txh) => {

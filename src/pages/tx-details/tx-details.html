@@ -1,0 +1,56 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>{{title | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <div *ngIf="tx.action == 'received'" class="action">
+        <img src="assets/img/tx-action/icon-received.svg" width="40">
+        <span translate>Received</span>
+      </div>
+      <div *ngIf="tx.action == 'sent'" class="action">
+        <img src="assets/img/tx-action/icon-sent.svg" width="40">
+        <span translate>Sent</span>
+      </div>
+      <div *ngIf="tx.action == 'moved'" class="action">
+        <img src="assets/img/tx-action/icon-moved.svg" width="40">
+        <span translate>Moved</span>
+      </div>
+
+      <div class="amount-str">{{amountStr | toUnit : tx.amount}}</div>
+      <div class="amount-alt-str">{{fiatAmountStr | toFiat : tx.amount}}</div>
+    </ion-item>
+
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+      </ion-avatar>
+      <h2 translate>To</h2>
+      <p>{{destinationAddress || '...'}}</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'Date' | translate}}</ion-label>
+      <ion-note item-end>
+        {{tx.time * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}
+      </ion-note>
+    </ion-item>
+
+    <button ion-item (click)="addMemo()">
+      <ion-label>{{'Memo' | translate}}</ion-label>
+      <span>{{tx.message}}</span>
+    </button>
+
+    <ion-item>
+      <ion-label>{{'Confirmations' | translate}}</ion-label>
+      <ion-note item-end>
+        {{tx.Confirmations || 'Unconfirmed' | translate}}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button block clear (click)="viewOnBlockchain()" translate>View on blockchain</button>
+</ion-content>
