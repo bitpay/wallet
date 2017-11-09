@@ -6,25 +6,51 @@
 
 </ion-header>
 
+<!-- TODO send max -->
 
 <ion-content>
-  <ion-list>
-    <ion-label padding>Recipient</ion-label>
+  <ion-card>
     <ion-item>
-      <ion-icon name="contact" item-left></ion-icon>
-      <span>{{ toAddress }}</span>
+      <span translate>Recipient</span>
     </ion-item>
-  </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-icon *ngIf="recipientType == 'wallet'" item-left>
+          <img src="assets/img/icon-wallet.svg" [ngClass]="{'wallet-background-color-default': !toColor}" [ngStyle]="{'background-color': color}"
+            class="icon-wallet">
+        </ion-icon>
+        <ion-icon *ngIf="recipientType == 'contact'" item-left>
+          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
+          <!-- TODO add gravatar -->
+        </ion-icon>
+        <ion-icon *ngIf="!recipientType" item-left>
+          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
+        </ion-icon>
+        <span>{{ name || toAddress }}</span>
+      </ion-item>
+    </ion-list>
+  </ion-card>
   <div>
-    <div padding>
-      <div>
-        <span>Amount</span>
+    <div [ngClass]="{'amount-pane-recipient': !customAmount && !nextStep,
+      'amount-pane-no-recipient': customAmount || nextStep}">
+
+      <div class="amount-bar">
+        <div class="title">
+          <span translate>Amount</span>
+        </div>
       </div>
-      <div>
-        <span>{{ amountStr || "0.00" }}</span>
-      </div>
-      <div [hidden]="!globalResult">
-        = {{globalResult|| "0.00" }}
+
+      <div class="amount">
+        <div class="amount__editable" [ngClass]="{'amount__editable--minimize': smallFont, 'amount__editable--standard': !smallFont, 'amount__editable--placeholder': !amount}">
+          <span class="amount__number">{{amountStr || "0.00" }}</span>
+          <a *ngIf="unit" class="amount__currency-toggle" (click)="changeUnit()">{{unit}}</a>
+        </div>
+        <div [ngClass]="{'amount__results--minimize': smallFont, 'amount__results--standard': !smallFont, 'amount__results--placeholder': amountResult}"
+          (click)="changeAlternativeUnit()">
+          <div class="amount__result" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
+          <div class="amount__result-equiv" [hidden]="!alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
+          <div class="amount__result-equiv" [hidden]="alternativeAmount">&nbsp;</div>
+        </div>
       </div>
     </div>
     <div class="keypad">

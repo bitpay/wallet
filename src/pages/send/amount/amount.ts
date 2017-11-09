@@ -37,6 +37,7 @@ export class AmountPage {
   public amount: number;
   public showSendMax: boolean = false;
   public useSendMax: boolean;
+  public alternativeAmount: number;
 
   private LENGTH_EXPRESSION_LIMIT = 19;
   private SMALL_FONT_SIZE_LIMIT = 10;
@@ -92,9 +93,6 @@ export class AmountPage {
     this.email = this.navParams.data.email;
     this.color = this.navParams.data.color;
     this.amount = this.navParams.data.amount;
-  }
-
-  ionViewDidEnter() {
     this.setAvailableUnits();
     this.updateUnitUI();
     //this.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' || $ionicHistory.backView().stateName == 'tabs.bitpayCard'); TODO
@@ -241,19 +239,18 @@ export class AmountPage {
     if (_.isNumber(result)) {
       this.globalResult = this.isExpression(this.amountStr) ? '= ' + this.processResult(result) : '';
 
-      // TODO this.globalResult is always undefinded - Need: processResult()
-      /* if (this.availableUnits[this.unitIndex].isFiat) {
+      if (this.availableUnits[this.unitIndex].isFiat) {
 
         var a = this.fromFiat(result);
         if (a) {
-          this.alternativeAmount = txFormatService.formatAmount(a * unitToSatoshi, true);
+          this.alternativeAmount = this.txFormatProvider.formatAmount(a * this.unitToSatoshi, true);
         } else {
-          this.alternativeAmount = 'N/A'; //TODO
+          this.alternativeAmount = null;
           this.allowSend = false;
         }
       } else {
-        this.alternativeAmount = $filter('formatFiatAmount')(toFiat(result));
-      } */
+        this.alternativeAmount = this.filter.formatFiatAmount((this.toFiat(result)));
+      }
       this.globalResult = result.toString();
     }
   };
