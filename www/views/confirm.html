@@ -77,8 +77,8 @@
           </div>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="item item-icon-right" ng-if="wallet" ng-click="chooseFeeLevel(tx, wallet)">
-          <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
+        <div class="item item-icon-right" ng-if="wallet">
+          <span class="label">{{'Fee:' | translate}}</span>
           <span class="m10l">{{tx.txp[wallet.id].feeStr || '...'}} (transaction fee)</span>
           <span class="item-note m10l">
             <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
