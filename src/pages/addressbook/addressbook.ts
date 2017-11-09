@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { AddressbookAddPage } from './add/add';
+import { AddressbookViewPage } from './view/view';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
@@ -10,8 +12,12 @@ import * as _ from 'lodash';
 })
 export class AddressbookPage {
 
+  private cache: boolean = false;
+
   private isEmptyList: boolean;
   private addressbook: Array<object> = [];
+
+  private searchQuery: string = '';
 
   constructor(
     public navCtrl: NavController,
@@ -21,6 +27,11 @@ export class AddressbookPage {
     private addressbookProvider: AddressBookProvider
   ) {
     this.initAddressbook();
+  }
+
+  ionViewDidEnter() {
+    if (this.cache) this.initAddressbook();
+    this.cache = true;
   }
 
   private initAddressbook() {
@@ -53,5 +64,29 @@ export class AddressbookPage {
       alertError.present();
     });
   };
+
+  private addEntry() {
+    this.navCtrl.push(AddressbookAddPage);
+  };
+
+  private viewEntry(ab: any) {
+    this.navCtrl.push(AddressbookViewPage, { address: ab.address });
+  }
+
+  private getItems(ev: any) {
+    // Reset items back to all of the items
+    this.initAddressbook();
+
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.addressbook = this.addressbook.filter((item) => {
+        let name = item['name'];
+        return _.includes(name.toLowerCase(), val.toLowerCase());
+      });
+    }
+  }
 
 }

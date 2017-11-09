@@ -27,6 +27,12 @@
   </div>
 
   <div *ngIf="!isEmptyList">
+    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-list>
+      <ion-item *ngFor="let entry of addressbook" (click)="viewEntry(entry)">
+        {{ entry.name }}
+      </ion-item>
+    </ion-list>
   </div>
 
 </ion-content>

@@ -39,6 +39,8 @@ import { TourPage } from '../pages/onboarding/tour/tour';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { AddressbookPage } from '../pages/addressbook/addressbook';
+import { AddressbookAddPage } from '../pages/addressbook/add/add';
+import { AddressbookViewPage } from '../pages/addressbook/view/view';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -106,6 +108,8 @@ let pages: any = [
   BackupWarningPage,
   BackupGamePage,
   AddressbookPage,
+  AddressbookAddPage,
+  AddressbookViewPage,
   AboutPage,
   AdvancedPage,
   AltCurrencyPage,
