@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     var fiatCode;
     var coin;
     var fixedUnit;
-
+    var showRate = true;
     $scope.isChromeApp = platformInfo.isChromeApp;
 
     $scope.$on('$ionicView.leave', function() {
@@ -35,45 +35,16 @@ angular.module('copayApp.controllers').controller('amountController', function($
             var networks = bitcore.Networks.networks;
             availableUnits = [];
 
-            var hasBTCWallets = profileService.getWallets({
-                coin: 'btc'
-            }).length;
+            var _net = bitcore.Networks.get(this.coin, "coin");
 
-            if (hasBTCWallets) {
-                availableUnits.push({
-                    name: 'Bitcoin',
-                    id: 'btc',
-                    shortName: 'BTC',
-                });
-            }
-
-
-            var hasBCHWallets = profileService.getWallets({
-                coin: 'bch'
-            }).length;
-
-
-
-            if (hasBCHWallets) {
-                availableUnits.push({
-                    name: 'Bitcoin Cash',
-                    id: 'bch',
-                    shortName: 'BCH',
-                });
-            };
-            var hasREQHWallets = profileService.getWallets({
-                coin: this.coin
-            }).length;
-
-            if (hasREQHWallets) {
-                var _net = bitcore.Networks.get(this.coin, "coin");
-                availableUnits.push({
-                    name: _net.coinName,
-                    id: _net.coin,
-                    shortName: _net.shortName,
-                });
-            };
-
+            var cfg = COIN_CONFIG[_net.coin];
+            availableUnits.push({
+                name: _net.coinName,
+                id: _net.coin,
+                shortName: _net.shortName,
+            });
+            if (cfg && cfg.showRate)
+                this.showRate = true;
             unitIndex = 0;
 
             if (data.stateParams.coin) {
@@ -101,7 +72,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
             var fiatName;
             if (data.stateParams.currency) {
                 fiatCode = data.stateParams.currency;
-                altUnitIndex = unitIndex
+                altUnitIndex = unitIndex;
                 unitIndex = availableUnits.length;
             } else {
                 fiatCode = config.alternativeIsoCode || 'USD';
@@ -227,6 +198,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     };
 
     $scope.changeUnit = function() {
+        if (!this.showRate)
+            return;
         if (fixedUnit) return;
 
         unitIndex++;
@@ -376,9 +349,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
     };
 
     $scope.finish = function() {
-        console.log("finish");
         var unit = availableUnits[unitIndex];
-        console.log(unit);
+
         var _amount = evaluate(format($scope.amount));
         var coin = unit.id;
         if (unit.isFiat) {
@@ -386,7 +358,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
         }
 
         if ($scope.nextStep) {
-
             $state.transitionTo($scope.nextStep, {
                 id: _id,
                 amount: $scope.useSendMax ? null : _amount,
@@ -396,7 +367,6 @@ angular.module('copayApp.controllers').controller('amountController', function($
             });
         } else {
             var amount = _amount;
-
             if (unit.isFiat) {
                 amount = (fromFiat(amount) * unitToSatoshi).toFixed(0);
             } else {
