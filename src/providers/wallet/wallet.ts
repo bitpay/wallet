@@ -9,7 +9,7 @@ import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { RateProvider } from '../rate/rate';
 import { Filter } from '../filter/filter';
 import { PopupProvider } from '../popup/popup';
-import { OnGoingProcess } from '../on-going-process/on-going-process';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
 
 import * as lodash from 'lodash';
@@ -46,7 +46,7 @@ export class WalletProvider {
     private rateProvider: RateProvider,
     private filter: Filter,
     private popupProvider: PopupProvider,
-    private ongoingProcess: OnGoingProcess,
+    private ongoingProcess: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider
   ) {
     console.log('Hello WalletService Provider');
@@ -753,7 +753,7 @@ export class WalletProvider {
     });
   }
 
-  public isEncrypted(wallet: any) {
+  public isEncrypted(wallet: any): boolean {
     if (lodash.isEmpty(wallet)) return;
     let isEncrypted = wallet.isPrivKeyEncrypted();
     if (isEncrypted) this.logger.debug('Wallet is encrypted');

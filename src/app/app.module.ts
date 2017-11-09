@@ -34,6 +34,7 @@ import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-req
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { PayProPage } from '../pages/paypro/paypro';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
@@ -57,6 +58,7 @@ import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-us
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
+import { ChooseFeeLevelPage } from '../pages/choose-fee-level/choose-fee-level';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
@@ -69,10 +71,13 @@ import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
+import { ExternalLinkProvider } from '../providers/external-link/external-link';
+import { FeeProvider } from '../providers/fee/fee';
 import { Filter } from '../providers/filter/filter';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
-import { OnGoingProcess } from '../providers/on-going-process/on-going-process';
+import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
+import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../providers/paypro/paypro';
 import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
@@ -82,6 +87,7 @@ import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
 import { ScanProvider } from '../providers/scan/scan';
 import { TouchIdProvider } from '../providers/touchid/touchid';
+import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 
@@ -91,6 +97,7 @@ export function createTranslateLoader(http: Http) {
 
 let pages: any = [
   AddPage,
+  ChooseFeeLevelPage,
   CreateWalletPage,
   CopayersPage,
   ImportWalletPage,
@@ -111,6 +118,7 @@ let pages: any = [
   HomePage,
   LockPage,
   OnboardingPage,
+  PayProPage,
   PinModalPage,
   ReceivePage,
   SendPage,
@@ -130,10 +138,13 @@ let providers: any = [
   ConfigProvider,
   Clipboard,
   DerivationPathHelperProvider,
+  ExternalLinkProvider,
+  FeeProvider,
   Filter,
   IncomingDataProvider,
   LanguageProvider,
-  OnGoingProcess,
+  NodeWebkitProvider,
+  OnGoingProcessProvider,
   PayproProvider,
   PlatformProvider,
   ProfileProvider,
@@ -148,6 +159,7 @@ let providers: any = [
   Toast,
   TouchID,
   TouchIdProvider,
+  TxConfirmNotificationProvider,
   TxFormatProvider,
   WalletProvider,
   {

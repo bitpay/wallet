@@ -16,7 +16,7 @@ export class RateProvider {
 
   private rateServiceUrl = 'https://bitpay.com/api/rates';
   private bchRateServiceUrl = 'https://api.kraken.com/0/public/Ticker?pair=BCHUSD,BCHEUR';
-  
+
   constructor(public http: Http) {
     console.log('Hello RateProvider Provider');
     this._rates = {};
@@ -28,7 +28,7 @@ export class RateProvider {
   }
 
   updateRates(): Promise<any> {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let self = this;
       this.getBTC().then((dataBTC) => {
 
@@ -44,23 +44,23 @@ export class RateProvider {
         this.getBCH().then((dataBCH) => {
 
           _.each(dataBCH.result, (data, paircode) => {
-            var code = paircode.substr(3,3);
-            var rate =data.c[0];
+            var code = paircode.substr(3, 3);
+            var rate = data.c[0];
             self._ratesBCH[code] = rate;
           });
 
           this._isAvailable = true;
           resolve();
         })
-        .catch((errorBCH) => {
-          console.log("Error: ", errorBCH);
-          reject(errorBCH);
-        });
+          .catch((errorBCH) => {
+            console.log("Error: ", errorBCH);
+            reject(errorBCH);
+          });
       })
-      .catch((errorBTC) => {
-        console.log("Error: ", errorBTC);
-        reject(errorBTC);
-      });
+        .catch((errorBTC) => {
+          console.log("Error: ", errorBTC);
+          reject(errorBTC);
+        });
     });
   }
 
@@ -78,17 +78,17 @@ export class RateProvider {
       .catch((error) => console.log("Error", error));
   }
 
-  getRate(code, chain) {
+  getRate(code, chain?) {
     if (chain == 'bch')
       return this._ratesBCH[code];
     else
       return this._rates[code];
   };
-  
+
   getAlternatives() {
     return this._alternatives;
   };
-  
+
   toFiat(satoshis, code, chain) {
     return satoshis * this.SAT_TO_BTC * this.getRate(code, chain);
   };
@@ -99,7 +99,7 @@ export class RateProvider {
 
   listAlternatives(sort: boolean) {
     var self = this;
-  
+
     var alternatives = _.map(this.getAlternatives(), (item) => {
       return {
         name: item.name,
@@ -107,7 +107,7 @@ export class RateProvider {
       }
     });
     if (sort) {
-      alternatives.sort( (a, b) => {
+      alternatives.sort((a, b) => {
         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
       });
     }
@@ -115,11 +115,11 @@ export class RateProvider {
   };
 
   //TODO IMPROVE WHEN AVAILABLE
-  whenAvailable() { 
-    return new Promise((resolve, reject)=> {
+  whenAvailable() {
+    return new Promise((resolve, reject) => {
       if (this._isAvailable) resolve();
       else {
-       this.updateRates().then(()=>{
+        this.updateRates().then(() => {
           resolve();
         });
       }

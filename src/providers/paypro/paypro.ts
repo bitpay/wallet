@@ -3,14 +3,14 @@ import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { ProfileProvider } from '../profile/profile';
-import { OnGoingProcess } from '../on-going-process/on-going-process';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 
 @Injectable()
 export class PayproProvider {
   constructor(
     private profileProvider: ProfileProvider,
     private logger: Logger,
-    private onGoingProcess: OnGoingProcess
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     console.log('Hello PayproProvider Provider');
   }
@@ -26,12 +26,12 @@ export class PayproProvider {
 
       this.logger.debug('Fetch PayPro Request...', uri);
 
-      if (!disableLoader) this.onGoingProcess.set('fetchingPayPro', true);
+      if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', true);
 
       wallet.fetchPayPro({
         payProUrl: uri,
       }, (err, paypro) => {
-        if (!disableLoader) this.onGoingProcess.set('fetchingPayPro', false);
+        if (!disableLoader) this.onGoingProcessProvider.set('fetchingPayPro', false);
         if (err) return reject(err);
         else if (!paypro.verified) {
           this.logger.warn('Failed to verify payment protocol signatures');

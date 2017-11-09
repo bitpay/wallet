@@ -137,7 +137,7 @@ export class SendPage {
     }
   }
 
-  findContact(search: string): void {
+  public findContact(search: string): void {
     if (this.incomingDataProvider.redir(search)) return;
     if (!search || search.length < 2) {
       this.updateContactsList();
@@ -157,14 +157,15 @@ export class SendPage {
         this.popupProvider.ionicAlert('Error - no address');
         return;
       }
-      this.logger.debug('Got toAddress:' + addr + ' | ' + item.name);
+      this.logger.debug('Got address:' + addr + ' | ' + item.name);
       this.navCtrl.push(AmountPage, {
         recipientType: item.recipientType,
         toAddress: addr,
-        toName: item.name,
-        toEmail: item.email,
-        toColor: item.color,
-        coin: item.coin
+        name: item.name,
+        email: item.email,
+        color: item.color,
+        coin: item.coin,
+        fromSend: true
       });
       return;
     }).catch((err: any) => {

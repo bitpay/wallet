@@ -5,8 +5,6 @@
   </ion-navbar>
 
 </ion-header>
-
-
 <ion-content padding>
   <ion-list>
     <ion-label>Recipient</ion-label>
@@ -16,22 +14,32 @@
       <ion-icon class="scanner-icon" name="md-qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
   </ion-list>
-  <div *ngIf="contactsList">
+  <ion-card *ngIf="contactsList">
+    <ion-item>
+      <span translate>Contacts</span>
+    </ion-item>
     <ion-list>
-      <ion-label>Contacts</ion-label>
-      <ion-item *ngFor="let item of contactsList" (click)="goToAmount(item)">
-        {{item.name}}
-      </ion-item>
+      <button *ngFor="let item of contactsList" (click)="goToAmount(item)">
+        <ion-icon item-start>
+          <img src="assets/img/contact-placeholder.svg">
+        </ion-icon>
+        <h2>{{item.name}}</h2>
+      </button>
     </ion-list>
-  </div>
-  <div *ngIf="walletList">
+  </ion-card>
+  <ion-card *ngIf="walletList">
+    <ion-item>
+      <span translate>Transfer to Wallet</span>
+    </ion-item>
     <ion-list>
-      <ion-label>Transfer to Wallet</ion-label>
-      <ion-item *ngFor="let item of walletList" (click)="goToAmount(item)">
-        {{item.name}}
-      </ion-item>
+      <button ion-item *ngFor="let item of walletList" (click)="goToAmount(item)">
+        <ion-icon item-start>
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+        </ion-icon>
+        <h2>{{item.name}}</h2>
+      </button>
     </ion-list>
-  </div>
+  </ion-card>
   <ion-card *ngIf="!hasWallets">
     <ion-card-header>
       <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
