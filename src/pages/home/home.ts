@@ -67,6 +67,6 @@ export class HomePage {
   }
 
   goToWalletDetails(wallet: any) {
-    this.navCtrl.push(WalletDetailsPage, {wallet: wallet});
+    this.navCtrl.push(WalletDetailsPage, {walletId: wallet.credentials.walletId});
   }
 }

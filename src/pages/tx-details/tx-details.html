@@ -30,7 +30,7 @@
       </ion-avatar>
       <h2 translate>To</h2>
       <p *ngIf="tx.action != 'sent'">{{wallet.name || '...'}}</p>
-      <p *ngIf="tx.action == 'sent'">{{destinationAddress || '...'}}</p>
+      <p *ngIf="tx.action == 'sent'">{{tx.addressTo || '...'}}</p>
     </ion-item>
 
     <ion-item *ngIf="tx.action == 'sent'">

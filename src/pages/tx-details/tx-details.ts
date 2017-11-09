@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { NavParams } from 'ionic-angular';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
+import { ProfileProvider } from '../../providers/profile/profile';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 
 @Component({
@@ -10,36 +11,31 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 })
 export class TxDetailsPage {
   public title: string;
+  public wallet: any;
   public tx: any;
-  public destinationAddress: string;
-
-  private wallet: any;
   
   constructor(
     private navParams: NavParams,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
+    private profileProvider: ProfileProvider,
     private externalLinkProvider: ExternalLinkProvider,
   ) {
-    this.wallet = this.navParams.data.wallet;
-    this.tx = this.navParams.data.tx;
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.tx = {};
   }
 
   ionViewDidEnter() {
-    if (this.tx.action == 'sent') this.title = 'Sent Funds';
-    if (this.tx.action == 'received') this.title = 'Received Funds';
-    if (this.tx.action == 'moved') this.title = 'Moved Funds';
+    const txid = this.navParams.data.txid;
 
-    this.walletProvider.getTx(this.wallet, this.tx.txid).then((tx) => {
-      this.updateTxParams(tx);
+    this.walletProvider.getTx(this.wallet, txid).then((tx) => {
+      this.tx = tx;
+      if (this.tx.action == 'sent') this.title = 'Sent Funds';
+      if (this.tx.action == 'received') this.title = 'Received Funds';
+      if (this.tx.action == 'moved') this.title = 'Moved Funds';
     }).catch((err) => {
       console.log('ERROR', err);
     });
-  }
-
-  private updateTxParams(tx: any) {
-    this.tx = tx;
-    this.destinationAddress = tx.addressTo;
   }
 
   addMemo() {
@@ -47,7 +43,8 @@ export class TxDetailsPage {
   }
 
   viewOnBlockchain() {
-    const url = 'https://insight.bitpay.com/tx/' + this.tx.txid;
+    const prefix = this.wallet.coin === 'bch' ? 'bch-' : this.wallet.network === 'testnet' ? 'test-' : '';
+    const url = 'https://' + prefix + 'insight.bitpay.com/tx/' + this.tx.txid;
     this.externalLinkProvider.open(url);
   }
 }

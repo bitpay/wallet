@@ -10,7 +10,7 @@ export class ToUnitPipe implements PipeTransform {
     private configProvider: ConfigProvider,
     private txFormatProvider: TxFormatProvider
   ) {
-    this.unitCode = this.configProvider.get()['wallet']['settings'].unitCode;
+    this.unitCode = this.configProvider.get().wallet.settings.unitCode;
   }
   transform(value: string, satoshis: number): any {
     return this.txFormatProvider.formatAmountStr(this.unitCode, satoshis);
