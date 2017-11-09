@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { WalletProvider } from '../../providers/wallet/wallet';
-import { ConfigProvider } from '../../providers/config/config';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 
 @Component({
@@ -10,17 +9,14 @@ import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 })
 export class WalletDetailsPage {
   public wallet: any;
-  public unitCode: string;
   public alternativeBalanceStr: string;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private walletProvider: WalletProvider,
-    private configProvider: ConfigProvider,
   ) {
     this.wallet = this.navParams.data.wallet;
-    this.unitCode = this.configProvider.get()['wallet']['settings'].unitCode;
   }
   
   ionViewDidEnter() {
@@ -32,7 +28,7 @@ export class WalletDetailsPage {
   }
   
   goToTxDetails(tx: any) {
-    this.navCtrl.push(TxDetailsPage, {tx: tx});
+    this.navCtrl.push(TxDetailsPage, {wallet: this.wallet, tx: tx});
   }
   
   getTxHistory(force?: boolean) {

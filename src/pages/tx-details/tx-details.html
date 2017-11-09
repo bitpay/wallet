@@ -21,7 +21,7 @@
       </div>
 
       <div class="amount-str">{{amountStr | toUnit : tx.amount}}</div>
-      <div class="amount-alt-str">{{fiatAmountStr | toFiat : tx.amount}}</div>
+      <div class="amount-alt-str">{{tx.alternativeAmountStr || '...'}}</div>
     </ion-item>
 
     <ion-item>
@@ -29,15 +29,16 @@
         <img src="assets/img/icon-wallet.svg" class="icon-wallet">
       </ion-avatar>
       <h2 translate>To</h2>
-      <p>{{destinationAddress || '...address to send...'}}</p>
+      <p *ngIf="tx.action != 'sent'">{{wallet.name || '...'}}</p>
+      <p *ngIf="tx.action == 'sent'">{{destinationAddress || '...'}}</p>
     </ion-item>
 
-    <ion-item *ngIf="tx.action != 'received'">
+    <ion-item *ngIf="tx.action == 'sent'">
       <ion-avatar item-start>
         <img src="assets/img/icon-wallet.svg" class="icon-wallet">
       </ion-avatar>
       <h2 translate>From</h2>
-      <p>{{destinationAddress || '...address from was sent...'}}</p>
+      <p>{{wallet.name || '...'}}</p>
     </ion-item>
 
     <ion-item>
@@ -54,13 +55,15 @@
 
     <button ion-item (click)="addMemo()" *ngIf="tx.action != 'received'">
       <ion-label>{{'Fee' | translate}}</ion-label>
-      <span>{{tx.message}}</span>
+      <ion-note item-end>
+        {{tx.feeStr}} - {{fiatFee | toFiat: tx.fees || '...'}}
+      </ion-note>
     </button>
 
     <ion-item>
       <ion-label>{{'Confirmations' | translate}}</ion-label>
       <ion-note item-end>
-        {{tx.Confirmations || 'Unconfirmed' | translate}}
+        {{(tx.safeConfirmed || tx.Confirmations) || 'Unconfirmed' | translate}}
       </ion-note>
     </ion-item>
   </ion-list>
