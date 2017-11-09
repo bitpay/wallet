@@ -20,6 +20,6 @@ var COIN_CONFIG = {
     },
     yng: {
         bwsurl: 'http://192.168.0.12:3232/bws/api',
-        insight: 'http://192.168.0.12:23080/insight-yng'
+        insight: 'http://192.168.0.12:23080'
     },
 }

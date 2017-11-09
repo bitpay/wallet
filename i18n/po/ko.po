@@ -315,7 +315,7 @@ msgstr "백업이 필요함"
 
 #: src/js/controllers/lockSetup.js:87
 msgid "Backup all livenet wallets before using this function"
-msgstr ""
+msgstr "이 기능을 사용하기 전에 모든 지갑들을 백업하세요"
 
 #: www/views/preferences.html:36
 #: www/views/tab-settings.html:125
@@ -747,11 +747,11 @@ msgstr "거래내역을 가져올수 없습니다"
 #: src/js/services/profileService.js:649
 #: src/js/services/profileService.js:673
 msgid "Could not import"
-msgstr "가려올수 없습니다"
+msgstr "가져올 수 없습니다"
 
 #: src/js/services/profileService.js:583
 msgid "Could not import. Check input file and spending password"
-msgstr ""
+msgstr "가져올 수 없습니다. 입력 파일 및 암호를 확인하십시오"
 
 #: src/js/services/profileService.js:456
 msgid "Could not join wallet"
@@ -1196,7 +1196,7 @@ msgstr "가족여행 자금"
 
 #: www/views/tx-details.html:81
 msgid "Fee"
-msgstr "수주료"
+msgstr "수수료"
 
 #: www/views/modals/chooseFeeLevel.html:75
 msgid "Fee level"
@@ -1618,7 +1618,7 @@ msgstr ""
 
 #: www/views/backup.html:47
 msgid "Is this correct?"
-msgstr "내역이 옳바릅니까?"
+msgstr "입력하신 내역에 맞습니까?"
 
 #: www/views/onboarding/collectEmail.html:22
 msgid "Is this email address correct?"
@@ -2892,23 +2892,23 @@ msgstr "가져오기 위해서 복구 단어는 암호가 필요할수 있습니
 
 #: src/js/services/bwcError.js:56
 msgid "The request could not be understood by the server"
-msgstr ""
+msgstr "요청을 서버에서 이해할 수 없습니다"
 
 #: www/views/addresses.html:52
 msgid "The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated."
-msgstr ""
+msgstr "자금이 없는 20 개의 주소가 생성되면 복원 프로세스가 중지됩니다. 더 많은 주소를 안전하게 생성하려면 이미 생성 된 사용되지 않은 주소 중 하나에 지불하십시오."
 
 #: src/js/services/bwcError.js:98
 msgid "The spend proposal is not pending"
-msgstr ""
+msgstr "전송된 제안이 보류중이 아닙니다"
 
 #: www/views/modals/wallet-balance.html:36
 msgid "The total amount of bitcoin stored in this wallet."
-msgstr ""
+msgstr "이 지갑에 저장된 코인의 수량"
 
 #: www/views/preferencesHistory.html:27
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
-msgstr ""
+msgstr "트랜잭션 내역과 새로운 모든 들어오는 트랜잭션이 앱에 캐시됩니다.이 기능은 이를 정리하고 서버에서 다시 동기화합니다"
 
 #: www/views/tab-import-phrase.html:6
 msgid "The wallet service URL"
@@ -2927,7 +2927,7 @@ msgstr ""
 #: src/js/controllers/feedback/send.js:61
 #: src/js/controllers/feedback/send.js:65
 msgid "There's obviously something we're doing wrong."
-msgstr ""
+msgstr "분명히 우리가 잘못하고 있는 것이 있습니다."
 
 #: src/js/controllers/feedback/rateCard.js:38
 msgid "This app is fantastic!"
@@ -2953,16 +2953,16 @@ msgstr "이 복구 문장은 암호로 부터 생성되었습니다. 이 지갑�
 
 #: www/views/tx-details.html:93
 msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
-msgstr ""
+msgstr "이 거래 금액은 현재의 코인 네트워크 수수료에 비해 너무 적습니다.이 금액을 사용하려면 자금에 해당하는 네트워크 수수료가 필요합니다."
 
 #: www/views/tx-details.html:89
 msgid "This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender"
-msgstr ""
+msgstr "이 거래는 확인하는 데 오랜 시간이 걸리거나 발신자가 설정 한 낮은 수수료로 인해 삭제 될 수 있습니다."
 
 #: www/views/walletDetails.html:109
 #: www/views/walletDetails.html:29
 msgid "This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information."
-msgstr ""
+msgstr "이 지갑은 저희의 Bitcore Wallet Service (BWS)에 등록되어 있지 않습니다. 개인의 정로로 다시 생성할수 있습니다."
 
 #: www/views/modals/txp-details.html:138
 #: www/views/tx-details.html:123
