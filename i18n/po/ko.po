@@ -1565,37 +1565,37 @@ msgstr "잘못된 네트웍 주소입니다."
 #: src/js/controllers/confirm.js:285
 #: src/js/services/bwcError.js:44
 msgid "Insufficient funds"
-msgstr ""
+msgstr "자금이 부족합니다"
 
 #: src/js/controllers/topup.js:165
 #: src/js/controllers/topup.js:177
 #: src/js/services/bwcError.js:71
 msgid "Insufficient funds for fee"
-msgstr ""
+msgstr "수수료 지불을 위한 자금이 부족합니다"
 
 #: www/views/includes/walletHistory.html:49
 msgid "Invalid"
-msgstr ""
+msgstr "유효하지 않음"
 
 #: src/js/controllers/buyAmazon.js:137
 #: src/js/controllers/buyMercadoLibre.js:137
 #: src/js/controllers/topup.js:115
 msgid "Invalid URL"
-msgstr ""
+msgstr "유효하지 않은 URL"
 
 #: src/js/controllers/create.js:186
 #: src/js/controllers/import.js:345
 #: src/js/controllers/join.js:151
 msgid "Invalid account number"
-msgstr ""
+msgstr "유효하지 않은 계정 번호"
 
 #: src/js/services/bwcError.js:119
 msgid "Invalid address"
-msgstr ""
+msgstr "유효하지 않은 주소"
 
 #: src/js/controllers/tabsController.js:7
 msgid "Invalid data"
-msgstr ""
+msgstr "유효하지 않은 자료"
 
 #: src/js/controllers/create.js:161
 #: src/js/controllers/import.js:266
@@ -1626,11 +1626,11 @@ msgstr "아래 이메일 주소가 맞습니까?"
 
 #: www/views/addresses.html:25
 msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
-msgstr ""
+msgstr "주소 재사용을 피하는 것이 좋습니다. 이것은 개인 정보를 보호하고 양자 컴퓨터에 의한 가상 공격으로부터 비트 동전을 보호합니다."
 
 #: src/js/controllers/backup.js:76
 msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
-msgstr ""
+msgstr "백업 구문을 올바르게 작성해야합니다. 지갑에 문제가 발생하면 돈을 회수하기 위해이 백업이 필요합니다. 백업을 검토하고 다시 시도하십시오."
 
 #: www/views/join.html:151
 msgid "Join"
@@ -1655,7 +1655,7 @@ msgstr ""
 
 #: src/js/services/bwcError.js:116
 msgid "Key already associated with an existing wallet"
-msgstr ""
+msgstr "기존 지갑과 이미 연결된 키"
 
 #: www/views/preferencesLanguage.html:4
 #: www/views/tab-settings.html:68
@@ -1703,7 +1703,7 @@ msgstr "잠김"
 
 #: src/js/services/bwcError.js:86
 msgid "Locktime in effect. Please wait to create a new spend proposal"
-msgstr ""
+msgstr "잠김. 잠깐만 기다려주세요. 새로운 제안서를 만들 때까지 기다려주십시오."
 
 #: src/js/services/bwcError.js:89
 msgid "Locktime in effect. Please wait to remove this spend proposal"
@@ -1726,7 +1726,7 @@ msgid "Low fees"
 msgstr "적은 수수료"
 
 #: www/views/onboarding/tour.html:38
-msgid "Makes sense"
+msgid "Makes sense무"
 msgstr ""
 
 #: src/js/controllers/modals/search.js:61
@@ -1740,7 +1740,7 @@ msgstr "나"
 
 #: src/js/controllers/feedback/rateCard.js:32
 msgid "Meh - it's alright"
-msgstr ""
+msgstr "괜찮습니다"
 
 #: src/js/controllers/tx-details.js:165
 #: www/views/modals/paypro.html:48
@@ -1773,7 +1773,7 @@ msgstr "잘못된 인자"
 
 #: src/js/services/bwcError.js:32
 msgid "Missing private keys to sign"
-msgstr "서명하기에 잘못된 개인키"
+msgstr "서명 할 개인 키가 없습니다"
 
 #: www/views/preferences.html:61
 #: www/views/preferencesAdvanced.html:3
