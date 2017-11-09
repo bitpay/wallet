@@ -6,7 +6,7 @@ page-confirm {
     padding: 1rem 1rem 1rem 3rem;
   }
   span.label {
-    color: color($colors, labels);
+    color: color($global-colors, labels);
     margin-bottom: 0.5rem;
   }
   .sending-label {
@@ -29,7 +29,7 @@ page-confirm {
     }
     .alternative {
       margin-top: 1rem;
-      color: color($colors, light-grey);
+      color: color($global-colors, light-grey);
     }
   }
 
@@ -47,7 +47,7 @@ page-confirm {
         width: 35px !important;
         background-color: color($colors, primary);
         &.disabled {
-          background-color: color($colors, light-grey);
+          background-color: color($global-colors, light-grey);
         }
       }
       .icon-bitcoin {

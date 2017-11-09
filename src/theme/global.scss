@@ -2,6 +2,11 @@
 // Position
 // --------------------------------------------------
 
+$global-colors: (
+  light-grey: #9B9B9B,
+  labels:     #6C6C6E,
+);
+
 .bottom-absolute {
   width: 100%;
   position: absolute;
