@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'Add Contact' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <form [formGroup]="addressBookAdd">
+    <ion-list>
+
+      <ion-item>
+        <ion-label stacked>{{ 'Name' | translate }}</ion-label>
+        <ion-input formControlName="name" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>{{ 'Email' | translate }}</ion-label>
+        <ion-input formControlName="email" type="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>{{ 'Bitcoin Address' | translate }}</ion-label>
+        <ion-input formControlName="address" type="text" address-validator></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <button ion-button block (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">{{ 'Save' | translate }}</button>
+  </form>
+
+</ion-content>

@@ -8,6 +8,7 @@ import { AltCurrencyPage } from './alt-currency/alt-currency';
 import { LockPage } from './lock/lock';
 import { AboutPage } from './about/about';
 import { AdvancedPage } from './advanced/advanced';
+import { AddressbookPage} from '../addressbook/addressbook';
 
 @Component({
   selector: 'page-settings',
@@ -57,6 +58,10 @@ export class SettingsPage {
 
   openLockPage() {
     this.navCtrl.push(LockPage);
+  }
+
+  openAddressBookPage() {
+    this.navCtrl.push(AddressbookPage);
   }
 
 }

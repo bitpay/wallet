@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ contact.name }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card>
+    <ion-card-header>
+      {{ contact.name }}
+    </ion-card-header>
+    <ion-card-content text-wrap>
+      {{ contact.address }}
+    </ion-card-content>
+  </ion-card>
+
+  <button ion-button clear color="danger" (click)="remove()">Remove</button>
+
+</ion-content>
