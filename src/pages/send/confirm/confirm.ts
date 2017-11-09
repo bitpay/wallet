@@ -33,6 +33,7 @@ export class ConfirmPage {
   public toAddress: string;
   public amount: string;
   public coin: string;
+  public recipientType: string;
 
   public countDown = null;
   public CONFIRM_LIMIT_USD: number = 20;
@@ -50,6 +51,7 @@ export class ConfirmPage {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public sendStatus: string;
+  public showFee: boolean;
 
   // Config Related values
   public config: any;
@@ -91,6 +93,7 @@ export class ConfirmPage {
     this.unitDecimals = this.walletConfig.settings.unitDecimals;
     this.satToUnit = 1 / this.unitToSatoshi;
     this.configFeeLevel = this.walletConfig.settings.feeLevel ? this.walletConfig.settings.feeLevel : 'normal';
+    this.showFee = false;
   }
 
   ionViewDidLoad() {
@@ -99,6 +102,7 @@ export class ConfirmPage {
     this.toAddress = this.navParams.data.toAddress;
     this.amount = this.navParams.data.amount;
     this.coin = this.navParams.data.coin;
+    this.recipientType = this.navParams.data.recipientType;
   }
 
   ionViewDidEnter() {
@@ -243,8 +247,6 @@ export class ConfirmPage {
   /* sets a wallet on the UI, creates a TXPs for that wallet */
 
   private setWallet(wallet: any, tx: any): void {
-    console.log("&&&& wallet", wallet);
-    console.log("&&&& tx", tx);
     this.wallet = wallet;
 
     // If select another wallet
@@ -389,7 +391,9 @@ export class ConfirmPage {
             txp.feeToHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
 
             tx.txp[wallet.id] = txp;
+            this.tx = tx;
             this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+            this.showFee = true;
             return resolve();
           }).catch((err: any) => {
             return reject(err);
@@ -485,7 +489,7 @@ export class ConfirmPage {
           txp.feePerKb = tx.feeRate;
         } else txp.feeLevel = tx.feeLevel;
       }
-      txp.feeLevel = 'normal';
+
       txp.message = tx.description;
 
       if (tx.paypro) {
@@ -513,7 +517,9 @@ export class ConfirmPage {
   }
 
   public onWalletSelect(wallet: any): void {
+    this.showFee = false;
     this.setWallet(wallet, this.tx);
+    this.walletSelector = false;
   }
 
   public showDescriptionPopup(tx) {

@@ -1,3 +1,64 @@
 page-confirm {
+  .item-md {
+    padding: 0rem;
+  }
+  ion-label {
+    padding: 1rem 1rem 1rem 3rem;
+  }
+  span.label {
+    color: color($global-colors, labels);
+    margin-bottom: 0.5rem;
+  }
+  .sending-label {
+    display: flex;
+    align-items: center;
+    .sending-img {
+      margin-right: 2rem;
+    }
+    span {
+      font-size: 1.8rem;
+    }
+  }
+  .amount-label {
+    padding-top: 2rem;
+    .amount {
+      font-size: 3.5rem;
+      .unit {
+        font-weight: 100;
+      }
+    }
+    .alternative {
+      margin-top: 1rem;
+      color: color($global-colors, light-grey);
+    }
+  }
 
+  @mixin row-flex {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .container-to, .container-from {
+    .wallet, .payment-proposal-to {
+      @include row-flex;
+      .icon-wallet {
+        margin-right: 1rem;
+        width: 35px !important;
+        background-color: color($colors, primary);
+        &.disabled {
+          background-color: color($global-colors, light-grey);
+        }
+      }
+      .icon-bitcoin {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  .wallet-selector {
+    ion-item {
+      cursor: pointer;
+    }
+  }
 }
