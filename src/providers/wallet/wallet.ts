@@ -392,7 +392,7 @@ export class WalletProvider {
   }
 
   private updateTxHistory_(wallet: any, txsFromLocal: any, txsFromServer?: any) {
-    let array = lodash.compact(txsFromLocal.concat(lodash.map(txsFromServer, 'res')));
+    let array = txsFromLocal.concat(txsFromServer.res);
     let newHistory = lodash.uniqBy(array, (x: any) => {
       return x.txid;
     });
