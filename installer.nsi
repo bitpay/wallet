@@ -110,6 +110,8 @@ section "uninstall"
 
 	# Remove files
   delete $INSTDIR\*
+  delete $INSTDIR\locales\*
+  delete $INSTDIR\pnacl\*
   rmDir $INSTDIR\locales
   rmDir $INSTDIR\pnacl
 
