@@ -8,18 +8,35 @@ var DEFAULT_CONFIG = {
 var COIN_CONFIG = {
     btc: {
         bwsurl: 'https://192.168.0.12:3232/bws/api',
-        insight: 'https://insight.bitpay.com'
+        insight: 'https://insight.bitpay.com',
+        network: 'livenet',
+        coin: 'btc',
+        displayName: "BTC",
+        coinName: "Bitcoin"
     },
     ltc: {
         bwsurl: 'http://192.168.0.12:3232/bws/api',
-        insight: 'http://192.168.0.12:3001/insight'
+        insight: 'http://192.168.0.12:3001/insight',
+        network: 'litecoin',
+        coin: 'ltc',
+        displayName: "LTC",
+        coinName: "Litecoin"
     },
     ven: {
         bwsurl: 'http://192.168.0.12:3232/bws/api',
-        insight: 'http://192.168.0.12:3001'
+        insight: 'http://192.168.0.12:3001',
+        network: 'ventas',
+        coin: 'ven',
+        displayName: "VEN",
+        coinName: "VENTAS"
     },
     yng: {
         bwsurl: 'http://192.168.0.12:3232/bws/api',
-        insight: 'http://192.168.0.12:23080'
-    },
+        insight: 'http://192.168.0.12:23080',
+        network: 'yangcoin',
+        coin: 'yng',
+        displayName: "YNG",
+        coinName: "Yangcoin",
+        showRate: false
+    }
 }
