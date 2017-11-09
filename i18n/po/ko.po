@@ -2841,15 +2841,15 @@ msgstr ""
 
 #: www/views/modals/wallet-balance.html:55
 msgid "The amount of bitcoin immediately spendable from this wallet."
-msgstr ""
+msgstr "이 지갑에서 즉시 사용할 수 있는 코인의 양."
 
 #: www/views/modals/wallet-balance.html:93
 msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr ""
+msgstr "보류중인 거래 제안에서 입력으로 할당되어 지갑에 저장된 코인의 양. 이 금액은 지갑과 관련된 미사용 트랜잭션 출력을 사용하여 결정되며 보류중인 트랜잭션 제안과 관련되어 실제 금액보다 많을 수 있습니다."
 
 #: www/views/modals/wallet-balance.html:74
 msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
-msgstr ""
+msgstr "블록 체인 확인이 1 개 미만인이 지갑에 저장된 코인의 양입니다"
 
 #: www/views/tab-import-phrase.html:5
 msgid "The derivation path"
@@ -2861,11 +2861,11 @@ msgstr ""
 
 #: www/views/preferencesFee.html:12
 msgid "The higher the fee, the greater the incentive a miner has to include that transaction in a block. Current fees are determined based on network load and the selected policy."
-msgstr ""
+msgstr "수수료가 높을수록 채굴자가 거래를 하나의 블록에 포함시켜야한다는 동기가 커집니다. 현재 수수료는 네트워크 부하 및 선택한 정책에 따라 결정됩니다"
 
 #: www/views/addresses.html:51
 msgid "The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab."
-msgstr ""
+msgstr "연속적인 최대 사용되지 않은 주소 수 (20)에 도달했습니다. 사용하지 않는 주소 중 하나가 결제를 받으면 새 주소가 생성되어 수신 탭에 표시됩니다."
 
 #: src/js/controllers/onboarding/terms.js:21
 msgid "The official English Terms of Service are available on the BitPay website."
@@ -2922,7 +2922,7 @@ msgstr "새로운 버전을 사용할수 있습니다"
 #: src/js/controllers/import.js:254
 #: src/js/controllers/import.js:335
 msgid "There is an error in the form"
-msgstr ""
+msgstr "양식에 오류가 있습니다."
 
 #: src/js/controllers/feedback/send.js:61
 #: src/js/controllers/feedback/send.js:65
