@@ -32,7 +32,7 @@ export class WalletDetailsPage {
     if (force) this.wallet.completeHistory = [];
     
     this.walletProvider.getTxHistory_(this.wallet, {force: force}).then((txh) => {
-      this.wallet.completeHistory = this.wallet.completeHistory = txh;
+      this.wallet.completeHistory = txh;
     }).catch((err) => {
       console.log(err);
     });

@@ -392,14 +392,13 @@ export class WalletProvider {
   }
 
   private updateTxHistory_(wallet: any, txsFromLocal: any, txsFromServer?: any) {
-    let array = lodash.compact(txsFromLocal.concat(txsFromServer));
+    let array = lodash.compact(txsFromLocal.concat(lodash.map(txsFromServer, 'res')));
     let newHistory = lodash.uniqBy(array, (x: any) => {
       return x.txid;
     });
     wallet.completeHistory = newHistory;
     wallet.completeHistory.isValid = true;
-
-    let historyToSave = lodash.compact(lodash.flatten(lodash.map(newHistory, 'res')));
+    let historyToSave = lodash.compact(lodash.flatten(newHistory));
 
     this.persistenceProvider.setTxHistory(wallet.credentials.walletId, JSON.stringify(historyToSave)).then(() => {
       this.logger.debug('Tx History saved for: ' + wallet.credentials.walletId);
