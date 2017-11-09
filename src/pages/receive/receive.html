@@ -33,7 +33,7 @@
     </div>
     <button ion-button (click)="goCopayers()" translate>Open wallet</button>
   </div>
-  <div *ngIf="wallets" class="wallets-container" (click)="showWallets()">
+  <div *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()">
     <img src="assets/img/icon-wallet.svg" class="icon-wallet">
     <div class="wallet-text">
       <div>{{wallet.name}}</div>
