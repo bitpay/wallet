@@ -44,12 +44,12 @@ export class FeeProvider {
         let feeLevelRate: any;
 
         if (response.fromCache) {
-          feeLevelRate = _.find(response.levels[network], {
-            level: feeLevel
+          feeLevelRate = _.find(response.levels[network], function (o) {
+            return o.level == feeLevel;
           });
         } else {
-          feeLevelRate = _.find(response[network], {
-            level: feeLevel
+          feeLevelRate = _.find(response[network], function (o) {
+            return o.level == feeLevel;
           });
         }
         if (!feeLevelRate || !feeLevelRate.feePerKb) {

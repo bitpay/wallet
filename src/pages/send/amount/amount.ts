@@ -148,8 +148,8 @@ export class AmountPage {
       // Always return to BTC... TODO?
       this.altUnitIndex = 0;
     } else {
-      this.altUnitIndex = _.findIndex(this.availableUnits, {
-        isFiat: true
+      this.altUnitIndex = _.findIndex(this.availableUnits, function(o) {
+        return o.isFiat == true;
       });
     }
 
