@@ -94,9 +94,17 @@ import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notificat
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 
+/* Directives */
+
+import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
 }
+
+let declarations: any = [
+  CopyToClipboard
+];
 
 let pages: any = [
   AddPage,
@@ -187,7 +195,7 @@ let providers: any = [
 ];
 
 export function declarationsComponents() {
-  return pages;
+  return pages.concat(declarations);
 }
 
 export function entryComponents() {
