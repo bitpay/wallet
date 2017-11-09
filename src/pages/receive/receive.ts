@@ -83,7 +83,7 @@ export class ReceivePage {
   }
 
   public requestSpecificAmount(): void {
-    this.navCtrl.push(AmountPage, { address: this.address, fromSend: false });
+    this.navCtrl.push(AmountPage, { toAddress: this.address, fromSend: false });
   }
 
   private setAddress(newAddr?: boolean): void {

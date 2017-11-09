@@ -330,7 +330,11 @@ export class AmountPage {
         coin: coin,
         useSendMax: this.useSendMax
       }
-      this.navCtrl.push(ConfirmPage, data);
+      if (this.navParams.data.fromSend) {
+        this.navCtrl.push(ConfirmPage, data);
+      } else {
+        this.navCtrl.push(CustomAmountPage, data);
+      }
     }
   }
 

@@ -19,7 +19,7 @@ export class CustomAmountPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomAmountPage');
-    this.address = this.navParams.data.address;
+    this.address = this.navParams.data.toAddress;
     this.amount = this.navParams.data.amount;
     this.updateQrAddress();
   }
