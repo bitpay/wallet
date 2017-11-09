@@ -313,7 +313,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           });
 
           var per = (txp.fee / (txp.amount + txp.fee) * 100);
-          txp.feeRatePerStr = per.toFixed(2) + '%';
+          txp.feeRatePerStr = per.toFixed(3) + '%';
           txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
 
           tx.txp[wallet.id] = txp;
