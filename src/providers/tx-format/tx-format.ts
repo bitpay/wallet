@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
 import { BwcProvider } from '../bwc/bwc';
 import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
@@ -14,7 +12,6 @@ export class TxFormatProvider {
   public pendingTxProposalsCountForUs: number
 
   constructor(
-    public http: Http,
     private bwc: BwcProvider,
     private rate: RateProvider,
     private config: ConfigProvider,

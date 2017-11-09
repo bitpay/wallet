@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
 import * as _ from "lodash";
 
 @Injectable()
@@ -8,7 +6,7 @@ export class Filter {
 
   public formats: any;
 
-  constructor(public http: Http) {
+  constructor() {
     console.log('Hello Filter Provider');
     this.formats = {
       CURRENCY_SYM: "$",

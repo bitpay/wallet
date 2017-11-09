@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
-import { HttpModule, Http } from '@angular/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 /* Native modules */
@@ -94,7 +94,7 @@ import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notificat
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 
-export function createTranslateLoader(http: Http) {
+export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
 }
 
@@ -206,7 +206,7 @@ export function providersComponents() {
       tabsPlacement: 'bottom'
     }),
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     NgLoggerModule.forRoot(Level.LOG),
     MomentModule,
     QRCodeModule,
@@ -214,7 +214,7 @@ export function providersComponents() {
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [Http]
+        deps: [HttpClient]
       }
     }),
   ],

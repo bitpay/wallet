@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
+import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -17,7 +15,7 @@ export class RateProvider {
   private rateServiceUrl = 'https://bitpay.com/api/rates';
   private bchRateServiceUrl = 'https://api.kraken.com/0/public/Ticker?pair=BCHUSD,BCHEUR';
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     console.log('Hello RateProvider Provider');
     this._rates = {};
     this._alternatives = [];
@@ -65,17 +63,19 @@ export class RateProvider {
   }
 
   getBTC(): Promise<any> {
-    return this.http.get(this.rateServiceUrl)
-      .map((response) => response.json())
-      .toPromise()
-      .catch((error) => console.log("Error", error));
+    return new Promise((resolve, reject) => {
+      this.http.get(this.rateServiceUrl).subscribe((data) => {
+        resolve(data);
+      });
+    });
   }
 
   getBCH(): Promise<any> {
-    return this.http.get(this.bchRateServiceUrl)
-      .map((response) => response.json())
-      .toPromise()
-      .catch((error) => console.log("Error", error));
+    return new Promise((resolve, reject) => {
+      this.http.get(this.bchRateServiceUrl).subscribe((data) => {
+        resolve(data);
+      });
+    });
   }
 
   getRate(code, chain?) {
