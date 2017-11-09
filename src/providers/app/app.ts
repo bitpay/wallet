@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
-import 'rxjs/add/operator/map';
 
 import { LanguageProvider } from '../../providers/language/language';
 import { ConfigProvider } from '../../providers/config/config';
@@ -41,11 +40,11 @@ interface App {
 
 @Injectable()
 export class AppProvider {
-  public info: App;
+  public info: any;
   private jsonPath: string = 'assets/appConfig.json';
 
   constructor(
-    public http: Http,
+    public http: HttpClient,
     private logger: Logger,
     private language: LanguageProvider,
     private config: ConfigProvider,
@@ -71,7 +70,6 @@ export class AppProvider {
   }
 
   private getInfo() {
-    return this.http.get(this.jsonPath)
-      .map((res: Response) => res.json());
+    return this.http.get(this.jsonPath);
   }
 }

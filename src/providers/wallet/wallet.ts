@@ -637,8 +637,8 @@ export class WalletProvider {
 
   // Approx utxo amount, from which the uxto is economically redeemable
   private getMinFee(wallet: any, feeLevels: any, nbOutputs?: number): number {
-    let level: any = lodash.find(feeLevels[wallet.network], {
-      level: 'normal',
+    let level: any = lodash.find(feeLevels[wallet.network], function (o) {
+      return o.level == 'normal';
     });
     let lowLevelRate = parseInt((level.feePerKb / 1000).toFixed(0));
 

@@ -1,5 +1,5 @@
 import { TestBed, inject, async } from '@angular/core/testing';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { AppProvider } from '../../providers/app/app';
 import { ReleaseProvider } from './release';
 
@@ -17,9 +17,9 @@ describe('Release Provider', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ReleaseProvider, 
-        { provide: Http },
-        { provide: AppProvider, useClass: AppProviderMock },  
+        ReleaseProvider,
+        { provide: HttpClient },
+        { provide: AppProvider, useClass: AppProviderMock },
       ]
     });
   });
@@ -34,7 +34,7 @@ describe('Release Provider', () => {
   it('should get successfully the current app version', () => {
     // Should return the AppProviderMock object
     const appVersion = service.getCurrentAppVersion();
-    
+
     expect(appVersion).toBeDefined();
     expect(appVersion).toEqual(currentAppVersion);
   });
@@ -49,20 +49,20 @@ describe('Release Provider', () => {
         expect(version).toEqual(latestAppVersion);
       });
   }));
-    
+
   it('should check unsuccessfully the current app version format', () => {
     const result = service.checkForUpdates(latestAppVersion, 'V..3.3.3');
-    
+
     expect(result.updateAvailable).toBeNull;
     expect(result.availabeVersion).toBeNull;
     expect(result.error).toBeDefined();
     expect(result.error).toMatch('Cannot');
     expect(result.error).toMatch('version tag');
   });
-  
+
   it('should check unsuccessfully the latest app version format', () => {
     const result = service.checkForUpdates('V..3.3.3', currentAppVersion);
-    
+
     expect(result.updateAvailable).toBeNull;
     expect(result.availabeVersion).toBeNull;
     expect(result.error).toBeDefined();
@@ -77,10 +77,10 @@ describe('Release Provider', () => {
     expect(result.updateAvailable).toBeNull;
     expect(result.availabeVersion).toBeNull;
   });
-  
+
   it('should be a new version available', () => {
     const result = service.checkForUpdates(latestAppVersion, currentAppVersion);
-    
+
     expect(result.error).toBeNull;
     expect(result.updateAvailable).toBeTruthy;
     expect(result.availabeVersion).toEqual(latestAppVersion);

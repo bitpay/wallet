@@ -1,5 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ConfigProvider } from '../config/config';
 import { WalletProvider } from './wallet';
 import { Logger, Level as LoggerLevel } from '@nsalaun/ng-logger';
@@ -37,7 +37,7 @@ describe('Provider: Wallet Provider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModule],
+      imports: [HttpClientModule],
       providers: [
         WalletProvider,
         { provide: ConfigProvider },

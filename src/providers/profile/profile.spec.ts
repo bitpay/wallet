@@ -1,5 +1,5 @@
 import { TestBed, inject, async } from '@angular/core/testing';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
 import { WalletProvider } from '../wallet/wallet';
 import { ProfileProvider } from './profile';
@@ -36,7 +36,7 @@ describe('Profile Provider', () => {
     TestBed.configureTestingModule({
       providers: [
         ProfileProvider,
-        { provide: Http },
+        { provide: HttpClient },
         { provide: Logger },
         { provide: WalletProvider },
         { provide: PersistenceProvider, useClass: PersistenceProviderMock },

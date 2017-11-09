@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
+import { HttpClient } from '@angular/common/http';
 import { AppProvider } from '../../providers/app/app';
 
 @Injectable()
@@ -9,20 +7,21 @@ export class ReleaseProvider {
   private LATEST_RELEASE_URL: string;
   private appVersion: string;
 
-  constructor(public http: Http, private app: AppProvider) {
+  constructor(public http: HttpClient, private app: AppProvider) {
     this.LATEST_RELEASE_URL = 'https://api.github.com/repos/bitpay/copay/releases/latest';
     this.appVersion = this.app.info.version;
   }
-  
+
   getCurrentAppVersion() {
     return this.appVersion;
   }
 
   getLatestAppVersion(): Promise<any> {
-    return this.http.get(this.LATEST_RELEASE_URL)
-      .map((response) => response.json().tag_name)
-      .toPromise()
-      .catch((error) => (error));
+    return new Promise((resolve, reject) => {
+      this.http.get(this.LATEST_RELEASE_URL).subscribe((data) => {
+        resolve(data['tag_name']);
+      });
+    });
   }
 
   checkForUpdates(latestVersion: string, currentVersion?: string) {
