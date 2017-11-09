@@ -19,9 +19,9 @@
       <span translate>Contacts</span>
     </ion-item>
     <ion-list>
-      <button *ngFor="let item of contactsList" (click)="goToAmount(item)">
+      <button ion-item *ngFor="let item of contactsList" (click)="goToAmount(item)">
         <ion-icon item-start>
-          <img src="assets/img/contact-placeholder.svg">
+          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
         </ion-icon>
         <h2>{{item.name}}</h2>
       </button>
