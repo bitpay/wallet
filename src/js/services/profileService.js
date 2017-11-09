@@ -1,6 +1,10 @@
 'use strict';
 angular.module('copayApp.services')
-    .factory('profileService', function profileServiceFactory($rootScope, $timeout, $filter, $log, $state, sjcl, lodash, storageService, bwcService, configService, gettextCatalog, bwcError, uxLanguage, platformInfo, txFormatService, appConfigService) {
+    .factory('profileService', function profileServiceFactory($rootScope, $timeout,
+        $filter, $log, $state, sjcl, lodash, storageService, bwcService, configService,
+        bitcore,
+        gettextCatalog, bwcError, uxLanguage, platformInfo,
+        txFormatService, appConfigService) {
 
 
         var isChromeApp = platformInfo.isChromeApp;
@@ -559,10 +563,10 @@ angular.module('copayApp.services')
         };
 
         root.importWallet = function(str, opts, cb) {
-
+            console.log(str, opts);
             var walletClient = bwcService.getClient(null, opts);
 
-            $log.debug('Importing Wallet:', opts);
+            $log.info('Importing Wallet:', opts);
 
             try {
                 var c = JSON.parse(str);
@@ -580,6 +584,7 @@ angular.module('copayApp.services')
                     password: opts.password
                 });
             } catch (err) {
+                console.log("err", err);
                 return cb(gettextCatalog.getString('Could not import. Check input file and spending password'));
             }
 
@@ -630,10 +635,13 @@ angular.module('copayApp.services')
 
         root.importMnemonic = function(words, opts, cb) {
             var walletClient = bwcService.getClient(null, opts);
-
-            $log.debug('Importing Wallet Mnemonic');
-
+            if (opts.coin != 'btc') {
+                var network = bitcore.Networks.get(opts.coin, "coin");
+                opts.networkName = network.name;
+            }
+            $log.info('Importing Wallet Mnemonic', opts, words);
             words = root._normalizeMnemonic(words);
+
             walletClient.importFromMnemonic(words, {
                 network: opts.networkName,
                 passphrase: opts.passphrase,

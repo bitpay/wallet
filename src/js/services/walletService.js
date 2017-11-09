@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger,
+    intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup,
+    fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService,
+    bitcore, popupService) {
 
     // Ratio low amount warning (fee/amount) in incoming TX
     var LOW_AMOUNT_RATIO = 0.15;
@@ -1241,8 +1244,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     };
 
     root.getProtocolHandler = function(wallet) {
+        var network = bitcore.Networks.get(wallet.coin);
+        if (network && network.uri) {
+            return network.uri;
+        }
         if (wallet.coin == 'bch') return 'bitcoincash';
-        else return 'bitcoin';
+        else if (wallet.coin == 'btc') return 'bitcoin';
+        else if (network) {
+            return network.name;
+        }
     }
 
 
