@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     var listeners = [];
     var config = configService.getSync();
     var blockexplorerUrl;
-
+    $scope.showRate = false;
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         txId = data.stateParams.txid;
         $scope.title = gettextCatalog.getString('Transaction');
@@ -16,8 +16,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         $scope.isShared = $scope.wallet.credentials.n > 1;
         $scope.txsUnsubscribedForNotifications = config.confirmedTxsNotifications ? !config.confirmedTxsNotifications.enabled : true;
         blockexplorerUrl = COIN_CONFIG[$scope.wallet.coin].insight;
-
-
+        $scope.showRate = COIN_CONFIG[$scope.wallet.coin].showRate;
 
         txConfirmNotification.checkIfEnabled(txId, function(res) {
             $scope.txNotification = {
