@@ -102,7 +102,7 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
 }
 
-let declarations: any = [
+let directives: any = [
   CopyToClipboard
 ];
 
@@ -195,7 +195,7 @@ let providers: any = [
 ];
 
 export function declarationsComponents() {
-  return pages.concat(declarations);
+  return pages.concat(directives);
 }
 
 export function entryComponents() {
