@@ -13,6 +13,7 @@ export class TxDetailsPage {
   public title: string;
   public wallet: any;
   public tx: any;
+  public confirmations: string;
   
   constructor(
     private navParams: NavParams,
@@ -23,6 +24,7 @@ export class TxDetailsPage {
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.tx = {};
+    this.confirmations = null;
   }
 
   ionViewDidEnter() {
@@ -33,8 +35,11 @@ export class TxDetailsPage {
       if (this.tx.action == 'sent') this.title = 'Sent Funds';
       if (this.tx.action == 'received') this.title = 'Received Funds';
       if (this.tx.action == 'moved') this.title = 'Moved Funds';
+
+      if (this.tx.safeConfirmed) this.confirmations = this.tx.safeConfirmed;
+      else if (this.tx.confirmations > 6)  this.confirmations = '6+';
     }).catch((err) => {
-      console.log('ERROR', err);
+      console.log(err);
     });
   }
 

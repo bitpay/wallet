@@ -21,7 +21,7 @@
       </div>
 
       <div class="amount-str">{{amountStr | toUnit : tx.amount}}</div>
-      <div class="amount-alt-str">{{tx.alternativeAmountStr || '...'}}</div>
+      <div class="amount-alt-str">{{tx.alternativeAmountStr || altAmountStr | toFiat : tx.amount}}</div>
     </ion-item>
 
     <ion-item>
@@ -56,14 +56,14 @@
     <button ion-item (click)="addMemo()" *ngIf="tx.action != 'received'">
       <ion-label>{{'Fee' | translate}}</ion-label>
       <ion-note item-end>
-        {{tx.feeStr}} - {{fiatFee | toFiat: tx.fees || '...'}}
+        {{unitFee | toUnit: tx.fees || '...'}} - {{fiatFee | toFiat: tx.fees || '...'}}
       </ion-note>
     </button>
 
     <ion-item>
       <ion-label>{{'Confirmations' | translate}}</ion-label>
       <ion-note item-end>
-        {{(tx.safeConfirmed || tx.Confirmations) || 'Unconfirmed' | translate}}
+        {{confirmations || 'Unconfirmed' | translate}}
       </ion-note>
     </ion-item>
   </ion-list>
