@@ -1,27 +1,62 @@
-<ion-view id="tab-notifications" class="settings" show-tabs>
+<ion-view id="cash-scan" hide-tabs>
   <ion-nav-bar class="bar-royal">
-    <ion-nav-title>{{'Bitcoin Cash Support' | translate}}</ion-nav-title>
+    <ion-nav-title>
+      <span translate>Bitcoin Cash</span>
+    </ion-nav-title>
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar>
 
   <ion-content>
-    <div class="list">
-      <ion-toggle class="has-comment" ng-model="cashSupport.value" toggle-class="toggle-balanced" ng-change="cashSupportChange()">
-        <span class="toggle-label" translate>Support Bitcoin Cash</span>
-      </ion-toggle>
+
+<div class="list card">
+  <div ng-if="!availableWallets[0]">
+    <div class="item">
+      <span class="assertive" translate>No wallets eligible for Bitcoin Cash support</span>
+    </div>
+  </div>
+
+  <div class="item" ng-if="error">
+    <span class="assertive">{{error}}</span>
+  </div>
+
+  <div ng-if="availableWallets[0]">
+    <div class="item heading">
+      <span translate>BTC wallets</span>
     </div>
 
-    <div class="settings-explanation">
-      <div class="settings-description" ng-show="!cashSupport.value">
-          <span translate>Enable Bitcoin Cash wallet creation and operation within the App.</span>
-          <a ng-click="openBitcoinCashWeb()" translate>Learn more</a>
+    <div ng-repeat="wallet in availableWallets track by $index" class="item wallet supported">
+      <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
+      <div class="wallet-content">
+        <div>{{wallet.name || wallet.id}}</div>
+        <div class="balanced">{{wallet.bchBalance  || ('Checking...' | translate)}} </div>
+        <div class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1" translate>{{wallet.m}}-of-{{wallet.n}}</div>
+      </div>
+
+      <div class="duplicate-button">
+        <button ng-click="duplicate(wallet)" class="button button-small button-outline button-primary" translate>Duplicate for BCH</button>
       </div>
     </div>
-    <div class="list" ng-if="cashSupport.value">
-      <div class="item scan-label" ui-sref="tabs.preferencesCash.scan">
-        <span translate>Scan your wallets for Bitcoin Cash</span>
-      </div>
+  </div>
+
+  <div ng-if="nonEligibleWallets[0]">
+    <div class="item item-divider"></div>
+
+    <div class="item heading">
+      <span translate>Non eligible BTC wallets</span>
     </div>
-  </ion-content>
-</ion-view>
+
+    <div ng-repeat="wallet in nonEligibleWallets track by $index" class="item item-sub item-icon-left item-big-icon-left item-button-right wallet">
+      <i class="icon big-icon-svg" ng-include="'views/includes/walletIcon.html'"></i>
+      <div class="text-disabled">{{wallet.name || wallet.id}}</div>
+      <div class="text-disabled">{{wallet.excludeReason}}</div>
+    </div>
+
+    <div class="item">
+      <span class="comment" translate>Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the</span>
+      <a ng-click="openRecoveryToolLink()" translate>recovery tool.</a>
+    </div>
+  </div>
+</div>
+
+</ion-content>

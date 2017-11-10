@@ -30,8 +30,6 @@ angular.module('copayApp.controllers').controller('createController',
       $scope.formData.derivationPath = derivationPathHelper.default;
       $scope.formData.coin = data.stateParams.coin;
 
-      if (config.cashSupport) $scope.enableCash = true;
-
       $scope.setTotalCopayers(tc);
       updateRCSelect(tc);
       resetPasswordFields();

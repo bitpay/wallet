@@ -594,16 +594,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
 
-      .state('tabs.preferencesCash.scan', {
-        url: '/cashScan',
-        views: {
-          'tab-settings@tabs': {
-            controller: 'cashScanController',
-            templateUrl: 'views/cashScan.html'
-          }
-        }
-      })
-
       /*
        *
        * Addressbook
