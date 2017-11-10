@@ -398,6 +398,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return ret;
   };
 
+  var updateOnProgress = {};
+  var progressFn = {};
   var updateLocalTxHistory = function(wallet, opts, cb) {
     var FIRST_LIMIT = 5;
     var LIMIT = 50;
@@ -405,7 +407,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var walletId = wallet.credentials.walletId;
 
     var opts = opts || {};
-    var progressFn = opts.progressFn || function() {};
+    progressFn[walletId] = opts.progressFn || function() {};
     var foundLimitTx = false;
 
 
@@ -428,8 +430,26 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       }
     };
 
+    if (updateOnProgress[wallet.id]) {
+      $log.warn('History update already on progress for: '+ wallet.credentials.walletName);
+
+      if (opts.progressFn) {
+        $log.debug('Rewriting progressFn');
+        progressFn[walletId] = opts.progressFn;
+      }
+      updateOnProgress[wallet.id].push(cb);
+      return; // no callback call yet.
+    }
+
+    updateOnProgress[walletId] = [cb];
+
     getSavedTxs(walletId, function(err, txsFromLocal) {
-      if (err) return cb(err);
+      if (err)  {
+        lodash.each(updateOnProgress[wallet.id], function(x) { 
+          x.apply(self,err);
+        });
+        updateOnProgress[wallet.id] = false;
+      }
 
       fixTxsUnit(txsFromLocal);
 
@@ -438,7 +458,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       var endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
 
       // First update
-      progressFn(txsFromLocal, 0);
+      progressFn[walletId](txsFromLocal, 0);
       wallet.completeHistory = txsFromLocal;
 
       function getNewTxs(newTxs, skip, next) {
@@ -456,7 +476,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           newTxs = newTxs.concat(processNewTxs(wallet, lodash.compact(res)));
 
-          progressFn(newTxs.concat(txsFromLocal), newTxs.length);
+          progressFn[walletId](newTxs.concat(txsFromLocal), newTxs.length);
 
           skip = skip + requestLimit;
 
@@ -489,7 +509,12 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       };
 
       getNewTxs([], 0, function(err, txs) {
-        if (err) return cb(err);
+        if (err)  {
+          lodash.each(updateOnProgress[wallet.id], function(x) { 
+            x.apply(self,err);
+          });
+          updateOnProgress[wallet.id] = false;
+        }
 
         var newHistory = lodash.uniq(lodash.compact(txs.concat(confirmedTxs)), function(x) {
           return x.txid;
@@ -535,6 +560,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
           // <HACK>
           if (foundLimitTx) {
             $log.debug('Tx history read until limitTx: ' + opts.limitTx);
+
+            // in this case, only the orig cb is called.
+            updateOnProgress[wallet.id] = false;
             return cb(null, newHistory);
           }
           // </HACK>
@@ -554,8 +582,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           return storageService.setTxHistory(historyToSave, walletId, function() {
             $log.debug('Tx History saved.');
-
-            return cb();
+            lodash.each(updateOnProgress[wallet.id], function(x) { 
+              x.apply(self);
+            });
+            updateOnProgress[wallet.id] = false;
           });
         });
       });
@@ -636,7 +666,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
 
-    $log.debug('Updating Transaction History');
+    $log.debug('Updating Transaction History: ' + wallet.credentials.walletName);
 
     updateLocalTxHistory(wallet, opts, function(err, txs) {
       if (err) return cb(err);
