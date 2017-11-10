@@ -72,7 +72,7 @@
     padding: 7%;
     margin: 5%;
   }
-  .circle-copay {
+  .circle-navpay {
     @include circle;
   	border: 1px solid $v-accent-color;
   }
@@ -80,7 +80,7 @@
     @include circle;
   	border: 1px solid $v-primary-color;
   }
-  .filled-copay {
+  .filled-navpay {
     background-color: $v-accent-color;
   }
   .filled-bitpay {
