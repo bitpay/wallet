@@ -122,12 +122,8 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
 
   $scope.openBuyLink = function() {
     var url = 'https://navcoin.org/buy-nav';
-    var optIn = true;
-    var title = null;
-    var message = gettextCatalog.getString('Visit Navcoin.org to purchase NAV?');
-    var okText = gettextCatalog.getString('Open');
-    var cancelText = gettextCatalog.getString('Go Back');
-    externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    var optIn = false;
+    externalLinkService.open(url, optIn);
   };
 
   $scope.openScanner = function() {
