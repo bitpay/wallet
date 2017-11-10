@@ -40,7 +40,17 @@ $placeholder-icon-padding: 10px;
   margin: ($content-padding * 2) 14px;
 }
 
-// A somewhat dirty solution to the nav-bar "flashing" during page transitions.
-// Since the old nav-bar is hidden before the new one is shown, this pseudo
-// element fills the space with the proper background color.
+// Fix Status Bar on iOS 11
+.platform-ios.platform-cordova:not(.fullscreen) .bar {
+  height: 64px !important;
+}
+.platform-ios.platform-cordova:not(.fullscreen) .has-header {
+  top: 64px;
+}
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
+  margin-top: 20px !important;
+}
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
+  margin-top: 20px;
+}
 
