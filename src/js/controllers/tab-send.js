@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, $window) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, $window, externalLinkService) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
@@ -118,6 +118,16 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $ionicScrollDelegate.resize();
       $scope.$apply();
     }, 10);
+  };
+
+  $scope.openBuyLink = function() {
+    var url = 'https://navcoin.org/buy-nav';
+    var optIn = true;
+    var title = null;
+    var message = gettextCatalog.getString('Visit Navcoin.org to purchase NAV?');
+    var okText = gettextCatalog.getString('Open');
+    var cancelText = gettextCatalog.getString('Go Back');
+    externalLinkService.open(url, optIn, title, message, okText, cancelText);
   };
 
   $scope.openScanner = function() {
