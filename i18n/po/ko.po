@@ -2126,7 +2126,7 @@ msgstr "결재 전송됨"
 
 #: www/views/modals/txp-details.html:32
 msgid "Payment accepted, but not yet broadcasted"
-msgstr "결재가 승인되었지만 아직 전파되지 않았읏빈다."
+msgstr "결재가 승인되었지만 아직 전파되지 않았습니다."
 
 #: www/views/modals/txp-details.html:40
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
