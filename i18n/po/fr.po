@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2017-10-10 08:58-0400\n"
+"PO-Revision-Date: 2017-11-12 09:11-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -392,7 +392,7 @@ msgstr "Bitcoin est une monnaie."
 
 #: www/views/onboarding/disclaimer.html:15
 msgid "Bitcoin is different &ndash; it cannot be safely held with a bank or web service."
-msgstr "Bitcoin est différent &ndash; il ne peut pas être conservé en toute sécurité avec un service internet ou bancaire."
+msgstr "Les bitcoins sont particuliers &ndash; ils ne peuvent pas être stockés en toute sécurité sur un service internet ou bancaire."
 
 #: www/views/onboarding/tour.html:18
 msgid "Bitcoin is secure,<br>digital money."
@@ -1510,7 +1510,7 @@ msgstr "Si l'option est activée, les portefeuilles vont essayer de dépenser de
 
 #: src/js/controllers/onboarding/backupRequest.js:18
 msgid "If this device is replaced or this app is deleted, neither you nor BitPay can recover your funds without a backup."
-msgstr "Si cet appareil est remplacé ou si cette appli est supprimée, ni vous ni BitPay ne peuvent récupérer vos fonds sans une sauvegarde."
+msgstr "Si cet appareil est remplacé ou si cette appli est supprimée, ni vous ni BitPay ne pouvez récupérer vos fonds sans une sauvegarde."
 
 #: www/views/feedback/complete.html:23
 msgid "If you have additional feedback, please let us know by tapping the \"Send feedback\" option in the Settings tab."
@@ -1705,7 +1705,7 @@ msgstr "Chargement des infos de transaction..."
 
 #: www/views/tab-settings.html:100
 msgid "Lock App"
-msgstr "Verrouiller l'appli"
+msgstr "Verrouillage de l'application"
 
 #: src/js/controllers/lockSetup.js:23
 msgid "Lock by Fingerprint"
