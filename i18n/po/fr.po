@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"PO-Revision-Date: 2017-11-12 09:11-0500\n"
+"PO-Revision-Date: 2017-11-12 10:11-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -3576,7 +3576,7 @@ msgstr "[Analyse des fonds]"
 
 #: src/js/controllers/bitpayCardIntro.js:11
 msgid "add your BitPay Visa card(s)"
-msgstr "ajoutez vos cartes BitPay Visa"
+msgstr "ajouter vos cartes BitPay Visa"
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
