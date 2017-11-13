@@ -24,6 +24,20 @@
     </div>
  -->
     <!-- <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div> -->
+    <div>
+      <div class="list card sendTip">
+        <div class="title" translate>
+          Purchase Nav Coin
+        </div>
+        <div class="subtitle">
+          <span ng-show="!hasWallets" translate>To get started, you'll need to create a Nav Coin wallet and get some Nav Coin.</span>
+          <div class="padding">
+            <a class="button button-standard button-primary" ng-show="hasWallets" ng-click="openBuyLink()" translate>Buy Nav Coin</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="list card homeTip" ng-if="homeTip">
       <div class="item item-icon-right item-heading">
         <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
