@@ -30,6 +30,7 @@
           Purchase Nav Coin
         </div>
         <div class="subtitle">
+          <span ng-show="hasWallets" translate>To get started, you can buy Nav Coin through our exchange partner Changelly.</span>
           <span ng-show="!hasWallets" translate>To get started, you'll need to create a Nav Coin wallet and get some Nav Coin.</span>
           <div class="padding">
             <a class="button button-standard button-primary" ng-show="hasWallets" ng-click="openBuyLink()" translate>Buy Nav Coin</a>
