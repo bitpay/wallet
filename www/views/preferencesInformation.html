@@ -94,8 +94,18 @@
         <span translate>Copayer {{$index}}</span>
         <span class="item-note">
           <span>{{pk}}</span>
-          <span ng-if="$index == 0">({{basePath}})</span>
+        <span ng-if="$index == 0">({{basePath}})</span>
         </span>
+      </div>
+
+      <div ng-if="!wallet.needsBackup">
+        <div class="item item-divider" translate>
+          Extended Private Key
+        </div>
+        <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesPrivateKey">
+        <span translate>Show Extended Private Key</span>
+        <i class="icon bp-arrow-right"></i>
+      </a>
       </div>
 
       <div ng-show="wallet.balanceByAddress[0]">

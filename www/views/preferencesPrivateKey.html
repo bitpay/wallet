@@ -1,0 +1,25 @@
+<ion-view hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>
+      <span translate>Extended Private Key</span>
+    </ion-nav-title>
+  </ion-nav-bar>
+  <ion-content>
+    <div ng-show="wallet && !credentialsEncrypted">
+      <div ng-include="'views/includes/walletItem.html'"></div>
+      <h1 class="text-center assertive" translate>Warning!</h1>
+      <div class="padding text-center">
+        <p translate>
+          Your extended private keys is all what is needed to access your funds. Be sure to protect it and share it only using secure devices. Only advanced users should handle the extended private key directly."
+        </p>
+      </div>
+      <div class="item" copy-to-clipboard="xPrivKey">
+        <span class="item-note">
+          <span>{{xPrivKey}}</span>
+        </span>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
