@@ -705,14 +705,7 @@ angular.module('copayApp.services')
       opts.n = 1;
       opts.networkName = 'livenet';
       opts.coin = 'btc';
-      root.createWallet(opts, function(err, btcClient) {
-        if (err) return cb(err);
-        opts.coin = 'bch';
-        root.createWallet(opts, function(err) {
-          if (err) $log.error(err); // Continue
-          return cb(null, btcClient);
-        });
-      });
+      root.createWallet(opts, cb);
     };
 
     root.setDisclaimerAccepted = function(cb) {
