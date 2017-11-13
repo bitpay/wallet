@@ -98,7 +98,7 @@
         </span>
       </div>
 
-      <div ng-if="!wallet.needsBackup">
+      <div ng-if="!wallet.needsBackup && canSign">
         <div class="item item-divider"></div>
         <a class="item item-icon-right" ui-sref="tabs.preferences.preferencesPrivateKey">
           <span translate>Extended Private Key</span>
