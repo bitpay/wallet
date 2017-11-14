@@ -31,7 +31,7 @@ export class WalletDetailsPage {
   getTxHistory(force?: boolean) {
     if (force) this.wallet.completeHistory = [];
     
-    this.walletProvider.getTxHistory_(this.wallet, {force: force}).then((txh) => {
+    this.walletProvider.getTxHistory(this.wallet, {force: force}).then((txh) => {
       this.wallet.completeHistory = txh;
     }).catch((err) => {
       console.log(err);
