@@ -1,21 +1,21 @@
-#tab-home {
+#changelly-iframe {
+  overflow-y: hidden;
+  border: none;
+  width: 90%;
+  height: 400px;
+  margin-bottom: 20px;
+  margin-left: 5%;
+}
+
+#tab-changelly{
   @extend .deflash-blue;
+
   .icon-create-wallet {
     background-color: #4A90E2; // default wallet color
   }
   .icon-buy-bitcoin {
     background-image: $v-bitcoin-icon;
     background-color: $v-bitcoin-orange;
-  }
-  .icon-bitpay-card {
-    background-image: url("../img/icon-card.svg");
-    background-color: #1e3186;
-  }
-  .icon-gift {
-    background-image: url("../img/icon-gift.svg");
-  }
-  .icon-amazon {
-    background-image: url("../img/icon-amazon.svg");
   }
   .bg {
     &.wallet {
@@ -146,4 +146,108 @@
   .badge {
     top:11px;
   }
+
+  //
+  //  Receive tab scss
+  //
+
+  .incoming-data-menu__url {
+      background: rgba(203, 203, 203, 0.13);
+      padding: 0.5rem 2rem;
+      border-radius: 30px;
+      align-items: center;
+      margin-bottom: .5rem;
+      width: 90%;
+      margin-left: 5%;
+  }
+  .incoming-data-menu__url__icon {
+    width: 20px;
+    vertical-align: middle;
+  }
+  .button-share {
+    color: #fff;
+    box-shadow: none;
+    border-color: transparent;
+    background: transparent;
+    padding: 0 10px;
+    .icon:before {
+      font-size: 26px;
+    }
+  }
+  .button-request {
+    margin-top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: $v-text-accent-color;
+    i.icon {
+      vertical-align: middle;
+      padding-left: 5px;
+    }
+  }
+  .button-address {
+    margin-top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    color: $v-text-accent-color;
+  }
+  .address {
+    background: #fff;
+    overflow: auto;
+    height: 100%;
+    &-info {
+      // padding-top: 22vh;
+      // padding-bottom: 17vh;
+      padding-top: 20px;
+      padding-bottom: 15px;
+      // @media(max-height: 800px) {
+      //   padding-top: 17vh;
+      // }
+      // @media(max-height: 700px) {
+      //   padding-top: 14vh;
+      // }
+      // @media(max-height: 600px) {
+      //   padding-top: 7vh;
+      // }
+      text-align: center;
+      .address-label {
+        margin-top: 5%;
+        font-size: 13px;
+      }
+    }
+    .incomplete {
+      .title {
+        padding-top: 10%;
+        font-size: 25px;
+        color: #444;
+        text-align: center;
+      }
+      .subtitle {
+        padding: 20px;
+        color: #444;
+        margin-top: 10%;
+        text-align: center;
+      }
+    }
+  }
+  .backup {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    cursor: pointer;
+    background-color: $wallet-backup-warning-color;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    i {
+      margin: 0 10px;
+    }
+  }
+  .wallet-selector {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
 }

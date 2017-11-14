@@ -11,35 +11,38 @@
      on-refresh="onRefresh()">
    </ion-refresher>
 
-  <!--   <div class="list card release ng-hide" ng-show="newRelease">
-      <i class="item icon big-icon-svg">
-        <img src="img/icon-update.svg" class="bg"/>
-      </i>
-
-      <div class="item title">{{updateText}}</div>
-
-      <div class="button" ng-click="openExternalLink()">
-        <span translate>Download</span>
-      </div>
-    </div>
- -->
     <!-- <div class="ng-hide" ng-show="showRateCard.value" ng-include="'views/feedback/rateCard.html'"></div> -->
     <div>
-      <div class="list card sendTip">
+      <div class="list card homeTip">
         <div class="title" translate>
           Purchase Nav Coin
         </div>
         <div class="subtitle">
-          <span ng-show="hasWallets" translate>To get started, you can buy Nav Coin through our exchange partner Changelly.</span>
-          <span ng-show="!hasWallets" translate>To get started, you'll need to create a Nav Coin wallet and get some Nav Coin.</span>
+          <span ng-show="wallets[0]" translate>To get started, you can buy Nav Coin through our exchange partner Changelly.</span>
+          <span ng-show="!wallets[0]" translate>To get started, you'll need to create a Nav Coin wallet and get some Nav Coin.</span>
           <div class="padding">
-            <a class="button button-standard button-primary" ng-show="hasWallets" ng-click="openBuyLink()" translate>Buy Nav Coin</a>
+            <a class="button button-standard button-primary" ng-show="wallets[0]" ng-click="openChangelly()" translate>Buy Nav Coin</a>
           </div>
         </div>
       </div>
     </div>
 
     <div class="list card homeTip" ng-if="homeTip">
+      <div class="item item-icon-right item-heading">
+        <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
+      </div>
+      <div>
+        <i class="icon big-icon-svg">
+          <img src="img/check-white.svg" class="bg green"/>
+        </i>
+      </div>
+      <div class="title" translate>
+        Your Nav Coin wallet is ready!
+      </div>
+      <div class="subtitle" translate>
+        On this screen you can see all your wallets, accounts, and assets.
+      </div>
+
       <div class="item item-icon-right item-heading">
         <a ng-click="hideHomeTip()"><i class="icon ion-ios-close-empty close-home-tip"></i></a>
       </div>
