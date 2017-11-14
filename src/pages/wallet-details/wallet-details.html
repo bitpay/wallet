@@ -11,7 +11,7 @@
   </div>
 
   <ion-list>
-    <button ion-item *ngFor="let tx of wallet.completeHistory" (click)="goToTxDetails(tx)">
+    <button ion-item *ngFor="let tx of history" (click)="goToTxDetails(tx)">
       <ion-icon item-start>
         <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
         <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
@@ -24,4 +24,8 @@
       </div>
     </button>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="loadHistory($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
