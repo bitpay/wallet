@@ -23,7 +23,7 @@
     <div *ngIf="selectedTab == 'file'">
       <ion-item>
         <ion-label stacked>Choose a backup file from your computer</ion-label>
-        <ion-input type="file" [(ngModel)]="formData.file" formControlName="file"></ion-input>
+        <ion-input type="file" accept="json" [(ngModel)]="formData.file" (change)="fileChangeEvent($event)" formControlName="file"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -34,7 +34,7 @@
 
     <ion-item-divider color="light"></ion-item-divider>
 
-    <ion-item (click)="showAdvOpts = !showAdvOpts">
+    <ion-item (click)="toggleShowAdvOpts()">
       <ion-label *ngIf="!showAdvOpts">Show advanced options</ion-label>
       <ion-label *ngIf="showAdvOpts">Hide advanced options</ion-label>
     </ion-item>
