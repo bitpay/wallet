@@ -807,7 +807,7 @@ msgstr "공유 지갑 만들기"
 #: www/views/tab-home.html:77
 #: www/views/tab-send.html:36
 msgid "Create bitcoin wallet"
-msgstr "비트코인 지갑만들기"
+msgstr "새로운 코인 지갑만들기"
 
 #: www/views/tab-create-personal.html:131
 msgid "Create new wallet"

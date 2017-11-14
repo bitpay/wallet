@@ -533,7 +533,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
             };
 
             function publishAndSign() {
-                console.log("puband sign");
                 if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
                     $log.info('No signing proposal: No private key');
 
