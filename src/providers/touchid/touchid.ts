@@ -18,8 +18,10 @@ export class TouchIdProvider {
   ) { }
 
   init() {
-    if (this.platform.isAndroid) this.checkAndroid();
-    if (this.platform.isIOS) this.checkIOS();
+    if (this.platform.isCordova) {
+      if (this.platform.isAndroid) this.checkAndroid();
+      if (this.platform.isIOS) this.checkIOS();
+    }
   }
 
   checkIOS() {
