@@ -5,6 +5,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -63,5 +64,9 @@ export class HomePage {
 
   public goToAddView(): void {
     this.navCtrl.push(AddPage);
+  }
+
+  goToWalletDetails(wallet: any) {
+    this.navCtrl.push(WalletDetailsPage, {walletId: wallet.credentials.walletId});
   }
 }

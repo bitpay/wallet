@@ -1,0 +1,27 @@
+<ion-header no-border>
+  <ion-navbar transparent>
+    <ion-title>{{wallet.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="balance-header" (click)="getTxHistory(true)">
+    <div class="balance-str">{{wallet.status.availableBalanceStr}}</div>
+    <div class="balance-alt-str">{{alternativeBalanceStr | toFiat : wallet.status.totalBalanceSat}}</div>
+  </div>
+
+  <ion-list>
+    <button ion-item *ngFor="let tx of wallet.completeHistory" (click)="goToTxDetails(tx)">
+      <ion-icon item-start>
+        <img src="assets/img/tx-action/icon-received.svg" *ngIf="tx.action == 'received'" width="40">
+        <img src="assets/img/tx-action/icon-sent.svg" *ngIf="tx.action == 'sent'" width="40">
+        <img src="assets/img/tx-action/icon-moved.svg" *ngIf="tx.action == 'moved'" width="40">
+      </ion-icon>
+      <div class="action">{{tx.action}}</div>
+      <div class="detail">
+        <div class="amount">{{amountStr | toUnit : tx.amount}}</div>
+        <div class="date">{{tx.time * 1000 | amTimeAgo}}</div>
+      </div>
+    </button>
+  </ion-list>
+</ion-content>
