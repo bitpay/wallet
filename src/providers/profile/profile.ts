@@ -134,7 +134,7 @@ export class ProfileProvider {
       this.logger.debug('BWC Notification:', n);
 
       if (n.type == "NewIncomingTx") {
-        this.walletProvider.getTxHistory_(wallet, { force: true }).catch((err) => {
+        this.walletProvider.getTxHistory(wallet, { force: true }).catch((err) => {
           this.logger.warn('Could not get the tx history for: ' + wallet.credentials.walletId);
         })
       }
