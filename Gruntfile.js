@@ -11,6 +11,13 @@ module.exports = function(grunt) {
             appConfig: {
                 command: 'node ./util/buildAppConfig.js'
             },
+            pack_prepare: {
+                command: 'rm -Rf ../deploy/<%= pkg.name %>-wallet/src/*;rm -Rf <%= pkg.name %>.tar.gz;rm -Rf tmp;mkdir -p ../deploy/<%= pkg.name %>-wallet/src;mkdir -p tmp/cordova/and ;mkdir -p tmp/cordova/ios ;'
+            },
+            //make deploy stamp
+            pack_copy: {
+                command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cd tmp; tar -zcvf  ../<%= pkg.name %>.tar.gz .;cp -R . ../../deploy/<%= pkg.name %>-wallet/src'
+            },
             externalServices: {
                 command: 'node ./util/buildExternalServices.js'
             },
@@ -287,5 +294,6 @@ module.exports = function(grunt) {
     grunt.registerTask('android', ['exec:android']);
     grunt.registerTask('android-release', ['prod', 'exec:android', 'exec:androidsign']);
     grunt.registerTask('desktopsign', ['exec:desktopsign', 'exec:desktopverify']);
+    grunt.registerTask('pack', ['exec:pack_prepare', 'exec:pack_copy']);
 
 };

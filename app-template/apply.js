@@ -108,7 +108,8 @@ function copyDir(from, to) {
     if (!fs.existsSync(from)) return; // nothing to do
     fs.copySync(from, to);
 }
-copyDir(configDir + '/app_config.js', '../www/app_config.js');
+
+copyDir(configDir + '/deploy_config.js', '../www/' + config['bundleName'] + '_config.js');
 copyDir(configDir + '/config/*', '../src/js/*');
 // Push Notification
 fs.copySync(configDir + '/GoogleService-Info.plist', '../GoogleService-Info.plist');

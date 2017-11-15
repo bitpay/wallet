@@ -117,7 +117,8 @@
         "test": "echo \"no package tests configured\"",
         "clean": "trash platforms && trash plugins && cordova prepare",
         "unstage-package": "git reset package.json",
-        "clean-all": "git clean -dfx"
+        "clean-all": "git clean -dfx",
+        "deploy:apps": "npm run final:www&&npm run build:android&& npm run build:ios && grunt pack"
     },
     "devDependencies": {
         "cordova": "^7.1.0",

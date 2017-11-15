@@ -113,3 +113,5 @@ www/boot.html
 www/ios.html
 src/js/config/*
 android-release-signed-aligned.apk
+tmp/*
+*.tar.gz

@@ -20,13 +20,13 @@
     </div>
     <script type="text/javascript" charset="utf-8" src="lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script type="text/javascript" charset="utf-8" src="deploy_config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/*BUNDLENAME*_config.js"></script>
 
     <script>
         var initBoot = function() {
             document.addEventListener("deviceready", function() {
                 jQuery.ajax({
-                    url: DEPLOY_URL + "app_config.js",
+                    url: DEPLOY_URL + "/*BUNDLENAME*_config.js",
                     dataType: 'script',
                     success: function(data) {
                         load(); //환경설정이 서버로 변경되었다.
