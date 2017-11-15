@@ -122,7 +122,9 @@
     "ionic": "^3.14.0",
     "trash-cli": "^1.4.0",
     "lodash": "^4.17.4",
-    "pre-commit": "^1.1.3"
+    "pre-commit": "^1.1.3",
+    "browserify": "^14.5.0",
+    "uglifyjs": "^2.4.11"
   },
   "pre-commit": "unstage-package"
 }
