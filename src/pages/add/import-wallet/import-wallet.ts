@@ -229,34 +229,6 @@ export class ImportWalletPage implements OnInit {
     }, 100);
   }
 
-  /*
-      IMPORT FROM PUBLIC KEY - PENDING TODO from v1
-
-    var _importExtendedPublicKey = function(xPubKey, opts) {
-      ongoingProcess.set('importingWallet', true);
-      $timeout(function() {
-        profileService.importExtendedPublicKey(opts, function(err, walletId) {
-          ongoingProcess.set('importingWallet', false);
-          if (err) {
-            $scope.error = err;
-            return $timeout(function() {
-              $scope.$apply();
-            });
-          }
-
-          profileService.setBackupFlag(walletId);
-           if ($stateParams.fromOnboarding) {
-             profileService.setDisclaimerAccepted(function(err) {
-               if (err) $log.error(err);
-             });
-           }
-
-          $state.go('tabs.home');
-        });
-      }, 100);
-    };
-    */
-
   private importMnemonic(words: string, opts: any): void {
     this.onGoingProcessProvider.set('importingWallet', true);
     setTimeout(() => {
@@ -337,9 +309,6 @@ export class ImportWalletPage implements OnInit {
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
-    } else if (words.indexOf('xpub') == 0 || words.indexOf('tpuv') == 0) {
-      //return this.importExtendedPublicKey(words, opts); TODO
-      return this.logger.warn("TODO: this.importExtendedPublicKey(words, opts)");
     } else {
       let wordList: Array<any> = words.split(/[\u3000\s]+/);
 
