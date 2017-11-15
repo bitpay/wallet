@@ -14,6 +14,21 @@
     </ion-segment-button>
   </ion-segment>
 
+  <ion-card (click)="importErr = false">
+    <ion-item *ngIf="importErr" class="assertive">
+      <div translate>Could not access the wallet at the server. Please check:</div>
+      <ul>
+        <li translate>The password of the recovery phrase (if set)</li>
+        <li translate>The derivation path</li>
+        <li translate>The wallet service URL</li>
+      </ul>
+      <small translate>
+        NOTE: To import a wallet from a 3rd party software, please go to Add Wallet &gt; Create Wallet, and specify the Recovery
+        Phrase there.
+      </small>
+    </ion-item>
+  </ion-card>
+
   <form [formGroup]="importForm" (ngSubmit)="import()">
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>Type the recovery phrase (usually 12 words)</ion-label>

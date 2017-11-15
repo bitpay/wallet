@@ -213,12 +213,12 @@ export class ImportWalletPage implements OnInit {
         this.onGoingProcessProvider.set('importingWallet', false);
         this.finish(wallet);
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
         if (err instanceof this.errors.NOT_AUTHORIZED) {
           this.importErr = true;
         } else {
           this.popupProvider.ionicAlert('Error', err); // TODO: gettextcatalog
         }
+        this.onGoingProcessProvider.set('importingWallet', false);
         return;
       });
     }, 100);
@@ -236,6 +236,8 @@ export class ImportWalletPage implements OnInit {
         } else {
           this.popupProvider.ionicAlert('Error', err); // TODO: gettextcatalog
         }
+        this.onGoingProcessProvider.set('importingWallet', false);
+        return;
       });
     }, 100);
   }
