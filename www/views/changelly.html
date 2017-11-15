@@ -1,0 +1,103 @@
+<ion-view id="tab-changelly" show-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-title><img class="tab-home__logo" src="img/app/logo-simple.svg"></ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <ion-refresher
+     ng-if="isAndroid"
+     pulling-icon="ion-ios-refresh"
+     spinner="ios-small"
+     on-refresh="onRefresh()">
+    </ion-refresher>
+
+  <div class="list card">
+      <div class="item item-icon-right item-heading">
+        <span translate>Changelly - Instant Exchange</span>
+        <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
+      </div>
+      <div>
+        <iframe src="https://changelly.com/widget/v1?auth=email&from=BTC&to=NAV&merchant_id=fa6a4eb25086&address=&amount=0.01&ref_id=6c2996558a71&color=7d59b5"
+          id="changelly-iframe" scrolling="no" style="overflow-y: hidden; border: none" >Can't load Changelly widget</iframe>
+      </div>
+    <!-- </div> -->
+
+    <!-- <div class=""> -->
+      <!-- <div class="item item-icon-right item-heading">
+        <span translate>Most recent wallet address</span>
+        <div>
+          <div class="incoming-data-menu__url">
+            <div class="incoming-data-menu__url__icon">
+              <img src="img/icon-bitcoin-small.svg">
+            </div>
+            <div class="incoming-data-menu__url__text">
+              {{data}}sdfs
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div> -->
+        <div class="list card padding text-center" ng-if="!wallets[0]">
+          <span translate>No Wallet</span>
+        </div>
+        <div class="address" ng-if="wallets[0]">
+          <div class="address-info" class="text-center" ng-if="wallet && !wallet.isComplete()">
+            <div class="incomplete">
+              <div class="title">
+                <span translate>Incomplete wallet</span>
+              </div>
+              <div class="subtitle">
+                <span translate>All signing devices must be added to this multisig wallet before Nav Coin addresses can be created.</span>
+              </div>
+              <button class="button button-standard button-primary" ng-click="goCopayers()" translate>Open wallet</button>
+            </div>
+          </div>
+          <div class="address-info" ng-if="wallet && wallet.isComplete()">
+            <div copy-to-clipboard="addr" class="incoming-data-menu__url">
+                <span class="ellipsis">
+                  <img src="img/icon-bitcoin-small.svg" class="incoming-data-menu__url__icon">
+                  {{addr}}
+                </span>
+                <ion-spinner ng-show="!addr" class="spinner-dark" icon="crescent"></ion-spinner>
+            </div>
+            <div>
+              <button ng-show="addr" class="button-address" ng-click="setAddress(true)">
+                <span translate>Generate new address</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="backup" ng-if="wallets[0] && wallet && wallet.isComplete() && wallet.needsBackup" ng-click="openBackupNeededModal()">
+          <i class="icon ion-alert"></i>
+          <span translate>Wallet not backed up</span>
+          <i class="icon ion-ios-arrow-thin-right"></i>
+        </div>
+
+        <!-- <div class="wallet-selector" ng-click="showWalletSelector()" ng-if="wallets[0] && wallet">
+          selector
+          <a ng-if="wallet" class="item item-sub item-icon-left item-big-icon-left item-icon-right">
+            <i class="icon big-icon-svg">
+              <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !wallet.color}" ng-style="{'background-color': wallet.color}" class="bg wallet"/>
+            </i>
+            <span>
+              {{wallet.name || wallet.id}}
+            </span>
+            <p>
+            <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
+
+            <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
+            <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
+              {{wallet.m}}-of-{{wallet.n}}
+            </span>
+            <span class="assertive" ng-if="wallet.error">{{wallet.error}}</span>
+            &nbsp;
+            </p>
+            <i ng-if="!singleWallet" class="icon bp-arrow-right"></i>
+          </a>
+        </div> -->
+      <!-- </div> -->
+    </div>
+  </ion-content>
+</ion-view>
