@@ -368,18 +368,22 @@ export class WalletProvider {
 
   public getTxHistory(wallet: any, opts: any) {
     return new Promise((resolve, reject) => {
-      opts = opts ? opts : {};
+      opts = opts || {};
 
       // TODO isHistoryCached should get the properties from status or profile service
 
       this.logger.debug('Updating Transaction History');
 
       this.getTxsFromLocal(wallet.credentials.walletId).then((txsFromLocal) => {
-        if (!lodash.isEmpty(txsFromLocal) && !opts.force) return resolve(txsFromLocal);
+        if (!lodash.isEmpty(txsFromLocal) && !opts.force) {
+          return resolve(txsFromLocal.slice(0, opts.limit));
+        }
 
-        this.getTxsFromServer(wallet, 0, null, 10).then((txsFromServer) => {
+        this.getTxsFromServer(wallet, opts).then((txsFromServer) => {
 
-          this.updateTxHistory(wallet, txsFromLocal, txsFromServer);
+          this.updateTxHistory(wallet, txsFromLocal, txsFromServer).then((newHistory: any) => {
+            return resolve(newHistory);
+          });
         }).catch((err) => {
           this.logger.debug('Error getting txs from server');
           return reject(err);
@@ -392,18 +396,21 @@ export class WalletProvider {
   }
 
   private updateTxHistory(wallet: any, txsFromLocal: any, txsFromServer?: any) {
-    let array = txsFromLocal.concat(txsFromServer.res);
-    let newHistory = lodash.uniqBy(array, (x: any) => {
-      return x.txid;
-    });
-    wallet.completeHistory = newHistory;
-    wallet.completeHistory.isValid = true;
-    let historyToSave = lodash.compact(lodash.flatten(newHistory));
+    return new Promise((resolve, reject) => {
+      var txsFromServer_ = txsFromServer && txsFromServer.res || [];
+      let array = txsFromLocal.concat(txsFromServer_);
+      let newHistory = lodash.uniqBy(array, (x: any) => {
+        return x.txid;
+      });
+      resolve(newHistory);
 
-    this.persistenceProvider.setTxHistory(wallet.credentials.walletId, JSON.stringify(historyToSave)).then(() => {
-      this.logger.debug('Tx History saved for: ' + wallet.credentials.walletId);
-    }).catch((err) => {
-      this.logger.warn('Error saving history for: ' + wallet.credentials.walletId);
+      let historyToSave = lodash.compact(lodash.flatten(newHistory));
+
+      this.persistenceProvider.setTxHistory(wallet.credentials.walletId, JSON.stringify(historyToSave)).then(() => {
+        this.logger.debug('Tx History saved for: ' + wallet.credentials.walletId);
+      }).catch((err) => {
+        this.logger.warn('Error saving history for: ' + wallet.credentials.walletId);
+      });
     });
   }
 
@@ -429,13 +436,14 @@ export class WalletProvider {
     });
   }
 
-  private getTxsFromServer(wallet: any, skip: number, endingTxid: string, limit: number): Promise<any> {
+  private getTxsFromServer(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
+      opts = opts || {};
       let res = [];
 
       wallet.getTxHistory({
-        skip: skip,
-        limit: limit
+        skip: opts.skip,
+        limit: opts.limit
       }, (err: Error, txsFromServer: Array<any>) => {
         if (err) return reject(err);
 
@@ -443,12 +451,12 @@ export class WalletProvider {
           return resolve();
 
         res = lodash.takeWhile(txsFromServer, (tx) => {
-          return tx.txid != endingTxid;
+          return tx.txid != opts.endingTxid;
         });
 
         let result = {
           res: res,
-          shouldContinue: res.length >= limit
+          shouldContinue: res.length >= opts.limit
         };
 
         return resolve(result);
