@@ -55,10 +55,9 @@ export class WalletDetailsPage {
       loading.complete();
       return;
     }
-    let self = this;
-    setTimeout(function() {
-      self.history = self.wallet.completeHistory.slice(0, self.HISTORY_PAGE_COUNTER * self.HISTORY_SHOW_LIMIT);
-      self.HISTORY_PAGE_COUNTER++;
+    setTimeout(() => {
+      this.history = this.wallet.completeHistory.slice(0, this.HISTORY_PAGE_COUNTER * this.HISTORY_SHOW_LIMIT);
+      this.HISTORY_PAGE_COUNTER++;
       loading.complete();
     }, 300);
   }
