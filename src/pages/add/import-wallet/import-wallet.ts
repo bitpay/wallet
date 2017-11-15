@@ -156,11 +156,6 @@ export class ImportWalletPage implements OnInit {
     this.formData.words = info.data;
   }
 
-  public switchTestnetOff(): void {
-    this.formData.testnetEnabled = false;
-    this.setDerivationPath();
-  }
-
   private setDerivationPath(): void {
     this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
