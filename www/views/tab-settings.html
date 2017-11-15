@@ -39,7 +39,7 @@
 
       <div class="item item-divider">{{'Preferences' | translate}}</div>
 
-      <a class="item item-icon-left item-icon-right" ui-sref="tabs.notifications">
+      <a class="item item-icon-left item-icon-right" ui-sref="tabs.notifications" ng-if="isCordova">
         <i class="icon big-icon-svg">
           <img src="img/icon-notifications.svg" class="bg"/>
         </i>
