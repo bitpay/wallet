@@ -416,7 +416,7 @@ export class WalletProvider {
         if (lodash.isEmpty(txs)) {
           return resolve(localTxs);
         };
-        
+
         try {
           localTxs = JSON.parse(txs);
         } catch (ex) {
@@ -709,9 +709,9 @@ export class WalletProvider {
     });
   }
 
-  public updateRemotePreferences(clients: any, prefs: any): Promise<any> {
+  public updateRemotePreferences(clients: any, prefs?: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      prefs = prefs || {};
+      prefs = prefs ? prefs : {};
 
       if (!lodash.isArray(clients))
         clients = [clients];
@@ -723,13 +723,16 @@ export class WalletProvider {
           this.logger.debug('Saving remote preferences', wallet.credentials.walletName, prefs);
 
           wallet.savePreferences(prefs, (err: any) => {
-
             if (err) {
               this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not save preferences on the server')); //TODO Gettextcatalog
               return reject(err);
             }
 
-            updateRemotePreferencesFor(clients, prefs);
+            updateRemotePreferencesFor(clients, prefs).then(() => {
+              return resolve();
+            }).catch((err: any) => {
+              return reject(err);
+            });
           });
         });
       };
@@ -740,7 +743,7 @@ export class WalletProvider {
 
       //prefs.email  (may come from arguments)
       prefs.email = config.emailNotifications.email;
-      prefs.language = "English" // This line was hardcoded - TODO: prefs.language = uxLanguage.getCurrentLanguage();
+      prefs.language = "en" // This line was hardcoded - TODO: prefs.language = uxLanguage.getCurrentLanguage();
       // prefs.unit = walletSettings.unitCode; // TODO: remove, not used
 
       updateRemotePreferencesFor(lodash.clone(clients), prefs).then(() => {

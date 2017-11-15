@@ -17,7 +17,6 @@ export class OnGoingProcessProvider {
         content: processName
       });
       this.loading.present();
-
     }
     else {
       this.loading.dismiss();
