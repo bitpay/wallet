@@ -65,7 +65,7 @@ var COIN_CONFIG = {
     },
     pax: {
         bwsurl: 'https://bws.bitchk.com/bws/api',
-        insight: 'https://insight=pax.bitchk.com',
+        insight: 'https://insight-pax.bitchk.com',
         coin: 'pax',
         displayName: "PAX",
         coinName: "Paxcoin",
@@ -73,7 +73,7 @@ var COIN_CONFIG = {
     },
     ssc: {
         bwsurl: 'https://bws.bitchk.com/bws/api',
-        insight: 'http://insight.ventasnu.com',
+        insight: 'https://insight-pax.bitchk.com',
         coin: 'ssc',
         displayName: "SSC",
         coinName: "SearchCoin",

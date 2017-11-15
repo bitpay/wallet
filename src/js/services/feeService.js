@@ -64,12 +64,9 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
         if (cache.coin == coin && cache.updateTs > Date.now() - CACHE_TIME_TS * 1000) {
             return cb(null, cache.data, true);
         }
-        //TODO
-        var cli = configService.getSync();
-
         var opts = {
             'coin': coin,
-            bwsurl: cli.bws.url
+            bwsurl: COIN_CONFIG[coin].bwsurl
         }
         var walletClient = bwcService.getClient(null, opts);
         var _net = bitcore.Networks.get(coin, 'coin');

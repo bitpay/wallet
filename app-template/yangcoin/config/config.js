@@ -1,7 +1,7 @@
 var DEFAULT_CONFIG = {
     networkName: 'yangcoin',
     coin: 'yng',
-    bwsurl: 'http://192.168.0.12:3232/bws/api',
+    bwsurl: 'https://bws.bitchk.com/bws/api',
     showMoney: false,
     networks: ['livenet', 'ventas', 'litecoin', 'yangcoin']
 }
@@ -15,7 +15,7 @@ var COIN_CONFIG = {
         coinName: "Bitcoin"
     },
     ltc: {
-        bwsurl: 'http://192.168.0.12:3232/bws/api',
+        bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'http://192.168.0.12:3001/insight',
         network: 'litecoin',
         coin: 'ltc',
@@ -23,7 +23,7 @@ var COIN_CONFIG = {
         coinName: "Litecoin"
     },
     ven: {
-        bwsurl: 'http://192.168.0.12:3232/bws/api',
+        bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'http://192.168.0.12:3001',
         network: 'ventas',
         coin: 'ven',
@@ -31,7 +31,7 @@ var COIN_CONFIG = {
         coinName: "VENTAS"
     },
     yng: {
-        bwsurl: 'http://192.168.0.12:3232/bws/api',
+        bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'http://192.168.0.12:23080',
         network: 'yangcoin',
         coin: 'yng',

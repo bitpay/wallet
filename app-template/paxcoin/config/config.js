@@ -1,7 +1,7 @@
 var DEFAULT_CONFIG = {
     networkName: 'ventas',
     coin: 'ven',
-    bwsurl: 'http://192.168.0.12:3232/bws/api',
+    bwsurl: 'https://bws.bitchk.com/bws/api',
     showMoney: false,
     networks: ['livenet', 'ventas', 'litecoin']
 }
@@ -11,15 +11,15 @@ var COIN_CONFIG = {
         insight: 'https://insight.bitpay.com'
     },
     ltc: {
-        bwsurl: 'http://192.168.0.12:3232/bws/api',
+        bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'http://192.168.0.12:3001/insight'
     },
     ven: {
-        bwsurl: 'http://192.168.0.12:3232/bws/api',
+        bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'http://192.168.0.12:3001'
     },
     tbc: {
-        bwsurl: 'http://192.168.0.12:3232/bws/api',
+        bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'http://192.168.0.12:3001/insight-tbc'
     },
 }
