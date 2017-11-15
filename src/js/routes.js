@@ -41,7 +41,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
     $logProvider.debugEnabled(true);
     $provide.decorator('$log', ['$delegate', 'platformInfo',
-      function($delegate, platformInfo) {
+    function($delegate, platformInfo) {
         var historicLog = historicLogProvider.$get();
 
         historicLog.getLevels().forEach(function(levelDesc) {
@@ -91,8 +91,8 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           };
         });
         return $delegate;
-      }
-    ]);
+    }
+  ]);
 
     // whitelist 'chrome-extension:' for chromeApp to work with image URLs processed by Angular
     // link: http://stackoverflow.com/questions/15606751/angular-changes-urls-to-unsafe-in-extension-page?lq=1
@@ -590,6 +590,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           'tab-settings@tabs': {
             controller: 'preferencesDeleteWalletController',
             templateUrl: 'views/preferencesDeleteWallet.html'
+          }
+        }
+      })
+      .state('tabs.preferences.preferencesPrivateKey', {
+        url: '/preferencesPrivateKey',
+        views: {
+          'tab-settings@tabs': {
+            controller: 'preferencesPrivateKeyController',
+            templateUrl: 'views/preferencesPrivateKey.html'
           }
         }
       })

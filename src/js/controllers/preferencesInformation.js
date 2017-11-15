@@ -45,6 +45,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $scope.N = c.n;
       $scope.pubKeys = lodash.pluck(c.publicKeyRing, 'xPubKey');
       $scope.externalSource = null;
+      $scope.canSign = wallet.canSign();
 
       if (wallet.isPrivKeyExternal()) {
         $scope.externalSource = lodash.find(walletService.externalSource, function(source) {
