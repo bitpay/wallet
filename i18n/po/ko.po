@@ -389,7 +389,7 @@ msgstr "비트코인은 안전한,<br> 디지털 통화입니다."
 
 #: www/views/preferencesFee.html:11
 msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr ""
+msgstr "코인의 거래에는 채굴자가 네트워크에서 수집 한 수수료가 포함됩니다."
 
 #: www/views/buyAmazon.html:108
 msgid "Bought {{amountUnitStr}}"
