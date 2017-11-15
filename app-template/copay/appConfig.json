@@ -23,8 +23,8 @@
   "windowsAppId": "804636ee-b017-4cad-8719-e58ac97ffa5c",
   "pushSenderId": "1036948132229",
   "description": "A Secure Nav Coin Wallet",
-  "version": "1.0.2",
-  "androidVersion": "100002",
+  "version": "1.0.3",
+  "androidVersion": "100003",
   "_extraCSS": null,
   "_enabledExtensions": {
     "coinbase": true,
