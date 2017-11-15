@@ -15,7 +15,7 @@
       <div class="amount-bg"></div>
       <div class="amount">
         <div ng-if="bitpayCard.balance" ng-click="bitpayCard.update()">
-          <div class="amount__balance">{{bitpayCard.currencySymbol}}{{bitpayCard.balance}}</div>
+          <div class="amount__balance">{{bitpayCard.balance | currency:bitpayCard.currencySymbol:2 }}</div>
 
           <div class="size-12 m5r" ng-if="bitpayCard.updatedOn">
             {{bitpayCard.updatedOn  * 1000 | amTimeAgo}}
