@@ -107,7 +107,7 @@
         "run:android": "cordova run android --device",
         "run:android-release": "cordova run android --device --release",
         "log:android": "adb logcat | grep chromium",
-        "sign:android": "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && $ANDROID_HOME/build-tools/26.0.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
+        "sign:android": "rm -f android-release-signed-aligned.apk;rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../appkeys/bitchk.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk bitchk.com && zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk; cp platforms/android/build/outputs/apk/android-release-signed-aligned.apk ./ ",
         "apply:bitchk": "npm i fs-extra && cd app-template && node apply.js bitchk && npm i && cordova prepare",
         "apply:yangcoin": "npm i fs-extra@0.30 && cd app-template && node apply.js yangcoin && cd .. && npm i",
         "apply:qcity": "npm i fs-extra@0.30 && cd app-template && node apply.js qcity && cd .. && npm i",

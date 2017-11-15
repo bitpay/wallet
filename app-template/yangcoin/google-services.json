@@ -1,27 +1,58 @@
 {
   "project_info": {
-    "project_number": "557173381113",
-    "firebase_url": "https://yng-wallet.firebaseio.com",
-    "project_id": "yng-wallet",
-    "storage_bucket": "yng-wallet.appspot.com"
+    "project_number": "143239831537",
+    "firebase_url": "https://bitchk-bitchk.firebaseio.com",
+    "project_id": "bitchk-bitchk",
+    "storage_bucket": "bitchk-bitchk.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:557173381113:android:d85cda1212aa1d51",
+        "mobilesdk_app_id": "1:143239831537:android:d46bb24e5a4e38a3",
         "android_client_info": {
-          "package_name": "com.bitchk.yngwallet"
+          "package_name": "com.bitchk.becheck"
         }
       },
       "oauth_client": [
         {
-          "client_id": "557173381113-b5hlt4r168f0ehva4q1752khqim9bvbp.apps.googleusercontent.com",
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWymnVXompGZlhAsiqokTUxc_RiJn7Fas"
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:681c0c255bf103e6",
+        "android_client_info": {
+          "package_name": "com.bitchk.yangcoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
         }
       ],
       "services": {
