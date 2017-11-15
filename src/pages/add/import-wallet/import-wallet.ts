@@ -136,7 +136,7 @@ export class ImportWalletPage implements OnInit {
 
     if (parsedCode.length != 5) {
       /// Trying to import a malformed wallet export QR code
-      this.popupProvider.ionicAlert('Error', 'Incorrect code format'); //TODO gettextcatalog
+      this.popupProvider.ionicAlert('Error', 'Incorrect code format', 'Ok'); //TODO gettextcatalog
       return;
     }
 
@@ -149,7 +149,7 @@ export class ImportWalletPage implements OnInit {
     };
 
     if (info.type == '1' && info.hasPassphrase)
-      this.popupProvider.ionicAlert('Error', 'Password required. Make sure to enter your password in advanced options'); //TODO gettextcatalog
+      this.popupProvider.ionicAlert('Error', 'Password required. Make sure to enter your password in advanced options', 'Ok'); //TODO gettextcatalog
 
     this.formData.derivationPath = info.derivationPath;
     this.formData.testnetEnabled = info.network == 'testnet' ? true : false;
@@ -171,7 +171,7 @@ export class ImportWalletPage implements OnInit {
     };
 
     if (err) {
-      this.popupProvider.ionicAlert('Error', err); //TODO gettextcatalog
+      this.popupProvider.ionicAlert('Error', err, 'Ok'); //TODO gettextcatalog
       return;
     }
 
@@ -185,7 +185,7 @@ export class ImportWalletPage implements OnInit {
         this.finish(wallet);
       }).catch((err: any) => {
         this.onGoingProcessProvider.set('importingWallet', false);
-        this.popupProvider.ionicAlert('Error', err); //TODO gettextcatalog
+        this.popupProvider.ionicAlert('Error', err, 'Ok'); //TODO gettextcatalog
         return;
       });
     }, 100);
@@ -216,7 +216,7 @@ export class ImportWalletPage implements OnInit {
         if (err instanceof this.errors.NOT_AUTHORIZED) {
           this.importErr = true;
         } else {
-          this.popupProvider.ionicAlert('Error', err); // TODO: gettextcatalog
+          this.popupProvider.ionicAlert('Error', err, 'Ok'); // TODO: gettextcatalog
         }
         this.onGoingProcessProvider.set('importingWallet', false);
         return;
@@ -234,7 +234,7 @@ export class ImportWalletPage implements OnInit {
         if (err instanceof this.errors.NOT_AUTHORIZED) {
           this.importErr = true;
         } else {
-          this.popupProvider.ionicAlert('Error', err); // TODO: gettextcatalog
+          this.popupProvider.ionicAlert('Error', err, 'Ok'); // TODO: gettextcatalog
         }
         this.onGoingProcessProvider.set('importingWallet', false);
         return;
@@ -253,7 +253,7 @@ export class ImportWalletPage implements OnInit {
 
   public importFromFile(): void {
     if (!this.importForm.valid) {
-      this.popupProvider.ionicAlert('Error', 'There is an error in the form'); // TODO: gettextcatalog
+      this.popupProvider.ionicAlert('Error', 'There is an error in the form', 'Ok'); // TODO: gettextcatalog
       return;
     }
 
@@ -262,7 +262,7 @@ export class ImportWalletPage implements OnInit {
     let password = this.formData.filePassword;
 
     if (!backupFile && !backupText) {
-      this.popupProvider.ionicAlert('Error', 'Please, select your backup file'); // TODO: gettextcatalog
+      this.popupProvider.ionicAlert('Error', 'Please, select your backup file', 'Ok'); // TODO: gettextcatalog
       return;
     }
 
@@ -278,7 +278,7 @@ export class ImportWalletPage implements OnInit {
 
   public importFromMnemonic(): void {
     if (!this.importForm.valid) {
-      this.popupProvider.ionicAlert('Error', 'There is an error in the form'); // TODO: gettextcatalog
+      this.popupProvider.ionicAlert('Error', 'There is an error in the form', 'Ok'); // TODO: gettextcatalog
       return;
     }
 
@@ -290,7 +290,7 @@ export class ImportWalletPage implements OnInit {
     let pathData: any = this.derivationPathHelperProvider.parse(this.formData.derivationPath);
 
     if (!pathData) {
-      this.popupProvider.ionicAlert('Error', 'Invalid derivation path'); // TODO: gettextcatalog
+      this.popupProvider.ionicAlert('Error', 'Invalid derivation path', 'Ok'); // TODO: gettextcatalog
       return;
     }
 
@@ -302,7 +302,7 @@ export class ImportWalletPage implements OnInit {
     let words: string = this.formData.words || null;
 
     if (!words) {
-      this.popupProvider.ionicAlert('Error', 'Please enter the recovery phrase');
+      this.popupProvider.ionicAlert('Error', 'Please enter the recovery phrase', 'Ok');
       return;
     } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
       return this.importExtendedPrivateKey(words, opts);
@@ -310,7 +310,7 @@ export class ImportWalletPage implements OnInit {
       let wordList: Array<any> = words.split(/[\u3000\s]+/);
 
       if ((wordList.length % 3) != 0) {
-        this.popupProvider.ionicAlert('Error', 'Wrong number of recovery words: ' + wordList.length);
+        this.popupProvider.ionicAlert('Error', 'Wrong number of recovery words: ' + wordList.length, 'Ok');
         return;
       }
     }
