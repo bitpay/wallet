@@ -1,36 +1,42 @@
 {
-    "project_info": {
-        "project_number": "149194066736",
-        "firebase_url": "https://bitchk-wallet.firebaseio.com",
-        "project_id": "bitchk-wallet",
-        "storage_bucket": "bitchk-wallet.appspot.com"
-    },
-    "client": [{
-        "client_info": {
-            "mobilesdk_app_id": "1:574421125911:ios:33a359229f0c5af0",
-            "android_client_info": {
-                "package_name": "com.bitchk.wallet"
-            }
-        },
-        "oauth_client": [{
-            "client_id": "",
-            "client_type": 3
-        }],
-        "api_key": [{
-            "current_key": ""
-        }],
-        "services": {
-            "analytics_service": {
-                "status": 1
-            },
-            "appinvite_service": {
-                "status": 1,
-                "other_platform_oauth_client": []
-            },
-            "ads_service": {
-                "status": 2
-            }
+  "project_info": {
+    "project_number": "557173381113",
+    "firebase_url": "https://yng-wallet.firebaseio.com",
+    "project_id": "yng-wallet",
+    "storage_bucket": "yng-wallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557173381113:android:d85cda1212aa1d51",
+        "android_client_info": {
+          "package_name": "com.bitchk.yngwallet"
         }
-    }],
-    "configuration_version": "1"
+      },
+      "oauth_client": [
+        {
+          "client_id": "557173381113-b5hlt4r168f0ehva4q1752khqim9bvbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWymnVXompGZlhAsiqokTUxc_RiJn7Fas"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }
