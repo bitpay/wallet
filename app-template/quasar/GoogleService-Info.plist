@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>143239831537-tb54d5ubsge46tshng1o67mu3se51aek.apps.googleusercontent.com</string>
+	<string>143239831537-dvt80e1t7jldbteovndc3mr2n6jmc0jb.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.143239831537-tb54d5ubsge46tshng1o67mu3se51aek</string>
+	<string>com.googleusercontent.apps.143239831537-dvt80e1t7jldbteovndc3mr2n6jmc0jb</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAu_Ym6T5drQe-fzeZghckUZBIjHhZENEg</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bitchk.bitchk</string>
+	<string>com.bitchk.quasar</string>
 	<key>PROJECT_ID</key>
 	<string>bitchk-bitchk</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:143239831537:ios:ca8036f135a7caf5</string>
+	<string>1:143239831537:ios:5844aea0341babb4</string>
 	<key>DATABASE_URL</key>
 	<string>https://bitchk-bitchk.firebaseio.com</string>
 </dict>
