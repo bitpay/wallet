@@ -110,7 +110,8 @@ function copyDir(from, to) {
 }
 
 copyDir(configDir + '/deploy_config.js', '../www/' + config['bundleName'] + '_config.js');
-copyDir(configDir + '/config/*', '../src/js/*');
+
+copyDir(configDir + '/config', '../src/js/config');
 // Push Notification
 fs.copySync(configDir + '/GoogleService-Info.plist', '../GoogleService-Info.plist');
 fs.copySync(configDir + '/google-services.json', '../google-services.json');
