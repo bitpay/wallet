@@ -25,7 +25,7 @@
     <script>
         var initBoot = function() {
             document.addEventListener("deviceready", function() {
-                console.log("ready");
+
                 jQuery.ajax({
                     url: DEPLOY_URL + "/*BUNDLENAME*_config.js",
                     dataType: 'script',
@@ -33,7 +33,6 @@
                         load(); //환경설정이 서버로 변경되었다.
                     },
                     error: function(error) {
-                        console.log("error", error);
                         load(); //실패했다, 그냥 로드한다.
                     },
                     async: true
@@ -44,10 +43,10 @@
         var load = function() {
             var remoteUrl = "index.html";
             //ionic web view url
-            if (REMOTE_LOAD && (location.href.startsWith("file://") || location.href.startsWith("http://ionic.local"))) {
+            if (window && window.cordova) {
                 if (window.cordova.platformId == "android")
                     remoteUrl = DEPLOY_URL + "/and.html";
-                else {
+                else if (window.cordova.platformId == "ios") {
                     remoteUrl = DEPLOY_URL + "/ios.html";
                 }
             }
