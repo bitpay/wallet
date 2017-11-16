@@ -1,2 +1,2 @@
-var DEPLOY_URL = 'https://yangcoin.firebaseapp.com';
+var DEPLOY_URL = 'https://yng.wallet.bitchk.com';
 var REMOTE_LOAD = 'true';

@@ -18,6 +18,9 @@ module.exports = function(grunt) {
             pack_copy: {
                 command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cd tmp; tar -zcvf  ../<%= pkg.name %>.tar.gz .;cp -R . ../../deploy/<%= pkg.name %>-wallet/src'
             },
+            pack_deploy: {
+                command: 'cd ../deploy/<%= pkg.name %>-wallet; ./<%=pkg.name%>-deploy.sh'
+            },
             externalServices: {
                 command: 'node ./util/buildExternalServices.js'
             },
