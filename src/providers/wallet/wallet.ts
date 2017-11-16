@@ -7,7 +7,6 @@ import { TxFormatProvider } from '../tx-format/tx-format';
 import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { RateProvider } from '../rate/rate';
-import { Filter } from '../filter/filter';
 import { PopupProvider } from '../popup/popup';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
@@ -44,7 +43,6 @@ export class WalletProvider {
     private persistenceProvider: PersistenceProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private rateProvider: RateProvider,
-    private filter: Filter,
     private popupProvider: PopupProvider,
     private ongoingProcess: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider
@@ -215,11 +213,11 @@ export class WalletProvider {
           let spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
           let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
-          cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
-          cache.pendingBalanceAlternative = this.filter.formatFiatAmount(pendingBalanceAlternative);
-          cache.lockedBalanceAlternative = this.filter.formatFiatAmount(lockedBalanceAlternative);
-          cache.spendableBalanceAlternative = this.filter.formatFiatAmount(spendableBalanceAlternative);
-          cache.alternativeConversionRate = this.filter.formatFiatAmount(alternativeConversionRate);
+          // cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
+          // cache.pendingBalanceAlternative = this.filter.formatFiatAmount(pendingBalanceAlternative);
+          // cache.lockedBalanceAlternative = this.filter.formatFiatAmount(lockedBalanceAlternative);
+          // cache.spendableBalanceAlternative = this.filter.formatFiatAmount(spendableBalanceAlternative);
+          // cache.alternativeConversionRate = this.filter.formatFiatAmount(alternativeConversionRate);
 
           cache.alternativeBalanceAvailable = true;
           cache.isRateAvailable = true;

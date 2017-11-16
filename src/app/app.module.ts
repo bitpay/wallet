@@ -70,8 +70,10 @@ import { ChooseFeeLevelPage } from '../pages/choose-fee-level/choose-fee-level';
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 
 /* Pipes */
-import { ToUnitPipe } from '../pipes/toUnit';
-import { ToFiatPipe } from '../pipes/toFiat';
+import { SatToUnitPipe } from '../pipes/satToUnit';
+import { SatToFiatPipe } from '../pipes/satToFiat';
+import { UnitToFiatPipe } from '../pipes/unitToFiat';
+import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 
 /* Providers */
 import { AddressBookProvider } from '../providers/address-book/address-book';
@@ -82,7 +84,6 @@ import { ConfigProvider } from '../providers/config/config';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../providers/external-link/external-link';
 import { FeeProvider } from '../providers/fee/fee';
-import { Filter } from '../providers/filter/filter';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
 import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
@@ -162,7 +163,6 @@ let providers: any = [
   DerivationPathHelperProvider,
   ExternalLinkProvider,
   FeeProvider,
-  Filter,
   IncomingDataProvider,
   LanguageProvider,
   NodeWebkitProvider,
@@ -204,8 +204,10 @@ let providers: any = [
 ];
 
 let pipes = [
-  ToUnitPipe,
-  ToFiatPipe,
+  SatToUnitPipe,
+  SatToFiatPipe,
+  UnitToFiatPipe,
+  FiatToUnitPipe
 ];
 
 export function declarationsComponents() {

@@ -1,12 +1,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Amount</ion-title>
+    <ion-title>{{'Amount' | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
-
-<!-- TODO send max -->
 
 <ion-content>
   <ion-card>
@@ -16,8 +14,7 @@
     <ion-list>
       <ion-item>
         <ion-icon *ngIf="recipientType == 'wallet'" item-left>
-          <img src="assets/img/icon-wallet.svg" [ngClass]="{'wallet-background-color-default': !toColor}" [ngStyle]="{'background-color': color}"
-            class="icon-wallet">
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet">
         </ion-icon>
         <ion-icon *ngIf="recipientType == 'contact'" item-left>
           <img src="assets/img/contact-placeholder.svg" class="icon-contact">
@@ -34,11 +31,14 @@
     <div [ngClass]="{'amount-pane-recipient': !customAmount && !nextStep,
       'amount-pane-no-recipient': customAmount || nextStep}">
 
-      <div class="amount-bar">
+      <!-- <div class="amount-bar">
         <div class="title">
           <span translate>Amount</span>
         </div>
-      </div>
+      </div> -->
+
+      <div>{{asd | unitToFiat: expression }}</div>
+      <div>{{asd2 | fiatToUnit: expression}}</div>
 
       <div class="amount">
         <div class="amount__editable" [ngClass]="{'amount__editable--minimize': smallFont, 'amount__editable--standard': !smallFont, 'amount__editable--placeholder': !amount}">

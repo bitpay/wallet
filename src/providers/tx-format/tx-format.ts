@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BwcProvider } from '../bwc/bwc';
 import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
-import { Filter } from '../filter/filter';
 import * as _ from "lodash";
 
 @Injectable()
@@ -15,7 +14,6 @@ export class TxFormatProvider {
     private bwc: BwcProvider,
     private rate: RateProvider,
     private config: ConfigProvider,
-    private filter: Filter
   ) {
     console.log('Hello TxFormatProvider Provider');
   }
@@ -55,16 +53,16 @@ export class TxFormatProvider {
     });
   };
 
-  public formatAlternativeStr(coin: string, satoshis: number) {
-    if (isNaN(satoshis)) return;
-    let settings = this.config.get().wallet.settings;
+  // public formatAlternativeStr(coin: string, satoshis: number) {
+  //   if (isNaN(satoshis)) return;
+  //   let settings = this.config.get().wallet.settings;
 
-    var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
-    var v1FormatFiat = this.filter.formatFiatAmount(v1);
-    if (!v1FormatFiat) return;
+  //   var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
+  //   // var v1FormatFiat = this.filter.formatFiatAmount(v1);
+  //   if (!v1FormatFiat) return;
 
-    return v1FormatFiat + ' ' + settings.alternativeIsoCode;
-  };
+  //   return v1FormatFiat + ' ' + settings.alternativeIsoCode;
+  // };
 
   public processTx(coin: string, tx: any): any {
     if (!tx || tx.action == 'invalid')
@@ -90,7 +88,7 @@ export class TxFormatProvider {
     }
 
     tx.amountStr = this.formatAmountStr(coin, tx.amount);
-    tx.alternativeAmountStr = this.formatAlternativeStr(coin, tx.amount);
+    // tx.alternativeAmountStr = this.formatAlternativeStr(coin, tx.amount);
     tx.feeStr = this.formatAmountStr(coin, tx.fee || tx.fees);
 
     if (tx.amountStr) {
@@ -179,7 +177,7 @@ export class TxFormatProvider {
 
     // If fiat currency
     if (currency != 'BCH' && currency != 'BTC' && currency != 'sat') {
-      amountUnitStr = this.filter.formatFiatAmount(amount) + ' ' + currency;
+      // amountUnitStr = this.filter.formatFiatAmount(amount) + ' ' + currency;
       amountSat = this.rate.fromFiat(amount, currency, coin).toFixed(0);
     } else if (currency == 'sat') {
       amountSat = amount;

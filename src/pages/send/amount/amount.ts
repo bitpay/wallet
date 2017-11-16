@@ -9,7 +9,6 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
 import { RateProvider } from '../../../providers/rate/rate';
-import { Filter } from '../../../providers/filter/filter';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 //pages
@@ -21,6 +20,8 @@ import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
   templateUrl: 'amount.html',
 })
 export class AmountPage {
+  public expression: any;
+  public finalAmount: any;
 
   public amountStr: string = '';
   public smallFont: boolean;
@@ -69,9 +70,11 @@ export class AmountPage {
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider,
     private rateProvider: RateProvider,
-    private filter: Filter,
     private txFormatProvider: TxFormatProvider
   ) {
+    this.expression = 0;
+    this.finalAmount = 0;
+
     this.allowSend = false;
     this.config = this.configProvider.get();
     this.walletConfig = this.config.wallet;
@@ -83,7 +86,6 @@ export class AmountPage {
   }
 
   ionViewDidLoad() {
-    console.log('Params', this.navParams.data);
     this.toAddress = this.navParams.data.toAddress;
     this.fromSend = this.navParams.data.fromSend;
     this._id = this.navParams.data.id;
@@ -95,7 +97,7 @@ export class AmountPage {
     this.amount = this.navParams.data.amount;
     this.setAvailableUnits();
     this.updateUnitUI();
-    //this.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' || $ionicHistory.backView().stateName == 'tabs.bitpayCard'); TODO
+
     if (!this.nextStep && !this.toAddress) {
       this.logger.error('Bad params at amount')
       throw ('bad params');
@@ -131,7 +133,7 @@ export class AmountPage {
   public toggleAlternative(): void {
     if (this.amountStr && this.isExpression(this.amountStr)) {
       let amount = this.evaluate(this.format(this.amountStr));
-      this.globalResult = '= ' + this.processResult(amount);
+      // this.globalResult = '= ' + this.processResult(amount);
     }
   };
 
@@ -188,6 +190,7 @@ export class AmountPage {
   }
 
   public pushDigit(digit: string): void {
+    this.expression += digit;
     if (this.amountStr && this.amountStr.length >= this.LENGTH_EXPRESSION_LIMIT) return;
     if (this.amountStr.indexOf('.') > -1 && digit == '.') return;
     // TODO: next line - Need: isFiat
@@ -205,6 +208,7 @@ export class AmountPage {
   };
 
   public pushOperator(operator: string): void {
+    this.expression += operator;
     if (!this.amountStr || this.amountStr.length == 0) return;
     this.amountStr = this._pushOperator(this.amountStr, operator);
   };
@@ -237,7 +241,7 @@ export class AmountPage {
     var result = this.evaluate(formatedValue);
     this.allowSend = _.isNumber(result) && +result > 0;
     if (_.isNumber(result)) {
-      this.globalResult = this.isExpression(this.amountStr) ? '= ' + this.processResult(result) : '';
+      // this.globalResult = this.isExpression(this.amountStr) ? '= ' + this.processResult(result) : '';
 
       if (this.availableUnits[this.unitIndex].isFiat) {
 
@@ -249,7 +253,7 @@ export class AmountPage {
           this.allowSend = false;
         }
       } else {
-        this.alternativeAmount = this.filter.formatFiatAmount((this.toFiat(result)));
+        // this.alternativeAmount = this.txFormatProvider.toFiat(result);
       }
       this.globalResult = result.toString();
     }
@@ -276,10 +280,10 @@ export class AmountPage {
     return result;
   };
 
-  private processResult(val: number): number {
-    if (this.availableUnits[this.unitIndex].isFiat) return this.filter.formatFiatAmount(val);
-    else return this.txFormatProvider.formatAmount(parseInt(val.toFixed(this.unitDecimals)) * this.unitToSatoshi, true);
-  };
+  // private processResult(val: number): number {
+    // if (this.availableUnits[this.unitIndex].isFiat) return this.filter.formatFiatAmount(val);
+    // else return this.txFormatProvider.formatAmount(parseInt(val.toFixed(this.unitDecimals)) * this.unitToSatoshi, true);
+  // };
 
   private fromFiat(val: number): number {
     return parseFloat((this.rateProvider.fromFiat(val, this.fiatCode, this.availableUnits[this.altUnitIndex].id) * this.satToUnit).toFixed(this.unitDecimals));

@@ -2,8 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { ConfigProvider } from '../providers/config/config';
 
-@Pipe({ name: 'toUnit' })
-export class ToUnitPipe implements PipeTransform {
+@Pipe({ name: 'satToUnit' })
+export class SatToUnitPipe implements PipeTransform {
   private unitCode: string;
   
   constructor(

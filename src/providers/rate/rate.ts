@@ -90,11 +90,11 @@ export class RateProvider {
   };
 
   toFiat(satoshis, code, chain) {
-    return satoshis * this.SAT_TO_BTC * this.getRate(code, chain);
+    return satoshis * this.getRate(code, chain);
   };
 
   fromFiat(amount, code, chain) {
-    return amount / this.getRate(code, chain) * this.BTC_TO_SAT;
+    return amount / this.getRate(code, chain);
   };
 
   listAlternatives(sort: boolean) {

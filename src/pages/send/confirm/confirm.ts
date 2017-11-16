@@ -331,7 +331,7 @@ export class ConfirmPage {
         tx.amountStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.amount);
         tx.amountValueStr = tx.amountStr.split(' ')[0];
         tx.amountUnitStr = tx.amountStr.split(' ')[1];
-        tx.alternativeAmountStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, tx.amount);
+        // tx.alternativeAmountStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, tx.amount);
       }
 
       updateAmount();
@@ -380,7 +380,7 @@ export class ConfirmPage {
           this.getTxp(_.clone(tx), wallet, opts.dryRun).then((txp: any) => {
             this.onGoingProcessProvider.set('calculatingFee', false);
             txp.feeStr = this.txFormatProvider.formatAmountStr(wallet.coin, txp.fee);
-            txp.alternativeFeeStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, txp.fee);
+            // txp.alternativeFeeStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, txp.fee);
 
             let per = (txp.fee / (txp.amount + txp.fee) * 100);
             txp.feeRatePerStr = per.toFixed(2) + '%';
