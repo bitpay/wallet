@@ -1,36 +1,197 @@
 {
-    "project_info": {
-        "project_number": "149194066736",
-        "firebase_url": "https://bitchk-wallet.firebaseio.com",
-        "project_id": "bitchk-wallet",
-        "storage_bucket": "bitchk-wallet.appspot.com"
-    },
-    "client": [{
-        "client_info": {
-            "mobilesdk_app_id": "1:574421125911:ios:33a359229f0c5af0",
-            "android_client_info": {
-                "package_name": "com.bitchk.wallet"
-            }
-        },
-        "oauth_client": [{
-            "client_id": "",
-            "client_type": 3
-        }],
-        "api_key": [{
-            "current_key": ""
-        }],
-        "services": {
-            "analytics_service": {
-                "status": 1
-            },
-            "appinvite_service": {
-                "status": 1,
-                "other_platform_oauth_client": []
-            },
-            "ads_service": {
-                "status": 2
-            }
+  "project_info": {
+    "project_number": "143239831537",
+    "firebase_url": "https://bitchk-bitchk.firebaseio.com",
+    "project_id": "bitchk-bitchk",
+    "storage_bucket": "bitchk-bitchk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:d46bb24e5a4e38a3",
+        "android_client_info": {
+          "package_name": "com.bitchk.becheck"
         }
-    }],
-    "configuration_version": "1"
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:681c0c255bf103e6",
+        "android_client_info": {
+          "package_name": "com.bitchk.yangcoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:ca8036f135a7caf5",
+        "android_client_info": {
+          "package_name": "com.bitchk.bitchk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:5844aea0341babb4",
+        "android_client_info": {
+          "package_name": "com.bitchk.quasar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:aaf471fab7cab8b1",
+        "android_client_info": {
+          "package_name": "com.bitchk.qcity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:5ea68b66c9fb11b1",
+        "android_client_info": {
+          "package_name": "com.bitchk.paxcoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }
