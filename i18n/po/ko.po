@@ -195,7 +195,7 @@ msgstr "알림 허용"
 
 #: www/views/onboarding/disclaimer.html:14
 msgid "Almost done! Let's review."
-msgstr "거의 완료되었습니다! 둘어보기 시작합니다."
+msgstr "거의 완료되었습니다! 둘러보기 시작합니다."
 
 #: www/views/preferencesAltCurrency.html:4
 #: www/views/tab-settings.html:79

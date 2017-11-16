@@ -83,7 +83,7 @@ var COIN_CONFIG = {
         coin: 'ssc',
         displayName: "SSC",
         coinName: "SearchCoin",
-        network: "searchcoin"
+        network: "searchcoin",
         enable: true,
     }
 }

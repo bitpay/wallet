@@ -9,7 +9,8 @@ var DEFAULT_CONFIG = {
         'qcity',
         'quasar',
         'searchcoin',
-        'paxcoin', 'ventas', 'yangcoin'
+        'paxcoin',
+        'ventas', 'yangcoin'
     ]
 }
 var COIN_CONFIG = {

@@ -1,7 +1,7 @@
 {
     "packageName": "yangcoin",
     "packageDescription": "Yang Coin Wallet",
-    "packageNameId": "com.bitchk.yngwallet",
+    "packageNameId": "com.bitchk.yangcoin",
     "statusBarColor": "#192c3a",
     "userVisibleName": "YangCoin",
     "purposeLine": "Yang Coin Wallet",
