@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('mercadoLibreCardDetailsController', function($scope, mercadoLibreService, externalLinkService, appConfigService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('mercadoLibreCardDetailsController', function($scope, mercadoLibreService, externalLinkService, gettextCatalog) {
 
   $scope.remove = function() {
     mercadoLibreService.savePendingGiftCard($scope.card, {
@@ -19,8 +19,7 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardDetailsContro
   };
 
   $scope.openSupportWebsite = function() {
-    var appName = appConfigService.name;
-    var url = appName == 'copay' ? 'https://github.com/bitpay/copay/issues/new' : 'https://help.bitpay.com/requestHelp';
+    var url = 'https://help.bitpay.com/requestHelp';
     var optIn = true;
     var title = null;
     var message = gettextCatalog.getString('Help and support information is available at the website.');
