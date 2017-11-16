@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('welcomeController', function($scope, $state, $timeout, $ionicConfig, $log,
-    ongoingProcess, profileService, startupService, storageService) {
+    ongoingProcess, profileService, startupService, storageService, appConfigService) {
 
     $scope.$on("$ionicView.afterEnter", function() {
         startupService.ready();
@@ -15,6 +15,11 @@ angular.module('copayApp.controllers').controller('welcomeController', function(
         $ionicConfig.views.swipeBackEnabled(true);
     });
 
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        $scope.appName = appConfigService.nameCase;
+        $scope.userVisibleName = appConfigService.userVisibleName;
+
+    })
     $scope.createProfile = function() {
         $log.debug('Creating profile');
         profileService.createProfile(function(err) {

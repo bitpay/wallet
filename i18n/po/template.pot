@@ -2772,7 +2772,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
+msgid "Take control of your money,<br>get started with {{userVisibleName}}."
 msgstr ""
 
 #: www/views/walletDetails.html:132

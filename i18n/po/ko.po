@@ -1322,7 +1322,7 @@ msgstr "시작하기"
 msgid "Get started"
 msgstr "시작하기"
 
-msgid "Take control of your money,<br />get started with bitcoin."
+msgid "Take control of your money,<br />get started with {{userVisibleName}}."
 msgstr "시작하세요"
 
 #: www/views/addressbook.html:20
@@ -2784,8 +2784,8 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "식제하시면 되돌릴 수 없습니다"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
-msgstr "자금을 관리하세요,<br>비트코인 시작하기"
+msgid "Take control of your money,<br>get started with {{userVisibleName}}."
+msgstr "자금을 관리하세요<br>{{userVisibleName}} 시작하기"
 
 #: www/views/walletDetails.html:132
 #: www/views/walletDetails.html:52

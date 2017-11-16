@@ -2785,7 +2785,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "＊＊＊注意＊＊＊ このアクションを元に戻すことはできません！！！"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with bitcoin."
+msgid "Take control of your money,<br>get started with {{userVisibleName}}."
 msgstr "お金のコントロールを取り戻そう、<br>ビットコインをはじめよう"
 
 #: www/views/walletDetails.html:132
