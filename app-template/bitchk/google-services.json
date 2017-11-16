@@ -67,6 +67,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143239831537:android:ca8036f135a7caf5",
+        "android_client_info": {
+          "package_name": "com.bitchk.bitchk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143239831537-5vrq6eb09tc4bpfnuibevrbjq2qc0d1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJcc4QytUxYA-_ERu6xit5gUNgl9NxIaQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
