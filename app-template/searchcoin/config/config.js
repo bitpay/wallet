@@ -1,25 +1,26 @@
 var DEFAULT_CONFIG = {
-    networkName: 'ventas',
-    coin: 'ven',
-    bwsurl: 'https://bws.bitchk.com/bws/api',
+    networkName: 'searchcoin',
+    coin: 'ssc',
+    bwsurl: 'http://ssc.bws.bitchk.com/bws/api',
     showMoney: false,
-    networks: ['livenet', 'ventas', 'litecoin']
+    networks: ['livenet',
+        'litecoin',
+        'ventas',
+        'yangcoin',
+        'quasar',
+        'qcity',
+        'searchcoin',
+        'paxcoin'
+    ]
 }
 var COIN_CONFIG = {
-    btc: {
-        bwsurl: 'https://192.168.0.12:3232/bws/api',
-        insight: 'https://insight.bitpay.com'
-    },
-    ltc: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
-        insight: 'http://192.168.0.12:3001/insight'
-    },
-    ven: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
-        insight: 'http://192.168.0.12:3001'
-    },
-    tbc: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
-        insight: 'http://192.168.0.12:3001/insight-tbc'
-    },
+
+    ssc: {
+        bwsurl: 'https://ssc.bws.bitchk.com/bws/api',
+        insight: 'https://insight-pax.bitchk.com',
+        coin: 'ssc',
+        displayName: "SSC",
+        coinName: "SearchCoin",
+        enable: true,
+    }
 }
