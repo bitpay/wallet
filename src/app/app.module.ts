@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { DecimalPipe } from '@angular/common';
 
 /* Native modules */
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
@@ -183,6 +184,7 @@ let providers: any = [
   TxConfirmNotificationProvider,
   TxFormatProvider,
   WalletProvider,
+  DecimalPipe,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler

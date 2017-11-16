@@ -37,14 +37,12 @@ export class TxFormatProvider {
     return (this.formatAmount(satoshis) + ' ' + coin.toUpperCase());
   }
 
-  public toFiat(coin: string, satoshis: number, code: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (isNaN(satoshis)) return resolve();
-      var v1;
-      v1 = this.rate.toFiat(satoshis, code, coin);
-      if (!v1) return resolve(null);
-      return resolve(v1.toFixed(2));
-    });
+  public toFiat(coin: string, satoshis: number, code: string): number {
+    if (isNaN(satoshis)) return;
+    var v1;
+    v1 = this.rate.toFiat(satoshis, code, coin);
+    if (!v1) return null;
+    return v1.toFixed(2);
   }
 
   public formatToUSD(coin: string, satoshis: number): Promise<any> {

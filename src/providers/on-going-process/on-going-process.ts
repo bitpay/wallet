@@ -4,23 +4,26 @@ import { LoadingController } from 'ionic-angular';
 @Injectable()
 export class OnGoingProcessProvider {
   private loading: any;
+  private processNames: any;
+
   constructor(
     private loadingCtrl: LoadingController,
   ) {
     console.log('Hello OnGoingProcessProvider Provider');
+    // TODO gettextcatalog()
+    this.processNames = {
+      'loadingTx': 'Loading transaction...',
+    };
   }
 
   public set(processName: string, isOn: boolean, customHandler?: any) {
-    console.log('TODO: OnGoingProcessProvider set()...');
-    if (isOn) {
-      this.loading = this.loadingCtrl.create({
-        content: processName
-      });
-      this.loading.present();
-    }
-    else {
+    if (!isOn) {
       this.loading.dismiss();
+      return;
     }
+    this.loading = this.loadingCtrl.create({
+      content: this.processNames[processName]
+    });
+    this.loading.present();
   }
-
 }
