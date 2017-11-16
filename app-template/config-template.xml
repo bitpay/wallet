@@ -11,6 +11,12 @@
         BitPay Inc.
     </author>
     <content src="boot.html" />
+    <allow-navigation href="https://*.bitchk.com" />
+    <allow-navigation href="http://*.bitchk.com" />
+
+    <allow-intent href="https://*.bitchk.com" />
+    <allow-intent href="http://*.bitchk.com" />
+
     <access origin="*" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <preference name="iosPersistentFileLocation" value="Library" />
