@@ -18,13 +18,14 @@
     <div style="display: none;">
         <input type="text" id="PreventChromeAutocomplete" name="PreventChromeAutocomplete" autocomplete="address-level4" />
     </div>
-    <script type="text/javascript" charset="utf-8" src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="lib/jquery/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/*BUNDLENAME*_config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="*BUNDLENAME*_config.js"></script>
 
     <script>
         var initBoot = function() {
             document.addEventListener("deviceready", function() {
+                console.log("ready");
                 jQuery.ajax({
                     url: DEPLOY_URL + "/*BUNDLENAME*_config.js",
                     dataType: 'script',

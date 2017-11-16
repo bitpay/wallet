@@ -3,7 +3,6 @@
         <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
     </ion-nav-bar>
     <ion-content>
-
         <div ng-if="hasFunds">
             <div class="send-header-wrapper">
                 <div class="item item-heading send-heading"><span translate>Recipient</span></div>
@@ -16,7 +15,6 @@
                 </div>
             </div>
         </div>
-
         <div ng-if="!checkingBalance && (!hasFunds || !hasWallets)">
             <div class="list card sendTip">
                 <div class="item item-icon-right item-heading"></div>

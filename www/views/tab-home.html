@@ -2,16 +2,13 @@
     <ion-nav-bar class="bar-royal">
         <ion-nav-title><img class="tab-home__logo" src="img/app/logo.png"></ion-nav-title>
     </ion-nav-bar>
-
     <ion-content>
         <ion-refresher ng-if=" isAndroid " pulling-icon="ion-ios-refresh " spinner="ios-small " on-refresh="onRefresh() ">
         </ion-refresher>
-
         <div class="list card release ng-hide " ng-show="newRelease ">
             <i class="item icon big-icon-svg ">
         <img src="img/icon-update.svg " class="bg "/>
       </i>
-
             <div class="item title ">{{updateText}}</div>
 
             <div class="button " ng-click="openExternalLink() ">
