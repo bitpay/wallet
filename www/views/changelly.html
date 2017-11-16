@@ -12,11 +12,12 @@
     </ion-refresher>
 
   <div class="list card">
-      <div class="item item-icon-right item-heading">
+      <!--<div class="item item-icon-right item-heading">
         <span translate>Changelly - Instant Exchange</span>
         <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
-      </div>
+      </div>-->
       <div>
+        <div id="changelly-loader">Loading Changelly Exchange...</div>
         <iframe src="https://changelly.com/widget/v1?auth=email&from=BTC&to=NAV&merchant_id=fa6a4eb25086&address=&amount=0.01&ref_id=6c2996558a71&color=7d59b5"
           id="changelly-iframe" scrolling="no" style="overflow-y: hidden; border: none" >Can't load Changelly widget</iframe>
       </div>
