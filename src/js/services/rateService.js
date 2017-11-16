@@ -54,6 +54,9 @@ RateService.prototype._fetchCurrencies = function() {
       btcRate = res[0].price_btc;
       self.httprequest.get(rateServiceUrl).success(function(res) {
         self.lodash.each(res, function(currency) {
+          if(currency.name === 'Pound Sterling' && currency.code === 'GBP'){
+            currency.name = 'Great British Pound'
+          }
           self._rates[currency.code] = parseFloat(currency.rate) * parseFloat(btcRate);
           self._alternatives.push({
             name: currency.name,
