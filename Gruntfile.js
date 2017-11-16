@@ -16,7 +16,7 @@ module.exports = function(grunt) {
             },
             //make deploy stamp
             pack_copy: {
-                command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cd tmp; tar -zcvf  ../<%= pkg.name %>.tar.gz .;cp -R . ../../deploy/<%= pkg.name %>-wallet/src;rm -Rf'
+                command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cd tmp; tar -zcvf  ../<%= pkg.name %>.tar.gz .;cp -R . ../../deploy/<%= pkg.name %>-wallet/src;rm -Rf *'
             },
             pack_deploy: {
                 command: 'cd ../deploy/<%= pkg.name %>-wallet; ./<%=pkg.name%>-deploy.sh'
