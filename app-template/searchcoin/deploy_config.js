@@ -1,2 +1,2 @@
-var DEPLOY_URL = 'https://bitchk-bitchk.firebaseapp.com';
+var DEPLOY_URL = 'http://wallet-ssc.bitchk.com';
 var REMOTE_LOAD = 'true';

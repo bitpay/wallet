@@ -12,11 +12,11 @@ module.exports = function(grunt) {
                 command: 'node ./util/buildAppConfig.js'
             },
             pack_prepare: {
-                command: 'rm -Rf ../deploy/<%= pkg.name %>-wallet/src/*;rm -Rf <%= pkg.name %>.tar.gz;rm -Rf tmp;mkdir -p ../deploy/<%= pkg.name %>-wallet/src;mkdir -p tmp/cordova/and ;mkdir -p tmp/cordova/ios ;'
+                command: 'rm -Rf ../deploy/<%= pkg.name %>-wallet/src/*; rm -Rf tmp;mkdir -p ../deploy/<%= pkg.name %>-wallet/src;mkdir -p tmp/cordova/and ;mkdir -p tmp/cordova/ios ;'
             },
-            //make deploy stamp
+            //make deploy stampbit
             pack_copy: {
-                command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cd tmp; tar -zcvf  ../<%= pkg.name %>.tar.gz .;cp -R . ../../deploy/<%= pkg.name %>-wallet/src;rm -Rf *'
+                command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cd tmp; cp -R . ../../deploy/<%= pkg.name %>-wallet/src;rm -Rf *'
             },
             pack_deploy: {
                 command: 'cd ../deploy/<%= pkg.name %>-wallet; ./<%=pkg.name%>-deploy.sh'
