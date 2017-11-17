@@ -33,10 +33,15 @@
                         load(); //환경설정이 서버로 변경되었다.
                     },
                     error: function(error) {
+                        console.log("error", xhr);
                         load(); //실패했다, 그냥 로드한다.
                     },
                     async: true
+                }).fail(function(xhr, ajaxOptions, thrownError) {
+                    console.log("fail", xhr);
+                    load(); //실패했다, 그냥 로드한다.
                 });
+
 
             }, false);
         }
