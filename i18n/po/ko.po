@@ -3337,7 +3337,7 @@ msgstr "지갑 복구 문장을 사용할수 없습니다."
 
 #: src/js/services/bwcError.js:50
 msgid "Wallet service not found"
-msgstr "지갑 서비를 찾을수 없습니다."
+msgstr "지갑 서비스를 찾을수 없습니다."
 
 #: www/views/tab-home.html:69
 msgid "Wallets"
@@ -3398,7 +3398,7 @@ msgstr ""
 
 #: www/views/onboarding/collectEmail.html:10
 msgid "Where would you like to receive email notifications about payments?"
-msgstr "결재들에 대한 알림을 이메일로 받고 싶으세요?"
+msgstr "지불에 관련된 알림을 이메일로 받고 싶으세요?"
 
 #: www/views/addresses.html:19
 msgid "Why?"
@@ -3520,7 +3520,7 @@ msgstr ""
 
 #: www/views/onboarding/backupRequest.html:10
 msgid "Your wallet is never saved to cloud storage or standard device backups."
-msgstr "귀하의 지감은 클라우드 저장소나 표준백업장비에 저장되지 않습니다."
+msgstr "귀하의 지갑은 클라우드 저장소나 백업장비에 저장되지 않습니다."
 
 #: src/js/services/walletService.js:1030
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
