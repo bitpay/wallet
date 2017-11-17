@@ -302,15 +302,11 @@ export class ConfirmPage {
       }
 
       this.feeProvider.getFeeRate(wallet.coin, tx.network, tx.feeLevel).then((feeRate: any) => {
-
-
         if (!this.usingCustomFee) tx.feeRate = feeRate;
         tx.feeLevelName = this.feeProvider.feeOpts[tx.feeLevel];
 
         this.getSendMaxInfo(_.clone(tx), wallet).then((sendMaxInfo: any) => {
-
           if (sendMaxInfo) {
-
             this.logger.debug('Send max info', sendMaxInfo);
 
             if (tx.sendMax && sendMaxInfo.amount == 0) {

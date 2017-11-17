@@ -77,9 +77,9 @@
 
     <button ion-item class="item item-icon-right" *ngIf="wallet && showFee" (click)="chooseFeeLevel(tx, wallet)">
       <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-        <span>{{tx.txp[wallet.id].feeStr || '...'}}</span>
+        <span>{{feeStr | satToUnit: tx.txp[wallet.id].fee || '...'}}</span>
         <span>
-          <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
+          <span>{{altFeeStr | satToFiat: tx.txp[wallet.id].fee || '...'}}&nbsp;
           <span class="fee-rate" *ngIf="tx.txp[wallet.id].feeRatePerStr"> &middot;
               <ion-icon ios="ios-alert" md="md-alert" [hidden]="!tx.txp[wallet.id].feeToHigh"></ion-icon> &nbsp;
               <span class="fee-rate" [ngClass]="{'warn':tx.txp[wallet.id].feeToHigh}" translate> {{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount </span>
