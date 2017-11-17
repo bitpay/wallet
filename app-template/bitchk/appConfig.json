@@ -23,8 +23,8 @@
     "windowsAppId": "",
     "pushSenderId": "",
     "description": "A Secure Bitcoin Wallet",
-    "version": "3.8.2",
-    "androidVersion": "382001",
+    "version": "3.8.2.2",
+    "androidVersion": "382002",
     "_extraCSS": null,
     "_enabledExtensions": {
         "coinbase": false,
