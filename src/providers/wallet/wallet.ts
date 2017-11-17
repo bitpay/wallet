@@ -181,14 +181,29 @@ export class WalletProvider {
         cache.satToUnit = 1 / cache.unitToSatoshi;
 
         //STR
-        cache.totalBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.totalBalanceSat);
-        cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.lockedBalanceSat);
-        cache.availableBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.availableBalanceSat);
-        cache.spendableBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.spendableAmount);
-        cache.pendingBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.pendingAmount);
+        // cache.totalBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.totalBalanceSat);
+        // cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.lockedBalanceSat);
+        // cache.availableBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.availableBalanceSat);
+        // cache.spendableBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.spendableAmount);
+        // cache.pendingBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.pendingAmount);
 
         cache.alternativeName = config.settings.alternativeName;
         cache.alternativeIsoCode = config.settings.alternativeIsoCode;
+
+        // let totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        // let pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
+        // let lockedBalanceAlternative = this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        // let spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+        // let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
+
+        // cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
+        // cache.pendingBalanceAlternative = this.filter.formatFiatAmount(pendingBalanceAlternative);
+        // cache.lockedBalanceAlternative = this.filter.formatFiatAmount(lockedBalanceAlternative);
+        // cache.spendableBalanceAlternative = this.filter.formatFiatAmount(spendableBalanceAlternative);
+        // cache.alternativeConversionRate = this.filter.formatFiatAmount(alternativeConversionRate);
+
+        cache.alternativeBalanceAvailable = true;
+        cache.isRateAvailable = true;
 
         // Check address
         this.isAddressUsed(wallet, balance.byAddress).then((used) => {
@@ -205,25 +220,25 @@ export class WalletProvider {
           return reject(err);
         });
 
-        this.rateProvider.whenAvailable().then(() => {
+        // this.rateProvider.whenAvailable().then(() => {
 
-          let totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
-          let lockedBalanceAlternative = this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
-          let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
+        //   let totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        //   let pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
+        //   let lockedBalanceAlternative = this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
+        //   let spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+        //   let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
-          // cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
-          // cache.pendingBalanceAlternative = this.filter.formatFiatAmount(pendingBalanceAlternative);
-          // cache.lockedBalanceAlternative = this.filter.formatFiatAmount(lockedBalanceAlternative);
-          // cache.spendableBalanceAlternative = this.filter.formatFiatAmount(spendableBalanceAlternative);
-          // cache.alternativeConversionRate = this.filter.formatFiatAmount(alternativeConversionRate);
+        //   // cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
+        //   // cache.pendingBalanceAlternative = this.filter.formatFiatAmount(pendingBalanceAlternative);
+        //   // cache.lockedBalanceAlternative = this.filter.formatFiatAmount(lockedBalanceAlternative);
+        //   // cache.spendableBalanceAlternative = this.filter.formatFiatAmount(spendableBalanceAlternative);
+        //   // cache.alternativeConversionRate = this.filter.formatFiatAmount(alternativeConversionRate);
 
-          cache.alternativeBalanceAvailable = true;
-          cache.isRateAvailable = true;
-        }).catch((err) => {
-          console.log(err);
-        });
+        //   cache.alternativeBalanceAvailable = true;
+        //   cache.isRateAvailable = true;
+        // }).catch((err) => {
+        //   console.log(err);
+        // });
       };
 
       let isStatusCached = (): any => {

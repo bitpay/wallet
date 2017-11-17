@@ -18,6 +18,7 @@ export class HomePage {
   public wallets: any;
   public walletsBtc: any;
   public walletsBch: any;
+  public cachedBalanceUpdateOn: string;
 
   constructor(
     private navCtrl: NavController,
@@ -26,7 +27,9 @@ export class HomePage {
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger
-  ) { }
+  ) { 
+    this.cachedBalanceUpdateOn = '';
+  }
 
   ionViewDidEnter() {
     this.wallets = this.profileProvider.getWallets();
@@ -55,12 +58,9 @@ export class HomePage {
 
     _.each(wallets, (wallet: any) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
-        const balanceStr = status.totalBalanceStr ? wallet.status.totalBalanceStr : '';
-        const cachedBalanceStr = wallet.cachedBalance ? wallet.cachedBalance : '';
-        const cachedBalanceUpdateOn = wallet.cachedBalanceUpdatedOn ? ' - ' + moment(wallet.cachedBalanceUpdatedOn * 1000).fromNow() : '';
-        wallet.statusStr = balanceStr || cachedBalanceStr + cachedBalanceUpdateOn;
+        this.cachedBalanceUpdateOn = wallet.cachedBalanceUpdatedOn ? ' - ' + moment(wallet.cachedBalanceUpdatedOn * 1000).fromNow() : '';
+        this.profileProvider.setLastKnownBalance(wallet.id, status.availableBalanceSat);
         wallet.status = status;
-        this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr);
       }).catch((err) => {
         wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
         this.logger.warn(err);

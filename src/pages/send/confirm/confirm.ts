@@ -19,7 +19,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { FeeProvider } from '../../../providers/fee/fee';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 
@@ -77,7 +76,6 @@ export class ConfirmPage {
     private externalLinkProvider: ExternalLinkProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private txFormatProvider: TxFormatProvider,
     private feeProvider: FeeProvider,
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController
@@ -339,8 +337,6 @@ export class ConfirmPage {
 
           this.getTxp(_.clone(tx), wallet, opts.dryRun).then((txp: any) => {
             this.onGoingProcessProvider.set('calculatingFee', false);
-            txp.feeStr = this.txFormatProvider.formatAmountStr(wallet.coin, txp.fee);
-            // txp.alternativeFeeStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, txp.fee);
 
             let per = (txp.fee / (txp.amount + txp.fee) * 100);
             txp.feeRatePerStr = per.toFixed(2) + '%';
@@ -387,7 +383,7 @@ export class ConfirmPage {
   }
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
-    let fee = this.txFormatProvider.formatAmountStr(wallet.coin, sendMaxInfo.fee);
+    let fee = sendMaxInfo.fee;
     let msg = fee + " will be deducted for bitcoin networking fees.";
     let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
@@ -400,12 +396,12 @@ export class ConfirmPage {
   private verifyExcludedUtxos(wallet: any, sendMaxInfo: any): any {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
-      let amountBelowFeeStr = this.txFormatProvider.formatAmountStr(wallet.coin, sendMaxInfo.amountBelowFee);
+      let amountBelowFeeStr = sendMaxInfo.amountBelowFee;
       warningMsg.push("A total of " + amountBelowFeeStr + " were excluded. These funds come from UTXOs smaller than the network fee provided.");// TODO gettextCatalog
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = this.txFormatProvider.formatAmountStr(wallet.coin, sendMaxInfo.amountAboveMaxSize);
+      let amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize;
       warningMsg.push("A total of " + amountAboveMaxSizeStr + " were excluded. The maximum size allowed for a transaction was exceeded.");// TODO gettextCatalog
     }
     return warningMsg.join('\n');
@@ -513,17 +509,11 @@ export class ConfirmPage {
           if (this.walletProvider.isEncrypted(wallet))
             return resolve();
 
-          let amountUsd: number;
-          this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then((value: string) => {
-            amountUsd = parseFloat(value);
-          });
-
-          if (amountUsd <= this.CONFIRM_LIMIT_USD)
+          if (this.isFiatAmount && this.amount <= this.CONFIRM_LIMIT_USD)
             return resolve();
 
-          let amountStr = tx.amountStr;
           let name = wallet.name;
-          let message = 'Sending ' + amountStr + ' from your ' + name + ' wallet'; // TODO gettextCatalog
+          let message = 'Sending ' + this.amount + ' from your ' + name + ' wallet'; // TODO gettextCatalog
           let okText = 'Confirm'; // TODO gettextCatalog
           let cancelText = 'Cancel'; // TODO gettextCatalog
           this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
