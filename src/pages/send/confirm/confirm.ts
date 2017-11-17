@@ -99,44 +99,24 @@ export class ConfirmPage {
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConfirmPage');
-    // Setup
-    let B = this.coin.toLocaleLowerCase() == 'bch' ? this.bwcProvider.getBitcoreCash() : this.bwcProvider.getBitcore();
-    let networkName;
-    try {
-      networkName = (new B.Address(this.toAddress)).network.name;
-    } catch (e) {
-      let message = 'Copay only supports Bitcoin Cash using new version numbers addresses'; // TODO gettextCatalog
-      let backText = 'Go back'; // TODO gettextCatalog
-      let learnText = 'Learn more'; // TODO gettextCatalog
-      this.popupProvider.ionicConfirm(null, message, backText, learnText).then((res: boolean) => {
-        this.navCtrl.setRoot(SendPage);
-        this.navCtrl.popToRoot();
-        if (!res) {
-          let url = 'https://support.bitpay.com/hc/en-us/articles/115004671663';
-          this.externalLinkProvider.open(url);
-        }
-      });
-      return;
-    }
-
     // Grab stateParams
+    let addressInfo = this.navParams.data.addressInfo;
     let tx: any = {
-      amount: parseFloat(this.navParams.data.amount) * 100000000, // TODO review this line '* 100000000' convert satoshi to BTC
+      amount: this.navParams.data.amount,
       sendMax: this.navParams.data.useSendMax == 'true' ? true : false,
-      toAddress: this.navParams.data.toAddress,
+      toAddress: addressInfo.address,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
-
       feeLevel: this.configFeeLevel,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
-      recipientType: this.navParams.data.recipientType || null,
+      recipientType: this.navParams.data.recipientType,
       name: this.navParams.data.name,
       email: this.navParams.data.email,
       color: this.navParams.data.color,
-      network: networkName,
-      coin: this.navParams.data.coin,
+      network: addressInfo.network,
+      coin: addressInfo.coin,
       txp: {},
     };
 
@@ -317,17 +297,6 @@ export class ConfirmPage {
       }
 
       this.tx = tx;
-      let updateAmount = (): void => {
-        if (!tx.amount) return;
-
-        // Amount
-        tx.amountStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.amount);
-        tx.amountValueStr = tx.amountStr.split(' ')[0];
-        tx.amountUnitStr = tx.amountStr.split(' ')[1];
-        // tx.alternativeAmountStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, tx.amount);
-      }
-
-      updateAmount();
 
       // End of quick refresh, before wallet is selected.
       if (!wallet) {
@@ -357,7 +326,6 @@ export class ConfirmPage {
 
             tx.sendMaxInfo = sendMaxInfo;
             tx.amount = tx.sendMaxInfo.amount;
-            updateAmount();
             this.onGoingProcessProvider.set('calculatingFee', false);
             setTimeout(() => {
               this.showSendMaxWarning(wallet, sendMaxInfo);

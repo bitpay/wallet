@@ -75,6 +75,7 @@ import { SatToFiatPipe } from '../pipes/satToFiat';
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 
 /* Providers */
+import { AddressProvider } from '../providers/address/address';
 import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AppProvider } from '../providers/app/app';
 import { BwcProvider } from '../providers/bwc/bwc';
@@ -152,6 +153,7 @@ let pages: any = [
 ];
 
 let providers: any = [
+  AddressProvider,
   AddressBookProvider,
   AndroidFingerprintAuth,
   AppProvider,

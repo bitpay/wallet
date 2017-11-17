@@ -1,6 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import { BwcProvider } from '../../../providers/bwc/bwc';
+import { AddressProvider } from '../../../providers/address/address';
 import * as _ from 'lodash';
 
 //providers
@@ -33,7 +35,7 @@ export class AmountPage {
   public allowSend: boolean;
   public fromSend: boolean;
   public recipientType: string;
-  public toAddress: string;
+  public addressInfo: any;
   public name: string;
   public email: string;
   public showSendMax: boolean;
@@ -47,10 +49,12 @@ export class AmountPage {
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider,
     private configProvider: ConfigProvider,
+    private bwcProvider: BwcProvider,
+    private addressProvider: AddressProvider,
   ) {
     this.recipientType = this.navParams.data.recipientType || null;
     this.nextView = this.navParams.data.fromSend ? ConfirmPage : ConfirmPage;
-    this.toAddress = this.navParams.data.toAddress;
+    this.addressInfo = this.addressProvider.validateAddress(this.navParams.data.toAddress);
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
     this.LENGTH_EXPRESSION_LIMIT = 19;
@@ -188,10 +192,11 @@ export class AmountPage {
     let data: any = {
       recipientType: this.recipientType,
       amount: this.amount,
-      toAddress: this.toAddress,
+      addressInfo: this.addressInfo,
       name: this.name,
       email: this.email,
-      coin: this.unit.toLocaleLowerCase(),
+      unit: this.unit.toLocaleLowerCase(),
+      coin: this.addressInfo.coin,
       useSendMax: this.useSendMax
     }
     this.navCtrl.push(this.nextView, data);
