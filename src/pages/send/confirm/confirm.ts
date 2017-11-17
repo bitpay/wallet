@@ -30,8 +30,9 @@ import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-not
 export class ConfirmPage {
   public data: any;
   public toAddress: string;
-  public amount: string;
+  public amount: number;
   public coin: string;
+  public isFiatAmount: boolean;
   public recipientType: string;
 
   public countDown = null;
@@ -83,9 +84,8 @@ export class ConfirmPage {
   ) {
     this.tx = {};
     this.data = this.navParams.data;
-    console.log(this.data);
-    this.toAddress = this.navParams.data.toAddress;
-    this.amount = this.navParams.data.amount;
+    this.amount = this.navParams.data.amoun;
+    this.isFiatAmount = this.navParams.data.coin != this.data.unit ? true : false;
     this.coin = this.navParams.data.coin;
     this.recipientType = this.navParams.data.recipientType;
     this.isCordova = this.platformProvider.isCordova;
@@ -99,17 +99,16 @@ export class ConfirmPage {
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConfirmPage');
-    // Grab stateParams
     let addressInfo = this.navParams.data.addressInfo;
     let tx: any = {
+      toAddress: addressInfo.address,
       amount: this.navParams.data.amount,
       sendMax: this.navParams.data.useSendMax == 'true' ? true : false,
-      toAddress: addressInfo.address,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
       feeLevel: this.configFeeLevel,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
-
+      
       // Vanity tx info (not in the real tx)
       recipientType: this.navParams.data.recipientType,
       name: this.navParams.data.name,
@@ -423,6 +422,8 @@ export class ConfirmPage {
         return reject(msg);
       }
 
+      tx.amount = tx.amount * 1e8;
+
       if (tx.amount > Number.MAX_SAFE_INTEGER) {
         let msg = 'Amount too big'; // TODO gettextCatalog
         this.logger.warn(msg);
@@ -466,7 +467,7 @@ export class ConfirmPage {
 
   private setSendError(msg: string) {
     this.sendStatus = '';
-    this.popupProvider.ionicAlert('Error at confirm', this.bwcErrorProvider.msg(msg)); // TODO gettextCatalog
+    this.popupProvider.ionicAlert('Error at confirm', this.bwcErrorProvider.msg(msg), 'Ok'); // TODO gettextCatalog
   }
 
   public toggleAddress(): void {

@@ -13,8 +13,10 @@
         <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
       </div>
       <div class="amount-label">
-        <div class="amount">{{amount | satToUnit: tx.amount * 1e8 || '...'}}</div>
-        <div class="alternative">{{alternativeAmount | satToFiat: tx.amount * 1e8 || '...'}}</div>
+        <div class="amount" *ngIf="isFiatAmount">{{amount | fiatToUnit: tx.amount || '...'}}</div>
+        <div class="amount" *ngIf="!isFiatAmount">{{amount | satToUnit: tx.amount * 1e8 || '...'}}</div>
+        <div class="alternative" *ngIf="isFiatAmount">{{tx.amount | number: '1.2-8' || '...'}} {{data.unit | uppercase}}</div>
+        <div class="alternative" *ngIf="!isFiatAmount">{{alternativeAmount | satToFiat: tx.amount * 1e8 || '...'}}</div>
       </div>
     </ion-item>
     <ion-item *ngIf="tx.paypro">
