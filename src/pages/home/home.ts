@@ -6,6 +6,7 @@ import { ReleaseProvider } from '../../providers/release/release';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
+import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -15,14 +16,19 @@ import * as moment from 'moment';
 })
 export class HomePage {
   public wallets: any;
+  public walletsBtc: any;
+  public walletsBch: any;
+  public txps: any;
+  public txpsN: number;
 
   constructor(
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
     private releaseProvider: ReleaseProvider,
     private walletProvider: WalletProvider,
-    private bwcErrorProvider: BwcErrorProvider
-  ) {}
+    private bwcErrorProvider: BwcErrorProvider,
+    private logger: Logger
+  ) { }
 
   ionViewDidEnter() {
     this.wallets = this.profileProvider.getWallets();
@@ -35,7 +41,23 @@ export class HomePage {
   }
 
   private updateAllWallets(): void {
-    _.each(this.wallets, (wallet: any) => {
+    let wallets: Array<any> = [];
+    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+
+    _.each(this.walletsBtc, function (wBtc) {
+      wallets.push(wBtc);
+    });
+
+    _.each(this.walletsBch, function (wBch) {
+      wallets.push(wBch);
+    });
+
+    if (_.isEmpty(wallets)) return;
+
+    let i = wallets.length;
+
+    _.each(wallets, (wallet: any, index: number) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
         const balanceStr = status.totalBalanceStr ? wallet.status.totalBalanceStr : '';
         const cachedBalanceStr = wallet.cachedBalance ? wallet.cachedBalance : '';
@@ -43,12 +65,30 @@ export class HomePage {
         wallet.statusStr = balanceStr || cachedBalanceStr + cachedBalanceUpdateOn;
         wallet.status = status;
         this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr);
+
+        if (index == i) {
+          this.updateTxps();
+        }
       }).catch((err) => {
         wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
-        console.log(err);
+        this.logger.warn(err);
+        if (index == i) {
+          this.updateTxps();
+        }
       });
     });
   }
+
+  private updateTxps(): void {
+    this.profileProvider.getTxps({
+      limit: 3
+    }).then((res: any) => {
+      this.txps = res.txps;
+      this.txpsN = res.n;
+    }).catch((err: any) => {
+      this.logger.error(err);
+    });
+  };
 
   private checkUpdate(): void {
     this.releaseProvider.getLatestAppVersion()
@@ -62,11 +102,14 @@ export class HomePage {
       })
   }
 
-  public goToAddView(): void {
-    this.navCtrl.push(AddPage);
+  public goToAddView(coin?: string): void {
+    if (coin)
+      this.navCtrl.push(AddPage, { coin: coin });
+    else
+      this.navCtrl.push(AddPage);
   }
 
   goToWalletDetails(wallet: any) {
-    this.navCtrl.push(WalletDetailsPage, {walletId: wallet.credentials.walletId});
+    this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
   }
 }

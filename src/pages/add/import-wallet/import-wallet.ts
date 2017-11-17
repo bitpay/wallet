@@ -35,7 +35,6 @@ export class ImportWalletPage implements OnInit {
   public formData: any;
   public showAdvOpts: boolean;
   public selectedTab: string;
-  public enableCash: boolean = false;
   public isCordova: boolean;
   public file: File;
 
@@ -75,8 +74,6 @@ export class ImportWalletPage implements OnInit {
       bwsURL: this.defaults.bws.url,
       coin: this.navParams.data.coin ? this.navParams.data.coin : null
     };
-
-    if (this.config.cashSupport) this.enableCash = true;
 
     if (this.navParams.data.code)
       this.processWalletInfo(this.navParams.data.code);
