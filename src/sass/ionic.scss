@@ -40,17 +40,3 @@ $placeholder-icon-padding: 10px;
   margin: ($content-padding * 2) 14px;
 }
 
-// Fix Status Bar on iOS 11
-.platform-ios.platform-cordova:not(.fullscreen) .bar {
-  height: 64px !important;
-}
-.platform-ios.platform-cordova:not(.fullscreen) .has-header {
-  top: 64px;
-}
-.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
-  margin-top: 20px !important;
-}
-.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
-  margin-top: 20px;
-}
-
