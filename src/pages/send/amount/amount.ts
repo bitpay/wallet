@@ -114,13 +114,6 @@ export class AmountPage {
     this.finish();
   };
 
-  public toggleAlternative(): void {
-    if (this.expression && this.isExpression(this.expression)) {
-      let amount = this.evaluate(this.format(this.expression));
-      // this.globalResult = '= ' + this.processResult(amount);
-    }
-  };
-
   public pushDigit(digit: string): void {
     if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
     this.expression = (this.expression + digit).replace('..', '.');
