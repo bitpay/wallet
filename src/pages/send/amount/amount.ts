@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
+import { ConfigProvider } from '../../../providers/config/config';
 import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
 
 //pages
@@ -17,8 +18,13 @@ import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
   templateUrl: 'amount.html',
 })
 export class AmountPage {
-  private LENGTH_EXPRESSION_LIMIT = 19;
-  private SMALL_FONT_SIZE_LIMIT = 10;
+  private LENGTH_EXPRESSION_LIMIT: number;
+  private SMALL_FONT_SIZE_LIMIT: number;
+  private availableUnits: Array<any>;
+  private unit: string;
+  private reNr: RegExp;
+  private reOp: RegExp;
+  private _id: number;
 
   public expression: any;
   public amount: any;
@@ -35,13 +41,6 @@ export class AmountPage {
   public showSendMax: boolean;
   public useSendMax: boolean;
 
-  private availableUnits: Array<any> = [];
-  private unitIndex: number = 0;
-  private altUnitIndex: number = 0;
-  private reNr: RegExp;
-  private reOp: RegExp;
-  private _id: number;
-
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -49,7 +48,12 @@ export class AmountPage {
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider,
+    private configProvider: ConfigProvider,
   ) {
+    this.LENGTH_EXPRESSION_LIMIT = 19;
+    this.SMALL_FONT_SIZE_LIMIT = 10;
+    this.availableUnits = [];
+    this.unit = '';
     this.expression = '';
     this.amount = 0;
     this.showExpressionResult = false;
@@ -59,6 +63,12 @@ export class AmountPage {
   }
   
   ionViewDidLoad() {
+
+    
+    // TODO
+
+
+
     this.toAddress = this.navParams.data.toAddress;
     this.fromSend = this.navParams.data.fromSend;
     this._id = this.navParams.data.id;
@@ -70,6 +80,7 @@ export class AmountPage {
     // this.setAvailableUnits();
     // this.updateUnitUI();
     this.processAmount();
+    this.setAvailableUnits();
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
@@ -264,68 +275,20 @@ export class AmountPage {
 
   private setAvailableUnits(): void {
     let hasBTCWallets = this.profileProvider.getWallets({ coin: 'btc' }).length;
-
-    if (hasBTCWallets) {
-      this.availableUnits.push({
-        name: 'Bitcoin',
-        id: 'btc',
-        shortName: 'BTC',
-      });
-    }
-
     let hasBCHWallets = this.profileProvider.getWallets({ coin: 'bch' }).length;
+    
+    if (hasBTCWallets) this.availableUnits.push('BTC');
+    if (hasBCHWallets) this.availableUnits.push('BCH');
 
-    if (hasBCHWallets) {
-      this.availableUnits.push({
-        name: 'Bitcoin Cash',
-        id: 'bch',
-        shortName: 'BCH',
-      });
-    };
+    const unit = this.configProvider.get().wallet.settings.alternativeIsoCode;
+    this.availableUnits.push(unit);
+    this.availableUnits.push('BCH'); // TEST
+    this.unit = this.availableUnits[0];
+  }
 
-    let unitIndex = 0;
-
-    if (this.navParams.data.coin) {
-      var coins = this.navParams.data.coin.split(',');
-      var newAvailableUnits = [];
-
-      _.each(coins, (c) => {
-        var coin = _.find(this.availableUnits, {
-          id: c
-        });
-        if (!coin) {
-          this.logger.warn('Could not find desired coin:' + this.navParams.data.coin)
-        } else {
-          newAvailableUnits.push(coin);
-        }
-      });
-
-      if (newAvailableUnits.length > 0) {
-        this.availableUnits = newAvailableUnits;
-      }
-    }
-    //  currency have preference
-    let fiatName;
-    // if (this.navParams.data.currency) {
-    //   this.fiatCode = this.navParams.data.currency;
-    //   this.altUnitIndex = unitIndex
-    //   unitIndex = this.availableUnits.length;
-    // } else {
-    //   this.fiatCode = this.config.alternativeIsoCode || 'USD';
-    //   fiatName = this.config.alternanativeName || this.fiatCode;
-    //   this.altUnitIndex = this.availableUnits.length;
-    // }
-
-    // this.availableUnits.push({
-    //   name: fiatName || this.fiatCode,
-    //   // TODO
-    //   id: this.fiatCode,
-    //   shortName: this.fiatCode,
-    //   isFiat: true,
-    // });
-
-    // if (this.navParams.data.fixedUnit) {
-    //   this.fixedUnit = true;
-    // }
+  public updateUnit(): void {
+    this.availableUnits.slice(0, this.availableUnits.length).join(',');
+    this.availableUnits.push(this.availableUnits.shift());
+    this.unit = this.availableUnits[0];
   }
 }

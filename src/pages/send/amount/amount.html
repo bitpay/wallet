@@ -36,16 +36,11 @@
 
       <div class="amount-content">
         <div class="expression">{{expression || '0.00'}}
-          <a class="unit-button" (click)="changeUnit()">{{unit || 'BTC'}}</a>
+          <a class="unit-button" (click)="updateUnit()">{{unit}}</a>
         </div>
-        <div class="amount" [hidden]="!showExpressionResult">= {{amount | number: '1.2-8'}} {{unit || 'BTC'}}</div>
-        <div class="result">≈ {{resultAmount | satToFiat: amount * 1e8 }}</div>
-        <!-- <div [ngClass]="{'amount__results-minimize': smallFont, 'amount__results-standard': !smallFont, 'amount__results-placeholder': amountResult}"
-          (click)="changeAlternativeUnit()">
-          <div class="amount__result">{{asd3 | satToFiat: amount * 1e8 }}</div>
-          <div class="amount__result-equiv" [hidden]="!alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
-          <div class="amount__result-equiv" [hidden]="alternativeAmount">&nbsp;</div>
-        </div> -->
+        <div class="amount" [hidden]="!showExpressionResult">= {{amount | number: '1.2-8'}} {{unit}}</div>
+        <div class="result" *ngIf="unit == 'BTC' || unit == 'BCH'">≈ {{resultAmount | satToFiat: amount * 1e8: unit }}</div>
+        <div class="result" *ngIf="unit != 'BTC' && unit != 'BCH'">≈ {{resultAmount | fiatToUnit: amount }}</div>
       </div>
     </div>
     <div class="keypad">
