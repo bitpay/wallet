@@ -23,8 +23,6 @@ angular.module('copayApp.controllers').controller('importController',
         value: false
       };
 
-      if (config.cashSupport) $scope.enableCash = true;
-
       if ($stateParams.code)
         $scope.processWalletInfo($stateParams.code);
 

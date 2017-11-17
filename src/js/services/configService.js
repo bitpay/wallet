@@ -61,8 +61,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
       bannedUntil: null,
     },
 
-    cashSupport: false,
-
     recentTransactions: {
       enabled: true,
     },
@@ -132,11 +130,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
         if (!configCache.hideNextSteps) {
           configCache.hideNextSteps = defaultConfig.hideNextSteps;
-        }
-
-
-        if (!configCache.cashSupport) {
-          configCache.cashSupport = defaultConfig.cashSupport;
         }
 
         if (!configCache.recentTransactions) {

@@ -26,10 +26,6 @@ angular.module('copayApp.controllers').controller('tabSettingsController', funct
         }, 10);
       });
 
-      $scope.cashSupport = {
-        value: config.cashSupport
-      };
-
 
       // TODO move this to a generic service
       bitpayCardService.getCards(function(err, cards) {
