@@ -10,7 +10,7 @@ var DEFAULT_CONFIG = {
         'quasar',
         'searchcoin',
         'paxcoin',
-        'ventas', 'yangcoin'
+        'yangcoin'
     ]
 }
 var COIN_CONFIG = {
@@ -32,22 +32,6 @@ var COIN_CONFIG = {
         enable: true,
         coinName: "Litecoin"
     },
-    ven: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
-        insight: 'http://insight.ventasnu.com',
-        coin: 'ven',
-        displayName: "VEN",
-        coinName: "VENTAS",
-        enable: true,
-    },
-    yng: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
-        insight: 'https://insight-yng.bitchk.com',
-        coin: 'yng',
-        displayName: "YNG",
-        coinName: "YangCoin",
-        enable: true,
-    },
     qct: {
         bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'https://insight-qct.bitchk.com',
@@ -65,7 +49,7 @@ var COIN_CONFIG = {
         enable: true,
     },
     pax: {
-        bwsurl: 'https://bws-pax.bitchk.com/bws/api',
+        bwsurl: 'https://bws.bitchk.com/bws/api',
         insight: 'https://insight-pax.bitchk.com',
         coin: 'pax',
         displayName: "PAX",
@@ -78,6 +62,14 @@ var COIN_CONFIG = {
         coin: 'ssc',
         displayName: "SSC",
         coinName: "SearchCoin",
+        enable: true,
+    },
+    yng: {
+        bwsurl: 'https://bws.bitchk.com/bws/api',
+        insight: 'https://insight-yng.bitchk.com',
+        coin: 'yng',
+        displayName: "YNG",
+        coinName: "YangCoin",
         enable: true,
     }
 }

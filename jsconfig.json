@@ -1,1 +1,10 @@
-{ "app.js", "www/**" }
+{
+    "exclude": [
+
+        "app.js",
+        "www/**",
+        "www",
+        "node_modules",
+        "angular-bitcore-wallet-client"
+    ]
+}
