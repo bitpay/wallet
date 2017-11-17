@@ -5,12 +5,13 @@
 
 /* Colors */
 
-$v-primary-color: #192c3a;
-$v-secondary-color: #31465b;
-$v-accent-color: #1abb9b;
+$v-primary-color: #eaeaea;
+$v-secondary-color: #bbbaba;
+$v-accent-color: #0d1312;
 $v-text-primary-color: #192c3a;
-$v-text-secondary-color: #c2c9d1;
-$v-text-accent-color: #1abb9b;
+$v-bar-royal-text:#3e3030;
+$v-text-secondary-color: #375f8c;
+$v-text-accent-color: #37413f;
 $v-success-color: #1abb9b;
 $v-warning-color: #bb331a;
 
@@ -69,3 +70,7 @@ $v-onboarding-button-secondary-outline-active-bg: darken($v-accent-color,
 $v-onboarding-button-secondary-outline-active-color: $v-accent-color;
 
 /* Main tabs */
+
+$v-home-item-head-color: #ffffff;
+$v-home-item-head-bg-color: #a0858a;
+$v-home-item-head-icon-color: #ffffff;
