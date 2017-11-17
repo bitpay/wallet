@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TxFormatProvider } from '../providers/tx-format/tx-format';
+import { DecimalPipe } from '@angular/common';
 import { ConfigProvider } from '../providers/config/config';
 
 @Pipe({ name: 'satToUnit' })
@@ -8,11 +8,11 @@ export class SatToUnitPipe implements PipeTransform {
   
   constructor(
     private configProvider: ConfigProvider,
-    private txFormatProvider: TxFormatProvider
+    private decimalPipe: DecimalPipe,
   ) {
     this.unitCode = this.configProvider.get().wallet.settings.unitCode;
   }
-  transform(value: string, satoshis: number): any {
-    return this.txFormatProvider.formatAmountStr(this.unitCode, satoshis);
+  transform(value: string, amount: number): any {
+    return this.decimalPipe.transform(amount / 1e8, '1.2-6') + ' ' + this.unitCode.toUpperCase();
   }
 }

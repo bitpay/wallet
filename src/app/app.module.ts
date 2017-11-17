@@ -72,7 +72,6 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 /* Pipes */
 import { SatToUnitPipe } from '../pipes/satToUnit';
 import { SatToFiatPipe } from '../pipes/satToFiat';
-import { UnitToFiatPipe } from '../pipes/unitToFiat';
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 
 /* Providers */
@@ -206,7 +205,6 @@ let providers: any = [
 let pipes = [
   SatToUnitPipe,
   SatToFiatPipe,
-  UnitToFiatPipe,
   FiatToUnitPipe
 ];
 

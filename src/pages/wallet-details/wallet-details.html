@@ -7,7 +7,7 @@
 <ion-content>
   <div class="balance-header" (click)="getTxHistory(true)">
     <div class="balance-str">{{wallet.status.availableBalanceStr}}</div>
-    <div class="balance-alt-str">{{alternativeBalanceStr | satToFiat : wallet.status.totalBalanceSat}}</div>
+    <div class="balance-alt-str">{{alternativeBalanceStr | satToFiat : wallet.status.availableBalanceSat}}</div>
   </div>
 
   <ion-list>
