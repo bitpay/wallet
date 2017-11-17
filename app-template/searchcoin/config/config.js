@@ -1,7 +1,7 @@
 var DEFAULT_CONFIG = {
     networkName: 'searchcoin',
     coin: 'ssc',
-    bwsurl: 'http://ssc.bws.bitchk.com/bws/api',
+    bwsurl: 'http://bws-ssc.bitchk.com/bws/api',
     showMoney: false,
     networks: ['livenet',
         'litecoin',
@@ -16,7 +16,7 @@ var DEFAULT_CONFIG = {
 var COIN_CONFIG = {
 
     ssc: {
-        bwsurl: 'https://ssc.bws.bitchk.com/bws/api',
+        bwsurl: 'https://bws-ssc.bitchk.com/bws/api',
         insight: 'https://insight-pax.bitchk.com',
         coin: 'ssc',
         displayName: "SSC",
