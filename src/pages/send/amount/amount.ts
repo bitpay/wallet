@@ -24,20 +24,18 @@ export class AmountPage {
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
-  private _id: number;
+  private nextView: any;
 
   public expression: any;
   public amount: any;
   public showExpressionResult: boolean;
 
-  public smallFont: boolean;
   public allowSend: boolean;
   public fromSend: boolean;
   public recipientType: string;
   public toAddress: string;
   public name: string;
   public email: string;
-  public color: string;
   public showSendMax: boolean;
   public useSendMax: boolean;
 
@@ -50,6 +48,11 @@ export class AmountPage {
     private nodeWebkitProvider: NodeWebkitProvider,
     private configProvider: ConfigProvider,
   ) {
+    this.recipientType = this.navParams.data.recipientType || null;
+    this.nextView = this.navParams.data.fromSend ? ConfirmPage : ConfirmPage;
+    this.toAddress = this.navParams.data.toAddress;
+    this.name = this.navParams.data.name;
+    this.email = this.navParams.data.email;
     this.LENGTH_EXPRESSION_LIMIT = 19;
     this.SMALL_FONT_SIZE_LIMIT = 10;
     this.availableUnits = [];
@@ -63,22 +66,6 @@ export class AmountPage {
   }
   
   ionViewDidLoad() {
-
-    
-    // TODO
-
-
-
-    this.toAddress = this.navParams.data.toAddress;
-    this.fromSend = this.navParams.data.fromSend;
-    this._id = this.navParams.data.id;
-    this.recipientType = this.navParams.data.recipientType || null;
-    this.name = this.navParams.data.name;
-    this.email = this.navParams.data.email;
-    this.color = this.navParams.data.color;
-    // this.expression = this.navParams.data.amount;
-    // this.setAvailableUnits();
-    // this.updateUnitUI();
     this.processAmount();
     this.setAvailableUnits();
   }
@@ -130,38 +117,6 @@ export class AmountPage {
     }
   };
 
-  public changeUnit(): void {
-    this.unitIndex++;
-    if (this.unitIndex >= this.availableUnits.length) this.unitIndex = 0;
-
-    if (this.availableUnits[this.unitIndex].isFiat) {
-      // Always return to BTC... TODO?
-      this.altUnitIndex = 0;
-    } else {
-      this.altUnitIndex = _.findIndex(this.availableUnits, function(o) {
-        return o.isFiat == true;
-      });
-    }
-
-    this.updateUnitUI();
-  };
-
-  public changeAlternativeUnit(): void {
-    // Do nothing is fiat is not main unit
-    if (!this.availableUnits[this.unitIndex].isFiat) return;
-
-    var nextCoin = _.findIndex(this.availableUnits, function (x) {
-      if (x.isFiat) return false;
-      if (x.id == this.availableUnits[this.altUnitIndex].id) return false;
-      return true;
-    });
-
-    if (nextCoin >= 0) {
-      this.altUnitIndex = nextCoin;
-      this.updateUnitUI();
-    }
-  };
-
   public pushDigit(digit: string): void {
     if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
     this.expression = (this.expression + digit).replace('..', '.');
@@ -207,7 +162,7 @@ export class AmountPage {
     }
   };
 
-  format(val: string) {
+  private format(val: string) {
     if (!val) return;
 
     var result = val.toString();
@@ -218,7 +173,7 @@ export class AmountPage {
     return result.replace('x', '*');
   };
 
-  evaluate(val: string) {
+  private evaluate(val: string) {
     var result;
     try {
       result = eval(val);
@@ -230,47 +185,16 @@ export class AmountPage {
   };
 
   public finish(): void {
-  //   let unit = this.availableUnits[this.unitIndex];
-  //   let _amount = this.evaluate(this.format(this.amountStr));
-  //   var coin = unit.id;
-  //   if (unit.isFiat) {
-  //     coin = this.availableUnits[this.altUnitIndex].id;
-  //   }
-
-  //   if (this.nextStep) {
-
-  //     this.navCtrl.push(this.nextStep, {
-  //       id: this._id,
-  //       amount: this.useSendMax ? null : _amount,
-  //       currency: unit.id.toUpperCase(),
-  //       coin: coin,
-  //       useSendMax: this.useSendMax
-  //     });
-  //   } else {
-  //     let amount = _amount;
-
-  //     if (unit.isFiat) {
-  //       amount = (this.fromFiat(amount) * this.unitToSatoshi).toFixed(0);
-  //     } else {
-  //       amount = (amount * this.unitToSatoshi).toFixed(0);
-  //     }
-
-  //     let data: any = {
-  //       recipientType: this.recipientType,
-  //       amount: this.globalResult,
-  //       toAddress: this.toAddress,
-  //       name: this.name,
-  //       email: this.email,
-  //       color: this.color,
-  //       coin: coin,
-  //       useSendMax: this.useSendMax
-  //     }
-  //     if (this.navParams.data.fromSend) {
-  //       this.navCtrl.push(ConfirmPage, data);
-  //     } else {
-  //       this.navCtrl.push(CustomAmountPage, data);
-  //     }
-  //   }
+    let data: any = {
+      recipientType: this.recipientType,
+      amount: this.amount,
+      toAddress: this.toAddress,
+      name: this.name,
+      email: this.email,
+      coin: this.unit,
+      useSendMax: this.useSendMax
+    }
+    this.navCtrl.push(this.nextView, data);
   }
 
   private setAvailableUnits(): void {
