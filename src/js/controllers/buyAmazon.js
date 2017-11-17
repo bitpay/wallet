@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService) {
+angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService, emailService) {
 
   var coin = 'btc';
   var amount;
@@ -217,13 +217,15 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
   });
 
   var initialize = function(wallet) {
+    var email = emailService.getEmailIfEnabled();
     var parsedAmount = txFormatService.parseAmount(coin, amount, currency);
     $scope.currencyIsoCode = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
-      uuid: wallet.id
+      uuid: wallet.id,
+      email: email
     };
     ongoingProcess.set('loadingTxInfo', true);
     createInvoice(dataSrc, function(err, invoice, accessKey) {

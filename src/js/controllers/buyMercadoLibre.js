@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyMercadoLibreController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, mercadoLibreService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, txFormatService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('buyMercadoLibreController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, mercadoLibreService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, txFormatService, gettextCatalog, emailService) {
 
   var coin = 'btc';
   var amount;
@@ -215,13 +215,15 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
   });
 
   var initialize = function(wallet) {
+    var email = emailService.getEmailIfEnabled();
     var parsedAmount = txFormatService.parseAmount(coin, amount, currency);
     $scope.currencyIsoCode = parsedAmount.currency;
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
       amount: parsedAmount.amount,
       currency: parsedAmount.currency,
-      uuid: wallet.id
+      uuid: wallet.id,
+      email: email
     };
     ongoingProcess.set('loadingTxInfo', true);
     createInvoice(dataSrc, function(err, invoice, accessKey) {
