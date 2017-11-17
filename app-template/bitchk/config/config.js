@@ -10,6 +10,7 @@ var DEFAULT_CONFIG = {
         'quasar',
         'searchcoin',
         'paxcoin',
+        'ventas',
         'yangcoin'
     ]
 }
