@@ -1889,7 +1889,7 @@ msgstr "지갑이 선택되지 않음"
 #: src/js/controllers/confirm.js:85
 #: src/js/controllers/topup.js:265
 msgid "No wallets available"
-msgstr "가능한 지갑없음"
+msgstr "가능한 지갑 없음"
 
 #: www/views/paperWallet.html:47
 msgid "No wallets available to receive funds"

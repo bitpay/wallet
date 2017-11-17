@@ -10,6 +10,7 @@
     <author email="support@bitpay.com" href="*URL*">
         BitPay Inc.
     </author>
+    <preference name="target-device" value="handset" />
     <content src="boot.html" />
     <allow-navigation href="https://*.bitchk.com" />
     <allow-navigation href="http://*.bitchk.com" />

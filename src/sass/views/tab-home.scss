@@ -37,9 +37,12 @@
                 padding-bottom: 1.5rem;
             }
         }
-        .item-head-red {
-            background: #e71e40;
-            color: white;
+        .item-heading {
+            color: $v-home-item-head-color;
+            background-color: $v-home-item-head-bg-color;
+            .icon {
+                color: $v-home-item-head-icon-color;
+            }
         }
         .item-sub {
             &:first-child:before {
