@@ -191,7 +191,7 @@ export class AmountPage {
       toAddress: this.toAddress,
       name: this.name,
       email: this.email,
-      coin: this.unit,
+      coin: this.unit.toLocaleLowerCase(),
       useSendMax: this.useSendMax
     }
     this.navCtrl.push(this.nextView, data);

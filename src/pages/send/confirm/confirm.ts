@@ -28,7 +28,6 @@ import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-not
   templateUrl: 'confirm.html',
 })
 export class ConfirmPage {
-
   public data: any;
   public toAddress: string;
   public amount: string;
@@ -36,10 +35,10 @@ export class ConfirmPage {
   public recipientType: string;
 
   public countDown = null;
-  public CONFIRM_LIMIT_USD: number = 20;
-  public FEE_TOO_HIGH_LIMIT_PER: number = 15;
+  public CONFIRM_LIMIT_USD: number;
+  public FEE_TOO_HIGH_LIMIT_PER: number;
 
-  public tx: any = {};
+  public tx: any;
   public wallet: any;
   public wallets: any;
   public noWalletMessage: string;
@@ -55,16 +54,11 @@ export class ConfirmPage {
 
   // Config Related values
   public config: any;
-  public walletConfig: any;
-  public unitToSatoshi: number;
-  public unitDecimals: number;
-  public satToUnit: number;
   public configFeeLevel: string;
 
-
   // Platform info
-  public isCordova: boolean = this.platformProvider.isCordova;
-  public isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+  public isCordova: boolean;
+  public isWindowsPhoneApp: boolean;
 
   //custom fee flag
   public usingCustomFee: boolean = false;
@@ -87,27 +81,26 @@ export class ConfirmPage {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController
   ) {
-    this.config = this.configProvider.get();
-    this.walletConfig = this.config.wallet;
-    this.unitToSatoshi = this.walletConfig.settings.unitToSatoshi;
-    this.unitDecimals = this.walletConfig.settings.unitDecimals;
-    this.satToUnit = 1 / this.unitToSatoshi;
-    this.configFeeLevel = this.walletConfig.settings.feeLevel ? this.walletConfig.settings.feeLevel : 'normal';
-    this.showFee = false;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ConfirmPage');
+    this.tx = {};
     this.data = this.navParams.data;
+    console.log(this.data);
     this.toAddress = this.navParams.data.toAddress;
     this.amount = this.navParams.data.amount;
     this.coin = this.navParams.data.coin;
     this.recipientType = this.navParams.data.recipientType;
+    this.isCordova = this.platformProvider.isCordova;
+    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+    this.CONFIRM_LIMIT_USD = 20;
+    this.FEE_TOO_HIGH_LIMIT_PER = 15;
+    this.showFee = false;
+    this.config = this.configProvider.get();
+    this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
   }
-
-  ionViewDidEnter() {
+  
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ConfirmPage');
     // Setup
-    let B = this.coin == 'bch' ? this.bwcProvider.getBitcoreCash() : this.bwcProvider.getBitcore();
+    let B = this.coin.toLocaleLowerCase() == 'bch' ? this.bwcProvider.getBitcoreCash() : this.bwcProvider.getBitcore();
     let networkName;
     try {
       networkName = (new B.Address(this.toAddress)).network.name;
@@ -135,7 +128,7 @@ export class ConfirmPage {
       paypro: this.navParams.data.paypro,
 
       feeLevel: this.configFeeLevel,
-      spendUnconfirmed: this.walletConfig.spendUnconfirmed,
+      spendUnconfirmed: this.config.wallet.spendUnconfirmed,
 
       // Vanity tx info (not in the real tx)
       recipientType: this.navParams.data.recipientType || null,
