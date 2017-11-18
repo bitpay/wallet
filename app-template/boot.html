@@ -25,37 +25,34 @@
     <script>
         var initBoot = function() {
             document.addEventListener("deviceready", function() {
-
-                jQuery.ajax({
-                    url: DEPLOY_URL + "/*BUNDLENAME*_config.js",
+                var req = jQuery.ajax({
+                    url: DEPLOY_URL + "/yangcoin_config.js",
                     dataType: 'script',
                     success: function(data) {
                         load(); //환경설정이 서버로 변경되었다.
                     },
                     error: function(error) {
-                        console.log("error", xhr);
-                        load(); //실패했다, 그냥 로드한다.
+                        console.log("error", error);
+                        load(true); //실패했다, 그냥 로드한다.
                     },
                     async: true
-                }).fail(function(xhr, ajaxOptions, thrownError) {
-                    console.log("fail", xhr);
-                    load(); //실패했다, 그냥 로드한다.
                 });
-
+                req.done(function(msg) {});
 
             }, false);
         }
-        var load = function() {
+        var load = function(fail) {
             var remoteUrl = "index.html";
             //ionic web view url
-            if (window && window.cordova) {
-                if (window.cordova.platformId == "android")
-                    remoteUrl = DEPLOY_URL + "/and.html";
-                else if (window.cordova.platformId == "ios") {
-                    remoteUrl = DEPLOY_URL + "/ios.html";
+            if (!fail) {
+                if (window && window.cordova) {
+                    if (window.cordova.platformId == "android")
+                        remoteUrl = DEPLOY_URL + "/and.html";
+                    else if (window.cordova.platformId == "ios") {
+                        remoteUrl = DEPLOY_URL + "/ios.html";
+                    }
                 }
             }
-
             location.href = remoteUrl;
         }
         initBoot();
