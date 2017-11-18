@@ -8,6 +8,9 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         exec: {
+            deploy_www: {
+                command: 'cp -Rf www/ platforms/ios/www/;cp -Rf www/ platforms/android/www/;'
+            },
             appConfig: {
                 command: 'node ./util/buildAppConfig.js'
             },

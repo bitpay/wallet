@@ -1,3 +1,10 @@
+var DEFAULT_CONFIG = {
+    networkName: 'yangcoin',
+    coin: 'yng',
+    bwsurl: 'https://bws-yng.bitchk.com/bws/api',
+    showMoney: false,
+    networks: ['livenet', 'ventas', 'litecoin', 'yangcoin']
+}
 var COIN_CONFIG = {
     btc: {
         bwsurl: 'https://bws.bitchk.com/bws/api',
@@ -35,7 +42,7 @@ var COIN_CONFIG = {
         enable: true,
     },
     qct: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
+        bwsurl: 'https://bws-qct.bitchk.com/bws/api',
         insight: 'https://insight-qct.bitchk.com',
         coin: 'qct',
         displayName: "QCT",
@@ -46,7 +53,7 @@ var COIN_CONFIG = {
         enable: true,
     },
     qac: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
+        bwsurl: 'https://bws-qac.bitchk.com/bws/api',
         insight: 'https://insight-qac.bitchk.com',
         coin: 'qac',
         displayName: "QAC",
@@ -55,7 +62,7 @@ var COIN_CONFIG = {
         enable: true,
     },
     pax: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
+        bwsurl: 'https://bws-pax.bitchk.com/bws/api',
         insight: 'https://insight-pax.bitchk.com',
         coin: 'pax',
         displayName: "PAX",
@@ -64,7 +71,7 @@ var COIN_CONFIG = {
         enable: true,
     },
     ssc: {
-        bwsurl: 'https://bws.bitchk.com/bws/api',
+        bwsurl: 'https://bws-ssc.bitchk.com/bws/api',
         insight: 'https://insight-ssc.bitchk.com',
         coin: 'ssc',
         displayName: "SSC",
