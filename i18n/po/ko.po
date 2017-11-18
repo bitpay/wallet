@@ -2741,9 +2741,13 @@ msgstr "전송 암호가 필요함"
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "자금을 전송하려면 코인네트웍의 수수료가 필요합니다"
 
+
+msgid "Start sending Your Coin"
+msgstr "코인 전송 시작하기"
+
 #: www/views/tab-send.html:28
 msgid "Start sending bitcoin"
-msgstr "비트코인 전송 시작하기"
+msgstr "코인 전송 시작하기"
 
 #: www/views/lockSetup.html:3
 msgid "Startup Lock"
