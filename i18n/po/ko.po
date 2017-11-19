@@ -2672,7 +2672,7 @@ msgid "Show advanced options"
 msgstr "추가 옵션 보기"
 
 #: www/views/tab-send.html:37
-msgid "Show bitcoin address"
+msgid "Show coin address"
 msgstr "코인주소 보기"
 
 #: www/views/tab-send.html:59

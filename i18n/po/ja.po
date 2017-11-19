@@ -2673,7 +2673,7 @@ msgid "Show advanced options"
 msgstr "詳細設定を表示"
 
 #: www/views/tab-send.html:37
-msgid "Show bitcoin address"
+msgid "Show coin address"
 msgstr "ビットコインアドレスを表示"
 
 #: www/views/tab-send.html:59

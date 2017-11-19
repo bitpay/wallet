@@ -2,7 +2,7 @@
     <ion-nav-bar class="bar-royal">
         <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
     </ion-nav-bar>
-    <ion-content>
+    <ion-content class="tab-bg-color">
         <div ng-if="hasFunds">
             <div class="send-header-wrapper">
                 <div class="item item-heading send-heading"><span translate>Recipient</span></div>
@@ -32,7 +32,7 @@
                     <div class="padding">
                         <!-- <button class="button button-standard button-primary" ng-click="buyBitcoin()" ng-show="hasWallets" translate>Buy Bitcoin</button> -->
                         <button class="button button-standard button-primary" ng-click="createWallet()" ng-show="!hasWallets" translate>Create bitcoin wallet</button>
-                        <button class="button button-standard button-secondary" ui-sref="tabs.receive" ng-show="hasWallets" translate>Show bitcoin address</button>
+                        <button class="button button-standard button-secondary" ui-sref="tabs.receive" ng-show="hasWallets" translate>Show coin address</button>
                     </div>
                 </div>
             </div>

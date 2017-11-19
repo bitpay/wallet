@@ -2660,7 +2660,7 @@ msgid "Show advanced options"
 msgstr ""
 
 #: www/views/tab-send.html:37
-msgid "Show bitcoin address"
+msgid "Show coin address"
 msgstr ""
 
 #: www/views/tab-send.html:59
