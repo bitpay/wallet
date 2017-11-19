@@ -233,7 +233,7 @@ msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr "누구나 귀하의 백업 문구로 귀하의 코인에 접근하고, 사용할수 있습니다."
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgid "Approximate Coin Network Fee to transfer wallet's balance (with normal priority)"
 msgstr ""
 
 #: www/views/backupWarning.html:10
@@ -368,7 +368,7 @@ msgstr ""
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:90
-msgid "Bitcoin Network Fee Policy"
+msgid "Coin Network Fee Policy"
 msgstr "코인 네트웍 거래 수수료"
 
 #: src/js/services/incomingData.js:151
@@ -2738,7 +2738,7 @@ msgid "Spending Password needed"
 msgstr "전송 암호가 필요함"
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Coin Network Fees"
 msgstr "자금을 전송하려면 코인네트웍의 수수료가 필요합니다"
 
 
@@ -2956,7 +2956,7 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "이 복구 문장은 암호로 부터 생성되었습니다. 이 지갑을 복구하기 위해서는 복구문장과 암호가 필요합니다."
 
 #: www/views/tx-details.html:93
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This transaction amount is too small compared to current Coin Network Fees. Spending these funds will need a Coin Network Fee cost comparable to the funds itself."
 msgstr "이 거래 금액은 현재의 코인 네트워크 수수료에 비해 너무 적습니다.이 금액을 사용하려면 자금에 해당하는 네트워크 수수료가 필요합니다."
 
 #: www/views/tx-details.html:89

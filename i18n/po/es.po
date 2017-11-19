@@ -233,7 +233,7 @@ msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr "Cualquier persona con tu copia de seguridad puede gastar tus bitcoins."
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgid "Approximate Coin Network Fee to transfer wallet's balance (with normal priority)"
 msgstr "Comisión aproximada de la red Bitcoin para transferir el saldo de esta billetera (con prioridad normal)"
 
 #: www/views/backupWarning.html:10
@@ -368,7 +368,7 @@ msgstr "Soportar Bitcoin Cash"
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:90
-msgid "Bitcoin Network Fee Policy"
+msgid "Coin Network Fee Policy"
 msgstr "Política de Comisión de la Red Bitcoin"
 
 #: src/js/services/incomingData.js:151
@@ -2735,7 +2735,7 @@ msgid "Spending Password needed"
 msgstr "Se necesita la contraseña para pagos"
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Coin Network Fees"
 msgstr "Gastar este balance requiere de significativas comisiones"
 
 #: www/views/tab-send.html:28
@@ -2949,7 +2949,7 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "Esta frase de recuperación fue creada con una contraseña. Para recuperar esta billetera, la frase de recuperación y la contraseña son necesarios."
 
 #: www/views/tx-details.html:93
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This transaction amount is too small compared to current Coin Network Fees. Spending these funds will need a Coin Network Fee cost comparable to the funds itself."
 msgstr "Este monto en la transacción es demasiado bajo comparado con las comisiones de la red Bitcoin. Para gastar estos fondos se requiere disponer de un monto superior a la comisión requerida por la red Bitcoin."
 
 #: www/views/tx-details.html:89

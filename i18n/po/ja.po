@@ -233,7 +233,7 @@ msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr "復元フレーズを知る者はあなたのビットコインが勝手に送れてしまいます。"
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgid "Approximate Coin Network Fee to transfer wallet's balance (with normal priority)"
 msgstr "ウォレットの残高を送るために推測される必要なビットコインネットワーク手数料(優先度：普通)"
 
 #: www/views/backupWarning.html:10
@@ -370,7 +370,7 @@ msgstr ""
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:90
-msgid "Bitcoin Network Fee Policy"
+msgid "Coin Network Fee Policy"
 msgstr "ビットコインネットワークの手数料設定"
 
 #: src/js/services/incomingData.js:151
@@ -2739,7 +2739,7 @@ msgid "Spending Password needed"
 msgstr "パスワードが必要"
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Coin Network Fees"
 msgstr "この入力の組み合わせを送金するために膨大なビットコインネットワーク手数料を必要とします"
 
 #: www/views/tab-send.html:28
@@ -2955,7 +2955,7 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "この復元フレーズにパスワードがかかっています。このウォレットを復元するためには、復元フレーズに加え、パスワードも必要です。"
 
 #: www/views/tx-details.html:93
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This transaction amount is too small compared to current Coin Network Fees. Spending these funds will need a Coin Network Fee cost comparable to the funds itself."
 msgstr "この取引の金額はビットコインネットワーク手数料より低いです。送金額より大きい手数料を払ってしまうことになります。"
 
 #: www/views/tx-details.html:89

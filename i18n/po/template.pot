@@ -224,7 +224,7 @@ msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr ""
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgid "Approximate Coin Network Fee to transfer wallet's balance (with normal priority)"
 msgstr ""
 
 #: www/views/backupWarning.html:10
@@ -359,7 +359,7 @@ msgstr ""
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:90
-msgid "Bitcoin Network Fee Policy"
+msgid "Coin Network Fee Policy"
 msgstr ""
 
 #: src/js/services/incomingData.js:151
@@ -2726,7 +2726,7 @@ msgid "Spending Password needed"
 msgstr ""
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Coin Network Fees"
 msgstr ""
 
 #: www/views/tab-send.html:28
@@ -2940,7 +2940,7 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr ""
 
 #: www/views/tx-details.html:93
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This transaction amount is too small compared to current Coin Network Fees. Spending these funds will need a Coin Network Fee cost comparable to the funds itself."
 msgstr ""
 
 #: www/views/tx-details.html:89

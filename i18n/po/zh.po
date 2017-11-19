@@ -233,7 +233,7 @@ msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr "任何人只要持有你的备份短语，就可以访问或者花掉你的比特币。"
 
 #: www/views/addresses.html:94
-msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
+msgid "Approximate Coin Network Fee to transfer wallet's balance (with normal priority)"
 msgstr "近似的比特币网络费用将钱包的余额转移 (与正常优先级)"
 
 #: www/views/backupWarning.html:10
@@ -368,7 +368,7 @@ msgstr ""
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
 #: www/views/tab-settings.html:90
-msgid "Bitcoin Network Fee Policy"
+msgid "Coin Network Fee Policy"
 msgstr "比特币网络手续费策略"
 
 #: src/js/services/incomingData.js:151
@@ -2735,7 +2735,7 @@ msgid "Spending Password needed"
 msgstr "需要支付密码"
 
 #: www/views/walletDetails.html:173
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Coin Network Fees"
 msgstr "这笔交易将需要非常高的比特币网络手续费"
 
 #: www/views/tab-send.html:28
@@ -2949,7 +2949,7 @@ msgid "This recovery phrase was created with a password. To recover this wallet 
 msgstr "此恢复短语是用密码创建。为了恢复此钱包，需要恢复短语和密码。"
 
 #: www/views/tx-details.html:93
-msgid "This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself."
+msgid "This transaction amount is too small compared to current Coin Network Fees. Spending these funds will need a Coin Network Fee cost comparable to the funds itself."
 msgstr "相对于当前比特币网络费，这笔交易金额太小。手续费相当于这笔交易金额本身。"
 
 #: www/views/tx-details.html:89
