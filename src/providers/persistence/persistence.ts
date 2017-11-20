@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Inject } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { File } from '@ionic-native/file';
+import { Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 
-import { IStorage, ISTORAGE } from './storage/istorage';
 import { PlatformProvider } from '../platform/platform';
 import { LocalStorage } from './storage/local-storage';
 import { FileStorage } from './storage/file-storage';
@@ -39,26 +38,33 @@ const Keys = {
   TX_HISTORY: walletId => 'txsHistory-' + walletId,
 };
 
-export let persistenceProviderFactory = (platform: PlatformProvider, log: Logger, file: File) => {
-  let storage;
-  if (platform.isCordova) {
-    log.info('Persistence mode: FileStorage.');
-    storage = new FileStorage(this.log, this.platform.platform, this.file);
-  } else {
-    log.info('Persistence mode: LocalStorage.');
-    storage = new LocalStorage(log);
-  }
-  // Testing in RAM
-  // storage = new RamStorage(log);
-  return new PersistenceProvider(storage, log);
-};
+interface Storage {
+  get(k: string): Promise<any>;
+  set(k: string, v: any): Promise<void>;
+  remove(k: string): Promise<void>;
+  create(k: string, v: any): Promise<void>;
+}
 
 @Injectable()
 export class PersistenceProvider {
 
-  constructor( @Inject(ISTORAGE) public storage: IStorage, private logger: Logger) {
+  public storage: Storage;
+
+  constructor(
+    private logger: Logger,
+    private platform: PlatformProvider,
+    private plt: Platform,
+    private file: File) {
     this.logger.info('PersistenceProvider initialized.');
   };
+
+  public load() {
+    if (this.platform.isCordova) {
+      this.storage = new FileStorage(this.file, this.plt, this.logger);
+    } else {
+      this.storage = new LocalStorage(this.logger);
+    }
+  }
 
   storeNewProfile(profile): Promise<void> {
     return this.storage.create(Keys.PROFILE, profile);

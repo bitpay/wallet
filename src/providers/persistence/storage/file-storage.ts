@@ -14,24 +14,25 @@ export class FileStorage implements IStorage {
   }
 
   init(): Promise<void> {
-    if (this.fs && this.dir) return Promise.resolve();
+    return new Promise((resolve,reject) => {
+      if (this.fs && this.dir) return resolve();
 
-    let onSuccess = (fs: FileSystem): Promise<void> => {
-      console.log('File system started: ', fs.name, fs.root.name);
-      this.fs = fs;
-      return this.getDir().then(dir => {
-        if (!dir.nativeURL) return;
-        this.dir = dir;
-        this.log.debug("Got main dir:", dir.nativeURL);
-      });
-    };
+      let onSuccess = (fs: FileSystem): Promise<void> => {
+        this.log.debug('File system started: ', fs.name, fs.root.name);
+        this.fs = fs;
+        return this.getDir().then(dir => {
+          if (!dir.nativeURL) return reject();
+          this.dir = dir;
+          this.log.debug("Got main dir:", dir.nativeURL);
+          return resolve();
+        });
+      };
 
-    function onFailure(err: Error): Promise<void> {
-      this.log.error('Could not init file system: ' + err.message);
-      return Promise.reject(err);
-    };
+      let onFailure = (err: Error): Promise<void> => {
+        this.log.error('Could not init file system: ' + err.message);
+        return Promise.reject(err);
+      };
 
-    return this.platform.ready().then(() => {
       window.requestFileSystem(1, 0, onSuccess, onFailure);
     });
   }
@@ -59,13 +60,14 @@ export class FileStorage implements IStorage {
       try {
         parsed = JSON.parse(v);
       } catch (e) {
+        this.log.error(e);
       }
       return parsed || v;
     };
 
-    return this.init()
-      .then(() => {
-        return this.file.getFile(this.dir, k, { create: false });
+    return Promise.resolve(
+      this.init().then(() => {
+        return Promise.resolve(this.file.getFile(this.dir, k, { create: false }));
       })
       .then(fileEntry => {
         if (!fileEntry) return;
@@ -83,7 +85,8 @@ export class FileStorage implements IStorage {
         // Not found
         if (err.code == 1) return;
         else throw err;
-      });
+      })
+    );
   }
 
   set(k: string, v: any): Promise<void> {

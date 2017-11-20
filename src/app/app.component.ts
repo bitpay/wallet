@@ -38,32 +38,37 @@ export class CopayApp {
 
   initializeApp() {
     this.platform.ready().then((readySource) => {
-      this.logger.info(
-        'Platform ready (' + readySource + '): ' +
-        this.app.info.nameCase +
-        ' - v' + this.app.info.version +
-        ' #' + this.app.info.commitHash);
+      this.app.load().then(() => {
+        this.logger.info(
+          'Platform ready (' + readySource + '): ' +
+          this.app.info.nameCase +
+          ' - v' + this.app.info.version +
+          ' #' + this.app.info.commitHash);
 
-      if (this.platform.is('cordova')) {
-        this.statusBar.styleLightContent();
-        this.splashScreen.hide();
-      }
-      // Check Profile
-      this.profile.loadAndBindProfile().then((profile: any) => {
-        this.openLockModal();
-        if (profile) {
-          this.logger.info('Profile exists.');
-          this.rootPage = TabsPage;
+        if (this.platform.is('cordova')) {
+          this.statusBar.styleLightContent();
+          this.splashScreen.hide();
         }
-        else {
-          this.logger.info('No profile exists.');
-          this.profile.createProfile();
-          this.rootPage = OnboardingPage;
-        }
-      }).catch((err: any) => {
-        this.logger.warn(err);
-        this.rootPage = DisclaimerPage;
+        // Check Profile
+        this.profile.loadAndBindProfile().then((profile: any) => {
+          this.openLockModal();
+          if (profile) {
+            this.logger.info('Profile exists.');
+            this.rootPage = TabsPage;
+          }
+          else {
+            this.logger.info('No profile exists.');
+            this.profile.createProfile();
+            this.rootPage = OnboardingPage;
+          }
+        }).catch((err: any) => {
+          this.logger.warn(err);
+          this.rootPage = DisclaimerPage;
+        });
+      }).catch((err) => {
+        console.log('[app.component.ts:68] NO PUDO INICIAR LA APP',err); //TODO
       });
+
     });
   }
 
