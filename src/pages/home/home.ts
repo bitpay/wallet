@@ -6,6 +6,7 @@ import { ReleaseProvider } from '../../providers/release/release';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
+import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -15,14 +16,17 @@ import * as moment from 'moment';
 })
 export class HomePage {
   public wallets: any;
+  public walletsBtc: any;
+  public walletsBch: any;
 
   constructor(
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
     private releaseProvider: ReleaseProvider,
     private walletProvider: WalletProvider,
-    private bwcErrorProvider: BwcErrorProvider
-  ) {}
+    private bwcErrorProvider: BwcErrorProvider,
+    private logger: Logger
+  ) { }
 
   ionViewDidEnter() {
     this.wallets = this.profileProvider.getWallets();
@@ -35,7 +39,21 @@ export class HomePage {
   }
 
   private updateAllWallets(): void {
-    _.each(this.wallets, (wallet: any) => {
+    let wallets: Array<any> = [];
+    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+
+    _.each(this.walletsBtc, function (wBtc) {
+      wallets.push(wBtc);
+    });
+
+    _.each(this.walletsBch, function (wBch) {
+      wallets.push(wBch);
+    });
+
+    if (_.isEmpty(wallets)) return;
+
+    _.each(wallets, (wallet: any) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
         const balanceStr = status.totalBalanceStr ? wallet.status.totalBalanceStr : '';
         const cachedBalanceStr = wallet.cachedBalance ? wallet.cachedBalance : '';
@@ -45,7 +63,7 @@ export class HomePage {
         this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr);
       }).catch((err) => {
         wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
-        console.log(err);
+        this.logger.warn(err);
       });
     });
   }
@@ -62,11 +80,11 @@ export class HomePage {
       })
   }
 
-  public goToAddView(): void {
-    this.navCtrl.push(AddPage);
+  public goToAddView(coin?: string): void {
+    this.navCtrl.push(AddPage, { coin: coin });
   }
 
   goToWalletDetails(wallet: any) {
-    this.navCtrl.push(WalletDetailsPage, {walletId: wallet.credentials.walletId});
+    this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
   }
 }
