@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
-"PO-Revision-Date: 2017-10-10 08:58-0400\n"
+"PO-Revision-Date: 2017-11-20 08:34-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -57,14 +57,14 @@ msgid "A total of {{amountBelowFeeStr}} were excluded. These funds come from UTX
 msgstr "Se excluyeron un total de {{amountBelowFeeStr}}. Estos fondos provienen del UTXOs más pequeños que la comisión de red provista."
 
 #: src/js/controllers/preferencesAbout.js:6
-#: www/views/tab-settings.html:156
+#: www/views/tab-settings.html:149
 msgid "About"
 msgstr "Acerca de"
 
 #: src/js/controllers/modals/txpDetails.js:62
 #: src/js/controllers/tx-details.js:79
 msgid "Accepted"
-msgstr "Aceptado"
+msgstr "Aceptada"
 
 #: www/views/preferencesInformation.html:72
 msgid "Account"
@@ -161,7 +161,7 @@ msgstr "Tipo de dirección"
 msgid "Addresses With Balance"
 msgstr "Direcciones con fondos"
 
-#: www/views/tab-settings.html:149
+#: www/views/tab-settings.html:142
 msgid "Advanced"
 msgstr "Avanzado"
 
@@ -198,7 +198,7 @@ msgid "Almost done! Let's review."
 msgstr "¡Casi listo! Vamos a revisar."
 
 #: www/views/preferencesAltCurrency.html:4
-#: www/views/tab-settings.html:79
+#: www/views/tab-settings.html:72
 msgid "Alternative Currency"
 msgstr "Moneda Alternativa"
 
@@ -224,7 +224,7 @@ msgstr "Monto demasiado grande"
 msgid "Amount too low to spend"
 msgstr "Monto insuficiente para enviar"
 
-#: src/js/controllers/tab-home.js:147
+#: src/js/controllers/tab-home.js:148
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "Actualización disponible. Por seguridad, actualiza a la versión más reciente."
 
@@ -301,7 +301,7 @@ msgstr "Tiempo promedio de confirmación"
 msgid "BIP32 path for address derivation"
 msgstr "BIP32 para el camino de derivación de direcciones"
 
-#: www/views/cashScan.html:25
+#: www/views/preferencesCash.html:25
 msgid "BTC wallets"
 msgstr "Billeteras BTC"
 
@@ -317,7 +317,7 @@ msgstr "Se necesita copia de seguridad"
 msgid "Backup all livenet wallets before using this function"
 msgstr "Debes respaldar todas tus billeteras para utilizar esta función"
 
-#: src/js/controllers/cashScan.js:64
+#: src/js/controllers/preferencesCash.js:64
 #: www/views/includes/walletListSettings.html:12
 #: www/views/preferences.html:36
 msgid "Backup needed"
@@ -340,7 +340,7 @@ msgstr "Respalda tu billetera para utilizar esta función"
 msgid "Bad wallet invitation"
 msgstr "Invitación incorrecta a la billetera"
 
-#: www/views/preferencesInformation.html:102
+#: www/views/preferencesInformation.html:110
 msgid "Balance By Address"
 msgstr "Balance por Dirección"
 
@@ -357,28 +357,21 @@ msgstr "Tarjetas BitPay Visa&reg;"
 msgid "Bitcoin Address"
 msgstr "Dirección Bitcoin"
 
-#: www/views/cashScan.html:4
-msgid "Bitcoin Cash (BCH) Balances"
-msgstr "Saldos Bitcoin Cash (BCH)"
-
-#: www/views/preferencesCash.html:3
-#: www/views/tab-settings.html:47
-msgid "Bitcoin Cash Support"
-msgstr "Soportar Bitcoin Cash"
-
-#: www/views/tab-home.html:98
-#: www/views/tab-settings.html:115
+#: www/views/includes/walletSelector.html:42
+#: www/views/tab-home.html:112
+#: www/views/tab-settings.html:108
 msgid "Bitcoin Cash Wallets"
 msgstr "Billeteras Bitcoin Cash"
 
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
-#: www/views/tab-settings.html:90
+#: www/views/tab-settings.html:83
 msgid "Bitcoin Network Fee Policy"
 msgstr "Política de Comisión de la Red Bitcoin"
 
-#: www/views/tab-home.html:83
-#: www/views/tab-settings.html:107
+#: www/views/includes/walletSelector.html:11
+#: www/views/tab-home.html:97
+#: www/views/tab-settings.html:100
 msgid "Bitcoin Wallets"
 msgstr "Billeteras Bitcoin"
 
@@ -432,7 +425,7 @@ msgstr "Comprar"
 msgid "Buy &amp; Sell Bitcoin"
 msgstr "Comprar &amp; Vender Bitcoin"
 
-#: www/views/tab-send.html:35
+#: www/views/tab-send.html:40
 msgid "Buy Bitcoin"
 msgstr "Comprar Bitcoin"
 
@@ -441,7 +434,7 @@ msgstr "Comprar Bitcoin"
 msgid "Buy a Gift Card"
 msgstr "Comprar una Tarjeta de Regalo"
 
-#: src/js/controllers/buyAmazon.js:334
+#: src/js/controllers/buyAmazon.js:336
 msgid "Buy from"
 msgstr "Comprar desde"
 
@@ -453,8 +446,8 @@ msgstr "Comprando Bitcoins..."
 msgid "Calculating fee"
 msgstr "Calculando comisión"
 
-#: src/js/controllers/buyAmazon.js:313
-#: src/js/controllers/buyMercadoLibre.js:307
+#: src/js/controllers/buyAmazon.js:315
+#: src/js/controllers/buyMercadoLibre.js:309
 #: src/js/controllers/confirm.js:550
 #: src/js/controllers/topup.js:287
 #: src/js/services/incomingData.js:154
@@ -561,8 +554,8 @@ msgstr "Completar el proceso de respaldo para usar esta opción"
 msgid "Completed"
 msgstr "Terminadas"
 
-#: src/js/controllers/buyAmazon.js:311
-#: src/js/controllers/buyMercadoLibre.js:305
+#: src/js/controllers/buyAmazon.js:313
+#: src/js/controllers/buyMercadoLibre.js:307
 #: src/js/controllers/confirm.js:549
 #: src/js/controllers/copayers.js:55
 #: src/js/controllers/topup.js:285
@@ -586,7 +579,7 @@ msgstr "Confirmar compra"
 msgid "Confirm your PIN"
 msgstr "Confirma tu PIN"
 
-#: src/js/services/walletService.js:1033
+#: src/js/services/walletService.js:1063
 msgid "Confirm your new spending password"
 msgstr "Confirme su contraseña para enviar"
 
@@ -615,7 +608,7 @@ msgstr "Conectando a Glidera..."
 msgid "Connection reset by peer"
 msgstr "Conexión re establecida"
 
-#: www/views/tab-send.html:45
+#: www/views/tab-send.html:50
 msgid "Contacts"
 msgstr "Contactos"
 
@@ -697,7 +690,7 @@ msgstr "No se pudo enviar el pago"
 msgid "Could not build transaction"
 msgstr "No se pudo construir la transacción"
 
-#: src/js/services/walletService.js:854
+#: src/js/services/walletService.js:884
 msgid "Could not create address"
 msgstr "No se pudo crear la dirección"
 
@@ -723,7 +716,7 @@ msgstr "No se pudo crear con la clave pública extendida especificada"
 msgid "Could not create: Invalid wallet recovery phrase"
 msgstr "No se pudo crear: frase de recuperación inválida"
 
-#: src/js/controllers/import.js:114
+#: src/js/controllers/import.js:112
 msgid "Could not decrypt file, check your password"
 msgstr "No se pudo descifrar el archivo, verifique su contraseña"
 
@@ -731,7 +724,7 @@ msgstr "No se pudo descifrar el archivo, verifique su contraseña"
 msgid "Could not delete payment proposal"
 msgstr "No se pudo eliminar la propuesta de pago"
 
-#: src/js/controllers/cashScan.js:117
+#: src/js/controllers/preferencesCash.js:117
 msgid "Could not duplicate"
 msgstr "No se pudo duplicar"
 
@@ -784,7 +777,7 @@ msgstr "No se pudo eliminar la cuenta"
 msgid "Could not remove card"
 msgstr "No se pudo quitar tarjeta"
 
-#: src/js/services/walletService.js:776
+#: src/js/services/walletService.js:806
 msgid "Could not save preferences on the server"
 msgstr "No se pueden guardar las preferencias en el servidor"
 
@@ -792,8 +785,8 @@ msgstr "No se pueden guardar las preferencias en el servidor"
 msgid "Could not send payment"
 msgstr "No se pudo enviar el pago"
 
-#: src/js/controllers/buyAmazon.js:325
-#: src/js/controllers/buyMercadoLibre.js:318
+#: src/js/controllers/buyAmazon.js:327
+#: src/js/controllers/buyMercadoLibre.js:320
 #: src/js/controllers/topup.js:299
 msgid "Could not send transaction"
 msgstr "No se pudo enviar la transacción"
@@ -818,8 +811,8 @@ msgid "Create Shared Wallet"
 msgstr "Crear billetera compartida"
 
 #: www/views/onboarding/tour.html:51
-#: www/views/tab-home.html:75
-#: www/views/tab-send.html:36
+#: www/views/tab-home.html:89
+#: www/views/tab-send.html:41
 msgid "Create bitcoin wallet"
 msgstr "Crear billetera"
 
@@ -915,8 +908,7 @@ msgid "Details"
 msgstr "Detalles"
 
 #: src/js/controllers/lockSetup.js:9
-#: src/js/controllers/tab-settings.js:65
-#: www/views/tab-settings.html:50
+#: src/js/controllers/tab-settings.js:61
 msgid "Disabled"
 msgstr "Deshabilitado"
 
@@ -934,11 +926,11 @@ msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd lo
 msgstr "¿No ves tu idioma en Crowdin? Contacta con el encargado del proyecto! Nos encantaría soportar tu idioma."
 
 #: www/views/tab-export-file.html:59
-#: www/views/tab-home.html:22
+#: www/views/tab-home.html:36
 msgid "Download"
 msgstr "Descargar"
 
-#: www/views/cashScan.html:37
+#: www/views/preferencesCash.html:37
 msgid "Duplicate for BCH"
 msgstr "Duplicar a BCH"
 
@@ -971,10 +963,6 @@ msgstr "Dirección de correo electrónico"
 msgid "Empty addresses limit reached. New addresses cannot be generated."
 msgstr "Se ha alcanzado el límite de direcciones vacías. No se pueden generar nuevas direcciones."
 
-#: www/views/preferencesCash.html:17
-msgid "Enable Bitcoin Cash wallet creation and operation within the App."
-msgstr "Habilita la creación y operación de billetera Bitcoin Cash dentro de la aplicación."
-
 #: www/views/tab-scan.html:19
 msgid "Enable camera access in your device settings to get started."
 msgstr "Habilitar el acceso de la cámara en su configuración de dispositivo para empezar."
@@ -991,12 +979,8 @@ msgstr "Activar notificaciones push"
 msgid "Enable the camera to get started."
 msgstr "Activar la cámara empezar."
 
-#: www/views/tab-settings.html:49
-msgid "Enabled"
-msgstr "Habilitado"
-
-#: src/js/services/walletService.js:1047
-#: src/js/services/walletService.js:1062
+#: src/js/services/walletService.js:1077
+#: src/js/services/walletService.js:1092
 msgid "Enter Spending Password"
 msgstr "Ingrese contraseña para pagos"
 
@@ -1012,7 +996,7 @@ msgstr "Ingrese el monto"
 msgid "Enter custom fee"
 msgstr "Ingrese comisión"
 
-#: src/js/services/walletService.js:1029
+#: src/js/services/walletService.js:1059
 msgid "Enter new spending password"
 msgstr "Ingrese una nueva contraseña para pagos"
 
@@ -1045,13 +1029,13 @@ msgstr "Ingrese su contraseña"
 #: src/js/controllers/buyMercadoLibre.js:35
 #: src/js/controllers/confirm.js:307
 #: src/js/controllers/copayers.js:67
-#: src/js/controllers/create.js:161
-#: src/js/controllers/create.js:174
-#: src/js/controllers/create.js:180
-#: src/js/controllers/create.js:186
-#: src/js/controllers/create.js:208
-#: src/js/controllers/create.js:215
-#: src/js/controllers/create.js:233
+#: src/js/controllers/create.js:159
+#: src/js/controllers/create.js:172
+#: src/js/controllers/create.js:178
+#: src/js/controllers/create.js:184
+#: src/js/controllers/create.js:206
+#: src/js/controllers/create.js:213
+#: src/js/controllers/create.js:231
 #: src/js/controllers/export.js:109
 #: src/js/controllers/export.js:115
 #: src/js/controllers/export.js:126
@@ -1061,31 +1045,31 @@ msgstr "Ingrese su contraseña"
 #: src/js/controllers/export.js:47
 #: src/js/controllers/export.js:53
 #: src/js/controllers/feedback/send.js:23
-#: src/js/controllers/import.js:119
-#: src/js/controllers/import.js:131
-#: src/js/controllers/import.js:149
-#: src/js/controllers/import.js:200
-#: src/js/controllers/import.js:229
-#: src/js/controllers/import.js:238
-#: src/js/controllers/import.js:254
-#: src/js/controllers/import.js:266
-#: src/js/controllers/import.js:278
-#: src/js/controllers/import.js:288
-#: src/js/controllers/import.js:312
-#: src/js/controllers/import.js:325
-#: src/js/controllers/import.js:335
-#: src/js/controllers/import.js:345
-#: src/js/controllers/import.js:369
-#: src/js/controllers/import.js:382
-#: src/js/controllers/import.js:85
-#: src/js/controllers/import.js:98
-#: src/js/controllers/join.js:125
-#: src/js/controllers/join.js:139
-#: src/js/controllers/join.js:145
-#: src/js/controllers/join.js:151
-#: src/js/controllers/join.js:174
-#: src/js/controllers/join.js:182
-#: src/js/controllers/join.js:200
+#: src/js/controllers/import.js:117
+#: src/js/controllers/import.js:129
+#: src/js/controllers/import.js:147
+#: src/js/controllers/import.js:198
+#: src/js/controllers/import.js:227
+#: src/js/controllers/import.js:236
+#: src/js/controllers/import.js:252
+#: src/js/controllers/import.js:264
+#: src/js/controllers/import.js:276
+#: src/js/controllers/import.js:286
+#: src/js/controllers/import.js:310
+#: src/js/controllers/import.js:323
+#: src/js/controllers/import.js:333
+#: src/js/controllers/import.js:343
+#: src/js/controllers/import.js:367
+#: src/js/controllers/import.js:380
+#: src/js/controllers/import.js:83
+#: src/js/controllers/import.js:96
+#: src/js/controllers/join.js:124
+#: src/js/controllers/join.js:138
+#: src/js/controllers/join.js:144
+#: src/js/controllers/join.js:150
+#: src/js/controllers/join.js:173
+#: src/js/controllers/join.js:181
+#: src/js/controllers/join.js:199
 #: src/js/controllers/modals/feeLevels.js:9
 #: src/js/controllers/modals/txpDetails.js:140
 #: src/js/controllers/paperWallet.js:47
@@ -1094,8 +1078,8 @@ msgstr "Ingrese su contraseña"
 #: src/js/controllers/preferencesBitpayServices.js:50
 #: src/js/controllers/preferencesDelete.js:36
 #: src/js/controllers/preferencesExternal.js:20
-#: src/js/controllers/tab-home.js:174
-#: src/js/controllers/tab-send.js:143
+#: src/js/controllers/tab-home.js:180
+#: src/js/controllers/tab-send.js:149
 #: src/js/controllers/tabsController.js:36
 #: src/js/controllers/tabsController.js:7
 #: src/js/controllers/topup.js:21
@@ -1182,10 +1166,15 @@ msgstr "Exportar a archivo"
 msgid "Export wallet"
 msgstr "Exportar billetera"
 
-#: src/js/services/walletService.js:1174
+#: src/js/services/walletService.js:1204
 #: www/views/tab-export-qrCode.html:9
 msgid "Exporting via QR not supported for this wallet"
 msgstr "Exportar vía código QR no es compatible para esta billetera"
+
+#: www/views/preferencesInformation.html:104
+#: www/views/preferencesPrivateKey.html:6
+msgid "Extended Private Key"
+msgstr "Clave Privada Extendida"
 
 #: www/views/preferencesInformation.html:89
 msgid "Extended Public Keys"
@@ -1246,8 +1235,8 @@ msgstr "Archivo/Texto"
 msgid "Filter setting"
 msgstr "Ajuste de filtro"
 
-#: src/js/services/fingerprintService.js:43
-#: src/js/services/fingerprintService.js:48
+#: src/js/services/fingerprintService.js:42
+#: src/js/services/fingerprintService.js:47
 msgid "Finger Scan Failed"
 msgstr "Fallo en la verificación de la huella"
 
@@ -1327,14 +1316,14 @@ msgstr "Consigue efectivo local dondequiera que vayas, desde cualquier ATM Visa<
 msgid "Get news and updates from BitPay"
 msgstr "Recibir noticias y actualizaciones de BitPay"
 
+#: www/views/bitpayCard.html:49
+msgid "Get started"
+msgstr "Empezar"
+
 #: www/views/onboarding/welcome.html:8
 msgctxt "button"
 msgid "Get started"
 msgstr "Comenzar"
-
-#: www/views/bitpayCard.html:49
-msgid "Get started"
-msgstr "Empezar"
 
 #: www/views/addressbook.html:20
 msgid "Get started by adding your first one."
@@ -1364,14 +1353,14 @@ msgstr "Tarjeta de regalo generada y lista para usar."
 
 #: src/js/controllers/bitpayCard.js:114
 #: src/js/controllers/bitpayCard.js:124
-#: src/js/controllers/cashScan.js:20
+#: src/js/controllers/modals/mercadoLibreCardDetails.js:27
 #: src/js/controllers/onboarding/terms.js:23
 #: src/js/controllers/preferences.js:67
 #: src/js/controllers/preferencesAbout.js:16
-#: src/js/controllers/preferencesCash.js:34
+#: src/js/controllers/preferencesCash.js:20
 #: src/js/controllers/preferencesLanguage.js:14
-#: src/js/controllers/tab-home.js:149
-#: src/js/controllers/tab-settings.js:53
+#: src/js/controllers/tab-home.js:150
+#: src/js/controllers/tab-settings.js:49
 #: src/js/controllers/tx-details.js:193
 #: src/js/controllers/tx-details.js:56
 msgid "Go Back"
@@ -1403,17 +1392,19 @@ msgstr "Equipo no conectado."
 msgid "Hardware wallet"
 msgstr "Billetera física"
 
-#: src/js/controllers/create.js:180
-#: src/js/controllers/join.js:145
+#: src/js/controllers/create.js:178
+#: src/js/controllers/join.js:144
 msgid "Hardware wallets are not yet supported with Bitcoin Cash"
 msgstr "Billeteras en hardware no son compatibles con Bitcoin Cash todavía"
 
+#: www/views/modals/mercadolibre-card-details.html:69
 #: www/views/tab-settings.html:20
 msgid "Help & Support"
 msgstr "Ayuda & Soporte"
 
 #: src/js/controllers/bitpayCard.js:112
-#: src/js/controllers/tab-settings.js:51
+#: src/js/controllers/modals/mercadoLibreCardDetails.js:25
+#: src/js/controllers/tab-settings.js:47
 msgid "Help and support information is available at the website."
 msgstr "La ayuda está disponible en el sitio web."
 
@@ -1553,7 +1544,8 @@ msgstr "Inactivo"
 #: www/views/includes/walletItem.html:9
 #: www/views/includes/walletList.html:6
 #: www/views/includes/walletListSettings.html:9
-#: www/views/includes/walletSelector.html:16
+#: www/views/includes/walletSelector.html:25
+#: www/views/includes/walletSelector.html:56
 msgid "Incomplete"
 msgstr "Incompleta"
 
@@ -1566,7 +1558,7 @@ msgid "Incorrect PIN, try again."
 msgstr "PIN Incorrecto. Inténtelo de nuevo."
 
 #. Trying to import a malformed wallet export QR code
-#: src/js/controllers/import.js:85
+#: src/js/controllers/import.js:83
 msgid "Incorrect code format"
 msgstr "Formato de código incorrecto"
 
@@ -1586,7 +1578,7 @@ msgstr "Fondos insuficientes"
 msgid "Insufficient funds for fee"
 msgstr "Fondos insuficientes para el pago de la comisión"
 
-#: www/views/tab-settings.html:123
+#: www/views/tab-settings.html:116
 msgid "Integrations"
 msgstr "Integraciones"
 
@@ -1600,9 +1592,9 @@ msgstr "Inválido"
 msgid "Invalid URL"
 msgstr "URL incorrecta"
 
-#: src/js/controllers/create.js:186
-#: src/js/controllers/import.js:345
-#: src/js/controllers/join.js:151
+#: src/js/controllers/create.js:184
+#: src/js/controllers/import.js:343
+#: src/js/controllers/join.js:150
 msgid "Invalid account number"
 msgstr "Número de cuenta inválido"
 
@@ -1614,9 +1606,9 @@ msgstr "Dirección inválida"
 msgid "Invalid data"
 msgstr "Datos no válidos"
 
-#: src/js/controllers/create.js:161
-#: src/js/controllers/import.js:266
-#: src/js/controllers/join.js:125
+#: src/js/controllers/create.js:159
+#: src/js/controllers/import.js:264
+#: src/js/controllers/join.js:124
 msgid "Invalid derivation path"
 msgstr "Camino de derivación no válido"
 
@@ -1675,7 +1667,7 @@ msgid "Key already associated with an existing wallet"
 msgstr "La clave ya esta asociada a un monedero existente"
 
 #: www/views/preferencesLanguage.html:4
-#: www/views/tab-settings.html:68
+#: www/views/tab-settings.html:61
 msgid "Language"
 msgstr "Idioma"
 
@@ -1685,7 +1677,7 @@ msgstr "Mes pasado"
 
 #: src/js/controllers/confirm.js:132
 #: www/views/preferences.html:48
-#: www/views/preferencesCash.html:18
+#: www/views/tab-home.html:24
 #: www/views/tx-details.html:94
 msgid "Learn more"
 msgstr "Más información"
@@ -1703,7 +1695,7 @@ msgstr "Cargando direcciones..."
 msgid "Loading transaction info..."
 msgstr "Cargando información de transacción..."
 
-#: www/views/tab-settings.html:100
+#: www/views/tab-settings.html:93
 msgid "Lock App"
 msgstr "Bloquear la aplicación"
 
@@ -1899,11 +1891,12 @@ msgid "No wallet found"
 msgstr "Se se encontró la billetera"
 
 #: src/js/controllers/preferencesDelete.js:8
+#: src/js/controllers/preferencesPrivateKey.js:7
 msgid "No wallet selected"
 msgstr "No se seleccionó una billetera"
 
-#: src/js/controllers/buyAmazon.js:300
-#: src/js/controllers/buyMercadoLibre.js:292
+#: src/js/controllers/buyAmazon.js:302
+#: src/js/controllers/buyMercadoLibre.js:294
 #: src/js/controllers/confirm.js:85
 #: src/js/controllers/topup.js:265
 msgid "No wallets available"
@@ -1913,15 +1906,15 @@ msgstr "No hay billeteras disponibles"
 msgid "No wallets available to receive funds"
 msgstr "No hay billeteras disponibles para recibir fondos"
 
-#: www/views/cashScan.html:15
+#: www/views/preferencesCash.html:15
 msgid "No wallets eligible for Bitcoin Cash support"
 msgstr "No hay billeteras elegibles para soporte a Bitcoin Cash"
 
-#: src/js/controllers/cashScan.js:58
+#: src/js/controllers/preferencesCash.js:58
 msgid "Non BIP44 wallet"
 msgstr "Billetera no BIP44"
 
-#: www/views/cashScan.html:46
+#: www/views/preferencesCash.html:46
 msgid "Non eligible BTC wallets"
 msgstr "Billeteras BTC no elegibles"
 
@@ -1963,7 +1956,7 @@ msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
 msgstr "Aviso: solo billeteras 1-1 (única firma) pueden ser utilizadas para vender bitcoin"
 
 #: www/views/preferencesNotifications.html:3
-#: www/views/tab-settings.html:61
+#: www/views/tab-settings.html:54
 msgid "Notifications"
 msgstr "Notificaciones"
 
@@ -1987,7 +1980,7 @@ msgstr "Es un buen momento para realizar una copia de seguridad de la billetera.
 msgid "Now is a perfect time to assess your surroundings. Nearby windows? Hidden cameras? Shoulder-spies?"
 msgstr "Es el momento perfecto para mirar a tu alrededor. ¿ventanas? ¿cámaras? ¿gente curiosa?"
 
-#: src/js/controllers/buyAmazon.js:312
+#: src/js/controllers/buyAmazon.js:314
 #: src/js/controllers/topup.js:286
 #: src/js/services/incomingData.js:153
 #: src/js/services/popupService.js:16
@@ -2013,19 +2006,19 @@ msgstr "Renuncia oficial en inglés"
 msgid "Oh no!"
 msgstr "¡Oh no!"
 
-#: src/js/controllers/buyMercadoLibre.js:306
+#: src/js/controllers/buyMercadoLibre.js:308
 msgid "Ok"
 msgstr "Correcto"
 
-#: www/views/tab-home.html:39
+#: www/views/tab-home.html:53
 msgid "On this screen you can see all your wallets, accounts, and assets."
 msgstr "En esta pantalla puedes ver tus billeteras, cuentas y activos."
 
 #: src/js/controllers/bitpayCard.js:113
-#: src/js/controllers/cashScan.js:19
+#: src/js/controllers/modals/mercadoLibreCardDetails.js:26
 #: src/js/controllers/preferences.js:66
-#: src/js/controllers/preferencesCash.js:33
-#: src/js/controllers/tab-settings.js:52
+#: src/js/controllers/preferencesCash.js:19
+#: src/js/controllers/tab-settings.js:48
 #: src/js/controllers/tx-details.js:55
 msgid "Open"
 msgstr "Abrir"
@@ -2059,11 +2052,7 @@ msgstr "Abrir Comunidad de Traducciones"
 msgid "Open Website"
 msgstr "Abrir Sitio Web"
 
-#: src/js/controllers/preferencesCash.js:32
-msgid "Open bitcoincash.org?"
-msgstr "¿Abrir bitcoincash.org?"
-
-#: src/js/controllers/cashScan.js:18
+#: src/js/controllers/preferencesCash.js:18
 msgid "Open the recovery tool."
 msgstr "Abrir herramienta de recuperación."
 
@@ -2090,7 +2079,7 @@ msgstr "Solicitar BitPay Card"
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/js/controllers/import.js:98
+#: src/js/controllers/import.js:96
 msgid "Password required. Make sure to enter your password in advanced options"
 msgstr "Se requiere contraseña. Asegúrate de introducirla en opciones avanzadas"
 
@@ -2127,7 +2116,7 @@ msgstr "Propuesta de Pago"
 msgid "Payment Proposal Created"
 msgstr "Propuesta de Pago Creada"
 
-#: www/views/tab-home.html:46
+#: www/views/tab-home.html:60
 msgid "Payment Proposals"
 msgstr "Propuestas de Pago"
 
@@ -2200,12 +2189,12 @@ msgstr "Por favor, anota cuidadosamente esta frase."
 msgid "Please connect a camera to get started."
 msgstr "Por favor, conecta una cámara para empezar."
 
-#: src/js/controllers/import.js:278
+#: src/js/controllers/import.js:276
 msgid "Please enter the recovery phrase"
 msgstr "Por favor ingresa la frase de recuperación"
 
-#: src/js/controllers/create.js:174
-#: src/js/controllers/join.js:139
+#: src/js/controllers/create.js:172
+#: src/js/controllers/join.js:138
 msgid "Please enter the wallet recovery phrase"
 msgstr "Por favor ingresa la frase de recuperación de la billetera"
 
@@ -2226,7 +2215,7 @@ msgstr "Por favor actualiza Copay para realizar esta acción"
 msgid "Please wait"
 msgstr "Por favor espere"
 
-#: src/js/controllers/import.js:238
+#: src/js/controllers/import.js:236
 msgid "Please, select your backup file"
 msgstr "Por favor, selecciona el archivo de copia de seguridad"
 
@@ -2246,7 +2235,7 @@ msgstr "Preparando direcciones..."
 msgid "Preparing backup..."
 msgstr "Preparando copia de seguridad..."
 
-#: src/js/routes.js:1264
+#: src/js/routes.js:1263
 msgid "Press again to exit"
 msgstr "Presione nuevamente para salir"
 
@@ -2288,11 +2277,11 @@ msgstr "Propuesta Rechazada"
 msgid "Proposals"
 msgstr "Propuestas"
 
-#: src/js/controllers/buyAmazon.js:282
+#: src/js/controllers/buyAmazon.js:284
 msgid "Purchase Amount is limited to {{limitPerDay}} {{currency}} per day"
 msgstr "El monto de la compra esta limitada a {{limitPerDay}} {{currency}} por día"
 
-#: src/js/controllers/buyMercadoLibre.js:281
+#: src/js/controllers/buyMercadoLibre.js:283
 msgid "Purchase amount must be a value between 50 and 2000"
 msgstr "El monto de la compra debe ser un valor entre 50 y 2000"
 
@@ -2312,8 +2301,8 @@ msgstr "Código QR"
 msgid "Quick review!"
 msgstr "¡Revisión rápida!"
 
-#: src/js/controllers/create.js:84
-#: src/js/controllers/join.js:68
+#: src/js/controllers/create.js:82
+#: src/js/controllers/join.js:67
 msgid "Random"
 msgstr "Al azar"
 
@@ -2334,7 +2323,7 @@ msgstr "Leer más"
 msgid "Read more in our Wiki"
 msgstr "Lee más en nuestra Wiki"
 
-#: src/js/controllers/cashScan.js:61
+#: src/js/controllers/preferencesCash.js:61
 msgid "Read only wallet"
 msgstr "Billetera solo lectura"
 
@@ -2371,12 +2360,12 @@ msgid "Recent Transaction Card"
 msgstr "Tarjeta con transacciones recientes"
 
 #: www/views/activity.html:4
-#: www/views/tab-home.html:58
+#: www/views/tab-home.html:72
 msgid "Recent Transactions"
 msgstr "Transacciones Recientes"
 
 #: www/views/amount.html:18
-#: www/views/tab-send.html:9
+#: www/views/tab-send.html:14
 msgid "Recipient"
 msgstr "Destinatario"
 
@@ -2410,7 +2399,7 @@ msgid "Release information"
 msgstr "Información de la versión"
 
 #: www/views/addressbook.view.html:36
-#: www/views/modals/mercadolibre-card-details.html:69
+#: www/views/modals/mercadolibre-card-details.html:74
 msgid "Remove"
 msgstr "Remover"
 
@@ -2497,13 +2486,9 @@ msgstr "Busca direcciones con fondos"
 msgid "Scan again"
 msgstr "Escanear de nuevo"
 
-#: src/js/services/fingerprintService.js:56
+#: src/js/services/fingerprintService.js:55
 msgid "Scan your fingerprint please"
 msgstr "Por favor ingrese su huella digital"
-
-#: www/views/preferencesCash.html:23
-msgid "Scan your wallets for Bitcoin Cash"
-msgstr "Explora tus billeteras para Bitcoin Cash"
 
 #: src/js/services/onGoingProcess.js:30
 msgid "Scanning Wallet funds..."
@@ -2521,7 +2506,7 @@ msgstr "Las capturas de pantallas no son seguras"
 msgid "Search Transactions"
 msgstr "Buscar transacciones"
 
-#: www/views/tab-send.html:13
+#: www/views/tab-send.html:18
 msgid "Search or enter bitcoin address"
 msgstr "Buscar o introducir dirección bitcoin"
 
@@ -2706,11 +2691,11 @@ msgstr "Mostrar dirección"
 msgid "Show advanced options"
 msgstr "Mostrar opciones avanzadas"
 
-#: www/views/tab-send.html:37
+#: www/views/tab-send.html:42
 msgid "Show bitcoin address"
 msgstr "Mostrar dirección bitcoin"
 
-#: www/views/tab-send.html:59
+#: www/views/tab-send.html:64
 msgid "Show more"
 msgstr "Ver más"
 
@@ -2754,12 +2739,12 @@ msgstr "Deslizar para pagar"
 msgid "Slide to send"
 msgstr "Deslizar para enviar"
 
-#: www/views/cashScan.html:56
+#: www/views/preferencesCash.html:56
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the"
 msgstr "Algunas de sus billeteras no pueden ser seleccionadas para darle soporte Bitcoin Cash. Pruebe acceder a sus fondos BCH utilizando la"
 
-#: src/js/controllers/create.js:88
-#: src/js/controllers/join.js:71
+#: src/js/controllers/create.js:86
+#: src/js/controllers/join.js:70
 msgid "Specify Recovery Phrase..."
 msgstr "Especificar la frase de recuperación..."
 
@@ -2779,7 +2764,7 @@ msgstr "Se necesita la contraseña para pagos"
 msgid "Spending this balance will need significant Bitcoin network fees"
 msgstr "Gastar este balance requiere de significativas comisiones"
 
-#: www/views/tab-send.html:28
+#: www/views/tab-send.html:33
 msgid "Start sending bitcoin"
 msgstr "Empezar a enviar bitcoin"
 
@@ -2799,10 +2784,6 @@ msgstr "Listo"
 #: src/js/services/feeService.js:14
 msgid "Super Economy"
 msgstr "Súper Económico"
-
-#: www/views/preferencesCash.html:11
-msgid "Support Bitcoin Cash"
-msgstr "Soportar Bitcoin Cash"
 
 #: www/views/paperWallet.html:7
 msgid "Sweep"
@@ -2913,7 +2894,7 @@ msgstr "Los términos y condiciones oficiales en inglés se encuentran disponibl
 msgid "The password of the recovery phrase (if set)"
 msgstr "La contraseña de la frase de recuperación (si existe)"
 
-#: src/js/services/walletService.js:1139
+#: src/js/services/walletService.js:1169
 msgid "The payment was created but could not be completed. Please try again from home screen"
 msgstr "El pago fue creado pero no se pudo completar. Por favor intenta nuevamente desde la pantalla de inicio"
 
@@ -2952,13 +2933,13 @@ msgstr "El historial de transacciones y cada nueva transacción entrantes se alm
 msgid "The wallet service URL"
 msgstr "URL de Wallet Service"
 
-#: src/js/controllers/tab-home.js:38
+#: src/js/controllers/tab-home.js:39
 msgid "There is a new version of {{appName}} available"
 msgstr "Hay una nueva versión de {{appName}} disponible"
 
-#: src/js/controllers/import.js:229
-#: src/js/controllers/import.js:254
-#: src/js/controllers/import.js:335
+#: src/js/controllers/import.js:227
+#: src/js/controllers/import.js:252
+#: src/js/controllers/import.js:333
 msgid "There is an error in the form"
 msgstr "Hay un error en el formulario"
 
@@ -3016,11 +2997,11 @@ msgstr "Línea de tiempo"
 msgid "To"
 msgstr "Para"
 
-#: www/views/tab-send.html:32
+#: www/views/tab-send.html:37
 msgid "To get started, buy bitcoin or share your address. You can receive bitcoin from any wallet or service."
 msgstr "Para empezar, compra bitcoin o comparte tu dirección. Puedes recibir bitcoin desde cualquier billetera o servicio."
 
-#: www/views/tab-send.html:33
+#: www/views/tab-send.html:38
 msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
 msgstr "Para empezar, necesitarás crear una billetera y obtener bitcoins."
 
@@ -3055,8 +3036,8 @@ msgstr "Número total de copayers"
 msgid "Total wallet inputs"
 msgstr "Total de entradas de la billetera"
 
-#: src/js/services/fingerprintService.js:63
-#: src/js/services/fingerprintService.js:68
+#: src/js/services/fingerprintService.js:62
+#: src/js/services/fingerprintService.js:67
 msgid "Touch ID Failed"
 msgstr "Falló Touch ID"
 
@@ -3077,8 +3058,8 @@ msgstr "Historial de Transacciones"
 msgid "Transaction already broadcasted"
 msgstr "La transacción ya fue enviada"
 
-#: src/js/controllers/buyAmazon.js:308
-#: src/js/controllers/buyMercadoLibre.js:301
+#: src/js/controllers/buyAmazon.js:310
+#: src/js/controllers/buyMercadoLibre.js:303
 #: src/js/controllers/topup.js:281
 msgid "Transaction has not been created"
 msgstr "La transacción no ha sido creada"
@@ -3092,7 +3073,7 @@ msgid "Transaction not available at this time"
 msgstr "La transacción no esta disponible en este momento"
 
 #: src/js/controllers/activity.js:45
-#: src/js/controllers/tab-home.js:174
+#: src/js/controllers/tab-home.js:180
 msgid "Transaction not found"
 msgstr "Transacción no encontrada"
 
@@ -3104,7 +3085,7 @@ msgstr "Las transacciones sin comisión no están soportadas."
 msgid "Transfer to"
 msgstr "Transferir a"
 
-#: www/views/tab-send.html:67
+#: www/views/tab-send.html:72
 msgid "Transfer to Wallet"
 msgstr "Transferir a billetera"
 
@@ -3140,7 +3121,7 @@ msgstr "Direcciones no utilizadas"
 msgid "Unused Addresses Limit"
 msgstr "Limite de direcciones sin uso"
 
-#: src/js/controllers/tab-home.js:146
+#: src/js/controllers/tab-home.js:147
 msgid "Update Available"
 msgstr "Actualización Disponible"
 
@@ -3194,7 +3175,7 @@ msgstr "Ver Términos de Uso"
 msgid "View Transaction on Insight"
 msgstr "Ver Transacción en Insight"
 
-#: src/js/controllers/tab-home.js:148
+#: src/js/controllers/tab-home.js:149
 msgid "View Update"
 msgstr "Ver Actualización"
 
@@ -3221,6 +3202,10 @@ msgstr "ADVERTENCIA: La clave privada de esta billetera no está disponible. La 
 #: www/views/modals/paypro.html:42
 msgid "WARNING: UNTRUSTED CERTIFICATE"
 msgstr "ADVERTENCIA: EL CERTIFICADO NO ES DE CONFIANZA"
+
+#: www/views/preferencesPrivateKey.html:14
+msgid "WARNING: Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "ADVERTENCIA: Sus claves privadas extendidas son todo lo que se necesita para acceder a sus fondos de bitcoin. No olvide proteger sus claves privadas y almacenarlas en dispositivos seguros. BitPay no tiene acceso a sus claves privadas, por lo que solo usted es responsable de sus claves. Si comparte la clave acceso con servicios externos, usted asume la responsabilidad por el riesgo de robo o violación. Sólo los usuarios avanzados deberían manipular las claves privadas extendidas directamente."
 
 #: src/js/services/onGoingProcess.js:15
 msgid "Waiting for Ledger..."
@@ -3360,8 +3345,8 @@ msgstr "Billetera sin copia de seguridad"
 msgid "Wallet not found"
 msgstr "Billetera no encontrada"
 
-#: src/js/controllers/cashScan.js:81
-#: src/js/controllers/tab-home.js:230
+#: src/js/controllers/preferencesCash.js:81
+#: src/js/controllers/tab-home.js:238
 msgid "Wallet not registered"
 msgstr "Billetera no registrada"
 
@@ -3377,7 +3362,7 @@ msgstr "Frase de recuperación de la billetera no disponible"
 msgid "Wallet service not found"
 msgstr "Wallet Service no encontrado"
 
-#: www/views/tab-home.html:69
+#: www/views/tab-home.html:83
 msgid "Wallets"
 msgstr "Billeteras"
 
@@ -3387,6 +3372,7 @@ msgstr "Billeteras"
 #: src/js/controllers/preferencesDelete.js:24
 #: src/js/controllers/preferencesExternal.js:14
 #: www/views/preferencesDeleteWallet.html:11
+#: www/views/preferencesPrivateKey.html:12
 msgid "Warning!"
 msgstr "¡Advertencia!"
 
@@ -3446,7 +3432,7 @@ msgstr "¿Estaría usted dispuesto a opinar sobre {{appName}} en la app store?"
 msgid "Would you like to receive push notifications about payments?"
 msgstr "¿Quieres recibir notificaciones push sobre sus transacciones?"
 
-#: src/js/controllers/import.js:288
+#: src/js/controllers/import.js:286
 msgid "Wrong number of recovery words:"
 msgstr "Número incorrecto de palabras:"
 
@@ -3519,7 +3505,7 @@ msgstr "Tus Tarjetas de Regalo"
 msgid "Your bitcoin wallet is backed up!"
 msgstr "¡Su billetera bitcoin está resguardada!"
 
-#: www/views/tab-home.html:36
+#: www/views/tab-home.html:50
 msgid "Your bitcoin wallet is ready!"
 msgstr "¡Su billetera bitcoin está lista!"
 
@@ -3556,12 +3542,13 @@ msgstr "Tu compra fue agregada a la lista de pendientes"
 msgid "Your wallet is never saved to cloud storage or standard device backups."
 msgstr "Tu billetera nunca se sube a la nube ni se resguarda automáticamente en el dispositivo."
 
-#: src/js/services/walletService.js:1030
+#: src/js/services/walletService.js:1060
 msgid "Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down."
 msgstr "La clave de la billetera será cifrada. La contraseña para pagos no puede ser recuperada. Asegúrate de anotarla."
 
 #: www/views/includes/walletList.html:13
-#: www/views/includes/walletSelector.html:21
+#: www/views/includes/walletSelector.html:30
+#: www/views/includes/walletSelector.html:61
 #: www/views/paperWallet.html:33
 #: www/views/tab-receive.html:72
 #: www/views/walletDetails.html:131
@@ -3594,15 +3581,15 @@ msgstr "nombre@ejemplo.com"
 msgid "preparing..."
 msgstr "preparando..."
 
-#: www/views/cashScan.html:57
+#: www/views/preferencesCash.html:57
 msgid "recovery tool."
 msgstr "herramienta de recuperación."
 
-#: src/js/controllers/buyAmazon.js:239
+#: src/js/controllers/buyAmazon.js:241
 msgid "{{amountStr}} for Amazon.com Gift Card"
 msgstr "{{amountStr}} en tarjeta de regalo de Amazon.com"
 
-#: src/js/controllers/buyMercadoLibre.js:237
+#: src/js/controllers/buyMercadoLibre.js:239
 msgid "{{amountStr}} for Mercado Livre Brazil Gift Card"
 msgstr "{{amountStr}} en Tarjeta de Regalo Mercado Livre Brasil"
 
@@ -3622,9 +3609,9 @@ msgstr "{{tx.txp[wallet.id].feeRatePerStr}} de la cantidad a enviar"
 msgid "{{updatingTxHistoryProgress}} transactions downloaded"
 msgstr "{{updatingTxHistoryProgress}} transacciones descargadas"
 
-#: www/views/cashScan.html:33
 #: www/views/copayers.html:46
 #: www/views/includes/walletInfo.html:18
+#: www/views/preferencesCash.html:33
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-de-{{wallet.n}}"
 
