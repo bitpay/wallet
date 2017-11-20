@@ -24,7 +24,7 @@ msgstr "(이중사용 가능)"
 
 #: www/views/modals/txp-details.html:161
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
-msgstr "* 결재 제안은 1) 귀하가 생성한 사람이고, 코페이어가 서명이 되었거나, 2) 제안을 생성한지 24 시간이 지났을 경우 삭제할수 있습니다."
+msgstr "* 결제 제안은 1) 귀하가 생성한 사람이고, 코페이어가 서명이 되었거나, 2) 제안을 생성한지 24 시간이 지났을 경우 삭제할수 있습니다."
 
 #: www/views/tx-details.html:84
 msgid "- {{btx.feeRateStr}} of the transaction"
@@ -200,7 +200,7 @@ msgstr "거의 완료되었습니다! 둘러보기 시작합니다."
 #: www/views/preferencesAltCurrency.html:4
 #: www/views/tab-settings.html:79
 msgid "Alternative Currency"
-msgstr "다른 화패단위"
+msgstr "다른 화폐단위"
 
 #: src/js/controllers/buyAmazon.js:98
 msgid "Amazon.com is not available at this moment. Please try back later."
@@ -397,7 +397,7 @@ msgstr ""
 
 #: www/views/modals/txp-details.html:36
 msgid "Broadcast Payment"
-msgstr "결재 전파"
+msgstr "결제 전파"
 
 #: src/js/controllers/modals/txpDetails.js:64
 #: src/js/controllers/tx-details.js:81
@@ -677,7 +677,7 @@ msgstr ""
 
 #: src/js/controllers/modals/txpDetails.js:199
 msgid "Could not broadcast payment"
-msgstr "결재를 전파할수 없습니다"
+msgstr "결제를 전파할수 없습니다"
 
 #: src/js/services/bwcError.js:41
 msgid "Could not build transaction"
@@ -759,7 +759,7 @@ msgstr "지갑에 참가할수 없습니다"
 
 #: src/js/controllers/modals/txpDetails.js:161
 msgid "Could not reject payment"
-msgstr "결재를 거절할수 없습니다"
+msgstr "결제를 거절할수 없습니다"
 
 #: src/js/controllers/preferencesBitpayServices.js:33
 msgid "Could not remove account"
@@ -776,7 +776,7 @@ msgstr "설정을 서버에 저장할수 없습니다"
 
 #: src/js/controllers/modals/txpDetails.js:147
 msgid "Could not send payment"
-msgstr "결재를 전송할수 없습니다"
+msgstr "결제를 전송할수 없습니다"
 
 #: src/js/controllers/buyAmazon.js:325
 #: src/js/controllers/buyMercadoLibre.js:318
@@ -841,7 +841,7 @@ msgstr "이 정책에 대한 현재 수수료 비율"
 
 #: src/js/services/feeService.js:15
 msgid "Custom"
-msgstr "고객"
+msgstr "설정"
 
 #: www/views/customAmount.html:9
 msgid "Custom Amount"
@@ -1120,7 +1120,7 @@ msgstr "최대전송 정보 수신 오류"
 #: src/js/controllers/buyMercadoLibre.js:136
 #: src/js/controllers/topup.js:114
 msgid "Error in Payment Protocol"
-msgstr "결재 프로토콜 오류"
+msgstr "결제 프로토콜 오류"
 
 #: src/js/controllers/bitpayCardIntro.js:14
 msgid "Error pairing BitPay Account"
@@ -1221,7 +1221,7 @@ msgstr ""
 
 #: src/js/services/onGoingProcess.js:21
 msgid "Fetching payment information"
-msgstr "결재 정보 수신중"
+msgstr "결제 정보 수신중"
 
 #: www/views/export.html:14
 #: www/views/import.html:16
@@ -2110,27 +2110,27 @@ msgstr ""
 
 #: www/views/includes/walletActivity.html:20
 msgid "Payment Received"
-msgstr "결재 수신됨"
+msgstr "결제 수신됨"
 
 #: www/views/modals/tx-status.html:43
 #: www/views/modals/txp-details.html:43
 msgid "Payment Rejected"
-msgstr "결재 거부됨"
+msgstr "결제 거부됨"
 
 #: src/js/controllers/modals/txpDetails.js:44
 #: www/views/confirm.html:126
 #: www/views/includes/walletActivity.html:11
 #: www/views/modals/txp-details.html:42
 msgid "Payment Sent"
-msgstr "결재 전송됨"
+msgstr "결제 전송됨"
 
 #: www/views/modals/txp-details.html:32
 msgid "Payment accepted, but not yet broadcasted"
-msgstr "결재가 승인되었지만 아직 전파되지 않았습니다."
+msgstr "결제가 승인되었지만 아직 전파되지 않았습니다."
 
 #: www/views/modals/txp-details.html:40
 msgid "Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it was created."
-msgstr "결재가 승인되었습니다. Glidera 서비스에 의해 전파될 예정입니다. 문제가 발생한 경우 6시간후에 삭제됩니다."
+msgstr "결제가 승인되었습니다. Glidera 서비스에 의해 전파될 예정입니다. 문제가 발생한 경우 6시간후에 삭제됩니다."
 
 #: src/js/services/incomingData.js:152
 msgid "Payment address was translated to new Bitcoin Cash address format:"
@@ -2138,7 +2138,7 @@ msgstr ""
 
 #: www/views/modals/txp-details.html:109
 msgid "Payment details"
-msgstr "결재 상세정보들"
+msgstr "결제 상세정보들"
 
 #: www/views/modals/paypro.html:6
 msgid "Payment request"
@@ -2333,7 +2333,7 @@ msgstr "최근"
 
 #: www/views/advancedSettings.html:21
 msgid "Recent Transaction Card"
-msgstr "최근에 거래 카드"
+msgstr "최신 거래 카드"
 
 #: www/views/activity.html:4
 #: www/views/tab-home.html:58
@@ -2557,7 +2557,7 @@ msgstr "최대 자금 전송"
 
 #: www/views/includes/incomingDataMenu.html:46
 msgid "Send payment to this address"
-msgstr "이 주소로 결재 전송"
+msgstr "이 주소로 결제 전송"
 
 #: www/views/feedback/rateApp.html:17
 msgid "Send us feedback instead"
@@ -2588,7 +2588,7 @@ msgstr "거래 전송중"
 
 #: src/js/controllers/confirm.js:524
 msgid "Sending {{amountStr}} from your {{name}} wallet"
-msgstr "귀의 {{name}} 지갑으로 부터 {{amountStr}} 전송중"
+msgstr "귀하의 {{name}} 지갑으로 부터 {{amountStr}} 전송중"
 
 #: www/views/includes/walletHistory.html:42
 #: www/views/modals/tx-status.html:9
@@ -2704,34 +2704,34 @@ msgstr "건너띄기"
 #: src/js/controllers/confirm.js:350
 #: src/js/controllers/modals/txpDetails.js:47
 msgid "Slide to accept"
-msgstr ""
+msgstr "밀어서 확인하기"
 
 #: www/views/buyAmazon.html:96
 #: www/views/buyMercadoLibre.html:83
 msgid "Slide to buy"
-msgstr ""
+msgstr "밀어서 사기"
 
 #: src/js/controllers/confirm.js:344
 msgid "Slide to pay"
-msgstr ""
+msgstr "밀어서 결재하기"
 
 #: src/js/controllers/confirm.js:356
 #: src/js/controllers/modals/txpDetails.js:40
 msgid "Slide to send"
-msgstr ""
+msgstr "밀어서 전송하기"
 
 #: src/js/controllers/create.js:88
 #: src/js/controllers/join.js:71
 msgid "Specify Recovery Phrase..."
-msgstr ""
+msgstr "지정 복구 문장..."
 
 #: src/js/services/bwcError.js:92
 msgid "Spend proposal is not accepted"
-msgstr ""
+msgstr "지불 제안이 받아 들여지지 않았습니다"
 
 #: src/js/services/bwcError.js:95
 msgid "Spend proposal not found"
-msgstr ""
+msgstr "지불 제안을 찾을수 없습니다"
 
 #: src/js/services/bwcError.js:137
 msgid "Spending Password needed"
@@ -2764,7 +2764,7 @@ msgstr "성공"
 
 #: src/js/services/feeService.js:14
 msgid "Super Economy"
-msgstr "초 절약"
+msgstr "초절약"
 
 #: www/views/preferencesCash.html:11
 msgid "Support Bitcoin Cash"
@@ -2943,7 +2943,7 @@ msgstr ""
 
 #: src/js/controllers/confirm.js:502
 msgid "This bitcoin payment request has expired."
-msgstr "이 비트코인 결재 요청은 만료되었습니다"
+msgstr "이 비트코인 결제 요청은 만료되었습니다"
 
 #: www/views/join.html:133
 #: www/views/tab-create-personal.html:103
@@ -3414,7 +3414,7 @@ msgstr ""
 
 #: www/views/onboarding/notifications.html:4
 msgid "Would you like to receive push notifications about payments?"
-msgstr "결재들에 대한 알림을 푸시아림으로 받고 싶으세요?"
+msgstr "결제들에 대한 알림을 푸시아림으로 받고 싶으세요?"
 
 #: src/js/controllers/import.js:287
 msgid "Wrong number of recovery words:"
@@ -3474,7 +3474,7 @@ msgstr ""
 
 #: www/views/preferencesNotifications.html:34
 msgid "You'll receive email notifications about payments sent and received from your wallets."
-msgstr "귀하의 지갑들의 결재에 관련된 알림을 이메일로 수신하게 됩니다."
+msgstr "귀하의 지갑들의 결제에 관련된 알림을 이메일로 수신하게 됩니다."
 
 #: www/views/bitpayCard.html:50
 msgid "Your BitPay Card is ready. Add funds to your card to start using it at stores and ATMs worldwide."
@@ -3550,7 +3550,7 @@ msgstr ""
 
 #: www/views/includes/available-balance.html:8
 msgid "locked by pending payments"
-msgstr "지연된 결재로 잠김"
+msgstr "지연된 결제로 잠김"
 
 #: src/js/services/profileService.js:402
 msgid "me"
