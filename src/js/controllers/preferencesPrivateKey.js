@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesPrivateKeyController', function($scope, $log, $ionicHistory, profileService, walletService) {
+angular.module('copayApp.controllers').controller('preferencesPrivateKeyController', function($scope, $log, $timeout, $ionicHistory, profileService, walletService) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     if (!data.stateParams || !data.stateParams.walletId) {
@@ -17,8 +17,10 @@ angular.module('copayApp.controllers').controller('preferencesPrivateKeyControll
         $ionicHistory.goBack();
         return;
       }
-      $scope.xPrivKey = k.xPrivKey;
-      $scope.credentialsEncrypted = false;
+      $timeout(function() {
+        $scope.xPrivKey = k.xPrivKey;
+        $scope.credentialsEncrypted = false;
+      }, 100);
     });
   });
 });
