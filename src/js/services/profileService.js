@@ -245,7 +245,7 @@ angular.module('copayApp.services')
             root.profile = profile;
 
             configService.get(function(err) {
-                $log.debug('Preferences read');
+                //$log.debug('Preferences read');
                 if (err) return cb(err);
 
                 function bindWallets(cb) {

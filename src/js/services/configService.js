@@ -157,7 +157,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
             configCache.aliasFor = configCache.aliasFor || {};
             configCache.emailFor = configCache.emailFor || {};
 
-            $log.debug('Preferences read:', configCache)
+            // $log.debug('Preferences read:', configCache)
 
             lodash.each(root._queue, function(x) {
                 $timeout(function() {
