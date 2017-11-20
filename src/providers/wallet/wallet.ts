@@ -932,10 +932,8 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.touchidProvider.checkWallet(wallet).then(() => {
         this.handleEncryptedWallet(wallet).then((password: string) => {
-          console.log("OLIS")
           return resolve(password);
         }).catch((err) => {
-          console.log("ERROR AQUI");
           return reject(err);
         });
       }).catch((err) => {
@@ -1070,8 +1068,6 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.prepare(wallet).then((password: string) => {
         let keys;
-        console.log(wallet);
-        console.log(password);
         try {
           keys = wallet.getKeys(password);
         } catch (e) {
@@ -1079,7 +1075,6 @@ export class WalletProvider {
         }
         return resolve(keys);
       }).catch((err) => {
-        console.log(err);
         return reject(err);
       });
     });

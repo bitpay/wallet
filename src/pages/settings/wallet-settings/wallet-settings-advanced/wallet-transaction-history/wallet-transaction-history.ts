@@ -77,9 +77,6 @@ export class WalletTransactionHistoryPage {
         let txsFromLocal = txs;
         this.allTxs.push(txsFromLocal);
         let compactTxs = _.compact(_.flatten(this.allTxs));
-        console.log(txsFromLocal);
-        console.log(compactTxs);
-        console.log(_.isEmpty(compactTxs));
         if (!_.isEmpty(compactTxs)) return resolve(compactTxs);
         else return reject(null);
       }).catch((err: any) => {

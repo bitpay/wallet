@@ -14,6 +14,7 @@ import { BwcProvider } from '../bwc/bwc';
 //pages
 import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
 import { HomePage } from '../../pages/home/home';
+import { CopayersPage } from '../../pages/copayers/copayers';
 
 import * as _ from 'lodash';
 
@@ -124,7 +125,7 @@ export class PushNotificationsProvider {
     if (!wallet) return;
 
     if (!wallet.isComplete()) {
-      //this.navCtrl.push(CopayersPage, {walletId: wallet.credentials.id}); //TODO add Copayers Page   
+      this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.id });
       return;
     }
     this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.id });
