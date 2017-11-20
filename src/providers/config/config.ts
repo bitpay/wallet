@@ -199,8 +199,12 @@ export class ConfigProvider {
   public load() {
     return new Promise((resolve, reject) => {
       this.persistence.getConfig().then((config: Config) => {
-        if (!_.isEmpty(config)) this.configCache = _.clone(config);
-        else this.configCache = _.clone(configDefault);
+        if (!_.isEmpty(config)) {
+          this.configCache = _.clone(config);
+          this.backwardCompatibility();
+        } else {
+          this.configCache = _.clone(configDefault);
+        }
         resolve();
       }).catch((err) => {
         this.logger.error(err);
@@ -228,6 +232,38 @@ export class ConfigProvider {
 
   public getDefaults(): Config {
     return configDefault;
+  }
+
+  private backwardCompatibility() {
+    //these ifs are to avoid migration problems
+    if (this.configCache.bws) {
+      this.configCache.bws = configDefault.bws;
+    }
+    if (!this.configCache.wallet) {
+      this.configCache.wallet = configDefault.wallet;
+    }
+    if (!this.configCache.wallet.settings.unitCode) {
+      this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
+    }
+
+    if (!this.configCache.hideNextSteps) {
+      this.configCache.hideNextSteps = configDefault.hideNextSteps;
+    }
+
+    if (!this.configCache.recentTransactions) {
+      this.configCache.recentTransactions = configDefault.recentTransactions;
+    }
+    if (!this.configCache.pushNotificationsEnabled) {
+      this.configCache.pushNotificationsEnabled = configDefault.pushNotificationsEnabled;
+    }
+
+    if (this.configCache.wallet.settings.unitCode == 'bit') {
+      // Convert to BTC. Bits will be disabled
+      this.configCache.wallet.settings.unitName = configDefault.wallet.settings.unitName;
+      this.configCache.wallet.settings.unitToSatoshi = configDefault.wallet.settings.unitToSatoshi;
+      this.configCache.wallet.settings.unitDecimals = configDefault.wallet.settings.unitDecimals;
+      this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
+    }
   }
 
 }
