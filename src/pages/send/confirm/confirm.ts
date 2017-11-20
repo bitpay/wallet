@@ -78,11 +78,11 @@ export class ConfirmPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private feeProvider: FeeProvider,
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
   ) {
     this.tx = {};
     this.data = this.navParams.data;
-    this.amount = this.navParams.data.amoun;
+    this.amount = this.navParams.data.amount;
     this.isFiatAmount = this.data.unit != 'bch' && this.data.unit != 'btc' ? true : false;
     this.coin = this.navParams.data.coin;
     this.recipientType = this.navParams.data.recipientType;
@@ -161,8 +161,9 @@ export class ConfirmPage {
           walletsUpdated++;
           wallet.status = status;
 
-          if (!status.availableBalanceSat)
+          if (!status.availableBalanceSat) {
             this.logger.debug('No balance available in: ' + wallet.name);
+          }
 
           if (status.availableBalanceSat > minAmount) {
             filteredWallets.push(wallet);
@@ -286,7 +287,6 @@ export class ConfirmPage {
 
   private updateTx(tx: any, wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
-
       this.onGoingProcessProvider.set('calculatingFee', true);
 
       if (opts.clearCache) {
@@ -414,8 +414,6 @@ export class ConfirmPage {
         return reject(msg);
       }
 
-      tx.amount = tx.amount * 1e8;
-
       if (tx.amount > Number.MAX_SAFE_INTEGER) {
         let msg = 'Amount too big'; // TODO gettextCatalog
         this.logger.warn(msg);
@@ -485,7 +483,6 @@ export class ConfirmPage {
   };
 
   public approve(tx: any, wallet: any, onSendStatusChange: Function): void {
-
     if (!tx || !wallet) return;
 
     if (this.paymentExpired) {
@@ -498,7 +495,6 @@ export class ConfirmPage {
     this.getTxp(_.clone(tx), wallet, false).then((txp: any) => {
       this.onGoingProcessProvider.set('creatingTx', false, onSendStatusChange);
 
-
       // confirm txs for more that 20usd, if not spending/touchid is enabled
       let confirmTx = (): Promise<any> => {
         return new Promise((resolve, reject) => {
@@ -508,8 +504,10 @@ export class ConfirmPage {
           if (this.isFiatAmount && this.amount <= this.CONFIRM_LIMIT_USD)
             return resolve();
 
+          let amount = (this.amount / 1e8).toFixed(8);
+          let unit = this.config.wallet.settings.unitName;
           let name = wallet.name;
-          let message = 'Sending ' + this.amount + ' from your ' + name + ' wallet'; // TODO gettextCatalog
+          let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO gettextCatalog
           let okText = 'Confirm'; // TODO gettextCatalog
           let cancelText = 'Cancel'; // TODO gettextCatalog
           this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
@@ -528,7 +526,6 @@ export class ConfirmPage {
         }
 
         this.walletProvider.publishAndSign(wallet, txp, onSendStatusChange).then((txp: any) => {
-
           if (this.config.confirmedTxsNotifications && this.config.confirmedTxsNotifications.enabled) {
             this.txConfirmNotificationProvider.subscribe(wallet, {
               txid: txp.txid

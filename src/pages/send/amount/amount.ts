@@ -14,6 +14,7 @@ import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
 //pages
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { RateProvider } from '../../../providers/rate/rate';
 
 @Component({
   selector: 'page-amount',
@@ -40,6 +41,7 @@ export class AmountPage {
   public email: string;
   public showSendMax: boolean;
   public useSendMax: boolean;
+  public config: any;
 
   constructor(
     private navCtrl: NavController,
@@ -51,7 +53,9 @@ export class AmountPage {
     private configProvider: ConfigProvider,
     private bwcProvider: BwcProvider,
     private addressProvider: AddressProvider,
+    private rateProvider: RateProvider,
   ) {
+    this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType || null;
     this.nextView = this.navParams.data.fromSend ? ConfirmPage : ConfirmPage;
     this.addressInfo = this.addressProvider.validateAddress(this.navParams.data.toAddress);
@@ -182,9 +186,19 @@ export class AmountPage {
   };
 
   public finish(): void {
+    let amount_: any;
+
+    if (this.isFiat(this.unit)) {
+      let altIsoCode: string = this.config.wallet.settings.alternativeIsoCode;
+      let unitCode: string = this.config.wallet.settings.unitCode;
+      let value: any = this.rateProvider.fromFiat(this.amount, altIsoCode, unitCode) * 1e8;
+      amount_ = parseInt(value);
+    } else
+      amount_ = this.amount * 1e8;
+
     let data: any = {
       recipientType: this.recipientType,
-      amount: this.amount,
+      amount: amount_,
       addressInfo: this.addressInfo,
       name: this.name,
       email: this.email,
@@ -195,6 +209,11 @@ export class AmountPage {
     this.navCtrl.push(this.nextView, data);
   }
 
+  private isFiat(unit: string) {
+    if (this.unit != 'BCH' && this.unit != 'BTC') return true;
+    return false;
+  }
+
   private setAvailableUnits(): void {
     let hasBTCWallets = this.profileProvider.getWallets({ coin: 'btc' }).length;
     let hasBCHWallets = this.profileProvider.getWallets({ coin: 'bch' }).length;
@@ -202,7 +221,7 @@ export class AmountPage {
     if (hasBTCWallets) this.availableUnits.push('BTC');
     if (hasBCHWallets) this.availableUnits.push('BCH');
 
-    const unit = this.configProvider.get().wallet.settings.alternativeIsoCode;
+    const unit = this.config.wallet.settings.alternativeIsoCode;
     this.availableUnits.push(unit);
     this.unit = this.availableUnits[0];
   }
