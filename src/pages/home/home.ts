@@ -18,8 +18,6 @@ export class HomePage {
   public wallets: any;
   public walletsBtc: any;
   public walletsBch: any;
-  public txps: any;
-  public txpsN: number;
 
   constructor(
     private navCtrl: NavController,
@@ -55,9 +53,7 @@ export class HomePage {
 
     if (_.isEmpty(wallets)) return;
 
-    let i = wallets.length;
-
-    _.each(wallets, (wallet: any, index: number) => {
+    _.each(wallets, (wallet: any) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
         const balanceStr = status.totalBalanceStr ? wallet.status.totalBalanceStr : '';
         const cachedBalanceStr = wallet.cachedBalance ? wallet.cachedBalance : '';
@@ -65,30 +61,12 @@ export class HomePage {
         wallet.statusStr = balanceStr || cachedBalanceStr + cachedBalanceUpdateOn;
         wallet.status = status;
         this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.totalBalanceStr);
-
-        if (index == i) {
-          this.updateTxps();
-        }
       }).catch((err) => {
         wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
         this.logger.warn(err);
-        if (index == i) {
-          this.updateTxps();
-        }
       });
     });
   }
-
-  private updateTxps(): void {
-    this.profileProvider.getTxps({
-      limit: 3
-    }).then((res: any) => {
-      this.txps = res.txps;
-      this.txpsN = res.n;
-    }).catch((err: any) => {
-      this.logger.error(err);
-    });
-  };
 
   private checkUpdate(): void {
     this.releaseProvider.getLatestAppVersion()
