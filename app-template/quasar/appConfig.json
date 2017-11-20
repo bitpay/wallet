@@ -23,8 +23,8 @@
     "windowsAppId": "",
     "pushSenderId": "",
     "description": "A Secure Quasar Coin Wallet",
-    "version": "3.8.2",
-    "androidVersion": "382001",
+    "version": "3.8.3",
+    "androidVersion": "383001",
     "_extraCSS": null,
     "_enabledExtensions": {
         "coinbase": false,
