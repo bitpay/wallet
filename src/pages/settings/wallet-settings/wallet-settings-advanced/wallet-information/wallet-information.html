@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Wallet Information' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="wallet">
+    <ion-item (click)="saveBlack()">
+      <h2 translate>Wallet Name (at creation)</h2>
+      <ion-note item-end>
+        {{walletName}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item>
+      <h2 translate>Coin</h2>
+      <ion-note item-end>
+        {{coin}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item copy-to-clipboard="{{walletId}}">
+      <h2 translate>Wallet Id</h2>
+      <ion-note item-end>
+        {{walletId}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item>
+      <h2 translate>Wallet Configuration (m-n)</h2>
+      <ion-note item-end>
+        {{wallet.credentials.m}}-{{wallet.credentials.n}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item>
+      <h2 translate>Wallet Network</h2>
+      <ion-note item-end>
+        {{network}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item>
+      <h2 translate>Address Type</h2>
+      <ion-note item-end>
+        {{addressType}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item>
+      <h2 translate>Derivation Strategy</h2>
+      <ion-note item-end>
+        {{derivationStrategy}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item [hidden]="wallet.canSign()">
+      <h2></h2>
+      <ion-note item-end translate>
+        No private key
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item [hidden]="wallet.canSign()">
+      <h2 translate>Account</h2>({{derivationStrategy}})
+      <ion-note item-end>
+        #{{wallet.credentials.account}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item-divider *ngIf="wallet.cachedStatus.wallet.copayers[0]" color="light" translate>Copayers</ion-item-divider>
+    <ion-item *ngFor="let copayer of wallet.cachedStatus.wallet.copayers" [hidden]="wallet.canSign()">
+      <h2 translate>{{copayer.name}}</h2>
+      <ion-note [hidden]="copayer.id == wallet.copayerId" item-end>
+        ({{'Me' | translate}})
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <ion-item-divider color="light" translate>Extended Public Keys</ion-item-divider>
+    <ion-item *ngFor="let pk of pubKeys" copy-to-clipboard="pk">
+      <h2 translate>Copayer {{$index}}</h2>
+      <ion-note item-end>
+        {{pk}}
+      </ion-note>
+      <span *ngIf="$index == 0">({{basePath}})</span>
+      <i class="icon bp-arrow-right"></i>
+    </ion-item>
+    <div *ngIf="!wallet.needsBackup && canSign">
+      <ion-item-divider color="light"></ion-item-divider>
+      <button ion-item (click)="openWalletExtendedPrivateKey()">
+        <h2 translate>Extended Private Key</h2>
+        <i class="icon bp-arrow-right"></i>      
+      </button>
+    </div>
+    <div *ngIf="wallet.balanceByAddress && wallet.balanceByAddress[0]">
+      <ion-item-divider color="light">Balance By Address</ion-item-divider>
+      <div class="item" *ngFor="let a of wallet.balanceByAddress" copy-to-clipboard="a.address">
+        <h2>{{a.address}}</h2>
+        <ion-note item-end>
+          {{(a.amount/1e8).toFixed(8)}} BTC
+        </ion-note>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>

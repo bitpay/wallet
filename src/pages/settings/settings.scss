@@ -1,4 +1,10 @@
 page-settings {
+	img {
+    &.icon-wallet {
+      width: 35px !important;
+      background-color: color($colors, primary);
+    }
+  }
   ion-item {
 		cursor: pointer;
 	}

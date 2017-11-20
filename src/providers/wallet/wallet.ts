@@ -769,6 +769,10 @@ export class WalletProvider {
     });
   }
 
+  public clearTxHistory(wallet): void {
+    this.invalidateCache(wallet);
+    this.persistenceProvider.removeTxHistory(wallet.id);
+  }
 
   public expireAddress(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -841,7 +845,7 @@ export class WalletProvider {
   // An alert dialog
   private askPassword(name: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.popupProvider.ionicPrompt(title, name, null, null).then((res: any) => {
+      this.popupProvider.ionicPrompt(title, name, null, null, null).then((res: any) => {
         return resolve(res);
       }).catch((err: any) => {
         return reject(err);
@@ -928,8 +932,10 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.touchidProvider.checkWallet(wallet).then(() => {
         this.handleEncryptedWallet(wallet).then((password: string) => {
+          console.log("OLIS")
           return resolve(password);
         }).catch((err) => {
+          console.log("ERROR AQUI");
           return reject(err);
         });
       }).catch((err) => {
@@ -1001,7 +1007,7 @@ export class WalletProvider {
     });
   }
 
-  public getEncodedWalletInfo(wallet: any, password: string): Promise<any> {
+  public getEncodedWalletInfo(wallet: any, password?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let derivationPath = wallet.credentials.getBaseAddressDerivationPath();
       let encodingType = {
@@ -1064,6 +1070,8 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       this.prepare(wallet).then((password: string) => {
         let keys;
+        console.log(wallet);
+        console.log(password);
         try {
           keys = wallet.getKeys(password);
         } catch (e) {
@@ -1071,6 +1079,7 @@ export class WalletProvider {
         }
         return resolve(keys);
       }).catch((err) => {
+        console.log(err);
         return reject(err);
       });
     });

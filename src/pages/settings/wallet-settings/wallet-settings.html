@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Wallet Settings'|translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="wallet">
+    <button ion-item (click)="openWalletName()">
+      <h2 translate>Name</h2>
+      <ion-note item-end>
+          {{wallet.credentials.walletName}}
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>
+    </button>
+    <button ion-item (click)="openWalletColor()">
+      <h2 translate>Color</h2>
+      <i class="icon bp-arrow-right"></i>      
+    </button>
+    <ion-item>
+      <ion-label translate>Hide Balance</ion-label>
+      <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
+    </ion-item>
+    <ion-item-divider color="light" translate>Security</ion-item-divider>
+    <button ion-item (click)="openBackupSettings()">
+      <h2 translate>Backup</h2>
+      <ion-note item-end translate>
+          Backup needed
+      </ion-note>
+      <i class="icon bp-arrow-right"></i>      
+    </button>
+    <div *ngIf="wallet.canSign()">
+      <ion-item>
+        <ion-label [ngClass]="{'disabled': wallet.needsBackup}" translate>Request Spending Password</ion-label>
+        <ion-toggle [(ngModel)]="encryptEnabled" (ionChange)="encryptChange()" [disabled]="wallet.needsBackup"></ion-toggle>
+      </ion-item>
+      <div class="comment">
+        <span translate>
+          If enabled, all sensitive information (private key and recovery phrase) and actions (spending and exporting) associated with this wallet will be protected.
+        </span>
+        <a (click)="openWikiSpendingPassword()" translate>Learn more</a>
+        <div class="assertive" *ngIf="wallet.needsBackup" translate>
+          Complete the backup process to use this option
+        </div>
+      </div>
+    </div>
+    <div *ngIf="wallet.canSign() && touchIdAvailable">
+      <ion-item>
+        <ion-label [ngClass]="{'disabled': wallet.needsBackup}" translate>Request Fingerprint</ion-label>
+        <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
+      </ion-item>
+    </div>
+    <ion-item-divider color="light" translate></ion-item-divider>
+    <button ion-item (click)="openAdvancedSettings()">
+      <h2 translate>More Options</h2>
+      <i class="icon bp-arrow-right"></i>      
+    </button>
+  </ion-list>
+
+</ion-content>

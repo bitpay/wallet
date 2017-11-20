@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { BwcProvider } from '../../../providers/bwc/bwc';
-import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { AddressValidator } from '../../../validators/address';
+import { BwcProvider } from '../../../../providers/bwc/bwc';
+import { AddressBookProvider } from '../../../../providers/address-book/address-book';
+import { AddressValidator } from '../../../../validators/address';
 
 @Component({
   selector: 'page-addressbook-add',
@@ -40,7 +40,7 @@ export class AddressbookAddPage {
   public save() {
     this.submitAttempt = true;
 
-    if(this.addressBookAdd.valid){
+    if (this.addressBookAdd.valid) {
       this.ab.add(this.addressBookAdd.value).then((ab) => {
         this.navCtrl.pop();
 
