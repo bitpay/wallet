@@ -33,7 +33,7 @@
     </div>
 
     <ion-item>
-      <ion-label stacked>Coin</ion-label>
+      <ion-label stacked>{{'Coin' | translate}}</ion-label>
       <ion-select [(ngModel)]="formData.coin" formControlName="coin" (ionChange)="formData.testnetEnabled = false">
         <ion-option value="btc">BTC</ion-option>
         <ion-option value="bch">BCH</ion-option>

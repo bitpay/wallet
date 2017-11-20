@@ -81,10 +81,7 @@ export class HomePage {
   }
 
   public goToAddView(coin?: string): void {
-    if (coin)
-      this.navCtrl.push(AddPage, { coin: coin });
-    else
-      this.navCtrl.push(AddPage);
+    this.navCtrl.push(AddPage, { coin: coin });
   }
 
   goToWalletDetails(wallet: any) {
