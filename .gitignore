@@ -117,3 +117,5 @@ tmp/*
 *.tar.gz
 www/deploy_config.js
 www/*_config.js
+app-template/package-template.json
+*.apk
