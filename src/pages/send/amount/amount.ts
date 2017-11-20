@@ -24,6 +24,7 @@ export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
   private SMALL_FONT_SIZE_LIMIT: number;
   private availableUnits: Array<any>;
+  private isFiatAmount: boolean;
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
@@ -65,6 +66,7 @@ export class AmountPage {
     this.SMALL_FONT_SIZE_LIMIT = 10;
     this.availableUnits = [];
     this.unit = '';
+    this.isFiatAmount = false;
     this.expression = '';
     this.amount = 0;
     this.showExpressionResult = false;
@@ -230,5 +232,6 @@ export class AmountPage {
     this.availableUnits.slice(0, this.availableUnits.length).join(',');
     this.availableUnits.push(this.availableUnits.shift());
     this.unit = this.availableUnits[0];
+    this.isFiatAmount = this.unit != 'BCH' && this.unit != 'BTC' ? true : false;
   }
 }
