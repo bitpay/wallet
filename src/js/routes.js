@@ -39,7 +39,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         // USE NATIVE SCROLLING
         $ionicConfigProvider.scrolling.jsScrolling(false);
 
-        $logProvider.debugEnabled(true);
+        $logProvider.debugEnabled(false);
         $provide.decorator('$log', ['$delegate', 'platformInfo',
             function($delegate, platformInfo) {
                 var historicLog = historicLogProvider.$get();
