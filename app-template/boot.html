@@ -29,7 +29,7 @@
                     navigator.splashscreen.show();
                 }
                 var req = jQuery.ajax({
-                    url: DEPLOY_URL + "/yangcoin_config.js",
+                    url: DEPLOY_URL + "/*BUNDLENAME*_config.js",
                     dataType: 'script',
                     success: function(data) {
                         load(); //환경설정이 서버로 변경되었다.
