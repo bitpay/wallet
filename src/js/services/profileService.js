@@ -396,10 +396,10 @@ angular.module('copayApp.services')
 
         // Creates a wallet on BWC/BWS
         var doCreateWallet = function(opts, cb) {
-            $log.debug('Creating Wallet:', opts);
+
             $timeout(function() {
                 seedWallet(opts, function(err, walletClient) {
-                    console.log('[profileService.js.395:walletClient:]', walletClient); //TODO
+                    //console.log('[profileService.js.395:walletClient:]', walletClient); //TODO
                     if (err) return cb(err);
 
                     var name = opts.name || gettextCatalog.getString('Personal Wallet');

@@ -6,7 +6,8 @@
      >
      <option
      value="{{config.coin}}"
-     ng-repeat="config in COIN_CONFIG" ng-if="config.enable">
+     ng-repeat="config in COIN_CONFIG" ng-if="config.enable"
+     ng-selected="DEFAULT_CONFIG.coin == config.coin">
      {{config.coinName}}
    </option>
     <!-- <option value="bch">BCH</option> -->

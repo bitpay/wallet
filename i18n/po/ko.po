@@ -1939,7 +1939,7 @@ msgstr ""
 #: www/views/preferencesNotifications.html:3
 #: www/views/tab-settings.html:61
 msgid "Notifications"
-msgstr "알림들"
+msgstr "알림"
 
 #: www/views/onboarding/collectEmail.html:9
 msgid "Notifications by email"

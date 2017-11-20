@@ -301,6 +301,6 @@ module.exports = function(grunt) {
     grunt.registerTask('android-release', ['prod', 'exec:android', 'exec:androidsign']);
     grunt.registerTask('desktopsign', ['exec:desktopsign', 'exec:desktopverify']);
     grunt.registerTask('pack', ['exec:pack_prepare', 'exec:pack_copy']);
-    grunt.registerTask('pack-all', ['exec:pack_prepare', 'exec:pack_copy', 'exec:pack_deploy']);
+    grunt.registerTask('pack-all', ['default', 'exec:pack_prepare', 'exec:pack_copy', 'exec:pack_deploy']);
 
 };
