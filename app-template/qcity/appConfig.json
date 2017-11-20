@@ -23,8 +23,8 @@
     "windowsAppId": "",
     "pushSenderId": "",
     "description": "A Secure QCITY Wallet",
-    "version": "3.8.3",
-    "androidVersion": "383001",
+    "version": "3.8.4",
+    "androidVersion": "384001",
     "_extraCSS": null,
     "_enabledExtensions": {
         "coinbase": false,
