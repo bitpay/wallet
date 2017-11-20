@@ -6,8 +6,8 @@
 
 <ion-content>
   <div class="balance-header" (click)="getTxHistory(true)">
-    <div class="balance-str">{{balanceStr | satToUnit: wallet.cachedBalance: wallet.coin}}</div>
-    <div class="balance-alt-str">{{alternativeBalanceStr | satToFiat : wallet.status.availableBalanceSat}}</div>
+    <div class="balance-str">{{wallet.cachedBalance | satToUnit:wallet.coin}}</div>
+    <div class="balance-alt-str">{{wallet.status.availableBalanceSat | satToFiat}}</div>
   </div>
 
   <ion-list>
@@ -19,7 +19,7 @@
       </ion-icon>
       <div class="action">{{tx.action}}</div>
       <div class="detail">
-        <div class="amount">{{amountStr | satToUnit : tx.amount}}</div>
+        <div class="amount">{{tx.amount | satToUnit}}</div>
         <div class="date">{{tx.time * 1000 | amTimeAgo}}</div>
       </div>
     </button>

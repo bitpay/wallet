@@ -23,7 +23,7 @@
         <ion-icon *ngIf="!recipientType" item-left>
           <img src="assets/img/contact-placeholder.svg" class="icon-contact">
         </ion-icon>
-        <span>{{ name || toAddress }}</span>
+        <span>{{name || toAddress}}</span>
       </ion-item>
     </ion-list>
   </ion-card>
@@ -39,8 +39,8 @@
           <a class="unit-button" (click)="updateUnit()">{{unit}}</a>
         </div>
         <div class="amount" [hidden]="!showExpressionResult">= {{amount | number: '1.2-8'}} {{unit}}</div>
-        <div class="result" *ngIf="unit == 'BTC' || unit == 'BCH'">≈ {{resultAmount | satToFiat: amount * 1e8: unit }}</div>
-        <div class="result" *ngIf="unit != 'BTC' && unit != 'BCH'">≈ {{resultAmount | fiatToUnit: amount }}</div>
+        <div class="result" *ngIf="unit == 'BTC' || unit == 'BCH'">≈ {{amount * 1e8 | satToFiat: unit}}</div>
+        <div class="result" *ngIf="unit != 'BTC' && unit != 'BCH'">≈ {{amount | fiatToUnit}}</div>
       </div>
     </div>
     <div class="keypad">

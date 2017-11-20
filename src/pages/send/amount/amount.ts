@@ -204,7 +204,6 @@ export class AmountPage {
 
     const unit = this.configProvider.get().wallet.settings.alternativeIsoCode;
     this.availableUnits.push(unit);
-    this.availableUnits.push('BCH'); // TEST
     this.unit = this.availableUnits[0];
   }
 

@@ -83,7 +83,7 @@ export class ConfirmPage {
     this.tx = {};
     this.data = this.navParams.data;
     this.amount = this.navParams.data.amoun;
-    this.isFiatAmount = this.navParams.data.coin != this.data.unit ? true : false;
+    this.isFiatAmount = this.data.unit != 'bch' && this.data.unit != 'btc' ? true : false;
     this.coin = this.navParams.data.coin;
     this.recipientType = this.navParams.data.recipientType;
     this.isCordova = this.platformProvider.isCordova;
