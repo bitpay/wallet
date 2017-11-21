@@ -305,6 +305,7 @@ export class ConfirmPage {
         if (!this.usingCustomFee) tx.feeRate = feeRate;
         tx.feeLevelName = this.feeProvider.feeOpts[tx.feeLevel];
 
+        // TODO should call getSendMaxInfo if was selected from amount view
         this.getSendMaxInfo(_.clone(tx), wallet).then((sendMaxInfo: any) => {
           if (sendMaxInfo) {
             this.logger.debug('Send max info', sendMaxInfo);
@@ -457,7 +458,7 @@ export class ConfirmPage {
 
   private setSendError(msg: string) {
     this.sendStatus = '';
-    this.popupProvider.ionicAlert('Error at confirm', this.bwcErrorProvider.msg(msg), 'Ok'); // TODO gettextCatalog
+    this.popupProvider.ionicAlert('Error at confirm', this.bwcErrorProvider.msg(msg)); // TODO gettextCatalog
   }
 
   public toggleAddress(): void {

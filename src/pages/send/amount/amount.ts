@@ -1,8 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
-import { BwcProvider } from '../../../providers/bwc/bwc';
-import { AddressProvider } from '../../../providers/address/address';
 import * as _ from 'lodash';
 
 //providers
@@ -10,11 +8,13 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ConfigProvider } from '../../../providers/config/config';
 import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
+import { BwcProvider } from '../../../providers/bwc/bwc';
+import { AddressProvider } from '../../../providers/address/address';
+import { RateProvider } from '../../../providers/rate/rate';
 
 //pages
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
-import { RateProvider } from '../../../providers/rate/rate';
 
 @Component({
   selector: 'page-amount',
@@ -38,9 +38,10 @@ export class AmountPage {
   public fromSend: boolean;
   public recipientType: string;
   public addressInfo: any;
+  public toAddress: string;
   public name: string;
   public email: string;
-  public showSendMax: boolean;
+  public showSendMax: boolean; // TODO send max menu
   public useSendMax: boolean;
   public config: any;
 
@@ -59,6 +60,7 @@ export class AmountPage {
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType || null;
     this.nextView = this.navParams.data.fromSend ? ConfirmPage : ConfirmPage;
+    this.toAddress = this.navParams.data.toAddress;
     this.addressInfo = this.addressProvider.validateAddress(this.navParams.data.toAddress);
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
@@ -217,11 +219,14 @@ export class AmountPage {
   }
 
   private setAvailableUnits(): void {
-    let hasBTCWallets = this.profileProvider.getWallets({ coin: 'btc' }).length;
-    let hasBCHWallets = this.profileProvider.getWallets({ coin: 'bch' }).length;
+    if (!this.addressInfo.isValid) return;
     
-    if (hasBTCWallets) this.availableUnits.push('BTC');
-    if (hasBCHWallets) this.availableUnits.push('BCH');
+    let coin = this.addressInfo.coin;
+    let availableWallets = this.profileProvider.getWallets({ coin: coin });
+    
+    if (availableWallets && availableWallets.length > 0) 
+      this.availableUnits.push(coin.toUpperCase());
+    else return;
 
     const unit = this.config.wallet.settings.alternativeIsoCode;
     this.availableUnits.push(unit);

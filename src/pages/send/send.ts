@@ -41,9 +41,7 @@ export class SendPage {
     private bwcProvider: BwcProvider,
     private incomingDataProvider: IncomingDataProvider,
     private popupProvider: PopupProvider
-  ) {
-
-  }
+  ) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SendPage');
@@ -54,7 +52,6 @@ export class SendPage {
       onlyComplete: true
     });
     this.hasWallets = !(_.isEmpty(this.wallets));
-    console.log(this.hasWallets);
     this.updateWalletsList();
     this.updateContactsList();
   }
