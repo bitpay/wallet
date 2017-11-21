@@ -5,6 +5,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
 import { HomePage } from '../../../pages/home/home';
+import { CopayersPage } from '../copayers/copayers';
 
 // Providers
 import { AppProvider } from '../../../providers/app/app';
@@ -260,7 +261,7 @@ export class CreateWalletPage implements OnInit {
       if (!wallet.isComplete()) {
         this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
-        // TODO: tabs.copayers (QR view when shared wallet is created)
+        this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       } else {
         this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();

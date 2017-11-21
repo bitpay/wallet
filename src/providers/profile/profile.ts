@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '@nsalaun/ng-logger';
 import { Events } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 //providers
@@ -150,9 +150,8 @@ export class ProfileProvider {
 
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
-
       this.updateCredentials(JSON.parse(wallet.export()))
-      //$rootScope.$emit('Local/WalletCompleted', walletId); TODO
+      this.events.publish('Local/WalletCompleted', walletId);
     });
 
     wallet.initialize({
@@ -191,7 +190,7 @@ export class ProfileProvider {
     if (wallet.cachedTxps)
       wallet.cachedTxps.isValid = false;
 
-    //$rootScope.$emit('bwsEvent', wallet.id, n.type, n); TODO
+    this.events.publish('bwsEvent', wallet.id, n.type, n);
   }
 
   public updateCredentials(credentials: any): void {
@@ -615,7 +614,7 @@ export class ProfileProvider {
           return reject(err);
         });
       }).catch((err: any) => {
-        //$rootScope.$emit('Local/DeviceError', err); TODO
+        this.events.publish('Local/DeviceError', err);
         return reject(err);
       });
     });
