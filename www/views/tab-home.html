@@ -40,8 +40,8 @@
             </div>
         </div>
 
-        <div class="list card" ng-if="notifications[0] && recentTransactionsEnabled">
-            <a class="item item-icon-right item-heading" ui-sref="tabs.activity">
+        <div class="list card " ng-if="notifications[0] && recentTransactionsEnabled">
+            <a class="item item-icon-right item-heading-bg" ui-sref="tabs.activity">
                 <span translate>Recent Transactions</span>
                 <i class="icon bp-arrow-right"></i>
                 <span class="badge badge-assertive m5t m10r" ng-show="notificationsN>3"> {{notificationsN}}</span>
@@ -51,8 +51,8 @@
             </a>
         </div>
 
-        <div class="list card">
-            <div class="item item-icon-right item-heading item-head-red">
+        <div class="list card ">
+            <div class="item item-icon-right item-heading-bg ">
                 <span translate>Wallets</span>
                 <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
             </div>

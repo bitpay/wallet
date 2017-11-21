@@ -22,13 +22,11 @@
                 <div class="wallet-balance__content no-border">
                     <div class="wallet-balance__title" translate>Total</div>
                     <span class="item-note text-right wallet-balance__amount">
-            <span class="wallet-balance__amount wallet-balance__amount--total">
-              {{status.totalBalanceStr}}
-            </span>
+                      <span class="wallet-balance__amount wallet-balance__amount--total">
+                        {{status.totalBalanceStr}}
+                      </span>
                     <div>
-                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable">
-                {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
-              </span>
+                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable&&showMoney">{{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}</span>
                     </div>
                     </span>
                 </div>
@@ -45,7 +43,7 @@
               {{status.spendableBalanceStr}}
             </span>
                     <div>
-                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable">
+                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable&&showMoney">
                 {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
               </span>
                     </div>
@@ -64,7 +62,7 @@
               {{status.pendingBalanceStr}}
             </span>
                     <div>
-                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable">
+                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable&&showMoney">
                 {{status.pendingBalanceAlternative}} {{status.alternativeIsoCode}}
               </span>
                     </div>
@@ -83,7 +81,7 @@
               {{status.lockedBalanceStr}}
             </span>
                     <div>
-                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable">
+                        <span class="wallet-balance__amount--alternative ng-binding" ng-show="status.alternativeBalanceAvailable&&showMoney">
                 {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}}
               </span>
                     </div>

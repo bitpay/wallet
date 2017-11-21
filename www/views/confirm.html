@@ -30,7 +30,7 @@
                 <div class="item" ng-hide="criticalError">
                     <span class="label" translate>To</span>
                     <span class="payment-proposal-to" ng-if="!recipientType">
-            <img src="img/bitchk/{{wallet.coin}}_small.png">
+            <img ng-src="img/bitchk/{{wallet.coin}}_small.png">
 
             <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
               <contact ng-if="tx.toAddress && !tx.toName" address="{{tx.toAddress}}"></contact>

@@ -16,14 +16,13 @@
                 <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="updateStatusError">
                     <span>{{updateStatusError}}</span>
                 </div>
-
                 <div class="amount__error" ng-style="{opacity: altAmountOpacity}" ng-show="walletNotRegistered">
                     <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
                 </div>
 
                 <div ng-click='updateAll(true)' ng-show="!updateStatusError && !wallet.balanceHidden && !wallet.scanning" on-hold="hideToggle()" ng-style="{'transform': amountScale}" ng-class="{amount__balance: amountIsCollapsible}">
                     <strong class="size-36">{{status.totalBalanceStr}}</strong>
-                    <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative &&status.alternativeBalanceAvailable" ng-style="{opacity: altAmountOpacity}">
+                    <div class="size-14 amount-alternative" ng-show="showMoney" ng-if="status.totalBalanceAlternative &&status.alternativeBalanceAvailable" ng-style="{opacity: altAmountOpacity}">
                         {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
                     </div>
                 </div>
@@ -51,7 +50,7 @@
                         {{status.spendableBalanceStr}}
                       </strong>
                       &nbsp;
-                      <span ng-show="status.alternativeBalanceAvailable">
+                      <span ng-show="status.alternativeBalanceAvailable&&showMoney">
                         {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
                       </span>
                     </button>
@@ -81,8 +80,8 @@
 
                     <div ng-click='updateAll(true)' ng-show="!updateStatusError && !wallet.balanceHidden && !wallet.scanning" on-hold="hideToggle()" ng-style="{'transform': amountScale}" ng-class="{amount__balance: amountIsCollapsible}">
                         <strong class="size-36">{{status.totalBalanceStr}}</strong>
-                        <div class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'" ng-style="{opacity: altAmountOpacity}">
-                            {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}} cccccc
+                        <div ng-show="showMoney" class="size-14 amount-alternative" ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'" ng-style="{opacity: altAmountOpacity}">
+                            {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
                         </div>
                     </div>
 
@@ -108,8 +107,8 @@
                           {{status.spendableBalanceStr}}
                         </strong>
                         &nbsp;
-                        <span>
-                          {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}} aaaaa
+                        <span ng-show="showMoney">
+                          {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
                         </span>
                       </button>
                     </div>
@@ -145,7 +144,7 @@
                     <div class="item item-footer description" ng-show="status.lockedBalanceSat" style="background: white;">
                         <span translate>Total Locked Balance</span>:
                         <b>{{status.lockedBalanceStr}} </b>
-                        <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} bbbbbb </span>
+                        <span nf-show="showMoney"> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}}</span>
                     </div>
                 </div>
 

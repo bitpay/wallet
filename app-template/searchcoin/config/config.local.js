@@ -2,7 +2,7 @@ var DEFAULT_CONFIG = {
     networkName: 'ventas',
     coin: 'ven',
     bwsurl: 'http://192.168.0.12:3232/bws/api',
-    showMoney: false,
+
     networks: ['livenet', 'ventas', 'litecoin']
 }
 var COIN_CONFIG = {

@@ -2,7 +2,7 @@ var DEFAULT_CONFIG = {
     networkName: 'livenet',
     coin: 'btc',
     bwsurl: 'https://bws.bitchk.com/bws/api',
-    showMoney: false,
+
     networks: [
         'livenet',
         'litecoin',

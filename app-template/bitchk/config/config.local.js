@@ -2,7 +2,7 @@ var DEFAULT_CONFIG = {
     networkName: 'livenet',
     coin: 'btc',
     bwsurl: 'http://localhost:3232/bws/api',
-    showMoney: false,
+
     networks: [
         'livenet',
         'litecoin',

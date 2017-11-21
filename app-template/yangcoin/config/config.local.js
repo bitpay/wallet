@@ -2,7 +2,6 @@ var DEFAULT_CONFIG = {
     networkName: 'yangcoin',
     coin: 'yng',
     bwsurl: 'http://192.168.0.12:3232/bws/api',
-    showMoney: false,
     networks: ['livenet', 'ventas', 'litecoin', 'yangcoin']
 }
 var COIN_CONFIG = {

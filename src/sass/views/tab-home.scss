@@ -39,6 +39,12 @@
         }
         .item-heading {
             color: $v-home-item-head-color;
+            .icon {
+                color: #000000;
+            }
+        }
+        .item-heading-bg {
+            color: $v-home-item-head-color;
             background-color: $v-home-item-head-bg-color;
             .icon {
                 color: $v-home-item-head-icon-color;

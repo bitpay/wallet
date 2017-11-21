@@ -30,7 +30,7 @@
                         <span ng-if="!showMoney">{{btx.alternativeAmountStr}}</span>
                         <span ng-if="showMoney">
                           <span ng-if="!rate">...</span>
-                        <span ng-if="rate">
+                        <span ng-if="rate &&showMoney">
                             {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
                           </span>
                         </span>
@@ -41,7 +41,7 @@
                 <div class="item" ng-if="btx.action === 'sent'">
                     <span class="label" translate>To</span>
                     <span class="payment-proposal-to">
-            <img ng-if="!cardId" src="img/bitchk/{{wallet.coin}}_small.png">
+            <img ng-if="!cardId" ng-src="img/bitchk/{{wallet.coin}}_small.png">
             <img ng-if="cardId" src="img/icon-card.svg" width="34">
             <div copy-to-clipboard="btx.addressTo" class="ellipsis">
               <contact ng-if="!toName" address="{{btx.addressTo}}" class="ellipsis" style="display: block;"></contact>

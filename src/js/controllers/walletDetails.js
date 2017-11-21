@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.isAndroid = platformInfo.isAndroid;
     $scope.isIOS = platformInfo.isIOS;
 
+    $scope.showRate = false;
     $scope.amountIsCollapsible = !$scope.isAndroid;
 
     $scope.openExternalLink = function(url, target) {
@@ -354,6 +355,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
         $scope.walletId = data.stateParams.walletId;
         $scope.wallet = profileService.getWallet($scope.walletId);
         if (!$scope.wallet) return;
+        $scope.showRate = $rootScope.COIN_CONFIG[$scope.wallet.coin].showRate;
         $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
 
         $scope.updatingTxHistory = true;
@@ -383,6 +385,7 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.$on("$ionicView.afterLeave", function(event, data) {
 
         if ($window.StatusBar) {
+            console.log("TODO status Color");
             var statusBarColor = appConfigService.name == 'copay' ? '#192c3a' : '#1e3186';
             $window.StatusBar.backgroundColorByHexString(statusBarColor);
         }
