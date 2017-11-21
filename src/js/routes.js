@@ -13,7 +13,10 @@ if (window && window.navigator) {
 }
 
 //Setting up route
-angular.module('copayApp').config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
+angular.module('copayApp').config(function(historicLogProvider, $provide,
+        $logProvider,
+        $stateProvider,
+        $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
         $urlRouterProvider.otherwise('/starting');
 
         // NO CACHE
@@ -50,9 +53,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
 
                     var orig = $delegate[level];
                     $delegate[level] = function() {
-                        if (level == 'error')
-                            console.log(arguments);
-
                         var args = Array.prototype.slice.call(arguments);
 
                         args = args.map(function(v) {
@@ -80,9 +80,6 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
                         });
 
                         try {
-                            if (platformInfo.isCordova)
-                                console.log(args.join(' '));
-
                             historicLog.add(level, args.join(' '));
                             orig.apply(null, args);
                         } catch (e) {
