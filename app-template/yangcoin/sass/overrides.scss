@@ -7,8 +7,8 @@
 
 $v-primary-color: #186ed7;
 $v-secondary-color: #31465b;
-$v-accent-color: #1abb9b;
-$v-text-primary-color: #192c3a;
+$v-accent-color: #1e7ce6;
+$v-text-primary-color: #dcdcdc;
 $v-text-secondary-color: #c2c9d1;
 $v-text-accent-color: #1abb9b;
 $v-success-color: #3c56eb;
@@ -17,7 +17,7 @@ $v-bar-royal-text:#ffffff;
 
 /* Theme */
 
-$v-default-wallet-color-index: 6;
+$v-default-wallet-color-index: 8;
 $v-top-tabs-color: $v-accent-color;
 $v-wallet-backup-phrase-color: $v-text-primary-color;
 $v-wallet-backup-select-phrase-color: $v-secondary-color;
@@ -43,7 +43,7 @@ $v-button-secondary-outline-active-color: $v-accent-color;
 /* Slide */
 
 $v-slide-bg-color: $v-accent-color;
-$v-slider-bg-color: #069074;
+$v-slider-bg-color: #3e64a5;
 $v-slide-text-color: #FFFFFF;
 
 /* Onboarding */
@@ -72,6 +72,6 @@ $v-onboarding-button-secondary-outline-active-color: $v-accent-color;
 /* Main tabs */
 
 $v-home-item-head-color: #ffffff;
-$v-home-item-head-bg-color: #89beff;
+$v-home-item-head-bg-color: #1f7fed;
 $v-home-item-head-icon-color: #ffffff;
 $v-logo-height:18px;
