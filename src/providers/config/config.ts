@@ -217,8 +217,6 @@ export class ConfigProvider {
     }
     _.merge(config, this.configCache, newOpts);
     this.configCache = config;
-    this.events.publish('config:updated', this.configCache);
-
     this.persistence.storeConfig(this.configCache).then(() => {
       this.logger.info('Config saved');
     });

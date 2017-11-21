@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { AddressBookProvider } from '../../../providers/address-book/address-book';
+import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 
 @Component({
   selector: 'page-addressbook-view',

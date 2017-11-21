@@ -13,7 +13,7 @@ export class PopupProvider {
         subTitle: subTitle,
         buttons: [
           {
-            text: okText,
+            text: okText ? okText : 'OK',
             handler: () => {
               console.log('Ok clicked');
               resolve();
@@ -25,21 +25,21 @@ export class PopupProvider {
     });
   };
 
-  public ionicConfirm(title, message, okText, cancelText): Promise<any> {
+  public ionicConfirm(title: string, message: string, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let confirm = this.alertCtrl.create({
         title: title,
         message: message,
         buttons: [
           {
-            text: cancelText,
+            text: cancelText ? cancelText : 'Cancel',
             handler: () => {
               console.log('Disagree clicked');
               resolve(false);
             }
           },
           {
-            text: okText,
+            text: okText ? okText : 'OK',
             handler: () => {
               console.log('Agree clicked');
               resolve(true);
@@ -53,13 +53,18 @@ export class PopupProvider {
 
   public ionicPrompt(title: string, message: string, opts: any, okText?: string, cancelText?: string): Promise<any> {
     return new Promise((resolve, reject) => {
+      let defaultText = opts && opts.defaultText ? opts.defaultText : null;
+      let placeholder = opts && opts.placeholder ? opts.placeholder : null;
+      let inputType = opts && opts.type ? opts.type : 'text';
+
       let prompt = this.alertCtrl.create({
         title: title,
         message: message,
         inputs: [
           {
-            value: opts.defaultText,
-            placeholder: opts.placeholder
+            value: defaultText,
+            placeholder: placeholder,
+            type: inputType
           },
         ],
         buttons: [

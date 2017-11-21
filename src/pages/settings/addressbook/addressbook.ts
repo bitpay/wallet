@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AddressbookAddPage } from './add/add';
 import { AddressbookViewPage } from './view/view';
-import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -39,7 +39,7 @@ export class AddressbookPage {
       this.isEmptyList = _.isEmpty(ab);
 
       let contacts: Array<object> = [];
-      _.each(ab, function(v, k) {
+      _.each(ab, function (v, k) {
         contacts.push({
           name: _.isObject(v) ? v.name : v,
           address: k,

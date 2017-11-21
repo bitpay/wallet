@@ -769,6 +769,10 @@ export class WalletProvider {
     });
   }
 
+  public clearTxHistory(wallet): void {
+    this.invalidateCache(wallet);
+    this.persistenceProvider.removeTxHistory(wallet.id);
+  }
 
   public expireAddress(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -841,7 +845,10 @@ export class WalletProvider {
   // An alert dialog
   private askPassword(name: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.popupProvider.ionicPrompt(title, name, null, null).then((res: any) => {
+      let opts = {
+        type: 'password'
+      }
+      this.popupProvider.ionicPrompt(title, name, opts, null, null).then((res: any) => {
         return resolve(res);
       }).catch((err: any) => {
         return reject(err);
@@ -1001,7 +1008,7 @@ export class WalletProvider {
     });
   }
 
-  public getEncodedWalletInfo(wallet: any, password: string): Promise<any> {
+  public getEncodedWalletInfo(wallet: any, password?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let derivationPath = wallet.credentials.getBaseAddressDerivationPath();
       let encodingType = {
@@ -1043,7 +1050,7 @@ export class WalletProvider {
 
   public setTouchId(wallet: any, enabled: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
-      var opts = {
+      let opts = {
         touchIdFor: {}
       };
       opts.touchIdFor[wallet.id] = enabled;

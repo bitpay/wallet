@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'More Options' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <button ion-item (click)="openWalletInformation()">
+    <h2 translate>Wallet information</h2>     
+  </button>
+  <button ion-item (click)="openWalletAddresses()">
+    <h2 translate>Wallet Addresses</h2>     
+  </button>
+  <button ion-item (click)="openExportWallet()">
+    <h2 translate>Export Wallet</h2>     
+  </button>
+  <button ion-item (click)="openWalletServiceUrl()">
+    <h2 translate>Wallet Service URL</h2>     
+  </button>
+  <button ion-item (click)="openTransactionHistory()">
+    <h2 translate>Transaction History</h2>     
+  </button>
+  <button ion-item (click)="openDeleteWallet()">
+    <h2 translate>DeleteWallet</h2>     
+  </button>
+</ion-content>

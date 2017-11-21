@@ -1,0 +1,11 @@
+page-wallet-settings {
+  .assertive {
+    color: color($colors, danger);
+    ion-label {
+      white-space: inherit;
+    }
+  }
+  .comment {
+    padding: 20px;
+  }
+}

@@ -13,6 +13,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Toast } from '@ionic-native/toast';
 import { TouchID } from '@ionic-native/touch-id';
+import { FCM } from '@ionic-native/fcm';
 
 /* Modules */
 import { MomentModule } from 'angular2-moment';
@@ -39,11 +40,8 @@ import { PayProPage } from '../pages/paypro/paypro';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
-import { AddressbookPage } from '../pages/addressbook/addressbook';
-import { AddressbookAddPage } from '../pages/addressbook/add/add';
-import { AddressbookViewPage } from '../pages/addressbook/view/view';
-import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
-import { TxDetailsPage } from '../pages/tx-details/tx-details';
+import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { TxDetailsPage } from '../pages/tx-details/tx-details';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -54,6 +52,9 @@ import { SettingsPage } from '../pages/settings/settings';
 
 /* Settings */
 import { AboutPage } from '../pages/settings/about/about';
+import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
+import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
+import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
@@ -61,6 +62,22 @@ import { LockPage } from '../pages/settings/lock/lock';
 import { PinModalPage } from '../pages/pin/pin';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 
+/* Wallet Settings */
+
+import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
+import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
+import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
+
+/* Wallet Advanced Settings */
+import { WalletSettingsAdvancedPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-settings-advanced';
+import { WalletInformationPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-information';
+import { WalletAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
+import { WalletExportPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-export/wallet-export';
+import { WalletServiceUrlPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-service-url/wallet-service-url';
+import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-transaction-history/wallet-transaction-history';
+import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-delete/wallet-delete';
+import { WalletExtendedPrivateKeyPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-extended-private-key/wallet-extended-private-key';
+import { AllAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/all-addresses/all-addresses';
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
@@ -78,6 +95,7 @@ import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 import { AddressProvider } from '../providers/address/address';
 import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AppProvider } from '../providers/app/app';
+import { BackupProvider } from '../providers/backup/backup';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
@@ -93,6 +111,7 @@ import { PersistenceProvider, persistenceProviderFactory } from '../providers/pe
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
+import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
 import { ScanProvider } from '../providers/scan/scan';
@@ -146,6 +165,18 @@ let pages: any = [
   ScanPage,
   SettingsPage,
   TermsOfUsePage,
+  WalletSettingsPage,
+  WalletSettingsAdvancedPage,
+  WalletNamePage,
+  WalletColorPage,
+  WalletInformationPage,
+  WalletAddressesPage,
+  WalletExportPage,
+  WalletServiceUrlPage,
+  WalletTransactionHistoryPage,
+  WalletDeletePage,
+  WalletExtendedPrivateKeyPage,
+  AllAddressesPage,
   TourPage,
   TabsPage,
   TxDetailsPage,
@@ -157,12 +188,14 @@ let providers: any = [
   AddressBookProvider,
   AndroidFingerprintAuth,
   AppProvider,
+  BackupProvider,
   BwcProvider,
   BwcErrorProvider,
   ConfigProvider,
   Clipboard,
   DerivationPathHelperProvider,
   ExternalLinkProvider,
+  FCM,
   FeeProvider,
   IncomingDataProvider,
   LanguageProvider,
@@ -173,6 +206,7 @@ let providers: any = [
   ProfileProvider,
   PopupProvider,
   QRScanner,
+  PushNotificationsProvider,
   RateProvider,
   ReleaseProvider,
   StatusBar,
@@ -212,7 +246,7 @@ let pipes = [
 
 export function declarationsComponents() {
   let declarations = [];
-  
+
   declarations = declarations.concat(pages);
   declarations = declarations.concat(directives);
   declarations = declarations.concat(pipes);

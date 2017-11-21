@@ -1,4 +1,16 @@
 page-settings {
+	img {
+    &.icon-wallet {
+      width: 35px !important;
+      background-color: color($colors, primary);
+    }
+  }
+  .assertive {
+    color: color($colors, danger);
+    ion-label {
+      white-space: inherit;
+    }
+  }
   ion-item {
 		cursor: pointer;
 	}
