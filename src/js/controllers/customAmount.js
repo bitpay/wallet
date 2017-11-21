@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService, platformInfo, configService, profileService, walletService, popupService) {
+angular.module('copayApp.controllers').controller('customAmountController', function($scope, $ionicHistory, txFormatService,
+    platformInfo, configService, profileService, walletService,
+    popupService, bitcore) {
 
     var showErrorAndBack = function(title, msg) {
         popupService.showAlert(title, msg, function() {
@@ -62,7 +64,10 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     $scope.shareAddress = function() {
         if (!platformInfo.isCordova) return;
         var protocol = 'bitcoin';
-        if ($scope.wallet.coin == 'bch') protocol += 'cash';
+        var net = bitcore.Networks.get($scope.wallet.coin, "coin");
+        if (net) {
+            protocol = net.url;
+        }
         var data = protocol + ':' + $scope.address + '?amount=' + $scope.amountBtc;
         window.plugins.socialsharing.share(data, null, null, null);
     }

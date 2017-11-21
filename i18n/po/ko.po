@@ -841,21 +841,21 @@ msgstr "이 정책에 대한 현재 수수료 비율"
 
 #: src/js/services/feeService.js:15
 msgid "Custom"
-msgstr "설정"
+msgstr "맞춤"
 
 #: www/views/customAmount.html:9
 msgid "Custom Amount"
-msgstr ""
+msgstr "맞춤 금액"
 
 #: src/js/controllers/preferencesFee.js:85
 msgid "Custom Fee"
-msgstr ""
+msgstr "맞춤 수수료"
 
 #: www/views/modals/mercadolibre-card-details.html:56
 #: www/views/modals/txp-details.html:89
 #: www/views/tx-details.html:68
 msgid "Date"
-msgstr "날자"
+msgstr "날짜"
 
 #: www/views/preferencesDeleteWallet.html:21
 msgid "Delete"
@@ -1245,7 +1245,7 @@ msgstr "완료"
 #: www/views/tab-create-personal.html:123
 #: www/views/tab-create-shared.html:152
 msgid "For audit purposes"
-msgstr "감사 목적을 위하여"
+msgstr "검증을 목적으로"
 
 #: src/js/controllers/topup.js:308
 #: www/views/buyAmazon.html:29
@@ -2310,7 +2310,7 @@ msgstr "받기"
 
 #: www/views/customAmount.html:46
 msgid "Receive in"
-msgstr "받은것 중에"
+msgstr "수신"
 
 #: www/views/includes/walletHistory.html:24
 #: www/views/tx-details.html:18
@@ -2713,7 +2713,7 @@ msgstr "밀어서 사기"
 
 #: src/js/controllers/confirm.js:344
 msgid "Slide to pay"
-msgstr "밀어서 결재하기"
+msgstr "밀어서 결제하기"
 
 #: src/js/controllers/confirm.js:356
 #: src/js/controllers/modals/txpDetails.js:40
@@ -2849,7 +2849,7 @@ msgstr "이 지갑에서 즉시 사용할 수 있는 코인의 양."
 
 #: www/views/modals/wallet-balance.html:93
 msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr "보류중인 거래 제안에서 입력으로 할당되어 지갑에 저장된 코인의 양. 이 금액은 지갑과 관련된 미사용 트랜잭션 출력을 사용하여 결정되며 보류중인 트랜잭션 제안과 관련되어 실제 금액보다 많을 수 있습니다."
+msgstr "보류중인 거래 제안에서 입력으로 할당되어 지갑에 저장된 코인의 양. 이 금액은 지갑과 관련된 미사용 트랜잭션 출력을 사용하여 재정되며 보류중인 트랜잭션 제안과 관련되어 실제 금액보다 많을 수 있습니다."
 
 #: www/views/modals/wallet-balance.html:74
 msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
