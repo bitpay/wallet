@@ -1,4 +1,7 @@
 {
+    "include": [
+        "src/**/*"
+    ],
     "exclude": [
 
         "app.js",
