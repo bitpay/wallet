@@ -845,7 +845,10 @@ export class WalletProvider {
   // An alert dialog
   private askPassword(name: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.popupProvider.ionicPrompt(title, name, null, null, null).then((res: any) => {
+      let opts = {
+        type: 'password'
+      }
+      this.popupProvider.ionicPrompt(title, name, opts, null, null).then((res: any) => {
         return resolve(res);
       }).catch((err: any) => {
         return reject(err);
@@ -1047,7 +1050,7 @@ export class WalletProvider {
 
   public setTouchId(wallet: any, enabled: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
-      var opts = {
+      let opts = {
         touchIdFor: {}
       };
       opts.touchIdFor[wallet.id] = enabled;

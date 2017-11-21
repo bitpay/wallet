@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
-import { RateProvider } from '../../providers/rate/rate';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ProfileProvider } from '../../providers/profile/profile';
 
@@ -20,36 +19,39 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
-  providers: [RateProvider]
 })
 export class SettingsPage {
   public appName: string;
   public currentLanguage: string;
   public languages: Array<any>;
-  public walletsBtc: any;
+  public walletsBtc: Array<any>;
+  public walletsBch: Array<any>;
 
   constructor(
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-    private navParams: NavParams,
     private app: AppProvider,
     private language: LanguageProvider,
-    private rate: RateProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private profileProvider: ProfileProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguage = this.language.getCurrent();
     this.languages = this.language.getAvailables();
+    this.walletsBch = [];
+    this.walletsBtc = [];
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.walletsBtc = this.profileProvider.getWallets({
       coin: 'btc'
+    });
+    this.walletsBch = this.profileProvider.getWallets({
+      coin: 'bch'
     });
   }
 

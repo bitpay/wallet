@@ -55,13 +55,16 @@ export class PopupProvider {
     return new Promise((resolve, reject) => {
       let defaultText = opts && opts.defaultText ? opts.defaultText : null;
       let placeholder = opts && opts.placeholder ? opts.placeholder : null;
+      let inputType = opts && opts.type ? opts.type : 'text';
+
       let prompt = this.alertCtrl.create({
         title: title,
         message: message,
         inputs: [
           {
             value: defaultText,
-            placeholder: placeholder
+            placeholder: placeholder,
+            type: inputType
           },
         ],
         buttons: [

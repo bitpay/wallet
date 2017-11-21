@@ -12,6 +12,7 @@ import { PersistenceProvider } from '../../../../../providers/persistence/persis
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
+
 //pages
 import { HomePage } from '../../../../../pages/home/home';
 
@@ -52,9 +53,16 @@ export class WalletExportPage {
   ) {
     this.exportWalletForm = this.formBuilder.group({
       password: ['', Validators.required],
-      repeatpassword: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
       noSignEnabled: ['']
-    });
+    }, { validator: this.matchingPasswords('password', 'confirmPassword') });
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad WalletExportPage');
+  }
+
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isEncrypted = this.wallet.isPrivKeyEncrypted();
     this.canSign = this.wallet.canSign();
@@ -62,23 +70,20 @@ export class WalletExportPage {
     this.isSafari = this.platformProvider.isSafari;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletExportPage');
+  private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
+    return (group: FormGroup): { [key: string]: any } => {
+      let password = group.controls[passwordKey];
+      let confirmPassword = group.controls[confirmPasswordKey];
+      if (password.value !== confirmPassword.value) {
+        return {
+          mismatchedPasswords: true
+        };
+      }
+    }
   }
 
   public showAdvChange(): void {
     this.showAdv = !this.showAdv;
-  };
-
-  public checkPassword(pw1: string, pw2: string): void {
-    if (pw1.length > 0) {
-      if (pw2.length > 0) {
-        if (pw1 == pw2) this.result = 'correct';
-        else this.result = 'incorrect';
-      } else
-        this.result = '';
-    } else
-      this.result = '';
   };
 
   public getPassword(): Promise<any> {

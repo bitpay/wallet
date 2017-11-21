@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -14,7 +14,7 @@ import { ConfigProvider } from '../../../../providers/config/config';
 export class WalletNamePage {
 
   public wallet: any;
-  public walletAlias: string;
+  public walletName: string;
   public walletNameForm: FormGroup;
   private config: any;
 
@@ -23,7 +23,8 @@ export class WalletNamePage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private configProvider: ConfigProvider,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private events: Events
   ) {
     this.walletNameForm = this.formBuilder.group({
       walletName: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -34,19 +35,21 @@ export class WalletNamePage {
     console.log('ionViewDidLoad WalletNamePage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
     let alias = this.config.aliasFor && this.config.aliasFor[this.wallet.credentials.walletId];
-    this.walletAlias = alias ? alias : this.wallet.credentials.walletName;
+    this.walletNameForm.value.walletName = alias ? alias : this.wallet.credentials.walletName;
+    this.walletName = this.wallet.credentials.walletName;
   }
 
   public save(): void {
-    var opts = {
+    let opts = {
       aliasFor: {}
     };
     opts.aliasFor[this.wallet.credentials.walletId] = this.walletNameForm.value.walletName;
     this.configProvider.set(opts);
+    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.pop();
   }
 }

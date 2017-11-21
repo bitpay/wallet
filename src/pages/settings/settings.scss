@@ -5,6 +5,12 @@ page-settings {
       background-color: color($colors, primary);
     }
   }
+  .assertive {
+    color: color($colors, danger);
+    ion-label {
+      white-space: inherit;
+    }
+  }
   ion-item {
 		cursor: pointer;
 	}

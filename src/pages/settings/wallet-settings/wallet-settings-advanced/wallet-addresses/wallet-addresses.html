@@ -13,22 +13,19 @@
 
   <ion-list>
     <button ion-item (click)="scan()">
-      <h2 translate>Scan addresses for funds</h2>
-      <i class="icon bp-arrow-right"></i>      
+      <h2 translate>Scan addresses for funds</h2>      
     </button>
 
     <button ion-item *ngIf="viewAll" (click)="viewAllAddresses()">
-      <h2 translate>View All Addresses</h2>
-      <i class="icon bp-arrow-right"></i>      
+      <h2 translate>View All Addresses</h2>      
     </button>
 
     <ion-item-divider (click)="newAddress()" color="light" translate>
       Unused Addresses
-      <i class="icon ion-ios-plus-empty"></i>
     </ion-item-divider>
 
-    <div *ngIf="loading" class="updating">
-      <ion-spinner class="spinner-dark recent" icon="crescent"></ion-spinner>
+    <div *ngIf="loading">
+      <ion-spinner icon="crescent"></ion-spinner>
       <span translate>Loading addresses...</span>
     </div>
 
@@ -56,9 +53,9 @@
         Addresses With Balance
       </ion-item-divider>
 
-      <ion-item class="item" *ngFor="let w of latestWithBalance" copy-to-clipboard="w.address">
+      <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="w.address">
         {{w.address}}
-        <div class="addr-balance">{{w.amount | satToUnit}}</div>
+        <div>{{w.amount | satToUnit}}</div>
       </ion-item>
     </div>
 

@@ -22,6 +22,9 @@ import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
 export class WalletSettingsPage {
 
   public wallet: any;
+  public walletName: any;
+  public canSign: boolean;
+  public needsBackup: boolean;
   public hiddenBalance: boolean;
   public encryptEnabled: boolean;
   public touchIdEnabled: boolean;
@@ -45,47 +48,41 @@ export class WalletSettingsPage {
     console.log('ionViewDidLoad WalletSettingsPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.config = this.configProvider.get();
+    this.walletName = this.wallet.name;
+    this.canSign = this.wallet.canSign();
+    this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
     this.encryptEnabled = this.walletProvider.isEncrypted(this.wallet);
     this.touchIdAvailable = this.touchIdProvider.isAvailable();
+    this.config = this.configProvider.get();
     this.touchIdEnabled = this.config.touchIdFor ? this.config.touchIdFor[this.wallet.credentials.walletId] : null;
     if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic)
       this.deleted = true;
   }
 
   public hiddenBalanceChange(): void {
-    let opts = {
-      balance: {
-        enabled: this.hiddenBalance
-      }
-    };
-    this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId).catch((err: any) => {
-      if (err) this.logger.error(err);
-    });
+    this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId);
   }
 
   public encryptChange(): void {
     if (!this.wallet) return;
-    var val = this.encryptEnabled;
+    let val = this.encryptEnabled;
 
     if (val && !this.walletProvider.isEncrypted(this.wallet)) {
       this.logger.debug('Encrypting private key for', this.wallet.name);
       this.walletProvider.encrypt(this.wallet).then(() => {
-        this.profileProvider.updateCredentials(JSON.parse(this.wallet.export())).then(() => {
-          this.logger.debug('Wallet encrypted');
-        });
+        this.profileProvider.updateCredentials(JSON.parse(this.wallet.export()));
+        this.logger.debug('Wallet encrypted');
       }).catch((err: any) => {
         this.logger.warn(err);
         this.encryptEnabled = false;
       })
     } else if (!val && this.walletProvider.isEncrypted(this.wallet)) {
       this.walletProvider.decrypt(this.wallet).then(() => {
-        this.profileProvider.updateCredentials(JSON.parse(this.wallet.export())).then(() => {
-          this.logger.debug('Wallet decrypted');
-        });
+        this.profileProvider.updateCredentials(JSON.parse(this.wallet.export()));
+        this.logger.debug('Wallet decrypted');
       }).catch((err) => {
         this.logger.warn(err);
         this.encryptEnabled = true;
@@ -108,9 +105,7 @@ export class WalletSettingsPage {
     this.walletProvider.setTouchId(this.wallet, !!newStatus).then(() => {
       this.logger.debug('Touch Id status changed: ' + newStatus);
     }).catch((err: any) => {
-      if (err) {
-        this.touchIdEnabled = !newStatus;
-      }
+      this.touchIdEnabled = !newStatus;
     });
   }
 

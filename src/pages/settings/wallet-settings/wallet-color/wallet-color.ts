@@ -30,7 +30,7 @@ export class WalletColorPage {
     console.log('ionViewDidLoad WalletColorPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.config = this.configProvider.get();
     this.colorCount = Array(this.getColorCount()).fill(0).map((x, i) => i);

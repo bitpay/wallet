@@ -44,7 +44,7 @@ export class WalletDeletePage {
     console.log('ionViewDidLoad WalletDeletePage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.name;
   }
@@ -64,6 +64,7 @@ export class WalletDeletePage {
       this.pushNotificationsProvider.unsubscribe(this.wallet);
       this.navCtrl.setRoot(HomePage);
       this.navCtrl.popToRoot();
+      this.navCtrl.parent.select(0);
     }).catch((err) => {
       this.popupProvider.ionicAlert('Error', err.message || err);//TODO gettextcatalog
     });

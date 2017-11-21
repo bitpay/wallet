@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -23,6 +23,12 @@ export class WalletInformationPage {
   public wallet: any;
   public walletId: string;
   public walletName: string;
+  public N: number;
+  public M: number;
+  public copayers: any;
+  public copayerId: any;
+  public balanceByAddress: any;
+  public account: number;
   public coin: string;
   public network: string;
   public addressType: string;
@@ -31,6 +37,7 @@ export class WalletInformationPage {
   public pubKeys: Array<string>;
   public externalSource: string;
   public canSign: boolean;
+  public needsBackup: boolean;
   private config: any;
   private colorCounter = 1;
   private BLACK_WALLET_COLOR = '#202020';
@@ -40,7 +47,8 @@ export class WalletInformationPage {
     private configProvider: ConfigProvider,
     private walletProvider: WalletProvider,
     private navParams: NavParams,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private events: Events
   ) {
 
   }
@@ -49,12 +57,17 @@ export class WalletInformationPage {
     console.log('ionViewDidLoad WalletInformationPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.config = this.configProvider.get();
     this.walletName = this.wallet.credentials.walletName;
     this.coin = this.wallet.coin;
     this.walletId = this.wallet.credentials.walletId;
+    this.N = this.wallet.credentials.n;
+    this.M = this.wallet.credentials.m;
+    this.copayers = this.wallet.cachedStatus.wallet.copayers;
+    this.copayerId = this.wallet.credentials.copayerId;
+    this.balanceByAddress = this.wallet.balanceByAddress;
+    this.account = this.wallet.credentials.account;
     this.network = this.wallet.credentials.network;
     this.addressType = this.wallet.credentials.addressType || 'P2SH';
     this.derivationStrategy = this.wallet.credentials.derivationStrategy || 'BIP45';
@@ -62,6 +75,8 @@ export class WalletInformationPage {
     this.pubKeys = _.map(this.wallet.credentials.publicKeyRing, 'xPubKey');
     this.externalSource = null;
     this.canSign = this.wallet.canSign();
+    this.needsBackup = this.wallet.needsBackup;
+    this.config = this.configProvider.get();
   }
 
   public saveBlack(): void {
@@ -78,8 +93,10 @@ export class WalletInformationPage {
     };
     opts.colorFor[this.wallet.credentials.walletId] = color;
     this.configProvider.set(opts);
+    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.setRoot(HomePage);
     this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
   };
 
   public openWalletExtendedPrivateKey(): void {

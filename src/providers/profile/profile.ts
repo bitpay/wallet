@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+import { Events } from 'ionic-angular';
 import * as _ from 'lodash';
+
+//providers
 import { PersistenceProvider } from '../persistence/persistence';
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
@@ -9,6 +12,8 @@ import { WalletProvider } from '../wallet/wallet';
 import { PlatformProvider } from '../platform/platform';
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
+
+//models
 import { Profile } from '../../models/profile/profile.model';
 
 @Injectable()
@@ -32,6 +37,7 @@ export class ProfileProvider {
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private languageProvider: LanguageProvider,
+    private events: Events
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -145,9 +151,8 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
 
-      this.updateCredentials(JSON.parse(wallet.export())).then(() => {
-        //$rootScope.$emit('Local/WalletCompleted', walletId); TODO
-      });
+      this.updateCredentials(JSON.parse(wallet.export()))
+      //$rootScope.$emit('Local/WalletCompleted', walletId); TODO
     });
 
     wallet.initialize({
@@ -163,13 +168,12 @@ export class ProfileProvider {
           this.logger.debug('Wallet + ' + walletId + ' status:' + JSON.stringify(wallet.status));
       });
     });
-
-    /* TODO $rootScope.$on('Local/SettingsUpdated', (e: any, walletId: string) => {
-      if (!walletId || walletId == wallet.id) {
+    this.events.subscribe('wallet:updated', (walletId: string) => {
+      if (walletId && walletId == wallet.id) {
         this.logger.debug('Updating settings for wallet:' + wallet.id);
         this.updateWalletSettings(wallet);
       }
-    }); */
+    });
 
     return true;
   }
@@ -190,13 +194,9 @@ export class ProfileProvider {
     //$rootScope.$emit('bwsEvent', wallet.id, n.type, n); TODO
   }
 
-  public updateCredentials(credentials: any): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.profile.updateWallet(credentials);
-      this.persistenceProvider.storeProfile(this.profile).then(() => {
-        return resolve();
-      });
-    });
+  public updateCredentials(credentials: any): void {
+    this.profile.updateWallet(credentials);
+    this.persistenceProvider.storeProfile(this.profile);
   }
 
   public getLastKnownBalance(wid: string): Promise<string> {
@@ -824,7 +824,7 @@ export class ProfileProvider {
 
   public createDefaultWallet(): Promise<any> {
     return new Promise((resolve, reject) => {
-      var opts: any = {};
+      let opts: any = {};
       opts.m = 1;
       opts.n = 1;
       opts.networkName = 'livenet';
@@ -911,15 +911,9 @@ export class ProfileProvider {
     }, 'createdOn']);
   }
 
-  public toggleHideBalanceFlag(walletId: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.wallet[walletId].balanceHidden = !this.wallet[walletId].balanceHidden;
-      this.persistenceProvider.setHideBalanceFlag(walletId, this.wallet[walletId].balanceHidden.toString()).then(() => {
-        return resolve();
-      }).catch((err: any) => {
-        return reject(err);
-      });
-    });
+  public toggleHideBalanceFlag(walletId: string): void {
+    this.wallet[walletId].balanceHidden = !this.wallet[walletId].balanceHidden;
+    this.persistenceProvider.setHideBalanceFlag(walletId, this.wallet[walletId].balanceHidden.toString());
   }
 
   public getNotifications(opts: any): Promise<any> {

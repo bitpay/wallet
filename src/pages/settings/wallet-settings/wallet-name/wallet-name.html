@@ -14,7 +14,7 @@
   <form [formGroup]="walletNameForm" (ngSubmit)="save()">
     <ion-item>
       <ion-label stacked translate>Name</ion-label>
-      <ion-input type="text" formControlName="walletName" placeholder="{{walletAlias}}" required></ion-input>
+      <ion-input type="text" formControlName="walletName" [value]="walletNameForm.value.walletName" required></ion-input>
     </ion-item>
     <button ion-button block type="submit" [disabled]="!walletNameForm.valid">Save</button>
   </form>

@@ -40,7 +40,7 @@ export class WalletServiceUrlPage {
     console.log('ionViewDidLoad WalletServiceUrlPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.defaults = this.configProvider.getDefaults();
     this.config = this.configProvider.get();

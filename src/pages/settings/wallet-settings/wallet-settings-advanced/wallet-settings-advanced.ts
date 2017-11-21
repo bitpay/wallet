@@ -25,11 +25,14 @@ export class WalletSettingsAdvancedPage {
     private navCtrl: NavController,
     private navParams: NavParams,
   ) {
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad WalletSettingsAdvancedPage');
+  }
+
+  ionViewWillEnter() {
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
   }
 
   public openWalletInformation(): void {

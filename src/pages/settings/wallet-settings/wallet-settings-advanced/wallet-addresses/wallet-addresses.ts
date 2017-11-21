@@ -57,7 +57,7 @@ export class WalletAddressesPage {
     console.log('ionViewDidLoad WalletAddressesPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.allAddressesView = this.navParams.data.stateName == 'tabs.receive.allAddresses' ? true : false;
     if (!this.isCachedWallet(this.navParams.data.walletId)) this.init();
@@ -114,7 +114,7 @@ export class WalletAddressesPage {
   }
 
   private processPaths(list: any): void {
-    _.each(list, (n) => {
+    _.each(list, (n: any) => {
       n.path = n.path.replace(/^m/g, 'xpub');
     });
   }

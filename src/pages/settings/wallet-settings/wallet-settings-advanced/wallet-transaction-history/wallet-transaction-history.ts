@@ -58,7 +58,7 @@ export class WalletTransactionHistoryPage {
     console.log('ionViewDidLoad WalletTransactionHistoryPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.isCordova = this.platformProvider.isCordova;
     this.appName = this.appProvider.info.nameCase;

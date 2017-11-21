@@ -9,7 +9,7 @@
       <ion-segment-button value="file/text">
         File/Text
       </ion-segment-button>
-      <ion-segment-button (click)="generateQrCode()" value="qrCode">
+      <ion-segment-button (click)="generateQrCode()">
         QR Code
       </ion-segment-button>
     </ion-segment>
@@ -20,13 +20,14 @@
         <form [formGroup]="exportWalletForm">
           <ion-item>
             <ion-label stacked translate>Set up a password</ion-label>
-            <ion-input type="text" formControlName="password" placeholder="{{'Your password'|translate}}" (ionChange)="checkPassword(exportWalletForm.value.password, exportWalletForm.value.repeatpassword)"
-              [ngClass]="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}" required></ion-input>
+            <ion-input type="password" formControlName="password" placeholder="{{'Your password'|translate}}" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked translate>Repeat the password</ion-label>
-            <ion-input type="text" formControlName="repeatpassword" placeholder="{{'Repeat password'|translate}}" (ionChange)="checkPassword(exportWalletForm.value.password, exportWalletForm.value.repeatpassword)"
-              [ngClass]="{'correct': result == 'correct', 'incorrect': result == 'incorrect'}" required></ion-input>
+            <ion-input type="password" formControlName="confirmPassword" placeholder="{{'Repeat password'|translate}}" required></ion-input>
+          </ion-item>
+          <ion-item class='form-text error' *ngIf="exportWalletForm.controls.confirmPassword.touched && exportWalletForm.hasError('mismatchedPasswords') && exportWalletForm.controls.password.valid">
+            <div translate>Passwords do not match</div>
           </ion-item>
           <div *ngIf="canSign">
             <ion-item-divider color="light"></ion-item-divider>
@@ -49,11 +50,11 @@
                 </span>
             </div>
           </div>
-          <button *ngIf="!isSafari && !isCordova" ion-button block type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.repeatpassword) || !exportWalletForm.valid ">Download</button>
-          <button *ngIf="isSafari && !isCordova" ion-button block type="submit" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.repeatpassword) || !exportWalletForm.valid ">View</button>
+          <button *ngIf="!isSafari && !isCordova" ion-button block type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Download</button>
+          <button *ngIf="isSafari && !isCordova" ion-button block type="submit" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">View</button>
           <div *ngIf="isCordova">
-            <button ion-button block type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.repeatpassword) || !exportWalletForm.valid ">Copy to clipboard</button>
-            <button ion-button block type="submit" (click)="sendWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.repeatpassword) || !exportWalletForm.valid ">Send by email</button>
+            <button ion-button block type="submit" (click)="copyWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Copy to clipboard</button>
+            <button ion-button block type="submit" (click)="sendWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Send by email</button>
           </div>
         </form>
       </div>
