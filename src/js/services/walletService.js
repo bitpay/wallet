@@ -291,7 +291,6 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
             tries = tries || 0;
 
-            $log.debug('Updating Status:', wallet.credentials.walletName, tries);
             get(function(err, status) {
                 if (err) return cb(err);
 

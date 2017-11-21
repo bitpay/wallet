@@ -47,15 +47,27 @@
         var load = function(fail) {
             var remoteUrl = "index.html";
             //ionic web view url
+            console.log("fail:" + fail + ", REMOTE_LOAD:" + REMOTE_LOAD);
             if (!fail) {
-                if (window && window.cordova) {
-                    if (window.cordova.platformId == "android")
+                if (REMOTE_LOAD && window && window.cordova) {
+                    console.log("isCordova");
+                    if (window.cordova.platformId == "android") {
                         remoteUrl = DEPLOY_URL + "/and.html";
-                    else if (window.cordova.platformId == "ios") {
+                        console.log("and", remoteUrl);
+                    } else if (window.cordova.platformId == "ios") {
                         remoteUrl = DEPLOY_URL + "/ios.html";
+                        console.log("ios", remoteUrl);
+                    } else {
+                        console.log("unkown os", window.cordova.platformId);
                     }
+                } else {
+                    console.log("load index.html");
                 }
+            } else {
+                console.log("config load fail");
             }
+            console.log("config url", remoteUrl);
+
             location.href = remoteUrl;
         }
         initBoot();
