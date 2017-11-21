@@ -49,7 +49,7 @@
         </ion-icon>
         <h2>{{wallet.credentials.walletName}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
         <span *ngIf="wallet.scanning" translate>Scanning funds</span>        
-        <p *ngIf="!wallet.scanning">{{wallet.statusStr}}</p>
+        <p *ngIf="!wallet.scanning">{{wallet.status.availableBalanceSat || 0 | satToUnit}} {{cachedBalanceUpdateOn}}</p>
         <p *ngIf="wallet.error" class="error">{{wallet.error}}</p>
       </button>
     </ion-list>
