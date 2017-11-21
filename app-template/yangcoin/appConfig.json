@@ -23,8 +23,8 @@
     "windowsAppId": "",
     "pushSenderId": "",
     "description": "A Secure YangCoin Wallet",
-    "version": "3.8.3",
-    "androidVersion": "383001",
+    "version": "3.8.5",
+    "androidVersion": "385001",
     "_extraCSS": null,
     "_enabledExtensions": {
         "coinbase": false,
