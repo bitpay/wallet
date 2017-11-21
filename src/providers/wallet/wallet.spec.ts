@@ -8,7 +8,6 @@ import { TxFormatProvider } from '../tx-format/tx-format';
 import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { RateProvider } from '../rate/rate';
-import { Filter } from '../filter/filter';
 import { PopupProvider } from '../popup/popup';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
@@ -46,8 +45,6 @@ describe('Provider: Wallet Provider', () => {
         { provide: TxFormatProvider },
         { provide: BwcProvider, useClass: BwcProviderMock },
         { provide: BwcErrorProvider },
-        { provide: RateProvider },
-        { provide: Filter },
         { provide: PopupProvider },
         { provide: OnGoingProcessProvider },
         { provide: TouchIdProvider },

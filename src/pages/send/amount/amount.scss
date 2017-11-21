@@ -1,4 +1,44 @@
 page-amount {
+  .amount-pane {
+    top: 95px;
+    width: 100%;
+    padding: 0 16px;
+    .title {
+      padding: 24px 0;
+      font-size: 18px;
+    }
+    .amount-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: absolute;
+      bottom: 30%;
+      top: 15%;
+      .expression{
+        font-size: 40px;
+        display: flex;
+        a {
+          margin: auto;
+          margin-left: 10px;
+          font-size: 20px;
+          border: 1px solid;
+          color: gray;
+          border-color: #A5A4A4;
+          padding: 2px;
+          cursor: pointer;
+        }
+      }
+      .amount {
+        color: #A5A4A4;
+        margin-left: 5px;
+      }
+      .result {
+        color: gray;
+        margin-left: 5px;
+      }
+    }
+  }
+
   .keypad {
     text-align: center;
     font-size: 24px;
@@ -6,41 +46,33 @@ page-amount {
     position: absolute;
     bottom: 0;
     width: 100%;
-
     .row {
       padding: 0 !important;
       margin: 0 !important;
     }
-
     .col {
-      line-height: 45px;
+      line-height: 40px;
     }
-
     .operator {
-      font-weight: normal;
       cursor: pointer;
     }
-
     .operator-row {
       width: 25%;
       margin-left: 75%;
       .operator-send {
         font-weight: bolder;
         color: #fff;
-        background-color: #647ce8;
+        background-color: color($colors, primary);
         font-size: 36px;
         cursor: pointer;
-
         &:active {
           background-color: #eaeaea;
         }
       }
     }
-
     .digit{
       cursor: pointer;
     }
-
     @media(max-height: 480px) {
       font-size: 12px;
     }
@@ -52,177 +84,6 @@ page-amount {
     }
     &.icon-contact {
       width: 35px !important;      
-    }
-  }
-  .amount-pane-recipient {
-    position: absolute;
-    top: 125px;
-    bottom: 0;
-    width: 100%;
-    padding: 0 16px;
-
-    .amount-bar {
-      padding: 24px 0;
-      font-size: 18px;
-      @media(max-height: 480px) {
-        padding: 0px;
-      }
-      @media(max-width: 320px) {
-        padding: 0px;
-      }
-      .title {
-        float: left;
-        padding-top: 10px;
-        color: black;
-        font-weight: bold;
-        font-size: 24px;
-        @media(max-height: 480px) {
-          padding: 0px;
-        }
-      }
-      @media(max-height: 480px) {
-        padding-top: 3px;
-      }
-    }
-    .amount {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      flex-grow: 1;
-      position: absolute;
-      bottom: 254px;
-      top: 66px;
-      .light {
-        color: black;
-      }
-      @media(max-height: 480px) {
-        top: 45px;
-      }
-      @media(max-width: 320px) {
-        bottom: 276px;
-        top: 60px;
-        & > div {
-          display: inline-block;
-        }
-        & > div:first-child {
-          display: inherit;
-        }
-      }
-    }
-  }
-  .amount-pane-no-recipient {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    padding: 0 16px;
-
-    .amount-bar {
-      padding: 24px 0;
-      font-size: 18px;
-      .title {
-        padding-top: 10px;
-        color: black;
-        font-weight: bold;
-        font-size: 24px;
-        .limits {
-          margin-top: 10px;
-          color: black;
-          font-size: 12px;
-        }
-        .select {
-          margin: 10px 1px;
-        }
-      }
-    }
-    .amount {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      flex-grow: 1;
-      position: absolute;
-      bottom: 254px;
-      top: 66px;
-      .light {
-        color: black;
-      }
-    }
-  }
-  .amount {
-    .icon-toggle {
-      font-size: 1.2em;
-      width: auto;
-      margin: 0.8em auto;
-      border: 1px solid grey;
-      color: black;
-      border-radius: 3px;
-      padding: 0 10px;
-      cursor: pointer;
-      @media(max-height: 280px) {
-        margin: 0.1em auto;
-      }
-    }
-    &__editable {
-      &--minimize {
-        font-size: 22px;
-      }
-      &--standard {
-        font-size: 42px;
-        @media(max-height: 480px) {
-          font-size: 26px;
-          padding-top: 10px;
-        }
-      }
-      &--placeholder {
-        color: black;
-      }
-    }
-    &__number {
-      color: black;
-    }
-    &__currency-toggle {
-      border: 1px solid grey;
-      color: black;
-      border-radius: 3px;
-      padding: 0 10px;
-      cursor: pointer;
-      font-size: .6em;
-      position: relative;
-      top: -3px;
-      line-height: 1;
-      @media(max-width: 320px) {
-        line-height: 30px;
-        height: 30px;
-      }
-    }
-    &__results {
-      &--minimize {
-        font-size: 12px;
-      }
-      &--standard {
-        font-size: 18px;
-        padding: 10px 0;
-      }
-      &--placeholder {
-        color: black;
-      }
-    }
-    &__result {
-      color: black;
-      font-size: .9em;
-      //margin-bottom: -.9em;  TODO matias
-      line-height: 1;
-      @media(max-height: 480px) {
-        margin-bottom: 0;
-      }
-    }
-    &__result-equiv {
-      color: grey;
-      font-size: 1.2em;
-      @media(max-height: 480px) {
-        margin-top: 0;
-        font-size: 16px;
-      }
     }
   }
 }

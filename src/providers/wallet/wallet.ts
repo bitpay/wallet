@@ -7,7 +7,6 @@ import { TxFormatProvider } from '../tx-format/tx-format';
 import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { RateProvider } from '../rate/rate';
-import { Filter } from '../filter/filter';
 import { PopupProvider } from '../popup/popup';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
@@ -44,7 +43,6 @@ export class WalletProvider {
     private persistenceProvider: PersistenceProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private rateProvider: RateProvider,
-    private filter: Filter,
     private popupProvider: PopupProvider,
     private ongoingProcess: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider
@@ -181,16 +179,10 @@ export class WalletProvider {
         // Selected unit
         cache.unitToSatoshi = config.settings.unitToSatoshi;
         cache.satToUnit = 1 / cache.unitToSatoshi;
-
-        //STR
-        cache.totalBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.totalBalanceSat);
-        cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.lockedBalanceSat);
-        cache.availableBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.availableBalanceSat);
-        cache.spendableBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.spendableAmount);
-        cache.pendingBalanceStr = this.txFormatProvider.formatAmountStr(wallet.coin, cache.pendingAmount);
-
         cache.alternativeName = config.settings.alternativeName;
         cache.alternativeIsoCode = config.settings.alternativeIsoCode;
+        cache.alternativeBalanceAvailable = true;
+        cache.isRateAvailable = true;
 
         // Check address
         this.isAddressUsed(wallet, balance.byAddress).then((used) => {
@@ -205,26 +197,6 @@ export class WalletProvider {
           }
         }).catch((err) => {
           return reject(err);
-        });
-
-        this.rateProvider.whenAvailable().then(() => {
-
-          let totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
-          let lockedBalanceAlternative = this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
-          let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
-
-          cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
-          cache.pendingBalanceAlternative = this.filter.formatFiatAmount(pendingBalanceAlternative);
-          cache.lockedBalanceAlternative = this.filter.formatFiatAmount(lockedBalanceAlternative);
-          cache.spendableBalanceAlternative = this.filter.formatFiatAmount(spendableBalanceAlternative);
-          cache.alternativeConversionRate = this.filter.formatFiatAmount(alternativeConversionRate);
-
-          cache.alternativeBalanceAvailable = true;
-          cache.isRateAvailable = true;
-        }).catch((err) => {
-          console.log(err);
         });
       };
 
@@ -915,7 +887,7 @@ export class WalletProvider {
 
   public handleEncryptedWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!this.isEncrypted(wallet)) return reject();
+      if (!this.isEncrypted(wallet)) return resolve();
       this.askPassword(wallet.name, 'Enter Spending Password').then((password: string) => { //TODO gettextcatalog
         if (!password) return reject('No password');
         if (!wallet.checkPassword(password)) return reject('Wrong password');

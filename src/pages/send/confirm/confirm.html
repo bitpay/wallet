@@ -13,8 +13,9 @@
         <span translate *ngIf="tx.sendMax">Sending maximum amount</span>
       </div>
       <div class="amount-label">
-        <div class="amount">{{tx.amountValueStr || '...'}} <span class="unit">{{tx.amountUnitStr}}</span></div>
-        <div class="alternative">{{tx.alternativeAmountStr || '...'}}</div>
+        <div class="amount" *ngIf="isFiatAmount">{{tx.amount || 0 | satToUnit}}</div>
+        <div class="amount" *ngIf="!isFiatAmount">{{tx.amount || 0 | satToUnit: data.unit}}</div>
+        <div class="alternative">{{tx.amount || 0 | satToFiat: data.unit}}</div>
       </div>
     </ion-item>
     <ion-item *ngIf="tx.paypro">
@@ -75,15 +76,13 @@
 
     <button ion-item class="item item-icon-right" *ngIf="wallet && showFee" (click)="chooseFeeLevel(tx, wallet)">
       <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-        <span>{{tx.txp[wallet.id].feeStr || '...'}}</span>
-        <span>
-          <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
-          <span class="fee-rate" *ngIf="tx.txp[wallet.id].feeRatePerStr"> &middot;
-              <ion-icon ios="ios-alert" md="md-alert" [hidden]="!tx.txp[wallet.id].feeToHigh"></ion-icon> &nbsp;
-              <span class="fee-rate" [ngClass]="{'warn':tx.txp[wallet.id].feeToHigh}" translate> {{tx.txp[wallet.id].feeRatePerStr}}  of the sending amount </span>
-          </span>
-          </span>
+      <div>{{tx.txp[wallet.id].fee || 0 | satToUnit}}</div>
+      <span>{{tx.txp[wallet.id].fee || 0 | satToFiat}}&nbsp;
+        <span class="fee-rate" *ngIf="tx.txp[wallet.id].feeRatePerStr">≈
+          <ion-icon ios="ios-alert" md="md-alert" [hidden]="!tx.txp[wallet.id].feeToHigh"></ion-icon> &nbsp;
+          <span class="fee-rate" [ngClass]="{'warn':tx.txp[wallet.id].feeToHigh}" translate> {{tx.txp[wallet.id].feeRatePerStr}} of the transaction</span>
         </span>
+      </span>
     </button>
 
     <button ion-item *ngIf="wallet" (click)="showDescriptionPopup(tx)">

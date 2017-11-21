@@ -1,12 +1,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Amount</ion-title>
+    <ion-title>{{'Amount' | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
-
-<!-- TODO send max -->
 
 <ion-content>
   <ion-card>
@@ -16,8 +14,7 @@
     <ion-list>
       <ion-item>
         <ion-icon *ngIf="recipientType == 'wallet'" item-left>
-          <img src="assets/img/icon-wallet.svg" [ngClass]="{'wallet-background-color-default': !toColor}" [ngStyle]="{'background-color': color}"
-            class="icon-wallet">
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet">
         </ion-icon>
         <ion-icon *ngIf="recipientType == 'contact'" item-left>
           <img src="assets/img/contact-placeholder.svg" class="icon-contact">
@@ -26,31 +23,24 @@
         <ion-icon *ngIf="!recipientType" item-left>
           <img src="assets/img/contact-placeholder.svg" class="icon-contact">
         </ion-icon>
-        <span>{{ name || toAddress }}</span>
+        <span>{{name || toAddress}}</span>
       </ion-item>
     </ion-list>
   </ion-card>
   <div>
-    <div [ngClass]="{'amount-pane-recipient': !customAmount && !nextStep,
-      'amount-pane-no-recipient': customAmount || nextStep}">
+    <div class="amount-pane">
 
-      <div class="amount-bar">
-        <div class="title">
-          <span translate>Amount</span>
-        </div>
+      <div class="title">
+        <span translate>Amount</span>
       </div>
 
-      <div class="amount">
-        <div class="amount__editable" [ngClass]="{'amount__editable--minimize': smallFont, 'amount__editable--standard': !smallFont, 'amount__editable--placeholder': !amount}">
-          <span class="amount__number">{{amountStr || "0.00" }}</span>
-          <a *ngIf="unit" class="amount__currency-toggle" (click)="changeUnit()">{{unit}}</a>
+      <div class="amount-content">
+        <div class="expression">{{expression || '0.00'}}
+          <a class="unit-button" (click)="updateUnit()">{{unit}}</a>
         </div>
-        <div [ngClass]="{'amount__results--minimize': smallFont, 'amount__results--standard': !smallFont, 'amount__results--placeholder': amountResult}"
-          (click)="changeAlternativeUnit()">
-          <div class="amount__result" [hidden]="!globalResult">{{globalResult}} {{unit}}</div>
-          <div class="amount__result-equiv" [hidden]="!alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
-          <div class="amount__result-equiv" [hidden]="alternativeAmount">&nbsp;</div>
-        </div>
+        <div class="amount" [hidden]="!showExpressionResult">= {{amount | number: '1.2-8'}} {{unit}}</div>
+        <div class="result" *ngIf="isFiatAmount">≈ {{amount | fiatToUnit: addressInfo.coin}}</div>
+        <div class="result" *ngIf="!isFiatAmount">≈ {{amount * 1e8 | satToFiat: unit}}</div>
       </div>
     </div>
     <div class="keypad">

@@ -19,7 +19,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
-import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 import { FeeProvider } from '../../../providers/fee/fee';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
 
@@ -28,18 +27,18 @@ import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-not
   templateUrl: 'confirm.html',
 })
 export class ConfirmPage {
-
   public data: any;
   public toAddress: string;
-  public amount: string;
+  public amount: number;
   public coin: string;
+  public isFiatAmount: boolean;
   public recipientType: string;
 
   public countDown = null;
-  public CONFIRM_LIMIT_USD: number = 20;
-  public FEE_TOO_HIGH_LIMIT_PER: number = 15;
+  public CONFIRM_LIMIT_USD: number;
+  public FEE_TOO_HIGH_LIMIT_PER: number;
 
-  public tx: any = {};
+  public tx: any;
   public wallet: any;
   public wallets: any;
   public noWalletMessage: string;
@@ -55,16 +54,11 @@ export class ConfirmPage {
 
   // Config Related values
   public config: any;
-  public walletConfig: any;
-  public unitToSatoshi: number;
-  public unitDecimals: number;
-  public satToUnit: number;
   public configFeeLevel: string;
 
-
   // Platform info
-  public isCordova: boolean = this.platformProvider.isCordova;
-  public isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+  public isCordova: boolean;
+  public isWindowsPhoneApp: boolean;
 
   //custom fee flag
   public usingCustomFee: boolean = false;
@@ -82,68 +76,44 @@ export class ConfirmPage {
     private externalLinkProvider: ExternalLinkProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private txFormatProvider: TxFormatProvider,
     private feeProvider: FeeProvider,
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
   ) {
-    this.config = this.configProvider.get();
-    this.walletConfig = this.config.wallet;
-    this.unitToSatoshi = this.walletConfig.settings.unitToSatoshi;
-    this.unitDecimals = this.walletConfig.settings.unitDecimals;
-    this.satToUnit = 1 / this.unitToSatoshi;
-    this.configFeeLevel = this.walletConfig.settings.feeLevel ? this.walletConfig.settings.feeLevel : 'normal';
-    this.showFee = false;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ConfirmPage');
+    this.tx = {};
     this.data = this.navParams.data;
-    this.toAddress = this.navParams.data.toAddress;
     this.amount = this.navParams.data.amount;
+    this.isFiatAmount = this.data.unit != 'bch' && this.data.unit != 'btc' ? true : false;
     this.coin = this.navParams.data.coin;
     this.recipientType = this.navParams.data.recipientType;
+    this.isCordova = this.platformProvider.isCordova;
+    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+    this.CONFIRM_LIMIT_USD = 20;
+    this.FEE_TOO_HIGH_LIMIT_PER = 15;
+    this.showFee = false;
+    this.config = this.configProvider.get();
+    this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
   }
-
-  ionViewDidEnter() {
-    // Setup
-    let B = this.coin == 'bch' ? this.bwcProvider.getBitcoreCash() : this.bwcProvider.getBitcore();
-    let networkName;
-    try {
-      networkName = (new B.Address(this.toAddress)).network.name;
-    } catch (e) {
-      let message = 'Copay only supports Bitcoin Cash using new version numbers addresses'; // TODO gettextCatalog
-      let backText = 'Go back'; // TODO gettextCatalog
-      let learnText = 'Learn more'; // TODO gettextCatalog
-      this.popupProvider.ionicConfirm(null, message, backText, learnText).then((res: boolean) => {
-        this.navCtrl.setRoot(SendPage);
-        this.navCtrl.popToRoot();
-        if (!res) {
-          let url = 'https://support.bitpay.com/hc/en-us/articles/115004671663';
-          this.externalLinkProvider.open(url);
-        }
-      });
-      return;
-    }
-
-    // Grab stateParams
+  
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ConfirmPage');
+    let addressInfo = this.navParams.data.addressInfo;
     let tx: any = {
-      amount: parseFloat(this.navParams.data.amount) * 100000000, // TODO review this line '* 100000000' convert satoshi to BTC
+      toAddress: addressInfo.address,
+      amount: this.navParams.data.amount,
       sendMax: this.navParams.data.useSendMax == 'true' ? true : false,
-      toAddress: this.navParams.data.toAddress,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
-
       feeLevel: this.configFeeLevel,
-      spendUnconfirmed: this.walletConfig.spendUnconfirmed,
-
+      spendUnconfirmed: this.config.wallet.spendUnconfirmed,
+      
       // Vanity tx info (not in the real tx)
-      recipientType: this.navParams.data.recipientType || null,
+      recipientType: this.navParams.data.recipientType,
       name: this.navParams.data.name,
       email: this.navParams.data.email,
       color: this.navParams.data.color,
-      network: networkName,
-      coin: this.navParams.data.coin,
+      network: addressInfo.network,
+      coin: addressInfo.coin,
       txp: {},
     };
 
@@ -191,8 +161,9 @@ export class ConfirmPage {
           walletsUpdated++;
           wallet.status = status;
 
-          if (!status.availableBalanceSat)
+          if (!status.availableBalanceSat) {
             this.logger.debug('No balance available in: ' + wallet.name);
+          }
 
           if (status.availableBalanceSat > minAmount) {
             filteredWallets.push(wallet);
@@ -316,7 +287,6 @@ export class ConfirmPage {
 
   private updateTx(tx: any, wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
-
       this.onGoingProcessProvider.set('calculatingFee', true);
 
       if (opts.clearCache) {
@@ -324,17 +294,6 @@ export class ConfirmPage {
       }
 
       this.tx = tx;
-      let updateAmount = (): void => {
-        if (!tx.amount) return;
-
-        // Amount
-        tx.amountStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.amount);
-        tx.amountValueStr = tx.amountStr.split(' ')[0];
-        tx.amountUnitStr = tx.amountStr.split(' ')[1];
-        tx.alternativeAmountStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, tx.amount);
-      }
-
-      updateAmount();
 
       // End of quick refresh, before wallet is selected.
       if (!wallet) {
@@ -343,15 +302,12 @@ export class ConfirmPage {
       }
 
       this.feeProvider.getFeeRate(wallet.coin, tx.network, tx.feeLevel).then((feeRate: any) => {
-
-
         if (!this.usingCustomFee) tx.feeRate = feeRate;
         tx.feeLevelName = this.feeProvider.feeOpts[tx.feeLevel];
 
+        // TODO should call getSendMaxInfo if was selected from amount view
         this.getSendMaxInfo(_.clone(tx), wallet).then((sendMaxInfo: any) => {
-
           if (sendMaxInfo) {
-
             this.logger.debug('Send max info', sendMaxInfo);
 
             if (tx.sendMax && sendMaxInfo.amount == 0) {
@@ -364,7 +320,6 @@ export class ConfirmPage {
 
             tx.sendMaxInfo = sendMaxInfo;
             tx.amount = tx.sendMaxInfo.amount;
-            updateAmount();
             this.onGoingProcessProvider.set('calculatingFee', false);
             setTimeout(() => {
               this.showSendMaxWarning(wallet, sendMaxInfo);
@@ -379,8 +334,6 @@ export class ConfirmPage {
 
           this.getTxp(_.clone(tx), wallet, opts.dryRun).then((txp: any) => {
             this.onGoingProcessProvider.set('calculatingFee', false);
-            txp.feeStr = this.txFormatProvider.formatAmountStr(wallet.coin, txp.fee);
-            txp.alternativeFeeStr = this.txFormatProvider.formatAlternativeStr(wallet.coin, txp.fee);
 
             let per = (txp.fee / (txp.amount + txp.fee) * 100);
             txp.feeRatePerStr = per.toFixed(2) + '%';
@@ -427,7 +380,7 @@ export class ConfirmPage {
   }
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
-    let fee = this.txFormatProvider.formatAmountStr(wallet.coin, sendMaxInfo.fee);
+    let fee = sendMaxInfo.fee;
     let msg = fee + " will be deducted for bitcoin networking fees.";
     let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
@@ -440,12 +393,12 @@ export class ConfirmPage {
   private verifyExcludedUtxos(wallet: any, sendMaxInfo: any): any {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
-      let amountBelowFeeStr = this.txFormatProvider.formatAmountStr(wallet.coin, sendMaxInfo.amountBelowFee);
+      let amountBelowFeeStr = sendMaxInfo.amountBelowFee;
       warningMsg.push("A total of " + amountBelowFeeStr + " were excluded. These funds come from UTXOs smaller than the network fee provided.");// TODO gettextCatalog
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = this.txFormatProvider.formatAmountStr(wallet.coin, sendMaxInfo.amountAboveMaxSize);
+      let amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize;
       warningMsg.push("A total of " + amountAboveMaxSizeStr + " were excluded. The maximum size allowed for a transaction was exceeded.");// TODO gettextCatalog
     }
     return warningMsg.join('\n');
@@ -531,7 +484,6 @@ export class ConfirmPage {
   };
 
   public approve(tx: any, wallet: any, onSendStatusChange: Function): void {
-
     if (!tx || !wallet) return;
 
     if (this.paymentExpired) {
@@ -544,24 +496,19 @@ export class ConfirmPage {
     this.getTxp(_.clone(tx), wallet, false).then((txp: any) => {
       this.onGoingProcessProvider.set('creatingTx', false, onSendStatusChange);
 
-
       // confirm txs for more that 20usd, if not spending/touchid is enabled
       let confirmTx = (): Promise<any> => {
         return new Promise((resolve, reject) => {
           if (this.walletProvider.isEncrypted(wallet))
             return resolve();
 
-          let amountUsd: number;
-          this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then((value: string) => {
-            amountUsd = parseFloat(value);
-          });
-
-          if (amountUsd <= this.CONFIRM_LIMIT_USD)
+          if (this.isFiatAmount && this.amount <= this.CONFIRM_LIMIT_USD)
             return resolve();
 
-          let amountStr = tx.amountStr;
+          let amount = (this.amount / 1e8).toFixed(8);
+          let unit = this.config.wallet.settings.unitName;
           let name = wallet.name;
-          let message = 'Sending ' + amountStr + ' from your ' + name + ' wallet'; // TODO gettextCatalog
+          let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO gettextCatalog
           let okText = 'Confirm'; // TODO gettextCatalog
           let cancelText = 'Cancel'; // TODO gettextCatalog
           this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
@@ -580,7 +527,6 @@ export class ConfirmPage {
         }
 
         this.walletProvider.publishAndSign(wallet, txp, onSendStatusChange).then((txp: any) => {
-
           if (this.config.confirmedTxsNotifications && this.config.confirmedTxsNotifications.enabled) {
             this.txConfirmNotificationProvider.subscribe(wallet, {
               txid: txp.txid

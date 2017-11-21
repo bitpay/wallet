@@ -9,7 +9,6 @@ import { WalletProvider } from '../wallet/wallet';
 import { PlatformProvider } from '../platform/platform';
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
-import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { Profile } from '../../models/profile/profile.model';
 
 @Injectable()
@@ -33,7 +32,6 @@ export class ProfileProvider {
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private languageProvider: LanguageProvider,
-    private txFormatProvider: TxFormatProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -985,8 +983,6 @@ export class ProfileProvider {
           x.txid = x.data ? x.data.txid : null;
           x.types = [x.type];
 
-          if (x.data && x.data.amount) x.amountStr = this.txFormatProvider.formatAmountStr(x.wallet.coin, x.data.amount);
-
           x.action = function () {
             // TODO?
             // $state.go('tabs.wallet', {
@@ -1011,7 +1007,6 @@ export class ProfileProvider {
             prev.types.push(x.type);
             prev.data = _.assign(prev.data, x.data);
             prev.txid = prev.txid || x.txid;
-            prev.amountStr = prev.amountStr || x.amountStr;
             prev.creatorName = prev.creatorName || x.creatorName;
           } else {
             finale.push(x);
