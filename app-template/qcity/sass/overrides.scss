@@ -5,19 +5,19 @@
 
 /* Colors */
 
-$v-primary-color: #eaeaea;
-$v-secondary-color: #bbbaba;
-$v-accent-color: #0d1312;
-$v-text-primary-color: #192c3a;
-$v-bar-royal-text:#3e3030;
+$v-primary-color: #1958bc;
+$v-secondary-color: #5c91dc;
+$v-accent-color: #4e79ba;
+$v-text-primary-color: #f0f6fa;
+$v-bar-royal-text:#eee9e9;
 $v-text-secondary-color: #375f8c;
-$v-text-accent-color: #37413f;
+$v-text-accent-color: #383741;
 $v-success-color: #1abb9b;
 $v-warning-color: #bb331a;
 
 /* Theme */
 
-$v-default-wallet-color-index: 6;
+$v-default-wallet-color-index: 8;
 $v-top-tabs-color: $v-accent-color;
 $v-wallet-backup-phrase-color: $v-text-primary-color;
 $v-wallet-backup-select-phrase-color: $v-secondary-color;
@@ -72,6 +72,6 @@ $v-onboarding-button-secondary-outline-active-color: $v-accent-color;
 /* Main tabs */
 
 $v-home-item-head-color: #ffffff;
-$v-home-item-head-bg-color: #a0858a;
+$v-home-item-head-bg-color: #1d68d8;
 $v-home-item-head-icon-color: #ffffff;
-$v-logo-height:18px;
+$v-logo-height:22px;
