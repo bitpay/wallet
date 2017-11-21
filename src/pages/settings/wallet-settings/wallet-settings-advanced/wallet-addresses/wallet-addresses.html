@@ -58,7 +58,7 @@
 
       <ion-item class="item" *ngFor="let w of latestWithBalance" copy-to-clipboard="w.address">
         {{w.address}}
-        <div class="addr-balance">{{w.balanceStr}}</div>
+        <div class="addr-balance">{{w.amount | satToUnit}}</div>
       </ion-item>
     </div>
 

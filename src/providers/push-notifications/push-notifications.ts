@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
-import { Events, NavController, App } from 'ionic-angular';
+import { NavController, App } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 
 //providers
@@ -41,6 +41,34 @@ export class PushNotificationsProvider {
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
     this.usePushNotifications = this.platformProvider.isCordova && !this.platformProvider.isWP;
+
+    if (this.usePushNotifications) {
+
+      this.FCMPlugin.onTokenRefresh().subscribe((token: any) => {
+        if (!this._token) return;
+        this.logger.debug('Refresh and update token for push notifications...');
+        this._token = token;
+        this.enable();
+      });
+
+      this.FCMPlugin.onNotification().subscribe((data: any) => {
+        if (!this._token) return;
+        this.navCtrl = this.app.getActiveNav(); //TODO TEST THIS
+        this.logger.debug('New Event Push onNotification: ' + JSON.stringify(data));
+        if (data.wasTapped) {
+          // Notification was received on device tray and tapped by the user.
+          var walletIdHashed = data.walletId;
+          if (!walletIdHashed) return;
+          this.navCtrl.setRoot(HomePage);
+          this.navCtrl.popToRoot();
+          this._openWallet(walletIdHashed);
+        } else {
+          // TODO
+          // Notification was received in foreground. Maybe the user needs to be notified.
+        }
+      });
+    }
+
   }
 
   public init(): void {
@@ -57,7 +85,7 @@ export class PushNotificationsProvider {
         this.enable();
       });
     });
-  };
+  }
 
   public updateSubscription(walletClient: any): void {
     if (!this._token) {
@@ -65,7 +93,7 @@ export class PushNotificationsProvider {
       return;
     }
     this._subscribe(walletClient);
-  };
+  }
 
   public enable(): void {
     if (!this._token) {
@@ -90,12 +118,12 @@ export class PushNotificationsProvider {
       this._unsubscribe(walletClient);
     });
     this._token = null;
-  };
+  }
 
   public unsubscribe(walletClient: any): void {
     if (!this._token) return;
     this._unsubscribe(walletClient);
-  };
+  }
 
   private _subscribe(walletClient: any): void {
     let opts = {
@@ -107,54 +135,28 @@ export class PushNotificationsProvider {
       if (err) this.logger.error(walletClient.name + ': Subscription Push Notifications error. ', JSON.stringify(err));
       else this.logger.debug(walletClient.name + ': Subscription Push Notifications success.');
     });
-  };
+  }
 
   private _unsubscribe(walletClient: any): void {
     walletClient.pushNotificationsUnsubscribe(this._token, (err: any) => {
       if (err) this.logger.error(walletClient.name + ': Unsubscription Push Notifications error. ', JSON.stringify(err));
       else this.logger.debug(walletClient.name + ': Unsubscription Push Notifications Success.');
     });
-  };
+  }
 
   private _openWallet(walletIdHashed: any): void {
-    var wallets = this.profileProvider.getWallets();
-    var wallet = _.find(wallets, (w) => {
-      return (_.isEqual(walletIdHashed, this.bwcProvider.getSJCL().codec.hex.fromBits(this.bwcProvider.getSJCL().hash.sha256.hash(w.id))));
+    let wallets = this.profileProvider.getWallets();
+    let wallet: any = _.find(wallets, (w: any) => {
+      let walletIdHash = this.bwcProvider.getSJCL().hash.sha256.hash(parseInt(w.credentials.walletId));
+      return _.isEqual(walletIdHashed, this.bwcProvider.getSJCL().codec.hex.fromBits(walletIdHash));
     });
 
     if (!wallet) return;
 
     if (!wallet.isComplete()) {
-      this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.id });
+      this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       return;
     }
-    this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.id });
-  };
-
-  if(usePushNotifications) {
-
-    this.FCMPlugin.onTokenRefresh().subscribe((token: any) => {
-      if (!this._token) return;
-      this.logger.debug('Refresh and update token for push notifications...');
-      this._token = token;
-      this.enable();
-    });
-
-    this.FCMPlugin.onNotification().subscribe((data: any) => {
-      if (!this._token) return;
-      this.navCtrl = this.app.getActiveNav(); //TODO TEST THIS
-      this.logger.debug('New Event Push onNotification: ' + JSON.stringify(data));
-      if (data.wasTapped) {
-        // Notification was received on device tray and tapped by the user. 
-        var walletIdHashed = data.walletId;
-        if (!walletIdHashed) return;
-        this.navCtrl.setRoot(HomePage);
-        this.navCtrl.popToRoot();
-        this._openWallet(walletIdHashed);
-      } else {
-        // TODO
-        // Notification was received in foreground. Maybe the user needs to be notified. 
-      }
-    });
+    this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
   }
 }

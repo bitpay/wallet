@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { ConfigProvider } from '../../../../../providers/config/config';
-import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
@@ -47,7 +45,6 @@ export class WalletAddressesPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
-    private txFormatProvider: TxFormatProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
@@ -87,11 +84,6 @@ export class WalletAddressesPage {
 
         this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
         this.latestWithBalance = _.slice(this.withBalance, 0, this.BALANCE_ADDRESS_LIMIT);
-
-        _.each(this.withBalance, (a) => {
-          a.balanceStr = this.txFormatProvider.formatAmountStr(this.wallet.coin, a.amount);
-        });
-
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT || this.withBalance.length > this.BALANCE_ADDRESS_LIMIT;
         this.allAddresses = this.noBalance.concat(this.withBalance);
 
