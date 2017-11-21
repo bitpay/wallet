@@ -65,7 +65,7 @@
       <variable name="SECOND_URL_SCHEME" value="*APPURI*" />
       <variable name="THIRD_URL_SCHEME" value="bitcoincash" />
     </plugin>
-    <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git" />
+    <plugin name="cordova-plugin-fcm" spec="https://github.com/cmgustavo/cordova-plugin-fcm.git#v4.0" />
 
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
 
