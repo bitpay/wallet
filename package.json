@@ -48,8 +48,8 @@
     "run:android-release": "ionic cordova run android --device --release",
     "log:android": "adb logcat | grep chromium",
     "sign:android": "rm -f platforms/android/build/outputs/apk/android-release-signed-aligned.apk; jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar platforms/android/build/outputs/apk/android-release-signed.apk  platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play && $ANDROID_HOME/build-tools/26.0.1/zipalign -v 4 platforms/android/build/outputs/apk/android-release-signed.apk platforms/android/build/outputs/apk/android-release-signed-aligned.apk",
-    "apply:copay": "npm i && cd app-template && node apply.js copay",
-    "apply:bitpay": "npm i && cd app-template && node apply.js bitpay",
+    "apply:copay": "npm i fs-extra && cd app-template && node apply.js copay && npm i",
+    "apply:bitpay": "npm i fs-extra && cd app-template && node apply.js bitpay && npm i",
     "fix:fcm": "echo platforms/ios/Copay/Resources platforms/ios/Copay/Resources/Resources platforms/ios/Bitpay/Resources platforms/ios/Bitpay/Resources/Resources | xargs -n 1 cp GoogleService-Info.plist 2>/dev/null; mkdir -p platforms/android/src/debug platforms/android/src/release; echo platforms/android/src/debug platforms/android/src/release | xargs -n 1 cp google-services.json"
   },
   "dependencies": {
