@@ -19,7 +19,7 @@ module.exports = function(grunt) {
             },
             //make deploy stampbit
             pack_copy: {
-                command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cd tmp; cp -R . ../../deploy/<%= pkg.name %>-wallet/src;rm -Rf *'
+                command: 'cp -R www/* tmp/ ;cp -R platforms/android/platform_www/* tmp/cordova/and;cp -R platforms/ios/platform_www/* tmp/cordova/ios;cp -R platforms/ios/www/cordova_plugins.js tmp/;cd tmp; cp -R . ../../deploy/<%= pkg.name %>-wallet/src;rm -Rf *'
             },
             pack_deploy: {
                 command: 'cd ../deploy/<%= pkg.name %>-wallet; ./<%=pkg.name%>-deploy.sh'
