@@ -9,58 +9,54 @@
 
 <ion-content>
   <div *ngIf="wallet" [hidden]="wallet.notAuthorized">
-    <div class="list text-center">
-      <div class="item item-heading item-text-wrap" translate>
+    <ion-list class="copayers-secret">
+      <ion-item translate>
         Share this invitation with your copayers
-      </div>
-      <div class="item text-center">
-        <div copy-to-clipboard="{{ secret }}">
+      </ion-item>
+      <ion-item>
+        <div class="qr-code-container" copy-to-clipboard="{{ secret }}">
           <qr-code [level]="L" [size]="220" [foreground]="'#334'" [value]="secret" copy-to-clipboard="{{ secret }}"></qr-code>
-          <div [hidden]="secret" style="position:relative; top:-226px; height:0px">
-            <div style="height:220px; width:220px; margin:auto; background: white">
-              <ion-spinner class="spinner-dark" icon="lines"></ion-spinner>
-            </div>
+          <div [hidden]="secret" class="spinner">
+            <ion-spinner></ion-spinner>
           </div>
-          <div class="copayers-secret">
-            {{secret || ('Loading...'|translate)}}
+          <div class="secret">
+            {{ secret || ('Loading...'|translate) }}
           </div>
         </div>
-        <button *ngIf="secret" class="button-cancel" (click)="showDeletePopup()">
-            <span translate>Cancel invitation</span>
-          </button>
-      </div>
-    </div>
+        <button ion-button type="button" *ngIf="secret" (click)="showDeletePopup()" translate>Cancel invitation</button>
+      </ion-item>
+    </ion-list>
 
     <div [hidden]="!secret">
-
-      <div class="list card">
-        <div class="item item-heading">
-          <span class="text-gray right">
+      <ion-card class="copayers-card">
+        <ion-card-header>
+          <span translate>Waiting for copayers</span>
+          <span>
               [ <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
           </span>
-          <span translate>Waiting for copayers</span>
-        </div>
-        <div>
-          <div class="item item-icon-left" *ngFor="let copayer of copayers">
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item *ngFor="let copayer of copayers">
             <span [hidden]="copayer.id != wallet.copayerId">
-                <i class="icon ion-checkmark"></i>
+                <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
                 {{'Me'|translate}}
               </span>
             <span [hidden]="copayer.id == wallet.copayerId">
-                <i class="icon ion-checkmark"></i>
+                <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
                 {{copayer.name}}
               </span>
-          </div>
-        </div>
-        <div *ngIf="!wallet.isComplete()" class="item item-icon-left">
-          <i class="icon ion-loop"></i> {{'Waiting...'|translate}}
-        </div>
-      </div>
+          </ion-item>
+          <ion-item *ngIf="!wallet.isComplete()">
+            <ion-icon ios="ios-repeat" md="md-repeat"></ion-icon> {{'Waiting...'|translate}}
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
 
-      <div class="m30v text-center" [hidden]="!wallet.notAuthorized">
+      <ion-card [hidden]="!wallet.notAuthorized" class="errors-card">
         <h1 translate>Wallet incomplete and broken</h1>
         <h4 translate>Delete it and create a new one</h4>
-      </div>
+      </ion-card>
     </div>
+
   </div>
 </ion-content>

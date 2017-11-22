@@ -1,3 +1,23 @@
 page-copayers {
-
+  .copayers-secret {
+    ion-item {
+      text-align: center;
+    }
+    .qr-code-container {
+      cursor: pointer;
+      .secret {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+      }
+    }
+  }
+  .copayers-card {
+    ion-card-header {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .errors-card {
+    color: red;
+  }
 }

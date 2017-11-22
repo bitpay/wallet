@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import * as _ from 'lodash';
 
 // Pages
 import { HomePage } from '../../../pages/home/home';
@@ -8,14 +9,13 @@ import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details'
 
 // Providers
 import { AppProvider } from '../../../providers/app/app';
-import { PlatformProvider } from '../../../providers/platform/platform';
-import { ProfileProvider } from '../../../providers/profile/profile';
-import { WalletProvider } from '../../../providers/wallet/wallet';
-import { PopupProvider } from '../../../providers/popup/popup';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { PopupProvider } from '../../../providers/popup/popup';
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-copayers',
@@ -23,7 +23,6 @@ import * as _ from 'lodash';
 })
 export class CopayersPage {
 
-  private listener: any;
   public appName: string = this.appProvider.info.userVisibleName;
   public appUrl: string = this.appProvider.info.url;
   public isCordova: boolean = this.platformProvider.isCordova;
@@ -34,17 +33,17 @@ export class CopayersPage {
   public secret: any;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
     private appProvider: AppProvider,
-    private platformProvider: PlatformProvider,
-    private profileProvider: ProfileProvider,
+    private bwcErrorProvider: BwcErrorProvider,
     private events: Events,
     private logger: Logger,
-    private walletProvider: WalletProvider,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
-    private bwcErrorProvider: BwcErrorProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private profileProvider: ProfileProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private walletProvider: WalletProvider
   ) {
 
   }
