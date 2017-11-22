@@ -86,7 +86,7 @@
     "cordova-android": "6.4.0",
     "cordova-clipboard": "^1.1.0",
     "cordova-custom-config": "^4.0.2",
-    "cordova-ios": "4.5.3",
+    "cordova-ios": "4.5.4",
     "cordova-plugin-android-fingerprint-auth": "^1.4.0",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-customurlscheme": "https://github.com/cmgustavo/Custom-URL-scheme.git#v4.0",

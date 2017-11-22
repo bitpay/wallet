@@ -37,7 +37,7 @@
 
     <!-- Supported Platforms -->
     <engine name="android" spec="6.4.0" />
-    <engine name="ios" spec="4.5.3" />
+    <engine name="ios" spec="4.5.4" />
 
     <!-- Plugins -->
     <plugin name="cordova-clipboard" spec="^1.1.0" />
