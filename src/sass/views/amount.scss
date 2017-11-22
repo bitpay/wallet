@@ -159,9 +159,9 @@
       color: $v-dark-gray;
     }
     &__currency-toggle {
-      border: 1px solid #222;
-      color: $v-mid-gray;
-      background-color: $nav-purple-light;
+      color: #FFF;
+      background-color: $nav-purple;
+      opacity: 1;
       border-radius: 3px;
       padding: 0 10px;
       cursor: pointer;
@@ -175,9 +175,7 @@
         height: 30px;
       }
       &.active {
-        border: 1px solid #222;
-        background-color: $nav-purple;
-        color: #fff;
+        opacity: 0.3;
       }
     }
     &__results {
