@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"PO-Revision-Date: 2017-11-17 09:30-0500\n"
+"PO-Revision-Date: 2017-11-22 03:40-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -363,7 +363,7 @@ msgstr "ビットコインアドレス"
 #: www/views/tab-home.html:112
 #: www/views/tab-settings.html:108
 msgid "Bitcoin Cash Wallets"
-msgstr "ビーキャッシュウォレット"
+msgstr "ビットコインキャッシュウォレット"
 
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
@@ -379,7 +379,7 @@ msgstr "ビットコインウォレット"
 
 #: src/js/services/incomingData.js:151
 msgid "Bitcoin cash Payment"
-msgstr "ビーキャッシュペイメント"
+msgstr "ビットコインキャッシュペイメント"
 
 #: www/views/onboarding/tour.html:31
 msgid "Bitcoin is a currency."
@@ -624,7 +624,7 @@ msgstr "翻訳に協力"
 
 #: src/js/controllers/confirm.js:130
 msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
-msgstr "Copay のビーキャッシュはビットコインと完全に異なる別通貨なので、アドレスの頭文字が異なります。"
+msgstr "Copay のビットコインキャッシュはビットコインと完全に異なる別通貨なので、アドレスの頭文字が異なります。"
 
 #: src/js/services/bwcError.js:62
 msgid "Copayer already in this wallet"
@@ -934,7 +934,7 @@ msgstr "ダウンロード"
 
 #: www/views/preferencesCash.html:37
 msgid "Duplicate for BCH"
-msgstr "ビーキャッシュウォレットを複製"
+msgstr "ビットコインキャッシュウォレットを複製"
 
 #: src/js/services/onGoingProcess.js:49
 msgid "Duplicating wallet..."
@@ -1176,7 +1176,7 @@ msgstr "このウォレットはQRによるエクスポートに対応してい�
 #: www/views/preferencesInformation.html:104
 #: www/views/preferencesPrivateKey.html:6
 msgid "Extended Private Key"
-msgstr ""
+msgstr "拡張秘密鍵"
 
 #: www/views/preferencesInformation.html:89
 msgid "Extended Public Keys"
@@ -1397,7 +1397,7 @@ msgstr "ハードウェアウォレット"
 #: src/js/controllers/create.js:178
 #: src/js/controllers/join.js:144
 msgid "Hardware wallets are not yet supported with Bitcoin Cash"
-msgstr "ビーキャッシュはまだハードウェアウォレットに対応しておりません。"
+msgstr "ビットコインキャッシュはまだハードウェアウォレットに対応しておりません。"
 
 #: www/views/modals/mercadolibre-card-details.html:69
 #: www/views/tab-settings.html:20
@@ -1910,7 +1910,7 @@ msgstr "ペーパーウォレットの出金を受け取るためのウォレッ
 
 #: www/views/preferencesCash.html:15
 msgid "No wallets eligible for Bitcoin Cash support"
-msgstr "ビーキャッシュ対応できるウォレットがありません。"
+msgstr "ビットコインキャッシュ対応できるウォレットがありません。"
 
 #: src/js/controllers/preferencesCash.js:58
 msgid "Non BIP44 wallet"
@@ -1951,7 +1951,7 @@ msgstr "メモ"
 
 #: www/views/backup.html:19
 msgid "Note: if this BCH wallet was duplicated from a BTC wallet, they share the same recovery phrase."
-msgstr "注意: このビーキャッシュウォレットがビットコインウォレットからの複製の場合、復元フレーズは一緒です。"
+msgstr "注意: このビットコインキャッシュウォレットがビットコインウォレットからの複製の場合、復元フレーズは一緒です。"
 
 #: www/views/modals/wallets.html:25
 msgid "Notice: only 1-1 (single signature) wallets can be used for sell bitcoin"
@@ -2156,7 +2156,7 @@ msgstr "取引が承認されました。Glideraより送信されます。問�
 
 #: src/js/services/incomingData.js:152
 msgid "Payment address was translated to new Bitcoin Cash address format:"
-msgstr "支払先アドレスはビーキャッシュの新フォーマットに変更された:"
+msgstr "支払先アドレスはビットコインキャッシュの新フォーマットに変更された:"
 
 #: www/views/modals/txp-details.html:107
 msgid "Payment details"
@@ -2745,7 +2745,7 @@ msgstr "スライドして送る"
 
 #: www/views/preferencesCash.html:56
 msgid "Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets using the"
-msgstr "いくつかのウォレットがビーキャッシュに対応できません。ビーキャッシュの取り戻しは復元ツールで試すとうまくいくかもしれません。"
+msgstr "いくつかのウォレットがビットコインキャッシュに対応できません。ビットコインキャッシュの取り戻しは復元ツールで試すとうまくいくかもしれません。"
 
 #: src/js/controllers/create.js:86
 #: src/js/controllers/join.js:70
@@ -3211,7 +3211,7 @@ msgstr "警告: 信頼されていない証明書"
 
 #: www/views/preferencesPrivateKey.html:14
 msgid "WARNING: Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr ""
+msgstr "注意： 拡張秘密鍵だけでビットコインをすべて送金できてしまいます。秘密鍵を守り、安全な端末のみにて管理して下さい。BitPayは秘密鍵へのアクセスができないので、管理する責任は全て自己責任になります。外部のサービスにこの鍵を共有する場合、窃盗などのリスクを全て受け入れた上で宜しくお願いします。拡張秘密鍵を直接扱うのは上級者のユーザーのみです。"
 
 #: src/js/services/onGoingProcess.js:15
 msgid "Waiting for Ledger..."

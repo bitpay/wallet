@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt\n"
-"PO-Revision-Date: 2017-11-17 09:30-0500\n"
+"PO-Revision-Date: 2017-11-22 10:20-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -1174,7 +1174,7 @@ msgstr "Exportação via QR code não suportada por essa carteira"
 #: www/views/preferencesInformation.html:104
 #: www/views/preferencesPrivateKey.html:6
 msgid "Extended Private Key"
-msgstr ""
+msgstr "Chave Privada Estendida"
 
 #: www/views/preferencesInformation.html:89
 msgid "Extended Public Keys"
@@ -3205,7 +3205,7 @@ msgstr "AVISO: CERTIFICADO NÃO CONFIÁVEL"
 
 #: www/views/preferencesPrivateKey.html:14
 msgid "WARNING: Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr ""
+msgstr "Aviso: Suas chaves privadas estendidas são tudo que é necessário para acessar seus fundos bitcoin. Certifique-se de proteger suas chaves privadas e armazená-las somente em dispositivos seguros. BitPay não tem acesso às suas chaves privadas, então você é responsável pelas suas chaves. Se você compartilhar a chave de acesso com serviços externos, responsabilize-se pelo risco de roubo ou violação. Apenas usuários avançados devem lidar com chaves privadas estendidas diretamente."
 
 #: src/js/services/onGoingProcess.js:15
 msgid "Waiting for Ledger..."
