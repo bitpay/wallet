@@ -165,6 +165,9 @@ angular.module('copayApp.controllers').controller('createController',
                 opts.passphrase = $scope.formData.passphrase;
 
                 var pathData = derivationPathHelper.parse($scope.formData.derivationPath);
+                if (pathData.networkName == "livenet")
+                    pathData.networkName = opts.networkName;
+
                 if (!pathData) {
                     popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Invalid derivation path'));
                     return;
@@ -173,6 +176,7 @@ angular.module('copayApp.controllers').controller('createController',
                 opts.account = pathData.account;
                 opts.networkName = pathData.networkName;
                 opts.derivationStrategy = pathData.derivationStrategy;
+
 
             } else {
                 opts.passphrase = $scope.formData.createPassphrase;
@@ -223,6 +227,7 @@ angular.module('copayApp.controllers').controller('createController',
                         popupService.showAlert(gettextCatalog.getString('Error'), err);
                         return;
                     }
+
                     opts = lodash.assign(lopts, opts);
                     _create(opts);
                 });
@@ -233,6 +238,7 @@ angular.module('copayApp.controllers').controller('createController',
 
         function _create(opts) {
             ongoingProcess.set('creatingWallet', true);
+
             $timeout(function() {
                 profileService.createWallet(opts, function(err, client) {
                     ongoingProcess.set('creatingWallet', false);
