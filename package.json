@@ -63,7 +63,7 @@
     "@angular/platform-browser-dynamic": "^5.0.1",
     "@angular/tsc-wrapped": "^4.4.6",
     "@biesbjerg/ngx-translate-po-http-loader": "^2.0.1",
-    "@ionic-native/android-fingerprint-auth": "^4.2.1",
+    "@ionic-native/android-fingerprint-auth": "^4.2.2",
     "@ionic-native/clipboard": "^4.1.0",
     "@ionic-native/core": "^4.3.3",
     "@ionic-native/fcm": "^4.4.2",
