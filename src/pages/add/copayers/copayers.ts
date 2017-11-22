@@ -27,7 +27,6 @@ export class CopayersPage {
   public isCordova: boolean = this.platformProvider.isCordova;
 
   public wallet: any;
-  public shareIcon: string;
   public copayers: any;
   public secret: any;
 
@@ -51,7 +50,6 @@ export class CopayersPage {
     console.log('ionViewDidLoad CopayersPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.updateWallet();
-    this.shareIcon = this.platformProvider.isIOS ? 'iOS' : 'Android';
 
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       if (this.wallet && walletId == this.wallet.id && type == ('NewCopayer' || 'WalletComplete')) {

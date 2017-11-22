@@ -10,12 +10,12 @@
 <ion-content>
   <div *ngIf="wallet" [hidden]="wallet.notAuthorized">
     <ion-list class="copayers-secret">
-      <ion-item translate>
-        Share this invitation with your copayers
+      <ion-item>
+        {{ 'Share this invitation with your copayers' | translate }}
       </ion-item>
       <ion-item>
         <div class="qr-code-container" copy-to-clipboard="{{ secret }}">
-          <qr-code [level]="L" [size]="220" [foreground]="'#334'" [value]="secret" copy-to-clipboard="{{ secret }}"></qr-code>
+          <qr-code [level]="L" [size]="220" [foreground]="'#334'" [value]="secret"></qr-code>
           <div [hidden]="secret" class="spinner">
             <ion-spinner></ion-spinner>
           </div>

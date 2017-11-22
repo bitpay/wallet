@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { AddPage } from "../add/add";
-import { ProfileProvider } from '../../providers/profile/profile';
-import { ReleaseProvider } from '../../providers/release/release';
-import { WalletProvider } from '../../providers/wallet/wallet';
-import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
-import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+
+// Pages
+import { AddPage } from "../add/add";
+import { CopayersPage } from '../add/copayers/copayers';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
+
+// Providers
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { ProfileProvider } from '../../providers/profile/profile';
+import { ReleaseProvider } from '../../providers/release/release';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-home',
@@ -27,7 +32,7 @@ export class HomePage {
     private walletProvider: WalletProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private logger: Logger
-  ) { 
+  ) {
     this.cachedBalanceUpdateOn = '';
   }
 
@@ -85,6 +90,9 @@ export class HomePage {
   }
 
   goToWalletDetails(wallet: any) {
+    if (!wallet.isComplete()) {
+      return this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
+    }
     this.navCtrl.push(WalletDetailsPage, { walletId: wallet.credentials.walletId });
   }
 }
