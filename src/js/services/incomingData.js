@@ -70,15 +70,17 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
     }
     // data extensions for Payment Protocol with non-backwards-compatible request
     if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
+      var coin = 'btc';
+      if (data.indexOf('bitcoincash') === 0) coin = 'bch';
+
       data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
-      $state.go('tabs.send', {}, {
-        'reload': true,
-        'notify': $state.current.name == 'tabs.send' ? false : true
-      }).then(function() {
-        $state.transitionTo('tabs.send.confirm', {
-          paypro: data
-        });
+
+      payproService.getPayProDetails(data, function(err, details) {
+        if (err) {
+          popupService.showAlert(gettextCatalog.getString('Error'), err);
+        } else handlePayPro(details, coin);
       });
+
       return true;
     }
 
@@ -119,11 +121,11 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         if (parsed.r) {
           payproService.getPayProDetails(parsed.r, function(err, details) {
             if (err) {
-              if (addr && amount) 
+              if (addr && amount)
                 goSend(addr, amount, message, coin);
-              else 
+              else
                 popupService.showAlert(gettextCatalog.getString('Error'), err);
-            } 
+            }
             handlePayPro(details, coin);
           });
         } else {
@@ -148,10 +150,10 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         // Translate address
         $log.debug('address transalated to:' + addr);
         popupService.showConfirm(
-          gettextCatalog.getString('Bitcoin cash Payment'), 
+          gettextCatalog.getString('Bitcoin cash Payment'),
           gettextCatalog.getString('Payment address was translated to new Bitcoin Cash address format: ' + addr),
-          gettextCatalog.getString('OK'), 
-          gettextCatalog.getString('Cancel'), 
+          gettextCatalog.getString('OK'),
+          gettextCatalog.getString('Cancel'),
           function(ret) {
             if (!ret) return false;
 
@@ -162,11 +164,11 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
             if (parsed.r) {
               payproService.getPayProDetails(parsed.r, function(err, details) {
                 if (err) {
-                  if (addr && amount) 
+                  if (addr && amount)
                     goSend(addr, amount, message, coin);
-                  else 
+                  else
                     popupService.showAlert(gettextCatalog.getString('Error'), err);
-                } 
+                }
                 handlePayPro(details, coin);
               });
             } else {
