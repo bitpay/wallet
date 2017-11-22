@@ -6,7 +6,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 
 //pages
 import { AmountPage } from '../send/amount/amount';
-import { CopayersPage } from '../copayers/copayers';
+import { CopayersPage } from './../add/copayers/copayers';
 import { BackupGamePage } from '../backup/backup-game/backup-game';
 //providers
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -51,7 +51,7 @@ export class ReceivePage {
     this.updateQrAddress();
     this.onSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.showShareButton = this.platformProvider.isCordova;
-    this.events.subscribe('bwsEvent', (e, walletId, type, n) => {
+    this.events.subscribe('bwsEvent', (walletId, type, n) => {
       // Update current address
       if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
     });

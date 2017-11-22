@@ -1,0 +1,62 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title *ngIf="wallet">{{ wallet.name }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="wallet" [hidden]="wallet.notAuthorized">
+    <ion-list class="copayers-secret">
+      <ion-item>
+        {{ 'Share this invitation with your copayers' | translate }}
+      </ion-item>
+      <ion-item>
+        <div class="qr-code-container" copy-to-clipboard="{{ secret }}">
+          <qr-code [level]="L" [size]="220" [foreground]="'#334'" [value]="secret"></qr-code>
+          <div [hidden]="secret" class="spinner">
+            <ion-spinner></ion-spinner>
+          </div>
+          <div class="secret">
+            {{ secret || ('Loading...'|translate) }}
+          </div>
+        </div>
+        <button ion-button type="button" *ngIf="secret" (click)="showDeletePopup()" translate>Cancel invitation</button>
+      </ion-item>
+    </ion-list>
+
+    <div [hidden]="!secret">
+      <ion-card class="copayers-card">
+        <ion-card-header>
+          <span translate>Waiting for copayers</span>
+          <span>
+              [ <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
+          </span>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item *ngFor="let copayer of copayers">
+            <span [hidden]="copayer.id != wallet.copayerId">
+                <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
+                {{'Me'|translate}}
+              </span>
+            <span [hidden]="copayer.id == wallet.copayerId">
+                <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
+                {{copayer.name}}
+              </span>
+          </ion-item>
+          <ion-item *ngIf="!wallet.isComplete()">
+            <ion-icon ios="ios-repeat" md="md-repeat"></ion-icon> {{'Waiting...'|translate}}
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card [hidden]="!wallet.notAuthorized" class="errors-card">
+        <h1 translate>Wallet incomplete and broken</h1>
+        <h4 translate>Delete it and create a new one</h4>
+      </ion-card>
+    </div>
+
+  </div>
+</ion-content>

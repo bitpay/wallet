@@ -29,7 +29,7 @@ import { CopayApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
-import { CopayersPage } from '../pages/copayers/copayers';
+import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
