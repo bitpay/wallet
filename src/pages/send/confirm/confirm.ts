@@ -5,7 +5,6 @@ import * as _ from 'lodash';
 
 // Pages
 import { SendPage } from '../../send/send';
-import { HomePage } from '../../home/home';
 import { PayProPage } from '../../paypro/paypro';
 import { ChooseFeeLevelPage } from '../../choose-fee-level/choose-fee-level';
 
@@ -94,7 +93,7 @@ export class ConfirmPage {
     this.config = this.configProvider.get();
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
   }
-  
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConfirmPage');
     let addressInfo = this.navParams.data.addressInfo;
@@ -106,7 +105,7 @@ export class ConfirmPage {
       paypro: this.navParams.data.paypro,
       feeLevel: this.configFeeLevel,
       spendUnconfirmed: this.config.wallet.spendUnconfirmed,
-      
+
       // Vanity tx info (not in the real tx)
       recipientType: this.navParams.data.recipientType,
       name: this.navParams.data.name,
@@ -571,7 +570,7 @@ export class ConfirmPage {
 
   public onSuccessConfirm(): void {
     this.sendStatus = '';
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(SendPage);
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
   };

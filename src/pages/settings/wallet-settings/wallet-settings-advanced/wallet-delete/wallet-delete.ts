@@ -6,14 +6,13 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
-import { AppProvider } from '../../../../../providers/app/app';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 
 //pages
-import { HomePage } from '../../../../home/home';
+import { SettingsPage } from '../../../../settings/settings';
 
 @Component({
   selector: 'page-wallet-delete',
@@ -29,7 +28,6 @@ export class WalletDeletePage {
     private navParams: NavParams,
     private navCtrl: NavController,
     private configProvider: ConfigProvider,
-    private app: AppProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private formBuilder: FormBuilder,
@@ -62,7 +60,7 @@ export class WalletDeletePage {
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
       this.onGoingProcessProvider.set('deletingWallet', false);
       this.pushNotificationsProvider.unsubscribe(this.wallet);
-      this.navCtrl.setRoot(HomePage);
+      this.navCtrl.setRoot(SettingsPage);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(0);
     }).catch((err) => {

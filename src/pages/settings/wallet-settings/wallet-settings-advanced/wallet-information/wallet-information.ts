@@ -9,7 +9,7 @@ import { ConfigProvider } from '../../../../../providers/config/config';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 //pages
-import { HomePage } from '../../../../../pages/home/home';
+import { SettingsPage } from '../../../../../pages/settings/settings';
 import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';
 
 import * as _ from 'lodash';
@@ -94,7 +94,7 @@ export class WalletInformationPage {
     opts.colorFor[this.wallet.credentials.walletId] = color;
     this.configProvider.set(opts);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(SettingsPage);
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
   };
