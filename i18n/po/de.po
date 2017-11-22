@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: cmgustavo83\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2017-11-17 09:30-0500\n"
+"PO-Revision-Date: 2017-11-22 10:34-0500\n"
 
 #: www/views/modals/paypro.html:34
 msgid "(Trusted)"
@@ -32,7 +32,7 @@ msgstr "- {{btx.feeRateStr}}ของธุรกรรม"
 
 #: www/views/modals/txp-details.html:102
 msgid "- {{tx.feeRateStr}} of the transaction"
-msgstr ""
+msgstr "{{tx.feeRateStr}} von die transaccion"
 
 #: www/views/feedback/rateApp.html:7
 msgid "5-star ratings help us get {{appName}} into more hands, and more users means more resources can be committed to the app!"
@@ -234,7 +234,7 @@ msgstr "Jeder mit Ihrer Wiederherstellungsphrase hat Zugriff auf ihre Bitcoins u
 
 #: www/views/addresses.html:94
 msgid "Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)"
-msgstr "Približna naknada za Bitcoin za prijenos novčanika (s normalnim prioritetom)"
+msgstr ""
 
 #: www/views/backupWarning.html:10
 msgid "Are you being watched?"
@@ -250,7 +250,7 @@ msgstr "Wollen Sie wirklich abbrechen und dieses Wallet löschen?"
 
 #: src/js/controllers/addressbookView.js:37
 msgid "Are you sure you want to delete this contact?"
-msgstr "Jeste li sigurni da želite obrisati ovaj kontakt?"
+msgstr ""
 
 #: src/js/controllers/preferencesDelete.js:25
 msgid "Are you sure you want to delete this wallet?"
@@ -270,7 +270,7 @@ msgstr "Sind Sie sicher dass Sie es überspringen möchten?"
 
 #: www/views/modals/bitpay-card-confirmation.html:4
 msgid "Are you sure you would like to log out of your BitPay Card account?"
-msgstr "Jeste li sigurni da se želite odjaviti od vašeg BitPay Card računa?"
+msgstr ""
 
 #: src/js/controllers/preferencesBitpayCard.js:7
 #: src/js/controllers/preferencesBitpayServices.js:20
@@ -303,7 +303,7 @@ msgstr "BIP32 Pfad für die Adressen-Ableitung"
 
 #: www/views/preferencesCash.html:25
 msgid "BTC wallets"
-msgstr "BTC nocčanik"
+msgstr ""
 
 #: www/views/preferences.html:34
 msgid "Backup"
@@ -361,7 +361,7 @@ msgstr "Bitcoin-Adresse"
 #: www/views/tab-home.html:112
 #: www/views/tab-settings.html:108
 msgid "Bitcoin Cash Wallets"
-msgstr "Novčanice bitcoina"
+msgstr ""
 
 #: www/views/modals/chooseFeeLevel.html:4
 #: www/views/preferencesFee.html:4
@@ -373,7 +373,7 @@ msgstr "Bitcoin-Netzwerk Gebührenübersicht"
 #: www/views/tab-home.html:97
 #: www/views/tab-settings.html:100
 msgid "Bitcoin Wallets"
-msgstr "Bitcoin novčanik"
+msgstr ""
 
 #: src/js/services/incomingData.js:151
 msgid "Bitcoin cash Payment"
