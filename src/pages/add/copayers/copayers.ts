@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
-import * as _ from 'lodash';
 
 // Pages
 import { HomePage } from '../../../pages/home/home';
