@@ -18,16 +18,18 @@
         <div class="alternative">{{tx.amount || 0 | satToFiat: data.unit}}</div>
       </div>
     </ion-item>
+    
     <ion-item *ngIf="tx.paypro">
       <span class="label" translate>Payment Expires:</span>
       <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
       <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" translate item-end>Expired</ion-note>
     </ion-item>
+
     <ion-item class="container-to" [hidden]="criticalError">
-      <span class="label">To</span>
+      <span class="label" translate>To</span>
+
       <div class="payment-proposal-to" *ngIf="!recipientType">
         <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg">
-
         <div *ngIf="!tx.paypro">
           <!-- TODO: copy to clipboard -->
           <!--TODO: <contact *ngIf="tx.toAddress && !tx.name" address="{{tx.toAddress}}"></contact>-->
@@ -44,8 +46,7 @@
       </div>
 
       <div class="wallet" *ngIf="recipientType == 'wallet'">
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" [ngClass]="{'wallet-background-color-default': !color}" [ngStyle]="{'background-color': color}"
-        />
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet"/>
         <div>
           <!-- TODO: copy to clipboard -->
           <!--TODO: <contact ng-if="tx.toAddress && !tx.name" address="{{tx.toAddress}}"></contact>-->
@@ -60,6 +61,7 @@
         <span *ngIf="tx.name && showAddress">{{tx.toAddress}}</span>
       </div>
     </ion-item>
+
     <button class="container-from" ion-item [hidden]="!wallet" (click)="showWalletSelector()">
       <span class="label" translate>From</span>
       <div>
@@ -104,9 +106,11 @@
         </ion-item>
       </ion-list>
     </ion-item>
-
   </ion-list>
-  <div class="bottom-absolute">
-    <button ion-button full (click)="approve(tx, wallet, statusChangeHandler)" [disabled]="!wallet">Click to send</button>
-  </div>
 </ion-content>
+
+<ion-footer no-shadow>
+  <ion-toolbar position="bottom">
+    <button ion-button full (click)="approve(tx, wallet, statusChangeHandler)" [disabled]="!wallet" translate>Click to send</button>
+  </ion-toolbar>
+</ion-footer>
