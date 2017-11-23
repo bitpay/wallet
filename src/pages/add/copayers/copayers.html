@@ -15,7 +15,7 @@
       </ion-item>
       <ion-item>
         <div class="qr-code-container" copy-to-clipboard="{{ secret }}">
-          <qr-code [level]="L" [size]="220" [foreground]="'#334'" [value]="secret"></qr-code>
+          <qr-code *ngIf="secret" [level]="L" [size]="220" [foreground]="'#334'" [value]="secret"></qr-code>
           <div [hidden]="secret" class="spinner">
             <ion-spinner></ion-spinner>
           </div>

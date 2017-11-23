@@ -13,7 +13,8 @@ export class OnGoingProcessProvider {
     // TODO gettextcatalog()
     this.processNames = {
       'loadingTx': 'Loading transaction...',
-      'creatingWallet': 'Creating Wallet...'
+      'creatingWallet': 'Creating Wallet...',
+      'joiningWallet': 'Joining Wallet...'
     };
   }
 

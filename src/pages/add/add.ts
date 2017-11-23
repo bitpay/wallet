@@ -16,7 +16,7 @@ export class AddPage {
     public navCtrl: NavController,
     private navParams: NavParams
   ) {
-    this.coin = this.navParams.get('coin') ? this.navParams.get('coin') : 'btc';
+    this.coin = this.navParams.data.coin ? this.navParams.data.coin : 'btc';
   }
 
   ionViewDidLoad() {
@@ -28,7 +28,7 @@ export class AddPage {
   }
 
   goToJoinWallet() {
-    this.navCtrl.push(JoinWalletPage);
+    this.navCtrl.push(JoinWalletPage, { coin: this.coin });
   }
 
   goToImportWallet() {
