@@ -16,3 +16,8 @@ $global-colors: (
     margin: 1.2rem 0.2rem;
   }
 }
+
+// This style prevents the names of the tabs from disappear
+.tabbar .tab-button .tab-button-text {
+  display: block;
+}
