@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
 import { NavController, Events, ActionSheetController, AlertController } from 'ionic-angular';
 
 //native
@@ -8,6 +9,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
 import { BackupGamePage } from '../backup/backup-game/backup-game';
+
 //providers
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -32,6 +34,7 @@ export class ReceivePage {
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
+    private logger: Logger,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private popupProvider: PopupProvider,
@@ -92,9 +95,7 @@ export class ReceivePage {
       this.address = addr;
       this.updateQrAddress();
     }).catch((err) => {
-      if (err) {
-        this.popupProvider.ionicAlert(err);
-      }
+      this.logger.warn('Wallet not completed');
     });
   }
 
@@ -110,15 +111,14 @@ export class ReceivePage {
 
   public showWallets(): void {
     let buttons: Array<any> = [];
-    let coinClass: string = "wallets";
-
-    this.wallets.forEach((wallet, index) => {
-
+    
+    _.each(this.wallets, (w: any) => {
       let walletButton: Object = {
-        text: wallet.credentials.walletName,
-        cssClass: coinClass,
+        text: w.credentials.walletName,
+        cssClass: 'wallet-' + w.network,
+        icon: 'wallet',
         handler: () => {
-          this.onSelect(wallet);
+          this.onSelect(w);
         }
       }
       buttons.push(walletButton);

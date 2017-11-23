@@ -66,8 +66,8 @@
     <ion-item-divider *ngIf="walletsBtc.length" color="light">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
     <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettings(wallet.credentials.walletId)">
       <ion-icon item-start>
-        <img ng-if="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img ng-if="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
       </ion-icon>
       <h2>{{wallet.name}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
       <ion-note class="assertive" *ngIf="!wallet.isComplete()" item-end>
@@ -80,8 +80,8 @@
     <ion-item-divider *ngIf="walletsBch.length" color="light">{{'BCH Wallets' | translate}}</ion-item-divider>
     <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettings(wallet.credentials.walletId)">
       <ion-icon item-start>
-        <img ng-if="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img ng-if="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+        <img *ngIf="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
       </ion-icon>
       <h2>{{wallet.name}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
       <ion-note class="assertive" *ngIf="!wallet.isComplete()" item-end>
