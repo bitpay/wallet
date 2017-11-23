@@ -5,6 +5,7 @@ import { Logger } from '@nsalaun/ng-logger';
 import { LanguageProvider } from '../../providers/language/language';
 import { ConfigProvider } from '../../providers/config/config';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
 
 interface App {
   packageName: string;
@@ -48,13 +49,15 @@ export class AppProvider {
     private logger: Logger,
     private language: LanguageProvider,
     private config: ConfigProvider,
-    private touchid: TouchIdProvider
+    private touchid: TouchIdProvider,
+    private persistence: PersistenceProvider
   ) {
     this.logger.info('AppProvider initialized.');
   }
 
   public load() {
     return new Promise((resolve, reject) => {
+      this.persistence.load();
       this.config.load().then(() => {
         this.language.load();
         this.touchid.init();
@@ -64,7 +67,7 @@ export class AppProvider {
         });
       }).catch((err) => {
         this.logger.error(err);
-        reject();
+        reject(err);
       });
     });
   }

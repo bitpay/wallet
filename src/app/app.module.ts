@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { DecimalPipe } from '@angular/common';
+import { File } from '@ionic-native/file';
 
 /* Native modules */
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
@@ -107,7 +108,7 @@ import { LanguageProvider } from '../providers/language/language';
 import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
 import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../providers/paypro/paypro';
-import { PersistenceProvider, persistenceProviderFactory } from '../providers/persistence/persistence';
+import { PersistenceProvider } from '../providers/persistence/persistence';
 import { PlatformProvider } from '../providers/platform/platform';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
@@ -220,21 +221,11 @@ let providers: any = [
   TxFormatProvider,
   WalletProvider,
   DecimalPipe,
+  PersistenceProvider,
+  File,
   {
     provide: ErrorHandler,
     useClass: IonicErrorHandler
-  },
-  {
-    provide: APP_INITIALIZER,
-    useFactory: (app: AppProvider) => () => app.load(),
-    deps: [AppProvider],
-    multi: true
-  },
-  {
-    provide: PersistenceProvider,
-    useFactory: persistenceProviderFactory,
-    deps: [PlatformProvider, Logger],
-    multi: false
   }
 ];
 
