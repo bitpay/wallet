@@ -13,6 +13,7 @@
     <span translate>Wallet not backed up</span>
     <ion-icon name="arrow-forward"></ion-icon>
   </div>
+  
   <div *ngIf="wallet && wallet.isComplete()" class="qr-container">
     <qr-code *ngIf="address" copy-to-clipboard="{{ address }}" [value]="qrAddress" [level]="M" [size]="220" [foreground]="'#334'"></qr-code>
     <div class="text-address" copy-to-clipboard="{{ address }}">{{ address }}</div>
@@ -24,6 +25,7 @@
       <span translate>Generate new address</span>
     </button>
   </div>
+  
   <div *ngIf="wallet && !wallet.isComplete()" class="incomplete-wallet-container">
     <div class="title">
       <span translate>Incomplete wallet</span>
@@ -33,12 +35,15 @@
     </div>
     <button ion-button (click)="goCopayers()" translate>Open wallet</button>
   </div>
+  
   <div *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()">
-    <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+    <img src="assets/img/icon-wallet.svg" class="icon-wallet" *ngIf="wallet.network == 'livenet'">
+    <img src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" *ngIf="wallet.network == 'testnet'">
     <div class="wallet-text">
       <div>{{wallet.name}}</div>
     </div>
   </div>
+
   <div *ngIf="!wallet">
     <ion-card>
       <ion-item>

@@ -1,5 +1,6 @@
 page-receive {
   .incomplete-wallet-container {
+    text-align: center;
     .title {
       padding-top: 10%;
       font-size: 25px;
@@ -38,46 +39,46 @@ page-receive {
     }
   }
   .wallets-container {
-        position: absolute;
-        bottom: 0rem;
-        width: 100%;
-        border-top: solid 1px rgb(242, 242, 242);
-        min-height: 78px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        img.icon-wallet {
-          width: 35px !important;
-          background-color: #647ce8;
-       }
-        .wallet-text {
-          padding-left: 1rem;
-        }
-      }
+    position: absolute;
+    bottom: 0rem;
+    width: 100%;
+    padding-left: 2rem;
+    border-top: solid 1px rgb(242, 242, 242);
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    img.icon-wallet {
+      width: 35px !important;
+      background-color: color($colors, primary);
     }
-
-    @mixin wallets-list {
-        height: 4rem;
-        width: 4rem;
-        content: " ";
-        position: absolute;
-        border-radius: 3px;
-        box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+    .wallet-text {
+      padding-left: 1rem;
     }
+  }
+}
 
-    .wallets::before {
-      @include wallets-list;
-      background: #647ce8 url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
-    }
+@mixin wallets-list {
+  height: 3.5rem;
+  width: 3.5rem;
+  content: " ";
+  position: absolute;
+  border-radius: 3px;
+  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+}
 
-    .action-sheet-container {
-      .action-sheet-button {
-        display: flex;
-        justify-content: baseline;
-        align-items: center;
-        padding: 2.5rem;
-        .button-inner {
-          padding-left: 5rem;
-        }
-      }
+.wallet-livenet::before {
+  @include wallets-list;
+  background: color($colors, primary) url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
+}
+ 
+.wallet-testnet::before {
+  @include wallets-list;
+  background: color($colors, primary) url('../assets/img/icon-wallet-testnet.svg') no-repeat 0px 0px;
+}
+
+.action-sheet-button {
+  position: inherit !important;
+  padding: 0 1rem 1rem 1.5rem !important;
+  line-height: 2.5;
 }
