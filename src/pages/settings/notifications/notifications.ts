@@ -1,0 +1,106 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { NavController, NavParams } from 'ionic-angular';
+
+import { ConfigProvider } from '../../../providers/config/config';
+import { AppProvider } from '../../../providers/app/app';
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
+import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
+
+import { EmailValidator } from '../../../validators/email';
+
+import * as _ from "lodash";
+
+@Component({
+  selector: 'page-notifications',
+  templateUrl: 'notifications.html',
+})
+export class NotificationsPage {
+  public emailForm: FormGroup;
+
+  public appName: string;
+  public usePushNotifications: boolean;
+  public isIOSApp: boolean;
+
+  public pushNotifications: boolean;
+  public confirmedTxsNotifications: boolean;
+
+  public emailNotifications: boolean;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public formBuilder: FormBuilder,
+    private configProvider: ConfigProvider,
+    private appProvider: AppProvider,
+    private platformProvider: PlatformProvider,
+    private pushProvider: PushNotificationsProvider,
+    private emailProvider: EmailNotificationsProvider
+  ) {
+    this.emailForm = this.formBuilder.group({
+      email: ['', Validators.compose([Validators.required, new EmailValidator(configProvider, emailProvider).isValid])]
+    });
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad NotificationsPage');
+    this.updateConfig();
+  }
+
+  private updateConfig() {
+    let config = this.configProvider.get();
+    this.appName = this.appProvider.info.nameCase;
+    this.usePushNotifications = this.platformProvider.isCordova;
+    this.isIOSApp = this.platformProvider.isIOS && this.platformProvider.isCordova;
+
+    this.pushNotifications = config.pushNotificationsEnabled;
+    this.confirmedTxsNotifications = config.confirmedTxsNotifications ? config.confirmedTxsNotifications.enabled : false;
+
+    this.emailForm.setValue({
+      email: this.emailProvider.getEmailIfEnabled(config) || ''
+    });
+
+    this.emailNotifications = config.emailNotifications ? config.emailNotifications.enabled : false;
+  };
+
+  public pushNotificationsChange() {
+    let opts = {
+      pushNotificationsEnabled: this.pushNotifications
+    };
+
+    this.configProvider.set(opts);
+
+    if (opts.pushNotificationsEnabled)
+      this.pushProvider.init();
+    else
+      this.pushProvider.disable();
+  };
+
+  public confirmedTxsNotificationsChange() {
+    let opts = {
+      confirmedTxsNotifications: {
+        enabled: this.confirmedTxsNotifications
+      }
+    };
+    this.configProvider.set(opts);
+  };
+
+  public emailNotificationsChange() {
+    let config = this.configProvider.get();
+    let opts = {
+      enabled: this.emailNotifications,
+      email: this.emailForm.value.email
+    };
+    this.emailProvider.updateEmail(opts);
+  };
+
+  public saveEmail() {
+    this.emailProvider.updateEmail({
+      enabled: this.emailNotifications,
+      email: this.emailForm.value.email
+    });
+
+  };
+
+}
