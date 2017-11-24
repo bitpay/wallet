@@ -13,9 +13,7 @@ import { ConfigProvider } from '../../../providers/config/config';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
-import { BwcProvider } from '../../../providers/bwc/bwc';
 import { PopupProvider } from '../../../providers/popup/popup';
-import { ExternalLinkProvider } from '../../../providers/external-link/external-link';
 import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -70,9 +68,7 @@ export class ConfirmPage {
     private platformProvider: PlatformProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    private bwcProvider: BwcProvider,
     private popupProvider: PopupProvider,
-    private externalLinkProvider: ExternalLinkProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private feeProvider: FeeProvider,
@@ -576,7 +572,7 @@ export class ConfirmPage {
   };
 
   public openPPModal(): void {
-    const myModal = this.modalCtrl.create(PayProPage, {}, {
+    this.modalCtrl.create(PayProPage, {}, {
       showBackdrop: true,
       enableBackdropDismiss: true,
     });

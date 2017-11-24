@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import * as _ from 'lodash';
 
-//providers
+// Providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
@@ -11,11 +11,10 @@ import { AppProvider } from '../../../../../providers/app/app';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
-//pages
+// Pages
 import { HomePage } from '../../../../../pages/home/home';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-wallet-transaction-history',
@@ -44,7 +43,6 @@ export class WalletTransactionHistoryPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private configProvider: ConfigProvider,
-    private formBuilder: FormBuilder,
     private logger: Logger,
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,

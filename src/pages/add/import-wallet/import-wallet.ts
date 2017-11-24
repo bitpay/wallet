@@ -27,10 +27,9 @@ export class ImportWalletPage implements OnInit {
   private importForm: FormGroup;
   private reader: FileReader;
   private defaults: any;
-  private config: any;
   private errors: any;
-  private importErr: boolean;
 
+  public importErr: boolean;
   public fromOnboarding: boolean;
   public formData: any;
   public showAdvOpts: boolean;
@@ -53,8 +52,7 @@ export class ImportWalletPage implements OnInit {
     private profileProvider: ProfileProvider
   ) {
     this.reader = new FileReader();
-    this.defaults = configProvider.getDefaults();
-    this.config = configProvider.get();
+    this.defaults = this.configProvider.getDefaults();
     this.errors = bwcProvider.getErrors();
 
     this.isCordova = this.platformProvider.isCordova;
@@ -153,7 +151,7 @@ export class ImportWalletPage implements OnInit {
     this.formData.words = info.data;
   }
 
-  private setDerivationPath(): void {
+  public setDerivationPath(): void {
     this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
 
@@ -256,7 +254,6 @@ export class ImportWalletPage implements OnInit {
 
     let backupFile = this.file;
     let backupText = this.formData.backupText;
-    let password = this.formData.filePassword;
 
     if (!backupFile && !backupText) {
       this.popupProvider.ionicAlert('Error', 'Please, select your backup file', 'Ok'); // TODO: gettextcatalog

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 @Component({
@@ -12,7 +12,7 @@ export class FingerprintModalPage {
     private touchid: TouchIdProvider,
     private viewCtrl: ViewController
   ) {
-    touchid.check().then(() => {
+    this.touchid.check().then(() => {
       this.viewCtrl.dismiss();
     });
   }

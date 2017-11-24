@@ -1,10 +1,10 @@
 import { IStorage, KeyAlreadyExistsError } from './istorage';
-import { Logger } from '@nsalaun/ng-logger';
 
 export class RamStorage implements IStorage {
   hash = {};
 
-  constructor(private log: Logger) { }
+  constructor() {
+  }
 
   get(k: string): Promise<any> {
     return Promise.resolve(this.hash[k]);

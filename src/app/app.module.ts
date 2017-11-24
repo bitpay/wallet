@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule, APP_INITIALIZER } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { DecimalPipe } from '@angular/common';
@@ -18,7 +18,7 @@ import { FCM } from '@ionic-native/fcm';
 
 /* Modules */
 import { MomentModule } from 'angular2-moment';
-import { NgLoggerModule, Logger, Level } from '@nsalaun/ng-logger';
+import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { QRCodeModule } from 'angular2-qrcode';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';

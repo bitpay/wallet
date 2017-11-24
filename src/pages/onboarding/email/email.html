@@ -19,15 +19,15 @@
       <p translate>Where would you like to receive email notifications about payments?</p>
       <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
         <ion-item>
-          <ion-input type="email" [(ngModel)]="formData.email" formControlName="email" placeholder="Email Input"></ion-input>
+          <ion-input type="email" formControlName="email" placeholder="Email Input"></ion-input>
         </ion-item>
 
         <ion-item no-lines>
           <ion-label translate>Get news and updates from BitPay</ion-label>
-          <ion-checkbox [(ngModel)]="formData.accept" formControlName="accept" checked="true"></ion-checkbox>
+          <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
         </ion-item>
 
-        <button ion-button block type="submit" [disabled]="!validateEmail()" translate>Continue &rarr;</button>
+        <button ion-button block type="submit" [disabled]="!emailForm.valid" translate>Continue &rarr;</button>
       </form>
     </div>
   </div>
@@ -35,7 +35,7 @@
   <div *ngIf="showConfirmForm">
     <div>
       <p translate>Is this email address correct?</p>
-      <p>{{formData.email}}</p>
+      <p>{{ emailForm.value.email }}</p>
     </div>
     <div class="buttons">
       <div class="row">

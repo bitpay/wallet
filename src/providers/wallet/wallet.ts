@@ -6,7 +6,6 @@ import { BwcProvider } from '../bwc/bwc';
 import { TxFormatProvider } from '../tx-format/tx-format';
 import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { RateProvider } from '../rate/rate';
 import { PopupProvider } from '../popup/popup';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
@@ -42,7 +41,6 @@ export class WalletProvider {
     private configProvider: ConfigProvider,
     private persistenceProvider: PersistenceProvider,
     private bwcErrorProvider: BwcErrorProvider,
-    private rateProvider: RateProvider,
     private popupProvider: PopupProvider,
     private ongoingProcess: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider
@@ -436,14 +434,7 @@ export class WalletProvider {
     });
   }
 
-  private updateHistoryFromServer() {
-    return new Promise((resolve, reject) => {
-    });
-  }
-
-  private processNewTxs(wallet: any, txs: any): Array<any> {
-    let configGet: any = this.configProvider.get();
-    let config: any = configGet.wallet.settings;
+  public processNewTxs(wallet: any, txs: any): Array<any> {
     let now = Math.floor(Date.now() / 1000);
     let txHistoryUnique = {};
     let ret = [];
@@ -479,7 +470,7 @@ export class WalletProvider {
     return ret;
   }
 
-  private removeAndMarkSoftConfirmedTx(txs: any): Array<any> {
+  public removeAndMarkSoftConfirmedTx(txs: any): Array<any> {
     return lodash.filter(txs, (tx: any) => {
       if (tx.confirmations >= this.SOFT_CONFIRMATION_LIMIT)
         return tx;
@@ -719,11 +710,11 @@ export class WalletProvider {
 
       // Update this JIC.
       let config: any = this.configProvider.get();
-      let walletSettings = config.wallet.settings;
 
       //prefs.email  (may come from arguments)
       prefs.email = config.emailNotifications.email;
       prefs.language = "en" // This line was hardcoded - TODO: prefs.language = uxLanguage.getCurrentLanguage();
+      //let walletSettings = config.wallet.settings;
       // prefs.unit = walletSettings.unitCode; // TODO: remove, not used
 
       updateRemotePreferencesFor(lodash.clone(clients), prefs).then(() => {
@@ -827,6 +818,7 @@ export class WalletProvider {
         return resolve({
           allUtxos: resp || [],
           lowUtxos: lowUtxos || [],
+          totalLow: totalLow,
           warning: minFee / balance > this.TOTAL_LOW_WARNING_RATIO,
           minFee: minFee,
         });

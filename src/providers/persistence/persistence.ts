@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { File } from '@ionic-native/file';
-import { Platform } from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { PlatformProvider } from '../platform/platform';
 import { LocalStorage } from './storage/local-storage';
 import { FileStorage } from './storage/file-storage';
-import { RamStorage } from './storage/ram-storage';
+//import { RamStorage } from './storage/ram-storage';
 
 const Keys = {
   ADDRESS_BOOK: network => 'addressbook-' + network,
@@ -53,16 +52,15 @@ export class PersistenceProvider {
   constructor(
     private logger: Logger,
     private platform: PlatformProvider,
-    private plt: Platform,
     private file: File) {
     this.logger.info('PersistenceProvider initialized.');
   };
 
   public load() {
     if (this.platform.isCordova) {
-      this.storage = new FileStorage(this.file, this.plt, this.logger);
+      this.storage = new FileStorage(this.file, this.logger);
     } else {
-      this.storage = new LocalStorage(this.logger);
+      this.storage = new LocalStorage();
     }
   }
 

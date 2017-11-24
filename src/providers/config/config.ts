@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
-import { Events } from 'ionic-angular';
 import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from "lodash";
@@ -190,7 +189,6 @@ export class ConfigProvider {
 
   constructor(
     private logger: Logger,
-    private events: Events,
     private persistence: PersistenceProvider
   ) {
     this.logger.debug('ConfigProvider initialized.');

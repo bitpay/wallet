@@ -13,7 +13,6 @@ import { BackupGamePage } from '../backup/backup-game/backup-game';
 //providers
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { PopupProvider } from '../../providers/popup/popup';
 import { PlatformProvider } from '../../providers/platform/platform';
 
 import * as _ from 'lodash';
@@ -37,7 +36,6 @@ export class ReceivePage {
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    private popupProvider: PopupProvider,
     private platformProvider: PlatformProvider,
     private events: Events,
     private actionSheetCtrl: ActionSheetController,
@@ -111,7 +109,7 @@ export class ReceivePage {
 
   public showWallets(): void {
     let buttons: Array<any> = [];
-    
+
     _.each(this.wallets, (w: any) => {
       let walletButton: Object = {
         text: w.credentials.walletName,

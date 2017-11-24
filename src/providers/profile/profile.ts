@@ -25,7 +25,6 @@ export class ProfileProvider {
   private throttledBwsEvent: any;
   private validationLock: boolean = false;
   private errors: any = this.bwcProvider.getErrors();
-  private queue: Array<any> = [];
 
   constructor(
     private logger: Logger,
@@ -93,7 +92,7 @@ export class ProfileProvider {
     return new Promise((resolve, reject) => {
 
       this.persistenceProvider.getHideBalanceFlag(wallet.credentials.walletId).then((shouldHideBalance: string) => {
-        var hideBalance = (shouldHideBalance == 'true') ? true : false;
+        let hideBalance: boolean = (shouldHideBalance == 'true') ? true : false;
         return resolve(hideBalance);
       }).catch((err) => {
         this.logger.error(err);
@@ -103,7 +102,7 @@ export class ProfileProvider {
 
   private bindWalletClient(wallet: any, opts?: any): boolean {
     opts = opts ? opts : {};
-    var walletId = wallet.credentials.walletId;
+    let walletId = wallet.credentials.walletId;
 
     if ((this.wallet[walletId] && this.wallet[walletId].started) && !opts.force) return false;
 
@@ -387,7 +386,7 @@ export class ProfileProvider {
           this.logger.warn(ex);
         }
         let mergeAddressBook = _.merge(addressBook, localAddressBook1);
-        this.persistenceProvider.setAddressbook(wallet.credentials.network, JSON.stringify(addressBook)).then(() => {
+        this.persistenceProvider.setAddressbook(wallet.credentials.network, JSON.stringify(mergeAddressBook)).then(() => {
           return resolve();
         }).catch((err: any) => {
           return reject(err);
@@ -401,7 +400,7 @@ export class ProfileProvider {
   public importExtendedPrivateKey(xPrivKey: string, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      var walletClient = this.bwcProvider.getClient(null, opts);
+      let walletClient = this.bwcProvider.getClient(null, opts);
       this.logger.debug('Importing Wallet xPrivKey');
 
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, (err: any) => {
@@ -434,7 +433,7 @@ export class ProfileProvider {
   public importMnemonic(words: string, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      var walletClient = this.bwcProvider.getClient(null, opts);
+      let walletClient = this.bwcProvider.getClient(null, opts);
 
       this.logger.debug('Importing Wallet Mnemonic');
 
@@ -472,7 +471,7 @@ export class ProfileProvider {
   public importExtendedPublicKey(opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      var walletClient = this.bwcProvider.getClient(null, opts);
+      let walletClient = this.bwcProvider.getClient(null, opts);
       this.logger.debug('Importing Wallet XPubKey');
 
       walletClient.importFromExtendedPublicKey(opts.extendedPublicKey, opts.externalSource, opts.entropySource, {
@@ -512,8 +511,6 @@ export class ProfileProvider {
 
   public bindProfile(profile: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let config = this.configProvider.get();
-
       let bindWallets = (): Promise<any> => {
         return new Promise((resolve, reject) => {
 
@@ -580,8 +577,8 @@ export class ProfileProvider {
 
       // Create the client
       let getBWSURL = (walletId: string) => {
-        var config: any = this.configProvider.get();
-        var defaults: any = this.configProvider.getDefaults();
+        let config: any = this.configProvider.get();
+        let defaults: any = this.configProvider.getDefaults();
         return ((config.bwsFor && config.bwsFor[walletId]) || defaults.bws.url);
       };
 
@@ -589,7 +586,7 @@ export class ProfileProvider {
         bwsurl: getBWSURL(credentials.walletId),
       });
 
-      var skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
+      let skipKeyValidation = this.shouldSkipValidation(credentials.walletId);
       if (!skipKeyValidation) this.runValidation(walletClient, 500);
 
       this.logger.info('Binding wallet:' + credentials.walletId + ' Validating?:' + !skipKeyValidation);
@@ -749,8 +746,6 @@ export class ProfileProvider {
   // joins and stores a wallet
   public joinWallet(opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
-
-      let walletClient = this.bwcProvider.getClient(null, opts);
       this.logger.debug('Joining Wallet:', opts);
 
       try {
@@ -797,10 +792,7 @@ export class ProfileProvider {
 
   public deleteWalletClient(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-
-      var walletId = wallet.credentials.walletId;
-
-      var config = this.configProvider.get();
+      let walletId = wallet.credentials.walletId;
 
       this.logger.debug('Deleting Wallet:', wallet.credentials.walletName);
       wallet.removeAllListeners();

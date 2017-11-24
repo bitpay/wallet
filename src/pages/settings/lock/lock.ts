@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { ConfigProvider } from '../../../providers/config/config';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
 import { PinModalPage } from '../../pin/pin';

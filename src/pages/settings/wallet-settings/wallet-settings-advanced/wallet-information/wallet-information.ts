@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { NavController, NavParams, Events } from 'ionic-angular';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
-import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 //pages
 import { SettingsPage } from '../../../../../pages/settings/settings';
@@ -34,18 +31,16 @@ export class WalletInformationPage {
   public addressType: string;
   public derivationStrategy: string;
   public basePath: string;
-  public pubKeys: Array<string>;
+  public pubKeys: Array<any>;
   public externalSource: string;
   public canSign: boolean;
   public needsBackup: boolean;
-  private config: any;
   private colorCounter = 1;
   private BLACK_WALLET_COLOR = '#202020';
 
   constructor(
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
-    private walletProvider: WalletProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
     private events: Events
@@ -76,7 +71,6 @@ export class WalletInformationPage {
     this.externalSource = null;
     this.canSign = this.wallet.canSign();
     this.needsBackup = this.wallet.needsBackup;
-    this.config = this.configProvider.get();
   }
 
   public saveBlack(): void {

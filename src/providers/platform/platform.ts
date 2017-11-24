@@ -4,18 +4,21 @@ import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
 export class PlatformProvider {
-  isAndroid: boolean;
-  isIOS: boolean;
-  isWP: boolean;
-  isSafari: boolean;
-  isCordova: boolean;
-  isNW: boolean;
-  ua: string;
-  isMobile: boolean;
-  isDevel: boolean;
+  public isAndroid: boolean;
+  public isIOS: boolean;
+  public isWP: boolean;
+  public isSafari: boolean;
+  public isCordova: boolean;
+  public isNW: boolean;
+  public ua: string;
+  public isMobile: boolean;
+  public isDevel: boolean;
 
-  constructor(private platform: Platform, private log: Logger) {
-    var ua = navigator ? navigator.userAgent : null;
+  constructor(
+    private platform: Platform,
+    private log: Logger
+  ) {
+    let ua: any = navigator ? navigator.userAgent : null;
 
     if (!ua) {
       console.log('Could not determine navigator. Using fixed string');
@@ -25,20 +28,19 @@ export class PlatformProvider {
     // Fixes IOS WebKit UA
     ua = ua.replace(/\(\d+\)$/, '');
 
-    this.isAndroid = platform.is('android');
-    this.isIOS = platform.is('ios');
-    this.isWP = platform.is('windows') && platform.is('mobile');
+    this.isAndroid = this.platform.is('android');
+    this.isIOS = this.platform.is('ios');
+    this.isWP = this.platform.is('windows') && this.platform.is('mobile');
     this.ua = ua;
-    this.isCordova = platform.is('cordova');
+    this.isCordova = this.platform.is('cordova');
     this.isNW = this.isNodeWebkit();
-    this.isMobile = platform.is('mobile');
+    this.isMobile = this.platform.is('mobile');
     this.isDevel = !this.isMobile && !this.isNW;
 
     this.log.info('PlatformProvider initialized.');
   }
 
-  getBrowserName(): string {
-    let chrome: any;
+  public getBrowserName(): string {
     let userAgent = window.navigator.userAgent;
     let browsers = { chrome: /chrome/i, safari: /safari/i, firefox: /firefox/i, ie: /internet explorer/i };
 
@@ -51,7 +53,7 @@ export class PlatformProvider {
     return 'unknown';
   }
 
-  isNodeWebkit(): boolean {
+  public isNodeWebkit(): boolean {
     let isNode = (typeof process !== "undefined" && typeof require !== "undefined");
     if (isNode) {
       try {

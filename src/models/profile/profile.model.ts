@@ -1,5 +1,3 @@
-import * as moment from 'moment';
-
 export class Profile {
 
   public version: string;
