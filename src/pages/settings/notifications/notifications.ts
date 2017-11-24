@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { ConfigProvider } from '../../../providers/config/config';
@@ -9,8 +9,6 @@ import { PushNotificationsProvider } from '../../../providers/push-notifications
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 
 import { EmailValidator } from '../../../validators/email';
-
-import * as _ from "lodash";
 
 @Component({
   selector: 'page-notifications',
@@ -87,7 +85,6 @@ export class NotificationsPage {
   };
 
   public emailNotificationsChange() {
-    let config = this.configProvider.get();
     let opts = {
       enabled: this.emailNotifications,
       email: this.emailForm.value.email
