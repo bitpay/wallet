@@ -22,6 +22,8 @@ export class WalletDetailsPage {
     private walletProvider: WalletProvider,
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    console.log(this.wallet);
+    
     this.history = [];
     this.HISTORY_SHOW_LIMIT = 10;
     this.HISTORY_PAGE_COUNTER = 2;

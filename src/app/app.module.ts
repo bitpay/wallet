@@ -43,6 +43,7 @@ import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
+import { WalletInfoPage } from '../pages/includes/wallet-info';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -122,7 +123,6 @@ import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
 
 /* Directives */
-
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -182,6 +182,7 @@ let pages: any = [
   TabsPage,
   TxDetailsPage,
   WalletDetailsPage,
+  WalletInfoPage,
 ];
 
 let providers: any = [
