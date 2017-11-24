@@ -203,7 +203,7 @@ export class CreateWalletPage implements OnInit {
       myName: this.formData.totalCopayers > 1 ? this.formData.myName : null,
       networkName: this.formData.testnetEnabled && this.formData.coin != 'bch' ? 'testnet' : 'livenet',
       bwsurl: this.formData.bwsurl,
-      singleAddress: this.formData.singleAddressEnabled,
+      singleAddress: this.formData.singleAddress,
       coin: this.formData.coin
     };
 
