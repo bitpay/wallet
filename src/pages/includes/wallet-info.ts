@@ -5,7 +5,7 @@ import { Component, Input } from "@angular/core";
   templateUrl: 'wallet-info.html',
 })
 export class WalletInfoPage {
-  public _wallet: any;
+  private _wallet: any;
 
   @Input()
   set wallet(wallet: any) {

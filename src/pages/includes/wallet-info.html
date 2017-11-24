@@ -9,11 +9,11 @@
   <ion-spinner class="spinner-dark recent right" icon="crescent" *ngIf="(updatingStatus || updatingTxHistory) && !walletNotRegistered && !updateStatusError && !updateTxHistoryError">
   </ion-spinner>
 
-  <img style="height:3rem; width:3rem;" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
-  <img style="height:3rem; width:5rem;" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
-  <img style="height:3rem; width:2rem;" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
-  <img style="height:3rem; width:6rem;" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
-  <img style="height:3rem; width:5rem;" *ngIf="wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
+  <img class="testnet" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
+  <img class="testnet-text" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-text-testnet.svg">
+  <img class="read-only" *ngIf="!wallet.canSign()" src="assets/img/icon-read-only.svg">
+  <img class="read-only-text" *ngIf="!wallet.canSign()" src="assets/img/icon-text-read-only.svg">
+  <img class="auditable-text" *ngIf="wallet.status.wallet.singleAddress" src="assets/img/icon-text-auditable.svg">
 
   <!-- TODO -->
   <img style="height:3rem; width:3rem;" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">

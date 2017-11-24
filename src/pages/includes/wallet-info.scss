@@ -1,0 +1,25 @@
+.wallet-info {
+  position: absolute;
+  top: 11.5rem;
+  left: 10px;
+  .testnet {
+    height: 3rem; 
+    width: 3rem;
+  }
+  .testnet-text {
+    height: 3rem; 
+    width: 5rem;
+  }
+  .read-only {
+    height: 3rem; 
+    width: 2rem;
+  }
+  .read-only-text {
+    height: 3rem; 
+    width: 6rem;
+  }
+  .auditable-text {
+    height: 3rem; 
+    width: 5rem;
+  }
+}
