@@ -1,59 +1,67 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Join wallet</ion-title>
+    <ion-title>{{'Join wallet' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="joinForm" (ngSubmit)="join()">
+  <form [formGroup]="joinForm" (ngSubmit)="setOptsAndJoin()">
     <ion-item>
-      <ion-label stacked>Your name</ion-label>
-      <ion-input type="text" [(ngModel)]="formData.copayerName" formControlName="copayerName" required></ion-input>
+      <ion-label stacked>{{'Your name' | translate}}</ion-label>
+      <ion-input type="text" [(ngModel)]="formData.myName" formControlName="myName" required></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label stacked>Wallet invitation</ion-label>
+      <ion-label stacked>{{'Wallet invitation' | translate}}</ion-label>
       <ion-input type="text" [(ngModel)]="formData.invitationCode" formControlName="invitationCode" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>{{'Coin' | translate}}</ion-label>
+      <ion-select [(ngModel)]="formData.coin" formControlName="coin">
+        <ion-option value="btc">BTC</ion-option>
+        <ion-option value="bch">BCH</ion-option>
+      </ion-select>
     </ion-item>
 
     <ion-item-divider color="light"></ion-item-divider>
 
     <ion-item (click)="showAdvOpts = !showAdvOpts">
-      <ion-label *ngIf="!showAdvOpts">Show advanced options</ion-label>
-      <ion-label *ngIf="showAdvOpts">Hide advanced options</ion-label>
+      <ion-label *ngIf="!showAdvOpts">{{'Show advanced options' | translate}}</ion-label>
+      <ion-label *ngIf="showAdvOpts">{{'Hide advanced options' | translate}}</ion-label>
     </ion-item>
 
     <div *ngIf="showAdvOpts">
       <ion-item>
-        <ion-label stacked>Wallet service URL</ion-label>
+        <ion-label stacked>{{'Wallet service URL' | translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="formData.bwsURL" formControlName="bwsURL"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label stacked>Wallet key</ion-label>
+        <ion-label stacked>{{'Wallet key' | translate}}</ion-label>
         <ion-select [(ngModel)]="formData.selectedSeed.id" formControlName="selectedSeed" (ionChange)="seedOptionsChange(formData.selectedSeed.id)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>
-      
+
       <ion-item *ngIf="formData.selectedSeed.id == 'set'">
-        <ion-label stacked>Wallet recovery phrase</ion-label>
+        <ion-label stacked>{{'Wallet recovery phrase' | translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="formData.recoveryPhrase" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
-      
+
       <ion-item>
-        <ion-label stacked>Add a password</ion-label>
+        <ion-label stacked>{{'Add a password' | translate}}</ion-label>
         <ion-toggle [(ngModel)]="formData.addPassword" formControlName="addPassword" (ionChange)="resetFormFields()"></ion-toggle>
       </ion-item>
 
       <div *ngIf="formData.addPassword">
         <ion-item>
-          <ion-label stacked>Password</ion-label>
+          <ion-label stacked>{{'Password' | translate}}</ion-label>
           <ion-input type="password" [(ngModel)]="formData.password" formControlName="password"></ion-input>
         </ion-item>
-  
+
         <ion-item>
-          <ion-label stacked>Confirm password</ion-label>
+          <ion-label stacked>{{'Confirm password' | translate}}</ion-label>
           <ion-input type="password" [(ngModel)]="formData.confirmPassword" formControlName="confirmPassword"></ion-input>
         </ion-item>
 
@@ -64,16 +72,16 @@
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>I have written it down</ion-label>
-          <ion-checkbox [(ngModel)]="formData.passwordSaved" formControlName="passwordSaved" checked="false"></ion-checkbox>
+          <ion-label stacked>{{'I have written it down' | translate}}</ion-label>
+          <ion-checkbox [(ngModel)]="formData.recoveryPhraseBackedUp" formControlName="recoveryPhraseBackedUp" checked="false"></ion-checkbox>
         </ion-item>
       </div>
 
       <ion-item *ngIf="formData.selectedSeed.id == 'set'">
-        <ion-label stacked>Derivation path</ion-label>
+        <ion-label stacked>{{'Derivation path' | translate}}</ion-label>
         <ion-input type="text" [(ngModel)]="formData.derivationPath" formControlName="derivationPath"></ion-input>
       </ion-item>
     </div>
-    <button ion-button block type="submit" [disabled]="!joinForm.valid || validatePasswords()">Join wallet</button>
+    <button ion-button block type="submit" [disabled]="!joinForm.valid || validatePasswords()" translate>Join wallet</button>
   </form>
 </ion-content>

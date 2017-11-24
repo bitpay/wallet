@@ -43,7 +43,7 @@ export class CopayersPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider
   ) {
-
+    this.secret = null;
   }
 
   ionViewDidLoad() {

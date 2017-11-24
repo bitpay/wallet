@@ -95,7 +95,7 @@ export class CreateWalletPage implements OnInit {
       derivationPath: this.derivationPathByDefault,
       testnetEnabled: false,
       singleAddress: false,
-      coin: this.navParams.get('coin')
+      coin: this.navParams.data.coin
     };
 
     this.setTotalCopayers(this.tc);
@@ -210,7 +210,6 @@ export class CreateWalletPage implements OnInit {
       networkName: this.formData.testnetEnabled && this.formData.coin != 'bch' ? 'testnet' : 'livenet',
       bwsurl: this.formData.bwsurl,
       singleAddress: this.formData.singleAddressEnabled,
-      walletPrivKey: this.formData._walletPrivKey, // Only for testing
       coin: this.formData.coin
     };
 
