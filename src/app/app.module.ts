@@ -31,12 +31,14 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
+import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
+import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
@@ -138,6 +140,7 @@ let pages: any = [
   ChooseFeeLevelPage,
   CreateWalletPage,
   CopayersPage,
+  IncomingDataMenuPage,
   ImportWalletPage,
   JoinWalletPage,
   BackupWarningPage,
@@ -159,6 +162,7 @@ let pages: any = [
   HomePage,
   LockPage,
   OnboardingPage,
+  PaperWalletPage,
   PayProPage,
   PinModalPage,
   ReceivePage,

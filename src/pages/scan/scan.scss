@@ -1,7 +1,7 @@
 $v-scanner-background-color: #1e3186;
 $v-scanner-guide-color: #647ce8;
 
-html , body, .back-trasnparent, ion-app, .nav-decor {
+html , body, .back-transparent, ion-app, .nav-decor {
   background: none transparent !important;
 } 
 
@@ -9,24 +9,11 @@ page-scan {
   color: #fff;
   text-align: center;
   background: transparent none;
-  .header {
-    opacity: .9;
-  }
-  svg#QR-scanner-guides path.st1 {
-    stroke: $v-scanner-guide-color;
-  }
-  .zero-state-cta {
-    padding-bottom: 6vh;
-  }
-  #page-scan-has-problems,
-  #page-scan-loading-camera {
-    background-color: $v-scanner-background-color;
-  }
-  #page-scan-loading-camera {
+  .page-scan-loading-camera {
     height: 100%;
     width: 100%
   }
-  #page-scan-camera-ready {
+  .page-scan-camera-ready {
     // view background is transparent to show video preview
     background: none transparent;
     .guides {
@@ -79,8 +66,4 @@ page-scan {
       }
     }
   }
-}
-
-#cordova-plugin-qrscanner-still, #cordova-plugin-qrscanner-video-preview {
-  background-color: $v-scanner-background-color !important;
 }

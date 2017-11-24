@@ -27,12 +27,11 @@ export class IncomingDataProvider {
     private scanProvider: ScanProvider,
     private popupProvider: PopupProvider,
     private logger: Logger,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
   ) {
     console.log('Hello IncomingDataProvider Provider');
   }
 
-  //TODO
   public showMenu(data: any): void {
     this.events.publish('incomingDataMenu.showMenu', data);
   }

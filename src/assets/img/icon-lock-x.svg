@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="20px" viewBox="0 0 19 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Addresss-(Unsecure-URL)" transform="translate(-9.000000, -9.000000)" stroke-width="2">
+            <g id="Items/Bitcoin-Address">
+                <g id="Items/Bitcoin-Address-Copy">
+                    <g id="ui-24px-outline-1_lock" transform="translate(10.955302, 10.000000)">
+                        <g id="Group">
+                            <path d="M6.5,0 L6.5,0 C4.225,0 2.4375,1.8 2.4375,4.09090909 L2.4375,6.54545455 L10.5625,6.54545455 L10.5625,4.09090909 C10.5625,1.8 8.775,0 6.5,0 L6.5,0 Z" id="Shape" stroke="#CACACA" fill="#EEEEEE" opacity="0.800000012"></path>
+                            <rect id="Rectangle-path" stroke="#CACACA" fill="#EEEEEE" opacity="0.800000012" x="0" y="6.54545455" width="13" height="11.4545455"></rect>
+                            <g id="ui-24px-outline-2_small-remove" transform="translate(8.000000, 7.000000)" stroke="#E14F61">
+                                <g id="Group">
+                                    <path d="M8,0 L0,8" id="Shape"></path>
+                                    <path d="M8,8 L0,0" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
