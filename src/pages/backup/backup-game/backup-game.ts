@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides, Navbar, AlertController, NavParams } from 'ionic-angular';
-import { TabsPage } from '../../tabs/tabs';
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
@@ -26,16 +25,13 @@ export class BackupGamePage {
   public customWords: Array<any>;
   public selectComplete: boolean;
   public error: boolean;
+  public credentialsEncrypted: boolean;
 
   private mnemonicHasPassphrase: any;
-
   private data: any;
   private walletId: string;
   private wallet: any;
   private keys: any;
-  private credentialsEncrypted: any;
-  private n: number;
-
   private useIdeograms: any;
 
   constructor(
@@ -50,7 +46,6 @@ export class BackupGamePage {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
     this.wallet = this.profileProvider.getWallet(this.walletId);
-    this.n = this.wallet.n;
     this.credentialsEncrypted = this.wallet.isPrivKeyEncrypted();
 
     this.deleted = this.isDeletedSeed();
@@ -93,7 +88,7 @@ export class BackupGamePage {
     });
   };
 
-  private addButton(index: number, item: any) {
+  public addButton(index: number, item: any): void {
     var newWord = {
       word: item.word,
       prevIndex: index
@@ -103,7 +98,7 @@ export class BackupGamePage {
     this.shouldContinue();
   };
 
-  private removeButton(index: number, item: any) {
+  public removeButton(index: number, item: any): void {
     // if ($scope.loading) return;
     this.customWords.splice(index, 1);
     this.shuffledMnemonicWords[item.prevIndex].selected = false;
@@ -158,7 +153,7 @@ export class BackupGamePage {
           handler: () => {
             if (this.fromOnboarding) {
               this.navCtrl.push(DisclaimerPage);
-            } else  {
+            } else {
               this.navCtrl.popToRoot();
             }
           }
@@ -185,7 +180,7 @@ export class BackupGamePage {
     this.slides.lockSwipes(true);
   }
 
-  private slideNext() {
+  public slideNext(): void {
     if (this.currentIndex == 1 && !this.mnemonicHasPassphrase)
       this.finalStep();
     else {
@@ -219,11 +214,12 @@ export class BackupGamePage {
   };
 
 
-  private copyRecoveryPhrase = function() {
+  /* TODO: check if this function is necessary
+  private copyRecoveryPhrase = function () {
     if (this.wallet.network == 'livenet') return null;
     else if (!this.wallet.credentials.mnemonic) return null;
     else return this.wallet.credentials.mnemonic;
-  };
+  };*/
 
   private confirm() {
     return new Promise((resolve, reject) => {

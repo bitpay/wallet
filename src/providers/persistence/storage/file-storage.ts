@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
-import { File, DirectoryEntry, FileEntry } from '@ionic-native/file';
-import { Platform } from 'ionic-angular';
+import { File, DirectoryEntry } from '@ionic-native/file';
 import { IStorage, KeyAlreadyExistsError } from './istorage';
 
 @Injectable()
@@ -10,14 +9,17 @@ export class FileStorage implements IStorage {
   fs: FileSystem;
   dir: DirectoryEntry;
 
-  constructor(private file: File, private platform: Platform, private log: Logger) {
+  constructor(
+    private file: File,
+    private log: Logger
+  ) {
   }
 
-  init(): Promise<void> {
-    return new Promise((resolve,reject) => {
+  init(): Promise<any> {
+    return new Promise((resolve, reject) => {
       if (this.fs && this.dir) return resolve();
 
-      let onSuccess = (fs: FileSystem): Promise<void> => {
+      let onSuccess = (fs: FileSystem): Promise<any> => {
         this.log.debug('File system started: ', fs.name, fs.root.name);
         this.fs = fs;
         return this.getDir().then(dir => {
@@ -28,7 +30,7 @@ export class FileStorage implements IStorage {
         });
       };
 
-      let onFailure = (err: Error): Promise<void> => {
+      let onFailure = (err: Error): Promise<any> => {
         this.log.error('Could not init file system: ' + err.message);
         return Promise.reject(err);
       };
@@ -69,23 +71,23 @@ export class FileStorage implements IStorage {
       this.init().then(() => {
         return Promise.resolve(this.file.getFile(this.dir, k, { create: false }));
       })
-      .then(fileEntry => {
-        if (!fileEntry) return;
-        return new Promise((resolve) => {
-          fileEntry.file(file => {
-            var reader = new FileReader();
-            reader.onloadend = () => {
-              resolve(parseResult(reader.result));
-            }
-            reader.readAsText(file);
+        .then(fileEntry => {
+          if (!fileEntry) return;
+          return new Promise((resolve) => {
+            fileEntry.file(file => {
+              var reader = new FileReader();
+              reader.onloadend = () => {
+                resolve(parseResult(reader.result));
+              }
+              reader.readAsText(file);
+            });
           });
-        });
-      })
-      .catch(err => {
-        // Not found
-        if (err.code == 1) return;
-        else throw err;
-      })
+        })
+        .catch(err => {
+          // Not found
+          if (err.code == 1) return;
+          else throw err;
+        })
     );
   }
 

@@ -10,7 +10,6 @@ import { BackupRequestPage } from '../backup-request/backup-request';
   templateUrl: 'email.html',
 })
 export class EmailPage {
-  public formData: any;
   public showConfirmForm: boolean;
 
   private walletId: string;
@@ -23,19 +22,16 @@ export class EmailPage {
     private log: Logger,
     private fb: FormBuilder
   ) {
-    this.walletId = this.navParams.get('walletId');
-    this.formData = {
-      accept: true,
-      email: null,
-    };
+    this.walletId = this.navParams.data.walletId;
+    let regex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    this.emailForm = this.fb.group({
+      email: [null, [Validators.required, Validators.pattern(regex)]],
+      accept: [true],
+    });
     this.showConfirmForm = false;
   }
 
   ngOnInit() {
-    this.emailForm = this.fb.group({
-      email: ['', Validators.required, this.validateEmail()],
-      accept: [''],
-    });
   };
 
   ionViewDidLoad() {
@@ -43,12 +39,7 @@ export class EmailPage {
   }
 
   skip() {
-    this.navCtrl.push(BackupRequestPage, {walletId: this.walletId});
-  }
-
-  validateEmail() {
-    var regex = /^[a-zA-Z0-9.!#$%&*+=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return regex.test(this.formData.email);
+    this.navCtrl.push(BackupRequestPage, { walletId: this.walletId });
   }
 
   showActionSheet() {
@@ -68,12 +59,12 @@ export class EmailPage {
 
   showConfirm() {
     // TODO Fix form validation
-    if (!this.formData.email) return;
+    if (!this.emailForm.value.email) return;
     this.showConfirmForm = !this.showConfirmForm;
   }
 
   save() {
     // TODO SAVE EMAIL
-    this.navCtrl.push(BackupRequestPage, {walletId: this.walletId});
+    this.navCtrl.push(BackupRequestPage, { walletId: this.walletId });
   }
 }

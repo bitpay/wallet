@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+//import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { PlatformProvider } from '../../providers/platform/platform';
 import { ScanProvider } from '../../providers/scan/scan';
 import { AmountPage } from '../send/amount/amount';
@@ -40,7 +40,7 @@ export class ScanPage {
       .then(resp => {
         this.text = resp;
         // TODO: implement incomingData
-        this.navCtrl.push(AmountPage, {address: this.text});
+        this.navCtrl.push(AmountPage, { address: this.text });
       })
       .catch(error => {
         console.log("error: " + error);

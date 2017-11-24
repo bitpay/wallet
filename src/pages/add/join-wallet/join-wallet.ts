@@ -21,7 +21,6 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 export class JoinWalletPage implements OnInit {
 
   private defaults: any;
-  private config: any;
   public formData: any;
   public showAdvOpts: boolean;
   public seedOptions: any;
@@ -42,7 +41,6 @@ export class JoinWalletPage implements OnInit {
     private walletProvider: WalletProvider
   ) {
     this.defaults = this.configProvider.getDefaults();
-    this.config = this.configProvider.get();
 
     this.derivationPathByDefault = this.derivationPathHelperProvider.default;
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;

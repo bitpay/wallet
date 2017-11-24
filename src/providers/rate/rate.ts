@@ -8,8 +8,6 @@ export class RateProvider {
   private _rates: Object;
   private _alternatives: Array<any>;
   private _ratesBCH: Object;
-  private SAT_TO_BTC: any;
-  private BTC_TO_SAT: any;
   private _isAvailable: boolean = false;
 
   private rateServiceUrl = 'https://bitpay.com/api/rates';
@@ -20,8 +18,6 @@ export class RateProvider {
     this._rates = {};
     this._alternatives = [];
     this._ratesBCH = {};
-    this.SAT_TO_BTC = 1 / 1e8;
-    this.BTC_TO_SAT = 1e8;
     this.updateRates();
   }
 
@@ -42,8 +38,8 @@ export class RateProvider {
         this.getBCH().then((dataBCH) => {
 
           _.each(dataBCH.result, (data, paircode) => {
-            var code = paircode.substr(3, 3);
-            var rate = data.c[0];
+            let code = paircode.substr(3, 3);
+            let rate = data.c[0];
             self._ratesBCH[code] = rate;
           });
 
@@ -98,9 +94,7 @@ export class RateProvider {
   };
 
   listAlternatives(sort: boolean) {
-    var self = this;
-
-    var alternatives = _.map(this.getAlternatives(), (item) => {
+    let alternatives = _.map(this.getAlternatives(), (item) => {
       return {
         name: item.name,
         isoCode: item.isoCode

@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { ConfigProvider } from '../../../../../providers/config/config';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
-import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 
@@ -42,12 +40,10 @@ export class WalletExportPage {
     private walletProvider: WalletProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private configProvider: ConfigProvider,
     private formBuilder: FormBuilder,
     private popupProvider: PopupProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private app: AppProvider,
     private backupProvider: BackupProvider,
     private platformProvider: PlatformProvider,
   ) {
@@ -237,9 +233,10 @@ export class WalletExportPage {
       if (this.exportWalletForm.value.noSignEnabled)
         name = name + '(No Private Key)';
 
-      var subject = this.app.info.nameCase + ' Wallet Backup: ' + name;
-      var body = 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}';
-      /* window.plugins.socialsharing.shareViaEmail(
+      /* TODO: socialsharing
+      let subject = this.app.info.nameCase + ' Wallet Backup: ' + name;
+      let body = 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}';
+       window.plugins.socialsharing.shareViaEmail(
         body,
         subject,
         null, // TO: must be null or an array

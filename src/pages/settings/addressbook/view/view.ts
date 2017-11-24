@@ -9,7 +9,8 @@ import { AddressBookProvider } from '../../../../providers/address-book/address-
 export class AddressbookViewPage {
 
   private address: string;
-  private contact: Object = {
+
+  public contact: Object = {
     name: '',
     address: '',
     email: ''
@@ -43,7 +44,7 @@ export class AddressbookViewPage {
     });
   }
 
-  private remove() {
+  public remove(): void {
     this.ab.remove(this.address).then(() => {
       this.navCtrl.pop();
     }).catch((err) => {

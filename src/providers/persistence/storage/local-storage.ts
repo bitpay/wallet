@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 import { IStorage, KeyAlreadyExistsError } from './istorage';
@@ -7,7 +6,7 @@ import { IStorage, KeyAlreadyExistsError } from './istorage';
 @Injectable()
 export class LocalStorage implements IStorage {
   ls: Storage;
-  constructor(private log: Logger) {
+  constructor() {
     this.ls = (typeof window.localStorage !== "undefined") ? window.localStorage : null;
     if (!this.ls) throw new Error('localstorage not available');
   }

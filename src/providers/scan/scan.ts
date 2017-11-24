@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { QRScanner } from '@ionic-native/qr-scanner';
 import { PlatformProvider } from '../platform/platform';
 
 @Injectable()

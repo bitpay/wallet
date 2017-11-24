@@ -6,8 +6,6 @@ import { Logger } from '@nsalaun/ng-logger';
 import { ProfileProvider } from '../../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../../providers/wallet/wallet';
 
-import * as _ from 'lodash';
-
 @Component({
   selector: 'page-wallet-extended-private-key',
   templateUrl: 'wallet-extended-private-key.html',

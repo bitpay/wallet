@@ -8,7 +8,6 @@ import { WalletProvider } from '../../../../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
-import { AppProvider } from '../../../../../providers/app/app';
 
 //pages
 import { AllAddressesPage } from './all-addresses/all-addresses';
@@ -47,8 +46,7 @@ export class WalletAddressesPage {
     private logger: Logger,
     private bwcErrorProvider: BwcErrorProvider,
     private popupProvider: PopupProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider,
-    private app: AppProvider
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
 
   }
@@ -165,7 +163,8 @@ export class WalletAddressesPage {
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId })
   }
 
-  private formatDate(ts: number): any {
+  // TODO: socialsharing
+  /*private formatDate(ts: number): any {
     var dateObj = new Date(ts * 1000);
     if (!dateObj) {
       this.logger.debug('Error formating a date');
@@ -175,22 +174,23 @@ export class WalletAddressesPage {
       return '';
     }
     return dateObj.toJSON();
-  }
+  }*/
 
   public sendByEmail(): any {
 
     this.onGoingProcessProvider.set('sendingByEmail', true);
     setTimeout(() => {
-      var appName = this.app.info.nameCase;
+      this.onGoingProcessProvider.set('sendingByEmail', false);
+      // TODO: socialsharing
+      /*let appName = this.app.info.nameCase;
 
-      var body = appName + ' Wallet "' + this.wallet.name + '" Addresses\n  Only Main Addresses are  shown.\n\n';
+      let body: string = appName + ' Wallet "' + this.wallet.name + '" Addresses\n  Only Main Addresses are  shown.\n\n';
       body += "\n";
       body += this.allAddresses.map((v) => {
         return ('* ' + v.address + ' xpub' + v.path.substring(1) + ' ' + this.formatDate(v.createdOn));
       }).join("\n");
-      this.onGoingProcessProvider.set('sendingByEmail', false);
-      //TODO
-      /* window.plugins.socialsharing.shareViaEmail(
+      
+       window.plugins.socialsharing.shareViaEmail(
         body,
         appName + ' Addresses',
         null, // TO: must be null or an array

@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 //providers
@@ -8,13 +7,11 @@ import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ConfigProvider } from '../../../providers/config/config';
 import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
-import { BwcProvider } from '../../../providers/bwc/bwc';
 import { AddressProvider } from '../../../providers/address/address';
 import { RateProvider } from '../../../providers/rate/rate';
 
 //pages
 import { ConfirmPage } from '../confirm/confirm';
-import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 
 @Component({
   selector: 'page-amount',
@@ -22,14 +19,13 @@ import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 })
 export class AmountPage {
   private LENGTH_EXPRESSION_LIMIT: number;
-  private SMALL_FONT_SIZE_LIMIT: number;
   private availableUnits: Array<any>;
-  private isFiatAmount: boolean;
   private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
   private nextView: any;
 
+  public isFiatAmount: boolean;
   public expression: any;
   public amount: any;
   public showExpressionResult: boolean;
@@ -48,12 +44,10 @@ export class AmountPage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private logger: Logger,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider,
     private configProvider: ConfigProvider,
-    private bwcProvider: BwcProvider,
     private addressProvider: AddressProvider,
     private rateProvider: RateProvider,
   ) {
@@ -65,7 +59,6 @@ export class AmountPage {
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
     this.LENGTH_EXPRESSION_LIMIT = 19;
-    this.SMALL_FONT_SIZE_LIMIT = 10;
     this.availableUnits = [];
     this.unit = '';
     this.isFiatAmount = false;
@@ -76,7 +69,7 @@ export class AmountPage {
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
   }
-  
+
   ionViewDidLoad() {
     this.processAmount();
     this.setAvailableUnits();
@@ -107,8 +100,8 @@ export class AmountPage {
     if (!this.platformProvider.isNW) return;
 
     let value = this.nodeWebkitProvider.readFromClipboard();
-    
-    if (value && this.evaluate(value) > 0) 
+
+    if (value && this.evaluate(value) > 0)
       this.paste(this.evaluate(value));
   };
 
@@ -172,7 +165,7 @@ export class AmountPage {
 
     var result = val.toString();
 
-    if (this.isOperator(_.last(val))) 
+    if (this.isOperator(_.last(val)))
       result = result.slice(0, -1);
 
     return result.replace('x', '*');
@@ -220,11 +213,11 @@ export class AmountPage {
 
   private setAvailableUnits(): void {
     if (!this.addressInfo.isValid) return;
-    
+
     let coin = this.addressInfo.coin;
     let availableWallets = this.profileProvider.getWallets({ coin: coin });
-    
-    if (availableWallets && availableWallets.length > 0) 
+
+    if (availableWallets && availableWallets.length > 0)
       this.availableUnits.push(coin.toUpperCase());
     else return;
 

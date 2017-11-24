@@ -12,7 +12,8 @@ import { AddressValidator } from '../../../../validators/address';
 export class AddressbookAddPage {
 
   private addressBookAdd: FormGroup;
-  private submitAttempt: boolean = false;
+
+  public submitAttempt: boolean = false;
 
   constructor(
     public navCtrl: NavController,

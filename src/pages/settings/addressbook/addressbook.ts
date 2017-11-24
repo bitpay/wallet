@@ -13,11 +13,9 @@ import * as _ from 'lodash';
 export class AddressbookPage {
 
   private cache: boolean = false;
-
-  private isEmptyList: boolean;
   private addressbook: Array<object> = [];
 
-  private searchQuery: string = '';
+  public isEmptyList: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -65,15 +63,15 @@ export class AddressbookPage {
     });
   };
 
-  private addEntry() {
+  public addEntry() {
     this.navCtrl.push(AddressbookAddPage);
   };
 
-  private viewEntry(ab: any) {
+  public viewEntry(ab: any) {
     this.navCtrl.push(AddressbookViewPage, { address: ab.address });
   }
 
-  private getItems(ev: any) {
+  public getItems(ev: any) {
     // Reset items back to all of the items
     this.initAddressbook();
 

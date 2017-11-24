@@ -7,6 +7,7 @@ import { ConfigProvider } from '../../providers/config/config';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 
+/* TODO: implement interface propertly
 interface App {
   packageName: string;
   packageDescription: string;
@@ -37,7 +38,7 @@ interface App {
   commitHash: string;
   _extraCSS: string;
   _enabledExtensions: any;
-}
+}*/
 
 @Injectable()
 export class AppProvider {

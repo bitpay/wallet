@@ -8,7 +8,6 @@ import { HomePage } from '../../../pages/home/home';
 import { CopayersPage } from '../copayers/copayers';
 
 // Providers
-import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { DerivationPathHelperProvider } from '../../../providers/derivation-path-helper/derivation-path-helper';
@@ -40,10 +39,8 @@ export class CreateWalletPage implements OnInit {
     12: 1,
   };
 
-  private appName: string;
   private createForm: FormGroup;
   private defaults: any;
-  private config: any;
   private tc: number;
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -59,7 +56,6 @@ export class CreateWalletPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private app: AppProvider,
     private fb: FormBuilder,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
@@ -72,8 +68,7 @@ export class CreateWalletPage implements OnInit {
 
     this.isShared = this.navParams.get('isShared');
     this.title = this.isShared ? 'Create shared wallet' : 'Create personal wallet';
-    this.defaults = configProvider.getDefaults();
-    this.config = configProvider.get();
+    this.defaults = this.configProvider.getDefaults();
     this.tc = this.isShared ? this.defaults.wallet.totalCopayers : 1;
 
     this.copayers = _.range(2, this.defaults.limits.totalCopayers + 1);
@@ -101,7 +96,6 @@ export class CreateWalletPage implements OnInit {
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
     this.resetPasswordFields();
-    this.appName = this.app.info.name;
   }
 
   ngOnInit() {

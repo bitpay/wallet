@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { NavController, NavParams } from 'ionic-angular';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
-import { ConfigProvider } from '../../../../../providers/config/config';
-import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
@@ -27,10 +23,6 @@ export class WalletDeletePage {
     private profileProvider: ProfileProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
-    private configProvider: ConfigProvider,
-    private logger: Logger,
-    private persistenceProvider: PersistenceProvider,
-    private formBuilder: FormBuilder,
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,

@@ -1,4 +1,4 @@
-import { Injectable, Injector, ViewChild } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Events, NavController, App } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
@@ -48,17 +48,20 @@ export class IncomingDataProvider {
     }
 
     data = this.sanitizeUri(data);
+    let amount: string;
+    let message: string;
+    let addr: string;
+    let parsed: any;
+    let coin: string;
 
     // Bitcoin  URL
     if (this.bwcProvider.getBitcore().URI.isValid(data)) {
 
-      var coin = 'btc';
-      var parsed = this.bwcProvider.getBitcore().URI(data);
-
-      var addr = parsed.address ? parsed.address.toString() : '';
-      var message = parsed.message;
-
-      var amount = parsed.amount ? parsed.amount : '';
+      coin = 'btc';
+      parsed = this.bwcProvider.getBitcore().URI(data);
+      addr = parsed.address ? parsed.address.toString() : '';
+      message = parsed.message;
+      amount = parsed.amount ? parsed.amount : '';
 
       if (parsed.r) {
         this.payproProvider.getPayProDetails(parsed.r).then((details) => {
@@ -73,13 +76,11 @@ export class IncomingDataProvider {
       return true;
       // Cash URI
     } else if (this.bwcProvider.getBitcoreCash().URI.isValid(data)) {
-      var coin = 'bch';
-      var parsed = this.bwcProvider.getBitcoreCash().URI(data);
-
-      var addr = parsed.address ? parsed.address.toString() : '';
-      var message = parsed.message;
-
-      var amount = parsed.amount ? parsed.amount : '';
+      coin = 'bch';
+      parsed = this.bwcProvider.getBitcoreCash().URI(data);
+      addr = parsed.address ? parsed.address.toString() : '';
+      message = parsed.message;
+      amount = parsed.amount ? parsed.amount : '';
 
       // paypro not yet supported on cash
       if (parsed.r) {
@@ -99,13 +100,13 @@ export class IncomingDataProvider {
       // Cash URI with bitcoin core address version number?
     } else if (this.bwcProvider.getBitcore().URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'))) {
       this.logger.debug('Handling bitcoincash URI with legacy address');
-      let coin = 'bch';
-      let parsed = this.bwcProvider.getBitcore().URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
+      coin = 'bch';
+      parsed = this.bwcProvider.getBitcore().URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
 
       let oldAddr = parsed.address ? parsed.address.toString() : '';
       if (!oldAddr) return false;
 
-      let addr = '';
+      addr = '';
 
       let a = this.bwcProvider.getBitcore().Address(oldAddr).toObject();
       addr = this.bwcProvider.getBitcoreCash().Address.fromObject(a).toString();
@@ -115,8 +116,8 @@ export class IncomingDataProvider {
       this.popupProvider.ionicConfirm('Bitcoin cash Payment', 'Payment address was translated to new Bitcoin Cash address format: ' + addr, 'OK', 'Cancel').then((res: boolean) => {
         if (!res) return false;
 
-        let message = parsed.message;
-        let amount = parsed.amount ? parsed.amount : '';
+        message = parsed.message;
+        amount = parsed.amount ? parsed.amount : '';
 
         // paypro not yet supported on cash
         if (parsed.r) {
@@ -167,12 +168,12 @@ export class IncomingDataProvider {
         this.goToAmountPage(data, 'bch');
       }
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
-      var code = this.getParameterByName('code', data);
+      //let code = this.getParameterByName('code', data);
       //this.navCtrl.push(GlideraPage, {code: code}); //Glidera TODO
       this.logger.debug('Glidera TODO');
       return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
-      var code = this.getParameterByName('code', data);
+      //let code = this.getParameterByName('code', data);
       //this.navCtrl.push(CoinbasePage, {code: code}); //Glidera TODO
       this.logger.debug('Coinbase TODO');
       return true;
@@ -182,10 +183,11 @@ export class IncomingDataProvider {
       // Disable BitPay Card
       if (!this.appProvider.info._enabledExtensions.debitcard) return false;
 
-      var secret = this.getParameterByName('secret', data);
-      var email = this.getParameterByName('email', data);
-      var otp = this.getParameterByName('otp', data);
-      var reason = this.getParameterByName('r', data);
+      /* For BitPay card binding
+      let secret = this.getParameterByName('secret', data);
+      let email = this.getParameterByName('email', data);
+      let otp = this.getParameterByName('otp', data);*/
+      let reason = this.getParameterByName('r', data);
       switch (reason) {
         default:
         case '0':
@@ -227,13 +229,13 @@ export class IncomingDataProvider {
 
   private sanitizeUri(data: any): string {
     // Fixes when a region uses comma to separate decimals
-    var regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
-    var match = regex.exec(data);
+    let regex = /[\?\&]amount=(\d+([\,\.]\d+)?)/i;
+    let match = regex.exec(data);
     if (!match || match.length === 0) {
       return data;
     }
-    var value = match[0].replace(',', '.');
-    var newUri = data.replace(regex, value);
+    let value = match[0].replace(',', '.');
+    let newUri = data.replace(regex, value);
 
     // mobile devices, uris like copay://glidera
     newUri.replace('://', ':');
@@ -244,7 +246,7 @@ export class IncomingDataProvider {
   private getParameterByName(name: string, url: string): string {
     if (!url) return;
     name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
       results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
@@ -287,7 +289,7 @@ export class IncomingDataProvider {
   }
 
   private handlePayPro(payProDetails: any, coin?: string): void {
-    var stateParams = {
+    let stateParams = {
       amount: payProDetails.amount,
       toAddress: payProDetails.toAddress,
       description: payProDetails.memo,
