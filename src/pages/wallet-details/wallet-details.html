@@ -5,13 +5,21 @@
 </ion-header>
 
 <ion-content>
-  <div class="balance-header" (tap)="getTxHistory(true)" (longPress)="toggleBalance()">
+  <div class="balance-header" (tap)="updateStatus(true)" (longPress)="toggleBalance()">
     <div *ngIf="wallet.balanceHidden">
       <div class="balance-hidden">[{{'Balance Hidden' | translate}}]</div>
     </div>
     <div *ngIf="!wallet.balanceHidden">
       <div class="balance-str">{{wallet.cachedBalance | satToUnit: wallet.coin}}</div>
       <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat}}</div>
+    </div>
+
+    <div class="error" *ngIf="updateError">
+      <span translate>Could not update wallet.</span>
+    </div>
+
+    <div class="error" *ngIf="walletNotRegistered">
+      <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
     </div>
   </div>
 
