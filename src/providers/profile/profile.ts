@@ -88,12 +88,11 @@ export class ProfileProvider {
     })
   }
 
-  private balanceIsHidden(wallet: any): Promise<boolean> {
+  private isBalanceHidden(wallet: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
-
-      this.persistenceProvider.getHideBalanceFlag(wallet.credentials.walletId).then((shouldHideBalance: string) => {
-        let hideBalance: boolean = (shouldHideBalance == 'true') ? true : false;
-        return resolve(hideBalance);
+      this.persistenceProvider.getHideBalanceFlag(wallet.credentials.walletId).then((shouldHideBalance) => {
+        let isHidden = shouldHideBalance && shouldHideBalance.toString() == 'true' ? true : false;
+        return resolve(isHidden);
       }).catch((err) => {
         this.logger.error(err);
       });
@@ -123,7 +122,7 @@ export class ProfileProvider {
       wallet.needsBackup = val;
     });
 
-    this.balanceIsHidden(wallet).then((val: any) => {
+    this.isBalanceHidden(wallet).then((val: any) => {
       wallet.balanceHidden = val;
     });
 
@@ -904,7 +903,7 @@ export class ProfileProvider {
 
   public toggleHideBalanceFlag(walletId: string): void {
     this.wallet[walletId].balanceHidden = !this.wallet[walletId].balanceHidden;
-    this.persistenceProvider.setHideBalanceFlag(walletId, this.wallet[walletId].balanceHidden.toString());
+    this.persistenceProvider.setHideBalanceFlag(walletId, this.wallet[walletId].balanceHidden);
   }
 
   public getNotifications(opts: any): Promise<any> {

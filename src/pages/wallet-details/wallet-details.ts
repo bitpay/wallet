@@ -35,6 +35,10 @@ export class WalletDetailsPage {
     this.getTxHistory();
   }
   
+  toggleBalance() {
+    this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId);
+  }
+
   getTxHistory(force?: boolean) {
     if (force) {
       this.history = [];

@@ -124,13 +124,15 @@ import { WalletProvider } from '../providers/wallet/wallet';
 
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
+import { LongPress } from '../directives/long-press/long-press';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
 }
 
 let directives: any = [
-  CopyToClipboard
+  CopyToClipboard,
+  LongPress
 ];
 
 let pages: any = [
