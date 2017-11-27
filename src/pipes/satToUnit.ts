@@ -13,7 +13,6 @@ export class SatToUnitPipe implements PipeTransform {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
   transform(amount: number, unit?: string): any {
-    amount = amount || 0;
     unit = unit ? unit : this.walletSettings.unitCode;
     return this.decimalPipe.transform(amount / 1e8, '1.2-6') + ' ' + unit.toUpperCase();
   }

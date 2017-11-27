@@ -15,9 +15,8 @@ export class SatToFiatPipe implements PipeTransform {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
   transform(amount: number, unit: string): any {
-    amount = amount || 0;
     unit = unit ? unit.toLocaleLowerCase() : this.walletSettings.unitCode;
     let amount_ = this.rateProvider.toFiat(amount / 1e8, this.walletSettings.alternativeIsoCode, unit);
-    return this.decimalPipe.transform(amount_, '1.2-2') + ' ' + this.walletSettings.alternativeIsoCode;
+    return this.decimalPipe.transform(amount_ || 0, '1.2-2') + ' ' + this.walletSettings.alternativeIsoCode;
   }
 }
