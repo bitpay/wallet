@@ -6,20 +6,23 @@
 
 <ion-content>
   <div class="balance-header" (tap)="updateStatus(true)" (longPress)="toggleBalance()">
-    <div *ngIf="wallet.balanceHidden">
-      <div class="balance-hidden">[{{'Balance Hidden' | translate}}]</div>
-    </div>
-    <div *ngIf="!wallet.balanceHidden">
-      <div class="balance-str">{{wallet.cachedBalance | satToUnit: wallet.coin}}</div>
-      <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat}}</div>
-    </div>
-
-    <div class="error" *ngIf="updateError">
-      <span translate>Could not update wallet.</span>
+    <div *ngIf="!wallet.error">
+      <div *ngIf="wallet.balanceHidden">
+        <div class="balance-hidden">[{{'Balance Hidden' | translate}}]</div>
+      </div>
+      <div *ngIf="!wallet.balanceHidden">
+        <div class="balance-str">{{wallet.cachedBalance | satToUnit: wallet.coin}}</div>
+        <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat}}</div>
+      </div>
     </div>
 
-    <div class="error" *ngIf="walletNotRegistered">
-      <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</span>
+    <div class="error" *ngIf="wallet.error">
+      <div *ngIf="updateError" (tap)="updateStatus(true)">
+        <span translate>Could not update wallet. Tap to retry.</span>
+      </div>
+      <div *ngIf="walletNotRegistered" (tap)="recreate(wallet)">
+        <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information. Tap to recreate.</span>
+      </div>
     </div>
   </div>
 

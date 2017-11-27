@@ -67,21 +67,30 @@ export class WalletDetailsPage {
       
       this.walletProvider.getTxHistory(this.wallet, { force: !!force }).then((txh) => {
         this.wallet.updating = false;
-
+        
+        this.wallet.error = null;
         this.wallet.completeHistory = txh;
         this.wallet.completeHistory.isValid = true;
         this.history = this.wallet.completeHistory.slice(0, this.HISTORY_SHOW_LIMIT);
       }).catch((err) => {
         this.wallet.updating = false;
-        console.log(err);
+        this.updateError = true;
+        this.wallet.error = err;
       });
     }).catch((err) => {
       this.wallet.updating = false;
+      this.wallet.error = err;
 
       if (err === 'WALLET_NOT_REGISTERED')
         this.walletNotRegistered = true;
       else
         this.updateError = true;
+    });
+  };
+
+  recreate(wallet: any) {
+    this.walletProvider.recreate(wallet).then(() => {
+      this.updateStatus(true);
     });
   };
 
