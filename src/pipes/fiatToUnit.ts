@@ -15,6 +15,7 @@ export class FiatToUnitPipe implements PipeTransform {
     this.walletSettings = this.configProvider.get().wallet.settings;
   }
   transform(amount: number, unit: string): any {
+    amount = amount || 0;
     unit = unit ? unit.toLocaleLowerCase() : this.walletSettings.unitCode;
     let amount_ = this.rateProvider.fromFiat(amount, this.walletSettings.alternativeIsoCode, unit);
     return this.decimalPipe.transform(amount_, '1.2-8') + ' ' + unit.toUpperCase();

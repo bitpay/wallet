@@ -5,11 +5,17 @@
 </ion-header>
 
 <ion-content>
-  <div class="balance-header" (tap)="getTxHistory(true)" long-press>
-    <div class="balance-str">{{wallet.cachedBalance || 0 | satToUnit: wallet.coin}}</div>
-    <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat}}</div>
-    <page-wallet-info [wallet]="wallet"></page-wallet-info>
+  <div class="balance-header" (tap)="getTxHistory(true)" (longPress)="toggleBalance()">
+    <div *ngIf="wallet.balanceHidden">
+      <div class="balance-hidden">[{{'Balance Hidden' | translate}}]</div>
+    </div>
+    <div *ngIf="!wallet.balanceHidden">
+      <div class="balance-str">{{wallet.cachedBalance | satToUnit: wallet.coin}}</div>
+      <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat}}</div>
+    </div>
   </div>
+
+  <page-wallet-info [wallet]="wallet"></page-wallet-info>
 
   <ion-list>
     <button ion-item *ngFor="let tx of history" (click)="goToTxDetails(tx)">
