@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <div class="balance-header" (click)="getTxHistory(true)">
+  <div class="balance-header" (tap)="getTxHistory(true)" long-press>
     <div class="balance-str">{{wallet.cachedBalance || 0 | satToUnit: wallet.coin}}</div>
     <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat}}</div>
     <page-wallet-info [wallet]="wallet"></page-wallet-info>
