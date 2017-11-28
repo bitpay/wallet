@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Notifications' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <div *ngIf="usePushNotifications">
+    <ion-item>
+      <ion-label>{{ 'Enable push notifications' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="pushNotifications" (ionChange)="pushNotificationsChange()"></ion-toggle>
+    </ion-item>
+  </div>
+
+  <div *ngIf="!usePushNotifications && isIOSApp" translate>
+    Push notifications for {{appName}} are currently disabled. Enable them in the Settings app.
+  </div>
+
+  <div *ngIf="usePushNotifications && pushNotifications">
+    <ion-item>
+      <ion-label>{{ 'Notify me when transactions are confirmed' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="confirmedTxsNotifications" (ionChange)="confirmedTxsNotificationsChange()"></ion-toggle>
+    </ion-item>
+  </div>
+
+
+  <ion-item>
+    <ion-label>{{ 'Enable email notifications' | translate }}</ion-label>
+    <ion-toggle [(ngModel)]="emailNotifications" (ionChange)="emailNotificationsChange()"></ion-toggle>
+  </ion-item>
+
+  <div *ngIf="emailNotifications">
+    <div translate>
+      You'll receive email notifications about payments sent and received from your wallets.
+    </div>
+
+    <form [formGroup]="emailForm">
+      <ion-list>
+        <ion-item>
+          <ion-label stacked>{{ 'Email Address' | translate }}</ion-label>
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <button ion-button block (click)="saveEmail()" [disabled]="emailForm.invalid">
+        {{ 'Save' | translate }}
+      </button>
+    </form>
+  </div>
+
+</ion-content>

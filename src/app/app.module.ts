@@ -63,6 +63,7 @@ import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { LockPage } from '../pages/settings/lock/lock';
 import { PinModalPage } from '../pages/pin/pin';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
+import { NotificationsPage } from '../pages/settings/notifications/notifications';
 
 /* Wallet Settings */
 
@@ -121,6 +122,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
 import { WalletProvider } from '../providers/wallet/wallet';
+import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
@@ -168,6 +170,7 @@ let pages: any = [
   ScanPage,
   SettingsPage,
   TermsOfUsePage,
+  NotificationsPage,
   WalletSettingsPage,
   WalletSettingsAdvancedPage,
   WalletNamePage,
@@ -223,6 +226,7 @@ let providers: any = [
   TxConfirmNotificationProvider,
   TxFormatProvider,
   WalletProvider,
+  EmailNotificationsProvider,
   DecimalPipe,
   PersistenceProvider,
   File,

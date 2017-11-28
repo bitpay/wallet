@@ -84,6 +84,7 @@ interface Config {
 
   emailNotifications: {
     enabled: boolean;
+    email: string;
   };
 
   log: {
@@ -174,7 +175,8 @@ const configDefault: Config = {
   },
 
   emailNotifications: {
-    enabled: false
+    enabled: false,
+    email: ''
   },
 
   log: {
