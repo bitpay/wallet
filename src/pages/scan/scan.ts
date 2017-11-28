@@ -27,15 +27,15 @@ export class ScanPage {
 
   private canEnableLight: boolean;
   private canChangeCamera: boolean;
-  private modalIsOpen: boolean = false;
-  private scannerIsAvailable: boolean = true;
-  private scannerHasPermission: boolean = false;
-  private scannerIsDenied: boolean = false;
-  private scannerIsRestricted: boolean = false;
+  private modalIsOpen: boolean;
+  private scannerIsAvailable: boolean;
+  private scannerHasPermission: boolean;
+  private scannerIsDenied: boolean;
+  private scannerIsRestricted: boolean;
   public lightActive: boolean;
   public cameraToggleActive: boolean;
   public scannerStates: any;
-  public canOpenSettings: boolean = false;
+  public canOpenSettings: boolean;
   public currentState: string;
   // private qrScannerBrowser: QRScannerBrowser (inside constructor)
   constructor(
@@ -59,6 +59,12 @@ export class ScanPage {
       loading: 'loading',
       visible: 'visible'
     };
+    this.modalIsOpen = false;
+    this.scannerIsAvailable = true;
+    this.scannerHasPermission = false;
+    this.scannerIsDenied = false;
+    this.scannerIsRestricted = false;
+    this.canOpenSettings = false;
   }
 
   ionViewDidLoad() {
@@ -83,7 +89,7 @@ export class ScanPage {
     this.events.subscribe('incomingDataMenu.showMenu', (data) => {
       if (!this.modalIsOpen) {
         this.modalIsOpen = true;
-        let modal = this.modalCtrl.create(IncomingDataMenuPage, { data });
+        let modal = this.modalCtrl.create(IncomingDataMenuPage, data);
         modal.present();
         modal.onDidDismiss((data) => {
           this.modalIsOpen = false;

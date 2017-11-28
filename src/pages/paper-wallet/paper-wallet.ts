@@ -72,10 +72,6 @@ export class PaperWalletPage {
 
     this.wallet = this.wallets[0];
     if (!this.wallet) return;
-    this.walletName = this.wallet.name;
-    this.totalBalanceStr = this.wallet.status.totalBalanceStr;
-    this.network = this.wallet.network;
-    this.balanceHidden = this.wallet.balanceHidden;
     if (!this.isPkEncrypted) this.scanFunds();
     else {
       let message = 'Private key encrypted. Enter password'; //TODO gettextcatalog
@@ -172,10 +168,6 @@ export class PaperWalletPage {
 
   private onWalletSelect(wallet: any): void {
     this.wallet = wallet;
-    this.walletName = this.wallet.name;
-    this.totalBalanceStr = this.wallet.status.totalBalanceStr;
-    this.network = this.wallet.network;
-    this.balanceHidden = this.wallet.balanceHidden;
   }
 
   public showWallets(): void {

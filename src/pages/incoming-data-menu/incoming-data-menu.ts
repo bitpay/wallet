@@ -22,7 +22,7 @@ export class IncomingDataMenuPage {
 
   public data: string;
   public type: string;
-  public https: boolean = false;
+  public https: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -34,11 +34,12 @@ export class IncomingDataMenuPage {
     private events: Events,
     private externalLinkProvider: ExternalLinkProvider
   ) {
+    this.https = false;
   }
 
   ionViewDidLoad() {
-    this.data = this.navParams.get('data').data;
-    this.type = this.navParams.get('data').type;
+    this.data = this.navParams.data.data;
+    this.type = this.navParams.data.type;
     if (this.type === 'url') {
       if (this.data.indexOf('https://') === 0) {
         this.https = true;
