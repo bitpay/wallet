@@ -41,6 +41,8 @@ export class AmountPage {
   public useSendMax: boolean;
   public config: any;
 
+  private walletId: any;
+
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -53,8 +55,9 @@ export class AmountPage {
   ) {
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType || null;
-    this.nextView = this.navParams.data.fromSend ? ConfirmPage : ConfirmPage;
+    this.nextView = this.navParams.data.fromSend ? ConfirmPage : CustomAmountPage;
     this.toAddress = this.navParams.data.toAddress;
+    this.walletId = this.navParams.data.walletId;
     this.addressInfo = this.addressProvider.validateAddress(this.navParams.data.toAddress);
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
@@ -201,7 +204,8 @@ export class AmountPage {
       email: this.email,
       unit: this.unit.toLocaleLowerCase(),
       coin: this.addressInfo.coin,
-      useSendMax: this.useSendMax
+      useSendMax: this.useSendMax,
+      walletId: this.walletId
     }
     this.navCtrl.push(this.nextView, data);
   }

@@ -84,7 +84,7 @@ export class ReceivePage {
   }
 
   public requestSpecificAmount(): void {
-    this.navCtrl.push(AmountPage, { toAddress: this.address, fromSend: false });
+    this.navCtrl.push(AmountPage, { toAddress: this.address, fromSend: false, walletId: this.wallet.id });
   }
 
   private setAddress(newAddr?: boolean): void {

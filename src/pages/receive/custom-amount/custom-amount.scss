@@ -1,12 +1,28 @@
 page-custom-amount {
   .qr-container {
-    text-align: center;
-    margin: auto;
-    .custom-info {
-      position: absolute;
-      bottom: 0px;      
-      left: 0px;
-      padding: 0px;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+  }
+  img {
+    &.icon-wallet {
+      width: 35px !important;
+      background-color: color($colors, primary);
+    }
+  }
+  .wallet-label {
+    align-items: center;
+    display: flex;
+    .wallet-name{
+      padding-left: 10px;
+    }
+  }
+  ion-item {
+    ion-label {
+      overflow: initial;
+    }
+    .address-note{
+      font-size: 12px;
     }
   }
 }
