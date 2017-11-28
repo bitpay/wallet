@@ -1,4 +1,5 @@
 .wallet-info {
+  width: 100%;
   font-weight: 500;
   color: color($colors, light);
   position: absolute;
@@ -23,5 +24,15 @@
   .auditable-text {
     height: 3rem; 
     width: 5rem;
+  }
+  ion-spinner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: 25px;
+    top: 5px;
+    &.spinner-crescent circle {
+      stroke: color($colors, light);
+    }
   }
 }

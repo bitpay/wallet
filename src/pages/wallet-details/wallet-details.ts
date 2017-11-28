@@ -14,6 +14,8 @@ export class WalletDetailsPage {
 
   public wallet: any;
   public history: any;
+  public walletNotRegistered: boolean;
+  public updateError: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -25,6 +27,8 @@ export class WalletDetailsPage {
     this.history = [];
     this.HISTORY_SHOW_LIMIT = 10;
     this.HISTORY_PAGE_COUNTER = 2;
+    this.walletNotRegistered = null;
+    this.updateError = null;
   }
   
   ionViewDidEnter() {
@@ -32,26 +36,11 @@ export class WalletDetailsPage {
       console.log('Wallet incomplete');
       return;
     };
-    this.getTxHistory();
+    this.updateStatus();
   }
   
   toggleBalance() {
     this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId);
-  }
-
-  getTxHistory(force?: boolean) {
-    if (force) {
-      this.history = [];
-      this.HISTORY_PAGE_COUNTER = 2;
-    }
-
-    this.walletProvider.getTxHistory(this.wallet, { force: force }).then((txh) => {
-      this.wallet.completeHistory = txh;
-      this.wallet.completeHistory.isValid = true;
-      this.history = this.wallet.completeHistory.slice(0, this.HISTORY_SHOW_LIMIT);
-    }).catch((err) => {
-      console.log(err);
-    });
   }
 
   loadHistory(loading) {
@@ -65,6 +54,45 @@ export class WalletDetailsPage {
       loading.complete();
     }, 300);
   }
+
+  updateStatus(force?: boolean) {
+    if (force) {
+      this.history = [];
+      this.HISTORY_PAGE_COUNTER = 2;
+    }
+    
+    this.wallet.updating = true;
+    this.walletProvider.getStatus(this.wallet, { force: !!force }).then((status) => {
+      this.wallet.status = status;
+      
+      this.walletProvider.getTxHistory(this.wallet, { force: !!force }).then((txh) => {
+        this.wallet.updating = false;
+        
+        this.wallet.error = null;
+        this.wallet.completeHistory = txh;
+        this.wallet.completeHistory.isValid = true;
+        this.history = this.wallet.completeHistory.slice(0, this.HISTORY_SHOW_LIMIT);
+      }).catch((err) => {
+        this.wallet.updating = false;
+        this.updateError = true;
+        this.wallet.error = err;
+      });
+    }).catch((err) => {
+      this.wallet.updating = false;
+      this.wallet.error = err;
+
+      if (err === 'WALLET_NOT_REGISTERED')
+        this.walletNotRegistered = true;
+      else
+        this.updateError = true;
+    });
+  };
+
+  recreate(wallet: any) {
+    this.walletProvider.recreate(wallet).then(() => {
+      this.updateStatus(true);
+    });
+  };
 
   goToTxDetails(tx: any) {
     this.navCtrl.push(TxDetailsPage, { walletId: this.wallet.credentials.walletId, txid: tx.txid });
