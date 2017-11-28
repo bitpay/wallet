@@ -12,31 +12,14 @@
     </ion-refresher>
 
   <div class="list card">
-      <!--<div class="item item-icon-right item-heading">
-        <span translate>Changelly - Instant Exchange</span>
-        <a ui-sref="tabs.add" ng-if="wallets[0]"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
-      </div>-->
-      <div>
+      <div id="changelly-constrainer">
         <div id="changelly-loader">Loading Changelly Exchange...</div>
-        <iframe src="https://changelly.com/widget/v1?auth=email&from=BTC&to=NAV&merchant_id=fa6a4eb25086&address=&amount=0.01&ref_id=6c2996558a71&color=7d59b5"
-          id="changelly-iframe" scrolling="no" style="overflow-y: hidden; border: none" >Can't load Changelly widget</iframe>
+        <div id="changelly-container">
+          <iframe src="https://changelly.com/widget/v1?auth=email&from=BTC&to=NAV&merchant_id=fa6a4eb25086&address=&amount=0.01&ref_id=6c2996558a71&color=7d59b5"
+            id="changelly-iframe" scrolling="no" style="overflow-y: hidden; border: none" >Can't load Changelly widget</iframe>
+        </div>
       </div>
     <!-- </div> -->
-
-    <!-- <div class=""> -->
-      <!-- <div class="item item-icon-right item-heading">
-        <span translate>Most recent wallet address</span>
-        <div>
-          <div class="incoming-data-menu__url">
-            <div class="incoming-data-menu__url__icon">
-              <img src="img/icon-bitcoin-small.svg">
-            </div>
-            <div class="incoming-data-menu__url__text">
-              {{data}}sdfs
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <!-- <div> -->
         <div class="list card padding text-center" ng-if="!wallets[0]">
