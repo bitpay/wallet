@@ -8,6 +8,9 @@
   @media (max-width: 419px) {
     height: 330px;
   }
+  @media (max-width: 359px) {
+    height: 300px;
+  }
 }
 #changelly-container {
   width: 5000px;
@@ -20,6 +23,9 @@
   @media (max-width: 419px) {
     height: 330px;
   }
+  @media (max-width: 359px) {
+    height: 300px;
+  }
 }
 
 #changelly-iframe {
@@ -30,11 +36,21 @@
   position: relative;
   @media (max-width: 599px) {
     -webkit-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    transform: scale(0.8);
     top: -13%;
   }
   @media (max-width: 419px) {
     -webkit-transform: scale(0.66);
+    -ms-transform: scale(0.66);
+    transform: scale(0.66);
     top: -26%;
+  }
+  @media (max-width: 359px) {
+    -webkit-transform: scale(0.6);
+    -ms-transform: scale(0.6);
+    transform: scale(0.6);
+    top: -34%;
   }
 }
 
