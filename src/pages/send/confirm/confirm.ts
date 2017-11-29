@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 // Pages
 import { SendPage } from '../../send/send';
 import { PayProPage } from '../../paypro/paypro';
-import { ChooseFeeLevelPage } from '../../choose-fee-level/choose-fee-level';
+import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -42,12 +42,10 @@ export class ConfirmPage {
   public criticalError: boolean;
   public showAddress: boolean;
   public walletSelectorTitle: string;
-  public walletSelector: boolean;
   public buttonText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public sendStatus: string;
-  public showFee: boolean;
 
   // Config Related values
   public config: any;
@@ -74,6 +72,7 @@ export class ConfirmPage {
     private feeProvider: FeeProvider,
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController,
+    private actionSheetCtrl: ActionSheetController,
   ) {
     this.tx = {};
     this.data = this.navParams.data;
@@ -85,7 +84,6 @@ export class ConfirmPage {
     this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
-    this.showFee = false;
     this.config = this.configProvider.get();
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
   }
@@ -204,10 +202,6 @@ export class ConfirmPage {
       this.navCtrl.setRoot(SendPage);
       this.navCtrl.popToRoot();
     });
-  };
-
-  private showWalletSelector(): void {
-    this.walletSelector = true;
   };
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
@@ -337,16 +331,15 @@ export class ConfirmPage {
             tx.txp[wallet.id] = txp;
             this.tx = tx;
             this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
-            this.showFee = true;
             return resolve();
           }).catch((err: any) => {
+            this.onGoingProcessProvider.set('calculatingFee', false);
             return reject(err);
           });
         }).catch((err: any) => {
           this.onGoingProcessProvider.set('calculatingFee', false);
           let msg = 'Error getting SendMax information'; // TODO gettextCatalog
-          this.setSendError(msg);
-          return reject();
+          return reject(msg);
         });
       }).catch((err: any) => {
         this.onGoingProcessProvider.set('calculatingFee', false);
@@ -461,9 +454,7 @@ export class ConfirmPage {
   }
 
   public onWalletSelect(wallet: any): void {
-    this.showFee = false;
     this.setWallet(wallet, this.tx);
-    this.walletSelector = false;
   }
 
   public showDescriptionPopup(tx) {
@@ -595,22 +586,50 @@ export class ConfirmPage {
 
     const myModal = this.modalCtrl.create(ChooseFeeLevelPage, txObject, {
       showBackdrop: true,
-      enableBackdropDismiss: true,
+      enableBackdropDismiss: false,
     });
+
+    myModal.present();
 
     myModal.onDidDismiss((data: any) => {
 
       this.logger.debug('New fee level choosen:' + data.newFeeLevel + ' was:' + tx.feeLevel);
-
       this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
 
-      if (tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) return;
+      if (tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) {
+        return;
+      }
 
       tx.feeLevel = data.newFeeLevel;
       if (this.usingCustomFee) tx.feeRate = parseInt(data.customFeePerKB);
 
-      this.updateTx(tx, wallet, { clearCache: true, dryRun: true });
+      this.updateTx(tx, wallet, { clearCache: true, dryRun: true }).catch((err: any) => {
+        this.logger.warn(err);
+      });
     });
   };
+
+  public showWalletSelector(): void {
+    let buttons: Array<any> = [];
+
+    _.each(this.wallets, (w: any) => {
+      let walletButton: Object = {
+        text: w.credentials.walletName,
+        cssClass: 'wallet-' + w.network,
+        icon: 'wallet',
+        handler: () => {
+          this.onWalletSelect(w);
+        }
+      }
+      buttons.push(walletButton);
+    });
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: this.walletSelectorTitle,
+      buttons: buttons
+    });
+
+    actionSheet.present();
+  }
 
 }

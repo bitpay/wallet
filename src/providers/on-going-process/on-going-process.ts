@@ -12,9 +12,10 @@ export class OnGoingProcessProvider {
     console.log('Hello OnGoingProcessProvider Provider');
     // TODO gettextcatalog()
     this.processNames = {
-      'loadingTx': 'Loading transaction...',
+      'calculatingFee': 'Calculating fee',
       'creatingWallet': 'Creating Wallet...',
-      'joiningWallet': 'Joining Wallet...'
+      'joiningWallet': 'Joining Wallet...',
+      'loadingTx': 'Loading transaction...'
     };
   }
 
