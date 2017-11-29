@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -43,7 +43,6 @@ export class ChooseFeeLevelPage {
     private viewCtrl: ViewController,
     private logger: Logger,
     private popupProvider: PopupProvider,
-    private modalCtrl: ModalController,
     private feeProvider: FeeProvider
   ) {
     // From parent controller

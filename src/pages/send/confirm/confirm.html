@@ -76,15 +76,21 @@
       </div>
     </button>
 
-    <button ion-item class="item item-icon-right" *ngIf="wallet && showFee && tx.txp[wallet.id]" (click)="chooseFeeLevel(tx, wallet)">
+    <button ion-item class="item item-icon-right" *ngIf="wallet" (click)="chooseFeeLevel(tx, wallet)">
       <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-      <div>{{tx.txp[wallet.id].fee || 0 | satToUnit}}</div>
-      <span>{{tx.txp[wallet.id].fee || 0 | satToFiat}}&nbsp;
-        <span class="fee-rate" *ngIf="tx.txp[wallet.id].feeRatePerStr">≈
-          <ion-icon ios="ios-alert" md="md-alert" [hidden]="!tx.txp[wallet.id].feeToHigh"></ion-icon> &nbsp;
-          <span class="fee-rate" [ngClass]="{'warn':tx.txp[wallet.id].feeToHigh}" translate> {{tx.txp[wallet.id].feeRatePerStr}} of the transaction</span>
-        </span>
-      </span>
+      <div *ngIf="!tx.txp[wallet.id]">
+        <div>...</div>
+        <ion-note>...</ion-note>
+      </div>
+      <div *ngIf="tx.txp[wallet.id]">
+        <div>{{tx.txp[wallet.id].fee || 0 | satToUnit}}</div>
+        <ion-note>{{tx.txp[wallet.id].fee || 0 | satToFiat}}&nbsp;
+          <span class="fee-rate" *ngIf="tx.txp[wallet.id].feeRatePerStr">≈
+            <ion-icon ios="ios-alert" md="md-alert" [hidden]="!tx.txp[wallet.id].feeToHigh"></ion-icon> &nbsp;
+            <span class="fee-rate" [ngClass]="{'warn':tx.txp[wallet.id].feeToHigh}" translate> {{tx.txp[wallet.id].feeRatePerStr}} of the transaction</span>
+          </span>
+        </ion-note>
+      </div>
     </button>
 
     <button ion-item *ngIf="wallet" (click)="showDescriptionPopup(tx)">

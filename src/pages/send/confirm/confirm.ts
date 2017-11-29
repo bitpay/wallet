@@ -46,7 +46,6 @@ export class ConfirmPage {
   public paymentExpired: boolean;
   public remainingTimeStr: string;
   public sendStatus: string;
-  public showFee: boolean;
 
   // Config Related values
   public config: any;
@@ -85,7 +84,6 @@ export class ConfirmPage {
     this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
-    this.showFee = false;
     this.config = this.configProvider.get();
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
   }
@@ -333,7 +331,6 @@ export class ConfirmPage {
             tx.txp[wallet.id] = txp;
             this.tx = tx;
             this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
-            this.showFee = true;
             return resolve();
           }).catch((err: any) => {
             this.onGoingProcessProvider.set('calculatingFee', false);
@@ -457,7 +454,6 @@ export class ConfirmPage {
   }
 
   public onWalletSelect(wallet: any): void {
-    this.showFee = false;
     this.setWallet(wallet, this.tx);
   }
 
@@ -596,13 +592,11 @@ export class ConfirmPage {
     myModal.present();
 
     myModal.onDidDismiss((data: any) => {
-      this.showFee = false;
 
       this.logger.debug('New fee level choosen:' + data.newFeeLevel + ' was:' + tx.feeLevel);
       this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
 
       if (tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) {
-        this.showFee = true;
         return;
       }
 
@@ -610,7 +604,6 @@ export class ConfirmPage {
       if (this.usingCustomFee) tx.feeRate = parseInt(data.customFeePerKB);
 
       this.updateTx(tx, wallet, { clearCache: true, dryRun: true }).catch((err: any) => {
-        this.showFee = true;
         this.logger.warn(err);
       });
     });
