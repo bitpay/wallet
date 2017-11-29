@@ -47,6 +47,14 @@
       </ion-item>
     </div>
 
+    <ion-item *ngIf="selectedTab != 'file'">
+      <ion-label stacked>{{'Coin' | translate}}</ion-label>
+      <ion-select [(ngModel)]="formData.coin" formControlName="coin" (ionChange)="formData.testnetEnabled = false">
+        <ion-option value="btc">BTC</ion-option>
+        <ion-option value="bch">BCH</ion-option>
+      </ion-select>
+    </ion-item>
+
     <ion-item-divider color="light"></ion-item-divider>
 
     <ion-item (click)="toggleShowAdvOpts()">

@@ -32,6 +32,6 @@ export class AddPage {
   }
 
   goToImportWallet() {
-    this.navCtrl.push(ImportWalletPage);
+    this.navCtrl.push(ImportWalletPage, { coin: this.coin });
   }
 }

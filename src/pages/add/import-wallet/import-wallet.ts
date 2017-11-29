@@ -70,7 +70,7 @@ export class ImportWalletPage implements OnInit {
       derivationPath: this.derivationPathByDefault,
       testnet: false,
       bwsURL: this.defaults.bws.url,
-      coin: this.navParams.data.coin ? this.navParams.data.coin : null
+      coin: this.navParams.data.coin ? this.navParams.data.coin : 'btc'
     };
 
     if (this.navParams.data.code)
@@ -86,6 +86,7 @@ export class ImportWalletPage implements OnInit {
       derivationPath: [''],
       testnet: [''],
       bwsURL: [''],
+      coin: ['']
     });
   }
 
