@@ -55,9 +55,16 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     _refreshScanView();
   });
 
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     console.log('tab-scan $ionicView.beforeEnter');
     console.log('data', data.stateParams.returnRoute);
+    _handleCapabilities();
+    $timeout(() => {
+      _refreshScanView()
+      $scope.cameraIssue = true
+      },
+    5000);
     $scope.returnRoute = data.stateParams.returnRoute || false;
   });
 
