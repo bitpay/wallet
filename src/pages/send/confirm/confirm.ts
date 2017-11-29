@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 // Pages
 import { SendPage } from '../../send/send';
 import { PayProPage } from '../../paypro/paypro';
-import { ChooseFeeLevelPage } from '../../choose-fee-level/choose-fee-level';
+import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -340,13 +340,13 @@ export class ConfirmPage {
             this.showFee = true;
             return resolve();
           }).catch((err: any) => {
+            this.onGoingProcessProvider.set('calculatingFee', false);
             return reject(err);
           });
         }).catch((err: any) => {
           this.onGoingProcessProvider.set('calculatingFee', false);
           let msg = 'Error getting SendMax information'; // TODO gettextCatalog
-          this.setSendError(msg);
-          return reject();
+          return reject(msg);
         });
       }).catch((err: any) => {
         this.onGoingProcessProvider.set('calculatingFee', false);
@@ -595,21 +595,29 @@ export class ConfirmPage {
 
     const myModal = this.modalCtrl.create(ChooseFeeLevelPage, txObject, {
       showBackdrop: true,
-      enableBackdropDismiss: true,
+      enableBackdropDismiss: false,
     });
 
+    myModal.present();
+
     myModal.onDidDismiss((data: any) => {
+      this.showFee = false;
 
       this.logger.debug('New fee level choosen:' + data.newFeeLevel + ' was:' + tx.feeLevel);
-
       this.usingCustomFee = data.newFeeLevel == 'custom' ? true : false;
 
-      if (tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) return;
+      if (tx.feeLevel == data.newFeeLevel && !this.usingCustomFee) {
+        this.showFee = true;
+        return;
+      }
 
       tx.feeLevel = data.newFeeLevel;
       if (this.usingCustomFee) tx.feeRate = parseInt(data.customFeePerKB);
 
-      this.updateTx(tx, wallet, { clearCache: true, dryRun: true });
+      this.updateTx(tx, wallet, { clearCache: true, dryRun: true }).catch((err: any) => {
+        this.showFee = true;
+        this.logger.warn(err);
+      });
     });
   };
 

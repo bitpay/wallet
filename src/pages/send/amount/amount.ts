@@ -76,6 +76,7 @@ export class AmountPage {
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.navCtrl.getActive().name != 'AmountPage') return;
     if (!event.key) return;
     if (event.which === 8) {
       event.preventDefault();

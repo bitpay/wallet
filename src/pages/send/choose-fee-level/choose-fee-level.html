@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <ion-title>{{'Bitcoin Network Fee Policy'|translate}}</ion-title>
+    <ion-buttons end>
+      <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" ion-button>
+        Ok
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="testnet-warning" *ngIf="network!='livenet'">
+    Testnet
+  </div>
+  <div [hidden]="!feeLevel">
+    <ion-card *ngIf="!customFeePerKB">
+      <div class="fee-info">
+        <div class="fee-time">
+          <div>
+            <div>
+              <span *ngIf="avgConfirmationTime">
+              {{avgConfirmationTime }}
+            </span>
+              <span *ngIf="loadingFee">...</span>
+            </div>
+            <span translate>Average confirmation time</span>
+          </div>
+        </div>
+        <div class="fee-rate">
+          <div>
+            <div>
+              <span *ngIf="feePerSatByte && !loadingFee">
+                {{feePerSatByte}} sat/byte
+              </span>
+              <span *ngIf="loadingFee">...</span>
+            </div>
+            <div translate>Current fee rate for this policy</div>
+          </div>
+        </div>
+      </div>
+    </ion-card>
+
+    <ion-card class="fee-custom" *ngIf="customFeePerKB">
+      <ion-item>
+        <ion-label color="primary" floating>Enter custom fee in sat/byte</ion-label>
+        <ion-input type="number" placeholder="{{'Enter custom fee'|translate}}" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)"
+          [(ngModel)]="customSatPerByte" required></ion-input>
+      </ion-item>
+      <ion-item class="fee-error" *ngIf="showError">
+        <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>
+        <span translate>Transactions without fee are not supported.</span>
+      </ion-item>
+
+      <ion-item class="fee-error" *ngIf="showMinWarning || showMaxWarning">
+        <ion-icon ios="ios-alert" md="md-alert"></ion-icon>
+        <span *ngIf="showMinWarning" translate>Your fee is lower than recommended.</span>
+        <span *ngIf="showMaxWarning" translate>You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.</span>
+      </ion-item>
+    </ion-card>
+  </div>
+
+  <ion-list [hidden]="!feeLevel">
+    <ion-item class="fee-level">
+      <ion-label>Fee level</ion-label>
+      <ion-select [(ngModel)]="selectedFee" (ionChange)="changeSelectedFee(selectedFee)">
+        <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.feeOpts[fee] }}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -18,7 +18,7 @@
         <div class="alternative">{{tx.amount || 0 | satToFiat: data.unit}}</div>
       </div>
     </ion-item>
-    
+
     <ion-item *ngIf="tx.paypro">
       <span class="label" translate>Payment Expires:</span>
       <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
@@ -46,7 +46,7 @@
       </div>
 
       <div class="wallet" *ngIf="recipientType == 'wallet'">
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet"/>
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
         <div>
           <!-- TODO: copy to clipboard -->
           <!--TODO: <contact ng-if="tx.toAddress && !tx.name" address="{{tx.toAddress}}"></contact>-->
@@ -76,7 +76,7 @@
       </div>
     </button>
 
-    <button ion-item class="item item-icon-right" *ngIf="wallet && showFee" (click)="chooseFeeLevel(tx, wallet)">
+    <button ion-item class="item item-icon-right" *ngIf="wallet && showFee && tx.txp[wallet.id]" (click)="chooseFeeLevel(tx, wallet)">
       <span class="label">{{'Fee:' | translate}} {{tx.feeLevelName | translate}}</span>
       <div>{{tx.txp[wallet.id].fee || 0 | satToUnit}}</div>
       <span>{{tx.txp[wallet.id].fee || 0 | satToFiat}}&nbsp;

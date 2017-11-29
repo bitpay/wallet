@@ -84,7 +84,7 @@ import { AllAddressesPage } from '../pages/settings/wallet-settings/wallet-setti
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
-import { ChooseFeeLevelPage } from '../pages/choose-fee-level/choose-fee-level';
+import { ChooseFeeLevelPage } from '../pages/send/choose-fee-level/choose-fee-level';
 
 /* Receive */
 import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
