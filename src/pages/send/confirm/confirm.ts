@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -42,7 +42,6 @@ export class ConfirmPage {
   public criticalError: boolean;
   public showAddress: boolean;
   public walletSelectorTitle: string;
-  public walletSelector: boolean;
   public buttonText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
@@ -74,6 +73,7 @@ export class ConfirmPage {
     private feeProvider: FeeProvider,
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController,
+    private actionSheetCtrl: ActionSheetController,
   ) {
     this.tx = {};
     this.data = this.navParams.data;
@@ -204,10 +204,6 @@ export class ConfirmPage {
       this.navCtrl.setRoot(SendPage);
       this.navCtrl.popToRoot();
     });
-  };
-
-  private showWalletSelector(): void {
-    this.walletSelector = true;
   };
 
   /* sets a wallet on the UI, creates a TXPs for that wallet */
@@ -463,7 +459,6 @@ export class ConfirmPage {
   public onWalletSelect(wallet: any): void {
     this.showFee = false;
     this.setWallet(wallet, this.tx);
-    this.walletSelector = false;
   }
 
   public showDescriptionPopup(tx) {
@@ -612,5 +607,28 @@ export class ConfirmPage {
       this.updateTx(tx, wallet, { clearCache: true, dryRun: true });
     });
   };
+
+  public showWalletSelector(): void {
+    let buttons: Array<any> = [];
+
+    _.each(this.wallets, (w: any) => {
+      let walletButton: Object = {
+        text: w.credentials.walletName,
+        cssClass: 'wallet-' + w.network,
+        icon: 'wallet',
+        handler: () => {
+          this.onWalletSelect(w);
+        }
+      }
+      buttons.push(walletButton);
+    });
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: this.walletSelectorTitle,
+      buttons: buttons
+    });
+
+    actionSheet.present();
+  }
 
 }

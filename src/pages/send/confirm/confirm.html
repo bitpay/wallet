@@ -18,7 +18,7 @@
         <div class="alternative">{{tx.amount || 0 | satToFiat: data.unit}}</div>
       </div>
     </ion-item>
-    
+
     <ion-item *ngIf="tx.paypro">
       <span class="label" translate>Payment Expires:</span>
       <ion-note *ngIf="!paymentExpired" item-end>{{remainingTimeStr}}</ion-note>
@@ -46,7 +46,7 @@
       </div>
 
       <div class="wallet" *ngIf="recipientType == 'wallet'">
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet"/>
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
         <div>
           <!-- TODO: copy to clipboard -->
           <!--TODO: <contact ng-if="tx.toAddress && !tx.name" address="{{tx.toAddress}}"></contact>-->
@@ -97,15 +97,6 @@
         <ion-badge>{{noWalletMessage}}</ion-badge>
       </span>
     </div>
-
-    <ion-item class="wallet-selector" *ngIf="walletSelector">
-      <span class="label" translate>Send from</span>
-      <ion-list>
-        <ion-item *ngFor="let item of wallets" (click)="onWalletSelect(item)">
-          <div>{{item.name}}</div>
-        </ion-item>
-      </ion-list>
-    </ion-item>
   </ion-list>
 </ion-content>
 
