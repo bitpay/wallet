@@ -20,7 +20,7 @@
           <div>
             <div>
               <span *ngIf="avgConfirmationTime">
-              {{avgConfirmationTime }}
+              {{ avgConfirmationTime | amDuration: 'minute' }}
             </span>
               <span *ngIf="loadingFee">...</span>
             </div>
