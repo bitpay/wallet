@@ -12,6 +12,7 @@ import { RateProvider } from '../../../providers/rate/rate';
 
 //pages
 import { ConfirmPage } from '../confirm/confirm';
+import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 
 @Component({
   selector: 'page-amount',
