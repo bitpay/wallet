@@ -54,7 +54,7 @@ export class ReceivePage {
     this.showShareButton = this.platformProvider.isCordova;
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       // Update current address
-      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
+      if (this.wallet && walletId == this.wallet.credentials.walletId && type == 'NewIncomingTx') this.setAddress(true);
     });
   }
 
@@ -84,7 +84,7 @@ export class ReceivePage {
   }
 
   public requestSpecificAmount(): void {
-    this.navCtrl.push(AmountPage, { toAddress: this.address, fromSend: false });
+    this.navCtrl.push(AmountPage, { toAddress: this.address, fromSend: false, walletId: this.wallet.credentials.walletId });
   }
 
   private setAddress(newAddr?: boolean): void {

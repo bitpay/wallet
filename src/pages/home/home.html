@@ -15,7 +15,7 @@
 
   <ion-card *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item>
-      <span translate>Wallets</span>
+      <span translate>Bitcoin Wallets</span>
       <button ion-button clear item-end class="header-icon" (click)="goToAddView()">
         <ion-icon name="ios-add"></ion-icon>
       </button>
@@ -24,7 +24,8 @@
     <ion-list>
       <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
         <ion-icon item-start>
-          <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+          <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
         <h2>{{wallet.credentials.walletName}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
         <span *ngIf="wallet.scanning" translate>Scanning funds</span>        
@@ -46,11 +47,11 @@
     <ion-list>
       <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)">
         <ion-icon item-start>
-          <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+          <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
         <h2>{{wallet.credentials.walletName}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
         <span *ngIf="wallet.scanning" translate>Scanning funds</span>        
-        <p *ngIf="!wallet.scanning">{{wallet.status.availableBalanceSat || 0 | satToUnit}} {{cachedBalanceUpdateOn}}</p>
+        <p *ngIf="!wallet.scanning">{{wallet.status.availableBalanceSat || 0 | satToUnit: wallet.coin}} {{cachedBalanceUpdateOn}}</p>
         <p *ngIf="wallet.error" class="error">{{wallet.error}}</p>
       </button>
     </ion-list>

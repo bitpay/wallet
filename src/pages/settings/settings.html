@@ -18,14 +18,14 @@
       <ion-icon name="help-circle" item-start></ion-icon>
       Help &amp; support
     </ion-item>
-    <ion-item (click)="openFeedbackPage()">
+    <!--     <ion-item (click)="openFeedbackPage()">
       <ion-icon name="mail" item-start></ion-icon>
       Send feedback
-    </ion-item>
-    <ion-item (click)="openSharePage()">
+    </ion-item> -->
+    <!--     <ion-item (click)="openSharePage()">
       <ion-icon name="heart" item-start></ion-icon>
       Share {{ appName }}
-    </ion-item>
+    </ion-item> TODO -->
 
     <ion-item-divider color="light">Preferences</ion-item-divider>
     <ion-item (click)="openNotificationsPage()">
@@ -77,11 +77,10 @@
         {{'Backup needed' | translate}}
       </ion-note>
     </button>
-    <ion-item-divider *ngIf="walletsBch.length" color="light">{{'BCH Wallets' | translate}}</ion-item-divider>
+    <ion-item-divider *ngIf="walletsBch.length" color="light">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
     <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettings(wallet.credentials.walletId)">
       <ion-icon item-start>
-        <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
       </ion-icon>
       <h2>{{wallet.name}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
       <ion-note class="assertive" *ngIf="!wallet.isComplete()" item-end>

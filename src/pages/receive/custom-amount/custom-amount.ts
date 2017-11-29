@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+//providers
+import { ProfileProvider } from '../../../providers/profile/profile';
+import { PlatformProvider } from '../../../providers/platform/platform';
+import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',
@@ -11,21 +15,41 @@ export class CustomAmountPage {
   public protocolHandler: string;
   public address: string;
   public amount: string;
+  public coin: string;
   public qrAddress: string;
+  public wallet: any;
+  public showShareButton: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.protocolHandler = "bitcoin";
+  constructor(
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private profileProvider: ProfileProvider,
+    private platformProvider: PlatformProvider,
+    private walletProvider: WalletProvider
+  ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomAmountPage');
-    this.address = this.navParams.data.toAddress;
+    this.address = this.navParams.data.addressInfo.address;
     this.amount = this.navParams.data.amount;
+    let walletId = this.navParams.data.walletId;
+    this.wallet = this.profileProvider.getWallet(walletId);
+    this.showShareButton = this.platformProvider.isCordova;
     this.updateQrAddress();
   }
 
-  updateQrAddress() {
+  private updateQrAddress(): void {
+    this.setProtocolHandler();
     this.qrAddress = this.protocolHandler + ":" + this.address + "?amount=" + this.amount;
+  }
+
+  private setProtocolHandler(): void {
+    this.protocolHandler = this.walletProvider.getProtocolHandler(this.wallet.coin);
+  }
+
+  public shareAddress = function () {
+    //window.plugins.socialsharing.share(this.qrAddress, null, null, null); TODO
   }
 
 }
