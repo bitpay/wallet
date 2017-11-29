@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="bitpay-lock" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 15 20" style="enable-background:new 0 0 15 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#12E5B6;}
+</style>
+<path class="st0" d="M12.2,6.7V5.4c0-2.7-2-4.7-4.7-4.7s-4.7,2-4.7,4.7v1.4H0.5v12.5h13.9V6.7H12.2z M4.6,5.4c0-1.6,1.3-2.9,2.9-2.9
+	s2.9,1.3,2.9,2.9v1.4H4.6V5.4z M12.6,17.4H2.4V8.6h0.4h9.4h0.5V17.4z"/>
+<path class="st0" d="M7.5,9.8c-1.3,0-2.4,1.1-2.4,2.4c0,1,0.7,1.9,1.5,2.2v0.7h1.9v-0.7c0.9-0.4,1.5-1.2,1.5-2.2
+	C9.9,10.9,8.8,9.8,7.5,9.8z M7.5,11.7c0.3,0,0.6,0.3,0.6,0.6c0,0.4-0.3,0.6-0.6,0.6s-0.6-0.3-0.6-0.6C6.9,12,7.2,11.7,7.5,11.7z"/>
+</svg>

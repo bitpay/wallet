@@ -77,8 +77,14 @@ page-receive {
   background: color($colors, primary) url('../assets/img/icon-wallet-testnet.svg') no-repeat 0px 0px;
 }
 
-.action-sheet-button {
-  position: inherit !important;
-  padding: 0 1rem 1rem 1.5rem !important;
-  line-height: 2.5;
+.action-sheet-container {
+  .action-sheet-button {
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    padding: 2.5rem;
+    .button-inner {
+      padding-left: 5rem;
+    }
+  }
 }

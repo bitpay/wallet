@@ -34,6 +34,10 @@ export class AddressbookAddPage {
     console.log('ionViewDidLoad AddressbookAddPage');
   }
 
+  ionViewWillEnter() {
+    this.addressBookAdd.value.address = this.navParams.data.addressbookEntry;
+  }
+
   private emailOrEmpty(control: AbstractControl): ValidationErrors | null {
     return control.value === '' ? null : Validators.email(control);
   }
