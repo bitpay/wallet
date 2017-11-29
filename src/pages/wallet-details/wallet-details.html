@@ -12,7 +12,7 @@
       </div>
       <div *ngIf="!wallet.balanceHidden">
         <div class="balance-str">{{wallet.cachedBalance | satToUnit: wallet.coin}}</div>
-        <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat}}</div>
+        <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">{{wallet.status.availableBalanceSat | satToFiat: wallet.coin}}</div>
       </div>
     </div>
 
@@ -37,7 +37,7 @@
       </ion-icon>
       <div class="action">{{tx.action}}</div>
       <div class="detail">
-        <div class="amount">{{tx.amount | satToUnit}}</div>
+        <div class="amount">{{tx.amount | satToUnit: wallet.coin}}</div>
         <div class="date">{{tx.time * 1000 | amTimeAgo}}</div>
       </div>
     </button>
