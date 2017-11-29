@@ -20,8 +20,8 @@
         <span translate>Moved</span>
       </div>
 
-      <div class="amount-str">{{tx.amount | satToUnit}}</div>
-      <div class="amount-alt-str">{{tx.amount | satToFiat}}</div>
+      <div class="amount-str">{{tx.amount | satToUnit: wallet.coin}}</div>
+      <div class="amount-alt-str">{{tx.amount | satToFiat: wallet.coin}}</div>
     </ion-item>
 
     <ion-item>
