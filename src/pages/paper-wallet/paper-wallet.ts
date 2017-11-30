@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -9,9 +9,6 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { FeeProvider } from '../../providers/fee/fee';
 import { ProfileProvider } from '../../providers/profile/profile';
-
-//pages
-import { ScanPage } from '../scan/scan';
 
 import * as _ from 'lodash';
 
@@ -41,7 +38,6 @@ export class PaperWalletPage {
 
   constructor(
     private navCtrl: NavController,
-    private viewCtrl: ViewController,
     private navParams: NavParams,
     private bwcProvider: BwcProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,

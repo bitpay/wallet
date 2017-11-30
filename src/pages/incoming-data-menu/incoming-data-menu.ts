@@ -1,18 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events, ModalController, ViewController } from 'ionic-angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Logger } from '@nsalaun/ng-logger';
-
-//providers
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
-
-//pages
-import { AmountPage } from '../send/amount/amount';
-import { SendPage } from '../send/send';
-import { AddressbookAddPage } from '../settings/addressbook/add/add';
-import { AddressbookPage } from '../settings/addressbook/addressbook';
-import { PaperWalletPage } from '../paper-wallet/paper-wallet';
-import { ScanPage } from '../scan/scan';
+import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'page-incoming-data-menu',
@@ -25,14 +12,8 @@ export class IncomingDataMenuPage {
   public https: boolean;
 
   constructor(
-    private navCtrl: NavController,
     private viewCtrl: ViewController,
     private navParams: NavParams,
-    private actionSheet: ActionSheetController,
-    private log: Logger,
-    private fb: FormBuilder,
-    private events: Events,
-    private externalLinkProvider: ExternalLinkProvider
   ) {
     this.https = false;
   }

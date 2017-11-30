@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -21,7 +21,6 @@ export class CustomAmountPage {
   public showShareButton: boolean;
 
   constructor(
-    private navCtrl: NavController,
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,

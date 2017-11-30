@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { NavController, Events, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -13,7 +12,6 @@ import { ExternalLinkProvider } from '../../providers/external-link/external-lin
 import { AmountPage } from '../send/amount/amount';
 import { IncomingDataMenuPage } from '../incoming-data-menu/incoming-data-menu';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
-import { AddressbookPage } from '../settings/addressbook/addressbook';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 
 //import { QRScanner as QRScannerBrowser } from 'cordova-plugin-qrscanner/src/browser/src/library'
@@ -25,13 +23,13 @@ import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 })
 export class ScanPage {
 
-  private canEnableLight: boolean;
-  private canChangeCamera: boolean;
   private modalIsOpen: boolean;
   private scannerIsAvailable: boolean;
   private scannerHasPermission: boolean;
   private scannerIsDenied: boolean;
   private scannerIsRestricted: boolean;
+  public canEnableLight: boolean;
+  public canChangeCamera: boolean;
   public lightActive: boolean;
   public cameraToggleActive: boolean;
   public scannerStates: any;
@@ -40,7 +38,6 @@ export class ScanPage {
   // private qrScannerBrowser: QRScannerBrowser (inside constructor)
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private scanProvider: ScanProvider,
     private platform: PlatformProvider,
     private incomingDataProvider: IncomingDataProvider,
@@ -233,10 +230,6 @@ export class ScanPage {
       .catch(error => {
         this.logger.warn("scanner error: " + error);
       });
-  }
-
-  private goBack(): void {
-    this.navCtrl.pop();
   }
 
 }
