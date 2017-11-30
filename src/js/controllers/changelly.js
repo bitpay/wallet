@@ -25,43 +25,6 @@ angular.module('copayApp.controllers').controller('changellyController',
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
-      storageService.getFeedbackInfo(function(error, info) {
-
-        if ($scope.isWindowsPhoneApp) {
-          $scope.showRateCard.value = false;
-          return;
-        }
-        if (!info) {
-          initFeedBackInfo();
-        } else {
-          var feedbackInfo = JSON.parse(info);
-          //Check if current version is greater than saved version
-          var currentVersion = $scope.version;
-          var savedVersion = feedbackInfo.version;
-          var isVersionUpdated = feedbackService.isVersionUpdated(currentVersion, savedVersion);
-          if (!isVersionUpdated) {
-            initFeedBackInfo();
-            return;
-          }
-          var now = moment().unix();
-          var timeExceeded = (now - feedbackInfo.time) >= 24 * 7 * 60 * 60;
-          $scope.showRateCard.value = timeExceeded && !feedbackInfo.sent;
-          $timeout(function() {
-            $scope.$apply();
-          });
-        }
-      });
-
-      function initFeedBackInfo() {
-        var feedbackInfo = {};
-        feedbackInfo.time = moment().unix();
-        feedbackInfo.version = $scope.version;
-        feedbackInfo.sent = false;
-        storageService.setFeedbackInfo(JSON.stringify(feedbackInfo), function() {
-          $scope.showRateCard.value = false;
-        });
-      };
-
       $scope.wallets = profileService.getWallets();
       $scope.singleWallet = $scope.wallets.length == 1;
 
@@ -70,63 +33,10 @@ angular.module('copayApp.controllers').controller('changellyController',
       // select first wallet if no wallet selected previously
       var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
       $scope.onWalletSelect(selectedWallet);
-
-      listeners = [
-        $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-          // Update current address
-          if ($scope.wallet && walletId == $scope.wallet.id && type == 'NewIncomingTx') $scope.setAddress(true);
-        })
-      ];
     });
 
     $scope.$on("$ionicView.enter", function(event, data) {
       updateAllWallets();
-
-      addressbookService.list(function(err, ab) {
-        if (err) $log.error(err);
-        $scope.addressbook = ab || {};
-      });
-
-      listeners = [
-        $rootScope.$on('bwsEvent', function(e, walletId, type, n) {
-          var wallet = profileService.getWallet(walletId);
-          updateWallet(wallet);
-          if ($scope.recentTransactionsEnabled) getNotifications();
-
-        }),
-        $rootScope.$on('Local/TxAction', function(e, walletId) {
-          $log.debug('Got action for wallet ' + walletId);
-          var wallet = profileService.getWallet(walletId);
-          updateWallet(wallet);
-          if ($scope.recentTransactionsEnabled) getNotifications();
-        })
-      ];
-
-
-      $scope.buyAndSellItems = buyAndSellService.getLinked();
-      $scope.homeIntegrations = homeIntegrationsService.get();
-      //
-      // bitpayCardService.get({}, function(err, cards) {
-      //   $scope.bitpayCardItems = cards;
-      // });
-
-      configService.whenAvailable(function(config) {
-        $scope.recentTransactionsEnabled = config.recentTransactions.enabled;
-        if ($scope.recentTransactionsEnabled) getNotifications();
-
-        if (config.hideNextSteps.enabled) {
-          $scope.nextStepsItems = null;
-        } else {
-          $scope.nextStepsItems = nextStepsService.get();
-        }
-
-        pushNotificationsService.init();
-
-        $timeout(function() {
-          $ionicScrollDelegate.resize();
-          $scope.$apply();
-        }, 10);
-      });
     });
 
     $scope.$on("$ionicView.leave", function(event, data) {
@@ -134,75 +44,6 @@ angular.module('copayApp.controllers').controller('changellyController',
         x();
       });
     });
-
-    $scope.createdWithinPastDay = function(time) {
-      return timeService.withinPastDay(time);
-    };
-
-    $scope.openExternalLink = function() {
-      var url = 'https://github.com/bitpay/copay/releases/latest';
-      var optIn = true;
-      var title = gettextCatalog.getString('Update Available');
-      var message = gettextCatalog.getString('An update to this app is available. For your security, please update to the latest version.');
-      var okText = gettextCatalog.getString('View Update');
-      var cancelText = gettextCatalog.getString('Go Back');
-      externalLinkService.open(url, optIn, title, message, okText, cancelText);
-    };
-
-    $scope.openNotificationModal = function(n) {
-      wallet = profileService.getWallet(n.walletId);
-
-      if (n.txid) {
-        $state.transitionTo('tabs.wallet.tx-details', {
-          txid: n.txid,
-          walletId: n.walletId
-        });
-      } else {
-        var txp = lodash.find($scope.txps, {
-          id: n.txpId
-        });
-        if (txp) {
-          txpModalService.open(txp);
-        } else {
-          ongoingProcess.set('loadingTxInfo', true);
-          walletService.getTxp(wallet, n.txpId, function(err, txp) {
-            var _txp = txp;
-            ongoingProcess.set('loadingTxInfo', false);
-            if (err) {
-              $log.warn('No txp found');
-              return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not found'));
-            }
-            txpModalService.open(_txp);
-          });
-        }
-      }
-    };
-
-    $scope.openWallet = function(wallet) {
-      if (!wallet.isComplete()) {
-        return $state.go('tabs.copayers', {
-          walletId: wallet.credentials.walletId
-        });
-      }
-
-      $state.go('tabs.wallet', {
-        walletId: wallet.credentials.walletId
-      });
-    };
-
-    var updateTxps = function() {
-      profileService.getTxps({
-        limit: 3
-      }, function(err, txps, n) {
-        if (err) $log.error(err);
-        $scope.txps = txps;
-        $scope.txpsN = n;
-        $timeout(function() {
-          $ionicScrollDelegate.resize();
-          $scope.$apply();
-        }, 10);
-      })
-    };
 
     var updateAllWallets = function() {
       $scope.wallets = profileService.getWallets();
@@ -245,47 +86,6 @@ angular.module('copayApp.controllers').controller('changellyController',
       });
     };
 
-    var getNotifications = function() {
-      profileService.getNotifications({
-        limit: 3
-      }, function(err, notifications, total) {
-        if (err) {
-          $log.error(err);
-          return;
-        }
-        $scope.notifications = notifications;
-        $scope.notificationsN = total;
-        $timeout(function() {
-          $ionicScrollDelegate.resize();
-          $scope.$apply();
-        }, 10);
-      });
-    };
-
-    $scope.hideHomeTip = function() {
-      storageService.setHomeTipAccepted('accepted', function() {
-        $scope.homeTip = false;
-        $timeout(function() {
-          $scope.$apply();
-        })
-      });
-    };
-
-
-    $scope.onRefresh = function() {
-      $timeout(function() {
-        $scope.$broadcast('scroll.refreshComplete');
-      }, 300);
-      updateAllWallets();
-    };
-
-
-    $scope.requestSpecificAmount = function() {
-      $state.go('tabs.paymentRequest.amount', {
-        id: $scope.wallet.credentials.walletId
-      });
-    };
-
     $scope.setAddress = function(newAddr) {
       $scope.addr = null;
       if (!$scope.wallet || $scope.generatingAddress || !$scope.wallet.isComplete()) return;
@@ -303,19 +103,6 @@ angular.module('copayApp.controllers').controller('changellyController',
           $scope.$apply();
         }, 10);
       });
-    };
-
-    $scope.goCopayers = function() {
-      $ionicHistory.removeBackView();
-      $ionicHistory.nextViewOptions({
-        disableAnimate: true
-      });
-      $state.go('tabs.home');
-      $timeout(function() {
-        $state.transitionTo('tabs.copayers', {
-          walletId: $scope.wallet.credentials.walletId
-        });
-      }, 100);
     };
 
     $scope.openBackupNeededModal = function() {
@@ -375,15 +162,4 @@ angular.module('copayApp.controllers').controller('changellyController',
       $scope.wallet = wallet;
       $scope.setAddress();
     };
-
-    $scope.showWalletSelector = function() {
-      if ($scope.singleWallet) return;
-      $scope.walletSelectorTitle = gettextCatalog.getString('Select a wallet');
-      $scope.showWallets = true;
-    };
-
-    $scope.shareAddress = function() {
-      if (!$scope.isCordova) return;
-      window.plugins.socialsharing.share('Nav Coin:' + $scope.addr, null, null, null);
-    }
   });
