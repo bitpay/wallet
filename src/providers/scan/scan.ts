@@ -15,7 +15,6 @@ export class ScanProvider {
   public nextDestroy: any = null;
   public hideAfterSeconds: number;
   public destroyAfterSeconds: number;
-  private scanSub: any;
   public isDesktop = !this.platform.isCordova;
   public isAvailable: boolean = true;
   public hasPermission: boolean = false;

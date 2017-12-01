@@ -26,8 +26,8 @@
       <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
     </div>
     <div class="scanner-controls">
-      <span class="icon-flash" [ngClass]="{'active': lightActive}" (click)="toggleLight()"></span>
-      <span class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
+      <span *ngIf="canEnableLight" class="icon-flash" [ngClass]="{'active': lightActive}" (click)="toggleLight()"></span>
+      <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
     </div>
   </div>
 </ion-content>
