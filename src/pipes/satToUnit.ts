@@ -2,7 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { ConfigProvider } from '../providers/config/config';
 
-@Pipe({ name: 'satToUnit' })
+@Pipe({ 
+  name: 'satToUnit',
+  pure: false
+})
 export class SatToUnitPipe implements PipeTransform {
   private walletSettings: any;
   
