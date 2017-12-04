@@ -5,14 +5,14 @@ Les utilisateurs de Navpay peuvent détenir leurs fonds de manière individuelle
 • Suivre des dépenses et remboursements familiaux.
 • Gérer des fonds et des dépenses pour une entreprise, un club ou une organisation.
 
-Nous avons développé les fonctionnalités suivantes dans cette version de Navpay pour un portefeuille nav coin qui ne fait pas de compromis sur la sécurité ou sur l'accessibilité :
+Nous avons développé les fonctionnalités suivantes dans cette version de Navpay pour un portefeuille Nav Coin qui ne fait pas de compromis sur la sécurité ou sur l'accessibilité :
 
 • Création et gestion de portefeuilles multiples. 
 • Sécurité de multi-signatures intuitive pour les portefeuilles personnels ou partagés.
 • Demande de paiement facile pour les portefeuilles partagés et pour les paiements de groupe.
 • Génération d'adresse déterministe hiérarchique (HD) et sauvegardes de portefeuilles. 
 • Sécurité basée sur l'appareil : toutes les clés privées sont stockées localement, pas dans le cloud.
-• Prise en charge des portefeuilles nav coin testnet.
+• Prise en charge des portefeuilles Nav Coin testnet.
 • Accès synchrone sur toutes les principales plateformes mobiles et de bureau.
 • Prise en charge de Payment protocol (BIP70-BIP73) : demandes de paiement facilement identifiables et paiements nav coins sécurisés et vérifiables.
 • Prise en charge de plus de 150 devises et dénomination d'unité en NAV ou en bits.

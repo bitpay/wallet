@@ -1,4 +1,4 @@
-Asegura tus nav coin con tus propias reglas con el monedero de código abierto, multifirma de NavPay. 
+Asegura tus Nav Coin con tus propias reglas con el monedero de código abierto, multifirma de NavPay. 
 Los usuario de Navpay pueden mantener sus fondos individuales o compartir sus finanzas de forma segura con otros usuarios utilizando monederos multifirmas, que previenen de pagos sin autorización al requerir múltiples aprobaciones. Estas son algunas formas en que puede ser utilizado Navpay con otros usuarios:
 
 Ahorrar para vacaciones o compras conjuntas con amigos 
@@ -12,9 +12,9 @@ Seguridad multifirma intuitiva para monederos personales y compartidos
 Sencillo flujo de propuesta de gastos para monederos compartidos y grupos de pagos
 Generación de direcciones HD (Hierarchical deterministic) y copias de seguridad 
 Seguridad basada en el dispositivo: todas las claves privadas se guardan localmente, no en la nube
-Soporta monederos nav coin en testnet
+Soporta monederos Nav Coin en testnet
 Acceso sincrónico desde las principales plataformas móviles y de escritorio
-Soporte al protocolo de pago (BIP70-BIP73): solicitudes de pagos fácilmente identificable y verificables como pago seguro en nav coin
+Soporte al protocolo de pago (BIP70-BIP73): solicitudes de pagos fácilmente identificable y verificables como pago seguro en Nav Coin
 Soporte a más de 150 precios de monedas y unidades de denominación en NAV o bits
 Notificaciones por email de pagos y transferencias
 Monederos con nombres y colores de fondo personalizables
