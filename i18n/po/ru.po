@@ -3209,45 +3209,37 @@ msgstr ""
 
 #: tab-scan.html:26
 msgid "Attempting to load the camera, please wait."
-msgstr ""
+msgstr "Попытка загрузить камеру, пожалуйста, подождите."
 
 #: tab-scan.html:27
 msgid "Your camera may be disabled or you may have no camera connected. In either case the scan function will not work."
-msgstr ""
+msgstr "Ваша камера может быть отключена или Ваша камера не подключена (не имеет подключение). В любом случае, функция сканирования не будет работать."
 
 #: onGoingProcess.js:49
 msgid "Calculating Transaction Fees"
-msgstr ""
+msgstr "Расчет Транзакционных Сборов"
 
 #: onGoingProcess.js:50
 msgid "Finding NavTech Server"
-msgstr ""
+msgstr "Поиск NavTech Сервера"
 
 #: confirmPrivate.html:15
 #: tab-send.html:19
 msgid "Private Payment"
-msgstr ""
+msgstr "Конфиденциальный Платеж"
 
 #: tab-home.html:18
 msgid "Purchase Nav Coin"
-msgstr ""
+msgstr "Покупка Nav Coin"
 
 #: tab-home.html:21
 msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
-msgstr ""
+msgstr "Для начала работы с Nav, Вы можете купить Nav Coin через нашего партнера -биржу Changelly"
 
 #: changelly.html:16
 msgid "Loading Changelly Exchange..."
-msgstr ""
-
-#: confirm.js:115
-#: confirm.js:288
-#: confirmPrivate.js:113
-#: confirmPrivate.js:281
-#: confirmPrivate.js:446
-msgid "Insufficient funds"
-msgstr ""
+msgstr "Загрузка Биржи Changelly..."
 
 #: tab-send.html:24
 msgid "Next"
-msgstr ""
+msgstr "Следующая"

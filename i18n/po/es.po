@@ -3241,14 +3241,6 @@ msgstr "Para comenzar, puede comprar Nav Coin mediante nuestro socio de intercam
 msgid "Loading Changelly Exchange..."
 msgstr "Cargando casa de intercambio Changelly"
 
-#: confirm.js:115
-#: confirm.js:288
-#: confirmPrivate.js:113
-#: confirmPrivate.js:281
-#: confirmPrivate.js:446
-msgid "Insufficient funds"
-msgstr "Fondos insuficientes"
-
 #: tab-send.html:24
 msgid "Next"
 msgstr "Siguiente"
