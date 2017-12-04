@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icons/Transaction/Processing" transform="translate(-8.000000, -8.000000)">
+            <g id="Icons/Send">
+                <g id="Group-2" transform="translate(8.000000, 8.000000)">
+                    <path d="M16.5,33 C25.6126984,33 33,25.6126984 33,16.5 C33,7.38730163 25.6126984,0 16.5,0 C7.38730163,0 0,7.38730163 0,16.5 C0,25.6126984 7.38730163,33 16.5,33 Z" id="Oval-204" fill="#F2F2F2" opacity="0.8"></path>
+                    <g id="Group" transform="translate(8.000000, 7.500000)" stroke="#BDBDBD">
+                        <path d="M0,9 C0,4.05 3.80952381,0 8.46560847,0 C11.7671958,0 14.6455026,1.98 16,4.95" id="Shape"></path>
+                        <path d="M17,9 C17,13.95 13.1904762,18 8.53439153,18 C5.23280423,18 2.35449735,16.02 1,13.05" id="Shape"></path>
+                        <polyline id="Shape" points="17 0 16.2941176 5 11 4.3220339"></polyline>
+                        <polyline id="Shape" points="0 18 0.705882353 13 6 13.6779661"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

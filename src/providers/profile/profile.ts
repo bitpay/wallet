@@ -136,9 +136,7 @@ export class ProfileProvider {
       this.logger.debug('BWC Notification:', n);
 
       if (n.type == "NewIncomingTx") {
-        this.walletProvider.getTxHistory(wallet, { force: true }).catch((err) => {
-          this.logger.warn('Could not get the tx history for: ' + wallet.credentials.walletId);
-        })
+        this.events.publish('wallet:updateHistory');
       }
 
       if (n.type == "NewBlock" && n.data.network == "testnet") {

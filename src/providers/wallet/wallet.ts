@@ -368,7 +368,7 @@ export class WalletProvider {
   private updateTxHistory(wallet: any, txsFromLocal: any, txsFromServer?: any) {
     return new Promise((resolve, reject) => {
       var txsFromServer_ = txsFromServer && txsFromServer.res || [];
-      let array = txsFromLocal.concat(txsFromServer_);
+      let array = txsFromServer_.concat(txsFromLocal);
       let newHistory = lodash.uniqBy(array, (x: any) => {
         return x.txid;
       });
