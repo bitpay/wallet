@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
@@ -22,6 +22,7 @@ export class WalletDetailsPage {
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
+    public events: Events
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.history = [];
@@ -36,7 +37,10 @@ export class WalletDetailsPage {
       console.log('Wallet incomplete');
       return;
     };
-    this.updateStatus();
+    this.updateStatus(true);
+    this.events.subscribe('wallet:updateHistory', () => {
+      this.updateStatus(true);
+    });
   }
   
   toggleBalance() {
