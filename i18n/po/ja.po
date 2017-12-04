@@ -2176,7 +2176,7 @@ msgstr "取引を検索"
 
 #: www/views/tab-send.html:13
 msgid "Search or enter Nav Coin address"
-msgstr "連絡先検索かナブコインアドレスを指定"
+msgstr "連絡先検索かNav Coinアドレスを指定"
 
 #: www/views/modals/search.html:16
 msgid "Search transactions"
@@ -3208,56 +3208,46 @@ msgstr "{{updatingTxHistoryProgress}} 個の取引ダウンロード済み"
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
 
- 
-
 
 
 
 #: changelly.html:19
 msgid "Can't load Changelly widget"
-msgstr ""
+msgstr "Changellyウイジットを読み込めません"
 
 #: tab-scan.html:26
 msgid "Attempting to load the camera, please wait."
-msgstr ""
+msgstr "カメラを読み込もうとしています。暫くお待ち下さい。"
 
 #: tab-scan.html:27
 msgid "Your camera may be disabled or you may have no camera connected. In either case the scan function will not work."
-msgstr ""
+msgstr "カメラは無効になっているか、カメラが接続されていません。その場合、スキャン機能は動作しません。"
 
 #: onGoingProcess.js:49
 msgid "Calculating Transaction Fees"
-msgstr ""
+msgstr "NavTech Serverの検索"
 
 #: onGoingProcess.js:50
 msgid "Finding NavTech Server"
-msgstr ""
+msgstr "NavTech Serverの検索"
 
 #: confirmPrivate.html:15
 #: tab-send.html:19
 msgid "Private Payment"
-msgstr ""
+msgstr "非公開（匿名）な支払い"
 
 #: tab-home.html:18
 msgid "Purchase Nav Coin"
-msgstr ""
+msgstr "Nav Coinを購入する"
 
 #: tab-home.html:21
 msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
-msgstr ""
+msgstr "まずはじめに、協力している交換所のChangelly(チェンジリー）からNavcoinを購入します。"
 
 #: changelly.html:16
 msgid "Loading Changelly Exchange..."
-msgstr ""
-
-#: confirm.js:115
-#: confirm.js:288
-#: confirmPrivate.js:113
-#: confirmPrivate.js:281
-#: confirmPrivate.js:446
-msgid "Insufficient funds"
-msgstr ""
+msgstr "Changelly Exchange(チェンジリー交換所）から読み込み中"
 
 #: tab-send.html:24
 msgid "Next"
-msgstr ""
+msgstr "次へ"
