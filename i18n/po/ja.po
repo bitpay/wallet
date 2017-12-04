@@ -1416,7 +1416,7 @@ msgid "Is this email address correct?"
 msgstr "このメールアドレスで宜しいですか？"
 
 #: www/views/addresses.html:25
-msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your Nav Coins secure against hypothetical attacks by quantum computers."
 msgstr "アドレスの再利用は避けましょう。これはプライバシーを守ることももちろんのこと、将来的にあり得るかもしれない量子コンピューターからの、ある攻撃からナブコインを守ることもできます。"
 
 #: src/js/controllers/backup.js:76
@@ -3242,7 +3242,7 @@ msgstr "Nav Coinを購入する"
 
 #: tab-home.html:21
 msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
-msgstr "まずはじめに、協力している交換所のChangelly(チェンジリー）からNavcoinを購入します。"
+msgstr "まずはじめに、協力している交換所のChangelly(チェンジリー）からNav Coinを購入します。"
 
 #: changelly.html:16
 msgid "Loading Changelly Exchange..."

@@ -1414,7 +1414,7 @@ msgid "Is this email address correct?"
 msgstr "Questo indirizzo email è corretto?"
 
 #: www/views/addresses.html:25
-msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your Nav Coins secure against hypothetical attacks by quantum computers."
 msgstr "È una buona idea evitare di riutilizzare gli indirizzi - questo protegge la tua privacy e mantiene i Nav Coin al sicuro da ipotetici attacchi di computer quantistici."
 
 #: src/js/controllers/backup.js:76
