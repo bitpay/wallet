@@ -158,7 +158,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
     var address = data.stateParams.toAddress;
 
     if (tx.sendMax) {
-      ongoingProcess.set('Calculating Transaction Fees', true);
+      ongoingProcess.set('calcTransFees', true);
       updateTx(tx, null, {}, function() {
         $scope.walletSelectorTitle = gettextCatalog.getString('Send from');
         $scope.setWalletSelector(tx.network, tx.toAmount, function(err) {
@@ -176,14 +176,14 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
       }); //updateTx
     } else {
       $scope.tx = tx;
-      ongoingProcess.set('Finding NavTech Server', true);
+      ongoingProcess.set('findNavTechServer', true);
       navTechService.findNode(amount, address, $scope.foundNode);
     }
   });
 
   $scope.foundNode = function(success, data, serverInfo) {
     var tx = $scope.tx;
-    ongoingProcess.set('Finding NavTech Server', false);
+    ongoingProcess.set('findNavTechServer', false);
     if (!success) {
       //@TODO finish this tree
       setNoWallet('NavTech Error: ' + data.message);
@@ -432,7 +432,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         return cb();
 
       getSendMaxInfo(lodash.clone(tx), wallet, function(err, sendMaxInfo) {
-        ongoingProcess.set('Calculating Transaction Fees', false);
+        ongoingProcess.set('calcTransFees', false);
         if (err) {
           var msg = gettextCatalog.getString('Error getting SendMax information');
           return setSendError(msg);
@@ -453,7 +453,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
 
           if (!tx.anondest) {
             $scope.tx = tx;
-            ongoingProcess.set('Finding NavTech Server', true);
+            ongoingProcess.set('findNavTechServer', true);
             navTechService.findNode(tx.toAmount, tx.toAddress, $scope.foundNode);
           }
 
