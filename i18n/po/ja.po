@@ -3208,6 +3208,11 @@ msgstr "{{updatingTxHistoryProgress}} 個の取引ダウンロード済み"
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
 
+
+
+
+
+
 #: changelly.html:19
 msgid "Can't load Changelly widget"
 msgstr ""
@@ -3228,30 +3233,31 @@ msgstr ""
 msgid "Finding NavTech Server"
 msgstr ""
 
-#: :
-msgid ""
+#: confirmPrivate.html:15
+#: tab-send.html:19
+msgid "Private Payment"
 msgstr ""
 
-#: :
-msgid ""
+#: tab-home.html:18
+msgid "Purchase Nav Coin"
 msgstr ""
 
-#: :
-msgid ""
+#: tab-home.html:21
+msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
 msgstr ""
 
-#: :
-msgid ""
+#: changelly.html:16
+msgid "Loading Changelly Exchange..."
 msgstr ""
 
-#: :
-msgid ""
+#: confirm.js:115
+#: confirm.js:288
+#: confirmPrivate.js:113
+#: confirmPrivate.js:281
+#: confirmPrivate.js:446
+msgid "Insufficent funds"
 msgstr ""
 
-#: :
-msgid ""
-msgstr ""
-
-#: :
-msgid ""
+#: tab-send.html:24
+msgid "Next"
 msgstr ""
