@@ -170,11 +170,11 @@ msgid "All Addresses"
 msgstr "Alle Adressen"
 
 #: www/views/modals/wallet-balance.html:18
-msgid "All of your nav coin wallet balance may not be available for immediate spending."
+msgid "All of your Nav Coin wallet balance may not be available for immediate spending."
 msgstr "Möglicherweise kann nicht ihr gesamtes Nav Coin Guthaben sofort ausgegeben werden."
 
 #: www/views/tab-receive.html:25
-msgid "All signing devices must be added to this multisig wallet before nav coin addresses can be created."
+msgid "All signing devices must be added to this multisig wallet before Nav Coin addresses can be created."
 msgstr "Alle unterzeichnenden Geräte müssen zu dieser Multi-Signatur Wallet hinzugefügt werden, bevor Nav Coin-Adressen erstellt werden können."
 
 #: www/views/tab-scan.html:21
@@ -218,7 +218,7 @@ msgid "An update to this app is available. For your security, please update to t
 msgstr "Ein Aktualisierung für diese App ist verfügbar. Zu Ihrer Sicherheit bitte auf die neueste Version aktualisieren."
 
 #: www/views/backupWarning.html:14
-msgid "Anyone with your backup phrase can access or spend your nav coin."
+msgid "Anyone with your backup phrase can access or spend your Nav Coin."
 msgstr "Jeder mit Ihrer Wiederherstellungsphrase hat Zugriff auf ihre Bitcoins und kann diese ausgeben."
 
 #: www/views/addresses.html:94
@@ -230,7 +230,7 @@ msgid "Are you being watched?"
 msgstr "Werden Sie beobachtet?"
 
 #: src/js/controllers/preferencesExternal.js:15
-msgid "Are you being watched? Anyone with your recovery phrase can access or spend your nav coin."
+msgid "Are you being watched? Anyone with your recovery phrase can access or spend your Nav Coin."
 msgstr "Werden Sie beobachtet? Jeder der Ihre Wiederherstellungsphrase kennt, kann auf Ihre Nav Coin zugreifen und diese ausgeben."
 
 #: src/js/controllers/copayers.js:56
@@ -710,7 +710,7 @@ msgstr "Erstelle eine gemeinsame Wallet"
 #: www/views/onboarding/tour.html:51
 #: www/views/tab-home.html:77
 #: www/views/tab-send.html:36
-msgid "Create nav coin wallet"
+msgid "Create Nav Coin wallet"
 msgstr "Erstelle Nav Coin-Wallet"
 
 #: www/views/tab-create-personal.html:129
@@ -816,7 +816,7 @@ msgid "Download"
 msgstr "Herunterladen"
 
 #: www/views/addresses.html:19
-msgid "Each nav coin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
+msgid "Each Nav Coin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Jede Nav Coin-Wallet kann Milliarden von Adressen aus Ihrem 12-Wort Backup erzeugen. Jedesmal wenn Sie eine Zahlung erhalten wird neue Adresse automatisch generiert und dargestellten."
 
 #: src/js/services/feeService.js:13
@@ -1271,7 +1271,7 @@ msgid "I understand"
 msgstr "Ich verstehe"
 
 #: www/views/onboarding/disclaimer.html:21
-msgid "I understand that if this app is moved to another device or deleted, my nav coin can only be recovered with the backup phrase."
+msgid "I understand that if this app is moved to another device or deleted, my Nav Coin can only be recovered with the backup phrase."
 msgstr "Ich verstehe, dass wenn diese App auf ein anderes Gerät verschoben oder gelöscht wird, meine Bitcoins nur mit der Wiederherstellungsphrase wiederhergestellt werden können."
 
 #: www/views/onboarding/disclaimer.html:18
@@ -1610,7 +1610,7 @@ msgid "No Wallet"
 msgstr "Keine Wallet"
 
 #: www/views/onboarding/backupRequest.html:5
-msgid "No backup, no nav coin."
+msgid "No backup, no Nav Coin."
 msgstr "Keine Sicherung, keine Bitcoins."
 
 #: www/views/addressbook.html:19
@@ -1687,7 +1687,7 @@ msgid "Note"
 msgstr "Notiz"
 
 #: www/views/modals/wallets.html:25
-msgid "Notice: only 1-1 (single signature) wallets can be used for sell nav coin"
+msgid "Notice: only 1-1 (single signature) wallets can be used for sell Nav Coin"
 msgstr "Hinweis: nur 1-1 (Einzelunterschrift) Wallets können verwendet werden um Bitcoins zu verkaufen"
 
 #: www/views/preferencesNotifications.html:3
@@ -1802,7 +1802,7 @@ msgid "Paste the backup plain text code"
 msgstr "Den Klartext der Sicherung einfügen"
 
 #: www/views/bitpayCardIntro.html:28
-msgid "Pay 0% fees to turn nav coin into dollars."
+msgid "Pay 0% fees to turn Nav Coin into dollars."
 msgstr "Zahle 0 % Gebühren um Bitcoins in Dollar zu wechseln."
 
 #: www/views/modals/paypro.html:18
@@ -2173,7 +2173,7 @@ msgid "Search Transactions"
 msgstr "Transaktionen durchsuchen"
 
 #: www/views/tab-send.html:13
-msgid "Search or enter nav coin address"
+msgid "Search or enter Nav Coin address"
 msgstr "Nav Coin-Adresse suchen oder eingeben"
 
 #: www/views/modals/search.html:16
@@ -2342,7 +2342,7 @@ msgid "Show advanced options"
 msgstr "Erweiterte Optionen anzeigen"
 
 #: www/views/tab-send.html:37
-msgid "Show nav coin address"
+msgid "Show Nav Coin address"
 msgstr "Nav Coin-Adresse anzeigen"
 
 #: www/views/tab-send.html:59
@@ -2397,7 +2397,7 @@ msgid "Spending this balance will need significant Nav Coin network fees"
 msgstr ""
 
 #: www/views/tab-send.html:28
-msgid "Start sending nav coin"
+msgid "Start sending Nav Coin"
 msgstr "Starte mit dem Senden der Bitcoins"
 
 #: src/js/routes.js:118
@@ -2433,7 +2433,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with nav coin."
+msgid "Take control of your money,<br>get started with Nav Coin."
 msgstr "Übernehmen Sie die Kontrolle über Ihr Geld, <br>Legen Sie los mit Bitcoins."
 
 #: www/views/walletDetails.html:140
@@ -2482,15 +2482,15 @@ msgid "The Ledger Chrome application is not installed"
 msgstr "Die Chrome-Anwendung für Ledger ist nicht installiert"
 
 #: www/views/modals/wallet-balance.html:55
-msgid "The amount of nav coin immediately spendable from this wallet."
+msgid "The amount of Nav Coin immediately spendable from this wallet."
 msgstr "Den Betrag an Bitcoins sofort aus dieser Wallet zahlen."
 
 #: www/views/modals/wallet-balance.html:93
-msgid "The amount of nav coin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgid "The amount of Nav Coin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
 msgstr "Der Betrag an Bitcoins gespeichert in dieser Wallet ist zugewiesen als Einsatz für die ausstehende Transaktion. Dem Betrag wurde zugewiesen unverbrauchte Transaktions-Ausgänge zu verwenden, welche mit dieser Brieftasche verbunden sind, und entspricht möglicherweise mehr als die tatsächlichen Beträge welche im Zusammenhang mit Ihren ausstehenden Transaktions-Betrag stehen."
 
 #: www/views/modals/wallet-balance.html:74
-msgid "The amount of nav coin stored in this wallet with less than 1 blockchain confirmation."
+msgid "The amount of Nav Coin stored in this wallet with less than 1 blockchain confirmation."
 msgstr "Die Menge an Bitcoins sind in dieser Geldbörse mit weniger als 1 Blockchain Bestätigung gespeichert."
 
 #: www/views/tab-import-phrase.html:5
@@ -2545,7 +2545,7 @@ msgid "The spend proposal is not pending"
 msgstr "Der Zahlungsvorschlag ist nicht ausstehend"
 
 #: www/views/modals/wallet-balance.html:36
-msgid "The total amount of nav coin stored in this wallet."
+msgid "The total amount of Nav Coin stored in this wallet."
 msgstr "Der Gesamtbetrag an Bitcoins vorrätig in dieser Wallet."
 
 #: www/views/preferencesHistory.html:27
@@ -2580,11 +2580,11 @@ msgid "This app is fantastic!"
 msgstr "Diese App ist fantastisch!"
 
 #: www/views/onboarding/tour.html:47
-msgid "This app stores your nav coin with cutting-edge security."
+msgid "This app stores your Nav Coin with cutting-edge security."
 msgstr "Diese App speichert Ihre Bitcoins mit modernster Sicherheit."
 
 #: src/js/controllers/confirm.js:464
-msgid "This nav coin payment request has expired."
+msgid "This Nav Coin payment request has expired."
 msgstr "Diese Nav Coin Zahlungsaufforderung ist abgelaufen."
 
 #: www/views/join.html:130
@@ -2625,11 +2625,11 @@ msgid "To"
 msgstr "An"
 
 #: www/views/tab-send.html:32
-msgid "To get started, buy nav coin or share your address. You can receive nav coin from any wallet or service."
+msgid "To get started, buy Nav Coin or share your address. You can receive Nav Coin from any wallet or service."
 msgstr "Um loszulegen kaufe Bitcoins oder teilen Sie ihre Adresse. Sie können Bitcoins von jeder beliebigen Wallet oder von einem Dienstleister/Broker empfangen."
 
 #: www/views/tab-send.html:33
-msgid "To get started, you'll need to create a nav coin wallet and get some nav coin."
+msgid "To get started, you'll need to create a Nav Coin wallet and get some Nav Coin."
 msgstr "Um loszulegen müssen Sie eine Nav Coin-Wallet erstellen und einige Bitcoins erhalten."
 
 #: src/js/services/bitpayAccountService.js:73
@@ -2713,7 +2713,7 @@ msgid "Try again in {{expires}}"
 msgstr "Versuchen Sie es erneut in {{expires}}"
 
 #: www/views/bitpayCardIntro.html:18
-msgid "Turn nav coin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
+msgid "Turn Nav Coin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
 msgstr "Wechseln Sie Bitcoins in Dollar, wechseln Sie überall wo Visa<sup>&reg;</sup> akzeptiert wird."
 
 #: www/views/tab-import-phrase.html:17
@@ -3070,7 +3070,7 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "Sie können Beiträge leisten indem Sie sich auf unserer Crowdin Community Übersetzungs-Website registrieren. Wir freuen uns darauf von Ihnen zu hören!"
 
 #: www/views/tab-scan.html:16
-msgid "You can scan nav coin addresses, payment requests, paper wallets, and more."
+msgid "You can scan Nav Coin addresses, payment requests, paper wallets, and more."
 msgstr "Sie können Nav Coin-Adressen, Zahlungsaufforderungen, Papier-Wallets und mehr scannen."
 
 #: src/js/controllers/preferencesAbout.js:14
@@ -3090,7 +3090,7 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Sie können auch mit andere Währungen wie US-Dollar, Euro oder Pfund handeln."
 
 #: www/views/onboarding/tour.html:46
-msgid "You control your nav coin."
+msgid "You control your Nav Coin."
 msgstr "Sie kontrollieren Ihre Bitcoins."
 
 #: www/views/modals/bitpay-card-confirmation.html:5
@@ -3106,11 +3106,11 @@ msgid "Your NavPay Card is ready. Add funds to your card to start using it at st
 msgstr ""
 
 #: www/views/includes/confirmBackupPopup.html:6
-msgid "Your nav coin wallet is backed up!"
+msgid "Your Nav Coin wallet is backed up!"
 msgstr "Ihre Nav Coin-Wallet wurde gesichert!"
 
 #: www/views/tab-home.html:36
-msgid "Your nav coin wallet is ready!"
+msgid "Your Nav Coin wallet is ready!"
 msgstr "Ihre Nav Coin-Wallet ist fertig!"
 
 #: www/views/feedback/send.html:42
@@ -3186,7 +3186,7 @@ msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain inform
 msgstr "{{appName}} hängt von Bitcore Wallet Service (BWS) ab bezüglich Blockchain Informationen, Vernetzung und Copayer Synchronisation. Die Standard Konfiguration verweist auf https://bws.bitpay.com (NavPays öffentlicher BWS Instanz)."
 
 #: src/js/controllers/confirm.js:354
-msgid "{{fee}} will be deducted for nav coin networking fees."
+msgid "{{fee}} will be deducted for Nav Coin networking fees."
 msgstr "{{fee}} wird für Nav Coin-Netzwerkgebühren abgezogen werden."
 
 #: www/views/confirm.html:87
