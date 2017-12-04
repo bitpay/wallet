@@ -23,8 +23,12 @@
         <button ng-show="currentState === scannerStates.unavailable" class="ng-hide button button-standard button-primary" ng-click="attemptToReactivate()" translate>Retry Camera</button>
       </div>
     </div>
-    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading" translate>Attempting to load the camera, please wait.</div>
+    <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading && !isSafari" translate>Attempting to load the camera, please wait.</div>
     <div class="ng-show" id="tab-scan-loading-camera" ng-show="currentState === scannerStates.loading && cameraIssue" translate>Your camera may be disabled or you may have no camera connected. In either case the scan function will not work.</div>
+    <div class="ng-show" id="tab-scan-loading-camera" ng-show="isSafari" translate>
+      Your browser is not supported, please try Google Chrome. <br />
+      <a href="https://www.google.com/chrome" target="e" class="button button-standard button-primary" id="get-chrome">Get Google Chrome</a>
+    </div>
     <div class="ng-hide" id="tab-scan-camera-ready" ng-show="currentState === scannerStates.visible">
       <div class="guides">
         <img class="svg qr-scan-guides" src="img/bitpay-wallet-qr-scan-guides.svg">

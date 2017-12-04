@@ -61,8 +61,10 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     console.log('data', data.stateParams.returnRoute);
     _handleCapabilities();
     $timeout(() => {
-      _refreshScanView()
-      $scope.cameraIssue = true
+        _refreshScanView()
+        if (isSafari() !== "SAFARI") {
+          $scope.cameraIssue = true
+        }
       },
     5000);
     $scope.returnRoute = data.stateParams.returnRoute || false;
@@ -76,7 +78,25 @@ angular.module('copayApp.controllers').controller('tabScanController', function(
     activate();
   });
 
+  function isSafari() {
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf('safari') != -1) {
+      if (ua.indexOf('chrome') > -1) {
+        return "CHROME";
+      } else {
+        return "SAFARI";
+      }
+    }
+    return "OTHER";
+  }
+
   function activate(){
+
+    if (isSafari() === "SAFARI") {
+      $scope.isSafari = true;
+      return;
+    }
+
     scannerService.activate(function(){
       _updateCapabilities();
       _handleCapabilities();
