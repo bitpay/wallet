@@ -3,7 +3,10 @@ import { RateProvider } from '../providers/rate/rate';
 import { ConfigProvider } from '../providers/config/config';
 import { DecimalPipe } from '@angular/common';
 
-@Pipe({ name: 'satToFiat' })
+@Pipe({ 
+  name: 'satToFiat', 
+  pure: false 
+})
 export class SatToFiatPipe implements PipeTransform {
   private walletSettings: any;
 
