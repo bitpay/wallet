@@ -170,11 +170,11 @@ msgid "All Addresses"
 msgstr "全アドレス"
 
 #: www/views/modals/wallet-balance.html:18
-msgid "All of your nav coin wallet balance may not be available for immediate spending."
+msgid "All of your Nav Coin wallet balance may not be available for immediate spending."
 msgstr "ナブコインのウォレットの残高の内、即座に送れないナブコインが含まれている可能性があります。"
 
 #: www/views/tab-receive.html:25
-msgid "All signing devices must be added to this multisig wallet before nav coin addresses can be created."
+msgid "All signing devices must be added to this multisig wallet before Nav Coin addresses can be created."
 msgstr "この共有ウォレットの必要参加者の人数が集まるまではナブコインアドレスを発行することができません。"
 
 #: www/views/tab-scan.html:21
@@ -218,7 +218,7 @@ msgid "An update to this app is available. For your security, please update to t
 msgstr "このアプリのアップデートがあります。セキュリティーを保持するために最新版にアップデートして下さい。"
 
 #: www/views/backupWarning.html:14
-msgid "Anyone with your backup phrase can access or spend your nav coin."
+msgid "Anyone with your backup phrase can access or spend your Nav Coin."
 msgstr "復元フレーズを知る者はあなたのナブコインが勝手に送れてしまいます。"
 
 #: www/views/addresses.html:94
@@ -230,7 +230,7 @@ msgid "Are you being watched?"
 msgstr "見られていませんか？"
 
 #: src/js/controllers/preferencesExternal.js:15
-msgid "Are you being watched? Anyone with your recovery phrase can access or spend your nav coin."
+msgid "Are you being watched? Anyone with your recovery phrase can access or spend your Nav Coin."
 msgstr "見られていますか？ 復元フレーズを知る者はあなたのナブコインが勝手に送れてしまいます。"
 
 #: src/js/controllers/copayers.js:56
@@ -712,7 +712,7 @@ msgstr "共有ウォレットを作成"
 #: www/views/onboarding/tour.html:51
 #: www/views/tab-home.html:77
 #: www/views/tab-send.html:36
-msgid "Create nav coin wallet"
+msgid "Create Nav Coin wallet"
 msgstr "ナブコインウォレット作成"
 
 #: www/views/tab-create-personal.html:129
@@ -818,7 +818,7 @@ msgid "Download"
 msgstr "ダウンロード"
 
 #: www/views/addresses.html:19
-msgid "Each nav coin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
+msgid "Each Nav Coin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "12個の単語から無限大のアドレスを生成することができ、それをナブコインウォレットと呼びます。送金を受け取る度に新しいアドレスを生成して受取画面でお見せします。"
 
 #: src/js/services/feeService.js:13
@@ -1273,7 +1273,7 @@ msgid "I understand"
 msgstr "承知しました"
 
 #: www/views/onboarding/disclaimer.html:21
-msgid "I understand that if this app is moved to another device or deleted, my nav coin can only be recovered with the backup phrase."
+msgid "I understand that if this app is moved to another device or deleted, my Nav Coin can only be recovered with the backup phrase."
 msgstr "このアプリが別の端末に移動されたり、削除されたりした場合に、含まれたナブコインが復元フレーズからのみ復元ができることを理解しています。"
 
 #: www/views/onboarding/disclaimer.html:18
@@ -1612,7 +1612,7 @@ msgid "No Wallet"
 msgstr "ウォレットが無いよ…(´・ω・`)"
 
 #: www/views/onboarding/backupRequest.html:5
-msgid "No backup, no nav coin."
+msgid "No backup, no Nav Coin."
 msgstr "バックアップは非常に重要です！"
 
 #: www/views/addressbook.html:19
@@ -1689,7 +1689,7 @@ msgid "Note"
 msgstr "メモ"
 
 #: www/views/modals/wallets.html:25
-msgid "Notice: only 1-1 (single signature) wallets can be used for sell nav coin"
+msgid "Notice: only 1-1 (single signature) wallets can be used for sell Nav Coin"
 msgstr "注意： ナブコインの売却は 1-of-1 (単一署名) のウォレットからしか行えません。"
 
 #: www/views/preferencesNotifications.html:3
@@ -1804,7 +1804,7 @@ msgid "Paste the backup plain text code"
 msgstr "バックアップの文字をここに貼り付けて下さい"
 
 #: www/views/bitpayCardIntro.html:28
-msgid "Pay 0% fees to turn nav coin into dollars."
+msgid "Pay 0% fees to turn Nav Coin into dollars."
 msgstr "0% 手数料でナブコインを米ドルに替える"
 
 #: www/views/modals/paypro.html:18
@@ -2175,7 +2175,7 @@ msgid "Search Transactions"
 msgstr "取引を検索"
 
 #: www/views/tab-send.html:13
-msgid "Search or enter nav coin address"
+msgid "Search or enter Nav Coin address"
 msgstr "連絡先検索かナブコインアドレスを指定"
 
 #: www/views/modals/search.html:16
@@ -2346,7 +2346,7 @@ msgid "Show advanced options"
 msgstr "詳細設定を表示"
 
 #: www/views/tab-send.html:37
-msgid "Show nav coin address"
+msgid "Show Nav Coin address"
 msgstr "ナブコインアドレスを表示"
 
 #: www/views/tab-send.html:59
@@ -2401,7 +2401,7 @@ msgid "Spending this balance will need significant Nav Coin network fees"
 msgstr "この入力の組み合わせを送金するために膨大なナブコインネットワーク手数料を必要とします"
 
 #: www/views/tab-send.html:28
-msgid "Start sending nav coin"
+msgid "Start sending Nav Coin"
 msgstr "ナブコインの送金を始めましょう"
 
 #: src/js/routes.js:118
@@ -2437,7 +2437,7 @@ msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "＊＊＊注意＊＊＊ このアクションを元に戻すことはできません！！！"
 
 #: www/views/onboarding/welcome.html:5
-msgid "Take control of your money,<br>get started with nav coin."
+msgid "Take control of your money,<br>get started with Nav Coin."
 msgstr "お金のコントロールを取り戻そう、<br>ナブコインをはじめよう"
 
 #: www/views/walletDetails.html:140
@@ -2486,15 +2486,15 @@ msgid "The Ledger Chrome application is not installed"
 msgstr "Ledgerのクロームアプリがインストールされていません。"
 
 #: www/views/modals/wallet-balance.html:55
-msgid "The amount of nav coin immediately spendable from this wallet."
+msgid "The amount of Nav Coin immediately spendable from this wallet."
 msgstr "このウォレットからすぐに送金できる額"
 
 #: www/views/modals/wallet-balance.html:93
-msgid "The amount of nav coin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgid "The amount of Nav Coin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
 msgstr "現在協議中の送金の提案によってロックされてしまっている金額です。この金額は未使用出力の割り当てられた合計額になりますので、必ずしも送金提案の送金額だけがロックされるというものではありません。"
 
 #: www/views/modals/wallet-balance.html:74
-msgid "The amount of nav coin stored in this wallet with less than 1 blockchain confirmation."
+msgid "The amount of Nav Coin stored in this wallet with less than 1 blockchain confirmation."
 msgstr "このウォレットの1承認未満の残高。"
 
 #: www/views/tab-import-phrase.html:5
@@ -2551,7 +2551,7 @@ msgid "The spend proposal is not pending"
 msgstr "送金の提案が協議中ではありません。"
 
 #: www/views/modals/wallet-balance.html:36
-msgid "The total amount of nav coin stored in this wallet."
+msgid "The total amount of Nav Coin stored in this wallet."
 msgstr "このウォレットのナブコインの総残高"
 
 #: www/views/preferencesHistory.html:27
@@ -2586,11 +2586,11 @@ msgid "This app is fantastic!"
 msgstr "このアプリは素晴らしいです!"
 
 #: www/views/onboarding/tour.html:47
-msgid "This app stores your nav coin with cutting-edge security."
+msgid "This app stores your Nav Coin with cutting-edge security."
 msgstr "このアプリは、最先端のセキュリティであなたのナブコインをお守りします。"
 
 #: src/js/controllers/confirm.js:464
-msgid "This nav coin payment request has expired."
+msgid "This Nav Coin payment request has expired."
 msgstr "ナブコインペイメントの請求期限が切れています。"
 
 #: www/views/join.html:130
@@ -2631,11 +2631,11 @@ msgid "To"
 msgstr "宛先"
 
 #: www/views/tab-send.html:32
-msgid "To get started, buy nav coin or share your address. You can receive nav coin from any wallet or service."
+msgid "To get started, buy Nav Coin or share your address. You can receive Nav Coin from any wallet or service."
 msgstr "はじめるには、ナブコインを購入したり、アドレスを他の人に共有したりしましょう。どのナブコインウォレットやサービスから受け取れます。"
 
 #: www/views/tab-send.html:33
-msgid "To get started, you'll need to create a nav coin wallet and get some nav coin."
+msgid "To get started, you'll need to create a Nav Coin wallet and get some Nav Coin."
 msgstr "はじめに、ナブコインウォレットを作成し、ナブコインを入手する必要があります。"
 
 #: src/js/services/bitpayAccountService.js:73
@@ -2719,7 +2719,7 @@ msgid "Try again in {{expires}}"
 msgstr "{{expires}} 経過後にもう一度試してください。"
 
 #: www/views/bitpayCardIntro.html:18
-msgid "Turn nav coin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
+msgid "Turn Nav Coin into dollars, swipe anywhere Visa<sup>&reg;</sup> is accepted."
 msgstr "瞬時にナブコインを米ドルに変換！Visa<sup>&reg;</sup>カード利用可能店舗ならどこでも！"
 
 #: www/views/tab-import-phrase.html:17
@@ -3076,7 +3076,7 @@ msgid "You can make contributions by signing up on our Crowdin community transla
 msgstr "Crowdinのサイトにて翻訳者登録をして、今すぐに投稿をいただけます。お待ちしております。"
 
 #: www/views/tab-scan.html:16
-msgid "You can scan nav coin addresses, payment requests, paper wallets, and more."
+msgid "You can scan Nav Coin addresses, payment requests, paper wallets, and more."
 msgstr "ナブコインアドレス、支払い請求、ペーパーウォレットなどをスキャンできます。"
 
 #: src/js/controllers/preferencesAbout.js:14
@@ -3096,7 +3096,7 @@ msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "米ドル、ユーロ、ポンドなど他の通貨との取引ができます。"
 
 #: www/views/onboarding/tour.html:46
-msgid "You control your nav coin."
+msgid "You control your Nav Coin."
 msgstr "ナブコインの自己管理"
 
 #: www/views/modals/bitpay-card-confirmation.html:5
@@ -3112,11 +3112,11 @@ msgid "Your NavPay Card is ready. Add funds to your card to start using it at st
 msgstr "NavPayカードの準備が整いました。入金して全世界のお店やATMでご利用下さい。"
 
 #: www/views/includes/confirmBackupPopup.html:6
-msgid "Your nav coin wallet is backed up!"
+msgid "Your Nav Coin wallet is backed up!"
 msgstr "ナブコインウォレットがバックアップされました!"
 
 #: www/views/tab-home.html:36
-msgid "Your nav coin wallet is ready!"
+msgid "Your Nav Coin wallet is ready!"
 msgstr "ナブコインウォレットが完成しました!"
 
 #: www/views/feedback/send.html:42
@@ -3192,7 +3192,7 @@ msgid "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain inform
 msgstr "{{appName}}はブロックチェーンの情報を取得したり参加者を同期させたりするためにBitcore Wallet Service (BWS)に依存します。初期値としてNavPay社が提供する https://bws.bitpay.com (NavPay公式のBWSサーバー)を設定していますが、独自で運用してウォレットをそちらに接続しても構いません。"
 
 #: src/js/controllers/confirm.js:354
-msgid "{{fee}} will be deducted for nav coin networking fees."
+msgid "{{fee}} will be deducted for Nav Coin networking fees."
 msgstr "{{fee}} のナブコインネットワーク手数料が差し引かれます。"
 
 #: www/views/confirm.html:87
@@ -3208,7 +3208,7 @@ msgstr "{{updatingTxHistoryProgress}} 個の取引ダウンロード済み"
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr "{{wallet.m}}-of-{{wallet.n}}"
 
-
+ 
 
 
 
