@@ -110,7 +110,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
               return cb('Could not update any wallet');
 
             if (lodash.isEmpty(filteredWallets)) {
-              setNoWallet('Insufficent funds');
+              setNoWallet('Insufficient funds');
             }
             $scope.wallets = lodash.clone(filteredWallets);
             return cb();
@@ -278,7 +278,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
         if (sendMaxInfo) {
 
           if (tx.sendMax && sendMaxInfo.amount == 0) {
-            setNoWallet('Insufficent funds');
+            setNoWallet('Insufficient funds');
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
             return cb('no_funds');
           }
@@ -443,7 +443,7 @@ angular.module('copayApp.controllers').controller('confirmPrivateController', fu
           $log.debug('Send max info', sendMaxInfo);
 
           if (tx.sendMax && sendMaxInfo.amount == 0) {
-            setNoWallet('Insufficent funds');
+            setNoWallet('Insufficient funds');
             popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Not enough funds for fee'));
             return cb('no_funds');
           }

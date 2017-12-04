@@ -3245,7 +3245,7 @@ msgstr ""
 #: confirmPrivate.js:113
 #: confirmPrivate.js:281
 #: confirmPrivate.js:446
-msgid "Insufficent funds"
+msgid "Insufficient funds"
 msgstr ""
 
 #: tab-send.html:24
