@@ -3206,49 +3206,42 @@ msgstr "{{wallet.m}}{{wallet.n}}"
 
 #: changelly.html:19
 msgid "Can't load Changelly widget"
-msgstr ""
+msgstr "Changelly widget 无法执行。"
 
 #: tab-scan.html:26
 msgid "Attempting to load the camera, please wait."
-msgstr ""
+msgstr "相机正在运行。 请等一下。"
 
 #: tab-scan.html:27
 msgid "Your camera may be disabled or you may have no camera connected. In either case the scan function will not work."
-msgstr ""
+msgstr "相机可能在不运转或未连接。 在这种情况下，扫描功能不能运转。"
 
 #: onGoingProcess.js:49
 msgid "Calculating Transaction Fees"
-msgstr ""
+msgstr "计算交易费用"
 
 #: onGoingProcess.js:50
 msgid "Finding NavTech Server"
-msgstr ""
+msgstr "NavTech Server 正在搜索服务器"
 
 #: confirmPrivate.html:15
 #: tab-send.html:19
 msgid "Private Payment"
-msgstr ""
+msgstr "匿名付款"
 
 #: tab-home.html:18
 msgid "Purchase Nav Coin"
-msgstr ""
+msgstr "购买 Nav Coin"
 
 #: tab-home.html:21
 msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
-msgstr ""
+msgstr "要开始，Changelly 通过伙伴A购买 Nav Coin"
 
 #: changelly.html:16
 msgid "Loading Changelly Exchange..."
-msgstr ""
+msgstr "正在运行..."
 
-#: confirm.js:115
-#: confirm.js:288
-#: confirmPrivate.js:113
-#: confirmPrivate.js:281
-#: confirmPrivate.js:446
-msgid "Insufficient funds"
-msgstr ""
 
 #: tab-send.html:24
 msgid "Next"
-msgstr ""
+msgstr "下面"
