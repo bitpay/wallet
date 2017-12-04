@@ -3091,7 +3091,7 @@ msgid "Purchase Nav Coin"
 msgstr "Koop Nav Coin "
 
 #: tab-home.html:21
-msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
+msgid "To get started, you can buy Nav Coin through our exchange partner Changelly."
 msgstr "Om te starten kunt u Nav Coin kopen via onze beurspartner Changelly"
 
 #: changelly.html:16

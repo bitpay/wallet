@@ -3289,7 +3289,7 @@ msgid "Purchase Nav Coin"
 msgstr "Покупка Nav Coin"
 
 #: tab-home.html:21
-msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
+msgid "To get started, you can buy Nav Coin through our exchange partner Changelly."
 msgstr "Для начала работы с Nav, Вы можете купить Nav Coin через нашего партнера -биржу Changelly"
 
 #: changelly.html:16
