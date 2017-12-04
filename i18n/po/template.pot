@@ -3192,3 +3192,45 @@ msgstr ""
 #: www/views/includes/walletInfo.html:12
 msgid "{{wallet.m}}-of-{{wallet.n}}"
 msgstr ""
+
+
+#: changelly.html:19
+msgid "Can't load Changelly widget"
+msgstr ""
+
+#: tab-scan.html:26
+msgid "Attempting to load the camera, please wait."
+msgstr ""
+
+#: tab-scan.html:27
+msgid "Your camera may be disabled or you may have no camera connected. In either case the scan function will not work."
+msgstr ""
+
+#: onGoingProcess.js:49
+msgid "Calculating Transaction Fees"
+msgstr ""
+
+#: onGoingProcess.js:50
+msgid "Finding NavTech Server"
+msgstr ""
+
+#: confirmPrivate.html:15
+#: tab-send.html:19
+msgid "Private Payment"
+msgstr ""
+
+#: tab-home.html:18
+msgid "Purchase Nav Coin"
+msgstr ""
+
+#: tab-home.html:21
+msgid "To get started, you can buy Nav Coin through our exchange partner Changelly"
+msgstr ""
+
+#: changelly.html:16
+msgid "Loading Changelly Exchange..."
+msgstr ""
+
+#: tab-send.html:24
+msgid "Next"
+msgstr ""
