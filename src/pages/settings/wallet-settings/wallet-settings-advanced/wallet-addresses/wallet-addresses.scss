@@ -16,12 +16,11 @@ page-wallet-addresses {
     padding: 2rem;
   }
   button {
-    color: color($colors, primary) !important;
+    &.item {
+      color: color($colors, primary) !important;
+    }
   }
   .item {
-    h3 {
-      font-size: 1.3rem;
-    }
     p {
       &.amount {
         color: color($colors, primary) !important;

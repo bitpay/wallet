@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -41,7 +41,8 @@ export class WalletAddressesPage {
     private logger: Logger,
     private bwcErrorProvider: BwcErrorProvider,
     private popupProvider: PopupProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private modalCtrl: ModalController,
   ) {
     this.UNUSED_ADDRESS_LIMIT = 5;
     this.BALANCE_ADDRESS_LIMIT = 5;
@@ -78,16 +79,6 @@ export class WalletAddressesPage {
     });
   }
 
-  private init(): void {
-    this.resetValues();
-  }
-
-  private resetValues() {
-    this.loading = false;
-    this.latestUnused = this.latestWithBalance = null;
-    this.viewAll = false;
-  }
-
   private processPaths(list: any): void {
     _.each(list, (n: any) => {
       n.path = n.path.replace(/^m/g, 'xpub');
@@ -122,7 +113,8 @@ export class WalletAddressesPage {
   }
 
   public viewAllAddresses(): void {
-    this.navCtrl.push(AllAddressesPage, { walletId: this.wallet.credentials.walletId });
+    let modal = this.modalCtrl.create(AllAddressesPage, { noBalance: this.noBalance, withBalance: this.withBalance, coin: this.wallet.coin });
+    modal.present();
   }
 
   public scan(): void {

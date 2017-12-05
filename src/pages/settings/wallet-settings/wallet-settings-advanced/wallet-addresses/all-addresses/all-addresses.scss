@@ -1,0 +1,10 @@
+page-all-addresses {
+  .item {
+    cursor: pointer;
+    p {
+      &.amount {
+        color: color($colors, primary) !important;
+      }
+    }
+  }
+}
