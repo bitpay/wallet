@@ -16,6 +16,7 @@ import { AdvancedPage } from './advanced/advanced';
 import { AddressbookPage } from './addressbook/addressbook';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 import { NotificationsPage } from './notifications/notifications';
+import { FeePolicyPage } from './fee-policy/fee-policy';
 
 @Component({
   selector: 'page-settings',
@@ -84,6 +85,10 @@ export class SettingsPage {
 
   openNotificationsPage() {
     this.navCtrl.push(NotificationsPage);
+  }
+
+  openFeePolicy() {
+    this.navCtrl.push(FeePolicyPage);
   }
 
   openWalletSettings(walletId: string): void {

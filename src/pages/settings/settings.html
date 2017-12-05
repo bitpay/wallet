@@ -47,15 +47,11 @@
         Alternative currency
       </ion-label>
     </ion-item>
-    <ion-item>
-      <ion-icon name="git-merge" item-start></ion-icon>
+    <ion-item (click)="openFeePolicy()">
+      <ion-icon name="git-network" item-start></ion-icon>
       <ion-label>
-        Bitcoin network fee policy
+        {{'Bitcoin network fee policy' | translate}}
       </ion-label>
-      <ion-select>
-        <ion-option>Normal</ion-option>
-        <ion-option>Urgent</ion-option>
-      </ion-select>
     </ion-item>
     <ion-item (click)="openLockPage()">
       <ion-icon name="lock" item-start></ion-icon>
