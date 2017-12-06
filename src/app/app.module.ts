@@ -96,7 +96,7 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { SatToUnitPipe } from '../pipes/satToUnit';
 import { SatToFiatPipe } from '../pipes/satToFiat';
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
-import { KeysPipe } from '../pipes/keys/keys';
+import { KeysPipe } from '../pipes/keys';
 
 /* Providers */
 import { AddressProvider } from '../providers/address/address';

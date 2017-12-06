@@ -37,7 +37,7 @@ export class WalletDetailsPage {
       console.log('Wallet incomplete');
       return;
     };
-    this.updateStatus(true);
+    this.updateStatus();
     this.events.subscribe('wallet:updateHistory', () => {
       this.updateStatus(true);
     });
