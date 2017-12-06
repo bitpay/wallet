@@ -32,7 +32,7 @@
   <ion-card *ngIf="txps && txps[0]">
     <ion-item>
       <span translate>Payment Proposals</span>
-      <ion-badge *ngIf="txpsN>3" item-end>{{txpsN}}</ion-badge>
+      <ion-badge (click)="openProposalsPage()" *ngIf="txpsN>3" item-end>{{txpsN}}</ion-badge>
     </ion-item>
 
     <ion-list>
@@ -45,7 +45,7 @@
   <ion-card *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
     <ion-item>
       <span translate>Recent Transactions</span>
-      <ion-badge *ngIf="notificationsN>3" item-end>{{notificationsN}}</ion-badge>
+      <ion-badge (click)="openActivityPage()" *ngIf="notificationsN>3" item-end>{{notificationsN}}</ion-badge>
     </ion-item>
 
     <ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">

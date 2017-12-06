@@ -8,6 +8,8 @@ import { CopayersPage } from '../add/copayers/copayers';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
+import { ProposalsPage } from './proposals/proposals';
+import { ActivityPage } from './activity/activity';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -251,4 +253,11 @@ export class HomePage {
     modal.present();
   }
 
+  public openProposalsPage(): void {
+    this.navCtrl.push(ProposalsPage);
+  }
+
+  public openActivityPage(): void {
+    this.navCtrl.push(ActivityPage);
+  }
 }

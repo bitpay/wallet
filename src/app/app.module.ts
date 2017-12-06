@@ -59,6 +59,10 @@ import { ScanPage } from '../pages/scan/scan';
 import { SendPage } from '../pages/send/send';
 import { SettingsPage } from '../pages/settings/settings';
 
+/* Home */
+import { ActivityPage } from '../pages/home/activity/activity';
+import { ProposalsPage } from '../pages/home/proposals/proposals';
+
 /* Settings */
 import { AboutPage } from '../pages/settings/about/about';
 import { AddressbookPage } from '../pages/settings/addressbook/addressbook';
@@ -148,6 +152,7 @@ let directives: any = [
 ];
 
 let pages: any = [
+  ActivityPage,
   AddPage,
   ChooseFeeLevelPage,
   CreateWalletPage,
@@ -177,6 +182,7 @@ let pages: any = [
   PaperWalletPage,
   PayProPage,
   PinModalPage,
+  ProposalsPage,
   ReceivePage,
   SendPage,
   ScanPage,
