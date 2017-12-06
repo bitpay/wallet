@@ -21,7 +21,6 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 export class JoinWalletPage implements OnInit {
 
   private defaults: any;
-  public formData: any;
   public showAdvOpts: boolean;
   public seedOptions: any;
 
@@ -46,18 +45,21 @@ export class JoinWalletPage implements OnInit {
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
 
     this.showAdvOpts = false;
-    this.formData = {
-      myName: null,
-      invitationCode: null, // invitationCode == secret
-      bwsURL: this.defaults.bws.url,
-      recoveryPhrase: null,
-      addPassword: false,
-      password: null,
-      confirmPassword: null,
-      recoveryPhraseBackedUp: null,
-      derivationPath: this.derivationPathByDefault,
-      coin: this.navParams.data.coin
-    };
+
+    this.joinForm = this.form.group({
+      myName: [null, Validators.required],
+      invitationCode: [null, Validators.required], // invitationCode == secret
+      bwsURL: [this.defaults.bws.url],
+      selectedSeed: ['new'],
+      recoveryPhrase: [null],
+      addPassword: [false],
+      password: [null],
+      confirmPassword: [null],
+      recoveryPhraseBackedUp: [null],
+      derivationPath: [this.derivationPathByDefault],
+      coin: [this.navParams.data.coin]
+    });
+
     this.seedOptions = [{
       id: 'new',
       label: 'Random',
@@ -67,9 +69,6 @@ export class JoinWalletPage implements OnInit {
       label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
-    this.formData.selectedSeed = {
-      id: this.seedOptions[0].id
-    };
 
     if (this.navParams.data.url) {
       let data = this.navParams.data.url;
@@ -84,20 +83,6 @@ export class JoinWalletPage implements OnInit {
   }
 
   ngOnInit() {
-    this.joinForm = this.form.group({
-      myName: ['', Validators.required],
-      invitationCode: ['', Validators.required],
-      bwsURL: [''],
-      selectedSeed: [''],
-      recoveryPhrase: [''],
-      addPassword: [''],
-      password: [''],
-      confirmPassword: [''],
-      recoveryPhraseBackedUp: [''],
-      derivationPath: [''],
-      coin: ['']
-    });
-
     this.joinForm.get('addPassword').valueChanges.subscribe((addPassword: boolean) => {
       if (addPassword) {
         this.joinForm.get('password').setValidators([Validators.required]);
@@ -112,9 +97,9 @@ export class JoinWalletPage implements OnInit {
   }
 
   public validatePasswords(): boolean {
-    if (this.formData.addPassword) {
-      if (this.formData.password == this.formData.confirmPassword) {
-        if (this.formData.recoveryPhraseBackedUp) return false;
+    if (this.joinForm.value.addPassword) {
+      if (this.joinForm.value.password == this.joinForm.value.confirmPassword) {
+        if (this.joinForm.value.recoveryPhraseBackedUp) return false;
       }
       return true;
     }
@@ -122,47 +107,52 @@ export class JoinWalletPage implements OnInit {
   }
 
   public onQrCodeScannedJoin(data: string): void { // TODO
-    this.formData.invitationCode = data;
+    this.joinForm.value.invitationCode = data;
   }
 
   public seedOptionsChange(seed: any): void {
-    this.formData.selectedSeed.id = seed;
-    this.formData.testnet = false;
-    this.formData.derivationPath = this.derivationPathByDefault;
+    if (seed === 'set') {
+      this.joinForm.get('recoveryPhrase').setValidators([Validators.required]);
+    } else {
+      this.joinForm.get('recoveryPhrase').setValidators(null);
+    }
+    this.joinForm.value.selectedSeed = seed;
+    this.joinForm.value.testnet = false;
+    this.joinForm.value.derivationPath = this.derivationPathByDefault;
     this.resetFormFields();
   }
 
   public resetFormFields(): void {
-    this.formData.password = null;
-    this.formData.confirmPassword = null;
-    this.formData.recoveryPhraseBackedUp = null;
-    this.formData.recoveryPhrase = null;
+    this.joinForm.value.password = null;
+    this.joinForm.value.confirmPassword = null;
+    this.joinForm.value.recoveryPhraseBackedUp = null;
+    this.joinForm.value.recoveryPhrase = null;
   }
 
   setDerivationPath() {
-    this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    this.joinForm.value.derivationPath = this.joinForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
 
   public setOptsAndJoin(): void {
 
     let opts: any = {
-      secret: this.formData.invitationCode,
-      myName: this.formData.myName,
-      bwsurl: this.formData.bwsurl,
-      coin: this.formData.coin
+      secret: this.joinForm.value.invitationCode,
+      myName: this.joinForm.value.myName,
+      bwsurl: this.joinForm.value.bwsurl,
+      coin: this.joinForm.value.coin
     }
 
-    let setSeed = this.formData.selectedSeed.id == 'set';
+    let setSeed = this.joinForm.value.selectedSeed == 'set';
     if (setSeed) {
-      let words = this.formData.recoveryPhrase;
+      let words = this.joinForm.value.recoveryPhrase;
       if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
         opts.extendedPrivateKey = words;
       } else {
         opts.mnemonic = words;
       }
-      opts.passphrase = this.formData.password;
+      opts.passphrase = this.joinForm.value.password;
 
-      let pathData = this.derivationPathHelperProvider.parse(this.formData.derivationPath);
+      let pathData = this.derivationPathHelperProvider.parse(this.joinForm.value.derivationPath);
       if (!pathData) {
         this.popupProvider.ionicAlert('Error', 'Invalid derivation path'); // TODO: GetTextCatalog
         return;
@@ -171,7 +161,7 @@ export class JoinWalletPage implements OnInit {
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
     } else {
-      opts.passphrase = this.formData.password;
+      opts.passphrase = this.joinForm.value.password;
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {

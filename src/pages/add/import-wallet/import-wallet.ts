@@ -31,7 +31,7 @@ export class ImportWalletPage implements OnInit {
 
   public importErr: boolean;
   public fromOnboarding: boolean;
-  public formData: any;
+  public formFile: any;
   public showAdvOpts: boolean;
   public selectedTab: string;
   public isCordova: boolean;
@@ -62,32 +62,24 @@ export class ImportWalletPage implements OnInit {
     this.derivationPathByDefault = this.derivationPathHelperProvider.default;
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
-    this.formData = {
-      words: null,
-      mnemonicPassword: null,
-      file: null,
-      filePassword: null,
-      derivationPath: this.derivationPathByDefault,
-      testnet: false,
-      bwsURL: this.defaults.bws.url,
-      coin: this.navParams.data.coin ? this.navParams.data.coin : 'btc'
-    };
+    this.formFile = null;
+
+    this.importForm = this.form.group({
+      words: [null, Validators.required],
+      mnemonicPassword: [null],
+      file: [null],
+      filePassword: [null],
+      derivationPath: [this.derivationPathByDefault],
+      testnet: [false],
+      bwsURL: [this.defaults.bws.url],
+      coin: [this.navParams.data.coin ? this.navParams.data.coin : 'btc']
+    });
 
     if (this.navParams.data.code)
       this.processWalletInfo(this.navParams.data.code);
   }
 
   ngOnInit() {
-    this.importForm = this.form.group({
-      words: ['', Validators.required],
-      mnemonicPassword: [''],
-      file: [''],
-      filePassword: [''],
-      derivationPath: [''],
-      testnet: [''],
-      bwsURL: [''],
-      coin: ['']
-    });
   }
 
   selectTab(tab: string) {
@@ -147,20 +139,20 @@ export class ImportWalletPage implements OnInit {
     if (info.type == '1' && info.hasPassphrase)
       this.popupProvider.ionicAlert('Error', 'Password required. Make sure to enter your password in advanced options', 'Ok'); //TODO gettextcatalog
 
-    this.formData.derivationPath = info.derivationPath;
-    this.formData.testnetEnabled = info.network == 'testnet' ? true : false;
-    this.formData.words = info.data;
+    this.importForm.value.derivationPath = info.derivationPath;
+    this.importForm.value.testnetEnabled = info.network == 'testnet' ? true : false;
+    this.importForm.value.words = info.data;
   }
 
   public setDerivationPath(): void {
-    this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    this.importForm.value.derivationPath = this.importForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
 
   private importBlob(str: string, opts: any): void {
     let str2: string;
     let err: any = null;
     try {
-      str2 = this.bwcProvider.getSJCL().decrypt(this.formData.filePassword, str);
+      str2 = this.bwcProvider.getSJCL().decrypt(this.importForm.value.filePassword, str);
     } catch (e) {
       err = 'Could not decrypt file, check your password'; //TODO gettextcatalog
       this.logger.warn(e);
@@ -254,7 +246,7 @@ export class ImportWalletPage implements OnInit {
     }
 
     let backupFile = this.file;
-    let backupText = this.formData.backupText;
+    let backupText = this.importForm.value.backupText;
 
     if (!backupFile && !backupText) {
       this.popupProvider.ionicAlert('Error', 'Please, select your backup file', 'Ok'); // TODO: gettextcatalog
@@ -265,8 +257,8 @@ export class ImportWalletPage implements OnInit {
       this.reader.readAsBinaryString(backupFile);
     } else {
       let opts: any = {};
-      opts.bwsurl = this.formData.bwsurl;
-      opts.coin = this.formData.coin;
+      opts.bwsurl = this.importForm.value.bwsurl;
+      opts.coin = this.importForm.value.coin;
       this.importBlob(backupText, opts);
     }
   }
@@ -279,10 +271,10 @@ export class ImportWalletPage implements OnInit {
 
     let opts: any = {};
 
-    if (this.formData.bwsurl)
-      opts.bwsurl = this.formData.bwsurl;
+    if (this.importForm.value.bwsurl)
+      opts.bwsurl = this.importForm.value.bwsurl;
 
-    let pathData: any = this.derivationPathHelperProvider.parse(this.formData.derivationPath);
+    let pathData: any = this.derivationPathHelperProvider.parse(this.importForm.value.derivationPath);
 
     if (!pathData) {
       this.popupProvider.ionicAlert('Error', 'Invalid derivation path', 'Ok'); // TODO: gettextcatalog
@@ -292,9 +284,9 @@ export class ImportWalletPage implements OnInit {
     opts.account = pathData.account;
     opts.networkName = pathData.networkName;
     opts.derivationStrategy = pathData.derivationStrategy;
-    opts.coin = this.formData.coin;
+    opts.coin = this.importForm.value.coin;
 
-    let words: string = this.formData.words || null;
+    let words: string = this.importForm.value.words || null;
 
     if (!words) {
       this.popupProvider.ionicAlert('Error', 'Please enter the recovery phrase', 'Ok');
@@ -310,7 +302,7 @@ export class ImportWalletPage implements OnInit {
       }
     }
 
-    opts.passphrase = this.formData.passphrase || null;
+    opts.passphrase = this.importForm.value.passphrase || null;
     this.importMnemonic(words, opts);
   }
 
@@ -320,7 +312,7 @@ export class ImportWalletPage implements OnInit {
 
   public fileChangeEvent($event: any) {
     this.file = $event.target ? $event.target.files[0] : $event.srcElement.files[0];
-    this.formData.file = $event.target.value;
+    this.formFile = $event.target.value;
     this.getFile();
   }
 
@@ -329,8 +321,8 @@ export class ImportWalletPage implements OnInit {
     this.reader.onloadend = (evt: any) => {
       if (evt.target.readyState == 2) { // DONE == 2
         let opts: any = {};
-        opts.bwsurl = this.formData.bwsurl;
-        opts.coin = this.formData.coin;
+        opts.bwsurl = this.importForm.value.bwsurl;
+        opts.coin = this.importForm.value.coin;
         this.importBlob(evt.target.result, opts);
       }
     }

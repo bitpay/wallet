@@ -45,7 +45,6 @@ export class CreateWalletPage implements OnInit {
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
 
-  public formData: any;
   public copayers: Array<number>;
   public signatures: Array<number>;
   public showAdvOpts: boolean;
@@ -76,22 +75,23 @@ export class CreateWalletPage implements OnInit {
     this.derivationPathForTestnet = this.derivationPathHelperProvider.defaultTestnet;
     this.showAdvOpts = false;
 
-    this.formData = {
-      walletName: null,
-      myName: null,
-      totalCopayers: 1,
-      requiredCopayers: 1,
-      bwsURL: this.defaults.bws.url,
-      recoveryPhrase: null,
-      addPassword: false,
-      password: null,
-      confirmPassword: null,
-      recoveryPhraseBackedUp: null,
-      derivationPath: this.derivationPathByDefault,
-      testnetEnabled: false,
-      singleAddress: false,
-      coin: this.navParams.data.coin
-    };
+    this.createForm = this.fb.group({
+      walletName: [null, Validators.required],
+      myName: [null],
+      totalCopayers: [1],
+      requiredCopayers: [1],
+      bwsURL: [this.defaults.bws.url],
+      selectedSeed: ['new'],
+      recoveryPhrase: [null],
+      addPassword: [false],
+      password: [null],
+      confirmPassword: [null],
+      recoveryPhraseBackedUp: [null],
+      derivationPath: [this.derivationPathByDefault],
+      testnetEnabled: [false],
+      singleAddress: [false],
+      coin: [this.navParams.data.coin]
+    });
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
@@ -99,24 +99,6 @@ export class CreateWalletPage implements OnInit {
   }
 
   ngOnInit() {
-    this.createForm = this.fb.group({
-      walletName: ['', Validators.required],
-      myName: [''],
-      totalCopayers: [''],
-      requiredCopayers: [''],
-      bwsURL: [''],
-      selectedSeed: [''],
-      recoveryPhrase: [''],
-      addPassword: [''],
-      password: [''],
-      confirmPassword: [''],
-      recoveryPhraseBackedUp: [''],
-      derivationPath: [''],
-      testnetEnabled: [''],
-      singleAddress: [''],
-      coin: ['']
-    });
-
     if (this.isShared) {
       this.createForm.get('myName').setValidators([Validators.required]);
     }
@@ -135,9 +117,9 @@ export class CreateWalletPage implements OnInit {
   }
 
   public validatePasswords(): boolean {
-    if (this.formData.addPassword) {
-      if (this.formData.password == this.formData.confirmPassword) {
-        if (this.formData.recoveryPhraseBackedUp) return false;
+    if (this.createForm.value.addPassword) {
+      if (this.createForm.value.password == this.createForm.value.confirmPassword) {
+        if (this.createForm.value.recoveryPhraseBackedUp) return false;
       }
       return true;
     }
@@ -145,20 +127,20 @@ export class CreateWalletPage implements OnInit {
   }
 
   public setTotalCopayers(n: number): void {
-    this.formData.totalCopayers = n;
+    this.createForm.value.totalCopayers = n;
     this.updateRCSelect(n);
     this.updateSeedSourceSelect();
   };
 
   private updateRCSelect(n: number): void {
-    this.formData.totalCopayers = n;
+    this.createForm.value.totalCopayers = n;
     var maxReq = this.COPAYER_PAIR_LIMITS[n];
     this.signatures = _.range(1, maxReq + 1);
-    this.formData.requiredCopayers = Math.min(Math.trunc(n / 2 + 1), maxReq);
+    this.createForm.value.requiredCopayers = Math.min(Math.trunc(n / 2 + 1), maxReq);
   };
 
   private resetPasswordFields(): void {
-    this.formData.password = this.formData.confirmPassword = this.formData.recoveryPhraseBackedUp = null;
+    this.createForm.value.password = this.createForm.value.confirmPassword = this.createForm.value.recoveryPhraseBackedUp = null;
   };
 
   private updateSeedSourceSelect(): void {
@@ -171,54 +153,57 @@ export class CreateWalletPage implements OnInit {
       label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
-    this.formData.selectedSeed = {
-      id: this.seedOptions[0].id
-    };
+    this.createForm.value.selectedSeed = this.seedOptions[0].id;
   };
 
   public seedOptionsChange(seed: any): void {
-    this.formData.selectedSeed.id = seed; // new or set
-    this.formData.testnet = false;
-    this.formData.derivationPath = this.derivationPathByDefault;
+    if (seed === 'set') {
+      this.createForm.get('recoveryPhrase').setValidators([Validators.required]);
+    } else {
+      this.createForm.get('recoveryPhrase').setValidators(null);
+    }
+    this.createForm.value.selectedSeed = seed; // new or set
+    this.createForm.value.testnet = false;
+    this.createForm.value.derivationPath = this.derivationPathByDefault;
     this.resetFormFields();
   }
 
   public resetFormFields(): void {
-    this.formData.password = null;
-    this.formData.confirmPassword = null;
-    this.formData.recoveryPhraseBackedUp = null;
-    this.formData.recoveryPhrase = null;
+    this.createForm.value.password = null;
+    this.createForm.value.confirmPassword = null;
+    this.createForm.value.recoveryPhraseBackedUp = null;
+    this.createForm.value.recoveryPhrase = null;
   }
 
   public setDerivationPath(): void {
-    this.formData.derivationPath = this.formData.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    this.createForm.value.derivationPath = this.createForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
   }
 
   public setOptsAndCreate(): void {
 
     let opts: any = {
-      name: this.formData.walletName,
-      m: this.formData.requiredCopayers,
-      n: this.formData.totalCopayers,
-      myName: this.formData.totalCopayers > 1 ? this.formData.myName : null,
-      networkName: this.formData.testnetEnabled && this.formData.coin != 'bch' ? 'testnet' : 'livenet',
-      bwsurl: this.formData.bwsurl,
-      singleAddress: this.formData.singleAddress,
-      coin: this.formData.coin
+      name: this.createForm.value.walletName,
+      m: this.createForm.value.requiredCopayers,
+      n: this.createForm.value.totalCopayers,
+      myName: this.createForm.value.totalCopayers > 1 ? this.createForm.value.myName : null,
+      networkName: this.createForm.value.testnetEnabled && this.createForm.value.coin != 'bch' ? 'testnet' : 'livenet',
+      bwsurl: this.createForm.value.bwsurl,
+      singleAddress: this.createForm.value.singleAddress,
+      coin: this.createForm.value.coin
     };
 
-    let setSeed = this.formData.selectedSeed.id == 'set';
+    let setSeed = this.createForm.value.selectedSeed == 'set';
     if (setSeed) {
 
-      let words = this.formData.recoveryPhrase || '';
+      let words = this.createForm.value.recoveryPhrase || '';
       if (words.indexOf(' ') == -1 && words.indexOf('prv') == 1 && words.length > 108) {
         opts.extendedPrivateKey = words;
       } else {
         opts.mnemonic = words;
       }
-      opts.passphrase = this.formData.password;
+      opts.passphrase = this.createForm.value.password;
 
-      let pathData = this.derivationPathHelperProvider.parse(this.formData.derivationPath);
+      let pathData = this.derivationPathHelperProvider.parse(this.createForm.value.derivationPath);
       if (!pathData) {
         this.popupProvider.ionicAlert('Error', 'Invalid derivation path', 'Ok'); // TODO: GetTextCatalog
         return;
@@ -228,7 +213,7 @@ export class CreateWalletPage implements OnInit {
       opts.derivationStrategy = pathData.derivationStrategy;
 
     } else {
-      opts.passphrase = this.formData.password;
+      opts.passphrase = this.createForm.value.password;
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
@@ -247,7 +232,7 @@ export class CreateWalletPage implements OnInit {
       this.walletProvider.updateRemotePreferences(wallet);
       // TODO: this.pushNotificationsService.updateSubscription(wallet);
 
-      if (this.formData.selectedSeed.id == 'set') {
+      if (this.createForm.value.selectedSeed == 'set') {
         this.profileProvider.setBackupFlag(wallet.credentials.walletId);
       }
 
