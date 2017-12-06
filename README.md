@@ -281,7 +281,7 @@ We release bug fixes as soon as possible for all platforms.  Usually around a we
 
 ## How to Verify NavPay Signatures
 
- 1. Download the `copay@bitpay.com` public key (`gpg --recv-keys 1112CFA1`)
+ 1. Download the `admin@navcoin.org` public key (`gpg --recv-keys 3F3B5403`)
  2. Download NavPay binary (`$FILENAME`) and signature file (`$FILENAME.sig`)
  3. Verify the signature by running:
 

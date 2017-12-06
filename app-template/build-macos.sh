@@ -73,7 +73,7 @@ if [ $SHOULD_SIGN ]
 then
   echo "Signing ${APP_NAME} DMG"
 
-  export IDENTITY="3rd Party Mac Developer Application: BitPay, Inc. (884JRH5R93)"
+  export IDENTITY="3rd Party Mac Developer Application: Nav Coin Holdings Limited (QT4D87XKX6)"
 
   # not need for 'out of app store' distribution (?)
 #  export PARENT_PLIST=parent.plist
