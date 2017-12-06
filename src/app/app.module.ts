@@ -66,6 +66,7 @@ import { LockPage } from '../pages/settings/lock/lock';
 import { PinModalPage } from '../pages/pin/pin';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
+import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 
 /* Wallet Settings */
 
@@ -95,6 +96,7 @@ import { CustomAmountPage } from '../pages/receive/custom-amount/custom-amount';
 import { SatToUnitPipe } from '../pipes/satToUnit';
 import { SatToFiatPipe } from '../pipes/satToFiat';
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
+import { KeysPipe } from '../pipes/keys/keys';
 
 /* Providers */
 import { AddressProvider } from '../providers/address/address';
@@ -175,6 +177,7 @@ let pages: any = [
   SettingsPage,
   TermsOfUsePage,
   NotificationsPage,
+  FeePolicyPage,
   WalletSettingsPage,
   WalletSettingsAdvancedPage,
   WalletNamePage,
@@ -243,7 +246,8 @@ let providers: any = [
 let pipes = [
   SatToUnitPipe,
   SatToFiatPipe,
-  FiatToUnitPipe
+  FiatToUnitPipe,
+  KeysPipe
 ];
 
 export function declarationsComponents() {
