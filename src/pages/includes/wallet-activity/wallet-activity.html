@@ -1,0 +1,65 @@
+<div class="wallet-activity">
+  <div *ngIf="notification.type == 'NewCopayer' && notification.wallet.n>1" translate>
+    Copayer joined
+  </div>
+
+  <div *ngIf="notification.type == 'NewCopayer' && notification.wallet.n==1" translate>
+    Wallet created
+  </div>
+
+  <div *ngIf="notification.type == 'NewOutgoingTx'">
+    <span translate>Payment Sent </span>
+    <div class="wallet-activity-amount">
+      {{notification.data.amount | satToUnit}}
+    </div>
+  </div>
+
+  <div *ngIf="notification.type == 'NewIncomingTx'">
+    <span translate>Payment Received</span>
+    <div class="wallet-activity-amount">
+      {{notification.data.amount | satToUnit}}
+    </div>
+  </div>
+
+  <div *ngIf="notification.type == 'TxProposalRemoved'">
+    <span translate>Proposal Deleted</span>:
+    <b>{{notification.message}}</b>
+    <div class="wallet-activity-amount">
+      {{notification.data.amount | satToUnit}}:
+    </div>
+  </div>
+
+  <div *ngIf="notification.type == 'TxProposalRejectedBy'">
+    <span translate>Proposal Rejected</span>:
+    <b>{{notification.message}}</b>
+    <div class="wallet-activity-amount">
+      {{notification.data.amount | satToUnit}}:
+    </div>
+  </div>
+
+  <div *ngIf="notification.type == 'NewTxProposal'">
+    <span translate>New Proposal</span>:
+    <b>{{notification.message}}</b>
+    <div class="wallet-activity-amount">
+      {{notification.data.amount | satToUnit}}
+    </div>
+  </div>
+
+  <div *ngIf="notification.type == 'TxProposalAcceptedBy'">
+    <span translate>Proposal Accepted</span>:
+    <b>{{notification.message}}</b>
+    <div class="wallet-activity-amount">
+      {{notification.data.amount | satToUnit}}
+    </div>
+  </div>
+
+  <div class="wallet-activity-note">
+    <!-- {{notification.types}} -->
+    <div>
+      <span class="wallet-activity-note-child color" [ngClass]="{'wallet-color-default': !notification.wallet.color}" [ngStyle]="{'color':notification.wallet.color}"></span>
+      <span *ngIf="notification.creatorName" class="wallet-activity-note-child">{{ notification.creatorName}}@</span>
+      <span class="wallet-activity-note-child">{{notification.wallet.name}}</span>
+    </div>
+    <time class="wallet-activity-note-child">{{ notification.createdOn * 1000 | amTimeAgo}}</time>
+  </div>
+</div>

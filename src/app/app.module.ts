@@ -45,7 +45,12 @@ import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
-import { WalletInfoPage } from '../pages/includes/wallet-info';
+import { TxpDetailsPage } from '../pages/txp-details/txp-details';
+
+/*Includes */
+import { WalletInfoPage } from '../pages/includes/wallet-info/wallet-info';
+import { TxpPage } from '../pages/includes/txp/txp';
+import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -122,6 +127,7 @@ import { PushNotificationsProvider } from '../providers/push-notifications/push-
 import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
 import { ScanProvider } from '../providers/scan/scan';
+import { TimeProvider } from '../providers/time/time';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
@@ -192,9 +198,12 @@ let pages: any = [
   AllAddressesPage,
   TourPage,
   TabsPage,
+  TxpDetailsPage,
   TxDetailsPage,
   WalletDetailsPage,
   WalletInfoPage,
+  TxpPage,
+  WalletActivityPage,
 ];
 
 let providers: any = [
@@ -229,6 +238,7 @@ let providers: any = [
   SocialSharing,
   Toast,
   TouchID,
+  TimeProvider,
   TouchIdProvider,
   TxConfirmNotificationProvider,
   TxFormatProvider,

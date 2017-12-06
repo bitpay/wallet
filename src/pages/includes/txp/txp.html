@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="label">
+    <ion-icon item-start>
+      <img src="assets/img/icon-proposal-pending.svg">
+    </ion-icon>
+    <span *ngIf="!tx.merchant">
+        <span *ngIf="tx.message">{{tx.message}}</span>
+    <span *ngIf="!tx.message && addressbook[tx.toAddress]">{{addressbook[tx.toAddress].name || addressbook[tx.toAddress]}}</span>
+    <span *ngIf="!tx.message && !addressbook[tx.toAddress]" translate>Sending</span>
+    </span>
+    <span *ngIf="tx.merchant">
+      <span *ngIf="tx.merchant.pr.ca"><ion-icon class="fi-lock"></ion-icon> {{tx.merchant.domain}}</span>
+    <span *ngIf="!tx.merchant.pr.ca"><ion-icon class="fion-icon-unlock"></ion-icon> {{tx.merchant.domain}}</span>
+    </span>
+  </div>
+  <div>
+    <div>
+      <span *ngIf="tx.action == 'sent'">–</span>
+      <span *ngIf="tx.action == 'invalid'" translate> (possible double spend) </span>
+      <span *ngIf="tx.action != 'invalid'"> – {{tx.amount | satToUnit}}</span>
+    </div>
+    <div class="time">
+      <time *ngIf="tx.createdOn && createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | amTimeAgo}}</time>
+      <time *ngIf="tx.createdOn && !createdWithinPastDay(tx.createdOn * 1000)">{{tx.createdOn * 1000 | date:'MMMM d, y'}}</time>
+    </div>
+  </div>
+</div>

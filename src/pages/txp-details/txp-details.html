@@ -1,0 +1,184 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button (click)="close()" ion-button icon-only>
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button (click)="reject()" [disabled]="loading" *ngIf="isShared && tx.pendingForUs">
+        {{'Reject'| translate}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+
+  <ion-list>
+    <ion-item>
+      <div class="sending-label">
+        <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+        <span translate>Sending</span>
+      </div>
+      <div class="amount-label">
+        <div class="amount" *ngIf="isFiatAmount">{{tx.amount || 0 | satToUnit}}</div>
+        <div class="amount" *ngIf="!isFiatAmount">{{tx.amount || 0 | satToUnit: data.unit}}</div>
+        <div class="alternative">{{tx.amount || 0 | satToFiat: data.unit}}</div>
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="tx.removed">
+      <span translate>The payment was removed by creator</span>
+    </ion-item>
+
+    <ion-item *ngIf="tx.status != 'pending'">
+      <div *ngIf="tx.status == 'accepted' && !tx.isGlidera">
+        <div translate>Payment accepted, but not yet broadcasted</div>
+        <button ion-button block type="button" (click)="broadcast(tx)" [disabled]="loading">
+          <ion-icon name="cloud-upload"></ion-icon>          
+          <span translate>Broadcast Payment</span>
+        </button>
+      </div>
+      <div *ngIf="tx.status == 'accepted' && tx.isGlidera">
+        <div translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after
+          it was created.</div>
+      </div>
+      <div *ngIf="tx.status == 'broadcasted'" translate>Payment Sent</div>
+      <div *ngIf="tx.status =='rejected'" translate>Payment Rejected</div>
+    </ion-item>
+
+    <ion-item *ngIf="!currentSpendUnconfirmed && tx.hasUnconfirmedInputs" translate>
+      Warning: this transaction has unconfirmed inputs
+    </ion-item>
+
+    <ion-item class="container-to">
+      <span class="label" translate>To</span>
+      <div class="payment-proposal-to" copy-to-clipboard="{{tx.toAddress}}">
+        <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg" />
+        <!-- <contact ng-if="!tx.hasMultiplesOutputs" class="ellipsis" address="{{tx.toAddress}}"></contact>  TODO -->
+        <span *ngIf="!tx.name">{{tx.toAddress}}</span>
+        <span *ngIf="tx.name">{{tx.name}}</span>
+        <span *ngIf="tx.hasMultiplesOutputs" translate>Multiple recipients</span>
+      </div>
+
+      <div *ngIf="tx.hasMultiplesOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
+        <span translate>Recipients</span>
+        <span>{{tx.recipientCount}}
+            <ion-icon name="arrow-up"></ion-icon>
+        </span>
+      </div>
+
+      <div *ngIf="tx.hasMultiplesOutputs && showMultiplesOutputs">
+        <div *ngFor="let output of tx.outputs">
+
+        </div>
+        <!-- TODO include output.html -->
+      </div>
+    </ion-item>
+
+    <ion-item class="container-from">
+      <span class="label" translate>From</span>
+      <div>
+        <div class="wallet" *ngIf="wallet">
+          <img class="icon-wallet" src="assets/img/icon-wallet.svg" />
+          <!-- TODO ng-include="'views/includes/walletIcon.html'" -->
+          <div>{{wallet.name}}</div>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item *ngIf="isShared">
+      <span class="label" translate>Created by</span>
+      <ion-note>
+        <span>{{tx.creatorName}}</span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.ts || tx.createdOn">
+      <span class="label" translate>Date</span>
+      <ion-note>
+        <time>{{ (tx.ts || tx.createdOn ) * 1000 | amDateFormat:'MM/DD/YYYY hh:mm a'}}</time>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.message">
+      <span class="label" translate>Memo</span>
+      <ion-note>
+        {{tx.message}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <span class="label">{{'Fee:' | translate}} {{tx.feeLevelStr | translate}}</span>
+      <span>{{tx.fee || '...' | satToUnit}}</span>
+      <span>{{tx.fee || '...' | satToFiat}}&nbsp;
+        <span *ngIf="tx.feeRateStr" translate>- {{tx.feeRateStr}} of the transaction</span>
+      </span>
+    </ion-item>
+
+    <div *ngIf="tx && tx.paypro">
+      <div class="item item-divider" translate>Payment details</div>
+      <ion-item>
+        {{'To'|translate}}
+        <ion-note>
+          <span *ngIf="tx.merchant && tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.paypro.domain}}</span>
+          <span *ngIf="tx.merchant && !tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
+        </ion-note>
+        <!--  <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact> -->
+      </ion-item>
+      <ion-item *ngIf="paymentExpired">
+        {{'Expired'|translate}}
+        <ion-note>
+          <time>{{tx.paypro.expires * 1000 | amTimeAgo }}</time>
+        </ion-note>
+      </ion-item>
+      <ion-item *ngIf="!paymentExpired">
+        {{'Expires'|translate}}
+        <ion-note>
+          <time>{{expires}}</time>
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        {{'Merchant Message'|translate}}
+        <ion-note>
+          {{tx.paypro.pr.pd.memo}}
+        </ion-note>
+      </ion-item>
+    </div>
+
+    <div *ngIf="actionList && actionList[0]">
+      <ion-item-divider color="light">{{'Timeline' | translate}}</ion-item-divider>
+      <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
+        *ngFor="let a of actionList; let i = index">
+        <div class="timeline-content">
+          <div class="timeline-content-icon">
+            <div class="rejected" *ngIf="a.type === 'reject'">!</div>
+            <div *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
+          </div>
+          <div class="timeline-content-label">
+            <div class="action">{{a.description}}</div>
+            <div class="name">{{a.by}}</div>
+          </div>
+          <ion-note>
+            <time>{{ a.time * 1000 | amTimeAgo}}</time>
+          </ion-note>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="tx.canBeRemoved || (tx.status == 'accepted' && !tx.broadcastedOn)">
+      <div class="proposal-deletion-help" *ngIf="!tx.isGlidera && isShared" translate>
+        * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed
+        since the proposal was created.
+      </div>
+      <button ion-button icon-left (click)="remove()" [disabled]="loading">
+        <ion-icon name="trash"></ion-icon>
+        <span translate>Delete Payment Proposal</span>
+      </button>
+    </div>
+  </ion-list>
+  <button *ngIf="tx.pendingForUs && canSign && !paymentExpired" ion-button icon-left (click)="onConfirm()">
+    <ion-icon name="trash"></ion-icon>
+    <span translate>{{buttonText}}</span>
+  </button>
+</ion-content>

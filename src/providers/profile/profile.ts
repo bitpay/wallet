@@ -1034,7 +1034,8 @@ export class ProfileProvider {
             notifications = _.sortBy(notifications, 'createdOn');
             notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
             let total = notifications.length;
-            return resolve({ processArray: process(notifications), total: total });
+            let processArray = process(notifications);
+            return resolve({ notifications: processArray, total: total });
           };
         }).catch((err: any) => {
           this.logger.warn('Error updating notifications:' + err);

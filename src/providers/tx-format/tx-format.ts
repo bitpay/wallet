@@ -7,7 +7,7 @@ export class TxFormatProvider {
   // TODO: implement configService
   public pendingTxProposalsCountForUs: number
 
-  constructor() {}
+  constructor() { }
 
   public processTx(coin: string, tx: any): any {
     if (!tx || tx.action == 'invalid')
@@ -82,7 +82,7 @@ export class TxFormatProvider {
         return;
       }
 
-      tx = this.processTx(tx.wallet.coin, tx);
+      //tx = this.processTx(tx.wallet.coin, tx);
 
       var action: any = _.find(tx.actions, {
         copayerId: tx.wallet.copayerId

@@ -1,0 +1,21 @@
+page-txp{
+  .icon-proposal{
+    img {
+      width: 40px;
+    }
+  }
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .label {
+      display: flex;
+      align-items: center;
+    }
+    .time {
+      font-size: 12px;
+      padding-top: 10px;
+      text-align: right;
+    }
+  }
+}
