@@ -3,7 +3,6 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
-import { TxFormatProvider } from '../tx-format/tx-format';
 import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { PopupProvider } from '../popup/popup';
@@ -37,7 +36,6 @@ export class WalletProvider {
   constructor(
     private logger: Logger,
     private bwcProvider: BwcProvider,
-    private txFormatProvider: TxFormatProvider,
     private configProvider: ConfigProvider,
     private persistenceProvider: PersistenceProvider,
     private bwcErrorProvider: BwcErrorProvider,

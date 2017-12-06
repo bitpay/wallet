@@ -19,8 +19,8 @@ import { PushNotificationsProvider } from '../../providers/push-notifications/pu
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { PopupProvider } from '../../providers/popup/popup';
-import { TimeProvider } from '../../providers/time/time';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
+import { AppProvider } from '../../providers/app/app';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -42,6 +42,8 @@ export class HomePage {
   public config: any;
   public serverMessage: any;
   public addressbook: any;
+  public newRelease: boolean;
+  public updateText: string;
 
   constructor(
     private navCtrl: NavController,
@@ -57,7 +59,8 @@ export class HomePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
-    private addressBookProvider: AddressBookProvider
+    private addressBookProvider: AddressBookProvider,
+    private app: AppProvider
   ) {
     this.cachedBalanceUpdateOn = '';
     this.config = this.configProvider.get();
@@ -181,13 +184,17 @@ export class HomePage {
         console.log('Current app version:', version);
         var result = this.releaseProvider.checkForUpdates(version);
         console.log('Update available:', result.updateAvailable);
+        if (result.updateAvailable) {
+          this.newRelease = true;
+          this.updateText = 'There is a new version of ' + this.app.info.nameCase + ' available';
+        }
       })
       .catch((err) => {
         console.log('Error:', err);
       })
   }
 
-  public openServerMessageLink() {
+  public openServerMessageLink(): void {
     let url = this.serverMessage.link;
     this.externalLinkProvider.open(url);
   };
@@ -229,8 +236,18 @@ export class HomePage {
     }
   }
 
+  public goToDownload(): void {
+    let url = 'https://github.com/bitpay/copay/releases/latest';
+    let optIn = true;
+    let title = 'Update Available'; //TODO gettextcatalog
+    let message = 'An update to this app is available. For your security, please update to the latest version.'; //TODO gettextcatalog
+    let okText = 'View Update'; //TODO gettextcatalog
+    let cancelText = 'Go Back'; //TODO gettextcatalog
+    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+  };
+
   public openTxpModal(tx: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx }, { showBackdrop: false, enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: tx }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 

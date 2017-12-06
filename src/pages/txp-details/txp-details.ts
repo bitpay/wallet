@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ViewController } from 'ionic-angular';
+import { NavParams, Events, ViewController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -34,17 +34,15 @@ export class TxpDetailsPage {
   public expires: string;
   public sendStatus: string;
   public currentSpendUnconfirmed: boolean;
+  public loading: boolean;
 
   private isGlidera: boolean;
   private GLIDERA_LOCK_TIME: number;
-  private now: number;
   private countDown: any;
-  private loading: boolean;
   private isCordova: boolean;
   private isWindowsPhoneApp: boolean;
 
   constructor(
-    private navCtrl: NavController,
     private navParams: NavParams,
     private platformProvider: PlatformProvider,
     private feeProvider: FeeProvider,
@@ -65,7 +63,6 @@ export class TxpDetailsPage {
     this.isGlidera = this.navParams.data.isGlidera;
     this.GLIDERA_LOCK_TIME = 6 * 60 * 60;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
-    this.now = Math.floor(Date.now() / 1000);
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
     this.isCordova = this.platformProvider.isCordova;
@@ -189,15 +186,15 @@ export class TxpDetailsPage {
   private paymentTimeControl(expirationTime) {
 
     let setExpirationTime = (): void => {
-      var now = Math.floor(Date.now() / 1000);
+      let now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
         this.paymentExpired = true;
         if (this.countDown) clearInterval(this.countDown);
         return;
       }
-      var totalSecs = expirationTime - now;
-      var m = Math.floor(totalSecs / 60);
-      var s = totalSecs % 60;
+      let totalSecs = expirationTime - now;
+      let m = Math.floor(totalSecs / 60);
+      let s = totalSecs % 60;
       this.expires = ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
     };
 
@@ -225,8 +222,8 @@ export class TxpDetailsPage {
   }
 
   public reject(txp: any): void {
-    var title = 'Warning!'; //TODO gettextcatalog
-    var msg = 'Are you sure you want to reject this transaction?'; //TODO gettextcatalog
+    let title = 'Warning!'; //TODO gettextcatalog
+    let msg = 'Are you sure you want to reject this transaction?'; //TODO gettextcatalog
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return
       this.loading = true;
@@ -239,8 +236,8 @@ export class TxpDetailsPage {
   }
 
   public remove(): void {
-    var title = 'Warning!'; //TODO gettextcatalog
-    var msg = 'Are you sure you want to remove this transaction?'; //TODO gettextcatalog
+    let title = 'Warning!'; //TODO gettextcatalog
+    let msg = 'Are you sure you want to remove this transaction?'; //TODO gettextcatalog
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return;
       this.onGoingProcessProvider.set('removeTx', true);
