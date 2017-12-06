@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -11,7 +11,7 @@ import { OnGoingProcessProvider } from '../../../../../providers/on-going-proces
 
 //pages
 import { AllAddressesPage } from './all-addresses/all-addresses';
-import { HomePage } from '../../../../../pages/home/home';
+import { SettingsPage } from '../../../settings';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
 import * as _ from 'lodash';
@@ -23,20 +23,15 @@ import * as _ from 'lodash';
 export class WalletAddressesPage {
 
   public wallet: any;
-  public allAddressesView: boolean;
   public loading: boolean;
-  public noBalance: any;
   public latestUnused: any;
   public latestWithBalance: any;
   public viewAll: boolean;
-  public allAddresses: any;
-  public showInfo: boolean;
-  public showMore: boolean;
   public gapReached: boolean;
-  private UNUSED_ADDRESS_LIMIT: number = 5;
-  private BALANCE_ADDRESS_LIMIT: number = 5;
-  private withBalance;
-  private cachedWallet;
+  private UNUSED_ADDRESS_LIMIT: number;
+  private BALANCE_ADDRESS_LIMIT: number;
+  private withBalance: any;
+  private noBalance: any;
 
   constructor(
     private profileProvider: ProfileProvider,
@@ -46,32 +41,22 @@ export class WalletAddressesPage {
     private logger: Logger,
     private bwcErrorProvider: BwcErrorProvider,
     private popupProvider: PopupProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private modalCtrl: ModalController,
   ) {
-
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletAddressesPage');
+    this.UNUSED_ADDRESS_LIMIT = 5;
+    this.BALANCE_ADDRESS_LIMIT = 5;
+    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.withBalance = null;
+    this.noBalance = null;
   }
 
   ionViewWillEnter() {
-    this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.allAddressesView = this.navParams.data.stateName == 'tabs.receive.allAddresses' ? true : false;
-    if (!this.isCachedWallet(this.navParams.data.walletId)) this.init();
-    else this.logger.debug('Addresses cached for Wallet:', this.navParams.data.walletId);
-  }
-
-  private init(): void {
-    this.resetValues();
     this.loading = true;
-
-    this.walletProvider.getMainAddresses(this.wallet, {}).then((addresses: any) => {
-      var allAddresses = addresses;
-
+    this.walletProvider.getMainAddresses(this.wallet, {}).then((allAddresses: any) => {
       this.walletProvider.getBalance(this.wallet, {}).then((resp: any) => {
-
         this.withBalance = resp.byAddress;
+
         var idx = _.keyBy(this.withBalance, 'address');
         this.noBalance = _.reject(allAddresses, (x) => {
           return idx[x.address];
@@ -83,32 +68,17 @@ export class WalletAddressesPage {
         this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
         this.latestWithBalance = _.slice(this.withBalance, 0, this.BALANCE_ADDRESS_LIMIT);
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT || this.withBalance.length > this.BALANCE_ADDRESS_LIMIT;
-        this.allAddresses = this.noBalance.concat(this.withBalance);
-
-        this.cachedWallet = this.wallet.id;
         this.loading = false;
-        this.logger.debug('Addresses cached for Wallet:', this.cachedWallet);
       }).catch((err: any) => {
-        if (err) {
-          this.loading = false;
-          return this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
-        }
+        this.logger.error(err);
+        this.loading = false;
+        this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
       });
     }).catch((err: any) => {
-      if (err) {
-        this.loading = false;
-        return this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
-      }
+      this.logger.error(err);
+      this.loading = false;
+      this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
     });
-  }
-
-  private resetValues() {
-    this.loading = false;
-    this.showInfo = false;
-    this.showMore = false;
-    this.allAddressesView = false;
-    this.latestUnused = this.latestWithBalance = null;
-    this.viewAll = false;
   }
 
   private processPaths(list: any): void {
@@ -132,34 +102,31 @@ export class WalletAddressesPage {
         this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT;
       }).catch((err) => {
+        this.logger.error(err);
+        this.onGoingProcessProvider.set('generatingNewAddress', false);
         this.popupProvider.ionicAlert('Error', err); //TODO getextcatalog
       });
     }).catch((err) => {
+      this.logger.error(err);
       this.onGoingProcessProvider.set('generatingNewAddress', false);
       if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
         this.gapReached = true;
       } else {
-        this.popupProvider.ionicAlert(err);
+        this.popupProvider.ionicAlert('Error', err);
       }
     });
   }
 
   public viewAllAddresses(): void {
-    this.navCtrl.push(AllAddressesPage, { walletId: this.wallet.credentials.walletId });
-  }
-
-  public showInformation(): void {
-    this.showInfo = !this.showInfo;
-  }
-
-  public readMore(): void {
-    this.showMore = !this.showMore;
+    let modal = this.modalCtrl.create(AllAddressesPage, { noBalance: this.noBalance, withBalance: this.withBalance, coin: this.wallet.coin });
+    modal.present();
   }
 
   public scan(): void {
     this.walletProvider.startScan(this.wallet);
-    this.navCtrl.setRoot(HomePage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.setRoot(SettingsPage);
     this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId })
   }
 
@@ -201,10 +168,5 @@ export class WalletAddressesPage {
         function () { }
       ); */
     });
-  }
-
-  private isCachedWallet(walletId: string): boolean {
-    if (this.cachedWallet && this.cachedWallet == walletId) return true;
-    else return false;
   }
 }

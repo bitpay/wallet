@@ -15,7 +15,8 @@ export class OnGoingProcessProvider {
       'calculatingFee': 'Calculating fee',
       'creatingWallet': 'Creating Wallet...',
       'joiningWallet': 'Joining Wallet...',
-      'loadingTx': 'Loading transaction...'
+      'loadingTx': 'Loading transaction...',
+      'generatingNewAddress': 'Generating new address...'
     };
   }
 

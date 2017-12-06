@@ -330,8 +330,8 @@ export class WalletProvider {
           this.bwcErrorProvider.cb(err, prefix).then((msg) => {
             return reject(msg);
           });
-        };
-        return resolve(addr.address);
+        } else
+          return resolve(addr.address);
       });
     });
   }

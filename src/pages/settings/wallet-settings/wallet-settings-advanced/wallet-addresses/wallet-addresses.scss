@@ -1,3 +1,30 @@
 page-wallet-addresses {
-   
+  .add-icon {
+    font-size: 1.7rem !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+  .loading {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    span {
+      margin: auto 10px auto 10px;
+    }
+  }
+  .comment {
+    padding: 2rem;
+  }
+  button {
+    &.item {
+      color: color($colors, primary) !important;
+    }
+  }
+  .item {
+    p {
+      &.amount {
+        color: color($colors, primary) !important;
+      }
+    }
+  }
 }
