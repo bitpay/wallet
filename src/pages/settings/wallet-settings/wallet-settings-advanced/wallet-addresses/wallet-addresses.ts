@@ -11,7 +11,7 @@ import { OnGoingProcessProvider } from '../../../../../providers/on-going-proces
 
 //pages
 import { AllAddressesPage } from './all-addresses/all-addresses';
-import { HomePage } from '../../../../../pages/home/home';
+import { SettingsPage } from '../../../settings';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
 import * as _ from 'lodash';
@@ -70,10 +70,12 @@ export class WalletAddressesPage {
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT || this.withBalance.length > this.BALANCE_ADDRESS_LIMIT;
         this.loading = false;
       }).catch((err: any) => {
+        this.logger.error(err);
         this.loading = false;
         this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
       });
     }).catch((err: any) => {
+      this.logger.error(err);
       this.loading = false;
       this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
     });
@@ -100,9 +102,12 @@ export class WalletAddressesPage {
         this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT;
       }).catch((err) => {
+        this.logger.error(err);
+        this.onGoingProcessProvider.set('generatingNewAddress', false);
         this.popupProvider.ionicAlert('Error', err); //TODO getextcatalog
       });
     }).catch((err) => {
+      this.logger.error(err);
       this.onGoingProcessProvider.set('generatingNewAddress', false);
       if (err.toString().match('MAIN_ADDRESS_GAP_REACHED')) {
         this.gapReached = true;
@@ -119,8 +124,9 @@ export class WalletAddressesPage {
 
   public scan(): void {
     this.walletProvider.startScan(this.wallet);
-    this.navCtrl.setRoot(HomePage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.setRoot(SettingsPage);
     this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId })
   }
 
