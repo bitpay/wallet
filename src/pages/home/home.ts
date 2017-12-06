@@ -23,6 +23,7 @@ import { OnGoingProcessProvider } from '../../providers/on-going-process/on-goin
 import { PopupProvider } from '../../providers/popup/popup';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -47,6 +48,8 @@ export class HomePage {
   public newRelease: boolean;
   public updateText: string;
 
+  private isNW: boolean;
+
   constructor(
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
@@ -62,10 +65,12 @@ export class HomePage {
     private popupProvider: PopupProvider,
     private modalCtrl: ModalController,
     private addressBookProvider: AddressBookProvider,
-    private app: AppProvider
+    private app: AppProvider,
+    private platformProvider: PlatformProvider
   ) {
     this.cachedBalanceUpdateOn = '';
     this.config = this.configProvider.get();
+    this.isNW = this.platformProvider.isNW;
   }
 
   ionViewWillEnter() {
@@ -73,7 +78,8 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
-    this.checkUpdate();
+
+    if (this.isNW) this.checkUpdate();
     this.updateAllWallets();
 
     this.addressBookProvider.list().then((ab: any) => {
