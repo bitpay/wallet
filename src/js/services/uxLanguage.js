@@ -24,6 +24,9 @@ angular.module('copayApp.services')
       name: 'Deutsch',
       isoCode: 'de',
     }, {
+      name: 'Nederlands',
+      isoCode: 'nl',
+    }, {
       name: '日本語',
       isoCode: 'ja',
       useIdeograms: true,
