@@ -3,7 +3,6 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
-import { TxFormatProvider } from '../tx-format/tx-format';
 import { PersistenceProvider } from '../persistence/persistence';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { PopupProvider } from '../popup/popup';
@@ -37,7 +36,6 @@ export class WalletProvider {
   constructor(
     private logger: Logger,
     private bwcProvider: BwcProvider,
-    private txFormatProvider: TxFormatProvider,
     private configProvider: ConfigProvider,
     private persistenceProvider: PersistenceProvider,
     private bwcErrorProvider: BwcErrorProvider,
@@ -93,7 +91,7 @@ export class WalletProvider {
 
         lodash.each(txps, (tx: any) => {
 
-          tx = this.txFormatProvider.processTx(wallet.coin, tx);
+          //tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
           // no future transactions...
           if (tx.createdOn > now)
@@ -441,7 +439,7 @@ export class WalletProvider {
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, (tx: any) => {
-      tx = this.txFormatProvider.processTx(wallet.coin, tx);
+      //tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
       // no future transactions...
       if (tx.time > now)

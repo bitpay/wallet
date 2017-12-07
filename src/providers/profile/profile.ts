@@ -8,7 +8,6 @@ import { PersistenceProvider } from '../persistence/persistence';
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
 import { BwcErrorProvider } from '../bwc-error/bwc-error';
-import { WalletProvider } from '../wallet/wallet';
 import { PlatformProvider } from '../platform/platform';
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
@@ -28,7 +27,6 @@ export class ProfileProvider {
 
   constructor(
     private logger: Logger,
-    private walletProvider: WalletProvider,
     private persistenceProvider: PersistenceProvider,
     private configProvider: ConfigProvider,
     private bwcProvider: BwcProvider,
@@ -1034,7 +1032,8 @@ export class ProfileProvider {
             notifications = _.sortBy(notifications, 'createdOn');
             notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
             let total = notifications.length;
-            return resolve({ processArray: process(notifications), total: total });
+            let processArray = process(notifications);
+            return resolve({ notifications: processArray, total: total });
           };
         }).catch((err: any) => {
           this.logger.warn('Error updating notifications:' + err);

@@ -5,6 +5,55 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-card *ngIf="serverMessage">
+    <ion-item>
+      <div>{{serverMessage.title}}</div>
+      <div>{{serverMessage.body}}</div>
+      <div (click)="openServerMessageLink()">
+        <span translate>Learn more</span>
+      </div>
+    </ion-item>
+  </ion-card>
+
+  <ion-card *ngIf="newRelease">
+    <ion-icon>
+      <img src="assets/img/icon-update.svg" class="bg" />
+    </ion-icon>
+    <ion-card-header>
+      {{updateText}}
+    </ion-card-header>
+    <ion-card-content>
+      <button ion-button (click)="goToDownload()">
+        <span translate>Download</span>
+      </button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="txps && txps[0]">
+    <ion-item>
+      <span translate>Payment Proposals</span>
+      <ion-badge (click)="openProposalsPage()" *ngIf="txpsN>3" item-end>{{txpsN}}</ion-badge>
+    </ion-item>
+
+    <ion-list>
+      <ion-item *ngFor="let tx of txps" (click)="openTxpModal(tx)">
+        <page-txp [tx]="tx" [addressbook]="addressbook"></page-txp>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
+    <ion-item>
+      <span translate>Recent Transactions</span>
+      <ion-badge (click)="openActivityPage()" *ngIf="notificationsN>3" item-end>{{notificationsN}}</ion-badge>
+    </ion-item>
+
+    <ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
+      <page-wallet-activity [notification]="notification"></page-wallet-activity>
+    </ion-item>
+
+  </ion-card>
+
   <div *ngIf="!wallets || !wallets[0]">
     <ion-card (click)="goToAddView()">
       <ion-item detail-push>

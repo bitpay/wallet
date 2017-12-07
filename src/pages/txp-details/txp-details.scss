@@ -1,0 +1,156 @@
+page-txp-details {
+  $item-border-color: #EFEFEF;
+  $item-lateral-padding: 20px;
+  $v-success-color: #1abb9b;
+  $v-icon-border-radius: 3px;
+  $item-label-color: #6C6C6E;
+  
+  .item-md {
+    padding: 0rem;
+  }
+  ion-label {
+    padding: 1rem 1rem 1rem 3rem;
+  }
+  span.label {
+    color: color($global-colors, labels);
+    margin-bottom: 0.5rem;
+  }
+  .sending-label {
+    display: flex;
+    align-items: center;
+    .sending-img {
+      margin-right: 2rem;
+    }
+    span {
+      font-size: 1.8rem;
+    }
+  }
+  .amount-label {
+    padding-top: 2rem;
+    .amount {
+      font-size: 3.5rem;
+      .unit {
+        font-weight: 100;
+      }
+    }
+    .alternative {
+      margin-top: 1rem;
+      color: color($global-colors, light-grey);
+    }
+  }
+
+  .proposal-deletion-help {
+    color: $item-label-color;
+    padding: 1rem 2rem;
+  }
+
+  .container-to, .container-from {
+    .wallet, .payment-proposal-to {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      .icon-wallet {
+        margin-right: 1rem;
+        width: 35px !important;
+        background-color: color($colors, primary);
+        &.disabled {
+          background-color: color($global-colors, light-grey);
+        }
+      }
+      .icon-bitcoin {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  .timeline-item {
+    border: 0;
+    &:nth-child(2) {
+      border-top: 1px solid $item-border-color;
+    }
+    &:last-child {
+      border-bottom: 1px solid $item-border-color;
+    }
+    padding: 17px $item-lateral-padding;
+
+    > * {
+      padding-right: 0;
+    }
+  }
+
+  .timeline-content {
+    display: flex;
+    align-items: center;
+
+    &-icon {
+      display: flex;
+      align-items: center;
+      min-width: 40px;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      margin-right: .5rem;
+      position: relative;
+
+      &::before {
+        content: '';
+        background: #e8e8e8;
+        height: 100px;
+        width: 1px;
+        position: absolute;
+        left: 50%;
+        -webkit-transform: translateX(-50%) translateY(-100%);
+        transform: translateX(-50%) translateY(-100%);
+        top: 0;
+      }
+
+      &::after {
+        content: '';
+        background: #e8e8e8;
+        height: 100px;
+        width: 1px;
+        position: absolute;
+        left: 50%;
+        -webkit-transform: translateX(-50%) translateY(100%);
+        transform: translateX(-50%) translateY(100%);
+        bottom: 0;
+      }
+
+      > div {
+        border: 3px solid $v-success-color;
+        border-radius: $v-icon-border-radius;
+        display: flex;
+        height: 26px;
+        width: 26px;
+        font-size: 13px;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        vertical-align: middle;
+        color: $v-success-color;
+        z-index: 10;
+
+        &.rejected {
+          background: #E15061;
+          border-color: #E15061;
+          color: #FFFFFF;
+          font-family: "Roboto-Bold";
+          font-size: 19px;
+        }
+      }
+    }
+
+    &-label {
+      flex-grow: 1;
+
+      > .action {
+        font-size: 16px;
+      }
+
+      > .name {
+        color: #aaa;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
