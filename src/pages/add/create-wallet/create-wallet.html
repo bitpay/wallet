@@ -8,25 +8,25 @@
   <form [formGroup]="createForm" (ngSubmit)="setOptsAndCreate()">
     <ion-item>
       <ion-label stacked>Wallet name</ion-label>
-      <ion-input type="text" [(ngModel)]="formData.walletName" formControlName="walletName" required></ion-input>
+      <ion-input type="text" formControlName="walletName"></ion-input>
     </ion-item>
 
     <div *ngIf="isShared">
       <ion-item>
         <ion-label stacked>Your name</ion-label>
-        <ion-input type="text" [(ngModel)]="formData.myName" formControlName="myName" required></ion-input>
+        <ion-input type="text" formControlName="myName"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Total number of copayers</ion-label>
-        <ion-select [(ngModel)]="formData.totalCopayers" formControlName="totalCopayers" (ionChange)="setTotalCopayers(formData.totalCopayers)">
+        <ion-select formControlName="totalCopayers" (ionChange)="setTotalCopayers(createForm.value.totalCopayers)">
           <ion-option *ngFor="let copayer of copayers" [value]="copayer">{{copayer}}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Required number of signatures</ion-label>
-        <ion-select [(ngModel)]="formData.requiredCopayers" formControlName="requiredCopayers">
+        <ion-select formControlName="requiredCopayers">
           <ion-option *ngFor="let signature of signatures" [value]="signature">{{signature}}</ion-option>
         </ion-select>
       </ion-item>
@@ -34,7 +34,7 @@
 
     <ion-item>
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select [(ngModel)]="formData.coin" formControlName="coin" (ionChange)="formData.testnetEnabled = false">
+      <ion-select formControlName="coin" (ionChange)="createForm.value.testnetEnabled = false">
         <ion-option value="btc">BTC</ion-option>
         <ion-option value="bch">BCH</ion-option>
       </ion-select>
@@ -50,35 +50,35 @@
     <div *ngIf="showAdvOpts">
       <ion-item>
         <ion-label stacked>Wallet service URL</ion-label>
-        <ion-input type="text" [(ngModel)]="formData.bwsURL" formControlName="bwsURL"></ion-input>
+        <ion-input type="text" formControlName="bwsURL"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Wallet key</ion-label>
-        <ion-select [(ngModel)]="formData.selectedSeed.id" formControlName="selectedSeed" (ionChange)="seedOptionsChange(formData.selectedSeed.id)">
+        <ion-select formControlName="selectedSeed" (ionChange)="seedOptionsChange(createForm.value.selectedSeed)">
           <ion-option *ngFor="let opt of seedOptions" [value]="opt.id">{{opt.label}}</ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="formData.selectedSeed.id == 'set'">
+      <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
         <ion-label stacked>Wallet recovery phrase</ion-label>
-        <ion-input type="text" [(ngModel)]="formData.recoveryPhrase" formControlName="recoveryPhrase"></ion-input>
+        <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Add a password</ion-label>
-        <ion-toggle [(ngModel)]="formData.addPassword" formControlName="addPassword" (ionChange)="resetFormFields()"></ion-toggle>
+        <ion-toggle formControlName="addPassword" (ionChange)="resetFormFields()"></ion-toggle>
       </ion-item>
 
-      <div *ngIf="formData.addPassword">
+      <div *ngIf="createForm.value.addPassword">
         <ion-item>
           <ion-label stacked>Password</ion-label>
-          <ion-input type="password" [(ngModel)]="formData.password" formControlName="password"></ion-input>
+          <ion-input type="password" formControlName="password"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label stacked>Confirm password</ion-label>
-          <ion-input type="password" [(ngModel)]="formData.confirmPassword" formControlName="confirmPassword"></ion-input>
+          <ion-input type="password" formControlName="confirmPassword"></ion-input>
         </ion-item>
 
         <ion-item>
@@ -89,23 +89,23 @@
 
         <ion-item>
           <ion-label stacked>I have written it down</ion-label>
-          <ion-checkbox [(ngModel)]="formData.recoveryPhraseBackedUp" formControlName="recoveryPhraseBackedUp" checked="false"></ion-checkbox>
+          <ion-checkbox formControlName="recoveryPhraseBackedUp" checked="false"></ion-checkbox>
         </ion-item>
       </div>
 
-      <ion-item *ngIf="formData.selectedSeed.id == 'new' && formData.coin == 'btc'">
+      <ion-item *ngIf="createForm.value.selectedSeed == 'new' && createForm.value.coin == 'btc'">
         <ion-label stacked>Testnet</ion-label>
-        <ion-toggle [(ngModel)]="formData.testnetEnabled" formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
+        <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
       </ion-item>
 
-      <ion-item *ngIf="formData.selectedSeed.id == 'set'">
+      <ion-item *ngIf="createForm.value.selectedSeed == 'set'">
         <ion-label stacked>Derivation path</ion-label>
-        <ion-input type="text" [(ngModel)]="formData.derivationPath" formControlName="derivationPath"></ion-input>
+        <ion-input type="text" formControlName="derivationPath"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Single address</ion-label>
-        <ion-toggle [(ngModel)]="formData.singleAddress" formControlName="singleAddress"></ion-toggle>
+        <ion-toggle formControlName="singleAddress"></ion-toggle>
       </ion-item>
     </div>
     <button ion-button block type="submit" [disabled]="!createForm.valid || validatePasswords()">Create wallet</button>
