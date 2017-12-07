@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { ModalController } from 'ionic-angular';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
@@ -30,7 +29,6 @@ export class SettingsPage {
   public walletsBch: Array<any>;
 
   constructor(
-    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private app: AppProvider,
     private language: LanguageProvider,
@@ -58,8 +56,7 @@ export class SettingsPage {
   }
 
   altCurrencyModal() {
-    let modal = this.modalCtrl.create(AltCurrencyPage);
-    modal.present();
+    this.navCtrl.push(AltCurrencyPage);
   }
 
   setLanguage(lang: string) {
