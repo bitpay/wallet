@@ -20,7 +20,7 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 
 @Component({
   selector: 'page-settings',
-  templateUrl: 'settings.html',
+  templateUrl: 'settings.html'
 })
 export class SettingsPage {
   public appName: string;

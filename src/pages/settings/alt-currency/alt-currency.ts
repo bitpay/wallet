@@ -23,7 +23,7 @@ export class AltCurrencyPage {
   public currentCurrency: any;
   public lastUsedAltCurrencyList: Array<any>;
 
-  private PAGE_COUNTER: number = 2;
+  private PAGE_COUNTER: number = 3;
   private SHOW_LIMIT: number = 10;
   private unusedCurrencyList: any;
 
@@ -46,7 +46,7 @@ export class AltCurrencyPage {
   }
 
   ionViewWillEnter() {
-    this.rate.updateRates().then((data) => {
+    this.rate.whenRatesAvailable().then((data) => {
       this.completeAlternativeList = this.rate.listAlternatives(true);
       let idx = _.keyBy(this.unusedCurrencyList, 'isoCode');
       let idx2 = _.keyBy(this.lastUsedAltCurrencyList, 'isoCode');
@@ -54,7 +54,7 @@ export class AltCurrencyPage {
       this.completeAlternativeList = _.reject(this.completeAlternativeList, (c: any) => {
         return idx[c.isoCode] || idx2[c.isoCode];
       });
-      this.altCurrencyList = this.completeAlternativeList.slice(0, this.SHOW_LIMIT);
+      this.altCurrencyList = this.completeAlternativeList.slice(0, 20);
     }).catch((err: any) => {
       this.logger.error(err);
     });
