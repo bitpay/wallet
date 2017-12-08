@@ -31,6 +31,7 @@ const Keys = {
   HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
+  MERCADO_LIBRE: network => 'MercadoLibreGiftCards-' + network;
   PROFILE: 'profile',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
@@ -472,4 +473,17 @@ export class PersistenceProvider {
         return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
       });
   };
+
+  setMercadoLibreGiftCards(network, gcs): Promise<void> {
+    return this.storage.set((Keys.MERCADO_LIBRE(network)), gcs);
+  };
+
+  getMercadoLibreGiftCards(network): Promise<void> {
+    return this.storage.get((Keys.MERCADO_LIBRE(network)));
+  };
+
+  removeMercadoLibreGiftCards(network): Promise<void> {
+    return this.storage.remove((Keys.MERCADO_LIBRE(network)));
+  };
+
 }
