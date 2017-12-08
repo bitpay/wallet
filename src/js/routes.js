@@ -141,7 +141,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        */
 
       .state('tabs.wallet', {
-        url: '/wallet/:walletId/:fromOnboarding',
+        url: '/wallet/:walletId/:fromOnboarding/:clearCache',
         views: {
           'tab-home@tabs': {
             controller: 'walletDetailsController',

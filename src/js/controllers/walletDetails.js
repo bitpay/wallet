@@ -161,6 +161,9 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     var progressFn = function(txs, newTxs) {
       if (newTxs > 5) $scope.txHistory = null;
       $scope.updatingTxHistoryProgress = newTxs;
+      $timeout(function() {
+        $scope.$apply();
+      });
     };
 
     walletService.getTxHistory($scope.wallet, {
@@ -347,14 +350,20 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    var clearCache = data.stateParams.clearCache;
     $scope.walletId = data.stateParams.walletId;
     $scope.wallet = profileService.getWallet($scope.walletId);
     if (!$scope.wallet) return;
     // Getting info from cache
-    $scope.status = $scope.wallet.cachedStatus;
-    if ($scope.wallet.completeHistory) {
-      $scope.completeTxHistory = $scope.wallet.completeHistory;
-      $scope.showHistory();
+    if (clearCache) {
+      $scope.txHistory = null;
+      $scope.status = null;
+    } else {
+      $scope.status = $scope.wallet.cachedStatus;
+      if ($scope.wallet.completeHistory) {
+        $scope.completeTxHistory = $scope.wallet.completeHistory;
+        $scope.showHistory();
+      }
     }
 
     $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
