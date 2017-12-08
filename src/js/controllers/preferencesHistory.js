@@ -140,7 +140,8 @@ angular.module('copayApp.controllers').controller('preferencesHistory',
         $state.go('tabs.home');
         $timeout(function() {
           $state.transitionTo('tabs.wallet', {
-            walletId: $scope.wallet.id
+            walletId: $scope.wallet.id,
+            clearCache: true
           });
         }, 100);
       });

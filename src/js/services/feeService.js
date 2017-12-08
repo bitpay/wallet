@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('feeService', function($log, $timeout, $stateParams, bwcService, walletService, configService, gettext, lodash, txFormatService, gettextCatalog) {
+angular.module('copayApp.services').factory('feeService', function($log, bwcService, configService, gettext, lodash, gettextCatalog) {
   var root = {};
 
   var CACHE_TIME_TS = 60; // 1 min
@@ -80,11 +80,16 @@ angular.module('copayApp.services').factory('feeService', function($log, $timeou
           'testnet': levelsTestnet
         };
 
+        root.cachedFeeLevels = cache.data;
+
         return cb(null, cache.data);
       });
     });
   };
 
+  // Fee levels (first start)
+  root.cachedFeeLevels = {};
+  root.getFeeLevels(null, function() {});
 
   return root;
 });
