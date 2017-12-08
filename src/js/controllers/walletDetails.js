@@ -52,13 +52,10 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   var analyzeUtxos = function() {
     if (analyzeUtxosDone) return;
 
-    feeService.getFeeLevels($scope.wallet.coin, function(err, levels) {
-      if (err) return;
-      walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
-        if (err || !resp) return;
-        analyzeUtxosDone = true;
-        $scope.lowUtxosWarning = resp.warning;
-      });
+    walletService.getLowUtxos($scope.wallet, function(err, resp) {
+      if (err || !resp) return;
+      analyzeUtxosDone = true;
+      $scope.lowUtxosWarning = resp.warning;
     });
   };
 
@@ -156,37 +153,36 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
 
   var updateTxHistory = function(cb) {
     if (!cb) cb = function() {};
+    $scope.updatingTxHistory = true;
 
     $scope.updateTxHistoryError = false;
     $scope.updatingTxHistoryProgress = 0;
 
     var progressFn = function(txs, newTxs) {
+      if (newTxs > 5) $scope.txHistory = null;
       $scope.updatingTxHistoryProgress = newTxs;
-      $scope.completeTxHistory = txs;
+    };
+
+    walletService.getTxHistory($scope.wallet, {
+      progressFn: progressFn
+    }, function(err, txHistory) {
+      $scope.updatingTxHistory = false;
+      if (err) {
+        $scope.txHistory = null;
+        $scope.updateTxHistoryError = true;
+        return;
+      }
+
+      var hasTx = txHistory[0];
+      if (hasTx) $scope.showNoTransactionsYetMsg = false;
+      else $scope.showNoTransactionsYetMsg = true;
+
+      $scope.completeTxHistory = txHistory;
       $scope.showHistory();
       $timeout(function() {
         $scope.$apply();
       });
-    };
-
-    feeService.getFeeLevels($scope.wallet.coin, function(err, levels) {
-      walletService.getTxHistory($scope.wallet, {
-        progressFn: progressFn,
-        feeLevels: levels,
-      }, function(err, txHistory) {
-        $scope.updatingTxHistory = false;
-        if (err) {
-          $scope.txHistory = null;
-          $scope.updateTxHistoryError = true;
-          return;
-        }
-        $scope.completeTxHistory = txHistory;
-        $scope.showHistory();
-        $timeout(function() {
-          $scope.$apply();
-        });
-        return cb();
-      });
+      return cb();
     });
   };
 
@@ -354,9 +350,14 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     $scope.walletId = data.stateParams.walletId;
     $scope.wallet = profileService.getWallet($scope.walletId);
     if (!$scope.wallet) return;
-    $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
+    // Getting info from cache
+    $scope.status = $scope.wallet.cachedStatus;
+    if ($scope.wallet.completeHistory) {
+      $scope.completeTxHistory = $scope.wallet.completeHistory;
+      $scope.showHistory();
+    }
 
-    $scope.updatingTxHistory = true;
+    $scope.requiresMultipleSignatures = $scope.wallet.credentials.m > 1;
 
     addressbookService.list(function(err, ab) {
       if (err) $log.error(err);

@@ -69,28 +69,23 @@ angular.module('copayApp.controllers').controller('addressesController', functio
     });
 
 
+    walletService.getLowUtxos($scope.wallet, function(err, resp) {
+      if (err) return;
 
-    feeService.getFeeLevels($scope.wallet.coin, function(err, levels){
-      walletService.getLowUtxos($scope.wallet, levels, function(err, resp) {
-        if (err) return;
+      if (resp && resp.allUtxos && resp.allUtxos.length) {
 
-        if (resp && resp.allUtxos && resp.allUtxos.length) {
+        var allSum = lodash.sum(resp.allUtxos || 0, 'satoshis');
+        var per = (resp.minFee / allSum) * 100;
 
+        $scope.lowWarning = resp.warning;
+        $scope.lowUtxosNb = resp.lowUtxos.length;
+        $scope.allUtxosNb = resp.allUtxos.length;
+        $scope.lowUtxosSum = txFormatService.formatAmountStr($scope.wallet.coin, lodash.sum(resp.lowUtxos || 0, 'satoshis'));
+        $scope.allUtxosSum = txFormatService.formatAmountStr($scope.wallet.coin, allSum);
+        $scope.minFee = txFormatService.formatAmountStr($scope.wallet.coin, resp.minFee || 0);
+        $scope.minFeePer = per.toFixed(2) + '%';
 
-          var allSum = lodash.sum(resp.allUtxos || 0, 'satoshis');
-          var per = (resp.minFee / allSum) * 100;
-
-          $scope.lowWarning = resp.warning;
-          $scope.lowUtxosNb = resp.lowUtxos.length;
-          $scope.allUtxosNb = resp.allUtxos.length;
-          $scope.lowUtxosSum = txFormatService.formatAmountStr($scope.wallet.coin, lodash.sum(resp.lowUtxos || 0, 'satoshis'));
-          $scope.allUtxosSum = txFormatService.formatAmountStr($scope.wallet.coin, allSum);
-          $scope.minFee = txFormatService.formatAmountStr($scope.wallet.coin, resp.minFee || 0);
-          $scope.minFeePer = per.toFixed(2) + '%';
-
-
-        }
-      });
+      }
     });
   };
 

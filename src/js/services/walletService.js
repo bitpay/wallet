@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, feeService) {
 
   // Ratio low amount warning (fee/amount) in incoming TX
   var LOW_AMOUNT_RATIO = 0.15;
@@ -412,7 +412,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
     if (opts.feeLevels) {
-      opts.lowAmount = root.getLowAmount(wallet, opts.feeLevels);
+      opts.lowAmount = root.getLowAmount(wallet);
     }
 
     var fixTxsUnit = function(txs) {
@@ -445,7 +445,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
     getSavedTxs(walletId, function(err, txsFromLocal) {
       if (err)  {
-        lodash.each(updateOnProgress[wallet.id], function(x) { 
+        lodash.each(updateOnProgress[wallet.id], function(x) {
           x.apply(self,err);
         });
         updateOnProgress[wallet.id] = false;
@@ -510,7 +510,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
       getNewTxs([], 0, function(err, txs) {
         if (err)  {
-          lodash.each(updateOnProgress[wallet.id], function(x) { 
+          lodash.each(updateOnProgress[wallet.id], function(x) {
             x.apply(self,err);
           });
           updateOnProgress[wallet.id] = false;
@@ -582,7 +582,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
           return storageService.setTxHistory(historyToSave, walletId, function() {
             $log.debug('Tx History saved.');
-            lodash.each(updateOnProgress[wallet.id], function(x) { 
+            lodash.each(updateOnProgress[wallet.id], function(x) {
               x.apply(self);
             });
             updateOnProgress[wallet.id] = false;
@@ -664,7 +664,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
       return wallet.completeHistory && wallet.completeHistory.isValid;
     };
 
-    if (isHistoryCached() && !opts.force) return cb(null, wallet.completeHistory);
+    if (isHistoryCached() && !opts.force) {
+      return cb(null, wallet.completeHistory);
+    }
 
     $log.debug('Updating Transaction History: ' + wallet.credentials.walletName);
 
@@ -950,37 +952,38 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   // Approx utxo amount, from which the uxto is economically redeemable
-  root.getMinFee = function(wallet, feeLevels, nbOutputs) {
-    var lowLevelRate = (lodash.find(feeLevels[wallet.network], {
+  root.getMinFee = function(wallet, nbOutputs) {
+    var levels = feeService.cachedFeeLevels;
+    var lowLevelRate = (lodash.find(levels[wallet.network], {
       level: 'normal',
     }).feePerKb / 1000).toFixed(0);
 
     var size = root.getEstimatedTxSize(wallet, nbOutputs);
-    return size * lowLevelRate;
+      return size * lowLevelRate;
   };
 
 
   // Approx utxo amount, from which the uxto is economically redeemable
-  root.getLowAmount = function(wallet, feeLevels, nbOutputs) {
-    var minFee = root.getMinFee(wallet, feeLevels, nbOutputs);
+  root.getLowAmount = function(wallet, nbOutputs) {
+    var minFee = root.getMinFee(wallet, nbOutputs);
     return parseInt(minFee / LOW_AMOUNT_RATIO);
   };
 
 
 
-  root.getLowUtxos = function(wallet, levels, cb) {
+  root.getLowUtxos = function(wallet, cb) {
 
     wallet.getUtxos({
       coin: wallet.coin
     }, function(err, resp) {
       if (err || !resp || !resp.length) return cb();
 
-      var minFee = root.getMinFee(wallet, levels, resp.length);
+      var minFee = root.getMinFee(wallet, resp.length);
 
       var balance = lodash.sum(resp, 'satoshis');
 
       // for 2 outputs
-      var lowAmount = root.getLowAmount(wallet, levels);
+      var lowAmount = root.getLowAmount(wallet);
       var lowUtxos = lodash.filter(resp, function(x) {
         return x.satoshis < lowAmount;
       });
