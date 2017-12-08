@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import * as _ from 'lodash';
+import { Logger } from '@nsalaun/ng-logger';
 
 // PRoviders
 import { ConfigProvider } from '../../../providers/config/config';
@@ -27,9 +28,9 @@ export class AltCurrencyPage {
   private unusedCurrencyList: any;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
     private configProvider: ConfigProvider,
+    private logger: Logger,
+    private navCtrl: NavController,
     private rate: RateProvider,
     private profileProvider: ProfileProvider,
     private persistenceProvider: PersistenceProvider,
@@ -54,8 +55,8 @@ export class AltCurrencyPage {
         return idx[c.isoCode] || idx2[c.isoCode];
       });
       this.altCurrencyList = this.completeAlternativeList.slice(0, this.SHOW_LIMIT);
-    }).catch((error) => {
-      console.log("Error: ", error);
+    }).catch((err: any) => {
+      this.logger.error(err);
     });
 
     let config = this.configProvider.get();
@@ -64,11 +65,11 @@ export class AltCurrencyPage {
     this.persistenceProvider.getLastCurrencyUsed().then((lastUsedAltCurrency: any) => {
       this.lastUsedAltCurrencyList = lastUsedAltCurrency ? lastUsedAltCurrency : [];
     }).catch((err: any) => {
-      console.log("Error: ", err);
+      this.logger.error(err);
     });
   }
 
-  public loadAltCurrencies(loading): void {
+  public loadAltCurrencies(loading: any): void {
     if (this.altCurrencyList.length === this.completeAlternativeList.length) {
       loading.complete();
       return;
@@ -98,14 +99,14 @@ export class AltCurrencyPage {
     this.saveLastUsed(newAltCurrency);
     this.walletProvider.updateRemotePreferences(this.profileProvider.getWallets());
     this.navCtrl.pop();
-  };
+  }
 
-  private saveLastUsed(newAltCurrency): void {
+  private saveLastUsed(newAltCurrency: any): void {
     this.lastUsedAltCurrencyList.unshift(newAltCurrency);
     this.lastUsedAltCurrencyList = _.uniqBy(this.lastUsedAltCurrencyList, 'isoCode');
     this.lastUsedAltCurrencyList = this.lastUsedAltCurrencyList.slice(0, 3);
     this.persistenceProvider.setLastCurrencyUsed(JSON.stringify(this.lastUsedAltCurrencyList)).then(() => { });
-  };
+  }
 
   public findCurrency(searchedAltCurrency: string): void {
     this.altCurrencyList = _.filter(this.completeAlternativeList, (item) => {
