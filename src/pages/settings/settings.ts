@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { ModalController } from 'ionic-angular';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
+import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -20,7 +20,7 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 
 @Component({
   selector: 'page-settings',
-  templateUrl: 'settings.html',
+  templateUrl: 'settings.html'
 })
 export class SettingsPage {
   public appName: string;
@@ -28,14 +28,16 @@ export class SettingsPage {
   public languages: Array<any>;
   public walletsBtc: Array<any>;
   public walletsBch: Array<any>;
+  public config: any;
+  public selectedAlternative: any;
 
   constructor(
-    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private app: AppProvider,
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private configProvider: ConfigProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguage = this.language.getCurrent();
@@ -55,11 +57,15 @@ export class SettingsPage {
     this.walletsBch = this.profileProvider.getWallets({
       coin: 'bch'
     });
+    this.config = this.configProvider.get();
+    this.selectedAlternative = {
+      name: this.config.wallet.settings.alternativeName,
+      isoCode: this.config.wallet.settings.alternativeIsoCode
+    }
   }
 
   altCurrencyModal() {
-    let modal = this.modalCtrl.create(AltCurrencyPage);
-    modal.present();
+    this.navCtrl.push(AltCurrencyPage);
   }
 
   setLanguage(lang: string) {

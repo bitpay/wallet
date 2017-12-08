@@ -1,124 +1,128 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 @Injectable()
 export class RateProvider {
 
-  private _rates: Object;
-  private _alternatives: Array<any>;
-  private _ratesBCH: Object;
-  private _isAvailable: boolean = false;
+  private rates: any;
+  private alternatives: Array<any>;
+  private ratesBCH: any;
+  private ratesAvailable: boolean;
 
   private rateServiceUrl = 'https://bitpay.com/api/rates';
   private bchRateServiceUrl = 'https://api.kraken.com/0/public/Ticker?pair=BCHUSD,BCHEUR';
 
-  constructor(public http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private logger: Logger
+  ) {
     console.log('Hello RateProvider Provider');
-    this._rates = {};
-    this._alternatives = [];
-    this._ratesBCH = {};
-    this.updateRates();
+    this.rates = {};
+    this.alternatives = [];
+    this.ratesBCH = {};
+    this.ratesAvailable = false;
+    this.updateRatesBtc();
+    this.updateRatesBch();
   }
 
-  updateRates(): Promise<any> {
+  private updateRatesBtc(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let self = this;
-      this.getBTC().then((dataBTC) => {
+      this.getBTC().then((dataBTC: any) => {
 
-        _.each(dataBTC, (currency) => {
-          self._rates[currency.code] = currency.rate;
-          self._alternatives.push({
+        _.each(dataBTC, (currency: any) => {
+          this.rates[currency.code] = currency.rate;
+          this.alternatives.push({
             name: currency.name,
             isoCode: currency.code,
             rate: currency.rate
           });
         });
+        this.ratesAvailable = true;
+        resolve();
+      }).catch((errorBTC: any) => {
+        this.logger.error(errorBTC);
+        reject(errorBTC);
+      });
+    });
+  }
 
-        this.getBCH().then((dataBCH) => {
-
-          _.each(dataBCH.result, (data, paircode) => {
-            let code = paircode.substr(3, 3);
-            let rate = data.c[0];
-            self._ratesBCH[code] = rate;
-          });
-
-          this._isAvailable = true;
-          resolve();
-        })
-          .catch((errorBCH) => {
-            console.log("Error: ", errorBCH);
-            reject(errorBCH);
-          });
-      })
-        .catch((errorBTC) => {
-          console.log("Error: ", errorBTC);
-          reject(errorBTC);
+  private updateRatesBch(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getBCH().then((dataBCH: any) => {
+        _.each(dataBCH.result, (data: any, paircode: string) => {
+          let code = paircode.substr(3, 3);
+          let rate = data.c[0];
+          this.ratesBCH[code] = rate;
         });
+        resolve();
+      }).catch((errorBCH: any) => {
+        this.logger.error(errorBCH);
+        reject(errorBCH);
+      });
     });
   }
 
-  getBTC(): Promise<any> {
+  private getBTC(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.get(this.rateServiceUrl).subscribe((data) => {
+      this.http.get(this.rateServiceUrl).subscribe((data: any) => {
         resolve(data);
       });
     });
   }
 
-  getBCH(): Promise<any> {
+  private getBCH(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.http.get(this.bchRateServiceUrl).subscribe((data) => {
+      this.http.get(this.bchRateServiceUrl).subscribe((data: any) => {
         resolve(data);
       });
     });
   }
 
-  getRate(code, chain?) {
+  private getRate(code: string, chain?: string): number {
     if (chain == 'bch')
-      return this._ratesBCH[code];
+      return this.ratesBCH[code];
     else
-      return this._rates[code];
-  };
+      return this.rates[code];
+  }
 
-  getAlternatives() {
-    return this._alternatives;
-  };
+  public getAlternatives(): Array<any> {
+    return this.alternatives;
+  }
 
-  toFiat(satoshis, code, chain) {
+  public toFiat(satoshis: number, code: string, chain: string): number {
     return satoshis * this.getRate(code, chain);
-  };
+  }
 
-  fromFiat(amount, code, chain) {
+  public fromFiat(amount: number, code: string, chain: string): number {
     return amount / this.getRate(code, chain);
-  };
+  }
 
-  listAlternatives(sort: boolean) {
-    let alternatives = _.map(this.getAlternatives(), (item) => {
+  public listAlternatives(sort: boolean) {
+    let alternatives = _.map(this.getAlternatives(), (item: any) => {
       return {
         name: item.name,
         isoCode: item.isoCode
       }
     });
     if (sort) {
-      alternatives.sort((a, b) => {
+      alternatives.sort((a: any, b: any) => {
         return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
       });
     }
     return _.uniqBy(alternatives, 'isoCode');
-  };
+  }
 
-  //TODO IMPROVE WHEN AVAILABLE
-  whenAvailable() {
+  public whenRatesAvailable(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (this._isAvailable) resolve();
+      if (this.ratesAvailable) resolve();
       else {
-        this.updateRates().then(() => {
+        this.updateRatesBtc().then(() => {
           resolve();
         });
       }
     });
-
   }
 
 }
