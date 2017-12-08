@@ -13,7 +13,7 @@ import * as _ from 'lodash';
 export class MercadoLibreProvider {
 
   private credentials: any;
-  private availableCountries: any;
+  //private availableCountries: any;
   private homeItem: any;
   private nextStepItem: any;
 
@@ -26,12 +26,12 @@ export class MercadoLibreProvider {
   ) {
     console.log('Hello MercadoLibreProvider Provider');
     // Not used yet
-    this.availableCountries = [{
+    /* this.availableCountries = [{
       'country': 'Brazil',
       'currency': 'BRL',
       'name': 'Mercado Livre',
       'url': 'https://www.mercadolivre.com.br'
-    }];
+    }]; */
 
     /*
    * Development: 'testnet'
@@ -114,7 +114,7 @@ export class MercadoLibreProvider {
     let headers: any = {
       'content-type': 'application/json'
     };
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, dataSrc, headers).subscribe((data: any) => {
       this.logger.info('BitPay Create Invoice: SUCCESS');
       return cb(null, data.data);
     }, (data) => {
@@ -186,7 +186,7 @@ export class MercadoLibreProvider {
   };
   */
 
-  private register() {
+  /* private register() {
     this.persistenceProvider.getMercadoLibreGiftCards(this.getNetwork()).then((giftCards) => {
       if (giftCards) {
         this.homeIntegrationsProvider.register(this.homeItem);
@@ -194,6 +194,6 @@ export class MercadoLibreProvider {
         this.nextStepsProvider.register(this.nextStepItem);
       }
     });
-  };
+  }; */
 }
 

@@ -44,7 +44,7 @@ export class ProfileProvider {
   private updateWalletSettings(wallet: any): void {
     let config: any = this.configProvider.get();
     let defaults: any = this.configProvider.getDefaults();
-    // this.config.whenAvailable(function (config) { TODO
+    // this.config.whenAvailable( (config) => { TODO
     wallet.usingCustomBWS = config.bwsFor && config.bwsFor[wallet.id] && (config.bwsFor[wallet.id] != defaults.bws.url);
     wallet.name = (config.aliasFor && config.aliasFor[wallet.id]) || wallet.credentials.walletName;
     wallet.color = (config.colorFor && config.colorFor[wallet.id]);
@@ -963,7 +963,7 @@ export class ProfileProvider {
           x.txid = x.data ? x.data.txid : null;
           x.types = [x.type];
 
-          x.action = function () {
+          x.action = () => {
             // TODO?
             // $state.go('tabs.wallet', {
             //   walletId: x.walletId,

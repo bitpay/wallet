@@ -64,7 +64,7 @@ describe('Profile Provider', () => {
         status: {
           availableBalanceSat: 1000000000 // 10 BTC
         },
-        isComplete: function () {
+        isComplete: () => {
           return true;
         }
       },
@@ -81,7 +81,7 @@ describe('Profile Provider', () => {
         status: {
           availableBalanceSat: 500000000 // 5 BCH
         },
-        isComplete: function () {
+        isComplete: () => {
           return true;
         }
       },
@@ -98,7 +98,7 @@ describe('Profile Provider', () => {
         status: {
           availableBalanceSat: 150000000 // 1.50 BTC
         },
-        isComplete: function () {
+        isComplete: () => {
           return true;
         }
       }

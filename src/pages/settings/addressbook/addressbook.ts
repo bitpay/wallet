@@ -37,7 +37,7 @@ export class AddressbookPage {
       this.isEmptyList = _.isEmpty(ab);
 
       let contacts: Array<object> = [];
-      _.each(ab, function (v, k) {
+      _.each(ab, (v, k) => {
         contacts.push({
           name: _.isObject(v) ? v.name : v,
           address: k,

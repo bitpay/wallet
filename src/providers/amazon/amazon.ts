@@ -54,27 +54,6 @@ export class AmazonProvider {
     this.register();
   }
 
-  private _getBitPay(endpoint) {
-    return {
-      method: 'GET',
-      url: this.credentials.BITPAY_API_URL + endpoint,
-      headers: {
-        'content-type': 'application/json'
-      }
-    };
-  };
-
-  private _postBitPay(endpoint, data) {
-    return {
-      method: 'POST',
-      url: this.credentials.BITPAY_API_URL + endpoint,
-      headers: {
-        'content-type': 'application/json'
-      },
-      data: data
-    };
-  };
-
   public getNetwork() {
     return this.credentials.NETWORK;
   };

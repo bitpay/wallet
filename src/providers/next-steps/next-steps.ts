@@ -20,7 +20,7 @@ export class NextStepsProvider {
   public register(serviceInfo) {
     this.logger.info('Adding NextSteps entry:' + serviceInfo.name);
 
-    if (!_.find(this.services, function (x) {
+    if (!_.find(this.services, (x) => {
       return x.name == serviceInfo.name;
     })) {
       this.services.push(serviceInfo);

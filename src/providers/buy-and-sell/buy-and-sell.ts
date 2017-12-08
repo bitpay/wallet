@@ -25,7 +25,7 @@ export class BuyAndSellProvider {
 
   public update() {
 
-    var newLinked = _.filter(this.services, function (x) {
+    var newLinked = _.filter(this.services, (x) => {
       return x.linked;
     });
 
@@ -62,7 +62,7 @@ export class BuyAndSellProvider {
 
 
   public updateLink(name, linked) {
-    var service = _.find(this.services, function (x) {
+    var service = _.find(this.services, (x) => {
       return x.name == name;
     });
     this.logger.info('Updating Buy and Sell service:' + name + ' linked:' + linked);

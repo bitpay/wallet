@@ -449,14 +449,14 @@ export class GlideraProvider {
     this.persistenceProvider.getGlideraToken(this.credentials.NETWORK).then((accessToken) => {
       if (_.isEmpty(accessToken)) return cb();
 
-      this.getPermissions(accessToken, this.credentials.NETWORK, true, function (err, permissions) {
+      this.getPermissions(accessToken, this.credentials.NETWORK, true, (err, permissions) => {
         if (err) return cb(err);
 
         this.persistenceProvider.getGlideraStatus(this.credentials.NETWORK).then((status) => {
           if (_.isString(status)) status = JSON.parse(status);
           this.persistenceProvider.getGlideraTxs(this.credentials.NETWORK).then((txs) => {
             if (_.isString(txs)) txs = JSON.parse(txs);
-            this.buyAndSellService.updateLink('glidera', true);
+            this.buyAndSellProvider.updateLink('glidera', true);
             return cb(null, {
               token: accessToken,
               permissions: permissions,
@@ -471,7 +471,7 @@ export class GlideraProvider {
 
   public updateStatus(data) {
     this.persistenceProvider.getGlideraToken(this.credentials.NETWORK).then((accessToken) => {
-      this.getPermissions(accessToken, this.credentials.NETWORK, false, function (err, permissions) {
+      this.getPermissions(accessToken, this.credentials.NETWORK, false, (err, permissions) => {
         if (err) return;
         data.permissions = permissions;
 

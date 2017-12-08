@@ -149,11 +149,11 @@ export class HomePage {
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
 
-    _.each(this.walletsBtc, function (wBtc) {
+    _.each(this.walletsBtc, (wBtc) => {
       wallets.push(wBtc);
     });
 
-    _.each(this.walletsBch, function (wBch) {
+    _.each(this.walletsBch, (wBch) => {
       wallets.push(wBch);
     });
 

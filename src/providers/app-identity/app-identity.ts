@@ -4,20 +4,22 @@ import { Logger } from '@nsalaun/ng-logger';
 //providers
 import { PersistenceProvider } from '../persistence/persistence';
 
-import * as _ from 'lodash'; 
+import * as _ from 'lodash';
 
 @Injectable()
-export class AppProvider {
+export class AppIdentityProvider {
 
   constructor(
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
   ) {
-    this.logger.info('AppProvider initialized.');
+    this.logger.info('AppIdentityProvider initialized.');
   }
 
   public getIdentity(network, cb) {
-    var pubkey, sin, isNew;
+    //var pubkey;
+    //var sin;
+    var isNew;
     this.persistenceProvider.getAppIdentity(network).then((data) => {
       var appIdentity = data || {};
       if (_.isEmpty(appIdentity) || (appIdentity && !appIdentity.priv)) {
@@ -26,9 +28,9 @@ export class AppProvider {
       }
       try {
         //pubkey = this.bitauthProvider.getPublicKeyFromPrivateKey(appIdentity.priv); TODO
-       // sin = this.bitauthProvider.getSinFromPublicKey(pubkey); TODO
+        // sin = this.bitauthProvider.getSinFromPublicKey(pubkey); TODO
         if (isNew)
-        this.persistenceProvider.setAppIdentity(network, JSON.stringify(appIdentity));
+          this.persistenceProvider.setAppIdentity(network, JSON.stringify(appIdentity));
       }
       catch (e) {
         this.logger.error(e);
@@ -36,7 +38,7 @@ export class AppProvider {
       };
       return cb(null, appIdentity);
     }).catch((err) => {
-    return cb(err);
-     });
+      return cb(err);
+    });
   };
 }

@@ -19,7 +19,6 @@ export class CoinbaseProvider {
 
   private credentials: any;
   private isCordova: boolean;
-  private isNW: boolean;
 
   public priceSensitivity: any;
   public selectedPriceSensitivity: any;
@@ -37,7 +36,6 @@ export class CoinbaseProvider {
     this.logger.debug('ConfigProvider initialized.');
     this.credentials = {};
     this.isCordova = this.platformProvider.isCordova;
-    this.isNW = this.platformProvider.isNW;
 
     this.priceSensitivity = [{
       value: 0.5,
@@ -156,7 +154,7 @@ export class CoinbaseProvider {
   }
 
   public checkEnoughFundsForFee(amount, cb) {
-    this._getNetAmount(amount, function (err, reducedAmount) {
+    this._getNetAmount(amount, (err, reducedAmount) => {
       if (err) return cb(err);
 
       // Check if transaction has enough funds to transfer bitcoin from Coinbase to Copay
@@ -303,9 +301,9 @@ export class CoinbaseProvider {
           if (err.errors && err.errors[0] && err.errors[0].id == 'expired_token') {
             this.logger.debug('Refresh token');
             this.persistenceProvider.getCoinbaseRefreshToken(this.credentials.NETWORK).then((refreshToken) => {
-              this._refreshToken(refreshToken, function (err, newToken) {
+              this._refreshToken(refreshToken, (err, newToken) => {
                 if (err) return cb(err);
-                this._getMainAccountId(newToken, function (err, accountId) {
+                this._getMainAccountId(newToken, (err, accountId) => {
                   if (err) return cb(err);
                   return cb(null, {
                     accessToken: newToken,
@@ -587,7 +585,7 @@ export class CoinbaseProvider {
   }
 
 
-  public buyRequest = function (token, accountId, dataSrc, cb) {
+  public buyRequest(token, accountId, dataSrc, cb) {
     let data = {
       amount: dataSrc.amount,
       currency: dataSrc.currency,

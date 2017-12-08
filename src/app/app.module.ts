@@ -113,6 +113,7 @@ import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AppProvider } from '../providers/app/app';
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { BackupProvider } from '../providers/backup/backup';
+import { BitPayProvider } from '../providers/bitpay/bitpay';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
@@ -223,7 +224,9 @@ let providers: any = [
   AddressBookProvider,
   AndroidFingerprintAuth,
   AppProvider,
+  AmazonProvider,
   BackupProvider,
+  BitPayProvider,
   BwcProvider,
   BwcErrorProvider,
   ConfigProvider,

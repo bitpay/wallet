@@ -23,7 +23,7 @@ export class HomeIntegrationsProvider {
   };
 
   public unregister(serviceName) {
-    this.services = _.filter(this.services, function (x) {
+    this.services = _.filter(this.services, (x) => {
       return x.name != serviceName
     });
   };
