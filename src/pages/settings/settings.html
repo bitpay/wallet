@@ -46,6 +46,9 @@
       <ion-label>
         Alternative currency
       </ion-label>
+      <ion-note *ngIf="selectedAlternative" item-end>
+        {{ selectedAlternative.name }}
+      </ion-note>
     </ion-item>
     <ion-item (click)="openFeePolicy()">
       <ion-icon name="git-network" item-start></ion-icon>

@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
+import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ProfileProvider } from '../../providers/profile/profile';
@@ -27,13 +28,16 @@ export class SettingsPage {
   public languages: Array<any>;
   public walletsBtc: Array<any>;
   public walletsBch: Array<any>;
+  public config: any;
+  public selectedAlternative: any;
 
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private configProvider: ConfigProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguage = this.language.getCurrent();
@@ -53,6 +57,11 @@ export class SettingsPage {
     this.walletsBch = this.profileProvider.getWallets({
       coin: 'bch'
     });
+    this.config = this.configProvider.get();
+    this.selectedAlternative = {
+      name: this.config.wallet.settings.alternativeName,
+      isoCode: this.config.wallet.settings.alternativeIsoCode
+    }
   }
 
   altCurrencyModal() {
