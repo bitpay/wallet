@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //pages
@@ -21,7 +21,6 @@ export class AboutPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private app: AppProvider,
     private log: Logger,
     private externalLinkProvider: ExternalLinkProvider
