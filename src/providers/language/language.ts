@@ -48,7 +48,7 @@ export class LanguageProvider {
   constructor(
     private log: Logger,
     private translate: TranslateService,
-    private config: ConfigProvider
+    private configProvider: ConfigProvider
   ) {
     this.log.info('LanguageProvider initialized.');
     this.translate.onLangChange.subscribe((event) => {
@@ -57,7 +57,7 @@ export class LanguageProvider {
   }
 
   public load() {
-    let lang = this.config.get().wallet.settings.defaultLanguage;
+    let lang = this.configProvider.get().wallet.settings.defaultLanguage;
     if (!_.isEmpty(lang)) this.current = lang;
     else {
       // Get from browser
@@ -73,7 +73,7 @@ export class LanguageProvider {
   set(lang: string) {
     this.current = lang;
     this.translate.use(lang);
-    this.config.set({wallet: { settings: { defaultLanguage: lang } } });
+    this.configProvider.set({ wallet: { settings: { defaultLanguage: lang } } });
   }
 
   getName(lang: string) {

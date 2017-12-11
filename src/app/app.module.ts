@@ -76,6 +76,7 @@ import { PinModalPage } from '../pages/pin/pin';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
 import { NotificationsPage } from '../pages/settings/notifications/notifications';
 import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
+import { SessionLogPage } from '../pages/settings/about/session-log/session-log';
 
 /* Wallet Settings */
 
@@ -93,6 +94,7 @@ import { WalletTransactionHistoryPage } from '../pages/settings/wallet-settings/
 import { WalletDeletePage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-delete/wallet-delete';
 import { WalletExtendedPrivateKeyPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-information/wallet-extended-private-key/wallet-extended-private-key';
 import { AllAddressesPage } from '../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/all-addresses/all-addresses';
+
 /* Send */
 import { AmountPage } from '../pages/send/amount/amount';
 import { ConfirmPage } from '../pages/send/confirm/confirm';
@@ -122,6 +124,7 @@ import { DerivationPathHelperProvider } from '../providers/derivation-path-helpe
 import { ExternalLinkProvider } from '../providers/external-link/external-link';
 import { FeeProvider } from '../providers/fee/fee';
 import { GlideraProvider } from '../providers/glidera/glidera';
+import { HistoricLogProvider } from '../providers/historic-log/historic-log';
 import { HomeIntegrationsProvider } from '../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
@@ -197,6 +200,7 @@ let pages: any = [
   TermsOfUsePage,
   NotificationsPage,
   FeePolicyPage,
+  SessionLogPage,
   WalletSettingsPage,
   WalletSettingsAdvancedPage,
   WalletNamePage,
@@ -238,6 +242,7 @@ let providers: any = [
   HomeIntegrationsProvider,
   FeeProvider,
   GlideraProvider,
+  HistoricLogProvider,
   IncomingDataProvider,
   LanguageProvider,
   MercadoLibreProvider,

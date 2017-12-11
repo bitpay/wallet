@@ -1,39 +1,38 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>About Copay</ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-
   <ion-list>
-    <ion-item-divider color="light">Release information</ion-item-divider>
+    <ion-item-divider color="light">{{'Release information'| translate}}</ion-item-divider>
     <ion-item>
       <ion-icon name="logo-github" item-start></ion-icon>
-      Version
+      {{'Version' | translate}}
       <ion-note item-end>
-        {{version}}
+        v{{version}}
       </ion-note>
     </ion-item>
-    <ion-item>
+    <ion-item class="commit-hash" (click)="openExternalLink()">
       <ion-icon name="git-commit" item-start></ion-icon>
-      Commit hash
+      {{'Commit hash' | translate}}
       <ion-note item-end>
-        {{commitHash}}
+        #{{commitHash}}
       </ion-note>
     </ion-item>
     <ion-item-divider color="light">&nbsp;</ion-item-divider>
-    <ion-item (click)="openTermsOfUse()">
+    <button ion-item (click)="openTermsOfUse()">
       <ion-icon name="people" item-start></ion-icon>
-      Terms of use
-    </ion-item>
-    <ion-item>
+      {{'Terms of use' | translate }}
+    </button>
+    <button ion-item (click)="openSessionLog()">
       <ion-icon name="paper" item-start></ion-icon>
-      Session log
-    </ion-item>
+      {{ 'Session log' | translate }}
+    </button>
   </ion-list>
 
 </ion-content>
