@@ -1364,7 +1364,7 @@ msgstr "礼品卡已生成，可以使用了。"
 #: src/js/controllers/tx-details.js:193
 #: src/js/controllers/tx-details.js:56
 msgid "Go Back"
-msgstr "返回	#"
+msgstr "返回"
 
 #: src/js/controllers/confirm.js:131
 #: src/js/controllers/onboarding/backupRequest.js:20
@@ -2038,7 +2038,7 @@ msgstr "打开 GitHub 项目"
 #: src/js/controllers/bitpayCard.js:123
 #: src/js/controllers/tx-details.js:192
 msgid "Open Insight"
-msgstr "开放的洞察力"
+msgstr "打开区块浏览器"
 
 #: www/views/tab-scan.html:22
 msgid "Open Settings"
