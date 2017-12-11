@@ -4,12 +4,6 @@ page-custom-amount {
     display: flex;
     justify-content: center;
   }
-  img {
-    &.icon-wallet {
-      width: 35px !important;
-      background-color: color($colors, primary);
-    }
-  }
   .wallet-label {
     align-items: center;
     display: flex;

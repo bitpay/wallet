@@ -34,7 +34,8 @@
     <ion-list>
       <button ion-item *ngFor="let item of walletList" (click)="goToAmount(item)">
         <ion-icon item-start>
-          <img src="assets/img/icon-wallet.svg" class="icon-wallet">
+          <img *ngIf="item.network == 'testnet'" [ngStyle]="{'background-color': item.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+          <img *ngIf="item.network != 'testnet'" [ngStyle]="{'background-color': item.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
         <h2>{{item.name}}</h2>
       </button>

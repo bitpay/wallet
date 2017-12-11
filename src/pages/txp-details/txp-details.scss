@@ -4,7 +4,7 @@ page-txp-details {
   $v-success-color: #1abb9b;
   $v-icon-border-radius: 3px;
   $item-label-color: #6C6C6E;
-  
+
   .item-md {
     padding: 0rem;
   }
@@ -51,8 +51,6 @@ page-txp-details {
       margin-top: 1rem;
       .icon-wallet {
         margin-right: 1rem;
-        width: 35px !important;
-        background-color: color($colors, primary);
         &.disabled {
           background-color: color($global-colors, light-grey);
         }

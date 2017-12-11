@@ -1,19 +1,20 @@
 page-home {
-   img {
-    &.icon-wallet {
-      width: 35px !important;
-      background-color: color($colors, primary);
+  .add-icon {
+    cursor: pointer;
+  }
+
+  .title-wallet {
+    color: color($colors, dark);
+    font-weight: 700;
+    >img {
+      width: 22px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
     }
   }
 
-  .header-icon {
-    font-size: 1.7rem !important;
-    color: silver;
-    margin: 0 !important;
-    padding: 10px !important;
-  }
-
   .error {
-    color: color($colors, danger) !important;
+    color: color($colors, danger);
   }
 }

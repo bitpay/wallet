@@ -77,13 +77,4 @@ page-amount {
       font-size: 12px;
     }
   }
-  img {
-    &.icon-wallet {
-      width: 35px !important;
-      background-color: color($colors, primary);
-    }
-    &.icon-contact {
-      width: 35px !important;      
-    }
-  }
 }

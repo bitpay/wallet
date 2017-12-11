@@ -1,15 +1,13 @@
 page-settings {
-	img {
-    &.icon-wallet {
-      width: 35px !important;
-      background-color: color($colors, primary);
-    }
-  }
   .assertive {
     color: color($colors, danger);
     ion-label {
       white-space: inherit;
     }
+  }
+  .icon-wallet {
+    width: 27px;
+    height: 27px;
   }
   ion-item {
 		cursor: pointer;
