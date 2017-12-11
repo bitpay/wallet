@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+//providers
+import { ConfigProvider } from '../../../providers/config/config';
+
 @Component({
   selector: 'page-advanced',
   templateUrl: 'advanced.html',
@@ -11,23 +14,50 @@ export class AdvancedPage {
   public recentTransactionsEnabled: boolean;
   public showNextSteps: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public configProvider: ConfigProvider
+  ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdvancedPage');
   }
 
-  spendUnconfirmedChange() {
-    console.log("this.spendUnconfirmed", this.spendUnconfirmed);
+  ionViewWillEnter() {
+    let config = this.configProvider.get();
+
+    this.spendUnconfirmed = config.wallet.spendUnconfirmed;
+    this.recentTransactionsEnabled = config.recentTransactions.enabled;
+    this.showNextSteps = config.showNextSteps.enabled;
   }
 
-  recentTransactionsChange() {
-    console.log("this.recentTransactionsEnabled", this.recentTransactionsEnabled);    
+  public spendUnconfirmedChange(): void {
+    let opts = {
+      wallet: {
+        spendUnconfirmed: this.spendUnconfirmed
+      }
+    };
+    this.configProvider.set(opts);
   }
 
-  nextStepsChange() {
-    console.log("this.showNextSteps", this.showNextSteps);    
+  public recentTransactionsChange(): void {
+    let opts = {
+      recentTransactions: {
+        enabled: this.recentTransactionsEnabled
+      }
+    };
+    this.configProvider.set(opts);
+  }
+
+  public nextStepsChange(): void {
+    let opts = {
+      showNextSteps: {
+        enabled: this.showNextSteps
+      },
+    };
+    this.configProvider.set(opts);
   }
 
 }
