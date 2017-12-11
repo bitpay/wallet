@@ -94,7 +94,7 @@ export class ConfirmPage {
     let tx: any = {
       toAddress: addressInfo.address,
       amount: this.navParams.data.amount,
-      sendMax: this.navParams.data.useSendMax == 'true' ? true : false,
+      sendMax: this.navParams.data.useSendMax ? true : false,
       description: this.navParams.data.description,
       paypro: this.navParams.data.paypro,
       feeLevel: this.configFeeLevel,
@@ -294,59 +294,94 @@ export class ConfirmPage {
         if (!this.usingCustomFee) tx.feeRate = feeRate;
         tx.feeLevelName = this.feeProvider.feeOpts[tx.feeLevel];
 
-        // TODO should call getSendMaxInfo if was selected from amount view
-        this.getSendMaxInfo(_.clone(tx), wallet).then((sendMaxInfo: any) => {
-          if (sendMaxInfo) {
-            this.logger.debug('Send max info', sendMaxInfo);
-
-            if (tx.sendMax && sendMaxInfo.amount == 0) {
-              this.onGoingProcessProvider.set('calculatingFee', false);
-              this.setNoWallet('Insufficient funds'); // TODO gettextCatalog
-              this.popupProvider.ionicAlert('Error', 'Not enough funds for fee').then(() => {
-                return resolve('no_funds');
-              }); // TODO gettextCatalog
-            }
-
-            tx.sendMaxInfo = sendMaxInfo;
-            tx.amount = tx.sendMaxInfo.amount;
-            this.onGoingProcessProvider.set('calculatingFee', false);
-            setTimeout(() => {
-              this.showSendMaxWarning(wallet, sendMaxInfo);
-            }, 200);
-          }
-
+        // call getSendMaxInfo if was selected from amount view
+        if (tx.sendMax) {
+          this.useSendMax(tx, wallet, opts).then(() => {
+            return resolve();
+          }).catch((err: any) => {
+            return reject(err);
+          });
+        } else {
           // txp already generated for this wallet?
           if (tx.txp[wallet.id]) {
             this.onGoingProcessProvider.set('calculatingFee', false);
             return resolve();
           }
 
-          this.getTxp(_.clone(tx), wallet, opts.dryRun).then((txp: any) => {
-            this.onGoingProcessProvider.set('calculatingFee', false);
-
-            let per = (txp.fee / (txp.amount + txp.fee) * 100);
-            txp.feeRatePerStr = per.toFixed(2) + '%';
-            txp.feeToHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
-
-            tx.txp[wallet.id] = txp;
-            this.tx = tx;
-            this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+          this.buildTxp(tx, wallet, opts).then(() => {
             return resolve();
           }).catch((err: any) => {
-            this.onGoingProcessProvider.set('calculatingFee', false);
             return reject(err);
           });
-        }).catch((err: any) => {
-          this.onGoingProcessProvider.set('calculatingFee', false);
-          let msg = 'Error getting SendMax information'; // TODO gettextCatalog
-          return reject(msg);
-        });
+        }
       }).catch((err: any) => {
         this.onGoingProcessProvider.set('calculatingFee', false);
         return reject(err);
       });
     });
 
+  }
+
+  private useSendMax(tx: any, wallet: any, opts: any) {
+    return new Promise((resolve, reject) => {
+      this.getSendMaxInfo(_.clone(tx), wallet).then((sendMaxInfo: any) => {
+        if (sendMaxInfo) {
+          this.logger.debug('Send max info', sendMaxInfo);
+
+          if (sendMaxInfo.amount == 0) {
+            this.onGoingProcessProvider.set('calculatingFee', false);
+            this.setNoWallet('Insufficient funds'); // TODO gettextCatalog
+            this.popupProvider.ionicAlert('Error', 'Not enough funds for fee').then(() => {
+              return resolve('no_funds');
+            }); // TODO gettextCatalog
+          }
+
+          tx.sendMaxInfo = sendMaxInfo;
+          tx.amount = tx.sendMaxInfo.amount;
+          this.onGoingProcessProvider.set('calculatingFee', false);
+          setTimeout(() => {
+            this.showSendMaxWarning(wallet, sendMaxInfo);
+          }, 200);
+        }
+
+        // txp already generated for this wallet?
+        if (tx.txp[wallet.id]) {
+          this.onGoingProcessProvider.set('calculatingFee', false);
+          return resolve();
+        }
+
+        this.buildTxp(tx, wallet, opts).then(() => {
+          return resolve();
+        }).catch((err: any) => {
+          return reject(err);
+        });
+
+      }).catch((err: any) => {
+        this.onGoingProcessProvider.set('calculatingFee', false);
+        let msg = 'Error getting SendMax information'; // TODO gettextCatalog
+        return reject(msg);
+      });
+    });
+  }
+
+  private buildTxp(tx: any, wallet: any, opts: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getTxp(_.clone(tx), wallet, opts.dryRun).then((txp: any) => {
+        this.onGoingProcessProvider.set('calculatingFee', false);
+
+        let per = (txp.fee / (txp.amount + txp.fee) * 100);
+        txp.feeRatePerStr = per.toFixed(2) + '%';
+        txp.feeToHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
+
+        tx.txp[wallet.id] = txp;
+        this.tx = tx;
+        this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+        return resolve();
+      }).catch((err: any) => {
+        this.onGoingProcessProvider.set('calculatingFee', false);
+        return reject(err);
+      });
+    });
   }
 
   private getSendMaxInfo(tx: any, wallet: any): Promise<any> {
@@ -368,8 +403,8 @@ export class ConfirmPage {
   }
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
-    let fee = sendMaxInfo.fee;
-    let msg = fee + " will be deducted for bitcoin networking fees.";
+    let fee = (sendMaxInfo.fee / 1e8);
+    let msg = fee + " " + this.coin.toUpperCase() + " will be deducted for bitcoin networking fees.";
     let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
     if (!_.isEmpty(warningMsg))
@@ -381,13 +416,13 @@ export class ConfirmPage {
   private verifyExcludedUtxos(wallet: any, sendMaxInfo: any): any {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
-      let amountBelowFeeStr = sendMaxInfo.amountBelowFee;
-      warningMsg.push("A total of " + amountBelowFeeStr + " were excluded. These funds come from UTXOs smaller than the network fee provided.");// TODO gettextCatalog
+      let amountBelowFeeStr = (sendMaxInfo.amountBelowFee / 1e8);
+      warningMsg.push("A total of " + amountBelowFeeStr + " " + this.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided.");// TODO gettextCatalog
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
-      let amountAboveMaxSizeStr = sendMaxInfo.amountAboveMaxSize;
-      warningMsg.push("A total of " + amountAboveMaxSizeStr + " were excluded. The maximum size allowed for a transaction was exceeded.");// TODO gettextCatalog
+      let amountAboveMaxSizeStr = (sendMaxInfo.amountAboveMaxSize / 1e8);
+      warningMsg.push("A total of " + amountAboveMaxSizeStr + " " + this.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded.");// TODO gettextCatalog
     }
     return warningMsg.join('\n');
   };

@@ -2,6 +2,11 @@
 
   <ion-navbar>
     <ion-title>{{'Amount' | translate}}</ion-title>
+    <ion-buttons end>
+      <button (click)="showSendMaxMenu()" ion-button icon-only>
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
