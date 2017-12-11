@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 //providers
@@ -38,13 +38,13 @@ export class AmountPage {
   public toAddress: string;
   public name: string;
   public email: string;
-  public showSendMax: boolean; // TODO send max menu
   public useSendMax: boolean;
   public config: any;
 
   private walletId: any;
 
   constructor(
+    private actionSheetCtrl: ActionSheetController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
@@ -79,6 +79,10 @@ export class AmountPage {
     this.setAvailableUnits();
   }
 
+  ionViewWillEnter() {
+    this.useSendMax = false;
+  }
+
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
     if (this.navCtrl.getActive().name != 'AmountPage') return;
     if (!event.key) return;
@@ -111,11 +115,25 @@ export class AmountPage {
   };
 
   public showSendMaxMenu(): void {
-    this.showSendMax = true;
+    let buttons: Array<any> = [];
+
+    let sendMaxButton: Object = {
+      text: 'Send Max amount',
+      icon: 'speedometer',
+      handler: () => {
+        this.sendMax();
+      }
+    }
+    buttons.push(sendMaxButton);
+
+    const actionSheet = this.actionSheetCtrl.create({
+      buttons: buttons
+    });
+
+    actionSheet.present();
   }
 
   public sendMax(): void {
-    this.showSendMax = false;
     this.useSendMax = true;
     this.finish();
   };
