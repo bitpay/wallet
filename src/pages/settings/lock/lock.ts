@@ -14,11 +14,11 @@ export class LockPage {
 
   constructor(
     private modalCtrl: ModalController,
-    private config: ConfigProvider,
+    private configProvider: ConfigProvider,
     private touchid: TouchIdProvider,
   ) {
 
-    this.lockOptions = this.config.get()['lock'];
+    this.lockOptions = this.configProvider.get()['lock'];
     this.options = [
       {
         method: 'Disabled',
@@ -61,6 +61,6 @@ export class LockPage {
 
   lockByFingerprint() {
     let lock = { method: 'Fingerprint', value: null, bannedUntil: null };
-    this.config.set({ lock });
+    this.configProvider.set({ lock });
   }
 }

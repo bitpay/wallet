@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'Session Log' | translate}}</ion-title>
+    <ion-buttons start>
+      <button (click)="showOptionsMenu()" ion-button icon-only>
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item class="log-entry">
+      <div *ngIf="filteredLogs && filteredLogs.length == 0">
+        <span translate>No entries for this log level</span>.
+        <a (click)="showOptionsMenu()" translate>Filter setting</a>.
+      </div>
+      <div *ngIf="filteredLogs && filteredLogs.length > 0">
+        <div *ngFor="let l of filteredLogs">
+          <span [ngClass]="{'energized': l.level=='warn', 'dark': l.level=='debug', 'positive': l.level=='info', 'assertive': l.level=='error'}">
+              <span class="log-timestamp">[{{l.timestamp}}]</span>
+          <span class="log-level">[{{l.level}}]</span> {{l.msg}}
+          </span>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+  <!--   <log-options log-options-show="showOptions" log-options="logOptions" log-options-fill-class="fillClass" log-options-on-select="setOptionSelected"
+    log-options-on-copy="prepareLogs" log-options-on-send="sendLogs">
+  </log-options> -->
+</ion-content>

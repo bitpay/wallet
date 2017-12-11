@@ -23,7 +23,7 @@ export class PinModalPage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private config: ConfigProvider,
+    private configProvider: ConfigProvider,
     private logger: Logger,
     private viewCtrl: ViewController
   ) {
@@ -40,7 +40,7 @@ export class PinModalPage {
     }
 
     if (this.action === 'checkPin' || this.action === 'removeLock') {
-      let config = this.config.get();
+      let config = this.configProvider.get();
       let bannedUntil = config['lock']['bannedUntil'];
       if (bannedUntil) {
         let now = Math.floor(Date.now() / 1000);
@@ -122,17 +122,17 @@ export class PinModalPage {
 
   save(): void {
     let lock = { method: 'PIN', value: this.currentPin, bannedUntil: null };
-    this.config.set({ lock });
+    this.configProvider.set({ lock });
     this.viewCtrl.dismiss();
   }
 
   checkIfCorrect(): void {
-    let config = this.config.get();
+    let config = this.configProvider.get();
     let pinValue = config['lock'] && config['lock']['value'];
     if (pinValue == this.currentPin) {
       if (this.action === 'removeLock') {
         let lock = { method: 'Disabled', value: null, bannedUntil: null };
-        this.config.set({ lock });
+        this.configProvider.set({ lock });
         this.viewCtrl.dismiss();
       }
       if (this.action === 'checkPin') this.viewCtrl.dismiss();
@@ -149,7 +149,7 @@ export class PinModalPage {
 
   saveFailedAttempt(bannedUntil) {
     let lock = { bannedUntil: bannedUntil };
-    this.config.set({ lock });
+    this.configProvider.set({ lock });
   }
 
 }
