@@ -20,7 +20,7 @@ export class ExternalLinkProvider {
 
 
   private restoreHandleOpenURL(old: string): void {
-    setTimeout(function () {
+    setTimeout(() => {
       (window as any).handleOpenURL = old;
     }, 500);
   }

@@ -111,15 +111,22 @@ import { KeysPipe } from '../pipes/keys';
 import { AddressProvider } from '../providers/address/address';
 import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AppProvider } from '../providers/app/app';
+import { AmazonProvider } from '../providers/amazon/amazon';
 import { BackupProvider } from '../providers/backup/backup';
+import { BitPayProvider } from '../providers/bitpay/bitpay';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../providers/config/config';
+import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../providers/external-link/external-link';
 import { FeeProvider } from '../providers/fee/fee';
+import { GlideraProvider } from '../providers/glidera/glidera';
+import { HomeIntegrationsProvider } from '../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
+import { NextStepsProvider } from '../providers/next-steps/next-steps';
+import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
 import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
 import { PayproProvider } from '../providers/paypro/paypro';
@@ -217,17 +224,24 @@ let providers: any = [
   AddressBookProvider,
   AndroidFingerprintAuth,
   AppProvider,
+  AmazonProvider,
   BackupProvider,
+  BitPayProvider,
   BwcProvider,
   BwcErrorProvider,
   ConfigProvider,
+  CoinbaseProvider,
   Clipboard,
   DerivationPathHelperProvider,
   ExternalLinkProvider,
   FCM,
+  HomeIntegrationsProvider,
   FeeProvider,
+  GlideraProvider,
   IncomingDataProvider,
   LanguageProvider,
+  MercadoLibreProvider,
+  NextStepsProvider,
   NodeWebkitProvider,
   OnGoingProcessProvider,
   PayproProvider,

@@ -107,7 +107,7 @@ export class Profile {
     if (!this.hasWallet(walletId))
       return false;
 
-    this.credentials = this.credentials.filter(function (c) {
+    this.credentials = this.credentials.filter((c) => {
       return c.walletId != walletId;
     });
 

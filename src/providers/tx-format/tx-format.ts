@@ -23,9 +23,9 @@ export class TxFormatProvider {
           tx.recipientCount = outputsNr;
           tx.hasMultiplesOutputs = true;
         }
-        tx.amount = _.reduce(tx.outputs, function (total: any, o: any) {
-          o.amountStr = this.formatAmountStr(coin, o.amount);
-          o.alternativeAmountStr = this.formatAlternativeStr(coin, o.amount);
+        tx.amount = _.reduce(tx.outputs, (total: any, o: any) => {
+          /* o.amountStr = this.formatAmountStr(coin, o.amount);
+          o.alternativeAmountStr = this.formatAlternativeStr(coin, o.amount); */
           return total + o.amount;
         }, 0);
       }
@@ -62,7 +62,7 @@ export class TxFormatProvider {
     txps.push(txp);
     */
 
-    _.each(txps, function (tx) {
+    _.each(txps, (tx) => {
 
       // no future transactions...
       if (tx.createdOn > now)

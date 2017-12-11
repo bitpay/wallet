@@ -31,6 +31,7 @@ const Keys = {
   HOME_TIP: 'homeTip',
   LAST_ADDRESS: walletId => 'lastAddress-' + walletId,
   LAST_CURRENCY_USED: 'lastCurrencyUsed',
+  MERCADO_LIBRE: network => 'MercadoLibreGiftCards-' + network,
   PROFILE: 'profile',
   REMOTE_PREF_STORED: 'remotePrefStored',
   TX_CONFIRM_NOTIF: txid => 'txConfirmNotif-' + txid,
@@ -449,7 +450,7 @@ export class PersistenceProvider {
           if (account.cards) {
             // Add account's email to each card
             var cards = _.clone(account.cards);
-            _.each(cards, function (x) {
+            _.each(cards, (x) => {
               x.email = email;
             });
 
@@ -463,7 +464,7 @@ export class PersistenceProvider {
   removeBitpayDebitCard(network: string, cardEid: string): Promise<void> {
     return this.getBitpayAccounts(network)
       .then(allAccounts => {
-        return _.each(allAccounts, function (account) {
+        return _.each(allAccounts, (account) => {
           account.cards = _.reject(account.cards, {
             eid: cardEid
           });
@@ -472,4 +473,17 @@ export class PersistenceProvider {
         return this.storage.set(Keys.BITPAY_ACCOUNTS_V2(network), allAccounts);
       });
   };
+
+  setMercadoLibreGiftCards(network, gcs): Promise<void> {
+    return this.storage.set((Keys.MERCADO_LIBRE(network)), gcs);
+  };
+
+  getMercadoLibreGiftCards(network): Promise<void> {
+    return this.storage.get((Keys.MERCADO_LIBRE(network)));
+  };
+
+  removeMercadoLibreGiftCards(network): Promise<void> {
+    return this.storage.remove((Keys.MERCADO_LIBRE(network)));
+  };
+
 }
