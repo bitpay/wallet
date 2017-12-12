@@ -32,9 +32,9 @@ export class TxDetailsPage {
   ionViewDidLoad() {
     const txid = this.navParams.data.txid;
 
-    this.onGoingProcess.set('loadingTx', true);
+    this.onGoingProcess.set('loadingTxInfo', true);
     this.walletProvider.getTx(this.wallet, txid).then((tx) => {
-      this.onGoingProcess.set('loadingTx', false);
+      this.onGoingProcess.set('loadingTxInfo', false);
       this.tx = tx;
       if (this.tx.action == 'sent') this.title = 'Sent Funds';
       if (this.tx.action == 'received') this.title = 'Received Funds';
