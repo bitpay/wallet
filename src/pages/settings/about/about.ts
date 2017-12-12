@@ -22,12 +22,12 @@ export class AboutPage {
   constructor(
     private navCtrl: NavController,
     private app: AppProvider,
-    private log: Logger,
+    private logger: Logger,
     private externalLinkProvider: ExternalLinkProvider
   ) { }
 
   ionViewDidLoad() {
-    this.log.log('ionViewDidLoad AboutPage');
+    this.logger.debug('ionViewDidLoad AboutPage');
     this.commitHash = this.app.info.commitHash;
     this.version = this.app.info.version;
     this.title = 'About' + ' ' + this.app.info.nameCase;

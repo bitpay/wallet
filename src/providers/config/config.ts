@@ -64,7 +64,7 @@ interface Config {
     enabled: boolean;
   };
 
-  hideNextSteps: {
+  showNextSteps: {
     enabled: boolean;
   };
 
@@ -156,8 +156,8 @@ const configDefault: Config = {
     enabled: true
   },
 
-  hideNextSteps: {
-    enabled: false
+  showNextSteps: {
+    enabled: true
   },
 
   rates: {
@@ -246,8 +246,8 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
     }
 
-    if (!this.configCache.hideNextSteps) {
-      this.configCache.hideNextSteps = configDefault.hideNextSteps;
+    if (!this.configCache.showNextSteps) {
+      this.configCache.showNextSteps = configDefault.showNextSteps;
     }
 
     if (!this.configCache.recentTransactions) {
