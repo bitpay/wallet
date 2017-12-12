@@ -4,6 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <div *ngIf="wallet && !credentialsEncrypted">
     <h1 translate>Warning!</h1>
     <div>

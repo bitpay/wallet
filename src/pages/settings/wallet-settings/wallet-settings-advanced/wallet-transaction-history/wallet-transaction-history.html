@@ -4,6 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <!-- TODO <ion-item *ngIf="csvReady && !isCordova" ng-csv="csvContent" csv-header="csvHeader" filename="{{appName}}-{{wallet.name}}.csv">
     <span translate>Export to file</span>
   </ion-item>

@@ -4,6 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <form [formGroup]="walletServiceForm" (ngSubmit)="save()">
     <ion-item>
       <ion-label stacked translate>Wallet Service URL</ion-label>

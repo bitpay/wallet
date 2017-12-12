@@ -49,6 +49,7 @@ import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 
 /*Includes */
 import { WalletInfoPage } from '../pages/includes/wallet-info/wallet-info';
+import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 
@@ -223,6 +224,7 @@ let pages: any = [
   TxDetailsPage,
   WalletDetailsPage,
   WalletInfoPage,
+  WalletItemPage,
   TxpPage,
   WalletActivityPage,
 ];
