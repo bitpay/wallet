@@ -36,14 +36,6 @@
     <button ion-button (click)="goCopayers()" translate>Open wallet</button>
   </div>
 
-  <div *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()">
-    <img src="assets/img/icon-wallet.svg" [ngStyle]="{'background-color': wallet.color}" class="icon-wallet" *ngIf="wallet.network == 'livenet'">
-    <img src="assets/img/icon-wallet-testnet.svg" [ngStyle]="{'background-color': wallet.color}" class="icon-wallet" *ngIf="wallet.network == 'testnet'">
-    <div class="wallet-text">
-      <div>{{wallet.name}}</div>
-    </div>
-  </div>
-
   <div *ngIf="!wallet">
     <ion-card>
       <ion-item>
@@ -52,3 +44,13 @@
     </ion-card>
   </div>
 </ion-content>
+
+<ion-footer>
+  <div *ngIf="wallets[0]" class="wallets-container" (click)="showWallets()">
+    <img src="assets/img/icon-wallet.svg" [ngStyle]="{'background-color': wallet.color}" class="icon-wallet" *ngIf="wallet.network == 'livenet'">
+    <img src="assets/img/icon-wallet-testnet.svg" [ngStyle]="{'background-color': wallet.color}" class="icon-wallet" *ngIf="wallet.network == 'testnet'">
+    <div class="wallet-text">
+      <div>{{wallet.name}}</div>
+    </div>
+  </div>
+</ion-footer>

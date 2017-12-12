@@ -106,8 +106,6 @@
   </ion-list>
 </ion-content>
 
-<ion-footer no-shadow>
-  <ion-toolbar position="bottom">
-    <button ion-button full (click)="approve(tx, wallet, statusChangeHandler)" [disabled]="!wallet" translate>Click to send</button>
-  </ion-toolbar>
+<ion-footer>
+  <button ion-button block class="button-footer" (click)="approve(tx, wallet, statusChangeHandler)" [disabled]="!wallet" translate>Click to send</button>
 </ion-footer>

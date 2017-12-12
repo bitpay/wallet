@@ -47,7 +47,7 @@ export class SendPage {
     console.log('ionViewDidLoad SendPage');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true
     });
@@ -57,7 +57,10 @@ export class SendPage {
   }
 
   private updateWalletsList(): void {
-    if (!this.hasWallets) return;
+    if (!this.hasWallets) {
+      this.walletList = [];
+      return;
+    }
 
     this.walletList = [];
     _.each(this.wallets, (v: any) => {

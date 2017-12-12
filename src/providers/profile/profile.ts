@@ -915,7 +915,7 @@ export class ProfileProvider {
       };
 
       let w = this.getWallets();
-      if (_.isEmpty(w)) return resolve();
+      if (_.isEmpty(w)) return reject('Could not find any wallet');
 
       let l = w.length;
       let j = 0;
