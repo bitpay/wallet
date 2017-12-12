@@ -12,7 +12,7 @@ export class PayproProvider {
     private logger: Logger,
     private onGoingProcessProvider: OnGoingProcessProvider
   ) {
-    console.log('Hello PayproProvider Provider');
+    this.logger.info('PayproProvider initialized');
   }
 
   public getPayProDetails(uri: string, disableLoader?: boolean): Promise<any> {

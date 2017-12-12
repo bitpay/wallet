@@ -41,10 +41,10 @@ export class SendPage {
     private bwcProvider: BwcProvider,
     private incomingDataProvider: IncomingDataProvider,
     private popupProvider: PopupProvider
-  ) {}
+  ) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SendPage');
+    this.logger.info('ionViewDidLoad SendPage');
   }
 
   ionViewWillEnter() {

@@ -36,7 +36,7 @@ export class CopayApp {
     private logger: Logger,
     private app: AppProvider,
     private profile: ProfileProvider,
-    private config: ConfigProvider,
+    private configProvider: ConfigProvider,
     private modalCtrl: ModalController,
     private glideraProvider: GlideraProvider,
     private coinbaseProvider: CoinbaseProvider,
@@ -86,7 +86,7 @@ export class CopayApp {
   }
 
   private openLockModal(): void {
-    let config: any = this.config.get();
+    let config: any = this.configProvider.get();
     let lockMethod = config.lock.method;
     if (!lockMethod) return;
     if (lockMethod == 'PIN') this.openPINModal('checkPin');

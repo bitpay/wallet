@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PlatformProvider } from '../platform/platform';
 import { ConfigProvider } from '../config/config';
+import { Logger } from '@nsalaun/ng-logger';
 
 import { TouchID } from '@ionic-native/touch-id';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
@@ -14,34 +15,35 @@ export class TouchIdProvider {
     private touchId: TouchID,
     private androidFingerprintAuth: AndroidFingerprintAuth,
     private platform: PlatformProvider,
-    private config: ConfigProvider
+    private config: ConfigProvider,
+    private logger: Logger
   ) { }
 
-  init() {
+  public init(): void {
     if (this.platform.isCordova) {
       if (this.platform.isAndroid) this.checkAndroid();
       if (this.platform.isIOS) this.checkIOS();
     }
   }
 
-  checkIOS() {
+  private checkIOS(): void {
     this.touchId.isAvailable()
       .then(
       res => this._isAvailable = true,
-      err => console.log("Fingerprint is not available")
+      err => this.logger.debug("Fingerprint is not available")
       );
   }
 
-  checkAndroid() {
+  private checkAndroid(): void {
     this.androidFingerprintAuth.isAvailable()
       .then(
       res => {
         if (res.isAvailable) this._isAvailable = true
-        else console.log("Fingerprint is not available")
+        else this.logger.debug("Fingerprint is not available")
       });
   }
 
-  verifyIOSFingerprint(): Promise<any> {
+  private verifyIOSFingerprint(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.touchId.verifyFingerprint('Scan your fingerprint please')
         .then(
@@ -51,34 +53,34 @@ export class TouchIdProvider {
     });
   }
 
-  verifyAndroidFingerprint(): Promise<any> {
+  private verifyAndroidFingerprint(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.androidFingerprintAuth.encrypt({ clientId: 'Copay' })
         .then(result => {
           if (result.withFingerprint) {
-            console.log('Successfully authenticated with fingerprint.');
+            this.logger.debug('Successfully authenticated with fingerprint.');
             resolve();
           } else if (result.withBackup) {
-            console.log('Successfully authenticated with backup password!');
+            this.logger.debug('Successfully authenticated with backup password!');
             resolve();
-          } else console.log('Didn\'t authenticate!');
+          } else this.logger.debug('Didn\'t authenticate!');
         }).catch(error => {
           if (error === this.androidFingerprintAuth.ERRORS.FINGERPRINT_CANCELLED) {
-            console.log('Fingerprint authentication cancelled');
+            this.logger.debug('Fingerprint authentication cancelled');
             reject();
           } else {
-            console.error(error);
+            this.logger.warn(error);
             resolve();
           };
         });
     });
   }
 
-  isAvailable() {
+  public isAvailable(): boolean {
     return this._isAvailable;
   }
 
-  check(): Promise<any> {
+  public check(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.isAvailable()) reject();
       if (this.platform.isIOS) {
@@ -102,7 +104,7 @@ export class TouchIdProvider {
     });
   }
 
-  isNeeded(wallet: any) {
+  private isNeeded(wallet: any): string {
     let config: any = this.config.get();
     config.touchIdFor = config.touchIdFor || {};
     return config.touchIdFor[wallet.credentials.walletId];

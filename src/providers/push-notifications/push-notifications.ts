@@ -37,7 +37,7 @@ export class PushNotificationsProvider {
     private bwcProvider: BwcProvider,
     private FCMPlugin: FCM
   ) {
-    console.log('Hello PushNotificationsProvider Provider');
+    this.logger.info('PushNotificationsProvider initialized.');
     this.isIOS = this.platformProvider.isIOS;
     this.isAndroid = this.platformProvider.isAndroid;
     this.usePushNotifications = this.platformProvider.isCordova && !this.platformProvider.isWP;

@@ -89,7 +89,7 @@ export class ConfirmPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ConfirmPage');
+    this.logger.info('ionViewDidLoad ConfirmPage');
     let addressInfo = this.navParams.data.addressInfo;
     let tx: any = {
       toAddress: addressInfo.address,
@@ -397,7 +397,7 @@ export class ConfirmPage {
       }).then((res: any) => {
         resolve(res);
       }).catch((err: any) => {
-        console.log(err);
+        this.logger.warn(err);
       });
     });
   }

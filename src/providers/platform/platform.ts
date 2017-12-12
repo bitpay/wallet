@@ -16,12 +16,12 @@ export class PlatformProvider {
 
   constructor(
     private platform: Platform,
-    private log: Logger
+    private logger: Logger
   ) {
     let ua: any = navigator ? navigator.userAgent : null;
 
     if (!ua) {
-      console.log('Could not determine navigator. Using fixed string');
+      this.logger.info('Could not determine navigator. Using fixed string');
       ua = 'dummy user-agent';
     }
 
@@ -37,7 +37,7 @@ export class PlatformProvider {
     this.isMobile = this.platform.is('mobile');
     this.isDevel = !this.isMobile && !this.isNW;
 
-    this.log.info('PlatformProvider initialized.');
+    this.logger.info('PlatformProvider initialized.');
   }
 
   public getBrowserName(): string {

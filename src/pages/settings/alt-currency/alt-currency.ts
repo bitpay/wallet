@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import * as _ from 'lodash';
 import { Logger } from '@nsalaun/ng-logger';
 
-// PRoviders
+// Providers
 import { ConfigProvider } from '../../../providers/config/config';
 import { RateProvider } from '../../../providers/rate/rate';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-alt-currency',
@@ -82,7 +83,7 @@ export class AltCurrencyPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AltCurrencyPage');
+    this.logger.info('ionViewDidLoad AltCurrencyPage');
   }
 
   public save(newAltCurrency: any): void {

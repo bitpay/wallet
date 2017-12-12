@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
 export class BackupProvider {
 
-  constructor() {
-    console.log('Hello BackupProvider Provider');
+  constructor(
+    private logger: Logger
+  ) {
+    this.logger.info('BackupProvider initialized.');
     //TODO
   }
 

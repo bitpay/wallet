@@ -37,7 +37,7 @@ export class WalletServiceUrlPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletServiceUrlPage');
+    this.logger.info('ionViewDidLoad WalletServiceUrlPage');
   }
 
   ionViewWillEnter() {

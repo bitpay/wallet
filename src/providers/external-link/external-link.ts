@@ -15,7 +15,7 @@ export class ExternalLinkProvider {
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider
   ) {
-    console.log('Hello ExternalLinkProvider Provider');
+    this.logger.info('ExternalLinkProvider initialized.');
   }
 
 

@@ -18,7 +18,7 @@ export class RateProvider {
     private http: HttpClient,
     private logger: Logger
   ) {
-    console.log('Hello RateProvider Provider');
+    this.logger.info('RateProvider initialized.');
     this.rates = {};
     this.alternatives = [];
     this.ratesBCH = {};

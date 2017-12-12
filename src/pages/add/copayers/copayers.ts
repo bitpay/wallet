@@ -47,7 +47,7 @@ export class CopayersPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CopayersPage');
+    this.logger.info('ionViewDidLoad CopayersPage');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.updateWallet();
 

@@ -65,7 +65,7 @@ export class ScanPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ScanPage');
+    this.logger.info('ionViewDidLoad ScanPage');
   }
 
   ionViewWillLeave() {

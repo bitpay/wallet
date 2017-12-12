@@ -41,7 +41,6 @@ export class ActivityPage {
     this.profileProvider.getNotifications(50).then((nData: any) => {
       this.fetchingNotifications = false;
       this.notifications = nData.notifications;
-      console.log(nData.notifications);
       this.profileProvider.getTxps({}).then((txpsData: any) => {
         this.txps = txpsData.txps;
       }).catch((err) => {

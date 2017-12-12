@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
+
+//providers
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
+
+//pages
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 
 @Component({
@@ -22,7 +27,8 @@ export class WalletDetailsPage {
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    public events: Events
+    private events: Events,
+    private logger: Logger
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.history = [];
@@ -31,10 +37,10 @@ export class WalletDetailsPage {
     this.walletNotRegistered = null;
     this.updateError = null;
   }
-  
+
   ionViewDidEnter() {
     if (!this.wallet.isComplete()) {
-      console.log('Wallet incomplete');
+      this.logger.debug('Wallet incomplete');
       return;
     };
     this.updateStatus();
@@ -42,7 +48,7 @@ export class WalletDetailsPage {
       this.updateStatus(true);
     });
   }
-  
+
   toggleBalance() {
     this.profileProvider.toggleHideBalanceFlag(this.wallet.credentials.walletId);
   }
@@ -64,14 +70,14 @@ export class WalletDetailsPage {
       this.history = [];
       this.HISTORY_PAGE_COUNTER = 2;
     }
-    
+
     this.wallet.updating = true;
     this.walletProvider.getStatus(this.wallet, { force: !!force }).then((status) => {
       this.wallet.status = status;
-      
+
       this.walletProvider.getTxHistory(this.wallet, { force: !!force }).then((txh) => {
         this.wallet.updating = false;
-        
+
         this.wallet.error = null;
         this.wallet.completeHistory = txh;
         this.wallet.completeHistory.isValid = true;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
 import { HomePage } from '../../../pages/home/home';
@@ -37,7 +38,8 @@ export class JoinWalletPage implements OnInit {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private logger: Logger
   ) {
     this.defaults = this.configProvider.getDefaults();
 
@@ -78,7 +80,7 @@ export class JoinWalletPage implements OnInit {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad JoinWalletPage');
+    this.logger.info('ionViewDidLoad JoinWalletPage');
     this.resetFormFields();
   }
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoadingController } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
 export class OnGoingProcessProvider {
@@ -8,8 +9,9 @@ export class OnGoingProcessProvider {
 
   constructor(
     private loadingCtrl: LoadingController,
+    private logger: Logger
   ) {
-    console.log('Hello OnGoingProcessProvider Provider');
+    this.logger.info('OnGoingProcessProvider initialized.');
     // TODO gettextcatalog()
     this.processNames = {
       'calculatingFee': 'Calculating fee',

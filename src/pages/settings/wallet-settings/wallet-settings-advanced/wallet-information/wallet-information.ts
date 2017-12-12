@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -43,13 +44,14 @@ export class WalletInformationPage {
     private configProvider: ConfigProvider,
     private navParams: NavParams,
     private navCtrl: NavController,
-    private events: Events
+    private events: Events,
+    private logger: Logger
   ) {
 
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletInformationPage');
+    this.logger.info('ionViewDidLoad WalletInformationPage');
   }
 
   ionViewWillEnter() {

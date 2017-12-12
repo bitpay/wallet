@@ -27,7 +27,7 @@ export class BitPayCardProvider {
     private nextStepsProvider: NextStepsProvider,
     private appProvider: AppProvider
   ) {
-    console.log('BitPayCardProvider initialized');
+    this.logger.info('BitPayCardProvider initialized');
     /*
     * CONSTANTS
     */

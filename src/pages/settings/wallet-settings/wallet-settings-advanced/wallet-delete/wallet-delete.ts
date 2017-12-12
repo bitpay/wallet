@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -26,12 +27,13 @@ export class WalletDeletePage {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
+    private logger: Logger
   ) {
 
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletDeletePage');
+    this.logger.info('ionViewDidLoad WalletDeletePage');
   }
 
   ionViewWillEnter() {

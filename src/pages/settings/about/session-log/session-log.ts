@@ -33,7 +33,7 @@ export class SessionLogPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SessionLogPage');
+    this.logger.info('ionViewDidLoad SessionLogPage');
   }
 
   ionViewWillEnter() {

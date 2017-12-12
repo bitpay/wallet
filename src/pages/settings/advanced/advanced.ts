@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -15,14 +15,13 @@ export class AdvancedPage {
   public showNextSteps: boolean;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private logger: Logger
   ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AdvancedPage');
+    this.logger.info('ionViewDidLoad AdvancedPage');
   }
 
   ionViewWillEnter() {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -24,12 +25,13 @@ export class CustomAmountPage {
     private navParams: NavParams,
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private logger: Logger
   ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CustomAmountPage');
+    this.logger.info('ionViewDidLoad CustomAmountPage');
     this.address = this.navParams.data.addressInfo.address;
     this.amount = this.navParams.data.amount;
     let walletId = this.navParams.data.walletId;
