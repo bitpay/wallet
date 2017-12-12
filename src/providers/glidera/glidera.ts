@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from '../persistence/persistence';
 import { BuyAndSellProvider } from '../buy-and-sell/buy-and-sell';
+import { AppProvider } from '../app/app';
 
 import * as _ from 'lodash';
 
@@ -21,22 +22,20 @@ export class GlideraProvider {
     private http: HttpClient,
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
-    private buyAndSellProvider: BuyAndSellProvider
+    private buyAndSellProvider: BuyAndSellProvider,
+    private appProvider: AppProvider
   ) {
-    this.logger.info('GlideraProvider initialized.');
-
+    this.logger.info('GlideraProvider initialized');
     this.credentials = {};
     this.isCordova = this.platformProvider.isCordova;
-    this.setCredentials();
-    this.register();
   }
 
-  private setCredentials() {
-    if (!(window as any).externalServices || !(window as any).externalServices.glidera) {
+  public setCredentials() {
+    if (!this.appProvider.servicesInfo || !this.appProvider.servicesInfo.glidera) {
       return;
     }
 
-    var glidera = (window as any).externalServices.glidera;
+    var glidera = this.appProvider.servicesInfo.glidera;
 
     /*
      * Development: 'testnet'
@@ -523,14 +522,13 @@ export class GlideraProvider {
     });
   }
 
-  private register() {
+  public register() {
     this.persistenceProvider.getGlideraToken(this.credentials.NETWORK).then((token) => {
       this.buyAndSellProvider.register({
         name: 'glidera',
         logo: 'img/glidera-logo.png',
         location: 'US Only',
-        sref: 'tabs.buyandsell.glidera',
-        configSref: 'tabs.preferences.glidera',
+        page: 'GlideraPage',
         linked: !!token,
       });
     });

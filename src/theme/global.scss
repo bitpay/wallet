@@ -38,6 +38,17 @@ $global-colors: (
   background-size: 103%;
 }
 
+.icon-services {
+  background-color: none;
+  border-radius: 50%;
+  width: 37px;
+  height: 37px;
+  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-size: 103%;
+}
+
 .icon-contact {
   width: 35px;
 }

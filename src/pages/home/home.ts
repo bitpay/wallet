@@ -24,6 +24,10 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
 import { PlatformProvider } from '../../providers/platform/platform';
+import { BuyAndSellProvider } from '../../providers/buy-and-sell/buy-and-sell';
+import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
+import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
+import { NextStepsProvider } from '../../providers/next-steps/next-steps';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -47,6 +51,11 @@ export class HomePage {
   public addressbook: any;
   public newRelease: boolean;
   public updateText: string;
+  public homeIntegrations: Array<any>;
+  public buyAndSellItems: Array<any>;
+  public bitpayCardItems: Array<any>;
+  public nextStepsItems: Array<any>;
+  public hideNextSteps: boolean;
 
   private isNW: boolean;
 
@@ -66,15 +75,39 @@ export class HomePage {
     private modalCtrl: ModalController,
     private addressBookProvider: AddressBookProvider,
     private app: AppProvider,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private buyAndSellProvider: BuyAndSellProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private bitPayCardProvider: BitPayCardProvider,
+    private nextStepsProvider: NextStepsProvider
   ) {
     this.cachedBalanceUpdateOn = '';
-    this.config = this.configProvider.get();
     this.isNW = this.platformProvider.isNW;
+    this.hideNextSteps = false;
   }
 
   ionViewWillEnter() {
+    this.config = this.configProvider.get();
     this.wallets = this.profileProvider.getWallets();
+
+    this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
+    if (this.recentTransactionsEnabled) this.getNotifications();
+
+    this.pushNotificationsProvider.init();
+
+    this.buyAndSellItems = this.buyAndSellProvider.getLinked();
+    this.homeIntegrations = this.homeIntegrationsProvider.get();
+
+    this.bitPayCardProvider.get({}, (err, cards) => {
+      this.bitpayCardItems = cards;
+    });
+
+    if (this.config.showNextSteps.enabled) {
+      this.nextStepsItems = this.nextStepsProvider.get();
+    } else {
+      this.nextStepsItems = null;
+    }
+
   }
 
   ionViewDidEnter() {
@@ -99,11 +132,6 @@ export class HomePage {
       this.updateWallet(wallet);
       if (this.recentTransactionsEnabled) this.getNotifications();
     });
-
-    this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
-    if (this.recentTransactionsEnabled) this.getNotifications();
-
-    this.pushNotificationsProvider.init();
   }
 
   ionViewWillLeave() {
@@ -189,16 +217,16 @@ export class HomePage {
     //TODO check if new update
     this.releaseProvider.getLatestAppVersion()
       .then((version) => {
-        console.log('Current app version:', version);
+        this.logger.debug('Current app version:', version);
         var result = this.releaseProvider.checkForUpdates(version);
-        console.log('Update available:', result.updateAvailable);
+        this.logger.debug('Update available:', result.updateAvailable);
         if (result.updateAvailable) {
           this.newRelease = true;
           this.updateText = 'There is a new version of ' + this.app.info.nameCase + ' available';
         }
       })
       .catch((err) => {
-        console.log('Error:', err);
+        this.logger.warn('Error:', err);
       })
   }
 
@@ -265,5 +293,22 @@ export class HomePage {
 
   public openActivityPage(): void {
     this.navCtrl.push(ActivityPage);
+  }
+
+  public goTo(page): void {
+    switch (page) {
+      case 'MercadoLibrePage':
+        //push MercadolibrePage
+        break;
+      case 'AmazonPage':
+        //push AmazonPage
+        break;
+      case 'BitPayCardIntroPage':
+        //push BitPayCardIntroPage
+        break;
+      case 'BuyAndSellPage':
+        //push BuyAndSellPage
+        break;
+    }
   }
 }

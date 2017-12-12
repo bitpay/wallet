@@ -2,8 +2,7 @@ page-home {
   .add-icon {
     cursor: pointer;
   }
-
-  .title-wallet {
+  .title {
     color: color($colors, dark);
     font-weight: 700;
     >img {
@@ -13,7 +12,6 @@ page-home {
       margin-right: 10px;
     }
   }
-
   .error {
     color: color($colors, danger);
   }

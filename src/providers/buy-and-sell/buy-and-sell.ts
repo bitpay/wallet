@@ -18,6 +18,7 @@ export class BuyAndSellProvider {
     private logger: Logger,
     private nextStepsProvider: NextStepsProvider
   ) {
+    console.log('Hello BuyAndSellProvider Provider');
     this.updateNextStepsDebunced = _.debounce(this.update, 1000);
     this.services = [];
     this.linkedServices = [];
@@ -43,8 +44,8 @@ export class BuyAndSellProvider {
       this.nextStepsProvider.register({
         title: 'Buy or Sell Bitcoin',
         name: 'buyandsell',
-        icon: 'icon-buy-bitcoin',
-        sref: 'tabs.buyandsell',
+        icon: 'assets/img/app/icon-bitcoin.svg',
+        page: 'BuyAndSellPage',
       });
     } else {
       this.nextStepsProvider.unregister({
@@ -56,7 +57,7 @@ export class BuyAndSellProvider {
 
   public register(serviceInfo) {
     this.services.push(serviceInfo);
-    this.logger.info('Adding Buy and Sell service:' + serviceInfo.name + ' linked:' + serviceInfo.linked);
+    this.logger.info('Adding Buy and Sell service: ' + serviceInfo.name + ' linked: ' + serviceInfo.linked);
     this.updateNextStepsDebunced();
   }
 
@@ -65,7 +66,7 @@ export class BuyAndSellProvider {
     var service = _.find(this.services, (x) => {
       return x.name == name;
     });
-    this.logger.info('Updating Buy and Sell service:' + name + ' linked:' + linked);
+    this.logger.info('Updating Buy and Sell service: ' + name + ' linked: ' + linked);
     service.linked = linked
 
     this.update();
