@@ -52,6 +52,8 @@ export class ActivityPage {
   }
 
   public openNotificationModal(n: any): void {
+    let wallet = this.profileProvider.getWallet(n.walletId);
+
     if (n.txid) {
       this.navCtrl.push(TxDetailsPage, { txid: n.txid, walletId: n.walletId });
     } else {
@@ -64,7 +66,7 @@ export class ActivityPage {
       }
       else {
         this.onGoingProcessProvider.set('loadingTxInfo', true);
-        this.walletProvider.getTxp(n.wallet, n.txpId).then((txp) => {
+        this.walletProvider.getTxp(wallet, n.txpId).then((txp) => {
           let _txp = txp;
           this.onGoingProcessProvider.set('loadingTxInfo', false);
           let modal = this.modalCtrl.create(TxpDetailsPage, { tx: _txp }, { showBackdrop: false, enableBackdropDismiss: false });

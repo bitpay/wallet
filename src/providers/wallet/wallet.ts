@@ -334,7 +334,7 @@ export class WalletProvider {
     });
   }
 
-  public getTxHistory(wallet: any, opts: any) {
+  public getTxHistory(wallet: any, opts?: any) {
     return new Promise((resolve, reject) => {
       opts = opts || {};
 
@@ -348,7 +348,6 @@ export class WalletProvider {
         }
 
         this.getTxsFromServer(wallet, opts).then((txsFromServer) => {
-
           this.updateTxHistory(wallet, txsFromLocal, txsFromServer).then((newHistory: any) => {
             return resolve(newHistory);
           });
@@ -370,7 +369,7 @@ export class WalletProvider {
       let newHistory = lodash.uniqBy(array, (x: any) => {
         return x.txid;
       });
-      resolve(newHistory);
+      if (newHistory) return resolve(newHistory);
 
       let historyToSave = lodash.compact(lodash.flatten(newHistory));
 
@@ -549,23 +548,25 @@ export class WalletProvider {
 
   public getTx(wallet: any, txid: string) {
     return new Promise((resolve, reject) => {
-      let finish = (list: any) => {
+      let finish = (list: any): any => {
         let tx = lodash.find(list, {
           txid: txid
         });
 
         if (!tx) return reject('Could not get transaction');
-        return resolve(tx);
+        return tx;
       };
 
       if (wallet.completeHistory && wallet.completeHistory.isValid) {
-        finish(wallet.completeHistory);
+        let tx = finish(wallet.completeHistory);
+        return resolve(tx);
       } else {
         let opts = {
-          limitTx: txid
+          force: true
         };
         this.getTxHistory(wallet, opts).then((txHistory: any) => {
-          finish(txHistory);
+          let tx = finish(txHistory);
+          return resolve(tx);
         }).catch((err) => {
           return reject(err);
         });
