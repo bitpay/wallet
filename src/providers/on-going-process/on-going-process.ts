@@ -16,8 +16,6 @@ export class OnGoingProcessProvider {
       'calculatingFee': 'Calculating fee',
       'connectingCoinbase': 'Connecting to Coinbase...',
       'connectingGlidera': 'Connecting to Glidera...',
-      'connectingledger': 'Waiting for Ledger...',
-      'connectingtrezor': 'Waiting for Trezor...',
       'creatingTx': 'Creating transaction',
       'creatingWallet': 'Creating Wallet...',
       'deletingWallet': 'Deleting Wallet...',
