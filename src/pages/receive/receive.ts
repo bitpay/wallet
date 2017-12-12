@@ -44,10 +44,6 @@ export class ReceivePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReceivePage');
-  }
-
-  ionViewDidEnter() {
     this.wallets = this.profileProvider.getWallets();
     this.updateQrAddress();
     this.onSelect(this.checkSelectedWallet(this.wallet, this.wallets));

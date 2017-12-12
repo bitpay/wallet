@@ -5,15 +5,14 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content padding>
-  <ion-list>
-    <ion-label>Recipient</ion-label>
-    <ion-item *ngIf="hasWallets">
+<ion-content>
+  <ion-card *ngIf="hasWallets">
+    <ion-item>
       <ion-icon name="logo-bitcoin" item-left></ion-icon>
       <ion-input type="text" placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
-      <ion-icon class="scanner-icon" name="md-qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
-  </ion-list>
+  </ion-card>
   <ion-card *ngIf="contactsList">
     <ion-item>
       <span translate>Contacts</span>

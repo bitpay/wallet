@@ -17,6 +17,11 @@ $global-colors: (
   }
 }
 
+.footer .button-footer {
+  margin: 0;
+  height: 40px;
+}
+
 // This style prevents the names of the tabs from disappear
 .tabbar .tab-button .tab-button-text {
   display: block;

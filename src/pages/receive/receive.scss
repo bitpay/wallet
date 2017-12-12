@@ -39,17 +39,15 @@ page-receive {
     }
   }
   .wallets-container {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     padding-left: 2rem;
-    border-top: solid 1px rgb(242, 242, 242);
-    min-height: 78px;
+    height: 60px;
     display: flex;
     align-items: center;
     cursor: pointer;
-    > img {
-      margin: 9px 8px 9px 0;
+    .icon-wallet {
+      width: 30px;
+      height: 30px;
+      box-shadow: 0;
     }
     .wallet-text {
       padding-left: 24px;

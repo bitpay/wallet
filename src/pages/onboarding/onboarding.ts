@@ -30,10 +30,4 @@ export class OnboardingPage {
     this.navCtrl.push(ImportWalletPage, {fromOnboarding: true});
   }
 
-  skipOnboarding() {
-    // TODO: Testing purpose
-    this.navCtrl.setRoot(TabsPage);
-    this.navCtrl.popToRoot();
-  }
-
 }
