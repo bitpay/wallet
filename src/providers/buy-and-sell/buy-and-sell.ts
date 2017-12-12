@@ -44,7 +44,7 @@ export class BuyAndSellProvider {
       this.nextStepsProvider.register({
         title: 'Buy or Sell Bitcoin',
         name: 'buyandsell',
-        icon: 'assets/img/app/icon-bitcoin.svg',
+        icon: 'assets/img/icon-bitcoin.svg',
         page: 'BuyAndSellPage',
       });
     } else {
