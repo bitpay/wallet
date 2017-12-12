@@ -14,6 +14,7 @@ import { BackupGamePage } from '../backup/backup-game/backup-game';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { PlatformProvider } from '../../providers/platform/platform';
+import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 
 import * as _ from 'lodash';
 
@@ -39,11 +40,12 @@ export class ReceivePage {
     private platformProvider: PlatformProvider,
     private events: Events,
     private actionSheetCtrl: ActionSheetController,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
   }
 
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.wallets = this.profileProvider.getWallets();
     this.updateQrAddress();
     this.onSelect(this.checkSelectedWallet(this.wallet, this.wallets));
@@ -85,11 +87,15 @@ export class ReceivePage {
 
   private setAddress(newAddr?: boolean): void {
 
+    if (newAddr || _.isEmpty(this.address)) this.onGoingProcessProvider.set('generatingNewAddress', true);
+
     this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
+      this.onGoingProcessProvider.set('generatingNewAddress', false);
       this.address = addr;
       this.updateQrAddress();
     }).catch((err) => {
-      this.logger.warn('Wallet not completed');
+      this.onGoingProcessProvider.set('generatingNewAddress', false);
+      this.logger.error(err);
     });
   }
 

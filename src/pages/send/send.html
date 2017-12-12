@@ -6,46 +6,46 @@
 
 </ion-header>
 <ion-content>
-  <ion-card *ngIf="hasWallets">
-    <ion-item>
-      <ion-icon name="logo-bitcoin" item-left></ion-icon>
-      <ion-input type="text" placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
-      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
-    </ion-item>
-  </ion-card>
-  <ion-card *ngIf="contactsList">
-    <ion-item>
-      <span translate>Contacts</span>
-    </ion-item>
-    <ion-list>
-      <button ion-item *ngFor="let item of contactsList" (click)="goToAmount(item)">
-        <ion-icon item-start>
-          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
-        </ion-icon>
-        <h2>{{item.name}}</h2>
-      </button>
-    </ion-list>
-  </ion-card>
-  <ion-card *ngIf="walletList">
-    <ion-item>
-      <span translate>Transfer to Wallet</span>
-    </ion-item>
-    <ion-list>
-      <button ion-item *ngFor="let item of walletList" (click)="goToAmount(item)">
-        <ion-icon item-start>
-          <img *ngIf="item.network == 'testnet'" [ngStyle]="{'background-color': item.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="item.network != 'testnet'" [ngStyle]="{'background-color': item.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-        </ion-icon>
-        <h2>{{item.name}}</h2>
-      </button>
-    </ion-list>
-  </ion-card>
+  <div *ngIf="hasWallets">
+    <ion-card>
+      <ion-item>
+        <ion-icon name="logo-bitcoin" item-left></ion-icon>
+        <ion-input type="text" placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
+        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      </ion-item>
+    </ion-card>
+    <ion-card *ngIf="contactsList">
+      <ion-item>
+        <span translate>Contacts</span>
+      </ion-item>
+      <ion-list>
+        <button ion-item *ngFor="let item of contactsList" (click)="goToAmount(item)">
+          <ion-icon item-start>
+            <img src="assets/img/contact-placeholder.svg" class="icon-contact">
+          </ion-icon>
+          <h2>{{item.name}}</h2>
+        </button>
+      </ion-list>
+    </ion-card>
+    <ion-card *ngIf="walletList">
+      <ion-item>
+        <span translate>Transfer to Wallet</span>
+      </ion-item>
+      <ion-list>
+        <button ion-item *ngFor="let item of walletList" (click)="goToAmount(item)">
+          <ion-icon item-start>
+            <img *ngIf="item.network == 'testnet'" [ngStyle]="{'background-color': item.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+            <img *ngIf="item.network != 'testnet'" [ngStyle]="{'background-color': item.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          </ion-icon>
+          <h2>{{item.name}}</h2>
+        </button>
+      </ion-list>
+    </ion-card>
+  </div>
   <ion-card *ngIf="!hasWallets">
-    <ion-card-header>
-      <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
-    </ion-card-header>
     <ion-card-content>
-      <button ion-button (click)="createWallet()" translate>Create bitcoin wallet</button>
+      <p translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</p>
+      <button ion-button outline (click)="createWallet()" translate>Create bitcoin wallet</button>
     </ion-card-content>
   </ion-card>
 </ion-content>
