@@ -148,6 +148,7 @@ import { TimeProvider } from '../providers/time/time';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 import { TxConfirmNotificationProvider } from '../providers/tx-confirm-notification/tx-confirm-notification';
 import { TxFormatProvider } from '../providers/tx-format/tx-format';
+import { FilterProvider } from '../providers/filter/filter';
 import { WalletProvider } from '../providers/wallet/wallet';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
 
@@ -272,6 +273,7 @@ let providers: any = [
   TimeProvider,
   TouchIdProvider,
   TxConfirmNotificationProvider,
+  FilterProvider,
   TxFormatProvider,
   WalletProvider,
   EmailNotificationsProvider,
