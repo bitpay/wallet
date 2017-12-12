@@ -17,7 +17,7 @@
     <ion-slide>
       <div *ngIf="mnemonicWords[0] || !credentialsEncrypted">
         <h4 translate>Please carefully write down this phrase.</h4>
-        <div class="phrase">
+        <div copy-to-clipboard="{{ copyRecoveryPhrase() }}" class="phrase">
           <span *ngFor="let word of mnemonicWords">
             <span>{{word}}</span>
           <span *ngIf="useIdeograms">&#x3000;</span>
