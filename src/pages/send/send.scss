@@ -2,13 +2,4 @@ page-send {
   .scanner-icon {
     z-index: 99;
   }
-  img {
-    &.icon-wallet {
-      width: 35px !important;
-      background-color: color($colors, primary);
-    }
-    &.icon-contact {
-      width: 35px !important;      
-    }
-  }
 }

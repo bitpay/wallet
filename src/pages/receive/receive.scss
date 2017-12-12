@@ -40,7 +40,7 @@ page-receive {
   }
   .wallets-container {
     position: absolute;
-    bottom: 0rem;
+    bottom: 0;
     width: 100%;
     padding-left: 2rem;
     border-top: solid 1px rgb(242, 242, 242);
@@ -48,14 +48,17 @@ page-receive {
     display: flex;
     align-items: center;
     cursor: pointer;
-    img.icon-wallet {
-      width: 35px !important;
-      background-color: color($colors, primary);
+    > img {
+      margin: 9px 8px 9px 0;
     }
     .wallet-text {
-      padding-left: 1rem;
+      padding-left: 24px;
     }
   }
+}
+
+.action-sheet-container .action-sheet-button .button-inner {
+  padding-left: 10px !important;
 }
 
 @mixin wallets-list {
@@ -63,7 +66,7 @@ page-receive {
   width: 3.5rem;
   content: " ";
   position: absolute;
-  border-radius: 3px;
+  border-radius: $icon-border-radius;
   box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
 }
 
@@ -71,7 +74,7 @@ page-receive {
   @include wallets-list;
   background: color($colors, primary) url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
 }
- 
+
 .wallet-testnet::before {
   @include wallets-list;
   background: color($colors, primary) url('../assets/img/icon-wallet-testnet.svg') no-repeat 0px 0px;
