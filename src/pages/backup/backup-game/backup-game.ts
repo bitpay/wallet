@@ -105,14 +105,14 @@ export class BackupGamePage {
     this.shouldContinue();
   };
 
-  private shouldContinue() {
+  private shouldContinue(): void {
     if (this.customWords.length == this.shuffledMnemonicWords.length)
       this.selectComplete = true;
     else
       this.selectComplete = false;
   };
 
-  private backupError(err: any) {
+  private backupError(err: any): void {
     // ongoingProcess.set('validatingWords', false);
     this.logger.error('Failed to verify backup: ', err);
     this.error = true;
@@ -130,7 +130,7 @@ export class BackupGamePage {
     showError.present();
   };
 
-  private showBackupResult() {
+  private showBackupResult(): void {
     if (this.error) {
       let alert = this.alertCtrl.create({
         title: "Uh oh...",
@@ -163,14 +163,14 @@ export class BackupGamePage {
     }
   };
 
-  private isDeletedSeed() {
+  private isDeletedSeed(): boolean {
     if (!this.wallet.credentials.mnemonic && !this.wallet.credentials.mnemonicEncrypted)
       return true;
 
     return false;
   }
 
-  private slidePrev() {
+  private slidePrev(): void {
     this.slides.lockSwipes(false);
     if (this.currentIndex == 0) this.navCtrl.pop();
     else {
@@ -192,7 +192,7 @@ export class BackupGamePage {
     this.slides.lockSwipes(true);
   }
 
-  private setFlow() {
+  private setFlow(): void {
     if (!this.keys) return;
 
     let words = this.keys.mnemonic;
@@ -213,15 +213,13 @@ export class BackupGamePage {
 
   };
 
-
-  /* TODO: check if this function is necessary
-  private copyRecoveryPhrase = function () {
+  private copyRecoveryPhrase(): string {
     if (this.wallet.network == 'livenet') return null;
     else if (!this.wallet.credentials.mnemonic) return null;
     else return this.wallet.credentials.mnemonic;
-  };*/
+  }
 
-  private confirm() {
+  private confirm(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.error = false;
 
@@ -259,7 +257,7 @@ export class BackupGamePage {
     });
   };
 
-  private finalStep() {
+  private finalStep(): void {
     //ongoingProcess.set('validatingWords', true);
     this.confirm().then(() => {
       //ongoingProcess.set('validatingWords', false);

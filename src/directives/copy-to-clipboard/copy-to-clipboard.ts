@@ -41,6 +41,9 @@ export class CopyToClipboard {
   }
 
   public copy() {
+    if (!this.value) {
+      return;
+    }
     if (this.isCordova) {
       this.clipboard.copy(this.value);
     } else if (this.isNW) {
