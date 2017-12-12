@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'Pending Proposals'|translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div *ngIf="fetchingProposals">
+    <ion-spinner></ion-spinner>
+    <span translate>Updating pending proposals. Please stand by</span>
+  </div>
+
+  <ion-list *ngIf="txps && txps[0] && !fetchingProposals">
+    <ion-item *ngFor="let tx of txps" (click)="openTxpModal(tx)">
+      <page-txp [tx]="tx" [addressbook]="addressbook"></page-txp>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="txps && !txps[0] && !fetchingProposals">
+    <ion-item>
+      <span translate>No pending proposals</span>
+    </ion-item>
+  </ion-list>
+</ion-content>

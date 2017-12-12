@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'Recent Transactions'|translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <div *ngIf="fetchingNotifications">
+    <ion-spinner></ion-spinner>
+    <span translate>Updating... Please stand by</span>
+  </div>
+
+  <ion-list *ngIf="notifications && notifications[0] && !fetchingNotifications">
+    <ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
+      <page-wallet-activity [notification]="notification"></page-wallet-activity>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="notifications && !notifications[0] && !fetchingNotifications">
+    <ion-item>
+      <span translate>No pending proposals</span>
+    </ion-item>
+  </ion-list>
+</ion-content>
