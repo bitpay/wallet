@@ -29,7 +29,7 @@ export class IncomingDataProvider {
     private logger: Logger,
     private appProvider: AppProvider,
   ) {
-    console.log('Hello IncomingDataProvider Provider');
+    this.logger.info('IncomingDataProvider initialized.');
   }
 
   public showMenu(data: any): void {

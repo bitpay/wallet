@@ -140,7 +140,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
+    this.logger.info('ionViewDidLoad HomePage');
   }
 
   private updateWallet(wallet: any): void {

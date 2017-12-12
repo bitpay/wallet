@@ -53,7 +53,7 @@ export class WalletTransactionHistoryPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletTransactionHistoryPage');
+    this.logger.info('ionViewDidLoad WalletTransactionHistoryPage');
   }
 
   ionViewWillEnter() {

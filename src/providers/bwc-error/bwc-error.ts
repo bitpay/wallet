@@ -4,8 +4,10 @@ import { Logger } from '@nsalaun/ng-logger';
 @Injectable()
 export class BwcErrorProvider {
 
-  constructor(private logger: Logger, ) {
-    console.log('Hello BwcErrorProvider Provider');
+  constructor(
+    private logger: Logger
+  ) {
+    this.logger.info('BwcErrorProvider initialized.');
   }
 
   public msg(err: any, prefix?: string): string {

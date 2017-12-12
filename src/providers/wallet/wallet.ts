@@ -43,7 +43,7 @@ export class WalletProvider {
     private ongoingProcess: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider
   ) {
-    console.log('Hello WalletService Provider');
+    this.logger.info('WalletService initialized.');
   }
 
 

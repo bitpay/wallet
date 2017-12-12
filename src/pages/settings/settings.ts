@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
@@ -37,7 +38,8 @@ export class SettingsPage {
     private language: LanguageProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private logger: Logger
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguage = this.language.getCurrent();
@@ -47,7 +49,7 @@ export class SettingsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+    this.logger.info('ionViewDidLoad SettingsPage');
   }
 
   ionViewWillEnter() {

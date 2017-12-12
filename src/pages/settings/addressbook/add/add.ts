@@ -4,6 +4,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressValidator } from '../../../../validators/address';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
   selector: 'page-addressbook-add',
@@ -16,22 +17,23 @@ export class AddressbookAddPage {
   public submitAttempt: boolean = false;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public alertCtrl: AlertController,
-    public bwc: BwcProvider,
-    public ab: AddressBookProvider,
-    public formBuilder: FormBuilder
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private alertCtrl: AlertController,
+    private bwc: BwcProvider,
+    private ab: AddressBookProvider,
+    private formBuilder: FormBuilder,
+    private logger: Logger
   ) {
     this.addressBookAdd = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9 ]*')])],
       email: ['', this.emailOrEmpty],
-      address: ['', Validators.compose([Validators.required, new AddressValidator(bwc).isValid])]
+      address: ['', Validators.compose([Validators.required, new AddressValidator(this.bwc).isValid])]
     });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddressbookAddPage');
+    this.logger.info('ionViewDidLoad AddressbookAddPage');
   }
 
   ionViewWillEnter() {

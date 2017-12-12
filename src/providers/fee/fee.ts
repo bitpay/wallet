@@ -29,7 +29,7 @@ export class FeeProvider {
     private logger: Logger,
     private bwcProvider: BwcProvider
   ) {
-    console.log('Hello FeeProvider Provider');
+    this.logger.info('FeeProvider initialized.');
   }
 
   public getCurrentFeeLevel(): string {

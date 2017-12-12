@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 
+import { Logger } from '@nsalaun/ng-logger';
+
 @Injectable()
 export class PopupProvider {
-  constructor(public alertCtrl: AlertController) {
+  constructor(
+    private alertCtrl: AlertController,
+    private logger: Logger
+  ) {
   }
 
   public ionicAlert(title: string, subTitle?: string, okText?: string): Promise<any> {
@@ -15,7 +20,7 @@ export class PopupProvider {
           {
             text: okText ? okText : 'OK',
             handler: () => {
-              console.log('Ok clicked');
+              this.logger.info('Ok clicked');
               resolve();
             }
           }
@@ -34,14 +39,14 @@ export class PopupProvider {
           {
             text: cancelText ? cancelText : 'Cancel',
             handler: () => {
-              console.log('Disagree clicked');
+              this.logger.info('Disagree clicked');
               resolve(false);
             }
           },
           {
             text: okText ? okText : 'OK',
             handler: () => {
-              console.log('Agree clicked');
+              this.logger.info('Agree clicked');
               resolve(true);
             }
           }
@@ -71,14 +76,14 @@ export class PopupProvider {
           {
             text: cancelText ? cancelText : 'Cancel',
             handler: data => {
-              console.log('Cancel clicked');
+              this.logger.info('Cancel clicked');
               resolve(null);
             }
           },
           {
             text: okText ? okText : 'OK',
             handler: data => {
-              console.log('Saved clicked');
+              this.logger.info('Saved clicked');
               resolve(data[0]);
             }
           }

@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, NavParams } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
+//providers
 import { ConfigProvider } from '../../../providers/config/config';
 import { AppProvider } from '../../../providers/app/app';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { PushNotificationsProvider } from '../../../providers/push-notifications/push-notifications';
 import { EmailNotificationsProvider } from '../../../providers/email-notifications/email-notifications';
 
+//validators
 import { EmailValidator } from '../../../validators/email';
 
 @Component({
@@ -27,14 +29,13 @@ export class NotificationsPage {
   public emailNotifications: boolean;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public formBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private configProvider: ConfigProvider,
     private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
     private pushProvider: PushNotificationsProvider,
-    private emailProvider: EmailNotificationsProvider
+    private emailProvider: EmailNotificationsProvider,
+    private logger: Logger
   ) {
     this.emailForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, new EmailValidator(configProvider, emailProvider).isValid])]
@@ -42,7 +43,7 @@ export class NotificationsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NotificationsPage');
+    this.logger.info('ionViewDidLoad NotificationsPage');
     this.updateConfig();
   }
 

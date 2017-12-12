@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
   selector: 'page-terms-of-use',
@@ -7,11 +7,13 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class TermsOfUsePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    private logger: Logger
+  ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TermsOfUsePage');
+    this.logger.info('ionViewDidLoad TermsOfUsePage');
   }
 
 }

@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { NavParams } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
 
 // Providers
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
@@ -23,6 +24,7 @@ export class TxDetailsPage {
     private profileProvider: ProfileProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcess: OnGoingProcessProvider,
+    private logger: Logger
   ) {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.tx = {};
@@ -43,7 +45,7 @@ export class TxDetailsPage {
       if (this.tx.safeConfirmed) this.confirmations = this.tx.safeConfirmed;
       else if (this.tx.confirmations > 6) this.confirmations = '6+';
     }).catch((err) => {
-      console.log(err);
+      this.logger.warn(err);
     });
   }
 

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { Logger } from '@nsalaun/ng-logger';
+
 import * as BWC from 'bitcore-wallet-client';
 
 @Injectable()
@@ -7,30 +9,32 @@ export class BwcProvider {
   public buildTx = BWC.buildTx;
   public parseSecret = BWC.parseSecret;
   public Client = BWC;
-  constructor() {
-    console.log('Hello BwcProvider Provider');
+  constructor(
+    private logger: Logger
+  ) {
+    this.logger.info('BwcProvider initialized.');
   }
-  getBitcore() {
+  public getBitcore(): any {
     return BWC.Bitcore;
   }
 
-  getBitcoreCash() {
+  public getBitcoreCash(): any {
     return BWC.BitcoreCash;
   }
 
-  getErrors() {
+  public getErrors(): any {
     return BWC.errors;
   }
 
-  getSJCL() {
+  public getSJCL(): any {
     return BWC.sjcl;
   }
 
-  getUtils() {
+  public getUtils(): any {
     return BWC.Utils;
   }
 
-  getClient(walletData?, opts?) {
+  public getClient(walletData?, opts?): any {
     opts = opts || {};
 
     //note opts use `bwsurl` all lowercase;

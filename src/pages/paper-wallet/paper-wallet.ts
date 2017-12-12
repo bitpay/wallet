@@ -175,7 +175,6 @@ export class PaperWalletPage {
         cssClass: 'wallet-' + w.network,
         icon: 'wallet',
         handler: () => {
-          console.log(w);
           this.onWalletSelect(w);
         }
       }

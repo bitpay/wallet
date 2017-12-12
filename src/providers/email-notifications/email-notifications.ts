@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
 
+//providers
 import { ConfigProvider } from '../config/config';
 import { ProfileProvider } from '../profile/profile';
 import { WalletProvider } from '../wallet/wallet';
@@ -12,9 +14,10 @@ export class EmailNotificationsProvider {
   constructor(
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private logger: Logger
   ) {
-    console.log('Hello EmailNotificationsProvider Provider');
+    this.logger.info('EmailNotificationsProvider initialized');
   }
 
   public updateEmail(opts: any) {
@@ -48,7 +51,7 @@ export class EmailNotificationsProvider {
 
     // Backward compatibility
     let emails = _.values(config.emailFor);
-    for(var i = 0; i < emails.length; i++) {
+    for (var i = 0; i < emails.length; i++) {
       if (emails[i] !== null && typeof emails[i] !== 'undefined') {
         return emails[i];
       }

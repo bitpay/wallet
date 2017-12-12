@@ -192,7 +192,7 @@ export class ScanProvider {
     return new Promise((resolve, reject) => {
       this.logger.debug('Scanning...');
       let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-        console.log('Scanned something', text);
+        this.logger.debug('Scanned something', text);
         this.qrScanner.hide(); // hide camera preview
         scanSub.unsubscribe(); // stop scanning
         return resolve(text);

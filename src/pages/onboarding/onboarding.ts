@@ -13,12 +13,12 @@ export class OnboardingPage {
 
   constructor(
     public navCtrl: NavController,
-    private log: Logger
+    private logger: Logger
   ) {
   }
 
   ionViewDidLoad() {
-    this.log.info('ionViewDidLoad OnboardingPage');
+    this.logger.info('ionViewDidLoad OnboardingPage');
   }
 
   getStarted() {
@@ -26,7 +26,7 @@ export class OnboardingPage {
   }
 
   restoreFromBackup() {
-    this.navCtrl.push(ImportWalletPage, {fromOnboarding: true});
+    this.navCtrl.push(ImportWalletPage, { fromOnboarding: true });
   }
 
 }

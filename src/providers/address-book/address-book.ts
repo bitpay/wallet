@@ -13,7 +13,7 @@ export class AddressBookProvider {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
   ) {
-    console.log('Hello AddressBookProvider Provider');
+    this.logger.info('AddressBookProvider initialized.');
   }
 
   private getNetwork(address: string): string {

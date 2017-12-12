@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { ProfileProvider } from '../../../../providers/profile/profile';
@@ -23,7 +24,8 @@ export class WalletNamePage {
     private navParams: NavParams,
     private configProvider: ConfigProvider,
     private formBuilder: FormBuilder,
-    private events: Events
+    private events: Events,
+    private logger: Logger
   ) {
     this.walletNameForm = this.formBuilder.group({
       walletName: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -31,7 +33,7 @@ export class WalletNamePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletNamePage');
+    this.logger.info('ionViewDidLoad WalletNamePage');
   }
 
   ionViewWillEnter() {

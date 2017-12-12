@@ -18,7 +18,7 @@ export class BuyAndSellProvider {
     private logger: Logger,
     private nextStepsProvider: NextStepsProvider
   ) {
-    console.log('Hello BuyAndSellProvider Provider');
+    this.logger.info('BuyAndSellProvider initialized.');
     this.updateNextStepsDebunced = _.debounce(this.update, 1000);
     this.services = [];
     this.linkedServices = [];

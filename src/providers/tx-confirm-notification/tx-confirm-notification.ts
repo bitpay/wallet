@@ -11,7 +11,7 @@ export class TxConfirmNotificationProvider {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider
   ) {
-    console.log('Hello TxConfirmNotificationProvider Provider');
+    this.logger.info('TxConfirmNotificationProvider initialized.');
   }
 
   public checkIfEnabled(txid: string): Promise<any> {
