@@ -37,18 +37,18 @@
             </ion-item>
             <ion-item *ngIf="showAdv">
               <ion-label stacked>Do not include private key</ion-label>
-              <ion-checkbox formControlName="noSignEnabled" checked="false" (ionChange)="noSignEnabledChange()"></ion-checkbox>
+              <ion-checkbox formControlName="noSignEnabled" (ionChange)="noSignEnabledChange()"></ion-checkbox>
             </ion-item>
-            <div *ngIf="!canSign">
-              <span translate>
-                  WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
-                </span>
-            </div>
-            <div *ngIf="exportWalletForm.value.noSignEnabled">
-              <span translate>
-                  WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
-                </span>
-            </div>
+          </div>
+          <div *ngIf="!canSign">
+            <span translate>
+              WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+            </span>
+          </div>
+          <div *ngIf="exportWalletForm.value.noSignEnabled">
+            <span translate>
+              WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
+            </span>
           </div>
           <button *ngIf="!isSafari && !isCordova" ion-button block type="submit" (click)="downloadWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">Download</button>
           <button *ngIf="isSafari && !isCordova" ion-button block type="submit" (click)="viewWalletBackup()" [disabled]="(!exportWalletForm.value.password || exportWalletForm.value.password != exportWalletForm.value.confirmPassword) || !exportWalletForm.valid ">View</button>

@@ -12,7 +12,7 @@ import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 
 //pages
-import { HomePage } from '../../../../../pages/home/home';
+import { SettingsPage } from '../../../../../pages/settings/settings';
 
 @Component({
   selector: 'page-wallet-export',
@@ -50,7 +50,7 @@ export class WalletExportPage {
     this.exportWalletForm = this.formBuilder.group({
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
-      noSignEnabled: ['']
+      noSignEnabled: [false]
     }, { validator: this.matchingPasswords('password', 'confirmPassword') });
   }
 
@@ -146,9 +146,10 @@ export class WalletExportPage {
           password: password
         };
 
-        this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts).then(() => {
-          this.navCtrl.setRoot(HomePage);
+        this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts, this.navParams.data.walletId).then(() => {
+          this.navCtrl.setRoot(SettingsPage);
           this.navCtrl.popToRoot();
+          this.navCtrl.parent.select(0);
         }).catch((err: string) => {
           this.popupProvider.ionicAlert('Error', 'Failed to export');  //TODO gettextcatalog
         });
@@ -177,7 +178,7 @@ export class WalletExportPage {
     });
   }
 
-  public getBackup(): Promise<any> {
+  private getBackup(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getPassword().then((password: string) => {
         this.getAddressbook().then((localAddressBook: any) => {
@@ -187,7 +188,7 @@ export class WalletExportPage {
             password: password
           };
 
-          var ew = this.backupProvider.walletExport(this.exportWalletForm.value.password, opts);
+          var ew = this.backupProvider.walletExport(this.exportWalletForm.value.password, opts, this.navParams.data.walletId);
           if (!ew) {
             this.popupProvider.ionicAlert('Error', 'Failed to export'); //TODO gettextcatalog
           }
