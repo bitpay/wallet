@@ -41,17 +41,16 @@ export class AmazonProvider {
     this.homeItem = {
       name: 'amazon',
       title: 'Amazon.com Gift Cards',
-      icon: 'icon-amazon',
-      sref: 'tabs.giftcards.amazon',
+      icon: 'assets/img/amazon/icon-amazon.svg',
+      page: 'AmazonPage',
     };
 
     this.nextStepItem = {
       name: 'amazon',
       title: 'Buy Amazon.com Gift Cards',
-      icon: 'icon-amazon',
-      sref: 'tabs.giftcards.amazon',
+      icon: 'assets/img/amazon/icon-amazon.svg',
+      page: 'AmazonPage',
     };
-    this.register();
   }
 
   public getNetwork() {

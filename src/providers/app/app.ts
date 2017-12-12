@@ -43,7 +43,9 @@ interface App {
 @Injectable()
 export class AppProvider {
   public info: any;
-  private jsonPath: string = 'assets/appConfig.json';
+  public servicesInfo: any;
+  private jsonPathApp: string = 'assets/appConfig.json';
+  private jsonPathServices: string = 'assets/externalServices.json';
 
   constructor(
     public http: HttpClient,
@@ -56,15 +58,18 @@ export class AppProvider {
     this.logger.info('AppProvider initialized.');
   }
 
-  public load() {
+  public load(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistence.load();
       this.config.load().then(() => {
         this.language.load();
         this.touchid.init();
-        this.getInfo().subscribe((info) => {
-          this.info = info;
-          resolve();
+        this.getServicesInfo().subscribe((infoServices) => {
+          this.servicesInfo = infoServices;
+          this.getInfo().subscribe((infoApp) => {
+            this.info = infoApp;
+            resolve();
+          });
         });
       }).catch((err) => {
         this.logger.error(err);
@@ -74,6 +79,10 @@ export class AppProvider {
   }
 
   private getInfo() {
-    return this.http.get(this.jsonPath);
+    return this.http.get(this.jsonPathApp);
   }
+  private getServicesInfo() {
+    return this.http.get(this.jsonPathServices);
+  }
+
 }

@@ -24,7 +24,7 @@ export class MercadoLibreProvider {
     private http: HttpClient,
     private logger: Logger
   ) {
-    console.log('Hello MercadoLibreProvider Provider');
+    this.logger.info('MercadoLibreProvider initialized');
     // Not used yet
     /* this.availableCountries = [{
       'country': 'Brazil',
@@ -34,9 +34,10 @@ export class MercadoLibreProvider {
     }]; */
 
     /*
-   * Development: 'testnet'
-   * Production: 'livenet'
-   */
+    * Development: 'testnet'
+    * Production: 'livenet'
+    */
+    this.credentials = {};
     this.credentials.NETWORK = 'livenet';
     //credentials.NETWORK = 'testnet';
     if (this.credentials.NETWORK == 'testnet') {
@@ -48,19 +49,16 @@ export class MercadoLibreProvider {
     this.homeItem = {
       name: 'mercadoLibre',
       title: 'Mercado Livre Brazil Gift Cards',
-      icon: 'icon-ml',
-      sref: 'tabs.giftcards.mercadoLibre',
+      icon: 'assets/img/mercado-libre/icon-ml.svg',
+      page: 'MercadoLibrePage',
     };
 
     this.nextStepItem = {
       name: 'mercadoLibre',
       title: 'Buy Mercado Livre Brazil Gift Cards',
-      icon: 'icon-ml',
-      sref: 'tabs.giftcards.mercadoLibre',
+      icon: 'assets/img/mercado-libre/icon-ml.svg',
+      page: 'MercadoLibrePage',
     };
-
-    // Hide Mercado Libre
-    // register();
   }
 
   public getNetwork() {
@@ -186,7 +184,7 @@ export class MercadoLibreProvider {
   };
   */
 
-  /* private register() {
+  public register() {
     this.persistenceProvider.getMercadoLibreGiftCards(this.getNetwork()).then((giftCards) => {
       if (giftCards) {
         this.homeIntegrationsProvider.register(this.homeItem);
@@ -194,6 +192,6 @@ export class MercadoLibreProvider {
         this.nextStepsProvider.register(this.nextStepItem);
       }
     });
-  }; */
+  }
 }
 

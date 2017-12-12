@@ -6,12 +6,13 @@ import { BitPayProvider } from '../bitpay/bitpay';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { PersistenceProvider } from '../persistence/persistence';
 import { NextStepsProvider } from '../next-steps/next-steps';
+import { AppProvider } from '../app/app';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
 @Injectable()
-export class AmazonProvider {
+export class BitPayCardProvider {
 
   public currencySymbols: any;
   public bpTranCodes: any;
@@ -23,11 +24,10 @@ export class AmazonProvider {
     private bitPayProvider: BitPayProvider,
     private appIdentityProvider: AppIdentityProvider,
     private persistenceProvider: PersistenceProvider,
-    private nextStepsProvider: NextStepsProvider
+    private nextStepsProvider: NextStepsProvider,
+    private appProvider: AppProvider
   ) {
-
-    this.registerNextStep();
-
+    console.log('BitPayCardProvider initialized');
     /*
     * CONSTANTS
     */
@@ -1110,8 +1110,8 @@ export class AmazonProvider {
     this.nextStepItem = {
       name: 'bitpaycard',
       title: 'Add BitPay Visa® Card',
-      icon: 'icon-bitpay-card',
-      sref: 'tabs.bitpayCardIntro',
+      icon: 'assets/img/bitpay-card/icon-bitpay.svg',
+      page: 'BitPayCardIntroPage',
     }
   }
 
@@ -1301,7 +1301,7 @@ export class AmazonProvider {
       });
 
       this.persistenceProvider.setBitpayDebitCards(this.bitPayProvider.getEnvironment().network, apiContext.pairData.email, cards);
-      this.registerNextStep();
+      this.register();
       return cb(null, cards);
 
     }, (data) => {
@@ -1451,7 +1451,7 @@ export class AmazonProvider {
 
   public remove(cardId, cb) {
     this.persistenceProvider.removeBitpayDebitCard(this.bitPayProvider.getEnvironment().network, cardId).then(() => {
-      this.registerNextStep();
+      this.register();
       this.persistenceProvider.removeBalanceCache(cardId);
       return cb();
     }).catch((err) => {
@@ -1504,9 +1504,9 @@ export class AmazonProvider {
   };
 
 
-  public registerNextStep() {
+  public register() {
     // Disable BitPay Card
-    if (!(window as any)._enabledExtensions.debitcard) return;
+    if (!this.appProvider.info._enabledExtensions.debitcard) return;
     this.getCards((err, cards) => {
       if (_.isEmpty(cards)) {
         this.nextStepsProvider.register(this.nextStepItem);

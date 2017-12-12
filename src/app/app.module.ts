@@ -113,11 +113,14 @@ import { KeysPipe } from '../pipes/keys';
 import { AddressProvider } from '../providers/address/address';
 import { AddressBookProvider } from '../providers/address-book/address-book';
 import { AppProvider } from '../providers/app/app';
+import { AppIdentityProvider } from '../providers/app-identity/app-identity';
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { BackupProvider } from '../providers/backup/backup';
 import { BitPayProvider } from '../providers/bitpay/bitpay';
+import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
+import { BuyAndSellProvider } from '../providers/buy-and-sell/buy-and-sell';
 import { ConfigProvider } from '../providers/config/config';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
@@ -228,11 +231,14 @@ let providers: any = [
   AddressBookProvider,
   AndroidFingerprintAuth,
   AppProvider,
+  AppIdentityProvider,
   AmazonProvider,
   BackupProvider,
   BitPayProvider,
+  BitPayCardProvider,
   BwcProvider,
   BwcErrorProvider,
+  BuyAndSellProvider,
   ConfigProvider,
   CoinbaseProvider,
   Clipboard,

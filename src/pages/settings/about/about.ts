@@ -38,7 +38,7 @@ export class AboutPage {
   }
 
   public openExternalLink(): void {
-    let url = 'https://github.com/bitpay/' + this.app.info.gitHubRepoName + '/tree/' + (window as any).commitHash + '';
+    let url = 'https://github.com/bitpay/' + this.app.info.gitHubRepoName + '/tree/' + this.app.info.commitHash + '';
     let optIn = true;
     let title = 'Open GitHub Project'; //TODO gettextcatalog
     let message = 'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.'; //TODO gettextcatalog

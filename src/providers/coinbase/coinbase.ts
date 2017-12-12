@@ -22,6 +22,7 @@ export class CoinbaseProvider {
 
   public priceSensitivity: any;
   public selectedPriceSensitivity: any;
+
   constructor(
     private http: HttpClient,
     private logger: Logger,
@@ -33,7 +34,7 @@ export class CoinbaseProvider {
     private appProvider: AppProvider,
     private events: Events
   ) {
-    this.logger.debug('ConfigProvider initialized.');
+    this.logger.info('Coinbase initialized.');
     this.credentials = {};
     this.isCordova = this.platformProvider.isCordova;
 
@@ -56,9 +57,6 @@ export class CoinbaseProvider {
 
     this.selectedPriceSensitivity = this.priceSensitivity[1];
 
-    this.setCredentials();
-    this.register();
-
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       if (type == 'NewBlock' && n && n.data && n.data.network == 'livenet') {
         this.isActive((err, isActive) => {
@@ -71,13 +69,13 @@ export class CoinbaseProvider {
   }
 
 
-  private setCredentials() {
+  public setCredentials() {
 
-    if (!(window as any).externalServices || !(window as any).externalServices.coinbase) {
+    if (!this.appProvider.servicesInfo || !this.appProvider.servicesInfo.coinbase) {
       return;
     }
 
-    var coinbase = (window as any).externalServices.coinbase;
+    var coinbase = this.appProvider.servicesInfo.coinbase;
 
     /*
      * Development: 'testnet'
@@ -279,12 +277,10 @@ export class CoinbaseProvider {
 
   public isActive(cb) {
     if (_.isEmpty(this.credentials.CLIENT_ID))
-      return cb();
+      return cb(false);
 
     this.persistenceProvider.getCoinbaseToken(this.credentials.NETWORK).then((accessToken) => {
       return cb(!!accessToken);
-    }).catch((err) => {
-      return cb(err);
     });
   }
 
@@ -899,17 +895,15 @@ export class CoinbaseProvider {
     });
   }
 
-  private register() {
-    this.isActive((err, isActive) => {
-      if (err) return;
+  public register() {
+    this.isActive((isActive) => {
 
       this.buyAndSellProvider.register({
         name: 'coinbase',
         logo: 'img/coinbase-logo.png',
         location: '33 Countries',
-        sref: 'tabs.buyandsell.coinbase',
-        configSref: 'tabs.preferences.coinbase',
-        linked: isActive,
+        page: 'CoinbasePage',
+        linked: !!isActive,
       });
     });
   }

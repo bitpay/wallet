@@ -30,11 +30,16 @@
   </ion-card>
 
   <ion-card *ngIf="txps && txps[0]">
-    <ion-item>
-      <span translate>Payment Proposals</span>
-      <ion-badge (click)="openProposalsPage()" *ngIf="txpsN>3" item-end>{{txpsN}}</ion-badge>
-    </ion-item>
-
+    <ion-card-header>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>Payment Proposals</span>
+        </ion-col>
+        <ion-col text-right (click)="openProposalsPage()">
+          <ion-badge *ngIf="txpsN>3" item-end>{{txpsN}}</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
     <ion-list>
       <ion-item *ngFor="let tx of txps" (click)="openTxpModal(tx)">
         <page-txp [tx]="tx" [addressbook]="addressbook"></page-txp>
@@ -43,10 +48,16 @@
   </ion-card>
 
   <ion-card *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
-    <ion-item>
-      <span translate>Recent Transactions</span>
-      <ion-badge (click)="openActivityPage()" *ngIf="notificationsN>3" item-end>{{notificationsN}}</ion-badge>
-    </ion-item>
+    <ion-card-header>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>Recent Transactions</span>
+        </ion-col>
+        <ion-col text-right (click)="openActivityPage()">
+          <ion-badge *ngIf="notificationsN>3" item-end>{{notificationsN}}</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
 
     <ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
       <page-wallet-activity [notification]="notification"></page-wallet-activity>
@@ -65,7 +76,7 @@
   <ion-card *ngIf="walletsBtc && walletsBtc[0]">
     <ion-card-header>
       <ion-row>
-        <ion-col class="title-wallet">
+        <ion-col class="title">
           <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
           <span translate>Bitcoin Wallets</span>
         </ion-col>
@@ -106,7 +117,7 @@
   <ion-card *ngIf="walletsBch && walletsBch[0]">
     <ion-card-header>
       <ion-row>
-        <ion-col class="title-wallet">
+        <ion-col class="title">
           <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
           <span translate>Bitcoin Cash Wallets</span>
         </ion-col>
@@ -147,4 +158,68 @@
     </ion-list>
   </ion-card>
 
+  <ion-card *ngIf="wallets && wallets[0] && buyAndSellItems && buyAndSellItems.length>0">
+    <ion-card-header>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>Buy &amp; Sell Bitcoin</span>
+        </ion-col>
+        <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
+          <ion-icon *ngIf="!hideNextSteps" name="arrow-down"></ion-icon>
+          <ion-icon *ngIf="hideNextSteps" name="arrow-up"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <div *ngIf="!hideNextSteps">
+      <button ion-item *ngFor="let service of services" (click)="goTo(service.page)">
+        <ion-icon item-start>
+          <img src="{{service.logo}}" />
+        </ion-icon>
+      </button>
+    </div>
+  </ion-card>
+
+  <ion-card *ngIf="homeIntegrations && homeIntegrations.length>0">
+    <ion-card-header>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>Services</span>
+        </ion-col>
+        <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
+          <ion-icon *ngIf="!hideNextSteps" name="arrow-down"></ion-icon>
+          <ion-icon *ngIf="hideNextSteps" name="arrow-up"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <div *ngIf="!hideNextSteps">
+      <button ion-item *ngFor="let service of services" (click)="goTo(service.page)">
+        <ion-icon item-start>
+          <img src="{{service.icon}}" />
+        </ion-icon>
+        <span>{{service.title ||  service.name}}</span>
+      </button>
+    </div>
+  </ion-card>
+
+  <ion-card *ngIf="nextStepsItems && nextStepsItems.length>0">
+    <ion-card-header>
+      <ion-row>
+        <ion-col class="title">
+          <span translate>Next steps</span>
+        </ion-col>
+        <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
+          <ion-icon *ngIf="!hideNextSteps" name="arrow-down"></ion-icon>
+          <ion-icon *ngIf="hideNextSteps" name="arrow-up"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <div *ngIf="!hideNextSteps">
+      <button ion-item *ngFor="let nextStepsItem of nextStepsItems" (click)="goTo(nextStepsItem.page)">
+        <ion-icon item-start>
+          <img src="{{nextStepsItem.icon}}" class="icon-services" />
+        </ion-icon>
+        <span>{{nextStepsItem.title ||  nextStepsItem.name}}</span>
+      </button>
+    </div>
+  </ion-card>
 </ion-content>

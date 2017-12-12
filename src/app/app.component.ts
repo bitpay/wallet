@@ -3,12 +3,19 @@ import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+//providers
 import { Logger } from '@nsalaun/ng-logger';
 import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ConfigProvider } from '../providers/config/config';
 import { TouchIdProvider } from '../providers/touchid/touchid';
+import { GlideraProvider } from '../providers/glidera/glidera';
+import { CoinbaseProvider } from '../providers/coinbase/coinbase';
+import { AmazonProvider } from '../providers/amazon/amazon';
+import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
+import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 
+//pages
 import { TabsPage } from '../pages/tabs/tabs';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PinModalPage } from '../pages/pin/pin';
@@ -30,7 +37,12 @@ export class CopayApp {
     private app: AppProvider,
     private profile: ProfileProvider,
     private config: ConfigProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private glideraProvider: GlideraProvider,
+    private coinbaseProvider: CoinbaseProvider,
+    private amazonProvider: AmazonProvider,
+    private bitPayCardProvider: BitPayCardProvider,
+    private mercadoLibreProvider: MercadoLibreProvider
   ) {
 
     this.initializeApp();
@@ -52,6 +64,7 @@ export class CopayApp {
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
           this.openLockModal();
+          this.registerIntegrations();
           if (profile) {
             this.logger.info('Profile exists.');
             this.rootPage = TabsPage;
@@ -66,13 +79,13 @@ export class CopayApp {
           this.rootPage = DisclaimerPage;
         });
       }).catch((err) => {
-        console.log('[app.component.ts:68] NO PUDO INICIAR LA APP',err); //TODO
+        console.log('[app.component.ts:68] NO PUDO INICIAR LA APP', err); //TODO
       });
 
     });
   }
 
-  openLockModal() {
+  private openLockModal(): void {
     let config: any = this.config.get();
     let lockMethod = config.lock.method;
     if (!lockMethod) return;
@@ -80,13 +93,23 @@ export class CopayApp {
     if (lockMethod == 'Fingerprint') this.openFingerprintModal();
   }
 
-  openPINModal(action) {
+  private openPINModal(action): void {
     let modal = this.modalCtrl.create(PinModalPage, { action }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
   }
 
-  openFingerprintModal() {
+  private openFingerprintModal(): void {
     let modal = this.modalCtrl.create(FingerprintModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
+  }
+
+  private registerIntegrations(): void {
+    this.mercadoLibreProvider.register();
+    this.bitPayCardProvider.register();
+    this.amazonProvider.register();
+    this.glideraProvider.setCredentials();
+    this.glideraProvider.register();
+    this.coinbaseProvider.setCredentials();
+    this.coinbaseProvider.register();
   }
 }
