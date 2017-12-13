@@ -86,15 +86,15 @@ export class ReceivePage {
   }
 
   private setAddress(newAddr?: boolean): void {
-
-    if (newAddr || _.isEmpty(this.address)) this.onGoingProcessProvider.set('generatingNewAddress', true);
+    let showLoading = newAddr || _.isEmpty(this.address);
+    if (showLoading) this.onGoingProcessProvider.set('generatingNewAddress', true);
 
     this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
-      this.onGoingProcessProvider.set('generatingNewAddress', false);
+      if (showLoading) this.onGoingProcessProvider.set('generatingNewAddress', false);
       this.address = addr;
       this.updateQrAddress();
     }).catch((err) => {
-      this.onGoingProcessProvider.set('generatingNewAddress', false);
+      if (showLoading) this.onGoingProcessProvider.set('generatingNewAddress', false);
       this.logger.error(err);
     });
   }
