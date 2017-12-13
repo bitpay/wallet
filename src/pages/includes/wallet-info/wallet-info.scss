@@ -1,36 +1,39 @@
 .wallet-info {
-  width: 100%;
   font-weight: 500;
   color: color($colors, light);
-  position: absolute;
-  top: 11.5rem;
-  left: 10px;
+  height: 25px;
+  span {
+    margin: 0 3px;
+    padding-top: 2px;
+    float: left;
+  }
+  img {
+    float: left;
+  }
   .testnet {
-    height: 3rem; 
+    height: 3rem;
     width: 3rem;
   }
   .testnet-text {
-    height: 3rem; 
+    height: 3rem;
     width: 5rem;
   }
   .read-only {
-    height: 3rem; 
+    height: 3rem;
     width: 2rem;
   }
   .read-only-text {
-    height: 3rem; 
+    height: 3rem;
     width: 6rem;
   }
   .auditable-text {
-    height: 3rem; 
+    height: 3rem;
     width: 5rem;
   }
   ion-spinner {
-    position: absolute;
+    float: right;
     width: 20px;
     height: 20px;
-    right: 25px;
-    top: 5px;
     &.spinner-crescent circle {
       stroke: color($colors, light);
     }

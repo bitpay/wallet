@@ -5,6 +5,11 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-card *ngIf="serverMessage">
     <ion-item>
       <div>{{serverMessage.title}}</div>
@@ -92,21 +97,22 @@
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
           <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
+        <h2>{{wallet.credentials.walletName}}</h2>
         <p>
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
           <span *ngIf="wallet.isComplete()">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status.totalBalanceSat ? (wallet.status.totalBalanceSat || 0 | satToUnit) :
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) :
               ( wallet.cachedBalance ?
               wallet.cachedBalance + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '')
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
-            <ion-icon *ngIf="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" name="timer"></ion-icon>
+            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </p>
@@ -133,27 +139,25 @@
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
           <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
+        <h2>{{wallet.credentials.walletName}}</h2>
         <p>
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete
           </span>
           <span *ngIf="wallet.isComplete()">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status.totalBalanceSat ? (wallet.status.totalBalanceSat || 0 | satToUnit: wallet.coin) :
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) :
               ( wallet.cachedBalance ?
               wallet.cachedBalance + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '')
               : '')}}
             </span>
             <span *ngIf="wallet.scanning" translate>Scanning funds</span>
             <span *ngIf="wallet.balanceHidden && !wallet.scanning">[{{'Balance Hidden' | translate}}]</span>
-            <ion-icon *ngIf="!wallet.balanceHidden && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" name="timer"></ion-icon>
+            <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-of-{{wallet.credentials.n}}</span>
+            <ion-icon *ngIf="!wallet.balanceHidden && wallet.status && (wallet.status.totalBalanceSat != wallet.status.spendableAmount)" name="timer"></ion-icon>
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </p>
-        <span *ngIf="wallet.scanning" translate>Scanning funds</span>
-        <p *ngIf="!wallet.scanning">{{wallet.status.availableBalanceSat || 0 | satToUnit: wallet.coin}} {{cachedBalanceUpdateOn}}</p>
-        <p *ngIf="wallet.error" class="error">{{wallet.error}}</p>
       </button>
     </ion-list>
   </ion-card>

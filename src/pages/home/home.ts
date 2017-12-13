@@ -30,7 +30,6 @@ import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { NextStepsProvider } from '../../providers/next-steps/next-steps';
 
 import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   selector: 'page-home',
@@ -192,8 +191,6 @@ export class HomePage {
 
     _.each(wallets, (wallet: any) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
-        this.cachedBalanceUpdateOn = wallet.cachedBalanceUpdatedOn ? ' - ' + moment(wallet.cachedBalanceUpdatedOn * 1000).fromNow() : '';
-        this.profileProvider.setLastKnownBalance(wallet.id, status.availableBalanceSat);
         wallet.status = status;
         wallet.error = null;
 
@@ -201,6 +198,8 @@ export class HomePage {
           this.serverMessage = status.serverMessage;
           foundMessage = true;
         }
+
+        this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
 
         if (++j == i) {
           this.updateTxps();
@@ -310,5 +309,12 @@ export class HomePage {
         //push BuyAndSellPage
         break;
     }
+  }
+
+  public doRefresh(refresher) {
+    this.updateAllWallets();
+    setTimeout(() => {
+      refresher.complete();
+    }, 2000);
   }
 }
