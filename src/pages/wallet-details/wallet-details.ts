@@ -62,7 +62,7 @@ export class WalletDetailsPage {
 
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
 
-    addressbookProvider.list().then((ab) => {
+    this.addressbookProvider.list().then((ab) => {
       this.addressbook = ab;
     }).catch((err) => {
       this.logger.error(err);
