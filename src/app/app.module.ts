@@ -72,6 +72,7 @@ import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
+import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
 import { PinModalPage } from '../pages/pin/pin';
 import { TermsOfUsePage } from '../pages/settings/about/terms-of-use/terms-of-use';
@@ -192,6 +193,7 @@ let pages: any = [
   EmailPage,
   FingerprintModalPage,
   HomePage,
+  LanguagePage,
   LockPage,
   OnboardingPage,
   PaperWalletPage,
