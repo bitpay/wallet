@@ -8,11 +8,11 @@ page-wallet-color {
 
 /* background-color and color defaults should be the same */
 .wallet-background-color-default {
-  background-color: #019477; 
+  background-color: color($colors, primary);  
 }
 
 .wallet-color-default {
-  color: #019477; 
+  color: color($colors, primary); 
 }
 
 .settings-color-block {
@@ -71,7 +71,7 @@ page-wallet-color {
 }
 
 .wallet-color-5 {
-  background: #29bb9c; 
+  background: #1abb9b; 
 }
 
 .wallet-color-5:before {
@@ -98,7 +98,7 @@ page-wallet-color {
 }
 
 .wallet-color-8 {
-  background: #4a90e2; 
+  background: #647ce8; 
 }
 
 .wallet-color-8:before {
