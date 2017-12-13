@@ -22,10 +22,14 @@ import * as _ from 'lodash';
 })
 export class SendPage {
   public search: string = '';
-  public wallets: any;
-  public walletList: any;
-  public contactsList: any;
-  public hasWallets: boolean;
+  public walletsBtc: any;
+  public walletsBch: any;
+  public walletBchList: any;
+  public walletBtcList: any;
+  public contactsList: Array<object> = [];;
+  public filteredContactsList: Array<object> = [];;
+  public hasBtcWallets: boolean;
+  public hasBchWallets: boolean;
   public hasContacts: boolean;
   public contactsShowMore: boolean;
   public searchFocus: boolean;
@@ -48,28 +52,29 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
-    this.wallets = this.profileProvider.getWallets({
-      onlyComplete: true
-    });
-    this.hasWallets = !(_.isEmpty(this.wallets));
-    this.updateWalletsList();
+    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.hasBtcWallets = !(_.isEmpty(this.walletsBtc));
+    this.hasBchWallets = !(_.isEmpty(this.walletsBch));
+    this.updateBchWalletsList();
+    this.updateBtcWalletsList();
     this.updateContactsList();
   }
 
-  private updateWalletsList(): void {
-    if (!this.hasWallets) {
-      this.walletList = [];
-      return;
-    }
+  private updateBchWalletsList(): void {
+    this.walletBchList = [];
 
-    this.walletList = [];
-    _.each(this.wallets, (v: any) => {
-      this.walletList.push({
+    if (!this.hasBchWallets) return;
+
+    _.each(this.walletsBch, (v: any) => {
+      this.walletBchList.push({
         color: v.color,
         name: v.name,
         recipientType: 'wallet',
         coin: v.coin,
         network: v.network,
+        m: v.credentials.m,
+        n: v.credentials.n,
         getAddress: (): Promise<any> => {
           return new Promise((resolve, reject) => {
             this.walletProvider.getAddress(v, false).then((addr) => {
@@ -83,7 +88,34 @@ export class SendPage {
     });
   }
 
-  private updateContactsList() {
+  private updateBtcWalletsList(): void {
+    this.walletBtcList = [];
+
+    if (!this.hasBtcWallets) return;
+
+    _.each(this.walletsBtc, (v: any) => {
+      this.walletBtcList.push({
+        color: v.color,
+        name: v.name,
+        recipientType: 'wallet',
+        coin: v.coin,
+        network: v.network,
+        m: v.credentials.m,
+        n: v.credentials.n,
+        getAddress: (): Promise<any> => {
+          return new Promise((resolve, reject) => {
+            this.walletProvider.getAddress(v, false).then((addr) => {
+              return resolve(addr);
+            }).catch((err) => {
+              return reject(err);
+            });
+          });
+        }
+      });
+    });
+  }
+
+  private updateContactsList(): void {
     this.addressBookProvider.list().then((ab: any) => {
 
       this.hasContacts = _.isEmpty(ab) ? false : true;
@@ -104,9 +136,9 @@ export class SendPage {
           }
         });
       });
-      let contacts = this.contactsList.slice(0, (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT);
-      this.contactsShowMore = this.contactsList.length > contacts.length;
-      return;
+      let shortContactsList = _.clone(this.contactsList.slice(0, (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT));
+      this.filteredContactsList = _.clone(shortContactsList);
+      this.contactsShowMore = this.contactsList.length > shortContactsList.length;
     });
   }
 
@@ -124,7 +156,7 @@ export class SendPage {
 
   public showMore(): void {
     this.currentContactsPage++;
-    this.updateWalletsList();
+    this.updateContactsList();
   }
 
   public searchInFocus(): void {
@@ -139,15 +171,15 @@ export class SendPage {
 
   public findContact(search: string): void {
     if (this.incomingDataProvider.redir(search)) return;
-    if (!search || search.length < 2) {
+    if (search && search.trim() != '') {
+      let result = _.filter(this.contactsList, (item: any) => {
+        let val = item.name;
+        return _.includes(val.toLowerCase(), search.toLowerCase());
+      });
+      this.filteredContactsList = result;
+    } else {
       this.updateContactsList();
-      return;
     }
-    let result = _.filter(this.contactsList, (item: any) => {
-      let val = item.name;
-      return _.includes(val.toLowerCase(), search.toLowerCase());
-    });
-    this.contactsList = result;
   }
 
   public goToAmount(item: any): void {
