@@ -31,6 +31,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
+import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
 import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
@@ -80,7 +81,6 @@ import { FeePolicyPage } from '../pages/settings/fee-policy/fee-policy';
 import { SessionLogPage } from '../pages/settings/about/session-log/session-log';
 
 /* Wallet Settings */
-
 import { WalletSettingsPage } from '../pages/settings/wallet-settings/wallet-settings';
 import { WalletNamePage } from '../pages/settings/wallet-settings/wallet-name/wallet-name';
 import { WalletColorPage } from '../pages/settings/wallet-settings/wallet-color/wallet-color';
@@ -190,6 +190,7 @@ let pages: any = [
   CopayApp,
   DisclaimerPage,
   EmailPage,
+  FeeWarningPage,
   FingerprintModalPage,
   HomePage,
   LockPage,

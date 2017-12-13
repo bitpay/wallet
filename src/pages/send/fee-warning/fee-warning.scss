@@ -1,3 +1,33 @@
-page-fee-warning {
-  
+ion-modal {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(100, 100, 100, 0.8);
+
+	.modal-content {
+		text-align: center;
+
+		.modal-img {
+			background-color: color($colors, danger);
+			padding: 1rem;
+		}
+		.modal-heading {
+			padding: 2rem;	
+		}
+		.modal-message {
+			padding: 3rem;	
+		}
+		button {
+			position: absolute;
+			bottom: 1rem;
+		}
+	}
+}
+.modal-wrapper {
+	position: relative !important;
+	left: auto;
+	top: auto;
+	width: 90%;
+	height: 60%;
+	max-width: 350px;
 }
