@@ -13,7 +13,8 @@ import * as _ from 'lodash';
 export class AddressbookPage {
 
   private cache: boolean = false;
-  private addressbook: Array<object> = [];
+  public addressbook: Array<object> = [];
+  public filteredAddressbook: Array<object> = [];
 
   public isEmptyList: boolean;
 
@@ -32,7 +33,7 @@ export class AddressbookPage {
     this.cache = true;
   }
 
-  private initAddressbook() {
+  private initAddressbook(): void {
     this.addressbookProvider.list().then((ab) => {
       this.isEmptyList = _.isEmpty(ab);
 
@@ -45,7 +46,7 @@ export class AddressbookPage {
         });
       });
       this.addressbook = _.clone(contacts);
-
+      this.filteredAddressbook = _.clone(this.addressbook);
     }).catch((err) => {
       this.logger.error(err);
       let alertError = this.alertCtrl.create({
@@ -63,27 +64,29 @@ export class AddressbookPage {
     });
   };
 
-  public addEntry() {
+  public addEntry(): void {
     this.navCtrl.push(AddressbookAddPage);
   };
 
-  public viewEntry(ab: any) {
+  public viewEntry(ab: any): void {
     this.navCtrl.push(AddressbookViewPage, { address: ab.address });
   }
 
-  public getItems(ev: any) {
-    // Reset items back to all of the items
-    this.initAddressbook();
+  public getItems(ev: any): void {
 
     // set val to the value of the searchbar
     let val = ev.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.addressbook = this.addressbook.filter((item) => {
+      let result = _.filter(this.addressbook, (item: any) => {
         let name = item['name'];
         return _.includes(name.toLowerCase(), val.toLowerCase());
       });
+      this.filteredAddressbook = result;
+    } else {
+      // Reset items back to all of the items
+      this.initAddressbook();
     }
   }
 
