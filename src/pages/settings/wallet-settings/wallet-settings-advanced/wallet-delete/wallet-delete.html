@@ -4,15 +4,11 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <h1>Warning!</h1>
   <p translate>
     Permanently delete this wallet.
   </p>
-  <ion-card>
-    <ion-card-content>
-      {{walletName}}
-    </ion-card-content>
-  </ion-card>
   <p translate>
     THIS ACTION CANNOT BE REVERSED
   </p>

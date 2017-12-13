@@ -1,0 +1,21 @@
+page-wallet-item{
+  .wallet-item {
+    display: inline-block;
+    width: 100%;
+    padding: 2rem;
+    .wallet-name{
+      text-align: center;    
+      padding: 1rem;  
+      color: #000;
+    }
+    .wallet-icon{
+      text-align: center;
+      padding: 1rem;
+      img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@
 
 
 <ion-content class="wallet-color-count wallet-color-default">
+  <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <ion-list radio-group [(ngModel)]="currentColorIndex">
     <ion-item *ngFor="let i of colorCount">
       <ion-label>
