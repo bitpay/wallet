@@ -5,6 +5,7 @@ import { Logger } from '@nsalaun/ng-logger';
 //providers
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../providers/config/config';
+
 @Component({
   selector: 'page-wallet-color',
   templateUrl: 'wallet-color.html',
