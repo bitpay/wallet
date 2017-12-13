@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { SendPage } from '../../send/send';
 import { PayProPage } from '../../paypro/paypro';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
+import { FeeWarningPage } from '../fee-warning/fee-warning';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -371,7 +372,12 @@ export class ConfirmPage {
 
         let per = (txp.fee / (txp.amount + txp.fee) * 100);
         txp.feeRatePerStr = per.toFixed(2) + '%';
-        txp.feeToHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
+        txp.feeTooHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
+
+        if (txp.feeTooHigh) {
+          let feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+          feeWarningModal.present();
+        }
 
         tx.txp[wallet.id] = txp;
         this.tx = tx;

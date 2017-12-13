@@ -1,0 +1,15 @@
+page-fee-warning {
+	.modal-content {
+		text-align: center;
+		.modal-img {
+			background-color: color($colors, danger);
+			padding: 1rem;
+		}
+		.modal-heading {
+			padding: 2rem;	
+		}
+		.modal-message {
+			padding: 3rem;	
+		}
+	}
+}
