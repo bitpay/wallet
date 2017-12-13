@@ -2,4 +2,18 @@ page-send {
   .scanner-icon {
     z-index: 99;
   }
+  .show-more {
+    display: flex;
+    text-align: center;
+  }
+  .title {
+    color: color($colors, dark);
+    font-weight: 700;
+    >img {
+      width: 22px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  }
 }
