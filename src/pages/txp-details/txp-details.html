@@ -1,17 +1,23 @@
 <ion-header>
-  <ion-navbar>
+  <ion-toolbar>
+    <ion-title>
+      {{'Payment Proposal' | translate}}
+    </ion-title>
     <ion-buttons start>
-      <button (click)="close()" ion-button icon-only>
-        <ion-icon name="arrow-back"></ion-icon>
+      <button (click)="close()" ion-button>
+        <span ion-text color="primary">{{'Close'|translate}}</span>
       </button>
     </ion-buttons>
+    <!-- TODO:
     <ion-buttons end>
       <button ion-button (click)="reject()" [disabled]="loading" *ngIf="isShared && tx.pendingForUs">
         {{'Reject'| translate}}
       </button>
     </ion-buttons>
-  </ion-navbar>
+    -->
+  </ion-toolbar>
 </ion-header>
+
 <ion-content>
 
   <ion-list>
@@ -35,7 +41,7 @@
       <div *ngIf="tx.status == 'accepted' && !tx.isGlidera">
         <div translate>Payment accepted, but not yet broadcasted</div>
         <button ion-button block type="button" (click)="broadcast(tx)" [disabled]="loading">
-          <ion-icon name="cloud-upload"></ion-icon>          
+          <ion-icon name="cloud-upload"></ion-icon>
           <span translate>Broadcast Payment</span>
         </button>
       </div>

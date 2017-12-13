@@ -176,7 +176,7 @@ export class WalletTransactionHistoryPage {
 
     this.navCtrl.setRoot(HomePage);
     this.navCtrl.popToRoot();
-    this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
   }
 
 }
