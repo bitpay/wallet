@@ -1,4 +1,4 @@
-<ion-header no-border>
+<ion-header>
 
   <ion-navbar>
     <ion-title>{{'Backup' | translate}}</ion-title>
@@ -15,7 +15,7 @@
 
   <ion-slides pager="true" *ngIf="!deleted">
     <ion-slide>
-      <div *ngIf="mnemonicWords[0] || !credentialsEncrypted">
+      <div *ngIf="mnemonicWords && mnemonicWords[0] || !credentialsEncrypted">
         <h4 translate>Please carefully write down this phrase.</h4>
         <div copy-to-clipboard="{{ copyRecoveryPhrase() }}" class="phrase">
           <span *ngFor="let word of mnemonicWords">

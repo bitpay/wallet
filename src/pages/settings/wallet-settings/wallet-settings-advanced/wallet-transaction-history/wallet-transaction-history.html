@@ -18,9 +18,9 @@
     </ion-note>
   </ion-item> -->
   <ion-item-divider *ngIf="!isCordova" color="light"></ion-item-divider>
-  <ion-item (click)="clearTransactionHistory()">
+  <button ion-item (click)="clearTransactionHistory()">
     <span translate>Clear cache</span>
-  </ion-item>
+  </button>
   <div translate>
     The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes
     again from the server

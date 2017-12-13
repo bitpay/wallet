@@ -10,10 +10,10 @@
 <ion-content>
 
   <ion-list>
-    <ion-item (click)="openAddressBookPage()">
+    <button ion-item (click)="openAddressBookPage()">
       <ion-icon name="contacts" item-start></ion-icon>
       {{'Address book' | translate}}
-    </ion-item>
+    </button>
     <ion-item (click)="openHelpExternalLink()">
       <ion-icon name="help-circle" item-start></ion-icon>
       {{'Help &amp; support' | translate}}
@@ -28,11 +28,11 @@
     </ion-item> TODO -->
 
     <ion-item-divider color="light">{{'Preferences' | translate}}</ion-item-divider>
-    <ion-item (click)="openNotificationsPage()">
+    <button ion-item (click)="openNotificationsPage()">
       <ion-icon name="notifications" item-start></ion-icon>
       {{'Notification' | translate}}
-    </ion-item>
-    <ion-item (click)="openLanguagePage()">
+    </button>
+    <button ion-item (click)="openLanguagePage()">
       <ion-icon name="globe" item-start></ion-icon>
       <ion-label>
         {{'Language' | translate}}
@@ -40,8 +40,8 @@
       <ion-note *ngIf="currentLanguageName" item-end>
         {{ currentLanguageName }}
       </ion-note>
-    </ion-item>
-    <ion-item (click)="openAltCurrencyPage()">
+    </button>
+    <button ion-item (click)="openAltCurrencyPage()">
       <ion-icon name="cash" item-start></ion-icon>
       <ion-label>
         {{'Alternative currency' | translate}}
@@ -49,19 +49,19 @@
       <ion-note *ngIf="selectedAlternative" item-end>
         {{ selectedAlternative.name }}
       </ion-note>
-    </ion-item>
-    <ion-item (click)="openFeePolicy()">
+    </button>
+    <button ion-item (click)="openFeePolicy()">
       <ion-icon name="git-network" item-start></ion-icon>
       <ion-label>
         {{'Bitcoin network fee policy' | translate}}
       </ion-label>
-    </ion-item>
-    <ion-item (click)="openLockPage()">
+    </button>
+    <button ion-item (click)="openLockPage()">
       <ion-icon name="lock" item-start></ion-icon>
       <ion-label>
         {{'Lock' | translate}}
       </ion-label>
-    </ion-item>
+    </button>
     <ion-item-divider *ngIf="walletsBtc.length" color="light">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
     <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettings(wallet.credentials.walletId)">
       <ion-icon item-start>
@@ -91,14 +91,14 @@
       </ion-note>
     </button>
     <ion-item-divider color="light">More</ion-item-divider>
-    <ion-item (click)="openAdvancedPage()">
+    <button ion-item (click)="openAdvancedPage()">
       <ion-icon name="hammer" item-start></ion-icon>
       {{'Advanced' | translate}}
-    </ion-item>
-    <ion-item (click)="openAboutPage()">
+    </button>
+    <button ion-item (click)="openAboutPage()">
       <ion-icon name="apps" item-start></ion-icon>
       {{'About' | translate}} {{appName}}
-    </ion-item>
+    </button>
   </ion-list>
 
 </ion-content>
