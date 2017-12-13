@@ -9,7 +9,6 @@ export class WalletActivityPage {
 
   @Input()
   set notification(notification: any) {
-    console.log(notification);
     this._notification = notification;
   }
 
