@@ -41,9 +41,9 @@
       </ion-row>
     </ion-card-header>
     <ion-list>
-      <ion-item *ngFor="let tx of txps" (click)="openTxpModal(tx)">
+      <button ion-item *ngFor="let tx of txps" (click)="openTxpModal(tx)">
         <page-txp [tx]="tx" [addressbook]="addressbook"></page-txp>
-      </ion-item>
+      </button>
     </ion-list>
   </ion-card>
 
@@ -59,17 +59,17 @@
       </ion-row>
     </ion-card-header>
 
-    <ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
+    <button ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
       <page-wallet-activity [notification]="notification"></page-wallet-activity>
-    </ion-item>
+    </button>
 
   </ion-card>
 
   <div *ngIf="!wallets || !wallets[0]">
     <ion-card (click)="goToAddView()">
-      <ion-item detail-push>
+      <button ion-item detail-push>
         <span translate>Create a new wallet</span>
-      </ion-item>
+      </button>
     </ion-card>
   </div>
 
