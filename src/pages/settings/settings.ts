@@ -18,6 +18,7 @@ import { AddressbookPage } from './addressbook/addressbook';
 import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 import { NotificationsPage } from './notifications/notifications';
 import { FeePolicyPage } from './fee-policy/fee-policy';
+import { LanguagePage } from './language/language';
 
 @Component({
   selector: 'page-settings',
@@ -25,7 +26,7 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 })
 export class SettingsPage {
   public appName: string;
-  public currentLanguage: string;
+  public currentLanguageName: string;
   public languages: Array<any>;
   public walletsBtc: Array<any>;
   public walletsBch: Array<any>;
@@ -39,11 +40,10 @@ export class SettingsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
-    private logger: Logger
+    private logger: Logger,
   ) {
     this.appName = this.app.info.nameCase;
-    this.currentLanguage = this.language.getCurrent();
-    this.languages = this.language.getAvailables();
+    this.currentLanguageName = this.language.getName(this.language.getCurrent());
     this.walletsBch = [];
     this.walletsBtc = [];
   }
@@ -66,44 +66,43 @@ export class SettingsPage {
     }
   }
 
-  altCurrencyModal() {
+  public openAltCurrencyPage(): void {
     this.navCtrl.push(AltCurrencyPage);
   }
 
-  setLanguage(lang: string) {
-    this.currentLanguage = lang;
-    this.language.set(lang);
+  public openLanguagePage(): void {
+    this.navCtrl.push(LanguagePage);
   }
 
-  openAdvancedPage() {
+  public openAdvancedPage(): void {
     this.navCtrl.push(AdvancedPage);
   }
 
-  openAboutPage() {
+  public openAboutPage(): void {
     this.navCtrl.push(AboutPage);
   }
 
-  openLockPage() {
+  public openLockPage(): void {
     this.navCtrl.push(LockPage);
   }
 
-  openAddressBookPage() {
+  public openAddressBookPage(): void {
     this.navCtrl.push(AddressbookPage);
   }
 
-  openNotificationsPage() {
+  public openNotificationsPage(): void {
     this.navCtrl.push(NotificationsPage);
   }
 
-  openFeePolicy() {
+  public openFeePolicy(): void {
     this.navCtrl.push(FeePolicyPage);
   }
 
-  openWalletSettings(walletId: string): void {
+  public openWalletSettings(walletId: string): void {
     this.navCtrl.push(WalletSettingsPage, { walletId: walletId });
   }
 
-  openHelpExternalLink() {
+  public openHelpExternalLink(): void {
     var url = this.appName == 'copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
     var optIn = true;
     var title = null;

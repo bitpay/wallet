@@ -1,0 +1,16 @@
+page-language{
+  .settings-explanation {
+    padding: 0 1rem;
+    margin: 1rem 0;
+    .settings-heading {
+      font-size: 17px;
+      color: color($colors,dark);
+      margin: 1rem 0;
+    }
+    .settings-description {
+      color:color($colors,dark);
+      margin: 1rem 0;
+      font-size: 0.9em;
+    }
+  }
+}

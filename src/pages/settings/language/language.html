@@ -1,0 +1,31 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'Language'|translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list radio-group [(ngModel)]="currentLanguage">
+    <ion-item *ngFor="let language of languages">
+      <ion-label>
+        {{ language.name }}
+      </ion-label>
+      <ion-radio (click)="save(language.isoCode)" [value]="language.isoCode"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <ion-item-divider color="light"></ion-item-divider>
+  <div class="settings-explanation">
+    <div class="settings-description" translate>
+      We’re always looking for translation contributions! You can make corrections or help to make this app available in your native
+      language by joining our community on Crowdin.
+    </div>
+  </div>
+  <div class="settings-explanation">
+    <div class="settings-description" translate>
+      Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language.
+    </div>
+  </div>
+  <button ion-button block class="button-footer" (click)="openExternalLink()">{{'Contribute Translations'|translate}}</button>
+</ion-content>

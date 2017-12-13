@@ -46,13 +46,13 @@ export class LanguageProvider {
   private current: string;
 
   constructor(
-    private log: Logger,
+    private logger: Logger,
     private translate: TranslateService,
     private configProvider: ConfigProvider
   ) {
-    this.log.info('LanguageProvider initialized.');
+    this.logger.info('LanguageProvider initialized.');
     this.translate.onLangChange.subscribe((event) => {
-      this.log.info('Setting new default language to: ' + event.lang);
+      this.logger.info('Setting new default language to: ' + event.lang);
     });
   }
 
@@ -66,41 +66,31 @@ export class LanguageProvider {
       if (validBrowserLang) this.current = browserLang;
       else this.current = this.getDefault();
     }
-    this.log.info('Default language: ' + this.current);
+    this.logger.info('Default language: ' + this.current);
     this.translate.setDefaultLang(this.current);
   }
 
-  set(lang: string) {
+  public set(lang: string): void {
     this.current = lang;
     this.translate.use(lang);
     this.configProvider.set({ wallet: { settings: { defaultLanguage: lang } } });
   }
 
-  getName(lang: string) {
+  public getName(lang: string): string {
     return _.result(_.find(this.languages, {
       'isoCode': lang
     }), 'name');
   }
 
-  getDefault() {
+  private getDefault(): string {
     return this.languages[0]['isoCode'];
   }
 
-  getCurrent() {
+  public getCurrent(): any {
     return this.current;
   }
 
-  getCurrentName() {
-    return this.getName(this.current);
-  }
-
-  getCurrentInfo() {
-    return _.find(this.languages, {
-      'isoCode': this.current
-    });
-  }
-
-  getAvailables() {
+  public getAvailables(): any {
     return this.languages;
   }
 
