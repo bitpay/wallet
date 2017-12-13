@@ -56,7 +56,7 @@
   <div class="wallet-activity-note">
     <!-- {{notification.types}} -->
     <div>
-      <span class="wallet-activity-note-child color" [ngClass]="{'wallet-color-default': !notification.wallet.color}" [ngStyle]="{'color':notification.wallet.color}"></span>
+      <span class="wallet-activity-note-child color" [ngClass]="{'wallet-color-default': !notification.wallet.color}" [ngStyle]="{'background-color':notification.wallet.color}"></span>
       <span *ngIf="notification.creatorName" class="wallet-activity-note-child">{{ notification.creatorName}}@</span>
       <span class="wallet-activity-note-child">{{notification.wallet.name}}</span>
     </div>
