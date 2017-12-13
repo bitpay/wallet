@@ -10,37 +10,38 @@ import { PinModalPage } from '../../pin/pin';
 })
 export class LockPage {
   public options: Array<{ method: string, enabled: boolean, disabled: boolean }> = [];
-  public lockOptions: Object;
+  public lockOptions: any;
 
   constructor(
     private modalCtrl: ModalController,
     private configProvider: ConfigProvider,
     private touchid: TouchIdProvider,
   ) {
+    this.checkLockOptions();
+  }
 
-    this.lockOptions = this.configProvider.get()['lock'];
+  private checkLockOptions() {
+    this.lockOptions = this.configProvider.get().lock;
     this.options = [
       {
         method: 'Disabled',
-        enabled: this.lockOptions['method'] == 'Disabled' ? true : false,
+        enabled: this.lockOptions.method == 'Disabled' ? true : false,
         disabled: false
       },
       {
         method: 'PIN',
-        enabled: this.lockOptions['method'] == 'PIN' ? true : false,
+        enabled: this.lockOptions.method == 'PIN' ? true : false,
         disabled: false
       },
       {
         method: 'Fingerprint',
-        enabled: this.lockOptions['method'] == 'Fingerprint' ? true : false,
+        enabled: this.lockOptions.method == 'Fingerprint' ? true : false,
         disabled: !this.touchid.isAvailable() ? true : false
       }
     ];
   }
 
-
-
-  select(method): void {
+  public select(method): void {
     switch (method) {
       case 'PIN':
         this.openPinModal('pinSetUp');
@@ -54,12 +55,15 @@ export class LockPage {
     }
   }
 
-  openPinModal(action) {
+  private openPinModal(action): void {
     let modal = this.modalCtrl.create(PinModalPage, { action });
     modal.present();
+    modal.onDidDismiss(() => {
+      this.checkLockOptions();
+    });
   }
 
-  lockByFingerprint() {
+  public lockByFingerprint(): void {
     let lock = { method: 'Fingerprint', value: null, bannedUntil: null };
     this.configProvider.set({ lock });
   }
