@@ -213,7 +213,7 @@ export class BackupGamePage {
 
   };
 
-  private copyRecoveryPhrase(): string {
+  public copyRecoveryPhrase(): string {
     if (this.wallet.network == 'livenet') return null;
     else if (!this.wallet.credentials.mnemonic) return null;
     else return this.wallet.credentials.mnemonic;
