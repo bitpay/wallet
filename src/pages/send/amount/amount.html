@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title>{{'Amount' | translate}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="showSendMax">
       <button (click)="showSendMaxMenu()" ion-button icon-only>
         <ion-icon name="more"></ion-icon>
       </button>

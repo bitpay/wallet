@@ -5,6 +5,7 @@
 $global-colors: (
   light-grey: #9B9B9B,
   labels:     #6C6C6E,
+  warning: #BB331A
 );
 
 .bottom-absolute {
@@ -51,4 +52,32 @@ $global-colors: (
 
 .icon-contact {
   width: 35px;
+}
+
+.box-notification {
+  padding: 0.5rem;
+  border: 1px solid;
+  margin: 10px;
+  a {
+    color: #fff;
+  }
+  &.notice {
+    border-color: #b2b2b2;
+    background-color: #f8f8f8;
+    color: #444;
+  }
+  &.warning {
+    border-color: #e6b500;
+    background-color: #ffc900;
+    color: #fff;
+    &.warning-red{
+      border-color: #EB475A;
+      background-color: color($global-colors, warning);;
+    }
+  }
+  &.error {
+    background-color: #ef473a;
+    border-color: #e42112;
+    color: #fff;
+  }
 }

@@ -4,6 +4,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
 import { AddPage } from "../add/add";
+import { AmazonPage } from '../integrations/amazon/amazon';
 import { CopayersPage } from '../add/copayers/copayers';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { TxDetailsPage } from '../tx-details/tx-details';
@@ -300,7 +301,7 @@ export class HomePage {
         //push MercadolibrePage
         break;
       case 'AmazonPage':
-        //push AmazonPage
+        this.navCtrl.push(AmazonPage);
         break;
       case 'BitPayCardIntroPage':
         //push BitPayCardIntroPage
