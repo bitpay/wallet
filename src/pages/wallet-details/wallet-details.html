@@ -15,7 +15,7 @@
         <div *ngIf="!wallet.balanceHidden && wallet.status">
           <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
           <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
-            {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}} --
+            {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
           </div>
         </div>
       </div>
