@@ -6,7 +6,6 @@ import { Logger } from '@nsalaun/ng-logger';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
-import { BwcProvider } from '../../providers/bwc/bwc';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PopupProvider } from '../../providers/popup/popup';
 import { AddressProvider } from '../../providers/address/address';
@@ -43,7 +42,6 @@ export class SendPage {
     private walletProvider: WalletProvider,
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
-    private bwcProvider: BwcProvider,
     private incomingDataProvider: IncomingDataProvider,
     private popupProvider: PopupProvider,
     private addressProvider: AddressProvider
