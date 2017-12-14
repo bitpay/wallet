@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -23,7 +23,8 @@ export class WalletColorPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private configProvider: ConfigProvider,
-    private logger: Logger
+    private logger: Logger,
+    private events: Events
   ) {
 
   }
@@ -49,6 +50,7 @@ export class WalletColorPage {
     opts.colorFor[this.wallet.credentials.walletId] = color;
 
     this.configProvider.set(opts);
+    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
     this.navCtrl.pop();
   }
 
