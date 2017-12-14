@@ -13,9 +13,7 @@
   </div>
 
   <ion-list *ngIf="txps && txps[0] && !fetchingProposals">
-    <ion-item *ngFor="let tx of txps" (click)="openTxpModal(tx)">
-      <page-txp [tx]="tx" [addressbook]="addressbook"></page-txp>
-    </ion-item>
+    <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
   </ion-list>
 
   <ion-list *ngIf="txps && !txps[0] && !fetchingProposals">

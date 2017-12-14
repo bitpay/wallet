@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 import { ConfigProvider } from '../config/config';
@@ -47,7 +48,8 @@ export class WalletProvider {
     private filter: FilterProvider,
     private popupProvider: PopupProvider,
     private ongoingProcess: OnGoingProcessProvider,
-    private touchidProvider: TouchIdProvider
+    private touchidProvider: TouchIdProvider,
+    private events: Events
   ) {
     this.logger.info('WalletService initialized.');
   }
@@ -706,7 +708,7 @@ export class WalletProvider {
         this.logger.debug('Transaction removed');
 
         this.invalidateCache(wallet);
-        // $rootScope.$emit('Local/TxAction', wallet.id);
+        this.events.publish('Local/TxAction', wallet.id);
         return resolve(err);
       });
     });
@@ -933,7 +935,7 @@ export class WalletProvider {
       this.rejectTx(wallet, txp).then((txpr: any) => {
         this.invalidateCache(wallet);
         this.ongoingProcess.set('rejectTx', false);
-        //$rootScope.$emit('Local/TxAction', wallet.id);
+        this.events.publish('Local/TxAction', wallet.id);
         return resolve(txpr);
       }).catch((err) => {
         return reject(err);
@@ -947,7 +949,7 @@ export class WalletProvider {
       this.publishTx(wallet, txp).then((publishedTxp) => {
         this.invalidateCache(wallet);
         this.ongoingProcess.set('sendingTx', false, customStatusHandler);
-        //$rootScope.$emit('Local/TxAction', wallet.id);
+        this.events.publish('Local/TxAction', wallet.id);
         return resolve();
       }).catch((err) => {
         return reject(this.bwcErrorProvider.msg(err));
@@ -980,19 +982,19 @@ export class WalletProvider {
           this.ongoingProcess.set('broadcastingTx', true, customStatusHandler);
           this.broadcastTx(wallet, signedTxp).then((broadcastedTxp: any) => {
             this.ongoingProcess.set('broadcastingTx', false, customStatusHandler);
-            //$rootScope.$emit('Local/TxAction', wallet.id);
+            this.events.publish('Local/TxAction', wallet.id);
             return resolve(broadcastedTxp);
           }).catch((err) => {
             return reject(this.bwcErrorProvider.msg(err));
           });
         } else {
-          //$rootScope.$emit('Local/TxAction', wallet.id);
+          this.events.publish('Local/TxAction', wallet.id);
           return resolve(signedTxp);
         };
       }).catch((err) => {
         this.logger.warn('sign error:' + err);
         let msg = err && err.message ? err.message : 'The payment was created but could not be completed. Please try again from home screen'; //TODO gettextcatalog
-        //$rootScope.$emit('Local/TxAction', wallet.id);
+        this.events.publish('Local/TxAction', wallet.id);
         return reject(msg);
       });
     });

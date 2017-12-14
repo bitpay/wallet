@@ -1,13 +1,9 @@
 import { Component } from "@angular/core";
 import { Logger } from '@nsalaun/ng-logger';
-import { ModalController } from 'ionic-angular';
 
 //providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
 import { ProfileProvider } from '../../../providers/profile/profile';
-
-//pages
-import { TxpDetailsPage } from '../../txp-details/txp-details';
 
 @Component({
   selector: 'page-proposals',
@@ -22,8 +18,7 @@ export class ProposalsPage {
   constructor(
     private addressBookProvider: AddressBookProvider,
     private logger: Logger,
-    private profileProvider: ProfileProvider,
-    private modalCtrl: ModalController
+    private profileProvider: ProfileProvider
   ) {
     this.fetchingProposals = true;
   }
@@ -42,11 +37,6 @@ export class ProposalsPage {
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }
-
-  public openTxpModal(tx: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: tx }, { showBackdrop: false, enableBackdropDismiss: false });
-    modal.present();
   }
 
 }
