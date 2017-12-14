@@ -14,7 +14,7 @@ import { BackupGamePage } from '../backup/backup-game/backup-game';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { PlatformProvider } from '../../providers/platform/platform';
-import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
+import { PopupProvider } from '../../providers/popup/popup';
 
 import * as _ from 'lodash';
 
@@ -30,6 +30,7 @@ export class ReceivePage {
   public wallets: Array<any> = [];
   public wallet: any;
   public showShareButton: boolean;
+  public loading: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -41,7 +42,7 @@ export class ReceivePage {
     private events: Events,
     private actionSheetCtrl: ActionSheetController,
     private socialSharing: SocialSharing,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private popupProvider: PopupProvider
   ) {
   }
 
@@ -96,15 +97,17 @@ export class ReceivePage {
 
   private setAddress(newAddr?: boolean): void {
 
-    if (newAddr || _.isEmpty(this.address)) this.onGoingProcessProvider.set('generatingNewAddress', true);
+    this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
     this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
-      this.onGoingProcessProvider.set('generatingNewAddress', false);
+      this.loading = false
       this.address = addr;
       this.updateQrAddress();
     }).catch((err) => {
-      this.onGoingProcessProvider.set('generatingNewAddress', false);
-      this.logger.error(err);
+      this.loading = false;
+      this.logger.warn(err);
+      //Error is already formated
+      this.popupProvider.ionicAlert(null, err);
     });
   }
 
