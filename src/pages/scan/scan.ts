@@ -35,6 +35,7 @@ export class ScanPage {
   public scannerStates: any;
   public canOpenSettings: boolean;
   public currentState: string;
+  public notSupportedMessage: string;
   // private qrScannerBrowser: QRScannerBrowser (inside constructor)
   constructor(
     private navCtrl: NavController,
@@ -76,7 +77,10 @@ export class ScanPage {
 
   ionViewDidEnter() {
     //TODO support for browser
-    if (!this.platform.isCordova) return;
+    if (!this.platform.isCordova) {
+      this.notSupportedMessage = "Scanner not supported"; //TODO gettextcatalog
+      return;
+    }
     // try initializing and refreshing status any time the view is entered
     if (!this.scanProvider.isInitialized()) {
       this.scanProvider.gentleInitialize();

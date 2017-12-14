@@ -30,4 +30,9 @@
       <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
     </div>
   </div>
+  <ion-card class="not-supported-message" *ngIf="notSupportedMessage">
+    <ion-item>
+      {{notSupportedMessage}}
+    </ion-item>
+  </ion-card>
 </ion-content>
