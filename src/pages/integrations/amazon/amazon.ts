@@ -27,7 +27,7 @@ export class AmazonPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AmazonPage');
+    this.logger.info('ionViewDidLoad AmazonPage');
     this.network = this.amazonProvider.getNetwork();
     this.initAmazon();
   }

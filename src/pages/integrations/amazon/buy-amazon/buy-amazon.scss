@@ -1,3 +1,18 @@
 page-buy-amazon {
-
+  .amazon-title {
+    img {
+      width: 3.5rem;
+    }
+  }
+  .wallets-list {
+    img {
+      width: 2rem;
+      background-color: color($colors, primary);
+    }
+  }
+  .amazon-info {
+    * {
+      white-space: normal;
+    }
+  }
 }

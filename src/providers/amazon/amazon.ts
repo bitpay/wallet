@@ -107,20 +107,20 @@ export class AmazonProvider {
 
     this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/pay', dataSrc).subscribe((data: any) => {
       this.logger.info('BitPay Create Invoice: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
-      this.logger.error('BitPay Create Invoice: ERROR ' + data.data.message);
-      return cb(data.data);
+      this.logger.error('BitPay Create Invoice: ERROR ' + data.error.message);
+      return cb(data.error);
     });
   };
 
   public getBitPayInvoice(id, cb) {
     this.http.get(this.credentials.BITPAY_API_URL + '/invoices/' + id).subscribe((data: any) => {
       this.logger.info('BitPay Get Invoice: SUCCESS');
-      return cb(null, data.data.data);
+      return cb(null, data.data);
     }, (data: any) => {
-      this.logger.error('BitPay Get Invoice: ERROR ' + data.data.error);
-      return cb(data.data.error);
+      this.logger.error('BitPay Get Invoice: ERROR ' + data.error.message);
+      return cb(data.error.message);
     });
   };
 
