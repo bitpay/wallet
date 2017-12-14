@@ -82,7 +82,16 @@ export class ReceivePage {
   }
 
   public requestSpecificAmount(): void {
-    this.navCtrl.push(AmountPage, { toAddress: this.address, fromSend: false, walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(AmountPage, {
+      toAddress: this.address,
+      walletId: this.wallet.credentials.walletId,
+      recipientType: 'wallet',
+      name: this.wallet.name,
+      color: this.wallet.color,
+      coin: this.wallet.coin,
+      network: this.wallet.network,
+      fromSend: false,
+    });
   }
 
   private setAddress(newAddr?: boolean): void {

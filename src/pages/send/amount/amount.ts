@@ -40,10 +40,12 @@ export class AmountPage {
   public toAddress: string;
   public name: string;
   public email: string;
+  public color: string;
+  public coin: string;
+  public network: string;
   public useSendMax: boolean;
   public showSendMax: boolean;
   public config: any;
-  public coin: string;
 
   private walletId: any;
 
@@ -64,9 +66,11 @@ export class AmountPage {
     this.nextView = this.setNextView();
     this.toAddress = this.navParams.data.toAddress;
     this.walletId = this.navParams.data.walletId;
-    this.addressInfo = this.addressProvider.validateAddress(this.navParams.data.toAddress);
+    this.network = this.navParams.data.network;
     this.name = this.navParams.data.name;
     this.email = this.navParams.data.email;
+    this.color = this.navParams.data.color;
+    this.coin = this.navParams.data.coin;
     this.LENGTH_EXPRESSION_LIMIT = 19;
     this.availableUnits = [];
     this.unit = this.navParams.data.currency ? this.navParams.data.currency : '';
@@ -87,8 +91,8 @@ export class AmountPage {
 
   ionViewWillEnter() {
     this.useSendMax = false;
-      }
-    
+  }
+
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
     if (this.navCtrl.getActive().name != 'AmountPage') return;
     if (!event.key) return;
@@ -240,12 +244,14 @@ export class AmountPage {
 
     let data: any = {
       recipientType: this.recipientType,
+      toAddress: this.toAddress,
       amount: amount_,
-      addressInfo: this.addressInfo,
       name: this.name,
       email: this.email,
+      color: this.color,
       unit: this.unit.toLowerCase(),
-      coin: this.addressInfo.coin,
+      coin: this.coin,
+      network: this.network,
       useSendMax: this.useSendMax,
       walletId: this.walletId
     }
@@ -258,9 +264,7 @@ export class AmountPage {
   }
 
   private setAvailableUnits(): void {
-    if (!this.addressInfo.isValid) return;
-
-    let coin = this.addressInfo.coin;
+    let coin = this.coin;
     let availableWallets = this.profileProvider.getWallets({ coin: coin });
 
     if (availableWallets && availableWallets.length > 0)

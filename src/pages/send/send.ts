@@ -9,6 +9,7 @@ import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcProvider } from '../../providers/bwc/bwc';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { PopupProvider } from '../../providers/popup/popup';
+import { AddressProvider } from '../../providers/address/address';
 
 //pages
 import { AmountPage } from './amount/amount';
@@ -44,7 +45,8 @@ export class SendPage {
     private logger: Logger,
     private bwcProvider: BwcProvider,
     private incomingDataProvider: IncomingDataProvider,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private addressProvider: AddressProvider
   ) { }
 
   ionViewDidLoad() {
@@ -126,9 +128,10 @@ export class SendPage {
         this.contactsList.push({
           name: _.isObject(v) ? v.name : v,
           address: k,
+          network: this.addressProvider.validateAddress(k).network,
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
-          coin: this.getCoin(k),
+          coin: this.addressProvider.validateAddress(k).coin,
           getAddress: (): Promise<any> => {
             return new Promise((resolve, reject) => {
               return resolve(k);
@@ -140,14 +143,6 @@ export class SendPage {
       this.filteredContactsList = _.clone(shortContactsList);
       this.contactsShowMore = this.contactsList.length > shortContactsList.length;
     });
-  }
-
-  private getCoin(address: string): string {
-    let cashAddress = this.bwcProvider.getBitcoreCash().Address.isValid(address, 'livenet');
-    if (cashAddress) {
-      return 'bch';
-    }
-    return 'btc';
   }
 
   public openScanner(): void {
@@ -197,6 +192,7 @@ export class SendPage {
         email: item.email,
         color: item.color,
         coin: item.coin,
+        network: item.network,
         fromSend: true
       });
       return;

@@ -33,6 +33,13 @@ page-confirm {
     }
   }
 
+  .no-wallet-message {
+    ion-item {
+      text-align: center;
+      text-transform: uppercase;
+    }
+  } 
+
   @mixin row-flex {
     display: flex;
     align-items: center;

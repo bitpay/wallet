@@ -24,15 +24,17 @@
     <ion-item>
       <span translate>Amount</span>
       <ion-note item-end>
-        {{amount | satToUnit}}
+        {{amount | satToUnit: coin}}
       </ion-note>
     </ion-item>
     <ion-item *ngIf="wallet" ion-item>
       <span translate>Receive in</span>
       <ion-note class="wallet-label" item-end>
-        <ion-icon>
-          <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-          <img *ngIf="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <ion-icon item-start>
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
         </ion-icon>
         <span class="wallet-name">{{wallet.name}}</span>
       </ion-note>
