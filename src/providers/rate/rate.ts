@@ -11,6 +11,9 @@ export class RateProvider {
   private ratesBCH: any;
   private ratesAvailable: boolean;
 
+  private SAT_TO_BTC: number;
+  private BTC_TO_SAT: number;
+
   private rateServiceUrl = 'https://bitpay.com/api/rates';
   private bchRateServiceUrl = 'https://api.kraken.com/0/public/Ticker?pair=BCHUSD,BCHEUR';
 
@@ -22,6 +25,8 @@ export class RateProvider {
     this.rates = {};
     this.alternatives = [];
     this.ratesBCH = {};
+    this.SAT_TO_BTC = 1 / 1e8;
+    this.BTC_TO_SAT = 1e8;
     this.ratesAvailable = false;
     this.updateRatesBtc();
     this.updateRatesBch();
@@ -91,12 +96,22 @@ export class RateProvider {
     return this.alternatives;
   }
 
+  public isAvailable() {
+    return this.ratesAvailable;
+  }
+
   public toFiat(satoshis: number, code: string, chain: string): number {
-    return satoshis * this.getRate(code, chain);
+    if (!this.isAvailable()) {
+      return null;
+    }
+    return satoshis * this.SAT_TO_BTC * this.getRate(code, chain);
   }
 
   public fromFiat(amount: number, code: string, chain: string): number {
-    return amount / this.getRate(code, chain);
+    if (!this.isAvailable()) {
+      return null;
+    }
+    return amount / this.getRate(code, chain) * this.BTC_TO_SAT;
   }
 
   public listAlternatives(sort: boolean) {
