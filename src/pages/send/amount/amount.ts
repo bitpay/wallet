@@ -41,6 +41,7 @@ export class AmountPage {
   public name: string;
   public email: string;
   public useSendMax: boolean;
+  public showSendMax: boolean;
   public config: any;
   public coin: string;
 
@@ -57,6 +58,7 @@ export class AmountPage {
     private addressProvider: AddressProvider,
     private rateProvider: RateProvider,
   ) {
+    this.showSendMax = false;
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType || null;
     this.nextView = this.setNextView();
@@ -85,8 +87,8 @@ export class AmountPage {
 
   ionViewWillEnter() {
     this.useSendMax = false;
-  }
-
+      }
+    
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
     if (this.navCtrl.getActive().name != 'AmountPage') return;
     if (!event.key) return;
@@ -111,6 +113,7 @@ export class AmountPage {
 
   private setNextView(): any {
     if (this.navParams.data.fromSend) {
+      this.showSendMax = true;
       return ConfirmPage;
     } else if (this.navParams.data.fromIntegration) {
       switch (this.navParams.data.integration) {
