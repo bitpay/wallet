@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import * as _ from "lodash";
 
 @Injectable()
@@ -6,7 +7,7 @@ export class FilterProvider {
 
   public formats: any;
 
-  constructor() {
+  constructor(private decimalPipe: DecimalPipe) {
     console.log('Hello Filter Provider');
     this.formats = {
       CURRENCY_SYM: "$",
@@ -16,15 +17,16 @@ export class FilterProvider {
   }
 
   formatFiatAmount(amount: number) {
-    var value: any;
-    var sep: any;
-    var group: any;
-    var intValue: any;
-    var floatValue: any;
-    var finalValue: any;
+    let value: any;
+    let sep: any;
+    let group: any;
+    let intValue: any;
+    let floatValue: any;
+    let finalValue: any;
 
-    var fractionSize = 2;
-    value = _.round(amount, fractionSize).toString();
+    let fractionSize = 2;
+    value = this.decimalPipe.transform(amount);
+    if (!value) return 0;
     sep = value.indexOf(this.formats.DECIMAL_SEP);
     group = value.indexOf(this.formats.GROUP_SEP);
 

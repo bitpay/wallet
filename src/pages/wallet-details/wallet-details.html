@@ -15,7 +15,7 @@
         <div *ngIf="!wallet.balanceHidden && wallet.status">
           <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
           <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
-            {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+            {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}} --
           </div>
         </div>
       </div>
@@ -24,7 +24,10 @@
         <strong translate>[Scanning Funds]</strong>
       </div>
 
-      <div *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status && wallet.status.totalBalanceSat != wallet.status.spendableAmount">
+      <div
+        class="balance-spendable"
+        *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status && wallet.status.totalBalanceSat != wallet.status.spendableAmount">
+        <ion-icon name="checkmark"></ion-icon>
         <strong>
           {{wallet.status.spendableBalanceStr}}
         </strong>
@@ -32,6 +35,7 @@
         <span>
           {{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
         </span>
+        <ion-icon name="arrow-round-forward"></ion-icon>
       </div>
 
       <div *ngIf="updateStatusError">
@@ -63,10 +67,12 @@
       <button ion-item *ngFor="let txp of txps" (click)="openTxpModal(txp)">
         <page-txp [tx]="txp" [addressbook]="addressbook"></page-txp>
       </button>
-      <ion-item *ngIf="wallet.status.lockedBalanceSat">
-        <span translate>Total Locked Balance</span>:
-        <b>{{wallet.status.lockedBalanceStr}} </b>
-        <span> {{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}} </span>
+      <ion-item *ngIf="wallet.status.lockedBalanceSat" text-end>
+        <h2 translate>Total Locked Balance</h2>
+        <p>
+          <b>{{wallet.status.lockedBalanceStr}}</b>
+          <span> {{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}} </span>
+        </p>
       </ion-item>
     </ion-list>
   </ion-card>
