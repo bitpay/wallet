@@ -49,7 +49,7 @@
           <a class="unit-button" (click)="updateUnit()">{{unit}}</a>
         </div>
         <div class="amount" [hidden]="!showExpressionResult">= {{amount | number: '1.2-8'}} {{unit}}</div>
-        <div class="result" *ngIf="isFiatAmount">≈ {{amount | fiatToUnit: coin}}</div>
+        <div class="result" *ngIf="isFiatAmount">≈ {{amount | fiatToUnit: coin : unit}}</div>
         <div class="result" *ngIf="!isFiatAmount">≈ {{amount * 1e8 | satToFiat: unit}}</div>
       </div>
     </div>

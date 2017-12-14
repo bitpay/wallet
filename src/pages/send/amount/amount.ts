@@ -3,11 +3,9 @@ import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 //providers
-import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ConfigProvider } from '../../../providers/config/config';
 import { NodeWebkitProvider } from '../../../providers/node-webkit/node-webkit';
-import { AddressProvider } from '../../../providers/address/address';
 import { RateProvider } from '../../../providers/rate/rate';
 
 //pages
@@ -34,7 +32,6 @@ export class AmountPage {
   public showExpressionResult: boolean;
 
   public allowSend: boolean;
-  public fromSend: boolean;
   public recipientType: string;
   public addressInfo: any;
   public toAddress: string;
@@ -44,7 +41,6 @@ export class AmountPage {
   public coin: string;
   public network: string;
   public useSendMax: boolean;
-  public showSendMax: boolean;
   public config: any;
 
   private walletId: any;
@@ -53,17 +49,13 @@ export class AmountPage {
     private actionSheetCtrl: ActionSheetController,
     private navCtrl: NavController,
     private navParams: NavParams,
-    private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private nodeWebkitProvider: NodeWebkitProvider,
     private configProvider: ConfigProvider,
-    private addressProvider: AddressProvider,
     private rateProvider: RateProvider,
   ) {
-    this.showSendMax = false;
     this.config = this.configProvider.get();
-    this.recipientType = this.navParams.data.recipientType || null;
-    this.nextView = this.setNextView();
+    this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
     this.walletId = this.navParams.data.walletId;
     this.network = this.navParams.data.network;
@@ -71,26 +63,30 @@ export class AmountPage {
     this.email = this.navParams.data.email;
     this.color = this.navParams.data.color;
     this.coin = this.navParams.data.coin;
+    this.fixedUnit = this.navParams.data.fixedUnit;
     this.LENGTH_EXPRESSION_LIMIT = 19;
     this.availableUnits = [];
-    this.unit = this.navParams.data.currency ? this.navParams.data.currency : '';
-    this.isFiatAmount = this.isFiat(this.unit);
     this.expression = '';
     this.amount = 0;
+    this.useSendMax = false;
     this.showExpressionResult = false;
     this.allowSend = false;
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
-    this.fixedUnit = this.navParams.data.fixedUnit ? true : false;
-  }
+    this.nextView = this.getNextView();
 
-  ionViewDidLoad() {
-    this.processAmount();
-    this.setAvailableUnits();
-  }
-
-  ionViewWillEnter() {
-    this.useSendMax = false;
+    if (this.navParams.data.currency) {
+      this.availableUnits.push(this.coin.toUpperCase());
+      this.availableUnits.push(this.navParams.data.currency);
+      this.unit = this.navParams.data.currency;
+    }
+    else {
+      let unit = this.config.wallet.settings.alternativeIsoCode;
+      this.availableUnits.push(this.coin.toUpperCase());
+      this.availableUnits.push(unit);
+      this.unit = this.availableUnits[0];
+    }
+    this.isFiatAmount = this.unit != 'BCH' && this.unit != 'BTC' ? true : false;
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
@@ -115,20 +111,19 @@ export class AmountPage {
     this.processAmount();
   }
 
-  private setNextView(): any {
-    if (this.navParams.data.fromSend) {
-      this.showSendMax = true;
-      return ConfirmPage;
-    } else if (this.navParams.data.fromIntegration) {
-      switch (this.navParams.data.integration) {
-        case 'Amazon':
-          return BuyAmazonPage;
-        default:
-          return ConfirmPage;
-      }
-    } else {
-      return CustomAmountPage;
+  private getNextView(): any {
+    let nextPage;
+    switch (this.navParams.data.nextPage) {
+      case 'BuyAmazonPage':
+        nextPage = BuyAmazonPage;
+        break;
+      case 'CustomAmountPage':
+        nextPage = CustomAmountPage;
+        break;
+      default:
+        nextPage = ConfirmPage;
     }
+    return nextPage;
   }
 
   public processClipboard(): void {
@@ -199,8 +194,8 @@ export class AmountPage {
   }
 
   private processAmount(): void {
-    var formatedValue = this.format(this.expression);
-    var result = this.evaluate(formatedValue);
+    let formatedValue = this.format(this.expression);
+    let result = this.evaluate(formatedValue);
     this.allowSend = _.isNumber(result) && +result > 0;
 
     if (_.isNumber(result)) {
@@ -234,7 +229,7 @@ export class AmountPage {
   public finish(): void {
     let amount_: any;
 
-    if (this.isFiat(this.unit)) {
+    if (this.isFiatAmount) {
       let altIsoCode: string = this.config.wallet.settings.alternativeIsoCode;
       let unitCode: string = this.config.wallet.settings.unitCode;
       let value: any = this.rateProvider.fromFiat(this.amount, altIsoCode, unitCode) * 1e8;
@@ -256,24 +251,6 @@ export class AmountPage {
       walletId: this.walletId
     }
     this.navCtrl.push(this.nextView, data);
-  }
-
-  private isFiat(unit: string) {
-    if (this.unit != 'BCH' && this.unit != 'BTC') return true;
-    return false;
-  }
-
-  private setAvailableUnits(): void {
-    let coin = this.coin;
-    let availableWallets = this.profileProvider.getWallets({ coin: coin });
-
-    if (availableWallets && availableWallets.length > 0)
-      this.availableUnits.push(coin.toUpperCase());
-    else return;
-
-    const unit = this.config.wallet.settings.alternativeIsoCode;
-    this.availableUnits.push(unit);
-    this.unit = this.availableUnits[0];
   }
 
   public updateUnit(): void {

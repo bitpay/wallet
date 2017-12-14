@@ -40,9 +40,7 @@ export class AmazonPage {
     switch (page) {
       case 'Amount':
         this.navCtrl.push(AmountPage, {
-          fromIntegration: true,
-          integration: 'Amazon',
-          fromSend: false,
+          nextPage: 'BuyAmazonPage',
           currency: 'USD',
           coin: 'btc',
           fixedUnit: true,

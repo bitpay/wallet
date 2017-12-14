@@ -27,7 +27,7 @@
       </div>
       <div *ngIf="tx.txp[wallet.id]">
         <div>{{tx.txp[wallet.id].fee | satToUnit: coin}}</div>
-        <ion-note>{{tx.txp[wallet.id].fee | satToFiat}}&nbsp;
+        <ion-note>{{tx.txp[wallet.id].fee | satToFiat: unit}}&nbsp;
           <span class="fee-rate" *ngIf="tx.txp[wallet.id].feeRatePerStr">≈
             <ion-icon ios="ios-alert" md="md-alert" [hidden]="!tx.txp[wallet.id].feeTooHigh"></ion-icon> &nbsp;
             <span class="fee-rate" [ngClass]="{'warn':tx.txp[wallet.id].feeTooHigh}" translate> {{tx.txp[wallet.id].feeRatePerStr}} of the transaction</span>

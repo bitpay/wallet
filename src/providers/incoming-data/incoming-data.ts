@@ -8,6 +8,7 @@ import { PayproProvider } from '../paypro/paypro';
 import { ScanProvider } from '../scan/scan';
 import { PopupProvider } from '../popup/popup';
 import { AppProvider } from '../app/app';
+import { AddressProvider } from '../address/address';
 
 //pages
 import { SendPage } from '../../pages/send/send';
@@ -28,6 +29,7 @@ export class IncomingDataProvider {
     private popupProvider: PopupProvider,
     private logger: Logger,
     private appProvider: AppProvider,
+    private addressProvider: AddressProvider
   ) {
     this.logger.info('IncomingDataProvider initialized.');
   }
@@ -154,7 +156,9 @@ export class IncomingDataProvider {
           type: 'bitcoinAddress'
         });
       } else {
-        this.goToAmountPage(data);
+        let coin = 'btc';
+        let network = this.addressProvider.validateAddress(data).network;
+        this.goToAmountPage(data, coin, network);
       }
     } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet')) {
       if (this.navCtrl.getActive().name === 'ScanPage') {
@@ -164,7 +168,9 @@ export class IncomingDataProvider {
           coin: 'bch',
         });
       } else {
-        this.goToAmountPage(data, 'bch');
+        let coin = 'bch';
+        let network = this.addressProvider.validateAddress(data).network;
+        this.goToAmountPage(data, coin, network);
       }
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
       //let code = this.getParameterByName('code', data);
@@ -278,12 +284,11 @@ export class IncomingDataProvider {
     }
   }
 
-  private goToAmountPage(toAddress: string, coin?: string) {
-    let fromSend = this.navCtrl.getActive().name === 'SendPage';
+  private goToAmountPage(toAddress: string, coin: string, network: string) {
     this.navCtrl.push(AmountPage, {
       toAddress: toAddress,
       coin: coin,
-      fromSend: fromSend
+      network: network
     });
   }
 

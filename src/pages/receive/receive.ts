@@ -90,7 +90,7 @@ export class ReceivePage {
       color: this.wallet.color,
       coin: this.wallet.coin,
       network: this.wallet.network,
-      fromSend: false,
+      nextPage: 'CustomAmountPage',
     });
   }
 
