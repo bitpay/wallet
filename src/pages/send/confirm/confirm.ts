@@ -25,12 +25,8 @@ import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-not
   templateUrl: 'confirm.html',
 })
 export class ConfirmPage {
-  public data: any;
-  public toAddress: string;
-  public amount: number;
-  public coin: string;
+  public unit: string;
   public isFiatAmount: boolean;
-  public recipientType: string;
 
   public countDown = null;
   public CONFIRM_LIMIT_USD: number;
@@ -75,25 +71,16 @@ export class ConfirmPage {
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
   ) {
-    this.tx = {};
-    this.data = this.navParams.data;
-    this.amount = this.navParams.data.amount;
-    this.isFiatAmount = this.data.unit != 'bch' && this.data.unit != 'btc' ? true : false;
-    this.coin = this.navParams.data.coin;
-    this.recipientType = this.navParams.data.recipientType;
-    this.isCordova = this.platformProvider.isCordova;
-    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
-  }
-
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad ConfirmPage');
-    let addressInfo = this.navParams.data.addressInfo;
-    let tx: any = {
-      toAddress: addressInfo.address,
+    this.isFiatAmount = this.navParams.data.unit != 'bch' && this.navParams.data.unit != 'btc' ? true : false;
+    this.unit = this.navParams.data.unit;
+    this.isCordova = this.platformProvider.isCordova;
+    this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
+    this.tx = {
+      toAddress: this.navParams.data.toAddress,
       amount: this.navParams.data.amount,
       sendMax: this.navParams.data.useSendMax ? true : false,
       description: this.navParams.data.description,
@@ -106,24 +93,23 @@ export class ConfirmPage {
       name: this.navParams.data.name,
       email: this.navParams.data.email,
       color: this.navParams.data.color,
-      network: addressInfo.network,
-      coin: addressInfo.coin,
+      network: this.navParams.data.network,
+      coin: this.navParams.data.coin,
       txp: {},
     };
 
-    this.tx = tx;
-
-    if (tx.coin && tx.coin == 'bch') tx.feeLevel = 'normal';
-
+    if (this.tx.coin && this.tx.coin == 'bch') this.tx.feeLevel = 'normal';
     this.showAddress = false;
-
     this.walletSelectorTitle = 'Send from'; // TODO gettextCatalog
+  }
 
-    this.setWalletSelector(tx.coin, tx.network, tx.amount).then(() => {
+  ionViewDidLoad() {
+    this.logger.info('ionViewDidLoad ConfirmPage');
+    this.setWalletSelector(this.tx.coin, this.tx.network, this.tx.amount).then(() => {
       if (this.wallets.length > 1) {
         this.showWalletSelector();
       } else if (this.wallets.length) {
-        this.setWallet(this.wallets[0], tx);
+        this.setWallet(this.wallets[0], this.tx);
       }
     }).catch((err: any) => {
       return this.exitWithError('Could not update wallets');
@@ -194,7 +180,7 @@ export class ConfirmPage {
     this.wallet = null;
     this.noWalletMessage = msg;
     this.criticalError = criticalError;
-    this.logger.warn('Not ready to make the payment:' + msg);
+    this.logger.warn('Not ready to make the payment: ' + msg);
   };
 
   private exitWithError(err: any) {
@@ -331,7 +317,7 @@ export class ConfirmPage {
 
           if (sendMaxInfo.amount == 0) {
             this.onGoingProcessProvider.set('calculatingFee', false);
-            this.setNoWallet('Insufficient funds'); // TODO gettextCatalog
+            this.setNoWallet('Insufficient funds', false); // TODO gettextCatalog
             this.popupProvider.ionicAlert('Error', 'Not enough funds for fee').then(() => {
               return resolve('no_funds');
             }); // TODO gettextCatalog
@@ -410,7 +396,7 @@ export class ConfirmPage {
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
     let fee = (sendMaxInfo.fee / 1e8);
-    let msg = fee + " " + this.coin.toUpperCase() + " will be deducted for bitcoin networking fees.";
+    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees.";
     let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
     if (!_.isEmpty(warningMsg))
@@ -423,12 +409,12 @@ export class ConfirmPage {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = (sendMaxInfo.amountBelowFee / 1e8);
-      warningMsg.push("A total of " + amountBelowFeeStr + " " + this.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided.");// TODO gettextCatalog
+      warningMsg.push("A total of " + amountBelowFeeStr + " " + this.tx.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided.");// TODO gettextCatalog
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
       let amountAboveMaxSizeStr = (sendMaxInfo.amountAboveMaxSize / 1e8);
-      warningMsg.push("A total of " + amountAboveMaxSizeStr + " " + this.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded.");// TODO gettextCatalog
+      warningMsg.push("A total of " + amountAboveMaxSizeStr + " " + this.tx.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded.");// TODO gettextCatalog
     }
     return warningMsg.join('\n');
   };
@@ -529,10 +515,10 @@ export class ConfirmPage {
           if (this.walletProvider.isEncrypted(wallet))
             return resolve();
 
-          if (this.isFiatAmount && this.amount <= this.CONFIRM_LIMIT_USD)
+          if (this.isFiatAmount && this.tx.amount <= this.CONFIRM_LIMIT_USD)
             return resolve();
 
-          let amount = (this.amount / 1e8).toFixed(8);
+          let amount = (this.tx.amount / 1e8).toFixed(8);
           let unit = this.config.wallet.settings.unitName;
           let name = wallet.name;
           let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO gettextCatalog

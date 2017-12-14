@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngIf="!criticalError">
+    <ion-item>
       <div class="sending-label">
         <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
         <span translate *ngIf="!tx.sendMax">Sending</span>
@@ -14,8 +14,8 @@
       </div>
       <div class="amount-label">
         <div class="amount" *ngIf="isFiatAmount">{{tx.amount || 0 | satToUnit}}</div>
-        <div class="amount" *ngIf="!isFiatAmount">{{tx.amount || 0 | satToUnit: data.unit}}</div>
-        <div class="alternative">{{tx.amount || 0 | satToFiat: data.unit}}</div>
+        <div class="amount" *ngIf="!isFiatAmount">{{tx.amount || 0 | satToUnit: unit}}</div>
+        <div class="alternative">{{tx.amount || 0 | satToFiat: unit}}</div>
       </div>
     </ion-item>
 
@@ -42,10 +42,10 @@
       <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" translate item-end>Expired</ion-note>
     </ion-item>
 
-    <ion-item class="container-to" [hidden]="criticalError">
+    <ion-item class="container-to" *ngIf="!criticalError">
       <span class="label" translate>To</span>
 
-      <div class="payment-proposal-to" *ngIf="!recipientType">
+      <div class="payment-proposal-to" *ngIf="!tx.recipientType">
         <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg">
         <div *ngIf="!tx.paypro">
           <!-- TODO: copy to clipboard -->
@@ -62,8 +62,13 @@
         </div>
       </div>
 
-      <div class="wallet" *ngIf="recipientType == 'wallet'">
-        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      <div class="wallet" *ngIf="tx.recipientType == 'wallet'">
+        <ion-icon item-start>
+          <img *ngIf="tx.network == 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet" />
+          <img *ngIf="tx.network != 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
+          />
+        </ion-icon>
         <div>
           <!-- TODO: copy to clipboard -->
           <!--TODO: <contact ng-if="tx.toAddress && !tx.name" address="{{tx.toAddress}}"></contact>-->
@@ -72,8 +77,11 @@
         </div>
       </div>
 
-      <div *ngIf="recipientType == 'contact'" (click)="toggleAddress()">
+      <div class="wallet" *ngIf="tx.recipientType == 'contact'" (click)="toggleAddress()">
         <!--TODO: <gravatar class="send-gravatar" name="{{tx.name}}" height="30" width="30" email="{{toEmail}}"></gravatar> -->
+        <ion-icon item-start>
+          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
+        </ion-icon>
         <span *ngIf="tx.name && !showAddress">{{tx.name}}</span>
         <span *ngIf="tx.name && showAddress">{{tx.toAddress}}</span>
       </div>
@@ -83,7 +91,12 @@
       <span class="label" translate>From</span>
       <div>
         <div class="wallet" *ngIf="wallet">
-          <img class="icon-wallet" src="assets/img/icon-wallet.svg"/>
+          <ion-icon item-start>
+            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+              class="icon-wallet" />
+            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
+            /> 
+          </ion-icon>
           <div>{{wallet.name}}</div>
         </div>
         <div class="wallet" *ngIf="!wallet">
@@ -97,13 +110,12 @@
       <span class="label" translate>Add Memo</span>
       <span>{{tx.description}}</span>
     </button>
-
-    <div [hidden]="!noWalletMessage">
-      <span class="badge badge-energized">
-        <ion-badge>{{noWalletMessage}}</ion-badge>
-      </span>
-    </div>
   </ion-list>
+  <ion-card class="no-wallet-message" *ngIf="noWalletMessage">
+    <ion-item>
+      {{noWalletMessage}}
+    </ion-item>
+  </ion-card>
 </ion-content>
 
 <ion-footer>
