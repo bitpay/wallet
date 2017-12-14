@@ -1,0 +1,51 @@
+page-amazon {
+  .integration-onboarding {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  &-logo {
+    display: inline-block;
+    margin-bottom: 1em;
+    img {
+      max-width: 170px;
+    }
+  }
+  &-description {
+    margin-top: 0;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 130px;
+    opacity: .6;
+    max-width: 300px;
+  }
+  &-cta {
+    position: absolute;
+    bottom: 5vh;
+    width: 100%;
+    button {
+      width: 85%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+  }
+}
+.integration-giftCard {
+  &-logo {
+    width: 100%;
+    display: inline-block;
+    margin: 1em auto;
+    text-align: center;
+    img {
+      max-width: 200px;
+    }
+  }
+  &-info {
+    padding: 1rem;
+  }
+}
+}

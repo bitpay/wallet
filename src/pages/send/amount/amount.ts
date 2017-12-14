@@ -11,6 +11,7 @@ import { AddressProvider } from '../../../providers/address/address';
 import { RateProvider } from '../../../providers/rate/rate';
 
 //pages
+import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 
@@ -25,6 +26,7 @@ export class AmountPage {
   private reNr: RegExp;
   private reOp: RegExp;
   private nextView: any;
+  private fixedUnit: boolean;
 
   public isFiatAmount: boolean;
   public expression: any;
@@ -40,6 +42,7 @@ export class AmountPage {
   public email: string;
   public useSendMax: boolean;
   public config: any;
+  public coin: string;
 
   private walletId: any;
 
@@ -56,7 +59,7 @@ export class AmountPage {
   ) {
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType || null;
-    this.nextView = this.navParams.data.fromSend ? ConfirmPage : CustomAmountPage;
+    this.nextView = this.setNextView();
     this.toAddress = this.navParams.data.toAddress;
     this.walletId = this.navParams.data.walletId;
     this.addressInfo = this.addressProvider.validateAddress(this.navParams.data.toAddress);
@@ -64,14 +67,15 @@ export class AmountPage {
     this.email = this.navParams.data.email;
     this.LENGTH_EXPRESSION_LIMIT = 19;
     this.availableUnits = [];
-    this.unit = '';
-    this.isFiatAmount = false;
+    this.unit = this.navParams.data.currency ? this.navParams.data.currency : '';
+    this.isFiatAmount = this.isFiat(this.unit);
     this.expression = '';
     this.amount = 0;
     this.showExpressionResult = false;
     this.allowSend = false;
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
+    this.fixedUnit = this.navParams.data.fixedUnit ? true : false;
   }
 
   ionViewDidLoad() {
@@ -103,7 +107,22 @@ export class AmountPage {
   private paste(value: string): void {
     this.expression = value;
     this.processAmount();
-  };
+  }
+
+  private setNextView(): any {
+    if (this.navParams.data.fromSend) {
+      return ConfirmPage;
+    } else if (this.navParams.data.fromIntegration) {
+      switch (this.navParams.data.integration) {
+        case 'Amazon':
+          return BuyAmazonPage;
+        default:
+          return ConfirmPage;
+      }
+    } else {
+      return CustomAmountPage;
+    }
+  }
 
   public processClipboard(): void {
     if (!this.platformProvider.isNW) return;
@@ -112,7 +131,7 @@ export class AmountPage {
 
     if (value && this.evaluate(value) > 0)
       this.paste(this.evaluate(value));
-  };
+  }
 
   public showSendMaxMenu(): void {
     let buttons: Array<any> = [];
@@ -136,23 +155,23 @@ export class AmountPage {
   public sendMax(): void {
     this.useSendMax = true;
     this.finish();
-  };
+  }
 
   public pushDigit(digit: string): void {
     if (this.expression && this.expression.length >= this.LENGTH_EXPRESSION_LIMIT) return;
     this.expression = (this.expression + digit).replace('..', '.');
     this.processAmount();
-  };
+  }
 
   public removeDigit(): void {
     this.expression = this.expression.slice(0, -1);
     this.processAmount();
-  };
+  }
 
   public pushOperator(operator: string): void {
     if (!this.expression || this.expression.length == 0) return;
     this.expression = this._pushOperator(this.expression, operator);
-  };
+  }
 
   private _pushOperator(val: string, operator: string) {
     if (!this.isOperator(_.last(val))) {
@@ -160,17 +179,17 @@ export class AmountPage {
     } else {
       return val.slice(0, -1) + operator;
     }
-  };
+  }
 
   private isOperator(val: string): boolean {
     const regex = /[\/\-\+\x\*]/;
     return regex.test(val);
-  };
+  }
 
   private isExpression(val: string): boolean {
     const regex = /^\.?\d+(\.?\d+)?([\/\-\+\*x]\d?\.?\d+)+$/;
     return regex.test(val);
-  };
+  }
 
   private processAmount(): void {
     var formatedValue = this.format(this.expression);
@@ -181,7 +200,7 @@ export class AmountPage {
       this.amount = result;
       this.showExpressionResult = this.isExpression(this.expression);
     }
-  };
+  }
 
   private format(val: string) {
     if (!val) return;
@@ -192,7 +211,7 @@ export class AmountPage {
       result = result.slice(0, -1);
 
     return result.replace('x', '*');
-  };
+  }
 
   private evaluate(val: string) {
     var result;
@@ -203,7 +222,7 @@ export class AmountPage {
     }
     if (!_.isFinite(result)) return 0;
     return result;
-  };
+  }
 
   public finish(): void {
     let amount_: any;
@@ -222,7 +241,7 @@ export class AmountPage {
       addressInfo: this.addressInfo,
       name: this.name,
       email: this.email,
-      unit: this.unit.toLocaleLowerCase(),
+      unit: this.unit.toLowerCase(),
       coin: this.addressInfo.coin,
       useSendMax: this.useSendMax,
       walletId: this.walletId
@@ -251,6 +270,8 @@ export class AmountPage {
   }
 
   public updateUnit(): void {
+    if (this.fixedUnit) return;
+
     this.availableUnits.slice(0, this.availableUnits.length).join(',');
     this.availableUnits.push(this.availableUnits.shift());
     this.unit = this.availableUnits[0];
