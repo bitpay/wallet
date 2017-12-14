@@ -191,7 +191,6 @@ export class SendPage {
         color: item.color,
         coin: item.coin,
         network: item.network,
-        fromSend: true
       });
       return;
     }).catch((err: any) => {

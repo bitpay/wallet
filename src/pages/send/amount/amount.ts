@@ -32,7 +32,6 @@ export class AmountPage {
   public showExpressionResult: boolean;
 
   public allowSend: boolean;
-  public fromSend: boolean;
   public recipientType: string;
   public addressInfo: any;
   public toAddress: string;
@@ -56,7 +55,7 @@ export class AmountPage {
     private rateProvider: RateProvider,
   ) {
     this.config = this.configProvider.get();
-    this.recipientType = this.navParams.data.recipientType || null;
+    this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
     this.walletId = this.navParams.data.walletId;
     this.network = this.navParams.data.network;
@@ -113,18 +112,18 @@ export class AmountPage {
   }
 
   private getNextView(): any {
-    let page;
-    switch (this.navParams.data.page) {
-      case 'AmazonPage':
-        page = BuyAmazonPage;
+    let nextPage;
+    switch (this.navParams.data.nextPage) {
+      case 'BuyAmazonPage':
+        nextPage = BuyAmazonPage;
         break;
       case 'CustomAmountPage':
-        page = CustomAmountPage;
+        nextPage = CustomAmountPage;
         break;
       default:
-        page = ConfirmPage;
+        nextPage = ConfirmPage;
     }
-    return page;
+    return nextPage;
   }
 
   public processClipboard(): void {
