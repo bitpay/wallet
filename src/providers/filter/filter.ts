@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import * as _ from "lodash";
 
 @Injectable()
 export class FilterProvider {
@@ -24,7 +23,6 @@ export class FilterProvider {
     let floatValue: any;
     let finalValue: any;
 
-    let fractionSize = 2;
     value = this.decimalPipe.transform(amount);
     if (!value) return 0;
     sep = value.indexOf(this.formats.DECIMAL_SEP);
