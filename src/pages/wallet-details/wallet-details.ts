@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 import * as _ from 'lodash';
@@ -12,7 +12,6 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 
 //pages
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
-import { TxpDetailsPage } from '../txp-details/txp-details';
 
 const HISTORY_SHOW_LIMIT = 10;
 
@@ -46,7 +45,6 @@ export class WalletDetailsPage {
     private walletProvider: WalletProvider,
     private addressbookProvider: AddressBookProvider,
     private bwcError: BwcErrorProvider,
-    private modalCtrl: ModalController,
     private events: Events,
     private logger: Logger
   ) {
@@ -76,7 +74,7 @@ export class WalletDetailsPage {
       if (walletId == this.wallet.id && type != 'NewAddress')
         this.updateAll();
     });
-    this.events.subscribe('Local/TxAction', (e, walletId) => {
+    this.events.subscribe('Local/TxAction', (walletId) => {
       if (walletId == this.wallet.id)
         this.updateAll();
     });
@@ -209,8 +207,4 @@ export class WalletDetailsPage {
     this.navCtrl.push(TxDetailsPage, { walletId: this.wallet.credentials.walletId, txid: tx.txid });
   }
 
-  public openTxpModal(txp: any): void {
-    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: txp }, { showBackdrop: false, enableBackdropDismiss: false });
-    modal.present();
-  }
 }

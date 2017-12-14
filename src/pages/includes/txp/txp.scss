@@ -1,16 +1,24 @@
 page-txp{
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .label {
-      display: flex;
-      align-items: center;
+  img {
+    width: 40px;
+  }
+  .label {
+    display: -webkit-inline-box;
+  }
+  .action {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .details {
+    position: absolute;
+    right: 16px;
+    text-align: end;
+    .amount {
     }
-    .time {
-      font-size: 12px;
-      padding-top: 10px;
-      text-align: right;
+    .date {
+      color: color($colors, grey);
+      font-size: 12.5px;
     }
   }
 }

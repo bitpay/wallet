@@ -217,10 +217,10 @@
   </ion-list>
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="(isShared && tx.pendingForUs) || (tx.pendingForUs && canSign && !paymentExpired)">
   <ion-toolbar>
     <ion-buttons left>
-      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="grey" *ngIf="isShared && tx.pendingForUs">
+      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="danger" *ngIf="isShared && tx.pendingForUs">
         <ion-icon name="trash"></ion-icon>
         {{'Reject'| translate}}
       </button>

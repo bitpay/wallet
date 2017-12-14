@@ -64,10 +64,8 @@
       <span ng-show="!requiresMultipleSignatures" translate>Unsent transactions</span>
     </ion-card-header>
     <ion-list>
-      <button ion-item *ngFor="let txp of txps" (click)="openTxpModal(txp)">
-        <page-txp [tx]="txp" [addressbook]="addressbook"></page-txp>
-      </button>
-      <ion-item *ngIf="wallet.status.lockedBalanceSat" text-end>
+      <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+      <ion-item *ngIf="wallet.status.lockedBalanceSat" left>
         <h2 translate>Total Locked Balance</h2>
         <p>
           <b>{{wallet.status.lockedBalanceStr}}</b>

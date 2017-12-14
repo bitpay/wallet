@@ -46,9 +46,7 @@
       </ion-row>
     </ion-card-header>
     <ion-list>
-      <button ion-item *ngFor="let tx of txps" (click)="openTxpModal(tx)">
-        <page-txp [tx]="tx" [addressbook]="addressbook"></page-txp>
-      </button>
+      <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
     </ion-list>
   </ion-card>
 

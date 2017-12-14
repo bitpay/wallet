@@ -133,10 +133,6 @@ export class ProfileProvider {
     wallet.on('notification', (n: any) => {
       this.logger.debug('BWC Notification:', n);
 
-      if (n.type == "NewIncomingTx") {
-        this.events.publish('wallet:updateHistory');
-      }
-
       if (n.type == "NewBlock" && n.data.network == "testnet") {
         this.throttledBwsEvent(n, wallet);
       } else this.newBwsEvent(n, wallet);
@@ -145,7 +141,8 @@ export class ProfileProvider {
     wallet.on('walletCompleted', () => {
       this.logger.debug('Wallet completed');
       this.updateCredentials(JSON.parse(wallet.export()))
-      this.events.publish('Local/WalletCompleted', walletId);
+      // TODO: never used
+      //this.events.publish('wallet:completed', walletId);
     });
 
     wallet.initialize({

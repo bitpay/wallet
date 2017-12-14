@@ -1,5 +1,8 @@
 import { Component, Input } from "@angular/core";
+import { ModalController } from 'ionic-angular';
 import { TimeProvider } from '../../../providers/time/time';
+
+import { TxpDetailsPage } from '../../txp-details/txp-details';
 
 @Component({
   selector: 'page-txp',
@@ -10,7 +13,8 @@ export class TxpPage {
   private _addressbook: any;
 
   constructor(
-    private timeProvider: TimeProvider
+    private timeProvider: TimeProvider,
+    private modalCtrl: ModalController
   ) {
   }
 
@@ -34,5 +38,10 @@ export class TxpPage {
 
   public createdWithinPastDay(time: any): any {
     return this.timeProvider.withinPastDay(time);
+  }
+
+  public openTxpModal(txp: any): void {
+    let modal = this.modalCtrl.create(TxpDetailsPage, { tx: txp }, { showBackdrop: false, enableBackdropDismiss: false });
+    modal.present();
   }
 }

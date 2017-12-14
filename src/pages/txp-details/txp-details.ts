@@ -269,27 +269,26 @@ export class TxpDetailsPage {
   }
 
   private updateTxInfo(eventName: string): void {
-    this.wallet.getTx(this.tx.id, (err: any, tx: any) => {
-      if (err) {
-        if (err.message && err.message == 'Transaction proposal not found' &&
-          (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
-          this.tx.removed = true;
-          this.tx.canBeRemoved = false;
-          this.tx.pendingForUs = false;
-        }
-        return;
-      }
-
+    this.walletProvider.getTxp(this.wallet, this.tx.id).then((tx: any) => {
+      console.log('[txp-details.ts:272] NUEVA TX', eventName,tx); //TODO
       let action = _.find(tx.actions, {
         copayerId: this.wallet.credentials.copayerId
       });
 
       //this.tx = txFormatService.processTx(this.wallet.coin, tx);
+      this.tx = tx;
 
       if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
 
       this.updateCopayerList();
       this.initActionList();
+    }).catch((err) => {
+      if (err.message && err.message == 'Transaction proposal not found' &&
+        (eventName == 'transactionProposalRemoved' || eventName == 'TxProposalRemoved')) {
+        this.tx.removed = true;
+        this.tx.canBeRemoved = false;
+        this.tx.pendingForUs = false;
+      }
     });
   }
 

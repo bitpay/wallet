@@ -126,7 +126,7 @@ export class HomePage {
       this.updateWallet(wallet);
       if (this.recentTransactionsEnabled) this.getNotifications();
     });
-    this.events.subscribe('Local/TxAction', (e, walletId) => {
+    this.events.subscribe('Local/TxAction', (walletId) => {
       this.logger.debug('Got action for wallet ' + walletId);
       var wallet = this.profileProvider.getWallet(walletId);
       this.updateWallet(wallet);
