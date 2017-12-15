@@ -398,18 +398,16 @@ export class WalletProvider {
     });
   }
 
-  public updateTxHistory(wallet: any, opts?: any) {
-    opts = opts || {};
-
+  public updateTxHistory(wallet: any, force?: boolean) {
     this.getTxsFromLocal(wallet.credentials.walletId).then((localHistory: any) => {
-      if (!lodash.isEmpty(localHistory) && !opts.force) {
+      if (!lodash.isEmpty(localHistory) && !force) {
         wallet.updating = false;
         wallet.history = localHistory.slice(0, 10);
         wallet.completeHistory = localHistory;
         wallet.completeHistory.isValid = true;
         return;  
       }
-      this.updateHistoryFromServer(wallet, opts);
+      this.updateHistoryFromServer(wallet);
     }).catch((err) => {
       this.logger.error(err);
     });
@@ -467,15 +465,11 @@ export class WalletProvider {
   /**
    * Sync and update history from server in background
    */
-  private updateHistoryFromServer(wallet: any, opts: any) {
+  private updateHistoryFromServer(wallet: any) {
     this.logger.debug('## Updating history from server...');
     const FIRST_LIMIT = 10;
     const LIMIT = 50;
     let requestLimit = FIRST_LIMIT;
-    
-    opts = opts || {};
-    opts.skip = 0;
-    opts.requestLimit = requestLimit;
     wallet.updatingTxHistoryProgress = 0;
 
     let getNewTxs = (newTxs, skip) => {

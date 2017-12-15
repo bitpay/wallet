@@ -169,7 +169,7 @@ export class WalletDetailsPage {
       this.wallet.updatingTxHistoryProgress = 0;
       this.historyPageCounter = 2;
     }
-    this.walletProvider.updateTxHistory(this.wallet, { force: !!force });
+    this.walletProvider.updateTxHistory(this.wallet, !!force );
   }
 
   public recreate() {
