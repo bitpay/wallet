@@ -141,13 +141,21 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
        .state('tabs.changelly', {
          url: '/changelly',
          views: {
-          'tab-home@tabs': {   
+          'tab-home@tabs': {
             controller: 'changellyController',
             templateUrl: 'views/changelly.html'
            }
          }
        })
-
+       .state('tabs.changelly-send', {
+         url: '/changelly',
+         views: {
+          'tab-send@tabs': {
+            controller: 'changellyController',
+            templateUrl: 'views/changelly.html'
+           }
+         }
+       })
       /*
        *
        * Wallet
