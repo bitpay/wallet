@@ -20,9 +20,8 @@
         <span translate>Sending</span>
       </div>
       <div class="amount-label">
-        <div class="amount" *ngIf="isFiatAmount">{{tx.amount || 0 | satToUnit}}</div>
-        <div class="amount" *ngIf="!isFiatAmount">{{tx.amount || 0 | satToUnit: data.unit}}</div>
-        <div class="alternative">{{tx.amount || 0 | satToFiat: data.unit}}</div>
+        <div class="amount">{{tx.amount | satToUnit}}</div>
+        <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
       </div>
     </ion-card-content>
   </ion-card>
@@ -141,7 +140,7 @@
       </ion-label>
       <ion-note item-end>
         <span>{{tx.fee || '...' | satToUnit}}</span>
-        <div>{{tx.fee || '...' | satToFiat}}&nbsp;
+        <div>{{tx.fee || '...' | satToFiat: tx.coin}}&nbsp;
           <span *ngIf="tx.feeRateStr">({{tx.feeRateStr}})</span>
         </div>
       </ion-note>

@@ -26,7 +26,6 @@ export class TxpDetailsPage {
   public isShared: boolean;
   public canSign: boolean;
   public color: string;
-  public data: any;
   public buttonText: string;
   public successText: string;
   public actionList: Array<any>;
@@ -65,15 +64,12 @@ export class TxpDetailsPage {
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
     this.isCordova = this.platformProvider.isCordova;
-    this.isCordova = this.platformProvider.isCordova;
     this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
     this.copayers = this.wallet.status.wallet.copayers;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
     this.color = this.wallet.color;
-    this.data = {};
-
   }
 
   ionViewWillEnter() {
@@ -270,7 +266,7 @@ export class TxpDetailsPage {
 
   private updateTxInfo(eventName: string): void {
     this.walletProvider.getTxp(this.wallet, this.tx.id).then((tx: any) => {
-      console.log('[txp-details.ts:272] NUEVA TX', eventName,tx); //TODO
+      console.log('[txp-details.ts:272] NUEVA TX', eventName, tx); //TODO
       let action = _.find(tx.actions, {
         copayerId: this.wallet.credentials.copayerId
       });
@@ -323,7 +319,7 @@ export class TxpDetailsPage {
 
   public close(): void {
     this.events.unsubscribe('bwsEvent');
-    this.loading = null;
+    this.loading = false;
     this.viewCtrl.dismiss();
   }
 
