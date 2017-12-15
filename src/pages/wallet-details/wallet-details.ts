@@ -134,7 +134,7 @@ export class WalletDetailsPage {
   }
 
   public loadHistory(loading) {
-    if (this.wallet.history.length === this.wallet.completeHistory.length || this.wallet.updating) {
+    if (this.wallet.updating || this.wallet.history.length === this.wallet.completeHistory.length) {
       loading.complete();
       return;
     }

@@ -24,9 +24,7 @@
         <strong translate>[Scanning Funds]</strong>
       </div>
 
-      <div
-        class="balance-spendable"
-        *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status && wallet.status.totalBalanceSat != wallet.status.spendableAmount">
+      <div class="balance-spendable" *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status && wallet.status.totalBalanceSat != wallet.status.spendableAmount">
         <ion-icon name="checkmark"></ion-icon>
         <strong>
           {{wallet.status.spendableBalanceStr}}
@@ -77,12 +75,11 @@
 
   <!-- Transactions -->
 
-  <ion-card *ngIf="showNoTransactionsYetMsg && !updateStatusError">
+  <ion-card *ngIf="(!wallet.history || !wallet.history[0]) && !wallet.updating">
     <ion-card-content>
       {{'No transactions yet' | translate}}
     </ion-card-content>
   </ion-card>
-
 
   <ion-card *ngIf="txHistory && !txHistory[0] && updateTxHistoryError">
     <ion-card-content>

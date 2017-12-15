@@ -471,6 +471,7 @@ export class WalletProvider {
     const LIMIT = 50;
     let requestLimit = FIRST_LIMIT;
     wallet.updatingTxHistoryProgress = 0;
+    wallet.updating = true;
 
     let getNewTxs = (newTxs, skip) => {
       this.getTxsFromServer(wallet, { skip: skip, limit: requestLimit }).then((result) => {
