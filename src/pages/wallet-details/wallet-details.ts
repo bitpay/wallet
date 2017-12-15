@@ -55,6 +55,9 @@ export class WalletDetailsPage {
     this.updatingTxHistoryProgress = 0;
     let clearCache = this.navParams.data.clearCache;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.wallet.updateAll = () => {
+      this.updateAll(true);
+    };
     // Getting info from cache
     if (clearCache) {
       this.clearData();
@@ -71,21 +74,22 @@ export class WalletDetailsPage {
     });
   }
 
-  private updateAll(force?: boolean) {
+  private updateAll(force?: boolean, limitTx?: string) {
+    if (this.wallet.updating) return;
     this.updateStatus(force);
-    this.updateTxHistory();
+    this.updateTxHistory({limitTx: limitTx});
   }
-
+  
   ionViewDidEnter() {
     this.updateAll();
-
+    
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       if (walletId == this.wallet.id && type != 'NewAddress')
-        this.updateAll();
+        this.updateAll(true, n.data.txid);
     });
     this.events.subscribe('Local/TxAction', (walletId) => {
       if (walletId == this.wallet.id)
-        this.updateAll();
+        this.updateAll(true);
     });
   }
 
@@ -163,13 +167,13 @@ export class WalletDetailsPage {
     });
   };
   
-  private updateTxHistory(force?: boolean) {
-    if (force) {
+  private updateTxHistory(opts?: any) {
+    if (opts.force) {
       this.wallet.history = [];
       this.wallet.updatingTxHistoryProgress = 0;
       this.historyPageCounter = 2;
     }
-    this.walletProvider.updateTxHistory(this.wallet, !!force );
+    this.walletProvider.updateTxHistory(this.wallet, opts);
   }
 
   public recreate() {

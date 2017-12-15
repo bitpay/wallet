@@ -5,7 +5,7 @@
     <a *ngIf="updateStatusError" (click)="updateAll(true)" translate>Tap to retry</a>
   </div>
 
-  <ion-spinner *ngIf="(updatingStatus || updatingTxHistory) && !walletNotRegistered && !updateStatusError && !updateTxHistoryError"></ion-spinner>
+  <ion-spinner *ngIf="wallet.updating"></ion-spinner>
 
   <div *ngIf="wallet">
     <img class="testnet" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
