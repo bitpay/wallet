@@ -57,17 +57,15 @@ export class TxFormatProvider {
     });
   };
 
-  public formatAlternativeStr(coin: string, satoshis: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (isNaN(satoshis)) return resolve();
-      let settings = this.config.get().wallet.settings;
+  public formatAlternativeStr(coin: string, satoshis: number): string {
+    if (isNaN(satoshis)) return;
+    let settings = this.config.get().wallet.settings;
 
-      var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
-      var v1FormatFiat = this.filter.formatFiatAmount(v1);
-      if (!v1FormatFiat) return resolve(null);
+    let v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
+    let v1FormatFiat = this.filter.formatFiatAmount(v1);
+    if (!v1FormatFiat) return;
 
-      return resolve(v1FormatFiat + ' ' + settings.alternativeIsoCode);
-    });
+    return v1FormatFiat + ' ' + settings.alternativeIsoCode;
   };
 
   public processTx(coin: string, tx: any): any {
@@ -84,7 +82,7 @@ export class TxFormatProvider {
           tx.recipientCount = outputsNr;
           tx.hasMultiplesOutputs = true;
         }
-        tx.amount = _.reduce(tx.outputs, function (total: any, o: any) {
+        tx.amount = _.reduce(tx.outputs, (total: any, o: any) => {
           o.amountStr = this.formatAmountStr(coin, o.amount);
           o.alternativeAmountStr = this.formatAlternativeStr(coin, o.amount);
           return total + o.amount;
