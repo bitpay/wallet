@@ -126,7 +126,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     var networkName;
     try {
       networkName = (new B.Address(data.stateParams.toAddress)).network.name;
-    } catch(e) {
+    } catch (e) {
       var message = gettextCatalog.getString('Copay only supports Bitcoin Cash using new version numbers addresses');
       var backText = gettextCatalog.getString('Go back');
       var learnText = gettextCatalog.getString('Learn more');
@@ -139,7 +139,7 @@ angular.module('copayApp.controllers').controller('confirmController', function(
           $ionicHistory.clearHistory();
           if (!back) {
             var url = 'https://support.bitpay.com/hc/en-us/articles/115004671663';
-            externalLinkService.open(url); 
+            externalLinkService.open(url);
           }
         });
       });
@@ -337,7 +337,20 @@ angular.module('copayApp.controllers').controller('confirmController', function(
 
           var per = (txp.fee / (txp.amount + txp.fee) * 100);
           txp.feeRatePerStr = per.toFixed(2) + '%';
-          txp.feeToHigh = per > FEE_TOO_HIGH_LIMIT_PER;
+          txp.feeTooHigh = per > FEE_TOO_HIGH_LIMIT_PER;
+
+          if (txp.feeTooHigh) {
+            $ionicModal.fromTemplateUrl('views/modals/fee-warning.html', {
+              scope: $scope
+            }).then(function(modal) {
+              $scope.feeWarningModal = modal;
+              $scope.feeWarningModal.show();
+            });
+
+            $scope.close = function() {
+              $scope.feeWarningModal.hide();
+            };
+          }
 
           tx.txp[wallet.id] = txp;
           $log.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
