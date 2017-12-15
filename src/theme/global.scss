@@ -81,3 +81,27 @@ $global-colors: (
     color: #fff;
   }
 }
+
+/*
+ * Wallet selector
+ */
+
+@mixin wallets-list {
+  height: 3.5rem;
+  width: 3.5rem;
+  content: " ";
+  position: absolute;
+  top: 6px;
+  border-radius: $icon-border-radius;
+}
+
+.wallet-livenet::before {
+  @include wallets-list;
+  background: color($colors, primary) url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
+}
+
+.wallet-testnet::before {
+  @include wallets-list;
+  background: color($colors, primary) url('../assets/img/icon-wallet-testnet.svg') no-repeat 0px 0px;
+}
+
