@@ -123,7 +123,7 @@ export class AmazonCardsPage {
   public openCardModal(card: any): void {
     this.card = card;
 
-    let modal = this.modalCtrl.create(AmazonCardDetailsPage);
+    let modal = this.modalCtrl.create(AmazonCardDetailsPage, { card: this.card });
     modal.present();
 
     modal.onDidDismiss(() => {
