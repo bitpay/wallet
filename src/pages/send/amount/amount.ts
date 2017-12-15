@@ -42,6 +42,7 @@ export class AmountPage {
   public network: string;
   public useSendMax: boolean;
   public config: any;
+  public showRecipient: boolean;
 
   private walletId: any;
 
@@ -56,6 +57,7 @@ export class AmountPage {
   ) {
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
+    this.showRecipient = true;
     this.toAddress = this.navParams.data.toAddress;
     this.walletId = this.navParams.data.walletId;
     this.network = this.navParams.data.network;
@@ -115,6 +117,7 @@ export class AmountPage {
     let nextPage;
     switch (this.navParams.data.nextPage) {
       case 'BuyAmazonPage':
+        this.showRecipient = false;
         nextPage = BuyAmazonPage;
         break;
       case 'CustomAmountPage':
@@ -227,13 +230,15 @@ export class AmountPage {
   }
 
   public finish(): void {
-    let amount_: any;
+    let amount_: number;
+    let amountFiat: number;
 
     if (this.isFiatAmount) {
       let altIsoCode: string = this.config.wallet.settings.alternativeIsoCode;
       let unitCode: string = this.config.wallet.settings.unitCode;
-      let value: any = this.rateProvider.fromFiat(this.amount, altIsoCode, unitCode) * 1e8;
+      let value: any = this.rateProvider.fromFiat(this.amount, altIsoCode, unitCode);
       amount_ = parseInt(value);
+      amountFiat = this.amount;
     } else
       amount_ = this.amount * 1e8;
 
@@ -241,10 +246,12 @@ export class AmountPage {
       recipientType: this.recipientType,
       toAddress: this.toAddress,
       amount: amount_,
+      amountFiat: amountFiat,
       name: this.name,
       email: this.email,
       color: this.color,
       unit: this.unit.toLowerCase(),
+      currency: this.navParams.data.currency,
       coin: this.coin,
       network: this.network,
       useSendMax: this.useSendMax,

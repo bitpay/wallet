@@ -37,8 +37,8 @@ export class EmailNotificationsProvider {
     this.walletProvider.updateRemotePreferences(wallets);
   };
 
-  public getEmailIfEnabled(config) {
-    config = config || this.configProvider.get();
+  public getEmailIfEnabled(config?: any) {
+    config = config ? config : this.configProvider.get();
 
     if (config.emailNotifications) {
       if (!config.emailNotifications.enabled) return;

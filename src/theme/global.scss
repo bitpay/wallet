@@ -3,9 +3,18 @@
 // --------------------------------------------------
 
 $global-colors: (
-  light-grey: #9B9B9B,
-  labels:     #6C6C6E,
-  warning: #BB331A
+  light-grey:                      #9B9B9B,
+  labels:                          #6C6C6E,
+  warning:                         #BB331A,
+  light:                           #fff,
+  stable:                          #f8f8f8,
+  positive:                        #387ef5,
+  calm:                            #11c1f3,
+  balanced:                        #33cd5f,
+  energized:                       #ffc900,
+  assertive:                       #ef473a,
+  royal:                           #886aea,
+  dark:                            #444,
 );
 
 .bottom-absolute {
@@ -72,7 +81,7 @@ $global-colors: (
     color: #fff;
     &.warning-red{
       border-color: #EB475A;
-      background-color: color($global-colors, warning);;
+      background-color: color($global-colors, warning);
     }
   }
   &.error {
@@ -82,6 +91,13 @@ $global-colors: (
   }
 }
 
+.assertive, a.assertive {
+  color: color($global-colors, assertive);
+}
+
+.text-gray {
+  color: gray;
+}
 /*
  * Wallet selector
  */

@@ -8,5 +8,87 @@
 
 
 <ion-content>
+  <ion-list>
+    <ion-item>
+      <div class="amazon-title">
+        <img src="assets/img/amazon/icon-amazon.svg">
+        <span>Amazon.com Gift Card</span>
+      </div>
+      <div class="amount-label">
+        <div class="amount">{{amountUnitStr}}</div>
+        <div class="alternative">
+          {{limitPerDayMessage}}
+        </div>
+      </div>
+    </ion-item>
 
+    <ion-item-group class="info">
+      <button ion-item (click)="showWallets()" class="wallets-list">
+        <div translate>From</div>
+        <div class="wallet">
+          <img src="assets/img/icon-wallet.svg">
+          <span>{{wallet ? wallet.name : '...'}}</span>
+        </div>
+      </button>
+      <div *ngIf="totalAmountStr">
+        <ion-item-divider color="light">
+          Details
+        </ion-item-divider>
+        <ion-item>
+          <span translate>Gift Card</span>
+          <ion-note item-end>
+            {{amount | currency:'$ ':2}}<span *ngIf="amount"> {{currencyIsoCode}}</span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Network Cost</span>
+          <ion-note item-end>
+            <span>{{invoiceFee | currency:'$ ':2}}<span *ngIf="invoiceFee"> {{currencyIsoCode}}</span></span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Miner Fee</span>
+          <ion-note item-end>
+            <span>{{networkFee | currency:'$ ':2}}<span *ngIf="networkFee"> {{currencyIsoCode}}</span></span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Total</span>
+          <ion-note item-end>
+            <span *ngIf="totalAmount">{{totalAmount | currency:'$ ':2}} {{currencyIsoCode}}</span>
+            <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
+          </ion-note>
+        </ion-item>
+      </div>
+      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item class="amazon-info">
+        * <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as
+        required by law, <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred
+        for value or redeemed for cash. GCs may be used only for purchases of eligible goods at <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>        or certain of its affiliated websites. For complete terms and conditions, see
+        <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI
+        Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>,
+        Inc. or its affiliates. No expiration date or service fees.
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
 </ion-content>
+
+<ion-footer *ngIf="!amazonGiftCard">
+  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>Confirm purchase</button>
+</ion-footer>
+
+<ion-footer *ngIf="amazonGiftCard">
+  <span *ngIf="amazonGiftCard.status == 'FAILURE'" translate>
+        Your purchase could not be completed
+      </span>
+  <span *ngIf="amazonGiftCard.status == 'PENDING'" translate>
+        Your purchase was added to the list of pending
+      </span>
+  <span *ngIf="amazonGiftCard.status == 'SUCCESS'" translate>
+        Bought {{amountUnitStr}}
+      </span>
+  <div *ngIf="amazonGiftCard.status == 'SUCCESS'" translate>
+    Gift card generated and ready to use.
+  </div>
+  <button ion-button block class="button-footer" (click)="goBackHome()" [disabled]="!(wallet && totalAmountStr)" translate>Accept and back home</button>
+</ion-footer>

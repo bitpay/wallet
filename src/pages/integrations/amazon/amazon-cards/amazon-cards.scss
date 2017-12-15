@@ -1,0 +1,16 @@
+page-amazon-cards {
+  .amazon-card {
+    display: flex;
+    align-items: center;
+    .avatar {
+      width: 40px;
+      border-radius: 5rem;
+    }
+    .card-info {
+      padding-left: 1rem;
+    }
+  }
+  .amazon-info {
+    padding: 2rem;
+  }
+}
