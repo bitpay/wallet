@@ -1,13 +1,36 @@
 page-buy-amazon {
   .amazon-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
     img {
       width: 3.5rem;
+      margin-right: 1.5rem; 
+      box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+    }
+  }
+  .amount-label {
+    margin-bottom: 5rem;
+    .amount {
+      font-size: 38px;
+      margin-bottom: .5rem;
+    }
+    .alternative {
+      font-size: 12px;
+      color: #9B9B9B;
     }
   }
   .wallets-list {
-    img {
-      width: 2rem;
-      background-color: color($colors, primary);
+    .wallet {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      img {
+        width: 2.3rem;
+        margin-right: 1.5rem; 
+        border-radius: 0.3rem;
+        background-color: color($colors, primary);
+      }
     }
   }
   .amazon-info {

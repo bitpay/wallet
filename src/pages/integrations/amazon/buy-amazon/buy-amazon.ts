@@ -34,7 +34,7 @@ export class BuyAmazonPage {
   private message: string;
   private invoiceId: string;
   private configWallet: any;
-  private isCordova: boolean;
+  //private isCordova: boolean;
   private currencyIsoCode: string;
 
   public wallet: any;
@@ -69,7 +69,8 @@ export class BuyAmazonPage {
   ) {
     this.coin = 'btc';
     this.configWallet = this.configProvider.get().wallet;
-    this.isCordova = this.platformProvider.isCordova;
+    //this.isCordova = this.platformProvider.isCordova;
+    this.amazonGiftCard = null;
   }
 
   ionViewDidLoad() {
