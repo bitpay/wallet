@@ -11,6 +11,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
 import { ConfigProvider } from '../../providers/config/config';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 
 import * as _ from 'lodash';
 
@@ -26,7 +27,6 @@ export class TxpDetailsPage {
   public isShared: boolean;
   public canSign: boolean;
   public color: string;
-  public data: any;
   public buttonText: string;
   public successText: string;
   public actionList: Array<any>;
@@ -54,17 +54,18 @@ export class TxpDetailsPage {
     private logger: Logger,
     private viewCtrl: ViewController,
     private configProvider: ConfigProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private txFormatProvider: TxFormatProvider
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
     this.wallet = this.tx.wallet ? this.tx.wallet : this.profileProvider.getWallet(this.tx.walletId);
+    this.tx = this.txFormatProvider.processTx(this.wallet.coin, this.tx);
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.isGlidera = this.navParams.data.isGlidera;
     this.GLIDERA_LOCK_TIME = 6 * 60 * 60;
     this.currentSpendUnconfirmed = config.spendUnconfirmed;
     this.loading = false;
-    this.isCordova = this.platformProvider.isCordova;
     this.isCordova = this.platformProvider.isCordova;
     this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
     this.copayers = this.wallet.status.wallet.copayers;
@@ -72,8 +73,6 @@ export class TxpDetailsPage {
     this.isShared = this.wallet.credentials.n > 1;
     this.canSign = this.wallet.canSign() || this.wallet.isPrivKeyExternal();
     this.color = this.wallet.color;
-    this.data = {};
-
   }
 
   ionViewWillEnter() {
@@ -112,6 +111,7 @@ export class TxpDetailsPage {
   }
 
   private displayFeeValues(): void {
+    this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, this.tx.fee);
     this.tx.feeRateStr = (this.tx.fee / (this.tx.amount + this.tx.fee) * 100).toFixed(2) + '%';
     this.tx.feeLevelStr = this.feeProvider.feeOpts[this.tx.feeLevel];
   }
@@ -270,13 +270,11 @@ export class TxpDetailsPage {
 
   private updateTxInfo(eventName: string): void {
     this.walletProvider.getTxp(this.wallet, this.tx.id).then((tx: any) => {
-      console.log('[txp-details.ts:272] NUEVA TX', eventName,tx); //TODO
       let action = _.find(tx.actions, {
         copayerId: this.wallet.credentials.copayerId
       });
 
-      //this.tx = txFormatService.processTx(this.wallet.coin, tx);
-      this.tx = tx;
+      this.tx = this.txFormatProvider.processTx(this.wallet.coin, tx);
 
       if (!action && tx.status == 'pending') this.tx.pendingForUs = true;
 
@@ -323,7 +321,7 @@ export class TxpDetailsPage {
 
   public close(): void {
     this.events.unsubscribe('bwsEvent');
-    this.loading = null;
+    this.loading = false;
     this.viewCtrl.dismiss();
   }
 
