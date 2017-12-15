@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService, emailService) {
+angular.module('copayApp.controllers').controller('buyAmazonController', function($scope, $log, $state, $timeout, $filter, $ionicHistory, $ionicConfig, $ionicModal, lodash, amazonService, popupService, profileService, ongoingProcess, configService, walletService, payproService, bwcError, externalLinkService, platformInfo, gettextCatalog, txFormatService, emailService) {
 
   var coin = 'btc';
   var amount;
@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
   var message;
   var invoiceId;
   var configWallet = configService.getSync().wallet;
+  var FEE_TOO_HIGH_LIMIT_PER = 15;
   $scope.isCordova = platformInfo.isCordova;
 
   $scope.openExternalLink = function(url) {
@@ -264,10 +265,31 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
           invoiceTime: invoice.invoiceTime
         };
         $scope.totalAmountStr = txFormatService.formatAmountStr(coin, ctxp.amount);
+
+        // Warn: fee too high
+        checkFeeHigh(Number(parsedAmount.amountSat), Number(invoiceFeeSat) + Number(ctxp.fee));
+
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       });
     });
   };
+
+  var checkFeeHigh = function(amount, fee) {
+    var per = fee / (amount + fee) * 100;
+
+    if (per > FEE_TOO_HIGH_LIMIT_PER) {
+      $ionicModal.fromTemplateUrl('views/modals/fee-warning.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.feeWarningModal = modal;
+        $scope.feeWarningModal.show();
+      });
+
+      $scope.close = function() {
+        $scope.feeWarningModal.hide();
+      };
+    }
+  }
 
   $scope.$on("$ionicView.beforeLeave", function(event, data) {
     $ionicConfig.views.swipeBackEnabled(true);
