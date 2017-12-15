@@ -53,39 +53,17 @@ page-receive {
       padding-left: 24px;
     }
   }
-}
 
-.action-sheet-container .action-sheet-button .button-inner {
-  padding-left: 10px !important;
-}
-
-@mixin wallets-list {
-  height: 3.5rem;
-  width: 3.5rem;
-  content: " ";
-  position: absolute;
-  border-radius: $icon-border-radius;
-  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
-}
-
-.wallet-livenet::before {
-  @include wallets-list;
-  background: color($colors, primary) url('../assets/img/icon-wallet.svg') no-repeat 0px 0px;
-}
-
-.wallet-testnet::before {
-  @include wallets-list;
-  background: color($colors, primary) url('../assets/img/icon-wallet-testnet.svg') no-repeat 0px 0px;
-}
-
-.action-sheet-container {
-  .action-sheet-button {
+  .loading-address {
+    margin: 0 auto;
+    width: 220px;
+    height: 223px;
     display: flex;
-    justify-content: baseline;
+    text-align: center;
+    justify-content: middle;
     align-items: center;
-    padding: 2.5rem;
-    .button-inner {
-      padding-left: 5rem;
+    ion-spinner {
+      margin: 0 auto;
     }
   }
 }

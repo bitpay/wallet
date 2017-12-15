@@ -44,16 +44,15 @@ export class ReceivePage {
     private socialSharing: SocialSharing,
     private popupProvider: PopupProvider
   ) {
+    this.showShareButton = this.platformProvider.isCordova;
   }
 
   ionViewWillEnter() {
     this.wallets = this.profileProvider.getWallets();
-    this.updateQrAddress();
     this.onSelect(this.checkSelectedWallet(this.wallet, this.wallets));
-    this.showShareButton = this.platformProvider.isCordova;
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       // Update current address
-      if (this.wallet && walletId == this.wallet.credentials.walletId && type == 'NewIncomingTx') this.setAddress(true);
+      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
     });
   }
 
