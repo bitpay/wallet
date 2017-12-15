@@ -4,6 +4,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
 import { AmountPage } from '../../send/amount/amount';
+import { AmazonCardsPage } from './amazon-cards/amazon-cards';
 
 // Providers
 import { AmazonProvider } from '../../../providers/amazon/amazon';
@@ -47,7 +48,9 @@ export class AmazonPage {
         });
         break;
       case 'AmazonCards':
-        //push AmazonCards
+        this.navCtrl.push(AmazonCardsPage, {
+          invoiceId: null
+        });
         break;
     }
   }

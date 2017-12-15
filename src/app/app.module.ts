@@ -29,6 +29,7 @@ import { CopayApp } from './app.component';
 /* Pages */
 import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
+import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
@@ -173,6 +174,7 @@ let directives: any = [
 let pages: any = [
   ActivityPage,
   AddPage,
+  AmazonCardDetailsPage,
   AmazonCardsPage,
   AmazonPage,
   BuyAmazonPage,

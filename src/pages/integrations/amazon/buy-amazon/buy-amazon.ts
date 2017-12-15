@@ -6,7 +6,6 @@ import * as moment from 'moment';
 
 // Pages
 import { AmazonCardsPage } from '../../../../pages/integrations/amazon/amazon-cards/amazon-cards';
-import { HomePage } from '../../../../pages/home/home';
 
 // Provider
 import { AmazonProvider } from '../../../../providers/amazon/amazon';
@@ -15,7 +14,6 @@ import { ConfigProvider } from '../../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
-import { PlatformProvider } from '../../../../providers/platform/platform';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
@@ -34,7 +32,6 @@ export class BuyAmazonPage {
   private message: string;
   private invoiceId: string;
   private configWallet: any;
-  //private isCordova: boolean;
   private currencyIsoCode: string;
 
   public wallet: any;
@@ -61,7 +58,6 @@ export class BuyAmazonPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
@@ -69,7 +65,6 @@ export class BuyAmazonPage {
   ) {
     this.coin = 'btc';
     this.configWallet = this.configProvider.get().wallet;
-    //this.isCordova = this.platformProvider.isCordova;
     this.amazonGiftCard = null;
   }
 
@@ -382,12 +377,11 @@ export class BuyAmazonPage {
         return;
       }
 
-      this.onGoingProcessProvider.set('buyingGiftCard', true, this.statusChangeHandler);
       this.publishAndSign(this.wallet, this.createdTx, function () { }).then((txSent) => {
+        this.onGoingProcessProvider.set('buyingGiftCard', true, this.statusChangeHandler);
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();
-        this.onGoingProcessProvider.set('buyingGiftCard', false, this.statusChangeHandler);
         this.showError('Could not send transaction', err); // TODO: gettextCatalog
         return;
       });
@@ -401,9 +395,9 @@ export class BuyAmazonPage {
 
   public goBackHome(): void {
     this.sendStatus = '';
-    this.navCtrl.setRoot(HomePage);
-    this.navCtrl.popToRoot();
-    this.navCtrl.push(AmazonCardsPage);
+    this.navCtrl.remove(3, 1);
+    this.navCtrl.pop();
+    this.navCtrl.push(AmazonCardsPage, { invoiceId: this.invoiceId });
   }
 
   public showWallets(): void {

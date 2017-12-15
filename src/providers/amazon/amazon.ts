@@ -31,7 +31,7 @@ export class AmazonProvider {
     * Production: 'livenet'
     */
     this.credentials.NETWORK = 'livenet';
-    //this.this.credentials.NETWORK = 'testnet';
+    //this.credentials.NETWORK = 'testnet';
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.BITPAY_API_URL = "https://test.bitpay.com";
     } else {
@@ -88,7 +88,7 @@ export class AmazonProvider {
   public getPendingGiftCards(cb) {
     var network = this.getNetwork();
     this.persistenceProvider.getAmazonGiftCards(network).then((giftCards) => {
-      var _gcds = giftCards ? JSON.parse(giftCards) : null;
+      var _gcds = giftCards ? giftCards : null;
       return cb(null, _gcds);
     }).catch((err) => {
       return cb(err);
@@ -133,13 +133,13 @@ export class AmazonProvider {
     };
 
     this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/redeem', dataSrc).subscribe((data: any) => {
-      var status = data.data.status == 'new' ? 'PENDING' : (data.data.status == 'paid') ? 'PENDING' : data.data.status;
-      data.data.status = status;
+      var status = data.status == 'new' ? 'PENDING' : (data.status == 'paid') ? 'PENDING' : data.status;
+      data.status = status;
       this.logger.info('Amazon.com Gift Card Create/Update: ' + status);
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data: any) => {
-      this.logger.error('Amazon.com Gift Card Create/Update: ' + data.data.message);
-      return cb(data.data);
+      this.logger.error('Amazon.com Gift Card Create/Update: ' + data.message);
+      return cb(data);
     });
   };
 
@@ -153,10 +153,10 @@ export class AmazonProvider {
 
     this.http.post(this.credentials.BITPAY_API_URL + '/amazon-gift/cancel', dataSrc).subscribe((data: any) => {
       this.logger.info('Amazon.com Gift Card Cancel: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data: any) => {
-      this.logger.error('Amazon.com Gift Card Cancel: ' + data.data.message);
-      return cb(data.data);
+      this.logger.error('Amazon.com Gift Card Cancel: ' + data.message);
+      return cb(data);
     });
   };
 
