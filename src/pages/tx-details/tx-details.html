@@ -68,5 +68,6 @@
     </ion-item>
   </ion-list>
 
+  <button ion-button block clear copy-to-clipboard="{{tx.txid}}" *ngIf="tx" translate>Copy transaction id</button>
   <button ion-button block clear (click)="viewOnBlockchain()" translate>View on blockchain</button>
 </ion-content>

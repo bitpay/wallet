@@ -79,27 +79,25 @@
 
   <ion-card *ngIf="showNoTransactionsYetMsg && !updateStatusError">
     <ion-card-content>
-      No transactions yet
+      {{'No transactions yet' | translate}}
     </ion-card-content>
   </ion-card>
 
 
   <ion-card *ngIf="txHistory && !txHistory[0] && updateTxHistoryError">
     <ion-card-content>
-      Could not update transaction history
+      {{'Could not update transaction history' | translate}}
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
-    <ion-card-content>
-      <span translate>Updating transaction history. Please stand by.</span><br>
-      <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
-    </ion-card-content>
-  </ion-card>
+  <div class="updating-history" *ngIf="wallet.updating && wallet.updatingTxHistoryProgress > 5">
+    <div>Updating transaction history. Please stand by.</div>
+    <div>{{wallet.updatingTxHistoryProgress}} transactions downloaded</div>
+  </div>
 
   <ion-card class="tx-history">
     <ion-list>
-      <button ion-item *ngFor="let tx of history" (click)="goToTxDetails(tx)">
+      <button ion-item *ngFor="let tx of wallet.history" (click)="goToTxDetails(tx)">
         <ion-icon item-start>
           <div *ngIf="tx.confirmations == 0">
             <img src="assets/img/tx-action/icon-confirming.svg" width="40">

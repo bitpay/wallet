@@ -372,20 +372,21 @@ export class WalletProvider {
   public getTxHistory(wallet: any, opts?: any) {
     return new Promise((resolve, reject) => {
       opts = opts || {};
-
-      // TODO isHistoryCached should get the properties from status or profile service
-
-      this.logger.debug('Updating Transaction History');
+      this.logger.debug('Retrieving Transaction History...');
 
       this.getTxsFromLocal(wallet.credentials.walletId).then((txsFromLocal) => {
         if (!lodash.isEmpty(txsFromLocal) && !opts.force) {
+          this.logger.debug('History loaded from local storage');
           return resolve(txsFromLocal.slice(0, opts.limit));
         }
-
         this.getTxsFromServer(wallet, opts).then((txsFromServer) => {
-          this.updateTxHistory(wallet, txsFromLocal, txsFromServer).then((newHistory: any) => {
-            return resolve(newHistory);
+          let txsFromServer_ = txsFromServer && txsFromServer.res || [];
+          let array = txsFromServer_.concat(txsFromLocal);
+          let filteredHistory = lodash.uniqBy(array, (x: any) => {
+            return x.txid;
           });
+          this.logger.debug('History loaded from server');
+          return resolve(lodash.compact(lodash.flatten(filteredHistory)));
         }).catch((err) => {
           this.logger.debug('Error getting txs from server');
           return reject(err);
@@ -397,28 +398,25 @@ export class WalletProvider {
     });
   }
 
-  private updateTxHistory(wallet: any, txsFromLocal: any, txsFromServer?: any) {
-    return new Promise((resolve, reject) => {
-      var txsFromServer_ = txsFromServer && txsFromServer.res || [];
-      let array = txsFromServer_.concat(txsFromLocal);
-      let newHistory = lodash.uniqBy(array, (x: any) => {
-        return x.txid;
-      });
-      if (newHistory) return resolve(newHistory);
+  public updateTxHistory(wallet: any, opts?: any) {
+    opts = opts || {};
 
-      let historyToSave = lodash.compact(lodash.flatten(newHistory));
-
-      this.persistenceProvider.setTxHistory(wallet.credentials.walletId, JSON.stringify(historyToSave)).then(() => {
-        this.logger.debug('Tx History saved for: ' + wallet.credentials.walletId);
-      }).catch((err) => {
-        this.logger.warn('Error saving history for: ' + wallet.credentials.walletId);
-      });
+    this.getTxsFromLocal(wallet.credentials.walletId).then((localHistory: any) => {
+      if (!lodash.isEmpty(localHistory) && !opts.force) {
+        wallet.updating = false;
+        wallet.history = localHistory.slice(0, 10);
+        wallet.completeHistory = localHistory;
+        wallet.completeHistory.isValid = true;
+        return;  
+      }
+      this.updateHistoryFromServer(wallet, opts);
+    }).catch((err) => {
+      this.logger.error(err);
     });
   }
 
   private getTxsFromLocal(walletId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-
       this.persistenceProvider.getTxHistory(walletId).then((txs: any) => {
         let localTxs = [];
 
@@ -448,22 +446,74 @@ export class WalletProvider {
         limit: opts.limit
       }, (err: Error, txsFromServer: Array<any>) => {
         if (err) return reject(err);
-
-        if (!txsFromServer.length)
-          return resolve();
-
+        
+        if (lodash.isEmpty(txsFromServer))
+        return resolve();
+        
         res = lodash.takeWhile(txsFromServer, (tx) => {
           return tx.txid != opts.endingTxid;
         });
-
+        
         let result = {
           res: res,
           shouldContinue: res.length >= opts.limit
         };
-
+        
         return resolve(result);
       });
     });
+  }
+
+  /**
+   * Sync and update history from server in background
+   */
+  private updateHistoryFromServer(wallet: any, opts: any) {
+    this.logger.debug('## Updating history from server...');
+    const FIRST_LIMIT = 10;
+    const LIMIT = 50;
+    let requestLimit = FIRST_LIMIT;
+    
+    opts = opts || {};
+    opts.skip = 0;
+    opts.requestLimit = requestLimit;
+    wallet.updatingTxHistoryProgress = 0;
+
+    let getNewTxs = (newTxs, skip) => {
+      this.getTxsFromServer(wallet, { skip: skip, limit: requestLimit }).then((result) => {
+        let shouldContinue = result && result.shouldContinue || false; 
+        let txsFromServer = result && result.res || [];
+        newTxs = newTxs.concat(this.processNewTxs(wallet, lodash.compact(txsFromServer)));
+        
+        // Load the first 10 transactions during the sync process
+        if (skip === 0) wallet.history = newTxs.slice(0, 10);
+        wallet.updatingTxHistoryProgress = newTxs.length;
+
+        this.logger.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' Continue:', shouldContinue);
+        skip = skip + requestLimit;
+        requestLimit = LIMIT;
+        
+        if (shouldContinue)
+          getNewTxs(newTxs, skip);
+        else {
+          let historyToSave = lodash.uniqBy(lodash.compact(newTxs), (x: any) => {
+            return x.txid;
+          });
+          this.persistenceProvider.setTxHistory(wallet.credentials.walletId, JSON.stringify(historyToSave)).then(() => {
+            this.logger.debug('Transaction History saved for: ' + wallet.credentials.walletId);
+            wallet.updating = false;
+            wallet.completeHistory = historyToSave;
+            wallet.completeHistory.isValid = true;
+          }).catch((err) => {
+            this.logger.warn('Error saving history for: ' + wallet.credentials.walletId);
+          });
+        }
+      }).catch((err) => {
+        wallet.updating = false;
+        this.logger.error(err);
+      });
+    }
+    
+    getNewTxs([], 0);
   }
 
   public processNewTxs(wallet: any, txs: any): Array<any> {
@@ -587,25 +637,53 @@ export class WalletProvider {
         let tx = lodash.find(list, {
           txid: txid
         });
-
         if (!tx) return reject('Could not get transaction');
-        return tx;
+        return resolve(tx);
       };
 
       if (wallet.completeHistory && wallet.completeHistory.isValid) {
-        let tx = finish(wallet.completeHistory);
-        return resolve(tx);
+        finish(wallet.completeHistory);
       } else {
-        let opts = {
-          force: true
-        };
-        this.getTxHistory(wallet, opts).then((txHistory: any) => {
-          let tx = finish(txHistory);
-          return resolve(tx);
+        this.findLimitTx(wallet, txid).then((tx: any) => {
+          return resolve (tx);
         }).catch((err) => {
           return reject(err);
         });
       };
+    });
+  }
+
+  /**
+   * No sync all, just by LIMIT range until find the tx
+   */
+  private findLimitTx(wallet: any, limitTx: string) {
+    return new Promise((resolve, reject) => {
+      const LIMIT = 50;
+      let foundTx: Array<any> = [];
+
+      let findTx = (newTxs, skip) => {
+        this.getTxsFromServer(wallet, { skip: skip, limit: LIMIT }).then((result) => {
+          newTxs = newTxs.concat(this.processNewTxs(wallet, lodash.compact(result.res)));
+          
+          foundTx = lodash.find(newTxs, (tx: any) => {
+            return tx.txid == limitTx;
+          });
+
+          if (lodash.isEmpty(foundTx)) {
+            skip = skip + LIMIT;
+            findTx(newTxs, skip);
+          }
+          else {
+            console.log('Transaction found', foundTx);
+            return resolve (foundTx)
+          }
+        }).catch((err) => {
+          this.logger.warn('Error finding tx: ' + limitTx);
+          return reject(err);
+        });
+      }
+      
+      findTx([], 0);
     });
   }
 
