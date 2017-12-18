@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, $ionicModal, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog) {
 
+  var FEE_TOO_HIGH_LIMIT_PER = 15;
   $scope.isCordova = platformInfo.isCordova;
   var coin = 'btc';
   var cardId;
@@ -185,6 +186,23 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }
   };
 
+  var checkFeeHigh = function(amount, fee) {
+    var per = fee / (amount + fee) * 100;
+
+    if (per > FEE_TOO_HIGH_LIMIT_PER) {
+      $ionicModal.fromTemplateUrl('views/modals/fee-warning.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.feeWarningModal = modal;
+        $scope.feeWarningModal.show();
+      });
+
+      $scope.close = function() {
+        $scope.feeWarningModal.hide();
+      };
+    }
+  }
+
   var initializeTopUp = function(wallet, parsedAmount) {
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
     var dataSrc = {
@@ -220,6 +238,9 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         createdTx = ctxp;
 
         $scope.totalAmountStr = txFormatService.formatAmountStr(coin, ctxp.amount);
+
+        // Warn: fee too high
+        checkFeeHigh(Number(parsedAmount.amountSat), Number(invoiceFeeSat) + Number(ctxp.fee));
 
         setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
 
