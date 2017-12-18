@@ -30,7 +30,7 @@
       </ion-avatar>
       <h2 translate>To</h2>
       <p *ngIf="tx.action != 'sent'">{{wallet.name || '...'}}</p>
-      <p *ngIf="tx.action == 'sent'">{{tx.addressTo || '...'}}</p>
+      <p *ngIf="tx.action == 'sent'" class="to">{{tx.addressTo || '...'}}</p>
     </ion-item>
 
     <ion-item *ngIf="tx.action == 'sent'">
@@ -48,9 +48,9 @@
       </ion-note>
     </ion-item>
 
-    <button ion-item (click)="addMemo()">
-      <ion-label>{{'Memo' | translate}}</ion-label>
-      <span>{{tx.message}}</span>
+    <button ion-item (click)="addMemo()" class="memo">
+      <span translate>Memo</span>
+      <div class="message">{{tx.message}}</div>
     </button>
 
     <button ion-item (click)="addMemo()" *ngIf="tx.action != 'received'">
