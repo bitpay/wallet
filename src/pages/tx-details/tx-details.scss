@@ -18,4 +18,16 @@ page-tx-details {
     margin-left: 2px;
     margin-bottom: 1.5rem;
   }
+  .input-wrapper, .memo {
+    overflow: initial !important;
+    white-space: initial;
+  }
+  .message {
+    padding-top: 5px;
+    color: color($colors, grey);
+    white-space: normal;
+  }
+  .to {
+    font-size: 1.25rem;
+  }
 }
