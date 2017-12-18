@@ -27,10 +27,7 @@ export class WalletDetailsPage {
   public walletNotRegistered: boolean;
   public updateError: boolean;
   public updateStatusError;
-  public updatingTxHistory: boolean;
-  public updateTxHistoryError: boolean;
   public updatingTxHistoryProgress: number;
-  public showNoTransactionsYetMsg: boolean;
   public addressbook: any;
   public txps: Array<any>;
 
