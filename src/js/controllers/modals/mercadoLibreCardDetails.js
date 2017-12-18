@@ -22,7 +22,7 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardDetailsContro
     var url;
     var isSandbox = mercadoLibreService.getNetwork() == 'testnet' ? true : false;
     if (isSandbox) url = 'https://beta.mercadolivre.com.br/vale-presente/resgate';
-    else url = 'https://www.mercadolivre.com.br/vale-presente/resgate'
+    else url = 'https://www.mercadolivre.com.br/vale-presente/resgate';
     $scope.openExternalLink(url);
   }
 
