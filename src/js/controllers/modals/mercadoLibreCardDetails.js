@@ -18,6 +18,14 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardDetailsContro
     externalLinkService.open(url);
   };
 
+  $scope.openRedeemLink = function() {
+    var url;
+    var isSandbox = mercadoLibreService.getNetwork() == 'testnet' ? true : false;
+    if (isSandbox) url = 'https://beta.mercadolivre.com.br/vale-presente/resgate';
+    else url = 'https://www.mercadolivre.com.br/vale-presente/resgate'
+    $scope.openExternalLink(url);
+  }
+
   $scope.openSupportWebsite = function() {
     var url = 'https://help.bitpay.com/requestHelp';
     var optIn = true;
