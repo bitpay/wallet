@@ -399,12 +399,14 @@ export class WalletProvider {
   }
 
   public updateTxHistory(wallet: any, opts?: any) {
+    opts = opts || {};
     this.getTxsFromLocal(wallet.credentials.walletId).then((localHistory: any) => {
       if (!lodash.isEmpty(localHistory) && !opts.force && !opts.limitTx) {
         wallet.updating = false;
         wallet.history = localHistory.slice(0, 10);
         wallet.completeHistory = localHistory;
         wallet.completeHistory.isValid = true;
+        this.events.publish('history:updated', wallet.credentials.walletId);
         return;  
       }
       this.updateHistoryFromServer(wallet, opts.limitTx);
@@ -518,7 +520,7 @@ export class WalletProvider {
       wallet.updating = false;
       wallet.completeHistory = historyToSave;
       wallet.completeHistory.isValid = true;
-      wallet.updateAll();
+      this.events.publish('history:updated', wallet.credentials.walletId);
     }).catch((err) => {
       this.logger.warn('Error saving history for: ' + wallet.credentials.walletId);
     });

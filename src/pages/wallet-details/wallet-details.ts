@@ -20,7 +20,6 @@ const HISTORY_SHOW_LIMIT = 10;
   templateUrl: 'wallet-details.html'
 })
 export class WalletDetailsPage {
-  private HISTORY_SHOW_LIMIT: number;
   private historyPageCounter: number;
 
   public requiresMultipleSignatures: boolean;
@@ -46,7 +45,6 @@ export class WalletDetailsPage {
     private events: Events,
     private logger: Logger
   ) {
-    this.HISTORY_SHOW_LIMIT = 10;
     this.historyPageCounter = 2;
     this.walletNotRegistered = null;
     this.updateError = null;
@@ -55,9 +53,7 @@ export class WalletDetailsPage {
     this.updatingTxHistoryProgress = 0;
     let clearCache = this.navParams.data.clearCache;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.wallet.updateAll = () => {
-      this.updateAll(true);
-    };
+    
     // Getting info from cache
     if (clearCache) {
       this.clearData();
@@ -83,6 +79,10 @@ export class WalletDetailsPage {
   ionViewDidEnter() {
     this.updateAll();
     
+    this.events.subscribe('history:updated', (walletId) => {
+      if (walletId == this.wallet.id)
+        this.updateStatus(true);
+    });
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       if (walletId == this.wallet.id && type != 'NewAddress')
         this.updateAll(true, n.data.txid);
@@ -94,6 +94,7 @@ export class WalletDetailsPage {
   }
 
   ionViewWillLeave() {
+    this.events.unsubscribe('history:updated');
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/TxAction');
   }
@@ -143,7 +144,7 @@ export class WalletDetailsPage {
       return;
     }
     setTimeout(() => {
-      this.wallet.history = this.wallet.completeHistory.slice(0, this.historyPageCounter * this.HISTORY_SHOW_LIMIT);
+      this.wallet.history = this.wallet.completeHistory.slice(0, this.historyPageCounter * HISTORY_SHOW_LIMIT);
       this.historyPageCounter++;
       loading.complete();
     }, 300);
@@ -168,6 +169,7 @@ export class WalletDetailsPage {
   };
   
   private updateTxHistory(opts?: any) {
+    opts = opts || {};
     if (opts.force) {
       this.wallet.history = [];
       this.wallet.updatingTxHistoryProgress = 0;
