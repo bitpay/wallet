@@ -27,7 +27,6 @@ export class WalletDetailsPage {
   public walletNotRegistered: boolean;
   public updateError: boolean;
   public updateStatusError;
-  public updatingStatus: boolean;
   public updatingTxHistory: boolean;
   public updateTxHistoryError: boolean;
   public updatingTxHistoryProgress: number;
@@ -152,13 +151,14 @@ export class WalletDetailsPage {
 
   private updateStatus(force?: boolean) {
     if (this.wallet.updating) return;
-    
+
+    this.wallet.updatingStatus = true;
     this.walletProvider.getStatus(this.wallet, { force: !!force }).then((status: any) => {
-      this.updatingStatus = false;
+      this.wallet.updatingStatus = false;
       this.setPendingTxps(status.pendingTxps);
       this.wallet.status = status;
     }).catch((err) => {
-      this.updatingStatus = false;
+      this.wallet.updatingStatus = false;
       if (err === 'WALLET_NOT_REGISTERED') {
         this.walletNotRegistered = true;
       } else {
