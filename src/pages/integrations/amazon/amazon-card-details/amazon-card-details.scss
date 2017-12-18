@@ -1,3 +1,17 @@
 page-amazon-card-details {
-
+  .scroll-content {
+    padding: 2rem;
+  }
+  .header-modal {
+    text-align: center;
+    img {
+      width: 230px;
+    }
+    &-amount {
+      padding: 1rem;
+    }
+    .invoice {
+      margin: 2rem 0 5rem 0;
+    }
+  }
 }
