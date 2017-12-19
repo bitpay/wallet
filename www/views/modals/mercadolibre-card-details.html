@@ -20,7 +20,7 @@
       <div ng-show="card.cardStatus == 'active'">
         <div class="redeem-pin" copy-to-clipboard="card.pin">{{card.pin}}</div>
         <button class="button-redeem"
-                ng-click="openExternalLink('https://www.mercadolivre.com.br')" translate>
+                ng-click="openRedeemLink()" translate>
           Redeem now
         </button>
       </div>
