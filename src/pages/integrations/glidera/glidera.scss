@@ -1,0 +1,36 @@
+page-glidera {
+  .heading{
+    text-align: center;
+    padding: 20px;
+    img {
+      padding: 50px;
+      width: 80%;
+    }
+    .integration-onboarding-description {
+        margin-left: auto;
+        margin-right: auto;
+        opacity: .6;
+        max-width: 300px;
+    }
+  }
+  .item-img-buy,
+  .item-img-sell {
+    width: 40px;
+  }
+  img {
+    width: 40px;
+  }
+  .label {
+    display: -webkit-inline-box;
+  }
+  .action {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .details {
+    position: absolute;
+    right: 16px;
+    text-align: end;
+  }
+}

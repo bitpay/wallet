@@ -3,6 +3,8 @@ import { BwcProvider } from '../bwc/bwc';
 import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
 import { FilterProvider } from '../filter/filter';
+import { Logger } from '@nsalaun/ng-logger';
+
 import * as _ from "lodash";
 
 @Injectable()
@@ -15,9 +17,10 @@ export class TxFormatProvider {
     private bwc: BwcProvider,
     private rate: RateProvider,
     private config: ConfigProvider,
-    private filter: FilterProvider
+    private filter: FilterProvider,
+    private logger: Logger
   ) {
-    console.log('Hello TxFormatProvider Provider');
+    this.logger.info('TxFormatProvider initialized.');
   }
 
   public formatAmount(satoshis: number, fullPrecision?: boolean): number {
@@ -140,7 +143,7 @@ export class TxFormatProvider {
       // hardcoded tx.wallet ^
 
       if (!tx.wallet) {
-        console.log("no wallet at txp?");
+        this.logger.debug("no wallet at txp?");
         return;
       }
 

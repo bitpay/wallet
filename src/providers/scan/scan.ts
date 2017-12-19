@@ -257,7 +257,7 @@ export class ScanProvider {
 
   public toggleLight(): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log('Toggling light...');
+      this.logger.info('Toggling light...');
       if (this.lightEnabled) {
         this.qrScanner.disableLight()
           .then(resp => {
@@ -265,7 +265,7 @@ export class ScanProvider {
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            console.log("Error: ", err);
+            this.logger.warn("Error: ", err);
             return reject(err);
           });
       } else {
@@ -275,7 +275,7 @@ export class ScanProvider {
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            console.log("Error: ", err);
+            this.logger.warn("Error: ", err);
             return reject(err);
           });
       }
@@ -291,7 +291,7 @@ export class ScanProvider {
 
   public toggleCamera(): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log('Toggling camera...');
+      this.logger.info('Toggling camera...');
       if (this.frontCameraEnabled) {
         this.qrScanner.useBackCamera()
           .then(resp => {
@@ -299,7 +299,7 @@ export class ScanProvider {
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            console.log("Error: ", err);
+            this.logger.warn("Error: ", err);
             return reject(err);
           });
       } else {
@@ -309,7 +309,7 @@ export class ScanProvider {
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            console.log("Error: ", err);
+            this.logger.warn("Error: ", err);
             return reject(err);
           });
       }

@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
 export class FilterProvider {
 
   public formats: any;
 
-  constructor(private decimalPipe: DecimalPipe) {
-    console.log('Hello Filter Provider');
+  constructor(
+    private decimalPipe: DecimalPipe,
+    private logger: Logger
+  ) {
+    this.logger.info('FilterProvider initialized');
     this.formats = {
       CURRENCY_SYM: "$",
       DECIMAL_SEP: ".",

@@ -173,9 +173,9 @@
       </ion-row>
     </ion-card-header>
     <div *ngIf="!hideNextSteps">
-      <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
+      <button ion-item *ngFor="let service of buyAndSellItems" (click)="goTo(service.page)">
         <ion-icon item-start>
-          <img src="{{service.logo}}" />
+          <img src="{{service.logo}}" class="logo-services"/>
         </ion-icon>
       </button>
     </div>

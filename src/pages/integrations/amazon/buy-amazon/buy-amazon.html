@@ -26,7 +26,10 @@
       <button ion-item (click)="showWallets()" class="wallets-list">
         <div translate>From</div>
         <div class="wallet">
-          <img src="assets/img/icon-wallet.svg">
+            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet" />
+            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
+          />
           <span>{{wallet ? wallet.name : '...'}}</span>
         </div>
       </button>

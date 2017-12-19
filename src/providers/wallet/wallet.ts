@@ -227,7 +227,7 @@ export class WalletProvider {
           cache.alternativeBalanceAvailable = true;
           cache.isRateAvailable = true;
         }).catch((err) => {
-          console.log(err);
+          this.logger.warn(err);
         });
       };
 

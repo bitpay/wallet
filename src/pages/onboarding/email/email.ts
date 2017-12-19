@@ -16,10 +16,10 @@ export class EmailPage {
   private emailForm: FormGroup;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public actionSheet: ActionSheetController,
-    private log: Logger,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private actionSheet: ActionSheetController,
+    private logger: Logger,
     private fb: FormBuilder
   ) {
     this.walletId = this.navParams.data.walletId;
@@ -35,7 +35,7 @@ export class EmailPage {
   };
 
   ionViewDidLoad() {
-    this.log.info('ionViewDidLoad EmailPage');
+    this.logger.info('ionViewDidLoad EmailPage');
   }
 
   skip() {
@@ -49,7 +49,7 @@ export class EmailPage {
           text: 'Continue',
           role: 'destructor',
           handler: () => {
-            console.log('Continue clicked');
+            this.logger.debug('Continue clicked');
           }
         }
       ]

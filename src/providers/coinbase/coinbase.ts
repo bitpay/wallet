@@ -900,7 +900,7 @@ export class CoinbaseProvider {
 
       this.buyAndSellProvider.register({
         name: 'coinbase',
-        logo: 'img/coinbase-logo.png',
+        logo: 'assets/img/coinbase/coinbase-logo.png',
         location: '33 Countries',
         page: 'CoinbasePage',
         linked: !!isActive,

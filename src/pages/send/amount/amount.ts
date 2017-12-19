@@ -10,6 +10,8 @@ import { RateProvider } from '../../../providers/rate/rate';
 
 //pages
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
+import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
+import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 
@@ -119,6 +121,14 @@ export class AmountPage {
       case 'BuyAmazonPage':
         this.showRecipient = false;
         nextPage = BuyAmazonPage;
+        break;
+      case 'BuyGlideraPage':
+        this.showRecipient = false;
+        nextPage = BuyGlideraPage;
+        break;
+      case 'SellGlideraPage':
+        this.showRecipient = false;
+        nextPage = SellGlideraPage;
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;

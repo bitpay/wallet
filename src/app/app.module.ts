@@ -32,22 +32,26 @@ import { AddPage } from '../pages/add/add';
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
+import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
+import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
+import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
+import { BuyAndSellPage } from '../pages/buy-and-sell/buy-and-sell';
+import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
+import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
+import { EmailPage } from '../pages/onboarding/email/email';
 import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
+import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
-import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
-import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
-import { EmailPage } from '../pages/onboarding/email/email';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
+import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
 import { TourPage } from '../pages/onboarding/tour/tour';
-import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
-import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
@@ -178,6 +182,8 @@ let pages: any = [
   AmazonCardsPage,
   AmazonPage,
   BuyAmazonPage,
+  BuyAndSellPage,
+  BuyGlideraPage,
   ChooseFeeLevelPage,
   CreateWalletPage,
   CopayersPage,
@@ -200,6 +206,7 @@ let pages: any = [
   DisclaimerPage,
   EmailPage,
   FeeWarningPage,
+  GlideraPage,
   FingerprintModalPage,
   HomePage,
   LanguagePage,
@@ -207,6 +214,7 @@ let pages: any = [
   OnboardingPage,
   PaperWalletPage,
   PayProPage,
+  SellGlideraPage,
   PinModalPage,
   ProposalsPage,
   ReceivePage,

@@ -146,7 +146,8 @@ export class BuyAmazonPage {
     });
   }
 
-  private statusChangeHandler(processName: string, showName: string, isOn: boolean) {
+  private statusChangeHandler(processName: string, isOn: boolean) {
+    let showName = this.onGoingProcessProvider.getShowName(processName);
     this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
     if (processName == 'buyingGiftCard' && !isOn) {
       this.sendStatus = 'success';
@@ -266,7 +267,8 @@ export class BuyAmazonPage {
     this.amazonProvider.createGiftCard(dataSrc, (err, giftCard) => {
       this.logger.debug("creating gift card " + count);
       if (err) {
-        this.onGoingProcessProvider.set('buyingGiftCard', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('buyingGiftCard', false);
+        this.statusChangeHandler('buyingGiftCard', false);
         giftCard = {};
         giftCard.status = 'FAILURE';
         this.showError('Error creating gift card', err); // TODO: gettextCatalog
@@ -293,14 +295,16 @@ export class BuyAmazonPage {
           remove: true
         }, (err: any) => {
           this.logger.error(err);
-          this.onGoingProcessProvider.set('buyingGiftCard', false, this.statusChangeHandler);
+          this.onGoingProcessProvider.set('buyingGiftCard', false);
+          this.statusChangeHandler('buyingGiftCard', false);
           this.showError(null, 'Gift card expired'); // TODO: gettextCatalog
         });
         return;
       }
 
       this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
-        this.onGoingProcessProvider.set('buyingGiftCard', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('buyingGiftCard', false);
+        this.statusChangeHandler('buyingGiftCard', false);
         this.logger.debug("Saving new gift card with status: " + newData.status);
         this.amazonGiftCard = newData;
       });
@@ -321,6 +325,7 @@ export class BuyAmazonPage {
       email: email
     };
     this.onGoingProcessProvider.set('loadingTxInfo', true);
+
     this.createInvoice(dataSrc).then((data: any) => {
       let invoice = data.invoice;
       let accessKey = data.accessKey;
@@ -378,7 +383,8 @@ export class BuyAmazonPage {
       }
 
       this.publishAndSign(this.wallet, this.createdTx, function () { }).then((txSent) => {
-        this.onGoingProcessProvider.set('buyingGiftCard', true, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('buyingGiftCard', true);
+        this.statusChangeHandler('buyingGiftCard', true);
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();

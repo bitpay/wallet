@@ -11,6 +11,8 @@ import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { ProposalsPage } from './proposals/proposals';
 import { ActivityPage } from './activity/activity';
+import { BuyAndSellPage } from '../buy-and-sell/buy-and-sell';
+import { GlideraPage } from '../integrations/glidera/glidera';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -307,7 +309,10 @@ export class HomePage {
         //push BitPayCardIntroPage
         break;
       case 'BuyAndSellPage':
-        //push BuyAndSellPage
+        this.navCtrl.push(BuyAndSellPage);
+        break;
+      case 'GlideraPage':
+        this.navCtrl.push(GlideraPage);
         break;
     }
   }
