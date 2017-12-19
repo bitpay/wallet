@@ -176,22 +176,15 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       if (err) {
         $scope.sendStatus = '';
         ongoingProcess.set('Comprando Vale-Presente', false, statusChangeHandler);
-        giftCard = {};
-        giftCard.status = 'FAILURE';
+        giftCard = giftCard || {};
+        giftCard['status'] = 'FAILURE';
       }
 
       if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
         $scope.sendStatus = '';
         ongoingProcess.set('Comprando Vale-Presente', false, statusChangeHandler);
-        giftCard = {};
-        giftCard.status = 'FAILURE';
-      }
-
-
-      if (giftCard.status == 'PENDING' && count < 3) {
-        $log.debug("Waiting for payment confirmation");
-        checkTransaction(count + 1, dataSrc);
-        return;
+        giftCard = giftCard || {};
+        giftCard['status'] = 'FAILURE';
       }
 
       var now = moment().unix() * 1000;
@@ -205,9 +198,20 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
       newData['date'] = dataSrc.invoiceTime || now;
       newData['uuid'] = dataSrc.uuid;
 
+      if (giftCard.status == 'PENDING' && count < 3) {
+        $log.debug("Waiting for payment confirmation");
+
+        mercadoLibreService.savePendingGiftCard(newData, null, function(err) {
+          $log.debug("Saving gift card with status: " + newData.status);
+        });
+
+        checkTransaction(count + 1, dataSrc);
+        return;
+      }
+
       mercadoLibreService.savePendingGiftCard(newData, null, function(err) {
         ongoingProcess.set('Comprando Vale-Presente', false, statusChangeHandler);
-        $log.debug("Saving new gift card with status: " + newData.status);
+        $log.debug("Saved new gift card with status: " + newData.status);
         $scope.mlGiftCard = newData;
       });
     });

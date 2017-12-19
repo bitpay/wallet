@@ -1,10 +1,25 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('mercadoLibreCardsController',
-  function($scope, $timeout, $ionicModal, $log, $ionicScrollDelegate, lodash, mercadoLibreService, platformInfo, externalLinkService, popupService, ongoingProcess) {
+  function($scope, $timeout, $ionicModal, $log, $ionicScrollDelegate, lodash, mercadoLibreService, platformInfo, externalLinkService, popupService, ongoingProcess, timeService) {
+
+    var updateGiftCard;
 
     $scope.openExternalLink = function(url) {
       externalLinkService.open(url);
+    };
+
+    var checkIfCardNeedsUpdate = function(card) {
+      // Continues normal flow (update card)
+      if (card.status == 'PENDING') {
+        return true;
+      }
+      // Check if card status FAILURE for 24 hours
+      if (card.status == 'FAILURE' && timeService.withinPastDay(card.date)) {
+        return true;
+      }
+      // Success: do not update
+      return false;
     };
 
     var updateGiftCards = function(cb) {
@@ -28,15 +43,18 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardsController',
         var index = 0;
         var gcds = $scope.giftCards;
         lodash.forEach(gcds, function(dataFromStorage) {
-          if (dataFromStorage.status == 'PENDING') {
+
+          updateGiftCard = checkIfCardNeedsUpdate(dataFromStorage);
+
+          if (updateGiftCard) {
             $log.debug("Creating / Updating gift card");
 
             mercadoLibreService.createGiftCard(dataFromStorage, function(err, giftCard) {
 
               if (err) {
                 $log.error('Error creating gift card:', (err.message || err));
-                giftCard = {};
-                giftCard.status = 'FAILURE';
+                giftCard = giftCard || {};
+                giftCard['status'] = 'FAILURE';
               }
 
               if (giftCard.status != 'PENDING') {
@@ -51,7 +69,7 @@ angular.module('copayApp.controllers').controller('mercadoLibreCardsController',
                 lodash.merge(newData, dataFromStorage, giftCard);
 
                 mercadoLibreService.savePendingGiftCard(newData, null, function(err) {
-                  $log.debug("Saving new gift card");
+                  $log.debug("Mercado Libre gift card updated");
                   updateGiftCards();
                 });
               }
