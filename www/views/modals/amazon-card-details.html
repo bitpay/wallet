@@ -61,6 +61,9 @@
               EXPIRED
             </span>
           </div>
+          <div class="m10t text-center" ng-show="updateGiftCard">
+            <a class="button button-clear button-positive" ng-click="refreshGiftCard()">Try again</a>
+          </div>
         </div>
         <div class="m10t text-center">
           <a class="button button-clear button-calm" ng-click="openExternalLink(card.invoiceUrl)">See invoice</a>

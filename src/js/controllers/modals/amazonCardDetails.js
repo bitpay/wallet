@@ -30,6 +30,7 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
   };
 
   $scope.refreshGiftCard = function() {
+    if (!$scope.updateGiftCard) return;
     ongoingProcess.set('updatingGiftCard', true);
     amazonService.getPendingGiftCards(function(err, gcds) {
       if (lodash.isEmpty(gcds)) {
@@ -48,24 +49,35 @@ angular.module('copayApp.controllers').controller('amazonCardDetailsController',
             ongoingProcess.set('updatingGiftCard', false);
           }, 1000);
         }
-        if (dataFromStorage.status == 'PENDING' && dataFromStorage.invoiceId == $scope.card.invoiceId) {
+        if (dataFromStorage.invoiceId == $scope.card.invoiceId) {
           $log.debug("creating gift card");
           amazonService.createGiftCard(dataFromStorage, function(err, giftCard) {
             if (err) {
               popupService.showAlert('Error', bwcError.msg(err));
               return;
             }
-            if (!lodash.isEmpty(giftCard)) {
+            if (!lodash.isEmpty(giftCard) && giftCard.status != 'PENDING') {
               var newData = {};
+
               lodash.merge(newData, dataFromStorage, giftCard);
+
+              if (newData.status == 'expired') {
+                amazonService.savePendingGiftCard(newData, {
+                  remove: true
+                }, function(err) {
+                  $scope.cancel();
+                });
+                return;
+              }
+
               amazonService.savePendingGiftCard(newData, null, function(err) {
-                $log.debug("Saving new gift card");
+                $log.debug("Amazon gift card updated");
                 $scope.card = newData;
                 $timeout(function() {
                   $scope.$digest();
                 });
               });
-            } else $log.debug("pending gift card not available yet");
+            } else $log.debug("Pending gift card not available yet");
           });
         }
       });

@@ -175,15 +175,8 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
       $log.debug("creating gift card " + count);
       if (err) {
         ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-        giftCard = {};
-        giftCard.status = 'FAILURE';
-        showError(gettextCatalog.getString('Error creating gift card'), err);
-      }
-
-      if (giftCard.status == 'PENDING' && count < 3) {
-        $log.debug("Waiting for payment confirmation");
-        checkTransaction(count + 1, dataSrc);
-        return;
+        giftCard = giftCard || {};
+        giftCard['status'] = 'FAILURE';
       }
 
       var now = moment().unix() * 1000;
@@ -207,9 +200,20 @@ angular.module('copayApp.controllers').controller('buyAmazonController', functio
         return;
       }
 
+      if (giftCard.status == 'PENDING' && count < 3) {
+        $log.debug("Waiting for payment confirmation");
+
+        amazonService.savePendingGiftCard(newData, null, function(err) {
+          $log.debug("Saving gift card with status: " + newData.status);
+        });
+
+        checkTransaction(count + 1, dataSrc);
+        return;
+      }
+
       amazonService.savePendingGiftCard(newData, null, function(err) {
         ongoingProcess.set('buyingGiftCard', false, statusChangeHandler);
-        $log.debug("Saving new gift card with status: " + newData.status);
+        $log.debug("Saved new gift card with status: " + newData.status);
         $scope.amazonGiftCard = newData;
       });
     });
