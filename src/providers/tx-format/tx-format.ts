@@ -41,6 +41,7 @@ export class TxFormatProvider {
   }
 
   public toFiat(coin: string, satoshis: number, code: string): Promise<any> {
+    //TODO not a promise
     return new Promise((resolve, reject) => {
       if (isNaN(satoshis)) return resolve();
       var v1;
@@ -51,6 +52,7 @@ export class TxFormatProvider {
   }
 
   public formatToUSD(coin: string, satoshis: number): Promise<any> {
+    //TODO not a promise
     return new Promise((resolve, reject) => {
       let v1: number;
       if (isNaN(satoshis)) return resolve();

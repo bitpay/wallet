@@ -56,7 +56,7 @@
     <button ion-item (click)="addMemo()" *ngIf="tx.action != 'received'">
       <ion-label>{{'Fee' | translate}}</ion-label>
       <ion-note item-end>
-        {{tx.fees || '...' | satToUnit}} - {{tx.fees || '...' | satToFiat: wallet.coin}}
+        {{tx.fees || '...' | satToUnit: wallet.coin}} - {{tx.fees || '...' | satToFiat: wallet.coin}}
       </ion-note>
     </button>
 
