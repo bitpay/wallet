@@ -469,8 +469,12 @@ export class WalletProvider {
           let txsFromServer = result && result.res || [];
           newTxs = newTxs.concat(this.processNewTxs(wallet, lodash.compact(txsFromServer)));
 
+          // Load the first 10 transactions during the sync process
+          if (skip === 0) wallet.history = newTxs.slice(0, 10);
+          wallet.updatingTxHistoryProgress = newTxs.length;
+          
           skip = skip + requestLimit;
-
+          requestLimit = LIMIT;
           this.logger.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' EndingTxid:', endingTxid, ' Continue:', shouldContinue);
 
           // TODO Dirty <HACK>
@@ -492,7 +496,6 @@ export class WalletProvider {
             return next(null, newTxs);
           }
 
-          requestLimit = LIMIT;
           getNewTxs(newTxs, skip, next);
         }).catch((err) => {
           this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error')); //TODO

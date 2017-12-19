@@ -23,9 +23,10 @@ export class WalletDetailsPage {
   private currentPage: number;
 
   public requiresMultipleSignatures: boolean;
-  public wallet: any;
   public walletNotRegistered: boolean;
-  public updateStatusError;
+  public updateStatusError: boolean;
+  public showSpendableBalance: boolean;
+  public wallet: any;
   public addressbook: any;
   public txps: Array<any>;
   public error: string;
@@ -54,6 +55,7 @@ export class WalletDetailsPage {
       if (this.wallet.completeHistory) this.showHistory();
     }
 
+    this.showSpendableBalance = false;
     this.requiresMultipleSignatures = this.wallet.credentials.m > 1;
 
     this.addressbookProvider.list().then((ab) => {
@@ -89,6 +91,7 @@ export class WalletDetailsPage {
   }
 
   private showHistory() {
+    if (this.wallet.updatingHistory) return;
     this.wallet.history = this.wallet.completeHistory.slice(0, (this.currentPage + 1) * HISTORY_SHOW_LIMIT);
     this.currentPage++;
   }
@@ -125,11 +128,14 @@ export class WalletDetailsPage {
   private updateTxHistory(opts?: any) {
     this.error = null;
 
+    this.wallet.updatingHistory = true;
     this.walletProvider.getTxHistory(this.wallet, opts).then((txHistory) => {
+      this.wallet.updatingHistory = false;
       this.wallet.completeHistory = txHistory;
       this.wallet.completeHistory.isValid = true;
       this.showHistory();
     }).catch((err) => {
+      this.wallet.updatingHistory = false;
       this.error = 'Could not update transaction history'; // TODO gettextcatalog
       this.logger.error(err);
       this.clearData();
@@ -165,6 +171,7 @@ export class WalletDetailsPage {
       this.wallet.updatingStatus = false;
       this.setPendingTxps(status.pendingTxps);
       this.wallet.status = status;
+      this.shouldShowSpendableBalance();
     }).catch((err) => {
       this.wallet.updatingStatus = false;
       if (err === 'WALLET_NOT_REGISTERED') {
@@ -175,6 +182,10 @@ export class WalletDetailsPage {
       this.wallet.status = null;
     });
   };
+
+  private shouldShowSpendableBalance() {
+    this.showSpendableBalance = !this.wallet.balanceHidden && !this.wallet.scanning && this.wallet.status && this.wallet.status.totalBalanceSat != this.wallet.status.spendableAmount;
+  }
 
   public recreate() {
     this.error = null;
