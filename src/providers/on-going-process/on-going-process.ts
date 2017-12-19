@@ -4,15 +4,17 @@ import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
 export class OnGoingProcessProvider {
+
   private loading: any;
   private processNames: any;
 
   constructor(
     private loadingCtrl: LoadingController,
-    private logger: Logger
+    private logger: Logger,
   ) {
     this.logger.info('OnGoingProcessProvider initialized.');
     // TODO gettextcatalog()
+    // TODO GET - CLEAR - CHECK DecimalPipe for FILTER WITH TRANSLATE
     this.processNames = {
       'broadcastingTx': 'Broadcasting transaction',
       'calculatingFee': 'Calculating fee',
@@ -54,13 +56,20 @@ export class OnGoingProcessProvider {
     };
   }
 
-  public set(processName: string, isOn: boolean, customHandler?: any) {
+  public getShowName(processName: string): string {
+    let showName = this.processNames[processName];
+    return showName;
+  }
+
+  public set(processName: string, isOn: boolean, customHandler?: any): string {
+    this.logger.debug('ongoingProcess', processName, isOn);
+    let showName = this.processNames[processName];
     if (!isOn) {
       this.loading.dismiss();
       return;
     }
     this.loading = this.loadingCtrl.create({
-      content: this.processNames[processName]
+      content: showName
     });
     this.loading.present();
   }

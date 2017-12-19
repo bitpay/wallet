@@ -212,7 +212,7 @@ export class ProfileProvider {
         }
         return resolve();
       }).catch((err: any) => {
-        console.log(err);
+        this.logger.warn(err);
       });
     });
   }

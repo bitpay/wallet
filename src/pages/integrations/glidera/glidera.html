@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!account.token">
+    <div class="heading">
+      <img src="assets/img/glidera/glidera-logo.png">
+      <div class="integration-onboarding-description" *ngIf="!showOauthForm">Glidera's exchange service is available in the United States, and can take 1-2 weeks to buy or sell bitcoin.</div>
+      <div class="integration-onboarding-description" *ngIf="showOauthForm">If you have trouble, contact Glidera support for direct assistance.</div>
+    </div>
+    <div *ngIf="!showOauthForm">
+      <button ion-button block (click)="openAuthenticateWindow()">Connect to Glidera</button>
+      <button ion-button block outline (click)="openSupportWindow()">Glidera Support &rarr;</button>
+    </div>
+    <div *ngIf="showOauthForm" class="integration-onboarding-oauthform">
+      <form [formGroup]="oauthCodeForm" (ngSubmit)="submitOauthCode(oauthCodeForm.value.code)">
+        <ion-item>
+          <ion-label stacked translate>OAuth Code</ion-label>
+          <ion-input type="text" formControlName="code" [value]="oauthCodeForm.value.code" placeholder="{{'Enter OAuth Code'}}" required></ion-input>
+        </ion-item>
+        <button ion-button block type="submit" [disabled]="!oauthCodeForm.valid">Connect Glidera Account</button>
+      </form>
+      <button ion-button block outline (click)="openSupportWindow()">Glidera Support &rarr;</button>
+    </div>
+  </div>
+  <div *ngIf="account.token && account.status && !account.status.userCanTransact">
+    <div class="heading">
+      <img src="assets/img/glidera/glidera-logo.png">
+      <div class="integration-onboarding-description">Please complete your account verification on Glidera's website. If you have trouble, contact Glidera's support for
+        direct assistance.</div>
+    </div>
+    <button ion-button block (click)="openLoginWindow()">Complete Glidera Setup</button>
+    <button ion-button block outline (click)="openSupportWindow()">Glidera Support &rarr;</button>
+  </div>
+  <div *ngIf="account.token && account.status && account.status.userCanTransact">
+    <div class="heading">
+      <img src="assets/img/glidera/glidera-logo.png">
+    </div>
+    <ion-card>
+      <ion-list>
+        <button ion-item *ngIf="account.status.userCanBuy" (click)="goToBuyGlideraPage()">
+          <ion-icon item-start>
+            <img src="assets/img/glidera/buy-bitcoin.svg" alt="buy bitcoin" class="item-img-buy">                
+          </ion-icon>
+          <ion-label>Buy Bitcoin</ion-label>
+          <ion-note item-end>
+            ${{account.price.buy}}/BTC
+          </ion-note>
+        </button>
+        <button ion-item *ngIf="account.status.userCanSell" (click)="goToSellGlideraPage()">
+          <ion-icon item-start>
+            <img src="assets/img/glidera/sell-bitcoin.svg" alt="buy bitcoin" class="item-img-sell">                
+          </ion-icon>
+          <ion-label>Sell Bitcoin</ion-label>
+          <ion-note item-end>
+            ${{account.price.sell}}/BTC
+          </ion-note>
+        </button>
+      </ion-list>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>Activity</ion-card-header>
+      <ion-list *ngFor="let tx of account.txs">
+        <button ion-item (click)="openTxModal(tx)" *ngIf="account.txs && account.txs.length > 0">
+              <ion-icon item-start>
+                <img src="assets/img/glidera/bought.svg" alt="bought" width="39" *ngIf="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+                <img src="assets/img/glidera/bought-pending.svg" alt="bought" width="33" *ngIf="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+                <img src="assets/img/glidera/sold.svg" alt="bought" width="39" *ngIf="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+                <img src="assets/img/glidera/sold-pending.svg" alt="bought" width="33" *ngIf="tx.type == 'SELL' && tx.status == 'PROCESSING'">              
+              </ion-icon>
+              <div class="action">
+                <div *ngIf="tx.status == 'COMPLETE'">
+                    <time *ngIf="tx.transactionDate">{{tx.transactionDate | amTimeAgo}}</time>
+                  </div>
+                  <div *ngIf="tx.status == 'PROCESSING'">
+                    <span *ngIf="tx.status == 'PROCESSING'">Processing</span>
+                  </div>
+              </div>
+              <div class="details">
+                <span *ngIf="tx.type == 'BUY'">Bought</span>
+                <span *ngIf="tx.type == 'SELL'">Sold</span>
+                <b>{{tx.qty}}</b> BTC
+                <p>{{tx.subtotal|currency:'':2}} {{tx.currency}}</p>
+              </div>
+            </button>
+      </ion-list>
+    </ion-card>
+  </div>
+</ion-content>
