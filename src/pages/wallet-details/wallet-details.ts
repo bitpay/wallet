@@ -20,23 +20,15 @@ const HISTORY_SHOW_LIMIT = 10;
   templateUrl: 'wallet-details.html'
 })
 export class WalletDetailsPage {
-  private currentPage: number = 0;
+  private currentPage: number;
 
-  public requiresMultipleSignatures;
+  public requiresMultipleSignatures: boolean;
   public wallet: any;
-  public history: any = [];
   public walletNotRegistered: boolean;
-  public updateError: boolean;
   public updateStatusError;
-  public updatingStatus: boolean;
-  public updatingTxHistory: boolean;
-  public updateTxHistoryError;
-  public updatingTxHistoryProgress: number = 0;
-  public showNoTransactionsYetMsg: boolean;
-
-  public addressbook: any = {};
-
-  public txps: Array<any> = [];
+  public addressbook: any;
+  public txps: Array<any>;
+  public error: string;
 
   constructor(
     private navCtrl: NavController,
@@ -48,6 +40,10 @@ export class WalletDetailsPage {
     private events: Events,
     private logger: Logger
   ) {
+    this.currentPage = 0;
+    this.addressbook = {};
+    this.txps = [];
+    this.error = null;
     let clearCache = this.navParams.data.clearCache;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     // Getting info from cache
@@ -86,13 +82,14 @@ export class WalletDetailsPage {
   }
 
   private clearData() {
-    this.history = [];
+    this.wallet.history = [];
     this.currentPage = 0;
     this.wallet.status = null;
+    this.error = null;
   }
 
   private showHistory() {
-    this.history = this.wallet.completeHistory.slice(0, (this.currentPage + 1) * HISTORY_SHOW_LIMIT);
+    this.wallet.history = this.wallet.completeHistory.slice(0, (this.currentPage + 1) * HISTORY_SHOW_LIMIT);
     this.currentPage++;
   }
 
@@ -125,31 +122,17 @@ export class WalletDetailsPage {
     }
   }
 
-  private updateTxHistory() {
-    this.updatingTxHistory = true;
+  private updateTxHistory(opts?: any) {
+    this.error = null;
 
-    this.updateTxHistoryError = false;
-    this.updatingTxHistoryProgress = 0;
-
-    let progressFn = function(txs, newTxs) {
-      if (newTxs > 5) this.thistory = null;
-      this.updatingTxHistoryProgress = newTxs;
-    };
-
-    this.walletProvider.getTxHistory(this.wallet, {
-      progressFn: progressFn
-    }).then((txHistory) => {
-
-      let hasTx = txHistory[0];
-      if (hasTx) this.showNoTransactionsYetMsg = false;
-      else this.showNoTransactionsYetMsg = true;
-
+    this.walletProvider.getTxHistory(this.wallet, opts).then((txHistory) => {
       this.wallet.completeHistory = txHistory;
+      this.wallet.completeHistory.isValid = true;
       this.showHistory();
-
     }).catch((err) => {
+      this.error = 'Could not update transaction history'; // TODO gettextcatalog
+      this.logger.error(err);
       this.clearData();
-      this.updateTxHistoryError = true;
     });
   }
 
@@ -163,7 +146,7 @@ export class WalletDetailsPage {
   }
 
   public loadHistory(loading) {
-    if (this.history.length === this.wallet.completeHistory.length) {
+    if (this.wallet.history.length === this.wallet.completeHistory.length) {
       loading.complete();
       return;
     }
@@ -174,26 +157,27 @@ export class WalletDetailsPage {
   }
 
   private updateStatus(force?: boolean) {
-    this.updatingStatus = true;
-    this.updateStatusError = null;
+    this.error = null;
     this.walletNotRegistered = false;
-
+    
+    this.wallet.updatingStatus = true;
     this.walletProvider.getStatus(this.wallet, { force: !!force }).then((status: any) => {
-      this.updatingStatus = false;
+      this.wallet.updatingStatus = false;
       this.setPendingTxps(status.pendingTxps);
       this.wallet.status = status;
     }).catch((err) => {
-      this.updatingStatus = false;
+      this.wallet.updatingStatus = false;
       if (err === 'WALLET_NOT_REGISTERED') {
         this.walletNotRegistered = true;
       } else {
-        this.updateStatusError = this.bwcError.msg(err, 'Could not update wallet'); // TODO: translate
+        this.error = this.bwcError.msg(err, 'Could not update wallet'); // TODO: translate
       }
       this.wallet.status = null;
     });
   };
 
   public recreate() {
+    this.error = null;
     this.walletProvider.recreate(this.wallet).then(() => {
       setTimeout(() => {
         this.walletProvider.startScan(this.wallet).then(() => {
