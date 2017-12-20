@@ -134,6 +134,7 @@ export class WalletDetailsPage {
       if (hasTx) this.showNoTransactionsYetMsg = false;
       else this.showNoTransactionsYetMsg = true;
       this.wallet.completeHistory = txHistory;
+      this.wallet.completeHistory.isValid = true;
       this.showHistory();
     }).catch((err) => {
       this.clearData();
