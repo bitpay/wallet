@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
+import * as papa from 'papaparse';
 
 // Providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -12,27 +13,23 @@ import { PersistenceProvider } from '../../../../../providers/persistence/persis
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // Pages
-import { HomePage } from '../../../../../pages/home/home';
+import { SettingsPage } from '../../../../../pages/settings/settings';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
-
 
 @Component({
   selector: 'page-wallet-transaction-history',
   templateUrl: 'wallet-transaction-history.html',
 })
 export class WalletTransactionHistoryPage {
-
   public wallet: any;
-  public csvReady: boolean = false;
+  public csvReady: boolean;
   public appName: string;
   public isCordova: boolean;
-  public allTxs: any;
   public err: any;
   public config: any;
-  public csvContent: Array<any> = [];
+  public csvContent: Array<any>;
   public csvFilename: any;
   public csvHeader: Array<string>;
-
   public unitToSatoshi: number;
   public unitDecimals: number;
   public satToUnit: number;
@@ -49,7 +46,8 @@ export class WalletTransactionHistoryPage {
     private persistenceProvider: PersistenceProvider,
     private walletProvider: WalletProvider
   ) {
-
+    this.csvReady = false;
+    this.csvContent = [];
   }
 
   ionViewDidLoad() {
@@ -68,21 +66,6 @@ export class WalletTransactionHistoryPage {
     this.csvHistory();
   }
 
-  private getHistory(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      //TODO getTxHistory not working
-      this.persistenceProvider.getTxHistory(this.wallet.credentials.walletId).then((txs: any) => {
-        let txsFromLocal = txs;
-        this.allTxs.push(txsFromLocal);
-        let compactTxs = _.compact(_.flatten(this.allTxs));
-        if (!_.isEmpty(compactTxs)) return resolve(compactTxs);
-        else return reject(null);
-      }).catch((err: any) => {
-        return reject(err);
-      });
-    });
-  }
-
   private formatDate(date: any): string {
     var dateObj = new Date(date);
     if (!dateObj) {
@@ -98,7 +81,12 @@ export class WalletTransactionHistoryPage {
   // TODO : move this to walletService.
   public csvHistory() {
     this.logger.debug('Generating CSV from History');
-    this.getHistory().then((txs: any) => {
+    this.walletProvider.getTxHistory(this.wallet, {}).then((txs: any) => {
+      if (_.isEmpty(txs)) {
+        this.logger.warn('Failed to generate CSV: no transactions');
+        this.err = 'no transactions';
+        return;
+      }
 
       this.logger.debug('Wallet Transaction History Length:', txs.length);
 
@@ -107,6 +95,7 @@ export class WalletTransactionHistoryPage {
       this.csvHeader = ['Date', 'Destination', 'Description', 'Amount', 'Currency', 'Txid', 'Creator', 'Copayers', 'Comment'];
 
       var _amount, _note, _copayers, _creator, _comment;
+
       data.forEach((it, index) => {
         var amount = it.amount;
 
@@ -157,14 +146,24 @@ export class WalletTransactionHistoryPage {
       });
       this.csvReady = true;
     }).catch((err) => {
-      if (err) {
-        this.logger.warn('Failed to generate CSV:', err);
-        this.err = err;
-      } else {
-        this.logger.warn('Failed to generate CSV: no transactions');
-        this.err = 'no transactions';
-      }
+      this.logger.warn('Failed to generate CSV:', err);
+      this.err = err;
     });
+  }
+
+  private downloadCSV() {
+    let csv = papa.unparse({
+      fields: this.csvHeader,
+      data: this.csvContent
+    });
+
+    var blob = new Blob([csv]);
+    var a = window.document.createElement("a");
+    a.href = window.URL.createObjectURL(blob);
+    a.download = this.csvFilename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   public clearTransactionHistory(): void {
@@ -174,8 +173,9 @@ export class WalletTransactionHistoryPage {
 
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
 
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(SettingsPage);
     this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });
   }
 
