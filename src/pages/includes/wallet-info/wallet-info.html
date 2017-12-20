@@ -5,7 +5,7 @@
     <a *ngIf="updateStatusError" (click)="updateAll(true)" translate>Tap to retry</a>
   </div>
 
-  <ion-spinner *ngIf="(updatingStatus || updatingTxHistory) && !walletNotRegistered && !updateStatusError && !updateTxHistoryError"></ion-spinner>
+  <ion-spinner *ngIf="wallet.updatingTxHistory || wallet.updatingStatus || wallet.scanning"></ion-spinner>
 
   <div *ngIf="wallet">
     <img class="testnet" *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg">
@@ -17,6 +17,8 @@
     <!-- TODO -->
     <img style="height:3rem; width:3rem;" *ngIf="wallet.usingCustomBWS" src="assets/img/icon-bws-white.svg">
 
-    <span *ngIf="wallet.credentials.n > 1"><span translate>{{wallet.m}}-of-{{wallet.n}}</span></span>
+    <span *ngIf="wallet.credentials.n > 1">
+      <span translate>{{wallet.m}}-of-{{wallet.n}}</span>
+    </span>
   </div>
 </div>

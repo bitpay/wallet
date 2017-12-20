@@ -7,54 +7,53 @@
 <ion-content>
   <ion-card class="balance-card" [ngStyle]="{'background': wallet.color}">
     <ion-card-content>
-    <div class="balance-header" (tap)="updateAll(true)" (longPress)="toggleBalance()">
-      <div *ngIf="!updateStatusError && !wallet.scanning">
-        <div *ngIf="wallet.balanceHidden">
-          <div class="balance-hidden">[{{'Balance Hidden' | translate}}]</div>
-        </div>
-        <div *ngIf="!wallet.balanceHidden && wallet.status">
-          <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
-          <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
-            {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+      <div class="balance-header" (tap)="updateAll(true)" (longPress)="toggleBalance()">
+        <div *ngIf="!updateStatusError && !wallet.scanning">
+          <div *ngIf="wallet.balanceHidden">
+            <div class="balance-hidden">[{{'Balance Hidden' | translate}}]</div>
+          </div>
+          <div *ngIf="!wallet.balanceHidden && wallet.status">
+            <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
+            <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
+              {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+            </div>
           </div>
         </div>
+
+        <div *ngIf="wallet.scanning">
+          <strong translate>[Scanning Funds]</strong>
+        </div>
+
+        <div class="balance-spendable" *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status && wallet.status.totalBalanceSat != wallet.status.spendableAmount">
+          <ion-icon name="checkmark"></ion-icon>
+          <strong>
+            {{wallet.status.spendableBalanceStr}}
+          </strong>
+          &nbsp;
+          <span>
+            {{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+          </span>
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </div>
+
+        <div *ngIf="updateStatusError">
+          <span>{{updateStatusError}}</span>
+        </div>
+        <div *ngIf="walletNotRegistered" (tap)="recreate()">
+          <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.
+            Tap to recreate.</span>
+        </div>
       </div>
 
-      <div *ngIf="wallet.scanning">
-        <strong translate>[Scanning Funds]</strong>
-      </div>
-
-      <div
-        class="balance-spendable"
-        *ngIf="!wallet.balanceHidden && !wallet.scanning && wallet.status && wallet.status.totalBalanceSat != wallet.status.spendableAmount">
-        <ion-icon name="checkmark"></ion-icon>
-        <strong>
-          {{wallet.status.spendableBalanceStr}}
-        </strong>
-        &nbsp;
-        <span>
-          {{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
-        </span>
-        <ion-icon name="arrow-round-forward"></ion-icon>
-      </div>
-
-      <div *ngIf="updateStatusError">
-        <span>{{updateStatusError}}</span>
-      </div>
-      <div *ngIf="walletNotRegistered" (tap)="recreate()">
-        <span translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information. Tap to recreate.</span>
-      </div>
-    </div>
-
-    <page-wallet-info [wallet]="wallet"></page-wallet-info>
+      <page-wallet-info [wallet]="wallet"></page-wallet-info>
     </ion-card-content>
   </ion-card>
 
   <ion-card *ngIf="wallet.incorrectDerivation">
     <ion-card-content>
-    <span translate>
-      WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
-    </span>
+      <span translate>
+        WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
+      </span>
     </ion-card-content>
   </ion-card>
 
@@ -79,27 +78,27 @@
 
   <ion-card *ngIf="showNoTransactionsYetMsg && !updateStatusError">
     <ion-card-content>
-      No transactions yet
+      {{'No transactions yet' | translate}}
     </ion-card-content>
   </ion-card>
 
-
-  <ion-card *ngIf="txHistory && !txHistory[0] && updateTxHistoryError">
+  <ion-card *ngIf="wallet.history && !wallet.history[0] && updateTxHistoryError">
     <ion-card-content>
-      Could not update transaction history
+      {{'Could not update transaction history' | translate}}
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
+  <ion-card *ngIf="wallet.updatingTxHistory && wallet.updatingTxHistoryProgress>5">
     <ion-card-content>
-      <span translate>Updating transaction history. Please stand by.</span><br>
-      <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
+      <span translate>Updating transaction history. Please stand by.</span>
+      <br>
+      <span translate>{{wallet.updatingTxHistoryProgress}} transactions downloaded</span>
     </ion-card-content>
   </ion-card>
 
   <ion-card class="tx-history">
     <ion-list>
-      <button ion-item *ngFor="let tx of history" (click)="goToTxDetails(tx)">
+      <button ion-item *ngFor="let tx of wallet.history" (click)="goToTxDetails(tx)">
         <ion-icon item-start>
           <div *ngIf="tx.confirmations == 0">
             <img src="assets/img/tx-action/icon-confirming.svg" width="40">
