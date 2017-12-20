@@ -9,7 +9,7 @@
 <ion-content padding>
   <div *ngIf="!noMatchingWallet">
     <h4 translate>Funds found:</h4>
-    <div *ngIf="balance">{{balanceSat | satToUnit}}</div>
+    <div *ngIf="balance">{{balanceSat | satToUnit: wallet.coin}}</div>
     <div *ngIf="!balance">...</div>
     <ion-item-divider color="light">{{'Funds will be transferred to' | translate}}</ion-item-divider>
     <button ion-item *ngIf="wallet" (click)="showWallets()">

@@ -19,14 +19,13 @@ import { BwcErrorProvider } from '../../../providers/bwc-error/bwc-error';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { FeeProvider } from '../../../providers/fee/fee';
 import { TxConfirmNotificationProvider } from '../../../providers/tx-confirm-notification/tx-confirm-notification';
+import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 @Component({
   selector: 'page-confirm',
   templateUrl: 'confirm.html',
 })
 export class ConfirmPage {
-  public unit: string;
-  public isFiatAmount: boolean;
 
   public countDown = null;
   public CONFIRM_LIMIT_USD: number;
@@ -70,13 +69,12 @@ export class ConfirmPage {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
+    private txFormatProvider: TxFormatProvider
   ) {
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
     this.configFeeLevel = this.config.wallet.settings.feeLevel ? this.config.wallet.settings.feeLevel : 'normal';
-    this.isFiatAmount = this.navParams.data.unit != 'bch' && this.navParams.data.unit != 'btc' ? true : false;
-    this.unit = this.navParams.data.unit;
     this.isCordova = this.platformProvider.isCordova;
     this.isWindowsPhoneApp = this.platformProvider.isCordova && this.platformProvider.isWP;
     this.tx = {
@@ -515,17 +513,20 @@ export class ConfirmPage {
           if (this.walletProvider.isEncrypted(wallet))
             return resolve();
 
-          if (this.isFiatAmount && this.tx.amount <= this.CONFIRM_LIMIT_USD)
-            return resolve();
+          this.txFormatProvider.formatToUSD(wallet.coin, txp.amount).then((val) => {
+            let amountUsd = parseFloat(val);
+            if (amountUsd <= this.CONFIRM_LIMIT_USD)
+              return resolve();
 
-          let amount = (this.tx.amount / 1e8).toFixed(8);
-          let unit = this.config.wallet.settings.unitName;
-          let name = wallet.name;
-          let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO gettextCatalog
-          let okText = 'Confirm'; // TODO gettextCatalog
-          let cancelText = 'Cancel'; // TODO gettextCatalog
-          this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
-            return resolve(!ok);
+            let amount = (this.tx.amount / 1e8).toFixed(8);
+            let unit = this.config.wallet.settings.unitName;
+            let name = wallet.name;
+            let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO gettextCatalog
+            let okText = 'Confirm'; // TODO gettextCatalog
+            let cancelText = 'Cancel'; // TODO gettextCatalog
+            this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
+              return resolve(!ok);
+            });
           });
         });
       };

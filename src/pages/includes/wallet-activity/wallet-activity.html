@@ -10,14 +10,14 @@
   <div *ngIf="notification.type == 'NewOutgoingTx'">
     <span translate>Payment Sent </span>
     <div class="wallet-activity-amount">
-      {{notification.data.amount | satToUnit}}
+      {{notification.data.amount | satToUnit: notification.wallet.coin}}
     </div>
   </div>
 
   <div *ngIf="notification.type == 'NewIncomingTx'">
     <span translate>Payment Received</span>
     <div class="wallet-activity-amount">
-      {{notification.data.amount | satToUnit}}
+      {{notification.data.amount | satToUnit: notification.wallet.coin}}
     </div>
   </div>
 
@@ -25,7 +25,7 @@
     <span translate>Proposal Deleted</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
-      {{notification.data.amount | satToUnit}}:
+      {{notification.data.amount | satToUnit: notification.wallet.coin}}:
     </div>
   </div>
 
@@ -33,7 +33,7 @@
     <span translate>Proposal Rejected</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
-      {{notification.data.amount | satToUnit}}:
+      {{notification.data.amount | satToUnit: notification.wallet.coin}}:
     </div>
   </div>
 
@@ -41,7 +41,7 @@
     <span translate>New Proposal</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
-      {{notification.data.amount | satToUnit}}
+      {{notification.data.amount | satToUnit: notification.wallet.coin}}
     </div>
   </div>
 
@@ -49,7 +49,7 @@
     <span translate>Proposal Accepted</span>:
     <b>{{notification.message}}</b>
     <div class="wallet-activity-amount">
-      {{notification.data.amount | satToUnit}}
+      {{notification.data.amount | satToUnit: notification.wallet.coin}}
     </div>
   </div>
 

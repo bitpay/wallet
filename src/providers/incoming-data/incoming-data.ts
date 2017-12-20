@@ -57,7 +57,7 @@ export class IncomingDataProvider {
 
     // Bitcoin  URL
     if (this.bwcProvider.getBitcore().URI.isValid(data)) {
-
+      this.logger.debug('Handling Bitcoin URI');
       coin = 'btc';
       parsed = this.bwcProvider.getBitcore().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
@@ -66,7 +66,7 @@ export class IncomingDataProvider {
 
       if (parsed.r) {
         this.payproProvider.getPayProDetails(parsed.r).then((details) => {
-          this.handlePayPro(details);
+          this.handlePayPro(details, coin);
         }).catch((err: string) => {
           if (addr && amount) this.goSend(addr, amount, message, coin);
           else this.popupProvider.ionicAlert('Error', err); //TODO gettextcatalog
@@ -77,6 +77,7 @@ export class IncomingDataProvider {
       return true;
       // Cash URI
     } else if (this.bwcProvider.getBitcoreCash().URI.isValid(data)) {
+      this.logger.debug('Handling Bitcoin Cash URI');
       coin = 'bch';
       parsed = this.bwcProvider.getBitcoreCash().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
@@ -137,9 +138,11 @@ export class IncomingDataProvider {
       return true;
       // Plain URL
     } else if (/^https?:\/\//.test(data)) {
+      this.logger.debug('Handling Plain URL');
 
       this.payproProvider.getPayProDetails(data).then((details) => {
-        this.handlePayPro(details);
+        //TODO review
+        this.handlePayPro(details, 'btc');
         return true;
       }).catch(() => {
         this.showMenu({
@@ -150,6 +153,7 @@ export class IncomingDataProvider {
       });
       // Plain Address
     } else if (this.bwcProvider.getBitcore().Address.isValid(data, 'livenet') || this.bwcProvider.getBitcore().Address.isValid(data, 'testnet')) {
+      this.logger.debug('Handling Bitcoin Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
           data: data,
@@ -161,6 +165,7 @@ export class IncomingDataProvider {
         this.goToAmountPage(data, coin, network);
       }
     } else if (this.bwcProvider.getBitcoreCash().Address.isValid(data, 'livenet')) {
+      this.logger.debug('Handling Bitcoin Cash Plain Address');
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
           data: data,
@@ -299,6 +304,7 @@ export class IncomingDataProvider {
       description: payProDetails.memo,
       paypro: payProDetails,
       coin: coin,
+      network: this.addressProvider.validateAddress(payProDetails.toAddress).network
     };
     this.scanProvider.pausePreview();
     this.navCtrl.push(ConfirmPage, stateParams);

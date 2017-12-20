@@ -260,7 +260,6 @@ export class AmountPage {
       name: this.name,
       email: this.email,
       color: this.color,
-      unit: this.unit.toLowerCase(),
       currency: this.navParams.data.currency,
       coin: this.coin,
       network: this.network,
