@@ -1,7 +1,8 @@
 .wallet-info {
   font-weight: 500;
   color: color($colors, light);
-  height: 25px;
+  height: 2.5rem;
+  padding-left: 0.5rem;
   span {
     margin: 0 3px;
     padding-top: 2px;
@@ -11,23 +12,26 @@
     float: left;
   }
   .testnet {
-    height: 3rem;
-    width: 3rem;
+    height: 2.5rem;
+    width: 2.5rem;
   }
   .testnet-text {
-    height: 3rem;
-    width: 5rem;
+    height: 2.5rem;
+    width: 4.5rem;
+    margin-right: 5px;
   }
   .read-only {
-    height: 3rem;
-    width: 2rem;
+    height: 2.5rem;
+    width: 1.5rem;
+    margin-right: 5px;
   }
   .read-only-text {
-    height: 3rem;
-    width: 6rem;
+    height: 2.5rem;
+    width: 5rem;
+    margin-right: 5px;
   }
   .auditable-text {
-    height: 3rem;
+    height: 2.5rem;
     width: 5rem;
   }
   ion-spinner {
