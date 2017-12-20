@@ -1,0 +1,13 @@
+page-mercado-libre-cards {
+  .mercado-libre-card {
+    display: flex;
+    align-items: center;
+    .avatar {
+      width: 40px;
+      border-radius: 5rem;
+    }
+    .card-info {
+      padding-left: 1rem;
+    }
+  }
+}

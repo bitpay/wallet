@@ -1,0 +1,53 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'Mercado Livre Brazil Gift Cards'|translate}}s</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content *ngIf="!giftCards">
+  <div class="box-notification warning" *ngIf="network == 'testnet'">
+    Sandbox version. Only for testing purpose.
+  </div>
+  <div class="integration-onboarding">
+    <div class="integration-onboarding-logo">
+      <img src="assets/img/mercado-libre/mlbr.svg" alt="Mercado Libre">
+    </div>
+    <div class="integration-onboarding-description" translate>
+      <b>Only</b> redeemable on Mercado Livre (Brazil)
+    </div>
+    <div class="integration-onboarding-cta" *ngIf="!showOauthForm">
+      <button ion-button (click)="goTo('Amount')" translate>Buy a Gift Card</button>
+      <!-- TODO: no-low-fee -->
+      <button ion-button (click)="openExternalLink('https://www.mercadolivre.com.br')" translate>Visit mercadolivre.com.br &rarr;</button>
+    </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="giftCards">
+  <div class="box-notification warning" *ngIf="network == 'testnet'">
+    Sandbox version. Only for testing purpose.
+  </div>
+
+  <div class="integration-giftCard-logo">
+    <img src="assets/img/mercado-libre/mlbr.svg" alt="Mercado Libre">
+    <div translate><b>Only</b> redeemable on Mercado Livre (Brazil)</div>
+  </div>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <button ion-item (click)="goTo('Amount')">
+          <!-- TODO: no-low-fee -->
+          <ion-icon name="ios-pricetags-outline"></ion-icon>
+          <span translate>Buy Gift Card</span>
+        </button>
+        <button ion-item (click)="goTo('MercadoLibreCards')">
+          <ion-icon name="ios-folder-outline"></ion-icon>
+          <span translate>Your Gift Cards</span>
+        </button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
