@@ -6,7 +6,6 @@ import { DecimalPipe } from '@angular/common';
   pure: false
 })
 export class SatToUnitPipe implements PipeTransform {
-  private walletSettings: any;
 
   constructor(
     private decimalPipe: DecimalPipe,

@@ -29,9 +29,6 @@ export class MercadoLibrePage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad MercadoLibrePage');
-  }
-
-  ionViewWillEnter(): void {
     this.network = this.mercadoLibreProvider.getNetwork();
     this.init();
   }

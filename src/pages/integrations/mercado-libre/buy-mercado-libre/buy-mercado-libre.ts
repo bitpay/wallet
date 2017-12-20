@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
 // Pages
+import { FeeWarningPage } from '../../../../pages/send/fee-warning/fee-warning';
 import { MercadoLibreCardsPage } from '../../../../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
 
 // Provider
@@ -56,6 +57,7 @@ export class BuyMercadoLibrePage {
     private emailNotificationsProvider: EmailNotificationsProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
+    private modalCtrl: ModalController,
     private navCtrl: NavController,
     private navParams: NavParams,
     private onGoingProcessProvider: OnGoingProcessProvider,
@@ -96,6 +98,15 @@ export class BuyMercadoLibrePage {
     this.onWalletSelect(this.wallets[0]); // Default first wallet
   }
 
+  private checkFeeHigh(amount: number, fee: number) {
+    let per = fee / (amount + fee) * 100;
+
+    if (per > this.FEE_TOO_HIGH_LIMIT_PER) {
+      let feeWarningModal = this.modalCtrl.create(FeeWarningPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
+      feeWarningModal.present();
+    }
+  }
+
   public openExternalLink(url: string) {
     this.externalLinkProvider.open(url);
   }
@@ -127,7 +138,7 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  private publishAndSign(wallet, txp, onSendStatusChange): Promise<any> {
+  private publishAndSign(wallet: any, txp: any, onSendStatusChange: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
@@ -217,7 +228,7 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  private createTx(wallet, invoice, message): Promise<any> {
+  private createTx(wallet: any, invoice: any, message: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let payProUrl = (invoice && invoice.paymentUrls) ? invoice.paymentUrls.BIP73 : null;
 
@@ -288,6 +299,7 @@ export class BuyMercadoLibrePage {
       newData.invoiceId = dataSrc.invoiceId;
       newData.accessKey = dataSrc.accessKey;
       newData.invoiceUrl = dataSrc.invoiceUrl;
+      newData.currency = dataSrc.currency;
       newData.amount = dataSrc.amount;
       newData.date = dataSrc.invoiceTime || now;
       newData.uuid = dataSrc.uuid;
@@ -342,6 +354,10 @@ export class BuyMercadoLibrePage {
           invoiceTime: invoice.invoiceTime
         };
         this.totalAmountStr = this.txFormatProvider.formatAmountStr(this.coin, ctxp.amount);
+
+        // Warn: fee too high
+        this.checkFeeHigh(Number(parsedAmount.amountSat), Number(invoiceFeeSat) + Number(ctxp.fee));
+
         this.setTotalAmount(parsedAmount.amountSat, invoiceFeeSat, ctxp.fee);
       }).catch((err: any) => {
         this.onGoingProcessProvider.set('loadingTxInfo', false);

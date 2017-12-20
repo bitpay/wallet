@@ -106,7 +106,8 @@ export class MercadoLibreProvider {
     let dataSrc = {
       currency: data.currency,
       amount: data.amount,
-      clientId: data.uuid
+      clientId: data.uuid,
+      email: data.email
     };
     let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/pay';
     let headers: any = {
@@ -114,7 +115,6 @@ export class MercadoLibreProvider {
     };
     this.http.post(url, dataSrc, headers).subscribe((data: any) => {
       this.logger.info('BitPay Create Invoice: SUCCESS');
-      console.log("DATA-----------------1", data);
       return cb(null, data);
     }, (data) => {
       this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
@@ -130,7 +130,6 @@ export class MercadoLibreProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('BitPay Get Invoice: SUCCESS');
-      console.log("DATA-----------------2", data);
       return cb(null, data.data);
     }, (data) => {
       this.logger.error('BitPay Get Invoice: ERROR', JSON.stringify(data));

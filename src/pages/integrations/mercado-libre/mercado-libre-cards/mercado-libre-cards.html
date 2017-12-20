@@ -13,7 +13,6 @@
       <button ion-item *ngFor="let item of giftCards | keys" (click)="openCardModal(item.value)">
           <div class="mercado-libre-card">
             <img src="assets/img/mercado-libre/meli-card-24px.png" alt="" class="avatar">
-            <ion-spinner *ngIf="updatingPending[item.value.invoiceId]" name="crescent"></ion-spinner>
             <div class="card-info">
               <h2 *ngIf="item.value.amount">
                 {{item.value.amount | currency : '$ ' : 2}} {{item.value.currency}}
@@ -26,11 +25,6 @@
                 <span class="assertive" *ngIf="item.value.cardStatus == 'inactive'" translate>Inactive</span>
                 <span class="assertive" *ngIf="item.value.cardStatus == 'expired'" translate>Expired</span>
               </span>
-
-              <h2 *ngIf="item.value.amount">
-                {{item.value.amount | currency : '' : 2}} {{item.value.currency}}
-              </h2>
-
               <span class="dark">{{item.value.date | amTimeAgo}}</span>
             </div>
           </div>

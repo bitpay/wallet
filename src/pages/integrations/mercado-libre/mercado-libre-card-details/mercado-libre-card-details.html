@@ -1,18 +1,78 @@
-<!--
-  Generated template for the MercadoLibreCardDetailsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>mercado-libre-card-details</ion-title>
+    <ion-title>Details</ion-title>
+    <ion-buttons start>
+      <button (click)="close()" ion-button>
+        Close
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <div class="header-modal">
+    <img src="assets/img/mercado-libre/giftcard-pt.svg" alt="Mercado Livre Brazil Gift Card">
+    <div class="header-modal-amount">
+      <span class="text-bold">
+        {{card.amount | currency : '$ ' : 2}} {{card.currency}}
+      </span>
+    </div>
 
+    <div *ngIf="card.pin">
+      <div *ngIf="card.cardStatus == 'active'">
+        <span class="text-bold" copy-to-clipboard="card.pin">{{card.pin}}</span>
+      </div>
+      <button (click)="openExternalLink('https://www.mercadolivre.com.br')" translate>
+        Redeem Now
+      </button>
+
+      <div *ngIf="card.cardStatus == 'inactive'">
+        <span class="assertive" translate>Inactive</span>
+        <div class="card-status-desc" translate>Gift Card is not available to use anymore</div>
+      </div>
+
+      <div *ngIf="card.cardStatus == 'expired'">
+        <span class="assertive" translate>Expired</span>
+        <div class="card-status-desc" translate>Gift Card is not available to use anymore</div>
+      </div>
+
+      <div *ngIf="card.status">
+        <span class="positive" *ngIf="card.status == 'PENDING'" translate>
+          Pending
+        </span>
+        <span class="calm" *ngIf="card.status=='invalid'" translate>
+          Still pending
+        </span>
+        <span class="assertive" *ngIf="card.status == 'FAILURE'" translate>
+          Error
+        </span>
+        <span class="dark" *ngIf="card.status == 'expired'" translate>
+          Invoice expired
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <span translate>Date</span>
+      <ion-note item-end>
+        {{card.date | amTimeAgo}}
+      </ion-note>
+    </ion-item>
+
+    <button ion-item (click)="openExternalLink(card.invoiceUrl)">
+      <span translate>See invoice</span>
+    </button>
+
+    <button ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
+        <span>{{'Help & Support' | translate }}</span>
+      </button>
+  </ion-list>
+
+  <button ion-button block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'"
+    class="button-footer assertive" (click)="remove()">Remove</button>
 </ion-content>

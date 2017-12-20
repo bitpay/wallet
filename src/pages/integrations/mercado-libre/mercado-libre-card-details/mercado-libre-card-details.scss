@@ -1,3 +1,14 @@
 page-mercado-libre-card-details {
-
+  .scroll-content {
+    padding: 2rem;
+  }
+  .header-modal {
+    text-align: center;
+    img {
+      width: 230px;
+    }
+    &-amount {
+      padding: 1rem;
+    }
+  }
 }

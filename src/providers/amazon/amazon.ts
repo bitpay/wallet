@@ -30,8 +30,8 @@ export class AmazonProvider {
     * Development: 'testnet'
     * Production: 'livenet'
     */
-    //this.credentials.NETWORK = 'livenet';
-    this.credentials.NETWORK = 'testnet';
+    this.credentials.NETWORK = 'livenet';
+    //this.credentials.NETWORK = 'testnet';
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.BITPAY_API_URL = "https://test.bitpay.com";
     } else {

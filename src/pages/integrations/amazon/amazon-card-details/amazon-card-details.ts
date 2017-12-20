@@ -96,11 +96,11 @@ export class AmazonCardDetailsPage {
 
   public cancel(): void {
     this.viewCtrl.dismiss();
-  };
+  }
 
   public openExternalLink(url: string): void {
     this.externalLinkProvider.open(url);
-  };
+  }
 
 }
 

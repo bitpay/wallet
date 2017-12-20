@@ -18,7 +18,6 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 export class MercadoLibreCardsPage {
 
   public giftCards: any;
-  public updatingPending: any;
   public card: any;
   public invoiceId;
 
