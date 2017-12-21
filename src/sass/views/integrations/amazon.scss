@@ -3,6 +3,12 @@
   $item-vertical-padding: 10px;
   $item-border-color: #EFEFEF;
   $item-label-color: #6C6C6E;
+  .details {
+    float: right;
+    font-size: 25px;
+    color: $v-accent-color;
+    cursor: pointer;
+  }
   .icon-amazon {
     background-image: url("../img/icon-amazon.svg");
   }
