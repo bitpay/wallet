@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Details
+    </ion-title>
+    <ion-buttons start>
+      <button (click)="close()" ion-button>
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-content>
+      <div class="item-img">
+        <img src="assets/img/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'completed'">
+        <img src="assets/img/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status != 'completed'">
+        <img src="assets/img/sold.svg" alt="sold" *ngIf="tx.type == 'sell' && tx.status == 'completed'">
+        <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
+      </div>
+      <div *ngIf="tx.status == 'completed'">
+        <span *ngIf="tx.type == 'buy' || tx.type == 'send'">Bought</span>
+        <span *ngIf="tx.type == 'sell'">Sold</span>
+      </div>
+      <div *ngIf="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
+        <span *ngIf="tx.to">Receiving purchased bitcoin</span>
+        <span *ngIf="tx.from">Sending bitcoin to sell</span>
+      </div>
+      <div *ngIf="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
+        <span *ngIf="tx.type == 'buy'">Buying bitcoin</span>
+        <span *ngIf="tx.type == 'sell'">Selling bitcoin</span>
+      </div>
+      <div>
+        <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}} {{tx.amount.currency}}
+      </div>
+      <div class="size-12">
+        <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}}
+        {{tx.native_amount.currency}}
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-list>
+
+    <ion-item *ngFor="let err of tx.error.errors">
+      <ion-label>
+        <span>{{err.message}}</span>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="tx.details && tx.status != 'pending'">
+      <ion-label>
+        <span>{{tx.details.title}}</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.details.subtitle}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <span>Status</span>
+      </ion-label>
+      <ion-note item-end>
+        <span class="balanced" *ngIf="tx.status == 'completed'">Completed</span>
+        <span class="dark" *ngIf="tx.status == 'pending'">Pending</span>
+        <span class="assertive" *ngIf="tx.status == 'error'">Error</span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.created_at">
+      <ion-label>
+        <span>Date</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.created_at | amCalendar}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.price_sensitivity">
+      <ion-label>
+        <span>Price Sensitivity</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.price_sensitivity.name}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.sell_price_amount">
+      <ion-label>
+        <span>Sell Price</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.sell_price_amount}} {{tx.sell_price_currency}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.description">
+      <ion-label>
+        <span *ngIf="tx.from && tx.type == 'send'">Sent bitcoin from</span>
+        <span *ngIf="tx.to && tx.type == 'send'">Receive bitcoin in</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.description}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item-divider *ngIf="tx.status == 'error'" color="light"></ion-item-divider>
+
+    <ion-item *ngIf="tx.status == 'error'">
+      <ion-label>
+        <span (click)="remove()">Remove transaction</span>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

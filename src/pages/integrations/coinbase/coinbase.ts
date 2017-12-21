@@ -175,6 +175,9 @@ export class CoinbasePage {
 
     let modal = this.modalCtrl.create(CoinbaseTxDetailsPage, { tx: this.tx });
     modal.present();
-  };
+    modal.onDidDismiss((data) => {
+      if (data.updateRequired) this.updateTransactions();
+    })
+  }
 
 }
