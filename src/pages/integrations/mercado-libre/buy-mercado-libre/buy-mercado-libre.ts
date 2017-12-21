@@ -6,10 +6,10 @@ import * as moment from 'moment';
 
 // Pages
 import { FeeWarningPage } from '../../../../pages/send/fee-warning/fee-warning';
-import { AmazonCardsPage } from '../../../../pages/integrations/amazon/amazon-cards/amazon-cards';
+import { MercadoLibreCardsPage } from '../../../../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
 
 // Provider
-import { AmazonProvider } from '../../../../providers/amazon/amazon';
+import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { BwcErrorProvider } from '../../../../providers/bwc-error/bwc-error';
 import { ConfigProvider } from '../../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
@@ -21,10 +21,10 @@ import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 
 @Component({
-  selector: 'page-buy-amazon',
-  templateUrl: 'buy-amazon.html',
+  selector: 'page-buy-mercado-libre',
+  templateUrl: 'buy-mercado-libre.html',
 })
-export class BuyAmazonPage {
+export class BuyMercadoLibrePage {
 
   private coin: string;
   private amount: number;
@@ -43,7 +43,7 @@ export class BuyAmazonPage {
   public networkFee: number;
   public totalAmount: number;
   public sendStatus: string;
-  public amazonGiftCard: any;
+  public mlGiftCard: any;
   public amountUnitStr: string;
   public limitPerDayMessage: string;
   public network: string;
@@ -51,7 +51,7 @@ export class BuyAmazonPage {
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
-    private amazonProvider: AmazonProvider,
+    private mercadoLibreProvider: MercadoLibreProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private configProvider: ConfigProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
@@ -69,31 +69,26 @@ export class BuyAmazonPage {
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.coin = 'btc';
     this.configWallet = this.configProvider.get().wallet;
-    this.amazonGiftCard = null;
+    this.mlGiftCard = null;
   }
 
   ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad BuyAmazonPage');
+    this.logger.info('ionViewDidLoad BuyMercadoLibrePage');
   }
 
   ionViewWillEnter() {
     this.amount = this.navParams.data.amountFiat;
     this.currency = this.navParams.data.currency.toUpperCase();
 
-    let limitPerDay = this.amazonProvider.limitPerDay;
-
-    this.limitPerDayMessage = "Purchase Amount is limited to " + limitPerDay + " " + this.currency + " per day"; // TODO: gettextCatalog
-
-    if (this.amount > this.amazonProvider.limitPerDay) {
-      this.showErrorAndBack(null, this.limitPerDayMessage);
+    if (this.amount > 2000 || this.amount < 50) {
+      this.showErrorAndBack(null, 'Purchase amount must be a value between 50 and 2000'); // TODO: gettextCatalog
       return;
     }
 
-    this.network = this.amazonProvider.getNetwork();
+    this.network = this.mercadoLibreProvider.getNetwork();
     this.wallets = this.profileProvider.getWallets({
       onlyComplete: true,
       network: this.network,
-      hasFunds: true,
       coin: this.coin
     });
     if (_.isEmpty(this.wallets)) {
@@ -159,8 +154,7 @@ export class BuyAmazonPage {
     });
   }
 
-  private statusChangeHandler(processName: string, isOn: boolean) {
-    let showName = this.onGoingProcessProvider.getShowName(processName);
+  private statusChangeHandler(processName: string, showName: string, isOn: boolean) {
     this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
     if (processName == 'buyingGiftCard' && !isOn) {
       this.sendStatus = 'success';
@@ -194,17 +188,17 @@ export class BuyAmazonPage {
 
   private createInvoice(data: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.amazonProvider.createBitPayInvoice(data, (err: any, dataInvoice: any) => {
+      this.mercadoLibreProvider.createBitPayInvoice(data, (err: any, dataInvoice: any) => {
         if (err) {
           let err_title = 'Error creating the invoice'; // TODO: gettextCatalog
           let err_msg;
           if (err && err.message && err.message.match(/suspended/i)) {
             err_title = 'Service not available'; // TODO: gettextCatalog
-            err_msg = 'Amazon.com is not available at this moment. Please try back later.'; // TODO: gettextCatalog
+            err_msg = 'Mercadolibre Gift Card Service is not available at this moment. Please try back later.'; // TODO: gettextCatalog
           } else if (err && err.message) {
             err_msg = err.message;
           } else {
-            err_msg = 'Could not access to Amazon.com'; // TODO: gettextCatalog
+            err_msg = 'Could not access Gift Card Service'; // TODO: gettextCatalog
           };
 
           return reject({
@@ -221,7 +215,7 @@ export class BuyAmazonPage {
           });
         }
 
-        this.amazonProvider.getBitPayInvoice(dataInvoice.invoiceId, (err: any, invoice: any) => {
+        this.mercadoLibreProvider.getBitPayInvoice(dataInvoice.invoiceId, (err: any, invoice: any) => {
           if (err) {
             return reject({
               message: 'Could not get the invoice' // TODO: gettextCatalog
@@ -277,14 +271,20 @@ export class BuyAmazonPage {
   }
 
   private checkTransaction = _.throttle((count: number, dataSrc: any) => {
-    this.amazonProvider.createGiftCard(dataSrc, (err, giftCard) => {
+    this.mercadoLibreProvider.createGiftCard(dataSrc, (err, giftCard) => {
       this.logger.debug("creating gift card " + count);
       if (err) {
-        this.onGoingProcessProvider.set('buyingGiftCard', false);
-        this.statusChangeHandler('buyingGiftCard', false);
+        this.sendStatus = '';
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
         giftCard = {};
         giftCard.status = 'FAILURE';
-        this.showError('Error creating gift card', err); // TODO: gettextCatalog
+      }
+
+      if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
+        this.sendStatus = '';
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
+        giftCard = {};
+        giftCard.status = 'FAILURE';
       }
 
       if (giftCard.status == 'PENDING' && count < 3) {
@@ -299,27 +299,15 @@ export class BuyAmazonPage {
       newData.invoiceId = dataSrc.invoiceId;
       newData.accessKey = dataSrc.accessKey;
       newData.invoiceUrl = dataSrc.invoiceUrl;
+      newData.currency = dataSrc.currency;
       newData.amount = dataSrc.amount;
       newData.date = dataSrc.invoiceTime || now;
       newData.uuid = dataSrc.uuid;
 
-      if (newData.status == 'expired') {
-        this.amazonProvider.savePendingGiftCard(newData, {
-          remove: true
-        }, (err: any) => {
-          this.logger.error(err);
-          this.onGoingProcessProvider.set('buyingGiftCard', false);
-          this.statusChangeHandler('buyingGiftCard', false);
-          this.showError(null, 'Gift card expired'); // TODO: gettextCatalog
-        });
-        return;
-      }
-
-      this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
-        this.onGoingProcessProvider.set('buyingGiftCard', false);
-        this.statusChangeHandler('buyingGiftCard', false);
+      this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
         this.logger.debug("Saving new gift card with status: " + newData.status);
-        this.amazonGiftCard = newData;
+        this.mlGiftCard = newData;
       });
     });
   }, 8000, {
@@ -338,7 +326,6 @@ export class BuyAmazonPage {
       email: email
     };
     this.onGoingProcessProvider.set('loadingTxInfo', true);
-
     this.createInvoice(dataSrc).then((data: any) => {
       let invoice = data.invoice;
       let accessKey = data.accessKey;
@@ -347,7 +334,7 @@ export class BuyAmazonPage {
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
 
-      this.message = this.amountUnitStr + " for Amazon.com Gift Card"; // TODO: gettextCatalog
+      this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Car"; // TODO: gettextCatalog
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.set('loadingTxInfo', false);
@@ -400,8 +387,7 @@ export class BuyAmazonPage {
       }
 
       this.publishAndSign(this.wallet, this.createdTx, function () { }).then((txSent) => {
-        this.onGoingProcessProvider.set('buyingGiftCard', true);
-        this.statusChangeHandler('buyingGiftCard', true);
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', true, this.statusChangeHandler);
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();
@@ -420,7 +406,7 @@ export class BuyAmazonPage {
     this.sendStatus = '';
     this.navCtrl.remove(3, 1);
     this.navCtrl.pop();
-    this.navCtrl.push(AmazonCardsPage, { invoiceId: this.invoiceId });
+    this.navCtrl.push(MercadoLibreCardsPage, { invoiceId: this.invoiceId });
   }
 
   public showWallets(): void {

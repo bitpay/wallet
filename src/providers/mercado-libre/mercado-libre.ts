@@ -39,7 +39,7 @@ export class MercadoLibreProvider {
     */
     this.credentials = {};
     this.credentials.NETWORK = 'livenet';
-    //credentials.NETWORK = 'testnet';
+    //this.credentials.NETWORK = 'testnet';
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.BITPAY_API_URL = "https://test.bitpay.com";
     } else {
@@ -106,7 +106,8 @@ export class MercadoLibreProvider {
     let dataSrc = {
       currency: data.currency,
       amount: data.amount,
-      clientId: data.uuid
+      clientId: data.uuid,
+      email: data.email
     };
     let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/pay';
     let headers: any = {
@@ -114,10 +115,10 @@ export class MercadoLibreProvider {
     };
     this.http.post(url, dataSrc, headers).subscribe((data: any) => {
       this.logger.info('BitPay Create Invoice: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
-      this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data.data));
-      return cb(data.data);
+      this.logger.error('BitPay Create Invoice: ERROR', JSON.stringify(data));
+      return cb(data);
     });
   }
 
@@ -129,10 +130,10 @@ export class MercadoLibreProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('BitPay Get Invoice: SUCCESS');
-      return cb(null, data.data.data);
+      return cb(null, data.data);
     }, (data) => {
-      this.logger.error('BitPay Get Invoice: ERROR', JSON.stringify(data.data));
-      return cb(data.data);
+      this.logger.error('BitPay Get Invoice: ERROR', JSON.stringify(data));
+      return cb(data);
     });
   }
 
@@ -149,13 +150,13 @@ export class MercadoLibreProvider {
     };
 
     this.http.post(url, dataSrc, headers).subscribe((data: any) => {
-      var status = data.data.status == 'new' ? 'PENDING' : (data.data.status == 'paid') ? 'PENDING' : data.data.status;
-      data.data.status = status;
+      var status = data.status == 'new' ? 'PENDING' : (data.status == 'paid') ? 'PENDING' : data.status;
+      data.status = status;
       this.logger.info('Mercado Libre Gift Card Create/Update: ' + status);
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
-      this.logger.error('Mercado Libre Gift Card Create/Update: ERROR', JSON.stringify(data.data));
-      return cb(data.data);
+      this.logger.error('Mercado Libre Gift Card Create/Update: ERROR', JSON.stringify(data));
+      return cb(data);
     });
   }
 
@@ -176,10 +177,10 @@ export class MercadoLibreProvider {
     };      
     this.http.post(url, dataSrc, headers).subscribe((data: any) => {
       this.logger.info('Mercado Libre Gift Card Cancel: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
-      this.logger.error('Mercado Libre Gift Card Cancel: ' + data.data.message);
-      return cb(data.data);
+      this.logger.error('Mercado Libre Gift Card Cancel: ' + data.message);
+      return cb(data);
     });
   };
   */

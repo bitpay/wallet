@@ -14,6 +14,7 @@ import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glide
 import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
+import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 
 @Component({
   selector: 'page-amount',
@@ -132,6 +133,10 @@ export class AmountPage {
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
+        break;
+      case 'BuyMercadoLibrePage':
+        this.showRecipient = false;
+        nextPage = BuyMercadoLibrePage;
         break;
       default:
         nextPage = ConfirmPage;

@@ -3,16 +3,17 @@ import { NavController, Events, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
+import { ActivityPage } from './activity/activity';
 import { AddPage } from "../add/add";
 import { AmazonPage } from '../integrations/amazon/amazon';
+import { BuyAndSellPage } from '../buy-and-sell/buy-and-sell';
 import { CopayersPage } from '../add/copayers/copayers';
-import { WalletDetailsPage } from '../wallet-details/wallet-details';
+import { GlideraPage } from '../integrations/glidera/glidera';
+import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
+import { ProposalsPage } from './proposals/proposals';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
-import { ProposalsPage } from './proposals/proposals';
-import { ActivityPage } from './activity/activity';
-import { BuyAndSellPage } from '../buy-and-sell/buy-and-sell';
-import { GlideraPage } from '../integrations/glidera/glidera';
+import { WalletDetailsPage } from '../wallet-details/wallet-details';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -300,7 +301,7 @@ export class HomePage {
   public goTo(page): void {
     switch (page) {
       case 'MercadoLibrePage':
-        //push MercadolibrePage
+        this.navCtrl.push(MercadoLibrePage);
         break;
       case 'AmazonPage':
         this.navCtrl.push(AmazonPage);

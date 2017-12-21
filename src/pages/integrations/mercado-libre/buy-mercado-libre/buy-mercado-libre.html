@@ -1,0 +1,84 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Buy</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <div class="mercado-libre-title">
+        <img src="assets/img/mercado-libre/icon-ml.svg">
+        <span>Vale-Presente do Mercado Livre Brasil</span>
+      </div>
+      <div class="amount-label">
+        <div class="amount">{{amountUnitStr}}</div>
+        <div class="alternative">
+          {{limitPerDayMessage}}
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item-group class="info">
+      <button ion-item (click)="showWallets()" class="wallets-list">
+        <div translate>From</div>
+        <div class="wallet">
+          <img src="assets/img/icon-wallet.svg">
+          <span>{{wallet ? wallet.name : '...'}}</span>
+        </div>
+      </button>
+      <div *ngIf="totalAmountStr">
+        <ion-item-divider color="light">
+          Details
+        </ion-item-divider>
+        <ion-item>
+          <span translate>Gift Card</span>
+          <ion-note item-end>
+            {{amount | currency:'$ ':2}}<span *ngIf="amount"> {{currencyIsoCode}}</span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Network Cost</span>
+          <ion-note item-end>
+            <span>{{invoiceFee | currency:'$ ':2}}<span *ngIf="invoiceFee"> {{currencyIsoCode}}</span></span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Miner Fee</span>
+          <ion-note item-end>
+            <span>{{networkFee | currency:'$ ':2}}<span *ngIf="networkFee"> {{currencyIsoCode}}</span></span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Total</span>
+          <ion-note item-end>
+            <span *ngIf="totalAmount">{{totalAmount | currency:'$ ':2}} {{currencyIsoCode}}</span>
+            <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
+          </ion-note>
+        </ion-item>
+      </div>
+    </ion-item-group>
+  </ion-list>
+</ion-content>
+
+<ion-footer *ngIf="!mlGiftCard">
+  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>Confirm purchase</button>
+</ion-footer>
+
+<ion-footer *ngIf="mlGiftCard">
+  <span *ngIf="mlGiftCard.status == 'FAILURE'" translate>
+        Sua compra não pôde ser concluída
+      </span>
+  <span *ngIf="mlGiftCard.status == 'PENDING'" translate>
+        Sua compra foi adicionada à lista de pendentes
+      </span>
+  <span *ngIf="mlGiftCard.status == 'SUCCESS' || mlGiftCard.status == 'active'" translate>
+        Comprou {{mlGiftCard.amount}} {{mlGiftCard.currency}}
+      </span>
+  <div *ngIf="mlGiftCard.status == 'SUCCESS' || mlGiftCard.cardStatus == 'active'" translate>
+    Vale-Presente gerado e pronto para usar
+  </div>
+  <button ion-button block class="button-footer" (click)="goBackHome()" [disabled]="!(wallet && totalAmountStr)" translate>Accept and back home</button>
+</ion-footer>

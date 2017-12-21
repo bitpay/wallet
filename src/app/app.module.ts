@@ -29,32 +29,42 @@ import { CopayApp } from './app.component';
 /* Pages */
 import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
-import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
-import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
-import { AmazonPage } from '../pages/integrations/amazon/amazon';
+
+
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
-import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
 import { BuyAndSellPage } from '../pages/buy-and-sell/buy-and-sell';
-import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
+
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { EmailPage } from '../pages/onboarding/email/email';
 import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
-import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
-import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
+// Integrations: Amazon
+import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
+import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
+import { AmazonPage } from '../pages/integrations/amazon/amazon';
+import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
+// Integrations: Glidera
+import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
+import { GlideraPage } from '../pages/integrations/glidera/glidera';
+import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
+// Integrations: Mercado Libre
+import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
+import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
+import { MercadoLibreCardsPage } from '../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
+import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
 
 /*Includes */
 import { WalletInfoPage } from '../pages/includes/wallet-info/wallet-info';
@@ -184,6 +194,7 @@ let pages: any = [
   BuyAmazonPage,
   BuyAndSellPage,
   BuyGlideraPage,
+  BuyMercadoLibrePage,
   ChooseFeeLevelPage,
   CreateWalletPage,
   CopayersPage,
@@ -211,6 +222,7 @@ let pages: any = [
   HomePage,
   LanguagePage,
   LockPage,
+  MercadoLibrePage,
   OnboardingPage,
   PaperWalletPage,
   PayProPage,
@@ -222,6 +234,8 @@ let pages: any = [
   ScanPage,
   SettingsPage,
   TermsOfUsePage,
+  MercadoLibreCardDetailsPage,
+  MercadoLibreCardsPage,
   NotificationsPage,
   FeePolicyPage,
   SessionLogPage,
