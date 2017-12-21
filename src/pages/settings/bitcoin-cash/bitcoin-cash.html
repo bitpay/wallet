@@ -10,10 +10,6 @@
       {{'No wallets eligible for Bitcoin Cash support' | translate}}
     </ion-card-header>
 
-    <ion-card-header *ngIf="error">
-      <span class="assertive">{{error}}</span>
-    </ion-card-header>
-
     <div *ngIf="availableWallets[0]">
       <ion-card-header>
         {{'BTC wallets' | translate}}

@@ -15,6 +15,7 @@ import { BwcProvider } from "../../../providers/bwc/bwc";
 import { OnGoingProcessProvider } from "../../../providers/on-going-process/on-going-process";
 import { PushNotificationsProvider } from "../../../providers/push-notifications/push-notifications";
 import { ExternalLinkProvider } from "../../../providers/external-link/external-link";
+import { PopupProvider } from "../../../providers/popup/popup";
 
 @Component({
 	selector: 'page-bitcoin-cash',
@@ -35,6 +36,7 @@ export class BitcoinCashPage {
 		private profileProvider: ProfileProvider,
 		private txFormatProvider: TxFormatProvider,
 		private onGoingProcessProvider: OnGoingProcessProvider,
+		private popupProvider: PopupProvider,
 		private pushNotificationsProvider: PushNotificationsProvider,
 		private externalLinkProvider: ExternalLinkProvider,
 		private bwcErrorProvider: BwcErrorProvider,
@@ -50,7 +52,6 @@ export class BitcoinCashPage {
 		this.availableWallets = [];
 		this.nonEligibleWallets = [];
 		this.errors = bwcProvider.getErrors();
-		this.error = null;
 	}
 
 	ionViewWillEnter() {
@@ -86,11 +87,9 @@ export class BitcoinCashPage {
 
 		lodash.each(this.availableWallets, (wallet) => {
 			this.walletProvider.getBalance(wallet, { coin: 'bch' }).then((balance) => {
-				this.error = null;
 				wallet.bchBalance = this.txFormatProvider.formatAmountStr('bch', balance.availableAmount);
 			}).catch((err) => {
 				this.logger.error(err);
-				this.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
 			});
 		});
 	}
@@ -105,7 +104,6 @@ export class BitcoinCashPage {
 	}
 
 	duplicate(wallet: any) {
-		this.error = null;
 		this.logger.debug('Duplicating wallet for BCH:' + wallet.id + ':' + wallet.name);
 
 		let opts: any = {
@@ -119,11 +117,11 @@ export class BitcoinCashPage {
 			compliantDerivation: wallet.credentials.compliantDerivation,
 		};
 
-		let setErr = (err, cb?) => {
-			if (!cb) cb = function () {};
-
-			this.error = this.bwcErrorProvider.cb(err, 'Could not duplicate').then(() => {
-				return cb(err);
+		let setErr = (err) => {
+			this.bwcErrorProvider.cb(err, 'Could not duplicate').then((errorMsg) => {
+				this.logger.warn(errorMsg);
+				this.popupProvider.ionicAlert(errorMsg, null, 'OK');
+				return;
 			});
 		}
 
@@ -138,7 +136,6 @@ export class BitcoinCashPage {
 					}).catch((err) => {
 						if (!(err instanceof this.errors.NOT_AUTHORIZED)) {
 							return reject(err);
-							// return setErr(err);
 						}
 						// create and store a wallet
 						this.profileProvider.createWallet(opts).then((newWallet) => {
@@ -162,8 +159,7 @@ export class BitcoinCashPage {
 
 			this.walletProvider.copyCopayers(wallet, newWallet, (err) => {
 				if (err) {
-					this.logger.warn(err);
-					return setErr(err, cb);
+					return setErr(err);
 				} 
 				return cb();
 			});
@@ -181,8 +177,7 @@ export class BitcoinCashPage {
 
 				addCopayers(newWallet, isNew, (err) => {
 					this.onGoingProcessProvider.set('duplicatingWallet', false);
-					if (err)
-						return setErr(err);
+					if (err) return setErr(err);
 
 					if (isNew)
 						this.walletProvider.startScan(newWallet);
@@ -192,14 +187,12 @@ export class BitcoinCashPage {
 					this.navCtrl.parent.select(0);
 				});
 			}).catch((err) => {
-				this.logger.warn(err);
 				this.onGoingProcessProvider.set('duplicatingWallet', false);
-				this.error = err;
+				setErr(err);
 			});
 		}).catch((err) => {
-			this.logger.warn(err);
 			this.onGoingProcessProvider.set('duplicatingWallet', false);
-			this.error = err;
+			setErr(err);
 		});
 	}
 }
