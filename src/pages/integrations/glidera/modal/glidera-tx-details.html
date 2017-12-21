@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Details
+    </ion-title>
+    <ion-buttons start>
+      <button (click)="cancel()" ion-button>
+          <ion-icon name="arrow-round-back"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-content>
+      <div class="item-img">
+        <img src="assets/img/glidera/bought.svg" alt="bought" width="80" *ngIf="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+        <img src="assets/img/glidera/bought-pending.svg" alt="bought" width="65" *ngIf="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+        <img src="assets/img/glidera/sold.svg" alt="bought" width="80" *ngIf="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+        <img src="assets/img/glidera/sold-pending.svg" alt="bought" width="65" *ngIf="tx.type == 'SELL' && tx.status == 'PROCESSING'">
+      </div>
+      <span *ngIf="tx.type == 'BUY'">Bought</span>
+      <span *ngIf="tx.type == 'SELL'">Sold</span>
+      <b>{{tx.qty}}</b> BTC
+      <div>
+        {{tx.subtotal|currency:'':2}} {{tx.currency}}
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-list>
+
+    <ion-item>
+      <ion-label>
+        <span>Status</span>
+      </ion-label>
+      <ion-note item-end>
+        <span class="text-success" *ngIf="tx.status == 'COMPLETE'">Completed</span>
+        <span class="text-info" *ngIf="tx.status == 'PROCESSING'">Processing</span>
+        <span class="text-warning" *ngIf="tx.status == 'ERROR'">Error</span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.transactionDate">
+      <ion-label>
+        <span>Date</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.transactionDate | amCalendar}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.price">
+      <ion-label>
+        <span>Exchange rate</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.price|currency:'':2}} {{tx.currency}}/BTC
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.subtotal">
+      <ion-label>
+        <span>Subtotal</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.subtotal|currency:'':2}} {{tx.currency}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.fees">
+      <ion-label>
+        <span>Fees</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.fees|currency:'':2}} {{tx.currency}}
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="tx.total">
+      <ion-label>
+        <span>Total</span>
+      </ion-label>
+      <ion-note item-end>
+        {{tx.total|currency:'':2}} {{tx.currency}}
+      </ion-note>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //providers
@@ -8,9 +8,9 @@ import { ExternalLinkProvider } from '../../../providers/external-link/external-
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { GlideraProvider } from '../../../providers/glidera/glidera';
 import { PopupProvider } from '../../../providers/popup/popup';
-
 //pages
 import { AmountPage } from '../../send/amount/amount';
+import { GlideraTxDetailsPage } from './modal/glidera-tx-details';
 
 @Component({
   selector: 'page-glidera',
@@ -34,6 +34,7 @@ export class GlideraPage {
     private navParams: NavParams,
     private navCtrl: NavController,
     private formBuilder: FormBuilder,
+    private modalCtrl: ModalController
   ) {
     this.oauthCodeForm = this.formBuilder.group({
       code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -96,6 +97,9 @@ export class GlideraPage {
   public openTxModal(tx) {
     this.tx = tx;
 
+    let modal = this.modalCtrl.create(GlideraTxDetailsPage, { tx: this.tx });
+    modal.present();
+
     this.glideraProvider.getTransaction(this.account.token, tx.transactionUuid, (err, tx) => {
       if (err) {
         this.popupProvider.ionicAlert('Error getting transaction', 'Could not get transactions');
@@ -103,16 +107,6 @@ export class GlideraPage {
       }
       this.tx = tx;
     });
-
-    /* $ionicModal.fromTemplateUrl('views/modals/glidera-tx-details.html', {
-      scope: this,
-      backdropClickToClose: false,
-      hardwareBackButtonClose: false,
-      animation: 'slide-in-up'
-    }).then(function (modal) {
-      this.glideraTxDetailsModal = modal;
-      this.glideraTxDetailsModal.show();
-    }); */
   }
 
   public openAuthenticateWindow(): void {

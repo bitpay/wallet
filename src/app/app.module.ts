@@ -59,6 +59,7 @@ import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazo
 // Integrations: Glidera
 import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
+import { GlideraTxDetailsPage } from '../pages/integrations/glidera/modal/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
 // Integrations: Mercado Libre
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
@@ -226,6 +227,7 @@ let pages: any = [
   OnboardingPage,
   PaperWalletPage,
   PayProPage,
+  GlideraTxDetailsPage,
   SellGlideraPage,
   PinModalPage,
   ProposalsPage,
