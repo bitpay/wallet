@@ -208,10 +208,10 @@ export class CoinbaseProvider {
     this.http.post(url, data).subscribe((data: any) => {
       this.logger.info('Coinbase Authorization Access Token: SUCCESS');
       // Show pending task from the UI
-      this._afterTokenReceived(data.data, cb);
+      this._afterTokenReceived(data, cb);
     }, (data) => {
       this.logger.error('Coinbase Authorization Access Token: ERROR ' + data.statusText);
-      return cb(data.data || 'Could not get the access token');
+      return cb(data || 'Could not get the access token');
     });
   }
 
@@ -227,10 +227,10 @@ export class CoinbaseProvider {
 
     this.http.post(url, data).subscribe((data: any) => {
       this.logger.info('Coinbase Refresh Access Token: SUCCESS');
-      this._afterTokenReceived(data.data, cb);
+      this._afterTokenReceived(data, cb);
     }, (data) => {
       this.logger.error('Coinbase Refresh Access Token: ERROR ' + data.statusText);
-      return cb(data.data || 'Could not get the access token');
+      return cb(data || 'Could not get the access token');
     });
   }
 
@@ -260,10 +260,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, { headers }).subscribe((data: any) => {
       this.logger.info('Coinbase Get Accounts: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Get Accounts: ERROR ' + data.statusText);
-      return cb(data.data || 'Could not get the accounts');
+      return cb(data || 'Could not get the accounts');
     });
   }
 
@@ -335,10 +335,10 @@ export class CoinbaseProvider {
     }
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Get Account: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Get Account: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -352,10 +352,10 @@ export class CoinbaseProvider {
     };
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Autorization Information: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Autorization Information: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -370,10 +370,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Get Current User: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Get Current User: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -388,10 +388,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Buy Info: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Buy Info: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -405,10 +405,10 @@ export class CoinbaseProvider {
     };
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Transaction: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Transaction: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -425,10 +425,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Address s Transactions: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Address s Transactions: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -443,10 +443,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Transactions: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data: any) => {
       this.logger.error('Coinbase Transactions: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -463,10 +463,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Pagination Transactions: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Pagination Transactions: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -481,10 +481,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Sell Price: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Sell Price: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -497,10 +497,10 @@ export class CoinbaseProvider {
     };
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Buy Price: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Buy Price: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -513,10 +513,10 @@ export class CoinbaseProvider {
     };
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Get Payment Methods: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Get Payment Methods: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -531,10 +531,10 @@ export class CoinbaseProvider {
 
     this.http.get(url, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Get Payment Method: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Get Payment Method: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -556,10 +556,10 @@ export class CoinbaseProvider {
 
     this.http.post(url, data, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Sell Request: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Sell Request: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -573,10 +573,10 @@ export class CoinbaseProvider {
 
     this.http.post(url, null, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Sell Commit: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Sell Commit: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -598,10 +598,10 @@ export class CoinbaseProvider {
 
     this.http.post(url, data, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Buy Request: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Buy Request: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -615,10 +615,10 @@ export class CoinbaseProvider {
 
     this.http.post(url, null, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Buy Commit: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Buy Commit: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -635,10 +635,10 @@ export class CoinbaseProvider {
 
     this.http.post(url, data, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Create Address: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Create Address: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 
@@ -659,10 +659,10 @@ export class CoinbaseProvider {
 
     this.http.post(url, data, headers).subscribe((data: any) => {
       this.logger.info('Coinbase Create Address: SUCCESS');
-      return cb(null, data.data);
+      return cb(null, data);
     }, (data) => {
       this.logger.error('Coinbase Create Address: ERROR ' + data.statusText);
-      return cb(data.data);
+      return cb(data);
     });
   }
 

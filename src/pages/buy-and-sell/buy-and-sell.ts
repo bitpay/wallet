@@ -4,6 +4,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 //pages
 import { GlideraPage } from '../integrations/glidera/glidera';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
 
 //providers
 import { BuyAndSellProvider } from '../../providers/buy-and-sell/buy-and-sell';
@@ -31,6 +32,7 @@ export class BuyAndSellPage {
   public goTo(page): void {
     switch (page) {
       case 'CoinbasePage':
+        this.navCtrl.push(CoinbasePage);
         break;
       case 'GlideraPage':
         this.navCtrl.push(GlideraPage);
