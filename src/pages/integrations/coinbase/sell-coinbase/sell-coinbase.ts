@@ -1,5 +1,20 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, ActionSheetController } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
+import * as _ from 'lodash';
+
+//pages
+import { CoinbasePage } from '../coinbase';
+
+//providers
+import { AppProvider } from '../../../../providers/app/app';
+import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
+import { ConfigProvider } from '../../../../providers/config/config';
+import { PopupProvider } from '../../../../providers/popup/popup';
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
+import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
+import { WalletProvider } from '../../../../providers/wallet/wallet';
+import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 
 @Component({
   selector: 'page-sell-coinbase',
@@ -7,11 +22,341 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class SellCoinbasePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private coin: string;
+  private amount: string;
+  private currency: string;
+  private wallets: any;
+
+  public sendStatus: string;
+  public paymentMethods: Array<any>;
+  public selectedPaymentMethodId: any;
+  public selectedPriceSensitivity: any;
+  public sellPrice: string;
+  public amountUnitStr: string;
+  public accountId: string;
+  public wallet: any;
+  public sellRequestInfo: any;
+
+  constructor(
+    private appProvider: AppProvider,
+    private coinbaseProvider: CoinbaseProvider,
+    private configProvider: ConfigProvider,
+    private logger: Logger,
+    private popupProvider: PopupProvider,
+    private navCtrl: NavController,
+    private externalLinkProvider: ExternalLinkProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private walletProvider: WalletProvider,
+    private actionSheetCtrl: ActionSheetController,
+    private txFormatProvider: TxFormatProvider
+  ) {
+    this.coin = 'btc';
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SellCoinbasePage');
+    this.logger.info('ionViewDidLoad SellCoinbasePage');
+  }
+
+  private showErrorAndBack(err: any): void {
+    this.sendStatus = '';
+    this.logger.error(err);
+    err = err.errors ? err.errors[0].message : err;
+    this.popupProvider.ionicAlert('Error', err).then(() => {
+      this.navCtrl.pop();
+    });
+  }
+
+  private showError(err: any): void {
+    this.sendStatus = '';
+    this.logger.error(err);
+    err = err.errors ? err.errors[0].message : err;
+    this.popupProvider.ionicAlert('Error', err);
+  }
+
+  private publishAndSign(wallet: any, txp: any, onSendStatusChange: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
+        let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
+        this.logger.info(err);
+        return reject(err);
+      }
+
+      this.walletProvider.publishAndSign(wallet, txp, onSendStatusChange).then((txp: any) => {
+        return resolve(txp);
+      }).catch((err: any) => {
+        return reject(err);
+      });
+    });
+  }
+
+  private processPaymentInfo(): void {
+    this.onGoingProcessProvider.set('connectingCoinbase', true);
+    this.coinbaseProvider.init((err: any, res: any) => {
+      if (err) {
+        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+        return;
+      }
+      let accessToken = res.accessToken;
+
+      this.coinbaseProvider.sellPrice(accessToken, this.coinbaseProvider.getAvailableCurrency(), (err: any, s: any) => {
+        this.sellPrice = s.data || null;
+      });
+
+      this.paymentMethods = [];
+      this.selectedPaymentMethodId = { value: null };
+      this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
+        if (err) {
+          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+          return;
+        }
+
+        let hasPrimary;
+        let pm;
+        for (let i = 0; i < p.data.length; i++) {
+          pm = p.data[i];
+          if (pm.allow_buy) {
+            this.paymentMethods.push(pm);
+          }
+          if (pm.allow_buy && pm.primary_buy) {
+            hasPrimary = true;
+            this.selectedPaymentMethodId.value = pm.id;
+          }
+        }
+        if (_.isEmpty(this.paymentMethods)) {
+          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          let url = 'https://support.coinbase.com/customer/portal/articles/1148716-payment-methods-for-us-customers';
+          let msg = 'No payment method available to buy';
+          let okText = 'More info';
+          let cancelText = 'Go Back';
+          this.externalLinkProvider.open(url, true, null, msg, okText, cancelText).then(() => {
+            this.navCtrl.remove(3, 1);
+            this.navCtrl.pop();
+            return;
+          });
+        }
+        if (!hasPrimary) this.selectedPaymentMethodId.value = this.paymentMethods[0].id;
+        this.sellRequest();
+      });
+    });
+  }
+
+  private checkTransaction = _.throttle((count: number, txp: any) => {
+    this.logger.warn('Check if transaction has been received by Coinbase. Try ' + count + '/5');
+    // TX amount in BTC
+    let satToBtc = 1 / 100000000;
+    let amountBTC = (txp.amount * satToBtc).toFixed(8);
+    this.coinbaseProvider.init((err: any, res: any) => {
+      if (err) {
+        this.logger.error(err);
+        this.checkTransaction(count, txp);
+        return;
+      }
+      let accessToken = res.accessToken;
+      let accountId = res.accountId;
+      let sellPrice = null;
+
+      this.coinbaseProvider.sellPrice(accessToken, this.coinbaseProvider.getAvailableCurrency(), (err: any, sell: any) => {
+        if (err) {
+          this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
+          this.checkTransaction(count, txp);
+          return;
+        }
+        sellPrice = sell.data;
+
+        this.coinbaseProvider.getTransactions(accessToken, accountId, (err: any, ctxs: any) => {
+          if (err) {
+            this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
+            this.checkTransaction(count, txp);
+            return;
+          }
+
+          let coinbaseTransactions = ctxs.data;
+          let txFound = false;
+          let ctx;
+          for (let i = 0; i < coinbaseTransactions.length; i++) {
+            ctx = coinbaseTransactions[i];
+            if (ctx.type == 'send' && ctx.from && ctx.amount.amount == amountBTC) {
+              this.logger.warn('Transaction found!', ctx);
+              txFound = true;
+              this.logger.debug('Saving transaction to process later...');
+              ctx['payment_method'] = this.selectedPaymentMethodId.value;
+              ctx['status'] = 'pending'; // Forcing "pending" status to process later
+              ctx['price_sensitivity'] = this.selectedPriceSensitivity.data;
+              ctx['sell_price_amount'] = sellPrice ? sellPrice.amount : '';
+              ctx['sell_price_currency'] = sellPrice ? sellPrice.currency : 'USD';
+              ctx['description'] = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
+              this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
+                this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+                if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
+              });
+              return;
+            }
+          }
+          if (!txFound) {
+            // Transaction sent, but could not be verified by Coinbase.com
+            this.logger.warn('Transaction not found in Coinbase. Will try 5 times...');
+            if (count < 5) {
+              this.checkTransaction(count + 1, txp);
+            } else {
+              this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+              this.showError('No transaction found');
+              return;
+            }
+          }
+        });
+      });
+    });
+  }, 8000, {
+      'leading': true
+    });
+
+  private statusChangeHandler(processName: string, showName: string, isOn: boolean): void {
+    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
+    if (processName == 'sellingBitcoin' && !isOn) {
+      this.sendStatus = 'success';
+    } else if (showName) {
+      this.sendStatus = showName;
+    }
+  }
+
+  public sellRequest(): void {
+    this.onGoingProcessProvider.set('connectingCoinbase', true);
+    this.coinbaseProvider.init((err: any, res: any) => {
+      if (err) {
+        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+        return;
+      }
+      let accessToken = res.accessToken;
+      let accountId = res.accountId;
+      let dataSrc = {
+        amount: this.amount,
+        currency: this.currency,
+        payment_method: this.selectedPaymentMethodId.value,
+        quote: true
+      };
+      this.coinbaseProvider.sellRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
+        this.onGoingProcessProvider.set('connectingCoinbase', false);
+        if (err) {
+          this.showErrorAndBack(this.coinbaseProvider.getErrorsAsString(err.errors));
+          return;
+        }
+        this.sellRequestInfo = data.data;
+      });
+    });
+  }
+
+  public sellConfirm(): void {
+    let config = this.configProvider.get();
+    let configWallet = config.wallet;
+    let walletSettings = configWallet.settings;
+
+    let message = 'Selling bitcoin for ' + this.amount + ' ' + this.currency;
+    let okText = 'Confirm';
+    let cancelText = 'Cancel';
+    this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: any) => {
+      if (!ok) return;
+
+      this.onGoingProcessProvider.set('sellingBitcoin', true, this.statusChangeHandler);
+      this.coinbaseProvider.init((err: any, res: any) => {
+        if (err) {
+          this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+          this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
+          return;
+        }
+        let accessToken = res.accessToken;
+        let accountId = res.accountId;
+
+        let dataSrc = {
+          name: 'Received from ' + this.appProvider.info.nameCase
+        };
+        this.coinbaseProvider.createAddress(accessToken, accountId, dataSrc, (err: any, data: any) => {
+          if (err) {
+            this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+            this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
+            return;
+          }
+          let outputs = [];
+          let toAddress = data.data.address;
+          let amountSat = parseInt((this.sellRequestInfo.amount.amount * 100000000).toFixed(0));
+          let comment = 'Sell bitcoin (Coinbase)';
+
+          outputs.push({
+            'toAddress': toAddress,
+            'amount': amountSat,
+            'message': comment
+          });
+
+          let txp = {
+            toAddress: toAddress,
+            amount: amountSat,
+            outputs: outputs,
+            message: comment,
+            payProUrl: null,
+            excludeUnconfirmedUtxos: configWallet.spendUnconfirmed ? false : true,
+            feeLevel: walletSettings.feeLevel || 'normal'
+          };
+
+          this.walletProvider.createTx(this.wallet, txp).then((ctxp: any) => {
+            this.logger.debug('Transaction created.');
+            this.publishAndSign(this.wallet, ctxp, function () { }).then((txSent: any) => {
+              this.logger.debug('Transaction broadcasted. Wait for Coinbase confirmation...');
+              this.checkTransaction(1, txSent);
+            }).catch((err: any) => {
+              this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+              this.showError(err);
+              return;
+            });
+          }).catch((err: any) => {
+            this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+            this.showError(err);
+            return;
+          });
+        });
+      });
+    });
+  }
+
+  public showWallets(): void {
+    let buttons: Array<any> = [];
+
+    _.each(this.wallets, (w: any) => {
+      let walletButton: Object = {
+        text: w.credentials.walletName,
+        cssClass: 'wallet-' + w.network,
+        icon: 'wallet',
+        handler: () => {
+          this.onWalletSelect(w);
+        }
+      }
+      buttons.push(walletButton);
+    });
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: 'Sell from',
+      buttons: buttons
+    });
+
+    actionSheet.present();
+  }
+
+  public onWalletSelect(wallet: any): void {
+    this.wallet = wallet;
+    let parsedAmount = this.txFormatProvider.parseAmount(this.coin, this.amount, this.currency);
+
+    this.amount = parsedAmount.amount;
+    this.currency = parsedAmount.currency;
+    this.amountUnitStr = parsedAmount.amountUnitStr;
+    this.processPaymentInfo();
+  }
+
+  public goBackHome() {
+    this.sendStatus = '';
+    this.navCtrl.remove(3, 1);
+    this.navCtrl.pop();
+    this.navCtrl.push(CoinbasePage, { coin: 'btc' });
   }
 
 }

@@ -9,7 +9,6 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { AppProvider } from '../../../../../providers/app/app';
-import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // Pages
@@ -43,7 +42,6 @@ export class WalletTransactionHistoryPage {
     private logger: Logger,
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
-    private persistenceProvider: PersistenceProvider,
     private walletProvider: WalletProvider
   ) {
     this.csvReady = false;
@@ -151,7 +149,7 @@ export class WalletTransactionHistoryPage {
     });
   }
 
-  private downloadCSV() {
+  public downloadCSV() {
     let csv = papa.unparse({
       fields: this.csvHeader,
       data: this.csvContent

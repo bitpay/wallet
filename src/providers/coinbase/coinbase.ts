@@ -130,6 +130,20 @@ export class CoinbaseProvider {
     }
   }
 
+  public getErrorsAsString(errors: any): string {
+    let errStr = '';
+
+    if (!_.isArray(errors)) {
+      errStr = errors.message ||  errors;
+      return errStr;
+    }
+
+    for (let i = 0; i < errors.length; i++) {
+      errStr = errStr + errors[i].message + '. ';
+    }
+    return errStr;
+  }
+
   public getNetwork() {
     return this.credentials.NETWORK;
   }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import * as _ from 'lodash';
 
 //providers
 import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
@@ -14,7 +15,6 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 //pages
 import { CoinbasePage } from '../coinbase';
 
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-buy-coinbase',
@@ -316,7 +316,6 @@ export class BuyCoinbasePage {
   }
 
   public goBackHome() {
-    this.sendStatus = '';
     this.sendStatus = '';
     this.navCtrl.remove(3, 1);
     this.navCtrl.pop();
