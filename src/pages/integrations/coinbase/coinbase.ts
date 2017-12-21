@@ -11,6 +11,7 @@ import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-g
 
 //pages
 import { CoinbaseTxDetailsPage } from './coinbase-tx-details/coinbase-tx-details';
+import { AmountPage } from '../../send/amount/amount';
 
 import * as _ from 'lodash';
 
@@ -178,6 +179,14 @@ export class CoinbasePage {
     modal.onDidDismiss((data) => {
       if (data.updateRequired) this.updateTransactions();
     })
+  }
+
+  public goToBuyGlideraPage(): void {
+    this.navCtrl.push(AmountPage, { nextPage: 'BuyCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true });
+  }
+
+  public goToSellGlideraPage(): void {
+    this.navCtrl.push(AmountPage, { nextPage: 'SellCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true })
   }
 
 }
