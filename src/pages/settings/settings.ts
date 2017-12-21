@@ -11,6 +11,7 @@ import { ProfileProvider } from '../../providers/profile/profile';
 
 //pages
 import { AltCurrencyPage } from './alt-currency/alt-currency';
+import { BitcoinCashPage } from './bitcoin-cash/bitcoin-cash';
 import { LockPage } from './lock/lock';
 import { AboutPage } from './about/about';
 import { AdvancedPage } from './advanced/advanced';
@@ -64,6 +65,10 @@ export class SettingsPage {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
+  }
+
+  public openBitcoinCashPage(): void {
+    this.navCtrl.push(BitcoinCashPage);
   }
 
   public openAltCurrencyPage(): void {

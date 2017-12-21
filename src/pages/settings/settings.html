@@ -1,37 +1,43 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>{{'Settings' | translate}}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content>
-
   <ion-list>
     <button ion-item (click)="openAddressBookPage()">
       <ion-icon name="contacts" item-start></ion-icon>
       {{'Address book' | translate}}
     </button>
+
     <ion-item (click)="openHelpExternalLink()">
       <ion-icon name="help-circle" item-start></ion-icon>
       {{'Help &amp; support' | translate}}
     </ion-item>
+    
     <!--     <ion-item (click)="openFeedbackPage()">
       <ion-icon name="mail" item-start></ion-icon>
       Send feedback
     </ion-item> -->
+    
     <!--     <ion-item (click)="openSharePage()">
       <ion-icon name="heart" item-start></ion-icon>
       Share {{ appName }}
     </ion-item> TODO -->
 
     <ion-item-divider color="light">{{'Preferences' | translate}}</ion-item-divider>
+    
+    <button ion-item (click)="openBitcoinCashPage()">
+      <ion-icon item-start><img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="25" /></ion-icon>
+      Bitcoin Cash
+    </button>
+    
     <button ion-item (click)="openNotificationsPage()">
       <ion-icon name="notifications" item-start></ion-icon>
       {{'Notification' | translate}}
     </button>
+    
     <button ion-item (click)="openLanguagePage()">
       <ion-icon name="globe" item-start></ion-icon>
       <ion-label>
@@ -41,6 +47,7 @@
         {{ currentLanguageName }}
       </ion-note>
     </button>
+    
     <button ion-item (click)="openAltCurrencyPage()">
       <ion-icon name="cash" item-start></ion-icon>
       <ion-label>
@@ -50,19 +57,23 @@
         {{ selectedAlternative.name }}
       </ion-note>
     </button>
+    
     <button ion-item (click)="openFeePolicy()">
       <ion-icon name="git-network" item-start></ion-icon>
       <ion-label>
         {{'Bitcoin network fee policy' | translate}}
       </ion-label>
     </button>
+    
     <button ion-item (click)="openLockPage()">
       <ion-icon name="lock" item-start></ion-icon>
       <ion-label>
         {{'Lock' | translate}}
       </ion-label>
     </button>
+    
     <ion-item-divider *ngIf="walletsBtc.length" color="light">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
+    
     <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettings(wallet.credentials.walletId)">
       <ion-icon item-start>
         <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
@@ -76,7 +87,9 @@
         {{'Backup needed' | translate}}
       </ion-note>
     </button>
+    
     <ion-item-divider *ngIf="walletsBch.length" color="light">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
+    
     <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettings(wallet.credentials.walletId)">
       <ion-icon item-start>
         <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
@@ -90,15 +103,17 @@
         {{'Backup needed' | translate}}
       </ion-note>
     </button>
+    
     <ion-item-divider color="light">More</ion-item-divider>
+    
     <button ion-item (click)="openAdvancedPage()">
       <ion-icon name="hammer" item-start></ion-icon>
       {{'Advanced' | translate}}
     </button>
+    
     <button ion-item (click)="openAboutPage()">
       <ion-icon name="apps" item-start></ion-icon>
       {{'About' | translate}} {{appName}}
     </button>
   </ion-list>
-
 </ion-content>
