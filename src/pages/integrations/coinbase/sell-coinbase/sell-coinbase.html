@@ -1,18 +1,117 @@
-<!--
-  Generated template for the SellCoinbasePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>sell-coinbase</ion-title>
+    <ion-title>Sell bitcoin</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
+  <ion-card *ngIf="sendStatus === 'success'">
+    <ion-card-header>
+      Funds sent to Coinbase Account
+    </ion-card-header>
+    <ion-card-content>
+      The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically
+      once it is confirmed by Coinbase.
+    </ion-card-content>
+  </ion-card>
+  <ion-list *ngIf="sellRequestInfo">
+    <ion-item>
+      <div class="selling-label">
+        <img class="selling-img" src="assets/img/sell-bitcoin.svg">
+        <span>Selling</span>
+      </div>
+      <div class="amount-label">
+        <div class="amount">{{amountUnitStr}}</div>
+        <div class="alternative">
+          <span *ngIf="isFiat">{{sellRequestInfo.subtotal}} {{sellRequestInfo.currency}}</span> @ ${{sellPrice.amount}} per
+          BTC
+        </div>
+      </div>
+    </ion-item>
 
+    <ion-item-group class="info">
+      <button ion-item (click)="showWallets()" class="wallets-list">
+          <div>From</div>
+          <div class="wallet">
+            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet"/>
+            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"/>
+            <span>{{wallet ? wallet.name : '...'}}</span>
+          </div>
+        </button>
+
+      <ion-item>
+        <ion-label stacked>Deposit into</ion-label>
+        <ion-select [(ngModel)]="selectedPaymentMethodId" (ionChange)="sellRequest()">
+          <ion-option *ngFor="let item of paymentMethods" [value]="item.id">{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item-divider color="light">
+        At what percentage lower price would you accept to sell?
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-label stacked>Price Sensitivity</ion-label>
+        <ion-select [(ngModel)]="selectedPriceSensitivity">
+          <ion-option *ngFor="let item of priceSensitivity" [value]="item">{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="selectedPriceSensitivity">
+        <div>
+          Coinbase has not yet implemented an immediate method to sell bitcoin from a wallet. To make this sale, funds will be sent
+          to your Coinbase account, and sold when Coinbase accepts the transaction (usually one hour).
+        </div>
+        <div *ngIf="sellRequestInfo">
+          Estimated sale value:
+          <strong>
+            {{sellRequestInfo.total.amount | currency : '' : 2}}
+            {{sellRequestInfo.total.currency}}
+            </strong>
+        </div>
+        <div *ngIf="sellRequestInfo">
+          Still sell if price fall until:
+          <strong>
+            {{(sellRequestInfo.total.amount -
+            (selectedPriceSensitivity.data.value / 100) * sellRequestInfo.total.amount) | currency : '' : 2}}
+            {{sellRequestInfo.total.currency}}
+            </strong>
+        </div>
+      </ion-item>
+
+      <ion-item-divider color="light">
+        Transaction details
+      </ion-item-divider>
+      <ion-item>
+        Amount
+        <ion-note item-end>
+          {{sellRequestInfo.subtotal.amount}} {{sellRequestInfo.subtotal.currency}}
+        </ion-note>
+      </ion-item>
+      <ion-item *ngFor="let fee of sellRequestInfo.fees">
+        <span>
+            {{fee.type}} fee
+          </span>
+        <ion-note item-end>
+          <span *ngIf="fee.amount.amount != '0.00'">-</span> {{fee.amount.amount}} {{fee.amount.currency}}
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        Total to receive
+        <ion-note>
+          {{sellRequestInfo.total.amount}} {{sellRequestInfo.total.currency}}
+        </ion-note>
+      </ion-item>
+
+    </ion-item-group>
+  </ion-list>
 </ion-content>
+
+<ion-footer *ngIf="!isCordova && sellRequestInfo">
+  <button ion-button block class="button-footer" (click)="sellConfirm()" [disabled]="!selectedPaymentMethodId.value || !sellRequestInfo || !wallet">Confirm sale</button>
+</ion-footer>
+
+<ion-footer *ngIf="sendStatus === 'success'">
+  <button ion-button block class="button-footer" (click)="goBackHome()">Accept and back home</button>
+</ion-footer>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -15,6 +15,7 @@ import { ExternalLinkProvider } from '../../../../providers/external-link/extern
 import { OnGoingProcessProvider } from '../../../../providers/on-going-process/on-going-process';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
+import { ProfileProvider } from '../../../../providers/profile/profile';
 
 @Component({
   selector: 'page-sell-coinbase',
@@ -36,6 +37,9 @@ export class SellCoinbasePage {
   public accountId: string;
   public wallet: any;
   public sellRequestInfo: any;
+  public network: string;
+  public isFiat: boolean;
+  public priceSensitivity: any;
 
   constructor(
     private appProvider: AppProvider,
@@ -44,17 +48,41 @@ export class SellCoinbasePage {
     private logger: Logger,
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
+    private navParams: NavParams,
     private externalLinkProvider: ExternalLinkProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
     private actionSheetCtrl: ActionSheetController,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private profileProvider: ProfileProvider
   ) {
     this.coin = 'btc';
+    this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
+    this.amount = this.navParams.data.amount;
+    this.currency = this.navParams.data.currency;
+    this.priceSensitivity = this.coinbaseProvider.priceSensitivity;
+    this.selectedPriceSensitivity = { data: this.coinbaseProvider.selectedPriceSensitivity };
+    this.network = this.coinbaseProvider.getNetwork();
   }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SellCoinbasePage');
+  }
+
+  ionViewWillEnter() {
+    this.wallets = this.profileProvider.getWallets({
+      m: 1, // Only 1-signature wallet
+      onlyComplete: true,
+      network: this.network,
+      hasFunds: true,
+      coin: this.coin
+    });
+
+    if (_.isEmpty(this.wallets)) {
+      this.showErrorAndBack('No wallet available to operate with Coinbase');
+      return;
+    }
+    this.onWalletSelect(this.wallets[0]); // Default first wallet
   }
 
   private showErrorAndBack(err: any): void {
@@ -104,7 +132,7 @@ export class SellCoinbasePage {
       });
 
       this.paymentMethods = [];
-      this.selectedPaymentMethodId = { value: null };
+      this.selectedPaymentMethodId = null;
       this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
         if (err) {
           this.onGoingProcessProvider.set('connectingCoinbase', false);
@@ -121,7 +149,7 @@ export class SellCoinbasePage {
           }
           if (pm.allow_buy && pm.primary_buy) {
             hasPrimary = true;
-            this.selectedPaymentMethodId.value = pm.id;
+            this.selectedPaymentMethodId = pm.id;
           }
         }
         if (_.isEmpty(this.paymentMethods)) {
@@ -136,7 +164,7 @@ export class SellCoinbasePage {
             return;
           });
         }
-        if (!hasPrimary) this.selectedPaymentMethodId.value = this.paymentMethods[0].id;
+        if (!hasPrimary) this.selectedPaymentMethodId = this.paymentMethods[0].id;
         this.sellRequest();
       });
     });
@@ -181,12 +209,12 @@ export class SellCoinbasePage {
               this.logger.warn('Transaction found!', ctx);
               txFound = true;
               this.logger.debug('Saving transaction to process later...');
-              ctx['payment_method'] = this.selectedPaymentMethodId.value;
-              ctx['status'] = 'pending'; // Forcing "pending" status to process later
-              ctx['price_sensitivity'] = this.selectedPriceSensitivity.data;
-              ctx['sell_price_amount'] = sellPrice ? sellPrice.amount : '';
-              ctx['sell_price_currency'] = sellPrice ? sellPrice.currency : 'USD';
-              ctx['description'] = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
+              ctx.payment_method = this.selectedPaymentMethodId;
+              ctx.status = 'pending'; // Forcing "pending" status to process later
+              ctx.price_sensitivity = this.selectedPriceSensitivity;
+              ctx.sell_price_amount = sellPrice ? sellPrice.amount : '';
+              ctx.sell_price_currency = sellPrice ? sellPrice.currency : 'USD';
+              ctx.description = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
                 this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
                 if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
@@ -234,7 +262,7 @@ export class SellCoinbasePage {
       let dataSrc = {
         amount: this.amount,
         currency: this.currency,
-        payment_method: this.selectedPaymentMethodId.value,
+        payment_method: this.selectedPaymentMethodId,
         quote: true
       };
       this.coinbaseProvider.sellRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
