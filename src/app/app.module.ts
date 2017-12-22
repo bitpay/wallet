@@ -31,6 +31,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
 
 
+import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
@@ -191,6 +192,7 @@ let pages: any = [
   AmazonCardDetailsPage,
   AmazonCardsPage,
   AmazonPage,
+  BitcoinCashPage,
   BuyAmazonPage,
   BuyAndSellPage,
   BuyGlideraPage,
