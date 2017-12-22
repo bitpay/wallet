@@ -1,5 +1,16 @@
 <ion-header>
   <ion-navbar>
+    <ion-navbar>
+      <ion-buttons end>
+        <button *ngIf="!account.token" (click)="toggleOauthForm()" ion-button>
+          <span *ngIf="!showOauthForm">Enter Code</span>
+          <span *ngIf="showOauthForm">Restart</span>
+        </button>
+        <button *ngIf="account.token && account.status && !account.status.userCanTransact" (click)="update()">
+          Refresh
+        </button>
+      </ion-buttons>
+    </ion-navbar>
   </ion-navbar>
 </ion-header>
 
