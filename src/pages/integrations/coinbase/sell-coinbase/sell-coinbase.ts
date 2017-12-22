@@ -216,7 +216,8 @@ export class SellCoinbasePage {
               ctx.sell_price_currency = sellPrice ? sellPrice.currency : 'USD';
               ctx.description = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
-                this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+                this.onGoingProcessProvider.set('sellingBitcoin', false);
+                this.statusChangeHandler('sellingBitcoin', false);
                 if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
               });
               return;
@@ -228,7 +229,8 @@ export class SellCoinbasePage {
             if (count < 5) {
               this.checkTransaction(count + 1, txp);
             } else {
-              this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+              this.onGoingProcessProvider.set('sellingBitcoin', false);
+              this.statusChangeHandler('sellingBitcoin', false);
               this.showError('No transaction found');
               return;
             }
@@ -240,7 +242,8 @@ export class SellCoinbasePage {
       'leading': true
     });
 
-  private statusChangeHandler(processName: string, showName: string, isOn: boolean): void {
+  private statusChangeHandler(processName: string, isOn: boolean): void {
+    let showName = this.onGoingProcessProvider.getShowName(processName);
     this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
     if (processName == 'sellingBitcoin' && !isOn) {
       this.sendStatus = 'success';
@@ -287,10 +290,12 @@ export class SellCoinbasePage {
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: any) => {
       if (!ok) return;
 
-      this.onGoingProcessProvider.set('sellingBitcoin', true, this.statusChangeHandler);
+      this.onGoingProcessProvider.set('sellingBitcoin', true);
+      this.statusChangeHandler('sellingBitcoin', true);
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
-          this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+          this.onGoingProcessProvider.set('sellingBitcoin', false);
+          this.statusChangeHandler('sellingBitcoin', false);
           this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
           return;
         }
@@ -302,7 +307,8 @@ export class SellCoinbasePage {
         };
         this.coinbaseProvider.createAddress(accessToken, accountId, dataSrc, (err: any, data: any) => {
           if (err) {
-            this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+            this.onGoingProcessProvider.set('sellingBitcoin', false);
+            this.statusChangeHandler('sellingBitcoin', false);
             this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
             return;
           }
@@ -333,12 +339,14 @@ export class SellCoinbasePage {
               this.logger.debug('Transaction broadcasted. Wait for Coinbase confirmation...');
               this.checkTransaction(1, txSent);
             }).catch((err: any) => {
-              this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+              this.onGoingProcessProvider.set('sellingBitcoin', false);
+              this.statusChangeHandler('sellingBitcoin', false);
               this.showError(err);
               return;
             });
           }).catch((err: any) => {
-            this.onGoingProcessProvider.set('sellingBitcoin', false, this.statusChangeHandler);
+            this.onGoingProcessProvider.set('sellingBitcoin', false);
+            this.statusChangeHandler('sellingBitcoin', false);
             this.showError(err);
             return;
           });

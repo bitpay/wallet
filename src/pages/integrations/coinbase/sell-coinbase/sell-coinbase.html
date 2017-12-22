@@ -108,8 +108,8 @@
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="!isCordova && sellRequestInfo">
-  <button ion-button block class="button-footer" (click)="sellConfirm()" [disabled]="!selectedPaymentMethodId.value || !sellRequestInfo || !wallet">Confirm sale</button>
+<ion-footer *ngIf="sendStatus != 'success'">
+  <button ion-button block class="button-footer" (click)="sellConfirm()" [disabled]="!selectedPaymentMethodId || !sellRequestInfo || !wallet">Confirm sale</button>
 </ion-footer>
 
 <ion-footer *ngIf="sendStatus === 'success'">

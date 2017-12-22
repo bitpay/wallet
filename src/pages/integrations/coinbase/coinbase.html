@@ -1,5 +1,11 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons end>
+      <button *ngIf="!accessToken" (click)="toggleOauthForm()" ion-button>
+        <span *ngIf="!showOauthForm">Enter Code</span>
+        <span *ngIf="showOauthForm">Restart</span>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

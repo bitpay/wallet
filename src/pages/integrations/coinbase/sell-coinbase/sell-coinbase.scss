@@ -1,3 +1,38 @@
 page-sell-coinbase {
-
+  .sending-label {
+    display: flex;
+    align-items: center;
+    .sending-img {
+      margin-right: 2rem;
+    }
+    span {
+      font-size: 1.8rem;
+    }
+  }
+  .amount-label {
+    padding-top: 2rem;
+    .amount {
+      font-size: 3.5rem;
+      .unit {
+        font-weight: 100;
+      }
+    }
+    .alternative {
+      margin-top: 1rem;
+      color: color($global-colors, light-grey);
+    }
+  }
+  .wallets-list {
+    .wallet {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      img {
+        width: 2.3rem;
+        margin-right: 1.5rem; 
+        border-radius: 0.3rem;
+        background-color: color($colors, primary);
+      }
+    }
+  }
 }

@@ -71,7 +71,7 @@
 </ion-content>
 
 <ion-footer *ngIf="sendStatus != 'success'">
-  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!wallet || !buyRequestInfo || selectedPaymentMethodId">Confirm purchase</button>
+  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId">Confirm purchase</button>
 </ion-footer>
 
 <ion-footer *ngIf="sendStatus === 'success'">
