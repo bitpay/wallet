@@ -54,13 +54,13 @@
     <ion-card>
       <ion-card-header (click)="updateTransactions()">Activity</ion-card-header>
       <div *ngIf="pendingTransactions.data && !error">
-        <ion-list *ngFor="let tx in pendingTransactions.data | keys">
+        <ion-list *ngFor="let tx of pendingTransactions.data | keys">
           <button ion-item (click)="openTxModal(tx)">
             <ion-icon item-start>
-                <img src="img/assets/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
-                <img src="img/assets/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
-                <img src="img/assets/sold-pending.svg" alt="sold" *ngIf="tx.from && tx.type == 'send'">
-                <img src="img/assets/sold.svg" alt="sold" *ngIf="!tx.from && tx.type == 'sell' && tx.status == 'completed'">          
+                <img src="assets/img/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status != 'completed'">
+                <img src="assets/img/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.to && tx.type == 'send')) && tx.status == 'completed'">
+                <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="tx.from && tx.type == 'send'">
+                <img src="assets/img/sold.svg" alt="sold" *ngIf="!tx.from && tx.type == 'sell' && tx.status == 'completed'">          
             </ion-icon>
             <div class="action">
               <div class="assertive" *ngIf="tx.error || tx.status == 'error'">

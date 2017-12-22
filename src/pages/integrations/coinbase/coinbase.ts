@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //providers
 import { CoinbaseProvider } from '../../../providers/coinbase/coinbase';
@@ -31,6 +32,7 @@ export class CoinbasePage {
   public pendingTransactions: any;
   public code: string;
   public showOauthForm: boolean;
+  public oauthCodeForm: FormGroup;
 
   private isNW: boolean;
   private isCordova: boolean;
@@ -44,8 +46,12 @@ export class CoinbasePage {
     private platformProvider: PlatformProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private modalCtrl: ModalController,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private formBuilder: FormBuilder
   ) {
+    this.oauthCodeForm = this.formBuilder.group({
+      code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
+    });
     this.isNW = this.platformProvider.isNW;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;

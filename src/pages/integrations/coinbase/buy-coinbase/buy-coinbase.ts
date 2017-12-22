@@ -93,7 +93,8 @@ export class BuyCoinbasePage {
     this.popupProvider.ionicAlert('Error', err);
   }
 
-  private statusChangeHandler(processName: string, showName: string, isOn: boolean): void {
+  private statusChangeHandler(processName: string, isOn: boolean): void {
+    let showName = this.onGoingProcessProvider.getShowName(processName);
     this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
     if (processName == 'buyingBitcoin' && !isOn) {
       this.sendStatus = 'success';
@@ -117,7 +118,7 @@ export class BuyCoinbasePage {
       });
 
       this.paymentMethods = [];
-      this.selectedPaymentMethodId = { value: null };
+      this.selectedPaymentMethodId = null;
       this.coinbaseProvider.getPaymentMethods(accessToken, (err: any, p: any) => {
         if (err) {
           this.onGoingProcessProvider.set('connectingCoinbase', false);
@@ -134,7 +135,7 @@ export class BuyCoinbasePage {
           }
           if (pm.allow_buy && pm.primary_buy) {
             hasPrimary = true;
-            this.selectedPaymentMethodId.value = pm.id;
+            this.selectedPaymentMethodId = pm.id;
           }
         }
         if (_.isEmpty(this.paymentMethods)) {
@@ -149,7 +150,7 @@ export class BuyCoinbasePage {
             return;
           });
         }
-        if (!hasPrimary) this.selectedPaymentMethodId.value = this.paymentMethods[0].id;
+        if (!hasPrimary) this.selectedPaymentMethodId = this.paymentMethods[0].id;
         this.buyRequest();
       });
     });
@@ -168,7 +169,7 @@ export class BuyCoinbasePage {
       let dataSrc = {
         amount: this.amount,
         currency: this.currency,
-        payment_method: this.selectedPaymentMethodId.value,
+        payment_method: this.selectedPaymentMethodId,
         quote: true
       };
       this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, data: any) => {
@@ -189,10 +190,12 @@ export class BuyCoinbasePage {
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
       if (!ok) return;
 
-      this.onGoingProcessProvider.set('buyingBitcoin', true, this.statusChangeHandler);
+      this.onGoingProcessProvider.set('buyingBitcoin', true);
+      this.statusChangeHandler('buyingBitcoin', true);
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
-          this.onGoingProcessProvider.set('buyingBitcoin', false, this.statusChangeHandler);
+          this.onGoingProcessProvider.set('buyingBitcoin', false);
+          this.statusChangeHandler('buyingBitcoin', false);
           this.showError(err);
           return;
         }
@@ -201,12 +204,13 @@ export class BuyCoinbasePage {
         let dataSrc = {
           amount: this.amount,
           currency: this.currency,
-          payment_method: this.selectedPaymentMethodId.value,
+          payment_method: this.selectedPaymentMethodId,
           commit: true
         };
         this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, b: any) => {
           if (err) {
-            this.onGoingProcessProvider.set('buyingBitcoin', false, this.statusChangeHandler);
+            this.onGoingProcessProvider.set('buyingBitcoin', false);
+            this.statusChangeHandler('buyingBitcoin', false);
             this.showError(err);
             return;
           }
@@ -226,14 +230,16 @@ export class BuyCoinbasePage {
 
   private processBuyTx(tx: any): void {
     if (!tx) {
-      this.onGoingProcessProvider.set('buyingBitcoin', false, this.statusChangeHandler);
+      this.onGoingProcessProvider.set('buyingBitcoin', false);
+      this.statusChangeHandler('buyingBitcoin', false);
       this.showError('Transaction not found');
       return;
     }
 
     this.coinbaseProvider.getTransaction(this.accessToken, this.accountId, tx.id, (err: any, updatedTx: any) => {
       if (err) {
-        this.onGoingProcessProvider.set('buyingBitcoin', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('buyingBitcoin', false);
+        this.statusChangeHandler('buyingBitcoin', false);
         this.showError(err);
         return;
       }
@@ -244,11 +250,13 @@ export class BuyCoinbasePage {
 
         this.logger.debug('Saving transaction to process later...');
         this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
-          this.onGoingProcessProvider.set('buyingBitcoin', false, this.statusChangeHandler);
+          this.onGoingProcessProvider.set('buyingBitcoin', false);
+          this.statusChangeHandler('buyingBitcoin', false);
           if (err) this.logger.debug(err);
         });
       }).catch((err) => {
-        this.onGoingProcessProvider.set('buyingBitcoin', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('buyingBitcoin', false);
+        this.statusChangeHandler('buyingBitcoin', false);
         this.showError(err);
       });
     });
@@ -257,7 +265,8 @@ export class BuyCoinbasePage {
   private _processBuyOrder(b: any): void {
     this.coinbaseProvider.getBuyOrder(this.accessToken, this.accountId, b.data.id, (err: any, buyResp: any) => {
       if (err) {
-        this.onGoingProcessProvider.set('buyingBitcoin', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('buyingBitcoin', false);
+        this.statusChangeHandler('buyingBitcoin', false);
         this.showError(err);
         return;
       }
