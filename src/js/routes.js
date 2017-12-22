@@ -1207,9 +1207,48 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             templateUrl: 'views/preferencesBitpayServices.html'
           }
         }
-      });
+      })
+
+      /*
+       *
+       * ShapeShift
+       *
+       */
+
+      .state('tabs.shapeshift', {
+        url: '/shapeshift',
+        views: {
+          'tab-home@tabs': {
+            controller: 'shapeshiftController',
+            templateUrl: 'views/shapeshift.html'
+          }
+        }
+      })
+      .state('tabs.shapeshift.amount', {
+        url: '/amount/:coin/:id/:toWalletId',
+        views: {
+          'tab-home@tabs': {
+            controller: 'amountController',
+            templateUrl: 'views/amount.html'
+          }
+        },
+        params: {
+          nextStep: 'tabs.shapeshift.confirm',
+          fixedUnit: true,
+        }
+      })
+      .state('tabs.shapeshift.confirm', {
+        url: '/confirm/:amount/:currency/:id/:toWalletId',
+        views: {
+          'tab-home@tabs': {
+            controller: 'shapeshiftConfirmController',
+            templateUrl: 'views/shapeshiftConfirm.html'
+          }
+        }
+      })
+      ;
   })
-  .run(function($rootScope, $state, $location, $log, $timeout, startupService, ionicToast, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, emailService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, bitpayCardService, applicationService, mercadoLibreService) {
+  .run(function($rootScope, $state, $location, $log, $timeout, startupService, ionicToast, fingerprintService, $ionicHistory, $ionicPlatform, $window, appConfigService, lodash, platformInfo, profileService, uxLanguage, gettextCatalog, openURLService, storageService, scannerService, configService, emailService, /* plugins START HERE => */ coinbaseService, glideraService, amazonService, shapeshiftService, bitpayCardService, applicationService, mercadoLibreService) {
 
     uxLanguage.init();
 

@@ -1,0 +1,98 @@
+<ion-view id="shapeshift" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>{{'Confirm'|translate}}</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content class="add-bottom-for-cta">
+    <!-- BUY -->
+    <div class="list">
+
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/icon-shapeshift.svg" width="50">
+          <span translate>Shift</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{totalAmountStr}}</div>
+          <div class="alternative" ng-if="amountFiatStr">{{amountFiatStr}}</div>
+        </div>
+      </div>
+
+      <div class="info">
+        <div class="item item-icon-right">
+          <div class="label">
+            {{'From'|translate}}
+          </div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img ng-src="img/{{fromWallet.network == 'testnet' ? 'icon-wallet-testnet' : 'icon-wallet'}}.svg"
+              ng-class="{'wallet-background-color-default': !fromWallet.color}" ng-style="{'background-color': fromWallet.color}" class="bg">
+            </i>
+            {{fromWallet ? fromWallet.name : '...'}}
+          </div>
+          <i class="icon">
+            <img ng-if="fromWallet.coin == 'btc'" class="confirm-coin-logo" src="img/icon-bitcoin.svg" width="26">
+            <img ng-if="fromWallet.coin == 'bch'" class="confirm-coin-logo-cash" src="img/bitcoin-cash-logo.svg" width="30">
+          </i>
+        </div>
+        <div class="item item-icon-right">
+          <div class="label">
+            {{'To'|translate}}
+          </div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img ng-src="img/{{toWallet.network == 'testnet' ? 'icon-wallet-testnet' : 'icon-wallet'}}.svg"
+              ng-class="{'wallet-background-color-default': !toWallet.color}" ng-style="{'background-color': toWallet.color}" class="bg">
+            </i>
+            {{toWallet ? toWallet.name : '...'}}
+          </div>
+          <i class="icon">
+            <img ng-if="toWallet.coin == 'btc'" class="confirm-coin-logo" src="img/icon-bitcoin.svg" width="26">
+            <img ng-if="toWallet.coin == 'bch'" class="confirm-coin-logo-cash" src="img/bitcoin-cash-logo.svg" width="30">
+          </i>
+        </div>
+        <div class="item item-divider" translate>
+          Details
+        </div>
+        <div class="item">
+          <span translate>Fee</span>
+          <span class="item-note">
+            {{feeStr}}
+          </span>
+        </div>
+        <div class="item">
+          <span translate>Widthdrawal</span>
+          <span class="item-note">
+            {{withdrawalStr}}
+          </span>
+        </div>
+        <div class="item item-divider"></div>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <click-to-accept
+    ng-click="confirm()"
+    ng-if="!isCordova"
+    click-send-status="sendStatus"
+    is-disabled="!fromWallet || !totalAmountStr">
+    {{'Shift'|translate}}
+  </click-to-accept>
+  <slide-to-accept
+    ng-if="isCordova && fromWallet && totalAmountStr"
+    slide-on-confirm="confirm()"
+    slide-send-status="sendStatus">
+    {{'Slide to shift'|translate}}
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="goBackHome()"
+    slide-success-hide-on-confirm="true">
+    <div class="m10 size-14" ng-show="txSent" translate>
+      Transaction sent.
+    </div>
+  </slide-to-accept-success>
+</ion-view>

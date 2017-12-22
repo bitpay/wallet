@@ -1,0 +1,27 @@
+<i class="icon big-icon-svg">
+  <img ng-if="toWallet.network != 'testnet'" src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default':
+  !toWallet.color}" ng-style="{'background-color': toWallet.color}" class="bg"/>
+</i>
+<span>
+  {{toWallet.name || toWallet.id}}
+</span>
+<p>
+  <span ng-if="!toWallet.isComplete()" class="assertive" translate>
+    Incomplete
+  </span>
+  <span ng-if="toWallet.isComplete()">
+    <span ng-if="!toWallet.balanceHidden  && !toWallet.scanning"> {{toWallet.status.totalBalanceStr ?
+      toWallet.status.totalBalanceStr : ( toWallet.cachedBalance ? toWallet.cachedBalance   +
+      (toWallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( toWallet.cachedBalanceUpdatedOn  * 1000 | amTimeAgo) : '') : ''  ) }} </span>
+    <span ng-if="toWallet.scanning" translate> Scanning funds... </span>
+
+    <span ng-if="toWallet.balanceHidden && !toWallet.scanning" translate>[Balance Hidden]</span>
+    <span class="tab-home__wallet__multisig-number" ng-if="toWallet.n > 1">
+      {{toWallet.m}}-of-{{toWallet.n}}
+    </span>
+    <i ng-if="!toWallet.balanceHidden && (toWallet.status.totalBalanceSat != toWallet.status.spendableAmount)" class="tab-home__wallet__status-icon ion-ios-timer-outline"></i>
+    <span class="assertive" ng-if="toWallet.error">{{toWallet.error}}</span>
+  </span>
+  &nbsp;
+</p>
+<i class="icon bp-arrow-right"></i>

@@ -1,0 +1,93 @@
+<ion-view id="shapeshift" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>ShapeShift</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content>
+    <div class="list card ng-hide" ng-show="fromWallets.length == 0 || toWallets.length == 0">
+      <div class="item item-heading">
+        <span translate>No available wallets to convert between.</span>
+      </div>
+    </div>
+
+    <div class="list card" ng-if="fromWallets.length > 0">
+      <div class="item item-icon-right item-heading">
+        <span translate>From</span>
+        <i class="icon">
+          <img ng-if="fromWallet.coin == 'btc'" src="img/icon-bitcoin.svg" width="18">
+          <img ng-if="fromWallet.coin == 'bch'" src="img/bitcoin-cash-logo.svg" width="22">
+        </i>
+      </div>
+      <div>
+        <a class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
+           ng-click="showFromWalletSelector()">
+          <span ng-include="'views/includes/walletListFromShapeshift.html'"></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="swipe-arrow">
+      <i class="icon ion-ios-arrow-down"></i>
+    </div>
+
+    <div class="list card" ng-if="toWallets.length > 0">
+      <div class="item item-icon-right item-heading">
+        <span translate>To</span>
+        <i class="icon">
+            <img ng-if="toWallet.coin == 'btc'" src="img/icon-bitcoin.svg" width="18">
+            <img ng-if="toWallet.coin == 'bch'" src="img/bitcoin-cash-logo.svg" width="22">
+          </i>
+      </div>
+      <div>
+        <a class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
+           ng-click="showToWalletSelector()">
+          <span ng-include="'views/includes/walletListToShapeshift.html'"></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="rate-block">
+      <div>Rate:
+        <span ng-if="!rate">...</span>
+        <span ng-if="rate">
+          {{rate.rate}} {{toWallet.coin | uppercase}} per {{fromWallet.coin | uppercase}}
+        </span>
+      </div>
+      <div>Limit:
+        <span ng-if="!limit">...</span>
+        <span ng-if="limit">
+          {{limit.limit}} {{fromWallet.coin | uppercase}}
+        </span>
+      </div>
+      <div>Minimum:
+        <span ng-if="!limit">...</span>
+        <span ng-if="limit">
+          {{limit.min}} {{fromWallet.coin | uppercase}}
+        </span>
+      </div>
+    </div>
+
+    <button class="shift-button button button-standard button-primary" ng-click="setAmount()" no-low-fee>
+      Continue
+    </button>
+
+</ion-content>
+
+<wallet-selector
+                wallet-selector-title="fromWalletSelectorTitle"
+                wallet-selector-wallets="fromWallets"
+                wallet-selector-selected-wallet="fromWallet"
+                wallet-selector-show="showFromWallets"
+                wallet-selector-on-select="onFromWalletSelect">
+</wallet-selector>
+
+<wallet-selector
+                wallet-selector-title="toWalletSelectorTitle"
+                wallet-selector-wallets="toWallets"
+                wallet-selector-selected-wallet="toWallet"
+                wallet-selector-show="showToWallets"
+                wallet-selector-on-select="onToWalletSelect">
+</wallet-selector>
+</ion-view>

@@ -121,6 +121,10 @@ angular.module('copayApp.controllers').controller('amountController', function($
     $scope.toColor = data.stateParams.toColor;
     $scope.showSendMax = false;
 
+
+    // Use only with ShapeShift
+    $scope.toWalletId = data.stateParams.toWalletId;
+
     if (!$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')
       throw ('bad params');
@@ -310,7 +314,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
           $scope.alternativeAmount = txFormatService.formatAmount(a * unitToSatoshi, true);
         } else {
           if (result) {
-            $scope.alternativeAmount = 'N/A'; 
+            $scope.alternativeAmount = 'N/A';
           } else {
             $scope.alternativeAmount = null;
           }
@@ -374,7 +378,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
         amount: $scope.useSendMax ? null : _amount,
         currency: unit.id.toUpperCase(),
         coin: coin,
-        useSendMax: $scope.useSendMax
+        useSendMax: $scope.useSendMax,
+        toWalletId: $scope.toWalletId
       });
     } else {
       var amount = _amount;
