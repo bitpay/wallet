@@ -75,7 +75,7 @@
   </ion-content>
 
   <click-to-accept
-    ng-click="confirm()"
+    ng-click="confirmTx()"
     ng-if="!isCordova"
     click-send-status="sendStatus"
     is-disabled="!fromWallet || !totalAmountStr">
@@ -83,7 +83,7 @@
   </click-to-accept>
   <slide-to-accept
     ng-if="isCordova && fromWallet && totalAmountStr"
-    slide-on-confirm="confirm()"
+    slide-on-confirm="confirmTx()"
     slide-send-status="sendStatus">
     {{'Slide to shift'|translate}}
   </slide-to-accept>
@@ -92,7 +92,7 @@
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
     <div class="m10 size-14" ng-show="txSent" translate>
-      Transaction sent.
+      Transaction sent
     </div>
   </slide-to-accept-success>
 </ion-view>

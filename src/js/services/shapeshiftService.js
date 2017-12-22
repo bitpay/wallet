@@ -66,6 +66,43 @@ angular.module('copayApp.services').factory('shapeshiftService', function($http,
     });
   };
 
+  root.saveShapeshift = function(data, opts, cb) {
+    var network = root.getNetwork();
+    storageService.getShapeshift(network, function(err, oldData) {
+      if (lodash.isString(oldData)) {
+        oldData = JSON.parse(oldData);
+      }
+      if (lodash.isString(data)) {
+        data = JSON.parse(data);
+      }
+      var inv = oldData || {};
+      inv[data.address] = data;
+      if (opts && (opts.error || opts.status)) {
+        inv[data.address] = lodash.assign(inv[data.address], opts);
+      }
+      if (opts && opts.remove) {
+        delete(inv[data.address]);
+      }
+
+      inv = JSON.stringify(inv);
+
+
+      storageService.setShapeshift(network, inv, function(err) {
+        homeIntegrationsService.register(homeItem);
+        nextStepsService.unregister(homeItem.name);
+        return cb(err);
+      });
+    });
+  };
+
+  root.getShapeshift = function(cb) {
+    var network = root.getNetwork();
+    storageService.getShapeshift(network, function(err, ss) {
+      var _gcds = ss ? JSON.parse(ss) : null;
+      return cb(err, _gcds);
+    });
+  };
+
   root.getRate = function(pair, cb) {
     $http(_get('/rate/' + pair)).then(function(data) {
       $log.info('Shapeshift PAIR: SUCCESS');
@@ -86,8 +123,24 @@ angular.module('copayApp.services').factory('shapeshiftService', function($http,
     });
   };
 
+  root.getStatus = function(addr, cb) {
+    $http(_get('/txStat/' + addr)).then(function(data) {
+      $log.info('Shapeshift STATUS: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Shapeshift STATUS ERROR', data);
+      return cb(data);
+    });
+  };
+
   var register = function() {
-    homeIntegrationsService.register(homeItem);
+    storageService.getShapeshift(root.getNetwork(), function(err, ss) {
+      if (ss) {
+        homeIntegrationsService.register(homeItem);
+      } else {
+        nextStepsService.register(homeItem);
+      }
+    });
   };
 
   register();

@@ -1224,6 +1224,15 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
           }
         }
       })
+      .state('tabs.shapeshift.shift', {
+        url: '/shift',
+        views: {
+          'tab-home@tabs': {
+            controller: 'shapeshiftShiftController',
+            templateUrl: 'views/shapeshiftShift.html'
+          }
+        }
+      })
       .state('tabs.shapeshift.amount', {
         url: '/amount/:coin/:id/:toWalletId',
         views: {

@@ -3,6 +3,37 @@
   $item-vertical-padding: 10px;
   $item-border-color: #EFEFEF;
   $item-label-color: #6C6C6E;
+  .start-background {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    background: url(../img/shapeshift_background.jpg) center center no-repeat #28394d;
+    .start-buttons {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+    }
+    .start-description {
+      margin-top: 0;
+      margin-left: 2rem;
+      margin-right: 2rem;
+      margin-bottom: 130px;
+      opacity: .6;
+      max-width: 300px;
+    }
+  }
+  .main-header {
+    height: 120px;
+    background: url(../img/shapeshift_background.jpg) center center no-repeat #28394d;
+    text-align: center;
+    img {
+      padding-top: 20px;
+    }
+  }
   .confirm-coin-logo {
     margin-top: 26px;
   }
@@ -21,17 +52,6 @@
       background: #fff;
       border-radius: 50px;
     }
-  }
-  .swipe-arrow {
-    width: 100%;
-    text-align: center;
-  }
-  .rate-block {
-    text-align: left;
-    color: gray;
-    padding: 5px 15px;
-    font-size: 12px;
-    font-weight: bold;
   }
   .shift-button {
     margin-top: 20px;

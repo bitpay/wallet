@@ -63,6 +63,24 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
     });
   };
 
+  var saveShapeshiftData = function() {
+    var address = $scope.shapeInfo.deposit;
+    var status;
+    var now = moment().unix() * 1000;
+
+    shapeshiftService.getStatus(address, function(err, st) {
+      var newData = {
+        address: address,
+        status: st.status,
+        date: now
+      };
+
+      shapeshiftService.saveShapeshift(newData, null, function(err) {
+        $log.debug("Saved shift with status: " + newData.status);
+      });
+    });
+  };
+
   var createTx = function(wallet, toAddress, cb) {
     var parsedAmount = txFormatService.parseAmount(wallet.coin, amount, currency);
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
@@ -223,7 +241,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
 
   });
 
-  $scope.confirm = function() {
+  $scope.confirmTx = function() {
     if (!createdTx) {
       showErrorAndBack(null, gettextCatalog.getString('Transaction has not been created'));
       return;
@@ -248,6 +266,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
           return;
         }
         $scope.txSent = txSent;
+        $timeout(function() { saveShapeshiftData(); }, 2000);
         $timeout(function() { $scope.$digest(); }, 100);
       });
     });

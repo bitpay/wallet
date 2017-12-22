@@ -1,93 +1,57 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('shapeshiftController',
-  function($scope, $ionicHistory, $timeout, $log, $state, profileService, popupService, lodash, shapeshiftService, gettextCatalog) {
+  function($rootScope, $scope, $timeout, $log, $ionicScrollDelegate, lodash, shapeshiftService, externalLinkService) {
 
-    var defaultCoin = 'btc';
-    var walletsBtc = [];
-    var walletsBch = [];
+    var listeners = [];
+    $scope.openExternalLink = function(url) {
+      externalLinkService.open(url);
+    };
 
-    var showErrorAndBack = function(title, msg) {
-      title = title || gettextCatalog.getString('Error');
-      $scope.sendStatus = '';
-      $log.error(msg);
-      msg = (msg && msg.errors) ? msg.errors[0].message : msg;
-      popupService.showAlert(title, msg, function() {
-        $ionicHistory.goBack();
+    var updateShift = function(shifts) {
+      if (lodash.isEmpty(shifts.data)) return;
+      lodash.forEach(shifts.data, function(dataFromStorage) {
+        shapeshiftService.getStatus(dataFromStorage.address, function(err, st) {
+          if (err) return;
+
+          $scope.shifts.data[st.address]['status'] = st.status;
+          $timeout(function() {
+            $scope.$digest();
+          }, 100);
+        });
       });
     };
 
-    var showToWallets = function() {
-      $scope.toWallets = $scope.fromWallet.coin == 'btc' ? walletsBch : walletsBtc;
-      $scope.onToWalletSelect($scope.toWallets[0]);
 
-      var pair = $scope.fromWallet.coin + '_' + $scope.toWallet.coin;
-      shapeshiftService.getRate(pair, function(err, rate) {
-        $scope.rate = rate;
+    var init = function() {
+      shapeshiftService.getShapeshift(function(err, ss) {
+        if (err) $log.error(err);
+
+        $scope.shifts = { data: ss };
+        updateShift($scope.shifts);
+        $timeout(function() {
+          $scope.$digest();
+          $ionicScrollDelegate.resize();
+        });
       });
-      shapeshiftService.getLimit(pair, function(err, limit) {
-        $scope.limit = limit;
-      });
-
-      $timeout(function() { $scope.$digest(); }, 100);
-    }
-
-    $scope.onFromWalletSelect = function(wallet) {
-      $scope.fromWallet = wallet;
-      showToWallets();
     };
-
-    $scope.onToWalletSelect = function(wallet) {
-      $scope.toWallet = wallet;
-    }
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-
       $scope.network = shapeshiftService.getNetwork();
-      walletsBtc = profileService.getWallets({
-        onlyComplete: true,
-        network: $scope.network,
-        coin: 'btc'
-      });
+      $scope.shifts = { data: {} };
 
-      walletsBch = profileService.getWallets({
-        onlyComplete: true,
-        network: $scope.network,
-        coin: 'bch'
-      });
+      listeners = [
+        $rootScope.$on('bwsEvent', function(e, walletId) {
+          if (e.type == 'NewBlock') updateShift($scope.shifts);
+        })
+      ];
 
-      $scope.fromWallets = lodash.filter(walletsBtc.concat(walletsBch), function(w) {
-        // Available balance and 1-signature wallet
-        return w.status.balance.availableAmount > 0 && w.credentials.m == 1;
-      });
-
-      if (lodash.isEmpty($scope.fromWallets)) {
-        showErrorAndBack(null, gettextCatalog.getString('No wallets available to use ShapeShift'));
-        return;
-      }
-
-      $scope.onFromWalletSelect($scope.fromWallets[0]);
-
-      $scope.fromWalletSelectorTitle = 'From';
-      $scope.toWalletSelectorTitle = 'To';
-
-      $scope.showFromWallets = false;
-      $scope.showToWallets = false;
+      init();
     });
 
-    $scope.showFromWalletSelector = function() {
-      $scope.showFromWallets = true;
-    }
-
-    $scope.showToWalletSelector = function() {
-      $scope.showToWallets = true;
-    }
-
-    $scope.setAmount = function() {
-      $state.go('tabs.shapeshift.amount', {
-        coin: $scope.fromWallet.coin,
-        id: $scope.fromWallet.id,
-        toWalletId: $scope.toWallet.id
+    $scope.$on("$ionicView.leave", function(event, data) {
+      lodash.each(listeners, function(x) {
+        x();
       });
-    };
+    });
   });
