@@ -300,6 +300,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
       $ionicHistory.nextViewOptions({
         disableAnimate: true
       });
+      $state.transitionTo('tabs.shapeshift');
     });
   };
 });
