@@ -49,7 +49,7 @@
         </p>
       </div>
 
-      <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="u.address">
+      <ion-item *ngFor="let u of latestUnused" copy-to-clipboard="{{u.address}}">
         <h3>{{u.address}}</h3>
         <p>{{u.path}} {{u.createdOn * 1000 | amDateFormat:'MMMM Do YYYY, hh:mm a'}}</p>
       </ion-item>
@@ -58,7 +58,7 @@
     <div *ngIf="latestWithBalance && latestWithBalance[0]">
       <ion-item-divider color="light">{{'Addresses with balance' | translate}}</ion-item-divider>
 
-      <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="w.address">
+      <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
         <p class="amount">{{w.amount | satToUnit: wallet.coin}}</p>
       </ion-item>
