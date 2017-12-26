@@ -24,6 +24,9 @@ if (externalServices.glidera &&
 if (externalServices.glidera &&
     (externalServices.glidera.sandbox.mobile.client_id || externalServices.glidera.sandbox.desktop.client_id))
   console.log('Glidera Sandbox Enabled');
+if (externalServices.shapeshift &&
+    externalServices.shapeshift.api_key)
+  console.log('Shapeshift PUBLIC KEY found!');
 
 var content = 'window.externalServices=' + JSON.stringify(externalServices) + ';';
 fs.writeFileSync("./src/js/externalServices.js", content);

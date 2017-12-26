@@ -1,7 +1,12 @@
 'use strict';
-angular.module('copayApp.services').factory('shapeshiftService', function($http, $log, lodash, moment, storageService, configService, platformInfo, nextStepsService, homeIntegrationsService) {
+angular.module('copayApp.services').factory('shapeshiftService', function($http, $log, $window, lodash, moment, storageService, configService, platformInfo, nextStepsService, homeIntegrationsService) {
   var root = {};
   var credentials = {};
+
+  // (Optional) Affiliate PUBLIC KEY, for volume tracking, affiliate payments, split-shifts, etc.
+  if ($window.externalServices && $window.externalServices.shapeshift) {
+    credentials.API_KEY = $window.externalServices.shapeshift.api_key || null;
+  }
 
   /*
    * Development: 'testnet'
@@ -14,8 +19,8 @@ angular.module('copayApp.services').factory('shapeshiftService', function($http,
     credentials.API_URL = "";
   } else {
     // CORS: cors.shapeshift.io
-    credentials.API_URL = "https://cors.shapeshift.io";
-  };
+    credentials.API_URL = "https://shapeshift.io";
+  }
 
   var homeItem = {
     name: 'shapeshift',
@@ -54,7 +59,8 @@ angular.module('copayApp.services').factory('shapeshiftService', function($http,
     var dataSrc = {
       withdrawal: data.withdrawal,
       pair: data.pair,
-      returnAddress: data.returnAddress
+      returnAddress: data.returnAddress,
+      apiKey: credentials.API_KEY
     };
 
     $http(_post('/shift', dataSrc)).then(function(data) {
