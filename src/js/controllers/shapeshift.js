@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
       externalLinkService.open(url);
     };
 
-    var updateShift = function(shifts) {
+    var updateShift = lodash.debounce(function(shifts) {
       if (lodash.isEmpty(shifts.data)) return;
       lodash.forEach(shifts.data, function(dataFromStorage) {
         if (dataFromStorage.status == 'complete') return;
@@ -24,7 +24,9 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
           }, 100);
         });
       });
-    };
+    }, 1000, {
+      'leading': true
+    });
 
 
     var init = function() {
