@@ -83,7 +83,9 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
       var newData = {
         address: address,
         status: st.status,
-        date: now
+        date: now,
+        amount: $scope.amountStr,
+        title: $scope.fromWallet.coin.toUpperCase() + ' to ' + $scope.toWallet.coin.toUpperCase()
       };
 
       shapeshiftService.saveShapeshift(newData, null, function(err) {
@@ -96,7 +98,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
     var parsedAmount = txFormatService.parseAmount(wallet.coin, amount, currency);
     $scope.amountUnitStr = parsedAmount.amountUnitStr;
 
-    var message = 'ShapeShift: ' + $scope.fromWallet.coin.toUpperCase() + ' to ' + $scope.toWallet.coin.toUpperCase();
+    message = 'ShapeShift: ' + $scope.fromWallet.coin.toUpperCase() + ' to ' + $scope.toWallet.coin.toUpperCase();
     var outputs = [];
 
     outputs.push({
@@ -263,13 +265,13 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
       showErrorAndBack(null, gettextCatalog.getString('Transaction has not been created'));
       return;
     }
-    var title = gettextCatalog.getString('Confirm to shift from {{fromCoin}} to {{toCoin}}', {
+    var title = gettextCatalog.getString('Confirm to shift {{fromCoin}} to {{toCoin}}', {
       fromCoin: $scope.fromWallet.coin.toUpperCase(),
       toCoin: $scope.toWallet.coin.toUpperCase()
     });
     var okText = gettextCatalog.getString('OK');
     var cancelText = gettextCatalog.getString('Cancel');
-    popupService.showConfirm(title, message, okText, cancelText, function(ok) {
+    popupService.showConfirm(title, null, okText, cancelText, function(ok) {
       if (!ok) {
         $scope.sendStatus = '';
         return;
