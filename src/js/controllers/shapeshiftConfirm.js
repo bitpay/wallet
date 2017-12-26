@@ -271,9 +271,12 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
     });
     var okText = gettextCatalog.getString('OK');
     var cancelText = gettextCatalog.getString('Cancel');
-    popupService.showConfirm(title, null, okText, cancelText, function(ok) {
+    popupService.showConfirm(title, '', okText, cancelText, function(ok) {
       if (!ok) {
         $scope.sendStatus = '';
+        $timeout(function() {
+          $scope.$apply();
+        });
         return;
       }
 
