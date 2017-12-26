@@ -9,6 +9,10 @@
     position: absolute;
     bottom: 55px;
     padding: 0 1.5rem;
+    // nasty iPhone X hacks
+    padding-bottom: calc(constant(safe-area-inset-bottom) + 50px);
+    // changed for iOS>=11.2
+    padding-bottom: calc(env(safe-area-inset-bottom) + 50px);
     width: 100%;
   }
   color: #fff;
