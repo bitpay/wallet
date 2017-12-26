@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, $ionicModal, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog) {
+angular.module('copayApp.controllers').controller('topUpController', function($scope, $log, $state, $timeout, $ionicHistory, $ionicConfig, $ionicModal, lodash, popupService, profileService, ongoingProcess, walletService, configService, platformInfo, bitpayService, bitpayCardService, payproService, bwcError, txFormatService, sendMaxService, gettextCatalog, externalLinkService) {
 
   var FEE_TOO_HIGH_LIMIT_PER = 15;
   $scope.isCordova = platformInfo.isCordova;
@@ -43,7 +43,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     });
   };
 
-  var publishAndSign = function (wallet, txp, onSendStatusChange, cb) {
+  var publishAndSign = function(wallet, txp, onSendStatusChange, cb) {
     if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
       var err = gettextCatalog.getString('No signing proposal: No private key');
       $log.info(err);
@@ -56,7 +56,7 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     }, onSendStatusChange);
   };
 
-  var statusChangeHandler = function (processName, showName, isOn) {
+  var statusChangeHandler = function(processName, showName, isOn) {
     $log.debug('statusChangeHandler: ', processName, showName, isOn);
     if (processName == 'topup' && !isOn) {
       $scope.sendStatus = 'success';
@@ -163,19 +163,26 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
         }
 
         if (maxValues.amount == 0) {
-          return cb({message: gettextCatalog.getString('Insufficient funds for fee')});
+          return cb({
+            message: gettextCatalog.getString('Insufficient funds for fee')
+          });
         }
 
         var maxAmountBtc = Number((maxValues.amount / 100000000).toFixed(8));
 
-        createInvoice({amount: maxAmountBtc, currency: 'BTC'}, function(err, inv) {
+        createInvoice({
+          amount: maxAmountBtc,
+          currency: 'BTC'
+        }, function(err, inv) {
           if (err) return cb(err);
 
           var invoiceFeeSat = parseInt((inv.buyerPaidBtcMinerFee * 100000000).toFixed());
           var newAmountSat = maxValues.amount - invoiceFeeSat;
 
           if (newAmountSat <= 0) {
-            return cb({message: gettextCatalog.getString('Insufficient funds for fee')});
+            return cb({
+              message: gettextCatalog.getString('Insufficient funds for fee')
+            });
           }
 
           return cb(null, newAmountSat, 'sat');
@@ -265,7 +272,10 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
 
-    bitpayCardService.get({ cardId: cardId, noRefresh: true }, function(err, card) {
+    bitpayCardService.get({
+      cardId: cardId,
+      noRefresh: true
+    }, function(err, card) {
       if (err) {
         showErrorAndBack(null, err);
         return;
@@ -355,8 +365,14 @@ angular.module('copayApp.controllers').controller('topUpController', function($s
     });
     $ionicHistory.clearHistory();
     $state.go('tabs.home').then(function() {
-      $state.transitionTo('tabs.bitpayCard', {id: cardId});
+      $state.transitionTo('tabs.bitpayCard', {
+        id: cardId
+      });
     });
+  };
+
+  $scope.openExternalLink = function(url) {
+    externalLinkService.open(url);
   };
 
 });

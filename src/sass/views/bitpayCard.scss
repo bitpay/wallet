@@ -5,7 +5,12 @@
   $item-border-color: #EFEFEF;
   $item-label-color: #6C6C6E;
   background: white;
-
+  .details {
+    float: right;
+    font-size: 25px;
+    color: $v-accent-color;
+    cursor: pointer;
+  }
   .status-label {
     font-size: 14px;
     font-weight: 300;
