@@ -5,7 +5,7 @@
     <ion-nav-title>{{'Confirm'|translate}}</ion-nav-title>
   </ion-nav-bar>
 
-  <ion-content class="add-bottom-for-cta">
+  <ion-content class="has-bottom">
     <!-- BUY -->
     <div class="list">
 
@@ -15,8 +15,8 @@
           <span translate>Shift</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{totalAmountStr}}</div>
-          <div class="alternative" ng-if="amountFiatStr">{{amountFiatStr}}</div>
+          <div class="amount">{{amountStr}}</div>
+          <div class="alternative" ng-if="fiatAmount">{{fiatAmount | currency}} {{currencyIsoCode}}</div>
         </div>
       </div>
 
@@ -53,22 +53,22 @@
             <img ng-if="toWallet.coin == 'bch'" class="confirm-coin-logo-cash" src="img/bitcoin-cash-logo.svg" width="30">
           </i>
         </div>
-        <div class="item item-divider" translate>
-          Details
-        </div>
-        <div class="item">
+        <div class="item" ng-if="fiatFee && feeRatePerStr">
           <span translate>Fee</span>
           <span class="item-note">
-            {{feeStr}}
+            {{feeStr}} ({{fiatFee | currency}} {{currencyIsoCode}}, {{feeRatePerStr}})
           </span>
         </div>
-        <div class="item">
-          <span translate>Widthdrawal</span>
+        <div class="item" ng-if="fiatTotalAmount">
+          <span translate>Total</span>
           <span class="item-note">
-            {{withdrawalStr}}
+            {{totalAmountStr}} ({{fiatTotalAmount | currency}} {{currencyIsoCode}})
           </span>
         </div>
-        <div class="item item-divider"></div>
+        <p class="text-confirm" ng-if="withdrawalStr">
+        A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for
+        {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?
+        </p>
       </div>
     </div>
 
@@ -76,16 +76,16 @@
 
   <click-to-accept
     ng-click="confirmTx()"
-    ng-if="!isCordova"
+    ng-if="!isCordova && fromWallet && toWallet && totalAmountStr"
     click-send-status="sendStatus"
     is-disabled="!fromWallet || !totalAmountStr">
-    {{'Shift'|translate}}
+    {{'Shift ' + (fromWallet.coin | uppercase) + ' to ' + (toWallet.coin | uppercase)}}
   </click-to-accept>
   <slide-to-accept
-    ng-if="isCordova && fromWallet && totalAmountStr"
+    ng-if="isCordova && fromWallet && toWallet && totalAmountStr"
     slide-on-confirm="confirmTx()"
     slide-send-status="sendStatus">
-    {{'Slide to shift'|translate}}
+    {{'Slide to shift ' + (fromWallet.coin | uppercase) + ' to ' + (toWallet.coin | uppercase)}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"

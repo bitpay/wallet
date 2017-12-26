@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
   var createdTx;
   var message;
   var configWallet = configService.getSync().wallet;
+  $scope.currencyIsoCode = configWallet.settings.alternativeIsoCode;
   $scope.isCordova = platformInfo.isCordova;
 
   $scope.openExternalLink = function(url) {
@@ -50,16 +51,26 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
     }
   };
 
-  var satToFiat = function(coin, sat, cb) {
-    txFormatService.formatAlternativeStr(coin, sat, function(v) {
-      return cb(v);
+  var satToFiat = function(coin, sat, isoCode, cb) {
+    txFormatService.toFiat(coin, sat, isoCode, function(value) {
+      return cb(value);
     });
   };
 
-  var setFiatAmount = function(amountSat) {
-    satToFiat($scope.fromWallet.coin, amountSat, function(a) {
-      $scope.amountFiatStr = a;
-      $timeout(function() { $scope.$digest(); }, 100);
+  var setFiatTotalAmount = function(amountSat, feeSat, withdrawalSat) {
+    satToFiat($scope.toWallet.coin, withdrawalSat, $scope.currencyIsoCode, function(w) {
+      $scope.fiatWithdrawal = Number(w);
+
+      satToFiat($scope.fromWallet.coin, amountSat, $scope.currencyIsoCode, function(a) {
+        $scope.fiatAmount = Number(a);
+
+        satToFiat($scope.fromWallet.coin, feeSat, $scope.currencyIsoCode, function(i) {
+          $scope.fiatFee = Number(i);
+
+          $scope.fiatTotalAmount = $scope.fiatAmount + $scope.fiatFee;
+          $timeout(function() { $scope.$digest(); }, 100);
+        });
+      });
     });
   };
 
@@ -175,20 +186,26 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
 
             // Save in memory
             createdTx = ctxp;
+            $scope.shapeInfo = shapeData;
 
             shapeshiftService.getRate(getCoinPair(), function(err, r) {
               ongoingProcess.set('connectingShapeshift', false);
               var rateUnit = r.rate;
               var amountUnit = txFormatService.satToUnit(ctxp.amount);
-
               var withdrawalSat = Number((rateUnit * amountUnit * 100000000).toFixed());
 
+              // Fee rate
+              var per = (ctxp.fee / (ctxp.amount + ctxp.fee) * 100);
+              $scope.feeRatePerStr = per.toFixed(2) + '%';
+
+              // Amount + Unit
+              $scope.amountStr = txFormatService.formatAmountStr($scope.fromWallet.coin, ctxp.amount);
               $scope.withdrawalStr = txFormatService.formatAmountStr($scope.toWallet.coin, withdrawalSat);
               $scope.feeStr = txFormatService.formatAmountStr($scope.fromWallet.coin, ctxp.fee);
-              $scope.totalAmountStr = txFormatService.formatAmountStr($scope.fromWallet.coin, ctxp.amount);
-              $scope.shapeInfo = shapeData;
+              $scope.totalAmountStr = txFormatService.formatAmountStr($scope.fromWallet.coin, ctxp.amount + ctxp.fee);
 
-              setFiatAmount(ctxp.amount);
+              // Convert to fiat
+              setFiatTotalAmount(ctxp.amount, ctxp.fee, withdrawalSat);
             });
           });
         });
