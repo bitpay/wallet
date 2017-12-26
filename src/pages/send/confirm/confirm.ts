@@ -537,6 +537,7 @@ export class ConfirmPage {
           this.walletProvider.onlyPublish(wallet, txp, onSendStatusChange).catch((err: any) => {
             this.setSendError(err);
           });
+          this.onSuccessConfirm(); // TODO review this line
           return;
         }
 
