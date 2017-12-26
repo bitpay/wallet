@@ -27,7 +27,7 @@
 
     <div *ngIf="card.claimCode">
       <div *ngIf="card.cardStatus !== 'Canceled'">
-        Claim code: <span class="text-bold" copy-to-clipboard="card.claimCode">{{card.claimCode}}</span>
+        Claim code: <span class="text-bold" copy-to-clipboard="{{card.claimCode}}">{{card.claimCode}}</span>
       </div>
       <div *ngIf="card.cardStatus == 'Fulfilled'">
         <button ion-button (click)="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode)">
