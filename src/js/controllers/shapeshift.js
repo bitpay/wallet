@@ -15,6 +15,9 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
           if (err) return;
 
           $scope.shifts.data[st.address]['status'] = st.status;
+          shapeshiftService.saveShapeshift($scope.shifts.data[st.address], null, function(err) {
+            $log.debug("Saved shift with status: " + st.status);
+          });
           $timeout(function() {
             $scope.$digest();
           }, 100);
@@ -28,12 +31,16 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
         if (err) $log.error(err);
 
         $scope.shifts = { data: ss };
-        updateShift($scope.shifts);
         $timeout(function() {
+          updateShift($scope.shifts);
           $scope.$digest();
           $ionicScrollDelegate.resize();
-        });
+        }, 1000);
       });
+    };
+
+    $scope.update = function() {
+      updateShift($scope.shifts);
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
