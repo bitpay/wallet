@@ -1,8 +1,5 @@
-<action-sheet action-sheet-show="show" class="wallet-selector" ng-init="walletsBtc = []; walletsBch = []">
+<action-sheet action-sheet-show="show" class="wallet-selector">
   <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()">
-
-  <span ng-repeat="wallet in wallets track by $index"
-    ng-init="wallet.coin == 'btc' ? walletsBtc.push(wallet) : walletsBch.push(wallet)"></span>
 
   <div class="header" ng-show="!walletsBtc[0] || !walletsBch[0]">{{title}}</div>
 

@@ -1,0 +1,98 @@
+<ion-view id="shapeshift" hide-tabs>
+  <ion-nav-bar class="bar-royal">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-title>{{'Confirm'|translate}}</ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content class="has-bottom">
+    <!-- BUY -->
+    <div class="list">
+
+      <div class="item head">
+        <div class="sending-label">
+          <img src="img/icon-shapeshift.svg" width="50">
+          <span translate>Shift</span>
+        </div>
+        <div class="amount-label">
+          <div class="amount">{{amountStr}}</div>
+          <div class="alternative" ng-if="fiatAmount">{{fiatAmount | currency}} {{currencyIsoCode}}</div>
+        </div>
+      </div>
+
+      <div class="info">
+        <div class="item item-icon-right">
+          <div class="label">
+            {{'From'|translate}}
+          </div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img ng-src="img/{{fromWallet.network == 'testnet' ? 'icon-wallet-testnet' : 'icon-wallet'}}.svg"
+              ng-class="{'wallet-background-color-default': !fromWallet.color}" ng-style="{'background-color': fromWallet.color}" class="bg">
+            </i>
+            {{fromWallet ? fromWallet.name : '...'}}
+          </div>
+          <i class="icon">
+            <img ng-if="fromWallet.coin == 'btc'" class="confirm-coin-logo" src="img/icon-bitcoin.svg" width="26">
+            <img ng-if="fromWallet.coin == 'bch'" class="confirm-coin-logo-cash" src="img/bitcoin-cash-logo.svg" width="30">
+          </i>
+        </div>
+        <div class="item item-icon-right">
+          <div class="label">
+            {{'To'|translate}}
+          </div>
+          <div class="wallet">
+            <i class="icon big-icon-svg">
+              <img ng-src="img/{{toWallet.network == 'testnet' ? 'icon-wallet-testnet' : 'icon-wallet'}}.svg"
+              ng-class="{'wallet-background-color-default': !toWallet.color}" ng-style="{'background-color': toWallet.color}" class="bg">
+            </i>
+            {{toWallet ? toWallet.name : '...'}}
+          </div>
+          <i class="icon">
+            <img ng-if="toWallet.coin == 'btc'" class="confirm-coin-logo" src="img/icon-bitcoin.svg" width="26">
+            <img ng-if="toWallet.coin == 'bch'" class="confirm-coin-logo-cash" src="img/bitcoin-cash-logo.svg" width="30">
+          </i>
+        </div>
+        <div class="item" ng-if="fiatFee && feeRatePerStr">
+          <span translate>Fee</span>
+          <span class="item-note">
+            {{feeStr}} ({{fiatFee | currency}} {{currencyIsoCode}}, {{feeRatePerStr}})
+          </span>
+        </div>
+        <div class="item" ng-if="fiatTotalAmount">
+          <span translate>Total</span>
+          <span class="item-note">
+            {{totalAmountStr}} ({{fiatTotalAmount | currency}} {{currencyIsoCode}})
+          </span>
+        </div>
+        <p class="text-confirm" ng-if="withdrawalStr">
+        A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for
+        {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?
+        </p>
+      </div>
+    </div>
+
+  </ion-content>
+
+  <click-to-accept
+    ng-click="confirmTx()"
+    ng-if="!isCordova && fromWallet && toWallet && totalAmountStr"
+    click-send-status="sendStatus"
+    is-disabled="!fromWallet || !totalAmountStr">
+    {{'Shift ' + (fromWallet.coin | uppercase) + ' to ' + (toWallet.coin | uppercase)}}
+  </click-to-accept>
+  <slide-to-accept
+    ng-if="isCordova && fromWallet && toWallet && totalAmountStr"
+    slide-on-confirm="confirmTx()"
+    slide-send-status="sendStatus">
+    {{'Slide to shift ' + (fromWallet.coin | uppercase) + ' to ' + (toWallet.coin | uppercase)}}
+  </slide-to-accept>
+  <slide-to-accept-success
+    slide-success-show="sendStatus === 'success'"
+    slide-success-on-confirm="goBackHome()"
+    slide-success-hide-on-confirm="true">
+    <div class="m10 size-14" ng-show="txSent" translate>
+      Transaction sent
+    </div>
+  </slide-to-accept-success>
+</ion-view>

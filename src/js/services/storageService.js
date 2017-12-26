@@ -622,5 +622,17 @@ angular.module('copayApp.services')
       storage.remove('MercadoLibreGiftCards-' + network, cb);
     };
 
+    root.setShapeshift = function(network, gcs, cb) {
+      storage.set('shapeShift-' + network, gcs, cb);
+    };
+
+    root.getShapeshift = function(network, cb) {
+      storage.get('shapeShift-' + network, cb);
+    };
+
+    root.removeShapeshift = function(network, cb) {
+      storage.remove('shapeShift-' + network, cb);
+    };
+
     return root;
   });
