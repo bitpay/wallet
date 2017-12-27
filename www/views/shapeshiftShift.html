@@ -6,11 +6,6 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="list card ng-hide" ng-if="fromWallets.length == 0 || toWallets.length == 0">
-      <div class="item item-heading">
-        <span class="assertive" translate>No wallets available to use ShapeShift</span>
-      </div>
-    </div>
 
     <div class="list" ng-if="fromWallets.length > 0 && toWallets.length > 0">
       <div ng-if="fromWallets.length > 0">
