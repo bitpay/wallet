@@ -45,7 +45,7 @@
             <img src="assets/img/glidera/buy-bitcoin.svg" alt="buy bitcoin" class="item-img-buy">                
           </ion-icon>
           <ion-label>Buy Bitcoin</ion-label>
-          <ion-note item-end>
+          <ion-note *ngIf="account.price && account.price.buy" item-end>
             ${{account.price.buy}}/BTC
           </ion-note>
         </button>
@@ -54,7 +54,7 @@
             <img src="assets/img/glidera/sell-bitcoin.svg" alt="buy bitcoin" class="item-img-sell">                
           </ion-icon>
           <ion-label>Sell Bitcoin</ion-label>
-          <ion-note item-end>
+          <ion-note *ngIf="account.price && account.price.sell" item-end>
             ${{account.price.sell}}/BTC
           </ion-note>
         </button>
