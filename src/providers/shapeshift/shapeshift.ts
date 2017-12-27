@@ -57,7 +57,7 @@ export class ShapeshiftProvider {
       returnAddress: data.returnAddress
     };
 
-    this.http.post(this.credentials.BITPAY_API_URL + '/shift', dataSrc).subscribe((data: any) => {
+    this.http.post(this.credentials.API_URL + '/shift', dataSrc).subscribe((data: any) => {
       this.logger.info('Shapeshift SHIFT: SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -106,7 +106,7 @@ export class ShapeshiftProvider {
   }
 
   public getRate(pair: string, cb) {
-    this.http.get(this.credentials.BITPAY_API_URL + '/rate/' + pair).subscribe((data: any) => {
+    this.http.get(this.credentials.API_URL + '/rate/' + pair).subscribe((data: any) => {
       this.logger.info('Shapeshift PAIR: SUCCESS');
       return cb(null, data);
     }, (data: any) => {
@@ -116,7 +116,7 @@ export class ShapeshiftProvider {
   }
 
   public getLimit(pair: string, cb) {
-    this.http.get(this.credentials.BITPAY_API_URL + '/limit/' + pair).subscribe((data: any) => {
+    this.http.get(this.credentials.API_URL + '/limit/' + pair).subscribe((data: any) => {
       this.logger.info('Shapeshift LIMIT: SUCCESS');
       return cb(null, data);
     }, (data: any) => {
@@ -126,7 +126,7 @@ export class ShapeshiftProvider {
   }
 
   public getStatus(addr: string, cb) {
-    this.http.get(this.credentials.BITPAY_API_URL + '/txStat/' + addr).subscribe((data: any) => {
+    this.http.get(this.credentials.API_URL + '/txStat/' + addr).subscribe((data: any) => {
       this.logger.info('Shapeshift STATUS: SUCCESS');
       return cb(null, data);
     }, (data: any) => {

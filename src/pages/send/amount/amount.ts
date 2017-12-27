@@ -15,6 +15,7 @@ import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-gl
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
+import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 
 @Component({
   selector: 'page-amount',
@@ -137,6 +138,10 @@ export class AmountPage {
       case 'BuyMercadoLibrePage':
         this.showRecipient = false;
         nextPage = BuyMercadoLibrePage;
+        break;
+      case 'ShapeshiftConfirmPage':
+        this.showRecipient = false;
+        nextPage = ShapeshiftConfirmPage;
         break;
       default:
         nextPage = ConfirmPage;

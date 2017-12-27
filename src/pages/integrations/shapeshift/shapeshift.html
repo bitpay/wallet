@@ -46,8 +46,8 @@
 
     <button ion-item *ngFor="let item of shifts.data | keys">
       <div class="shapeshift-address">
-        <h2 copy-to-clipboard="{{item.address}}">
-          {{item.address}}
+        <h2 copy-to-clipboard="{{item.value.address}}">
+          {{item.value.address}}
         </h2>
         <span>
           <span class="assertive" *ngIf="item.value.status == 'failed'">Failed</span>

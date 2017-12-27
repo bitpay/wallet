@@ -7,6 +7,17 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ShapeshiftConfirmPage {
 
+  private amount;
+  private currency;
+  private fromWalletId;
+  private toWalletId;
+  private createdTx;
+  private message;
+  private configWallet = configService.getSync().wallet;
+
+  public currencyIsoCode = configWallet.settings.alternativeIsoCode;
+  public isCordova = platformInfo.isCordova;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
