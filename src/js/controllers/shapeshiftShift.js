@@ -56,15 +56,15 @@ angular.module('copayApp.controllers').controller('shapeshiftShiftController',
         coin: 'bch'
       });
 
+      if (lodash.isEmpty(walletsBtc) || lodash.isEmpty(walletsBch)) {
+        showErrorAndBack(null, gettextCatalog.getString('No wallets available to use ShapeShift'));
+        return;
+      }
+
       $scope.fromWallets = lodash.filter(walletsBtc.concat(walletsBch), function(w) {
         // Available balance and 1-signature wallet
         return w.status.balance.availableAmount > 0 && w.credentials.m == 1;
       });
-
-      if (lodash.isEmpty($scope.fromWallets)) {
-        showErrorAndBack(null, gettextCatalog.getString('No wallets available to use ShapeShift'));
-        return;
-      }
 
       $scope.onFromWalletSelect($scope.fromWallets[0]);
 

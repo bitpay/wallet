@@ -6,13 +6,8 @@
   </ion-nav-bar>
 
   <ion-content>
-    <div class="list card ng-hide" ng-show="fromWallets.length == 0 || toWallets.length == 0">
-      <div class="item item-heading">
-        <span translate>No available wallets to convert between.</span>
-      </div>
-    </div>
 
-    <div class="list">
+    <div class="list" ng-if="fromWallets.length > 0 && toWallets.length > 0">
       <div ng-if="fromWallets.length > 0">
         <div class="item item-icon-right item-heading">
           <span translate>From</span>
@@ -76,7 +71,11 @@
       </div>
     </div>
 
-    <button class="shift-button button button-standard button-primary" ng-click="setAmount()" no-low-fee>
+    <button
+      ng-show="fromWallets.length > 0 && toWallets.length > 0"
+      class="shift-button button button-standard button-primary"
+      ng-disabled="!fromWallet || !toWallet"
+      ng-click="setAmount()" no-low-fee>
       Continue
     </button>
 

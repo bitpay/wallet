@@ -8,9 +8,10 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
       externalLinkService.open(url);
     };
 
-    var updateShift = function(shifts) {
+    var updateShift = lodash.debounce(function(shifts) {
       if (lodash.isEmpty(shifts.data)) return;
       lodash.forEach(shifts.data, function(dataFromStorage) {
+        if (dataFromStorage.status == 'complete') return;
         shapeshiftService.getStatus(dataFromStorage.address, function(err, st) {
           if (err) return;
 
@@ -23,7 +24,9 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
           }, 100);
         });
       });
-    };
+    }, 1000, {
+      'leading': true
+    });
 
 
     var init = function() {
@@ -48,8 +51,8 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
       $scope.shifts = { data: {} };
 
       listeners = [
-        $rootScope.$on('bwsEvent', function(e, walletId) {
-          if (e.type == 'NewBlock') updateShift($scope.shifts);
+        $rootScope.$on('bwsEvent', function(e, walletId, type) {
+          if (type == 'NewBlock') updateShift($scope.shifts);
         })
       ];
 

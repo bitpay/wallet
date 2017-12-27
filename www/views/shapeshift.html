@@ -45,16 +45,17 @@
         <div ng-repeat="(id, item) in shifts.data | orderObjectBy:'date':true track by $index"
            class="item">
           <h2 copy-to-clipboard="item.address">
-            {{item.address}}
+            <span class="item-amount">{{ item.amount }}</span>
+            <span class="ellipsis">{{item.title || item.address}}</span>
           </h2>
+          <span class="item-note">{{item.date | amTimeAgo}}</span>
           <p>
-          <div class="right">
+          <div>
             <span class="assertive" ng-if="item.status == 'failed'">Failed</span>
             <span class="balanced" ng-if="item.status == 'complete'">Completed</span>
-            <span class="dark" ng-if="item.status == 'received'">Received</span>
-            <span class="text-gray" ng-if="item.status == 'no_deposits'">No deposits</span>
+            <span class="dark" ng-if="item.status == 'received'">Pending</span>
+            <span class="text-gray" ng-if="item.status == 'no_deposits'">Pending</span>
           </div>
-          <span class="text-gray">{{item.date | amTimeAgo}}</span>
           </p>
         </div>
       </div>
