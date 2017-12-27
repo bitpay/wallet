@@ -57,6 +57,11 @@ import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-
 import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
+// Integrations: Coinbase
+import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
+import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
+import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
+import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/sell-coinbase';
 // Integrations: Glidera
 import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
@@ -196,10 +201,13 @@ let pages: any = [
   BitcoinCashPage,
   BuyAmazonPage,
   BuyAndSellPage,
+  BuyCoinbasePage,
   BuyGlideraPage,
   BuyMercadoLibrePage,
   ChooseFeeLevelPage,
   CreateWalletPage,
+  CoinbasePage,
+  CoinbaseTxDetailsPage,
   CopayersPage,
   IncomingDataMenuPage,
   ImportWalletPage,
@@ -230,13 +238,14 @@ let pages: any = [
   PaperWalletPage,
   PayProPage,
   GlideraTxDetailsPage,
-  SellGlideraPage,
   PinModalPage,
   ProposalsPage,
   ReceivePage,
   SendPage,
   ScanPage,
   SettingsPage,
+  SellCoinbasePage,
+  SellGlideraPage,
   TermsOfUsePage,
   MercadoLibreCardDetailsPage,
   MercadoLibreCardsPage,

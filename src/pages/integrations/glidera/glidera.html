@@ -1,5 +1,16 @@
 <ion-header>
   <ion-navbar>
+    <ion-navbar>
+      <ion-buttons end>
+        <button *ngIf="!account.token" (click)="toggleOauthForm()" ion-button>
+          <span *ngIf="!showOauthForm">Enter Code</span>
+          <span *ngIf="showOauthForm">Restart</span>
+        </button>
+        <button *ngIf="account.token && account.status && !account.status.userCanTransact" (click)="update()">
+          Refresh
+        </button>
+      </ion-buttons>
+    </ion-navbar>
   </ion-navbar>
 </ion-header>
 
@@ -42,7 +53,7 @@
       <ion-list>
         <button ion-item *ngIf="account.status.userCanBuy" (click)="goToBuyGlideraPage()">
           <ion-icon item-start>
-            <img src="assets/img/glidera/buy-bitcoin.svg" alt="buy bitcoin" class="item-img-buy">                
+            <img src="assets/img/buy-bitcoin.svg" alt="buy bitcoin" class="item-img-buy">                
           </ion-icon>
           <ion-label>Buy Bitcoin</ion-label>
           <ion-note *ngIf="account.price && account.price.buy" item-end>
@@ -51,7 +62,7 @@
         </button>
         <button ion-item *ngIf="account.status.userCanSell" (click)="goToSellGlideraPage()">
           <ion-icon item-start>
-            <img src="assets/img/glidera/sell-bitcoin.svg" alt="buy bitcoin" class="item-img-sell">                
+            <img src="assets/img/sell-bitcoin.svg" alt="sell bitcoin" class="item-img-sell">                
           </ion-icon>
           <ion-label>Sell Bitcoin</ion-label>
           <ion-note *ngIf="account.price && account.price.sell" item-end>
@@ -65,10 +76,10 @@
       <ion-list *ngFor="let tx of account.txs">
         <button ion-item (click)="openTxModal(tx)" *ngIf="account.txs && account.txs.length > 0">
               <ion-icon item-start>
-                <img src="assets/img/glidera/bought.svg" alt="bought" width="39" *ngIf="tx.type == 'BUY' && tx.status == 'COMPLETE'">
-                <img src="assets/img/glidera/bought-pending.svg" alt="bought" width="33" *ngIf="tx.type == 'BUY' && tx.status == 'PROCESSING'">
-                <img src="assets/img/glidera/sold.svg" alt="bought" width="39" *ngIf="tx.type == 'SELL' && tx.status == 'COMPLETE'">
-                <img src="assets/img/glidera/sold-pending.svg" alt="bought" width="33" *ngIf="tx.type == 'SELL' && tx.status == 'PROCESSING'">              
+                <img src="assets/img/bought.svg" alt="bought" width="39" *ngIf="tx.type == 'BUY' && tx.status == 'COMPLETE'">
+                <img src="assets/img/bought-pending.svg" alt="bought" width="33" *ngIf="tx.type == 'BUY' && tx.status == 'PROCESSING'">
+                <img src="assets/img/sold.svg" alt="bought" width="39" *ngIf="tx.type == 'SELL' && tx.status == 'COMPLETE'">
+                <img src="assets/img/sold-pending.svg" alt="bought" width="33" *ngIf="tx.type == 'SELL' && tx.status == 'PROCESSING'">              
               </ion-icon>
               <div class="action">
                 <div *ngIf="tx.status == 'COMPLETE'">
