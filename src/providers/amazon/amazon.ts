@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
+import * as _ from 'lodash';
 
 //providers
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
 import { NextStepsProvider } from '../next-steps/next-steps';
 
-import * as _ from 'lodash';
 
 @Injectable()
 export class AmazonProvider {
@@ -76,12 +76,10 @@ export class AmazonProvider {
       }
 
       inv = JSON.stringify(inv);
-      this.persistenceProvider.setAmazonGiftCards(network, inv).then((err) => {
-
-        this.homeIntegrationsProvider.register(this.homeItem);
-        this.nextStepsProvider.unregister(this.nextStepItem.name);
-        return cb(err);
-      });
+      this.persistenceProvider.setAmazonGiftCards(network, inv);
+      this.homeIntegrationsProvider.register(this.homeItem);
+      this.nextStepsProvider.unregister(this.nextStepItem.name);
+      return cb(null);
     });
   }
 

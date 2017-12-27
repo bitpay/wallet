@@ -72,6 +72,10 @@ import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mer
 import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
 import { MercadoLibreCardsPage } from '../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
+// Integrations: ShapeShift
+import { ShapeshiftConfirmPage } from '../pages/integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
+import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
 /*Includes */
 import { WalletInfoPage } from '../pages/includes/wallet-info/wallet-info';
@@ -170,6 +174,7 @@ import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
 import { RateProvider } from '../providers/rate/rate';
 import { ReleaseProvider } from '../providers/release/release';
+import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { ScanProvider } from '../providers/scan/scan';
 import { TimeProvider } from '../providers/time/time';
 import { TouchIdProvider } from '../providers/touchid/touchid';
@@ -241,11 +246,14 @@ let pages: any = [
   PinModalPage,
   ProposalsPage,
   ReceivePage,
-  SendPage,
   ScanPage,
+  SendPage,
   SettingsPage,
   SellCoinbasePage,
   SellGlideraPage,
+  ShapeshiftConfirmPage,
+  ShapeshiftPage,
+  ShapeshiftShiftPage,
   TermsOfUsePage,
   MercadoLibreCardDetailsPage,
   MercadoLibreCardsPage,
@@ -312,6 +320,7 @@ let providers: any = [
   PushNotificationsProvider,
   RateProvider,
   ReleaseProvider,
+  ShapeshiftProvider,
   StatusBar,
   SplashScreen,
   ScanProvider,

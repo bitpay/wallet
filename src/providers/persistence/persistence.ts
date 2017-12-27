@@ -474,16 +474,28 @@ export class PersistenceProvider {
       });
   };
 
-  setMercadoLibreGiftCards(network, gcs): Promise<void> {
+  setMercadoLibreGiftCards(network: string, gcs): Promise<void> {
     return this.storage.set((Keys.MERCADO_LIBRE(network)), gcs);
   };
 
-  getMercadoLibreGiftCards(network): Promise<void> {
+  getMercadoLibreGiftCards(network: string): Promise<void> {
     return this.storage.get((Keys.MERCADO_LIBRE(network)));
   };
 
-  removeMercadoLibreGiftCards(network): Promise<void> {
+  removeMercadoLibreGiftCards(network: string): Promise<void> {
     return this.storage.remove((Keys.MERCADO_LIBRE(network)));
+  };
+
+  setShapeshift(network: string, gcs: any): Promise<void> {
+    return this.storage.set('shapeShift-' + network, gcs);
+  };
+
+  getShapeshift(network: string): Promise<void> {
+    return this.storage.get('shapeShift-' + network);
+  };
+
+  removeShapeshift(network: string): Promise<void> {
+    return this.storage.remove('shapeShift-' + network);
   };
 
 }

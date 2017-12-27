@@ -14,6 +14,7 @@ import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
+import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 
 //pages
 import { TabsPage } from '../pages/tabs/tabs';
@@ -42,7 +43,8 @@ export class CopayApp {
     private coinbaseProvider: CoinbaseProvider,
     private amazonProvider: AmazonProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private mercadoLibreProvider: MercadoLibreProvider
+    private mercadoLibreProvider: MercadoLibreProvider,
+    private shapeshiftProvider: ShapeshiftProvider,
   ) {
 
     this.initializeApp();
@@ -111,5 +113,6 @@ export class CopayApp {
     this.glideraProvider.register();
     this.coinbaseProvider.setCredentials();
     this.coinbaseProvider.register();
+    this.shapeshiftProvider.register();
   }
 }
