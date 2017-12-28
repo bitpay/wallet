@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -33,6 +33,7 @@ export class ShapeshiftShiftPage {
   public toWalletSelectorTitle: string;
 
   constructor(
+    private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -58,13 +59,7 @@ export class ShapeshiftShiftPage {
       network: this.network,
       coin: 'bch'
     });
-  }
 
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad ShapeshiftShiftPage');
-  }
-
-  ionViewWillEnter() {
     this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), (w: any) => {
       // Available balance and 1-signature wallet
       return w.status.balance.availableAmount > 0 && w.credentials.m == 1;
@@ -76,6 +71,10 @@ export class ShapeshiftShiftPage {
     }
 
     this.onFromWalletSelect(this.fromWallets[0]);
+  }
+
+  ionViewDidLoad() {
+    this.logger.info('ionViewDidLoad ShapeshiftShiftPage');
   }
 
   private showErrorAndBack(title: string, msg: any): void {
@@ -111,12 +110,51 @@ export class ShapeshiftShiftPage {
 
   public setAmount(): void {
     this.navCtrl.push(AmountPage, {
-      nextStep: 'ShapeshiftConfirmPage',
+      nextPage: 'ShapeshiftConfirmPage',
       fixedUnit: true,
       coin: this.fromWallet.coin,
-      id: this.fromWallet.id,
-      toWalletId: this.toWallet.id
+      walletId: this.fromWallet.id,
+      toWalletId: this.toWallet.id,
+      currency: this.fromWallet.coin.toUpperCase()
     });
+  }
+
+  public showWallets(selector: string): void {
+    let buttons: Array<any> = [];
+    let walletsForActionSheet: Array<any> = [];
+
+    if (selector == 'from') {
+      walletsForActionSheet = this.fromWallets;
+    } else if (selector == 'to') {
+      walletsForActionSheet = this.toWallets;
+    }
+
+    _.each(walletsForActionSheet, (w: any) => {
+      let walletButton: Object = {
+        text: w.credentials.walletName,
+        cssClass: 'wallet-' + w.network,
+        icon: 'wallet',
+        handler: () => {
+          this.onWalletSelect(w, selector);
+        }
+      }
+      buttons.push(walletButton);
+    });
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: selector == 'from' ? this.fromWalletSelectorTitle : this.toWalletSelectorTitle,
+      buttons: buttons
+    });
+
+    actionSheet.present();
+  }
+
+  public onWalletSelect(wallet: any, selector: string): void {
+    if (selector == 'from') {
+      this.onFromWalletSelect(wallet);
+    } else if (selector == 'to') {
+      this.onToWalletSelect(wallet);
+    }
   }
 
 }
