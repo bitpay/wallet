@@ -201,8 +201,6 @@ export class ShapeshiftConfirmPage {
       let message = 'ShapeShift: ' + this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase();
       let outputs = [];
 
-      debugger;
-
       outputs.push({
         'toAddress': toAddress,
         'amount': parsedAmount.amountSat,
