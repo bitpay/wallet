@@ -87,7 +87,9 @@ angular.module('copayApp.controllers').controller('shapeshiftShiftController',
       $state.go('tabs.shapeshift.amount', {
         coin: $scope.fromWallet.coin,
         id: $scope.fromWallet.id,
-        toWalletId: $scope.toWallet.id
+        toWalletId: $scope.toWallet.id,
+        shiftMax: $scope.limit.limit + ' ' + $scope.fromWallet.coin.toUpperCase(),
+        shiftMin: $scope.limit.min + ' ' + $scope.fromWallet.coin.toUpperCase()
       });
     };
   });
