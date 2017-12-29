@@ -29,14 +29,11 @@ import { CopayApp } from './app.component';
 /* Pages */
 import { TabsPage } from '../pages/tabs/tabs';
 import { AddPage } from '../pages/add/add';
-
-
 import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
 import { BuyAndSellPage } from '../pages/buy-and-sell/buy-and-sell';
-
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -48,25 +45,32 @@ import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
 import { PayProPage } from '../pages/paypro/paypro';
+import { FeedbackPage } from '../pages/feedback/feedback/feedback';
+import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
+import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
+
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
 import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
+
 // Integrations: Coinbase
 import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy-coinbase';
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/sell-coinbase';
+
 // Integrations: Glidera
 import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { GlideraTxDetailsPage } from '../pages/integrations/glidera/modal/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
+
 // Integrations: Mercado Libre
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
@@ -74,9 +78,10 @@ import { MercadoLibreCardsPage } from '../pages/integrations/mercado-libre/merca
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
 
 /*Includes */
+import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
+import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletInfoPage } from '../pages/includes/wallet-info/wallet-info';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
-import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 
 /* Tabs */
@@ -152,6 +157,7 @@ import { ConfigProvider } from '../providers/config/config';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
 import { ExternalLinkProvider } from '../providers/external-link/external-link';
+import { FeedbackProvider } from '../providers/feedback/feedback';
 import { FeeProvider } from '../providers/fee/fee';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { HistoricLogProvider } from '../providers/historic-log/historic-log';
@@ -198,6 +204,15 @@ let pages: any = [
   AmazonCardDetailsPage,
   AmazonCardsPage,
   AmazonPage,
+  AmountPage,
+  AddressbookPage,
+  AddressbookAddPage,
+  AddressbookViewPage,
+  AboutPage,
+  AdvancedPage,
+  AllAddressesPage,
+  AltCurrencyPage,
+  BackupRequestPage,
   BitcoinCashPage,
   BuyAmazonPage,
   BuyAndSellPage,
@@ -209,19 +224,14 @@ let pages: any = [
   CoinbasePage,
   CoinbaseTxDetailsPage,
   CopayersPage,
+  FeedbackCardPage,
+  FeedbackPage,
+  FeedbackCompletePage,
   IncomingDataMenuPage,
   ImportWalletPage,
   JoinWalletPage,
   BackupWarningPage,
   BackupGamePage,
-  AddressbookPage,
-  AddressbookAddPage,
-  AddressbookViewPage,
-  AboutPage,
-  AdvancedPage,
-  AltCurrencyPage,
-  AmountPage,
-  BackupRequestPage,
   ConfirmPage,
   CustomAmountPage,
   CopayApp,
@@ -252,6 +262,12 @@ let pages: any = [
   NotificationsPage,
   FeePolicyPage,
   SessionLogPage,
+  SendFeedbackPage,
+  TourPage,
+  TabsPage,
+  TxpDetailsPage,
+  TxDetailsPage,
+  TxpPage,
   WalletSettingsPage,
   WalletSettingsAdvancedPage,
   WalletNamePage,
@@ -263,15 +279,9 @@ let pages: any = [
   WalletTransactionHistoryPage,
   WalletDeletePage,
   WalletExtendedPrivateKeyPage,
-  AllAddressesPage,
-  TourPage,
-  TabsPage,
-  TxpDetailsPage,
-  TxDetailsPage,
   WalletDetailsPage,
   WalletInfoPage,
   WalletItemPage,
-  TxpPage,
   WalletActivityPage,
 ];
 
@@ -293,6 +303,7 @@ let providers: any = [
   Clipboard,
   DerivationPathHelperProvider,
   ExternalLinkProvider,
+  FeedbackProvider,
   FCM,
   HomeIntegrationsProvider,
   FeeProvider,

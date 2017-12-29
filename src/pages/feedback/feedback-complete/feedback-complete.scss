@@ -1,0 +1,39 @@
+page-feedback-complete {
+  .share-the-love{
+    display: flex;
+    justify-content: center;
+    .share-the-love-illustration {
+      width: 10rem;
+    }
+  }  
+  .feedback-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: color($colors,dark);
+    margin: 20px 10px;
+    text-align: center;
+  }
+  .subtitle {
+    padding: 10px 30px 20px;
+    text-align: center;
+  }
+  .share-buttons {
+    padding: 50px 10px 30px;
+    text-align: center;
+  }
+  .share-buttons__action {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    img {
+      width: 50px;
+    }
+    .name {
+      padding-top: 10px;
+      font-size: .9rem;
+    }
+  }
+  .illustration-send {
+    text-align: center;
+  }
+}

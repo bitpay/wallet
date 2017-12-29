@@ -8,6 +8,7 @@ import { ConfigProvider } from '../../providers/config/config';
 import { LanguageProvider } from '../../providers/language/language';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 //pages
 import { AltCurrencyPage } from './alt-currency/alt-currency';
@@ -20,6 +21,8 @@ import { WalletSettingsPage } from './wallet-settings/wallet-settings';
 import { NotificationsPage } from './notifications/notifications';
 import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
+import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
+import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 
 @Component({
   selector: 'page-settings',
@@ -33,6 +36,8 @@ export class SettingsPage {
   public walletsBch: Array<any>;
   public config: any;
   public selectedAlternative: any;
+  public isCordova: boolean;
+  public isWindowsPhoneApp: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -42,11 +47,14 @@ export class SettingsPage {
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
+    private platformProvider: PlatformProvider
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguageName = this.language.getName(this.language.getCurrent());
     this.walletsBch = [];
     this.walletsBtc = [];
+    this.isCordova = this.platformProvider.isCordova;
+    this.isWindowsPhoneApp = this.platformProvider.isWP;
   }
 
   ionViewDidLoad() {
@@ -99,12 +107,20 @@ export class SettingsPage {
     this.navCtrl.push(NotificationsPage);
   }
 
-  public openFeePolicy(): void {
+  public openFeePolicyPage(): void {
     this.navCtrl.push(FeePolicyPage);
   }
 
-  public openWalletSettings(walletId: string): void {
+  public openWalletSettingsPage(walletId: string): void {
     this.navCtrl.push(WalletSettingsPage, { walletId: walletId });
+  }
+
+  public openSendFeedbackPage(): void {
+    this.navCtrl.push(SendFeedbackPage);
+  }
+
+  public openFeedbackCompletePage(): void {
+    this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
   }
 
   public openHelpExternalLink(): void {

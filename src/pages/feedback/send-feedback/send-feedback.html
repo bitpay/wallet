@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Send Feedback'|translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button clear *ngIf="score" (click)="sendFeedback(null, true)">
+        <span translate>Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-row>
+    <ion-col>
+      <div class="feedback-title" *ngIf="!justFeedback">
+        <span>{{reaction}}</span>
+      </div>
+    </ion-col>
+    <ion-col class="rating" *ngIf="score">
+      <img class="send-feedback-star" *ngIf="1 <= score" src="assets/img/ico-star-filled.svg" />
+      <img class="send-feedback-star" *ngIf="1 > score" src="assets/img/ico-star.svg" />
+      <img class="send-feedback-star" *ngIf="2 <= score" src="assets/img/ico-star-filled.svg" />
+      <img class="send-feedback-star" *ngIf="2 > score" src="assets/img/ico-star.svg" />
+      <img class="send-feedback-star" *ngIf="3 <= score" src="assets/img/ico-star-filled.svg" />
+      <img class="send-feedback-star" *ngIf="3 > score" src="assets/img/ico-star.svg" />
+      <img class="send-feedback-star" *ngIf="4 <= score" src="assets/img/ico-star-filled.svg" />
+      <img class="send-feedback-star" *ngIf="4 > score" src="assets/img/ico-star.svg" />
+      <img class="send-feedback-star" *ngIf="5 ==  score" src="assets/img/ico-star-filled.svg" />
+      <img class="send-feedback-star" *ngIf="5 > score" src="assets/img/ico-star.svg" />
+    </ion-col>
+  </ion-row>
+  <div class="comment">
+    <span>{{comment}}</span>
+  </div>
+  <form [formGroup]="feedbackForm" (ngSubmit)="sendFeedback(feedbackForm.value.comment)">
+    <ion-item>
+      <ion-textarea type="text" formControlName="comment" placeholder="{{'Your ideas, feedback, or comments' | translate}}" [value]="feedbackForm.value.comment"
+        required></ion-textarea>
+    </ion-item>
+    <button ion-button block type="submit" [disabled]="!feedbackForm.valid">Send</button>
+  </form>
+</ion-content>
