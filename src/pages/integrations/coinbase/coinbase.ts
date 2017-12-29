@@ -34,7 +34,7 @@ export class CoinbasePage {
   public showOauthForm: boolean;
   public oauthCodeForm: FormGroup;
 
-  private isNW: boolean;
+  private isNW: boolean = false; // TODO: desktop
   private isCordova: boolean;
 
   constructor(
@@ -52,7 +52,8 @@ export class CoinbasePage {
     this.oauthCodeForm = this.formBuilder.group({
       code: ['', Validators.compose([Validators.minLength(1), Validators.required])]
     });
-    this.isNW = this.platformProvider.isNW;
+    // TODO: desktop
+    //this.isNW = this.platformProvider.isNW;
     this.isCordova = this.platformProvider.isCordova;
     this.showOauthForm = false;
   }
@@ -118,6 +119,7 @@ export class CoinbasePage {
     if (!this.isNW) {
       this.externalLinkProvider.open(oauthUrl);
     } else {
+      /* TODO: desktop
       let gui = require('nw.gui');
       gui.Window.open(oauthUrl, {
         focus: true,
@@ -132,6 +134,7 @@ export class CoinbasePage {
           }
         });
       });
+       */
     }
   }
 
