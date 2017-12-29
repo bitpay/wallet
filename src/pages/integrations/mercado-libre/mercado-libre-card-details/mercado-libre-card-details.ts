@@ -44,13 +44,21 @@ export class MercadoLibreCardDetailsPage {
     this.externalLinkProvider.open(url);
   }
 
+  public openRedeemLink() {
+    let url;
+    let isSandbox = this.mercadoLibreProvider.getNetwork() == 'testnet' ? true : false;
+    if (isSandbox) url = 'https://beta.mercadolivre.com.br/vale-presente/resgate';
+    else url = 'https://www.mercadolivre.com.br/vale-presente/resgate';
+    this.openExternalLink(url);
+  }
+
   public openSupportWebsite(): void {
-    var url = 'https://help.bitpay.com/requestHelp';
-    var optIn = true;
-    var title = null;
-    var message = 'Help and support information is available at the website.'; //TODO: getTextCatalog
-    var okText = 'Open'; //TODO: getTextCatalog
-    var cancelText = 'Go Back'; //TODO: getTextCatalog
+    let url = 'https://help.bitpay.com/requestHelp';
+    let optIn = true;
+    let title = null;
+    let message = 'Help and support information is available at the website.'; //TODO: getTextCatalog
+    let okText = 'Open'; //TODO: getTextCatalog
+    let cancelText = 'Go Back'; //TODO: getTextCatalog
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   };
 
