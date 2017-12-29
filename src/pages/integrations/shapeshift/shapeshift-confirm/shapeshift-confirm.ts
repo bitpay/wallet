@@ -183,7 +183,6 @@ export class ShapeshiftConfirmPage {
 
   private saveShapeshiftData(): void {
     let address = this.shapeInfo.deposit;
-    let status;
     let now = moment().unix() * 1000;
 
     this.shapeshiftProvider.getStatus(address, (err: any, st: any) => {

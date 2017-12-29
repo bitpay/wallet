@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, ActionSheetController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 import { AmountPage } from './../../../send/amount/amount';
 
 // Providers
-import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
@@ -18,7 +17,6 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 })
 export class ShapeshiftShiftPage {
 
-  private defaultCoin: string;
   private walletsBtc: Array<any>;
   private walletsBch: Array<any>;
 
@@ -36,12 +34,10 @@ export class ShapeshiftShiftPage {
     private actionSheetCtrl: ActionSheetController,
     private logger: Logger,
     private navCtrl: NavController,
-    private navParams: NavParams,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private shapeshiftProvider: ShapeshiftProvider
   ) {
-    this.defaultCoin = 'btc';
     this.walletsBtc = [];
     this.walletsBch = [];
     this.fromWalletSelectorTitle = 'From';
