@@ -113,7 +113,7 @@ angular.module('copayApp.controllers').controller('amountController', function($
     setAvailableUnits();
     updateUnitUI();
 
-    $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' || $ionicHistory.backView().stateName == 'tabs.bitpayCard');
+    $scope.showMenu = $ionicHistory.backView() && ($ionicHistory.backView().stateName == 'tabs.send' || $ionicHistory.backView().stateName == 'tabs.bitpayCard' || $ionicHistory.backView().stateName == 'tabs.shapeshift.shift');
     $scope.recipientType = data.stateParams.recipientType || null;
     $scope.toAddress = data.stateParams.toAddress;
     $scope.toName = data.stateParams.toName;
@@ -124,6 +124,8 @@ angular.module('copayApp.controllers').controller('amountController', function($
 
     // Use only with ShapeShift
     $scope.toWalletId = data.stateParams.toWalletId;
+    $scope.shiftMax = data.stateParams.shiftMax;
+    $scope.shiftMin = data.stateParams.shiftMin;
 
     if (!$scope.nextStep && !data.stateParams.toAddress) {
       $log.error('Bad params at amount')

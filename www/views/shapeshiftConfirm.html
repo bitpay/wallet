@@ -79,20 +79,20 @@
     ng-if="!isCordova && fromWallet && toWallet && totalAmountStr"
     click-send-status="sendStatus"
     is-disabled="!fromWallet || !totalAmountStr">
-    {{'Shift ' + (fromWallet.coin | uppercase) + ' to ' + (toWallet.coin | uppercase)}}
+    {{'Click to shift'}}
   </click-to-accept>
   <slide-to-accept
     ng-if="isCordova && fromWallet && toWallet && totalAmountStr"
     slide-on-confirm="confirmTx()"
     slide-send-status="sendStatus">
-    {{'Slide to shift ' + (fromWallet.coin | uppercase) + ' to ' + (toWallet.coin | uppercase)}}
+    {{'Slide to shift'}}
   </slide-to-accept>
   <slide-to-accept-success
     slide-success-show="sendStatus === 'success'"
     slide-success-on-confirm="goBackHome()"
     slide-success-hide-on-confirm="true">
-    <div class="m10 size-14" ng-show="txSent" translate>
-      Transaction sent
+    <div class="shift-sent" ng-show="txSent" translate>
+      Transaction Sent
     </div>
   </slide-to-accept-success>
 </ion-view>

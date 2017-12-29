@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
   var createdTx;
   var message;
   var configWallet = configService.getSync().wallet;
-  $scope.currencyIsoCode = configWallet.settings.alternativeIsoCode;
+  $scope.currencyIsoCode = 'USD'; // Only USD
   $scope.isCordova = platformInfo.isCordova;
 
   $scope.openExternalLink = function(url) {
@@ -224,6 +224,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
   });
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    var useSendMax = data.stateParams.useSendMax == 'true' ? true : false;
     amount = data.stateParams.amount;
     currency = data.stateParams.currency;
     fromWalletId = data.stateParams.id;
@@ -241,6 +242,9 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
     shapeshiftService.getLimit(getCoinPair(), function(err, lim) {
       var min = Number(lim.min);
       var max = Number(lim.limit);
+
+      if (useSendMax) amount = max;
+
       var amountNumber = Number(amount);
       if (amountNumber < min) {
         showErrorAndBack(null, gettextCatalog.getString('Minimum amount required is {{minAmount}}', {

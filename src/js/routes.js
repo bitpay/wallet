@@ -1231,10 +1231,13 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
             controller: 'shapeshiftShiftController',
             templateUrl: 'views/shapeshiftShift.html'
           }
+        },
+        params: {
+          currency: 'USD'
         }
       })
       .state('tabs.shapeshift.amount', {
-        url: '/amount/:coin/:id/:toWalletId',
+        url: '/amount/:coin/:id/:toWalletId/:shiftMax/:shiftMin',
         views: {
           'tab-home@tabs': {
             controller: 'amountController',
@@ -1247,7 +1250,7 @@ angular.module('copayApp').config(function(historicLogProvider, $provide, $logPr
         }
       })
       .state('tabs.shapeshift.confirm', {
-        url: '/confirm/:amount/:currency/:id/:toWalletId',
+        url: '/confirm/:amount/:currency/:id/:toWalletId/:useSendMax',
         views: {
           'tab-home@tabs': {
             controller: 'shapeshiftConfirmController',
