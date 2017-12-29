@@ -282,15 +282,8 @@ export class BuyAmazonPage {
       if (err) {
         this.onGoingProcessProvider.set('buyingGiftCard', false);
         this.statusChangeHandler('buyingGiftCard', false);
-        giftCard = {};
-        giftCard.status = 'FAILURE';
-        this.showError('Error creating gift card', err); // TODO: gettextCatalog
-      }
-
-      if (giftCard.status == 'PENDING' && count < 3) {
-        this.logger.debug("Waiting for payment confirmation");
-        this.checkTransaction(count + 1, dataSrc);
-        return;
+        giftCard = giftCard || {};
+        giftCard['status'] = 'FAILURE';
       }
 
       var now = moment().unix() * 1000;
@@ -315,10 +308,19 @@ export class BuyAmazonPage {
         return;
       }
 
+      if (giftCard.status == 'PENDING' && count < 3) {
+        this.logger.debug("Waiting for payment confirmation");
+        this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
+          this.logger.debug("Saving gift card with status: " + newData.status);
+        });
+        this.checkTransaction(count + 1, dataSrc);
+        return;
+      }
+
       this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
         this.onGoingProcessProvider.set('buyingGiftCard', false);
         this.statusChangeHandler('buyingGiftCard', false);
-        this.logger.debug("Saving new gift card with status: " + newData.status);
+        this.logger.debug("Saved new gift card with status: " + newData.status);
         this.amazonGiftCard = newData;
       });
     });
