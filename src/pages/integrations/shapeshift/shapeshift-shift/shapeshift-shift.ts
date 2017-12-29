@@ -27,7 +27,7 @@ export class ShapeshiftShiftPage {
   public fromWallet: any;
   public toWallet: any;
   public rate: number;
-  public limit: number;
+  public limit: any;
   public network: string;
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
@@ -94,7 +94,7 @@ export class ShapeshiftShiftPage {
     this.shapeshiftProvider.getRate(pair, (err: any, rate: number) => {
       this.rate = rate;
     });
-    this.shapeshiftProvider.getLimit(pair, (err: any, limit: number) => {
+    this.shapeshiftProvider.getLimit(pair, (err: any, limit: any) => {
       this.limit = limit;
     });
   }
@@ -115,7 +115,9 @@ export class ShapeshiftShiftPage {
       coin: this.fromWallet.coin,
       walletId: this.fromWallet.id,
       toWalletId: this.toWallet.id,
-      currency: this.fromWallet.coin.toUpperCase()
+      currency: this.fromWallet.coin.toUpperCase(),
+      shiftMax: this.limit.limit + ' ' + this.fromWallet.coin.toUpperCase(),
+      shiftMin: this.limit.min + ' ' + this.fromWallet.coin.toUpperCase()
     });
   }
 

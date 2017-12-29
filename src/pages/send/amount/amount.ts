@@ -34,6 +34,9 @@ export class AmountPage {
   public expression: any;
   public amount: any;
   public showExpressionResult: boolean;
+  public shiftMax: number;
+  public shiftMin: number;
+  public showSendMax: boolean;
 
   public allowSend: boolean;
   public recipientType: string;
@@ -60,6 +63,7 @@ export class AmountPage {
     private configProvider: ConfigProvider,
     private rateProvider: RateProvider,
   ) {
+    this.showSendMax = false;
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
     this.showRecipient = true;
@@ -84,6 +88,8 @@ export class AmountPage {
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
+    this.shiftMax = this.navParams.data.shiftMax;
+    this.shiftMin = this.navParams.data.shiftMin;
 
     let unit = this.navParams.data.currency ? this.navParams.data.currency : this.config.wallet.settings.alternativeIsoCode;
     this.availableUnits.push(this.coin.toUpperCase());
@@ -142,10 +148,12 @@ export class AmountPage {
         nextPage = BuyMercadoLibrePage;
         break;
       case 'ShapeshiftConfirmPage':
+        this.showSendMax = true;
         this.showRecipient = false;
         nextPage = ShapeshiftConfirmPage;
         break;
       default:
+        this.showSendMax = true;
         nextPage = ConfirmPage;
     }
     return nextPage;

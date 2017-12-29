@@ -35,6 +35,7 @@ export class ShapeshiftConfirmPage {
   private configWallet: any;
   private bitcore: any;
   private bitcoreCash: any;
+  private useSendMax: boolean;
 
   public currencyIsoCode: string;
   public isCordova: boolean;
@@ -72,10 +73,12 @@ export class ShapeshiftConfirmPage {
     private walletProvider: WalletProvider
   ) {
     this.configWallet = this.configProvider.get().wallet;
-    this.currencyIsoCode = this.configWallet.settings.alternativeIsoCode;
+    this.currencyIsoCode = 'USD';  // Only USD
     this.isCordova = this.platformProvider.isCordova;
     this.bitcore = this.bwcProvider.getBitcore();
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+
+    this.useSendMax = this.navParams.data.useSendMax ? true : false;
 
     this.amount = this.navParams.data.amount / 1e8;
     this.currency = this.navParams.data.currency;
@@ -94,6 +97,9 @@ export class ShapeshiftConfirmPage {
     this.shapeshiftProvider.getLimit(this.getCoinPair(), (err: any, lim: any) => {
       let min = Number(lim.min);
       let max = Number(lim.limit);
+
+      if (this.useSendMax) this.amount = max;
+
       let amountNumber = Number(this.amount);
 
       if (amountNumber < min) {
