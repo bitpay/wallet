@@ -49,7 +49,7 @@ export class ShapeshiftPage {
     this.externalLinkProvider.open(url);
   }
 
-  private updateShift(shifts: any): void {
+  private updateShift = _.debounce((shifts: any) => {
     if (_.isEmpty(shifts.data)) return;
     _.forEach(shifts.data, (dataFromStorage: any) => {
       this.shapeshiftProvider.getStatus(dataFromStorage.address, (err: any, st: any) => {
@@ -61,7 +61,9 @@ export class ShapeshiftPage {
         });
       });
     });
-  }
+  }, 1000, {
+      'leading': true
+    });
 
   private init(): void {
     this.shapeshiftProvider.getShapeshift((err: any, ss: any) => {

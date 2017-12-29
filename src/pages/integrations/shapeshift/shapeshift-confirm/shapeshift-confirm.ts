@@ -184,7 +184,9 @@ export class ShapeshiftConfirmPage {
       let newData = {
         address: address,
         status: st.status,
-        date: now
+        date: now,
+        amount: this.amountStr,
+        title: this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase()
       };
 
       this.shapeshiftProvider.saveShapeshift(newData, null, (err: any) => {
@@ -198,20 +200,20 @@ export class ShapeshiftConfirmPage {
       let parsedAmount = this.txFormatProvider.parseAmount(wallet.coin, this.amount, this.currency);
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
-      let message = 'ShapeShift: ' + this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase();
+      this.message = 'ShapeShift: ' + this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase();
       let outputs = [];
 
       outputs.push({
         'toAddress': toAddress,
         'amount': parsedAmount.amountSat,
-        'message': message
+        'message': this.message
       });
 
       let txp = {
         toAddress: toAddress,
         amount: parsedAmount.amountSat,
         outputs: outputs,
-        message: message,
+        message: this.message,
         excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
         feeLevel: this.configWallet.settings.feeLevel || 'normal',
         customData: {
@@ -318,10 +320,10 @@ export class ShapeshiftConfirmPage {
     }
     let fromCoin = this.fromWallet.coin.toUpperCase();
     let toCoin = this.toWallet.coin.toUpperCase();
-    let title = 'Confirm to shift from ' + fromCoin + ' to ' + toCoin; // TODO: gettextCatalog
+    let title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: gettextCatalog
     let okText = 'OK'; // TODO: gettextCatalog
     let cancelText = 'Cancel'; // TODO: gettextCatalog
-    this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok: any) => {
+    this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {
       if (!ok) {
         this.sendStatus = '';
         return;

@@ -4,9 +4,10 @@ import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 //providers
+import { AppProvider } from '../app/app';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
-import { PersistenceProvider } from '../persistence/persistence';
 import { NextStepsProvider } from '../next-steps/next-steps';
+import { PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
 export class ShapeshiftProvider {
@@ -15,14 +16,21 @@ export class ShapeshiftProvider {
   private homeItem: any;
 
   constructor(
+    private appProvider: AppProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private http: HttpClient,
     private logger: Logger,
-    private persistenceProvider: PersistenceProvider,
-    private nextStepsProvider: NextStepsProvider
+    private nextStepsProvider: NextStepsProvider,
+    private persistenceProvider: PersistenceProvider
   ) {
     this.logger.info('Hello ShapeshiftProvider Provider');
     this.credentials = {};
+
+    // (Optional) Affiliate PUBLIC KEY, for volume tracking, affiliate payments, split-shifts, etc.
+    if (this.appProvider.servicesInfo && this.appProvider.servicesInfo.shapeshift) {
+      this.credentials.API_KEY = this.appProvider.servicesInfo.shapeshift.api_key || null;
+    }
+
     /*
     * Development: 'testnet'
     * Production: 'livenet'
@@ -34,8 +42,8 @@ export class ShapeshiftProvider {
       this.credentials.API_URL = "";
     } else {
       // CORS: cors.shapeshift.io
-      this.credentials.API_URL = "https://cors.shapeshift.io";
-    };
+      this.credentials.API_URL = "https://shapeshift.io";
+    }
 
     this.homeItem = {
       name: 'shapeshift',
@@ -54,7 +62,8 @@ export class ShapeshiftProvider {
     let dataSrc = {
       withdrawal: data.withdrawal,
       pair: data.pair,
-      returnAddress: data.returnAddress
+      returnAddress: data.returnAddress,
+      apiKey: this.credentials.API_KEY
     };
 
     this.http.post(this.credentials.API_URL + '/shift', dataSrc).subscribe((data: any) => {

@@ -47,15 +47,16 @@
     <button ion-item *ngFor="let item of shifts.data | keys">
       <div class="shapeshift-address">
         <h2 copy-to-clipboard="{{item.value.address}}">
-          {{item.value.address}}
+          <span class="item-amount">{{ item.value.amount }}</span>
+          <span class="ellipsis">{{item.value.title || item.value.address}}</span>
         </h2>
+        <ion-note>{{item.value.date | amTimeAgo}}</ion-note>
         <span>
           <span class="assertive" *ngIf="item.value.status == 'failed'">Failed</span>
           <span class="balanced" *ngIf="item.value.status == 'complete'">Completed</span>
-          <span class="dark" *ngIf="item.value.status == 'received'">Received</span>
-          <span class="text-gray" *ngIf="item.value.status == 'no_deposits'">No deposits</span>
+          <span class="dark" *ngIf="item.value.status == 'received'">Pending</span>
+          <span class="text-gray" *ngIf="item.value.status == 'no_deposits'">Pending</span>
         </span>
-        <span class="text-gray">{{item.value.date | amTimeAgo}}</span>
       </div>
     </button>
   </ion-list>

@@ -60,15 +60,15 @@ export class ShapeshiftShiftPage {
       coin: 'bch'
     });
 
+    if (_.isEmpty(this.walletsBtc) || _.isEmpty(this.walletsBch)) {
+      this.showErrorAndBack(null, 'No wallets available to use ShapeShift'); // TODO: gettextCatalog
+      return;
+    }
+
     this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), (w: any) => {
       // Available balance and 1-signature wallet
       return w.status.balance.availableAmount > 0 && w.credentials.m == 1;
     });
-
-    if (_.isEmpty(this.fromWallets)) {
-      this.showErrorAndBack(null, 'No wallets available to use ShapeShift'); // TODO: gettextCatalog
-      return;
-    }
 
     this.onFromWalletSelect(this.fromWallets[0]);
   }
