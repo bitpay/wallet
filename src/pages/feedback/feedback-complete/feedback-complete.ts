@@ -35,7 +35,6 @@ export class FeedbackCompletePage {
   private downloadUrl: string;
   private shareFacebookVia: string;
   private shareTwitterVia: string;
-  private shareGooglePlusVia: string;
 
   constructor(
     private navCtrl: NavController,

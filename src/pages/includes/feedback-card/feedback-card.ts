@@ -1,11 +1,10 @@
-import { Component, Input } from "@angular/core";
+import { Component } from "@angular/core";
 import { NavController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { AppProvider } from '../../../providers/app/app';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
-import { PlatformProvider } from '../../../providers/platform/platform';
 
 //pages
 import { FeedbackPage } from '../../../pages/feedback/feedback/feedback';
@@ -21,18 +20,14 @@ export class FeedbackCardPage {
   public score: number;
   public button_title: string;
 
-  private isCordova: boolean;
-
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private events: Events,
-    private platformProvider: PlatformProvider
   ) {
     this.appName = this.appProvider.info.nameCase;
-    this.isCordova = this.platformProvider.isCordova;
     this.score = 0;
   }
 

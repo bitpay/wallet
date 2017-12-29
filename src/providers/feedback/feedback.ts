@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
-import { log } from 'util';
-import { concat } from 'rxjs/operator/concat';
 
 @Injectable()
 export class FeedbackProvider {

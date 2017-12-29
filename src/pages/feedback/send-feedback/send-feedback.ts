@@ -8,7 +8,6 @@ import { AppProvider } from '../../../providers/app/app';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { PopupProvider } from '../../../providers/popup/popup';
-import { PlatformProvider } from '../../../providers/platform/platform';
 
 //pages
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
@@ -39,7 +38,6 @@ export class SendFeedbackPage {
     private feedbackProvider: FeedbackProvider,
     private formBuilder: FormBuilder,
     private popupProvider: PopupProvider,
-    private platformProvider: PlatformProvider
   ) {
     this.feedbackForm = this.formBuilder.group({
       comment: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -99,7 +97,7 @@ export class SendFeedbackPage {
         let title = 'Thank you!'; //TODO gettextcatalog
         let message = 'A member of the team will review your feedback as soon as possible.'; //TODO gettextcatalog
         let okText = 'Finish'; //TODO gettextcatalog
-        this.popupProvider.ionicAlert(title, message).then(() => {
+        this.popupProvider.ionicAlert(title, message, okText).then(() => {
           this.feedback = '';
           this.navCtrl.pop();
         });

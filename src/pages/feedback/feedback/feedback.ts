@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, Platform, NavController } from 'ionic-angular';
+import { NavParams, NavController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -33,7 +33,6 @@ export class FeedbackPage {
     private appProvider: AppProvider,
     private configProvider: ConfigProvider,
     private navParams: NavParams,
-    private platform: Platform,
     private feedbackProvider: FeedbackProvider,
     private navCtrl: NavController,
     private logger: Logger,

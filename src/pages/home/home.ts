@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ModalController, NavParams } from 'ionic-angular';
+import { NavController, Events, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
@@ -91,7 +91,6 @@ export class HomePage {
     private nextStepsProvider: NextStepsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
-    private navParams: NavParams
   ) {
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
