@@ -51,7 +51,7 @@ export class BitcoinCashPage {
 		this.walletsBCH = [];
 		this.availableWallets = [];
 		this.nonEligibleWallets = [];
-		this.errors = bwcProvider.getErrors();
+		this.errors = this.bwcProvider.getErrors();
 	}
 
 	ionViewWillEnter() {
@@ -126,25 +126,25 @@ export class BitcoinCashPage {
 		}
 
 		let importOrCreate = () => {
-			return new Promise ((resolve, reject) => {
+			return new Promise((resolve, reject) => {
 				this.walletProvider.getStatus(wallet, {}).then((status: any) => {
 					opts.singleAddress = status.wallet.singleAddress;
-	
+
 					// first try to import
 					this.profileProvider.importExtendedPrivateKey(opts.extendedPrivateKey, opts).then((newWallet) => {
-						return resolve({ newWallet: newWallet});
+						return resolve({ newWallet: newWallet });
 					}).catch((err) => {
 						if (!(err instanceof this.errors.NOT_AUTHORIZED)) {
 							return reject(err);
 						}
 						// create and store a wallet
 						this.profileProvider.createWallet(opts).then((newWallet) => {
-							return resolve({ newWallet: newWallet, isNew: true});
+							return resolve({ newWallet: newWallet, isNew: true });
 						});
 					}).catch((err) => {
 						return reject(err);
 					});
-				}).catch((err) =>{
+				}).catch((err) => {
 					return reject(err);
 				});
 			});
@@ -160,7 +160,7 @@ export class BitcoinCashPage {
 			this.walletProvider.copyCopayers(wallet, newWallet, (err) => {
 				if (err) {
 					return setErr(err);
-				} 
+				}
 				return cb();
 			});
 		};
