@@ -25,7 +25,7 @@
       <div *ngIf="card.cardStatus == 'active'">
         <span class="text-bold" copy-to-clipboard="{{card.pin}}">{{card.pin}}</span>
       </div>
-      <button (click)="openExternalLink('https://www.mercadolivre.com.br')" translate>
+      <button (click)="openRedeemLink()" translate>
         Redeem Now
       </button>
 
