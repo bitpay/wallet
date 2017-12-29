@@ -10,6 +10,7 @@ import { AmazonCardDetailsPage } from '../amazon-card-details/amazon-card-detail
 import { AmazonProvider } from '../../../../providers/amazon/amazon';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../providers/popup/popup';
+import { TimeProvider } from '../../../../providers/time/time';
 
 @Component({
   selector: 'page-amazon-cards',
@@ -17,12 +18,14 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class AmazonCardsPage {
 
+  private updateGiftCard: boolean;
   public giftCards: any;
   public updatingPending: any;
   public card: any;
   public invoiceId;
 
   constructor(
+    private timeProvider: TimeProvider,
     private amazonProvider: AmazonProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
@@ -48,6 +51,7 @@ export class AmazonCardsPage {
           this.popupProvider.ionicAlert(null, 'Card not found');
           return;
         }
+        this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
         this.openCardModal(card);
       }
     }).catch((err: any) => {
@@ -58,6 +62,19 @@ export class AmazonCardsPage {
   public openExternalLink(url: string): void {
     this.externalLinkProvider.open(url);
   }
+
+  private checkIfCardNeedsUpdate(card: any) {
+    // Continues normal flow (update card)
+    if (card.status == 'PENDING' || card.status == 'invalid') {
+      return true;
+    }
+    // Check if card status FAILURE for 24 hours
+    if (card.status == 'FAILURE' && this.timeProvider.withinPastDay(card.date)) {
+      return true;
+    }
+    // Success: do not update
+    return false;
+  };
 
   private updateGiftCards(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -77,7 +94,10 @@ export class AmazonCardsPage {
     this.updateGiftCards().then(() => {
       let gcds = this.giftCards;
       _.forEach(gcds, (dataFromStorage: any) => {
-        if (dataFromStorage.status == 'PENDING' || dataFromStorage.status == 'invalid') {
+
+        this.updateGiftCard = this.checkIfCardNeedsUpdate(dataFromStorage);
+
+        if (this.updateGiftCard) {
           this.logger.debug("Creating / Updating gift card");
           this.updatingPending[dataFromStorage.invoiceId] = true;
 
@@ -86,8 +106,8 @@ export class AmazonCardsPage {
             this.updatingPending[dataFromStorage.invoiceId] = false;
             if (err) {
               this.logger.error('Error creating gift card:', err);
-              giftCard = {};
-              giftCard.status = 'FAILURE';
+              giftCard = giftCard || {};
+              giftCard['status'] = 'FAILURE';
             }
 
             if (giftCard.status != 'PENDING') {
@@ -105,7 +125,7 @@ export class AmazonCardsPage {
               }
 
               this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
-                this.logger.debug("Saving new gift card");
+                this.logger.debug("Amazon gift card updated");
                 this.updateGiftCards();
               });
             }
@@ -123,7 +143,7 @@ export class AmazonCardsPage {
   public openCardModal(card: any): void {
     this.card = card;
 
-    let modal = this.modalCtrl.create(AmazonCardDetailsPage, { card: this.card });
+    let modal = this.modalCtrl.create(AmazonCardDetailsPage, { card: this.card, updateGiftCard: this.updateGiftCard });
     modal.present();
 
     modal.onDidDismiss(() => {

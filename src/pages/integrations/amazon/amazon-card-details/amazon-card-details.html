@@ -59,6 +59,9 @@
           EXPIRED
         </span>
       </div>
+      <div *ngIf="updateGiftCard">
+        <a class="button button-clear button-positive" ng-click="refreshGiftCard()">Try again</a>
+      </div>
     </div>
     <div class="invoice">
       <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)">See invoice</a>

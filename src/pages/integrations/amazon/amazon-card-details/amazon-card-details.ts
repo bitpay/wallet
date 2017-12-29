@@ -16,6 +16,7 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class AmazonCardDetailsPage {
 
+  public updateGiftCard: boolean;
   public card: any;
 
   constructor(
@@ -59,6 +60,7 @@ export class AmazonCardDetailsPage {
   }
 
   public refreshGiftCard(): void {
+    if (!this.updateGiftCard) return;
     this.onGoingProcessProvider.set('updatingGiftCard', true);
     this.amazonProvider.getPendingGiftCards((err: any, gcds: any) => {
       if (_.isEmpty(gcds)) {
@@ -73,21 +75,31 @@ export class AmazonCardDetailsPage {
         if (++index == Object.keys(gcds).length) {
           this.onGoingProcessProvider.set('updatingGiftCard', false);
         }
-        if (dataFromStorage.status == 'PENDING' && dataFromStorage.invoiceId == this.card.invoiceId) {
+        if (dataFromStorage.invoiceId == this.card.invoiceId) {
           this.logger.debug("creating gift card");
           this.amazonProvider.createGiftCard(dataFromStorage, (err: any, giftCard: any) => {
             if (err) {
               this.popupProvider.ionicAlert('Error', this.bwcErrorProvider.msg(err));
               return;
             }
-            if (!_.isEmpty(giftCard)) {
-              var newData = {};
+            if (!_.isEmpty(giftCard) && giftCard.status != 'PENDING') {
+              var newData:any = {};
               _.merge(newData, dataFromStorage, giftCard);
+
+              if (newData.status == 'expired') {
+                this.amazonProvider.savePendingGiftCard(newData, {
+                  remove: true
+                }, (err: any) => {
+                  this.cancel();
+                });
+                return;
+              }
+
               this.amazonProvider.savePendingGiftCard(newData, null, (err: any) => {
-                this.logger.debug("Saving new gift card");
+                this.logger.debug("Amazon gift card updated");
                 this.card = newData;
               });
-            } else this.logger.debug("pending gift card not available yet");
+            } else this.logger.debug("Pending gift card not available yet");
           });
         }
       });
