@@ -15,6 +15,7 @@ import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-gl
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
+import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 
 @Component({
   selector: 'page-amount',
@@ -33,6 +34,9 @@ export class AmountPage {
   public expression: any;
   public amount: any;
   public showExpressionResult: boolean;
+  public shiftMax: number;
+  public shiftMin: number;
+  public showSendMax: boolean;
 
   public allowSend: boolean;
   public recipientType: string;
@@ -46,6 +50,7 @@ export class AmountPage {
   public useSendMax: boolean;
   public config: any;
   public showRecipient: boolean;
+  public toWalletId: string;
 
   private walletId: any;
 
@@ -58,6 +63,7 @@ export class AmountPage {
     private configProvider: ConfigProvider,
     private rateProvider: RateProvider,
   ) {
+    this.showSendMax = false;
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
     this.showRecipient = true;
@@ -80,15 +86,18 @@ export class AmountPage {
     this.reOp = /^[\*\+\-\/]$/;
     this.nextView = this.getNextView();
 
+    // Use only with ShapeShift
+    this.toWalletId = this.navParams.data.toWalletId;
+    this.shiftMax = this.navParams.data.shiftMax;
+    this.shiftMin = this.navParams.data.shiftMin;
+
+    let unit = this.navParams.data.currency ? this.navParams.data.currency : this.config.wallet.settings.alternativeIsoCode;
+    this.availableUnits.push(this.coin.toUpperCase());
+    this.availableUnits.push(unit);
+
     if (this.navParams.data.currency) {
-      this.availableUnits.push(this.coin.toUpperCase());
-      this.availableUnits.push(this.navParams.data.currency);
       this.unit = this.navParams.data.currency;
-    }
-    else {
-      let unit = this.config.wallet.settings.alternativeIsoCode;
-      this.availableUnits.push(this.coin.toUpperCase());
-      this.availableUnits.push(unit);
+    } else {
       this.unit = this.availableUnits[0];
     }
     this.isFiatAmount = this.unit != 'BCH' && this.unit != 'BTC' ? true : false;
@@ -138,7 +147,13 @@ export class AmountPage {
         this.showRecipient = false;
         nextPage = BuyMercadoLibrePage;
         break;
+      case 'ShapeshiftConfirmPage':
+        this.showSendMax = true;
+        this.showRecipient = false;
+        nextPage = ShapeshiftConfirmPage;
+        break;
       default:
+        this.showSendMax = true;
         nextPage = ConfirmPage;
     }
     return nextPage;
@@ -269,7 +284,8 @@ export class AmountPage {
       coin: this.coin,
       network: this.network,
       useSendMax: this.useSendMax,
-      walletId: this.walletId
+      walletId: this.walletId,
+      toWalletId: this.toWalletId ? this.toWalletId : null
     }
     this.navCtrl.push(this.nextView, data);
   }

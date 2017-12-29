@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Confirm'|translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <div class="sending-label">
+        <img src="assets/img/shapeshift/icon-shapeshift.svg" alt="shapeshift">
+        <span translate>Shift</span>
+      </div>
+      <div class="amount-label">
+        <div class="amount">{{amountStr}}</div>
+        <div class="alternative" *ngIf="fiatAmount">{{fiatAmount | currency}} {{currencyIsoCode}}</div>
+      </div>
+    </ion-item>
+
+    <div class="info">
+      <ion-item>
+        <span translate>From</span>
+        <img item-end *ngIf="fromWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
+        <img item-end *ngIf="fromWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
+      </ion-item>
+      <ion-item class="wallet-selector">
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <div class="wallet-balance">
+          <span>
+            {{fromWallet ? fromWallet.name : '...'}}
+          </span>
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <span translate>To</span>
+        <img item-end *ngIf="toWallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" width="18">
+        <img item-end *ngIf="toWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
+      </ion-item>
+      <ion-item class="wallet-selector">
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <div class="wallet-balance">
+          <span>
+            {{toWallet ? toWallet.name : '...'}}
+          </span>
+        </div>
+      </ion-item>
+    </div>
+
+    <ion-item *ngIf="fiatFee && feeRatePerStr">
+      {{'Fee'|translate}}
+      <ion-note item-end>
+        <span>
+          {{feeStr}} ({{fiatFee | currency}} {{currencyIsoCode}}, {{feeRatePerStr}})
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item *ngIf="fiatTotalAmount">
+      {{'Total'|translate}}
+      <ion-note item-end>
+        <span>
+          {{totalAmountStr}} ({{fiatTotalAmount | currency}} {{currencyIsoCode}})
+        </span>
+      </ion-note>
+    </ion-item>
+
+  </ion-list>
+
+  <p class="text-confirm" *ngIf="withdrawalStr">
+    A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal
+    | currency}} {{currencyIsoCode}}). Would you like to proceed?
+  </p>
+
+</ion-content>
+
+<ion-footer *ngIf="fromWallet && toWallet && totalAmountStr">
+  <button ion-button block class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr" translate>
+    Click to shift
+  </button>
+</ion-footer>
+
+<ion-footer *ngIf="sendStatus === 'success'">
+  <button ion-button block class="button-footer" (click)="goBackHome()" [disabled]="!(wallet && totalAmountStr)" translate>
+    Transaction Sent
+  </button>
+</ion-footer>

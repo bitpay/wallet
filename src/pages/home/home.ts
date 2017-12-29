@@ -11,6 +11,7 @@ import { CopayersPage } from '../add/copayers/copayers';
 import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ProposalsPage } from './proposals/proposals';
+import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
@@ -360,9 +361,6 @@ export class HomePage {
 
   public goTo(page): void {
     switch (page) {
-      case 'MercadoLibrePage':
-        this.navCtrl.push(MercadoLibrePage);
-        break;
       case 'AmazonPage':
         this.navCtrl.push(AmazonPage);
         break;
@@ -374,6 +372,12 @@ export class HomePage {
         break;
       case 'GlideraPage':
         this.navCtrl.push(GlideraPage);
+        break;
+      case 'MercadoLibrePage':
+        this.navCtrl.push(MercadoLibrePage);
+        break;
+      case 'ShapeshiftPage':
+        this.navCtrl.push(ShapeshiftPage);
         break;
     }
   }
