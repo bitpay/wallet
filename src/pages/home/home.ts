@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Events, ModalController } from 'ionic-angular';
+import { NavController, Events, ModalController, NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
@@ -32,8 +32,11 @@ import { BuyAndSellProvider } from '../../providers/buy-and-sell/buy-and-sell';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { NextStepsProvider } from '../../providers/next-steps/next-steps';
+import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { FeedbackProvider } from '../../providers/feedback/feedback';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'page-home',
@@ -59,8 +62,11 @@ export class HomePage {
   public bitpayCardItems: Array<any>;
   public nextStepsItems: Array<any>;
   public hideNextSteps: boolean;
+  public showRateCard: boolean;
+  public homeTip: boolean;
 
   private isNW: boolean;
+  private isWindowsPhoneApp: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -82,10 +88,14 @@ export class HomePage {
     private buyAndSellProvider: BuyAndSellProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private bitPayCardProvider: BitPayCardProvider,
-    private nextStepsProvider: NextStepsProvider
+    private nextStepsProvider: NextStepsProvider,
+    private persistenceProvider: PersistenceProvider,
+    private feedbackProvider: FeedbackProvider,
+    private navParams: NavParams
   ) {
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
+    this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.hideNextSteps = false;
   }
 
@@ -116,6 +126,8 @@ export class HomePage {
   ionViewDidEnter() {
 
     if (this.isNW) this.checkUpdate();
+    this.checkHomeTip();
+    this.checkFeedbackInfo();
     this.updateAllWallets();
 
     this.addressBookProvider.list().then((ab: any) => {
@@ -135,15 +147,64 @@ export class HomePage {
       this.updateWallet(wallet);
       if (this.recentTransactionsEnabled) this.getNotifications();
     });
+    this.events.subscribe('feedback:hide', () => {
+      this.showRateCard = false;
+    })
   }
 
   ionViewWillLeave() {
     this.events.unsubscribe('bwsEvent');
     this.events.unsubscribe('Local/TxAction');
+    this.events.unsubscribe('feedback:hide');
   }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
+  }
+
+  public checkHomeTip(): void {
+    this.persistenceProvider.getHomeTipAccepted().then((value: string) => {
+      this.homeTip = (value == 'accepted') ? false : true;
+    });
+  }
+
+  public hideHomeTip(): void {
+    this.persistenceProvider.setHomeTipAccepted('accepted');
+    this.homeTip = false;
+  }
+
+  private checkFeedbackInfo() {
+    this.persistenceProvider.getFeedbackInfo().then((info: any) => {
+      if (this.isWindowsPhoneApp) {
+        this.showRateCard = false;
+        return;
+      }
+      if (!info) {
+        this.initFeedBackInfo();
+      } else {
+        let feedbackInfo = info;
+        //Check if current version is greater than saved version
+        let currentVersion = this.releaseProvider.getCurrentAppVersion();
+        let savedVersion = feedbackInfo.version;
+        let isVersionUpdated = this.feedbackProvider.isVersionUpdated(currentVersion, savedVersion);
+        if (!isVersionUpdated) {
+          this.initFeedBackInfo();
+          return;
+        }
+        let now = moment().unix();
+        let timeExceeded = (now - feedbackInfo.time) >= 24 * 7 * 60 * 60;
+        this.showRateCard = timeExceeded && !feedbackInfo.sent;
+      }
+    });
+  }
+
+  private initFeedBackInfo() {
+    let feedbackInfo: any = {};
+    feedbackInfo.time = moment().unix();
+    feedbackInfo.version = this.releaseProvider.getCurrentAppVersion();
+    feedbackInfo.sent = false;
+    this.showRateCard = false;
+    this.persistenceProvider.setFeedbackInfo(feedbackInfo);
   }
 
   private updateWallet(wallet: any): void {
@@ -154,7 +215,7 @@ export class HomePage {
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  };
+  }
 
   private updateTxps(): void {
     this.profileProvider.getTxps({ limit: 3 }).then((data: any) => {
@@ -172,7 +233,7 @@ export class HomePage {
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  };
+  }
 
   private updateAllWallets(): void {
     let wallets: Array<any> = [];
@@ -236,7 +297,7 @@ export class HomePage {
   public openServerMessageLink(): void {
     let url = this.serverMessage.link;
     this.externalLinkProvider.open(url);
-  };
+  }
 
   public goToAddView(coin?: string): void {
     this.navCtrl.push(AddPage, { coin: coin });
@@ -283,7 +344,7 @@ export class HomePage {
     let okText = 'View Update'; //TODO gettextcatalog
     let cancelText = 'Go Back'; //TODO gettextcatalog
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
-  };
+  }
 
   public openTxpModal(tx: any): void {
     let modal = this.modalCtrl.create(TxpDetailsPage, { tx: tx }, { showBackdrop: false, enableBackdropDismiss: false });

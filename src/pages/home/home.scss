@@ -2,6 +2,19 @@ page-home {
   .add-icon {
     cursor: pointer;
   }
+  .check{
+    text-align: center;
+    .title {
+      font-weight: 700;
+      font-size: 2rem;
+    }
+    .subtitle{
+      padding: 10px;
+    }
+    .check-icon {
+      cursor: pointer;
+    }
+  }
   .title {
     color: color($colors, dark);
     font-weight: 700;
