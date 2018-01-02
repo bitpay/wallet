@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
-import { EmailPage } from '../email/email';
+import { CollectEmailPage } from '../collect-email/collect-email';
 import { ProfileProvider } from '../../../providers/profile/profile';
 
 @Component({
@@ -56,7 +56,7 @@ export class TourPage {
 
     this.profileProvider.createDefaultWallet().then((wallet) => {
       loading.dismiss();
-      this.navCtrl.push(EmailPage, {walletId: wallet.id});
+      this.navCtrl.push(CollectEmailPage, { walletId: wallet.id });
     })
   }
 
