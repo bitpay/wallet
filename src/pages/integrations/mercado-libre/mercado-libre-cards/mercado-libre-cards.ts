@@ -10,6 +10,7 @@ import { MercadoLibreCardDetailsPage } from '../mercado-libre-card-details/merca
 import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../providers/popup/popup';
+import { TimeProvider } from '../../../../providers/time/time';
 
 @Component({
   selector: 'page-mercado-libre-cards',
@@ -17,11 +18,13 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 })
 export class MercadoLibreCardsPage {
 
+  private updateGiftCard: boolean;
   public giftCards: any;
   public card: any;
   public invoiceId;
 
   constructor(
+    private timeProvider: TimeProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
@@ -48,6 +51,7 @@ export class MercadoLibreCardsPage {
           return;
         }
         this.openCardModal(card);
+        this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
       }
     }).catch((err: any) => {
       this.logger.warn(err);
@@ -57,6 +61,19 @@ export class MercadoLibreCardsPage {
   public openExternalLink(url: string): void {
     this.externalLinkProvider.open(url);
   }
+
+  private checkIfCardNeedsUpdate(card: any) {
+    // Continues normal flow (update card)
+    if (card.status == 'PENDING') {
+      return true;
+    }
+    // Check if card status FAILURE for 24 hours
+    if (card.status == 'FAILURE' && this.timeProvider.withinPastDay(card.date)) {
+      return true;
+    }
+    // Success: do not update
+    return false;
+  };
 
   private updateGiftCards(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -75,15 +92,18 @@ export class MercadoLibreCardsPage {
     this.updateGiftCards().then(() => {
       let gcds = this.giftCards;
       _.forEach(gcds, (dataFromStorage: any) => {
-        if (dataFromStorage.status == 'PENDING' || dataFromStorage.status == 'invalid') {
+
+        this.updateGiftCard = this.checkIfCardNeedsUpdate(dataFromStorage);
+
+        if (this.updateGiftCard) {
           this.logger.debug("Creating / Updating gift card");
 
           this.mercadoLibreProvider.createGiftCard(dataFromStorage, (err: any, giftCard: any) => {
 
             if (err) {
               this.logger.error('Error creating gift card:', err);
-              giftCard = {};
-              giftCard.status = 'FAILURE';
+              giftCard = giftCard || {};
+              giftCard['status'] = 'FAILURE';
             }
 
             if (giftCard.status != 'PENDING') {
@@ -98,7 +118,7 @@ export class MercadoLibreCardsPage {
               _.merge(newData, dataFromStorage, giftCard);
 
               this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
-                this.logger.debug("Saving new gift card");
+                this.logger.debug("Mercado Libre gift card updated");
                 this.updateGiftCards();
               });
             }
