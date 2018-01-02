@@ -276,21 +276,15 @@ export class BuyMercadoLibrePage {
       if (err) {
         this.sendStatus = '';
         this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
-        giftCard = {};
-        giftCard.status = 'FAILURE';
+        giftCard = giftCard || {};
+        giftCard['status'] = 'FAILURE';
       }
 
       if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
         this.sendStatus = '';
         this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
-        giftCard = {};
-        giftCard.status = 'FAILURE';
-      }
-
-      if (giftCard.status == 'PENDING' && count < 3) {
-        this.logger.debug("Waiting for payment confirmation");
-        this.checkTransaction(count + 1, dataSrc);
-        return;
+        giftCard = giftCard || {};
+        giftCard['status'] = 'FAILURE';
       }
 
       var now = moment().unix() * 1000;
@@ -304,9 +298,18 @@ export class BuyMercadoLibrePage {
       newData.date = dataSrc.invoiceTime || now;
       newData.uuid = dataSrc.uuid;
 
+      if (giftCard.status == 'PENDING' && count < 3) {
+        this.logger.debug("Waiting for payment confirmation");
+        this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
+          this.logger.debug("Saving new gift card with status: " + newData.status);
+        });
+        this.checkTransaction(count + 1, dataSrc);
+        return;
+      }
+
       this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
         this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
-        this.logger.debug("Saving new gift card with status: " + newData.status);
+        this.logger.debug("Saved new gift card with status: " + newData.status);
         this.mlGiftCard = newData;
       });
     });
