@@ -37,7 +37,7 @@ import { BuyAndSellPage } from '../pages/buy-and-sell/buy-and-sell';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
-import { EmailPage } from '../pages/onboarding/email/email';
+import { CollectEmailPage } from '../pages/onboarding/collect-email/collect-email';
 import { FeeWarningPage } from '../pages/send/fee-warning/fee-warning';
 import { IncomingDataMenuPage } from '../pages/incoming-data-menu/incoming-data-menu';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
@@ -241,7 +241,7 @@ let pages: any = [
   CustomAmountPage,
   CopayApp,
   DisclaimerPage,
-  EmailPage,
+  CollectEmailPage,
   FeeWarningPage,
   GlideraPage,
   FingerprintModalPage,
