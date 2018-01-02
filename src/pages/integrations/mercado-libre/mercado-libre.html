@@ -18,8 +18,7 @@
       <b>Only</b> redeemable on Mercado Livre (Brazil)
     </div>
     <div class="integration-onboarding-cta" *ngIf="!showOauthForm">
-      <button ion-button (click)="goTo('Amount')" translate>Buy a Gift Card</button>
-      <!-- TODO: no-low-fee -->
+      <button ion-button (click)="goTo('Amount')" no-low-fee translate>Buy a Gift Card</button>
       <button ion-button (click)="openExternalLink('https://www.mercadolivre.com.br')" translate>Visit mercadolivre.com.br &rarr;</button>
     </div>
   </div>
@@ -32,14 +31,14 @@
 
   <div class="integration-giftCard-logo">
     <img src="assets/img/mercado-libre/mlbr.svg" alt="Mercado Libre">
-    <div translate><b>Only</b> redeemable on Mercado Livre (Brazil)</div>
+    <div translate>
+      <b>Only</b> redeemable on Mercado Livre (Brazil)</div>
   </div>
 
   <ion-card>
     <ion-card-content>
       <ion-list>
-        <button ion-item (click)="goTo('Amount')">
-          <!-- TODO: no-low-fee -->
+        <button ion-item no-low-fee (click)="goTo('Amount')">
           <ion-icon name="ios-pricetags-outline"></ion-icon>
           <span translate>Buy Gift Card</span>
         </button>
