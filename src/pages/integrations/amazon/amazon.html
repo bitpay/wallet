@@ -18,8 +18,7 @@
       items.
     </div>
     <div class="integration-onboarding-cta" *ngIf="!showOauthForm">
-      <button ion-button (click)="goTo('Amount')">Buy a Gift Card</button>
-      <!-- TODO: no-low-fee -->
+      <button ion-button (click)="goTo('Amount')" no-low-fee>Buy a Gift Card</button>
       <button ion-button (click)="openExternalLink('https://www.amazon.com')">Visit Amazon.com &rarr;</button>
     </div>
   </div>
@@ -32,14 +31,14 @@
 
   <div class="integration-giftCard-logo">
     <img src="assets/img/amazon/GCs-logo-cllb.png" alt="Amazon.com Gift Card">
-    <div><b>Only</b> redeemable on www.amazon.com (US website).</div>
+    <div>
+      <b>Only</b> redeemable on www.amazon.com (US website).</div>
   </div>
 
   <ion-card>
     <ion-card-content>
       <ion-list>
-        <button ion-item (click)="goTo('Amount')">
-          <!-- TODO: no-low-fee -->
+        <button ion-item (click)="goTo('Amount')" no-low-fee>
           <ion-icon name="ios-pricetags-outline"></ion-icon>
           <span>Buy Gift Card</span>
         </button>
@@ -52,12 +51,14 @@
   </ion-card>
 
   <div class="integration-giftCard-info">
-    * <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required
-    by law, <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for
-    value or redeemed for cash. GCs may be used only for purchases of eligible goods at <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>    or certain of its affiliated websites. For complete terms and conditions, see
-    <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift
-    Cards, Inc., a Washington corporation. All Amazon &reg;, &trade; &amp; &copy; are IP of <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>,
-    Inc. or its affiliates. No expiration date or service fees.
+    *
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
+    of eligible goods at
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
+    <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
+    &amp; &copy; are IP of
+    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
   </div>
 
 </ion-content>

@@ -16,6 +16,7 @@ export class PopupProvider {
       let alert = this.alertCtrl.create({
         title: title,
         subTitle: subTitle,
+        enableBackdropDismiss: false,
         buttons: [
           {
             text: okText ? okText : 'OK',
