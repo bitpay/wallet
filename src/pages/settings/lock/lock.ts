@@ -25,7 +25,7 @@ export class LockPage {
     this.options = [
       {
         method: 'Disabled',
-        enabled: this.lockOptions.method == 'Disabled' ? true : false,
+        enabled: !this.lockOptions.method || this.lockOptions.method == 'Disabled' ? true : false,
         disabled: false
       },
       {
@@ -47,7 +47,7 @@ export class LockPage {
         this.openPinModal('pinSetUp');
         break;
       case 'Disabled':
-        this.openPinModal('removeLock');
+        if (this.lockOptions.method && this.lockOptions.method != 'Disabled') this.openPinModal('removeLock');
         break;
       case 'Fingerprint':
         this.lockByFingerprint();
