@@ -1,23 +1,36 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>{{ contact.name }}</ion-title>
+  <ion-navbar transparent>
+    <ion-title>{{ name }}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
-<ion-content padding>
-
-  <ion-card>
-    <ion-card-header>
-      {{ contact.name }}
-    </ion-card-header>
-    <ion-card-content text-wrap>
-      {{ contact.address }}
-    </ion-card-content>
-  </ion-card>
-
-  <button ion-button clear color="danger" (click)="remove()">Remove</button>
-
+<ion-content>
+  <div class="contact-view-header">
+    <gravatar [name]="name" [height]="80" [width]="80" [email]="email"></gravatar>
+  </div>
+  <ion-list>
+    <ion-item>
+      {{'Name' | translate}}
+      <ion-note item-end>
+        {{ name }}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      {{'Email' | translate}}
+      <ion-note item-end>
+        {{ email }}
+      </ion-note>
+    </ion-item>
+    <ion-item copy-to-clipboard="{{ address }}">
+      {{'Address' | translate}}
+      <ion-note item-end>
+        {{ address }}
+      </ion-note>
+    </ion-item>
+    <ion-item-divider color="light"></ion-item-divider>
+    <button ion-item class="btn-send" (click)="sendTo()" translate>Send Money</button>
+    <ion-item-divider color="light"></ion-item-divider>
+    <button ion-item class="btn-remove" (click)="remove()" translate>Remove</button>
+    <ion-item-divider color="light"></ion-item-divider>
+  </ion-list>
 </ion-content>

@@ -119,6 +119,7 @@
     "rxjs": "^5.5.2",
     "simple-plist": "^0.2.1",
     "sw-toolbox": "^3.6.0",
+    "ts-md5": "^1.2.2",
     "zone.js": "^0.8.18"
   },
   "devDependencies": {

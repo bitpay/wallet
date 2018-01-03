@@ -34,20 +34,20 @@ export class AddressbookPage {
   }
 
   private initAddressbook(): void {
-    this.addressbookProvider.list().then((ab) => {
-      this.isEmptyList = _.isEmpty(ab);
+    this.addressbookProvider.list().then((addressBook: any) => {
+      this.isEmptyList = _.isEmpty(addressBook);
 
       let contacts: Array<object> = [];
-      _.each(ab, (v, k) => {
+      _.each(addressBook, (contact: any, k: string) => {
         contacts.push({
-          name: _.isObject(v) ? v.name : v,
+          name: _.isObject(contact) ? contact.name : contact,
           address: k,
-          email: _.isObject(v) ? v.email : null
+          email: _.isObject(contact) ? contact.email : null
         });
       });
       this.addressbook = _.clone(contacts);
       this.filteredAddressbook = _.clone(this.addressbook);
-    }).catch((err) => {
+    }).catch((err: any) => {
       this.logger.error(err);
       let alertError = this.alertCtrl.create({
         title: err,
@@ -68,14 +68,14 @@ export class AddressbookPage {
     this.navCtrl.push(AddressbookAddPage);
   };
 
-  public viewEntry(ab: any): void {
-    this.navCtrl.push(AddressbookViewPage, { address: ab.address });
+  public viewEntry(contact: any): void {
+    this.navCtrl.push(AddressbookViewPage, { contact: contact });
   }
 
-  public getItems(ev: any): void {
+  public getItems(event: any): void {
 
     // set val to the value of the searchbar
-    let val = ev.target.value;
+    let val = event.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {

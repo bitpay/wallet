@@ -33,5 +33,14 @@ page-addressbook {
       max-width: 300px;
     }
   }
+  .contact {
+    ion-label {
+      display: flex;
+      align-items: center;
+      gravatar {
+        margin-right: 1.5rem;
+      }
+    }
+  }
 
 }

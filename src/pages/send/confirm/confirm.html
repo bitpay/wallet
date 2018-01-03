@@ -75,10 +75,7 @@
       </div>
 
       <div class="wallet" *ngIf="tx.recipientType == 'contact'" (click)="toggleAddress()">
-        <!--TODO: <gravatar class="send-gravatar" name="{{tx.name}}" height="30" width="30" email="{{toEmail}}"></gravatar> -->
-        <ion-icon item-start>
-          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
-        </ion-icon>
+        <gravatar [name]="tx.name" [height]="30" [width]="30" [email]="tx.email"></gravatar>
         <span *ngIf="tx.name && !showAddress">{{tx.name}}</span>
         <span *ngIf="tx.name && showAddress">{{tx.toAddress}}</span>
       </div>

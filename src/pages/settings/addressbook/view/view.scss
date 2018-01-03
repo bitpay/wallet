@@ -1,3 +1,36 @@
 page-addressbook-view {
-
+  .toolbar {
+    background-color: #192c3a;
+    &-content {
+      margin-right: 70px;
+    }
+    &-title {
+      text-align: center;
+    }
+    .back-button, &-title {
+      color: white;
+    }
+    .back-button:hover {
+      color: white;
+    }
+  }
+  .contact-view-header {
+    position: relative;
+    height: 70px;
+    border-color: #192c3a;
+    background-color: #192c3a;
+    padding-top: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+    .gravatar {
+      border-radius: 3px;
+      display: inline-block;
+    }
+  }
+  .btn-send {
+    color: color($colors, primary);
+  }
+  .btn-remove {
+    color: color($global-colors, assertive);
+  }
 }

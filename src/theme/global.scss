@@ -122,6 +122,12 @@ $global-colors: (
 .text-bold {
   font-weight: 700;
 }
+
+.gravatar {
+  min-width: 3rem;
+  min-height: 3rem;
+}
+
 /*
  * Wallet selector
  */
