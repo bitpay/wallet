@@ -5,50 +5,49 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header *ngIf="!availableWallets[0]">
-      {{'No wallets eligible for Bitcoin Cash support' | translate}}
+  <ion-card *ngIf="!availableWallets[0]">
+    <ion-card-header>
+      <span translate>No wallets eligible for Bitcoin Cash support</span>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card *ngIf="availableWallets[0]">
+    <ion-card-header>
+      {{'BTC wallets' | translate}}
     </ion-card-header>
 
-    <div *ngIf="availableWallets[0]">
-      <ion-card-header>
-        {{'BTC wallets' | translate}}
-      </ion-card-header>
-      
-      <ion-item *ngFor="let wallet of availableWallets">
-        <ion-icon item-start>
-          <img [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-        </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
-        <p>
-          {{wallet.status && wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : wallet.cachedBalance}}
-        </p>
-        <ion-note item-end>
-          <button class="duplicate" (click)="duplicate(wallet)" translate>Duplicate</button>
-        </ion-note>
-      </ion-item>
-    </div>
+    <ion-item *ngFor="let wallet of availableWallets">
+      <ion-icon item-start>
+        <img [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <h2>{{wallet.credentials.walletName}}</h2>
+      <p>
+        {{wallet.status && wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : wallet.cachedBalance}}
+      </p>
+      <ion-note item-end>
+        <button ion-button (click)="duplicate(wallet)" translate>Duplicate</button>
+      </ion-note>
+    </ion-item>
+  </ion-card>
 
-    <div *ngIf="nonEligibleWallets[0]">
-      <ion-item-divider color="light"></ion-item-divider>
+  <ion-card *ngIf="nonEligibleWallets[0]">
+    <ion-card-header>
+      <span translate>Non eligible BTC wallets</span>
+    </ion-card-header>
 
-      <ion-card-header>
-        <span translate>Non eligible BTC wallets</span>
-      </ion-card-header>
-  
-      <ion-item *ngFor="let wallet of nonEligibleWallets">
-        <ion-icon item-start>
-          <img [ngStyle]="{'background-color': 'gray'}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-        </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
-        <p class="text-disabled">{{wallet.excludeReason}}</p>
-      </ion-item>
-  
-      <ion-item>
-        <span translate>Some of your wallets are not eligible for Bitcoin Cash support. 
-          You can try to access BCH funds from these wallets using the</span>
-          <a (click)="openRecoveryToolLink()" translate>recovery tool.</a>
-      </ion-item>
+    <ion-item *ngFor="let wallet of nonEligibleWallets">
+      <ion-icon item-start>
+        <img [ngStyle]="{'background-color': 'gray'}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <h2>{{wallet.credentials.walletName}}</h2>
+      <p class="text-disabled">{{wallet.excludeReason}}</p>
+    </ion-item>
+
+    <div padding>
+      <span translate>Some of your wallets are not eligible for Bitcoin Cash support. You can try to access BCH funds from these wallets
+        using the
+      </span>
+      <a (click)="openRecoveryToolLink()" translate>recovery tool.</a>
     </div>
   </ion-card>
 </ion-content>
