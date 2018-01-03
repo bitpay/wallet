@@ -1,13 +1,14 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-buttons start>
-      <button *ngIf="action === 'pinSetUp' || action === 'removeLock'" (click)="goBack()" ion-button icon-only>
-          <ion-icon name="arrow-back"></ion-icon>
-        </button>
-    </ion-buttons>
     <ion-title *ngIf="!confirmingPin">Please enter your PIN</ion-title>
     <ion-title *ngIf="confirmingPin">Confirm your PIN</ion-title>
+    <ion-buttons start>
+      <button ion-button *ngIf="action === 'pinSetUp' || action === 'removeLock'" (click)="goBack()">
+        <span ion-text color="primary" showWhen="ios" translate>Cancel</span>
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
