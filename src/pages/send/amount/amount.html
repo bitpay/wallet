@@ -27,8 +27,7 @@
           </ion-icon>
         </ion-icon>
         <ion-icon *ngIf="recipientType == 'contact'" item-left>
-          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
-          <!-- TODO add gravatar -->
+          <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
         </ion-icon>
         <ion-icon *ngIf="!recipientType" item-left>
           <img src="assets/img/contact-placeholder.svg" class="icon-contact">

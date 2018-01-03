@@ -15,14 +15,14 @@
         <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
       </ion-item>
     </ion-card>
-    <ion-card *ngIf="filteredContactsList">
+    <ion-card *ngIf="filteredContactsList[0]">
       <ion-item class="title">
         <span translate>Transfer to Contact</span>
       </ion-item>
       <ion-list>
         <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
           <ion-icon item-start>
-            <img src="assets/img/contact-placeholder.svg" class="icon-contact">
+            <gravatar [name]="item.name" [width]="30" [email]="item.email"></gravatar>
           </ion-icon>
           <h2>{{item.name}}</h2>
         </button>
@@ -44,10 +44,14 @@
       <ion-list>
         <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToAmount(wallet)">
           <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+              class="icon-wallet" />
+            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+              class="icon-wallet" />
           </ion-icon>
-          <h2>{{wallet.name}} <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span></h2>
+          <h2>{{wallet.name}}
+            <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span>
+          </h2>
         </button>
       </ion-list>
     </ion-card>
@@ -65,10 +69,14 @@
       <ion-list>
         <button ion-item *ngFor="let wallet of walletBchList" (click)="goToAmount(wallet)">
           <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+              class="icon-wallet" />
+            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+              class="icon-wallet" />
           </ion-icon>
-          <h2>{{wallet.name}} <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span></h2>
+          <h2>{{wallet.name}}
+            <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span>
+          </h2>
         </button>
       </ion-list>
     </ion-card>

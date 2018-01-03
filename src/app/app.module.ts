@@ -83,6 +83,7 @@ import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift
 
 /*Includes */
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
+import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletInfoPage } from '../pages/includes/wallet-info/wallet-info';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
@@ -246,6 +247,7 @@ let pages: any = [
   CollectEmailPage,
   FeeWarningPage,
   GlideraPage,
+  GravatarPage,
   FingerprintModalPage,
   HomePage,
   LanguagePage,
