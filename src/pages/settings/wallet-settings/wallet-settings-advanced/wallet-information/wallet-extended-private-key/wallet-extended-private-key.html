@@ -5,9 +5,9 @@
 </ion-header>
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <div *ngIf="wallet && !credentialsEncrypted">
+  <div class="container" *ngIf="wallet && !credentialsEncrypted">
     <h1 translate>Warning!</h1>
-    <div>
+    <div class="warning-message">
       <p translate>
         WARNING: Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private
         keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible
@@ -15,8 +15,8 @@
         Only advanced users should handle extended private keys directly.
       </p>
     </div>
-    <ion-item copy-to-clipboard="{{xPrivKey}}">
-      <h2 translate>{{xPrivKey}}</h2>
-    </ion-item>
+    <div copy-to-clipboard="{{xPrivKey}}">
+      <button ion-button block outline translate>Copy to clipboard</button>
+    </div>
   </div>
 </ion-content>
