@@ -84,7 +84,6 @@ import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift
 /*Includes */
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { TxpPage } from '../pages/includes/txp/txp';
-import { WalletInfoPage } from '../pages/includes/wallet-info/wallet-info';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 
@@ -288,7 +287,6 @@ let pages: any = [
   WalletDeletePage,
   WalletExtendedPrivateKeyPage,
   WalletDetailsPage,
-  WalletInfoPage,
   WalletItemPage,
   WalletActivityPage,
 ];

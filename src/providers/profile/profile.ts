@@ -1002,9 +1002,8 @@ export class ProfileProvider {
         return finale;
       }
 
-      _.each(w, (wallet: any) => {
+      let pr = (wallet, cb) => {
         updateNotifications(wallet).then(() => {
-          j++;
           let n = _.filter(wallet.cachedActivity.n, (x: any) => {
             return typeFilter[x.type];
           });
@@ -1024,16 +1023,23 @@ export class ProfileProvider {
           });
 
           notifications.push(n);
+          return cb();
+        }).catch((err: any) => {
+          return cb(err);
+        });
+      };
 
-          if (j == l) {
+      _.each(w, (wallet: any) => {
+        pr(wallet, (err) => {
+          if (err)
+            this.logger.warn(this.bwcErrorProvider.msg(err, 'Error updating notifications for ' + wallet.name));
+          if (++j == l) {
             notifications = _.sortBy(notifications, 'createdOn');
             notifications = _.compact(_.flatten(notifications)).slice(0, MAX);
             let total = notifications.length;
             let processArray = process(notifications);
             return resolve({ notifications: processArray, total: total });
-          };
-        }).catch((err: any) => {
-          this.logger.warn('Error updating notifications:' + err);
+          }
         });
       });
     });

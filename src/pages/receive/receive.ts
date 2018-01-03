@@ -14,7 +14,7 @@ import { BackupGamePage } from '../backup/backup-game/backup-game';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { PlatformProvider } from '../../providers/platform/platform';
-import { PopupProvider } from '../../providers/popup/popup';
+import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 
 import * as _ from 'lodash';
 
@@ -42,7 +42,7 @@ export class ReceivePage {
     private events: Events,
     private actionSheetCtrl: ActionSheetController,
     private socialSharing: SocialSharing,
-    private popupProvider: PopupProvider
+    private bwcErrorProvider: BwcErrorProvider
   ) {
     this.showShareButton = this.platformProvider.isCordova;
   }
@@ -104,9 +104,7 @@ export class ReceivePage {
       this.updateQrAddress();
     }).catch((err) => {
       this.loading = false;
-      this.logger.warn(err);
-      //Error is already formated
-      this.popupProvider.ionicAlert(null, err);
+      this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
     });
   }
 

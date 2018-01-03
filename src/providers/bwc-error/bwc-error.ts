@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
 export class BwcErrorProvider {
 
-  constructor(
-    private logger: Logger
-  ) {
-    this.logger.info('BwcErrorProvider initialized.');
-  }
+  constructor() {}
 
   public msg(err: any, prefix?: string): string {
     if (!err)
@@ -155,7 +150,6 @@ export class BwcErrorProvider {
           break;
 
         default:
-          this.logger.warn('Unknown error type:', name);
           body = err.message || name;
           break;
       }

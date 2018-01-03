@@ -226,14 +226,16 @@ export class HomePage {
     });
   }
 
-  private getNotifications(): void {
+  private getNotifications = _.debounce(() => {
     this.profileProvider.getNotifications({ limit: 3 }).then((data: any) => {
       this.notifications = data.notifications;
       this.notificationsN = data.total;
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }
+  }, 2000, {
+    'leading': true
+  });
 
   private updateAllWallets(): void {
     let wallets: Array<any> = [];
@@ -254,7 +256,7 @@ export class HomePage {
     let i = wallets.length;
     let j = 0;
 
-    _.each(wallets, (wallet: any) => {
+    let pr = ((wallet, cb) => {
       this.walletProvider.getStatus(wallet, {}).then((status: any) => {
         wallet.status = status;
         wallet.error = null;
@@ -265,14 +267,19 @@ export class HomePage {
         }
 
         this.profileProvider.setLastKnownBalance(wallet.id, wallet.status.availableBalanceStr);
+        return cb();
+      }).catch((err) => {
+        wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
+        this.logger.warn(this.bwcErrorProvider.msg(err, 'Error updating status for ' + wallet.name));
+        return cb();
+      });
+    }).bind(this);
 
+    _.each(wallets, (wallet: any) => {
+      pr(wallet, () => {
         if (++j == i) {
           this.updateTxps();
         }
-
-      }).catch((err) => {
-        wallet.error = (err === 'WALLET_NOT_REGISTERED') ? 'Wallet not registered' : this.bwcErrorProvider.msg(err);
-        this.logger.warn(err);
       });
     });
   }
