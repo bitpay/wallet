@@ -498,4 +498,12 @@ export class PersistenceProvider {
     return this.storage.remove('shapeShift-' + network);
   };
 
+  setWalletOrder(walletId: string, index: number): Promise<void> {
+    return this.storage.set('order-' + walletId, index);
+  };
+
+  getWalletOrder(walletId: string): Promise<void> {
+    return this.storage.get('order-' + walletId);
+  };
+
 }

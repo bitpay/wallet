@@ -65,6 +65,8 @@ export class HomePage {
   public hideNextSteps: boolean;
   public showRateCard: boolean;
   public homeTip: boolean;
+  public showReorderBtc: boolean;
+  public showReorderBch: boolean;
 
   private isNW: boolean;
   private isWindowsPhoneApp: boolean;
@@ -97,6 +99,8 @@ export class HomePage {
     this.isNW = this.platformProvider.isNW;
     this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.hideNextSteps = false;
+    this.showReorderBtc = false;
+    this.showReorderBch = false;
   }
 
   ionViewWillEnter() {
@@ -304,6 +308,7 @@ export class HomePage {
   }
 
   public goToWalletDetails(wallet: any): void {
+    if (this.showReorderBtc || this.showReorderBch) return;
     if (!wallet.isComplete()) {
       this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       return;
@@ -335,6 +340,32 @@ export class HomePage {
       }
     }
   }
+
+  public reorderBtc(): void {
+    this.showReorderBtc = !this.showReorderBtc;
+  }
+
+  public reorderBch(): void {
+    this.showReorderBch = !this.showReorderBch;
+  }
+
+  public reorderWalletsBtc(indexes): void {
+    let element = this.walletsBtc[indexes.from];
+    this.walletsBtc.splice(indexes.from, 1);
+    this.walletsBtc.splice(indexes.to, 0, element);
+    _.each(this.walletsBtc, (wallet: any, index: number) => {
+      this.profileProvider.setWalletOrder(wallet.id, index);
+    });
+  };
+
+  public reorderWalletsBch(indexes): void {
+    let element = this.walletsBch[indexes.from];
+    this.walletsBch.splice(indexes.from, 1);
+    this.walletsBch.splice(indexes.to, 0, element);
+    _.each(this.walletsBch, (wallet: any, index: number) => {
+      this.profileProvider.setWalletOrder(wallet.id, index);
+    });
+  };
 
   public goToDownload(): void {
     let url = 'https://github.com/bitpay/copay/releases/latest';
