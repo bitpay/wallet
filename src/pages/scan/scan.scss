@@ -10,10 +10,8 @@ page-scan {
   text-align: center;
   background: transparent none;
   .not-supported-message {
-    ion-item {
-      text-align: center;
-      text-transform: uppercase;
-    }
+    text-align: center;
+    text-transform: uppercase;
   }
   .page-scan-loading-camera {
     height: 100%;
