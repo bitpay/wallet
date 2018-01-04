@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import * as _ from 'lodash';
 
 //providers
 import { BwcProvider } from '../../providers/bwc/bwc';
@@ -168,7 +169,7 @@ export class PaperWalletPage {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Select a wallet');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      this.onWalletSelect(wallet);
+      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
     });
   }

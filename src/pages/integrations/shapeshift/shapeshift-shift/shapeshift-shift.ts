@@ -130,7 +130,7 @@ export class ShapeshiftShiftPage {
     }
     this.events.publish('showWalletsSelectorEvent', walletsForActionSheet, selectedWalletId, title);
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
-      this.onWalletSelect(wallet, selector);
+      if (!_.isEmpty(wallet)) this.onWalletSelect(wallet, selector);
       this.events.unsubscribe('selectWalletEvent');
     });
   }
