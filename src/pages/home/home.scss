@@ -1,7 +1,4 @@
 page-home {
-  .add-icon {
-    cursor: pointer;
-  }
   .check{
     text-align: center;
     .title {
@@ -23,6 +20,17 @@ page-home {
       display: inline-block;
       vertical-align: middle;
       margin-right: 10px;
+    }
+  }
+  .icons-add-reorder {
+    justify-content: flex-end;
+    display: flex;
+    .add-icon {
+      cursor: pointer;
+    }
+    .reorder-icon {
+      cursor: pointer;
+      margin-right: 15px;
     }
   }
   .error {
