@@ -10,6 +10,8 @@ import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 
 //pages
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
+import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
+import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
 
 import * as _ from 'lodash';
 
@@ -20,20 +22,21 @@ const HISTORY_SHOW_LIMIT = 10;
   templateUrl: 'wallet-details.html'
 })
 export class WalletDetailsPage {
-  private currentPage: number;
+  private currentPage: number = 0;
 
   public requiresMultipleSignatures: boolean;
   public wallet: any;
+  public history: any = [];
   public walletNotRegistered: boolean;
   public updateError: boolean;
   public updateStatusError: any;
   public updatingStatus: boolean;
   public updatingTxHistory: boolean;
   public updateTxHistoryError: boolean;
-  public updatingTxHistoryProgress: number;
+  public updatingTxHistoryProgress: number = 0;
   public showNoTransactionsYetMsg: boolean;
-  public addressbook: any;
-  public txps: Array<any>;
+  public addressbook: any = {};
+  public txps: Array<any> = [];
 
   constructor(
     private navCtrl: NavController,
@@ -45,10 +48,6 @@ export class WalletDetailsPage {
     private events: Events,
     private logger: Logger
   ) {
-    this.currentPage = 0;
-    this.updatingTxHistoryProgress = 0;
-    this.addressbook = {};
-    this.txps = [];
     let clearCache = this.navParams.data.clearCache;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     // Getting info from cache
@@ -87,13 +86,13 @@ export class WalletDetailsPage {
   }
 
   private clearData() {
-    this.wallet.history = [];
+    this.history = [];
     this.currentPage = 0;
     this.wallet.status = null;
   }
 
   private showHistory() {
-    this.wallet.history = this.wallet.completeHistory.slice(0, (this.currentPage + 1) * HISTORY_SHOW_LIMIT);
+    this.history = this.wallet.completeHistory.slice(0, (this.currentPage + 1) * HISTORY_SHOW_LIMIT);
     this.currentPage++;
   }
 
@@ -126,19 +125,30 @@ export class WalletDetailsPage {
   }
 
   private updateTxHistory() {
+    this.updatingTxHistory = true;
+
     this.updateTxHistoryError = false;
-    this.wallet.updatingTxHistory = true;
-    this.walletProvider.getTxHistory(this.wallet, {}).then((txHistory: any) => {
-      this.wallet.updatingTxHistory = false;
+    this.updatingTxHistoryProgress = 0;
+
+    let progressFn = (function(txs, newTxs) {
+      if (newTxs > 5) this.thistory = null;
+      this.updatingTxHistoryProgress = newTxs;
+    }).bind(this);
+
+    this.walletProvider.getTxHistory(this.wallet, {
+      progressFn: progressFn
+    }).then((txHistory) => {
+      this.updatingTxHistory = false;
+
       let hasTx = txHistory[0];
       if (hasTx) this.showNoTransactionsYetMsg = false;
       else this.showNoTransactionsYetMsg = true;
+
       this.wallet.completeHistory = txHistory;
-      this.wallet.completeHistory.isValid = true;
       this.showHistory();
     }).catch((err) => {
+      this.updatingTxHistory = false;
       this.clearData();
-      this.wallet.updatingTxHistory = false;
       this.updateTxHistoryError = true;
     });
   }
@@ -153,7 +163,7 @@ export class WalletDetailsPage {
   }
 
   public loadHistory(loading) {
-    if (this.wallet.updatingTxHistory || this.wallet.history.length === this.wallet.completeHistory.length) {
+    if (this.history.length === this.wallet.completeHistory.length) {
       loading.complete();
       return;
     }
@@ -195,6 +205,14 @@ export class WalletDetailsPage {
 
   public goToTxDetails(tx: any) {
     this.navCtrl.push(TxDetailsPage, { walletId: this.wallet.credentials.walletId, txid: tx.txid });
+  }
+
+  public openBackup() {
+    this.navCtrl.push(BackupWarningPage, { walletId: this.wallet.credentials.walletId });
+  }
+
+  public openAddresses() {
+    this.navCtrl.push(WalletAddressesPage, { walletId: this.wallet.credentials.walletId });
   }
 
 }

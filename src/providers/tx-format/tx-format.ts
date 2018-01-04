@@ -66,11 +66,16 @@ export class TxFormatProvider {
     if (isNaN(satoshis)) return;
     let settings = this.config.get().wallet.settings;
 
-    let v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
-    let v1FormatFiat = this.filter.formatFiatAmount(v1);
-    if (!v1FormatFiat) return;
+    let val = (() => {
+      var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
+      v1 = this.filter.formatFiatAmount(v1);
+      if (!v1) return null;
 
-    return v1FormatFiat + ' ' + settings.alternativeIsoCode;
+      return v1 + ' ' + settings.alternativeIsoCode;
+    }).bind(this);
+
+    if (!this.rate.isAvailable()) return null;
+    return val();
   };
 
   public processTx(coin: string, tx: any): any {

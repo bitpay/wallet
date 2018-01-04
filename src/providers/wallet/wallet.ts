@@ -37,6 +37,12 @@ export class WalletProvider {
 
   private errors: any = this.bwcProvider.getErrors();
 
+  private progressFn = {};
+
+  /* TODO: update on progress
+  private updateOnProgress = {}
+   */
+
   constructor(
     private logger: Logger,
     private bwcProvider: BwcProvider,
@@ -99,7 +105,7 @@ export class WalletProvider {
 
         lodash.each(txps, (tx: any) => {
 
-          //tx = this.txFormatProvider.processTx(wallet.coin, tx);
+          tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
           // no future transactions...
           if (tx.createdOn > now)
@@ -369,30 +375,6 @@ export class WalletProvider {
     });
   }
 
-  public getTxHistory(wallet: any, opts: any) {
-    return new Promise((resolve, reject) => {
-      opts = opts || {};
-
-      if (!wallet.isComplete()) return resolve();
-
-      if (wallet.completeHistory && wallet.completeHistory.isValid && !opts.force) {
-        return resolve(wallet.completeHistory);
-      }
-
-      this.logger.debug('Updating Transaction History: ' + wallet.credentials.walletName);
-
-      this.updateLocalTxHistory(wallet, opts, (err, txs) => {
-        if (err) return reject(err);
-
-        if (opts.limitTx) {
-          return resolve(txs);
-        }
-        wallet.completeHistory.isValid = true;
-        return resolve(wallet.completeHistory);
-      });
-    });
-  }
-
   private getSavedTxs(walletId: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getTxHistory(walletId).then((txs: any) => {
@@ -405,9 +387,9 @@ export class WalletProvider {
         try {
           localTxs = JSON.parse(txs);
         } catch (ex) {
-          localTxs = lodash.compact(txs);
+          localTxs = txs;
         };
-        return resolve(localTxs);
+        return resolve(lodash.compact(localTxs));
       }).catch((err: Error) => {
         return reject(err);
       });
@@ -418,176 +400,230 @@ export class WalletProvider {
     return new Promise((resolve, reject) => {
       let res = [];
 
+      let result = {
+        res: res,
+        shouldContinue: res.length >= limit
+      };
+
       wallet.getTxHistory({
         skip: skip,
         limit: limit
       }, (err: Error, txsFromServer: Array<any>) => {
         if (err) return reject(err);
 
-        if (!txsFromServer.length)
-          return resolve();
+        if (lodash.isEmpty(txsFromServer))
+          return resolve(result);
 
         res = lodash.takeWhile(txsFromServer, (tx) => {
           return tx.txid != endingTxid;
         });
 
-        let result = {
-          res: res,
-          shouldContinue: res.length >= limit
-        };
+        result.res = res;
+        result.shouldContinue = res.length >= limit;
 
         return resolve(result);
       });
     });
   }
 
-  public updateLocalTxHistory (wallet, opts, cb) {
-    var FIRST_LIMIT = 5;
-    var LIMIT = 50;
-    var requestLimit = FIRST_LIMIT;
-    var walletId = wallet.credentials.walletId;
+  private updateLocalTxHistory(wallet: any, opts: any) {
+    return new Promise((resolve, reject) => {
+      opts = opts ? opts : {};
+      let FIRST_LIMIT = 5;
+      let LIMIT = 50;
+      let requestLimit = FIRST_LIMIT;
+      let walletId = wallet.credentials.walletId;
+      this.progressFn[walletId] = opts.progressFn || (() => {});
+      let foundLimitTx = [];
 
-    var opts = opts || {};
-    var foundLimitTx = false;
-
-    if (opts.feeLevels) {
-      opts.lowAmount = this.getLowAmount(wallet);
-    }
-
-    this.getSavedTxs(walletId).then((txsFromLocal) => {
-      var confirmedTxs = this.removeAndMarkSoftConfirmedTx(txsFromLocal);
-      var endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
-      var endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
-
-      // First update
-      wallet.completeHistory = txsFromLocal;
-
-      let getNewTxs = (newTxs, skip, next) => {
-        this.getTxsFromServer(wallet, skip, endingTxid, requestLimit).then((result) => {
-          let shouldContinue = result && result.shouldContinue || false;
-          let txsFromServer = result && result.res || [];
-          newTxs = newTxs.concat(this.processNewTxs(wallet, lodash.compact(txsFromServer)));
-
-          // Load the first 5 transactions during the sync process
-          if (skip === 0) wallet.history = newTxs.slice(0, 5);
-          wallet.updatingTxHistoryProgress = newTxs.length;
-          
-          this.logger.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' EndingTxid:', endingTxid, ' Continue:', shouldContinue);
-          skip = skip + requestLimit;
-          requestLimit = LIMIT;
-
-          // TODO Dirty <HACK>
-          // do not sync all history, just looking for a single TX.
-          if (opts.limitTx) {
-            foundLimitTx = lodash.find(newTxs, {
-              txid: opts.limitTx,
-            });
-
-            if (foundLimitTx) {
-              this.logger.debug('Found limitTX: ' + opts.limitTx);
-              return next(null, [foundLimitTx]);
-            }
-          }
-          // </HACK>
-          if (!shouldContinue) {
-            this.logger.debug('Finished Sync: New / soft confirmed Txs: ' + newTxs.length);
-            return next(null, newTxs);
-          }
-
-          getNewTxs(newTxs, skip, next);
-        }).catch((err) => {
-          this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error')); //TODO
-          if (err instanceof this.errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
-            this.logger.info('Retrying history download in 5 secs...');
-            return setTimeout(() => {
-              return getNewTxs(newTxs, skip, next);
-            }, 5000);
-          };
-          return next(err);
-        });
+      if (opts.feeLevels) {
+        opts.lowAmount = this.getLowAmount(wallet, opts.feeLevels);
       };
 
-      getNewTxs([], 0, (err, txs) => {
-        var newHistory = lodash.uniqBy(lodash.compact(txs.concat(confirmedTxs)), (x: any) => {
-          return x.txid;
-        });
+      let fixTxsUnit = (txs: any): void => {
+        if (!txs || !txs[0] || !txs[0].amountStr) return;
 
-        let updateNotes = (cb2) => {
-          if (!endingTs) return cb2();
+        let cacheCoin: string = txs[0].amountStr.split(' ')[1];
 
-          this.logger.debug('Syncing notes from: ' + endingTs);
-          wallet.getTxNotes({
-            minTs: endingTs
-          }, (err, notes) => {
-            if (err) {
-              this.logger.warn(err);
-              return cb2();
-            };
-            lodash.each(notes, (note) => {
-              this.logger.debug('Note for ' + note.txid);
-              lodash.each(newHistory, (tx) => {
-                if (tx.txid == note.txid) {
-                  this.logger.debug('...updating note for ' + note.txid);
-                  tx.note = note;
-                }
-              });
-            });
-            return cb2();
+        if (cacheCoin == 'bits') {
+
+          this.logger.debug('Fixing Tx Cache Unit to: ' + wallet.coin)
+          lodash.each(txs, (tx: any) => {
+            tx.amountStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.amount);
+            tx.feeStr = this.txFormatProvider.formatAmountStr(wallet.coin, tx.fees);
           });
+        };
+      };
+
+      /* TODO: update on progress
+      if (updateOnProgress[wallet.id]) {
+        $log.warn('History update already on progress for: '+ wallet.credentials.walletName);
+
+        if (opts.progressFn) {
+          $log.debug('Rewriting progressFn');
+          progressFn[walletId] = opts.progressFn;
         }
+        updateOnProgress[wallet.id].push(cb);
+        return; // no callback call yet.
+      }
 
-        let updateLowAmount = (txs) => {
-          if (!opts.lowAmount) return;
+      updateOnProgress[walletId] = [cb];
+       */
 
-          lodash.each(txs, (tx) => {
-            tx.lowAmount = tx.amount < opts.lowAmount;
+      this.getSavedTxs(walletId).then((txsFromLocal: any) => {
+
+        fixTxsUnit(txsFromLocal);
+
+        let confirmedTxs = this.removeAndMarkSoftConfirmedTx(txsFromLocal);
+        let endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
+        let endingTs = confirmedTxs[0] ? confirmedTxs[0].time : null;
+
+        // First update
+        this.progressFn[walletId](txsFromLocal, 0);
+        wallet.completeHistory = txsFromLocal;
+
+        let getNewTxs = (newTxs: Array<any>, skip: number): Promise<any> => {
+          return new Promise((resolve, reject) => {
+            this.getTxsFromServer(wallet, skip, endingTxid, requestLimit).then((result: any) => {
+
+              let res = result.res;
+              let shouldContinue = result.shouldContinue ? result.shouldContinue : false;
+
+              newTxs = newTxs.concat(this.processNewTxs(wallet, lodash.compact(res)));
+              this.progressFn[walletId](newTxs.concat(txsFromLocal), newTxs.length);
+              skip = skip + requestLimit;
+              this.logger.debug('Syncing TXs. Got:' + newTxs.length + ' Skip:' + skip, ' EndingTxid:', endingTxid, ' Continue:', shouldContinue);
+
+              // TODO Dirty <HACK>
+              // do not sync all history, just looking for a single TX.
+              if (opts.limitTx) {
+                foundLimitTx = lodash.find(newTxs, {
+                  txid: opts.limitTx,
+                });
+                if (!lodash.isEmpty(foundLimitTx)) {
+                  this.logger.debug('Found limitTX: ' + opts.limitTx);
+                  return resolve([foundLimitTx]);
+                }
+              }
+              // </HACK>
+              if (!shouldContinue) {
+                this.logger.debug('Finished Sync: New / soft confirmed Txs: ' + newTxs.length);
+                return resolve(newTxs);
+              };
+
+              requestLimit = LIMIT;
+              getNewTxs(newTxs, skip).then((txs: any) => {
+                resolve(txs);
+
+              });
+            }).catch((err) => {
+              this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error')); //TODO
+              if (err instanceof this.errors.CONNECTION_ERROR || (err.message && err.message.match(/5../))) {
+                this.logger.info('Retrying history download in 5 secs...');
+                return reject(setTimeout(() => {
+                  return getNewTxs(newTxs, skip);
+                }, 5000));
+              };
+              return reject(err);
+            });
           });
         };
 
-        updateLowAmount(txs);
+        getNewTxs([], 0).then((txs: any) => {
 
-        updateNotes(() => {
-
-          // <HACK>
-          if (foundLimitTx) {
-            this.logger.debug('Tx history read until limitTx: ' + opts.limitTx);
-            // in this case, only the orig cb is called.
-            return cb(null, newHistory);
-          }
-          // </HACK>
-          var historyToSave = JSON.stringify(newHistory);
-
-          lodash.each(txs, (tx) => {
-            tx.recent = true;
-          })
-
-          this.logger.debug('Tx History synced. Total Txs: ' + newHistory.length);
-
-          // Final update
-          if (walletId == wallet.credentials.walletId) {
-            wallet.completeHistory = newHistory;
-          }
-
-          this.persistenceProvider.setTxHistory(walletId, historyToSave).then(() => {
-            this.logger.debug('Tx History saved for: ' + walletId);
-            return cb(null, newHistory);
-          }).catch((err) => {
-            this.logger.warn(err);
-            return cb(err);
+          let array: Array<any> = lodash.compact(txs.concat(confirmedTxs));
+          let newHistory = lodash.uniqBy(array, (x: any) => {
+            return x.txid;
           });
+
+          let updateNotes = (): Promise<any> => {
+            return new Promise((resolve, reject) => {
+              if (!endingTs) return resolve();
+
+              this.logger.debug('Syncing notes from: ' + endingTs);
+              wallet.getTxNotes({
+                minTs: endingTs
+              }, (err: any, notes: any) => {
+                if (err) {
+                  this.logger.warn(err);
+                  return reject(err);
+                };
+                lodash.each(notes, (note: any) => {
+                  this.logger.debug('Note for ' + note.txid);
+                  lodash.each(newHistory, (tx: any) => {
+                    if (tx.txid == note.txid) {
+                      this.logger.debug('...updating note for ' + note.txid);
+                      tx.note = note;
+                    };
+                  });
+                });
+                return resolve();
+              });
+            });
+          };
+
+          let updateLowAmount = (txs: any) => {
+            if (!opts.lowAmount) return;
+
+            lodash.each(txs, (tx: any) => {
+              tx.lowAmount = tx.amount < opts.lowAmount;
+            });
+          };
+
+          updateLowAmount(txs);
+
+          updateNotes().then(() => {
+
+            // <HACK>
+            if (!lodash.isEmpty(foundLimitTx)) {
+              this.logger.debug('Tx history read until limitTx: ' + opts.limitTx);
+              return resolve(newHistory);
+            }
+            // </HACK>
+
+            var historyToSave = JSON.stringify(newHistory);
+            lodash.each(txs, (tx: any) => {
+              tx.recent = true;
+            });
+            this.logger.debug('Tx History synced. Total Txs: ' + newHistory.length);
+
+            // Final update
+            if (walletId == wallet.credentials.walletId) {
+              wallet.completeHistory = newHistory;
+            }
+
+            return this.persistenceProvider.setTxHistory(walletId, historyToSave).then(() => {
+              this.logger.debug('Tx History saved.');
+              return resolve();
+            }).catch((err) => {
+              return reject(err);
+            });
+          }).catch((err) => {
+            return reject(err);
+          });
+        }).catch((err) => {
+          /* TODO: update on progress
+          lodash.each(this.updateOnProgress[walletId], function(x) {
+            x.apply(this,err);
+          });
+          this.updateOnProgress[walletId] = false;
+           */
+          return reject(err);
         });
+      }).catch((err) => {
+        return reject(err);
       });
     });
-  };
+  }
 
-  public processNewTxs(wallet: any, txs: any): Array<any> {
+  private processNewTxs(wallet: any, txs: any): Array<any> {
     let now = Math.floor(Date.now() / 1000);
     let txHistoryUnique = {};
     let ret = [];
     wallet.hasUnsafeConfirmed = false;
 
     lodash.each(txs, (tx: any) => {
-      //tx = this.txFormatProvider.processTx(wallet.coin, tx);
+      tx = this.txFormatProvider.processTx(wallet.coin, tx);
 
       // no future transactions...
       if (tx.time > now)
@@ -720,6 +756,32 @@ export class WalletProvider {
           return reject(err);
         });
       };
+    });
+  }
+
+  public getTxHistory(wallet: any, opts: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      opts = opts ? opts : {};
+
+      if (!wallet.isComplete()) return resolve();
+
+      let isHistoryCached = () => {
+        return wallet.completeHistory && wallet.completeHistory.isValid;
+      };
+
+      if (isHistoryCached() && !opts.force) return resolve(wallet.completeHistory);
+
+      this.logger.debug('Updating Transaction History');
+      this.updateLocalTxHistory(wallet, opts).then((txs: any) => {
+        if (opts.limitTx) {
+          return resolve(txs);
+        };
+
+        wallet.completeHistory.isValid = true;
+        return resolve(wallet.completeHistory);
+      }).catch((err) => {
+        return reject(err);
+      });
     });
   }
 
