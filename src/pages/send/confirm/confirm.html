@@ -18,16 +18,16 @@
       </div>
     </ion-item>
 
-    <button ion-item class="item item-icon-right item-fee" *ngIf="wallet" (click)="chooseFeeLevel(tx, wallet)">
+    <button ion-item class="item item-icon-right item-fee" (click)="chooseFeeLevel()">
       {{'Fee:' | translate}} <strong>{{tx.feeLevelName | translate}}</strong>
-      <div *ngIf="!tx.txp[wallet.id]">
+      <div *ngIf="!wallet || !tx.txp[wallet.id]">
         <span>...</span>
         <ion-note>
           <span>...</span>
           <div>...</div>
         </ion-note>
       </div>
-      <div *ngIf="tx.txp[wallet.id]">
+      <div *ngIf="wallet && tx.txp[wallet.id]">
         {{tx.txp[wallet.id].fee | satToUnit: tx.coin}}
         <ion-note>
           ({{tx.txp[wallet.id].fee | satToFiat: tx.coin}})
@@ -47,7 +47,7 @@
       <ion-note *ngIf="paymentExpired" [ngStyle]="{'color': 'red'}" translate item-end>Expired</ion-note>
     </ion-item>
 
-    <ion-item class="container-to" [hidden]="!wallet" *ngIf="!criticalError">
+    <ion-item class="container-to" *ngIf="!criticalError">
       <span translate>To</span>
 
       <div class="payment-proposal-to" *ngIf="!tx.recipientType">
@@ -89,26 +89,26 @@
       </div>
     </ion-item>
 
-    <button class="container-from" ion-item [hidden]="!wallet" (click)="showWallets()">
+    <button class="container-from" ion-item (click)="showWallets()">
       <span translate>From</span>
-      <div>
-        <div class="wallet" *ngIf="wallet">
-          <ion-icon item-start>
-            <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-              class="icon-wallet" />
-            <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-              class="icon-wallet" />
-          </ion-icon>
-          <div>{{wallet.name}}</div>
-        </div>
-        <div class="wallet" *ngIf="!wallet">
+      <div class="wallet" *ngIf="wallet">
+        <ion-icon item-start>
+          <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+            class="icon-wallet" />
+          <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
+        </ion-icon>
+        <div>{{wallet.name}}</div>
+      </div>
+      <div class="wallet" *ngIf="!wallet">
+        <ion-icon item-start>
           <img class="icon-wallet disabled" src="assets/img/icon-wallet.svg" />
-          <div>...</div>
-        </div>
+        </ion-icon>
+        <div translate>Select a wallet</div>
       </div>
     </button>
 
-    <button ion-item text-wrap *ngIf="wallet" (click)="showDescriptionPopup(tx)">
+    <button ion-item text-wrap (click)="showDescriptionPopup(tx)">
       <span *ngIf="!tx.description" translate>Add Memo</span>
       <span *ngIf="tx.description" translate>Memo</span>
       <div class="item-memo">
