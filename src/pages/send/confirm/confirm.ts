@@ -103,7 +103,9 @@ export class ConfirmPage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ConfirmPage');
+    this.onGoingProcessProvider.set('retrievingInputs', true);
     this.setWalletSelector(this.tx.coin, this.tx.network, this.tx.amount).then(() => {
+      this.onGoingProcessProvider.set('retrievingInputs', false);
       if (this.wallets.length > 1) {
         this.showWallets();
       } else if (this.wallets.length) {

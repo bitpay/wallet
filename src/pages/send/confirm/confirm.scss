@@ -1,14 +1,4 @@
 page-confirm {
-  .item-md {
-    padding: 0rem;
-  }
-  ion-label {
-    padding: 1rem 1rem 1rem 3rem;
-  }
-  span.label {
-    color: color($global-colors, labels);
-    margin-bottom: 0.5rem;
-  }
   .sending-label {
     display: flex;
     align-items: center;
@@ -20,7 +10,7 @@ page-confirm {
     }
   }
   .amount-label {
-    padding-top: 2rem;
+    padding-top: 1rem;
     .amount {
       font-size: 3.5rem;
       .unit {
@@ -28,9 +18,34 @@ page-confirm {
       }
     }
     .alternative {
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       color: color($global-colors, light-grey);
     }
+  }
+
+  .item-fee {
+    line-height: 20px;
+    .per-cent {
+      font-size: 12px;
+      color: color($global-colors, positive);
+      ion-icon {
+        font-size: 1.1em;
+        color: color($global-colors, warning);
+      }
+    }
+    .warn {
+      color: color($global-colors, warning);
+    }
+  }
+
+  .item-gravatar {
+    img {
+      margin-right: 1rem;
+    }
+  }
+
+  .item-memo {
+    margin-top: 10px;
   }
 
   .no-wallet-message {

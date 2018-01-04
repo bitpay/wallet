@@ -1,31 +1,40 @@
 page-amount {
   .amount-pane {
-    top: 95px;
-    width: 100%;
-    padding: 0 16px;
     .title {
-      padding: 24px 0;
+      padding: 18px 16px 0;
       font-size: 18px;
     }
     .amount-content {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      position: absolute;
-      bottom: 30%;
-      top: 15%;
+      width: 100%;
+      padding: 15% 16px 0 16px;
+      @media(max-height: 640px) {
+        padding-top: 10%;
+      }
+      @media(max-height: 500px) {
+        padding-top: 5%;
+      }
       .expression{
         font-size: 40px;
+        @media(max-height: 640px) {
+          font-size: 35px;
+        }
+        @media(max-height: 500px) {
+          font-size: 25px;
+        }
         display: flex;
-        a {
-          margin: auto;
-          margin-left: 10px;
-          font-size: 20px;
-          border: 1px solid;
-          color: gray;
-          border-color: #A5A4A4;
-          padding: 2px;
+        a.unit-button {
+          font-size: 19px;
+          color: color($global-colors, light-grey);
+          border: 1px solid color($global-colors, light-grey);
+          padding: 0 5px;
+          margin: 14px 0 8px 10px;
           cursor: pointer;
+          @media(max-height: 500px) {
+            font-size: 16px;
+          }
         }
       }
       .amount {
@@ -60,20 +69,20 @@ page-amount {
       width: 25%;
       margin-left: 75%;
       .operator-send {
-        font-weight: bolder;
         color: #fff;
         background-color: color($colors, primary);
-        font-size: 36px;
+        font-size: 16px;
         cursor: pointer;
         &:active {
-          background-color: #eaeaea;
+          color: color($colors, primary);
+          background-color: #fff;
         }
       }
     }
     .digit{
       cursor: pointer;
     }
-    @media(max-height: 480px) {
+    @media(max-height: 500px) {
       font-size: 12px;
     }
   }
