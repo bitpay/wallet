@@ -13,7 +13,7 @@
     </div>
 
     <ion-list>
-      <button ion-item *ngFor="let wallet of walletsBtc" (click)="selectWallet(wallet)">
+      <button ion-item *ngFor="let wallet of walletsBtc" class="wallet-button" (click)="selectWallet(wallet)">
         <ion-icon item-start>
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
             class="icon-wallet" />
@@ -23,7 +23,7 @@
         <ion-icon item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
+        <h2 class="wallet-name">{{wallet.credentials.walletName}}</h2>
         <p>
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete
@@ -53,7 +53,7 @@
     </div>
 
     <ion-list>
-      <button ion-item *ngFor="let wallet of walletsBch" (click)="selectWallet(wallet)">
+      <button ion-item *ngFor="let wallet of walletsBch" class="wallet-button" (click)="selectWallet(wallet)">
         <ion-icon item-start>
           <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
             class="icon-wallet" />
@@ -63,7 +63,7 @@
         <ion-icon item-end>
           <img class="check" src="assets/img/icon-check-selected.svg" *ngIf="selectedWalletId === wallet.id">
         </ion-icon>
-        <h2>{{wallet.credentials.walletName}}</h2>
+        <h2 class="wallet-name">{{wallet.credentials.walletName}}</h2>
         <p>
           <span *ngIf="!wallet.isComplete()" translate>
             Incomplete

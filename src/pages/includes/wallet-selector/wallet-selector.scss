@@ -10,9 +10,9 @@ wallet-selector {
   .wallet-selector {
     position: absolute;
     bottom: 0;
-    max-height: 65rem;
-    min-width: 30rem;
-    width: calc(50% + 1px);
+    max-height: 90vh;
+    max-width: 50rem;
+    width: calc(100% + 1px);
     overflow-y: scroll;
     background: white;
     padding: 2rem;
@@ -37,6 +37,13 @@ wallet-selector {
     }
     .error {
       color: color($colors, danger);
+    }
+    .wallet-button {
+      background: none;
+      .wallet-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
   .slider {
