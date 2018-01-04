@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ActionSheetController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -69,7 +69,8 @@ export class ConfirmPage {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private events: Events
   ) {
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
@@ -105,7 +106,7 @@ export class ConfirmPage {
     this.logger.info('ionViewDidLoad ConfirmPage');
     this.setWalletSelector(this.tx.coin, this.tx.network, this.tx.amount).then(() => {
       if (this.wallets.length > 1) {
-        this.showWalletSelector();
+        this.showWallets();
       } else if (this.wallets.length) {
         this.setWallet(this.wallets[0], this.tx);
       }
@@ -638,27 +639,12 @@ export class ConfirmPage {
     });
   };
 
-  public showWalletSelector(): void {
-    let buttons: Array<any> = [];
-
-    _.each(this.wallets, (w: any) => {
-      let walletButton: Object = {
-        text: w.credentials.walletName,
-        cssClass: 'wallet-' + w.network,
-        icon: 'wallet',
-        handler: () => {
-          this.onWalletSelect(w);
-        }
-      }
-      buttons.push(walletButton);
+  public showWallets(): void {
+    this.events.publish('showWalletsSelectorEvent', this.wallets, this.walletSelectorTitle);
+    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+      this.onWalletSelect(wallet);
+      this.events.unsubscribe('selectWalletEvent');
     });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: this.walletSelectorTitle,
-      buttons: buttons
-    });
-
-    actionSheet.present();
   }
 
 }

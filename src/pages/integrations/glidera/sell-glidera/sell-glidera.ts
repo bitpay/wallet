@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import * as _ from 'lodash';
 
 //providers
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -11,8 +12,6 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
 import { ConfigProvider } from '../../../../providers/config/config';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-sell-glidera',
@@ -46,7 +45,8 @@ export class SellGlideraPage {
     private txFormatProvider: TxFormatProvider,
     private actionSheetCtrl: ActionSheetController,
     private walletProvider: WalletProvider,
-    private configProvider: ConfigProvider
+    private configProvider: ConfigProvider,
+    private events: Events
   ) {
     this.coin = 'btc';
     this.isCordova = this.platformProvider.isCordova;
@@ -276,28 +276,12 @@ export class SellGlideraPage {
     this.processPaymentInfo();
   }
 
-
   public showWallets(): void {
-    let buttons: Array<any> = [];
-
-    _.each(this.wallets, (w: any) => {
-      let walletButton: Object = {
-        text: w.credentials.walletName,
-        cssClass: 'wallet-' + w.network,
-        icon: 'wallet',
-        handler: () => {
-          this.onWalletSelect(w);
-        }
-      }
-      buttons.push(walletButton);
+    this.events.publish('showWalletsSelectorEvent', this.wallets, 'Sell From');
+    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+      this.onWalletSelect(wallet);
+      this.events.unsubscribe('selectWalletEvent');
     });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Sell From',
-      buttons: buttons
-    });
-
-    actionSheet.present();
   }
 
   public goBackHome(): void {

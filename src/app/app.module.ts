@@ -87,6 +87,7 @@ import { GravatarPage } from '../pages/includes/gravatar/gravatar';
 import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
+import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -293,6 +294,7 @@ let pages: any = [
   WalletDetailsPage,
   WalletItemPage,
   WalletActivityPage,
+  WalletSelectorPage
 ];
 
 let providers: any = [

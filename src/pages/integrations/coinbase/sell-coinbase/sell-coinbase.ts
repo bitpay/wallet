@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -45,6 +45,7 @@ export class SellCoinbasePage {
     private appProvider: AppProvider,
     private coinbaseProvider: CoinbaseProvider,
     private configProvider: ConfigProvider,
+    private events: Events,
     private logger: Logger,
     private popupProvider: PopupProvider,
     private navCtrl: NavController,
@@ -356,26 +357,11 @@ export class SellCoinbasePage {
   }
 
   public showWallets(): void {
-    let buttons: Array<any> = [];
-
-    _.each(this.wallets, (w: any) => {
-      let walletButton: Object = {
-        text: w.credentials.walletName,
-        cssClass: 'wallet-' + w.network,
-        icon: 'wallet',
-        handler: () => {
-          this.onWalletSelect(w);
-        }
-      }
-      buttons.push(walletButton);
+    this.events.publish('showWalletsSelectorEvent', this.wallets, 'Sell from');
+    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+      this.onWalletSelect(wallet);
+      this.events.unsubscribe('selectWalletEvent');
     });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Sell from',
-      buttons: buttons
-    });
-
-    actionSheet.present();
   }
 
   public onWalletSelect(wallet: any): void {

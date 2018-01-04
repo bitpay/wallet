@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -47,6 +47,7 @@ export class PaperWalletPage {
     private feeProvider: FeeProvider,
     private profileProvider: ProfileProvider,
     private actionSheetCtrl: ActionSheetController,
+    private events: Events
   ) {
     this.bitcore = this.bwcProvider.getBitcore();
   }
@@ -167,25 +168,10 @@ export class PaperWalletPage {
   }
 
   public showWallets(): void {
-    let buttons: Array<any> = [];
-
-    _.each(this.wallets, (w: any) => {
-      let walletButton: Object = {
-        text: w.credentials.walletName,
-        cssClass: 'wallet-' + w.network,
-        icon: 'wallet',
-        handler: () => {
-          this.onWalletSelect(w);
-        }
-      }
-      buttons.push(walletButton);
+    this.events.publish('showWalletsSelectorEvent', this.wallets, 'Select a wallet');
+    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+      this.onWalletSelect(wallet);
+      this.events.unsubscribe('selectWalletEvent');
     });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Select a wallet',
-      buttons: buttons
-    });
-
-    actionSheet.present();
   }
 }
