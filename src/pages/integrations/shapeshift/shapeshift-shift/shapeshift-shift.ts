@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController } from 'ionic-angular';
+import { NavController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -31,7 +31,7 @@ export class ShapeshiftShiftPage {
   public toWalletSelectorTitle: string;
 
   constructor(
-    private actionSheetCtrl: ActionSheetController,
+    private events: Events,
     private logger: Logger,
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
@@ -118,33 +118,21 @@ export class ShapeshiftShiftPage {
   }
 
   public showWallets(selector: string): void {
-    let buttons: Array<any> = [];
     let walletsForActionSheet: Array<any> = [];
-
+    let selectedWalletId: string;
+    let title: string = selector == 'from' ? this.fromWalletSelectorTitle : this.toWalletSelectorTitle
     if (selector == 'from') {
       walletsForActionSheet = this.fromWallets;
+      selectedWalletId = this.fromWallet.id;
     } else if (selector == 'to') {
       walletsForActionSheet = this.toWallets;
+      selectedWalletId = this.toWallet.id;
     }
-
-    _.each(walletsForActionSheet, (w: any) => {
-      let walletButton: Object = {
-        text: w.credentials.walletName,
-        cssClass: 'wallet-' + w.network,
-        icon: 'wallet',
-        handler: () => {
-          this.onWalletSelect(w, selector);
-        }
-      }
-      buttons.push(walletButton);
+    this.events.publish('showWalletsSelectorEvent', walletsForActionSheet, selectedWalletId, title);
+    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+      this.onWalletSelect(wallet, selector);
+      this.events.unsubscribe('selectWalletEvent');
     });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: selector == 'from' ? this.fromWalletSelectorTitle : this.toWalletSelectorTitle,
-      buttons: buttons
-    });
-
-    actionSheet.present();
   }
 
   public onWalletSelect(wallet: any, selector: string): void {

@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, Input } from '@angular/core';
 import { Md5 } from 'ts-md5/dist/md5';
 import { Logger } from '@nsalaun/ng-logger';
 
@@ -9,7 +8,7 @@ import { Logger } from '@nsalaun/ng-logger';
 })
 export class GravatarPage {
 
-  private emailHash: any;
+  public emailHash: any;
 
   @Input() email: string;
   @Input() name: string;

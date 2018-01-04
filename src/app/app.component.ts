@@ -28,7 +28,8 @@ import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
   providers: [TouchIdProvider]
 })
 export class CopayApp {
-  rootPage: any;
+
+  public rootPage: any;
 
   constructor(
     private platform: Platform,
@@ -44,9 +45,8 @@ export class CopayApp {
     private amazonProvider: AmazonProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
-    private shapeshiftProvider: ShapeshiftProvider,
+    private shapeshiftProvider: ShapeshiftProvider
   ) {
-
     this.initializeApp();
   }
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
-import { NavController, Events, ActionSheetController, AlertController } from 'ionic-angular';
+import { NavController, Events, AlertController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -40,7 +40,6 @@ export class ReceivePage {
     private walletProvider: WalletProvider,
     private platformProvider: PlatformProvider,
     private events: Events,
-    private actionSheetCtrl: ActionSheetController,
     private socialSharing: SocialSharing,
     private bwcErrorProvider: BwcErrorProvider
   ) {
@@ -49,7 +48,7 @@ export class ReceivePage {
 
   ionViewWillEnter() {
     this.wallets = this.profileProvider.getWallets();
-    this.onSelect(this.checkSelectedWallet(this.wallet, this.wallets));
+    this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       // Update current address
       if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
@@ -60,7 +59,7 @@ export class ReceivePage {
     this.events.unsubscribe('bwsEvent');
   }
 
-  private onSelect(wallet: any): any {
+  private onWalletSelect(wallet: any): any {
     this.wallet = wallet;
     if (this.wallet) {
       this.setProtocolHandler();
@@ -119,26 +118,11 @@ export class ReceivePage {
   }
 
   public showWallets(): void {
-    let buttons: Array<any> = [];
-
-    _.each(this.wallets, (w: any) => {
-      let walletButton: Object = {
-        text: w.credentials.walletName,
-        cssClass: 'wallet-' + w.network,
-        icon: 'wallet',
-        handler: () => {
-          this.onSelect(w);
-        }
-      }
-      buttons.push(walletButton);
+    this.events.publish('showWalletsSelectorEvent', this.wallets, this.wallet.id);
+    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+      this.onWalletSelect(wallet);
+      this.events.unsubscribe('selectWalletEvent');
     });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Select a wallet',
-      buttons: buttons
-    });
-
-    actionSheet.present();
   }
 
   public goCopayers(): void {

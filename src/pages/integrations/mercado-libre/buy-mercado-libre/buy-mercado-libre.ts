@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -50,11 +50,11 @@ export class BuyMercadoLibrePage {
   public walletSelectorTitle: string;
 
   constructor(
-    private actionSheetCtrl: ActionSheetController,
     private mercadoLibreProvider: MercadoLibreProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private configProvider: ConfigProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
+    private events: Events,
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private modalCtrl: ModalController,
@@ -413,26 +413,11 @@ export class BuyMercadoLibrePage {
   }
 
   public showWallets(): void {
-    let buttons: Array<any> = [];
-
-    _.each(this.wallets, (w: any) => {
-      let walletButton: Object = {
-        text: w.credentials.walletName,
-        cssClass: 'wallet-' + w.network,
-        icon: 'wallet',
-        handler: () => {
-          this.onWalletSelect(w);
-        }
-      }
-      buttons.push(walletButton);
+    this.events.publish('showWalletsSelectorEvent', this.wallets, this.wallet.id, 'Buy from');
+    this.events.subscribe('selectWalletEvent', (wallet: any) => {
+      this.onWalletSelect(wallet);
+      this.events.unsubscribe('selectWalletEvent');
     });
-
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Buy from',
-      buttons: buttons
-    });
-
-    actionSheet.present();
   }
 
 }

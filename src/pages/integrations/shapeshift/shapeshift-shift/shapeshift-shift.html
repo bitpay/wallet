@@ -14,7 +14,8 @@
         <img item-end *ngIf="fromWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
       </ion-item>
       <button ion-item class="wallet-selector" (click)="showWallets('from')">
-        <img *ngIf="fromWallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img *ngIf="fromWallet.network != 'testnet'" src="assets/img/icon-wallet.svg" [ngStyle]="{'background-color': fromWallet.color}"
+          class="icon-wallet" />
         <div class="wallet-balance">
           <span>
             {{fromWallet.name || fromWallet.id}}
@@ -48,7 +49,8 @@
         <img item-end *ngIf="toWallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" width="22">
       </ion-item>
       <button ion-item class="wallet-selector" (click)="showWallets('to')">
-        <img *ngIf="fromWallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+        <img *ngIf="toWallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': toWallet.color}"
+        />
         <div class="wallet-balance">
           <span>
             {{toWallet.name || toWallet.id}}
