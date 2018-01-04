@@ -26,9 +26,11 @@ page-amount {
         }
         display: flex;
         a.unit-button {
-          font-size: 28px;
+          font-size: 19px;
           color: color($global-colors, light-grey);
-          padding: 7px 0 0 10px;
+          border: 1px solid color($global-colors, light-grey);
+          padding: 0 5px;
+          margin: 14px 0 8px 10px;
           cursor: pointer;
           @media(max-height: 500px) {
             font-size: 16px;
