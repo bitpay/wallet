@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -43,7 +43,6 @@ export class SellGlideraPage {
     private glideraProvider: GlideraProvider,
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
-    private actionSheetCtrl: ActionSheetController,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
     private events: Events

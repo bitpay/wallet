@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -50,7 +50,6 @@ export class BuyMercadoLibrePage {
   public walletSelectorTitle: string;
 
   constructor(
-    private actionSheetCtrl: ActionSheetController,
     private mercadoLibreProvider: MercadoLibreProvider,
     private bwcErrorProvider: BwcErrorProvider,
     private configProvider: ConfigProvider,

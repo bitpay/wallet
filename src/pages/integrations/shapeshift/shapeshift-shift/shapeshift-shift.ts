@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -31,7 +31,6 @@ export class ShapeshiftShiftPage {
   public toWalletSelectorTitle: string;
 
   constructor(
-    private actionSheetCtrl: ActionSheetController,
     private events: Events,
     private logger: Logger,
     private navCtrl: NavController,

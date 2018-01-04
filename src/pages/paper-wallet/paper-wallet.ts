@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -9,8 +9,6 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { FeeProvider } from '../../providers/fee/fee';
 import { ProfileProvider } from '../../providers/profile/profile';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-paper-wallet',
@@ -46,7 +44,6 @@ export class PaperWalletPage {
     private walletProvider: WalletProvider,
     private feeProvider: FeeProvider,
     private profileProvider: ProfileProvider,
-    private actionSheetCtrl: ActionSheetController,
     private events: Events
   ) {
     this.bitcore = this.bwcProvider.getBitcore();

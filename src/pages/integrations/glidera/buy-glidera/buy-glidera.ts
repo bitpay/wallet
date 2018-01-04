@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -45,7 +45,6 @@ export class BuyGlideraPage {
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
-    private actionSheetCtrl: ActionSheetController,
   ) {
     this.coin = 'btc';
     this.isCordova = this.platformProvider.isCordova;

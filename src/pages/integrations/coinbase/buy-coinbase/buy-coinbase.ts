@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Events } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -49,7 +49,6 @@ export class BuyCoinbasePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private navParams: NavParams,
     private walletProvider: WalletProvider,
-    private actionSheetCtrl: ActionSheetController,
     private txFormatProvider: TxFormatProvider,
     private profileProvider: ProfileProvider
   ) {

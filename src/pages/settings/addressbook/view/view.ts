@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { importType } from '@angular/compiler/src/output/output_ast';
+import { NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { AmountPage } from '../../../../pages/send/amount/amount';
@@ -29,7 +28,6 @@ export class AddressbookViewPage {
   constructor(
     private addressBookProvider: AddressBookProvider,
     private addressProvider: AddressProvider,
-    private alertCtrl: AlertController,
     private bwcProvider: BwcProvider,
     private navCtrl: NavController,
     private navParams: NavParams,

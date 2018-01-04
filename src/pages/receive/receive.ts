@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
-import { NavController, Events, ActionSheetController, AlertController } from 'ionic-angular';
+import { NavController, Events, AlertController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -40,7 +40,6 @@ export class ReceivePage {
     private walletProvider: WalletProvider,
     private platformProvider: PlatformProvider,
     private events: Events,
-    private actionSheetCtrl: ActionSheetController,
     private socialSharing: SocialSharing,
     private bwcErrorProvider: BwcErrorProvider
   ) {
