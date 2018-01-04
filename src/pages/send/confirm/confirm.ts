@@ -112,6 +112,7 @@ export class ConfirmPage {
         this.setWallet(this.wallets[0], this.tx);
       }
     }).catch((err: any) => {
+      this.logger.error(err);
       return this.exitWithError('Could not update wallets');
     });
   }
@@ -641,7 +642,8 @@ export class ConfirmPage {
   };
 
   public showWallets(): void {
-    this.events.publish('showWalletsSelectorEvent', this.wallets, this.wallet.id, this.walletSelectorTitle);
+    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    this.events.publish('showWalletsSelectorEvent', this.wallets, id, this.walletSelectorTitle);
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');

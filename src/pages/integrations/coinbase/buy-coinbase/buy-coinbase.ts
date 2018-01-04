@@ -282,7 +282,8 @@ export class BuyCoinbasePage {
   }
 
   public showWallets(): void {
-    this.events.publish('showWalletsSelectorEvent', this.wallets, this.wallet.id, 'Receive in');
+    let id = this.wallet ? this.wallet.credentials.walletId : null;
+    this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Receive in');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
