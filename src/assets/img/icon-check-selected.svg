@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="17px" viewBox="0 0 20 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons/Check/Green</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Views/Select-Wallet" transform="translate(-325.000000, -344.000000)" stroke="#12E5B6">
+            <g id="Componets/Select-Wallet">
+                <g id="Items/Activity-Cards/Recent-Activity" transform="translate(15.000000, 256.000000)">
+                    <g id="Group-3" transform="translate(0.000000, 60.000000)">
+                        <g id="Icons/Check/Green" transform="translate(311.000000, 29.000000)">
+                            <g id="ui-24px-outline-1_check">
+                                <g id="Group" transform="translate(0.500000, 0.500000)" stroke-width="2">
+                                    <polyline id="Shape" points="0 7 7 14 17.5 0"></polyline>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

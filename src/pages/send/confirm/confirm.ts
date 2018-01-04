@@ -639,7 +639,7 @@ export class ConfirmPage {
   };
 
   public showWallets(): void {
-    this.events.publish('showWalletsSelectorEvent', this.wallets, this.walletSelectorTitle);
+    this.events.publish('showWalletsSelectorEvent', this.wallets, this.wallet.id, this.walletSelectorTitle);
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
