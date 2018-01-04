@@ -13,6 +13,7 @@ export class WalletSelectorPage {
   public walletsBch: Array<any>;
   public showSlideEffect: boolean;
   public title: string;
+  public selectedWalletId: string;
 
   constructor(
     private events: Events
@@ -20,9 +21,10 @@ export class WalletSelectorPage {
     this.showWalletsSelector = false;
     this.showSlideEffect = false;
     this.wallets = [];
-    this.events.subscribe('showWalletsSelectorEvent', (wallets: Array<any>, title?: string) => {
+    this.events.subscribe('showWalletsSelectorEvent', (wallets: Array<any>, selectedWalletId: string, title?: string) => {
       this.title = title ? title : null;
       this.showWalletsSelector = true;
+      this.selectedWalletId = selectedWalletId;
       setTimeout(() => {
         this.showSlideEffect = true;
       }, 50);

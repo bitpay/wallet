@@ -120,13 +120,16 @@ export class ShapeshiftShiftPage {
 
   public showWallets(selector: string): void {
     let walletsForActionSheet: Array<any> = [];
+    let selectedWalletId: string;
     let title: string = selector == 'from' ? this.fromWalletSelectorTitle : this.toWalletSelectorTitle
     if (selector == 'from') {
       walletsForActionSheet = this.fromWallets;
+      selectedWalletId = this.fromWallet.id;
     } else if (selector == 'to') {
       walletsForActionSheet = this.toWallets;
+      selectedWalletId = this.toWallet.id;
     }
-    this.events.publish('showWalletsSelectorEvent', walletsForActionSheet, title);
+    this.events.publish('showWalletsSelectorEvent', walletsForActionSheet, selectedWalletId, title);
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       this.onWalletSelect(wallet, selector);
       this.events.unsubscribe('selectWalletEvent');

@@ -427,7 +427,7 @@ export class BuyAmazonPage {
   }
 
   public showWallets(): void {
-    this.events.publish('showWalletsSelectorEvent', this.wallets, 'Buy from');
+    this.events.publish('showWalletsSelectorEvent', this.wallets, this.wallet.id, 'Buy from');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
