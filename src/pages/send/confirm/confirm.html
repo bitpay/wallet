@@ -18,16 +18,16 @@
       </div>
     </ion-item>
 
-    <button ion-item class="item item-icon-right item-fee" *ngIf="wallet" (click)="chooseFeeLevel(tx, wallet)">
+    <button ion-item class="item item-icon-right item-fee" (click)="chooseFeeLevel()">
       {{'Fee:' | translate}} <strong>{{tx.feeLevelName | translate}}</strong>
-      <div *ngIf="!tx.txp[wallet.id]">
+      <div *ngIf="!wallet || !tx.txp[wallet.id]">
         <span>...</span>
         <ion-note>
           <span>...</span>
           <div>...</div>
         </ion-note>
       </div>
-      <div *ngIf="tx.txp[wallet.id]">
+      <div *ngIf="wallet && tx.txp[wallet.id]">
         {{tx.txp[wallet.id].fee | satToUnit: tx.coin}}
         <ion-note>
           ({{tx.txp[wallet.id].fee | satToFiat: tx.coin}})
