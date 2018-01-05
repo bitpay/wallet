@@ -677,10 +677,11 @@ export class WalletProvider {
   // Approx utxo amount, from which the uxto is economically redeemable
   public getMinFee(wallet: any, nbOutputs?: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.feeProvider.getFeeLevels(wallet.coin).then((data) => {
-        let lowLevelRate = (lodash.find(data.levels[wallet.network], {
-          level: 'normal',
-        }).feePerKb / 1000).toFixed(0);
+      this.feeProvider.getFeeLevels(wallet.coin).then((data: any) => {
+        let normalLevelRate: any = lodash.find(data.levels[wallet.network], (level: any) => {
+          return level.level === 'normal';
+        });
+        let lowLevelRate: string = (normalLevelRate.feePerKb / 1000).toFixed(0);
         let size = this.getEstimatedTxSize(wallet, nbOutputs);
         return resolve(size * parseInt(lowLevelRate));
       }).catch((err) => {
