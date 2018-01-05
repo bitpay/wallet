@@ -96,7 +96,7 @@
 
     <ion-item-divider *ngIf="walletsBch.length" color="light">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
 
-    <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettings(wallet.credentials.walletId)">
+    <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
       <ion-icon item-start>
         <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
           class="icon-wallet" />
