@@ -1,5 +1,5 @@
 page-wallet-details {
-  .card.balance-card {
+  .balance-card {
     background: color($colors, primary);
   }
   .balance-header {
@@ -59,10 +59,19 @@ page-wallet-details {
     }
   }
 
+  .middle-message {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
   .wallet-info {
     font-weight: 500;
     color: color($colors, light);
-    height: 25px;
+    height: 35px;
     img {
       float: left;
       margin-right: 4px;
@@ -103,6 +112,7 @@ page-wallet-details {
       float: right;
       width: 20px;
       height: 20px;
+      margin: 5px 5px 0 0;
       &.spinner-crescent circle {
         stroke: color($colors, light);
       }

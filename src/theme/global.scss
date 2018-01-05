@@ -32,6 +32,11 @@ $global-colors: (
   height: 70px;
 }
 
+// Hide border when refresh
+.has-refresher > .scroll-content {
+  border-top: none !important;
+}
+
 // This style prevents the names of the tabs from disappear
 .tabbar .tab-button .tab-button-text {
   display: block;
@@ -84,30 +89,34 @@ $global-colors: (
 }
 
 .box-notification {
-  padding: 0.5rem;
-  border: 1px solid;
+  cursor: pointer;
+  padding: 10px 0;
+  border: none;
   margin: 10px;
+  text-align: center;
+  color: color($colors, light);
   a {
-    color: #fff;
+    display: block;
+    color: color($colors, light);
+  }
+  .icon {
+    vertical-align: middle;
+    margin: 0 5px;
+  }
+  &.no-margin {
+    margin: 0;
   }
   &.notice {
-    border-color: #b2b2b2;
-    background-color: #f8f8f8;
-    color: #444;
+    background-color: color($colors, grey);
   }
-  &.warning {
-    border-color: #e6b500;
-    background-color: #ffc900;
-    color: #fff;
+  &.warn {
+    background-color: color($colors, warning);
     &.warning-red{
-      border-color: #EB475A;
       background-color: color($global-colors, warning);
     }
   }
   &.error {
-    background-color: #ef473a;
-    border-color: #e42112;
-    color: #fff;
+    background-color: color($colors, danger);
   }
 }
 

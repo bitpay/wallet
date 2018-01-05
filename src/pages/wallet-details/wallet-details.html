@@ -5,10 +5,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-card class="balance-card" [ngStyle]="{'background': wallet.color}">
-    <ion-card-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="balance-card" [ngStyle]="{'background': wallet.color}">
       <div class="balance-header">
-        <div (tap)="updateAll(true)" (longPress)="toggleBalance()">
+        <div (longPress)="toggleBalance()">
           <div *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
             <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
             <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
@@ -64,70 +68,74 @@
         </span>
       </div>
 
-    </ion-card-content>
-  </ion-card>
+  </div>
 
-  <ion-list no-lines *ngIf="wallet.needsBackup">
-    <button ion-item (click)="openBackup()">
-      <ion-icon name="warning" item-start></ion-icon>
+  <div *ngIf="wallet.needsBackup" class="box-notification no-margin warn">
+    <a (click)="openBackup()">
+      <ion-icon name="warning"></ion-icon>
       {{'Wallet not backed up'|translate}}
-    </button>
-  </ion-list>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </a>
+  </div>
 
-  <ion-list no-lines *ngIf="lowUtxosWarning">
-    <button ion-item (click)="openAddresses()">
-      <ion-icon name="warning" item-start></ion-icon>
+  <div *ngIf="lowUtxosWarning" class="box-notification no-margin warn">
+    <a (click)="openAddresses()">
+      <ion-icon name="alert"></ion-icon>
       {{'Spending this balance will need significant Bitcoin network fees'|translate}}
-    </button>
-  </ion-list>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </a>
+  </div>
 
-  <ion-card *ngIf="wallet && wallet.isComplete() && !walletNotRegistered && txps && txps[0]">
-    <div *ngIf="wallet.incorrectDerivation">
+  <ion-list *ngIf="wallet && wallet.isComplete() && !walletNotRegistered && txps && txps[0]">
+    <ion-item-divider *ngIf="wallet.incorrectDerivation">
       <span translate>
         WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
       </span>
-    </div>
-    <ion-card-header>
+    </ion-item-divider>
+    <ion-list-header>
       <span *ngIf="requiresMultipleSignatures" translate>Proposals</span>
       <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
-    </ion-card-header>
-    <ion-list>
-      <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
-      <ion-item *ngIf="wallet.status && wallet.status.lockedBalanceSat" left>
-        <h2 translate>Total Locked Balance</h2>
-        <p>
-          <b>{{wallet.status.lockedBalanceStr}}</b>
-          <span> {{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}} </span>
-        </p>
-      </ion-item>
-    </ion-list>
-  </ion-card>
+    </ion-list-header>
+    <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
+    <ion-item-divider *ngIf="wallet.status && wallet.status.lockedBalanceSat">
+      <strong translate>Total Locked Balance</strong>
+      <div>
+        {{wallet.status.lockedBalanceStr}}
+        <span>({{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}})</span>
+      </div>
+    </ion-item-divider>
+  </ion-list>
 
   <!-- Transactions -->
 
-  <ion-card *ngIf="showNoTransactionsYetMsg && !updateStatusError">
-    <ion-card-content>
-      {{'No transactions yet' | translate}}
-    </ion-card-content>
-  </ion-card>
+  <div class="middle-message" *ngIf="showNoTransactionsYetMsg && !updateStatusError">
+    {{'No transactions yet' | translate}}
+  </div>
 
-  <ion-card *ngIf="txHistory && !txHistory[0] && updateTxHistoryError">
-    <ion-card-content>
-      {{'Could not update transaction history' | translate}}
-    </ion-card-content>
-  </ion-card>
+  <div class="middle-message" *ngIf="txHistory && !txHistory[0] && updateTxHistoryError">
+    {{'Could not update transaction history' | translate}}
+  </div>
 
-  <ion-card *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
-    <ion-card-content>
-      <span translate>Updating transaction history. Please stand by.</span>
-      <br>
-      <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
-    </ion-card-content>
-  </ion-card>
+  <div class="middle-message" *ngIf="updatingTxHistory && updatingTxHistoryProgress>5">
+    <span translate>Updating transaction history. Please stand by.</span>
+    <br>
+    <span translate>{{updatingTxHistoryProgress}} transactions downloaded</span>
+  </div>
 
-  <ion-card *ngIf="history && history[0]" class="tx-history">
-    <ion-list>
-      <button ion-item *ngFor="let tx of history" (click)="goToTxDetails(tx)">
+  <ion-list *ngIf="history && history[0]" class="tx-history">
+    <div *ngFor="let tx of history; trackBy: trackByFn; let i = index">
+
+      <span *ngIf="isFirstInGroup(i)">
+        <ion-item-divider *ngIf="isDateInCurrentMonth(getDate(tx.time))">
+          <span translate>Recent</span>
+        </ion-item-divider>
+
+        <ion-item-divider *ngIf="!isDateInCurrentMonth(getDate(tx.time))">
+          {{getDate(tx.time) | amDateFormat:'MMMM'}}
+        </ion-item-divider>
+      </span>
+
+      <button ion-item (click)="goToTxDetails(tx)">
         <ion-icon item-start>
           <div *ngIf="tx.confirmations == 0">
             <img src="assets/img/tx-action/icon-confirming.svg" width="40">
@@ -143,11 +151,14 @@
         <div class="action" *ngIf="tx.confirmations > 0">{{tx.action}}</div>
         <div class="detail">
           <div class="amount">{{tx.amount | satToUnit: wallet.coin}}</div>
-          <div class="date">{{tx.time * 1000 | amTimeAgo}}</div>
+          <div class="date">
+            <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amTimeAgo}}</span>
+            <span *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MMM D, YYYY'}}</span>
+          </div>
         </div>
       </button>
-    </ion-list>
-  </ion-card>
+    </div>
+  </ion-list>
 
   <ion-infinite-scroll (ionInfinite)="loadHistory($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>

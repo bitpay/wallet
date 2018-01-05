@@ -7,6 +7,7 @@ import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
+import { TimeProvider } from '../../providers/time/time';
 
 //pages
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
@@ -46,7 +47,8 @@ export class WalletDetailsPage {
     private addressbookProvider: AddressBookProvider,
     private bwcError: BwcErrorProvider,
     private events: Events,
-    private logger: Logger
+    private logger: Logger,
+    private timeProvider: TimeProvider
   ) {
     let clearCache = this.navParams.data.clearCache;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -214,5 +216,46 @@ export class WalletDetailsPage {
   public openAddresses() {
     this.navCtrl.push(WalletAddressesPage, { walletId: this.wallet.credentials.walletId });
   }
+
+  public doRefresh(refresher) {
+    this.updateAll(true);
+    setTimeout(() => {
+      refresher.complete();
+    }, 1000);
+  }
+
+  public getDate(txCreated) {
+    let date = new Date(txCreated * 1000);
+    return date;
+  };
+
+  public trackByFn(index, tx) {
+    return index;
+  };
+
+  public isFirstInGroup(index) {
+    if (index === 0) {
+      return true;
+    }
+    let curTx = this.history[index];
+    let prevTx = this.history[index - 1];
+    return !this.createdDuringSameMonth(curTx, prevTx);
+  };
+
+  private createdDuringSameMonth(curTx, prevTx) {
+    return this.timeProvider.withinSameMonth(curTx.time * 1000, prevTx.time * 1000);
+  };
+
+  public isDateInCurrentMonth(date) {
+    return this.timeProvider.isDateInCurrentMonth(date);
+  };
+
+  public createdWithinPastDay(time) {
+    return this.timeProvider.withinPastDay(time);
+  };
+
+  public isUnconfirmed(tx) {
+    return !tx.confirmations || tx.confirmations === 0;
+  };
 
 }

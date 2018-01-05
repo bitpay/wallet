@@ -8,8 +8,8 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" (click)="goToBackup()" class="backup">
-    <ion-icon name="alert"></ion-icon>
+  <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" (click)="goToBackup()" class="box-notification no-margin warn">
+    <ion-icon name="warning"></ion-icon>
     <span translate>Wallet not backed up</span>
     <ion-icon name="arrow-forward"></ion-icon>
   </div>
