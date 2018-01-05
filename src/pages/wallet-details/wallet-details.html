@@ -1,10 +1,10 @@
-<ion-header>
-  <ion-navbar>
+<ion-header no-border [ngStyle]="{'background': wallet.color}">
+  <ion-navbar transparent>
     <ion-title>{{wallet.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen>
 
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -33,15 +33,14 @@
         </div>
 
         <div class="balance-spendable" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
-          <ion-icon name="checkmark"></ion-icon>
+          <div translate>Spendable</div>
           <strong>
             {{wallet.status.spendableBalanceStr}}
           </strong>
           &nbsp;
           <span>
-            {{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
+            ({{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}})
           </span>
-          <ion-icon name="arrow-round-forward"></ion-icon>
         </div>
 
         <div class="balance-error" *ngIf="updateStatusError" (tap)="updateAll(true)">
