@@ -36,6 +36,7 @@ export class WalletDetailsPage {
   public updateTxHistoryError: boolean;
   public updatingTxHistoryProgress: number = 0;
   public showNoTransactionsYetMsg: boolean;
+  public showBalanceButton: boolean = false;
   public addressbook: any = {};
   public txps: Array<any> = [];
 
@@ -179,11 +180,13 @@ export class WalletDetailsPage {
     this.updatingStatus = true;
     this.updateStatusError = null;
     this.walletNotRegistered = false;
+    this.showBalanceButton = false;
 
     this.walletProvider.getStatus(this.wallet, { force: !!force }).then((status: any) => {
       this.updatingStatus = false;
       this.setPendingTxps(status.pendingTxps);
       this.wallet.status = status;
+      this.showBalanceButton = (this.wallet.status.totalBalanceSat != this.wallet.status.spendableAmount);
     }).catch((err) => {
       this.updatingStatus = false;
       if (err === 'WALLET_NOT_REGISTERED') {
