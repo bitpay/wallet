@@ -93,28 +93,16 @@ page-txp-details {
       margin-right: .5rem;
       position: relative;
 
-      &::before {
+      .line::before {
         content: '';
         background: #e8e8e8;
-        height: 100px;
+        height: 42px;
         width: 1px;
         position: absolute;
         left: 50%;
         -webkit-transform: translateX(-50%) translateY(-100%);
         transform: translateX(-50%) translateY(-100%);
         top: 0;
-      }
-
-      &::after {
-        content: '';
-        background: #e8e8e8;
-        height: 100px;
-        width: 1px;
-        position: absolute;
-        left: 50%;
-        -webkit-transform: translateX(-50%) translateY(100%);
-        transform: translateX(-50%) translateY(100%);
-        bottom: 0;
       }
 
       > div {

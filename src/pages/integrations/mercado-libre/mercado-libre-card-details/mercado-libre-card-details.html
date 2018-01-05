@@ -4,7 +4,7 @@
     <ion-title>Details</ion-title>
     <ion-buttons start>
       <button (click)="close()" ion-button>
-        Close
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -69,8 +69,8 @@
     </button>
 
     <button ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
-        <span>{{'Help & Support' | translate }}</span>
-      </button>
+      <span>{{'Help & Support' | translate }}</span>
+    </button>
   </ion-list>
 
   <button ion-button block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'"

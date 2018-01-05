@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons start>
       <button (click)="close()" ion-button>
-        <ion-icon name="arrow-round-back"></ion-icon>
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -37,8 +37,7 @@
         <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}} {{tx.amount.currency}}
       </div>
       <div class="size-12">
-        <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}}
-        {{tx.native_amount.currency}}
+        <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}} {{tx.native_amount.currency}}
       </div>
     </ion-card-content>
   </ion-card>

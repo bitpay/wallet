@@ -94,19 +94,19 @@
       </ion-note>
     </ion-item>
 
-    <ion-item class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
+    <div class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
       <img src="assets/img/icon-warning.png" width="20">
       <span translate>This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender</span>
-    </ion-item>
+    </div>
 
-    <ion-item class="low-fees" *ngIf="btx.lowAmount">
+    <div class="low-fees" *ngIf="btx.lowAmount">
       <img src="assets/img/icon-warning.png" width="20">
       <span translate>
         This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
         fee cost comparable to the funds itself.
       </span>
       <a (click)="readMore()" translate>Learn more</a>
-    </ion-item>
+    </div>
 
     <ion-item>
       <ion-label>{{'Confirmations' | translate}}</ion-label>
@@ -136,7 +136,7 @@
           <div class="timeline-content-icon">
             <div class="rejected" *ngIf="a.type === 'reject'">!</div>
             <img src="assets/img/icon-broadcasted.svg" *ngIf="a.type === 'broadcasted'">
-            <div *ngIf="a.type !== 'reject' && a.type !== 'broadcasted'">{{actionList.length - i}}</div>
+            <div class="line" *ngIf="a.type !== 'reject' && a.type !== 'broadcasted'">{{actionList.length - i}}</div>
           </div>
           <div class="timeline-content-label">
             <div class="action">{{a.description}}</div>
