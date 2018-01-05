@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+
+//pages
+import { SuccessModalPage } from '../../../success/success';
 
 //providers
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -20,7 +23,6 @@ import * as _ from 'lodash';
 export class BuyGlideraPage {
 
   public isCordova: boolean;
-  public sendStatus: string;
   public token: string;
   public isFiat: boolean;
   public network: string;
@@ -45,6 +47,7 @@ export class BuyGlideraPage {
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
+    private modalCtrl: ModalController
   ) {
     this.coin = 'btc';
     this.isCordova = this.platformProvider.isCordova;
@@ -70,7 +73,6 @@ export class BuyGlideraPage {
   }
 
   private showErrorAndBack(err): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err || '';
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -79,20 +81,9 @@ export class BuyGlideraPage {
   }
 
   private showError(err): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
-  }
-
-  private statusChangeHandler(processName: string, isOn: boolean): void {
-    let showName = this.onGoingProcessProvider.getShowName(processName);
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'buyingBitcoin' && !isOn) {
-      this.sendStatus = 'success';
-    } else if (showName) {
-      this.sendStatus = showName;
-    }
   }
 
   private processPaymentInfo(): void {
@@ -149,18 +140,15 @@ export class BuyGlideraPage {
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
       if (!ok) return;
       this.onGoingProcessProvider.set('buyingBitcoin', true);
-      this.statusChangeHandler('buyingBitcoin', true);
       this.glideraProvider.get2faCode(this.token, (err, tfa) => {
         if (err) {
           this.onGoingProcessProvider.set('buyingBitcoin', false);
-          this.statusChangeHandler('buyingBitcoin', false);
           this.showError(err);
           return;
         }
         this.ask2FaCode(tfa.mode, (twoFaCode) => {
           if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
-            this.statusChangeHandler('buyingBitcoin', false);
             this.showError('No code entered');
             return;
           }
@@ -175,13 +163,12 @@ export class BuyGlideraPage {
             };
             this.glideraProvider.buy(this.token, twoFaCode, data, (err, data) => {
               this.onGoingProcessProvider.set('buyingBitcoin', false);
-              this.statusChangeHandler('buyingBitcoin', false);
               if (err) return this.showError(err);
               this.logger.info(data);
+              this.openSuccessModal();
             });
           }).catch(() => {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
-            this.statusChangeHandler('buyingBitcoin', false);
             this.showError(err);
           });
         });
@@ -211,10 +198,14 @@ export class BuyGlideraPage {
     this.processPaymentInfo();
   }
 
-  public goBackHome(): void {
-    this.sendStatus = '';
-    this.navCtrl.remove(3, 1);
-    this.navCtrl.pop();
+  public openSuccessModal(): void {
+    let successText = 'Bought';
+    let successComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.remove(3, 1);
+      this.navCtrl.pop();
+    })
   }
-
 }

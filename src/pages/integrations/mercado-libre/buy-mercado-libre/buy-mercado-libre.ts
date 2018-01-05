@@ -7,6 +7,7 @@ import * as moment from 'moment';
 // Pages
 import { FeeWarningPage } from '../../../../pages/send/fee-warning/fee-warning';
 import { MercadoLibreCardsPage } from '../../../../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
+import { SuccessModalPage } from '../../../success/success';
 
 // Provider
 import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';
@@ -42,7 +43,6 @@ export class BuyMercadoLibrePage {
   public invoiceFee: number;
   public networkFee: number;
   public totalAmount: number;
-  public sendStatus: string;
   public mlGiftCard: any;
   public amountUnitStr: string;
   public limitPerDayMessage: string;
@@ -118,7 +118,6 @@ export class BuyMercadoLibrePage {
 
   private showErrorAndBack(title: string, msg: any) {
     title = title ? title : 'Error'; // TODO: gettextCatalog
-    this.sendStatus = '';
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
@@ -129,7 +128,6 @@ export class BuyMercadoLibrePage {
   private showError = function (title: string, msg: any): Promise<any> {
     return new Promise((resolve, reject) => {
       title = title || 'Error'; // TODO: gettextCatalog
-      this.sendStatus = '';
       this.logger.error(msg);
       msg = (msg && msg.errors) ? msg.errors[0].message : msg;
       this.popupProvider.ionicAlert(title, msg).then(() => {
@@ -138,7 +136,7 @@ export class BuyMercadoLibrePage {
     });
   }
 
-  private publishAndSign(wallet: any, txp: any, onSendStatusChange: any): Promise<any> {
+  private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
@@ -146,21 +144,12 @@ export class BuyMercadoLibrePage {
         return reject(err);
       }
 
-      this.walletProvider.publishAndSign(wallet, txp, onSendStatusChange).then((txp: any) => {
+      this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
         return resolve(txp);
       }).catch((err: any) => {
         return reject(err);
       });
     });
-  }
-
-  private statusChangeHandler(processName: string, showName: string, isOn: boolean) {
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'buyingGiftCard' && !isOn) {
-      this.sendStatus = 'success';
-    } else if (showName) {
-      this.sendStatus = showName;
-    }
   }
 
   private satToFiat(sat: number): Promise<any> {
@@ -274,15 +263,13 @@ export class BuyMercadoLibrePage {
     this.mercadoLibreProvider.createGiftCard(dataSrc, (err, giftCard) => {
       this.logger.debug("creating gift card " + count);
       if (err) {
-        this.sendStatus = '';
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         giftCard = giftCard || {};
         giftCard['status'] = 'FAILURE';
       }
 
       if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
-        this.sendStatus = '';
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         giftCard = giftCard || {};
         giftCard['status'] = 'FAILURE';
       }
@@ -308,9 +295,10 @@ export class BuyMercadoLibrePage {
       }
 
       this.mercadoLibreProvider.savePendingGiftCard(newData, null, (err: any) => {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', false, this.statusChangeHandler);
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.mlGiftCard = newData;
+        this.openSuccessModal();
       });
     });
   }, 8000, {
@@ -385,12 +373,11 @@ export class BuyMercadoLibrePage {
     var cancelText = 'Cancel'; // TODO: gettextCatalog
     this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok) => {
       if (!ok) {
-        this.sendStatus = '';
         return;
       }
 
-      this.publishAndSign(this.wallet, this.createdTx, function () { }).then((txSent) => {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', true, this.statusChangeHandler);
+      this.publishAndSign(this.wallet, this.createdTx).then((txSent) => {
+        this.onGoingProcessProvider.set('Comprando Vale-Presente', true);
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();
@@ -405,19 +392,33 @@ export class BuyMercadoLibrePage {
     this.initialize(wallet);
   }
 
-  public goBackHome(): void {
-    this.sendStatus = '';
-    this.navCtrl.remove(3, 1);
-    this.navCtrl.pop();
-    this.navCtrl.push(MercadoLibreCardsPage, { invoiceId: this.invoiceId });
-  }
-
   public showWallets(): void {
     let id = this.wallet ? this.wallet.credentials.walletId : null;
     this.events.publish('showWalletsSelectorEvent', this.wallets, id, 'Buy from');
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+    });
+  }
+
+  public openSuccessModal(): void {
+    let successComment: string;
+    if (this.mlGiftCard.status == 'FAILURE') {
+      successComment = 'Sua compra não pôde ser concluída';
+    }
+    if (this.mlGiftCard.status == 'PENDING') {
+      successComment = 'Sua compra foi adicionada à lista de pendentes';
+    }
+    if (this.mlGiftCard.status == 'SUCCESS' || this.mlGiftCard.cardStatus == 'active') {
+      successComment = 'Vale-Presente gerado e pronto para usar';
+    }
+    let successText = '';
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.remove(3, 1);
+      this.navCtrl.pop();
+      this.navCtrl.push(MercadoLibreCardsPage, { invoiceId: this.invoiceId });
     });
   }
 

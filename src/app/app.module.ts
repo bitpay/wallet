@@ -52,6 +52,7 @@ import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
+import { SuccessModalPage } from '../pages/success/success';
 
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
@@ -275,6 +276,7 @@ let pages: any = [
   FeePolicyPage,
   SessionLogPage,
   SendFeedbackPage,
+  SuccessModalPage,
   TourPage,
   TabsPage,
   TxpDetailsPage,

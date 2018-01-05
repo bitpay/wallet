@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
@@ -14,7 +14,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 
 //pages
 import { CoinbasePage } from '../coinbase';
-
+import { SuccessModalPage } from '../../../success/success';
 
 @Component({
   selector: 'page-buy-coinbase',
@@ -27,7 +27,6 @@ export class BuyCoinbasePage {
   private coin: string;
   private wallets: any;
 
-  public sendStatus: string;
   public paymentMethods: Array<any>;
   public selectedPaymentMethodId: any;
   public buyPrice: string;
@@ -50,7 +49,8 @@ export class BuyCoinbasePage {
     private navParams: NavParams,
     private walletProvider: WalletProvider,
     private txFormatProvider: TxFormatProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private modalCtrl: ModalController
   ) {
     this.coin = 'btc';
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
@@ -78,7 +78,6 @@ export class BuyCoinbasePage {
   }
 
   private showErrorAndBack(err: any): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -87,20 +86,9 @@ export class BuyCoinbasePage {
   }
 
   private showError(err: any): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
-  }
-
-  private statusChangeHandler(processName: string, isOn: boolean): void {
-    let showName = this.onGoingProcessProvider.getShowName(processName);
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'buyingBitcoin' && !isOn) {
-      this.sendStatus = 'success';
-    } else if (showName) {
-      this.sendStatus = showName;
-    }
   }
 
   private processPaymentInfo(): void {
@@ -191,11 +179,9 @@ export class BuyCoinbasePage {
       if (!ok) return;
 
       this.onGoingProcessProvider.set('buyingBitcoin', true);
-      this.statusChangeHandler('buyingBitcoin', true);
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
           this.onGoingProcessProvider.set('buyingBitcoin', false);
-          this.statusChangeHandler('buyingBitcoin', false);
           this.showError(err);
           return;
         }
@@ -210,7 +196,6 @@ export class BuyCoinbasePage {
         this.coinbaseProvider.buyRequest(accessToken, accountId, dataSrc, (err: any, b: any) => {
           if (err) {
             this.onGoingProcessProvider.set('buyingBitcoin', false);
-            this.statusChangeHandler('buyingBitcoin', false);
             this.showError(err);
             return;
           }
@@ -231,7 +216,6 @@ export class BuyCoinbasePage {
   private processBuyTx(tx: any): void {
     if (!tx) {
       this.onGoingProcessProvider.set('buyingBitcoin', false);
-      this.statusChangeHandler('buyingBitcoin', false);
       this.showError('Transaction not found');
       return;
     }
@@ -239,7 +223,6 @@ export class BuyCoinbasePage {
     this.coinbaseProvider.getTransaction(this.accessToken, this.accountId, tx.id, (err: any, updatedTx: any) => {
       if (err) {
         this.onGoingProcessProvider.set('buyingBitcoin', false);
-        this.statusChangeHandler('buyingBitcoin', false);
         this.showError(err);
         return;
       }
@@ -251,12 +234,11 @@ export class BuyCoinbasePage {
         this.logger.debug('Saving transaction to process later...');
         this.coinbaseProvider.savePendingTransaction(updatedTx.data, {}, (err: any) => {
           this.onGoingProcessProvider.set('buyingBitcoin', false);
-          this.statusChangeHandler('buyingBitcoin', false);
           if (err) this.logger.debug(err);
+          this.openSuccessModal();
         });
       }).catch((err) => {
         this.onGoingProcessProvider.set('buyingBitcoin', false);
-        this.statusChangeHandler('buyingBitcoin', false);
         this.showError(err);
       });
     });
@@ -266,7 +248,6 @@ export class BuyCoinbasePage {
     this.coinbaseProvider.getBuyOrder(this.accessToken, this.accountId, b.data.id, (err: any, buyResp: any) => {
       if (err) {
         this.onGoingProcessProvider.set('buyingBitcoin', false);
-        this.statusChangeHandler('buyingBitcoin', false);
         this.showError(err);
         return;
       }
@@ -310,11 +291,16 @@ export class BuyCoinbasePage {
     });
   }
 
-  public goBackHome() {
-    this.sendStatus = '';
-    this.navCtrl.remove(3, 1);
-    this.navCtrl.pop();
-    this.navCtrl.push(CoinbasePage, { coin: 'btc' });
+  public openSuccessModal(): void {
+    let successText = 'Bought';
+    let successComment = 'Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet';
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.remove(3, 1);
+      this.navCtrl.pop();
+      this.navCtrl.push(CoinbasePage, { coin: 'btc' });
+    });
   }
 
 } 

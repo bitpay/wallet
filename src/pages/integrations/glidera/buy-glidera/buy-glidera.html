@@ -4,14 +4,6 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngIf="sendStatus === 'success'">
-    <ion-card-header>
-      Bought
-    </ion-card-header>
-    <ion-card-content>
-      A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day
-    </ion-card-content>
-  </ion-card>
   <ion-list *ngIf="buyInfo">
     <ion-item>
       <div class="buying-label">
@@ -32,9 +24,9 @@
         <div>Receive in</div>
         <div class="wallet">
           <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-          class="icon-wallet" />
-          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-        />
+            class="icon-wallet" />
+          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
           <span>{{wallet ? wallet.name : '...'}}</span>
         </div>
       </button>
@@ -63,10 +55,6 @@
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="sendStatus != 'success'">
+<ion-footer>
   <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!wallet">Confirm purchase</button>
-</ion-footer>
-
-<ion-footer *ngIf="sendStatus === 'success'">
-  <button ion-button block class="button-footer" (click)="goBackHome()">Accept and back home</button>
 </ion-footer>

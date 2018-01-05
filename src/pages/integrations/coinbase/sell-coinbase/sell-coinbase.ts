@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
 
 //pages
 import { CoinbasePage } from '../coinbase';
+import { SuccessModalPage } from '../../../success/success';
 
 //providers
 import { AppProvider } from '../../../../providers/app/app';
@@ -28,7 +29,6 @@ export class SellCoinbasePage {
   private currency: string;
   private wallets: any;
 
-  public sendStatus: string;
   public paymentMethods: Array<any>;
   public selectedPaymentMethodId: any;
   public selectedPriceSensitivity: any;
@@ -54,7 +54,8 @@ export class SellCoinbasePage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
     private txFormatProvider: TxFormatProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private modalCtrl: ModalController
   ) {
     this.coin = 'btc';
     this.isFiat = this.navParams.data.currency != 'BTC' ? true : false;
@@ -86,7 +87,6 @@ export class SellCoinbasePage {
   }
 
   private showErrorAndBack(err: any): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -95,13 +95,12 @@ export class SellCoinbasePage {
   }
 
   private showError(err: any): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
   }
 
-  private publishAndSign(wallet: any, txp: any, onSendStatusChange: any): Promise<any> {
+  private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
@@ -109,7 +108,7 @@ export class SellCoinbasePage {
         return reject(err);
       }
 
-      this.walletProvider.publishAndSign(wallet, txp, onSendStatusChange).then((txp: any) => {
+      this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
         return resolve(txp);
       }).catch((err: any) => {
         return reject(err);
@@ -217,7 +216,7 @@ export class SellCoinbasePage {
               ctx.description = this.appProvider.info.nameCase + ' Wallet: ' + this.wallet.name;
               this.coinbaseProvider.savePendingTransaction(ctx, null, (err: any) => {
                 this.onGoingProcessProvider.set('sellingBitcoin', false);
-                this.statusChangeHandler('sellingBitcoin', false);
+                this.openSuccessModal();
                 if (err) this.logger.debug(this.coinbaseProvider.getErrorsAsString(err.errors));
               });
               return;
@@ -230,7 +229,6 @@ export class SellCoinbasePage {
               this.checkTransaction(count + 1, txp);
             } else {
               this.onGoingProcessProvider.set('sellingBitcoin', false);
-              this.statusChangeHandler('sellingBitcoin', false);
               this.showError('No transaction found');
               return;
             }
@@ -241,16 +239,6 @@ export class SellCoinbasePage {
   }, 8000, {
       'leading': true
     });
-
-  private statusChangeHandler(processName: string, isOn: boolean): void {
-    let showName = this.onGoingProcessProvider.getShowName(processName);
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'sellingBitcoin' && !isOn) {
-      this.sendStatus = 'success';
-    } else if (showName) {
-      this.sendStatus = showName;
-    }
-  }
 
   public sellRequest(): void {
     this.onGoingProcessProvider.set('connectingCoinbase', true);
@@ -291,11 +279,9 @@ export class SellCoinbasePage {
       if (!ok) return;
 
       this.onGoingProcessProvider.set('sellingBitcoin', true);
-      this.statusChangeHandler('sellingBitcoin', true);
       this.coinbaseProvider.init((err: any, res: any) => {
         if (err) {
           this.onGoingProcessProvider.set('sellingBitcoin', false);
-          this.statusChangeHandler('sellingBitcoin', false);
           this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
           return;
         }
@@ -308,7 +294,6 @@ export class SellCoinbasePage {
         this.coinbaseProvider.createAddress(accessToken, accountId, dataSrc, (err: any, data: any) => {
           if (err) {
             this.onGoingProcessProvider.set('sellingBitcoin', false);
-            this.statusChangeHandler('sellingBitcoin', false);
             this.showError(this.coinbaseProvider.getErrorsAsString(err.errors));
             return;
           }
@@ -335,18 +320,16 @@ export class SellCoinbasePage {
 
           this.walletProvider.createTx(this.wallet, txp).then((ctxp: any) => {
             this.logger.debug('Transaction created.');
-            this.publishAndSign(this.wallet, ctxp, function () { }).then((txSent: any) => {
+            this.publishAndSign(this.wallet, ctxp).then((txSent: any) => {
               this.logger.debug('Transaction broadcasted. Wait for Coinbase confirmation...');
               this.checkTransaction(1, txSent);
             }).catch((err: any) => {
               this.onGoingProcessProvider.set('sellingBitcoin', false);
-              this.statusChangeHandler('sellingBitcoin', false);
               this.showError(err);
               return;
             });
           }).catch((err: any) => {
             this.onGoingProcessProvider.set('sellingBitcoin', false);
-            this.statusChangeHandler('sellingBitcoin', false);
             this.showError(err);
             return;
           });
@@ -374,11 +357,16 @@ export class SellCoinbasePage {
     this.processPaymentInfo();
   }
 
-  public goBackHome() {
-    this.sendStatus = '';
-    this.navCtrl.remove(3, 1);
-    this.navCtrl.pop();
-    this.navCtrl.push(CoinbasePage, { coin: 'btc' });
+  public openSuccessModal(): void {
+    let successText = 'Funds sent to Coinbase Account';
+    let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.remove(3, 1);
+      this.navCtrl.pop();
+      this.navCtrl.push(CoinbasePage, { coin: 'btc' });
+    });
   }
 
 }

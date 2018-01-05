@@ -8,6 +8,7 @@ import { SendPage } from '../../send/send';
 import { PayProPage } from '../../paypro/paypro';
 import { ChooseFeeLevelPage } from '../choose-fee-level/choose-fee-level';
 import { FeeWarningPage } from '../fee-warning/fee-warning';
+import { SuccessModalPage } from '../../success/success';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -41,7 +42,6 @@ export class ConfirmPage {
   public buttonText: string;
   public paymentExpired: boolean;
   public remainingTimeStr: string;
-  public sendStatus: string;
 
   // Config Related values
   public config: any;
@@ -470,7 +470,6 @@ export class ConfirmPage {
   }
 
   private setSendError(msg: string) {
-    this.sendStatus = '';
     this.popupProvider.ionicAlert('Error at confirm', this.bwcErrorProvider.msg(msg)); // TODO gettextCatalog
   }
 
@@ -494,18 +493,17 @@ export class ConfirmPage {
     });
   };
 
-  public approve(tx: any, wallet: any, onSendStatusChange: Function): void {
+  public approve(tx: any, wallet: any): void {
     if (!tx || !wallet) return;
 
     if (this.paymentExpired) {
       this.popupProvider.ionicAlert(null, 'This bitcoin payment request has expired.'); // TODO gettextCatalog
-      this.sendStatus = '';
       return;
     }
 
-    this.onGoingProcessProvider.set('creatingTx', true, onSendStatusChange);
+    this.onGoingProcessProvider.set('creatingTx', true);
     this.getTxp(_.clone(tx), wallet, false).then((txp: any) => {
-      this.onGoingProcessProvider.set('creatingTx', false, onSendStatusChange);
+      this.onGoingProcessProvider.set('creatingTx', false);
 
       // confirm txs for more that 20usd, if not spending/touchid is enabled
       let confirmTx = (): Promise<any> => {
@@ -534,20 +532,20 @@ export class ConfirmPage {
       let publishAndSign = (): void => {
         if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
           this.logger.info('No signing proposal: No private key');
-          this.walletProvider.onlyPublish(wallet, txp, onSendStatusChange).catch((err: any) => {
+          this.walletProvider.onlyPublish(wallet, txp).catch((err: any) => {
             this.setSendError(err);
           });
-          this.onSuccessConfirm(); // TODO review this line
+          this.openSuccessModal();
           return;
         }
 
-        this.walletProvider.publishAndSign(wallet, txp, onSendStatusChange).then((txp: any) => {
+        this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
           if (this.config.confirmedTxsNotifications && this.config.confirmedTxsNotifications.enabled) {
             this.txConfirmNotificationProvider.subscribe(wallet, {
               txid: txp.txid
             });
           }
-          this.onSuccessConfirm(); // TODO review this line
+          this.openSuccessModal();
         }).catch((err: any) => {
           this.setSendError(err);
           return;
@@ -556,7 +554,6 @@ export class ConfirmPage {
 
       confirmTx().then((nok: boolean) => {
         if (nok) {
-          this.sendStatus = '';
           return;
         }
         publishAndSign();
@@ -570,26 +567,15 @@ export class ConfirmPage {
     });
   }
 
-  public statusChangeHandler(processName: string, showName: string, isOn: boolean): void {
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (
-      (
-        processName === 'broadcastingTx' ||
-        ((processName === 'signingTx') && this.wallet.m > 1) ||
-        (processName == 'sendingTx' && !this.wallet.canSign() && !this.wallet.isPrivKeyExternal())
-      ) && !isOn) {
-      this.sendStatus = 'success';
-    } else if (showName) {
-      this.sendStatus = showName;
-    }
+  public openSuccessModal() {
+    let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.setRoot(SendPage);
+      this.navCtrl.popToRoot();
+      this.navCtrl.parent.select(0);
+    })
   }
-
-  public onSuccessConfirm(): void {
-    this.sendStatus = '';
-    this.navCtrl.setRoot(SendPage);
-    this.navCtrl.popToRoot();
-    this.navCtrl.parent.select(0);
-  };
 
   public openPPModal(): void {
     this.modalCtrl.create(PayProPage, {}, {

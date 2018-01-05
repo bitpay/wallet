@@ -238,8 +238,8 @@ export class HomePage {
       this.logger.error(err);
     });
   }, 2000, {
-    'leading': true
-  });
+      'leading': true
+    });
 
   private updateAllWallets(): void {
     let wallets: Array<any> = [];

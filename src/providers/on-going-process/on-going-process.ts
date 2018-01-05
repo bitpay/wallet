@@ -66,7 +66,7 @@ export class OnGoingProcessProvider {
     this.loading.dismiss();
   };
 
-  public set(processName: string, isOn: boolean, customHandler?: any): string {
+  public set(processName: string, isOn: boolean): string {
     this.logger.debug('ongoingProcess', processName, isOn);
     let showName = this.processNames[processName];
     if (!isOn) {

@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Buy</ion-title>
+    <ion-title>{{'Buy'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -36,19 +36,24 @@
         <ion-item>
           <span translate>Gift Card</span>
           <ion-note item-end>
-            {{amount | currency:'$ ':2}}<span *ngIf="amount"> {{currencyIsoCode}}</span>
+            {{amount | currency:'$ ':2}}
+            <span *ngIf="amount"> {{currencyIsoCode}}</span>
           </ion-note>
         </ion-item>
         <ion-item>
           <span translate>Network Cost</span>
           <ion-note item-end>
-            <span>{{invoiceFee | currency:'$ ':2}}<span *ngIf="invoiceFee"> {{currencyIsoCode}}</span></span>
+            <span>{{invoiceFee | currency:'$ ':2}}
+              <span *ngIf="invoiceFee"> {{currencyIsoCode}}</span>
+            </span>
           </ion-note>
         </ion-item>
         <ion-item>
           <span translate>Miner Fee</span>
           <ion-note item-end>
-            <span>{{networkFee | currency:'$ ':2}}<span *ngIf="networkFee"> {{currencyIsoCode}}</span></span>
+            <span>{{networkFee | currency:'$ ':2}}
+              <span *ngIf="networkFee"> {{currencyIsoCode}}</span>
+            </span>
           </ion-note>
         </ion-item>
         <ion-item>
@@ -63,22 +68,6 @@
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="!mlGiftCard">
-  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>Confirm purchase</button>
-</ion-footer>
-
-<ion-footer *ngIf="mlGiftCard">
-  <span *ngIf="mlGiftCard.status == 'FAILURE'" translate>
-        Sua compra não pôde ser concluída
-      </span>
-  <span *ngIf="mlGiftCard.status == 'PENDING'" translate>
-        Sua compra foi adicionada à lista de pendentes
-      </span>
-  <span *ngIf="mlGiftCard.status == 'SUCCESS' || mlGiftCard.status == 'active'" translate>
-        Comprou {{mlGiftCard.amount}} {{mlGiftCard.currency}}
-      </span>
-  <div *ngIf="mlGiftCard.status == 'SUCCESS' || mlGiftCard.cardStatus == 'active'" translate>
-    Vale-Presente gerado e pronto para usar
-  </div>
-  <button ion-button block class="button-footer" (click)="goBackHome()" [disabled]="!(wallet && totalAmountStr)" translate>Accept and back home</button>
+<ion-footer>
+  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)">Confirmar a compra</button>
 </ion-footer>

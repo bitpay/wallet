@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavParams, Events, ViewController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -32,7 +31,6 @@ export class TxpDetailsPage {
   public actionList: Array<any>;
   public paymentExpired: boolean;
   public expires: string;
-  public sendStatus: string;
   public currentSpendUnconfirmed: boolean;
   public loading: boolean;
 
@@ -51,7 +49,6 @@ export class TxpDetailsPage {
     private bwcError: BwcErrorProvider,
     private walletProvider: WalletProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private logger: Logger,
     private viewCtrl: ViewController,
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
@@ -106,8 +103,6 @@ export class TxpDetailsPage {
         }
       });
     });
-
-    this.statusChangeHandler = this.statusChangeHandler;
   }
 
   private displayFeeValues(): void {
@@ -211,11 +206,11 @@ export class TxpDetailsPage {
     this.popupProvider.ionicAlert('Error', this.bwcError.msg(err, prefix)); //TODO gettextcatalog
   }
 
-  public sign(onSendStatusChange?: any): void {
+  public sign(): void {
     this.loading = true;
-    this.walletProvider.publishAndSign(this.wallet, this.tx, onSendStatusChange).then((txp: any) => {
+    this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
       this.events.publish('UpdateTx');
-      this.success();
+      //this.success(); TODO
     }).catch((err: any) => {
       this.setError(err, 'Could not send payment'); //TODO gettextcatalog
     });
@@ -300,19 +295,8 @@ export class TxpDetailsPage {
     });
   }
 
-  private statusChangeHandler(processName: string, showName: string, isOn: boolean): void {
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (showName) {
-      this.sendStatus = showName;
-    }
-  }
-
-  private success(): void {
-    this.sendStatus = 'success';
-  }
-
   public onConfirm(): void {
-    this.sign(this.statusChangeHandler);
+    this.sign();
   };
 
   public onSuccessConfirm(): void {

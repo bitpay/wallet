@@ -433,7 +433,7 @@ export class WalletProvider {
       let LIMIT = 50;
       let requestLimit = FIRST_LIMIT;
       let walletId = wallet.credentials.walletId;
-      this.progressFn[walletId] = opts.progressFn || (() => {});
+      this.progressFn[walletId] = opts.progressFn || (() => { });
       let foundLimitTx = [];
 
       if (opts.feeLevels) {
@@ -1119,12 +1119,12 @@ export class WalletProvider {
     });
   }
 
-  public onlyPublish(wallet: any, txp: any, customStatusHandler: any): Promise<any> {
+  public onlyPublish(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.ongoingProcess.set('sendingTx', true, customStatusHandler);
+      this.ongoingProcess.set('sendingTx', true);
       this.publishTx(wallet, txp).then((publishedTxp) => {
         this.invalidateCache(wallet);
-        this.ongoingProcess.set('sendingTx', false, customStatusHandler);
+        this.ongoingProcess.set('sendingTx', false);
         this.events.publish('Local/TxAction', wallet.id);
         return resolve();
       }).catch((err) => {
@@ -1147,17 +1147,17 @@ export class WalletProvider {
     });
   }
 
-  private signAndBroadcast(wallet: any, publishedTxp: any, password: any, customStatusHandler: any): Promise<any> {
+  private signAndBroadcast(wallet: any, publishedTxp: any, password: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      this.ongoingProcess.set('signingTx', true, customStatusHandler);
+      this.ongoingProcess.set('signingTx', true);
       this.signTx(wallet, publishedTxp, password).then((signedTxp: any) => {
-        this.ongoingProcess.set('signingTx', false, customStatusHandler);
+        this.ongoingProcess.set('signingTx', false);
         this.invalidateCache(wallet);
         if (signedTxp.status == 'accepted') {
-          this.ongoingProcess.set('broadcastingTx', true, customStatusHandler);
+          this.ongoingProcess.set('broadcastingTx', true);
           this.broadcastTx(wallet, signedTxp).then((broadcastedTxp: any) => {
-            this.ongoingProcess.set('broadcastingTx', false, customStatusHandler);
+            this.ongoingProcess.set('broadcastingTx', false);
             this.events.publish('Local/TxAction', wallet.id);
             return resolve(broadcastedTxp);
           }).catch((err) => {
@@ -1176,12 +1176,12 @@ export class WalletProvider {
     });
   }
 
-  public publishAndSign(wallet: any, txp: any, customStatusHandler: any): Promise<any> {
+  public publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       // Already published?
       if (txp.status == 'pending') {
         this.prepare(wallet).then((password: string) => {
-          this.signAndBroadcast(wallet, txp, password, customStatusHandler).then((broadcastedTxp: any) => {
+          this.signAndBroadcast(wallet, txp, password).then((broadcastedTxp: any) => {
             return resolve(broadcastedTxp);
           }).catch((err) => {
             return reject(err);
@@ -1191,16 +1191,16 @@ export class WalletProvider {
         });
       } else {
         this.prepare(wallet).then((password: string) => {
-          this.ongoingProcess.set('sendingTx', true, customStatusHandler);
+          this.ongoingProcess.set('sendingTx', true);
           this.publishTx(wallet, txp).then((publishedTxp: any) => {
-            this.ongoingProcess.set('sendingTx', false, customStatusHandler);
-            this.signAndBroadcast(wallet, publishedTxp, password, customStatusHandler).then((broadcastedTxp: any) => {
+            this.ongoingProcess.set('sendingTx', false);
+            this.signAndBroadcast(wallet, publishedTxp, password).then((broadcastedTxp: any) => {
               return resolve(broadcastedTxp);
             }).catch((err) => {
               return reject(err);
             });
           }).catch((err) => {
-            this.ongoingProcess.set('sendingTx', false, customStatusHandler);
+            this.ongoingProcess.set('sendingTx', false);
             return reject(this.bwcErrorProvider.msg(err));
           });
         }).catch((err) => {

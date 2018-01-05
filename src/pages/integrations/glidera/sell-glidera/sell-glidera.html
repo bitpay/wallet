@@ -5,15 +5,6 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngIf="sendStatus === 'success'">
-    <ion-card-header>
-      Funds sent to Glidera Account
-    </ion-card-header>
-    <ion-card-content>
-      The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically
-      once it is confirmed by Glidera.
-    </ion-card-content>
-  </ion-card>
   <ion-list *ngIf="sellInfo">
     <ion-item>
       <div class="selling-label">
@@ -31,15 +22,15 @@
 
     <ion-item-group class="info">
       <button ion-item (click)="showWallets()" class="wallets-list">
-          <div>From</div>
-          <div class="wallet">
-            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+        <div>From</div>
+        <div class="wallet">
+          <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
             class="icon-wallet" />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-          />
-            <span>{{wallet ? wallet.name : '...'}}</span>
-          </div>
-        </button>
+          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
+          <span>{{wallet ? wallet.name : '...'}}</span>
+        </div>
+      </button>
       <ion-item-divider color="light">
         Transaction details
       </ion-item-divider>
@@ -65,10 +56,6 @@
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="sendStatus != 'success'">
+<ion-footer>
   <button ion-button block class="button-footer" (click)="sellConfirm()" [disabled]="!wallet">Confirm sale</button>
-</ion-footer>
-
-<ion-footer *ngIf="sendStatus === 'success'">
-  <button ion-button block class="button-footer" (click)="goBackHome()">Accept and back home</button>
 </ion-footer>
