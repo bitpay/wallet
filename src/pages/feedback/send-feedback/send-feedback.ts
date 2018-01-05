@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import * as _ from "lodash";
 
 //providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -13,7 +14,6 @@ import { PopupProvider } from '../../../providers/popup/popup';
 import { FeedbackCompletePage } from '../feedback-complete/feedback-complete';
 import { HomePage } from '../../home/home';
 
-import * as _ from "lodash";
 
 @Component({
   selector: 'page-send-feedback',
