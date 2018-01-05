@@ -24,6 +24,7 @@ export class FeeProvider {
     updateTs: 0,
     coin: ''
   }
+
   constructor(
     private configProvider: ConfigProvider,
     private logger: Logger,
@@ -105,6 +106,5 @@ export class FeeProvider {
       });
     });
   }
-
 
 }
