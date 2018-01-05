@@ -17,6 +17,9 @@ $global-colors: (
   dark:                            #444,
 );
 
+// Refresh color
+$refresher-icon-color: color($colors, primary);
+
 .bottom-absolute {
   width: 100%;
   position: absolute;
@@ -35,6 +38,9 @@ $global-colors: (
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
+  ion-spinner * {
+    stroke: color($colors, light);
+  }
 }
 
 // This style prevents the names of the tabs from disappear
