@@ -55,8 +55,6 @@ export class ProfileProvider {
   public setWalletOrder(walletId: string, index: number): void {
     this.persistenceProvider.setWalletOrder(walletId, index);
     this.logger.debug('Wallet new order stored');
-    console.log(this.wallet);
-    console.log(walletId);
     this.wallet[walletId].order = index;
   }
 

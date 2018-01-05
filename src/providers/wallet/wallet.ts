@@ -14,6 +14,7 @@ import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
 
 import * as lodash from 'lodash';
+import { FeeProvider } from '../fee/fee';
 
 
 /* TODO LIST:
@@ -55,7 +56,8 @@ export class WalletProvider {
     private popupProvider: PopupProvider,
     private ongoingProcess: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider,
-    private events: Events
+    private events: Events,
+    private feeProvider: FeeProvider
   ) {
     this.logger.info('WalletService initialized.');
   }
@@ -426,7 +428,7 @@ export class WalletProvider {
     });
   }
 
-  private updateLocalTxHistory(wallet: any, opts: any) {
+  private updateLocalTxHistory(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts ? opts : {};
       let FIRST_LIMIT = 5;
@@ -435,10 +437,6 @@ export class WalletProvider {
       let walletId = wallet.credentials.walletId;
       this.progressFn[walletId] = opts.progressFn || (() => { });
       let foundLimitTx = [];
-
-      if (opts.feeLevels) {
-        opts.lowAmount = this.getLowAmount(wallet, opts.feeLevels);
-      };
 
       let fixTxsUnit = (txs: any): void => {
         if (!txs || !txs[0] || !txs[0].amountStr) return;
@@ -570,7 +568,11 @@ export class WalletProvider {
             });
           };
 
-          updateLowAmount(txs);
+          this.getLowAmount(wallet).then((fee) => {
+            opts.lowAmount = fee;
+            updateLowAmount(txs);
+          });
+
 
           updateNotes().then(() => {
 
@@ -661,21 +663,31 @@ export class WalletProvider {
   }
 
   // Approx utxo amount, from which the uxto is economically redeemable
-  public getLowAmount(wallet: any, feeLevels?: any, nbOutputs?: number) {
-    let minFee: number = this.getMinFee(wallet, feeLevels, nbOutputs);
-    return (minFee / this.LOW_AMOUNT_RATIO);
+  public getLowAmount(wallet: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getMinFee(wallet).then((fee) => {
+        let minFee: number = fee;
+        return resolve(minFee / this.LOW_AMOUNT_RATIO);
+      }).catch((err) => {
+        return reject(err);
+      });
+    });
   }
 
   // Approx utxo amount, from which the uxto is economically redeemable
-  private getMinFee(wallet: any, feeLevels: any, nbOutputs?: number): number {
-    let level: any = lodash.find(feeLevels[wallet.network], (o) => {
-      return o.level == 'normal';
-    });
-    let lowLevelRate = parseInt((level.feePerKb / 1000).toFixed(0));
-
-    var size = this.getEstimatedTxSize(wallet, nbOutputs);
-    return size * lowLevelRate;
-  }
+  public getMinFee(wallet: any, nbOutputs?: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.feeProvider.getFeeLevels(wallet.coin).then((data) => {
+        let lowLevelRate = (lodash.find(data.levels[wallet.network], {
+          level: 'normal',
+        }).feePerKb / 1000).toFixed(0);
+        let size = this.getEstimatedTxSize(wallet, nbOutputs);
+        return resolve(size * parseInt(lowLevelRate));
+      }).catch((err) => {
+        return reject(err);
+      });
+    })
+  };
 
   // These 2 functions were taken from
   // https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js#L243
@@ -1007,30 +1019,33 @@ export class WalletProvider {
     });
   }
 
-  public getLowUtxos(wallet: any, levels: any): Promise<any> {
+  public getLowUtxos(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       wallet.getUtxos({
         coin: wallet.coin
       }, (err, resp) => {
         if (err || !resp || !resp.length) return reject(err);
 
-        let minFee = this.getMinFee(wallet, levels, resp.length);
+        this.getMinFee(wallet, resp.length).then((fee) => {
+          let minFee = fee;
+          let balance = lodash.sumBy(resp, 'satoshis');
 
-        let balance = lodash.sumBy(resp, 'satoshis');
+          // for 2 outputs
+          this.getLowAmount(wallet).then((fee) => {
+            let lowAmount = fee;
+            let lowUtxos = lodash.filter(resp, (x: any) => {
+              return x.satoshis < lowAmount;
+            });
 
-        // for 2 outputs
-        let lowAmount = this.getLowAmount(wallet, levels);
-        let lowUtxos = lodash.filter(resp, (x: any) => {
-          return x.satoshis < lowAmount;
-        });
-
-        let totalLow = lodash.sumBy(lowUtxos, 'satoshis');
-        return resolve({
-          allUtxos: resp || [],
-          lowUtxos: lowUtxos || [],
-          totalLow: totalLow,
-          warning: minFee / balance > this.TOTAL_LOW_WARNING_RATIO,
-          minFee: minFee,
+            let totalLow = lodash.sumBy(lowUtxos, 'satoshis');
+            return resolve({
+              allUtxos: resp || [],
+              lowUtxos: lowUtxos || [],
+              totalLow: totalLow,
+              warning: minFee / balance > this.TOTAL_LOW_WARNING_RATIO,
+              minFee: minFee,
+            });
+          });
         });
       });
     });

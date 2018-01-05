@@ -3,5 +3,8 @@ page-wallet-transaction-history {
     &.item {
       color: color($colors, primary) !important;
     }
-	}
+  }
+  .comment {
+    padding: 20px;
+  }
 }

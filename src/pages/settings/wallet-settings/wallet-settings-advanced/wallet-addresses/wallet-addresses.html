@@ -7,12 +7,14 @@
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
   <div class="comment">
-    <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. 
-      A new address is automatically generated and shown each time you receive a payment.
-    </span><a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
+    <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated
+      and shown each time you receive a payment.
+    </span>
+    <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
     <div *ngIf="showInfo">
-      <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>
+      <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against
+        hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
     </div>
   </div>
@@ -41,10 +43,14 @@
     <div *ngIf="latestUnused && latestUnused[0]">
       <div *ngIf="gapReached">
         <h5 translate>Unused addresses limit</h5>
-        <p><span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives a payment, a new address will be generated and shown in your Receive tab.</span>&nbsp
+        <p>
+          <span translate>The maximum number of consecutive unused addresses (20) has been reached. When one of your unused addresses receives
+            a payment, a new address will be generated and shown in your Receive tab.</span>&nbsp
           <a (click)="readMore()" *ngIf="!showMore" translate>Read more</a>
         </p>
-        <p *ngIf="showMore"><span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate more addresses, make a payment to one of the unused addresses which has already been generated.</span>&nbsp
+        <p *ngIf="showMore">
+          <span translate>The restore process will stop when 20 addresses are generated in a row which contain no funds. To safely generate
+            more addresses, make a payment to one of the unused addresses which has already been generated.</span>&nbsp
           <a (click)="readMore()" translate>Read less</a>
         </p>
       </div>
@@ -65,7 +71,7 @@
     </div>
 
     <div *ngIf="allUtxosNb">
-      <ion-item-divider>{{'Wallet Inputs' | translate}}</ion-item-divider>
+      <ion-item-divider color="light">{{'Wallet Inputs' | translate}}</ion-item-divider>
 
       <ion-item>
         <span translate>Total wallet inputs</span>

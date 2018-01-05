@@ -10,11 +10,13 @@
       <ion-label stacked translate>Wallet Service URL</ion-label>
       <ion-input type="text" formControlName="bwsurl" [value]="walletServiceForm.value.bwsurl" required></ion-input>
     </ion-item>
-    <div translate>
-      {{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The
-      default configuration points to https://bws.bitpay.com (BitPay's public BWS instance).
+    <div class="comment">
+      <span translate>{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization.
+        The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance).</span>
+      <a (click)="resetDefaultUrl()" translate>
+        Use default url
+      </a>
     </div>
-    <button ion-button (click)="resetDefaultUrl()"><ion-icon name="refresh"></ion-icon></button>
     <button ion-button block type="submit" [disabled]="!walletServiceForm.valid">Save</button>
   </form>
 </ion-content>

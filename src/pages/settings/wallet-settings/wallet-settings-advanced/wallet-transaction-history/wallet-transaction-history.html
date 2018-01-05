@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  
+
   <ion-item-divider *ngIf="!isCordova" color="light"></ion-item-divider>
 
   <button ion-item *ngIf="csvReady && !isCordova" (click)="downloadCSV()">
@@ -21,12 +21,12 @@
       {{err | translate}}
     </ion-note>
   </ion-item>
-  
+
   <button ion-item (click)="clearTransactionHistory()">
     <span translate>Clear cache</span>
   </button>
-  
-  <div translate>
+
+  <div class="comment" translate>
     The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes
     again from the server
   </div>

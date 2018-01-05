@@ -8,6 +8,7 @@ import { WalletProvider } from '../../../../../providers/wallet/wallet';
 import { BwcErrorProvider } from '../../../../../providers/bwc-error/bwc-error';
 import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
+import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 
 //pages
 import { AllAddressesPage } from './all-addresses/all-addresses';
@@ -28,6 +29,13 @@ export class WalletAddressesPage {
   public latestWithBalance: any;
   public viewAll: boolean;
   public gapReached: boolean;
+  public lowUtxosNb: number;
+  public allUtxosNb: number;
+  public lowUtxosSum: string;
+  public allUtxosSum: string;
+  public minFee: string;
+  public minFeePer: string;
+
   private UNUSED_ADDRESS_LIMIT: number;
   private BALANCE_ADDRESS_LIMIT: number;
   private withBalance: any;
@@ -43,6 +51,7 @@ export class WalletAddressesPage {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private modalCtrl: ModalController,
+    private txFormatProvider: TxFormatProvider
   ) {
     this.UNUSED_ADDRESS_LIMIT = 5;
     this.BALANCE_ADDRESS_LIMIT = 5;
@@ -79,6 +88,26 @@ export class WalletAddressesPage {
       this.loading = false;
       this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
     });
+
+    this.walletProvider.getLowUtxos(this.wallet).then((resp) => {
+
+      if (resp && resp.allUtxos && resp.allUtxos.length) {
+
+        let allSum = _.sumBy(resp.allUtxos || 0, 'satoshis');
+        let per = (resp.minFee / allSum) * 100;
+
+        this.lowUtxosNb = resp.lowUtxos.length;
+        this.allUtxosNb = resp.allUtxos.length;
+        this.lowUtxosSum = this.txFormatProvider.formatAmountStr(this.wallet.coin, _.sumBy(resp.lowUtxos || 0, 'satoshis'));
+        this.allUtxosSum = this.txFormatProvider.formatAmountStr(this.wallet.coin, allSum);
+        this.minFee = this.txFormatProvider.formatAmountStr(this.wallet.coin, resp.minFee || 0);
+        this.minFeePer = per.toFixed(2) + '%';
+
+      }
+    }).catch((err) => {
+      this.logger.warn(err);
+    });
+
   }
 
   private processPaths(list: any): void {
