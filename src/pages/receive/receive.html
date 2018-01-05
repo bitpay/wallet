@@ -1,8 +1,10 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{'Receive'|translate}}</ion-title>
-    <ion-buttons *ngIf="showShareButton" (click)="shareAddress()" end>
-      <ion-icon name="share"></ion-icon>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="showShareButton" (click)="shareAddress()">
+        <ion-icon name="share"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

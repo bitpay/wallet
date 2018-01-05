@@ -75,7 +75,7 @@ export class OnGoingProcessProvider {
     }
     this.loading = this.loadingCtrl.create({
       spinner: 'hide',
-      content: showName
+      content: showName + '...'
     });
     this.loading.present();
   }

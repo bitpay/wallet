@@ -220,13 +220,6 @@ export class WalletDetailsPage {
     this.navCtrl.push(WalletAddressesPage, { walletId: this.wallet.credentials.walletId });
   }
 
-  public doRefresh(refresher) {
-    this.updateAll(true);
-    setTimeout(() => {
-      refresher.complete();
-    }, 1000);
-  }
-
   public getDate(txCreated) {
     let date = new Date(txCreated * 1000);
     return date;

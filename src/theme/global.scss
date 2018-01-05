@@ -17,6 +17,9 @@ $global-colors: (
   dark:                            #444,
 );
 
+// Refresh color
+$refresher-icon-color: color($colors, primary);
+
 .bottom-absolute {
   width: 100%;
   position: absolute;
@@ -35,6 +38,9 @@ $global-colors: (
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
+  ion-spinner * {
+    stroke: color($colors, light);
+  }
 }
 
 // This style prevents the names of the tabs from disappear
@@ -45,9 +51,9 @@ $global-colors: (
 .icon-wallet {
   background-color: color($colors, primary);
   border-radius: $icon-border-radius;
-  width: 37px;
-  height: 37px;
-  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+  width: 35px;
+  height: 35px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat:no-repeat;
   background-clip: padding-box;
   background-size: 103%;
@@ -75,10 +81,11 @@ $global-colors: (
 
 .icon-services {
   background-color: none;
-  border-radius: 50%;
-  width: 37px;
-  height: 37px;
-  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+  border-radius: $icon-border-radius;
+  padding: 3px;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-size: 103%;

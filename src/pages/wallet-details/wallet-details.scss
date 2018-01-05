@@ -1,22 +1,16 @@
 page-wallet-details {
-  ion-header {
-    .toolbar-title, ion-icon {
-      color: color($colors, light);
-    }
-    background: color($colors, primary);
-  }
   .balance-card {
     background: color($colors, primary);
   }
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 10rem;
+    height: 14rem;
     text-align: center;
   }
   .balance-str {
     cursor: pointer;
-    padding-top: 1.5rem;
+    padding-top: 5rem;
     font-size: 35px;
     font-weight: 600;
   }
@@ -25,12 +19,13 @@ page-wallet-details {
     font-weight: 500;
   }
   .balance-hidden {
-    padding-top: 2rem;
+    cursor: pointer;
+    padding-top: 5rem;
     font-size: 20px;
     font-weight: 500;
   }
   .balance-error {
-    padding: 5% 1rem 0 1rem;
+    padding: 10% 1rem 0 1rem;
   }
   .balance-spendable {
     cursor: pointer;
@@ -39,28 +34,20 @@ page-wallet-details {
       margin: 0 5px;
     }
   }
+  .balance-scanning {
+    padding-top: 6rem;
+  }
   .tx-history {
     img {
-      width: 40px;
-    }
-    .label {
-      display: -webkit-inline-box;
+      width: 35px;
     }
     .action {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
-    .detail {
-      position: absolute;
-      right: 16px;
-      text-align: end;
-      .amount {
-      }
-      .date {
-        color: color($colors, grey);
-        font-size: 12.5px;
-      }
+    .amount {
+      color: color($colors, dark);
+    }
+    .date {
+      font-size: 12.5px;
     }
   }
 
@@ -118,7 +105,7 @@ page-wallet-details {
       width: 20px;
       height: 20px;
       margin: 5px 5px 0 0;
-      &.spinner-crescent circle {
+      * {
         stroke: color($colors, light);
       }
     }

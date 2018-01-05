@@ -1,19 +1,17 @@
-<ion-header no-border [ngStyle]="{'background': wallet.color}">
-  <ion-navbar transparent>
+<ion-header>
+  <ion-navbar>
     <ion-title>{{wallet.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content fullscreen>
-
-  <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+<ion-content>
 
   <div class="balance-card" [ngStyle]="{'background': wallet.color}">
       <div class="balance-header">
         <div (longPress)="toggleBalance()">
-          <div *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
+          <div
+            (tap)="updateAll(true)"
+            *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
             <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
             <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
               {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
@@ -148,13 +146,13 @@
         <div class="action" *ngIf="tx.confirmations == 0 && (tx.action == 'sent' || tx.action == 'moved')">{{'Sending' | translate}}</div>
         <div class="action" *ngIf="tx.confirmations == 0 && tx.action == 'received'">{{'Receiving' | translate}}</div>
         <div class="action" *ngIf="tx.confirmations > 0">{{tx.action}}</div>
-        <div class="detail">
+        <ion-note item-end>
           <div class="amount">{{tx.amount | satToUnit: wallet.coin}}</div>
           <div class="date">
             <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amTimeAgo}}</span>
             <span *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MMM D, YYYY'}}</span>
           </div>
-        </div>
+        </ion-note>
       </button>
     </div>
   </ion-list>

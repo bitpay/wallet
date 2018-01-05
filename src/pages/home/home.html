@@ -107,13 +107,16 @@
           <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
           <span translate>Bitcoin Wallets</span>
         </ion-col>
-        <ion-col text-right class="icons-add-reorder">
+        <ion-col text-right class="icons-add-reorder" *ngIf="!showReorderBtc">
           <div class="reorder-icon" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
             <ion-icon name="reorder"></ion-icon>
           </div>
           <div class="add-icon" (click)="goToAddView()">
             <ion-icon name="add"></ion-icon>
           </div>
+        </ion-col>
+        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBtc" (click)="reorderBtc()">
+          {{'Done'|translate}}
         </ion-col>
       </ion-row>
     </ion-card-header>
@@ -156,13 +159,16 @@
           <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
           <span translate>Bitcoin Cash Wallets</span>
         </ion-col>
-        <ion-col class="icons-add-reorder" text-right>
+        <ion-col class="icons-add-reorder" *ngIf="!showReorderBch" text-right>
           <div class="reorder-icon" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
             <ion-icon name="reorder"></ion-icon>
           </div>
           <div class="add-icon" (click)="goToAddView('bch')">
             <ion-icon name="add"></ion-icon>
           </div>
+        </ion-col>
+        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBch" (click)="reorderBch()">
+          {{'Done'|translate}}
         </ion-col>
       </ion-row>
     </ion-card-header>
