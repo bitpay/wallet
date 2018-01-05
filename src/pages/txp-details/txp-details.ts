@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavParams, Events, ViewController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
 
 //providers
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -50,7 +49,6 @@ export class TxpDetailsPage {
     private bwcError: BwcErrorProvider,
     private walletProvider: WalletProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private logger: Logger,
     private viewCtrl: ViewController,
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
