@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons start>
-      <button (click)="close()" ion-button icon-only>
-        <ion-icon name="arrow-back"></ion-icon>
+      <button (click)="close()" ion-button>
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -30,19 +30,19 @@
       <div class="settings-description">{{data}}</div>
       <button ion-item (click)="close('AddressBookPage', data)">
         <ion-icon item-start>
-          <img src="assets/img/icon-contacts.svg">              
+          <img src="assets/img/icon-contacts.svg">
         </ion-icon>
         <h2 translate>Add as a contact</h2>
       </button>
       <button ion-item (click)="close('AmountPage', data)">
         <ion-icon item-start>
-          <img src="assets/img/icon-send-alt.svg">              
+          <img src="assets/img/icon-send-alt.svg">
         </ion-icon>
         <h2 translate>Send payment to this address</h2>
       </button>
       <button ion-item copy-to-clipboard="{{ data }}">
         <ion-icon item-start>
-          <img src="assets/img/icon-paperclip.svg">       
+          <img src="assets/img/icon-paperclip.svg">
         </ion-icon>
         <h2 translate>Copy to clipboard</h2>
       </button>
@@ -68,7 +68,7 @@
       <div class="settings-description">{{data}}</div>
       <button ion-item (click)="close('PaperWalletPage', data)">
         <ion-icon item-start>
-            <img src="assets/img/icon-import.svg">
+          <img src="assets/img/icon-import.svg">
         </ion-icon>
         <h2 translate>Sweep paper wallet</h2>
       </button>

@@ -109,9 +109,9 @@ export class TxDetailsPage {
 
   private initActionList(): void {
     this.actionList = [];
-    if (this.btx.action != 'sent' || !this.isShared) return;
+    if (this.btx.action != 'sent' && this.btx.action != 'moved' || !this.isShared) return;
 
-    var actionDescriptions = {
+    let actionDescriptions = {
       created: 'Proposal Created', // Todo: gettextCatalog
       accept: 'Accepted', // Todo: gettextCatalog
       reject: 'Rejected', // Todo: gettextCatalog

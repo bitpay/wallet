@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons start>
       <button (click)="close()" ion-button>
-        <ion-icon name="arrow-round-back"></ion-icon>
+        {{'Close' | translate}}
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -70,7 +70,7 @@
       <div *ngIf="tx.hasMultiplesOutputs" (click)="showMultiplesOutputs = !showMultiplesOutputs">
         <span translate>Recipients</span>
         <span>{{tx.recipientCount}}
-            <ion-icon name="arrow-up"></ion-icon>
+          <ion-icon name="arrow-up"></ion-icon>
         </span>
       </div>
 
@@ -153,8 +153,10 @@
           {{'To'|translate}}
         </ion-label>
         <ion-note item-end>
-          <span *ngIf="tx.merchant && tx.merchant.pr.ca"><i class="fi-lock"></i> {{tx.paypro.domain}}</span>
-          <span *ngIf="tx.merchant && !tx.merchant.pr.ca"><i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
+          <span *ngIf="tx.merchant && tx.merchant.pr.ca">
+            <i class="fi-lock"></i> {{tx.paypro.domain}}</span>
+          <span *ngIf="tx.merchant && !tx.merchant.pr.ca">
+            <i class="fi-unlock"></i> {{tx.paypro.domain}}</span>
         </ion-note>
         <!--  <contact address="{{tx.toAddress}}" ng-hide="tx.merchant"></contact> -->
       </ion-item>
@@ -191,7 +193,7 @@
         <div class="timeline-content">
           <div class="timeline-content-icon">
             <div class="rejected" *ngIf="a.type === 'reject'">!</div>
-            <div *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
+            <div class="line" *ngIf="a.type !== 'reject'">{{actionList.length - i}}</div>
           </div>
           <div class="timeline-content-label">
             <div class="action">{{a.description}}</div>

@@ -1,8 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-buttons start>
-    </ion-buttons>
-    <ion-title>Alternative currency</ion-title>
+    <ion-title>{{'Alternative currency' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -12,13 +10,15 @@
 
   <ion-list>
     <ion-item *ngFor="let lastUsedAltCurrency of lastUsedAltCurrencyList" (click)="save(lastUsedAltCurrency)">
-      {{ lastUsedAltCurrency.name }} <span item-end>{{lastUsedAltCurrency.isoCode}}</span>
+      {{ lastUsedAltCurrency.name }}
+      <span item-end>{{lastUsedAltCurrency.isoCode}}</span>
     </ion-item>
   </ion-list>
   <ion-item-divider *ngIf="altCurrencyList[0] && lastUsedAltCurrencyList[0]" color="light"></ion-item-divider>
   <ion-list>
     <ion-item *ngFor="let alt of altCurrencyList" (click)="save(alt)">
-      {{ alt.name }} <span item-end>{{alt.isoCode}}</span>
+      {{ alt.name }}
+      <span item-end>{{alt.isoCode}}</span>
     </ion-item>
   </ion-list>
 
