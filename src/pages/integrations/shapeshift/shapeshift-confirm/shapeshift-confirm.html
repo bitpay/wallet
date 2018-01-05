@@ -80,9 +80,3 @@
     Click to shift
   </button>
 </ion-footer>
-
-<ion-footer *ngIf="sendStatus === 'success'">
-  <button ion-button block class="button-footer" (click)="goBackHome()" [disabled]="!(wallet && totalAmountStr)" translate>
-    Transaction Sent
-  </button>
-</ion-footer>

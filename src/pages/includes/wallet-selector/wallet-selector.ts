@@ -53,7 +53,7 @@ export class WalletSelectorPage {
     }
   }
 
-  public backdropDismiss() {
+  public backdropDismiss(): void {
     this.events.publish('selectWalletEvent');
     this.showSlideEffect = false;
     setTimeout(() => {

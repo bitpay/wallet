@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import * as _ from 'lodash';
+
+//pages
+import { SuccessModalPage } from '../../../success/success';
 
 //providers
 import { PlatformProvider } from '../../../../providers/platform/platform';
@@ -20,7 +23,6 @@ import { ConfigProvider } from '../../../../providers/config/config';
 export class SellGlideraPage {
 
   public isCordova: boolean;
-  public sendStatus: string;
   public token: string;
   public isFiat: boolean;
   public network: string;
@@ -45,7 +47,8 @@ export class SellGlideraPage {
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
     private configProvider: ConfigProvider,
-    private events: Events
+    private events: Events,
+    private modalCtrl: ModalController
   ) {
     this.coin = 'btc';
     this.isCordova = this.platformProvider.isCordova;
@@ -74,7 +77,6 @@ export class SellGlideraPage {
   }
 
   private showErrorAndBack(err: any): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err).then(() => {
@@ -83,20 +85,9 @@ export class SellGlideraPage {
   }
 
   private showError(err: any): void {
-    this.sendStatus = '';
     this.logger.error(err);
     err = err.errors ? err.errors[0].message : err;
     this.popupProvider.ionicAlert('Error', err);
-  }
-
-  private statusChangeHandler(processName: string, isOn: boolean): void {
-    let showName = this.onGoingProcessProvider.getShowName(processName);
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'sellingBitcoin' && !isOn) {
-      this.sendStatus = 'success';
-    } else if (showName) {
-      this.sendStatus = showName;
-    }
   }
 
   private processPaymentInfo(): void {
@@ -153,18 +144,15 @@ export class SellGlideraPage {
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
       if (!ok) return;
       this.onGoingProcessProvider.set('sellingBitcoin', true);
-      this.statusChangeHandler('sellingBitcoin', true)
       this.glideraProvider.get2faCode(this.token, (err, tfa) => {
         if (err) {
           this.onGoingProcessProvider.set('sellingBitcoin', false);
-          this.statusChangeHandler('sellingBitcoin', false);
           this.showError(err);
           return;
         }
         this.ask2FaCode(tfa.mode, (twoFaCode) => {
           if (tfa.mode != 'NONE' && _.isEmpty(twoFaCode)) {
             this.onGoingProcessProvider.set('sellingBitcoin', false);
-            this.statusChangeHandler('sellingBitcoin', false);
             this.showError('No code entered');
             return;
           }
@@ -177,14 +165,12 @@ export class SellGlideraPage {
           this.walletProvider.getAddress(this.wallet, false).then((refundAddress) => {
             if (!refundAddress) {
               this.onGoingProcessProvider.set('sellingBitcoin', false);
-              this.statusChangeHandler('sellingBitcoin', false);
               this.showError('Could not create address');
               return;
             }
             this.glideraProvider.getSellAddress(this.token, (err, sellAddress) => {
               if (!sellAddress || err) {
                 this.onGoingProcessProvider.set('sellingBitcoin', false);
-                this.statusChangeHandler('sellingBitcoin', false);
                 this.showError(err);
                 return;
               }
@@ -228,13 +214,12 @@ export class SellGlideraPage {
                       };
                       this.glideraProvider.sell(this.token, twoFaCode, data, (err, data) => {
                         this.onGoingProcessProvider.set('sellingBitcoin', false);
-                        this.statusChangeHandler('sellingBitcoin', false);
                         if (err) return this.showError(err);
                         this.logger.info(data);
+                        this.openSuccessModal();
                       });
                     }).catch((err) => {
                       this.onGoingProcessProvider.set('sellingBitcoin', false);
-                      this.statusChangeHandler('sellingBitcoin', false);
                       this.showError(err);
                       this.walletProvider.removeTx(this.wallet, publishedTxp).catch((err) => { // TODO in the original code use signedTxp on this function
                         if (err) this.logger.debug(err);
@@ -242,17 +227,14 @@ export class SellGlideraPage {
                     });
                   }).catch((err) => {
                     this.onGoingProcessProvider.set('sellingBitcoin', false);
-                    this.statusChangeHandler('sellingBitcoin', false);
                     this.showError(err);
                   });
                 }).catch((err) => {
                   this.onGoingProcessProvider.set('sellingBitcoin', false);
-                  this.statusChangeHandler('sellingBitcoin', false);
                   this.showError(err);
                 });
               }).catch((err) => {
                 this.onGoingProcessProvider.set('sellingBitcoin', false);
-                this.statusChangeHandler('sellingBitcoin', false);
                 this.showError(err);
               });
             });
@@ -284,9 +266,15 @@ export class SellGlideraPage {
     });
   }
 
-  public goBackHome(): void {
-    this.sendStatus = '';
-    this.navCtrl.remove(3, 1);
-    this.navCtrl.pop();
+  public openSuccessModal(): void {
+    let successText = 'Funds sent to Glidera Account';
+    let successComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Glidera';
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.remove(3, 1);
+      this.navCtrl.pop();
+    });
   }
+
 }

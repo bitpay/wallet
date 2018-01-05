@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 
 // Pages
 import { ShapeshiftPage } from '../shapeshift';
+import { SuccessModalPage } from '../../../success/success';
 
 // Providers
 import { BwcProvider } from '../../../../providers/bwc/bwc';
@@ -19,6 +20,7 @@ import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../../../providers/wallet/wallet';
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 
 @Component({
   selector: 'page-shapeshift-confirm',
@@ -39,7 +41,6 @@ export class ShapeshiftConfirmPage {
 
   public currencyIsoCode: string;
   public isCordova: boolean;
-  public sendStatus: string;
   public toWallet: any;
   public fromWallet: any;
   public fiatWithdrawal: number;
@@ -70,7 +71,8 @@ export class ShapeshiftConfirmPage {
     private profileProvider: ProfileProvider,
     private shapeshiftProvider: ShapeshiftProvider,
     private txFormatProvider: TxFormatProvider,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private modalCtrl: ModalController
   ) {
     this.configWallet = this.configProvider.get().wallet;
     this.currencyIsoCode = 'USD';  // Only USD
@@ -124,7 +126,6 @@ export class ShapeshiftConfirmPage {
 
   private showErrorAndBack(title: string, msg: any) {
     title = title ? title : 'Error'; // TODO: gettextCatalog
-    this.sendStatus = '';
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
@@ -132,7 +133,7 @@ export class ShapeshiftConfirmPage {
     });
   };
 
-  private publishAndSign(wallet: any, txp: any, onSendStatusChange: any): Promise<any> {
+  private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
         let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
@@ -140,21 +141,12 @@ export class ShapeshiftConfirmPage {
         return reject(err);
       }
 
-      this.walletProvider.publishAndSign(wallet, txp, onSendStatusChange).then((txp: any) => {
+      this.walletProvider.publishAndSign(wallet, txp).then((txp: any) => {
         return resolve(txp);
       }).catch((err: any) => {
         return reject(err);
       });
     });
-  }
-
-  private statusChangeHandler(processName: string, showName: string, isOn: boolean) {
-    this.logger.debug('statusChangeHandler: ', processName, showName, isOn);
-    if (processName == 'sendingTx' && !isOn) {
-      this.sendStatus = 'success';
-    } else if (showName) {
-      this.sendStatus = showName;
-    }
   }
 
   private satToFiat(coin: string, sat: number, isoCode: string): Promise<any> {
@@ -196,6 +188,7 @@ export class ShapeshiftConfirmPage {
 
       this.shapeshiftProvider.saveShapeshift(newData, null, (err: any) => {
         this.logger.debug("Saved shift with status: " + newData.status);
+        this.openSuccessModal();
       });
     });
   }
@@ -330,13 +323,12 @@ export class ShapeshiftConfirmPage {
     let cancelText = 'Cancel'; // TODO: gettextCatalog
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {
       if (!ok) {
-        this.sendStatus = '';
         return;
       }
 
-      this.onGoingProcessProvider.set('sendingTx', true, this.statusChangeHandler);
-      this.publishAndSign(this.fromWallet, this.createdTx, function () { }).then((txSent: any) => {
-        this.onGoingProcessProvider.set('sendingTx', false, this.statusChangeHandler);
+      this.onGoingProcessProvider.set('sendingTx', true);
+      this.publishAndSign(this.fromWallet, this.createdTx).then((txSent: any) => {
+        this.onGoingProcessProvider.set('sendingTx', false);
         this.txSent = txSent;
         this.saveShapeshiftData();
       }).catch((err: any) => {
@@ -346,11 +338,15 @@ export class ShapeshiftConfirmPage {
     });
   };
 
-  public goBackHome() {
-    this.sendStatus = '';
-    this.navCtrl.remove(3, 1);
-    this.navCtrl.pop();
-    this.navCtrl.push(ShapeshiftPage);
+  public openSuccessModal(): void {
+    let successText = 'Transaction Sent';
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText }, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.remove(3, 1);
+      this.navCtrl.pop();
+      this.navCtrl.push(ShapeshiftPage);
+    });
   }
 
 }

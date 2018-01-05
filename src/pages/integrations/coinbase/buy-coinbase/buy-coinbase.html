@@ -5,14 +5,6 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngIf="sendStatus === 'success'">
-    <ion-card-header>
-      Bought
-    </ion-card-header>
-    <ion-card-content>
-      Bitcoin purchase completed. Coinbase has queued the transfer to your selected wallet
-    </ion-card-content>
-  </ion-card>
   <ion-list *ngIf="buyRequestInfo">
     <ion-item>
       <div class="sending-label">
@@ -22,8 +14,7 @@
       <div class="amount-label">
         <div class="amount">{{amountUnitStr}}</div>
         <div class="alternative" *ngIf="buyPrice">
-          <span ng-show="isFiat">{{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}</span> @ ${{buyPrice.amount}}
-          per BTC
+          <span ng-show="isFiat">{{buyRequestInfo.amount.amount}} {{buyRequestInfo.amount.currency}}</span> @ ${{buyPrice.amount}} per BTC
         </div>
       </div>
     </ion-item>
@@ -39,9 +30,9 @@
         <div>Receive in</div>
         <div class="wallet">
           <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-          class="icon-wallet" />
-          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-        />
+            class="icon-wallet" />
+          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
+            class="icon-wallet" />
           <span>{{wallet ? wallet.name : '...'}}</span>
         </div>
       </button>
@@ -70,10 +61,6 @@
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="sendStatus != 'success'">
+<ion-footer>
   <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!wallet || !buyRequestInfo || !selectedPaymentMethodId">Confirm purchase</button>
-</ion-footer>
-
-<ion-footer *ngIf="sendStatus === 'success'">
-  <button ion-button block class="button-footer" (click)="goBackHome()">Accept and back home</button>
 </ion-footer>
