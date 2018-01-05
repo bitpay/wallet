@@ -1,15 +1,29 @@
 page-fee-warning {
-	.modal-content {
-		text-align: center;
-		.modal-img {
-			background-color: color($colors, danger);
-			padding: 1rem;
-		}
-		.modal-heading {
-			padding: 2rem;	
-		}
-		.modal-message {
-			padding: 3rem;	
-		}
-	}
+  color: color($colors, dark);
+  .modal-img {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    background-color: color($colors, warning);
+    padding: 3rem;
+  }
+  .modal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 14rem;
+    .modal-heading {
+      padding: 0 4rem;
+      font-size: 24px
+    }
+    .modal-message {
+      padding: 3rem;
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
 }
