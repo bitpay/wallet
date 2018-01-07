@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Platform, ModalController } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 //providers
 import { Logger } from '@nsalaun/ng-logger';
@@ -31,6 +33,8 @@ export class CopayApp {
 
   constructor(
     private platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
     private logger: Logger,
     private app: AppProvider,
     private profile: ProfileProvider,
@@ -55,6 +59,12 @@ export class CopayApp {
           ' - v' + this.app.info.version +
           ' #' + this.app.info.commitHash);
 
+        if (this.platform.is('cordova')) {
+          this.statusBar.show();
+          this.statusBar.overlaysWebView(true);
+          this.statusBar.styleLightContent();
+          this.splashScreen.hide();
+        }
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
           this.openLockModal();
