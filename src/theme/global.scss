@@ -35,6 +35,17 @@ $refresher-icon-color: color($colors, primary);
   height: 70px;
 }
 
+/* Ionic Overrides and Workarounds */
+// Please include a description of the problem solved by the workaround.
+
+// the ion tabs element never needs it's own background (backgrounds are
+// rendered by the tabs), and the default background would cover the scanner
+ion-tabs.ion-tabs-transparent {
+  background: none transparent;
+}
+
+ion-nav-bar.hide { display: block !important; }
+
 // Hide border when refresh
 .has-refresher > .scroll-content {
   border-top: none !important;
