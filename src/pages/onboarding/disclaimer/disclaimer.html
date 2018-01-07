@@ -5,7 +5,7 @@
   <h1 *ngIf="resume" translate>Quick review!</h1>
   <h1 *ngIf="!resume" translate>Almost done! Let's review.</h1>
   <p translate>Bitcoin is different &ndash; it cannot be safely held with a bank or web service.</p>
-  <ion-list text-wrap>
+  <ion-list no-lines text-wrap>
     <ion-item>
       <ion-label>I understand that my funds are held securely on this device, not by a company.</ion-label>
       <ion-checkbox [(ngModel)]="accepted.first"></ion-checkbox>
@@ -17,7 +17,7 @@
   </ion-list>
   <div class="bottom-absolute" *ngIf="accepted.first && accepted.second">
     <a class="link" (click)="openDisclaimer()" translate>Terms of Use</a>
-    <ion-item no-lines>
+    <ion-item no-lines text-wrap>
       <ion-label>
         <span translate>I have read, understood, and agree to the </span>
       </ion-label>

@@ -3,7 +3,7 @@ page-wallet-details {
     .toolbar-title, ion-icon {
       color: color($colors, light);
     }
-    background: color($colors, primary);
+    background-color: color($colors, primary);
   }
   .balance-card {
     background: color($colors, primary);
@@ -11,12 +11,12 @@ page-wallet-details {
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 12rem;
+    height: 10rem;
     text-align: center;
   }
   .balance-str {
     cursor: pointer;
-    padding-top: 3rem;
+    padding-top: 1rem;
     font-size: 35px;
     font-weight: 600;
   }
@@ -26,7 +26,7 @@ page-wallet-details {
   }
   .balance-hidden {
     cursor: pointer;
-    padding-top: 3rem;
+    padding-top: 1rem;
     font-size: 20px;
     font-weight: 500;
   }
@@ -41,7 +41,7 @@ page-wallet-details {
     }
   }
   .balance-scanning {
-    padding-top: 3rem;
+    padding-top: 1rem;
   }
   .tx-history {
     img {

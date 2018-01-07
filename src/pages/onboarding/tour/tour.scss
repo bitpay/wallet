@@ -1,6 +1,11 @@
 page-tour {
-  .toolbar-background{
-    background-color: transparent;
+  ion-header {
+    .toolbar-title, ion-icon {
+      color: color($colors, primary);
+    }
+    .toolbar-background {
+      background-color: transparent;
+    }
   }
   .bottom-absolute {
     padding: 15px 15px 5vh 15px;

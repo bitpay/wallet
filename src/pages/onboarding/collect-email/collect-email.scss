@@ -1,8 +1,13 @@
 page-collect-email {
-  text-align: center;
-  .toolbar-background{
-    background-color: transparent;
+  ion-header {
+    .toolbar-title, ion-icon {
+      color: color($colors, primary);
+    }
+    .toolbar-background {
+      background-color: transparent;
+    }
   }
+  text-align: center;
   p {
     line-height: 1.6;
     font-size: 18px;
