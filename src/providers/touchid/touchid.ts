@@ -19,12 +19,12 @@ export class TouchIdProvider {
 
   public isAvailable(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (this.platform.isAndroid) {
+      if (this.platform.isCordova && this.platform.isAndroid) {
         this.checkAndroid().then((isAvailable) => {
           return resolve(isAvailable);
         });
       }
-      else if (this.platform.isIOS) {
+      else if (this.platform.isCordova && this.platform.isIOS) {
         this.checkIOS().then((isAvailable) => {
           return resolve(isAvailable);
         });
