@@ -60,6 +60,7 @@ export class CopayApp {
           ' #' + this.app.info.commitHash);
 
         if (this.platform.is('cordova')) {
+          this.statusBar.show();
           this.statusBar.overlaysWebView(true);
           this.statusBar.styleLightContent();
           this.splashScreen.hide();

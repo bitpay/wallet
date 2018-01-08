@@ -2,7 +2,7 @@
 
   <ion-navbar hideBackButton="true">
     <ion-buttons end>
-      <button ion-button icon-only (click)="skip()" translate>Skip</button>
+      <button ion-button color="primary" (click)="skip()" translate>Skip</button>
     </ion-buttons>
   </ion-navbar>
 
@@ -22,7 +22,7 @@
           <ion-input type="email" formControlName="email" placeholder="Email Input"></ion-input>
         </ion-item>
 
-        <ion-item no-lines>
+        <ion-item no-lines text-wrap>
           <ion-label translate>Get news and updates from BitPay</ion-label>
           <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
         </ion-item>

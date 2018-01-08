@@ -18,11 +18,11 @@
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="HideKeyboardFormAccessoryBar" value="true"/>
 
-    <preference name="StatusBarBackgroundColor" value="*THEMECOLOR*" />
     <preference name="BackupWebStorage" value="none"/>
     <preference name="Orientation" value="default" />
     <preference name="cordova-custom-config-stoponerror" value="true" />
 
+    <preference name="StatusBarBackgroundColor" value="*THEMECOLOR*" />
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
 

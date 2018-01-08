@@ -1,7 +1,12 @@
 page-disclaimer {
   text-align: center;
-  .toolbar-background{
-    background-color: transparent;
+  ion-header {
+    .toolbar-title, ion-icon {
+      color: color($colors, primary);
+    }
+    .toolbar-background {
+      background-color: transparent;
+    }
   }
   .link {
     font-size: 2vh;
