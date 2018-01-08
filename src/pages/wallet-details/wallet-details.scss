@@ -11,12 +11,12 @@ page-wallet-details {
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 10rem;
+    height: 11rem;
     text-align: center;
   }
   .balance-str {
     cursor: pointer;
-    padding-top: 1rem;
+    padding-top: 2rem;
     font-size: 35px;
     font-weight: 600;
   }
@@ -26,12 +26,12 @@ page-wallet-details {
   }
   .balance-hidden {
     cursor: pointer;
-    padding-top: 1rem;
+    padding-top: 2rem;
     font-size: 20px;
     font-weight: 500;
   }
   .balance-error {
-    padding: 5% 1rem 0 1rem;
+    padding: 10% 1rem 0 1rem;
   }
   .balance-spendable {
     cursor: pointer;
@@ -41,7 +41,7 @@ page-wallet-details {
     }
   }
   .balance-scanning {
-    padding-top: 1rem;
+    padding-top: 2rem;
   }
   .tx-history {
     img {
@@ -115,5 +115,12 @@ page-wallet-details {
         stroke: color($colors, light);
       }
     }
+  }
+
+  .total-locked-amount {
+    color: color($colors, dark);
+  }
+  .total-alt-locked-amount {
+    font-size: 12.5px;
   }
 }

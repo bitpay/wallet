@@ -10,14 +10,12 @@ page-txp{
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .details {
-    position: absolute;
-    right: 16px;
+  ion-note {
     text-align: end;
     .amount {
+      color: color($colors, dark);
     }
     .date {
-      color: color($colors, grey);
       font-size: 12.5px;
     }
   }

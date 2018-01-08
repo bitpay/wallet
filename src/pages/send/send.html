@@ -2,19 +2,19 @@
 
   <ion-navbar>
     <ion-title>{{'Send' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openScanner()">
+        <ion-icon class="icon-scanner" name="qr-scanner"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 <ion-content>
   <div *ngIf="hasBtcWallets || hasBchWallets">
-    <ion-card>
-      <ion-card-header class="title">{{'Recipient' | translate}}</ion-card-header>
-      <ion-item>
-        <ion-icon name="logo-bitcoin" item-left></ion-icon>
-        <ion-input type="text" placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
-        <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
-      </ion-item>
-    </ion-card>
+    <ion-searchbar placeholder="Search or enter bitcoin address" [(ngModel)]="search"
+      (ngModelChange)="findContact(search)"></ion-searchbar>
+
     <ion-card *ngIf="filteredContactsList && filteredContactsList[0]">
       <ion-item class="title">
         <span translate>Transfer to Contact</span>

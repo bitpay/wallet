@@ -6,7 +6,7 @@
 
 </ion-header>
 
-<ion-content class="back-transparent" padding>
+<ion-content class="back-transparent">
   <div class="tab-scan-has-problems" *ngIf="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
     <ion-icon>
       <img src="img/tab-icons/ico-receive.svg" />
@@ -30,7 +30,7 @@
       <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
     </div>
   </div>
-  <ion-card class="not-supported-message" *ngIf="notSupportedMessage">
-    <ion-card-content>{{notSupportedMessage}}</ion-card-content>
-  </ion-card>
+  <div class="not-supported-message" *ngIf="notSupportedMessage">
+    {{notSupportedMessage}}
+  </div>
 </ion-content>

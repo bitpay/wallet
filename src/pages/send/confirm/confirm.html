@@ -5,8 +5,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item>
+  <ion-card>
+    <ion-card-content>
       <div class="sending-label">
         <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
         <span translate *ngIf="!tx.sendMax">Sending</span>
@@ -16,8 +16,10 @@
         <div class="amount">{{tx.amount | satToUnit: tx.coin}}</div>
         <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
       </div>
-    </ion-item>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-list>
     <button ion-item class="item item-icon-right item-fee" (click)="chooseFeeLevel()">
       {{'Fee:' | translate}}
       <strong>{{tx.feeLevelName | translate}}</strong>
@@ -108,6 +110,8 @@
         <div translate>Select a wallet</div>
       </div>
     </button>
+
+    <ion-item-divider color="light"></ion-item-divider>
 
     <button ion-item text-wrap (click)="showDescriptionPopup(tx)">
       <span *ngIf="!tx.description" translate>Add Memo</span>

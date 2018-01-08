@@ -23,6 +23,23 @@ $app-direction: ltr;
 // Override - Homogenized ionic component styles
 @import 'overrides';
 
+$colors: (
+  primary:    $color-primary,
+  secondary:  $color-secondary,
+  warning:    #EBA133,
+  danger:     #bb331a,
+  success:    #7BC94D,
+  light:      #f4f4f4,
+  dark:       #222,
+  grey:       #999
+);
+
+// Refresh color
+$refresher-icon-color: color($colors, primary);
+
+$toolbar-text-color: color($colors, light);
+$text-color: color($colors, dark);
+
 
 // App iOS Variables
 // --------------------------------------------------
@@ -50,8 +67,6 @@ $app-direction: ltr;
 // default are overridden.
 
 @import "ionic.theme.default";
-@import "global";
-
 
 // Ionicons
 // --------------------------------------------------

@@ -6,10 +6,14 @@
 
 <ion-content>
   <ion-list>
+    <ion-item-divider color="light"></ion-item-divider>
+
     <button ion-item (click)="openAddressBookPage()">
       <ion-icon name="ios-contacts-outline" item-start></ion-icon>
       {{'Address book' | translate}}
     </button>
+
+    <ion-item-divider color="light"></ion-item-divider>
 
     <ion-item (click)="openHelpExternalLink()">
       <ion-icon name="ios-help-circle-outline" item-start></ion-icon>

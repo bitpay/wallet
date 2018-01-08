@@ -6,7 +6,8 @@
 
 
 <ion-content>
-  <ion-input type="search" placeholder="Search your currency" [(ngModel)]="searchedAltCurrency" (ngModelChange)="findCurrency(searchedAltCurrency)"></ion-input>
+  <ion-searchbar placeholder="Search your currency" [(ngModel)]="searchedAltCurrency"
+    (ngModelChange)="findCurrency(searchedAltCurrency)"></ion-searchbar>
 
   <ion-list>
     <ion-item *ngFor="let lastUsedAltCurrency of lastUsedAltCurrencyList" (click)="save(lastUsedAltCurrency)">

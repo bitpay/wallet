@@ -61,7 +61,10 @@ export class CopayApp {
 
         if (this.platform.is('cordova')) {
           this.statusBar.show();
-          this.statusBar.overlaysWebView(true);
+
+          // Only overlay for iOS
+          if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+
           this.statusBar.styleLightContent();
           this.splashScreen.hide();
         }

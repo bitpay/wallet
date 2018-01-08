@@ -277,34 +277,29 @@ export class ConfirmPage {
 
       this.onGoingProcessProvider.set('calculatingFee', true);
       this.feeProvider.getFeeRate(wallet.coin, tx.network, tx.feeLevel).then((feeRate: any) => {
+        this.onGoingProcessProvider.set('calculatingFee', false);
         if (!this.usingCustomFee) tx.feeRate = feeRate;
 
         // call getSendMaxInfo if was selected from amount view
         if (tx.sendMax) {
           this.useSendMax(tx, wallet, opts).then(() => {
-            this.onGoingProcessProvider.set('calculatingFee', false);
             return resolve();
           }).catch((err: any) => {
-            this.onGoingProcessProvider.set('calculatingFee', false);
             return reject(err);
           });
         } else {
           // txp already generated for this wallet?
           if (tx.txp[wallet.id]) {
-            this.onGoingProcessProvider.set('calculatingFee', false);
             return resolve();
           }
 
           this.buildTxp(tx, wallet, opts).then(() => {
-            this.onGoingProcessProvider.set('calculatingFee', false);
             return resolve();
           }).catch((err: any) => {
-            this.onGoingProcessProvider.set('calculatingFee', false);
             return reject(err);
           });
         }
       }).catch((err: any) => {
-        this.onGoingProcessProvider.set('calculatingFee', false);
         return reject(err);
       });
     });

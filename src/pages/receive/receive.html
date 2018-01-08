@@ -16,7 +16,8 @@
     <ion-icon name="arrow-forward"></ion-icon>
   </div>
 
-  <div *ngIf="wallet && wallet.isComplete()" class="qr-container">
+  <ion-card *ngIf="wallet && wallet.isComplete()" class="qr-container">
+    <ion-card-content>
     <div *ngIf="loading" class="loading-address spinner">
       <ion-spinner></ion-spinner>
     </div>
@@ -30,7 +31,8 @@
     <button ion-button block clear [hidden]="!address" (click)="setAddress(true)">
       <span translate>Generate new address</span>
     </button>
-  </div>
+    </ion-card-content>
+  </ion-card>
 
   <div *ngIf="wallet && !wallet.isComplete()" class="incomplete-wallet-container">
     <div class="title">

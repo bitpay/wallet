@@ -136,11 +136,11 @@
 
     <ion-item>
       <ion-label>
-        <span>{{'Fee:' | translate}} {{tx.feeLevelStr | translate}}</span>
+        <span>{{'Fee' | translate}} ({{tx.feeLevelStr | translate}})</span>
       </ion-label>
       <ion-note item-end>
         <span>{{tx.feeStr}}</span>
-        <div>{{tx.feeFiatStr}}&nbsp;
+        <div>{{tx.feeFiatStr}}
           <span *ngIf="tx.feeRateStr">({{tx.feeRateStr}})</span>
         </div>
       </ion-note>
@@ -211,9 +211,11 @@
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed
         since the proposal was created.
       </div>
-      <button ion-button color="danger" clear full (click)="remove()" [disabled]="loading">
+      <ion-item-divider color="light"></ion-item-divider>
+      <button ion-item class="btn-remove" (click)="remove()" [disabled]="loading">
         <span translate>Delete Payment Proposal</span>
       </button>
+      <ion-item-divider color="light"></ion-item-divider>
     </div>
   </ion-list>
 </ion-content>
