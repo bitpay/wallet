@@ -9,8 +9,6 @@ import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 @Injectable()
 export class TouchIdProvider {
 
-  private _isAvailable: boolean = false;
-
   constructor(
     private touchId: TouchID,
     private androidFingerprintAuth: AndroidFingerprintAuth,
@@ -19,28 +17,51 @@ export class TouchIdProvider {
     private logger: Logger
   ) { }
 
-  public init(): void {
-    if (this.platform.isCordova) {
-      if (this.platform.isAndroid) this.checkAndroid();
-      if (this.platform.isIOS) this.checkIOS();
-    }
+  public isAvailable(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.platform.isAndroid) {
+        this.checkAndroid().then((isAvailable) => {
+          return resolve(isAvailable);
+        });
+      }
+      else if (this.platform.isIOS) {
+        this.checkIOS().then((isAvailable) => {
+          return resolve(isAvailable);
+        });
+      }
+      else {
+        return resolve(false);
+      }
+    });
   }
 
-  private checkIOS(): void {
-    this.touchId.isAvailable()
-      .then(
-      res => this._isAvailable = true,
-      err => this.logger.debug("Fingerprint is not available")
-      );
+  private checkIOS(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.touchId.isAvailable()
+        .then(
+        res => {
+          return resolve(true);
+        },
+        err => {
+          console.log("Fingerprint is not available");
+          return resolve(false);
+        }
+        );
+    });
   }
 
-  private checkAndroid(): void {
-    this.androidFingerprintAuth.isAvailable()
-      .then(
-      res => {
-        if (res.isAvailable) this._isAvailable = true
-        else this.logger.debug("Fingerprint is not available")
-      });
+  private checkAndroid() {
+    return new Promise((resolve, reject) => {
+      this.androidFingerprintAuth.isAvailable()
+        .then(
+        res => {
+          if (res.isAvailable) return resolve(true);
+          else {
+            console.log("Fingerprint is not available");
+            return resolve(false);
+          }
+        });
+    });
   }
 
   private verifyIOSFingerprint(): Promise<any> {
@@ -76,13 +97,8 @@ export class TouchIdProvider {
     });
   }
 
-  public isAvailable(): boolean {
-    return this._isAvailable;
-  }
-
   public check(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!this.isAvailable()) reject();
       if (this.platform.isIOS) {
         this.verifyIOSFingerprint()
           .then(() => {
@@ -112,14 +128,18 @@ export class TouchIdProvider {
 
   public checkWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (!this.isAvailable()) return resolve();
-      if (this.isNeeded(wallet)) {
-        this.check().then(() => {
+      this.isAvailable().then((isAvailable: boolean) => {
+        if (!isAvailable) return resolve();
+        if (this.isNeeded(wallet)) {
+          this.check().then(() => {
+            return resolve();
+          }).catch(() => {
+            return reject();
+          });
+        } else {
           return resolve();
-        }).catch(() => {
-          return reject();
-        });
-      };
+        }
+      })
     });
   }
 }

@@ -55,7 +55,9 @@ export class WalletSettingsPage {
     this.needsBackup = this.wallet.needsBackup;
     this.hiddenBalance = this.wallet.balanceHidden;
     this.encryptEnabled = this.walletProvider.isEncrypted(this.wallet);
-    this.touchIdAvailable = this.touchIdProvider.isAvailable();
+    this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
+      this.touchIdAvailable = isAvailable;
+    });
     this.config = this.configProvider.get();
     this.touchIdEnabled = this.config.touchIdFor ? this.config.touchIdFor[this.wallet.credentials.walletId] : null;
     if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic)
