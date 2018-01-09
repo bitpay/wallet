@@ -4,7 +4,7 @@
     <ion-title>{{'Custom Amount' | translate}}</ion-title>
     <ion-buttons end>
       <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()" translate>
-          <ion-icon name="share"></ion-icon>
+        <ion-icon name="share"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -12,7 +12,7 @@
 </ion-header>
 <ion-content>
   <div class="qr-container">
-    <qr-code *ngIf="address" copy-to-clipboard="{{qrAddress}}" [value]="qrAddress" [level]="M" [size]="220" [foreground]="'#334'"></qr-code>
+    <ngx-qrcode *ngIf="address" copy-to-clipboard="{{ qrAddress }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
   </div>
   <ion-list>
     <ion-item>

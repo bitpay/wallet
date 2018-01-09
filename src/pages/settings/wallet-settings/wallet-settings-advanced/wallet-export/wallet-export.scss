@@ -2,6 +2,9 @@ page-wallet-export {
   .qrCode {
     text-align: center;
     padding: 10px;
+    .aclass >img {
+      width: 220px;
+    }
   }
   .not-supported-message {
     text-align: center;

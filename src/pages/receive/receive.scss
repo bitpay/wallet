@@ -37,6 +37,9 @@ page-receive {
       font-size: 12px;
       color: color($colors, secondary);
     }
+    .aclass >img {
+      width: 220px;
+    }
   }
   .wallets-container {
     padding-left: 2rem;
