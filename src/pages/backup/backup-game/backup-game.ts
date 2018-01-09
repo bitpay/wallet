@@ -63,6 +63,7 @@ export class BackupGamePage {
       this.setFlow();
     }).catch((err) => {
       this.logger.error('Could not get keys: ', err);
+      this.navCtrl.pop();
     });
   }
 

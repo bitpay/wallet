@@ -4,7 +4,6 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { LanguageProvider } from '../../providers/language/language';
 import { ConfigProvider } from '../../providers/config/config';
-import { TouchIdProvider } from '../../providers/touchid/touchid';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 
 /* TODO: implement interface propertly
@@ -52,7 +51,6 @@ export class AppProvider {
     private logger: Logger,
     private language: LanguageProvider,
     private config: ConfigProvider,
-    private touchid: TouchIdProvider,
     private persistence: PersistenceProvider
   ) {
     this.logger.info('AppProvider initialized.');
@@ -63,7 +61,6 @@ export class AppProvider {
       this.persistence.load();
       this.config.load().then(() => {
         this.language.load();
-        this.touchid.init();
         this.getServicesInfo().subscribe((infoServices) => {
           this.servicesInfo = infoServices;
           this.getInfo().subscribe((infoApp) => {
