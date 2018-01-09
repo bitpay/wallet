@@ -6,7 +6,7 @@
 
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <div class="comment">
+  <ion-item-divider text-wrap>
     <span translate>Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated
       and shown each time you receive a payment.
     </span>
@@ -17,7 +17,7 @@
         hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
     </div>
-  </div>
+  </ion-item-divider>
 
   <button ion-item (click)="scan()" translate>
     Scan addresses for funds
