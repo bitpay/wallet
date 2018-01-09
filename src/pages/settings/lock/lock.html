@@ -1,17 +1,13 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Lock</ion-title>
+    <ion-title>{{'Lock'|translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content>
   <ion-list radio-group>
-    <ion-list-header>
-      Startup lock by
-    </ion-list-header>
-
     <ion-item *ngFor="let opt of options">
       <ion-label>{{opt.method}}</ion-label>
       <ion-radio (click)="select(opt.method)" value="{{opt.method}}" checked="{{opt.enabled}}" disabled="{{opt.disabled}}"></ion-radio>

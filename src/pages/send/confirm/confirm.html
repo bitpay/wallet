@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
   <ion-list>
     <ion-item>
       <div class="sending-label">
@@ -17,6 +17,8 @@
         <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
       </div>
     </ion-item>
+
+    <ion-item-divider color="light"></ion-item-divider>
 
     <button ion-item class="item item-icon-right item-fee" (click)="chooseFeeLevel()">
       {{'Fee:' | translate}}

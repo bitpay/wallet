@@ -10,16 +10,7 @@
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
-$colors: (
-  primary:    #1abb9b,
-  secondary:  #31465b,
-  warning:    #EBA133,
-  danger:     #bb331a,
-  success:    #7BC94D,
-  light:      #f4f4f4,
-  dark:       #222,
-  grey:       #999,
-);
-
+$color-primary: #1abb9b;
+$color-secondary: #31465b;
 $icon-border-radius: 3px;
 $toolbar-background: #192c3a;

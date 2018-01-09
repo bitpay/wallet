@@ -5,8 +5,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngIf="btx">
-    <ion-item>
+  <ion-card *ngIf="btx">
+    <ion-card-content>
       <div class="sending-label" *ngIf="btx.confirmations > 0">
         <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
         <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
@@ -34,14 +34,16 @@
           </span>
         </div>
       </div>
-    </ion-item>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-list>
     <ion-item *ngIf="btx.action === 'sent'">
       <span class="label" translate>To</span>
       <span class="payment-proposal-to">
         <img class="icon-bitcoin" *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg">
         <img class="icon-bitcoin" *ngIf="cardId" src="assets/img/icon-card.svg" width="34">
-        <div copy-to-clipboard="{{ btx.addressTo }}" class="ellipsis pointer">
+        <div copy-to-clipboard="{{ btx.addressTo }}">
           <span class="contact" *ngIf="!toName">{{ btx.addressTo }}"</span>
           <span *ngIf="toName">{{ toName }}</span>
         </div>
@@ -85,12 +87,12 @@
 
     <ion-item *ngIf="btx.action != 'received'">
       <ion-label>{{'Fee' | translate}}</ion-label>
-      <span>{{btx.feeStr || '...'}}</span>
       <ion-note item-end>
-        <span>
-          {{btx.feeFiatStr || '...'}}&nbsp;
-          <span class="fee-rate" *ngIf="btx.feeRateStr" translate>- {{btx.feeRateStr}} of the transaction</span>
-        </span>
+        <span>{{btx.feeStr}}</span>
+        <div>
+          {{btx.feeFiatStr}}
+          <span *ngIf="btx.feeRateStr">({{btx.feeRateStr}})</span>
+        </div>
       </ion-note>
     </ion-item>
 
@@ -149,7 +151,12 @@
       </div>
     </div>
 
+    <div *ngIf="btx">
+      <ion-item-divider color="light"></ion-item-divider>
+      <button ion-item class="btn-view" (click)="viewOnBlockchain()" translate>View on blockchain</button>
+      <ion-item-divider color="light"></ion-item-divider>
+    </div>
+
   </ion-list>
 
-  <button ion-button block clear *ngIf="btx" (click)="viewOnBlockchain()" translate>View on blockchain</button>
 </ion-content>

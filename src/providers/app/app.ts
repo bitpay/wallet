@@ -51,7 +51,7 @@ export class AppProvider {
     private logger: Logger,
     private language: LanguageProvider,
     private config: ConfigProvider,
-    private persistence: PersistenceProvider
+    private persistence: PersistenceProvider,
   ) {
     this.logger.info('AppProvider initialized.');
   }

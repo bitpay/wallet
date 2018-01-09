@@ -1,12 +1,10 @@
 <div class="wallet-item" *ngIf="wallet">
-  <div class="wallet-icon">
-    <ion-icon item-start>
-      <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-        class="icon-wallet" />
-      <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-        class="icon-wallet" />
-    </ion-icon>
-  </div>
+  <ion-icon class="wallet-icon" item-start>
+    <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+      class="icon-wallet" />
+    <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+      class="icon-wallet" />
+  </ion-icon>
   <div class="wallet-name">
     {{wallet.name || wallet.id}}
     <span *ngIf="wallet.n > 1">

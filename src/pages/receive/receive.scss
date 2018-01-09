@@ -26,8 +26,13 @@ page-receive {
     }
   }
   .qr-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     text-align: center;
-    margin: 10px auto;
     .icon {
       vertical-align: middle;
       margin: 0 10px;
@@ -35,7 +40,11 @@ page-receive {
     .text-address {
       margin: 5px 0 10px 0;
       font-size: 12px;
-      color: color($colors, secondary);
+      color: color($colors, dark);
+    }
+    img {
+      width: auto;
+      display: inherit;
     }
     .aclass >img {
       width: 220px;
@@ -55,13 +64,20 @@ page-receive {
   .loading-address {
     margin: 0 auto;
     width: 220px;
-    height: 223px;
+    height: 220px;
     display: flex;
     text-align: center;
     justify-content: middle;
     align-items: center;
     ion-spinner {
+      width: 50px;
+      height: 50px;
       margin: 0 auto;
     }
+  }
+
+  .box-notification {
+    position: absolute;
+    width: 100%;
   }
 }

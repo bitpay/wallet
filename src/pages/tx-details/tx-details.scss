@@ -1,22 +1,25 @@
 page-tx-details {
   $item-border-color: #EFEFEF;
   $item-lateral-padding: 20px;
-  $v-success-color: #1abb9b;
-  $v-icon-border-radius: 3px;
   $item-label-color: #6C6C6E;
 
+  span.label {
+    color: color($colors, grey);
+  }
   .sending-label {
     display: flex;
     align-items: center;
     .sending-img {
       margin-right: 2rem;
+      width: 40px;
+      height: 40px;
     }
     span {
       font-size: 1.8rem;
     }
   }
   .amount-label {
-    padding-top: 2rem;
+    padding-top: 1rem;
     .amount {
       font-size: 3.5rem;
       .unit {
@@ -24,8 +27,7 @@ page-tx-details {
       }
     }
     .alternative {
-      margin-top: 1rem;
-      color: color($global-colors, light-grey);
+      color: color($colors, grey);
     }
   }
 
@@ -33,10 +35,21 @@ page-tx-details {
     display: flex;
     align-items: center;
     margin-top: 1rem;
-    .icon-bitcoin {
+    .icon-wallet {
+      width: 25px;
+      height: 25px;
       margin-right: 1rem;
-      width: 37px;
-      height: 37px;
+      &.disabled {
+        background-color: color($colors, light);
+      }
+    }
+    .icon-bitcoin {
+      margin: 9px 17px 9px 0;
+      width: 25px;
+      height: 25px;
+      padding: 5px;
+      border: 1px solid color($colors, grey);
+      border-radius: $icon-border-radius;
     }
   }
 
@@ -90,8 +103,8 @@ page-tx-details {
       }
 
       > div {
-        border: 3px solid $v-success-color;
-        border-radius: $v-icon-border-radius;
+        border: 3px solid color($colors, primary);
+        border-radius: $icon-border-radius;
         display: flex;
         height: 26px;
         width: 26px;
@@ -100,7 +113,7 @@ page-tx-details {
         justify-content: center;
         font-weight: 600;
         vertical-align: middle;
-        color: $v-success-color;
+        color: color($colors, primary);
         z-index: 10;
 
         &.rejected {
@@ -125,5 +138,8 @@ page-tx-details {
         font-size: 14px;
       }
     }
+  }
+  .btn-view {
+    color: color($colors, primary);
   }
 }

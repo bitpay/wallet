@@ -19,7 +19,7 @@ page-sell-coinbase {
     }
     .alternative {
       margin-top: 1rem;
-      color: color($global-colors, light-grey);
+      color: color($colors, light);
     }
   }
   .wallets-list {
@@ -29,7 +29,7 @@ page-sell-coinbase {
       margin-top: 1rem;
       img {
         width: 2.3rem;
-        margin-right: 1.5rem; 
+        margin-right: 1.5rem;
         border-radius: 0.3rem;
         background-color: color($colors, primary);
       }

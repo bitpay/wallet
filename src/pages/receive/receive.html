@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
   <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" (click)="goToBackup()" class="box-notification no-margin warn">
     <ion-icon name="warning"></ion-icon>
     <span translate>Wallet not backed up</span>

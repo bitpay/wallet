@@ -11,31 +11,29 @@
 
 </ion-header>
 
-<ion-content>
-  <ion-card *ngIf="showRecipient">
-    <ion-item>
+<ion-content no-bounce>
+  <ion-list *ngIf="showRecipient">
+    <ion-list-header>
       <span translate>Recipient</span>
+    </ion-list-header>
+    <ion-item>
+      <ion-icon *ngIf="recipientType == 'wallet'" item-left>
+        <ion-icon item-start>
+          <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
+          />
+          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
+          />
+        </ion-icon>
+      </ion-icon>
+      <ion-icon *ngIf="recipientType == 'contact'" item-left>
+        <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
+      </ion-icon>
+      <ion-icon *ngIf="!recipientType" item-left>
+        <img src="assets/img/contact-placeholder.svg" class="icon-contact">
+      </ion-icon>
+      <span>{{name || toAddress}}</span>
     </ion-item>
-    <ion-list>
-      <ion-item>
-        <ion-icon *ngIf="recipientType == 'wallet'" item-left>
-          <ion-icon item-start>
-            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet"
-            />
-            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
-            />
-          </ion-icon>
-        </ion-icon>
-        <ion-icon *ngIf="recipientType == 'contact'" item-left>
-          <gravatar [name]="name" [height]="30" [width]="30" [email]="email"></gravatar>
-        </ion-icon>
-        <ion-icon *ngIf="!recipientType" item-left>
-          <img src="assets/img/contact-placeholder.svg" class="icon-contact">
-        </ion-icon>
-        <span>{{name || toAddress}}</span>
-      </ion-item>
-    </ion-list>
-  </ion-card>
+  </ion-list>
   <div>
     <div class="amount-pane">
 

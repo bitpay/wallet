@@ -1,8 +1,12 @@
 page-wallet-extended-private-key {
   .container{
+    h1 {
+      color: color($colors, danger);
+    }
     text-align: center;
     .warning-message {
-      padding: 20px;
+      line-height: 18px;
+      padding: 0 10px;
     }
   }
 }

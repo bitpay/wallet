@@ -31,6 +31,6 @@ page-addressbook-view {
     color: color($colors, primary);
   }
   .btn-remove {
-    color: color($global-colors, assertive);
+    color: color($colors, danger);
   }
 }

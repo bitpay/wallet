@@ -1,10 +1,10 @@
-<ion-header no-border [ngStyle]="{'background-color': wallet.color}">
-  <ion-navbar transparent>
+<ion-header>
+  <ion-navbar>
     <ion-title>{{wallet.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
 
   <div class="balance-card" [ngStyle]="{'background': wallet.color}">
       <div class="balance-header">
@@ -84,23 +84,23 @@
   </div>
 
   <ion-list *ngIf="wallet && wallet.isComplete() && !walletNotRegistered && txps && txps[0]">
-    <ion-item-divider *ngIf="wallet.incorrectDerivation">
+    <ion-item-divider color="light" *ngIf="wallet.incorrectDerivation">
       <span translate>
         WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
       </span>
     </ion-item-divider>
-    <ion-list-header>
+    <ion-list-header color="light">
       <span *ngIf="requiresMultipleSignatures" translate>Proposals</span>
       <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
     </ion-list-header>
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
-    <ion-item-divider *ngIf="wallet.status && wallet.status.lockedBalanceSat">
-      <strong translate>Total Locked Balance</strong>
-      <div>
-        {{wallet.status.lockedBalanceStr}}
-        <span>({{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}})</span>
-      </div>
-    </ion-item-divider>
+    <ion-item text-wrap color="light" *ngIf="wallet.status && wallet.status.lockedBalanceSat">
+      <span translate>Total Locked Balance</span>
+      <ion-note item-end>
+        <span class="total-locked-amount">{{wallet.status.lockedBalanceStr}}</span>
+        <div class="total-alt-locked-amount">{{wallet.status.lockedBalanceAlternative}} {{wallet.status.alternativeIsoCode}}</div>
+      </ion-note>
+    </ion-item>
   </ion-list>
 
   <!-- Transactions -->
@@ -123,11 +123,11 @@
     <div *ngFor="let tx of history; trackBy: trackByFn; let i = index">
 
       <span *ngIf="isFirstInGroup(i)">
-        <ion-item-divider *ngIf="isDateInCurrentMonth(getDate(tx.time))">
+        <ion-item-divider color="light" *ngIf="isDateInCurrentMonth(getDate(tx.time))">
           <span translate>Recent</span>
         </ion-item-divider>
 
-        <ion-item-divider *ngIf="!isDateInCurrentMonth(getDate(tx.time))">
+        <ion-item-divider color="light" *ngIf="!isDateInCurrentMonth(getDate(tx.time))">
           {{getDate(tx.time) | amDateFormat:'MMMM'}}
         </ion-item-divider>
       </span>

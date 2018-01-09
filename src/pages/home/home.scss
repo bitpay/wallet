@@ -1,6 +1,9 @@
 page-home {
+  ion-item-divider {
+    margin-top: 20px;
+  }
   .home-logo {
-    height: 26px;
+    height: 24px;
     position: relative;
     top: 3px;
   }
@@ -23,6 +26,9 @@ page-home {
   .title {
     color: color($colors, dark);
     font-weight: 700;
+    &.col {
+      padding: 0;
+    }
     >img {
       width: 22px;
       display: inline-block;
@@ -34,11 +40,13 @@ page-home {
     justify-content: flex-end;
     display: flex;
     .add-icon {
+      padding-left: 10px;
       cursor: pointer;
     }
     .reorder-icon {
       cursor: pointer;
-      margin-right: 15px;
+      margin-right: 5px;
+      padding-right: 10px;
     }
   }
   .error {

@@ -3,15 +3,18 @@ $v-scanner-guide-color: #647ce8;
 
 html , body, .back-transparent, ion-app, .nav-decor {
   background: none transparent !important;
-} 
+}
 
 page-scan {
   color: #fff;
-  text-align: center;
   background: transparent none;
   .not-supported-message {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    text-transform: uppercase;
   }
   .page-scan-loading-camera {
     height: 100%;

@@ -61,7 +61,10 @@ export class CopayApp {
 
         if (this.platform.is('cordova')) {
           this.statusBar.show();
-          this.statusBar.overlaysWebView(true);
+
+          // Only overlay for iOS
+          if (this.platform.is('ios')) this.statusBar.overlaysWebView(true);
+
           this.statusBar.styleLightContent();
           this.splashScreen.hide();
         }
@@ -83,7 +86,7 @@ export class CopayApp {
           this.rootPage = DisclaimerPage;
         });
       }).catch((err) => {
-        console.log('[app.component.ts:68] NO PUDO INICIAR LA APP', err); //TODO
+        this.logger.error('Could not initialize the app');
       });
 
     });

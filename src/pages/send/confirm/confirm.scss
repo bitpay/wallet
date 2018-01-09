@@ -2,8 +2,10 @@ page-confirm {
   .sending-label {
     display: flex;
     align-items: center;
-    .sending-img {
+    img.sending-img {
       margin-right: 2rem;
+      width: auto;
+      display: inherit;
     }
     span {
       font-size: 1.8rem;
@@ -19,7 +21,7 @@ page-confirm {
     }
     .alternative {
       margin-top: 0.5rem;
-      color: color($global-colors, light-grey);
+      color: color($colors, grey);
     }
   }
 
@@ -27,14 +29,14 @@ page-confirm {
     line-height: 20px;
     .per-cent {
       font-size: 12px;
-      color: color($global-colors, positive);
+      color: color($colors, secondary);
       ion-icon {
         font-size: 1.1em;
-        color: color($global-colors, warning);
+        color: color($colors, danger);
       }
     }
     .warn {
-      color: color($global-colors, warning);
+      color: color($colors, danger);
     }
   }
 
@@ -67,7 +69,7 @@ page-confirm {
       .icon-wallet {
         margin-right: 1rem;
         &.disabled {
-          background-color: color($global-colors, light-grey);
+          background-color: color($colors, grey);
         }
       }
       .icon-bitcoin {
