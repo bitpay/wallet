@@ -3,8 +3,38 @@
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
   <ion-content>
+    <div>isSweeping: {{isSweeping}}. checkPrivateKey: {{checkPrivateKey(formData.search)}}</div>
 
-    <div ng-if="hasFunds">
+    <div ng-if="isSweeping">
+      <div class="send-header-wrapper card">
+        <div class="item item-heading send-heading"><span translate>Private Key</span></div>
+        <div class="item input search-wrapper" ng-class="{'focus': searchFocus}">
+          <i class="icon icon-svg abs-v-center"><img class="svg" src="img/icon-bitcoin-symbol.svg"></i>
+          <div class="item-icon-right">
+            <input  ng-model="formData.search"
+                    ng-change="findContact(formData.search)"
+                    ng-model-onblur ng-focus="searchInFocus()"
+                    ng-blur="searchBlurred()"
+                    placeholder="{{'Enter a Nav Coin Private Key to sweep with' | translate}}"
+                    type="text"
+                    class="search-input"
+                    id="tab-sweep-address"  >
+            <i class="icon icon-svg qr abs-v-center separator-left" on-tap="openScanner()"><img src="img/scan-ico.svg"></i>
+          </div>
+        </div>
+        <div class="send-next-button">
+
+          <button ng-disabled="nextDisabled"
+                  ng-class="{disable: nextDisabled}"
+                  ng-click="sweepAddressClickHandler(formData.search)"
+                  class="button button-standard button-primary" >
+            <span class="button-label" translate>Sweep Address</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="hasFunds && !isSweeping">
       <div class="send-header-wrapper card">
         <div class="item item-heading send-heading"><span translate>Recipient</span></div>
         <div class="item input search-wrapper" ng-class="{'focus': searchFocus}">
@@ -20,15 +50,15 @@
           </ion-toggle>
         </div>
         <div class="send-next-button">
-          <button ng-disabled="nextDisabled" class="button button-standard button-primary" ng-class="{disable: nextDisabled}" ng-click="nextClicked(formData.search)">
+          <button ng-disabled="nextDisabled" class="button button-standard button-primary"
+          ng-class="{disable: nextDisabled}" ng-click="nextClicked(formData.search)">
             <span class="button-label" translate>Next</span>
           </button>
         </div>
       </div>
-
     </div>
 
-    <div ng-if="!checkingBalance && (!hasFunds || !hasWallets)">
+    <div ng-if="!checkingBalance && !isSweeping && (!hasFunds || !hasWallets)">
       <div class="list card sendTip">
         <div class="item item-icon-right item-heading"></div>
         <div>
