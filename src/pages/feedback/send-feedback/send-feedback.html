@@ -31,11 +31,11 @@
   <ion-item-divider text-wrap>
     <span>{{comment}}</span>
   </ion-item-divider>
-  <form [formGroup]="feedbackForm" (ngSubmit)="sendFeedback(feedbackForm.value.comment)">
+  <form [formGroup]="feedbackForm">
     <ion-textarea type="text" formControlName="comment" placeholder="{{'Your ideas, feedback, or comments' | translate}}" [value]="feedbackForm.value.comment"
       required padding></ion-textarea>
   </form>
 </ion-content>
 <ion-footer>
-  <button ion-button block class="button-footer" [disabled]="!feedbackForm.valid">Send</button>
+  <button ion-button block class="button-footer" (click)="sendFeedback(feedbackForm.value.comment)" [disabled]="!feedbackForm.valid">Send</button>
 </ion-footer>
