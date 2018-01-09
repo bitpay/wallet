@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '@nsalaun/ng-logger';
@@ -20,7 +20,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   selector: 'page-import-wallet',
   templateUrl: 'import-wallet.html'
 })
-export class ImportWalletPage implements OnInit {
+export class ImportWalletPage {
 
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
@@ -36,6 +36,7 @@ export class ImportWalletPage implements OnInit {
   public selectedTab: string;
   public isCordova: boolean;
   public file: File;
+  public testnetEnabled: boolean;
 
   constructor(
     private navCtrl: NavController,
@@ -69,17 +70,17 @@ export class ImportWalletPage implements OnInit {
       mnemonicPassword: [null],
       file: [null],
       filePassword: [null],
-      derivationPath: [this.derivationPathByDefault],
+      derivationPath: [this.derivationPathByDefault, Validators.required],
       testnet: [false],
       bwsURL: [this.defaults.bws.url],
       coin: [this.navParams.data.coin ? this.navParams.data.coin : 'btc']
     });
-
-    if (this.navParams.data.code)
-      this.processWalletInfo(this.navParams.data.code);
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
+    if (this.navParams.data.code) {
+      this.processWalletInfo(this.navParams.data.code);
+    }
   }
 
   selectTab(tab: string) {
@@ -139,13 +140,14 @@ export class ImportWalletPage implements OnInit {
     if (info.type == '1' && info.hasPassphrase)
       this.popupProvider.ionicAlert('Error', 'Password required. Make sure to enter your password in advanced options', 'Ok'); //TODO gettextcatalog
 
-    this.importForm.value.derivationPath = info.derivationPath;
-    this.importForm.value.testnetEnabled = info.network == 'testnet' ? true : false;
-    this.importForm.value.words = info.data;
+    this.testnetEnabled = info.network == 'testnet' ? true : false;
+    this.importForm.controls['derivationPath'].setValue(info.derivationPath);
+    this.importForm.controls['words'].setValue(info.data);
   }
 
   public setDerivationPath(): void {
-    this.importForm.value.derivationPath = this.importForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    let path = this.testnetEnabled ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    this.importForm.controls['derivationPath'].setValue(path);
   }
 
   private importBlob(str: string, opts: any): void {
@@ -325,6 +327,16 @@ export class ImportWalletPage implements OnInit {
         opts.coin = this.importForm.value.coin;
         this.importBlob(evt.target.result, opts);
       }
+    }
+  }
+
+  public openScanner(): void {
+    if (this.navParams.data.fromScan) {
+      this.navCtrl.popToRoot();
+    } else {
+      this.navCtrl.setRoot(HomePage);
+      this.navCtrl.popToRoot();
+      this.navCtrl.parent.select(2);
     }
   }
 

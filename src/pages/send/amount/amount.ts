@@ -275,8 +275,8 @@ export class AmountPage {
     let data: any = {
       recipientType: this.recipientType,
       toAddress: this.toAddress,
-      amount: amount_,
-      amountFiat: amountFiat,
+      amount: this.useSendMax ? 0 : amount_,
+      amountFiat: this.useSendMax ? 0 : amountFiat,
       name: this.name,
       email: this.email,
       color: this.color,

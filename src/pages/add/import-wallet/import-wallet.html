@@ -32,7 +32,8 @@
   <form [formGroup]="importForm" (ngSubmit)="import()">
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>Type the recovery phrase (usually 12 words)</ion-label>
-      <ion-textarea formControlName="words"></ion-textarea>
+      <ion-textarea formControlName="words" [value]="importForm.value.words"></ion-textarea>
+      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
     <div *ngIf="selectedTab == 'file'">
@@ -49,7 +50,7 @@
 
     <ion-item *ngIf="selectedTab != 'file'">
       <ion-label stacked>{{'Coin' | translate}}</ion-label>
-      <ion-select formControlName="coin" (ionChange)="importForm.value.testnetEnabled = false">
+      <ion-select formControlName="coin" (ionChange)="testnetEnabled = false">
         <ion-option value="btc">BTC</ion-option>
         <ion-option value="bch">BCH</ion-option>
       </ion-select>
@@ -76,7 +77,7 @@
 
         <ion-item>
           <ion-label stacked>Testnet</ion-label>
-          <ion-toggle color="primary" formControlName="testnet" (ionChange)="setDerivationPath()"></ion-toggle>
+          <ion-toggle color="primary" formControlName="testnet" [(ngModel)]="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
         </ion-item>
       </div>
 
