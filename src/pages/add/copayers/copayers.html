@@ -15,7 +15,7 @@
       </ion-item>
       <ion-item>
         <div class="qr-code-container" copy-to-clipboard="{{ secret }}">
-          <qr-code *ngIf="secret" [level]="L" [size]="220" [foreground]="'#334'" [value]="secret"></qr-code>
+          <ngx-qrcode *ngIf="secret" qrc-value="{{secret}}" qrc-class="aclass" qrc-errorCorrectionLevel="L"></ngx-qrcode>
           <div [hidden]="secret" class="spinner">
             <ion-spinner></ion-spinner>
           </div>
@@ -32,19 +32,20 @@
         <ion-card-header>
           <span translate>Waiting for copayers</span>
           <span>
-              [ <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
+            [
+            <span translate>{{wallet.m}}-of-{{wallet.n}}</span> ]
           </span>
         </ion-card-header>
         <ion-card-content>
           <ion-item *ngFor="let copayer of copayers">
             <span [hidden]="copayer.id != wallet.copayerId">
-                <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
-                {{'Me'|translate}}
-              </span>
+              <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
+              {{'Me'|translate}}
+            </span>
             <span [hidden]="copayer.id == wallet.copayerId">
-                <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
-                {{copayer.name}}
-              </span>
+              <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
+              {{copayer.name}}
+            </span>
           </ion-item>
           <ion-item *ngIf="!wallet.isComplete()">
             <ion-icon ios="ios-repeat" md="md-repeat"></ion-icon> {{'Waiting...'|translate}}

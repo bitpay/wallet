@@ -71,7 +71,7 @@
     </ion-list>
     <ion-list *ngSwitchCase="'qrCode'">
       <div class="qrCode" *ngIf="supported">
-        <qr-code [value]="exportWalletInfo" [level]="M" [size]="220" [foreground]="'#334'"></qr-code>
+        <ngx-qrcode qrc-value="{{exportWalletInfo}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
         <div translate>From the destination device, go to Add wallet &gt; Import wallet and scan this QR code</div>
       </div>
       <ion-card class="not-supported-message" *ngIf="!supported">

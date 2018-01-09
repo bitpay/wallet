@@ -19,7 +19,7 @@ import { FCM } from '@ionic-native/fcm';
 /* Modules */
 import { MomentModule } from 'angular2-moment';
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
-import { QRCodeModule } from 'angular2-qrcode';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 
@@ -396,7 +396,7 @@ export function providersComponents() {
     HttpClientModule,
     NgLoggerModule.forRoot(Level.LOG),
     MomentModule,
-    QRCodeModule,
+    NgxQRCodeModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
