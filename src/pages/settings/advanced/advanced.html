@@ -15,9 +15,9 @@
         <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()" checked="true"></ion-toggle>
       </div>
     </ion-card-header>
-    <ion-card-content>
+    <ion-item-divider color="light" text-wrap>
       <span translate>If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.</span>
-    </ion-card-content>
+    </ion-item-divider>
   </ion-card>
 
   <ion-card>
@@ -27,9 +27,10 @@
         <ion-toggle [(ngModel)]="recentTransactionsEnabled" (ionChange)="recentTransactionsChange()" checked="true"></ion-toggle>
       </div>
     </ion-card-header>
-    <ion-card-content>
-      <span translate>If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the Home tab.</span>
-    </ion-card-content>
+    <ion-item-divider color="light" text-wrap>
+      <span translate>If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the
+        Home tab.</span>
+    </ion-item-divider>
   </ion-card>
 
   <ion-card>
@@ -39,9 +40,9 @@
         <ion-toggle [(ngModel)]="showNextSteps" (ionChange)="nextStepsChange()" checked="true"></ion-toggle>
       </div>
     </ion-card-header>
-    <ion-card-content>
+    <ion-item-divider color="light" text-wrap>
       <span translate>If enabled, the "Next Steps Card" will appear in the Home tab.</span>
-    </ion-card-content>
+    </ion-item-divider>
   </ion-card>
 
 </ion-content>

@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <page-wallet-item [wallet]="wallet"></page-wallet-item>
+  <page-wallet-item *ngIf="wallet" [wallet]="wallet"></page-wallet-item>
   <ion-list>
     <ion-item (click)="saveBlack()">
       <h2 translate>Wallet Name (at creation)</h2>

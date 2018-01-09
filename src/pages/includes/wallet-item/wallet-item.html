@@ -1,19 +1,17 @@
-<ion-card class="wallet-item" *ngIf="wallet">
-  <ion-card-content>
-    <ion-icon class="wallet-icon" item-start>
-      <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-        class="icon-wallet" />
-      <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
-        class="icon-wallet" />
-    </ion-icon>
-    <div class="wallet-name">
-      {{wallet.name || wallet.id}}
-      <span *ngIf="wallet.n > 1">
-        {{wallet.m}}-of-{{wallet.n}}
-      </span>
-      <span *ngIf="!wallet.isComplete()">
-        {{'Incomplete' | translate}}
-      </span>
-    </div>
-  </ion-card-content>
-</ion-card>
+<div class="wallet-item" *ngIf="wallet">
+  <ion-icon class="wallet-icon" item-start>
+    <img *ngIf="wallet.network == 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+      class="icon-wallet" />
+    <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
+      class="icon-wallet" />
+  </ion-icon>
+  <div class="wallet-name">
+    {{wallet.name || wallet.id}}
+    <span *ngIf="wallet.n > 1">
+      {{wallet.m}}-of-{{wallet.n}}
+    </span>
+    <span *ngIf="!wallet.isComplete()">
+      {{'Incomplete' | translate}}
+    </span>
+  </div>
+</div>
