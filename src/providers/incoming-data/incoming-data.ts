@@ -11,7 +11,6 @@ import { AppProvider } from '../app/app';
 import { AddressProvider } from '../address/address';
 
 //pages
-import { SendPage } from '../../pages/send/send';
 import { ConfirmPage } from '../../pages/send/confirm/confirm';
 import { AmountPage } from '../../pages/send/amount/amount';
 import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
@@ -222,7 +221,7 @@ export class IncomingDataProvider {
         type: 'privateKey'
       });
     } else if (data && ((data.substring(0, 2) == '1|') || (data.substring(0, 2) == '2|') || (data.substring(0, 2) == '3|'))) {
-      this.navCtrl.push(ImportWalletPage, { code: data })
+      this.navCtrl.push(ImportWalletPage, { code: data, fromScan: true })
       return true;
 
     } else {
@@ -273,7 +272,7 @@ export class IncomingDataProvider {
   }
 
   private goSend(addr: string, amount: string, message: string, coin: string): void {
-    this.navCtrl.push(SendPage, {});
+    this.navCtrl.parent.select(3);
     if (amount) {
       this.navCtrl.push(ConfirmPage, {
         amount: amount,
