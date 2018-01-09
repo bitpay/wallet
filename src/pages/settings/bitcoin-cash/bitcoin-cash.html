@@ -5,11 +5,9 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngIf="!availableWallets[0]">
-    <ion-card-header>
-      <span translate>No wallets eligible for Bitcoin Cash support</span>
-    </ion-card-header>
-  </ion-card>
+  <div class="box-notification no-margin warn" *ngIf="!availableWallets[0]">
+    <span translate>No wallets eligible for Bitcoin Cash support</span>
+  </div>
 
   <ion-card *ngIf="availableWallets[0]">
     <ion-card-header>

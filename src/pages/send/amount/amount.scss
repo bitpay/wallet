@@ -85,6 +85,9 @@ page-amount {
     }
     @media(max-height: 500px) {
       font-size: 12px;
+      .col {
+        line-height: 20px;
+      }
     }
   }
 }

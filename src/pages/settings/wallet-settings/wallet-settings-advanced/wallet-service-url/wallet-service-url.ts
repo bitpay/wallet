@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -8,6 +8,9 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { AppProvider } from '../../../../../providers/app/app';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
+
+//pages
+import { SettingsPage } from '../../../../settings/settings';
 
 @Component({
   selector: 'page-wallet-service-url',
@@ -24,12 +27,14 @@ export class WalletServiceUrlPage {
 
   constructor(
     private profileProvider: ProfileProvider,
+    private navCtrl: NavController,
     private navParams: NavParams,
     private configProvider: ConfigProvider,
     private app: AppProvider,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private formBuilder: FormBuilder,
+    private events: Events
   ) {
     this.walletServiceForm = this.formBuilder.group({
       bwsurl: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -81,7 +86,11 @@ export class WalletServiceUrlPage {
 
     this.configProvider.set(opts);
     this.persistenceProvider.setCleanAndScanAddresses(this.wallet.credentials.walletId).then(() => {
-      //this.applicationService.restart(); TODO
+      this.events.publish('wallet:updated', this.wallet.credentials.walletId);
+      this.navCtrl.setRoot(SettingsPage);
+      this.navCtrl.popToRoot();
+      this.navCtrl.parent.select(0);
+      // TODO needs restart the app
     });
   };
 }

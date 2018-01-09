@@ -6,28 +6,28 @@
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
 
-  <ion-item-divider *ngIf="!isCordova" color="light"></ion-item-divider>
+  <ion-list>
+    <button ion-item *ngIf="csvReady && !isCordova" (click)="downloadCSV()">
+      <span translate>Export to file</span>
+    </button>
 
-  <button ion-item *ngIf="csvReady && !isCordova" (click)="downloadCSV()">
-    <span translate>Export to file</span>
-  </button>
+    <ion-item *ngIf="!csvReady && !isCordova">
+      <span translate>Export to file</span>
+      <ion-note *ngIf="!err" item-end>
+        {{'preparing...' | translate}}
+      </ion-note>
+      <ion-note *ngIf="err" item-end>
+        {{err | translate}}
+      </ion-note>
+    </ion-item>
 
-  <ion-item *ngIf="!csvReady && !isCordova">
-    <span translate>Export to file</span>
-    <ion-note *ngIf="!err" item-end>
-      {{'preparing...' | translate}}
-    </ion-note>
-    <ion-note *ngIf="err" item-end>
-      {{err | translate}}
-    </ion-note>
-  </ion-item>
+    <button ion-item (click)="clearTransactionHistory()">
+      <span translate>Clear cache</span>
+    </button>
 
-  <button ion-item (click)="clearTransactionHistory()">
-    <span translate>Clear cache</span>
-  </button>
-
-  <div class="comment" translate>
-    The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes
-    again from the server
-  </div>
+    <ion-item-divider text-wrap>
+      The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes
+      again from the server
+    </ion-item-divider>
+  </ion-list>
 </ion-content>

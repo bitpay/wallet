@@ -1,10 +1,10 @@
-<ion-header no-border [ngStyle]="{'background-color': wallet.color}">
-  <ion-navbar transparent>
+<ion-header>
+  <ion-navbar>
     <ion-title>{{wallet.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
 
   <div class="balance-card" [ngStyle]="{'background': wallet.color}">
       <div class="balance-header">

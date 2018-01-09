@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, ModalController } from 'ionic-angular';
+import { Platform, ModalController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -36,6 +36,7 @@ export class CopayApp {
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private logger: Logger,
+    private events: Events,
     private app: AppProvider,
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
@@ -86,7 +87,7 @@ export class CopayApp {
           this.rootPage = DisclaimerPage;
         });
       }).catch((err) => {
-        console.log('[app.component.ts:68] NO PUDO INICIAR LA APP', err); //TODO
+        this.logger.error('Could not initialize the app');
       });
 
     });

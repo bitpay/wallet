@@ -30,27 +30,35 @@ $colors: (
   danger:     #bb331a,
   success:    #7BC94D,
   light:      #f4f4f4,
-  dark:       #222,
+  dark:       #424242,
   grey:       #999
 );
 
 // Refresh color
 $refresher-icon-color: color($colors, primary);
 
+// Toolbar
 $toolbar-text-color: color($colors, light);
+
+// Main color
 $text-color: color($colors, dark);
+
+// Border light
+$list-border-color: color($colors, light);
 
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
+$item-ios-divider-background: white;
 
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$list-md-border-color: color($colors, light);
 
 
 // App Windows Variables
@@ -81,3 +89,8 @@ $text-color: color($colors, dark);
 
 @import "roboto";
 @import "noto-sans";
+
+/* Ionic Overrides and Workarounds */
+// Please include a description of the problem solved by the workaround.
+
+ion-navbar.hide { display: block !important; }

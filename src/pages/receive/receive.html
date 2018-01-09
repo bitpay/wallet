@@ -9,15 +9,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
   <div *ngIf="wallet && wallet.isComplete() && wallet.needsBackup" (click)="goToBackup()" class="box-notification no-margin warn">
     <ion-icon name="warning"></ion-icon>
     <span translate>Wallet not backed up</span>
     <ion-icon name="arrow-forward"></ion-icon>
   </div>
 
-  <ion-card *ngIf="wallet && wallet.isComplete()" class="qr-container">
-    <ion-card-content>
+  <div *ngIf="wallet && wallet.isComplete()" class="qr-container">
     <div *ngIf="loading" class="loading-address spinner">
       <ion-spinner></ion-spinner>
     </div>
@@ -31,8 +30,7 @@
     <button ion-button block clear [hidden]="!address" (click)="setAddress(true)">
       <span translate>Generate new address</span>
     </button>
-    </ion-card-content>
-  </ion-card>
+  </div>
 
   <div *ngIf="wallet && !wallet.isComplete()" class="incomplete-wallet-container">
     <div class="title">

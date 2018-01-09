@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
 
 import { LanguageProvider } from '../../providers/language/language';
 import { ConfigProvider } from '../../providers/config/config';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
+import { PlatformProvider } from '../../providers/platform/platform';
 
 /* TODO: implement interface propertly
 interface App {
@@ -49,9 +51,11 @@ export class AppProvider {
   constructor(
     public http: HttpClient,
     private logger: Logger,
+    private location: Location,
     private language: LanguageProvider,
     private config: ConfigProvider,
-    private persistence: PersistenceProvider
+    private persistence: PersistenceProvider,
+    private platform: PlatformProvider
   ) {
     this.logger.info('AppProvider initialized.');
   }

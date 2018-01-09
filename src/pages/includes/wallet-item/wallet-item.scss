@@ -1,21 +1,21 @@
 page-wallet-item{
+  text-align: center;
+  .card {
+    border: none;
+  }
   .wallet-item {
-    display: inline-block;
-    width: 100%;
-    padding: 2rem;
-    .wallet-name{
-      text-align: center;    
-      padding: 1rem;  
-      color: #000;
-    }
-    .wallet-icon{
-      text-align: center;
-      padding: 1rem;
-      img {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-      }
+    padding: 2rem 0;
+  }
+  .wallet-name{
+    font-size: 18px;
+    font-weight: bold;
+    color: color($colors, dark);
+  }
+  .wallet-icon{
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: $icon-border-radius;
     }
   }
 }

@@ -26,8 +26,13 @@ page-receive {
     }
   }
   .qr-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     text-align: center;
-    margin: 10px auto;
     .icon {
       vertical-align: middle;
       margin: 0 10px;
@@ -59,7 +64,7 @@ page-receive {
   .loading-address {
     margin: 0 auto;
     width: 220px;
-    height: 226px;
+    height: 220px;
     display: flex;
     text-align: center;
     justify-content: middle;
@@ -69,5 +74,10 @@ page-receive {
       height: 50px;
       margin: 0 auto;
     }
+  }
+
+  .box-notification {
+    position: absolute;
+    width: 100%;
   }
 }
