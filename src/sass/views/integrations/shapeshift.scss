@@ -193,4 +193,28 @@
     font-size: 26px;
     margin: 20px 10px;
   }
+  .market-info {
+    .item {
+      font-size: 14px;
+      padding: 10px;
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+  .agree-to-terms {
+    p {
+      font-size: 12px;
+    }
+    a {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .item {
+      position: relative;
+      float: left;
+      padding: 30px;
+      background-color: transparent;
+    }
+  }
 }

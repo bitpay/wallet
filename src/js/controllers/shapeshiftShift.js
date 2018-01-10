@@ -1,11 +1,16 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('shapeshiftShiftController',
-  function($scope, $ionicHistory, $timeout, $log, $state, profileService, popupService, lodash, shapeshiftService, gettextCatalog) {
+  function($scope, $ionicHistory, $timeout, $log, $state, profileService, popupService, lodash, shapeshiftService, gettextCatalog, externalLinkService) {
 
     var defaultCoin = 'btc';
     var walletsBtc = [];
     var walletsBch = [];
+
+    $scope.openTerms = function() {
+      var url = "https://info.shapeshift.io/sites/default/files/ShapeShift_Terms_Conditions%20v1.1.pdf";
+      externalLinkService.open(url);
+    };
 
     var showErrorAndBack = function(title, msg) {
       title = title || gettextCatalog.getString('Error');
@@ -25,7 +30,7 @@ angular.module('copayApp.controllers').controller('shapeshiftShiftController',
       shapeshiftService.getRate(pair, function(err, rate) {
         $scope.rate = rate;
       });
-      shapeshiftService.getLimit(pair, function(err, limit) {
+      shapeshiftService.getMarketInfo(pair, function(err, limit) {
         $scope.limit = limit;
       });
 
@@ -67,6 +72,10 @@ angular.module('copayApp.controllers').controller('shapeshiftShiftController',
         return hasCachedFunds;
       });
 
+      $scope.terms = {
+        accepted: false
+      }
+
       $scope.onFromWalletSelect($scope.fromWallets[0]);
 
       $scope.fromWalletSelectorTitle = 'From';
@@ -85,12 +94,15 @@ angular.module('copayApp.controllers').controller('shapeshiftShiftController',
     }
 
     $scope.setAmount = function() {
+      if (!$scope.terms.accepted) {
+        return;
+      }
       $state.go('tabs.shapeshift.amount', {
         coin: $scope.fromWallet.coin,
         id: $scope.fromWallet.id,
         toWalletId: $scope.toWallet.id,
         shiftMax: $scope.limit.limit + ' ' + $scope.fromWallet.coin.toUpperCase(),
-        shiftMin: $scope.limit.min + ' ' + $scope.fromWallet.coin.toUpperCase()
+        shiftMin: $scope.limit.minimum + ' ' + $scope.fromWallet.coin.toUpperCase()
       });
     };
   });
