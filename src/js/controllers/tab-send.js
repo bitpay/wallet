@@ -1,11 +1,24 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout, $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService, platformInfo, bwcError, gettextCatalog, scannerService, $window, externalLinkService) {
+angular.module('copayApp.controllers').controller('tabSendController', function($scope, $rootScope, $log, $timeout,
+  $ionicScrollDelegate, addressbookService, profileService, lodash, $state, walletService, incomingData, popupService,
+   platformInfo, bwcError, gettextCatalog, scannerService, $window, externalLinkService, bitcore) {
 
   var originalList;
   var CONTACTS_SHOW_LIMIT;
   var currentContactsPage;
+  $scope.isSweeping = false;
   $scope.isChromeApp = platformInfo.isChromeApp;
+
+
+  $scope.sweepBtnDisabled = function() {
+    var isDisabled = true;
+
+    if ($scope.checkPrivateKey($scope.formData.search)) {
+      isDisabled = false;
+    }
+    return isDisabled;
+  };
 
 
   var hasWallets = function() {
@@ -232,6 +245,28 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     });
   };
 
+  $scope.sweepAddressClickHandler = function(privateKey) {
+    console.log('privateKey', privateKey);
+
+    $state.go('tabs.home').then(function() {
+      $timeout(function() {
+        $state.transitionTo('tabs.home.paperWallet', {
+          privateKey: privateKey
+        });
+        }, 50);
+    });
+  };
+
+
+  $scope.checkPrivateKey = function(privateKey) {
+    try {
+      new bitcore.PrivateKey(privateKey, 'livenet');
+    } catch (err) {
+      return false;
+    }
+    return true;
+  }
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
 
     $scope.checkingBalance = true;
@@ -250,11 +285,14 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
       $scope.checkingBalance = false;
       return;
     }
-
     updateHasFunds();
 
     if (data.stateParams.address) {
-      $scope.formData.search = data.stateParams.address;
+      if (data.stateParams.address === 'sweep') {
+        $scope.isSweeping = true;
+      } else {
+        $scope.formData.search = data.stateParams.address;
+      }
       $timeout(function() {
         $scope.searchFocus = true;
         var element = $window.document.getElementById('tab-send-address');
