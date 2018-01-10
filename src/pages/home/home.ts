@@ -62,7 +62,7 @@ export class HomePage {
   public buyAndSellItems: Array<any>;
   public bitpayCardItems: Array<any>;
   public nextStepsItems: Array<any>;
-  public hideNextSteps: boolean;
+
   public showRateCard: boolean;
   public homeTip: boolean;
   public showReorderBtc: boolean;
@@ -98,7 +98,6 @@ export class HomePage {
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
     this.isWindowsPhoneApp = this.platformProvider.isWP;
-    this.hideNextSteps = false;
     this.showReorderBtc = false;
     this.showReorderBch = false;
   }

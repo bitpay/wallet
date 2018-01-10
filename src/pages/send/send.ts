@@ -197,11 +197,4 @@ export class SendPage {
       this.logger.warn(err);
     });
   };
-
-  public createWallet(): void {
-    this.navCtrl.push(CreateWalletPage, {});
-  };
-
-  // TODO check if wallets have balance
-
 }

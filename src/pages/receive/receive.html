@@ -42,12 +42,8 @@
     <button ion-button (click)="goCopayers()" translate>Open wallet</button>
   </div>
 
-  <div *ngIf="!wallet">
-    <ion-card>
-      <ion-item>
-        <span translate>No Wallet</span>
-      </ion-item>
-    </ion-card>
+  <div *ngIf="!wallet" class="no-wallet-message">
+    <span translate>No wallet</span>
   </div>
 </ion-content>
 

@@ -93,11 +93,12 @@
   </ion-list>
 
   <div *ngIf="!wallets || !wallets[0]">
-    <ion-card (click)="goToAddView()">
+    <ion-item-divider></ion-item-divider>
+    <ion-list (click)="goToAddView()">
       <button ion-item detail-push>
         <span translate>Create a new wallet</span>
       </button>
-    </ion-card>
+    </ion-list>
   </div>
 
   <ion-list *ngIf="walletsBtc && walletsBtc[0]">
@@ -210,13 +211,13 @@
         <ion-col class="title">
           <span translate>Buy &amp; Sell Bitcoin</span>
         </ion-col>
-        <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
-          <ion-icon *ngIf="!hideNextSteps" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="hideNextSteps" name="arrow-up"></ion-icon>
+        <ion-col text-right (click)="hideBuyAndSellItems = !hideBuyAndSellItems">
+          <ion-icon *ngIf="hideBuyAndSellItems" name="arrow-down"></ion-icon>
+          <ion-icon *ngIf="!hideBuyAndSellItems" name="arrow-up"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item-divider>
-    <div *ngIf="!hideNextSteps">
+    <div *ngIf="!hideBuyAndSellItems">
       <button ion-item *ngFor="let service of buyAndSellItems" (click)="goTo(service.page)">
         <ion-icon item-start>
           <img src="{{service.logo}}" class="logo-services" />
@@ -231,13 +232,13 @@
         <ion-col class="title">
           <span translate>Services</span>
         </ion-col>
-        <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
-          <ion-icon *ngIf="!hideNextSteps" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="hideNextSteps" name="arrow-up"></ion-icon>
+        <ion-col text-right (click)="hideHomeIntegrations = !hideHomeIntegrations">
+          <ion-icon *ngIf="hideHomeIntegrations" name="arrow-down"></ion-icon>
+          <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-up"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item-divider>
-    <div *ngIf="!hideNextSteps">
+    <div *ngIf="!hideHomeIntegrations">
       <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
         <ion-icon item-start>
           <img src="{{service.icon}}" class="icon-services" />
@@ -254,8 +255,8 @@
           <span translate>Next steps</span>
         </ion-col>
         <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
-          <ion-icon *ngIf="!hideNextSteps" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="hideNextSteps" name="arrow-up"></ion-icon>
+          <ion-icon *ngIf="hideNextSteps" name="arrow-down"></ion-icon>
+          <ion-icon *ngIf="!hideNextSteps" name="arrow-up"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item-divider>
