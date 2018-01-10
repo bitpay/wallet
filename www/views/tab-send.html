@@ -3,8 +3,6 @@
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
   <ion-content>
-    <div>isSweeping: {{isSweeping}}. checkPrivateKey: {{checkPrivateKey(formData.search)}}, sweepBtnDisabled: {{sweepBtnDisabled()}}</div>
-
     <div ng-if="isSweeping">
       <div class="send-header-wrapper card">
         <div class="item item-heading send-heading"><span translate>Private Key</span></div>
@@ -81,7 +79,7 @@
       </div>
     </div>
 
-    <div class="card" ng-if="hasContacts && hasWallets && hasFunds">
+    <div class="card" ng-if="hasContacts && hasWallets && hasFunds && !isSweeping">
       <div class="item item-icon-right item-heading">
         <span translate>Contacts</span>
         <a ng-if="hasContacts" ui-sref="tabs.send.addressbook">
@@ -103,7 +101,7 @@
       </div>
     </div>
 
-    <div class="card" ng-if="showTransferCard && hasFunds">
+    <div class="card" ng-if="showTransferCard && hasFunds && !isSweeping">
       <div class="item item-heading">
         <span translate>Transfer to Wallet</span>
       </div>
