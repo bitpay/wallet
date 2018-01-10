@@ -62,8 +62,9 @@ angular.module('copayApp.controllers').controller('shapeshiftShiftController',
       }
 
       $scope.fromWallets = lodash.filter(walletsBtc.concat(walletsBch), function(w) {
-        // Available balance and 1-signature wallet
-        return w.status.balance.availableAmount > 0 && w.credentials.m == 1;
+        // Available cached funds
+        var hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
+        return hasCachedFunds;
       });
 
       $scope.onFromWalletSelect($scope.fromWallets[0]);
