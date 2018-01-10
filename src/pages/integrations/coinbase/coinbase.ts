@@ -81,7 +81,7 @@ export class CoinbasePage {
           if (err) {
             this.logger.error(err);
             let errorId = err.errors ? err.errors[0].id : null;
-            err = err.errors ? err.errors[0].message : err;
+            err = err.errors ? err.errors[0].message : (err.error_description ? err.error_description : (err.error || 'Unknown error'));
             this.popupProvider.ionicAlert('Error connecting to Coinbase', err).then(() => {
               if (errorId == 'revoked_token') {
                 this.coinbaseProvider.logout();

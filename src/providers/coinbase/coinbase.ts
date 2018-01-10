@@ -117,6 +117,9 @@ export class CoinbaseProvider {
       this.credentials.CLIENT_ID = coinbase.production.client_id;
       this.credentials.CLIENT_SECRET = coinbase.production.client_secret;
     };
+
+    // Force to use specific version
+    this.credentials.API_VERSION = '2017-10-31';
   }
 
   private _afterTokenReceived(data, cb) {
@@ -130,18 +133,31 @@ export class CoinbaseProvider {
     }
   }
 
-  public getErrorsAsString(errors: any): string {
-    let errStr = '';
+  public getErrorsAsString(data: any): string {
+    let errData;
 
-    if (!_.isArray(errors)) {
-      errStr = errors.message ||  errors;
-      return errStr;
-    }
+    try {
+      if (data && data.errors) errData = data.errors;
+      else if (data && data.error) errData = data.error_description;
+      else return 'Unknown error';
 
-    for (let i = 0; i < errors.length; i++) {
-      errStr = errStr + errors[i].message + '. ';
+      if (!_.isArray(errData)) {
+        errData = errData && errData.message ? errData.message : errData;
+        return errData;
+      }
+
+      if (_.isArray(errData)) {
+        var errStr = '';
+        for (var i = 0; i < errData.length; i++) {
+          errStr = errStr + errData[i].message + '. ';
+        }
+        return errStr;
+      }
+
+      return JSON.stringify(errData);
+    } catch (e) {
+      this.logger.error(e);
     }
-    return errStr;
   }
 
   public getNetwork() {
@@ -205,7 +221,7 @@ export class CoinbaseProvider {
 
       return cb(null, amount - parseInt(feeBTC), parseInt(feeBTC));
     }).catch((err) => {
-      return cb(err);
+      return cb('Could not get fee rate');
     });
   };
 
@@ -220,12 +236,12 @@ export class CoinbaseProvider {
     };
 
     this.http.post(url, data).subscribe((data: any) => {
-      this.logger.info('Coinbase Authorization Access Token: SUCCESS');
+      this.logger.info('Coinbase: GET Access Token: SUCCESS');
       // Show pending task from the UI
       this._afterTokenReceived(data, cb);
     }, (data) => {
-      this.logger.error('Coinbase Authorization Access Token: ERROR ' + data.statusText);
-      return cb(data || 'Could not get the access token');
+      this.logger.error('Coinbase: GET Access Token: ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
+      return cb(data);
     });
   }
 
@@ -240,11 +256,11 @@ export class CoinbaseProvider {
     };
 
     this.http.post(url, data).subscribe((data: any) => {
-      this.logger.info('Coinbase Refresh Access Token: SUCCESS');
+      this.logger.info('Coinbase: Refresh Access Token SUCCESS');
       this._afterTokenReceived(data, cb);
     }, (data) => {
-      this.logger.error('Coinbase Refresh Access Token: ERROR ' + data.statusText);
-      return cb(data || 'Could not get the access token');
+      this.logger.error('Coinbase: Refresh Access Token ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
+      return cb(data);
     });
   }
 
@@ -253,12 +269,12 @@ export class CoinbaseProvider {
       if (err) return cb(err);
       var data = a.data;
       for (var i = 0; i < data.length; i++) {
-        if (data[i].primary && data[i].type == 'wallet') {
+        if (data[i].primary && data[i].type == 'wallet' && data[i].currency && data[i].currency.code == 'BTC') {
           return cb(null, data[i].id);
         }
       }
       this.logout();
-      return cb('Your primary account should be a WALLET. Set your wallet account as primary and try again');
+      return cb('Your primary account should be a BTC WALLET. Set your wallet account as primary and try again');
     });
   };
 
@@ -269,15 +285,16 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, { headers }).subscribe((data: any) => {
-      this.logger.info('Coinbase Get Accounts: SUCCESS');
+      this.logger.info('Coinbase: Get Accounts SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Get Accounts: ERROR ' + data.statusText);
-      return cb(data || 'Could not get the accounts');
+      this.logger.error('Coinbase: Get Accounts ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
+      return cb(data);
     });
   }
 
@@ -300,7 +317,7 @@ export class CoinbaseProvider {
 
   public init = _.throttle((cb) => {
     if (_.isEmpty(this.credentials.CLIENT_ID)) {
-      return cb('Coinbase is Disabled');
+      return cb('Coinbase is Disabled. Missing credentials.');
     }
     this.logger.debug('Trying to initialise Coinbase...');
 
@@ -308,7 +325,15 @@ export class CoinbaseProvider {
       if (!accessToken) return cb();
       this._getMainAccountId(accessToken, (err, accountId) => {
         if (err) {
-          if (err.errors && err.errors[0] && err.errors[0].id == 'expired_token') {
+          if (!err.errors) return cb(err);
+          if (err.errors && !_.isArray(err.errors)) return cb(err);
+
+          let expiredToken;
+          for (let i = 0; i < err.errors.length; i++) {
+            if (err.errors[i].id == 'expired_token') expiredToken = true;
+          }
+
+          if (expiredToken) {
             this.logger.debug('Refresh token');
             this.persistenceProvider.getCoinbaseRefreshToken(this.credentials.NETWORK).then((refreshToken) => {
               this._refreshToken(refreshToken, (err, newToken) => {
@@ -345,13 +370,14 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     }
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Get Account: SUCCESS');
+      this.logger.info('Coinbase: Get Account SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Get Account: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Get Account ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -362,13 +388,14 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Autorization Information: SUCCESS');
+      this.logger.info('Coinbase: Autorization Information SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Autorization Information: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Autorization Information ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -379,14 +406,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Get Current User: SUCCESS');
+      this.logger.info('Coinbase: Get Current User SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Get Current User: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Get Current User ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -397,14 +425,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Buy Info: SUCCESS');
+      this.logger.info('Coinbase: Buy Info SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Buy Info: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Buy Info ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -415,13 +444,14 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Transaction: SUCCESS');
+      this.logger.info('Coinbase: Transaction SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Transaction: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Transaction ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -434,14 +464,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Address s Transactions: SUCCESS');
+      this.logger.info('Coinbase: Address Transactions SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Address s Transactions: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Address Transactions ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -452,14 +483,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Transactions: SUCCESS');
+      this.logger.info('Coinbase: Transactions SUCCESS');
       return cb(null, data);
     }, (data: any) => {
-      this.logger.error('Coinbase Transactions: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Transactions ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -472,14 +504,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Pagination Transactions: SUCCESS');
+      this.logger.info('Coinbase: Pagination Transactions SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Pagination Transactions: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Pagination Transactions ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -490,14 +523,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Sell Price: SUCCESS');
+      this.logger.info('Coinbase: Sell Price SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Sell Price: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Sell Price ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -507,13 +541,14 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Buy Price: SUCCESS');
+      this.logger.info('Coinbase: Buy Price: SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Buy Price: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Buy Price ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -523,13 +558,14 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Get Payment Methods: SUCCESS');
+      this.logger.info('Coinbase: Get Payment Methods SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Get Payment Methods: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Get Payment Methods ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -540,14 +576,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.get(url, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Get Payment Method: SUCCESS');
+      this.logger.info('Coinbase: Get Payment Method SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Get Payment Method: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Get Payment Method ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -565,14 +602,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.post(url, data, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Sell Request: SUCCESS');
+      this.logger.info('Coinbase: Sell Request SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Sell Request: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Sell Request ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -582,14 +620,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.post(url, null, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Sell Commit: SUCCESS');
+      this.logger.info('Coinbase: Sell Commit SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Sell Commit: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Sell Commit ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -607,14 +646,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.post(url, data, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Buy Request: SUCCESS');
+      this.logger.info('Coinbase: Buy Request SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Buy Request: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Buy Request ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -624,14 +664,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.post(url, null, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Buy Commit: SUCCESS');
+      this.logger.info('Coinbase: Buy Commit SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Buy Commit: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Buy Commit ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -644,14 +685,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.post(url, data, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Create Address: SUCCESS');
+      this.logger.info('Coinbase: Create Address SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Create Address: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Create Address ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -668,14 +710,15 @@ export class CoinbaseProvider {
     let headers: any = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'CB-VERSION': this.credentials.API_VERSION,
       'Authorization': 'Bearer ' + token
     };
 
     this.http.post(url, data, headers).subscribe((data: any) => {
-      this.logger.info('Coinbase Create Address: SUCCESS');
+      this.logger.info('Coinbase: Create Address SUCCESS');
       return cb(null, data);
     }, (data) => {
-      this.logger.error('Coinbase Create Address: ERROR ' + data.statusText);
+      this.logger.error('Coinbase: Create Address ERROR ' + data.status + '. ' + this.getErrorsAsString(data));
       return cb(data);
     });
   }
@@ -758,14 +801,9 @@ export class CoinbaseProvider {
                 if (variance < dataFromStorage.price_sensitivity.value) {
                   this._sellPending(dataFromStorage, accessToken, accountId, coinbasePendingTransactions);
                 } else {
-                  var error = {
-                    errors: [{
-                      message: 'Price falls over the selected percentage'
-                    }]
-                  };
                   this._savePendingTransaction(dataFromStorage, {
                     status: 'error',
-                    error: error
+                    error: { errors: [{ message: 'Price falls over the selected percentage' }] }
                   }, (err) => {
                     if (err) this.logger.debug(err);
                     this._updateTxs(coinbasePendingTransactions);
@@ -831,17 +869,28 @@ export class CoinbaseProvider {
         if (res.data && !res.data.transaction) {
           this._savePendingTransaction(tx, {
             status: 'error',
-            error: err
+            error: { errors: [{ message: 'Sell order: transaction not found.' }] }
           }, (err) => {
             if (err) this.logger.debug(err);
             this._updateTxs(coinbasePendingTransactions);
           });
           return;
         }
-        this._savePendingTransaction(tx, {
-          remove: true
-        }, (err) => {
-          this.getTransaction(accessToken, accountId, res.data.transaction.id, (err, updatedTx) => {
+
+        this.getTransaction(accessToken, accountId, res.data.transaction.id, (err, updatedTx) => {
+          if (err) {
+            this._savePendingTransaction(tx, {
+              status: 'error',
+              error: err
+            }, (err) => {
+              if (err) this.logger.error(err);
+              this._updateTxs(coinbasePendingTransactions);
+            });
+            return;
+          }
+          this._savePendingTransaction(tx, {
+            remove: true
+          }, (err) => {
             this._savePendingTransaction(updatedTx.data, {}, (err) => {
               if (err) this.logger.debug(err);
               this._updateTxs(coinbasePendingTransactions);
@@ -859,7 +908,7 @@ export class CoinbaseProvider {
       if (err) {
         this._savePendingTransaction(tx, {
           status: 'error',
-          error: err
+          error: { errors: [{ message: err }] }
         }, (err) => {
           if (err) this.logger.debug(err);
           this._updateTxs(coinbasePendingTransactions);
@@ -887,7 +936,7 @@ export class CoinbaseProvider {
           if (res.data && !res.data.id) {
             this._savePendingTransaction(tx, {
               status: 'error',
-              error: err
+              error: { errors: [{ message: 'Transactions not found in Coinbase.com' }] }
             }, (err) => {
               if (err) this.logger.debug(err);
               this._updateTxs(coinbasePendingTransactions);
@@ -895,9 +944,21 @@ export class CoinbaseProvider {
             return;
           }
           this.getTransaction(accessToken, accountId, res.data.id, (err, sendTx) => {
+            if (err) {
+              this._savePendingTransaction(tx, {
+                status: 'error',
+                error: err
+              }, function (err) {
+                if (err) this.logger.error(err);
+                this._updateTxs(coinbasePendingTransactions);
+              });
+              return;
+            }
+
             this._savePendingTransaction(tx, {
               remove: true
             }, (err) => {
+              if (err) this.logger.error(err);
               this._savePendingTransaction(sendTx.data, {}, (err) => {
                 if (err) this.logger.debug(err);
                 this._updateTxs(coinbasePendingTransactions);
