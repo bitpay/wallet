@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('coinbaseController', function
           if (err) {
             $log.error(err);
             var errorId = err.errors ? err.errors[0].id : null;
-            err = err.errors ? err.errors[0].message : err;
+            err = err.errors ? err.errors[0].message : (err.error_description ? err.error_description : (err.error || 'Unknown error'));
             popupService.showAlert('Error connecting to Coinbase', err, function() {
               if (errorId == 'revoked_token') {
                 coinbaseService.logout(function() {});

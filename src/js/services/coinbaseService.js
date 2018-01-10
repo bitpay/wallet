@@ -92,18 +92,30 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     }
   };
 
-  root.getErrorsAsString = function(errors) {
-    var errStr = '';
+  root.getErrorsAsString = function(data) {
+    var errData;
+    try {
+      if (data && data.errors) errData = data.errors;
+      else if (data && data.error) errData = data.error_description;
+      else return '';
 
-    if (!lodash.isArray(errors)) {
-      errStr = errors.message || errors;
-      return errStr;
-    }
+      if (!lodash.isArray(errData)) {
+        errData = errData && errData.message ? errData.message : errData;
+        return errData;
+      }
 
-    for (var i = 0; i < errors.length; i++) {
-      errStr = errStr + errors[i].message + '. ';
-    }
-    return errStr;
+      if (lodash.isArray(errData)) {
+        var errStr = '';
+        for (var i = 0; i < errData.length; i++) {
+          errStr = errStr + errData[i].message + '. ';
+        }
+        return errStr;
+      }
+
+      return JSON.stringify(errData);
+    } catch(e) {
+      $log.error(e);
+    };
   };
 
   root.getNetwork = function() {
@@ -179,7 +191,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       // Show pending task from the UI
       _afterTokenReceived(data.data, cb);
     }, function(data) {
-      $log.error('Coinbase: GET Access Token ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: GET Access Token ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -216,7 +228,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Refresh Access Token SUCCESS');
       _afterTokenReceived(data.data, cb);
     }, function(data) {
-      $log.error('Coinbase: Refresh Access Token ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Refresh Access Token ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -315,7 +327,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Get Accounts SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Get Accounts ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Get Accounts ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -326,7 +338,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Get Account SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Get Account ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Get Account ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -337,7 +349,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Autorization Information SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Authorization Information ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Authorization Information ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -348,7 +360,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Get Current User SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Get Current User ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Get Current User ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -359,7 +371,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Buy Info SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Buy Info ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Buy Info ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -370,7 +382,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Transaction SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Transaction ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Transaction ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -381,7 +393,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Address Transactions SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Address Transactions ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Address Transactions ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -392,7 +404,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Transactions SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Transactions ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Transactions ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -403,7 +415,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Pagination Transactions SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Pagination Transactions ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Pagination Transactions ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -413,7 +425,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Sell Price SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Sell Price ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Sell Price ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -423,7 +435,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Buy Price SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Buy Price ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Buy Price ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -433,7 +445,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Get Payment Methods SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Get Payment Methods ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Get Payment Methods ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -443,7 +455,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Get Payment Method SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Get Payment Method ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Get Payment Method ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -474,7 +486,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Sell Request SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Sell Request ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Sell Request ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -484,7 +496,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Sell Commit SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Sell Commit ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Sell Commit ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -501,7 +513,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Buy Request SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Buy Request ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Buy Request ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -511,7 +523,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase Buy Commit: SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Buy Commit ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Buy Commit ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -524,7 +536,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Create Address SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Create Address ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Create Address ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
@@ -541,7 +553,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
       $log.info('Coinbase: Send Transaction SUCCESS');
       return cb(null, data.data);
     }, function(data) {
-      $log.error('Coinbase: Send Transaction ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data.errors));
+      $log.error('Coinbase: Send Transaction ERROR ' + data.status + '. ' + root.getErrorsAsString(data.data));
       return cb(data.data);
     });
   };
