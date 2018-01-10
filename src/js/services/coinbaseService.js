@@ -97,7 +97,7 @@ angular.module('copayApp.services').factory('coinbaseService', function($http, $
     try {
       if (data && data.errors) errData = data.errors;
       else if (data && data.error) errData = data.error_description;
-      else return '';
+      else return 'Unknown error';
 
       if (!lodash.isArray(errData)) {
         errData = errData && errData.message ? errData.message : errData;
