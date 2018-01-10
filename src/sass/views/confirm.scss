@@ -29,4 +29,15 @@
   .toggle {
     cursor: pointer;
   }
+  .box-notification {
+    margin: 0;
+    .i-info {
+      margin-left: 10px;
+      margin-right: 20px;
+    }
+    .i-arrow {
+      float: right;
+      margin-right: 10px;
+    }
+  }
 }

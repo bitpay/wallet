@@ -99,8 +99,10 @@
           </span>
           <i class="icon bp-arrow-right"></i>
         </a>
-        <div class="text-center" ng-show="noWalletMessage">
-          <span class="badge badge-energized">{{noWalletMessage}}</span>
+        <div class="box-notification warning" ng-if="noWalletMessage" ng-click="openSupport()">
+          <i class="icon i-info ion-alert-circled"></i>
+          {{noWalletMessage}}
+          <i class="icon i-arrow ion-ios-arrow-thin-right"></i>
         </div>
       </div>
     </div>
