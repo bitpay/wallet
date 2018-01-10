@@ -8,6 +8,9 @@ html , body, .back-transparent, ion-app, .nav-decor {
 page-scan {
   color: #fff;
   background: transparent none;
+  .navbar-transparent, .toolbar-background {
+    background: $toolbar-scanner;
+  }
   .not-supported-message {
     height: 100%;
     display: flex;
@@ -23,6 +26,7 @@ page-scan {
   .page-scan-camera-ready {
     // view background is transparent to show video preview
     background: none transparent;
+    height: 100%;
     .guides {
       display: flex;
       position: absolute;
