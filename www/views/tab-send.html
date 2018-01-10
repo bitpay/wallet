@@ -3,7 +3,7 @@
     <ion-nav-title>{{'Send' | translate}}</ion-nav-title>
   </ion-nav-bar>
   <ion-content>
-    <div>isSweeping: {{isSweeping}}. checkPrivateKey: {{checkPrivateKey(formData.search)}}</div>
+    <div>isSweeping: {{isSweeping}}. checkPrivateKey: {{checkPrivateKey(formData.search)}}, sweepBtnDisabled: {{sweepBtnDisabled()}}</div>
 
     <div ng-if="isSweeping">
       <div class="send-header-wrapper card">
@@ -24,8 +24,8 @@
         </div>
         <div class="send-next-button">
 
-          <button ng-disabled="nextDisabled"
-                  ng-class="{disable: nextDisabled}"
+          <button ng-disabled="sweepBtnDisabled()"
+                  ng-class="{disable: sweepBtnDisabled()}"
                   ng-click="sweepAddressClickHandler(formData.search)"
                   class="button button-standard button-primary" >
             <span class="button-label" translate>Sweep Address</span>
