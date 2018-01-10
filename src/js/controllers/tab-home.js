@@ -180,9 +180,16 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       }
     };
 
-    $scope.openChangelly = function() {
-      $state.go('tabs.changelly');
-    }
+    $scope.openBuyLink = function() {
+      if($scope.isIOS) {
+        var url = 'https://navcoin.org/buy-nav';
+        var optIn = false;
+        var title = null;
+        externalLinkService.open(url, optIn, title, message, okText, cancelText);
+      } else {
+        $state.go('tabs.changelly');
+      }
+    };
 
     $scope.openWallet = function(wallet) {
       if (!wallet.isComplete()) {

@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   var currentContactsPage;
   $scope.isSweeping = false;
   $scope.isChromeApp = platformInfo.isChromeApp;
-
+  $scope.isIOS = platformInfo.isIOS;
 
   $scope.sweepBtnDisabled = function() {
     var isDisabled = true;
@@ -134,7 +134,14 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
   };
 
   $scope.openBuyLink = function() {
-    $state.go('tabs.changelly-send');
+    if($scope.isIOS) {
+      var url = 'https://navcoin.org/buy-nav';
+      var optIn = false;
+      var title = null;
+      externalLinkService.open(url, optIn, title, message, okText, cancelText);
+    } else {
+      $state.go('tabs.changelly-send');
+    }
   };
 
   $scope.openScanner = function() {
