@@ -31,6 +31,10 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     }, 10);
   }
 
+  $scope.openSupport = function() {
+    var url = 'https://support.bitpay.com/hc/en-us/articles/115005936786';
+    externalLinkService.open(url);
+  };
 
   $scope.showWalletSelector = function() {
     $scope.walletSelector = true;
