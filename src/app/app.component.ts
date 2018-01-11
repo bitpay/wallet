@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Platform, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Subscription } from 'rxjs';
 
 //providers
 import { Logger } from '@nsalaun/ng-logger';
@@ -30,6 +31,8 @@ import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 export class CopayApp {
 
   public rootPage: any;
+  private onResumeSubscription: Subscription;
+  private isModalOpen: boolean;
 
   constructor(
     private platform: Platform,
@@ -68,9 +71,13 @@ export class CopayApp {
           this.statusBar.styleLightContent();
           this.splashScreen.hide();
         }
+        //Check PIN or Fingerprint
+        this.onResumeSubscription = this.platform.resume.subscribe(() => {
+          this.openLockModal();
+        });
+        this.openLockModal();
         // Check Profile
         this.profile.loadAndBindProfile().then((profile: any) => {
-          this.openLockModal();
           this.registerIntegrations();
           if (profile) {
             this.logger.info('Profile exists.');
@@ -92,7 +99,12 @@ export class CopayApp {
     });
   }
 
+  ngOnDestroy() {
+    this.onResumeSubscription.unsubscribe();
+  }
+
   private openLockModal(): void {
+    if (this.isModalOpen) return;
     let config: any = this.configProvider.get();
     let lockMethod = config.lock.method;
     if (!lockMethod) return;
@@ -101,13 +113,21 @@ export class CopayApp {
   }
 
   private openPINModal(action): void {
+    this.isModalOpen = true;
     let modal = this.modalCtrl.create(PinModalPage, { action }, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
+    modal.onDidDismiss(() => {
+      this.isModalOpen = false;
+    });
   }
 
   private openFingerprintModal(): void {
+    this.isModalOpen = true;
     let modal = this.modalCtrl.create(FingerprintModalPage, {}, { showBackdrop: false, enableBackdropDismiss: false });
     modal.present();
+    modal.onDidDismiss(() => {
+      this.isModalOpen = false;
+    });
   }
 
   private registerIntegrations(): void {

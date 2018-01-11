@@ -1,8 +1,7 @@
-<ion-header>
-  <ion-navbar>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-
+<ion-content>
+  <ion-item-divider class="title">Verify your identity</ion-item-divider>
+  <button *ngIf="showScanButton" class="scan-button" ion-item (click)="checkFingerprint()">
+    <ion-icon name="finger-print" item-start></ion-icon>
+    <span translate>Scan again</span>
+  </button>
 </ion-content>

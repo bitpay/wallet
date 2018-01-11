@@ -13,4 +13,8 @@
       <ion-radio (click)="select(opt.method)" value="{{opt.method}}" checked="{{opt.enabled}}" disabled="{{opt.disabled}}"></ion-radio>
     </ion-item>
   </ion-list>
+
+  <ion-item-divider *ngIf="needsBackupMsg" text-wrap>
+    <span class="assertive">{{needsBackupMsg}}</span>
+  </ion-item-divider>
 </ion-content>
