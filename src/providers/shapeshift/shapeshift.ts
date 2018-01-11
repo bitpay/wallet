@@ -134,6 +134,16 @@ export class ShapeshiftProvider {
     });
   }
 
+  public getMarketInfo(pair: string, cb) {
+    this.http.get(this.credentials.API_URL + '/marketinfo/' + pair).subscribe((data: any) => {
+      this.logger.info('Shapeshift MARKET INFO: SUCCESS');
+      return cb(null, data);
+    }, (data: any) => {
+      this.logger.error('Shapeshift MARKET INFO ERROR', data.error.message);
+      return cb(data);
+    });
+  }
+
   public getStatus(addr: string, cb) {
     this.http.get(this.credentials.API_URL + '/txStat/' + addr).subscribe((data: any) => {
       this.logger.info('Shapeshift STATUS: SUCCESS');

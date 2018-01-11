@@ -91,7 +91,17 @@
     </ion-item>
 
     <ion-item>
-      Limit
+      Deposit Min
+      <ion-note item-end>
+        <span *ngIf="!limit">...</span>
+        <span *ngIf="limit">
+          {{limit.minimum}} {{fromWallet.coin | uppercase}}
+        </span>
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      Deposit Max
       <ion-note item-end>
         <span *ngIf="!limit">...</span>
         <span *ngIf="limit">
@@ -101,20 +111,32 @@
     </ion-item>
 
     <ion-item>
-      Minimum
+      Miner fee
       <ion-note item-end>
         <span *ngIf="!limit">...</span>
         <span *ngIf="limit">
-          {{limit.min}} {{fromWallet.coin | uppercase}}
+          {{limit.minerFee}} {{fromWallet.coin | uppercase}}
         </span>
       </ion-note>
     </ion-item>
-
   </ion-list>
+
+  <div class="agree-to-terms">
+    <ion-item color="light" text-wrap>
+      <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
+    </ion-item>
+    <div class="terms">
+      <p translate>
+        I agree to the
+        <a (click)="openTerms()"> Terms </a>
+        and certify that I am the beneficial owner of the input assets and the destination address.
+      </p>
+    </div>
+  </div>
 
   <div class="buttons-container">
     <!-- TODO: noLowFee -->
-    <button ion-button type="button" *ngIf="fromWallets.length > 0 && toWallets.length > 0" [disabled]="!fromWallet || !toWallet"
+    <button ion-button type="button" *ngIf="fromWallets.length > 0 && toWallets.length > 0" [disabled]="!fromWallet || !toWallet || !termsAccepted"
       (click)="setAmount()">
       Continue
     </button>

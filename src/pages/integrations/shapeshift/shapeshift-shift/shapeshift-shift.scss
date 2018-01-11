@@ -20,4 +20,31 @@ page-shapeshift-shift {
       display: block;
     }
   }
+  .agree-to-terms {
+    position: relative;
+    ion-item {
+      height: 6rem;
+      .check {
+        margin: 9px 15px 9px 4px !important;
+      }
+    }
+    .terms {
+    display: flex;
+    align-items: center;
+    height: 6rem;
+    position: absolute;
+    top: 0;
+    left: 5rem;
+    padding: 0rem;
+    margin: 0rem;
+    p {
+      padding-right: 1rem;
+      font-size: 12px;
+    }
+    a {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    }
+  }
 }
