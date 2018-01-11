@@ -9,75 +9,84 @@
 </ion-header>
 <ion-content padding>
 
-  <div *ngIf="type === 'url'">
-    <div class="settings-explanation">
-      <div class="settings-heading" translate>Website</div>
-      <div class="settings-description">{{data}}</div>
-      <button ion-item (click)="close('OpenExternalLink', data)">
-        <ion-icon item-start>
-          <img *ngIf="!https" src="assets/img/icon-lock-x.svg">
-          <img *ngIf="https" src="assets/img/icon-lock-green.svg">
-        </ion-icon>
-        <h2 translate>Open website</h2>
-      </button>
-    </div>
-  </div>
+  <ion-list *ngIf="type === 'url'">
+    <ion-item-divider>{{'Website' |translate}}</ion-item-divider>
+    <ion-item>
+      {{data}}
+      <ion-icon item-start>
+        <img *ngIf="!https" src="assets/img/icon-lock-x.svg">
+        <img *ngIf="https" src="assets/img/icon-lock-green.svg">
+      </ion-icon>
+    </ion-item>
+    <button ion-item (click)="close('OpenExternalLink', data)">
+      <ion-icon item-start>
+        <img src="assets/img/icon-link-external.svg">
+      </ion-icon>
+      <span translate>Open website</span>
+    </button>
+    <button ion-item copy-to-clipboard="{{ data }}">
+      <ion-icon item-start>
+        <img src="assets/img/icon-paperclip.svg">
+      </ion-icon>
+      <span translate>Copy to clipboard</span>
+    </button>
+  </ion-list>
 
-  <div *ngIf="type === 'bitcoinAddress'">
-    <div class="settings-explanation">
-      <div class="settings-heading" translate>Bitcoin Address</div>
-      <img src="assets/img/icon-bitcoin-small.svg">
-      <div class="settings-description">{{data}}</div>
-      <button ion-item (click)="close('AddressBookPage', data)">
-        <ion-icon item-start>
-          <img src="assets/img/icon-contacts.svg">
-        </ion-icon>
-        <h2 translate>Add as a contact</h2>
-      </button>
-      <button ion-item (click)="close('AmountPage', data)">
-        <ion-icon item-start>
-          <img src="assets/img/icon-send-alt.svg">
-        </ion-icon>
-        <h2 translate>Send payment to this address</h2>
-      </button>
-      <button ion-item copy-to-clipboard="{{ data }}">
-        <ion-icon item-start>
-          <img src="assets/img/icon-paperclip.svg">
-        </ion-icon>
-        <h2 translate>Copy to clipboard</h2>
-      </button>
-    </div>
-  </div>
+  <ion-list *ngIf="type === 'bitcoinAddress'">
+    <ion-item-divider>{{'Bitcoin Address' | translate}}</ion-item-divider>
+    <ion-item>
+      {{data}}
+      <ion-icon item-start>
+        <img src="assets/img/icon-bitcoin-small.svg">
+      </ion-icon>
+    </ion-item>
+    <button ion-item (click)="close('AddressBookPage', data)">
+      <ion-icon item-start>
+        <img src="assets/img/icon-contacts.svg">
+      </ion-icon>
+      <span translate>Add as a contact</span>
+    </button>
+    <button ion-item (click)="close('AmountPage', data)">
+      <ion-icon item-start>
+        <img src="assets/img/icon-send-alt.svg">
+      </ion-icon>
+      <span translate>Send payment to this address</span>
+    </button>
+    <button ion-item copy-to-clipboard="{{ data }}">
+      <ion-icon item-start>
+        <img src="assets/img/icon-paperclip.svg">
+      </ion-icon>
+      <span translate>Copy to clipboard</span>
+    </button>
+  </ion-list>
 
-  <div *ngIf="type === 'text'">
-    <div class="settings-explanation">
-      <div class="settings-heading" translate>Text</div>
-      <div class="settings-description">{{data}}</div>
-      <button ion-item copy-to-clipboard="{{ data }}">
-        <ion-icon item-start>
-          <img src="assets/img/icon-paperclip.svg">
-        </ion-icon>
-        <h2 translate>Copy to clipboard</h2>
-      </button>
-    </div>
-  </div>
+  <ion-list *ngIf="type === 'text'">
+    <ion-item-divider>{{'Text' | translate}}</ion-item-divider>
+    <ion-item>
+      {{data}}
+    </ion-item>
+    <button ion-item copy-to-clipboard="{{ data }}">
+      <ion-icon item-start>
+        <img src="assets/img/icon-paperclip.svg">
+      </ion-icon>
+      <span translate>Copy to clipboard</span>
+    </button>
+  </ion-list>
 
-  <div *ngIf="type === 'privateKey'">
-    <div class="settings-explanation">
-      <div class="settings-heading" translate>Private Key</div>
-      <div class="settings-description">{{data}}</div>
-      <button ion-item (click)="close('PaperWalletPage', data)">
-        <ion-icon item-start>
-          <img src="assets/img/icon-import.svg">
-        </ion-icon>
-        <h2 translate>Sweep paper wallet</h2>
-      </button>
-      <button ion-item copy-to-clipboard="{{ data }}">
-        <ion-icon item-start>
-          <img src="assets/img/icon-paperclip.svg">
-        </ion-icon>
-        <h2 translate>Copy to clipboard</h2>
-      </button>
-    </div>
-  </div>
+  <ion-list *ngIf="type === 'privateKey'">
+    <ion-item-divider>{{'Private Key' | translate}}</ion-item-divider>
+    <ion-item>{{data}}</ion-item>
+    <button ion-item (click)="close('PaperWalletPage', data)">
+      <ion-icon item-start>
+        <img src="assets/img/icon-import.svg">
+      </ion-icon>
+      <span translate>Sweep paper wallet</span>
+    </button>
+    <button ion-item copy-to-clipboard="{{ data }}">
+      <ion-icon item-start>
+        <img src="assets/img/icon-paperclip.svg">
+      </ion-icon>
+      <span translate>Copy to clipboard</span>
+    </button>
+  </ion-list>
 </ion-content>
