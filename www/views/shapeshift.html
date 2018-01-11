@@ -49,8 +49,8 @@
           Transactions
         </div>
         <div ng-repeat="(id, item) in shifts.data | orderObjectBy:'date':true track by $index"
-           class="item">
-          <h2 copy-to-clipboard="item.address">
+           class="item" ng-click="openShiftModal(item)">
+          <h2>
             <span class="item-amount">{{ item.amount }}</span>
             <span class="ellipsis">{{item.title || item.address}}</span>
           </h2>

@@ -4,6 +4,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
 
   var amount;
   var currency;
+  var rateUnit;
   var fromWalletId;
   var toWalletId;
   var createdTx;
@@ -76,16 +77,25 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
 
   var saveShapeshiftData = function() {
     var address = $scope.shapeInfo.deposit;
+    var withdrawal = $scope.shapeInfo.withdrawal;
     var status;
     var now = moment().unix() * 1000;
 
     shapeshiftService.getStatus(address, function(err, st) {
       var newData = {
         address: address,
-        status: st.status,
+        withdrawal: withdrawal,
         date: now,
         amount: $scope.amountStr,
-        title: $scope.fromWallet.coin.toUpperCase() + ' to ' + $scope.toWallet.coin.toUpperCase()
+        rate: rateUnit + ' ' + $scope.toWallet.coin.toUpperCase() + ' per ' + $scope.fromWallet.coin.toUpperCase(),
+        title: $scope.fromWallet.coin.toUpperCase() + ' to ' + $scope.toWallet.coin.toUpperCase(),
+        // From ShapeShift
+        status: st.status,
+        transaction: st.transaction || null, // Transaction ID of coin sent to withdrawal address
+        incomingCoin: st.incomingCoin || null, // Amount deposited
+        incomingType: st.incomingType || null, // Coin type of deposit
+        outgoingCoin: st.outgoingCoin || null, // Amount sent to withdrawal address
+        outgoingType: st.outgoingType || null, // Coin type of withdrawal
       };
 
       shapeshiftService.saveShapeshift(newData, null, function(err) {
@@ -192,7 +202,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
 
             shapeshiftService.getRate(getCoinPair(), function(err, r) {
               ongoingProcess.set('connectingShapeshift', false);
-              var rateUnit = r.rate;
+              rateUnit = r.rate;
               var amountUnit = txFormatService.satToUnit(ctxp.amount);
               var withdrawalSat = Number((rateUnit * amountUnit * 100000000).toFixed());
 

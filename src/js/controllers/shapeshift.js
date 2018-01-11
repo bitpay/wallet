@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('shapeshiftController',
-  function($rootScope, $scope, $timeout, $log, $ionicScrollDelegate, lodash, shapeshiftService, externalLinkService) {
+  function($rootScope, $scope, $timeout, $log, $ionicScrollDelegate, $ionicModal, lodash, shapeshiftService, externalLinkService) {
 
     var listeners = [];
     $scope.openExternalLink = function(url) {
@@ -16,6 +16,11 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
           if (err) return;
 
           $scope.shifts.data[st.address]['status'] = st.status;
+          $scope.shifts.data[st.address]['transaction'] = st.transaction || null;
+          $scope.shifts.data[st.address]['incomingCoin'] = st.incomingCoin || null;
+          $scope.shifts.data[st.address]['incomingType'] = st.incomingType || null;
+          $scope.shifts.data[st.address]['outgoingCoin'] = st.outgoingCoin || null;
+          $scope.shifts.data[st.address]['outgoingType'] = st.outgoingType || null;
           shapeshiftService.saveShapeshift($scope.shifts.data[st.address], null, function(err) {
             $log.debug("Saved shift with status: " + st.status);
           });
@@ -44,6 +49,21 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
 
     $scope.update = function() {
       updateShift($scope.shifts);
+    };
+
+    $scope.openShiftModal = function(ss) {
+      $scope.ss = ss;
+
+      $ionicModal.fromTemplateUrl('views/modals/shapeshift-details.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.shapeshiftDetailsModal = modal;
+        $scope.shapeshiftDetailsModal.show();
+      });
+
+      $scope.$on('modal.hidden', function() {
+        init();
+      });
     };
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {

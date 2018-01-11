@@ -1,0 +1,90 @@
+<ion-modal-view id="shapeshift" ng-controller="shapeshiftDetailsController">
+  <ion-header-bar align-title="center" class="bar-royal">
+    <button class="button button-back button-clear" ng-click="cancel()">
+      Close
+    </button>
+    <h1 class="title">Details</h1>
+  </ion-header-bar>
+
+  <ion-content>
+
+    <div class="header-modal">
+
+      <div class="title-modal">
+        <img src="img/icon-shapeshift.svg" alt="ShapeShift" width="50">
+        {{ss.title}}
+      </div>
+
+      <div class="subtitle-modal">
+        {{ss.amount}}
+      </div>
+
+      <div class="status-modal">
+        <span class="assertive" ng-if="ss.status == 'failed'">Failed</span>
+        <span class="balanced" ng-if="ss.status == 'complete'">Completed</span>
+        <span class="dark" ng-if="ss.status == 'received'">Pending</span>
+        <span class="text-gray" ng-if="ss.status == 'no_deposits'">Pending</span>
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="item item-divider"></div>
+
+      <div class="item" ng-if="ss.rate">
+        Rate
+        <div class="item-note">
+          {{ ss.rate }}
+        </div>
+      </div>
+
+      <div class="item" ng-if="ss.date">
+        Created
+        <div class="item-note">
+          {{ ss.date | amDateFormat:'MMM D, YYYY'}}
+        </div>
+      </div>
+
+      <div class="item item-divider">Deposit</div>
+
+      <div class="item" ng-if="ss.address">
+        Adddress
+        <div class="item-note note-address" copy-to-clipboard="ss.address">
+          {{ ss.address }}
+        </div>
+      </div>
+
+      <div class="item" ng-if="ss.incomingCoin">
+        Amount
+        <div class="item-note">
+          {{ss.incomingCoin}} {{ss.incomingType}}
+        </div>
+      </div>
+
+      <div class="item item-divider">Withdraw</div>
+
+      <div class="item" ng-if="ss.withdrawal">
+        Adddress
+        <div class="item-note note-address" copy-to-clipboard="ss.withdrawal">
+          {{ ss.withdrawal }}
+        </div>
+      </div>
+
+      <div class="item" ng-if="ss.outgoingCoin">
+        Amount
+        <div class="item-note">
+          {{ss.outgoingCoin}} {{ss.outgoingType}}
+        </div>
+      </div>
+
+      <div ng-if="ss.transaction">
+        <div class="item item-divider"></div>
+        <a class="item" ng-click="openTransaction(ss.transaction)">See transaction</a>
+      </div>
+      <div class="item item-divider"></div>
+      <a class="item text-center" ng-click="remove()">
+        <span class="assertive">Remove</span>
+      </a>
+    </div>
+
+  </ion-content>
+</ion-modal-view>
