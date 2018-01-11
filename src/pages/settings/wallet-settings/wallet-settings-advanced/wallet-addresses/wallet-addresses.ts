@@ -77,6 +77,7 @@ export class WalletAddressesPage {
         this.latestUnused = _.slice(this.noBalance, 0, this.UNUSED_ADDRESS_LIMIT);
         this.latestWithBalance = _.slice(this.withBalance, 0, this.BALANCE_ADDRESS_LIMIT);
         this.viewAll = this.noBalance.length > this.UNUSED_ADDRESS_LIMIT || this.withBalance.length > this.BALANCE_ADDRESS_LIMIT;
+
         this.loading = false;
       }).catch((err: any) => {
         this.logger.error(err);
@@ -147,7 +148,7 @@ export class WalletAddressesPage {
   }
 
   public viewAllAddresses(): void {
-    let modal = this.modalCtrl.create(AllAddressesPage, { noBalance: this.noBalance, withBalance: this.withBalance, coin: this.wallet.coin });
+    let modal = this.modalCtrl.create(AllAddressesPage, { noBalance: this.noBalance, withBalance: this.withBalance, coin: this.wallet.coin, walletName: this.wallet.name });
     modal.present();
   }
 
@@ -157,45 +158,5 @@ export class WalletAddressesPage {
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId })
-  }
-
-  // TODO: socialsharing
-  /*private formatDate(ts: number): any {
-    var dateObj = new Date(ts * 1000);
-    if (!dateObj) {
-      this.logger.debug('Error formating a date');
-      return 'DateError';
-    }
-    if (!dateObj.toJSON()) {
-      return '';
-    }
-    return dateObj.toJSON();
-  }*/
-
-  public sendByEmail(): any {
-
-    this.onGoingProcessProvider.set('sendingByEmail', true);
-    setTimeout(() => {
-      this.onGoingProcessProvider.set('sendingByEmail', false);
-      // TODO: socialsharing
-      /*let appName = this.app.info.nameCase;
-
-      let body: string = appName + ' Wallet "' + this.wallet.name + '" Addresses\n  Only Main Addresses are  shown.\n\n';
-      body += "\n";
-      body += this.allAddresses.map((v) => {
-        return ('* ' + v.address + ' xpub' + v.path.substring(1) + ' ' + this.formatDate(v.createdOn));
-      }).join("\n");
-      
-       window.plugins.socialsharing.shareViaEmail(
-        body,
-        appName + ' Addresses',
-        null, // TO: must be null or an array
-        null, // CC: must be null or an array
-        null, // BCC: must be null or an array
-        null, // FILES: can be null, a string, or an array
-        function () { },
-        function () { }
-      ); */
-    });
   }
 }

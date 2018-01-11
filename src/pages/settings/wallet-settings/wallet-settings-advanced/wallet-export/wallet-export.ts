@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
+//native
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { Clipboard } from '@ionic-native/clipboard';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -10,6 +14,7 @@ import { PopupProvider } from '../../../../../providers/popup/popup';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
+import { AppProvider } from '../../../../../providers/app/app';
 
 //pages
 import { SettingsPage } from '../../../../../pages/settings/settings';
@@ -46,6 +51,10 @@ export class WalletExportPage {
     private persistenceProvider: PersistenceProvider,
     private backupProvider: BackupProvider,
     private platformProvider: PlatformProvider,
+    private socialSharing: SocialSharing,
+    private appProvider: AppProvider,
+    private clipboard: Clipboard,
+    public toastCtrl: ToastController
   ) {
     this.exportWalletForm = this.formBuilder.group({
       password: ['', Validators.required],
@@ -216,13 +225,21 @@ export class WalletExportPage {
     this.getBackup().then((backup: any) => {
       var ew = backup;
       if (!ew) return;
-      /*       window.cordova.plugins.clipboard.copy(ew);
-            window.plugins.toast.showShortCenter('Copied to clipboard')); */ //TODO
+      this.clipboard.copy(ew);
+      let showSuccess = this.toastCtrl.create({
+        message: 'Copied to clipboard',
+        duration: 1000,
+      });
+      showSuccess.present();
     });
   };
 
   public sendWalletBackup(): void {
-    //window.plugins.toast.showShortCenter('Preparing backup...')); TODO
+    let showSuccess = this.toastCtrl.create({
+      message: 'Preparing backup...',
+      duration: 1000,
+    });
+    showSuccess.present();
     let name = (this.wallet.credentials.walletName || this.wallet.credentials.walletId);
     if (this.wallet.alias) {
       name = this.wallet.alias + ' [' + name + ']';
@@ -234,19 +251,16 @@ export class WalletExportPage {
       if (this.exportWalletForm.value.noSignEnabled)
         name = name + '(No Private Key)';
 
-      /* TODO: socialsharing
-      let subject = this.app.info.nameCase + ' Wallet Backup: ' + name;
+      let subject = this.appProvider.info.nameCase + ' Wallet Backup: ' + name;
       let body = 'Here is the encrypted backup of the wallet ' + name + ': \n\n' + ew + '\n\n To import this backup, copy all text between {...}, including the symbols {}';
-       window.plugins.socialsharing.shareViaEmail(
+      this.socialSharing.shareViaEmail(
         body,
         subject,
         null, // TO: must be null or an array
         null, // CC: must be null or an array
         null, // BCC: must be null or an array
         null, // FILES: can be null, a string, or an array
-        function () { },
-        function () { }
-      ); */
+      );
     });
   };
 
