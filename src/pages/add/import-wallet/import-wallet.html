@@ -37,9 +37,14 @@
     </ion-item>
 
     <div *ngIf="selectedTab == 'file'">
-      <ion-item>
+      <ion-item *ngIf="!isSafari && !isCordova">
         <ion-label stacked>Choose a backup file from your computer</ion-label>
         <ion-input type="file" accept="json" [(ngModel)]="formFile" (change)="fileChangeEvent($event)" formControlName="file"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="isSafari || isCordova">
+        <ion-label stacked>Paste the backup plain text code</ion-label>
+        <ion-textarea formControlName="backupText" rows="5" [value]="importForm.value.backupText"></ion-textarea>
       </ion-item>
 
       <ion-item>

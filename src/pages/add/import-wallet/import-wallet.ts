@@ -35,6 +35,7 @@ export class ImportWalletPage {
   public showAdvOpts: boolean;
   public selectedTab: string;
   public isCordova: boolean;
+  public isSafari: boolean;
   public file: File;
   public testnetEnabled: boolean;
 
@@ -57,6 +58,7 @@ export class ImportWalletPage {
     this.errors = bwcProvider.getErrors();
 
     this.isCordova = this.platformProvider.isCordova;
+    this.isSafari = this.platformProvider.isSafari;
     this.importErr = false;
     this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.selectedTab = 'words';
@@ -67,6 +69,7 @@ export class ImportWalletPage {
 
     this.importForm = this.form.group({
       words: [null, Validators.required],
+      backupText: [null],
       mnemonicPassword: [null],
       file: [null],
       filePassword: [null],
@@ -93,7 +96,8 @@ export class ImportWalletPage {
         this.importForm.get('filePassword').clearValidators();
         break;
       case 'file':
-        this.importForm.get('file').setValidators([Validators.required]);
+        if (this.isCordova || this.isSafari) this.importForm.get('backupText').setValidators([Validators.required]);
+        else this.importForm.get('file').setValidators([Validators.required]);
         this.importForm.get('filePassword').setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
         break;

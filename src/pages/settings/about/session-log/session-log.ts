@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
+//native
+import { SocialSharing } from '@ionic-native/social-sharing';
+
 //providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { HistoricLogProvider } from '../../../../providers/historic-log/historic-log';
@@ -25,7 +28,8 @@ export class SessionLogPage {
   constructor(
     private configProvider: ConfigProvider,
     private historicLogProvider: HistoricLogProvider,
-    private logger: Logger
+    private logger: Logger,
+    private socialSharing: SocialSharing
   ) {
     this.config = this.configProvider.get();
     this.logLevels = this.historicLogProvider.getLevels();
@@ -83,18 +87,16 @@ export class SessionLogPage {
   }
 
   public sendLogs(): void {
-    //let body = this.prepareLogs();
+    let body = this.prepareLogs();
 
-    /* window.plugins.socialsharing.shareViaEmail(
+    this.socialSharing.shareViaEmail(
       body,
       'Copay Logs',
       null, // TO: must be null or an array
       null, // CC: must be null or an array
       null, // BCC: must be null or an array
       null, // FILES: can be null, a string, or an array
-      function () { },
-      function () { }
-    );  TODO sendbyemail*/
+    );
   }
 
   public showOptionsMenu(): void {
