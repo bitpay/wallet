@@ -42,6 +42,7 @@
 
       <div class="item item-divider"></div>
 
+      <div class="market-info">
       <div class="item">
         Rate
         <span class="item-note">
@@ -52,7 +53,16 @@
         </span>
       </div>
       <div class="item">
-        Limit
+        Deposit Min
+        <span class="item-note">
+          <span ng-if="!limit">...</span>
+          <span ng-if="limit">
+            {{limit.minimum}} {{fromWallet.coin | uppercase}}
+          </span>
+        </span>
+      </div>
+      <div class="item">
+        Deposit Max
         <span class="item-note">
           <span ng-if="!limit">...</span>
           <span ng-if="limit">
@@ -61,20 +71,30 @@
         </span>
       </div>
       <div class="item">
-        Minimum
+        Miner fee
         <span class="item-note">
           <span ng-if="!limit">...</span>
           <span ng-if="limit">
-            {{limit.min}} {{fromWallet.coin | uppercase}}
+            {{limit.minerFee}} {{toWallet.coin | uppercase}}
           </span>
         </span>
       </div>
+      </div>
+    </div>
+
+    <div class="agree-to-terms">
+      <ion-checkbox ng-model="terms.accepted"></ion-checkbox>
+      <p translate>
+      I agree to the <a ng-click="openTerms()">Terms</a>
+      and certify that I am the beneficial owner of the input assets and
+      the destination address.
+      </p>
     </div>
 
     <button
       ng-show="fromWallets.length > 0 && toWallets.length > 0"
       class="shift-button button button-standard button-primary"
-      ng-disabled="!fromWallet || !toWallet"
+      ng-disabled="!fromWallet || !toWallet || !terms.accepted"
       ng-click="setAmount()" no-low-fee>
       Continue
     </button>

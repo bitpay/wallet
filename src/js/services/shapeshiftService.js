@@ -129,6 +129,16 @@ angular.module('copayApp.services').factory('shapeshiftService', function($http,
     });
   };
 
+  root.getMarketInfo = function(pair, cb) {
+    $http(_get('/marketinfo/' + pair)).then(function(data) {
+      $log.info('Shapeshift MARKET INFO: SUCCESS');
+      return cb(null, data.data);
+    }, function(data) {
+      $log.error('Shapeshift MARKET INFO ERROR', data);
+      return cb(data);
+    });
+  };
+
   root.getStatus = function(addr, cb) {
     $http(_get('/txStat/' + addr)).then(function(data) {
       $log.info('Shapeshift STATUS: SUCCESS');
