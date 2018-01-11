@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('shapeshiftController',
       });
 
       $scope.$on('modal.hidden', function() {
-        $scope.update();
+        init();
       });
     };
 
