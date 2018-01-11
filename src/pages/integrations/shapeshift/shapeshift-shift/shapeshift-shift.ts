@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { AmountPage } from './../../../send/amount/amount';
 
 // Providers
+import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift';
@@ -29,9 +30,11 @@ export class ShapeshiftShiftPage {
   public network: string;
   public fromWalletSelectorTitle: string;
   public toWalletSelectorTitle: string;
+  public termsAccepted: boolean;
 
   constructor(
     private events: Events,
+    private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger,
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
@@ -42,6 +45,7 @@ export class ShapeshiftShiftPage {
     this.walletsBch = [];
     this.fromWalletSelectorTitle = 'From';
     this.toWalletSelectorTitle = 'To';
+    this.termsAccepted = false;
     this.network = this.shapeshiftProvider.getNetwork();
 
     this.walletsBtc = this.profileProvider.getWallets({
@@ -62,8 +66,9 @@ export class ShapeshiftShiftPage {
     }
 
     this.fromWallets = _.filter(this.walletsBtc.concat(this.walletsBch), (w: any) => {
-      // Available balance and 1-signature wallet
-      return w.status.balance.availableAmount > 0 && w.credentials.m == 1;
+      // Available cached funds
+      let hasCachedFunds = w.cachedBalance.match(/0\.00 /gi) ? false : true;
+      return hasCachedFunds;
     });
 
     this.onFromWalletSelect(this.fromWallets[0]);
@@ -71,6 +76,11 @@ export class ShapeshiftShiftPage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad ShapeshiftShiftPage');
+  }
+
+  public openTerms() {
+    let url = "https://info.shapeshift.io/sites/default/files/ShapeShift_Terms_Conditions%20v1.1.pdf";
+    this.externalLinkProvider.open(url);
   }
 
   private showErrorAndBack(title: string, msg: any): void {
@@ -90,7 +100,7 @@ export class ShapeshiftShiftPage {
     this.shapeshiftProvider.getRate(pair, (err: any, rate: number) => {
       this.rate = rate;
     });
-    this.shapeshiftProvider.getLimit(pair, (err: any, limit: any) => {
+    this.shapeshiftProvider.getMarketInfo(pair, (err: any, limit: any) => {
       this.limit = limit;
     });
   }
@@ -105,6 +115,9 @@ export class ShapeshiftShiftPage {
   }
 
   public setAmount(): void {
+    if (!this.termsAccepted) {
+      return;
+    }
     this.navCtrl.push(AmountPage, {
       nextPage: 'ShapeshiftConfirmPage',
       fixedUnit: true,
@@ -113,7 +126,7 @@ export class ShapeshiftShiftPage {
       toWalletId: this.toWallet.id,
       currency: this.fromWallet.coin.toUpperCase(),
       shiftMax: this.limit.limit + ' ' + this.fromWallet.coin.toUpperCase(),
-      shiftMin: this.limit.min + ' ' + this.fromWallet.coin.toUpperCase()
+      shiftMin: this.limit.minimum + ' ' + this.fromWallet.coin.toUpperCase()
     });
   }
 

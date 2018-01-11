@@ -20,6 +20,7 @@ export class OnGoingProcessProvider {
       'calculatingFee': 'Calculating fee',
       'connectingCoinbase': 'Connecting to Coinbase...',
       'connectingGlidera': 'Connecting to Glidera...',
+      'connectingShapeshift': 'Connecting to Shapeshift...',
       'creatingTx': 'Creating transaction',
       'creatingWallet': 'Creating Wallet...',
       'deletingWallet': 'Deleting Wallet...',

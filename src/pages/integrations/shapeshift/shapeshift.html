@@ -31,7 +31,15 @@
   </div>
 
   <ion-list class="shift">
-    <button ion-item no-low-fee (click)="goTo('Shift')">
+    <ion-item-divider class="help" color="light">
+      <div>
+        <span>Having problems with a ShapeShift?</span>
+        <a (click)="openExternalLink('https://shapeshift.zendesk.com/hc/en-us/requests/new')">
+          Contact the ShapeShift support team.
+        </a>
+      </div>
+    </ion-item-divider>
+    <button class="shift-btn" ion-item no-low-fee (click)="goTo('Shift')">
       <img src="assets/img/shapeshift/icon-shapeshift.svg">
       <span>Shift</span>
     </button>

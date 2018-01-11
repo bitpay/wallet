@@ -49,9 +49,17 @@ page-shapeshift {
     img {
       width: 30px;
     }
-    ion-label {
+    &-btn .label {
       display: flex;
       align-items: center;
+    }
+    .help .label {
+      text-align: center;
+      white-space: normal;
+      font-size: 12px;
+      span {
+        margin-right: 0.6rem;
+      }
     }
   }
 }
