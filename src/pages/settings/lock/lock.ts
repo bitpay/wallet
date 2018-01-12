@@ -43,12 +43,12 @@ export class LockPage {
         {
           method: 'PIN',
           enabled: this.lockOptions.method == 'PIN' ? true : false,
-          disabled: needsBackup
+          disabled: needsBackup || this.lockOptions.method == 'Fingerprint'
         },
         {
           method: 'Fingerprint',
           enabled: this.lockOptions.method == 'Fingerprint' ? true : false,
-          disabled: !isAvailable || needsBackup
+          disabled: !isAvailable || needsBackup || this.lockOptions.method == 'PIN'
         }
       ];
     });
@@ -81,12 +81,16 @@ export class LockPage {
     this.touchIdProvider.check().then(() => {
       let lock = { method: 'Disabled', value: null, bannedUntil: null };
       this.configProvider.set({ lock });
+      this.checkLockOptions();
+    }).catch(()=>{
+      this.checkLockOptions();
     });
   }
 
   public lockByFingerprint(): void {
     let lock = { method: 'Fingerprint', value: null, bannedUntil: null };
     this.configProvider.set({ lock });
+    this.checkLockOptions();
   }
 
   private needsBackup() {
