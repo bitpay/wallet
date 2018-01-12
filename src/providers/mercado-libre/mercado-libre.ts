@@ -165,7 +165,7 @@ export class MercadoLibreProvider {
  */
   /*
   public cancelGiftCard(data, cb) {
-  
+
     var dataSrc = {
       "clientId": data.uuid,
       "invoiceId": data.invoiceId,
@@ -174,7 +174,7 @@ export class MercadoLibreProvider {
     let url = this.credentials.BITPAY_API_URL + '/mercado-libre-gift/cancel';
     let headers: any = {
       'content-type': 'application/json'
-    };      
+    };
     this.http.post(url, dataSrc, headers).subscribe((data: any) => {
       this.logger.info('Mercado Libre Gift Card Cancel: SUCCESS');
       return cb(null, data);

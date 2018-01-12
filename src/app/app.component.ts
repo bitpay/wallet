@@ -132,12 +132,14 @@ export class CopayApp {
 
   private registerIntegrations(): void {
     this.mercadoLibreProvider.register();
-    this.bitPayCardProvider.register();
     this.amazonProvider.register();
-    this.glideraProvider.setCredentials();
-    this.glideraProvider.register();
-    this.coinbaseProvider.setCredentials();
-    this.coinbaseProvider.register();
-    this.shapeshiftProvider.register();
+
+    // Services disabled
+    //this.bitPayCardProvider.register();
+    //this.glideraProvider.setCredentials();
+    //this.glideraProvider.register();
+    //this.coinbaseProvider.setCredentials();
+    //this.coinbaseProvider.register();
+    //this.shapeshiftProvider.register();
   }
 }

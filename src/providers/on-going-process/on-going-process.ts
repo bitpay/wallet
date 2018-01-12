@@ -58,7 +58,7 @@ export class OnGoingProcessProvider {
   }
 
   public getShowName(processName: string): string {
-    let showName = this.processNames[processName];
+    let showName = this.processNames[processName] || processName;
     return showName;
   }
 
@@ -69,7 +69,7 @@ export class OnGoingProcessProvider {
 
   public set(processName: string, isOn: boolean): string {
     this.logger.debug('ongoingProcess', processName, isOn);
-    let showName = this.processNames[processName];
+    let showName = this.processNames[processName] || processName;
     if (!isOn) {
       this.loading.dismiss();
       return;
