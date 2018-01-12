@@ -77,8 +77,10 @@ import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mer
 import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
 import { MercadoLibreCardsPage } from '../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
+
 // Integrations: ShapeShift
 import { ShapeshiftConfirmPage } from '../pages/integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshift-details/shapeshift-details';
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
@@ -267,6 +269,7 @@ let pages: any = [
   SellCoinbasePage,
   SellGlideraPage,
   ShapeshiftConfirmPage,
+  ShapeshiftDetailsPage,
   ShapeshiftPage,
   ShapeshiftShiftPage,
   TermsOfUsePage,

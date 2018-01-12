@@ -43,6 +43,8 @@ export class ShapeshiftShiftPage {
   ) {
     this.walletsBtc = [];
     this.walletsBch = [];
+    this.toWallets = [];
+    this.fromWallets = [];
     this.fromWalletSelectorTitle = 'From';
     this.toWalletSelectorTitle = 'To';
     this.termsAccepted = false;

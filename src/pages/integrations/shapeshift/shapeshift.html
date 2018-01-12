@@ -50,9 +50,9 @@
       Transactions
     </ion-item-divider>
 
-    <button ion-item *ngFor="let item of shifts.data | keys">
+    <button ion-item *ngFor="let item of shifts.data | keys" (click)="openShiftModal(item.value)">
       <div class="shapeshift-address">
-        <h2 copy-to-clipboard="{{item.value.address}}">
+        <h2>
           <span class="item-amount">{{ item.value.amount }}</span>
           <span class="ellipsis">{{item.value.title || item.value.address}}</span>
         </h2>
