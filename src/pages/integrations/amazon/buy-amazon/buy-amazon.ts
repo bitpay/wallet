@@ -307,6 +307,7 @@ export class BuyAmazonPage {
         this.onGoingProcessProvider.set('buyingGiftCard', false);
         this.logger.debug("Saved new gift card with status: " + newData.status);
         this.amazonGiftCard = newData;
+        this.openSuccessModal();
       });
     });
   }, 8000, {
