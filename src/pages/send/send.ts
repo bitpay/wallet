@@ -12,7 +12,6 @@ import { AddressProvider } from '../../providers/address/address';
 
 //pages
 import { AmountPage } from './amount/amount';
-import { CreateWalletPage } from '../add/create-wallet/create-wallet';
 
 import * as _ from 'lodash';
 
