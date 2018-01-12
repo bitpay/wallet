@@ -71,10 +71,14 @@
     </button>
 
     <button ion-item (click)="openLockPage()">
-      <ion-icon name="ios-lock-outline" item-start></ion-icon>
+      <ion-icon *ngIf="lockMethod != 'Disabled'" name="ios-lock-outline" item-start></ion-icon>
+      <ion-icon *ngIf="lockMethod == 'Disabled'" name="ios-unlock-outline" item-start></ion-icon>
       <ion-label>
         {{'Lock' | translate}}
       </ion-label>
+      <ion-note item-end>
+        {{lockMethod}}
+      </ion-note>
     </button>
 
     <ion-item-divider *ngIf="walletsBtc.length" color="light">{{'Bitcoin Wallets' | translate}}</ion-item-divider>

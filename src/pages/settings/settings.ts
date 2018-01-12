@@ -38,6 +38,7 @@ export class SettingsPage {
   public selectedAlternative: any;
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
+  public lockMethod: string;
 
   constructor(
     private navCtrl: NavController,
@@ -73,6 +74,7 @@ export class SettingsPage {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
+    this.lockMethod = this.config.lock.method;
   }
 
   public openBitcoinCashPage(): void {

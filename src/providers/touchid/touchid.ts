@@ -91,7 +91,7 @@ export class TouchIdProvider {
             reject();
           } else {
             this.logger.warn(error);
-            resolve();
+            reject();
           };
         });
     });

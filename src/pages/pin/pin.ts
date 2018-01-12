@@ -16,9 +16,9 @@ export class PinModalPage {
   public firstPinEntered: string = '';
   public confirmingPin: boolean = false;
   public action: string = '';
-  public appName: string = 'copay';
   public disableButtons: boolean = false;
   public expires: string = '';
+  public incorrect: boolean;
 
   constructor(
     private navParams: NavParams,
@@ -49,15 +49,15 @@ export class PinModalPage {
         }
       }
     }
-
   }
 
-  public goBack(): void {
+  public close(): void {
     this.viewCtrl.dismiss();
   }
 
   public newEntry(value: string): void {
     if (this.disableButtons) return;
+    this.incorrect = false;
     this.currentPin = this.currentPin + value;
     if (!this.isComplete()) return;
     if (this.action === 'checkPin' || this.action === 'removeLock') this.checkIfCorrect();
@@ -68,13 +68,18 @@ export class PinModalPage {
         this.currentPin = '';
       }
       else if (this.firstPinEntered === this.currentPin) this.save();
-      else this.firstPinEntered = this.currentPin = '';
+      else {
+        this.firstPinEntered = this.currentPin = '';
+        this.incorrect = true;
+        this.confirmingPin = false;
+      }
     }
   }
 
   private checkAttempts(): void {
     this.currentAttempts += 1;
     this.logger.info('Attempts to unlock:', this.currentAttempts);
+    this.incorrect = true;
     if (this.currentAttempts == this.ATTEMPT_LIMIT) {
       this.currentAttempts = 0;
       let bannedUntil = Math.floor(Date.now() / 1000) + this.ATTEMPT_LOCK_OUT_TIME;
@@ -143,7 +148,7 @@ export class PinModalPage {
   }
 
   public getFilledClass(limit): string {
-    return this.currentPin.length >= limit ? 'filled-' + this.appName : null;
+    return this.currentPin.length >= limit ? 'filled' : null;
   }
 
   private saveFailedAttempt(bannedUntil) {

@@ -12,9 +12,14 @@ export class FingerprintModalPage {
     private touchid: TouchIdProvider,
     private viewCtrl: ViewController
   ) {
-    this.touchid.check().then(() => {
-      this.viewCtrl.dismiss();
-    });
+    this.checkFingerprint();
   }
 
+  public checkFingerprint(): void {
+    this.touchid.check().then(() => {
+      setTimeout(() => {
+        this.viewCtrl.dismiss();
+      }, 300);
+    });
+  }
 }

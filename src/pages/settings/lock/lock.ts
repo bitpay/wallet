@@ -1,44 +1,57 @@
 import { Component } from '@angular/core';
 import { ModalController } from 'ionic-angular';
+
+//pages
+import { PinModalPage } from '../../pin/pin';
+
+//providers
 import { ConfigProvider } from '../../../providers/config/config';
 import { TouchIdProvider } from '../../../providers/touchid/touchid';
-import { PinModalPage } from '../../pin/pin';
+import { ProfileProvider } from '../../../providers/profile/profile';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-lock',
   templateUrl: 'lock.html',
 })
 export class LockPage {
+
   public options: Array<{ method: string, enabled: boolean, disabled: boolean }> = [];
   public lockOptions: any;
+  public needsBackupMsg: string;
 
   constructor(
     private modalCtrl: ModalController,
     private configProvider: ConfigProvider,
-    private touchid: TouchIdProvider,
+    private touchIdProvider: TouchIdProvider,
+    private profileProvider: ProfileProvider
   ) {
     this.checkLockOptions();
   }
 
   private checkLockOptions() {
     this.lockOptions = this.configProvider.get().lock;
-    this.options = [
-      {
-        method: 'Disabled',
-        enabled: !this.lockOptions.method || this.lockOptions.method == 'Disabled' ? true : false,
-        disabled: false
-      },
-      {
-        method: 'PIN',
-        enabled: this.lockOptions.method == 'PIN' ? true : false,
-        disabled: false
-      },
-      {
-        method: 'Fingerprint',
-        enabled: this.lockOptions.method == 'Fingerprint' ? true : false,
-        disabled: !this.touchid.isAvailable() ? true : false
-      }
-    ];
+    this.touchIdProvider.isAvailable().then((isAvailable: boolean) => {
+      let needsBackup = this.needsBackup();
+      this.options = [
+        {
+          method: 'Disabled',
+          enabled: !this.lockOptions.method || this.lockOptions.method == 'Disabled' ? true : false,
+          disabled: false
+        },
+        {
+          method: 'PIN',
+          enabled: this.lockOptions.method == 'PIN' ? true : false,
+          disabled: needsBackup || this.lockOptions.method == 'Fingerprint'
+        },
+        {
+          method: 'Fingerprint',
+          enabled: this.lockOptions.method == 'Fingerprint' ? true : false,
+          disabled: !isAvailable || needsBackup || this.lockOptions.method == 'PIN'
+        }
+      ];
+    });
   }
 
   public select(method): void {
@@ -47,7 +60,8 @@ export class LockPage {
         this.openPinModal('pinSetUp');
         break;
       case 'Disabled':
-        if (this.lockOptions.method && this.lockOptions.method != 'Disabled') this.openPinModal('removeLock');
+        if (this.lockOptions.method && this.lockOptions.method == 'PIN') this.openPinModal('removeLock');
+        if (this.lockOptions.method && this.lockOptions.method == 'Fingerprint') this.removeFingerprint();
         break;
       case 'Fingerprint':
         this.lockByFingerprint();
@@ -63,8 +77,38 @@ export class LockPage {
     });
   }
 
+  private removeFingerprint(): void {
+    this.touchIdProvider.check().then(() => {
+      let lock = { method: 'Disabled', value: null, bannedUntil: null };
+      this.configProvider.set({ lock });
+      this.checkLockOptions();
+    }).catch(()=>{
+      this.checkLockOptions();
+    });
+  }
+
   public lockByFingerprint(): void {
     let lock = { method: 'Fingerprint', value: null, bannedUntil: null };
     this.configProvider.set({ lock });
+    this.checkLockOptions();
   }
+
+  private needsBackup() {
+    let wallets = this.profileProvider.getWallets();
+    let singleLivenetWallet = wallets.length == 1 && wallets[0].network == 'livenet' && wallets[0].needsBackup;
+    let atLeastOneLivenetWallet = _.find(wallets, (w) => {
+      return w.network == 'livenet' && w.needsBackup;
+    });
+
+    if (singleLivenetWallet) {
+      this.needsBackupMsg = 'Backup your wallet before using this function'; //TODO gettextCatalog
+      return true;
+    } else if (atLeastOneLivenetWallet) {
+      this.needsBackupMsg = 'Backup all your wallets before using this function'; //TODO gettextCatalog
+      return true;
+    } else {
+      this.needsBackupMsg = null;
+      return false;
+    }
+  };
 }
