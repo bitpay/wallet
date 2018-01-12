@@ -41,8 +41,8 @@ export class GlideraProvider {
      * Development: 'testnet'
      * Production: 'livenet'
      */
-    //this.credentials.NETWORK = 'livenet';
-    this.credentials.NETWORK = 'testnet';
+    this.credentials.NETWORK = 'livenet';
+    //this.credentials.NETWORK = 'testnet';
 
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.HOST = glidera.sandbox.host;
