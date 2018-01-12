@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 
 // Providers
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
@@ -15,7 +15,6 @@ export class ShapeshiftDetailsPage {
 
   constructor(
     private externalLinkProvider: ExternalLinkProvider,
-    private navCtrl: NavController,
     private navParams: NavParams,
     private shapeshiftProvider: ShapeshiftProvider,
     private viewCtrl: ViewController

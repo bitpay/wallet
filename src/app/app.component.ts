@@ -10,12 +10,12 @@ import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ConfigProvider } from '../providers/config/config';
 import { TouchIdProvider } from '../providers/touchid/touchid';
-import { GlideraProvider } from '../providers/glidera/glidera';
-import { CoinbaseProvider } from '../providers/coinbase/coinbase';
+//import { GlideraProvider } from '../providers/glidera/glidera';
+//import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { AmazonProvider } from '../providers/amazon/amazon';
-import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
+//import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
-import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
+//import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 
 //pages
 import { TabsPage } from '../pages/tabs/tabs';
@@ -43,12 +43,12 @@ export class CopayApp {
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
     private modalCtrl: ModalController,
-    private glideraProvider: GlideraProvider,
-    private coinbaseProvider: CoinbaseProvider,
+    //private glideraProvider: GlideraProvider,
+    //private coinbaseProvider: CoinbaseProvider,
     private amazonProvider: AmazonProvider,
-    private bitPayCardProvider: BitPayCardProvider,
+    //private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
-    private shapeshiftProvider: ShapeshiftProvider
+    //private shapeshiftProvider: ShapeshiftProvider
   ) {
     this.initializeApp();
   }
