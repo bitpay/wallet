@@ -999,11 +999,15 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.getAddressView = function(wallet, address) {
+  root.useLegacyAddress = function(wallet) {
     var config = configService.getSync();
     var walletSettings = config.wallet.settings;
 
-    if (wallet.coin != 'bch' || walletSettings.useLegacyAddress) return address;
+    return walletSettings.useLegacyAddress;
+  };
+
+  root.getAddressView = function(wallet, address) {
+    if (wallet.coin != 'bch' || root.useLegacyAddress(wallet)) return address;
 
     return (new bitcoreCash.Address(address)).toCashAddress();;
   };
@@ -1279,10 +1283,9 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getProtocolHandler = function(wallet) {
-    var config = configService.getSync();
 
     if (wallet.coin== 'bch') {
-      if (config.wallet.settings.useLegacyAddress) return 'bitcoincash';
+      if (root.useLegacyAddress(wallet)) return 'bitcoincash';
       return;
     }
     else return 'bitcoin';

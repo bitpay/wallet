@@ -47,8 +47,8 @@
           <span class="payment-proposal-to" ng-if="!recipientType">
             <img src="img/icon-bitcoin-small.svg">
 
-            <div copy-to-clipboard="tx.toAddress" ng-if="!tx.paypro" class="ellipsis">
-              <contact ng-if="tx.toAddress && !tx.toName" address="{{tx.toAddress}}"></contact>
+            <div copy-to-clipboard="tx.origToAddress" ng-if="!tx.paypro" class="ellipsis">
+              <contact ng-if="tx.origToAddress && !tx.toName" address="{{tx.origToAddress}}"></contact>
               <span class="m15l size-14" ng-if="tx.toName">{{tx.toName}}</span>
             </div>
 
@@ -65,15 +65,15 @@
             <i class="icon big-icon-svg">
               <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}" class="bg"/>
             </i>
-            <div copy-to-clipboard="tx.toAddress" class="ellipsis">
-              <contact ng-if="tx.toAddress && !tx.toName" address="{{tx.toAddress}}"></contact>
+            <div copy-to-clipboard="tx.origToAddress" class="ellipsis">
+              <contact ng-if="tx.origToAddress && !tx.toName" address="{{tx.origToAddress}}"></contact>
               <span ng-if="tx.toName" class="wallet-name">{{tx.toName}}</span>
             </div>
           </div>
           <div ng-if="recipientType == 'contact' && !isChromeApp" class="gravatar-contact toggle" ng-click="toggleAddress()">
             <gravatar class="send-gravatar" name="{{tx.toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
             <span ng-if="tx.toName && !showAddress">{{tx.toName}}</span>
-            <span ng-if="tx.toName && showAddress">{{tx.toAddress}}</span>
+            <span ng-if="tx.toName && showAddress">{{tx.origToAddress}}</span>
           </div>
         </div>
 

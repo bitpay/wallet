@@ -88,6 +88,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
 
     // Bitcoin  URL
     if (bitcore.URI.isValid(data)) {
+
         var coin = 'btc';
         var parsed = new bitcore.URI(data);
 
@@ -113,6 +114,12 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         var parsed = new bitcoreCash.URI(data);
 
         var addr = parsed.address ? parsed.address.toString() : '';
+
+        // keep address in original formal
+        if (parsed.address && data.indexOf(addr)<0) {
+          addr = parsed.address.toCashAddress();
+        };
+
         var message = parsed.message;
 
         var amount = parsed.amount ? parsed.amount : '';
