@@ -1269,7 +1269,11 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   };
 
   root.getProtocolHandler = function(wallet) {
-    if (wallet.coin== 'bch') return 'bitcoincash';
+    var config = configService.getSync();
+    if (wallet.coin== 'bch') {
+      if (config.wallet.settings.useLegacyAddress) return 'bitcoincash';
+      return;
+    }
     else return 'bitcoin';
   }
 
