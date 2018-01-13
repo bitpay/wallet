@@ -25,14 +25,8 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
         popupService.showAlert(err);
       }
 
-      if ($scope.wallet.coin == 'bch' && 1) { // todo config
-
-        var a = bitcoreCash.Address(addr);
-        addr = a.toCashAddress();
-      };
-
-      $scope.addr = addr;
-      $scope.protoAddr = $scope.protocolHandler? $scope.protocolHandler + ':' + addr : addr;
+      $scope.addr = walletService.getAddressView($scope.wallet, addr);
+      $scope.protoAddr = $scope.protocolHandler? $scope.protocolHandler + ':' + $scope.addr : $scope.addr;
       $timeout(function() {
         $scope.$apply();
       }, 10);

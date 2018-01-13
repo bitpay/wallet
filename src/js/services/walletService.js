@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, popupService, feeService) {
+angular.module('copayApp.services').factory('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, bitcoreCash, popupService, feeService) {
 
   // Ratio low amount warning (fee/amount) in incoming TX
   var LOW_AMOUNT_RATIO = 0.15;
@@ -999,6 +999,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
+  root.getAddressView = function(wallet, address) {
+    var config = configService.getSync();
+    var walletSettings = config.wallet.settings;
+
+    if (wallet.coin != 'bch' || walletSettings.useLegacyAddress) return address;
+
+    return (new bitcoreCash.Address(address)).toCashAddress();;
+  };
+
+
   root.getAddress = function(wallet, forceNew, cb) {
     storageService.getLastAddress(wallet.id, function(err, addr) {
       if (err) return cb(err);
@@ -1270,6 +1280,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.getProtocolHandler = function(wallet) {
     var config = configService.getSync();
+
     if (wallet.coin== 'bch') {
       if (config.wallet.settings.useLegacyAddress) return 'bitcoincash';
       return;
