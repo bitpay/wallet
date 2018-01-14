@@ -159,6 +159,6 @@ angular.module('copayApp.services').factory('shapeshiftService', function($http,
     });
   };
 
-  register();
+  //register();
   return root;
 });
