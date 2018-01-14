@@ -170,8 +170,14 @@ angular.module('copayApp.controllers').controller('confirmController', function(
       coin: data.stateParams.coin,
       txp: {},
     };
+    tx.origToAddress = tx.toAddress;
 
-    if (tx.coin && tx.coin == 'bch') tx.feeLevel = 'normal';
+    if (tx.coin && tx.coin == 'bch') {
+      tx.feeLevel = 'normal';
+
+      // Use legacy address
+      tx.toAddress = new bitcoreCash.Address(tx.toAddress).toString();
+    };
 
     // Other Scope vars
     $scope.isCordova = isCordova;

@@ -32,7 +32,8 @@ angular.module('copayApp.controllers').controller('customAmountController', func
         return;
       }
 
-      $scope.address = addr;
+      $scope.address = walletService.getAddressView($scope.wallet, addr);
+      $scope.protoAddr = $scope.protocolHandler + ':' + $scope.address;
 
       $scope.coin = data.stateParams.coin;
       var parsedAmount = txFormatService.parseAmount(

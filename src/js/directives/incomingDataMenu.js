@@ -10,6 +10,7 @@ angular.module('copayApp.directives')
           $timeout(function() {
             scope.data = data.data;
             scope.type = data.type;
+            scope.coin = data.coin;
             scope.showMenu = true;
             scope.https = false;
 
@@ -27,12 +28,13 @@ angular.module('copayApp.directives')
         scope.goToUrl = function(url) {
           externalLinkService.open(url);
         };
-        scope.sendPaymentToAddress = function(bitcoinAddress) {
+        scope.sendPaymentToAddress = function(bitcoinAddress, coin) {
           scope.showMenu = false;
           $state.go('tabs.send').then(function() {
             $timeout(function() {
               $state.transitionTo('tabs.send.amount', {
-                toAddress: bitcoinAddress
+                toAddress: bitcoinAddress,
+                coin: coin || 'btc',
               });
             }, 50);
           });
