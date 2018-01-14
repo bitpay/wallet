@@ -110,6 +110,7 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
         return true;
     // Cash URI
     } else if (bitcoreCash.URI.isValid(data)) {
+
         var coin = 'bch';
         var parsed = new bitcoreCash.URI(data);
 
@@ -203,7 +204,8 @@ angular.module('copayApp.services').factory('incomingData', function($log, $stat
       if ($state.includes('tabs.scan')) {
         root.showMenu({
           data: data,
-          type: 'bitcoinAddress'
+          type: 'bitcoinAddress',
+          coin: 'btc',
         });
       } else {
         goToAmountPage(data);

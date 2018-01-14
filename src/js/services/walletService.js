@@ -1009,7 +1009,8 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.getAddressView = function(wallet, address) {
     if (wallet.coin != 'bch' || root.useLegacyAddress(wallet)) return address;
 
-    return (new bitcoreCash.Address(address)).toCashAddress();;
+    var cashAddr= (new bitcoreCash.Address(address)).toCashAddress();;
+    return cashAddr.split(':')[1]; // rm prefix
   };
 
 
@@ -1285,10 +1286,10 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
   root.getProtocolHandler = function(wallet) {
 
     if (wallet.coin== 'bch') {
-      if (root.useLegacyAddress(wallet)) return 'bitcoincash';
-      return;
+      return 'bitcoincash';
+    } else {
+      return 'bitcoin';
     }
-    else return 'bitcoin';
   }
 
 
