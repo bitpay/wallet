@@ -15,6 +15,9 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       value: config.hideNextSteps.enabled
     };
 
+    $scope.useLegacyAddress = {
+      value: config.wallet.useLegacyAddress
+    };
   };
 
   $scope.spendUnconfirmedChange = function() {
@@ -49,6 +52,19 @@ angular.module('copayApp.controllers').controller('advancedSettingsController', 
       if (err) $log.debug(err);
     });
   };
+
+$scope.useLegacyAddressChange = function() {
+    var opts = {
+      wallet: {
+        useLegacyAddress: $scope.useLegacyAddress.value
+      }
+    };
+    configService.set(opts, function(err) {
+      if (err) $log.debug(err);
+    });
+  };
+
+
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.isWindowsPhoneApp = platformInfo.isCordova && platformInfo.isWP;

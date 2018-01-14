@@ -1001,7 +1001,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
   root.useLegacyAddress = function(wallet) {
     var config = configService.getSync();
-    var walletSettings = config.wallet.settings;
+    var walletSettings = config.wallet;
 
     return walletSettings.useLegacyAddress;
   };
