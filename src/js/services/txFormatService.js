@@ -1,10 +1,20 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, lodash) {
+angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, bitcoreCash, lodash) {
   var root = {};
 
   root.Utils = bwcService.getUtils();
 
+
+  root.toCashAddress = function(address, withPrefix) {
+    var cashAddr= (new bitcoreCash.Address(address)).toCashAddress();;
+
+    if (withPrefix) {
+      return cashAddr;
+    }
+
+    return cashAddr.split(':')[1]; // rm prefix
+  };
 
   root.formatAmount = function(satoshis, fullPrecision) {
     var config = configService.getDefaults().wallet.settings;
@@ -85,7 +95,7 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
     };
   };
 
-  root.processTx = function(coin, tx) {
+  root.processTx = function(coin, tx, useLegacyAddress) {
     if (!tx || tx.action == 'invalid')
       return tx;
 
@@ -106,6 +116,11 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
+
+      // toDo: translate all tx.outputs[x].toAddress ?
+      if (tx.toAddress && coin == 'bch' && !useLegacyAddress) {
+        tx.toAddress = root.toCashAddress(tx.toAddress);
+      }
     }
 
     tx.amountStr = root.formatAmountStr(coin, tx.amount);
@@ -116,6 +131,11 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
     }
+
+    if (tx.addressTo && coin == 'bch' && !useLegacyAddress) {
+      tx.addressTo = root.toCashAddress(tx.addressTo);
+    }
+
 
     return tx;
   };
