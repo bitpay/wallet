@@ -117,6 +117,11 @@ console.log('[txFormatService.js.9:address:]',address); //TODO
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
+
+      // toDo: translate all tx.outputs[x].toAddress ?
+      if (tx.toAddress && coin == 'bch' && !useLegacyAddress) {
+        tx.toAddress = root.toCashAddress(tx.toAddress);
+      }
     }
 
     tx.amountStr = root.formatAmountStr(coin, tx.amount);
