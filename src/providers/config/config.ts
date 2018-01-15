@@ -11,6 +11,7 @@ interface Config {
   };
 
   wallet: {
+    useLegacyAddress: boolean,
     requiredCopayers: number;
     totalCopayers: number;
     spendUnconfirmed: boolean;
@@ -101,6 +102,7 @@ const configDefault: Config = {
 
   // wallet default config
   wallet: {
+    useLegacyAddress: false,
     requiredCopayers: 2,
     totalCopayers: 3,
     spendUnconfirmed: false,

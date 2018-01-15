@@ -99,7 +99,7 @@ export class ReceivePage {
 
     this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
       this.loading = false
-      this.address = addr;
+      this.address = this.walletProvider.getAddressView(this.wallet, addr);
       this.updateQrAddress();
     }).catch((err) => {
       this.loading = false;
@@ -108,7 +108,7 @@ export class ReceivePage {
   }
 
   private updateQrAddress(): void {
-    this.qrAddress = this.protocolHandler + ":" + this.address;
+    this.qrAddress = (this.protocolHandler + ":" + this.address).toUpperCase();
   }
 
   public shareAddress(): void {

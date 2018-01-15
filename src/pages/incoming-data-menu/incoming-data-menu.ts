@@ -6,10 +6,11 @@ import { NavParams, ViewController } from 'ionic-angular';
   templateUrl: 'incoming-data-menu.html',
 })
 export class IncomingDataMenuPage {
+  public https: boolean;
 
   public data: string;
   public type: string;
-  public https: boolean;
+  public coin: string;
 
   constructor(
     private viewCtrl: ViewController,
@@ -21,6 +22,7 @@ export class IncomingDataMenuPage {
   ionViewDidLoad() {
     this.data = this.navParams.data.data;
     this.type = this.navParams.data.type;
+    this.coin = this.navParams.data.coin;
     if (this.type === 'url') {
       if (this.data.indexOf('https://') === 0) {
         this.https = true;
@@ -29,6 +31,11 @@ export class IncomingDataMenuPage {
   }
 
   public close(redirTo: string, value: string) {
+    if (redirTo == 'AmountPage') {
+      let coin = this.coin ? this.coin : 'btc';
+      this.viewCtrl.dismiss({ redirTo: redirTo, value: value, coin: coin });
+      return;
+    }
     this.viewCtrl.dismiss({ redirTo: redirTo, value: value });
   }
 }

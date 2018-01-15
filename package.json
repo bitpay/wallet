@@ -82,7 +82,7 @@
     "ajv": "^5.5.2",
     "angular2-moment": "^1.7.1",
     "autoprefixer": "^7.2.4",
-    "bitcore-wallet-client": "^6.4.0",
+    "bitcore-wallet-client": "^6.5.0",
     "buffer-compare": "^1.1.1",
     "cordova-android": "6.4.0",
     "cordova-clipboard": "^1.1.1",

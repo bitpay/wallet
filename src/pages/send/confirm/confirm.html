@@ -55,9 +55,9 @@
 
       <div class="payment-proposal-to" *ngIf="!tx.recipientType">
         <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg">
-        <div *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.toAddress }}">
-          <!--TODO: <contact *ngIf="tx.toAddress && !tx.name" address="{{tx.toAddress}}"></contact>-->
-          <span *ngIf="!tx.name">{{tx.toAddress}}</span>
+        <div *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">
+          <!--TODO: <contact *ngIf="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
+          <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
           <span *ngIf="tx.name">{{tx.name}}</span>
         </div>
 
@@ -76,9 +76,9 @@
           <img *ngIf="tx.network != 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
           />
         </ion-icon>
-        <div copy-to-clipboard="{{ tx.toAddress }}">
-          <!--TODO: <contact ng-if="tx.toAddress && !tx.name" address="{{tx.toAddress}}"></contact>-->
-          <span *ngIf="!tx.name">{{tx.toAddress}}</span>
+        <div copy-to-clipboard="{{ tx.origToAddress }}">
+          <!--TODO: <contact ng-if="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
+          <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
           <span *ngIf="tx.name">{{tx.name}}</span>
         </div>
       </div>

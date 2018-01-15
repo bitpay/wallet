@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import * as lodash from 'lodash';
 
+// Providers
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
 import { TxFormatProvider } from '../tx-format/tx-format';
@@ -12,8 +14,6 @@ import { FilterProvider } from '../filter/filter';
 import { PopupProvider } from '../popup/popup';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
-
-import * as lodash from 'lodash';
 import { FeeProvider } from '../fee/fee';
 
 
@@ -24,6 +24,8 @@ import { FeeProvider } from '../fee/fee';
 
 @Injectable()
 export class WalletProvider {
+
+  private bitcoreCash: any;
 
   // Ratio low amount warning (fee/amount) in incoming TX
   private LOW_AMOUNT_RATIO: number = 0.15;
@@ -60,6 +62,7 @@ export class WalletProvider {
     private feeProvider: FeeProvider
   ) {
     this.logger.info('WalletService initialized.');
+    this.bitcoreCash = this.bwcProvider.getBitcoreCash();
   }
 
 
@@ -320,6 +323,20 @@ export class WalletProvider {
         return reject(err);
       });
     });
+  }
+
+  public useLegacyAddress(wallet: any): boolean {
+    let config = this.configProvider.get();
+    let walletSettings = config.wallet;
+
+    return walletSettings.useLegacyAddress;
+  }
+
+  public getAddressView(wallet: any, address: string): string {
+    if (wallet.coin != 'bch' || this.useLegacyAddress(wallet)) return address;
+
+    let cashAddr = (this.bitcoreCash.Address(address)).toCashAddress();;
+    return cashAddr.split(':')[1]; // rm prefix
   }
 
   public getAddress(wallet: any, forceNew: boolean): Promise<any> {
@@ -1299,7 +1316,7 @@ export class WalletProvider {
         return reject(err);
       });
     });
-  };
+  }
 
   public getSendMaxInfo(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -1309,11 +1326,14 @@ export class WalletProvider {
         return resolve(res);
       });
     });
-  };
+  }
 
   public getProtocolHandler(coin: string): string {
-    if (coin == 'bch') return 'bitcoincash';
-    else return 'bitcoin';
+    if (coin == 'bch') {
+      return 'bitcoincash';
+    } else {
+      return 'bitcoin';
+    }
   }
 
   public copyCopayers(wallet: any, newWallet: any): Promise<any> {

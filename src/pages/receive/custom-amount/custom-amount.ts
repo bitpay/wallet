@@ -28,12 +28,14 @@ export class CustomAmountPage {
     private walletProvider: WalletProvider,
     private logger: Logger
   ) {
-    this.address = this.navParams.data.toAddress;
     this.amount = this.navParams.data.amount;
     this.coin = this.navParams.data.coin;
     let walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(walletId);
     this.showShareButton = this.platformProvider.isCordova;
+
+    let addr = this.navParams.data.toAddress;
+    this.address = this.walletProvider.getAddressView(this.wallet, addr);
   }
 
   ionViewDidLoad() {

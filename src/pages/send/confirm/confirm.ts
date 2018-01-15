@@ -11,6 +11,7 @@ import { FeeWarningPage } from '../fee-warning/fee-warning';
 import { SuccessModalPage } from '../../success/success';
 
 // Providers
+import { BwcProvider } from '../../../providers/bwc/bwc';
 import { ConfigProvider } from '../../../providers/config/config';
 import { PlatformProvider } from '../../../providers/platform/platform';
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -27,6 +28,8 @@ import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
   templateUrl: 'confirm.html',
 })
 export class ConfirmPage {
+
+  private bitcoreCash: any;
 
   public countDown = null;
   public CONFIRM_LIMIT_USD: number;
@@ -55,6 +58,7 @@ export class ConfirmPage {
   public usingCustomFee: boolean = false;
 
   constructor(
+    private bwcProvider: BwcProvider,
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger,
@@ -71,6 +75,7 @@ export class ConfirmPage {
     private txFormatProvider: TxFormatProvider,
     private events: Events
   ) {
+    this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.config = this.configProvider.get();
@@ -95,8 +100,16 @@ export class ConfirmPage {
       coin: this.navParams.data.coin,
       txp: {},
     };
+    this.tx.origToAddress = this.tx.toAddress;
 
-    if (this.tx.coin && this.tx.coin == 'bch') this.tx.feeLevel = 'normal';
+    if (this.tx.coin && this.tx.coin == 'bch') {
+      this.tx.feeLevel = 'normal';
+
+      // Use legacy address
+      this.tx.toAddress = this.bitcoreCash.Address(this.tx.toAddress).toString();
+    }
+
+    this.tx.feeLevel = 'normal';
     this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
     this.showAddress = false;
     this.walletSelectorTitle = 'Send from'; // TODO gettextCatalog
