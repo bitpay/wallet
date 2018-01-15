@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { Platform, ViewController } from 'ionic-angular';
 import { TouchIdProvider } from '../../providers/touchid/touchid';
 
 @Component({
@@ -8,16 +8,21 @@ import { TouchIdProvider } from '../../providers/touchid/touchid';
 })
 export class FingerprintModalPage {
 
+  public unregister: any;
+
   constructor(
     private touchid: TouchIdProvider,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platform: Platform
   ) {
+    this.unregister = this.platform.registerBackButtonAction(() => { });
     this.checkFingerprint();
   }
 
   public checkFingerprint(): void {
     this.touchid.check().then(() => {
       setTimeout(() => {
+        this.unregister();
         this.viewCtrl.dismiss();
       }, 300);
     });

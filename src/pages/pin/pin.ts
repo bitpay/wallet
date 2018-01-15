@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '@nsalaun/ng-logger';
 
@@ -19,13 +19,17 @@ export class PinModalPage {
   public disableButtons: boolean = false;
   public expires: string = '';
   public incorrect: boolean;
+  public unregister: any;
 
   constructor(
     private navParams: NavParams,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platform: Platform
   ) {
+
+    this.unregister = this.platform.registerBackButtonAction(() => { });
 
     switch (this.navParams.get('action')) {
       case 'checkPin':
@@ -52,6 +56,7 @@ export class PinModalPage {
   }
 
   public close(): void {
+    this.unregister();
     this.viewCtrl.dismiss();
   }
 
@@ -127,6 +132,7 @@ export class PinModalPage {
   public save(): void {
     let lock = { method: 'PIN', value: this.currentPin, bannedUntil: null };
     this.configProvider.set({ lock });
+    this.unregister();
     this.viewCtrl.dismiss();
   }
 
@@ -137,9 +143,13 @@ export class PinModalPage {
       if (this.action === 'removeLock') {
         let lock = { method: 'Disabled', value: null, bannedUntil: null };
         this.configProvider.set({ lock });
+        this.unregister();
         this.viewCtrl.dismiss();
       }
-      if (this.action === 'checkPin') this.viewCtrl.dismiss();
+      if (this.action === 'checkPin') {
+        this.unregister();
+        this.viewCtrl.dismiss();
+      }
     }
     else {
       this.currentPin = '';
