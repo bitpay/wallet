@@ -30,6 +30,7 @@ export class ShapeshiftConfirmPage {
 
   private amount: number;
   private currency: string;
+  private rateUnit: number;
   private fromWalletId: string;
   private toWalletId: string;
   private createdTx: any;
@@ -175,15 +176,24 @@ export class ShapeshiftConfirmPage {
 
   private saveShapeshiftData(): void {
     let address = this.shapeInfo.deposit;
+    let withdrawal = this.shapeInfo.withdrawal;
     let now = moment().unix() * 1000;
 
     this.shapeshiftProvider.getStatus(address, (err: any, st: any) => {
       let newData = {
         address: address,
-        status: st.status,
+        withdrawal: withdrawal,
         date: now,
         amount: this.amountStr,
-        title: this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase()
+        rate: this.rateUnit + ' ' + this.toWallet.coin.toUpperCase() + ' per ' + this.fromWallet.coin.toUpperCase(),
+        title: this.fromWallet.coin.toUpperCase() + ' to ' + this.toWallet.coin.toUpperCase(),
+        // From ShapeShift
+        status: st.status,
+        transaction: st.transaction || null, // Transaction ID of coin sent to withdrawal address
+        incomingCoin: st.incomingCoin || null, // Amount deposited
+        incomingType: st.incomingType || null, // Coin type of deposit
+        outgoingCoin: st.outgoingCoin || null, // Amount sent to withdrawal address
+        outgoingType: st.outgoingType || null, // Coin type of withdrawal
       };
 
       this.shapeshiftProvider.saveShapeshift(newData, null, (err: any) => {
@@ -276,9 +286,9 @@ export class ShapeshiftConfirmPage {
 
             this.shapeshiftProvider.getRate(this.getCoinPair(), (err: any, r: any) => {
               this.onGoingProcessProvider.set('connectingShapeshift', false);
-              let rateUnit = r.rate;
+              this.rateUnit = r.rate;
               let amountUnit = this.txFormatProvider.satToUnit(ctxp.amount);
-              let withdrawalSat = Number((rateUnit * amountUnit * 100000000).toFixed());
+              let withdrawalSat = Number((this.rateUnit * amountUnit * 100000000).toFixed());
 
               // Fee rate
               let per = (ctxp.fee / (ctxp.amount + ctxp.fee) * 100);

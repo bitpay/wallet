@@ -121,7 +121,7 @@
     </ion-item>
   </ion-list>
 
-  <div class="agree-to-terms">
+  <div *ngIf="fromWallets.length > 0 && toWallets.length > 0" class="agree-to-terms">
     <ion-item color="light" text-wrap>
       <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
     </ion-item>
@@ -134,12 +134,11 @@
     </div>
   </div>
 
-  <div class="buttons-container">
-    <!-- TODO: noLowFee -->
-    <button ion-button type="button" *ngIf="fromWallets.length > 0 && toWallets.length > 0" [disabled]="!fromWallet || !toWallet || !termsAccepted"
-      (click)="setAmount()">
+  <ion-footer class="buttons-container">
+    <button ion-button block class="button-footer" no-low-fee type="button" *ngIf="fromWallets.length > 0 && toWallets.length > 0"
+      [disabled]="!fromWallet || !toWallet || !termsAccepted" (click)="setAmount()">
       Continue
     </button>
-  </div>
+  </ion-footer>
 
 </ion-content>
