@@ -37,7 +37,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-list>
+  <ion-list *ngIf="btx">
     <ion-item *ngIf="btx.action === 'sent'">
       <span class="label" translate>To</span>
       <span class="payment-proposal-to">
