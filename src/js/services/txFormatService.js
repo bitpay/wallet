@@ -7,7 +7,6 @@ angular.module('copayApp.services').factory('txFormatService', function($filter,
 
 
   root.toCashAddress = function(address, withPrefix) {
-console.log('[txFormatService.js.9:address:]',address); //TODO
     var cashAddr= (new bitcoreCash.Address(address)).toCashAddress();;
 
     if (withPrefix) {
