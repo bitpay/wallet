@@ -1012,6 +1012,16 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     return txFormatService.toCashAddress(address);
   };
 
+  root.getProtoAddress = function(wallet, address) {
+    var proto  = root.getProtocolHandler(wallet);
+    var protoAddr = proto + ':' + address;
+
+    if (wallet.coin != 'bch' || root.useLegacyAddress(wallet)) {
+      return protoAddr;
+    } else {
+      return protoAddr.toUpperCase() ;
+    };
+  };
 
   root.getAddress = function(wallet, forceNew, cb) {
     storageService.getLastAddress(wallet.id, function(err, addr) {

@@ -8,10 +8,6 @@ angular.module('copayApp.controllers').controller('customAmountController', func
     });
   };
 
-  var setProtocolHandler = function() {
-    $scope.protocolHandler = walletService.getProtocolHandler($scope.wallet);
-  }
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     var walletId = data.stateParams.id;
 
@@ -24,8 +20,6 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
     $scope.wallet = profileService.getWallet(walletId);
 
-    setProtocolHandler();
-
     walletService.getAddress($scope.wallet, false, function(err, addr) {
       if (!addr) {
         showErrorAndBack('Error', 'Could not get the address');
@@ -33,7 +27,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
       }
 
       $scope.address = walletService.getAddressView($scope.wallet, addr);
-      $scope.protoAddr = $scope.protocolHandler + ':' + $scope.address;
+      $scope.protoAddr = walletService.getProtoAddress($scope.wallet, $scope.address);
 
       $scope.coin = data.stateParams.coin;
       var parsedAmount = txFormatService.parseAmount(
@@ -70,16 +64,12 @@ angular.module('copayApp.controllers').controller('customAmountController', func
 
   $scope.shareAddress = function() {
     if (!platformInfo.isCordova) return;
-    var protocol = 'bitcoin';
-    if ($scope.wallet.coin == 'bch') protocol += 'cash';
-    var data = protocol + ':' + $scope.address + '?amount=' + $scope.amountBtc;
+    var data = $scope.protoAddr + '?amount=' + $scope.amountBtc;
     window.plugins.socialsharing.share(data, null, null, null);
   }
 
   $scope.copyToClipboard = function() {
-    var protocol = 'bitcoin';
-    if ($scope.wallet.coin == 'bch') protocol += 'cash';
-    return protocol + ':' + $scope.address + '?amount=' + $scope.amountBtc;
+    return $scope.protoAddr + '?amount=' + $scope.amountBtc;
   };
 
 });
