@@ -1,4 +1,7 @@
 page-wallet-details {
+  .received {
+    color: color($colors, primary) !important;
+  }
   .balance-card {
     background: color($colors, primary);
   }
