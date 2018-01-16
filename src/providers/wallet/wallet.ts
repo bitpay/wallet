@@ -25,8 +25,6 @@ import { FeeProvider } from '../fee/fee';
 @Injectable()
 export class WalletProvider {
 
-  private bitcoreCash: any;
-
   // Ratio low amount warning (fee/amount) in incoming TX
   private LOW_AMOUNT_RATIO: number = 0.15;
 
@@ -62,7 +60,6 @@ export class WalletProvider {
     private feeProvider: FeeProvider
   ) {
     this.logger.info('WalletService initialized.');
-    this.bitcoreCash = this.bwcProvider.getBitcoreCash();
   }
 
 
@@ -325,7 +322,7 @@ export class WalletProvider {
     });
   }
 
-  public useLegacyAddress(wallet: any): boolean {
+  public useLegacyAddress(): boolean {
     let config = this.configProvider.get();
     let walletSettings = config.wallet;
 
@@ -333,7 +330,7 @@ export class WalletProvider {
   }
 
   public getAddressView(wallet: any, address: string): string {
-    if (wallet.coin != 'bch' || this.useLegacyAddress(wallet)) return address;
+    if (wallet.coin != 'bch' || this.useLegacyAddress()) return address;
     return this.txFormatProvider.toCashAddress(address);
   }
 
@@ -341,7 +338,7 @@ export class WalletProvider {
     let proto: string = this.getProtocolHandler(wallet);
     let protoAddr: string = proto + ':' + address;
 
-    if (wallet.coin != 'bch' || this.useLegacyAddress(wallet)) {
+    if (wallet.coin != 'bch' || this.useLegacyAddress()) {
       return protoAddr;
     } else {
       return protoAddr.toUpperCase();

@@ -63,7 +63,7 @@ export class TxDetailsPage {
     this.txsUnsubscribedForNotifications = this.config.confirmedTxsNotifications ? !this.config.confirmedTxsNotifications.enabled : true;
 
     if (this.wallet.coin == 'bch') {
-      if (this.walletProvider.useLegacyAddress(this.wallet)) {
+      if (this.walletProvider.useLegacyAddress()) {
         this.blockexplorerUrl = 'bch-insight.bitpay.com';
       } else {
         this.blockexplorerUrl = 'blockdozer.com/insight';
@@ -157,7 +157,7 @@ export class TxDetailsPage {
     this.walletProvider.getTx(this.wallet, this.txId).then((tx: any) => {
       if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
 
-      this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx, this.walletProvider.useLegacyAddress(this.wallet));
+      this.btx = this.txFormatProvider.processTx(this.wallet.coin, tx, this.walletProvider.useLegacyAddress());
       let v: string = this.txFormatProvider.formatAlternativeStr(this.wallet.coin, tx.fees);
       this.btx.feeFiatStr = v;
       this.btx.feeRateStr = (this.btx.fees / (this.btx.amount + this.btx.fees) * 100).toFixed(2) + '%';
