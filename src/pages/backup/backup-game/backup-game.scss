@@ -1,20 +1,15 @@
 page-backup-game {
-  p {
-    line-height: 1.6;
-    font-size: 18px;
-    margin-right: 10px;
-    margin-left: 10px;
+  .deleted-title {
+    text-align: center;
+  }
+  .slide-title {
+    padding: 20px;
   }
   .swiper-pagination {
     display: none;
   }
   .slide-zoom {
     height: 100%;
-  }
-  .password-required {
-    padding: 2rem;
-    font-size: 14px;
-    color: color($colors, danger);
   }
   .password {
     background-color: color($colors, light);
@@ -23,19 +18,10 @@ page-backup-game {
   .phrase {
     display: -webkit-box;
     background: color($colors, light);
-    border: 2px dashed #d9d9d9;
-    border-radius: 3px;
-    color: color($colors, secondary);
-    text-align: center;
     max-width: 500px;
     min-height: 12rem;
     align-items: center;
-    margin: 20px auto;
-    padding: 15px 0;
     line-height: 170%;
     word-spacing: 10px;
-  }
-  .tldr {
-    padding: 1rem;
   }
 }
