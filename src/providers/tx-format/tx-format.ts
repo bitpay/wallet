@@ -91,7 +91,7 @@ export class TxFormatProvider {
     return val();
   };
 
-  public processTx(coin: string, tx: any, useLegacyAddress: boolean): any {
+  public processTx(coin: string, tx: any, useLegacyAddress?: boolean): any {
     if (!tx || tx.action == 'invalid')
       return tx;
 

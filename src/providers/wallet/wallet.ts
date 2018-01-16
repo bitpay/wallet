@@ -337,6 +337,17 @@ export class WalletProvider {
     return this.txFormatProvider.toCashAddress(address);
   }
 
+  public getProtoAddress(wallet: any, address: string) {
+    let proto: string = this.getProtocolHandler(wallet);
+    let protoAddr: string = proto + ':' + address;
+
+    if (wallet.coin != 'bch' || this.useLegacyAddress(wallet)) {
+      return protoAddr;
+    } else {
+      return protoAddr.toUpperCase();
+    };
+  };
+
   public getAddress(wallet: any, forceNew: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistenceProvider.getLastAddress(wallet.id).then((addr) => {
