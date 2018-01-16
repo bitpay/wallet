@@ -1,7 +1,4 @@
 page-wallet-details {
-  .received {
-    color: color($colors, primary) !important;
-  }
   .balance-card {
     background: color($colors, primary);
   }
@@ -46,8 +43,14 @@ page-wallet-details {
     }
     .action {
     }
+    ion-note {
+      text-align: end;
+    }
     .amount {
       color: color($colors, dark);
+      .received {
+        color: color($colors, primary);
+      }
     }
     .date {
       font-size: 12.5px;

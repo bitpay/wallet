@@ -147,7 +147,9 @@
         <div class="action" *ngIf="tx.confirmations == 0 && tx.action == 'received'">{{'Receiving' | translate}}</div>
         <div class="action" *ngIf="tx.confirmations > 0">{{tx.action}}</div>
         <ion-note item-end>
-          <div class="amount" [ngClass]="{'received': tx.action == 'received'}">{{tx.amount | satToUnit: wallet.coin}}</div>
+          <div class="amount">
+            <span [ngClass]="{'received': tx.action == 'received'}">{{tx.amount | satToUnit: wallet.coin}}</span>
+          </div>
           <div class="date">
             <span *ngIf="tx.time && createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amTimeAgo}}</span>
             <span *ngIf="tx.time && !createdWithinPastDay(tx.time * 1000)">{{tx.time * 1000 | amDateFormat:'MMM D, YYYY'}}</span>
