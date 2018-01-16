@@ -711,8 +711,9 @@ export class ProfileProvider {
       setTimeout(() => {
         this.seedWallet(opts).then((walletClient: any) => {
 
-          let name = opts.name || 'Personal Wallet'; // TODO GetTextCatalog
-          let myName = opts.myName || 'me'; // TODO GetTextCatalog
+          let defaultName = opts.coin == 'btc' ? 'Personal Wallet [BTC]' : 'Personal Wallet [BCH]';
+          let name = opts.name ? opts.name : defaultName; // TODO GetTextCatalog
+          let myName = opts.myName ? opts.myName : 'me'; // TODO GetTextCatalog
 
           walletClient.createWallet(name, myName, opts.m, opts.n, {
             network: opts.networkName,
@@ -828,7 +829,12 @@ export class ProfileProvider {
       opts.networkName = 'livenet';
       opts.coin = 'btc';
       this.createWallet(opts).then((wallet: any) => {
-        return resolve(wallet);
+        opts.coin = 'bch';
+        this.createWallet(opts).then(() => {
+          return resolve(wallet);
+        }).catch((err) => {
+          return resolve(wallet);
+        });
       }).catch((err) => {
         return reject(err);
       });
