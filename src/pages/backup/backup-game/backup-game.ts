@@ -1,11 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides, Navbar, AlertController, NavParams } from 'ionic-angular';
+import { Logger } from '@nsalaun/ng-logger';
+import * as _ from 'lodash';
+
+//pahes
 import { DisclaimerPage } from '../../onboarding/disclaimer/disclaimer';
+
+//providers
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
 import { BwcProvider } from '../../../providers/bwc/bwc';
-import { Logger } from '@nsalaun/ng-logger';
-import * as _ from 'lodash';
+import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
 
 @Component({
   selector: 'page-backup-game',
@@ -21,14 +26,13 @@ export class BackupGamePage {
   public deleted: boolean;
   public mnemonicWords: Array<String>;
   public shuffledMnemonicWords: Array<any>;
-  public passphrase: String;
+  public password: String;
   public customWords: Array<any>;
   public selectComplete: boolean;
   public error: boolean;
   public credentialsEncrypted: boolean;
 
   private mnemonicHasPassphrase: any;
-  private data: any;
   private walletId: string;
   private wallet: any;
   private keys: any;
@@ -41,7 +45,8 @@ export class BackupGamePage {
     private logger: Logger,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    private bwcProvider: BwcProvider
+    private bwcProvider: BwcProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.walletId = this.navParams.get('walletId');
     this.fromOnboarding = this.navParams.get('fromOnboarding');
@@ -70,12 +75,13 @@ export class BackupGamePage {
   ngOnInit() {
     this.currentIndex = 0;
     this.navBar.backButtonClick = (e: UIEvent) => {
-      this.slidePrev();
+      if (this.slides) this.slidePrev();
+      else this.navCtrl.pop();
     }
   }
 
   ionViewDidLoad() {
-    this.slides.lockSwipes(true);
+    if (this.slides) this.slides.lockSwipes(true);
   }
 
   private shuffledWords(words: Array<String>) {
@@ -197,13 +203,12 @@ export class BackupGamePage {
     if (!this.keys) return;
 
     let words = this.keys.mnemonic;
-    this.data = {};
 
     this.mnemonicWords = words.split(/[\u3000\s]+/);
     this.shuffledMnemonicWords = this.shuffledWords(this.mnemonicWords);
     this.mnemonicHasPassphrase = this.wallet.mnemonicHasPassphrase();
     this.useIdeograms = words.indexOf("\u3000") >= 0;
-    this.data['passphrase'] = null;
+    this.password = '';
     this.customWords = [];
     this.selectComplete = false;
     this.error = false;
@@ -234,12 +239,12 @@ export class BackupGamePage {
         let walletClient = this.bwcProvider.getClient();
         let separator = this.useIdeograms ? '\u3000' : ' ';
         let customSentence = customWordList.join(separator);
-        let passphrase = this.data.passphrase || '';
+        let password = this.password || '';
 
         try {
           walletClient.seedFromMnemonic(customSentence, {
             network: this.wallet.credentials.network,
-            passphrase: passphrase,
+            password: password,
             account: this.wallet.credentials.account
           });
         } catch (err) {
@@ -259,9 +264,9 @@ export class BackupGamePage {
   };
 
   private finalStep(): void {
-    //ongoingProcess.set('validatingWords', true);
+    this.onGoingProcessProvider.set('validatingWords', true);
     this.confirm().then(() => {
-      //ongoingProcess.set('validatingWords', false);
+      this.onGoingProcessProvider.set('validatingWords', false);
       this.showBackupResult();
     }).catch((err) => {
       this.backupError(err);
