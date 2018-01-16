@@ -12,7 +12,7 @@
     <ion-card-header>
       <div class="toggle-header">
         <ion-label>{{'Use Unconfirmed Funds' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()" checked="true"></ion-toggle>
+        <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
       </div>
     </ion-card-header>
     <ion-item-divider color="light" text-wrap>
@@ -23,8 +23,20 @@
   <ion-card>
     <ion-card-header>
       <div class="toggle-header">
+        <ion-label>{{'Use Bitcoin Cash Copay Style Addresses' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="useLegacyAddress" (ionChange)="useLegacyAddressChange()"></ion-toggle>
+      </div>
+    </ion-card-header>
+    <ion-item-divider color="light" text-wrap>
+      <span translate>If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format.</span>
+    </ion-item-divider>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <div class="toggle-header">
         <ion-label>{{'Recent Transaction Card' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="recentTransactionsEnabled" (ionChange)="recentTransactionsChange()" checked="true"></ion-toggle>
+        <ion-toggle [(ngModel)]="recentTransactionsEnabled" (ionChange)="recentTransactionsChange()"></ion-toggle>
       </div>
     </ion-card-header>
     <ion-item-divider color="light" text-wrap>
@@ -37,7 +49,7 @@
     <ion-card-header>
       <div class="toggle-header">
         <ion-label>{{'Show Next Steps Card' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="showNextSteps" (ionChange)="nextStepsChange()" checked="true"></ion-toggle>
+        <ion-toggle [(ngModel)]="showNextSteps" (ionChange)="nextStepsChange()"></ion-toggle>
       </div>
     </ion-card-header>
     <ion-item-divider color="light" text-wrap>

@@ -10,17 +10,30 @@ import * as _ from "lodash";
 @Injectable()
 export class TxFormatProvider {
 
+  private bitcoreCash: any;
+
   // TODO: implement configService
   public pendingTxProposalsCountForUs: number
 
   constructor(
-    private bwc: BwcProvider,
+    private bwcProvider: BwcProvider,
     private rate: RateProvider,
     private config: ConfigProvider,
     private filter: FilterProvider,
     private logger: Logger
   ) {
     this.logger.info('TxFormatProvider initialized.');
+    this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+  }
+
+  public toCashAddress(address: string, withPrefix?: boolean): string {
+    let cashAddr: string = (this.bitcoreCash.Address(address)).toCashAddress();
+
+    if (withPrefix) {
+      return cashAddr;
+    }
+
+    return cashAddr.split(':')[1]; // rm prefix
   }
 
   public formatAmount(satoshis: number, fullPrecision?: boolean): number {
@@ -32,7 +45,7 @@ export class TxFormatProvider {
     var opts = {
       fullPrecision: !!fullPrecision
     };
-    return this.bwc.getUtils().formatAmount(satoshis, settings.unitCode, opts);
+    return this.bwcProvider.getUtils().formatAmount(satoshis, settings.unitCode, opts);
   }
 
   public formatAmountStr(coin: string, satoshis: number): string {
@@ -78,7 +91,7 @@ export class TxFormatProvider {
     return val();
   };
 
-  public processTx(coin: string, tx: any): any {
+  public processTx(coin: string, tx: any, useLegacyAddress?: boolean): any {
     if (!tx || tx.action == 'invalid')
       return tx;
 
@@ -99,6 +112,11 @@ export class TxFormatProvider {
         }, 0);
       }
       tx.toAddress = tx.outputs[0].toAddress;
+
+      // toDo: translate all tx.outputs[x].toAddress ?
+      if (tx.toAddress && coin == 'bch' && !useLegacyAddress) {
+        tx.toAddress = this.toCashAddress(tx.toAddress);
+      }
     }
 
     tx.amountStr = this.formatAmountStr(coin, tx.amount);
@@ -108,6 +126,10 @@ export class TxFormatProvider {
     if (tx.amountStr) {
       tx.amountValueStr = tx.amountStr.split(' ')[0];
       tx.amountUnitStr = tx.amountStr.split(' ')[1];
+    }
+
+    if (tx.addressTo && coin == 'bch' && !useLegacyAddress) {
+      tx.addressTo = this.toCashAddress(tx.addressTo);
     }
 
     return tx;

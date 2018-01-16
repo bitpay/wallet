@@ -96,7 +96,7 @@ export class ScanPage {
           this.modalIsOpen = false;
           switch (data.redirTo) {
             case 'AmountPage':
-              this.sendPaymentToAddress(data.value);
+              this.sendPaymentToAddress(data.value, data.coin);
               break;
             case 'AddressBookPage':
               this.addToAddressBook(data.value);
@@ -125,9 +125,9 @@ export class ScanPage {
     this.externalLinkProvider.open(url);
   }
 
-  private sendPaymentToAddress(bitcoinAddress: string): void {
+  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
     //this.navCtrl.parent.select(3); TODO go to send and then amount page
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress });
+    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin: coin });
   }
 
   private addToAddressBook(bitcoinAddress: string): void {

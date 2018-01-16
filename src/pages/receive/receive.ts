@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { NavController, Events, AlertController } from 'ionic-angular';
 
-//native
+// Native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-//pages
+// Pages
 import { AmountPage } from '../send/amount/amount';
 import { CopayersPage } from './../add/copayers/copayers';
 import { BackupGamePage } from '../backup/backup-game/backup-game';
 
-//providers
+// Providers
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -62,13 +62,8 @@ export class ReceivePage {
   private onWalletSelect(wallet: any): any {
     this.wallet = wallet;
     if (this.wallet) {
-      this.setProtocolHandler();
       this.setAddress();
     }
-  }
-
-  private setProtocolHandler(): void {
-    this.protocolHandler = this.walletProvider.getProtocolHandler(this.wallet.coin);
   }
 
   private checkSelectedWallet(wallet: any, wallets: any): any {
@@ -99,7 +94,7 @@ export class ReceivePage {
 
     this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
       this.loading = false
-      this.address = addr;
+      this.address = this.walletProvider.getAddressView(this.wallet, addr);
       this.updateQrAddress();
     }).catch((err) => {
       this.loading = false;
@@ -108,13 +103,12 @@ export class ReceivePage {
   }
 
   private updateQrAddress(): void {
-    this.qrAddress = this.protocolHandler + ":" + this.address;
+    this.qrAddress = this.walletProvider.getProtoAddress(this.wallet, this.address);
   }
 
   public shareAddress(): void {
-    let protocol = 'bitcoin';
-    if (this.wallet.coin == 'bch') protocol += 'cash';
-    this.socialSharing.share(protocol + ':' + this.address);
+    if (!this.showShareButton) return;
+    this.socialSharing.share(this.qrAddress);
   }
 
   public showWallets(): void {

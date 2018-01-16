@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import * as lodash from 'lodash';
 
+// Providers
 import { ConfigProvider } from '../config/config';
 import { BwcProvider } from '../bwc/bwc';
 import { TxFormatProvider } from '../tx-format/tx-format';
@@ -12,8 +14,6 @@ import { FilterProvider } from '../filter/filter';
 import { PopupProvider } from '../popup/popup';
 import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
-
-import * as lodash from 'lodash';
 import { FeeProvider } from '../fee/fee';
 
 
@@ -321,6 +321,29 @@ export class WalletProvider {
       });
     });
   }
+
+  public useLegacyAddress(): boolean {
+    let config = this.configProvider.get();
+    let walletSettings = config.wallet;
+
+    return walletSettings.useLegacyAddress;
+  }
+
+  public getAddressView(wallet: any, address: string): string {
+    if (wallet.coin != 'bch' || this.useLegacyAddress()) return address;
+    return this.txFormatProvider.toCashAddress(address);
+  }
+
+  public getProtoAddress(wallet: any, address: string) {
+    let proto: string = this.getProtocolHandler(wallet);
+    let protoAddr: string = proto + ':' + address;
+
+    if (wallet.coin != 'bch' || this.useLegacyAddress()) {
+      return protoAddr;
+    } else {
+      return protoAddr.toUpperCase();
+    };
+  };
 
   public getAddress(wallet: any, forceNew: boolean): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -1299,7 +1322,7 @@ export class WalletProvider {
         return reject(err);
       });
     });
-  };
+  }
 
   public getSendMaxInfo(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -1309,11 +1332,14 @@ export class WalletProvider {
         return resolve(res);
       });
     });
-  };
+  }
 
   public getProtocolHandler(coin: string): string {
-    if (coin == 'bch') return 'bitcoincash';
-    else return 'bitcoin';
+    if (coin == 'bch') {
+      return 'bitcoincash';
+    } else {
+      return 'bitcoin';
+    }
   }
 
   public copyCopayers(wallet: any, newWallet: any): Promise<any> {

@@ -13,6 +13,7 @@ export class AdvancedPage {
   public spendUnconfirmed: boolean;
   public recentTransactionsEnabled: boolean;
   public showNextSteps: boolean;
+  public useLegacyAddress: boolean;
 
   constructor(
     private configProvider: ConfigProvider,
@@ -30,6 +31,7 @@ export class AdvancedPage {
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
     this.recentTransactionsEnabled = config.recentTransactions.enabled;
     this.showNextSteps = config.showNextSteps.enabled;
+    this.useLegacyAddress = config.wallet.useLegacyAddress;
   }
 
   public spendUnconfirmedChange(): void {
@@ -45,6 +47,15 @@ export class AdvancedPage {
     let opts = {
       recentTransactions: {
         enabled: this.recentTransactionsEnabled
+      }
+    };
+    this.configProvider.set(opts);
+  }
+
+  public useLegacyAddressChange(): void {
+    let opts = {
+      wallet: {
+        useLegacyAddress: this.useLegacyAddress
       }
     };
     this.configProvider.set(opts);

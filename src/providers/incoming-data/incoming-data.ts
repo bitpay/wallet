@@ -80,6 +80,12 @@ export class IncomingDataProvider {
       coin = 'bch';
       parsed = this.bwcProvider.getBitcoreCash().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
+
+      // keep address in original format
+      if (parsed.address && data.indexOf(addr) < 0) {
+        addr = parsed.address.toCashAddress();
+      };
+
       message = parsed.message;
       amount = parsed.amount ? parsed.amount : '';
 
@@ -156,7 +162,8 @@ export class IncomingDataProvider {
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
           data: data,
-          type: 'bitcoinAddress'
+          type: 'bitcoinAddress',
+          coin: 'btc'
         });
       } else {
         let coin = 'btc';

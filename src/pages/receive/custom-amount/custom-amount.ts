@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
 
+// Native
+import { SocialSharing } from '@ionic-native/social-sharing';
+
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { PlatformProvider } from '../../../providers/platform/platform';
@@ -26,14 +29,17 @@ export class CustomAmountPage {
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private walletProvider: WalletProvider,
-    private logger: Logger
+    private logger: Logger,
+    private socialSharing: SocialSharing
   ) {
-    this.address = this.navParams.data.toAddress;
     this.amount = this.navParams.data.amount;
     this.coin = this.navParams.data.coin;
     let walletId = this.navParams.data.walletId;
     this.wallet = this.profileProvider.getWallet(walletId);
     this.showShareButton = this.platformProvider.isCordova;
+
+    let addr = this.navParams.data.toAddress;
+    this.address = this.walletProvider.getAddressView(this.wallet, addr);
   }
 
   ionViewDidLoad() {
@@ -42,16 +48,11 @@ export class CustomAmountPage {
   }
 
   private updateQrAddress(): void {
-    this.setProtocolHandler();
-    this.qrAddress = this.protocolHandler + ":" + this.address + "?amount=" + this.amount;
+    this.qrAddress = this.walletProvider.getProtoAddress(this.wallet, this.address) + "?amount=" + this.amount;
   }
 
-  private setProtocolHandler(): void {
-    this.protocolHandler = this.walletProvider.getProtocolHandler(this.wallet.coin);
-  }
-
-  public shareAddress = function () {
-    //window.plugins.socialsharing.share(this.qrAddress, null, null, null); TODO
+  public shareAddress(): void {
+    this.socialSharing.share(this.qrAddress);
   }
 
 }
