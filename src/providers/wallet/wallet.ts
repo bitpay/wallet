@@ -334,9 +334,7 @@ export class WalletProvider {
 
   public getAddressView(wallet: any, address: string): string {
     if (wallet.coin != 'bch' || this.useLegacyAddress(wallet)) return address;
-
-    let cashAddr = (this.bitcoreCash.Address(address)).toCashAddress();;
-    return cashAddr.split(':')[1]; // rm prefix
+    return this.txFormatProvider.toCashAddress(address);
   }
 
   public getAddress(wallet: any, forceNew: boolean): Promise<any> {

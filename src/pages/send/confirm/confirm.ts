@@ -109,7 +109,6 @@ export class ConfirmPage {
       this.tx.toAddress = this.bitcoreCash.Address(this.tx.toAddress).toString();
     }
 
-    this.tx.feeLevel = 'normal';
     this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
     this.showAddress = false;
     this.walletSelectorTitle = 'Send from'; // TODO gettextCatalog

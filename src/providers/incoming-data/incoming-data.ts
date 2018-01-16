@@ -81,7 +81,7 @@ export class IncomingDataProvider {
       parsed = this.bwcProvider.getBitcoreCash().URI(data);
       addr = parsed.address ? parsed.address.toString() : '';
 
-      // keep address in original formal
+      // keep address in original format
       if (parsed.address && data.indexOf(addr) < 0) {
         addr = parsed.address.toCashAddress();
       };
