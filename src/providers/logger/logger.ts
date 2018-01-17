@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Logger as Log } from '../../providers/logger/logger';
+import { Logger as Log } from '@nsalaun/ng-logger';
 
 //providers
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -34,26 +34,26 @@ export class Logger {
   }
 
 
-  public error(message?: any, optionalParams?: any): void {
-    this.logger.error(message, optionalParams);
+  public error(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.error(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('error', args);
   }
 
-  public debug(message?: any, optionalParams?: any): void {
-    this.logger.debug(message, optionalParams);
+  public debug(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.debug(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('debug', args);
   }
 
-  public info(message?: any, optionalParams?: any): void {
-    this.logger.info(message, optionalParams);
+  public info(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.info(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('info', args);
   }
 
-  public warn(message?: any, optionalParams?: any): void {
-    this.logger.warn(message, optionalParams);
+  public warn(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.warn(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('warn', args);
   }
