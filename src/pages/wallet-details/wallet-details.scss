@@ -106,7 +106,7 @@ page-wallet-details {
       float: right;
       width: 20px;
       height: 20px;
-      &.spinner-crescent circle {
+      * {
         stroke: color($colors, light);
       }
     }
