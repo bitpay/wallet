@@ -60,12 +60,12 @@ export class AddressbookViewPage {
     });
   }
 
-  public remove(addr: string): void {
+  public remove(): void {
     var title = 'Warning!'; // Todo: gettextCatalog
     var message = 'Are you sure you want to delete this contact?'; // Todo: gettextCatalog
     this.popupProvider.ionicConfirm(title, message, null, null).then((res: any) => {
       if (!res) return;
-      this.addressBookProvider.remove(addr).then((ab) => {
+      this.addressBookProvider.remove(this.address).then((ab) => {
         this.navCtrl.pop();
       }).catch((err: any) => {
         this.popupProvider.ionicAlert('Error', err); // Todo: gettextCatalog
