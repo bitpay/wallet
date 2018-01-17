@@ -12,11 +12,8 @@ import * as _ from 'lodash';
 })
 export class AddressbookPage {
 
-  private cache: boolean = false;
-  public addressbook: Array<object> = [];
-  public filteredAddressbook: Array<object> = [];
-
-  public isEmptyList: boolean;
+  private cache: boolean;
+  public filteredAddressbook: Array<any>;
 
   constructor(
     public navCtrl: NavController,
@@ -25,6 +22,8 @@ export class AddressbookPage {
     private logger: Logger,
     private addressbookProvider: AddressBookProvider
   ) {
+    this.cache = false;
+    this.filteredAddressbook = [];
     this.initAddressbook();
   }
 
@@ -35,18 +34,7 @@ export class AddressbookPage {
 
   private initAddressbook(): void {
     this.addressbookProvider.list().then((addressBook: any) => {
-      this.isEmptyList = _.isEmpty(addressBook);
-
-      let contacts: Array<object> = [];
-      _.each(addressBook, (contact: any, k: string) => {
-        contacts.push({
-          name: _.isObject(contact) ? contact.name : contact,
-          address: k,
-          email: _.isObject(contact) ? contact.email : null
-        });
-      });
-      this.addressbook = _.clone(contacts);
-      this.filteredAddressbook = _.clone(this.addressbook);
+      this.filteredAddressbook = _.clone(addressBook);
     }).catch((err: any) => {
       this.logger.error(err);
       let alertError = this.alertCtrl.create({

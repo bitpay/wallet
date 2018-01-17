@@ -48,15 +48,17 @@ export class AddressBookProvider {
 
   public list(): Promise<any> {
     return new Promise((resolve, reject) => {
+      let list: Array<any> = [];
+
       this.persistenceProvider.getAddressbook('testnet').then((ab: any) => {
-        if (ab && _.isString(ab)) ab = JSON.parse(ab);
-
-        ab = ab || {};
+        _.each(ab, (entry) => {
+          list.push(entry);
+        });
         this.persistenceProvider.getAddressbook('livenet').then((ab2: any) => {
-          if (ab2 && _.isString(ab)) ab2 = JSON.parse(ab2);
-
-          ab2 = ab2 || {};
-          return resolve(_.defaults(ab2, ab));
+          _.each(ab2, (entry) => {
+            list.push(entry);
+          });
+          return resolve(_.flattenDeep(list));
         }).catch((err: any) => {
           return reject(err);
         });
