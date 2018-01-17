@@ -22,4 +22,22 @@ page-session-log {
   .assertive {
     color: color($colors,danger);
   }
+  .filter-container {
+    padding: 20px;
+    .labels {
+      display: flex;
+      justify-content: space-between;
+      .info-label {
+        margin-right: -10px;
+      }
+    }
+  }
+  .no-entries-message {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 }

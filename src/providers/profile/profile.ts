@@ -146,7 +146,7 @@ export class ProfileProvider {
     });
 
     wallet.on('notification', (n: any) => {
-      this.logger.debug('BWC Notification:', n);
+      this.logger.debug('BWC Notification:', JSON.stringify(n));
 
       if (n.type == "NewBlock" && n.data.network == "testnet") {
         this.throttledBwsEvent(n, wallet);

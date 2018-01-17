@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Logger as Log } from '../../providers/logger/logger';
+import { Logger as Log } from '@nsalaun/ng-logger';
 
 //providers
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -20,10 +20,10 @@ export class Logger {
     this.logger.info('Logger initialized.');
     this.logs = [];
     this.levels = [
-      { level: 'error', weight: 0, label: 'Error' },
-      { level: 'warn', weight: 1, label: 'Warning' },
-      { level: 'info', weight: 2, label: 'Info', default: true },
-      { level: 'debug', weight: 3, label: 'Debug' }
+      { level: 'error', weight: 1, label: 'Error' },
+      { level: 'warn', weight: 2, label: 'Warning' },
+      { level: 'info', weight: 3, label: 'Info', default: true },
+      { level: 'debug', weight: 4, label: 'Debug' }
     ];
 
     // Create an array of level weights for performant filtering.
@@ -34,26 +34,26 @@ export class Logger {
   }
 
 
-  public error(message?: any, optionalParams?: any): void {
-    this.logger.error(message, optionalParams);
+  public error(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.error(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('error', args);
   }
 
-  public debug(message?: any, optionalParams?: any): void {
-    this.logger.debug(message, optionalParams);
+  public debug(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.debug(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('debug', args);
   }
 
-  public info(message?: any, optionalParams?: any): void {
-    this.logger.info(message, optionalParams);
+  public info(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.info(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('info', args);
   }
 
-  public warn(message?: any, optionalParams?: any): void {
-    this.logger.warn(message, optionalParams);
+  public warn(message?: any, ...optionalParams: Array<any>): void {
+    this.logger.warn(message, ...optionalParams);
     let args = this.processingArgs(arguments);
     this.add('warn', args);
   }
@@ -62,13 +62,13 @@ export class Logger {
     return this.levels;
   };
 
-  public getLevel(level): any {
+  public getWeight(weight): any {
     return _.find(this.levels, (l) => {
-      return l.level == level;
+      return l.weight == weight;
     });
   };
 
-  public getDefaultLevel(): any {
+  public getDefaultWeight(): any {
     return _.find(this.levels, (l) => {
       return l.default;
     });

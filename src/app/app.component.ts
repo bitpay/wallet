@@ -26,7 +26,7 @@ import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 
 @Component({
   templateUrl: 'app.html',
-  providers: [TouchIdProvider, Logger]
+  providers: [TouchIdProvider]
 })
 export class CopayApp {
 
