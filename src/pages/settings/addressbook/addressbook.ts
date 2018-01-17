@@ -3,7 +3,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AddressbookAddPage } from './add/add';
 import { AddressbookViewPage } from './view/view';
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
 
 @Component({

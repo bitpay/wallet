@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Md5 } from 'ts-md5/dist/md5';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../providers/logger/logger';
 
 @Component({
   selector: 'gravatar',

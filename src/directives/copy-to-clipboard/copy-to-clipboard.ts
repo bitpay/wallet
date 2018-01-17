@@ -3,7 +3,7 @@ import { Directive, Inject } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 import { PlatformProvider } from '../../providers/platform/platform';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 @Directive({
   selector: '[copy-to-clipboard]', // Attribute selector

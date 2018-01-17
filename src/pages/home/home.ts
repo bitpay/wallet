@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, Events, ModalController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 // Pages
 import { ActivityPage } from './activity/activity';

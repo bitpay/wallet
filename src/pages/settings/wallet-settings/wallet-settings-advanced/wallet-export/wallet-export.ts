@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../../../providers/logger/logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 //native

@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { BwcProvider } from '../../../../providers/bwc/bwc';
 import { AddressBookProvider } from '../../../../providers/address-book/address-book';
 import { AddressValidator } from '../../../../validators/address';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../../providers/logger/logger';
 
 @Component({
   selector: 'page-addressbook-add',

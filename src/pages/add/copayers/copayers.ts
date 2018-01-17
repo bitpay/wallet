@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
 
 // Pages
 import { HomePage } from '../../../pages/home/home';
@@ -14,6 +13,7 @@ import { PlatformProvider } from '../../../providers/platform/platform';
 import { PopupProvider } from '../../../providers/popup/popup';
 import { ProfileProvider } from '../../../providers/profile/profile';
 import { WalletProvider } from '../../../providers/wallet/wallet';
+import { Logger } from '../../../providers/logger/logger';
 
 
 @Component({

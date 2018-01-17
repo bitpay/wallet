@@ -168,10 +168,10 @@ import { ExternalLinkProvider } from '../providers/external-link/external-link';
 import { FeedbackProvider } from '../providers/feedback/feedback';
 import { FeeProvider } from '../providers/fee/fee';
 import { GlideraProvider } from '../providers/glidera/glidera';
-import { HistoricLogProvider } from '../providers/historic-log/historic-log';
 import { HomeIntegrationsProvider } from '../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
+import { Logger } from '../providers/logger/logger';
 import { NextStepsProvider } from '../providers/next-steps/next-steps';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
@@ -325,9 +325,9 @@ let providers: any = [
   HomeIntegrationsProvider,
   FeeProvider,
   GlideraProvider,
-  HistoricLogProvider,
   IncomingDataProvider,
   LanguageProvider,
+  Logger,
   MercadoLibreProvider,
   NextStepsProvider,
   NodeWebkitProvider,

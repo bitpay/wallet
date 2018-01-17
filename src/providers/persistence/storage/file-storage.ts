@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
 import { File, DirectoryEntry } from '@ionic-native/file';
 import { IStorage, KeyAlreadyExistsError } from './istorage';

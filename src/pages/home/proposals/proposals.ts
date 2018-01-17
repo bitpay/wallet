@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../providers/logger/logger';
 
 //providers
 import { AddressBookProvider } from '../../../providers/address-book/address-book';
