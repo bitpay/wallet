@@ -548,6 +548,7 @@ export class ProfileProvider {
         this.isDisclaimerAccepted().then(() => {
           return resolve();
         }).catch(() => {
+          this.persistenceProvider.setHomeTipAccepted('accepted');
           return reject(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
         });
       }).catch((err: any) => {
