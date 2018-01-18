@@ -371,7 +371,7 @@ export class ConfirmPage {
 
         tx.txp[wallet.id] = txp;
         this.tx = tx;
-        this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, tx);
+        this.logger.debug('Confirm. TX Fully Updated for wallet:' + wallet.id, JSON.stringify(tx));
         return resolve();
       }).catch((err: any) => {
         return reject(err);

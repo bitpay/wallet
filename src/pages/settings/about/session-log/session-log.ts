@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { DOCUMENT } from "@angular/platform-browser";
+import { Inject } from '@angular/core';
+import { ActionSheetController, ToastController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -6,6 +9,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 //providers
 import { ConfigProvider } from '../../../../providers/config/config';
 import { Logger } from '../../../../providers/logger/logger';
+import { PlatformProvider } from '../../../../providers/platform/platform';
 
 import * as _ from 'lodash';
 
@@ -16,22 +20,27 @@ import * as _ from 'lodash';
 export class SessionLogPage {
 
   private config: any;
-  private logLevels: any;
-  private selectedLevel: any;
+  private dom: Document;
 
   public logOptions: any;
   public filteredLogs: Array<any>;
-  public fillClass: any;
-  public showOptions: boolean;
+  public filterValue: number;
+  public isCordova: boolean;
 
   constructor(
+    @Inject(DOCUMENT) dom: Document,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    private actionSheetCtrl: ActionSheetController,
+    private toastCtrl: ToastController,
+    private platformProvider: PlatformProvider
   ) {
+    this.dom = dom;
     this.config = this.configProvider.get();
-    this.logLevels = this.logger.getLevels();
-    this.logOptions = _.keyBy(this.logLevels, 'level');
+    this.isCordova = this.platformProvider.isCordova;
+    let logLevels: any = this.logger.getLevels();
+    this.logOptions = _.keyBy(logLevels, 'weight');
   }
 
   ionViewDidLoad() {
@@ -39,28 +48,21 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
-    this.selectedLevel = _.has(this.config, 'log.filter') ? this.logger.getLevel(this.config.log.filter) : this.logger.getDefaultLevel();
-    this.setOptionSelected(this.selectedLevel.level);
-    this.filterLogs(this.selectedLevel.weight);
+    let selectedLevel: any = _.has(this.config, 'log.filter') ? this.logger.getWeight(this.config.log.filter) : this.logger.getDefaultWeight();
+    this.filterValue = selectedLevel.weight;
+    this.setOptionSelected(selectedLevel.weight);
+    this.filterLogs(selectedLevel.weight);
   }
 
   private filterLogs(weight: number): void {
     this.filteredLogs = this.logger.get(weight);
   }
 
-  public setOptionSelected(level: string): void {
-    let weight = this.logOptions[level].weight;
-    this.fillClass = 'fill-bar-' + level;
+  public setOptionSelected(weight: number): void {
     this.filterLogs(weight);
-    _.each(this.logOptions, (opt) => {
-      opt.selected = opt.weight <= weight ? true : false;
-      opt.head = opt.weight == weight;
-    });
-
-    // Save the setting.
     let opts = {
       log: {
-        filter: level
+        filter: weight
       }
     };
     this.configProvider.set(opts);
@@ -74,6 +76,20 @@ export class SessionLogPage {
     }).join('\n');
 
     return log;
+  }
+
+  private copyToClipboard() {
+    let textarea = this.dom.createElement('textarea');
+    this.dom.body.appendChild(textarea);
+    textarea.value = this.prepareLogs();
+    textarea.select();
+    this.dom.execCommand('copy');
+    let message = 'Copied to clipboard' //TODO gettextcatalog
+    let showSuccess = this.toastCtrl.create({
+      message: message,
+      duration: 1000,
+    });
+    showSuccess.present();
   }
 
   public sendLogs(): void {
@@ -90,8 +106,32 @@ export class SessionLogPage {
   }
 
   public showOptionsMenu(): void {
-    this.showOptions = true;
-    //TODO show filter menu
-  }
 
+    let copyText = 'Copy to clipboard' //TODO gettextcatalog
+    let emailText = 'Send by email' //TODO gettextcatalog
+    let button = [];
+
+    if (this.isCordova) {
+      button = [{
+        text: emailText,
+        handler: () => {
+          this.sendLogs()
+        }
+      }];
+    }
+    else {
+      button = [{
+        text: copyText,
+        handler: () => {
+          this.copyToClipboard();
+        }
+      }];
+    }
+
+    let actionSheet = this.actionSheetCtrl.create({
+      title: '',
+      buttons: button
+    });
+    actionSheet.present();
+  }
 }

@@ -226,8 +226,9 @@ export class WalletExportPage {
       var ew = backup;
       if (!ew) return;
       this.clipboard.copy(ew);
+      let copyMessage = 'Copied to clipboard' //TODO gettextcatalog
       let showSuccess = this.toastCtrl.create({
-        message: 'Copied to clipboard',
+        message: copyMessage,
         duration: 1000,
       });
       showSuccess.present();
@@ -235,8 +236,9 @@ export class WalletExportPage {
   };
 
   public sendWalletBackup(): void {
+    let preparingMessage = 'Preparing backup...' //TODO gettextcatalog
     let showSuccess = this.toastCtrl.create({
-      message: 'Preparing backup...',
+      message: preparingMessage,
       duration: 1000,
     });
     showSuccess.present();

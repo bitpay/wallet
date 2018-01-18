@@ -20,10 +20,10 @@ export class Logger {
     this.logger.info('Logger initialized.');
     this.logs = [];
     this.levels = [
-      { level: 'error', weight: 0, label: 'Error' },
-      { level: 'warn', weight: 1, label: 'Warning' },
-      { level: 'info', weight: 2, label: 'Info', default: true },
-      { level: 'debug', weight: 3, label: 'Debug' }
+      { level: 'error', weight: 1, label: 'Error' },
+      { level: 'warn', weight: 2, label: 'Warning' },
+      { level: 'info', weight: 3, label: 'Info', default: true },
+      { level: 'debug', weight: 4, label: 'Debug' }
     ];
 
     // Create an array of level weights for performant filtering.
@@ -62,13 +62,13 @@ export class Logger {
     return this.levels;
   };
 
-  public getLevel(level): any {
+  public getWeight(weight): any {
     return _.find(this.levels, (l) => {
-      return l.level == level;
+      return l.weight == weight;
     });
   };
 
-  public getDefaultLevel(): any {
+  public getDefaultWeight(): any {
     return _.find(this.levels, (l) => {
       return l.default;
     });
