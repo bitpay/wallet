@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { ActionSheetController } from 'ionic-angular';
+import { DOCUMENT } from "@angular/platform-browser";
+import { Inject } from '@angular/core';
+import { ActionSheetController, ToastController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -18,6 +20,7 @@ import * as _ from 'lodash';
 export class SessionLogPage {
 
   private config: any;
+  private dom: Document;
 
   public logOptions: any;
   public filteredLogs: Array<any>;
@@ -25,12 +28,15 @@ export class SessionLogPage {
   public isCordova: boolean;
 
   constructor(
+    @Inject(DOCUMENT) dom: Document,
     private configProvider: ConfigProvider,
     private logger: Logger,
     private socialSharing: SocialSharing,
     private actionSheetCtrl: ActionSheetController,
+    private toastCtrl: ToastController,
     private platformProvider: PlatformProvider
   ) {
+    this.dom = dom;
     this.config = this.configProvider.get();
     this.isCordova = this.platformProvider.isCordova;
     let logLevels: any = this.logger.getLevels();
@@ -72,8 +78,18 @@ export class SessionLogPage {
     return log;
   }
 
-  public copyLogToClipboard(l): any {
-    return '[' + l.timestamp + '][' + l.level + ']' + l.msg;
+  private copyToClipboard() {
+    let textarea = this.dom.createElement('textarea');
+    this.dom.body.appendChild(textarea);
+    textarea.value = this.prepareLogs();
+    textarea.select();
+    this.dom.execCommand('copy');
+    let message = 'Copied to clipboard' //TODO gettextcatalog
+    let showSuccess = this.toastCtrl.create({
+      message: message,
+      duration: 1000,
+    });
+    showSuccess.present();
   }
 
   public sendLogs(): void {
@@ -91,18 +107,30 @@ export class SessionLogPage {
 
   public showOptionsMenu(): void {
 
+    let copyText = 'Copy to clipboard' //TODO gettextcatalog
     let emailText = 'Send by email' //TODO gettextcatalog
+    let button = [];
+
+    if (this.isCordova) {
+      button = [{
+        text: emailText,
+        handler: () => {
+          this.sendLogs()
+        }
+      }];
+    }
+    else {
+      button = [{
+        text: copyText,
+        handler: () => {
+          this.copyToClipboard();
+        }
+      }];
+    }
 
     let actionSheet = this.actionSheetCtrl.create({
       title: '',
-      buttons: [
-        {
-          text: emailText,
-          handler: () => {
-            this.sendLogs()
-          }
-        }
-      ]
+      buttons: button
     });
     actionSheet.present();
   }
