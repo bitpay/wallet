@@ -77,4 +77,27 @@ page-scan {
       }
     }
   }
+
+  .browser-scanner {
+    qr-scanner {
+      div {
+        height: 100%;
+        video {
+          height: 100% !important;
+          width: inherit!important;
+          position: fixed !important;
+          top: 50% !important;
+          left: 50% !important;
+          /* bring your own prefixes */
+          transform: translate(-50%, -50%) !important;
+        }
+      }
+    }
+  }
+  .scan-again {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 }

@@ -22,6 +22,7 @@ import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
+import { QrScannerModule } from 'angular2-qrscanner';
 
 /* Copay App */
 import { CopayApp } from './app.component';
@@ -407,6 +408,7 @@ export function providersComponents() {
         deps: [HttpClient]
       }
     }),
+    QrScannerModule
   ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),

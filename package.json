@@ -81,6 +81,7 @@
     "@types/papaparse": "^4.1.33",
     "ajv": "^5.5.2",
     "angular2-moment": "^1.7.1",
+    "angular2-qrscanner": "^0.1.12",
     "autoprefixer": "^7.2.4",
     "bitcore-wallet-client": "^6.5.0",
     "buffer-compare": "^1.1.1",

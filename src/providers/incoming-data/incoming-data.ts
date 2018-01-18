@@ -279,7 +279,6 @@ export class IncomingDataProvider {
   }
 
   private goSend(addr: string, amount: string, message: string, coin: string): void {
-    this.navCtrl.parent.select(3);
     if (amount) {
       this.navCtrl.push(ConfirmPage, {
         amount: amount,

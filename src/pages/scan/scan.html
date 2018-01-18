@@ -4,7 +4,20 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="back-transparent">
+<ion-content *ngIf="!isCordova" class="back-transparent">
+  <div class="browser-scanner page-scan-camera-ready" *ngIf="browserScanEnabled">
+    <qr-scanner [debug]="false" [canvasWidth]="640" [canvasHeight]="480" [mirror]="false" [stopAfterScan]="true" [updateTime]="500"
+      (onRead)="decodedOutput($event)"></qr-scanner>
+    <div class="guides">
+      <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
+    </div>
+  </div>
+  <div class="scan-again" *ngIf="!browserScanEnabled">
+    <button ion-button clear (click)="scanAgain()" translate>Scan again</button>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="isCordova" class="back-transparent">
   <div class="page-scan-has-problems" *ngIf="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
     <ion-icon>
       <img src="img/tab-icons/ico-receive.svg" />

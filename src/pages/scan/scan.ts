@@ -36,6 +36,8 @@ export class ScanPage {
   public canOpenSettings: boolean;
   public currentState: string;
   public notSupportedMessage: string;
+  public isCordova: boolean;
+  public browserScanEnabled: boolean;
   // private qrScannerBrowser: QRScannerBrowser (inside constructor)
   constructor(
     private navCtrl: NavController,
@@ -47,6 +49,7 @@ export class ScanPage {
     private externalLinkProvider: ExternalLinkProvider,
     private logger: Logger
   ) {
+    this.isCordova = this.platform.isCordova;
     this.lightActive = false;
     this.canEnableLight = true;
     this.canChangeCamera = true;
@@ -69,15 +72,30 @@ export class ScanPage {
     this.logger.info('ionViewDidLoad ScanPage');
   }
 
+  ionViewWillEnter() {
+    if (!this.isCordova) this.browserScanEnabled = true;
+  }
+
   ionViewWillLeave() {
-    //TODO support for browser
-    if (!this.platform.isCordova) return;
-    this.scanProvider.deactivate();
+    if (!this.isCordova) {
+      this.browserScanEnabled = false;
+    } else {
+      this.scanProvider.deactivate();
+    }
+  }
+
+  decodedOutput(qrData: any) {
+    this.scannerHandler(qrData);
+    this.browserScanEnabled = false;
+  }
+
+  scanAgain() {
+    this.browserScanEnabled = true;
   }
 
   ionViewDidEnter() {
     //TODO support for browser
-    if (!this.platform.isCordova) {
+    if (!this.isCordova) {
       this.notSupportedMessage = "Scanner not supported"; //TODO gettextcatalog
       return;
     }
@@ -119,6 +137,11 @@ export class ScanPage {
       this._refreshScanView();
     });
 
+  }
+
+  private scannerHandler(data: any) {
+    this.logger.debug('Scan returned: "' + data + '"');
+    this.incomingDataProvider.redir(data);
   }
 
   private goToUrl(url: string): void {
