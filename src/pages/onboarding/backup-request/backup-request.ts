@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController} from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { Logger } from '../../../providers/logger/logger';
 
 import { DisclaimerPage } from '../disclaimer/disclaimer';
 import { BackupWarningPage } from '../../backup/backup-warning/backup-warning';
@@ -32,7 +32,7 @@ export class BackupRequestPage {
   }
 
   initBackupFlow() {
-    this.navCtrl.push(BackupWarningPage, {walletId: this.walletId, fromOnboarding: true});
+    this.navCtrl.push(BackupWarningPage, { walletId: this.walletId, fromOnboarding: true });
   }
 
   doBackupLater(confirmed: boolean) {
@@ -42,18 +42,18 @@ export class BackupRequestPage {
       text: 'Go back',
       role: 'destructor'
     },
-      {
-        text: !confirmed ? 'I understand' : 'Yes, skip',
-        handler: () => {
-          if (!confirmed) {
-            setTimeout(() => {
-              this.doBackupLater(true);
-            }, 300);
-          } else {
-            this.navCtrl.push(DisclaimerPage);
-          }
+    {
+      text: !confirmed ? 'I understand' : 'Yes, skip',
+      handler: () => {
+        if (!confirmed) {
+          setTimeout(() => {
+            this.doBackupLater(true);
+          }, 300);
+        } else {
+          this.navCtrl.push(DisclaimerPage);
         }
-      }]
+      }
+    }]
     let alert = this.alertCtrl.create(this.opts);
     alert.present();
   }

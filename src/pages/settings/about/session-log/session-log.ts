@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { Logger } from '@nsalaun/ng-logger';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 //providers
 import { ConfigProvider } from '../../../../providers/config/config';
-import { HistoricLogProvider } from '../../../../providers/historic-log/historic-log';
+import { Logger } from '../../../../providers/logger/logger';
 
 import * as _ from 'lodash';
 
@@ -27,12 +26,11 @@ export class SessionLogPage {
 
   constructor(
     private configProvider: ConfigProvider,
-    private historicLogProvider: HistoricLogProvider,
     private logger: Logger,
     private socialSharing: SocialSharing
   ) {
     this.config = this.configProvider.get();
-    this.logLevels = this.historicLogProvider.getLevels();
+    this.logLevels = this.logger.getLevels();
     this.logOptions = _.keyBy(this.logLevels, 'level');
   }
 
@@ -41,20 +39,13 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
-    this.selectedLevel = _.has(this.config, 'log.filter') ? this.historicLogProvider.getLevel(this.config.log.filter) : this.historicLogProvider.getDefaultLevel();
+    this.selectedLevel = _.has(this.config, 'log.filter') ? this.logger.getLevel(this.config.log.filter) : this.logger.getDefaultLevel();
     this.setOptionSelected(this.selectedLevel.level);
     this.filterLogs(this.selectedLevel.weight);
   }
 
   private filterLogs(weight: number): void {
-    this.filteredLogs = this.historicLogProvider.get(weight);
-    //TODO get historic logs
-    this.filteredLogs = [
-      { timestamp: "2017-12-11T14:01:36.228Z", level: 'warn', msg: 'Test warning warn' },
-      { timestamp: "2017-12-11T14:01:36.228Z", level: 'debug', msg: 'Test warning debug' },
-      { timestamp: "2017-12-11T14:01:36.228Z", level: 'info', msg: 'Test warning info' },
-      { timestamp: "2017-12-11T14:01:36.228Z", level: 'error', msg: 'Test warning error' },
-    ];
+    this.filteredLogs = this.logger.get(weight);
   }
 
   public setOptionSelected(level: string): void {
@@ -73,13 +64,12 @@ export class SessionLogPage {
       }
     };
     this.configProvider.set(opts);
-    this.logger.debug();
   }
 
   public prepareLogs(): any {
     let log = 'Copay Session Logs\n Be careful, this could contain sensitive private data\n\n';
     log += '\n\n';
-    log += this.historicLogProvider.get().map((v) => {
+    log += this.logger.get().map((v) => {
       return '[' + v.timestamp + '][' + v.level + ']' + v.msg;
     }).join('\n');
 

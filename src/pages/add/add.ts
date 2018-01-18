@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 //pages
 import { CreateWalletPage } from "./create-wallet/create-wallet";

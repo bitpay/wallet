@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class FeedbackProvider {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PlatformProvider } from '../platform/platform';
 import { ConfigProvider } from '../config/config';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 import { TouchID } from '@ionic-native/touch-id';
 import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';

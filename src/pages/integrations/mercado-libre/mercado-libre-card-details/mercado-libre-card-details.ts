@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Provider
 import { MercadoLibreProvider } from '../../../../providers/mercado-libre/mercado-libre';

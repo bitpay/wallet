@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../../providers/logger/logger';
 import * as _ from 'lodash';
 
 // Provider
@@ -83,7 +83,7 @@ export class AmazonCardDetailsPage {
               return;
             }
             if (!_.isEmpty(giftCard) && giftCard.status != 'PENDING') {
-              var newData:any = {};
+              var newData: any = {};
               _.merge(newData, dataFromStorage, giftCard);
 
               if (newData.status == 'expired') {

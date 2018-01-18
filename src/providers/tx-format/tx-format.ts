@@ -3,7 +3,7 @@ import { BwcProvider } from '../bwc/bwc';
 import { RateProvider } from '../rate/rate';
 import { ConfigProvider } from '../config/config';
 import { FilterProvider } from '../filter/filter';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 import * as _ from "lodash";
 

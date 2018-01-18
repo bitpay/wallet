@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class PopupProvider {

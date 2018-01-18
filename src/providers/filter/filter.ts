@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class FilterProvider {

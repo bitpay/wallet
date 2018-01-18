@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, LoadingController, Slides, Navbar } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../providers/logger/logger';
 
 //pages
 import { CollectEmailPage } from '../collect-email/collect-email';

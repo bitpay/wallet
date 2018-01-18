@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 import { NavController, Events, AlertController } from 'ionic-angular';
 
 // Native

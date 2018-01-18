@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../providers/logger/logger';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';

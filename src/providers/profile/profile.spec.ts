@@ -1,6 +1,6 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../wallet/wallet';
 import { ProfileProvider } from './profile';
 import { PersistenceProvider } from '../persistence/persistence';

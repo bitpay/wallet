@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Subscription } from 'rxjs';
 
 //providers
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../providers/logger/logger';
 import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ConfigProvider } from '../providers/config/config';

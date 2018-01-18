@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BwcProvider } from '../bwc/bwc';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 
 import * as _ from 'lodash';

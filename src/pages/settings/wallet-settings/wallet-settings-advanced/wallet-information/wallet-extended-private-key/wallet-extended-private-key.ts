@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../../../../../providers/logger/logger';
 
 //providers
 import { ProfileProvider } from '../../../../../../providers/profile/profile';

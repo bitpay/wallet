@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 @Component({
   selector: 'page-pin',

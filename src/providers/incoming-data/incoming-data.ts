@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Events, NavController, App } from 'ionic-angular';
-import { Logger } from '@nsalaun/ng-logger';
+import { Logger } from '../../providers/logger/logger';
 
 //providers
 import { BwcProvider } from '../bwc/bwc';
