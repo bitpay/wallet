@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, ToastController } from 'ionic-angular';
+import { ActionSheetController } from 'ionic-angular';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { Clipboard } from '@ionic-native/clipboard';
 
 //providers
 import { ConfigProvider } from '../../../../providers/config/config';
@@ -30,8 +29,6 @@ export class SessionLogPage {
     private logger: Logger,
     private socialSharing: SocialSharing,
     private actionSheetCtrl: ActionSheetController,
-    private clipboard: Clipboard,
-    private toastCtrl: ToastController,
     private platformProvider: PlatformProvider
   ) {
     this.config = this.configProvider.get();
@@ -75,15 +72,8 @@ export class SessionLogPage {
     return log;
   }
 
-  public copyToClipboard(): void {
-    let logs = this.prepareLogs();
-    this.clipboard.copy(logs);
-    let copyMessage = 'Copied to clipboard' //TODO gettextcatalog
-    let showSuccess = this.toastCtrl.create({
-      message: copyMessage,
-      duration: 1000,
-    });
-    showSuccess.present();
+  public copyLogToClipboard(l): any {
+    return '[' + l.timestamp + '][' + l.level + ']' + l.msg;
   }
 
   public sendLogs(): void {
@@ -101,18 +91,11 @@ export class SessionLogPage {
 
   public showOptionsMenu(): void {
 
-    let copyText = 'Copy to clipboard' //TODO gettextcatalog
     let emailText = 'Send by email' //TODO gettextcatalog
 
     let actionSheet = this.actionSheetCtrl.create({
       title: '',
       buttons: [
-        {
-          text: copyText,
-          handler: () => {
-            this.copyToClipboard();
-          }
-        },
         {
           text: emailText,
           handler: () => {

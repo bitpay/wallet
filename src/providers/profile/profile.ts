@@ -707,7 +707,7 @@ export class ProfileProvider {
       if (showOpts.extendedPrivateKey) showOpts.extendedPrivateKey = '[hidden]';
       if (showOpts.mnemonic) showOpts.mnemonic = '[hidden]';
 
-      this.logger.debug('Creating Wallet:', showOpts);
+      this.logger.debug('Creating Wallet:', JSON.stringify(showOpts));
       setTimeout(() => {
         this.seedWallet(opts).then((walletClient: any) => {
 
