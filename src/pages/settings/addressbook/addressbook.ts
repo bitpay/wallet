@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 export class AddressbookPage {
 
   private cache: boolean;
+  public addressbook: Array<any>;
   public filteredAddressbook: Array<any>;
 
   constructor(
@@ -23,6 +24,7 @@ export class AddressbookPage {
     private addressbookProvider: AddressBookProvider
   ) {
     this.cache = false;
+    this.addressbook = [];
     this.filteredAddressbook = [];
     this.initAddressbook();
   }
@@ -34,6 +36,7 @@ export class AddressbookPage {
 
   private initAddressbook(): void {
     this.addressbookProvider.list().then((addressBook: any) => {
+      this.addressbook = _.clone(addressBook);
       this.filteredAddressbook = _.clone(addressBook);
     }).catch((err: any) => {
       this.logger.error(err);
