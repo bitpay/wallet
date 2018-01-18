@@ -10,12 +10,12 @@ import { AppProvider } from '../providers/app/app';
 import { ProfileProvider } from '../providers/profile/profile';
 import { ConfigProvider } from '../providers/config/config';
 import { TouchIdProvider } from '../providers/touchid/touchid';
-//import { GlideraProvider } from '../providers/glidera/glidera';
-//import { CoinbaseProvider } from '../providers/coinbase/coinbase';
+import { GlideraProvider } from '../providers/glidera/glidera';
+import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { AmazonProvider } from '../providers/amazon/amazon';
 //import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
-//import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
+import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 
 //pages
 import { TabsPage } from '../pages/tabs/tabs';
@@ -43,12 +43,12 @@ export class CopayApp {
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
     private modalCtrl: ModalController,
-    //private glideraProvider: GlideraProvider,
-    //private coinbaseProvider: CoinbaseProvider,
+    private glideraProvider: GlideraProvider,
+    private coinbaseProvider: CoinbaseProvider,
     private amazonProvider: AmazonProvider,
     //private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
-    //private shapeshiftProvider: ShapeshiftProvider
+    private shapeshiftProvider: ShapeshiftProvider
   ) {
     this.initializeApp();
   }
@@ -131,15 +131,29 @@ export class CopayApp {
   }
 
   private registerIntegrations(): void {
-    this.mercadoLibreProvider.register();
-    this.amazonProvider.register();
 
-    // Services disabled
-    //this.bitPayCardProvider.register();
-    //this.glideraProvider.setCredentials();
-    //this.glideraProvider.register();
-    //this.coinbaseProvider.setCredentials();
-    //this.coinbaseProvider.register();
-    //this.shapeshiftProvider.register();
+    // Mercado Libre
+    if (this.app.info._enabledExtensions.mercadolibre) this.mercadoLibreProvider.register();
+
+    // Amazon Gift Cards
+    if (this.app.info._enabledExtensions.amazon) this.amazonProvider.register();
+
+    // ShapeShift
+    if (this.app.info._enabledExtensions.shapeshift) this.shapeshiftProvider.register();
+
+    // Glidera
+    if (this.app.info._enabledExtensions.glidera) {
+      this.glideraProvider.setCredentials();
+      this.glideraProvider.register();
+    }
+
+    // Coinbase
+    if (this.app.info._enabledExtensions.coinbase) {
+      this.coinbaseProvider.setCredentials();
+      this.coinbaseProvider.register();
+    }
+
+    // Disabled: needs to be fixed
+    //    if (this.app.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
   }
 }

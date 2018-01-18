@@ -23,12 +23,15 @@
   "windowsAppId": "804636ee-b017-4cad-8719-e58ac97ffa5c",
   "pushSenderId": "1036948132229",
   "description": "A Secure Bitcoin Wallet",
-  "version": "4.0.1",
-  "androidVersion": "400001",
+  "version": "4.0.2",
+  "androidVersion": "40000002",
   "_extraCSS": null,
   "_enabledExtensions": {
-    "coinbase": true,
-    "glidera": true,
-    "amazon": true
+    "coinbase": false,
+    "glidera": false,
+    "debitcard": false,
+    "amazon": false,
+    "mercadolibre": false,
+    "shapeshift": false
   }
 }

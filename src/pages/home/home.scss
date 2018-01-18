@@ -52,4 +52,12 @@ page-home {
   .error {
     color: color($colors, danger);
   }
+  .no-wallets {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 }
