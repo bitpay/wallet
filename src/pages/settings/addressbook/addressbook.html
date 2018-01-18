@@ -13,7 +13,7 @@
 
 <ion-content>
 
-  <div class="zero-state" *ngIf="isEmptyList">
+  <div class="zero-state" *ngIf="!filteredAddressbook || !filteredAddressbook[0]">
     <i class="icon zero-state-icon">
       <img class="svg" src="assets/img/address-book-add.svg" />
     </i>
@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div *ngIf="!isEmptyList">
+  <div *ngIf="filteredAddressbook && filteredAddressbook[0]">
     <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
     <ion-list>
       <button class="contact" ion-item *ngFor="let entry of filteredAddressbook" (click)="viewEntry(entry)">
