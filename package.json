@@ -3,6 +3,7 @@
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
   "version": "1.0.0",
+  "main": "electron/main.js",
   "keywords": [
     "bitcoin",
     "wallet",
@@ -22,7 +23,7 @@
   },
   "scripts": {
     "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js;",
-    "start": "ionic serve",
+    "start": "ionic serve --no-open",
     "clean": "trash platforms && trash plugins && trash config.xml",
     "clean:copay": "npm run clean && npm run apply:copay && ionic cordova prepare && npm run fix:fcm",
     "clean:bitpay": "npm run clean && npm run apply:bitpay && ionic cordova prepare && npm run fix:fcm",
