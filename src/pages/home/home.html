@@ -92,13 +92,10 @@
 
   </ion-list>
 
-  <div *ngIf="!wallets || !wallets[0]">
-    <ion-item-divider></ion-item-divider>
-    <ion-list (click)="goToAddView()">
-      <button ion-item detail-push>
-        <span translate>Create a new wallet</span>
-      </button>
-    </ion-list>
+  <div *ngIf="!wallets || !wallets[0]" class="no-wallets">
+    <button ion-button clear (click)="goToAddView()">
+      <span translate>Create a new wallet</span>
+    </button>
   </div>
 
   <ion-list *ngIf="walletsBtc && walletsBtc[0]">
