@@ -1,11 +1,11 @@
 <action-sheet action-sheet-show="show" class="item-selector">
   <img class="back-arrow" src="img/icon-back-arrow.svg" ng-click="hide()">
-  <div class="header">{{title}}</div>
   <a class="item item-icon-left option no-border" ng-click="onSelect()">
     <i class="icon ion-ios-speedometer-outline"></i>
     <div class="item-selector-inner">
       <div class="item-selector-details">
-        <div class="item-selector-name" translate>Send max amount</div>
+        <div class="item-selector-name" ng-if="!label" translate>Send max amount</div>
+        <div class="item-selector-name" ng-if="label">{{label}}</div>
       </div>
     </div>
   </a>

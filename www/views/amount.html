@@ -19,17 +19,18 @@
 
       <div class="item item-text-wrap item-icon-left bitcoin-address">
         <i class="icon big-icon-svg" ng-if="recipientType == 'wallet'">
-          <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}" class="bg"/>
+          <img src="img/icon-wallet.svg" ng-class="{'wallet-background-color-default': !toColor}" ng-style="{'background-color': toColor}"
+            class="bg" />
         </i>
         <span ng-if="recipientType == 'contact'">
           <i class="icon big-icon-svg" ng-if="isChromeApp">
-            <img src="img/contact-placeholder.svg" class="bg"/>
+            <img src="img/contact-placeholder.svg" class="bg" />
           </i>
           <gravatar ng-if="!isChromeApp" class="send-gravatar" name="{{toName}}" height="30" width="30" email="{{toEmail}}"></gravatar>
         </span>
         <span ng-if="!recipientType">
           <i class="icon big-icon-svg">
-            <img src="img/contact-placeholder.svg" class="bg"/>
+            <img src="img/contact-placeholder.svg" class="bg" />
           </i>
         </span>
         <span class="m10l">{{toName || toAddress}}</span>
@@ -54,7 +55,8 @@
           <span class="amount__number">{{amount || "0.00" }}</span>
           <a class="amount__currency-toggle" ng-click="changeUnit()">{{unit}}</a>
         </div>
-        <div ng-class="{'amount__results--minimize': smallFont, 'amount__results--standard': !smallFont, 'amount__results--placeholder': amountResult}" ng-click="changeAlternativeUnit()">
+        <div ng-class="{'amount__results--minimize': smallFont, 'amount__results--standard': !smallFont, 'amount__results--placeholder': amountResult}"
+          ng-click="changeAlternativeUnit()">
           <div class="amount__result" ng-show="globalResult">{{globalResult}} {{unit}}</div>
           <div class="amount__result-equiv" ng-show="alternativeAmount">&asymp; {{alternativeAmount || '0.00'}} {{alternativeUnit}}</div>
           <div class="amount__result-equiv" ng-show="!alternativeAmount">&nbsp;</div>
@@ -65,8 +67,7 @@
 
     <div class="keypad">
       <div class="row">
-        <div class="col col-25 col-offset-75 operator-send"
-             ng-show="allowSend" ng-click="finish()">
+        <div class="col col-25 col-offset-75 operator-send" ng-show="allowSend" ng-click="finish()">
           <i class="icon ion-ios-arrow-thin-right"></i>
         </div>
       </div>
@@ -99,8 +100,6 @@
       </div>
     </div>
   </ion-content>
-  <item-selector
-    item-selector-show="showSendMax"
-    item-selector-on-select="sendMax">
+  <item-selector item-selector-label="itemSelectorLabel" item-selector-show="showSendMax" item-selector-on-select="sendMax">
   </item-selector>
 </ion-view>
