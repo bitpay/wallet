@@ -46,7 +46,7 @@ RateService.prototype.updateRates = function() {
   var backoffSeconds = 5;
   var updateFrequencySeconds = 5 * 60;
   var rateServiceUrl = 'https://bitpay.com/api/rates';
-  var bchRateServiceUrl = 'https://api.kraken.com/0/public/Ticker?pair=BCHUSD,BCHEUR';
+  var bchRateServiceUrl = 'https://bitpay.com/api/rates/bch';
 
 
   function getBTC(cb, tries) {
@@ -81,24 +81,19 @@ RateService.prototype.updateRates = function() {
     if (!self.httprequest) return;
     if (tries > 5) return cb('could not get BCH rates');
 
-    function retry(tries) {
+    self.httprequest.get(bchRateServiceUrl).success(function(res) {
+      self.lodash.each(res, function(currency) {
+        self._ratesBCH[currency.code] = currency.rate;
+      });
+
+      return cb();
+    }).error(function() {
       //log.debug('Error fetching exchange rates', err);
       setTimeout(function() {
         backoffSeconds *= 1.5;
-        getBTC(cb, tries++);
+        getBCH(cb, tries++);
       }, backoffSeconds * 1000);
       return;
-    }
-
-    self.httprequest.get(bchRateServiceUrl).success(function(res) {
-      self.lodash.each(res.result, function(data, paircode) {
-        var code = paircode.substr(3,3);
-        var rate =data.c[0];
-        self._ratesBCH[code] = rate;
-      })
-      return cb();
-    }).error(function() {
-      return retry(tries);
     })
   }
 
