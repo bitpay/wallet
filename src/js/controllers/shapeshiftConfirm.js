@@ -302,7 +302,7 @@ angular.module('copayApp.controllers').controller('shapeshiftConfirmController',
           return;
         }
         $scope.txSent = txSent;
-        $timeout(function() { saveShapeshiftData(); }, 2000);
+        $timeout(function() { saveShapeshiftData(); }, 500);
         $timeout(function() { $scope.$digest(); }, 100);
       });
     });
