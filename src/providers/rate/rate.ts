@@ -15,7 +15,7 @@ export class RateProvider {
   private BTC_TO_SAT: number;
 
   private rateServiceUrl = 'https://bitpay.com/api/rates';
-  private bchRateServiceUrl = 'https://api.kraken.com/0/public/Ticker?pair=BCHUSD,BCHEUR';
+  private bchRateServiceUrl = 'https://bitpay.com/api/rates/bch';
 
   constructor(
     private http: HttpClient,
@@ -56,10 +56,8 @@ export class RateProvider {
   private updateRatesBch(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getBCH().then((dataBCH: any) => {
-        _.each(dataBCH.result, (data: any, paircode: string) => {
-          let code = paircode.substr(3, 3);
-          let rate = data.c[0];
-          this.ratesBCH[code] = rate;
+        _.each(dataBCH, (currency: any) => {
+          this.ratesBCH[currency.code] = currency.rate;
         });
         resolve();
       }).catch((errorBCH: any) => {
