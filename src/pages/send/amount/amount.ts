@@ -29,6 +29,7 @@ export class AmountPage {
   private reOp: RegExp;
   private nextView: any;
   private fixedUnit: boolean;
+  private itemSelectorLabel: string;
 
   public isFiatAmount: boolean;
   public expression: any;
@@ -85,11 +86,16 @@ export class AmountPage {
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
     this.nextView = this.getNextView();
+    this.itemSelectorLabel = 'Send Max amount';
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
     this.shiftMax = this.navParams.data.shiftMax;
     this.shiftMin = this.navParams.data.shiftMin;
+
+    if (this.shiftMax) {
+      this.itemSelectorLabel = 'Send ShapeShift Maximum: ' + this.shiftMax;
+    }
 
     let unit = this.navParams.data.currency ? this.navParams.data.currency : this.config.wallet.settings.alternativeIsoCode;
     this.availableUnits.push(this.coin.toUpperCase());
@@ -172,7 +178,7 @@ export class AmountPage {
     let buttons: Array<any> = [];
 
     let sendMaxButton: Object = {
-      text: 'Send Max amount',
+      text: this.itemSelectorLabel,
       icon: 'speedometer',
       handler: () => {
         this.sendMax();
