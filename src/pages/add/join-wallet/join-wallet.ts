@@ -59,7 +59,7 @@ export class JoinWalletPage implements OnInit {
       confirmPassword: [null],
       recoveryPhraseBackedUp: [null],
       derivationPath: [this.derivationPathByDefault],
-      coin: [this.navParams.data.coin]
+      coin: [this.navParams.data.coin ? this.navParams.data.coin : 'btc']
     });
 
     this.seedOptions = [{
@@ -71,17 +71,19 @@ export class JoinWalletPage implements OnInit {
       label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
-
-    if (this.navParams.data.url) {
-      let data = this.navParams.data.url;
-      data = data.replace('copay:', '');
-      this.onQrCodeScannedJoin(data);
-    }
   }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad JoinWalletPage');
     this.resetFormFields();
+  }
+
+  ionViewWillEnter() {
+    if (this.navParams.data.url) {
+      let data: string = this.navParams.data.url;
+      data = data.replace('copay:', '');
+      this.onQrCodeScannedJoin(data);
+    }
   }
 
   ngOnInit() {
@@ -109,7 +111,7 @@ export class JoinWalletPage implements OnInit {
   }
 
   public onQrCodeScannedJoin(data: string): void { // TODO
-    this.joinForm.value.invitationCode = data;
+    this.joinForm.controls['invitationCode'].setValue(data);
   }
 
   public seedOptionsChange(seed: any): void {
@@ -118,21 +120,22 @@ export class JoinWalletPage implements OnInit {
     } else {
       this.joinForm.get('recoveryPhrase').setValidators(null);
     }
-    this.joinForm.value.selectedSeed = seed;
-    this.joinForm.value.testnet = false;
-    this.joinForm.value.derivationPath = this.derivationPathByDefault;
+    this.joinForm.controls['selectedSeed'].setValue(seed);
+    this.joinForm.controls['testnet'].setValue(false);
+    this.joinForm.controls['derivationPath'].setValue(this.derivationPathByDefault);
     this.resetFormFields();
   }
 
   public resetFormFields(): void {
-    this.joinForm.value.password = null;
-    this.joinForm.value.confirmPassword = null;
-    this.joinForm.value.recoveryPhraseBackedUp = null;
-    this.joinForm.value.recoveryPhrase = null;
+    this.joinForm.controls['password'].setValue(null);
+    this.joinForm.controls['confirmPassword'].setValue(null);
+    this.joinForm.controls['recoveryPhraseBackedUp'].setValue(null);
+    this.joinForm.controls['recoveryPhrase'].setValue(null);
   }
 
   setDerivationPath() {
-    this.joinForm.value.derivationPath = this.joinForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    let path: string = this.joinForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    this.joinForm.controls['derivationPath'].setValue(path);
   }
 
   public setOptsAndJoin(): void {
@@ -194,6 +197,16 @@ export class JoinWalletPage implements OnInit {
       this.popupProvider.ionicAlert('Error', err, 'Ok'); // TODO: GetTextCatalog
       return;
     });
+  }
+
+  public openScanner(): void {
+    if (this.navParams.data.fromScan) {
+      this.navCtrl.popToRoot();
+    } else {
+      this.navCtrl.setRoot(HomePage);
+      this.navCtrl.popToRoot();
+      this.navCtrl.parent.select(2);
+    }
   }
 
 }

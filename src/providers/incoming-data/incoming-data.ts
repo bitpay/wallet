@@ -37,7 +37,7 @@ export class IncomingDataProvider {
     this.events.publish('incomingDataMenu.showMenu', data);
   }
 
-  public redir(data: any): boolean {
+  public redir(data: string): boolean {
     //TODO Injecting NavController in constructor of service fails with no provider error
     this.navCtrl = this.app.getActiveNav();
     // data extensions for Payment Protocol with non-backwards-compatible request
@@ -216,11 +216,11 @@ export class IncomingDataProvider {
 
       // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data })
+      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
       return true;
       // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data })
+      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
       return true;
     } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
       this.showMenu({
