@@ -76,23 +76,6 @@ angular.module('copayApp.controllers').controller('tourController',
       }, 300);
     };
 
-    /* 
-      $ionicModal.fromTemplateUrl('views/modals/password-warning.html', {
-        scope: $scope
-      }).then(function(modal) {
-        $scope.passwordWarningModal = modal;
-        $scope.passwordWarningModal.show();
-      });
-    /*
-    /*
-      $scope.close = function() {
-      $scope.passwordWarningModal.hide();
-    }; 
-    $scope.encrypt = function() {
-      
-    }
-    */
-
     $scope.goBack = function () {
       if ($scope.data.index != 0) $scope.slider.slidePrev();
       else $state.go('onboarding.welcome');
