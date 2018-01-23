@@ -9,11 +9,13 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <div *ngIf="fromSettings">
-    <div class="share-the-love">
-      <img src="assets/img/ico-positive-feedback.svg" class="share-the-love-illustration" />
+  <div class="share-image-container" *ngIf="fromSettings">
+    <div>
+      <div class="share-the-love">
+        <img src="assets/img/ico-positive-feedback.svg" class="share-the-love-illustration" />
+      </div>
+      <div class="subtitle" translate>Share the love by inviting your friends.</div>
     </div>
-    <div class="subtitle" translate>Share the love by inviting your friends.</div>
   </div>
   <div *ngIf="!fromSettings">
     <div class="feedback-title" translate>Thank you!</div>

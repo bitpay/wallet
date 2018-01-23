@@ -1,11 +1,18 @@
 page-feedback-complete {
-  .share-the-love{
+  .share-image-container {
+    height: 60%;
     display: flex;
     justify-content: center;
-    .share-the-love-illustration {
-      width: 10rem;
-    }
-  }  
+    align-items: center;
+    .share-the-love{
+      display: flex;
+      justify-content: center;
+      .share-the-love-illustration {
+        width: 60%;
+        height: 60%;
+      }
+    }  
+  }
   .feedback-title {
     font-size: 20px;
     font-weight: bold;
@@ -14,7 +21,7 @@ page-feedback-complete {
     text-align: center;
   }
   .subtitle {
-    padding: 10px 30px 20px;
+    padding: 30px;
     text-align: center;
   }
   .share-buttons {
