@@ -96,10 +96,7 @@ angular.module('copayApp.services')
             if (v && !lodash.isString(v)) {
               v = v.toString();
             }
-
-            $log.debug('Writing:', k, v);
             fileWriter.write(v);
-
           }, cb);
         });
       });
