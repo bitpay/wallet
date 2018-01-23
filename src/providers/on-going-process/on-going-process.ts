@@ -16,12 +16,12 @@ export class OnGoingProcessProvider {
     // TODO gettextcatalog()
     // TODO GET - CLEAR - CHECK DecimalPipe for FILTER WITH TRANSLATE
     this.processNames = {
-      'broadcastingTx': 'Broadcasting transaction',
-      'calculatingFee': 'Calculating fee',
+      'broadcastingTx': 'Broadcasting transaction...',
+      'calculatingFee': 'Calculating fee...',
       'connectingCoinbase': 'Connecting to Coinbase...',
       'connectingGlidera': 'Connecting to Glidera...',
       'connectingShapeshift': 'Connecting to Shapeshift...',
-      'creatingTx': 'Creating transaction',
+      'creatingTx': 'Creating transaction...',
       'creatingWallet': 'Creating Wallet...',
       'deletingWallet': 'Deleting Wallet...',
       'extractingWalletInfo': 'Extracting Wallet information...',
@@ -31,12 +31,12 @@ export class OnGoingProcessProvider {
       'importingWallet': 'Importing Wallet...',
       'joiningWallet': 'Joining Wallet...',
       'recreating': 'Recreating Wallet...',
-      'rejectTx': 'Rejecting payment proposal',
-      'removeTx': 'Deleting payment proposal',
+      'rejectTx': 'Rejecting payment proposal...',
+      'removeTx': 'Deleting payment proposal...',
       'retrievingInputs': 'Retrieving inputs information',
       'scanning': 'Scanning Wallet funds...',
-      'sendingTx': 'Sending transaction',
-      'signingTx': 'Signing transaction',
+      'sendingTx': 'Sending transaction...',
+      'signingTx': 'Signing transaction...',
       'sweepingWallet': 'Sweeping Wallet...',
       'validatingWords': 'Validating recovery phrase...',
       'loadingTxInfo': 'Loading transaction info...',
@@ -75,8 +75,7 @@ export class OnGoingProcessProvider {
       return;
     }
     this.loading = this.loadingCtrl.create({
-      spinner: 'hide',
-      content: showName + '...'
+      content: showName
     });
     this.loading.present();
   }
