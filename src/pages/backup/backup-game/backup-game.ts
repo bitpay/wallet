@@ -119,24 +119,6 @@ export class BackupGamePage {
       this.selectComplete = false;
   };
 
-  private backupError(err: any): void {
-    // ongoingProcess.set('validatingWords', false);
-    this.logger.error('Failed to verify backup: ', err);
-    this.error = true;
-    let showError = this.alertCtrl.create({
-      title: "Failed to verify backup",
-      subTitle: err,
-      buttons: [{
-        text: 'Try again',
-        role: 'cancel',
-        handler: () => {
-          this.setFlow();
-        }
-      }]
-    });
-    showError.present();
-  };
-
   private showBackupResult(): void {
     if (this.error) {
       let alert = this.alertCtrl.create({
@@ -269,7 +251,21 @@ export class BackupGamePage {
       this.onGoingProcessProvider.set('validatingWords', false);
       this.showBackupResult();
     }).catch((err) => {
-      this.backupError(err);
+      this.onGoingProcessProvider.set('validatingWords', false);
+      this.logger.error('Failed to verify backup: ', err);
+      this.error = true;
+      let showError = this.alertCtrl.create({
+        title: "Failed to verify backup",
+        subTitle: err,
+        buttons: [{
+          text: 'Try again',
+          role: 'cancel',
+          handler: () => {
+            this.setFlow();
+          }
+        }]
+      });
+      showError.present();
     });
   };
 
