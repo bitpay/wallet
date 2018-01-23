@@ -48,7 +48,7 @@ export class SessionLogPage {
   }
 
   ionViewWillEnter() {
-    let selectedLevel: any = _.has(this.config, 'log.filter') ? this.logger.getWeight(this.config.log.filter) : this.logger.getDefaultWeight();
+    let selectedLevel: any = _.has(this.config, 'log.weight') ? this.logger.getWeight(this.config.log.weight) : this.logger.getDefaultWeight();
     this.filterValue = selectedLevel.weight;
     this.setOptionSelected(selectedLevel.weight);
     this.filterLogs(selectedLevel.weight);
@@ -62,7 +62,7 @@ export class SessionLogPage {
     this.filterLogs(weight);
     let opts = {
       log: {
-        filter: weight
+        weight: weight
       }
     };
     this.configProvider.set(opts);

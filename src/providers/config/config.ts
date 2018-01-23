@@ -89,7 +89,7 @@ interface Config {
   };
 
   log: {
-    filter: string;
+    weight: number;
   };
 };
 
@@ -182,7 +182,7 @@ const configDefault: Config = {
   },
 
   log: {
-    filter: 'debug'
+    weight: 3
   }
 };
 

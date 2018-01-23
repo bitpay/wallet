@@ -33,7 +33,7 @@
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>Type the recovery phrase (usually 12 words)</ion-label>
       <ion-textarea formControlName="words" [value]="importForm.value.words"></ion-textarea>
-      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      <ion-icon *ngIf="!fromOnboarding" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
     <div *ngIf="selectedTab == 'file'">
