@@ -69,43 +69,48 @@ page-wallet-details {
   .wallet-info {
     font-weight: 500;
     color: color($colors, light);
-    height: 2.5rem;
-    padding-left: 0.5rem;
-    span {
-      margin: 0 3px;
-      padding-top: 2px;
-      float: left;
-    }
+    height: 30px;
     img {
       float: left;
+      margin-right: 4px;
     }
     .testnet {
       height: 2.5rem;
       width: 2.5rem;
+      margin-top: 3px;
     }
     .testnet-text {
-      height: 2.5rem;
-      width: 4.5rem;
-      margin-right: 5px;
+      color: color($colors, light);
+      height: 3rem;
+      width: 5rem;
     }
     .read-only {
-      height: 2.5rem;
-      width: 1.5rem;
-      margin-right: 5px;
+      height: 3rem;
+      width: 2rem;
     }
     .read-only-text {
-      height: 2.5rem;
-      width: 5rem;
-      margin-right: 5px;
+      height: 3rem;
+      width: 6rem;
     }
     .auditable-text {
-      height: 2.5rem;
+      height: 3rem;
       width: 5rem;
+    }
+    .custom-bws {
+      height: 3.2rem;
+      width: 3.2rem;
+    }
+    .wallet-type {
+      display: block;
+      float: left;
+      margin: 0 3px;
+      padding-top: 5px;
     }
     ion-spinner {
       float: right;
       width: 20px;
       height: 20px;
+      margin: 5px 5px 0 0;
       * {
         stroke: color($colors, light);
       }
