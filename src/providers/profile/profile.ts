@@ -11,6 +11,8 @@ import { BwcErrorProvider } from '../bwc-error/bwc-error';
 import { PlatformProvider } from '../platform/platform';
 import { AppProvider } from '../../providers/app/app';
 import { LanguageProvider } from '../../providers/language/language';
+import { PopupProvider } from '../popup/popup';
+import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 
 //models
 import { Profile } from '../../models/profile/profile.model';
@@ -34,7 +36,9 @@ export class ProfileProvider {
     private platformProvider: PlatformProvider,
     private appProvider: AppProvider,
     private languageProvider: LanguageProvider,
-    private events: Events
+    private events: Events,
+    private popupProvider: PopupProvider,
+    private onGoingProcessProvider: OnGoingProcessProvider
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -333,6 +337,60 @@ export class ProfileProvider {
     });
   }
 
+  // An alert dialog
+  private askPassword(name: string, title: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let opts = {
+        type: 'password'
+      }
+      this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
+        return resolve(res);
+      });
+    });
+  }
+
+  private showWarningNoEncrypt(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let title = 'Are you sure?'; //TODO gettextcatalog
+      let msg = 'Your wallet keys will be stored in plan text in this device, if an other app access the store it will be able to access your Bitcoin'; //TODO gettextcatalog
+      let okText = 'Yes'; //TODO gettextcatalog
+      let cancelText = 'No'; //TODO gettextcatalog
+      this.popupProvider.ionicConfirm(title, msg, okText, cancelText).then((res: any) => {
+        return resolve(res);
+      });
+    });
+  }
+
+  private encrypt(wallet: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let title = 'Please enter a password to encrypt your wallet keys on this device storage'; //TODO gettextcatalog
+      let warnMsg = 'Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.'; //TODO gettextcatalog
+      this.askPassword(warnMsg, title).then((password: string) => {
+        if (!password) {
+          this.showWarningNoEncrypt().then((res: any) => {
+            if (res) return resolve(); //TODO gettextcatalog
+            this.encrypt(wallet).then(() => {
+              return resolve();
+            });
+          });
+        }
+        else {
+          title = 'Confirm your new spending password'; //TODO gettextcatalog
+          this.askPassword(warnMsg, title).then((password2: string) => {
+            if (!password2 || password != password2) {
+              this.encrypt(wallet).then(() => {
+                return resolve();
+              });
+            } else {
+              wallet.encryptPrivateKey(password);
+              return resolve();
+            }
+          });
+        }
+      });
+    });
+  }
+
   // Adds and bind a new client to the profile
   private addAndBindWalletClient(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -340,40 +398,45 @@ export class ProfileProvider {
         return reject('Could not access wallet'); // TODO gettextCatalog
       }
 
-      let walletId: string = wallet.credentials.walletId
+      // Encrypt wallet
+      this.onGoingProcessProvider.pause();
+      this.encrypt(wallet).then(() => {
+        this.onGoingProcessProvider.resume();
 
-      if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-        return reject("Wallet already in " + this.appProvider.info.nameCase); // TODO gettextCatalog
-      }
+        let walletId: string = wallet.credentials.walletId
 
+        if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
+          return reject("Wallet already in " + this.appProvider.info.nameCase); // TODO gettextCatalog
+        }
 
-      let skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
-      if (!skipKeyValidation)
-        this.runValidation(wallet);
+        let skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
+        if (!skipKeyValidation)
+          this.runValidation(wallet);
 
-      this.bindWalletClient(wallet);
+        this.bindWalletClient(wallet);
 
-      let saveBwsUrl = (): Promise<any> => {
-        return new Promise((resolve, reject) => {
-          let defaults: any = this.configProvider.getDefaults();
-          let bwsFor: any = {};
-          bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
+        let saveBwsUrl = (): Promise<any> => {
+          return new Promise((resolve, reject) => {
+            let defaults: any = this.configProvider.getDefaults();
+            let bwsFor: any = {};
+            bwsFor[walletId] = opts.bwsurl || defaults.bws.url;
 
-          // Dont save the default
-          if (bwsFor[walletId] == defaults.bws.url) {
+            // Dont save the default
+            if (bwsFor[walletId] == defaults.bws.url) {
+              return resolve();
+            }
+
+            this.configProvider.set({ bwsFor: bwsFor });
             return resolve();
-          }
+          });
+        };
 
-          this.configProvider.set({ bwsFor: bwsFor });
-          return resolve();
-        });
-      };
-
-      saveBwsUrl().then(() => {
-        this.persistenceProvider.storeProfile(this.profile).then(() => {
-          return resolve(wallet);
-        }).catch((err: any) => {
-          return reject(err);
+        saveBwsUrl().then(() => {
+          this.persistenceProvider.storeProfile(this.profile).then(() => {
+            return resolve(wallet);
+          }).catch((err: any) => {
+            return reject(err);
+          });
         });
       });
     });

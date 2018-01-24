@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { LoadingController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import * as _ from 'lodash';
 
 @Injectable()
 export class OnGoingProcessProvider {
 
   private loading: any;
   private processNames: any;
+  private pausedOngoingProcess: any;
+  private ongoingProcess: any;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -55,20 +58,29 @@ export class OnGoingProcessProvider {
       'topup': 'Top up in progress...',
       'duplicatingWallet': 'Duplicating wallet...',
     };
+    this.ongoingProcess = {};
   }
 
-  public getShowName(processName: string): string {
-    let showName = this.processNames[processName] || processName;
-    return showName;
-  }
-
-  public clear() {
-    this.processNames = {};
+  private clear() {
+    this.ongoingProcess = {};
     this.loading.dismiss();
-  };
+  }
+
+  public pause(): void {
+    this.pausedOngoingProcess = this.ongoingProcess;
+    this.clear();
+  }
+
+  public resume(): void {
+    _.forEach(this.pausedOngoingProcess, (v, k) => {
+      this.set(k, v);
+    });
+    this.pausedOngoingProcess = {};
+  }
 
   public set(processName: string, isOn: boolean): string {
     this.logger.debug('ongoingProcess', processName, isOn);
+    this.ongoingProcess[processName] = isOn;
     let showName = this.processNames[processName] || processName;
     if (!isOn) {
       this.loading.dismiss();
