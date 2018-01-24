@@ -117,7 +117,6 @@ export class FileStorage implements IStorage {
               v = v.toString();
             }
 
-            this.log.debug('Writing:', k, v);
             fileWriter.write(v);
           }, err => {
             this.log.error('Could not create writer', err);

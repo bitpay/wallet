@@ -16,12 +16,6 @@ import { OnGoingProcessProvider } from '../on-going-process/on-going-process';
 import { TouchIdProvider } from '../touchid/touchid';
 import { FeeProvider } from '../fee/fee';
 
-
-/* TODO LIST:
-  - onGoingProcess provider
-*/
-
-
 @Injectable()
 export class WalletProvider {
 
@@ -1089,13 +1083,11 @@ export class WalletProvider {
       let opts = {
         type: 'password'
       }
-      this.popupProvider.ionicPrompt(title, name, opts, null, null).then((res: any) => {
+      this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
         return resolve(res);
-      }).catch((err: any) => {
-        return reject(err);
       });
     });
-  };
+  }
 
   public encrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -1115,8 +1107,7 @@ export class WalletProvider {
         return reject(err);
       });
     });
-
-  };
+  }
 
   public decrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {

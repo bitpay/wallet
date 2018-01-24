@@ -65,34 +65,6 @@
         <ion-input type="text" formControlName="recoveryPhrase"></ion-input>
       </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Add a password</ion-label>
-        <ion-toggle formControlName="addPassword" (ionChange)="resetFormFields()"></ion-toggle>
-      </ion-item>
-
-      <div *ngIf="createForm.value.addPassword">
-        <ion-item>
-          <ion-label stacked>Password</ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label stacked>Confirm password</ion-label>
-          <ion-input type="password" formControlName="confirmPassword"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <div class="warning">
-            <strong translate>This password cannot be recovered. If the password is lost, there is no way you could recover your funds.</strong>
-          </div>
-        </ion-item>
-
-        <ion-item>
-          <ion-label stacked>I have written it down</ion-label>
-          <ion-checkbox formControlName="recoveryPhraseBackedUp" checked="false"></ion-checkbox>
-        </ion-item>
-      </div>
-
       <ion-item *ngIf="createForm.value.selectedSeed == 'new' && createForm.value.coin == 'btc'">
         <ion-label stacked>Testnet</ion-label>
         <ion-toggle formControlName="testnetEnabled" (ionChange)="setDerivationPath()"></ion-toggle>
@@ -112,5 +84,5 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button block class="button-footer" (click)="setOptsAndCreate()" [disabled]="!createForm.valid || validatePasswords()">Create wallet</button>
+  <button ion-button block class="button-footer" (click)="setOptsAndCreate()" [disabled]="!createForm.valid">Create wallet</button>
 </ion-footer>
