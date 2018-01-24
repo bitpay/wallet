@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('joinController',
-  function($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
+  function ($scope, $rootScope, $timeout, $state, $ionicHistory, $ionicScrollDelegate, profileService, configService, storageService, applicationService, gettextCatalog, lodash, ledger, trezor, intelTEE, derivationPathHelper, ongoingProcess, walletService, $log, $stateParams, popupService, appConfigService) {
 
-    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+    $scope.$on("$ionicView.beforeEnter", function (event, data) {
       var defaults = configService.getDefaults();
       var config = configService.getSync();
       $scope.formData = {};
@@ -12,45 +12,22 @@ angular.module('copayApp.controllers').controller('joinController',
       $scope.formData.account = 1;
       $scope.formData.secret = null;
       $scope.formData.coin = data.stateParams.coin;
-      resetPasswordFields();
       updateSeedSourceSelect();
     });
 
-    $scope.showAdvChange = function() {
+    $scope.showAdvChange = function () {
       $scope.showAdv = !$scope.showAdv;
       $scope.encrypt = null;
       $scope.resizeView();
     };
 
-    $scope.checkPassword = function(pw1, pw2) {
-      if (pw1 && pw1.length > 0) {
-        if (pw2 && pw2.length > 0) {
-          if (pw1 == pw2) $scope.result = 'correct';
-          else {
-            $scope.formData.passwordSaved = null;
-            $scope.result = 'incorrect';
-          }
-        } else
-          $scope.result = null;
-      } else
-        $scope.result = null;
-    };
-
-    $scope.resizeView = function() {
-      $timeout(function() {
+    $scope.resizeView = function () {
+      $timeout(function () {
         $ionicScrollDelegate.resize();
       }, 10);
-      resetPasswordFields();
     };
 
-    function resetPasswordFields() {
-      $scope.formData.passphrase = $scope.formData.createPassphrase = $scope.formData.passwordSaved = $scope.formData.repeatPassword = $scope.result = null;
-      $timeout(function() {
-        $scope.$apply();
-      });
-    };
-
-    $scope.onQrCodeScannedJoin = function(data) {
+    $scope.onQrCodeScannedJoin = function (data) {
       $scope.formData.secret = data;
       $scope.$apply();
     };
@@ -100,7 +77,7 @@ angular.module('copayApp.controllers').controller('joinController',
       }
     };
 
-    $scope.join = function() {
+    $scope.join = function () {
 
       var opts = {
         secret: $scope.formData.secret,
@@ -175,7 +152,7 @@ angular.module('copayApp.controllers').controller('joinController',
         }
 
         // TODO: cannot currently join an intelTEE testnet wallet (need to detect from the secret)
-        src.getInfoForNewWallet(true, account, 'livenet', function(err, lopts) {
+        src.getInfoForNewWallet(true, account, 'livenet', function (err, lopts) {
           ongoingProcess.set('connecting' + $scope.formData.seedSource.id, false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
@@ -192,8 +169,8 @@ angular.module('copayApp.controllers').controller('joinController',
 
     function _join(opts) {
       ongoingProcess.set('joiningWallet', true);
-      $timeout(function() {
-        profileService.joinWallet(opts, function(err, client) {
+      $timeout(function () {
+        profileService.joinWallet(opts, function (err, client) {
           ongoingProcess.set('joiningWallet', false);
           if (err) {
             popupService.showAlert(gettextCatalog.getString('Error'), err);
@@ -208,7 +185,7 @@ angular.module('copayApp.controllers').controller('joinController',
               disableAnimate: true
             });
             $state.go('tabs.home');
-            $timeout(function() {
+            $timeout(function () {
               $state.transitionTo('tabs.copayers', {
                 walletId: client.credentials.walletId
               });
