@@ -56,8 +56,8 @@
     <ion-item-divider color="light">Deposit</ion-item-divider>
 
     <ion-item>
-      Adddress
-      <ion-note item-end>
+      Address
+      <ion-note item-end text-wrap>
         <span *ngIf="!ssData.address">...</span>
         <span *ngIf="ssData.address" copy-to-clipboard="{{ssData.address}}">
           {{ ssData.address }}
@@ -78,8 +78,8 @@
     <ion-item-divider color="light">Withdraw</ion-item-divider>
 
     <ion-item>
-      Adddress
-      <ion-note item-end>
+      Address
+      <ion-note item-end text-wrap>
         <span *ngIf="!ssData.withdrawal">...</span>
         <span *ngIf="ssData.withdrawal" copy-to-clipboard="{{ssData.withdrawal}}">
           {{ ssData.withdrawal }}
@@ -99,11 +99,11 @@
 
     <ion-item-divider color="light"></ion-item-divider>
 
-    <button ion-item *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)">
+    <button ion-item detail-none *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)">
       See transaction
     </button>
     <ion-item-divider color="light"></ion-item-divider>
-    <button ion-item (click)="remove()">
+    <button class="assertive" ion-item detail-none (click)="remove()">
       Remove
     </button>
 

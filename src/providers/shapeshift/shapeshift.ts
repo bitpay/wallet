@@ -105,10 +105,9 @@ export class ShapeshiftProvider {
   }
 
   public getShapeshift(cb) {
-    var network = this.getNetwork();
+    let network = this.getNetwork();
     this.persistenceProvider.getShapeshift(network).then((ss: any) => {
-      var _gcds = ss ? JSON.parse(ss) : null;
-      return cb(null, _gcds);
+      return cb(null, ss);
     }).catch((err: any) => {
       return cb(err, null);
     });

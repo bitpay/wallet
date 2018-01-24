@@ -51,18 +51,18 @@
     </ion-item-divider>
 
     <button ion-item *ngFor="let item of shifts.data | keys" (click)="openShiftModal(item.value)">
-      <div class="shapeshift-address">
-        <h2>
-          <span class="item-amount">{{ item.value.amount }}</span>
-          <span class="ellipsis">{{item.value.title || item.value.address}}</span>
-        </h2>
-        <ion-note>{{item.value.date | amTimeAgo}}</ion-note>
-        <span>
+      <ion-label>
+        <div class="ellipsis">{{item.value.title || item.value.address}}</div>
+        <div>
           <span class="assertive" *ngIf="item.value.status == 'failed'">Failed</span>
           <span class="balanced" *ngIf="item.value.status == 'complete'">Completed</span>
-          <span class="dark" *ngIf="item.value.status == 'received'">Pending</span>
-          <span class="text-gray" *ngIf="item.value.status == 'no_deposits'">Pending</span>
-        </span>
+          <span class="royal" *ngIf="item.value.status == 'received'">Pending</span>
+          <span class="calm" *ngIf="item.value.status == 'no_deposits'">Pending</span>
+        </div>
+      </ion-label>
+      <div item-content text-end>
+        <div class="text-bold">{{ item.value.amount }}</div>
+        <div class="calm">{{item.value.date | amTimeAgo}}</div>
       </div>
     </button>
   </ion-list>
