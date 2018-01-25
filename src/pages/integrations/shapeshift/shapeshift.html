@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content *ngIf="!shifts.data">
+<ion-content *ngIf="!shifts.data" no-bounce>
   <div class="box-notification warning" *ngIf="network == 'testnet'">
     Sandbox version. Only for testing purpose.
   </div>
@@ -24,7 +24,7 @@
 </ion-content>
 
 
-<ion-content *ngIf="shifts.data">
+<ion-content *ngIf="shifts.data" no-bounce>
 
   <div class="main-header" (click)="update()">
     <img src="assets/img/shapeshift/logo-shapeshift.svg" width="200">

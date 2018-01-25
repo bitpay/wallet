@@ -61,34 +61,30 @@
   </ion-card>
 
   <ion-list *ngIf="txps && txps[0]">
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
+    <ion-list-header color="light">
+        <div item-start>
           <span translate>Payment Proposals</span>
-        </ion-col>
-        <ion-col text-right (click)="openProposalsPage()">
-          <ion-badge *ngIf="txpsN>3" item-end>{{txpsN}}</ion-badge>
-        </ion-col>
-      </ion-row>
-    </ion-item-divider>
+        </div>
+        <button ion-button item-end (click)="openProposalsPage()" *ngIf="txpsN>3">
+          <ion-badge>{{txpsN}}</ion-badge>
+        </button>
+    </ion-list-header>
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
   </ion-list>
 
   <ion-list *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Recent Transactions</span>
-        </ion-col>
-        <ion-col text-right (click)="openActivityPage()">
-          <ion-badge *ngIf="notificationsN>3" item-end>{{notificationsN}}</ion-badge>
-        </ion-col>
-      </ion-row>
-    </ion-item-divider>
+    <ion-list-header color="light">
+      <div item-start>
+        <span translate>Recent Transactions</span>
+      </div>
+      <button ion-button item-end (click)="openActivityPage()" *ngIf="notificationsN>3">
+        <ion-badge>{{notificationsN}}</ion-badge>
+      </button>
+    </ion-list-header>
 
-    <button ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
+    <span *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
       <page-wallet-activity [notification]="notification"></page-wallet-activity>
-    </button>
+    </span>
 
   </ion-list>
 
@@ -99,25 +95,25 @@
   </div>
 
   <ion-list *ngIf="walletsBtc && walletsBtc[0]">
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
+    <ion-list-header color="light">
+        <div class="title" item-start>
           <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
           <span translate>Bitcoin Wallets</span>
-        </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="!showReorderBtc">
-          <div class="reorder-icon" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
+        </div>
+        <div item-end *ngIf="!showReorderBtc">
+          <button ion-button clear icon-only color="secondary" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
             <ion-icon name="reorder"></ion-icon>
-          </div>
-          <div class="add-icon" (click)="goToAddView()">
+          </button>
+          <button ion-button clear icon-only color="primary" (click)="goToAddView()">
             <ion-icon name="add"></ion-icon>
-          </div>
-        </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBtc" (click)="reorderBtc()">
-          {{'Done'|translate}}
-        </ion-col>
-      </ion-row>
-    </ion-item-divider>
+          </button>
+        </div>
+        <div item-end *ngIf="showReorderBtc">
+          <button ion-button clear color="secondary" (click)="reorderBtc()">
+            {{'Done'|translate}}
+          </button>
+        </div>
+    </ion-list-header>
 
     <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
       <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
@@ -151,25 +147,25 @@
   </ion-list>
 
   <ion-list *ngIf="walletsBch && walletsBch[0]">
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
-          <span translate>Bitcoin Cash Wallets</span>
-        </ion-col>
-        <ion-col class="icons-add-reorder" *ngIf="!showReorderBch" text-right>
-          <div class="reorder-icon" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </div>
-          <div class="add-icon" (click)="goToAddView('bch')">
-            <ion-icon name="add"></ion-icon>
-          </div>
-        </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBch" (click)="reorderBch()">
+    <ion-list-header color="light">
+      <div class="title" item-start>
+        <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
+        <span translate>Bitcoin Cash Wallets</span>
+      </div>
+      <div item-end *ngIf="!showReorderBch">
+        <button ion-button clear icon-only color="secondary" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
+          <ion-icon name="reorder"></ion-icon>
+        </button>
+        <button ion-button clear icon-only color="primary" (click)="goToAddView('bch')">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+      <div item-end *ngIf="showReorderBch">
+        <button ion-button clear color="secondary" (click)="reorderBch()">
           {{'Done'|translate}}
-        </ion-col>
-      </ion-row>
-    </ion-item-divider>
+        </button>
+      </div>
+    </ion-list-header>
 
     <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
       <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)">
@@ -203,7 +199,7 @@
   </ion-list>
 
   <ion-list *ngIf="wallets && wallets[0] && buyAndSellItems && buyAndSellItems.length>0">
-    <ion-item-divider>
+    <ion-item-divider color="light">
       <ion-row>
         <ion-col class="title">
           <span translate>Buy &amp; Sell Bitcoin</span>
@@ -224,7 +220,7 @@
   </ion-list>
 
   <ion-list *ngIf="homeIntegrations && homeIntegrations.length>0">
-    <ion-item-divider>
+    <ion-item-divider color="light">
       <ion-row>
         <ion-col class="title">
           <span translate>Services</span>
@@ -246,7 +242,7 @@
   </ion-list>
 
   <ion-list *ngIf="nextStepsItems && nextStepsItems.length>0">
-    <ion-item-divider>
+    <ion-item-divider color="light">
       <ion-row>
         <ion-col class="title">
           <span translate>Next steps</span>

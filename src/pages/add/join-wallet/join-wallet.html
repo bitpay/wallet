@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
   <form [formGroup]="joinForm" (ngSubmit)="setOptsAndJoin()">
     <ion-item>
       <ion-label stacked>{{'Your name' | translate}}</ion-label>
