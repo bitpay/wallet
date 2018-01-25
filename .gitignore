@@ -30,6 +30,7 @@ src/theme/overrides.scss
 src/assets/appConfig.json
 src/assets/externalServices.json
 src/assets/img/app
+src/assets/i18n/crowdin_api_key.txt
 src/index.html
 src/manifest.json
 
