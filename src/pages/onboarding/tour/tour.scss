@@ -1,6 +1,8 @@
 page-tour {
+  @extend %onboarding;
   ion-header {
-    .toolbar-title, ion-icon {
+    .toolbar-title,
+    ion-icon {
       color: color($colors, primary);
     }
     .toolbar-background {
@@ -12,6 +14,11 @@ page-tour {
   }
   .slide-zoom {
     height: inherit;
+    img {
+      height: 50%;
+      padding: 2em;
+      min-height: 300px;
+    }
   }
   /* pagination bullets */
   .swiper-pagination-bullet-active {
@@ -20,5 +27,21 @@ page-tour {
   p {
     line-height: 1.6;
     font-size: 18px;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+  .ticker-container {
+    text-align: center;
+    margin-bottom: -5em;
+    margin-top: 5em;
+  }
+  .ticker {
+    display: inline-block;
+    padding: 0.7em 1em;
+    z-index: 1;
+    background-color: $color-secondary;
+    border-radius: $icon-border-radius;
+    position: relative;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
   }
 }

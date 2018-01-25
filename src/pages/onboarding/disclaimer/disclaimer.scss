@@ -1,7 +1,9 @@
 page-disclaimer {
+  @extend %onboarding;
   text-align: center;
   ion-header {
-    .toolbar-title, ion-icon {
+    .toolbar-title,
+    ion-icon {
       color: color($colors, primary);
     }
     .toolbar-background {

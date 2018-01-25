@@ -1,6 +1,8 @@
 page-collect-email {
+  @extend %onboarding;
   ion-header {
-    .toolbar-title, ion-icon {
+    .toolbar-title,
+    ion-icon {
       color: color($colors, primary);
     }
     .toolbar-background {
