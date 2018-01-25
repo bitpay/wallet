@@ -1,40 +1,31 @@
 page-wallet-activity {
   .wallet-color-default {
-    background-color: color($colors, primary); 
+    background-color: color($colors, primary);
   }
-  .wallet-activity {
-    
-      &-not-pending {
-        opacity: 0.6;
-        filter: alpha(opacity=60); /* For IE8 and earlier */
-      }
-    
-      &-amount {
-        float: right;
-        font-size: 18px;
-        @media(max-width: 320px) {
-          text-align: right;
-        }
-      }
-    
-      &-note {
-        margin-top: 3px;
-        font-size: 12px!important;
-        display: flex;
-        justify-content: space-between;
 
-        &-child {
-          line-height: 30px;
-          vertical-align: middle;
-          display: inline-block;
-        }
-        .color {
-          width: 2rem;
-          height: 2rem;
-          border-radius: 2rem;
-          margin-right: 10px;
-        }
-      }
-    
+  .copayer {
+    font-size: 12.5px;
+    font-weight: 300;
+  }
+
+  ion-note {
+    text-align: end;
+    .amount {
+      color: color($colors, dark);
     }
+    .date {
+      font-size: 12.5px;
+    }
+  }
+
+  .wallet-icon-container {
+    width: 37px;
+  }
+
+  .icon-color {
+    width: 2rem;
+    height: 2rem;
+    border-radius: $txp-icon-border-radius;
+    margin: 8px auto;
+  }
 }

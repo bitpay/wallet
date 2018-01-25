@@ -31,7 +31,7 @@
     "glidera": true,
     "debitcard": true,
     "amazon": true,
-    "mercadolibre": false,
+    "mercadolibre": true,
     "shapeshift": true
   }
 }

@@ -73,6 +73,11 @@ export class ShapeshiftShiftPage {
       return hasCachedFunds;
     });
 
+    if (_.isEmpty(this.fromWallets)) {
+      this.showErrorAndBack(null, 'No wallets with funds'); // TODO: gettextCatalog
+      return;
+    }
+
     this.onFromWalletSelect(this.fromWallets[0]);
   }
 

@@ -96,10 +96,6 @@ $list-md-border-color: color($colors, light);
 /* Ionic Overrides and Workarounds */
 // Please include a description of the problem solved by the workaround.
 
-ion-navbar.hide {
-  display: block !important;
-}
-
 // Hide scrollbars on platforms which don't match iOS, Android, or Windows
 // (So scroll bars are not visible in Chrome, NW.js, or Electron.)
 .platform-core .scroll-content {

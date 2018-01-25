@@ -5,7 +5,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content no-bounce>
   <ion-list>
     <ion-item>
       <div class="sending-label">
@@ -48,6 +48,8 @@
       </ion-item>
     </div>
 
+    <ion-item-divider color="light"></ion-item-divider>
+
     <ion-item *ngIf="fiatFee && feeRatePerStr">
       {{'Fee'|translate}}
       <ion-note item-end>
@@ -66,12 +68,10 @@
       </ion-note>
     </ion-item>
 
+    <ion-item-divider *ngIf="withdrawalStr" no-lines text-wrap>
+      A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?
+    </ion-item-divider>
   </ion-list>
-
-  <p class="text-confirm" *ngIf="withdrawalStr">
-    A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal
-    | currency}} {{currencyIsoCode}}). Would you like to proceed?
-  </p>
 
 </ion-content>
 

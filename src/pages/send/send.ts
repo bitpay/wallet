@@ -142,10 +142,6 @@ export class SendPage {
     });
   }
 
-  public openScanner(): void {
-    this.navCtrl.parent.select(2);
-  }
-
   public showMore(): void {
     this.currentContactsPage++;
     this.updateContactsList();
