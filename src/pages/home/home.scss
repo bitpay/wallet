@@ -1,7 +1,4 @@
 page-home {
-  ion-item-divider {
-    margin-top: 20px;
-  }
   .home-logo {
     height: 24px;
     position: relative;
@@ -24,29 +21,9 @@ page-home {
     }
   }
   .title {
-    color: color($colors, dark);
-    font-weight: 700;
-    &.col {
-      padding: 0;
-    }
     >img {
-      width: 22px;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 10px;
-    }
-  }
-  .icons-add-reorder {
-    justify-content: flex-end;
-    display: flex;
-    .add-icon {
-      padding-left: 10px;
-      cursor: pointer;
-    }
-    .reorder-icon {
-      cursor: pointer;
+      vertical-align: sub;
       margin-right: 5px;
-      padding-right: 10px;
     }
   }
   .error {

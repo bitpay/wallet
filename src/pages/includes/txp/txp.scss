@@ -1,6 +1,8 @@
 page-txp{
   img {
     width: 40px;
+    height: 40px;
+    border-radius: $icon-border-radius;
   }
   .label {
     display: -webkit-inline-box;
@@ -9,6 +11,10 @@ page-txp{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    .copayer {
+      font-size: 12.5px;
+      font-weight: 300;
+    }
   }
   ion-note {
     text-align: end;

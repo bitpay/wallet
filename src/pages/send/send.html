@@ -2,25 +2,17 @@
 
   <ion-navbar>
     <ion-title>{{'Send' | translate}}</ion-title>
-    <ion-buttons end>
-      <button *ngIf="hasBtcWallets || hasBchWallets" ion-button icon-only (click)="openScanner()">
-        <ion-icon class="icon-scanner" name="qr-scanner"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 <ion-content no-bounce>
   <div *ngIf="hasBtcWallets || hasBchWallets">
-    <ion-list>
-      <ion-list-header class="title">{{'Recipient' | translate}}</ion-list-header>
-      <ion-searchbar placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-searchbar>
-    </ion-list>
+    <ion-searchbar placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-searchbar>
 
     <ion-list *ngIf="filteredContactsList && filteredContactsList[0]">
-      <ion-item-divider class="title">
+      <ion-list-header color="light">
         <span translate>Transfer to Contact</span>
-      </ion-item-divider>
+      </ion-list-header>
       <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
         <ion-icon item-start>
           <gravatar [name]="item.name" [width]="30" [email]="item.email"></gravatar>
@@ -32,10 +24,10 @@
       </button>
     </ion-list>
     <ion-list *ngIf="walletBtcList && walletBtcList[0]">
-      <ion-item-divider class="title">
+      <ion-list-header class="title" color="light">
         <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
         <span translate>Transfer to Bitcoin Wallet</span>
-      </ion-item-divider>
+      </ion-list-header>
 
       <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToAmount(wallet)">
         <ion-icon item-start>
@@ -51,10 +43,10 @@
     </ion-list>
 
     <ion-list *ngIf="walletBchList && walletBchList[0]">
-      <ion-item-divider class="title">
+      <ion-list-header class="title" color="light">
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Transfer to Bitcoin Cash Wallet</span>
-      </ion-item-divider>
+      </ion-list-header>
 
       <button ion-item *ngFor="let wallet of walletBchList" (click)="goToAmount(wallet)">
         <ion-icon item-start>

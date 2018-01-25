@@ -126,25 +126,20 @@
 .gravatar {
   min-width: 3rem;
   min-height: 3rem;
+  border-radius: $icon-border-radius;
 }
 
 
 // Compatibility Ionic 1
 
-.light, a.light {
-  color: color($colors, light);
-}
-.stable, a.stable {
+.light, a.light, .stable, a.stable {
   color: color($colors, light);
 }
 .positive, a.positive {
   color: color($colors, secondary);
 }
 .calm, a.calm {
-  color: color($colors, light);
-}
-.positive, a.positive {
-  color: color($colors, primary);
+  color: color($colors, grey);
 }
 .energized, a.energized {
   color: color($colors, primary);
@@ -152,8 +147,11 @@
 .assertive, a.assertive {
   color: color($colors, danger);
 }
+.balanced, a.balanced {
+  color: color($colors, success);
+}
 .royal, a.royal {
-  color: color($colors, secondary);
+  color: color($colors, dark);
 }
 
 .text-gray {

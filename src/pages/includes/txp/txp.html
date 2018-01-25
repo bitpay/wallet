@@ -12,6 +12,10 @@
       <span *ngIf="tx.merchant.pr.ca"><ion-icon class="fi-lock"></ion-icon> {{tx.merchant.domain}}</span>
       <span *ngIf="!tx.merchant.pr.ca"><ion-icon class="fion-icon-unlock"></ion-icon> {{tx.merchant.domain}}</span>
     </span>
+    <div class="copayer">
+      <span *ngIf="tx.creatorName">{{ tx.creatorName}}@</span>
+      <span>{{tx.wallet.name}}</span>
+    </div>
   </div>
 
   <ion-note item-end>

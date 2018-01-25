@@ -20,6 +20,7 @@ export class LocalStorage implements IStorage {
       try {
         parsed = JSON.parse(v);
       } catch (e) {
+        //TODO parse is not necessary
       }
       resolve(parsed || v);
     });

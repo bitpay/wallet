@@ -90,7 +90,3 @@ $list-md-border-color: color($colors, light);
 @import "roboto";
 @import "noto-sans";
 
-/* Ionic Overrides and Workarounds */
-// Please include a description of the problem solved by the workaround.
-
-ion-navbar.hide { display: block !important; }
