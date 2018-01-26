@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -15,7 +14,6 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-
 // Position
 // --------------------------------------------------
 
@@ -23,9 +21,10 @@
   width: 100%;
   position: absolute;
   bottom: 0px;
-  padding: 15px 15px 1vw 15px;
+  padding: 15px 15px calc(5vw + 1vh) 15px;
   .button {
-    margin: 1.2rem 0.2rem;
+    margin: 1.2rem auto;
+    max-width: 360px;
   }
 }
 
@@ -53,7 +52,7 @@
   width: 35px;
   height: 35px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
-  background-repeat:no-repeat;
+  background-repeat: no-repeat;
   background-clip: padding-box;
   background-size: 103%;
 }
@@ -65,10 +64,10 @@
     border-radius: $icon-border-radius;
     width: 40px;
     height: 40px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     background-clip: padding-box;
     background-size: 103%;
-    &.green{
+    &.green {
       background: rgb(1, 209, 162);
     }
   }
@@ -129,28 +128,46 @@
   border-radius: $icon-border-radius;
 }
 
-
 // Compatibility Ionic 1
 
-.light, a.light, .stable, a.stable {
+.light,
+a.light,
+.stable,
+a.stable {
   color: color($colors, light);
 }
-.positive, a.positive {
+
+.positive,
+a.positive {
   color: color($colors, secondary);
 }
-.calm, a.calm {
+
+.calm,
+a.calm {
   color: color($colors, grey);
 }
-.energized, a.energized {
+
+.positive,
+a.positive {
   color: color($colors, primary);
 }
-.assertive, a.assertive {
+
+.energized,
+a.energized {
+  color: color($colors, primary);
+}
+
+.assertive,
+a.assertive {
   color: color($colors, danger);
 }
-.balanced, a.balanced {
+
+.balanced,
+a.balanced {
   color: color($colors, success);
 }
-.royal, a.royal {
+.royal,
+a.royal {
   color: color($colors, dark);
 }
 
