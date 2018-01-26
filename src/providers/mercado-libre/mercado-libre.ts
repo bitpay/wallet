@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 //providers
 import { PersistenceProvider } from '../persistence/persistence';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
-import { NextStepsProvider } from '../next-steps/next-steps';
 
 import * as _ from 'lodash';
 
@@ -20,7 +19,6 @@ export class MercadoLibreProvider {
   constructor(
     private persistenceProvider: PersistenceProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private nextStepsProvider: NextStepsProvider,
     private http: HttpClient,
     private logger: Logger
   ) {
@@ -52,13 +50,6 @@ export class MercadoLibreProvider {
       icon: 'assets/img/mercado-libre/icon-ml.svg',
       page: 'MercadoLibrePage',
     };
-
-    this.nextStepItem = {
-      name: 'mercadoLibre',
-      title: 'Buy Mercado Livre Brazil Gift Cards',
-      icon: 'assets/img/mercado-libre/icon-ml.svg',
-      page: 'MercadoLibrePage',
-    };
   }
 
   public getNetwork() {
@@ -87,9 +78,6 @@ export class MercadoLibreProvider {
 
 
       this.persistenceProvider.setMercadoLibreGiftCards(network, inv);
-
-      this.homeIntegrationsProvider.register(this.homeItem);
-      this.nextStepsProvider.unregister(this.nextStepItem.name);
       return cb();
     });
   }
@@ -186,13 +174,7 @@ export class MercadoLibreProvider {
   */
 
   public register() {
-    this.persistenceProvider.getMercadoLibreGiftCards(this.getNetwork()).then((giftCards) => {
-      if (giftCards) {
-        this.homeIntegrationsProvider.register(this.homeItem);
-      } else {
-        this.nextStepsProvider.register(this.nextStepItem);
-      }
-    });
+    this.homeIntegrationsProvider.register(this.homeItem);
   }
 }
 

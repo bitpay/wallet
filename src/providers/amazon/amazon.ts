@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 //providers
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { PersistenceProvider } from '../persistence/persistence';
-import { NextStepsProvider } from '../next-steps/next-steps';
 
 
 @Injectable()
@@ -15,14 +14,12 @@ export class AmazonProvider {
   public credentials: any;
   public limitPerDay: number;
   public homeItem: any;
-  public nextStepItem: any;
 
   constructor(
     private http: HttpClient,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private nextStepsProvider: NextStepsProvider
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.logger.info('AmazonProvider initialized.');
     this.credentials = {};
@@ -41,13 +38,6 @@ export class AmazonProvider {
     this.homeItem = {
       name: 'amazon',
       title: 'Amazon.com Gift Cards',
-      icon: 'assets/img/amazon/icon-amazon.svg',
-      page: 'AmazonPage',
-    };
-
-    this.nextStepItem = {
-      name: 'amazon',
-      title: 'Buy Amazon.com Gift Cards',
       icon: 'assets/img/amazon/icon-amazon.svg',
       page: 'AmazonPage',
     };
@@ -78,7 +68,6 @@ export class AmazonProvider {
       inv = JSON.stringify(inv);
       this.persistenceProvider.setAmazonGiftCards(network, inv);
       this.homeIntegrationsProvider.register(this.homeItem);
-      this.nextStepsProvider.unregister(this.nextStepItem.name);
       return cb(null);
     });
   }
@@ -159,13 +148,7 @@ export class AmazonProvider {
   };
 
   public register() {
-    this.persistenceProvider.getAmazonGiftCards(this.getNetwork()).then((giftCards) => {
-      if (giftCards) {
-        this.homeIntegrationsProvider.register(this.homeItem);
-      } else {
-        this.nextStepsProvider.register(this.nextStepItem);
-      }
-    });
+    this.homeIntegrationsProvider.register(this.homeItem);
   };
 
 }

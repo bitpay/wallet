@@ -6,7 +6,6 @@ import { Logger } from '../../providers/logger/logger';
 import { ActivityPage } from './activity/activity';
 import { AddPage } from "../add/add";
 import { AmazonPage } from '../integrations/amazon/amazon';
-import { BuyAndSellPage } from '../buy-and-sell/buy-and-sell';
 import { CopayersPage } from '../add/copayers/copayers';
 import { GlideraPage } from '../integrations/glidera/glidera';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
@@ -15,6 +14,7 @@ import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -29,10 +29,7 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AppProvider } from '../../providers/app/app';
 import { PlatformProvider } from '../../providers/platform/platform';
-import { BuyAndSellProvider } from '../../providers/buy-and-sell/buy-and-sell';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
-import { NextStepsProvider } from '../../providers/next-steps/next-steps';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
 
@@ -59,14 +56,12 @@ export class HomePage {
   public newRelease: boolean;
   public updateText: string;
   public homeIntegrations: Array<any>;
-  public buyAndSellItems: Array<any>;
-  public bitpayCardItems: Array<any>;
-  public nextStepsItems: Array<any>;
 
   public showRateCard: boolean;
   public homeTip: boolean;
   public showReorderBtc: boolean;
   public showReorderBch: boolean;
+  public showIntegration: any;
 
   private isNW: boolean;
   private isWindowsPhoneApp: boolean;
@@ -88,10 +83,7 @@ export class HomePage {
     private addressBookProvider: AddressBookProvider,
     private app: AppProvider,
     private platformProvider: PlatformProvider,
-    private buyAndSellProvider: BuyAndSellProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider,
-    private bitPayCardProvider: BitPayCardProvider,
-    private nextStepsProvider: NextStepsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
   ) {
@@ -110,20 +102,18 @@ export class HomePage {
     if (this.recentTransactionsEnabled) this.getNotifications();
 
     this.pushNotificationsProvider.init();
-
-    this.buyAndSellItems = this.buyAndSellProvider.getLinked();
-    this.homeIntegrations = this.homeIntegrationsProvider.get();
-
-    this.bitPayCardProvider.get({}, (err, cards) => {
-      this.bitpayCardItems = cards;
-    });
-
-    if (this.config.showNextSteps.enabled) {
-      this.nextStepsItems = this.nextStepsProvider.get();
+    if (this.config.showIntegrations.enabled) {
+      this.homeIntegrations = this.homeIntegrationsProvider.get();
+      this.showIntegration = this.config.showIntegration;
+      this.homeIntegrations.forEach((integration: any) => {
+        integration.show = this.showIntegration[integration.name];
+      });
+      this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
+        return homeIntegrations.show == true;
+      });
     } else {
-      this.nextStepsItems = null;
+      this.homeIntegrations = null;
     }
-
   }
 
   ionViewDidEnter() {
@@ -404,8 +394,8 @@ export class HomePage {
       case 'BitPayCardIntroPage':
         //push BitPayCardIntroPage
         break;
-      case 'BuyAndSellPage':
-        this.navCtrl.push(BuyAndSellPage);
+      case 'CoinbasePage':
+        this.navCtrl.push(CoinbasePage);
         break;
       case 'GlideraPage':
         this.navCtrl.push(GlideraPage);

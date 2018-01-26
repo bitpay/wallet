@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 //providers
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from '../persistence/persistence';
-import { BuyAndSellProvider } from '../buy-and-sell/buy-and-sell';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { AppProvider } from '../app/app';
 
 import * as _ from 'lodash';
@@ -22,7 +22,7 @@ export class GlideraProvider {
     private http: HttpClient,
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
-    private buyAndSellProvider: BuyAndSellProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
     private appProvider: AppProvider
   ) {
     this.logger.info('GlideraProvider initialized');
@@ -94,7 +94,6 @@ export class GlideraProvider {
     this.persistenceProvider.removeGlideraPermissions(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraStatus(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraTxs(this.credentials.NETWORK);
-    this.buyAndSellProvider.updateLink('glidera', false);
   }
 
   public getToken(code, cb) {
@@ -401,7 +400,6 @@ export class GlideraProvider {
           if (_.isString(status)) status = status;
           this.persistenceProvider.getGlideraTxs(this.credentials.NETWORK).then((txs) => {
             if (_.isString(txs)) txs = txs;
-            this.buyAndSellProvider.updateLink('glidera', true);
             return cb(null, {
               token: accessToken,
               permissions: permissions,
@@ -470,9 +468,10 @@ export class GlideraProvider {
 
   public register() {
     this.persistenceProvider.getGlideraToken(this.credentials.NETWORK).then((token) => {
-      this.buyAndSellProvider.register({
+      this.homeIntegrationsProvider.register({
         name: 'glidera',
-        logo: 'assets/img/glidera/glidera-logo.png',
+        title: 'Glidera',
+        icon: 'assets/img/glidera/glidera-logo.png',
         location: 'US Only',
         page: 'GlideraPage',
         linked: !!token,

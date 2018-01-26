@@ -7,7 +7,7 @@ import { Events } from 'ionic-angular';
 //providers
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from '../persistence/persistence';
-import { BuyAndSellProvider } from '../buy-and-sell/buy-and-sell';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { ConfigProvider } from '../config/config';
 import { FeeProvider } from '../fee/fee';
 import { AppProvider } from '../app/app';
@@ -28,7 +28,7 @@ export class CoinbaseProvider {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private platformProvider: PlatformProvider,
-    private buyAndSellProvider: BuyAndSellProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
     private configProvider: ConfigProvider,
     private feeProvider: FeeProvider,
     private appProvider: AppProvider,
@@ -126,7 +126,6 @@ export class CoinbaseProvider {
     if (data && data.access_token && data.refresh_token) {
       this.persistenceProvider.setCoinbaseToken(this.credentials.NETWORK, data.access_token)
       this.persistenceProvider.setCoinbaseRefreshToken(this.credentials.NETWORK, data.refresh_token)
-      this.buyAndSellProvider.updateLink('coinbase', true);
       return cb(null, data.access_token);
     } else {
       return cb('Could not get the access token');
@@ -300,7 +299,6 @@ export class CoinbaseProvider {
 
   public logout() {
     this.persistenceProvider.removeCoinbaseToken(this.credentials.NETWORK);
-    this.buyAndSellProvider.updateLink('coinbase', false);
     this.persistenceProvider.removeCoinbaseRefreshToken(this.credentials.NETWORK);
     this.persistenceProvider.removeCoinbaseTxs(this.credentials.NETWORK);
   }
@@ -972,10 +970,10 @@ export class CoinbaseProvider {
 
   public register() {
     this.isActive((isActive) => {
-
-      this.buyAndSellProvider.register({
+      this.homeIntegrationsProvider.register({
         name: 'coinbase',
-        logo: 'assets/img/coinbase/coinbase-logo.png',
+        title: 'Coinbase',
+        icon: 'assets/img/coinbase/coinbase-logo.png',
         location: '33 Countries',
         page: 'CoinbasePage',
         linked: !!isActive,
