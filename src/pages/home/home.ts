@@ -8,6 +8,7 @@ import { AddPage } from "../add/add";
 import { AmazonPage } from '../integrations/amazon/amazon';
 import { CopayersPage } from '../add/copayers/copayers';
 import { GlideraPage } from '../integrations/glidera/glidera';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
 import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
 import { ProposalsPage } from './proposals/proposals';
 import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
@@ -399,6 +400,9 @@ export class HomePage {
         break;
       case 'GlideraPage':
         this.navCtrl.push(GlideraPage);
+        break;
+      case 'CoinbasePage':
+        this.navCtrl.push(CoinbasePage);
         break;
       case 'MercadoLibrePage':
         this.navCtrl.push(MercadoLibrePage);
