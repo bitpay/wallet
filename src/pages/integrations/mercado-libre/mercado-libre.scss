@@ -1,51 +1,62 @@
 page-mercado-libre {
-  .integration-onboarding {
+  .box-notification.warning {
+    background: #ffc900;
+    margin: 0rem;
+  }
+
+  .center-header {
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    &-logo {
+    .logo {
       display: inline-block;
       margin-bottom: 1em;
       img {
         max-width: 170px;
       }
     }
-    &-description {
-      margin-top: 0;
-      margin-left: 2rem;
-      margin-right: 2rem;
-      margin-bottom: 130px;
+    .description {
       opacity: .6;
       max-width: 300px;
     }
-    &-cta {
-      position: absolute;
-      bottom: 5vh;
-      width: 100%;
-      button {
-        width: 85%;
-        max-width: 300px;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-      }
-    }
   }
+
   .integration-giftCard {
     &-logo {
       width: 100%;
       display: inline-block;
-      margin: 1em auto;
+      padding: 1em;
       text-align: center;
       img {
         max-width: 200px;
+        margin-top: 1rem;
+      }
+      .subtitle {
+        margin-top: 0.5rem;
+        color: #bbbbbb;
       }
     }
-    &-info {
-      padding: 1rem;
+  }
+
+  .mercado-libre-card {
+    display: flex;
+    align-items: center;
+    .avatar {
+      width: 40px;
+      border-radius: 5rem;
+    }
+    .card-info {
+      padding-left: 1rem;
+      font-size: 12px;
+      width: 100%;
+      .amount {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
   }
 }

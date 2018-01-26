@@ -1,17 +1,32 @@
 page-amazon-card-details {
-  .scroll-content {
-    padding: 2rem;
-  }
   .header-modal {
     text-align: center;
+    padding: 2rem;
     img {
       width: 230px;
     }
     &-amount {
       padding: 1rem;
     }
+    .redeem {
+      margin-top: 2rem;
+    }
     .invoice {
-      margin: 2rem 0 5rem 0;
+      margin: 1.5rem 0 3rem 0;
+    }
+  }
+  .steps {
+    ion-item {
+      padding: 0px 16px 0px 16px;
+    }
+    .steps-info {
+      font-size: 12px;
+      white-space: normal;
+      color: #666;
+      line-height: 22px;
+    }
+    button {
+      text-align: center;
     }
   }
 }

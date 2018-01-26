@@ -34,7 +34,7 @@ export class AmazonProvider {
     } else {
       this.credentials.BITPAY_API_URL = "https://bitpay.com";
     };
-    this.limitPerDay = 1000;
+    this.limitPerDay = 2000;
     this.homeItem = {
       name: 'amazon',
       title: 'Amazon.com Gift Cards',

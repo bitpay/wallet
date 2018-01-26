@@ -55,7 +55,6 @@ import { SuccessModalPage } from '../pages/success/success';
 
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
-import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
 
@@ -74,7 +73,6 @@ import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell
 // Integrations: Mercado Libre
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
-import { MercadoLibreCardsPage } from '../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
 
 // Integrations: ShapeShift
@@ -210,7 +208,6 @@ let pages: any = [
   ActivityPage,
   AddPage,
   AmazonCardDetailsPage,
-  AmazonCardsPage,
   AmazonPage,
   AmountPage,
   AddressbookPage,
@@ -270,7 +267,6 @@ let pages: any = [
   ShapeshiftShiftPage,
   TermsOfUsePage,
   MercadoLibreCardDetailsPage,
-  MercadoLibreCardsPage,
   NotificationsPage,
   FeePolicyPage,
   SessionLogPage,

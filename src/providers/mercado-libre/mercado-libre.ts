@@ -14,7 +14,6 @@ export class MercadoLibreProvider {
   private credentials: any;
   //private availableCountries: any;
   private homeItem: any;
-  private nextStepItem: any;
 
   constructor(
     private persistenceProvider: PersistenceProvider,

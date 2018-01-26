@@ -30,8 +30,8 @@
         Claim code:
         <span class="text-bold" copy-to-clipboard="{{card.claimCode}}">{{card.claimCode}}</span>
       </div>
-      <div *ngIf="card.cardStatus == 'Fulfilled'">
-        <button ion-button (click)="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode)">
+      <div class="redeem" *ngIf="card.cardStatus == 'Fulfilled'">
+        <button ion-button outline (click)="openExternalLink('https://www.amazon.com/gc/redeem?claimCode=' + card.claimCode)">
           Redeem Now
         </button>
       </div>
@@ -65,7 +65,7 @@
       </div>
     </div>
     <div class="invoice">
-      <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)">See invoice</a>
+      <a class="button button-clear button-calm" (click)="openExternalLink(card.invoiceUrl)">See invoice &rarr;</a>
     </div>
   </div>
 
@@ -73,42 +73,50 @@
     There was a failure to the create gift card. Please, contact BitPay support.
   </div>
 
-  <div class="oh m20t size-12 p15h" *ngIf="card.claimCode && card.cardStatus == 'Fulfilled'">
-    To redeem your gift card, follow these steps:
+  <ion-list class="steps" *ngIf="card.claimCode && card.cardStatus == 'Fulfilled'">
+    <ion-list-header color="light">To redeem your gift card, follow these steps:</ion-list-header>
 
-    <ol class="m10t size-12">
-      <li>1. Visit
-        <a (click)="openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>
-        <li>2. Click Apply to Account and enter the Claim Code when prompted.
-          <li>3. Gift card funds will be applied automatically to eligible orders during the checkout process.
-            <li>4. You must pay for any remaining balance on your order with another payment method.
-    </ol>
+    <ion-item>
+      <ol class="steps-info">
+        <li>Visit
+          <a (click)="openExternalLink('https://www.amazon.com/gc')">www.amazon.com/gc</a>
+        </li>
+        <li>Click Apply to Account and enter the Claim Code when prompted.</li>
+        <li>Gift card funds will be applied automatically to eligible orders during the checkout process.</li>
+        <li>You must pay for any remaining balance on your order with another payment method.</li>
+      </ol>
 
-    <p class="size-12">
-      Your gift card claim code may also be entered when prompted during checkout. To redeem your gift card using the Amazon.com
-      1-Click&reg; service, first add the gift card funds to Your Account.
-    </p>
+      <div>
+        <p class="steps-info">
+          Your gift card claim code may also be entered when prompted during checkout. To redeem your gift card using the Amazon.com
+          1-Click&reg; service, first add the gift card funds to Your Account.
+        </p>
 
-    <p class="size-12">
-      If you have questions about redeeming your gift card, please visit
-      <a (click)="openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>. If you have questions regarding the BitPay Introductory offer, please contact BitPay.
-    </p>
+        <p class="steps-info">
+          If you have questions about redeeming your gift card, please visit
+          <a (click)="openExternalLink('https://www.amazon.com/gc-redeem')">www.amazon.com/gc-redeem</a>. If you have questions regarding the BitPay Introductory offer, please contact BitPay.
+        </p>
+      </div>
 
-  </div>
+      <div class="steps-info">
+        *
+        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
+        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for
+        purchases of eligible goods at
+        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
+        <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;,
+        &trade; &amp; &copy; are IP of
+        <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
+      </div>
+    </ion-item>
 
-  <div class="size-12 p15 m30v">
-    *
-    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
-    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> Gift Cards ("GCs") cannot be transferred for value or redeemed for cash. GCs may be used only for purchases
-    of eligible goods at
-    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> or certain of its affiliated websites. For complete terms and conditions, see
-    <a (click)="openExternalLink('https://www.amazon.com/gc-legal')">www.amazon.com/gc-legal</a>. GCs are issued by ACI Gift Cards, Inc., a Washington corporation. All Amazon &reg;, &trade;
-    &amp; &copy; are IP of
-    <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a>, Inc. or its affiliates. No expiration date or service fees.
-  </div>
+    <button ion-item block *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'"
+      class="button-footer assertive" (click)="remove()">Remove</button>
+    <button ion-item block *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" class="button-footer assertive"
+      (click)="cancelGiftCard()">Cancel</button>
 
-  <button ion-button block *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'"
-    class="button-footer assertive" (click)="remove()">Remove</button>
-  <button ion-button block *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" class="button-footer assertive"
-    (click)="cancelGiftCard()">Cancel</button>
+
+  </ion-list>
+
+
 </ion-content>
