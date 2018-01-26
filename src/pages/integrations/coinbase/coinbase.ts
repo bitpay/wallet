@@ -29,7 +29,7 @@ export class CoinbasePage {
   public loading: boolean;
   public buyPrice: string;
   public sellPrice: string;
-  public pendingTransactions: any;
+  public pendingTransactions: object = { data: {} };
   public code: string;
   public showOauthForm: boolean;
   public oauthCodeForm: FormGroup;
@@ -110,7 +110,6 @@ export class CoinbasePage {
 
   public updateTransactions(): void {
     this.logger.debug('Getting transactions...');
-    this.pendingTransactions = { data: {} };
     this.coinbaseProvider.getPendingTransactions(this.pendingTransactions);
   }
 
@@ -190,11 +189,11 @@ export class CoinbasePage {
     })
   }
 
-  public goToBuyGlideraPage(): void {
+  public goToBuyCoinbasePage(): void {
     this.navCtrl.push(AmountPage, { nextPage: 'BuyCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true });
   }
 
-  public goToSellGlideraPage(): void {
+  public goToSellCoinbasePage(): void {
     this.navCtrl.push(AmountPage, { nextPage: 'SellCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true })
   }
 

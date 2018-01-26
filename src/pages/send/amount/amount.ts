@@ -12,6 +12,8 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
 import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
 import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
+import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
+import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
@@ -145,6 +147,14 @@ export class AmountPage {
       case 'SellGlideraPage':
         this.showRecipient = false;
         nextPage = SellGlideraPage;
+        break;
+      case 'BuyCoinbasePage':
+        this.showRecipient = false;
+        nextPage = BuyCoinbasePage;
+        break;
+      case 'SellCoinbasePage':
+        this.showRecipient = false;
+        nextPage = SellCoinbasePage;
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
