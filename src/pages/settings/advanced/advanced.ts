@@ -5,8 +5,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { ConfigProvider } from '../../../providers/config/config';
 import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
 
-import * as _ from 'lodash';
-
 @Component({
   selector: 'page-advanced',
   templateUrl: 'advanced.html',
@@ -33,7 +31,7 @@ export class AdvancedPage {
   }
 
   ionViewWillEnter() {
-    let config = this.configProvider.get();
+    let config: any = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
     this.recentTransactionsEnabled = config.recentTransactions.enabled;

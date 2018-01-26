@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 // Pages
-import { FeeWarningPage } from '../../../../pages/send/fee-warning/fee-warning';
-import { MercadoLibreCardsPage } from '../../../../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
+import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
+import { MercadoLibrePage } from '../mercado-libre';
 import { SuccessModalPage } from '../../../success/success';
 
 // Provider
@@ -263,13 +263,11 @@ export class BuyMercadoLibrePage {
     this.mercadoLibreProvider.createGiftCard(dataSrc, (err, giftCard) => {
       this.logger.debug("creating gift card " + count);
       if (err) {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         giftCard = giftCard || {};
         giftCard['status'] = 'FAILURE';
       }
 
       if (giftCard && giftCard.cardStatus && (giftCard.cardStatus != 'active' && giftCard.cardStatus != 'inactive' && giftCard.cardStatus != 'expired')) {
-        this.onGoingProcessProvider.set('Comprando Vale-Presente', false);
         giftCard = giftCard || {};
         giftCard['status'] = 'FAILURE';
       }
@@ -416,9 +414,9 @@ export class BuyMercadoLibrePage {
     let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(3, 1);
+      this.navCtrl.remove(2, 2);
       this.navCtrl.pop();
-      this.navCtrl.push(MercadoLibreCardsPage, { invoiceId: this.invoiceId });
+      this.navCtrl.push(MercadoLibrePage, { invoiceId: this.invoiceId });
     });
   }
 

@@ -5,8 +5,8 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 // Pages
-import { FeeWarningPage } from '../../../../pages/send/fee-warning/fee-warning';
-import { AmazonCardsPage } from '../../../../pages/integrations/amazon/amazon-cards/amazon-cards';
+import { AmazonPage } from '../amazon';
+import { FeeWarningPage } from '../../../send/fee-warning/fee-warning';
 import { SuccessModalPage } from '../../../success/success';
 
 // Provider
@@ -268,7 +268,6 @@ export class BuyAmazonPage {
     this.amazonProvider.createGiftCard(dataSrc, (err, giftCard) => {
       this.logger.debug("creating gift card " + count);
       if (err) {
-        this.onGoingProcessProvider.set('buyingGiftCard', false);
         giftCard = giftCard || {};
         giftCard['status'] = 'FAILURE';
       }
@@ -429,9 +428,9 @@ export class BuyAmazonPage {
     let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.remove(3, 1);
+      this.navCtrl.remove(2, 2);
       this.navCtrl.pop();
-      this.navCtrl.push(AmazonCardsPage, { invoiceId: this.invoiceId });
+      this.navCtrl.push(AmazonPage, { invoiceId: this.invoiceId });
     });
   }
 

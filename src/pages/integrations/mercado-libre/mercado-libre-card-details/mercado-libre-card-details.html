@@ -16,18 +16,25 @@
   <div class="header-modal">
     <img src="assets/img/mercado-libre/giftcard-pt.svg" alt="Mercado Livre Brazil Gift Card">
     <div class="header-modal-amount">
+      {{'Gift Card Amount:' | translate }}
       <span class="text-bold">
         {{card.amount | currency : '$ ' : 2}} {{card.currency}}
       </span>
     </div>
+    <div translate>
+      Created {{card.date | amTimeAgo}}
+    </div>
 
-    <div *ngIf="card.pin">
+    <div>
       <div *ngIf="card.cardStatus == 'active'">
-        <span class="text-bold" copy-to-clipboard="{{card.pin}}">{{card.pin}}</span>
+        <div *ngIf="card.pin">
+          Claim code:
+          <span class="text-bold" copy-to-clipboard="{{card.pin}}">{{card.pin}}</span>
+        </div>
+        <button class="redeem" ion-button outline (click)="openRedeemLink()" translate>
+          Redeem Now
+        </button>
       </div>
-      <button (click)="openRedeemLink()" translate>
-        Redeem Now
-      </button>
 
       <div *ngIf="card.cardStatus == 'inactive'">
         <span class="assertive" translate>Inactive</span>
@@ -57,22 +64,16 @@
   </div>
 
   <ion-list>
-    <ion-item>
-      <span translate>Date</span>
-      <ion-note item-end>
-        {{card.date | amTimeAgo}}
-      </ion-note>
-    </ion-item>
-
-    <button ion-item (click)="openExternalLink(card.invoiceUrl)">
-      <span translate>See invoice</span>
+    <button class="links" ion-item (click)="openExternalLink(card.invoiceUrl)">
+      <span translate>See invoice &rarr;</span>
     </button>
 
-    <button ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
-      <span>{{'Help & Support' | translate }}</span>
+    <button class="links" ion-item *ngIf="card.status == 'FAILURE'" (click)="openSupportWebsite()">
+      <span>{{'Help & Support' | translate }} &rarr;</span>
     </button>
+
+    <button ion-item block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'"
+      class="button-footer assertive" (click)="remove()">Remove</button>
   </ion-list>
 
-  <button ion-button block *ngIf="card.cardStatus == 'inactive' || card.cardStatus == 'expired' || card.status == 'expired'"
-    class="button-footer assertive" (click)="remove()">Remove</button>
 </ion-content>

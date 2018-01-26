@@ -5,8 +5,7 @@ page-buy-mercado-libre {
     margin-bottom: 2rem;
     img {
       width: 3.5rem;
-      margin-right: 1.5rem; 
-      box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.3);
+      margin-right: 1.5rem;
     }
   }
   .amount-label {
@@ -15,21 +14,16 @@ page-buy-mercado-libre {
       font-size: 38px;
       margin-bottom: .5rem;
     }
-    .alternative {
-      font-size: 12px;
-      color: #9B9B9B;
-    }
   }
+
   .wallets-list {
     .wallet {
       display: flex;
       align-items: center;
       margin-top: 1rem;
-      img {
-        width: 2.3rem;
-        margin-right: 1.5rem; 
-        border-radius: 0.3rem;
+      .icon-wallet {
         background-color: color($colors, primary);
+        margin-right: 1rem;
       }
     }
   }
