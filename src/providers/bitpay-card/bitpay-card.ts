@@ -5,8 +5,8 @@ import { Logger } from '../../providers/logger/logger';
 import { BitPayProvider } from '../bitpay/bitpay';
 import { AppIdentityProvider } from '../app-identity/app-identity';
 import { PersistenceProvider } from '../persistence/persistence';
-import { NextStepsProvider } from '../next-steps/next-steps';
 import { AppProvider } from '../app/app';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -24,8 +24,8 @@ export class BitPayCardProvider {
     private bitPayProvider: BitPayProvider,
     private appIdentityProvider: AppIdentityProvider,
     private persistenceProvider: PersistenceProvider,
-    private nextStepsProvider: NextStepsProvider,
-    private appProvider: AppProvider
+    private appProvider: AppProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {
     this.logger.info('BitPayCardProvider initialized');
     /*
@@ -1507,12 +1507,6 @@ export class BitPayCardProvider {
   public register() {
     // Disable BitPay Card
     if (!this.appProvider.info._enabledExtensions.debitcard) return;
-    this.getCards((err, cards) => {
-      if (_.isEmpty(cards)) {
-        this.nextStepsProvider.register(this.nextStepItem);
-      } else {
-        this.nextStepsProvider.unregister(this.nextStepItem.name);
-      }
-    });
+    this.homeIntegrationsProvider.register(this.nextStepItem);
   };
 }

@@ -65,8 +65,17 @@ interface Config {
     enabled: boolean;
   };
 
-  showNextSteps: {
+  showIntegrations: {
     enabled: boolean;
+  };
+
+  showIntegration: {
+    coinbase: boolean,
+    glidera: boolean,
+    debitcard: boolean,
+    amazon: boolean,
+    mercadoLibre: boolean,
+    shapeshift: boolean
   };
 
   rates: {
@@ -158,8 +167,17 @@ const configDefault: Config = {
     enabled: true
   },
 
-  showNextSteps: {
+  showIntegrations: {
     enabled: true
+  },
+
+  showIntegration: {
+    coinbase: true,
+    glidera: true,
+    debitcard: true,
+    amazon: true,
+    mercadoLibre: true,
+    shapeshift: true
   },
 
   rates: {
@@ -248,8 +266,12 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
     }
 
-    if (!this.configCache.showNextSteps) {
-      this.configCache.showNextSteps = configDefault.showNextSteps;
+    if (!this.configCache.showIntegrations) {
+      this.configCache.showIntegrations = configDefault.showIntegrations;
+    }
+
+    if (!this.configCache.showIntegration) {
+      this.configCache.showIntegration = configDefault.showIntegration;
     }
 
     if (!this.configCache.recentTransactions) {

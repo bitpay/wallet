@@ -48,12 +48,18 @@
   <ion-card>
     <ion-card-header>
       <div class="toggle-header">
-        <ion-label>{{'Show Next Steps Card' | translate}}</ion-label>
-        <ion-toggle [(ngModel)]="showNextSteps" (ionChange)="nextStepsChange()"></ion-toggle>
+        <ion-label>{{'Show Services Card' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="showIntegrations" (ionChange)="integrationsChange()"></ion-toggle>
       </div>
     </ion-card-header>
+    <ion-card-content *ngIf="showIntegrations">
+      <ion-item *ngFor="let integration of homeIntegrations">
+        <ion-label>{{integration.title}}</ion-label>
+        <ion-checkbox [(ngModel)]="integration.show" (ionChange)="integrationChange(integration.name)"></ion-checkbox>
+      </ion-item>
+    </ion-card-content>
     <ion-item-divider color="light" text-wrap>
-      <span translate>If enabled, the "Next Steps Card" will appear in the Home tab.</span>
+      <span translate>If enabled, the "Services Card" will appear in the Home tab.</span>
     </ion-item-divider>
   </ion-card>
 

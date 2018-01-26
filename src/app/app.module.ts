@@ -33,7 +33,6 @@ import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
-import { BuyAndSellPage } from '../pages/buy-and-sell/buy-and-sell';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -160,7 +159,6 @@ import { BitPayProvider } from '../providers/bitpay/bitpay';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
-import { BuyAndSellProvider } from '../providers/buy-and-sell/buy-and-sell';
 import { ConfigProvider } from '../providers/config/config';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
@@ -172,7 +170,6 @@ import { HomeIntegrationsProvider } from '../providers/home-integrations/home-in
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
 import { Logger } from '../providers/logger/logger';
-import { NextStepsProvider } from '../providers/next-steps/next-steps';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
 import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
@@ -226,7 +223,6 @@ let pages: any = [
   BackupRequestPage,
   BitcoinCashPage,
   BuyAmazonPage,
-  BuyAndSellPage,
   BuyCoinbasePage,
   BuyGlideraPage,
   BuyMercadoLibrePage,
@@ -314,7 +310,6 @@ let providers: any = [
   BitPayCardProvider,
   BwcProvider,
   BwcErrorProvider,
-  BuyAndSellProvider,
   ConfigProvider,
   CoinbaseProvider,
   Clipboard,
@@ -329,7 +324,6 @@ let providers: any = [
   LanguageProvider,
   Logger,
   MercadoLibreProvider,
-  NextStepsProvider,
   NodeWebkitProvider,
   OnGoingProcessProvider,
   PayproProvider,

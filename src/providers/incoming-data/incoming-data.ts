@@ -15,6 +15,8 @@ import { ConfirmPage } from '../../pages/send/confirm/confirm';
 import { AmountPage } from '../../pages/send/amount/amount';
 import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
+import { GlideraPage } from '../../pages/integrations/glidera/glidera';
+import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
 
 @Injectable()
 export class IncomingDataProvider {
@@ -184,13 +186,17 @@ export class IncomingDataProvider {
         this.goToAmountPage(data, coin, network);
       }
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
-      //let code = this.getParameterByName('code', data);
-      //this.navCtrl.push(GlideraPage, {code: code}); //Glidera TODO
+
+      let code = this.getParameterByName('code', data);
+      this.navCtrl.push(GlideraPage, { code: code });
+
       this.logger.debug('Glidera TODO');
       return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
-      //let code = this.getParameterByName('code', data);
-      //this.navCtrl.push(CoinbasePage, {code: code}); //Glidera TODO
+
+      let code = this.getParameterByName('code', data);
+      this.navCtrl.push(CoinbasePage, { code: code });
+
       this.logger.debug('Coinbase TODO');
       return true;
       // BitPayCard Authentication
