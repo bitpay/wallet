@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>BitPay Visa<sup>&reg;</sup> Card ({{bitpayCard.lastFourDigits}})</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="box-notification warning" *ngIf="network == 'testnet'">
+    Sandbox version. Only for testing purpose
+  </div>
+  <div class="balance-header">
+    <div *ngIf="bitpayCard.balance" (click)="bitpayCard.update()">
+      <div class="balance">
+        {{bitpayCard.balance | currency:bitpayCard.currencySymbol:2 }}
+      </div>
+    </div>
+  </div>
+</ion-content>

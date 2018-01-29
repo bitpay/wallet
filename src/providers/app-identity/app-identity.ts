@@ -5,6 +5,7 @@ import { Logger } from '../../providers/logger/logger';
 import { PersistenceProvider } from '../persistence/persistence';
 
 import * as _ from 'lodash';
+import * as bitauthService from 'bitauth';
 
 @Injectable()
 export class AppIdentityProvider {
@@ -17,28 +18,26 @@ export class AppIdentityProvider {
   }
 
   public getIdentity(network, cb) {
-    //var pubkey;
-    //var sin;
-    var isNew;
+    let pubkey;
+    let sin;
+    let isNew;
     this.persistenceProvider.getAppIdentity(network).then((data) => {
-      var appIdentity = data || {};
+      let appIdentity = data || {};
+
       if (_.isEmpty(appIdentity) || (appIdentity && !appIdentity.priv)) {
         isNew = true;
-        //appIdentity = this.bitauthProvider.generateSin(); TODO
+        appIdentity = bitauthService.generateSin();
       }
       try {
-        //pubkey = this.bitauthProvider.getPublicKeyFromPrivateKey(appIdentity.priv); TODO
-        // sin = this.bitauthProvider.getSinFromPublicKey(pubkey); TODO
+        pubkey = bitauthService.getPublicKeyFromPrivateKey(appIdentity.priv);
+        sin = bitauthService.getSinFromPublicKey(pubkey);
         if (isNew)
-          this.persistenceProvider.setAppIdentity(network, JSON.stringify(appIdentity));
+          this.persistenceProvider.setAppIdentity(network, appIdentity);
       }
       catch (e) {
-        this.logger.error(e);
         return cb(e);
       };
       return cb(null, appIdentity);
-    }).catch((err) => {
-      return cb(err);
     });
   };
 }

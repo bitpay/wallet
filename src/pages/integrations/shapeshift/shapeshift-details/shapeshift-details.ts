@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
+import { Logger } from '../../../../providers/logger/logger';
 
 // Providers
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
@@ -17,13 +18,14 @@ export class ShapeshiftDetailsPage {
     private externalLinkProvider: ExternalLinkProvider,
     private navParams: NavParams,
     private shapeshiftProvider: ShapeshiftProvider,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private logger: Logger
   ) {
     this.ssData = this.navParams.data.ssData;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ShapeshiftDetailsPage');
+    this.logger.info('ionViewDidLoad ShapeshiftDetailsPage');
   }
 
   public remove() {

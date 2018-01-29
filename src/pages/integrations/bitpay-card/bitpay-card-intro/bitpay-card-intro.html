@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar transparent>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="bitPayCardInfo()">
+        <ion-icon name="information"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="bitpayCard-illustration">
+    <img class="bitpayCard-illustration-img" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
+  </div>
+  <ion-slides pager="true">
+    <ion-slide>
+      <p class="slider-text" translate>
+        Turn bitcoin into dollars, swipe anywhere Visa
+        <sup>&reg;</sup> is accepted.
+      </p>
+    </ion-slide>
+    <ion-slide>
+      <p class="slider-text" translate>
+        Get local cash anywhere you go, from any Visa
+        <sup>&reg;</sup> compatible ATM. ATM bank fees may apply.
+      </p>
+    </ion-slide>
+    <ion-slide>
+      <p class="slider-text" translate>
+        Pay 0% fees to turn bitcoin into dollars.
+      </p>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+<ion-footer>
+  <button ion-button block class="button-footer" (click)="orderBitPayCard()">Order the BitPay Card</button>
+  <button ion-button block outline class="button-footer" (click)="connectBitPayCard()">Connect my BitPay Card</button>
+</ion-footer>

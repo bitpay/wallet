@@ -17,7 +17,7 @@ export class BitPayCardProvider {
   public currencySymbols: any;
   public bpTranCodes: any;
   public iconMap: any;
-  public nextStepItem: any;
+  public homeItem: any;
 
   constructor(
     private logger: Logger,
@@ -1107,7 +1107,7 @@ export class BitPayCardProvider {
       'bp002': 'default'
     };
 
-    this.nextStepItem = {
+    this.homeItem = {
       name: 'bitpaycard',
       title: 'Add BitPay Visa® Card',
       icon: 'assets/img/bitpay-card/icon-bitpay.svg',
@@ -1505,8 +1505,6 @@ export class BitPayCardProvider {
 
 
   public register() {
-    // Disable BitPay Card
-    if (!this.appProvider.info._enabledExtensions.debitcard) return;
-    this.homeIntegrationsProvider.register(this.nextStepItem);
+    this.homeIntegrationsProvider.register(this.homeItem);
   };
 }

@@ -83,6 +83,10 @@ import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshi
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
+// Integrations: BitPayCard
+import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
+
 /*Includes */
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
@@ -156,6 +160,7 @@ import { AppProvider } from '../providers/app/app';
 import { AppIdentityProvider } from '../providers/app-identity/app-identity';
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { BackupProvider } from '../providers/backup/backup';
+import { BitPayAccountProvider } from '../providers/bitpay-account/bitpay-account';
 import { BitPayProvider } from '../providers/bitpay/bitpay';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { BwcProvider } from '../providers/bwc/bwc';

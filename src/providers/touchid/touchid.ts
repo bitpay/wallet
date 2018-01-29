@@ -43,7 +43,7 @@ export class TouchIdProvider {
           return resolve(true);
         },
         err => {
-          console.log("Fingerprint is not available");
+          this.logger.debug("Fingerprint is not available");
           return resolve(false);
         }
         );
@@ -57,7 +57,7 @@ export class TouchIdProvider {
         res => {
           if (res.isAvailable) return resolve(true);
           else {
-            console.log("Fingerprint is not available");
+            this.logger.debug("Fingerprint is not available");
             return resolve(false);
           }
         });
