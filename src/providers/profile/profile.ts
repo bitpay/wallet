@@ -78,7 +78,7 @@ export class ProfileProvider {
 
   private requiresBackup(wallet: any): boolean {
     if (wallet.isPrivKeyExternal()) return false;
-    if (!wallet.credentials.mnemonic) return false;
+    if (!wallet.credentials.mnemonic && !wallet.credentials.mnemonicEncrypted) return false;
     if (wallet.credentials.network == 'testnet') return false;
 
     return true;
