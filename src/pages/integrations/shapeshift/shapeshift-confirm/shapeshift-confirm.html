@@ -76,7 +76,7 @@
 </ion-content>
 
 <ion-footer *ngIf="fromWallet && toWallet && totalAmountStr">
-  <button ion-button block class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr" translate>
+  <button ion-button full class="button-footer" (click)="confirmTx()" [disabled]="!fromWallet || !totalAmountStr" translate>
     Click to shift
   </button>
 </ion-footer>

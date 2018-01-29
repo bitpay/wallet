@@ -112,7 +112,7 @@
 
     <button ion-item block *ngIf="card.status == 'FAILURE' || card.cardStatus == 'Canceled' || card.cardStatus == 'Expired' || card.status == 'expired'"
       class="button-footer assertive" (click)="remove()">Remove</button>
-    <button ion-item block *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" class="button-footer assertive"
+    <button ion-item block *ngIf="card.status == 'SUCCESS' && card.cardStatus == 'Fulfilled'" class="assertive"
       (click)="cancelGiftCard()">Cancel</button>
 
 
