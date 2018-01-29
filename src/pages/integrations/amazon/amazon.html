@@ -42,7 +42,7 @@
 
   <ion-list>
     <ion-list-header color="light">Your cards</ion-list-header>
-    <button ion-item *ngFor="let item of giftCards | keys" (click)="openCardModal(item.value)">
+    <button ion-item *ngFor="let item of (giftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
       <div class="amazon-card">
         <img src="assets/img/amazon/a-smile_color_btn.png" alt="" class="avatar">
         <ion-spinner *ngIf="updatingPending[item.value.invoiceId]" name="crescent"></ion-spinner>
