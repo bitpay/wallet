@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events } from 'ionic-angular';
+import { NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 import * as _ from 'lodash';
 
@@ -10,6 +10,7 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { FeeProvider } from '../../providers/fee/fee';
 import { ProfileProvider } from '../../providers/profile/profile';
+import { SuccessModalPage } from '../success/success';
 
 @Component({
   selector: 'page-paper-wallet',
@@ -45,7 +46,8 @@ export class PaperWalletPage {
     private walletProvider: WalletProvider,
     private feeProvider: FeeProvider,
     private profileProvider: ProfileProvider,
-    private events: Events
+    private events: Events,
+    private modalCtrl: ModalController
   ) {
     this.bitcore = this.bwcProvider.getBitcore();
   }
@@ -115,7 +117,10 @@ export class PaperWalletPage {
       this.onGoingProcessProvider.set('scanning', false);
       this.privateKey = data.privateKey;
       this.balanceSat = data.balance;
-      if (this.balanceSat <= 0) this.popupProvider.ionicAlert('Error', 'Not funds found'); //TODO gettextcatalog
+      if (this.balanceSat <= 0) {
+        this.popupProvider.ionicAlert('Error', 'Not funds found'); //TODO gettextcatalog
+        this.navCtrl.pop();
+      }
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('scanning', false);
       this.logger.error(err);
@@ -155,6 +160,8 @@ export class PaperWalletPage {
     this.onGoingProcessProvider.set('sweepingWallet', true);
     this._sweepWallet().then((data: any) => {
       this.onGoingProcessProvider.set('sweepingWallet', false);
+      this.logger.debug('Success sweep. Destination address:' + data.destinationAddress + ' - transaction id: ' + data.txid);
+      this.openSuccessModal();
     }).catch((err: any) => {
       this.logger.error(err);
       this.popupProvider.ionicAlert('Error sweeping wallet:', err || err.toString());//TODO gettextcatalog
@@ -171,6 +178,16 @@ export class PaperWalletPage {
     this.events.subscribe('selectWalletEvent', (wallet: any) => {
       if (!_.isEmpty(wallet)) this.onWalletSelect(wallet);
       this.events.unsubscribe('selectWalletEvent');
+    });
+  }
+
+  public openSuccessModal(): void {
+    let successComment = "Check the transaction on your wallet details"; //TODO gettextcatalog
+    let successText = 'Sweep Completed'; //TODO gettextcatalog
+    let modal = this.modalCtrl.create(SuccessModalPage, { successText: successText, successComment: successComment }, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.navCtrl.pop();
     });
   }
 }
