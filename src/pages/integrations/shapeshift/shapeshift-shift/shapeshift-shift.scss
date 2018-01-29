@@ -17,22 +17,22 @@ page-shapeshift-shift {
       }
     }
     .terms {
-    display: flex;
-    align-items: center;
-    height: 6rem;
-    position: absolute;
-    top: 0;
-    left: 5rem;
-    padding: 0rem;
-    margin: 0rem;
-    p {
-      padding-right: 1rem;
-      font-size: 12px;
-    }
-    a {
-      font-weight: bold;
-      cursor: pointer;
-    }
+      display: flex;
+      align-items: center;
+      height: 6rem;
+      position: absolute;
+      top: 0;
+      left: 5rem;
+      padding: 0rem;
+      margin: 0rem;
+      p {
+        padding-right: 1rem;
+        font-size: 12px;
+      }
+      a {
+        font-weight: bold;
+        cursor: pointer;
+      }
     }
   }
 }

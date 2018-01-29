@@ -62,6 +62,7 @@ export class MercadoLibrePage {
             return;
           }
           this.openCardModal(card);
+          this.invoiceId = this.navParams.data.invoiceId = null;
           this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
         }
       }).catch((err: any) => {

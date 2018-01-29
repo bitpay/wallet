@@ -62,6 +62,7 @@ export class AmazonPage {
             return;
           }
           this.updateGiftCard = this.checkIfCardNeedsUpdate(card);
+          this.invoiceId = this.navParams.data.invoiceId = null;
           this.openCardModal(card);
         }
       }).catch((err: any) => {
