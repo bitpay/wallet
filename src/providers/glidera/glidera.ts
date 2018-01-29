@@ -110,7 +110,7 @@ export class GlideraProvider {
       'Accept': 'application/json'
     };
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Glidera Authorization Access Token: SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -471,7 +471,7 @@ export class GlideraProvider {
       this.homeIntegrationsProvider.register({
         name: 'glidera',
         title: 'Glidera',
-        icon: 'assets/img/glidera/glidera-logo.png',
+        icon: 'assets/img/glidera/glidera-icon.png',
         location: 'US Only',
         page: 'GlideraPage',
         linked: !!token,

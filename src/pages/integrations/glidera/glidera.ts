@@ -10,7 +10,7 @@ import { GlideraProvider } from '../../../providers/glidera/glidera';
 import { PopupProvider } from '../../../providers/popup/popup';
 //pages
 import { AmountPage } from '../../send/amount/amount';
-import { GlideraTxDetailsPage } from './modal/glidera-tx-details';
+import { GlideraTxDetailsPage } from './glidera-tx-details/glidera-tx-details';
 
 @Component({
   selector: 'page-glidera',
