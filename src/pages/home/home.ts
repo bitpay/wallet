@@ -15,7 +15,6 @@ import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
-import { CoinbasePage } from '../integrations/coinbase/coinbase';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -400,9 +399,6 @@ export class HomePage {
         break;
       case 'GlideraPage':
         this.navCtrl.push(GlideraPage);
-        break;
-      case 'CoinbasePage':
-        this.navCtrl.push(CoinbasePage);
         break;
       case 'MercadoLibrePage':
         this.navCtrl.push(MercadoLibrePage);
