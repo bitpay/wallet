@@ -32,6 +32,7 @@
   <div *ngIf="accessToken">
     <div class="main-header">
       <img margin src="assets/img/coinbase/coinbase-logo-white.svg">
+      <ion-spinner *ngIf="loading"></ion-spinner>
     </div>
     <ion-list>
       <button ion-item (click)="goToBuyCoinbasePage()">
@@ -61,7 +62,11 @@
               <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="tx.from && tx.type == 'send'">
               <img src="assets/img/sold.svg" alt="sold" *ngIf="!tx.from && tx.type == 'sell' && tx.status == 'completed'">
           </ion-icon>
-          <div class="action">
+          <span *ngIf="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
+          <span *ngIf="tx.type == 'send' && tx.to && tx.status == 'completed'">Bought</span>
+          <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
+          {{tx.amount.currency}}
+          <ion-note item-end text-end>
             <div class="assertive" *ngIf="tx.error || tx.status == 'error'">
               Error
             </div>
@@ -73,13 +78,7 @@
                 <span *ngIf="tx.status == 'pending'">Pending</span>
               </div>
             </div>
-          </div>
-          <div class="details">
-            <span *ngIf="tx.type == 'sell' && tx.status == 'completed'">Sold</span>
-            <span *ngIf="tx.type == 'send' && tx.to && tx.status == 'completed'">Bought</span>
-            <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}}
-            {{tx.amount.currency}}
-          </div>
+          </ion-note>
         </button>
       </div>
     </ion-list>

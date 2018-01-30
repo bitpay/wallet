@@ -8,8 +8,17 @@ page-coinbase {
     justify-content: center;
   }
   .main-header {
+    position: relative;
     padding: 20px 0;
     text-align: center;
     background: #0667D0;
+    ion-spinner {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      * {
+        stroke: color($colors, light);
+      }
+    }
   }
 }

@@ -16,7 +16,7 @@ export class GlideraTxDetailsPage {
     this.tx = this.navParams.data.tx;
   }
 
-  public cancel(): void {
+  public close(): void {
     this.viewCtrl.dismiss();
   }
 }

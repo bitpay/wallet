@@ -273,7 +273,6 @@ export class CoinbaseProvider {
 
   private _getMainAccountId(accessToken, cb) {
     this.getAccounts(accessToken, (err, a) => {
-      console.log('[coinbase.ts:276] ACCOUNTS',a); //TODO
       if (err) return cb(err);
       var data = a.data;
       for (var i = 0; i < data.length; i++) {
@@ -982,7 +981,7 @@ export class CoinbaseProvider {
       this.homeIntegrationsProvider.register({
         name: 'coinbase',
         title: 'Coinbase',
-        icon: 'assets/img/coinbase/coinbase-logo.png',
+        icon: 'assets/img/coinbase/coinbase-icon.png',
         location: '33 Countries',
         page: 'CoinbasePage',
         linked: !!isActive,

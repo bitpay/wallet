@@ -67,7 +67,7 @@ import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/s
 // Integrations: Glidera
 import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
-import { GlideraTxDetailsPage } from '../pages/integrations/glidera/modal/glidera-tx-details';
+import { GlideraTxDetailsPage } from '../pages/integrations/glidera/glidera-tx-details/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
 
 // Integrations: Mercado Libre
