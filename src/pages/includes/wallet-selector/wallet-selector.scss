@@ -15,26 +15,7 @@ wallet-selector {
     width: calc(100% + 1px);
     overflow-y: scroll;
     background: white;
-    padding: 2rem;
     box-shadow: 0px 2px 13px 3px rgba(0, 0, 0, 0.3);
-    .back-button {
-      display: inline-block;
-      margin: 1rem 0 2rem 0;
-      ion-icon {
-        cursor: pointer;
-      }
-    }
-    .title {
-      color: color($colors, dark);
-      font-weight: 700;
-      height: 3rem;
-      >img {
-        width: 22px;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 10px;
-      }
-    }
     .error {
       color: color($colors, danger);
     }
@@ -44,6 +25,28 @@ wallet-selector {
         overflow: hidden;
         text-overflow: ellipsis;
       }
+    }
+  }
+  .title {
+    >img {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+  .destination-title {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    margin: 10px 0;
+    text-transform: uppercase;
+  }
+  .back-button {
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid color($colors, light);
+    ion-icon {
+      padding: 1.5rem 20px 1.5rem 20px;
+      cursor: pointer;
     }
   }
   .slider {
