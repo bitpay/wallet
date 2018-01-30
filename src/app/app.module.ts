@@ -145,6 +145,7 @@ import { SatToUnitPipe } from '../pipes/satToUnit';
 import { SatToFiatPipe } from '../pipes/satToFiat';
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 import { KeysPipe } from '../pipes/keys';
+import { OrderByPipe } from '../pipes/order-by';
 
 /* Providers */
 import { AddressProvider } from '../providers/address/address';
@@ -357,7 +358,8 @@ let pipes = [
   SatToUnitPipe,
   SatToFiatPipe,
   FiatToUnitPipe,
-  KeysPipe
+  KeysPipe,
+  OrderByPipe
 ];
 
 export function declarationsComponents() {
