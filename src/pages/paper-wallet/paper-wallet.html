@@ -7,24 +7,30 @@
 </ion-header>
 
 <ion-content padding>
-  <div *ngIf="!noMatchingWallet">
-    <h4 translate>Funds found:</h4>
-    <div *ngIf="balance">{{balanceSat | satToUnit: wallet.coin}}</div>
-    <div *ngIf="!balance">...</div>
-    <ion-item-divider color="light">{{'Funds will be transferred to' | translate}}</ion-item-divider>
-    <button ion-item *ngIf="wallet" (click)="showWallets()">
-      <ion-icon item-start>
-        <img *ngIf="wallet.network == 'testnet'" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
-        <img *ngIf="wallet.network != 'testnet'" src="assets/img/icon-wallet.svg" class="icon-wallet" />
-      </ion-icon>
-      <h2>{{wallet.name}} <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span></h2>
-      <span *ngIf="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>  
-      <span *ngIf="wallet.balanceHidden" translate>[Balance Hidden]</span>
-      <span class="assertive" *ngIf="error">{{error}}</span>    
-    </button>
-    <button [disabled]="sending || balanceSat <= 0 || noMatchingWallet" ion-button (click)="sweepWallet()" block translate>Sweep</button>
-  </div>
   <div *ngIf="noMatchingWallet">
     <span translate>No wallets available to receive funds</span>
   </div>
+  <div *ngIf="!noMatchingWallet">
+    <h4 class="header" translate>
+      <span translate>Funds found: </span>
+      <span *ngIf="balanceSat">{{balanceSat | satToUnit: wallet.coin}}</span>
+      <span *ngIf="!balanceSat">...</span>
+    </h4>
+    <ion-item-divider color="light">{{'Funds will be transferred to' | translate}}</ion-item-divider>
+    <button ion-item *ngIf="wallet" (click)="showWallets()">
+      <ion-icon item-start>
+        <img src="assets/img/icon-wallet.svg" class="icon-wallet" />
+      </ion-icon>
+      <h2>{{wallet.name}}
+        <span *ngIf="wallet.credentials.m > 1">{{wallet.credentials.m}}-{{wallet.credentials.n}}</span>
+      </h2>
+      <span *ngIf="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
+      <span *ngIf="wallet.balanceHidden" translate>[Balance Hidden]</span>
+      <span class="assertive" *ngIf="error">{{error}}</span>
+    </button>
+  </div>
 </ion-content>
+<ion-footer>
+  <button ion-button block class="button-footer" (click)="sweepWallet()" [disabled]="sending || balanceSat <= 0 || noMatchingWallet"
+    translate>Sweep</button>
+</ion-footer>
