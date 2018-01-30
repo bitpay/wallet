@@ -59,13 +59,26 @@ $onboarding-color: #fff;
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-$item-ios-divider-background: white;
+$item-ios-divider-background: color($colors, light);
+$list-ios-border-color: color($colors, light);
+$list-ios-header-font-size: 1.3rem;
+$searchbar-ios-background-color: color($colors, light);;
+$searchbar-ios-padding-vertical: 16px;
+$searchbar-ios-padding-horizontal: 16px;
+$list-ios-margin-bottom: 0;
+
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$item-md-divider-background: color($colors, light);
 $list-md-border-color: color($colors, light);
+$searchbar-md-padding-start: 8px;
+$searchbar-md-padding-end: 8px;
+$searchbar-md-padding-top: 16px;
+$list-md-header-margin-bottom: 0;
+$list-md-margin-bottom: 0;
 
 // App Windows Variables
 // --------------------------------------------------
