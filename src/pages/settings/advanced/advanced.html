@@ -9,49 +9,49 @@
 
 <ion-content>
   <ion-item-divider color="light"></ion-item-divider>
-  <ion-list class="toggle">
-    <div class="toggle-header">
+  <ion-list>
+    <ion-item>
       <ion-label>{{'Use Unconfirmed Funds' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="spendUnconfirmed" (ionChange)="spendUnconfirmedChange()"></ion-toggle>
-    </div>
-    <ion-item-divider class="comment" text-wrap>
+    </ion-item>
+    <ion-item-divider padding-horizontal text-wrap>
       <span translate>If enabled, wallets will also try to spend unconfirmed funds. This option may cause transaction delays.</span>
     </ion-item-divider>
   </ion-list>
 
-  <ion-list class="toggle">
-    <div class="toggle-header">
+  <ion-list>
+    <ion-item>
       <ion-label>{{'Use Bitcoin Cash Copay Style Addresses' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="useLegacyAddress" (ionChange)="useLegacyAddressChange()"></ion-toggle>
-    </div>
-    <ion-item-divider class="comment" text-wrap>
+    </ion-item>
+    <ion-item-divider padding-horizontal text-wrap>
       <span translate>If enabled, Bitcoin Cash addresses will be shown using Copay style address, and not the new cashaddr format.</span>
     </ion-item-divider>
   </ion-list>
 
-  <ion-list class="toggle">
-    <div class="toggle-header">
+  <ion-list>
+    <ion-item>
       <ion-label>{{'Recent Transaction Card' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="recentTransactionsEnabled" (ionChange)="recentTransactionsChange()"></ion-toggle>
-    </div>
-    <ion-item-divider class="comment" text-wrap>
+    </ion-item>
+    <ion-item-divider padding-horizontal text-wrap>
       <span translate>If enabled, the Recent Transactions card - a list of transactions occuring across all wallets - will appear in the
         Home tab.</span>
     </ion-item-divider>
   </ion-list>
 
-  <ion-list class="toggle">
-    <div class="toggle-header">
+  <ion-list>
+    <ion-item>
       <ion-label>{{'Show Services Card' | translate}}</ion-label>
       <ion-toggle [(ngModel)]="showIntegrations" (ionChange)="integrationsChange()"></ion-toggle>
-    </div>
+    </ion-item>
     <div *ngIf="showIntegrations">
       <ion-item *ngFor="let integration of homeIntegrations">
         <ion-label>{{integration.title}}</ion-label>
         <ion-checkbox [(ngModel)]="integration.show" (ionChange)="integrationChange(integration.name)"></ion-checkbox>
       </ion-item>
     </div>
-    <ion-item-divider class="comment" text-wrap>
+    <ion-item-divider padding-horizontal text-wrap>
       <span translate>If enabled, the "Services Card" will appear in the Home tab.</span>
     </ion-item-divider>
   </ion-list>
