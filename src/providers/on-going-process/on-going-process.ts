@@ -83,6 +83,7 @@ export class OnGoingProcessProvider {
     this.ongoingProcess[processName] = isOn;
     let showName = this.processNames[processName] || processName;
     if (!isOn) {
+      delete this.ongoingProcess[processName];
       this.loading.dismiss();
       return;
     }
