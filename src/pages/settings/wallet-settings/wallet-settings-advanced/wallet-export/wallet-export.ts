@@ -37,6 +37,7 @@ export class WalletExportPage {
   public backupWalletPlainText: any;
   public isCordova: boolean;
   public isSafari: boolean;
+  public isIOS: boolean;
   public exportWalletInfo: any;
   public supported: boolean;
 
@@ -73,6 +74,7 @@ export class WalletExportPage {
     this.canSign = this.wallet.canSign();
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
+    this.isIOS = this.platformProvider.isIOS;
   }
 
   private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {

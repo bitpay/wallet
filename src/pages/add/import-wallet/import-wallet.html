@@ -5,14 +5,16 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
-    <ion-segment-button value="words" translate>
-      Words
-    </ion-segment-button>
-    <ion-segment-button value="file" translate>
-      File
-    </ion-segment-button>
-  </ion-segment>
+  <div [attr.padding]="isIOS ? '' : null">
+    <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
+      <ion-segment-button value="words" translate>
+        Words
+      </ion-segment-button>
+      <ion-segment-button value="file" translate>
+        File
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
   <ion-card (click)="importErr = false">
     <ion-item *ngIf="importErr" class="assertive">

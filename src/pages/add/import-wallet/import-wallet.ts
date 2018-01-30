@@ -36,6 +36,7 @@ export class ImportWalletPage {
   public selectedTab: string;
   public isCordova: boolean;
   public isSafari: boolean;
+  public isIOS: boolean;
   public file: File;
   public testnetEnabled: boolean;
 
@@ -59,6 +60,7 @@ export class ImportWalletPage {
 
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
+    this.isIOS = this.platformProvider.isIOS;
     this.importErr = false;
     this.fromOnboarding = this.navParams.data.fromOnboarding;
     this.selectedTab = 'words';
