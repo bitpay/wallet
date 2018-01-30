@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <page-wallet-item [wallet]="wallet"></page-wallet-item>
-  <div padding>
+  <div [attr.padding]="isIOS ? '' : null">
     <ion-segment [(ngModel)]="segments">
       <ion-segment-button value="file/text">
         File/Text
