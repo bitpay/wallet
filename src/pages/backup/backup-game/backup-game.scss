@@ -18,10 +18,18 @@ page-backup-game {
   .phrase {
     display: -webkit-box;
     background: color($colors, light);
+    margin: 0 auto;
     max-width: 500px;
     min-height: 12rem;
     align-items: center;
     line-height: 170%;
     word-spacing: 10px;
+  }
+  .words {
+    max-width: 500px;
+    margin: 0 auto;
+    .button {
+      margin: 0.5rem;
+    }
   }
 }

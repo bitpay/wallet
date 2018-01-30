@@ -44,7 +44,7 @@
       <div class="bottom-absolute">
         <div *ngIf="!selectComplete">
           <ion-item-divider>{{'Please tap each word in the correct order.' | translate}}</ion-item-divider>
-          <div>
+          <div class="words">
             <button ion-button *ngFor="let shuffledWord of shuffledMnemonicWords; let i = index" (click)="addButton(i, shuffledWord)"
               [disabled]="shuffledWord.selected">{{shuffledWord.word}}
             </button>
