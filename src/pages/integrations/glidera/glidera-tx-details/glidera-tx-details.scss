@@ -1,5 +1,12 @@
 page-glidera-tx-details {
-  .item-img {
-    width: 40px;
+  ion-card img {
+    width: 90px;
+    margin: 0 auto;
+  }
+  .title {
+    font-size: 22px;
+  }
+  .price {
+    font-size: 12.5px;
   }
 }

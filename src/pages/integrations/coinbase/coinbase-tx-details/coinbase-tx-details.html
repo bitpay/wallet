@@ -14,29 +14,31 @@
 <ion-content>
 
   <ion-card>
-    <ion-card-content>
-      <div class="item-img">
+    <ion-card-content text-center>
+      <div>
         <img src="assets/img/bought.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status == 'completed'">
         <img src="assets/img/bought-pending.svg" alt="bought" *ngIf="(tx.type == 'buy' || (tx.type == 'send' && tx.to)) && tx.status != 'completed'">
         <img src="assets/img/sold.svg" alt="sold" *ngIf="tx.type == 'sell' && tx.status == 'completed'">
         <img src="assets/img/sold-pending.svg" alt="sold" *ngIf="(tx.type == 'sell' || (tx.type == 'send' && tx.from)) && tx.status != 'completed'">
       </div>
-      <div *ngIf="tx.status == 'completed'">
-        <span *ngIf="tx.type == 'buy' || tx.type == 'send'">Bought</span>
-        <span *ngIf="tx.type == 'sell'">Sold</span>
+      <div class="title" padding>
+        <div *ngIf="tx.status == 'completed'">
+          <span *ngIf="tx.type == 'buy' || tx.type == 'send'">Bought</span>
+          <span *ngIf="tx.type == 'sell'">Sold</span>
+        </div>
+        <div *ngIf="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
+          <span *ngIf="tx.to">Receiving purchased bitcoin</span>
+          <span *ngIf="tx.from">Sending bitcoin to sell</span>
+        </div>
+        <div *ngIf="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
+          <span *ngIf="tx.type == 'buy'">Buying bitcoin</span>
+          <span *ngIf="tx.type == 'sell'">Selling bitcoin</span>
+        </div>
       </div>
-      <div *ngIf="tx.type == 'send' && (tx.to || tx.from) && tx.status != 'completed'">
-        <span *ngIf="tx.to">Receiving purchased bitcoin</span>
-        <span *ngIf="tx.from">Sending bitcoin to sell</span>
-      </div>
-      <div *ngIf="(tx.type == 'sell' || tx.type == 'buy') && tx.status != 'completed'">
-        <span *ngIf="tx.type == 'buy'">Buying bitcoin</span>
-        <span *ngIf="tx.type == 'sell'">Selling bitcoin</span>
-      </div>
-      <div>
+      <div class="price">
         <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.amount.amount.replace('-','')}} {{tx.amount.currency}}
       </div>
-      <div class="size-12">
+      <div class="alternative-price">
         <span *ngIf="tx.type == 'sell' || (tx.type == 'send' && tx.from)">-</span>{{tx.native_amount.amount.replace('-','')}} {{tx.native_amount.currency}}
       </div>
     </ion-card-content>

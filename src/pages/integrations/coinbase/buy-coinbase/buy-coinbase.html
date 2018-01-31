@@ -1,10 +1,10 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Buy bitcoin</ion-title>
+    <ion-title>Coinbase</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-list *ngIf="buyRequestInfo">
     <ion-item>
       <div class="sending-label">
@@ -29,11 +29,11 @@
       <button ion-item (click)="showWallets()" class="wallets-list">
         <div>Receive in</div>
         <div class="wallet">
-          <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
-          <span>{{wallet ? wallet.name : '...'}}</span>
+          <ion-icon item-start>
+            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" />
+            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg" class="icon-wallet" />
+          </ion-icon>
+          <div>{{wallet ? wallet.name : '...'}}</div>
         </div>
       </button>
       <ion-item-divider color="light">
