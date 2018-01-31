@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
-import * as _ from 'lodash';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
@@ -25,8 +24,8 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
-import { GlideraPage } from '../integrations/glidera/glidera';
-import { CoinbasePage } from '../integrations/coinbase/coinbase';
+import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
+import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 
 @Component({
   selector: 'page-settings',
@@ -43,7 +42,7 @@ export class SettingsPage {
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
-  public homeIntegrations: Array<any> = [];
+  public exchangeServices: Array<any> = [];
 
   constructor(
     private navCtrl: NavController,
@@ -82,7 +81,7 @@ export class SettingsPage {
     }
     this.lockMethod = this.config.lock.method;
     if (this.config.showIntegrations.enabled) {
-      this.homeIntegrations = _.filter(this.homeIntegrationsProvider.getConfigurableServices(), { 'show':true });
+      this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
     }
   }
 
@@ -132,6 +131,17 @@ export class SettingsPage {
 
   public openFeedbackCompletePage(): void {
     this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
+  }
+
+  public openIntegrationSettings(name: string): void {
+    switch (name) {
+      case 'coinbase':
+        this.navCtrl.push(CoinbaseSettingsPage);
+        break;
+      case 'glidera':
+        this.navCtrl.push(GlideraSettingsPage);
+        break;
+    }
   }
 
   public openHelpExternalLink(): void {

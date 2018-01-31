@@ -6,9 +6,6 @@
         <span *ngIf="!showOauthForm">Enter Code</span>
         <span *ngIf="showOauthForm">Restart</span>
       </button>
-      <button ion-button icon-only *ngIf="account.token" (click)="update()">
-        <ion-icon name="refresh"></ion-icon>
-      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -42,7 +39,7 @@
   </div>
   <div *ngIf="account.token && account.status && account.status.userCanTransact">
     <div class="main-header">
-      <img src="assets/img/glidera/glidera-logo.png" width="200">
+      <img src="assets/img/glidera/glidera-logo.png" width="200" (click)="update()">
     </div>
     <ion-list>
       <button ion-item *ngIf="account.status.userCanBuy" (click)="goToBuyGlideraPage()">

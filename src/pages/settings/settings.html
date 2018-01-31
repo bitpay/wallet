@@ -121,11 +121,11 @@
       </ion-note>
     </button>
 
-    <ion-item-divider color="light" *ngIf="homeIntegrations && homeIntegrations.length > 0">
+    <ion-item-divider color="light" *ngIf="exchangeServices && exchangeServices.length > 0">
       {{'Integrations' | translate}}
     </ion-item-divider>
 
-    <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
+    <button ion-item *ngFor="let service of exchangeServices" (click)="openIntegrationSettings(service.name)">
       <ion-icon item-start>
           <img src="{{service.icon}}" class="icon-services" />
       </ion-icon>
