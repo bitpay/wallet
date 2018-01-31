@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Coinbase</ion-title>
-    <ion-buttons *ngIf="accessToken" end>
-      <button ion-button icon-only (click)="updateTransactions()">
-        <ion-icon name="refresh"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -31,7 +26,7 @@
   </div>
   <div *ngIf="accessToken">
     <div class="main-header">
-      <img margin src="assets/img/coinbase/coinbase-logo-white.svg">
+      <img margin src="assets/img/coinbase/coinbase-logo-white.svg" (click)="updateTransactions()">
       <ion-spinner *ngIf="loading"></ion-spinner>
     </div>
     <ion-list>

@@ -15,7 +15,7 @@
 
   <ion-card>
     <ion-card-content text-center>
-      <div class="type-logo">
+      <div>
         <img src="assets/img/glidera/bought.svg" alt="bought" width="20" *ngIf="tx.type == 'BUY' && tx.status == 'COMPLETE'">
         <img src="assets/img/glidera/bought-pending.svg" alt="bought" width="15" *ngIf="tx.type == 'BUY' && tx.status == 'PROCESSING'">
         <img src="assets/img/glidera/sold.svg" alt="bought" width="20" *ngIf="tx.type == 'SELL' && tx.status == 'COMPLETE'">
