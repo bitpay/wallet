@@ -121,7 +121,18 @@
       </ion-note>
     </button>
 
-    <ion-item-divider>More</ion-item-divider>
+    <ion-item-divider color="light" *ngIf="homeIntegrations && homeIntegrations.length > 0">
+      {{'Integrations' | translate}}
+    </ion-item-divider>
+
+    <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
+      <ion-icon item-start>
+          <img src="{{service.icon}}" class="icon-services" />
+      </ion-icon>
+      <span>{{service.title || service.name}}</span>
+    </button>
+
+    <ion-item-divider color="light">More</ion-item-divider>
 
     <button ion-item (click)="openAdvancedPage()">
       <ion-icon name="ios-cog-outline" item-start></ion-icon>

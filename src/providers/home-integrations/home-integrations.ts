@@ -4,6 +4,8 @@ import { Logger } from '../../providers/logger/logger';
 
 import * as _ from 'lodash';
 
+const hasConfig:Array<object> = [{ 'name' : 'coinbase' }, { 'name' : 'glidera' }];
+
 @Injectable()
 export class HomeIntegrationsProvider {
   public services: any;
@@ -29,7 +31,11 @@ export class HomeIntegrationsProvider {
   };
 
   public get() {
-    return this.services;
+    return _.orderBy(this.services, ['name'], ['asc']);
+  };
+
+  public getConfigurableServices() {
+    return _.intersectionBy(this.services, hasConfig, 'name');
   };
 
 }

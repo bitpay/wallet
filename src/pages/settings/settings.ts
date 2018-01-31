@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import * as _ from 'lodash';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
@@ -9,6 +10,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { PlatformProvider } from '../../providers/platform/platform';
+import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 
 //pages
 import { AltCurrencyPage } from './alt-currency/alt-currency';
@@ -23,6 +25,8 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
+import { GlideraPage } from '../integrations/glidera/glidera';
+import { CoinbasePage } from '../integrations/coinbase/coinbase';
 
 @Component({
   selector: 'page-settings',
@@ -39,6 +43,7 @@ export class SettingsPage {
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
+  public homeIntegrations: Array<any> = [];
 
   constructor(
     private navCtrl: NavController,
@@ -48,6 +53,7 @@ export class SettingsPage {
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
     private platformProvider: PlatformProvider
   ) {
     this.appName = this.app.info.nameCase;
@@ -75,6 +81,9 @@ export class SettingsPage {
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
     this.lockMethod = this.config.lock.method;
+    if (this.config.showIntegrations.enabled) {
+      this.homeIntegrations = _.filter(this.homeIntegrationsProvider.getConfigurableServices(), { 'show':true });
+    }
   }
 
   public openBitcoinCashPage(): void {
