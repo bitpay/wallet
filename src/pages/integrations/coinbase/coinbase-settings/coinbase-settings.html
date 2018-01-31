@@ -6,4 +6,49 @@
 
 <ion-content>
 
+  <ion-list *ngIf="coinbaseAccount && coinbaseAccount.balance">
+    <ion-item-divider>Account</ion-item-divider>
+    <ion-item>
+      <span>ID</span>
+      <ion-note item-end>
+        {{coinbaseAccount.id}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span>Name</span>
+      <ion-note item-end>
+        {{coinbaseAccount.name}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span>Balance</span>
+      <ion-note item-end>
+        {{coinbaseAccount.balance.amount}} {{coinbaseAccount.balance.currency}}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="coinbaseUser">
+    <ion-item-divider>User Information</ion-item-divider>
+    <ion-item>
+      <span>ID</span>
+      <ion-note item-end>
+        {{coinbaseUser.id}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <span>Email</span>
+      <ion-note item-end>
+        {{coinbaseUser.email}}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item-divider></ion-item-divider>
+    <button ion-item (click)="revokeToken()">
+      <span class="assertive">Log out</span>
+    </button>
+  </ion-list>
+
 </ion-content>
