@@ -199,8 +199,8 @@ export class ImportWalletPage {
         this.navCtrl.popToRoot();
       }
       else {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
+        this.navCtrl.parent.select(0);
       }
     }).catch((err: any) => {
       this.logger.warn(err);
@@ -345,7 +345,6 @@ export class ImportWalletPage {
     if (this.navParams.data.fromScan) {
       this.navCtrl.popToRoot();
     } else {
-      this.navCtrl.setRoot(HomePage);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(2);
     }

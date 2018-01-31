@@ -73,7 +73,6 @@ export class CopayersPage {
           if (err)
             this.logger.error(err);
 
-          this.navCtrl.setRoot(HomePage);
           this.navCtrl.popToRoot();
           this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId });
         });
@@ -98,7 +97,6 @@ export class CopayersPage {
       this.onGoingProcessProvider.set('deletingWallet', false);
 
       // TODO: pushNotificationsService.unsubscribe(this.wallet);
-      this.navCtrl.setRoot(HomePage);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(0);
     }).catch((err: any) => {

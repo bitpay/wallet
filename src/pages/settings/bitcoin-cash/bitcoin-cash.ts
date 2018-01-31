@@ -182,7 +182,6 @@ export class BitcoinCashPage {
 					if (isNew)
 						this.walletProvider.startScan(newWallet);
 
-					this.navCtrl.setRoot(SettingsPage);
 					this.navCtrl.popToRoot();
 					this.navCtrl.parent.select(0);
 				});

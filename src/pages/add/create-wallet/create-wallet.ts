@@ -198,11 +198,9 @@ export class CreateWalletPage implements OnInit {
       }
 
       if (!wallet.isComplete()) {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
         this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       } else {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
       }
     }).catch((err: any) => {
