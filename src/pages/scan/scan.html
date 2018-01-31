@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="back-transparent">
-  <div class="page-scan-has-problems" *ngIf="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
+  <!--<div class="page-scan-has-problems" *ngIf="currentState === scannerStates.unauthorized || currentState === scannerStates.denied || currentState === scannerStates.unavailable">
     <ion-icon>
       <img src="img/tab-icons/ico-receive.svg" />
     </ion-icon>
@@ -18,7 +18,7 @@
     <button ion-button block *ngIf="currentState === scannerStates.denied && canOpenSettings" (click)="openSettings()" translate>Open Settings</button>
     <button ion-button block *ngIf="currentState === scannerStates.unavailable" (click)="attemptToReactivate()" translate>Retry Camera</button>
   </div>
-  <div class="page-scan-loading-camera" *ngIf="currentState === scannerStates.loading"></div>
+  <div class="page-scan-loading-camera" *ngIf="currentState === scannerStates.loading"></div>-->
   <div class="page-scan-camera-ready" *ngIf="currentState === scannerStates.visible">
     <div class="guides">
       <img class="svg qr-scan-guides" src="assets/img/bitpay-wallet-qr-scan-guides.svg">
