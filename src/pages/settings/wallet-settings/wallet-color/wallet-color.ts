@@ -65,7 +65,8 @@ export class WalletColorPage {
 
   private setCurrentColorIndex(): void {
     try {
-      this.currentColorIndex = this.colorToIndex(this.config.colorFor[this.wallet.credentials.walletId] || this.getColorDefault());
+      let color = (this.config.colorFor && this.config.colorFor[this.wallet.credentials.walletId]) ? this.config.colorFor[this.wallet.credentials.walletId] : this.getColorDefault();
+      this.currentColorIndex = this.colorToIndex(color);
     } catch (e) {
       // Wait for DOM to render and try again.
       setTimeout(() => {
