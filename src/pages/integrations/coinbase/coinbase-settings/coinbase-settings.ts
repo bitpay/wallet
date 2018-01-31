@@ -63,6 +63,7 @@ export class CoinbaseSettingsPage {
       if (res) {
         this.coinbaseProvider.logout();
         this.navCtrl.popToRoot();
+        this.navCtrl.parent.select(0);
       }
     });
   };

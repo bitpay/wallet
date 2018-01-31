@@ -52,6 +52,7 @@ export class GlideraSettingsPage {
       if (res) {
         this.glideraProvider.remove();
         this.navCtrl.popToRoot();
+        this.navCtrl.parent.select(0);
       }
     });
   }
