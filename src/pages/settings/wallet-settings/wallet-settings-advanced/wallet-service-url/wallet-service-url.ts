@@ -87,7 +87,6 @@ export class WalletServiceUrlPage {
     this.configProvider.set(opts);
     this.persistenceProvider.setCleanAndScanAddresses(this.wallet.credentials.walletId).then(() => {
       this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-      this.navCtrl.setRoot(SettingsPage);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(0);
       // TODO needs restart the app

@@ -54,7 +54,6 @@ export class WalletDeletePage {
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
       this.onGoingProcessProvider.set('deletingWallet', false);
       this.pushNotificationsProvider.unsubscribe(this.wallet);
-      this.navCtrl.setRoot(SettingsPage);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(0);
     }).catch((err) => {

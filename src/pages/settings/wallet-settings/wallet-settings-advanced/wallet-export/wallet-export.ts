@@ -158,7 +158,6 @@ export class WalletExportPage {
         };
 
         this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts, this.navParams.data.walletId).then(() => {
-          this.navCtrl.setRoot(SettingsPage);
           this.navCtrl.popToRoot();
           this.navCtrl.parent.select(0);
         }).catch((err: string) => {

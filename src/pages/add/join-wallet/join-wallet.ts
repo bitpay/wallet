@@ -145,11 +145,9 @@ export class JoinWalletPage {
       this.walletProvider.updateRemotePreferences(wallet);
 
       if (!wallet.isComplete()) {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
         this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       } else {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
       }
     }).catch((err: any) => {
@@ -163,7 +161,6 @@ export class JoinWalletPage {
     if (this.navParams.data.fromScan) {
       this.navCtrl.popToRoot();
     } else {
-      this.navCtrl.setRoot(HomePage);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(2);
     }

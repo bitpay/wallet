@@ -198,7 +198,6 @@ export class ConfirmPage {
   private exitWithError(err: any) {
     this.logger.info('Error setting wallet selector:' + err);
     this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => { // TODO gettextCatalog
-      this.navCtrl.setRoot(SendPage);
       this.navCtrl.popToRoot();
     });
   };
@@ -578,7 +577,6 @@ export class ConfirmPage {
     let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
-      this.navCtrl.setRoot(SendPage);
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(0);
     })
