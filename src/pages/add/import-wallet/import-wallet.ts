@@ -5,6 +5,7 @@ import { Logger } from '../../../providers/logger/logger';
 
 // Pages
 import { HomePage } from '../../../pages/home/home';
+import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { BwcProvider } from '../../../providers/bwc/bwc';
@@ -194,9 +195,13 @@ export class ImportWalletPage {
         this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
           this.logger.error(err);
         });
+        this.navCtrl.setRoot(TabsPage);
+        this.navCtrl.popToRoot();
       }
-      this.navCtrl.setRoot(HomePage);
-      this.navCtrl.popToRoot();
+      else {
+        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.popToRoot();
+      }
     }).catch((err: any) => {
       this.logger.warn(err);
     });
