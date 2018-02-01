@@ -68,7 +68,7 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider *ngIf="withdrawalStr" no-lines text-wrap>
+    <ion-item-divider class="item-description" *ngIf="withdrawalStr" no-lines text-wrap>
       A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal
       | currency}} {{currencyIsoCode}}). Would you like to proceed?
     </ion-item-divider>
