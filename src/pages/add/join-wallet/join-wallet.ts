@@ -4,7 +4,6 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 
 // Pages
-import { HomePage } from '../../../pages/home/home';
 import { CopayersPage } from '../copayers/copayers';
 
 // Providers

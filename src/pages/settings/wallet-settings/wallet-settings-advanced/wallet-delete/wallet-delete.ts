@@ -8,9 +8,6 @@ import { PopupProvider } from '../../../../../providers/popup/popup';
 import { OnGoingProcessProvider } from '../../../../../providers/on-going-process/on-going-process';
 import { PushNotificationsProvider } from '../../../../../providers/push-notifications/push-notifications';
 
-//pages
-import { SettingsPage } from '../../../../settings/settings';
-
 @Component({
   selector: 'page-wallet-delete',
   templateUrl: 'wallet-delete.html',

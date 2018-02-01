@@ -12,7 +12,6 @@ import { AppProvider } from '../../../../../providers/app/app';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // Pages
-import { SettingsPage } from '../../../../../pages/settings/settings';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
 @Component({
