@@ -17,9 +17,11 @@ page-collect-email {
     margin-left: 10px;
   }
   .email-form {
+    p, ion-item {
+      color: #fff;
+    }
     ion-item {
       background: none;
-      color: #fff;
     }
   }
 }

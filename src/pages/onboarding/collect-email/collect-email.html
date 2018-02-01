@@ -10,29 +10,30 @@
 
 <ion-content no-bounce>
   <h1 translate>Wallet Created</h1>
-
   <div *ngIf="!showConfirmForm">
     <p translate>Notifications by email</p>
     <img src='assets/img/app/onboarding/push-notifications.svg' />
+  </div>
+</ion-content>
 
-    <div class="bottom-absolute">
-      <p translate>Where would you like to receive email notifications about payments?</p>
-      <form class="email-form" [formGroup]="emailForm" (ngSubmit)="showConfirm()">
-        <ion-item>
-          <ion-input type="email" formControlName="email" placeholder="Email Input"></ion-input>
-        </ion-item>
+<ion-footer>
+  <div class="email-form" *ngIf="!showConfirmForm">
+    <p translate>Where would you like to receive email notifications about payments?</p>
+    <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
+      <ion-item>
+        <ion-input type="email" formControlName="email" placeholder="Email Input"></ion-input>
+      </ion-item>
 
-        <ion-item no-lines text-wrap>
-          <ion-label translate>Get news and updates from BitPay</ion-label>
-          <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
-        </ion-item>
+      <ion-item no-lines text-wrap>
+        <ion-label translate>Get news and updates from BitPay</ion-label>
+        <ion-checkbox formControlName="accept" checked="true"></ion-checkbox>
+      </ion-item>
 
-        <button ion-button block type="submit" [disabled]="!emailForm.valid" translate>Continue &rarr;</button>
-      </form>
-    </div>
+      <button ion-button block type="submit" [disabled]="!emailForm.valid" translate>Continue &rarr;</button>
+    </form>
   </div>
 
-  <div *ngIf="showConfirmForm">
+  <div class="email-form" *ngIf="showConfirmForm">
     <div>
       <p translate>Is this email address correct?</p>
       <p>{{ emailForm.value.email }}</p>
@@ -48,4 +49,4 @@
       </div>
     </div>
   </div>
-</ion-content>
+</ion-footer>
