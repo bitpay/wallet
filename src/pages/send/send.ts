@@ -60,6 +60,10 @@ export class SendPage {
     this.updateContactsList();
   }
 
+  ionViewDidEnter() {
+    this.search = '';
+  }
+
   private updateBchWalletsList(): void {
     this.walletBchList = [];
 

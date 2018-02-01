@@ -111,6 +111,11 @@ export class AmountPage {
     this.isFiatAmount = this.unit != 'BCH' && this.unit != 'BTC' ? true : false;
   }
 
+  ionViewDidEnter() {
+    this.expression = '';
+    this.processAmount();
+  }
+
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
     if (this.navCtrl.getActive().name != 'AmountPage') return;
     if (!event.key) return;
