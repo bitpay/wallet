@@ -121,7 +121,7 @@
       </ion-note>
     </button>
 
-    <ion-item-divider color="light" *ngIf="exchangeServices && exchangeServices.length > 0">
+    <ion-item-divider *ngIf="exchangeServices && exchangeServices.length > 0">
       {{'Integrations' | translate}}
     </ion-item-divider>
 
@@ -132,7 +132,7 @@
       <span>{{service.title || service.name}}</span>
     </button>
 
-    <ion-item-divider color="light">More</ion-item-divider>
+    <ion-item-divider>More</ion-item-divider>
 
     <button ion-item (click)="openAdvancedPage()">
       <ion-icon name="ios-cog-outline" item-start></ion-icon>
