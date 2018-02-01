@@ -12,7 +12,6 @@ import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 
 //pages
 import { AllAddressesPage } from './all-addresses/all-addresses';
-import { SettingsPage } from '../../../settings';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
 import * as _ from 'lodash';

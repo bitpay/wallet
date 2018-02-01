@@ -9,9 +9,6 @@ import { ConfigProvider } from '../../../../../providers/config/config';
 import { AppProvider } from '../../../../../providers/app/app';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 
-//pages
-import { SettingsPage } from '../../../../settings/settings';
-
 @Component({
   selector: 'page-wallet-service-url',
   templateUrl: 'wallet-service-url.html',

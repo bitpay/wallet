@@ -3,9 +3,6 @@ import { NavController } from 'ionic-angular';
 import { Logger } from "../../../providers/logger/logger";
 import * as lodash from 'lodash';
 
-// Pages
-import { SettingsPage } from '../../settings/settings';
-
 // Providers
 import { WalletProvider } from "../../../providers/wallet/wallet";
 import { ProfileProvider } from '../../../providers/profile/profile';

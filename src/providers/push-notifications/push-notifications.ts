@@ -13,7 +13,6 @@ import { BwcProvider } from '../bwc/bwc';
 
 //pages
 import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
-import { HomePage } from '../../pages/home/home';
 import { CopayersPage } from '../../pages/add/copayers/copayers';
 
 import * as _ from 'lodash';
