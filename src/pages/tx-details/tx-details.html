@@ -1,4 +1,4 @@
-<ion-header no-border>
+<ion-header>
   <ion-navbar>
     <ion-title>{{title | translate}}</ion-title>
   </ion-navbar>
@@ -131,7 +131,7 @@
     </ion-item>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item-divider color="light">{{'Timeline' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
       <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
         *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
@@ -152,9 +152,9 @@
     </div>
 
     <div *ngIf="btx">
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
       <button ion-item class="btn-view" (click)="viewOnBlockchain()" translate>View on blockchain</button>
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
     </div>
 
   </ion-list>

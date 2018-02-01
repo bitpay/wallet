@@ -15,7 +15,7 @@
       <span item-end>{{lastUsedAltCurrency.isoCode}}</span>
     </ion-item>
   </ion-list>
-  <ion-item-divider *ngIf="altCurrencyList[0] && lastUsedAltCurrencyList[0]" color="light"></ion-item-divider>
+  <ion-item-divider *ngIf="altCurrencyList[0] && lastUsedAltCurrencyList[0]"></ion-item-divider>
   <ion-list>
     <ion-item *ngFor="let alt of altCurrencyList" (click)="save(alt)">
       {{ alt.name }}

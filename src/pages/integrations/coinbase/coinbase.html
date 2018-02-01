@@ -48,7 +48,7 @@
           {{sellPrice.amount|currency:'$':2}} {{sellPrice.currency}}/BTC
         </ion-note>
       </button>
-      <ion-list-header color="light">Activity</ion-list-header>
+      <ion-item-divider>Activity</ion-item-divider>
       <div *ngIf="pendingTransactions.data && !error">
         <button ion-item (click)="openTxModal(tx)" *ngFor="let tx of pendingTransactions.data | keys">
           <ion-icon item-start>

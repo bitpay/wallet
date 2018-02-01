@@ -31,7 +31,7 @@
   </div>
 
   <ion-list>
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
 
     <ion-item>
       Rate
@@ -53,7 +53,7 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider color="light">Deposit</ion-item-divider>
+    <ion-item-divider>Deposit</ion-item-divider>
 
     <ion-item>
       Address
@@ -75,7 +75,7 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider color="light">Withdraw</ion-item-divider>
+    <ion-item-divider>Withdraw</ion-item-divider>
 
     <ion-item>
       Address
@@ -97,12 +97,12 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
 
     <button ion-item detail-none *ngIf="ssData.transaction" (click)="openTransaction(ssData.transaction)">
       See transaction
     </button>
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
     <button class="assertive" ion-item detail-none (click)="remove()">
       Remove
     </button>

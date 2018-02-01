@@ -10,9 +10,9 @@
     <ion-searchbar placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-searchbar>
 
     <div *ngIf="filteredContactsList && filteredContactsList[0]">
-      <ion-list-header color="light">
+      <ion-item-divider>
         <span translate>Transfer to Contact</span>
-      </ion-list-header>
+      </ion-item-divider>
       <ion-list>
         <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
           <ion-icon item-start>
@@ -27,10 +27,10 @@
     </div>
 
     <div *ngIf="walletBtcList && walletBtcList[0]">
-      <ion-list-header class="title" color="light">
+      <ion-item-divider class="title">
         <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
         <span translate>Transfer to Bitcoin Wallet</span>
-      </ion-list-header>
+      </ion-item-divider>
 
       <ion-list>
         <button ion-item *ngFor="let wallet of walletBtcList" (click)="goToAmount(wallet)">
@@ -48,10 +48,10 @@
     </div>
 
     <div *ngIf="walletBchList && walletBchList[0]">
-      <ion-list-header class="title" color="light">
+      <ion-item-divider class="title">
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Transfer to Bitcoin Cash Wallet</span>
-      </ion-list-header>
+      </ion-item-divider>
 
       <ion-list>
         <button ion-item *ngFor="let wallet of walletBchList" (click)="goToAmount(wallet)">

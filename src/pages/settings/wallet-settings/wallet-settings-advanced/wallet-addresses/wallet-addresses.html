@@ -33,7 +33,7 @@
   </div>
 
   <ion-list *ngIf="!loading">
-    <ion-item-divider color="light">
+    <ion-item-divider>
       {{'Unused addresses' | translate}}
       <button ion-button clear item-end class="add-icon" (click)="newAddress()">
         <ion-icon name="ios-add"></ion-icon>
@@ -62,7 +62,7 @@
     </div>
 
     <div *ngIf="latestWithBalance && latestWithBalance[0]">
-      <ion-item-divider color="light">{{'Addresses with balance' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Addresses with balance' | translate}}</ion-item-divider>
 
       <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
@@ -71,7 +71,7 @@
     </div>
 
     <div *ngIf="allUtxosNb">
-      <ion-item-divider color="light">{{'Wallet Inputs' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Wallet Inputs' | translate}}</ion-item-divider>
 
       <ion-item>
         <span translate>Total wallet inputs</span>

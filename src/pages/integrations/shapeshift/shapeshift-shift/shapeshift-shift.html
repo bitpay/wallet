@@ -78,7 +78,7 @@
       </button>
     </div>
 
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
 
     <ion-item>
       Rate
@@ -122,7 +122,7 @@
   </ion-list>
 
   <div *ngIf="fromWallets.length > 0 && toWallets.length > 0" class="agree-to-terms">
-    <ion-item color="light" text-wrap>
+    <ion-item text-wrap>
       <ion-checkbox class="check" [(ngModel)]="termsAccepted"></ion-checkbox>
     </ion-item>
     <div class="terms">

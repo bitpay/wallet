@@ -41,7 +41,7 @@
   </div>
 
   <ion-list>
-    <ion-list-header color="light">{{'Your Gift Cards'|translate}}</ion-list-header>
+    <ion-item-divider>{{'Your Gift Cards'|translate}}</ion-item-divider>
     <button ion-item *ngFor="let item of (giftCards | keys : 'date') | orderBy : ['-order']" (click)="openCardModal(item.value)">
       <div class="mercado-libre-card">
         <img src="assets/img/mercado-libre/meli-card-24px.png" alt="" class="avatar">
