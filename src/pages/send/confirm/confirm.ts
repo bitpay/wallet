@@ -123,7 +123,7 @@ export class ConfirmPage {
       }
     }).catch((err: any) => {
       this.logger.error(err);
-      return this.exitWithError('Could not update wallets');
+      return this.exitWithError(err);
     });
   }
 
@@ -166,6 +166,7 @@ export class ConfirmPage {
 
             if (_.isEmpty(filteredWallets)) {
               this.setNoWallet('Insufficient funds', true); // TODO gettextCatalog
+              return reject('Insufficient funds');
             }
             this.wallets = _.clone(filteredWallets);
             return resolve();
@@ -178,6 +179,7 @@ export class ConfirmPage {
 
             if (_.isEmpty(filteredWallets)) {
               this.setNoWallet('Insufficient funds', true); // TODO gettextCatalog
+              return reject('Insufficient funds for fee');
             }
             this.wallets = _.clone(filteredWallets);
             return resolve();
@@ -323,7 +325,7 @@ export class ConfirmPage {
           this.logger.debug('Send max info', sendMaxInfo);
 
           if (sendMaxInfo.amount == 0) {
-            this.setNoWallet('Insufficient funds', false); // TODO gettextCatalog
+            this.setNoWallet('Insufficient funds for fee', false); // TODO gettextCatalog
             this.popupProvider.ionicAlert('Error', 'Not enough funds for fee').then(() => {
               return resolve('no_funds');
             }); // TODO gettextCatalog

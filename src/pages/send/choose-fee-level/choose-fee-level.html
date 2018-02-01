@@ -1,9 +1,9 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-title>{{'Bitcoin Network Fee Policy'|translate}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons start>
       <button [disabled]="customSatPerByte >= maxFeeAllowed || showError" (click)="ok()" ion-button>
-        Ok
+        {{'Done'|translate}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -13,59 +13,56 @@
   <div class="testnet-warning" *ngIf="network!='livenet'">
     Testnet
   </div>
-  <div [hidden]="!feeLevel">
-    <ion-card *ngIf="!customFeePerKB">
-      <div class="fee-info">
-        <div class="fee-time">
-          <div>
-            <div>
-              <span *ngIf="avgConfirmationTime">
-              {{ avgConfirmationTime | amDuration: 'minute' }}
-            </span>
-              <span *ngIf="loadingFee">...</span>
-            </div>
-            <span translate>Average confirmation time</span>
-          </div>
-        </div>
-        <div class="fee-rate">
-          <div>
-            <div>
-              <span *ngIf="feePerSatByte && !loadingFee">
-                {{feePerSatByte}} sat/byte
-              </span>
-              <span *ngIf="loadingFee">...</span>
-            </div>
-            <div translate>Current fee rate for this policy</div>
-          </div>
-        </div>
-      </div>
-    </ion-card>
-
-    <ion-card class="fee-custom" *ngIf="customFeePerKB">
-      <ion-item>
-        <ion-label color="primary" floating>Enter custom fee in sat/byte</ion-label>
-        <ion-input type="number" placeholder="{{'Enter custom fee'|translate}}" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)"
-          [(ngModel)]="customSatPerByte" required></ion-input>
-      </ion-item>
-      <ion-item class="fee-error" *ngIf="showError">
-        <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>
-        <span translate>Transactions without fee are not supported.</span>
-      </ion-item>
-
-      <ion-item class="fee-error" *ngIf="showMinWarning || showMaxWarning">
-        <ion-icon ios="ios-alert" md="md-alert"></ion-icon>
-        <span *ngIf="showMinWarning" translate>Your fee is lower than recommended.</span>
-        <span *ngIf="showMaxWarning" translate>You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.</span>
-      </ion-item>
-    </ion-card>
-  </div>
-
   <ion-list [hidden]="!feeLevel">
+    <ion-item-divider></ion-item-divider>
     <ion-item class="fee-level">
       <ion-label>Fee level</ion-label>
       <ion-select [(ngModel)]="selectedFee" (ionChange)="changeSelectedFee(selectedFee)">
         <ion-option *ngFor="let fee of feeOpts" [value]="fee">{{ feeProvider.feeOpts[fee] }}</ion-option>
       </ion-select>
     </ion-item>
+    <ion-item-divider></ion-item-divider>
   </ion-list>
+  <div [hidden]="!feeLevel">
+    <ion-list class="fee-info" *ngIf="!customFeePerKB">
+      <ion-item>
+        <div translate>
+          Average confirmation time
+        </div>
+        <ion-note item-end>
+          <span *ngIf="loadingFee">...</span>
+          <span *ngIf="avgConfirmationTime">
+            {{ avgConfirmationTime | amDuration: 'minute' }}
+          </span>
+        </ion-note>
+      </ion-item>
+      <ion-item>
+        <div translate>
+          Current fee rate for this policy
+        </div>
+        <ion-note item-end>
+          <span *ngIf="loadingFee">...</span>
+          <span *ngIf="feePerSatByte && !loadingFee">
+            {{feePerSatByte}} sat/byte
+          </span>
+        </ion-note>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="fee-custom" *ngIf="customFeePerKB">
+      <ion-item>
+        <ion-label color="primary" floating>Enter custom fee in sat/byte</ion-label>
+        <ion-input type="number" placeholder="{{'Enter custom fee'|translate}}" min="minFee" max="maxFee" (ionChange)="checkFees(customSatPerByte)"
+          [(ngModel)]="customSatPerByte" required></ion-input>
+      </ion-item>
+      <ion-item class="fee-error" *ngIf="showError">
+        <span translate>Transactions without fee are not supported.</span>
+      </ion-item>
+
+      <ion-item class="fee-error" *ngIf="showMinWarning || showMaxWarning" text-wrap>
+        <span *ngIf="showMinWarning" translate>Your fee is lower than recommended.</span>
+        <span *ngIf="showMaxWarning" translate>You should not set a fee higher than {{maxFeeRecommended}} satoshis/byte.</span>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
