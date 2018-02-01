@@ -29,6 +29,7 @@ $colors: (
   danger: #bb331a,
   success: #7bc94d,
   light: #f4f4f4,
+  blank: #fafafa,
   dark: #424242,
   grey: #999
 );
@@ -59,24 +60,34 @@ $onboarding-color: #fff;
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-$item-ios-divider-background: color($colors, light);
+$tabs-ios-background: color($colors, blank);
+$tabs-ios-border-color: rgba(0, 0, 0, .1);
+
+$item-ios-divider-background: color($colors, blank);
+$item-ios-padding-top: 16px;
+$item-ios-padding-bottom: 16px;
+
 $list-ios-border-color: color($colors, light);
 $list-ios-header-font-size: 1.3rem;
-$searchbar-ios-background-color: color($colors, light);;
-$searchbar-ios-padding-vertical: 16px;
-$searchbar-ios-padding-horizontal: 16px;
 $list-ios-margin-bottom: 0;
 
+$searchbar-ios-background-color: color($colors, blank);
+$searchbar-ios-padding-vertical: 16px;
+$searchbar-ios-padding-horizontal: 16px;
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-$item-md-divider-background: color($colors, light);
-$list-md-border-color: color($colors, light);
+$item-md-divider-background: color($colors, blank);
+$item-md-padding-top: 16px;
+$item-md-padding-bottom: 16px;
+
 $searchbar-md-padding-start: 8px;
 $searchbar-md-padding-end: 8px;
 $searchbar-md-padding-top: 16px;
+
+$list-md-border-color: color($colors, light);
 $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
 

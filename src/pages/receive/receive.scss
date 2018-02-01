@@ -64,9 +64,13 @@ page-receive {
     display: flex;
     align-items: center;
     cursor: pointer;
+    border-top: 1px solid color($colors, light);
     .wallet-text {
       padding-left: 24px;
     }
+  }
+  .footer-md::before {
+    background: none;
   }
 
   .loading-address {
