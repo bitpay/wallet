@@ -4,7 +4,8 @@ page-shapeshift {
       color: color($colors, light);
     }
     p {
-      color: color($colors, grey);
+      color: color($colors, light);
+      font-weight: 300;
     }
     height: 100%;
     display: flex;

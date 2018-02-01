@@ -6,13 +6,13 @@
 
 <ion-content no-bounce>
   <ion-list>
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
     <button ion-item no-lines (click)="openAddressBookPage()">
       <ion-icon name="ios-contacts-outline" item-start></ion-icon>
       {{'Address book' | translate}}
     </button>
 
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
 
     <ion-item (click)="openHelpExternalLink()">
       <ion-icon name="ios-help-circle-outline" item-start></ion-icon>
@@ -29,7 +29,7 @@
       Share {{ appName }}
     </ion-item>
 
-    <ion-item-divider color="light">{{'Preferences' | translate}}</ion-item-divider>
+    <ion-item-divider>{{'Preferences' | translate}}</ion-item-divider>
 
     <button ion-item (click)="openBitcoinCashPage()">
       <ion-icon item-start>
@@ -81,7 +81,7 @@
       </ion-note>
     </button>
 
-    <ion-item-divider *ngIf="walletsBtc.length" color="light">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
+    <ion-item-divider *ngIf="walletsBtc.length">{{'Bitcoin Wallets' | translate}}</ion-item-divider>
 
     <button ion-item *ngFor="let wallet of walletsBtc" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
       <ion-icon item-start>
@@ -101,7 +101,7 @@
       </ion-note>
     </button>
 
-    <ion-item-divider *ngIf="walletsBch.length" color="light">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
+    <ion-item-divider *ngIf="walletsBch.length">{{'Bitcoin Cash Wallets' | translate}}</ion-item-divider>
 
     <button ion-item *ngFor="let wallet of walletsBch" (click)="openWalletSettingsPage(wallet.credentials.walletId)">
       <ion-icon item-start>
@@ -121,7 +121,7 @@
       </ion-note>
     </button>
 
-    <ion-item-divider color="light">More</ion-item-divider>
+    <ion-item-divider>More</ion-item-divider>
 
     <button ion-item (click)="openAdvancedPage()">
       <ion-icon name="ios-cog-outline" item-start></ion-icon>

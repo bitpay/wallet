@@ -7,7 +7,7 @@
   <div class="destination-title" *ngIf="title">{{ title }}</div>
   <!--<div *ngFor="let wallet of wallets" (click)="selectWallet(wallet)">{{wallet.name}}</div>-->
   <div *ngIf="walletsBtc && walletsBtc[0]">
-    <ion-list-header color="light">
+    <ion-list-header>
       <div class="title">
         <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
         <span translate>Bitcoin Wallets</span>
@@ -49,7 +49,7 @@
   </div>
 
   <div *ngIf="walletsBch && walletsBch[0]">
-    <ion-list-header color="light">
+    <ion-list-header>
       <div class="title">
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Bitcoin Cash Wallets</span>

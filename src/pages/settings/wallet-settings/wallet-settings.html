@@ -19,7 +19,7 @@
       <ion-label translate>Hide Balance</ion-label>
       <ion-toggle [(ngModel)]="hiddenBalance" (ionChange)="hiddenBalanceChange()"></ion-toggle>
     </ion-item>
-    <ion-item-divider color="light" translate>Security</ion-item-divider>
+    <ion-item-divider translate>Security</ion-item-divider>
     <button ion-item (click)="openBackupSettings()">
       <h2 translate>Backup</h2>
       <ion-note *ngIf="needsBackup" class="assertive" item-end translate>
@@ -48,7 +48,7 @@
         <ion-toggle [(ngModel)]="touchIdEnabled" (ionChange)="touchIdChange()"></ion-toggle>
       </ion-item>
     </div>
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
     <button ion-item (click)="openAdvancedSettings()">
       <h2 translate>More Options</h2>
     </button>

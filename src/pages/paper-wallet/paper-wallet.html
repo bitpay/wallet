@@ -16,7 +16,7 @@
       <span *ngIf="balanceSat">{{balanceSat | satToUnit: wallet.coin}}</span>
       <span *ngIf="!balanceSat">...</span>
     </h4>
-    <ion-item-divider color="light">{{'Funds will be transferred to' | translate}}</ion-item-divider>
+    <ion-item-divider>{{'Funds will be transferred to' | translate}}</ion-item-divider>
     <button ion-item *ngIf="wallet" (click)="showWallets()">
       <ion-icon item-start>
         <img src="assets/img/icon-wallet.svg" class="icon-wallet" />

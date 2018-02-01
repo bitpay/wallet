@@ -10,7 +10,7 @@
     <ion-searchbar placeholder="Search or enter bitcoin address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-searchbar>
 
     <div *ngIf="filteredContactsList && filteredContactsList[0]">
-      <ion-list-header color="light">
+      <ion-list-header>
         <span translate>Transfer to Contact</span>
       </ion-list-header>
       <ion-list>
@@ -27,7 +27,7 @@
     </div>
 
     <div *ngIf="walletBtcList && walletBtcList[0]">
-      <ion-list-header class="title" color="light">
+      <ion-list-header class="title">
         <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
         <span translate>Transfer to Bitcoin Wallet</span>
       </ion-list-header>
@@ -48,7 +48,7 @@
     </div>
 
     <div *ngIf="walletBchList && walletBchList[0]">
-      <ion-list-header class="title" color="light">
+      <ion-list-header class="title">
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Transfer to Bitcoin Cash Wallet</span>
       </ion-list-header>

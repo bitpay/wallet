@@ -61,7 +61,7 @@
   </ion-card>
 
   <ion-list *ngIf="txps && txps[0]">
-    <ion-list-header color="light">
+    <ion-list-header>
       <div item-start>
         <span translate>Payment Proposals</span>
       </div>
@@ -73,7 +73,7 @@
   </ion-list>
 
   <ion-list *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
-    <ion-list-header color="light">
+    <ion-list-header>
       <div item-start>
         <span translate>Recent Transactions</span>
       </div>
@@ -95,7 +95,7 @@
   </div>
 
   <div *ngIf="walletsBtc && walletsBtc[0]">
-    <ion-list-header color="light">
+    <ion-list-header>
       <div class="title" item-start>
         <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
         <span translate>Bitcoin Wallets</span>
@@ -147,7 +147,7 @@
   </div>
 
   <div *ngIf="walletsBch && walletsBch[0]">
-    <ion-list-header color="light">
+    <ion-list-header>
       <div class="title" item-start>
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Bitcoin Cash Wallets</span>
@@ -199,7 +199,7 @@
   </div>
 
   <ion-list *ngIf="homeIntegrations && homeIntegrations.length>0">
-    <ion-list-header color="light" (click)="hideHomeIntegrations = !hideHomeIntegrations">
+    <ion-list-header (click)="hideHomeIntegrations = !hideHomeIntegrations">
       <div item-start translate>Services</div>
       <div item-end>
         <button ion-button clear color="grey" icon-only>

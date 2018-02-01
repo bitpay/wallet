@@ -84,17 +84,17 @@
   </div>
 
   <ion-list *ngIf="wallet && wallet.isComplete() && !walletNotRegistered && txps && txps[0]">
-    <ion-item-divider color="light" *ngIf="wallet.incorrectDerivation">
+    <ion-item-divider *ngIf="wallet.incorrectDerivation">
       <span translate>
         WARNING: Key derivation is not working on this device/wallet. Actions cannot be performed on this wallet.
       </span>
     </ion-item-divider>
-    <ion-list-header color="light">
+    <ion-list-header>
       <span *ngIf="requiresMultipleSignatures" translate>Proposals</span>
       <span *ngIf="!requiresMultipleSignatures" translate>Unsent transactions</span>
     </ion-list-header>
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
-    <ion-item text-wrap color="light" *ngIf="wallet.status && wallet.status.lockedBalanceSat">
+    <ion-item text-wrap *ngIf="wallet.status && wallet.status.lockedBalanceSat">
       <span translate>Total Locked Balance</span>
       <ion-note item-end>
         <span class="total-locked-amount">{{wallet.status.lockedBalanceStr}}</span>
@@ -123,11 +123,11 @@
     <div *ngFor="let tx of history; trackBy: trackByFn; let i = index">
 
       <span *ngIf="isFirstInGroup(i)">
-        <ion-item-divider color="light" *ngIf="isDateInCurrentMonth(getDate(tx.time))">
+        <ion-item-divider *ngIf="isDateInCurrentMonth(getDate(tx.time))">
           <span translate>Recent</span>
         </ion-item-divider>
 
-        <ion-item-divider color="light" *ngIf="!isDateInCurrentMonth(getDate(tx.time))">
+        <ion-item-divider *ngIf="!isDateInCurrentMonth(getDate(tx.time))">
           {{getDate(tx.time) | amDateFormat:'MMMM'}}
         </ion-item-divider>
       </span>

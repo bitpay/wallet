@@ -147,7 +147,7 @@
     </ion-item>
 
     <div *ngIf="tx && tx.paypro">
-      <ion-item-divider color="light">{{'Payment details' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Payment details' | translate}}</ion-item-divider>
       <ion-item>
         <ion-label>
           {{'To'|translate}}
@@ -187,7 +187,7 @@
     </div>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item-divider color="light">{{'Timeline' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
       <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
         *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
@@ -211,11 +211,11 @@
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed
         since the proposal was created.
       </div>
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
       <button ion-item class="btn-remove" (click)="remove()" [disabled]="loading">
         <span translate>Delete Payment Proposal</span>
       </button>
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
     </div>
   </ion-list>
 </ion-content>
