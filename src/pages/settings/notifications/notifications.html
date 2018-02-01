@@ -36,11 +36,11 @@
     </ion-item>
 
     <div *ngIf="emailNotifications">
-      <ion-list-header text-wrap>
+      <ion-item-divider text-wrap>
         <span translate>
           You'll receive email notifications about payments sent and received from your wallets.
         </span>
-      </ion-list-header>
+      </ion-item-divider>
 
       <form [formGroup]="emailForm">
         <ion-item>

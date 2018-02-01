@@ -61,26 +61,26 @@
   </ion-card>
 
   <ion-list *ngIf="txps && txps[0]">
-    <ion-list-header>
+    <ion-item-divider>
       <div item-start>
         <span translate>Payment Proposals</span>
       </div>
       <button ion-button item-end (click)="openProposalsPage()" *ngIf="txpsN>3">
         <ion-badge>{{txpsN}}</ion-badge>
       </button>
-    </ion-list-header>
+    </ion-item-divider>
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
   </ion-list>
 
   <ion-list *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
-    <ion-list-header>
+    <ion-item-divider>
       <div item-start>
         <span translate>Recent Transactions</span>
       </div>
       <button ion-button item-end (click)="openActivityPage()" *ngIf="notificationsN>3">
         <ion-badge>{{notificationsN}}</ion-badge>
       </button>
-    </ion-list-header>
+    </ion-item-divider>
 
     <span *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
       <page-wallet-activity [notification]="notification"></page-wallet-activity>
@@ -95,7 +95,7 @@
   </div>
 
   <div *ngIf="walletsBtc && walletsBtc[0]">
-    <ion-list-header>
+    <ion-item-divider>
       <div class="title" item-start>
         <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
         <span translate>Bitcoin Wallets</span>
@@ -113,7 +113,7 @@
           {{'Done'|translate}}
         </button>
       </div>
-    </ion-list-header>
+    </ion-item-divider>
 
     <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
       <button ion-item *ngFor="let wallet of walletsBtc" (click)="goToWalletDetails(wallet)">
@@ -147,7 +147,7 @@
   </div>
 
   <div *ngIf="walletsBch && walletsBch[0]">
-    <ion-list-header>
+    <ion-item-divider>
       <div class="title" item-start>
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
         <span translate>Bitcoin Cash Wallets</span>
@@ -165,7 +165,7 @@
           {{'Done'|translate}}
         </button>
       </div>
-    </ion-list-header>
+    </ion-item-divider>
 
     <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
       <button ion-item *ngFor="let wallet of walletsBch" (click)="goToWalletDetails(wallet)">
@@ -199,7 +199,7 @@
   </div>
 
   <ion-list *ngIf="homeIntegrations && homeIntegrations.length>0">
-    <ion-list-header (click)="hideHomeIntegrations = !hideHomeIntegrations">
+    <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
       <div item-start translate>Services</div>
       <div item-end>
         <button ion-button clear color="grey" icon-only>
@@ -207,7 +207,7 @@
           <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-dropup"></ion-icon>
         </button>
       </div>
-    </ion-list-header>
+    </ion-item-divider>
     <div *ngIf="!hideHomeIntegrations">
       <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
         <ion-icon item-start>

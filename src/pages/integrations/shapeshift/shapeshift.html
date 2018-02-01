@@ -28,7 +28,7 @@
   </div>
 
   <ion-list>
-    <ion-list-header>Transactions</ion-list-header>
+    <ion-item-divider>Transactions</ion-item-divider>
     <button ion-item *ngFor="let item of shifts.data | keys" (click)="openShiftModal(item.value)">
       <ion-label>
         <div class="ellipsis">{{item.value.title || item.value.address}}</div>

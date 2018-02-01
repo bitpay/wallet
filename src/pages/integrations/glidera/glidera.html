@@ -63,7 +63,7 @@
           ${{account.price.sell}}/BTC
         </ion-note>
       </button>
-      <ion-list-header>Activity</ion-list-header>
+      <ion-item-divider>Activity</ion-item-divider>
       <div *ngIf="account.txs && account.txs.length > 0">
         <button ion-item *ngFor="let tx of account.txs" (click)="openTxModal(tx)">
           <ion-icon item-start>
