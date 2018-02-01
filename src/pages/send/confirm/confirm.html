@@ -117,13 +117,8 @@
       </div>
     </button>
   </ion-list>
-  <ion-card class="no-wallet-message" *ngIf="noWalletMessage">
-    <ion-item>
-      {{noWalletMessage}}
-    </ion-item>
-  </ion-card>
 </ion-content>
 
 <ion-footer>
-  <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet" translate>Click to send</button>
+  <button ion-button full class="button-footer" (click)="approve(tx, wallet)" [disabled]="!wallet || noWalletMessage || critialError || !tx.txp[wallet.id]" translate>Click to send</button>
 </ion-footer>
