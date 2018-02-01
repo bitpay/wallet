@@ -85,6 +85,10 @@ export class ShapeshiftShiftPage {
     this.logger.info('ionViewDidLoad ShapeshiftShiftPage');
   }
 
+  ionViewDidEnter() {
+    this.termsAccepted = false;
+  }
+
   public openTerms() {
     let url = "https://info.shapeshift.io/sites/default/files/ShapeShift_Terms_Conditions%20v1.1.pdf";
     this.externalLinkProvider.open(url);
