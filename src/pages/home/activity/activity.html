@@ -7,19 +7,19 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="fetchingNotifications">
+  <div text-center *ngIf="fetchingNotifications">
     <ion-spinner></ion-spinner>
     <span translate>Updating... Please stand by</span>
   </div>
 
   <ion-list *ngIf="notifications && notifications[0] && !fetchingNotifications">
-    <ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
+    <span *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
       <page-wallet-activity [notification]="notification"></page-wallet-activity>
-    </ion-item>
+    </span>
   </ion-list>
 
   <ion-list *ngIf="notifications && !notifications[0] && !fetchingNotifications">
-    <ion-item>
+    <ion-item text-center>
       <span translate>No pending proposals</span>
     </ion-item>
   </ion-list>
