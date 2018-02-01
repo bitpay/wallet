@@ -94,6 +94,7 @@ export class GlideraProvider {
     this.persistenceProvider.removeGlideraPermissions(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraStatus(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraTxs(this.credentials.NETWORK);
+    this.homeIntegrationsProvider.update('glidera', null); // Name, Token
   }
 
   public getToken(code, cb) {
@@ -132,6 +133,7 @@ export class GlideraProvider {
           this.persistenceProvider.setGlideraToken(this.credentials.NETWORK, accessToken);
           this.persistenceProvider.setGlideraPermissions(this.credentials.NETWORK, p);
           this.persistenceProvider.setGlideraStatus(this.credentials.NETWORK, status);
+          this.homeIntegrationsProvider.update('glidera', accessToken); // Name, Token
           return cb(null, {
             token: accessToken,
             permissions: p,
@@ -397,14 +399,14 @@ export class GlideraProvider {
         if (err) return cb(err);
 
         this.persistenceProvider.getGlideraStatus(this.credentials.NETWORK).then((status) => {
-          if (_.isString(status)) status = status;
+          if (_.isString(status)) status = JSON.parse(status);
           this.persistenceProvider.getGlideraTxs(this.credentials.NETWORK).then((txs) => {
-            if (_.isString(txs)) txs = txs;
+            if (_.isString(txs)) txs = JSON.parse(txs);
             return cb(null, {
-              token: accessToken,
-              permissions: permissions,
-              status: status,
-              txs: txs
+              'token': accessToken,
+              'permissions': permissions,
+              'status': status,
+              'txs': txs
             });
           });
         });

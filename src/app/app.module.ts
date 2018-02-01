@@ -63,12 +63,14 @@ import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/sell-coinbase';
+import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-settings/coinbase-settings';
 
 // Integrations: Glidera
 import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { GlideraTxDetailsPage } from '../pages/integrations/glidera/glidera-tx-details/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
+import { GlideraSettingsPage } from '../pages/integrations/glidera/glidera-settings/glidera-settings';
 
 // Integrations: Mercado Libre
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
@@ -262,6 +264,8 @@ let pages: any = [
   SettingsPage,
   SellCoinbasePage,
   SellGlideraPage,
+  GlideraSettingsPage,
+  CoinbaseSettingsPage,
   ShapeshiftConfirmPage,
   ShapeshiftDetailsPage,
   ShapeshiftPage,
