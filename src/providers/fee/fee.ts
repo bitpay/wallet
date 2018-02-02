@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { ConfigProvider } from '../../providers/config/config';
@@ -13,12 +14,12 @@ export class FeeProvider {
   private CACHE_TIME_TS: number = 60;
   // Constant fee options to translate
   public feeOpts: any = {
-    urgent: 'Urgent', //TODO gettextcatalog
-    priority: 'Priority',//TODO gettextcatalog
-    normal: 'Normal',//TODO gettextcatalog
-    economy: 'Economy',//TODO gettextcatalog
-    superEconomy: 'Super Economy',//TODO gettextcatalog
-    custom: 'Custom'//TODO gettextcatalog
+    urgent: this.translate.instant('Urgent'),
+    priority: this.translate.instant('Priority'),
+    normal: this.translate.instant('Normal'),
+    economy: this.translate.instant('Economy'),
+    superEconomy: this.translate.instant('Super Economy'),
+    custom: this.translate.instant('Custom')
   };
   private cache: any = {
     updateTs: 0,
@@ -28,7 +29,8 @@ export class FeeProvider {
   constructor(
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private bwcProvider: BwcProvider
+    private bwcProvider: BwcProvider,
+    private translate: TranslateService
   ) {
     this.logger.info('FeeProvider initialized.');
   }
@@ -54,7 +56,7 @@ export class FeeProvider {
           });
         }
         if (!feeLevelRate || !feeLevelRate.feePerKb) {
-          let msg = "Could not get dynamic fee for level: " + feeLevel; //TODO gettextcatalog
+          let msg = this.translate.instant('Could not get dynamic fee for level:') + ' ' + feeLevel;
           return reject(msg);
         }
 
@@ -89,11 +91,11 @@ export class FeeProvider {
 
       walletClient.getFeeLevels(coin, 'livenet', (errLivenet, levelsLivenet) => {
         if (errLivenet) {
-          return reject('Could not get dynamic fee'); //TODO gettextcatalog
+          return reject(this.translate.instant('Could not get dynamic fee'));
         }
         walletClient.getFeeLevels('btc', 'testnet', (errTestnet, levelsTestnet) => {
           if (errTestnet) {
-            return reject('Could not get dynamic fee'); //TODO gettextcatalog
+            return reject(this.translate.instant('Could not get dynamic fee'));
           }
           this.cache.updateTs = Date.now();
           this.cache.coin = coin;

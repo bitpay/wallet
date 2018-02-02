@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Events, NavController, App } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { BwcProvider } from '../bwc/bwc';
@@ -30,7 +31,8 @@ export class IncomingDataProvider {
     private popupProvider: PopupProvider,
     private logger: Logger,
     private appProvider: AppProvider,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private translate: TranslateService
   ) {
     this.logger.info('IncomingDataProvider initialized.');
   }
@@ -70,7 +72,7 @@ export class IncomingDataProvider {
           this.handlePayPro(details, coin);
         }).catch((err: string) => {
           if (addr && amount) this.goSend(addr, amount, message, coin);
-          else this.popupProvider.ionicAlert('Error', err); //TODO gettextcatalog
+          else this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
         });
       } else {
         this.goSend(addr, amount, message, coin);
@@ -99,7 +101,7 @@ export class IncomingDataProvider {
           if (addr && amount)
             this.goSend(addr, amount, message, coin);
           else
-            this.popupProvider.ionicAlert('Error', err);//TODO gettextcatalog
+            this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
         });
       } else {
         this.goSend(addr, amount, message, coin);
@@ -122,7 +124,9 @@ export class IncomingDataProvider {
 
       // Translate address
       this.logger.debug('address transalated to:' + addr);
-      this.popupProvider.ionicConfirm('Bitcoin cash Payment', 'Payment address was translated to new Bitcoin Cash address format: ' + addr, 'OK', 'Cancel').then((res: boolean) => {
+      let title = this.translate.instant('Bitcoin cash Payment');
+      let msg = this.translate.instant('Payment address was translated to new Bitcoin Cash address format: {{addr}}', { addr: addr });
+      this.popupProvider.ionicConfirm(title, msg).then((res: boolean) => {
         if (!res) return false;
 
         message = parsed.message;
@@ -136,7 +140,7 @@ export class IncomingDataProvider {
             if (addr && amount)
               this.goSend(addr, amount, message, coin);
             else
-              this.popupProvider.ionicAlert('Error', err);//TODO gettextcatalog
+              this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
           });
         } else {
           this.goSend(addr, amount, message, coin);
