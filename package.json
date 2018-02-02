@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "main": "electron/main.js",
   "keywords": [
     "bitcoin",

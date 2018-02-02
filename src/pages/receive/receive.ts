@@ -108,7 +108,7 @@ export class ReceivePage {
 
   public shareAddress(): void {
     if (!this.showShareButton) return;
-    this.socialSharing.share(this.qrAddress);
+    this.socialSharing.share(this.address);
   }
 
   public showWallets(): void {
