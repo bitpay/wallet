@@ -19,7 +19,7 @@ import { FCM } from '@ionic-native/fcm';
 /* Modules */
 import { MomentModule } from 'angular2-moment';
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
-import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 
