@@ -100,9 +100,9 @@ export class WalletSettingsPage {
     let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#what-the-spending-password-does';
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Read more in our Wiki'); //TODO gettextcatalog
-    let okText = this.translate.instant('Open');//TODO gettextcatalog
-    let cancelText = this.translate.instant('Go Back');//TODO gettextcatalog
+    let message = this.translate.instant('Read more in our Wiki');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 

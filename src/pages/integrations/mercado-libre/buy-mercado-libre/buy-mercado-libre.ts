@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -64,7 +65,8 @@ export class BuyMercadoLibrePage {
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private translate: TranslateService
   ) {
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.coin = 'btc';
@@ -81,7 +83,7 @@ export class BuyMercadoLibrePage {
     this.currency = this.navParams.data.currency.toUpperCase();
 
     if (this.amount > 2000 || this.amount < 50) {
-      this.showErrorAndBack(null, 'Purchase amount must be a value between 50 and 2000'); // TODO: gettextCatalog
+      this.showErrorAndBack(null, this.translate.instant('Purchase amount must be a value between 50 and 2000'));
       return;
     }
 
@@ -92,7 +94,7 @@ export class BuyMercadoLibrePage {
       coin: this.coin
     });
     if (_.isEmpty(this.wallets)) {
-      this.showErrorAndBack(null, 'No wallets available'); // TODO: gettextCatalog
+      this.showErrorAndBack(null, this.translate.instant('No wallets available'));
       return;
     }
     this.onWalletSelect(this.wallets[0]); // Default first wallet
@@ -117,7 +119,7 @@ export class BuyMercadoLibrePage {
   }
 
   private showErrorAndBack(title: string, msg: any) {
-    title = title ? title : 'Error'; // TODO: gettextCatalog
+    title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
@@ -127,7 +129,7 @@ export class BuyMercadoLibrePage {
 
   private showError = function (title: string, msg: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      title = title || 'Error'; // TODO: gettextCatalog
+      title = title || this.translate.instant('Error');
       this.logger.error(msg);
       msg = (msg && msg.errors) ? msg.errors[0].message : msg;
       this.popupProvider.ionicAlert(title, msg).then(() => {
@@ -139,7 +141,7 @@ export class BuyMercadoLibrePage {
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
+        let err = this.translate.instant('No signing proposal: No private key');
         this.logger.info(err);
         return reject(err);
       }
@@ -179,15 +181,15 @@ export class BuyMercadoLibrePage {
     return new Promise((resolve, reject) => {
       this.mercadoLibreProvider.createBitPayInvoice(data, (err: any, dataInvoice: any) => {
         if (err) {
-          let err_title = 'Error creating the invoice'; // TODO: gettextCatalog
+          let err_title = this.translate.instant('Error creating the invoice');
           let err_msg;
           if (err && err.message && err.message.match(/suspended/i)) {
-            err_title = 'Service not available'; // TODO: gettextCatalog
-            err_msg = 'Mercadolibre Gift Card Service is not available at this moment. Please try back later.'; // TODO: gettextCatalog
+            err_title = this.translate.instant('Service not available');
+            err_msg = this.translate.instant('Mercadolibre Gift Card Service is not available at this moment. Please try back later.');
           } else if (err && err.message) {
             err_msg = err.message;
           } else {
-            err_msg = 'Could not access Gift Card Service'; // TODO: gettextCatalog
+            err_msg = this.translate.instant('Could not access Gift Card Service');
           };
 
           return reject({
@@ -200,14 +202,14 @@ export class BuyMercadoLibrePage {
 
         if (!accessKey) {
           return reject({
-            message: 'No access key defined' // TODO: gettextCatalog
+            message: this.translate.instant('No access key defined')
           });
         }
 
         this.mercadoLibreProvider.getBitPayInvoice(dataInvoice.invoiceId, (err: any, invoice: any) => {
           if (err) {
             return reject({
-              message: 'Could not get the invoice' // TODO: gettextCatalog
+              message: this.translate.instant('Could not get the invoice')
             });
           }
 
@@ -223,8 +225,8 @@ export class BuyMercadoLibrePage {
 
       if (!payProUrl) {
         return reject({
-          title: 'Error in Payment Protocol', // TODO: gettextCatalog
-          message: 'Invalid URL' // TODO: gettextCatalog
+          title: this.translate.instant('Error in Payment Protocol'),
+          message: this.translate.instant('Invalid URL')
         });
       }
 
@@ -252,7 +254,7 @@ export class BuyMercadoLibrePage {
         return resolve(ctxp);
       }).catch((err: any) => {
         return reject({
-          title: 'Could not create transaction', // TODO: gettextCatalog
+          title: this.translate.instant('Could not create transaction'),
           message: this.bwcErrorProvider.msg(err)
         });
       });
@@ -323,7 +325,7 @@ export class BuyMercadoLibrePage {
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
 
-      this.message = this.amountUnitStr + " for Mercado Livre Brazil Gift Car"; // TODO: gettextCatalog
+      this.message = this.translate.instant(this.amountUnitStr + " for Mercado Livre Brazil Gift Car");
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.set('loadingTxInfo', false);
@@ -363,13 +365,11 @@ export class BuyMercadoLibrePage {
 
   public buyConfirm() {
     if (!this.createdTx) {
-      this.showError(null, 'Transaction has not been created'); // TODO: gettextCatalog
+      this.showError(null, this.translate.instant('Transaction has not been created'));
       return;
     }
-    var title = 'Confirm'; // TODO: gettextCatalog
-    var okText = 'OK'; // TODO: gettextCatalog
-    var cancelText = 'Cancel'; // TODO: gettextCatalog
-    this.popupProvider.ionicConfirm(title, this.message, okText, cancelText).then((ok) => {
+    var title = this.translate.instant('Confirm');
+    this.popupProvider.ionicConfirm(title, this.message).then((ok) => {
       if (!ok) {
         return;
       }
@@ -379,7 +379,7 @@ export class BuyMercadoLibrePage {
         this.checkTransaction(1, this.createdTx.giftData);
       }).catch((err: any) => {
         this._resetValues();
-        this.showError('Could not send transaction', err); // TODO: gettextCatalog
+        this.showError(this.translate.instant('Could not send transaction'), err);
         return;
       });
     });

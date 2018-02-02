@@ -479,7 +479,7 @@ export class ProfileProvider {
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, (err: any) => {
         if (err) {
           if (err instanceof this.errors.NOT_AUTHORIZED) return reject(err);
-          this.bwcErrorProvider.cb(err, 'Could not import').then((msg: string) => { //TODO getTextCatalog
+          this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
             return reject(msg);
           });
         } else {

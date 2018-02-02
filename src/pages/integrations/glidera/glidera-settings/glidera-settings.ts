@@ -36,7 +36,7 @@ export class GlideraSettingsPage {
   }
 
   private showErrorAndBack(title: string, msg: any) {
-    title = title ? title : 'Error'; // TODO: gettextCatalog
+    title = title ? title : 'Error';
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
