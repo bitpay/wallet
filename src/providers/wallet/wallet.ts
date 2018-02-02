@@ -329,7 +329,7 @@ export class WalletProvider {
   }
 
   public getProtoAddress(wallet: any, address: string) {
-    let proto: string = this.getProtocolHandler(wallet);
+    let proto: string = this.getProtocolHandler(wallet.coin);
     let protoAddr: string = proto + ':' + address;
 
     if (wallet.coin != 'bch' || this.useLegacyAddress()) {
