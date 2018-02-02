@@ -53,7 +53,7 @@
 
       <div class="payment-proposal-to" *ngIf="!tx.recipientType">
         <img class="icon-bitcoin" src="assets/img/icon-bitcoin-small.svg">
-        <div *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">
+        <div class="ellipsis" *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">
           <!--TODO: <contact *ngIf="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
           <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
           <span *ngIf="tx.name">{{tx.name}}</span>
@@ -74,19 +74,21 @@
           <img *ngIf="tx.network != 'testnet'" [ngStyle]="{'background-color': tx.color}" src="assets/img/icon-wallet.svg" class="icon-wallet"
           />
         </ion-icon>
-        <div copy-to-clipboard="{{ tx.origToAddress }}">
+        <div class="ellipsis" copy-to-clipboard="{{ tx.origToAddress }}">
           <!--TODO: <contact ng-if="tx.origToAddress && !tx.name" address="{{tx.origToAddress}}"></contact>-->
           <span *ngIf="!tx.name">{{tx.origToAddress}}</span>
           <span *ngIf="tx.name">{{tx.name}}</span>
         </div>
       </div>
 
-      <div class="wallet" *ngIf="tx.recipientType == 'contact'" (click)="toggleAddress()">
+      <div class="wallet" *ngIf="tx.recipientType == 'contact'" (longPress)="toggleAddress()">
         <ion-icon class="item-gravatar" item-left>
           <gravatar [name]="tx.name" [height]="30" [width]="30" [email]="tx.email"></gravatar>
         </ion-icon>
-        <span *ngIf="tx.name && !showAddress">{{tx.name}}</span>
-        <span *ngIf="tx.name && showAddress">{{tx.toAddress}}</span>
+        <div class="ellipsis">
+          <span *ngIf="tx.name && !showAddress">{{tx.name}}</span>
+          <span *ngIf="tx.name && showAddress" copy-to-clipboard="{{ tx.toAddress }}">{{tx.toAddress}}</span>
+        </div>
       </div>
     </ion-item>
 

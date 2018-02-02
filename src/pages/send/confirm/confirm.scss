@@ -79,9 +79,12 @@ page-confirm {
         }
       }
       .icon-bitcoin {
-        margin-right: 1rem;
-        width: 37px;
-        height: 37px;
+        margin: 9px 2rem 9px 0;
+        width: 35px;
+        height: 35px;
+        padding: 5px 10px;
+        border: 1px solid color($colors, grey);
+        border-radius: $icon-border-radius;
       }
     }
   }

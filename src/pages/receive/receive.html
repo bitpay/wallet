@@ -3,7 +3,7 @@
     <ion-title>{{'Receive'|translate}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only *ngIf="showShareButton" (click)="shareAddress()">
-        <ion-icon name="share"></ion-icon>
+        <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -21,13 +21,17 @@
       <ion-spinner></ion-spinner>
     </div>
     <ngx-qrcode *ngIf="!loading && address" copy-to-clipboard="{{ address }}" qrc-value="{{qrAddress}}" qrc-class="aclass" qrc-errorCorrectionLevel="M"></ngx-qrcode>
-    <div *ngIf="!loading" class="text-address" copy-to-clipboard="{{ address }}">{{ address }}</div>
+    <div *ngIf="!loading" class="text-address ellipsis" copy-to-clipboard="{{ address }}">
+      <img *ngIf="wallet.coin == 'btc'" src="assets/img/icon-bitcoin.svg" alt="BTC" width="18" />
+      <img *ngIf="wallet.coin == 'bch'" src="assets/img/bitcoin-cash-logo.svg" alt="BCH" width="22" />
+      {{ address }}
+    </div>
     <div *ngIf="loading" class="text-address">...</div>
-    <button ion-button block clear [hidden]="!address" (click)="requestSpecificAmount()">
+    <button ion-button clear [hidden]="!address" (click)="requestSpecificAmount()">
       <span translate>Request Specific amount</span>
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
-    <button ion-button block clear [hidden]="!address" (click)="setAddress(true)">
+    <button ion-button clear small [hidden]="!address" (click)="setAddress(true)">
       <span translate>Generate new address</span>
     </button>
   </div>
@@ -52,7 +56,10 @@
     <img src="assets/img/icon-wallet.svg" class="icon-wallet" [ngStyle]="{'background-color': wallet.color}" *ngIf="wallet.network == 'livenet'">
     <img src="assets/img/icon-wallet-testnet.svg" class="icon-wallet" [ngStyle]="{'background-color': wallet.color}" *ngIf="wallet.network == 'testnet'">
     <div class="wallet-text">
-      <div>{{wallet.name}}</div>
+      {{wallet.name}}
+      <span *ngIf="wallet.n > 1">
+        {{wallet.m}}-of-{{wallet.n}}
+      </span>
     </div>
   </div>
 </ion-footer>
