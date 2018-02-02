@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
 import { CopayersPage } from '../copayers/copayers';
@@ -61,7 +62,8 @@ export class CreateWalletPage implements OnInit {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private translate: TranslateService
   ) {
 
     this.isShared = this.navParams.get('isShared');
@@ -167,7 +169,9 @@ export class CreateWalletPage implements OnInit {
 
       let pathData = this.derivationPathHelperProvider.parse(this.createForm.value.derivationPath);
       if (!pathData) {
-        this.popupProvider.ionicAlert('Error', 'Invalid derivation path', 'Ok'); // TODO: GetTextCatalog
+        let title = this.translate.instant('Error');
+        let subtitle = this.translate.instant('Invalid derivation path');
+        this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
 
@@ -177,7 +181,9 @@ export class CreateWalletPage implements OnInit {
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      this.popupProvider.ionicAlert('Error', 'Please enter the wallet recovery phrase', 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      let subtitle = this.translate.instant('Please enter the wallet recovery phrase');
+      this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
 
@@ -205,7 +211,8 @@ export class CreateWalletPage implements OnInit {
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('creatingWallet', false);
       this.logger.warn(err);
-      this.popupProvider.ionicAlert('Error', err, 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      this.popupProvider.ionicAlert(title, err);
       return;
     });
   }

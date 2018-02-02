@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class BwcErrorProvider {
 
-  constructor() {}
+  constructor(
+    private translate: TranslateService
+  ) { }
 
   public msg(err: any, prefix?: string): string {
     if (!err)
@@ -22,128 +25,127 @@ export class BwcErrorProvider {
     let body = '';
     prefix = prefix || '';
 
-    // TODO: GetTextCatalog for errors
     if (name) {
       switch (name) {
         case 'INVALID_BACKUP':
-          body = 'Wallet Recovery Phrase is invalid';
+          body = this.translate.instant('Wallet Recovery Phrase is invalid');
           break;
         case 'WALLET_DOES_NOT_EXIST':
-          body = 'Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your recovery phrase';
+          body = this.translate.instant('Wallet not registered at the wallet service. Recreate it from "Create Wallet" using "Advanced Options" to set your recovery phrase');
           break;
         case 'MISSING_PRIVATE_KEY':
-          body = 'Missing private keys to sign';
+          body = this.translate.instant('Missing private keys to sign');
           break;
         case 'ENCRYPTED_PRIVATE_KEY':
-          body = 'Private key is encrypted, cannot sign';
+          body = this.translate.instant('Private key is encrypted, cannot sign');
           break;
         case 'SERVER_COMPROMISED':
-          body = 'Server response could not be verified';
+          body = this.translate.instant('Server response could not be verified');
           break;
         case 'COULD_NOT_BUILD_TRANSACTION':
-          body = 'Could not build transaction';
+          body = this.translate.instant('Could not build transaction');
           break;
         case 'INSUFFICIENT_FUNDS':
-          body = 'Insufficient funds';
+          body = this.translate.instant('Insufficient funds');
           break;
         case 'CONNECTION_ERROR':
-          body = 'Network error';
+          body = this.translate.instant('Network error');
           break;
         case 'NOT_FOUND':
-          body = 'Wallet service not found';
+          body = this.translate.instant('Wallet service not found');
           break;
         case 'ECONNRESET_ERROR':
-          body = 'Connection reset by peer';
+          body = this.translate.instant('Connection reset by peer');
           break;
         case 'BAD_RESPONSE_CODE':
-          body = 'The request could not be understood by the server';
+          body = this.translate.instant('The request could not be understood by the server');
           break;
         case 'WALLET_ALREADY_EXISTS':
-          body = 'Wallet already exists';
+          body = this.translate.instant('Wallet already exists');
           break;
         case 'COPAYER_IN_WALLET':
-          body = 'Copayer already in this wallet';
+          body = this.translate.instant('Copayer already in this wallet');
           break;
         case 'WALLET_FULL':
-          body = 'Wallet is full';
+          body = this.translate.instant('Wallet is full');
           break;
         case 'WALLET_NOT_FOUND':
-          body = 'Wallet not found';
+          body = this.translate.instant('Wallet not found');
           break;
         case 'INSUFFICIENT_FUNDS_FOR_FEE':
-          body = 'Insufficient funds for fee';
+          body = this.translate.instant('Insufficient funds for fee');
           break;
         case 'LOCKED_FUNDS':
-          body = 'Funds are locked by pending spend proposals';
+          body = this.translate.instant('Funds are locked by pending spend proposals');
           break;
         case 'COPAYER_VOTED':
-          body = 'Copayer already voted on this spend proposal';
+          body = this.translate.instant('Copayer already voted on this spend proposal');
           break;
         case 'NOT_AUTHORIZED':
-          body = 'Not authorized';
+          body = this.translate.instant('Not authorized');
           break;
         case 'TX_ALREADY_BROADCASTED':
-          body = 'Transaction already broadcasted';
+          body = this.translate.instant('Transaction already broadcasted');
           break;
         case 'TX_CANNOT_CREATE':
-          body = 'Locktime in effect. Please wait to create a new spend proposal';
+          body = this.translate.instant('Locktime in effect. Please wait to create a new spend proposal');
           break;
         case 'TX_CANNOT_REMOVE':
-          body = 'Locktime in effect. Please wait to remove this spend proposal';
+          body = this.translate.instant('Locktime in effect. Please wait to remove this spend proposal');
           break;
         case 'TX_NOT_ACCEPTED':
-          body = 'Spend proposal is not accepted';
+          body = this.translate.instant('Spend proposal is not accepted');
           break;
         case 'TX_NOT_FOUND':
-          body = 'Spend proposal not found';
+          body = this.translate.instant('Spend proposal not found');
           break;
         case 'TX_NOT_PENDING':
-          body = 'The spend proposal is not pending';
+          body = this.translate.instant('The spend proposal is not pending');
           break;
         case 'UPGRADE_NEEDED':
-          body = 'Please upgrade Copay to perform this action';
+          body = this.translate.instant('Please upgrade Copay to perform this action');
           break;
         case 'BAD_SIGNATURES':
-          body = 'Signatures rejected by server';
+          body = this.translate.instant('Signatures rejected by server');
           break;
         case 'COPAYER_DATA_MISMATCH':
-          body = 'Copayer data mismatch';
+          body = this.translate.instant('Copayer data mismatch');
           break;
         case 'DUST_AMOUNT':
-          body = 'Amount below minimum allowed';
+          body = this.translate.instant('Amount below minimum allowed');
           break;
         case 'INCORRECT_ADDRESS_NETWORK':
-          body = 'Incorrect network address';
+          body = this.translate.instant('Incorrect network address');
           break;
         case 'COPAYER_REGISTERED':
-          body = 'Key already associated with an existing wallet';
+          body = this.translate.instant('Key already associated with an existing wallet');
           break;
         case 'INVALID_ADDRESS':
-          body = 'Invalid address';
+          body = this.translate.instant('Invalid address');
           break;
         case 'MAIN_ADDRESS_GAP_REACHED':
-          body = 'Empty addresses limit reached. New addresses cannot be generated.';
+          body = this.translate.instant('Empty addresses limit reached. New addresses cannot be generated.');
           break;
         case 'WALLET_LOCKED':
-          body = 'Wallet is locked';
+          body = this.translate.instant('Wallet is locked');
           break;
         case 'WALLET_NOT_COMPLETE':
-          body = 'Wallet is not complete';
+          body = this.translate.instant('Wallet is not complete');
           break;
         case 'WALLET_NEEDS_BACKUP':
-          body = 'Wallet needs backup';
+          body = this.translate.instant('Wallet needs backup');
           break;
         case 'MISSING_PARAMETER':
-          body = 'Missing parameter';
+          body = this.translate.instant('Missing parameter');
           break;
         case 'NO_PASSWORD_GIVEN':
-          body = 'Spending Password needed';
+          body = this.translate.instant('Spending Password needed');
           break;
         case 'PASSWORD_INCORRECT':
-          body = 'Wrong spending password';
+          body = this.translate.instant('Wrong spending password');
           break;
         case 'EXCEEDED_DAILY_LIMIT':
-          body = 'Exceeded daily limit of $500 per user';
+          body = this.translate.instant('Exceeded daily limit of $500 per user');
           break;
         case 'ERROR':
           body = (err.message || err.error);

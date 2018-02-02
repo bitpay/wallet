@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
 import { CopayersPage } from '../copayers/copayers';
@@ -38,7 +39,8 @@ export class JoinWalletPage {
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) {
     this.defaults = this.configProvider.getDefaults();
 
@@ -120,7 +122,9 @@ export class JoinWalletPage {
 
       let pathData = this.derivationPathHelperProvider.parse(this.joinForm.value.derivationPath);
       if (!pathData) {
-        this.popupProvider.ionicAlert('Error', 'Invalid derivation path'); // TODO: GetTextCatalog
+        let title = this.translate.instant('Error');
+        let subtitle = this.translate.instant('Invalid derivation path');
+        this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
 
@@ -129,7 +133,9 @@ export class JoinWalletPage {
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      this.popupProvider.ionicAlert('Error', 'Please enter the wallet recovery phrase', 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      let subtitle = this.translate.instant('Please enter the wallet recovery phrase');
+      this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
 
@@ -151,7 +157,8 @@ export class JoinWalletPage {
       }
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('joiningWallet', false);
-      this.popupProvider.ionicAlert('Error', err, 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      this.popupProvider.ionicAlert(title, err);
       return;
     });
   }

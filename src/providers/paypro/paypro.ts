@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { ProfileProvider } from '../profile/profile';
@@ -10,7 +11,8 @@ export class PayproProvider {
   constructor(
     private profileProvider: ProfileProvider,
     private logger: Logger,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private translate: TranslateService
   ) {
     this.logger.info('PayproProvider initialized');
   }
@@ -35,7 +37,7 @@ export class PayproProvider {
         if (err) return reject(err);
         else if (!paypro.verified) {
           this.logger.warn('Failed to verify payment protocol signatures');
-          return reject('Payment Protocol Invalid'); //TODO gettextcatalog
+          return reject(this.translate.instant('Payment Protocol Invalid'));
         }
         return resolve(paypro);
       });
