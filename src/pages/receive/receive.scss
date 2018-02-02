@@ -48,7 +48,14 @@ page-receive {
     .text-address {
       margin: 5px 0 10px 0;
       font-size: 12px;
+      width: 90%;
       color: color($colors, dark);
+      >img {
+        vertical-align: middle;
+        margin-right: 5px;
+        width: 16px;
+        display: inline-block;
+      }
     }
     img {
       width: auto;
@@ -67,6 +74,10 @@ page-receive {
     border-top: 1px solid color($colors, light);
     .wallet-text {
       padding-left: 24px;
+      >span {
+        font-size: 12.5px;
+        font-weight: 300;
+      }
     }
   }
   .footer-md::before {
