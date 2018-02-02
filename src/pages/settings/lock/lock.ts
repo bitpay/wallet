@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 //pages
 import { PinModalPage } from '../../pin/pin';
@@ -25,7 +26,8 @@ export class LockPage {
     private modalCtrl: ModalController,
     private configProvider: ConfigProvider,
     private touchIdProvider: TouchIdProvider,
-    private profileProvider: ProfileProvider
+    private profileProvider: ProfileProvider,
+    private translate: TranslateService
   ) {
     this.checkLockOptions();
   }
@@ -82,7 +84,7 @@ export class LockPage {
       let lock = { method: 'Disabled', value: null, bannedUntil: null };
       this.configProvider.set({ lock });
       this.checkLockOptions();
-    }).catch(()=>{
+    }).catch(() => {
       this.checkLockOptions();
     });
   }
@@ -101,10 +103,10 @@ export class LockPage {
     });
 
     if (singleLivenetWallet) {
-      this.needsBackupMsg = 'Backup your wallet before using this function'; //TODO gettextCatalog
+      this.needsBackupMsg = this.translate.instant('Backup your wallet before using this function');
       return true;
     } else if (atLeastOneLivenetWallet) {
-      this.needsBackupMsg = 'Backup all your wallets before using this function'; //TODO gettextCatalog
+      this.needsBackupMsg = this.translate.instant('Backup all your wallets before using this function');
       return true;
     } else {
       this.needsBackupMsg = null;

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, Events } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 import * as _ from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
 import { AmountPage } from './../../../send/amount/amount';
@@ -39,7 +40,8 @@ export class ShapeshiftShiftPage {
     private navCtrl: NavController,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
-    private shapeshiftProvider: ShapeshiftProvider
+    private shapeshiftProvider: ShapeshiftProvider,
+    private translate: TranslateService
   ) {
     this.walletsBtc = [];
     this.walletsBch = [];
@@ -63,7 +65,7 @@ export class ShapeshiftShiftPage {
     });
 
     if (_.isEmpty(this.walletsBtc) || _.isEmpty(this.walletsBch)) {
-      this.showErrorAndBack(null, 'No wallets available to use ShapeShift'); // TODO: gettextCatalog
+      this.showErrorAndBack(null, this.translate.instant('No wallets available to use ShapeShift'));
       return;
     }
 
@@ -74,7 +76,7 @@ export class ShapeshiftShiftPage {
     });
 
     if (_.isEmpty(this.fromWallets)) {
-      this.showErrorAndBack(null, 'No wallets with funds'); // TODO: gettextCatalog
+      this.showErrorAndBack(null, this.translate.instant('No wallets with funds'));
       return;
     }
 
@@ -95,7 +97,7 @@ export class ShapeshiftShiftPage {
   }
 
   private showErrorAndBack(title: string, msg: any): void {
-    title = title ? title : 'Error'; // TODO: gettextCatalog
+    title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {

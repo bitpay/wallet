@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { NavController, Events } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { AppProvider } from '../../../providers/app/app';
@@ -26,6 +27,7 @@ export class FeedbackCardPage {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private events: Events,
+    private translate: TranslateService
   ) {
     this.appName = this.appProvider.info.nameCase;
     this.score = 0;
@@ -45,19 +47,19 @@ export class FeedbackCardPage {
     this.score = score;
     switch (this.score) {
       case 1:
-        this.button_title = "I think this app is terrible"; //TODO gettextcatalog
+        this.button_title = this.translate.instant("I think this app is terrible");
         break;
       case 2:
-        this.button_title = "I don't like it"; //TODO gettextcatalog
+        this.button_title = this.translate.instant("I don't like it");
         break;
       case 3:
-        this.button_title = "Meh - it's alright"; //TODO gettextcatalog
+        this.button_title = this.translate.instant("Meh - it's alright");
         break;
       case 4:
-        this.button_title = "I like the app"; //TODO gettextcatalog
+        this.button_title = this.translate.instant("I like the app");
         break;
       case 5:
-        this.button_title = "This app is fantastic!"; //TODO gettextcatalog
+        this.button_title = this.translate.instant("This app is fantastic!");
         break;
     }
   }

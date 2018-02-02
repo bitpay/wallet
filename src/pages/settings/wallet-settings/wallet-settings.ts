@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -42,6 +43,7 @@ export class WalletSettingsPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
+    private translate: TranslateService
   ) {
   }
 
@@ -98,9 +100,9 @@ export class WalletSettingsPage {
     let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#what-the-spending-password-does';
     let optIn = true;
     let title = null;
-    let message = 'Read more in our Wiki'; //TODO gettextcatalog
-    let okText = 'Open';//TODO gettextcatalog
-    let cancelText = 'Go Back';//TODO gettextcatalog
+    let message = this.translate.instant('Read more in our Wiki'); //TODO gettextcatalog
+    let okText = this.translate.instant('Open');//TODO gettextcatalog
+    let cancelText = this.translate.instant('Go Back');//TODO gettextcatalog
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DOCUMENT } from "@angular/platform-browser";
 import { Inject } from '@angular/core';
 import { ActionSheetController, ToastController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -34,7 +35,8 @@ export class SessionLogPage {
     private socialSharing: SocialSharing,
     private actionSheetCtrl: ActionSheetController,
     private toastCtrl: ToastController,
-    private platformProvider: PlatformProvider
+    private platformProvider: PlatformProvider,
+    private translate: TranslateService
   ) {
     this.dom = dom;
     this.config = this.configProvider.get();
@@ -84,7 +86,7 @@ export class SessionLogPage {
     textarea.value = this.prepareLogs();
     textarea.select();
     this.dom.execCommand('copy');
-    let message = 'Copied to clipboard' //TODO gettextcatalog
+    let message = this.translate.instant('Copied to clipboard');
     let showSuccess = this.toastCtrl.create({
       message: message,
       duration: 1000,
@@ -107,8 +109,8 @@ export class SessionLogPage {
 
   public showOptionsMenu(): void {
 
-    let copyText = 'Copy to clipboard' //TODO gettextcatalog
-    let emailText = 'Send by email' //TODO gettextcatalog
+    let copyText = this.translate.instant('Copy to clipboard');
+    let emailText = this.translate.instant('Send by email');
     let button = [];
 
     if (this.isCordova) {

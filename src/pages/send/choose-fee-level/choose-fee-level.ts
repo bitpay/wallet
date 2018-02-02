@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 // Providers
 import { FeeProvider } from '../../../providers/fee/fee';
@@ -37,13 +38,12 @@ export class ChooseFeeLevelPage {
   public showMaxWarning: boolean;
   public showMinWarning: boolean;
 
-
-
   constructor(
     private viewCtrl: ViewController,
     private logger: Logger,
     private popupProvider: PopupProvider,
-    private feeProvider: FeeProvider
+    private feeProvider: FeeProvider,
+    private translate: TranslateService
   ) {
     // From parent controller
     this.network = this.viewCtrl.data.network;
@@ -53,7 +53,7 @@ export class ChooseFeeLevelPage {
     this.customFeePerKB = this.viewCtrl.data.customFeePerKB ? this.viewCtrl.data.customFeePerKB : null;
     this.feePerSatByte = this.viewCtrl.data.feePerSatByte ? this.viewCtrl.data.feePerSatByte : null;
 
-    if (_.isEmpty(this.feeLevel)) this.showErrorAndClose(null, 'Fee level is not defined'); // TODO: GetTextCatalog
+    if (_.isEmpty(this.feeLevel)) this.showErrorAndClose(null, this.translate.instant('Fee level is not defined'));
     this.selectedFee = this.feeLevel;
 
     this.feeOpts = Object.keys(this.feeProvider.feeOpts);
@@ -61,7 +61,7 @@ export class ChooseFeeLevelPage {
     this.feeProvider.getFeeLevels(this.coin).then((levels: any) => {
       this.loadingFee = false;
       if (_.isEmpty(levels)) {
-        this.showErrorAndClose(null, 'Could not get fee levels'); // TODO: GetTextCatalog
+        this.showErrorAndClose(null, this.translate.instant('Could not get fee levels'));
         return;
       }
       this.feeLevels = levels;
@@ -78,7 +78,7 @@ export class ChooseFeeLevelPage {
   }
 
   private showErrorAndClose(title: string, msg: string): void {
-    title = title ? title : 'Error'; // TODO: GetTextCatalog
+    title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     this.popupProvider.ionicAlert(title, msg).then(() => {
       this.viewCtrl.dismiss();

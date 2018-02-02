@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, Events, ModalController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -45,7 +46,8 @@ export class ScanPage {
     private events: Events,
     private modalCtrl: ModalController,
     private externalLinkProvider: ExternalLinkProvider,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) {
     this.lightActive = false;
     this.canEnableLight = true;
@@ -78,7 +80,7 @@ export class ScanPage {
   ionViewDidEnter() {
     //TODO support for browser
     if (!this.platform.isCordova) {
-      this.notSupportedMessage = "Scanner not supported"; //TODO gettextcatalog
+      this.notSupportedMessage = this.translate.instant("Scanner not supported");
       return;
     }
     // try initializing and refreshing status any time the view is entered
