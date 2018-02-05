@@ -325,7 +325,7 @@ export class BuyMercadoLibrePage {
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
 
-      this.message = this.translate.instant(this.amountUnitStr + " for Mercado Livre Brazil Gift Car");
+      this.message = this.translate.instant("{{amountUnitStr}} for Mercado Livre Brazil Gift Car", { amountUnitStr: this.amountUnitStr });
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.set('loadingTxInfo', false);

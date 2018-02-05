@@ -2000,6 +2000,9 @@ msgstr ""
 msgid "{{amountUnitStr}} for Amazon.com Gift Card"
 msgstr ""
 
+msgid "{{amountUnitStr}} for Mercado Livre Brazil Gift Car"
+msgstr ""
+
 msgid ""
 "{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
 "information, networking and Copayer synchronization.\n"
