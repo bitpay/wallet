@@ -329,9 +329,7 @@ export class PersistenceProvider {
   };
 
   getAppIdentity(network: string): Promise<any> {
-    return this.storage.get(Keys.APP_IDENTITY(network)).then(data => {
-      return JSON.parse(data || '{}');
-    });
+    return this.storage.get(Keys.APP_IDENTITY(network));
   };
 
   removeAppIdentity(network: string): Promise<void> {

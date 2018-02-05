@@ -17,6 +17,7 @@ import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
 import { GlideraPage } from '../../pages/integrations/glidera/glidera';
 import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
+import { BitPayCardIntroPage } from '../../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 
 @Injectable()
 export class IncomingDataProvider {
@@ -205,17 +206,17 @@ export class IncomingDataProvider {
       // Disable BitPay Card
       if (!this.appProvider.info._enabledExtensions.debitcard) return false;
 
-      /* For BitPay card binding
+      // For BitPay card binding
       let secret = this.getParameterByName('secret', data);
       let email = this.getParameterByName('email', data);
-      let otp = this.getParameterByName('otp', data);*/
+      let otp = this.getParameterByName('otp', data);
       let reason = this.getParameterByName('r', data);
       switch (reason) {
         default:
         case '0':
           /* For BitPay card binding */
-          //this.navCtrl.push(BitPayCardPage,{ secret: secret, email: email, otp: otp}); //Glidera TODO
-          this.logger.debug('BitPay card TODO');
+          this.navCtrl.parent.select(0);
+          this.navCtrl.push(BitPayCardIntroPage, { secret: secret, email: email, otp: otp });
           break;
       }
       return true;
@@ -229,6 +230,7 @@ export class IncomingDataProvider {
       this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
       return true;
     } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
+      this.logger.debug('Handling private key');
       this.showMenu({
         data: data,
         type: 'privateKey'
@@ -240,6 +242,7 @@ export class IncomingDataProvider {
     } else {
 
       if (this.navCtrl.getActive().name === 'ScanPage') {
+        this.logger.debug('Handling plain text');
         this.showMenu({
           data: data,
           type: 'text'

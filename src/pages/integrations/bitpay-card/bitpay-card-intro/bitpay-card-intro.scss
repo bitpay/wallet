@@ -1,0 +1,34 @@
+page-bitpay-card-intro {
+  ion-content {
+    background: url(../assets/img/onboarding-welcome-bg.png), linear-gradient(to bottom, rgba(30, 49, 134, 1) 0%, rgba(17, 27, 73, 1) 100%);
+    background-position: top center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    color: #fff;
+    .bitpayCard {
+      &-illustration {
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        &-img {
+          width: 100%;
+          max-width: 400px;
+        }
+      }
+      &-info:before {
+        font-size: 22px;
+        line-height: 22px;
+        margin-top: 6px;
+      }
+    }
+    ion-slides {
+      max-height: 100px;
+      padding: 10px;
+      .slider-text {
+        text-align: center;
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, .7);
+      }
+    }
+  }
+}

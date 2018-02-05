@@ -106,10 +106,7 @@ export class GlideraProvider {
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
     };
-    let headers: any = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+    const headers: any = new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
 
     this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Glidera Authorization Access Token: SUCCESS');

@@ -13,7 +13,7 @@ import { TouchIdProvider } from '../providers/touchid/touchid';
 import { GlideraProvider } from '../providers/glidera/glidera';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { AmazonProvider } from '../providers/amazon/amazon';
-//import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
+import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 
@@ -46,7 +46,7 @@ export class CopayApp {
     private glideraProvider: GlideraProvider,
     private coinbaseProvider: CoinbaseProvider,
     private amazonProvider: AmazonProvider,
-    //private bitPayCardProvider: BitPayCardProvider,
+    private bitPayCardProvider: BitPayCardProvider,
     private mercadoLibreProvider: MercadoLibreProvider,
     private shapeshiftProvider: ShapeshiftProvider
   ) {
@@ -153,7 +153,7 @@ export class CopayApp {
       this.coinbaseProvider.register();
     }
 
-    // Disabled: needs to be fixed
-    //    if (this.app.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
+    // BitPay Card
+    if (this.app.info._enabledExtensions.debitcard) this.bitPayCardProvider.register();
   }
 }
