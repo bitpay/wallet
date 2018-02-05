@@ -1278,12 +1278,13 @@ export class BitPayCardProvider {
     };
     // Get Debit Cards
     this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      if (data && data.data.error) return cb(data.data.error);
+      console.log('[bitpay-card.ts:1280]',data); /* TODO */
+      if (data && data.error) return cb(data.error);
       this.logger.info('BitPay Get Debit Cards: SUCCESS');
 
       var cards = [];
 
-      _.each(data.data.data, (x) => {
+      _.each(data.data, (x) => {
         var n: any = {};
 
         if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
@@ -1344,7 +1345,7 @@ export class BitPayCardProvider {
         // Get invoices
         this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
           this.logger.info('BitPay Get Invoices: SUCCESS');
-          invoices = data.data.data || [];
+          invoices = data.data || [];
 
           if (_.isEmpty(invoices))
             this.logger.info('No invoices');
@@ -1356,12 +1357,12 @@ export class BitPayCardProvider {
           // Get transactions History list
           this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
             this.logger.info('BitPay Get History: SUCCESS');
-            history = data.data.data || {};
+            history = data.data || {};
             history['txs'] = this._processTransactions(invoices, history);
 
             this.setLastKnownBalance(cardId, history.currentCardBalance);
 
-            return cb(data.data.error, history);
+            return cb(data.error, history);
           }, (data) => {
             return cb(this._setError('BitPay Card Error: Get History', data));
           });
@@ -1393,10 +1394,10 @@ export class BitPayCardProvider {
 
         this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
           this.logger.info('BitPay TopUp: SUCCESS');
-          if (data.data.error) {
-            return cb(data.data.error);
+          if (data.error) {
+            return cb(data.error);
           } else {
-            return cb(null, data.data.data.invoice);
+            return cb(null, data.invoice);
           }
         }, (data) => {
           return cb(this._setError('BitPay Card Error: TopUp', data));
@@ -1408,7 +1409,7 @@ export class BitPayCardProvider {
   public getInvoice(id, cb) {
     this.bitPayProvider.get('/invoices/' + id, (data) => {
       this.logger.info('BitPay Get Invoice: SUCCESS');
-      return cb(data.data.error, data.data.data);
+      return cb(data.error, data.data);
     }, (data) => {
       return cb(this._setError('BitPay Card Error: Get Invoice', data));
     });
@@ -1463,7 +1464,7 @@ export class BitPayCardProvider {
   public getRates(currency, cb) {
     this.bitPayProvider.get('/rates/' + currency, (data) => {
       this.logger.info('BitPay Get Rates: SUCCESS');
-      return cb(data.data.error, data.data.data);
+      return cb(data.error, data.data);
     }, (data) => {
       return cb(this._setError('BitPay Error: Get Rates', data));
     });
