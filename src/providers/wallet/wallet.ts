@@ -49,7 +49,7 @@ export class WalletProvider {
     private rateProvider: RateProvider,
     private filter: FilterProvider,
     private popupProvider: PopupProvider,
-    private ongoingProcess: OnGoingProcessProvider,
+    private ongoingProcessProvider: OnGoingProcessProvider,
     private touchidProvider: TouchIdProvider,
     private events: Events,
     private feeProvider: FeeProvider,
@@ -977,10 +977,10 @@ export class WalletProvider {
   public recreate(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Recreating wallet:', wallet.id);
-      this.ongoingProcess.set('recreating', true);
+      this.ongoingProcessProvider.set('recreating', true);
       wallet.recreateWallet((err: any) => {
         wallet.notAuthorized = false;
-        this.ongoingProcess.set('recreating', false);
+        this.ongoingProcessProvider.set('recreating', false);
         if (err) return reject(err);
         return resolve();
       });
@@ -1139,13 +1139,14 @@ export class WalletProvider {
 
   public reject(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.ongoingProcess.set('rejectTx', true);
+      this.ongoingProcessProvider.set('rejectTx', true);
       this.rejectTx(wallet, txp).then((txpr: any) => {
         this.invalidateCache(wallet);
-        this.ongoingProcess.set('rejectTx', false);
+        this.ongoingProcessProvider.set('rejectTx', false);
         this.events.publish('Local/TxAction', wallet.id);
         return resolve(txpr);
       }).catch((err) => {
+        this.ongoingProcessProvider.set('rejectTx', false);
         return reject(err);
       });
     });
@@ -1153,13 +1154,14 @@ export class WalletProvider {
 
   public onlyPublish(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.ongoingProcess.set('sendingTx', true);
+      this.ongoingProcessProvider.set('sendingTx', true);
       this.publishTx(wallet, txp).then((publishedTxp) => {
         this.invalidateCache(wallet);
-        this.ongoingProcess.set('sendingTx', false);
+        this.ongoingProcessProvider.set('sendingTx', false);
         this.events.publish('Local/TxAction', wallet.id);
         return resolve();
       }).catch((err) => {
+        this.ongoingProcessProvider.set('sendingTx', false);
         return reject(this.bwcErrorProvider.msg(err));
       });
     });
@@ -1182,24 +1184,26 @@ export class WalletProvider {
   private signAndBroadcast(wallet: any, publishedTxp: any, password: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      this.ongoingProcess.set('signingTx', true);
+      this.ongoingProcessProvider.set('signingTx', true);
       this.signTx(wallet, publishedTxp, password).then((signedTxp: any) => {
-        this.ongoingProcess.set('signingTx', false);
         this.invalidateCache(wallet);
         if (signedTxp.status == 'accepted') {
-          this.ongoingProcess.set('broadcastingTx', true);
+          this.ongoingProcessProvider.set('broadcastingTx', true);
           this.broadcastTx(wallet, signedTxp).then((broadcastedTxp: any) => {
-            this.ongoingProcess.set('broadcastingTx', false);
+            this.ongoingProcessProvider.clear();
             this.events.publish('Local/TxAction', wallet.id);
             return resolve(broadcastedTxp);
           }).catch((err) => {
+            this.ongoingProcessProvider.clear();
             return reject(this.bwcErrorProvider.msg(err));
           });
         } else {
+          this.ongoingProcessProvider.clear();
           this.events.publish('Local/TxAction', wallet.id);
           return resolve(signedTxp);
         };
       }).catch((err) => {
+        this.ongoingProcessProvider.clear();
         this.logger.warn('sign error:' + err);
         let msg = err && err.message ? err.message : this.translate.instant('The payment was created but could not be completed. Please try again from home screen');
         this.events.publish('Local/TxAction', wallet.id);
@@ -1223,16 +1227,15 @@ export class WalletProvider {
         });
       } else {
         this.prepare(wallet).then((password: string) => {
-          this.ongoingProcess.set('sendingTx', true);
+          this.ongoingProcessProvider.set('sendingTx', true);
           this.publishTx(wallet, txp).then((publishedTxp: any) => {
-            this.ongoingProcess.set('sendingTx', false);
             this.signAndBroadcast(wallet, publishedTxp, password).then((broadcastedTxp: any) => {
               return resolve(broadcastedTxp);
             }).catch((err) => {
               return reject(err);
             });
           }).catch((err) => {
-            this.ongoingProcess.set('sendingTx', false);
+            this.ongoingProcessProvider.clear();
             return reject(this.bwcErrorProvider.msg(err));
           });
         }).catch((err) => {

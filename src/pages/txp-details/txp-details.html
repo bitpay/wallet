@@ -229,7 +229,7 @@
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button *ngIf="tx.pendingForUs && canSign && !paymentExpired" ion-button icon-right color="primary" (click)="onConfirm()">
+      <button *ngIf="tx.pendingForUs && canSign && !paymentExpired" ion-button icon-right (click)="onConfirm()">
         {{buttonText}}
         <ion-icon name="send"></ion-icon>
       </button>

@@ -514,7 +514,6 @@ export class ConfirmPage {
 
     this.onGoingProcessProvider.set('creatingTx', true);
     this.getTxp(_.clone(tx), wallet, false).then((txp: any) => {
-      this.onGoingProcessProvider.set('creatingTx', false);
 
       // confirm txs for more that 20usd, if not spending/touchid is enabled
       let confirmTx = (): Promise<any> => {
@@ -543,10 +542,11 @@ export class ConfirmPage {
       let publishAndSign = (): void => {
         if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
           this.logger.info('No signing proposal: No private key');
-          this.walletProvider.onlyPublish(wallet, txp).catch((err: any) => {
+          this.walletProvider.onlyPublish(wallet, txp).then(() => {
+            this.openSuccessModal(true);
+          }).catch((err: any) => {
             this.setSendError(err);
           });
-          this.openSuccessModal();
           return;
         }
 
@@ -573,13 +573,20 @@ export class ConfirmPage {
         return;
       });
     }).catch((err: any) => {
+      this.onGoingProcessProvider.set('creatingTx', false);
       this.logger.warn(err);
       return;
     });
   }
 
-  public openSuccessModal() {
-    let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+  public openSuccessModal(onlyPublish?: boolean) {
+    let params = {};
+    if (onlyPublish) {
+      let successText = this.translate.instant('Payment Published');
+      let successComment = this.translate.instant('You could sign the transaction later in your wallet details');
+      params = { successText: successText, successComment: successComment };
+    }
+    let modal = this.modalCtrl.create(SuccessModalPage, params, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot();
