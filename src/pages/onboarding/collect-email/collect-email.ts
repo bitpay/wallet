@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import * as _ from 'lodash';
 
 //providers
 import { AppProvider } from '../../../providers/app/app';
@@ -30,7 +31,8 @@ export class CollectEmailPage {
     private fb: FormBuilder,
     private appProvider: AppProvider,
     private http: HttpClient,
-    private emailProvider: EmailNotificationsProvider
+    private emailProvider: EmailNotificationsProvider,
+    private platform: Platform
   ) {
     this.walletId = this.navParams.data.walletId;
     let regex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -72,12 +74,18 @@ export class CollectEmailPage {
   }
 
   private collectEmail(): void {
+    let platform = this.platform.platforms().join("");
+    let versions: any = this.platform.versions();
+    versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
+    let version: any = versions && versions[0] ? versions[0] : null;
+    let versionStr = version ? version.str : '';
+
     const headers: any = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
     const urlSearchParams = new HttpParams()
       .set('App', this.appProvider.info.nameCase)
       .set('Email', this.emailForm.value.email)
-      .set('Platform', 'ionic.Platform.platform()') //TODO ionic.Platform.platform()
-      .set('DeviceVersion', 'ionic.Platform.version()') //TODO ionic.Platform.version()
+      .set('Platform', platform)
+      .set('DeviceVersion', versionStr)
 
     this.http.post(this.URL, null, {
       params: urlSearchParams,

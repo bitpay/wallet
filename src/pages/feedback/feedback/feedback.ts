@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController } from 'ionic-angular';
+import { NavParams, NavController, Platform } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 //providers
@@ -36,7 +36,8 @@ export class FeedbackPage {
     private feedbackProvider: FeedbackProvider,
     private navCtrl: NavController,
     private logger: Logger,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private platform: Platform
   ) {
     this.score = this.navParams.data.score;
     this.appName = this.appProvider.info.nameCase;
@@ -47,13 +48,19 @@ export class FeedbackPage {
 
 
   public skip(): void {
+    let platform = this.platform.platforms().join("");
+    let versions: any = this.platform.versions();
+    versions = _.values(_.pickBy(versions, _.identity)) //remove undefined and get array of versions
+    let version: any = versions && versions[0] ? versions[0] : null;
+    let versionStr = version ? version.str : '';
+
     let dataSrc = {
       "Email": _.values(this.config.emailFor)[0] || ' ',
       "Feedback": ' ',
       "Score": this.score,
       "AppVersion": this.appProvider.info.version,
-      "Platform": 'platform', //TODO ionic.Platform.platform()
-      "DeviceVersion": 'version' //TODO ionic.Platform.version()
+      "Platform": platform,
+      "DeviceVersion": versionStr
     };
     this.feedbackProvider.send(dataSrc).then(() => {
       this.navCtrl.push(FeedbackCompletePage, { score: this.score, skipped: true })
