@@ -1,8 +1,17 @@
 page-bitpay-card {
+  .balance-card {
+    background: color($colors, primary);
+  }
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 13rem;
+    height: 15rem;
     text-align: center;
+  }
+  .balance-str {
+    cursor: pointer;
+    padding-top: 5rem;
+    font-size: 35px;
+    font-weight: 600;
   }
 }

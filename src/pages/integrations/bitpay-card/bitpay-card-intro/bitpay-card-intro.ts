@@ -37,14 +37,12 @@ export class BitPayCardIntroPage {
       };
       let pairingReason = 'add your BitPay Visa card(s)'; //TODO gettextcatalog
       this.bitPayAccountProvider.pair(pairData, pairingReason, (err: string, paired: boolean, apiContext: any) => {
-        console.log('[bitpay-card-intro.ts:39]',apiContext); /* TODO */
         if (err) {
           this.popupProvider.ionicAlert('Error pairing BitPay Account', err); //TODO gettextcatalog
           return;
         }
         if (paired) {
           this.bitPayCardProvider.sync(apiContext, (err, cards) => {
-            console.log('[bitpay-card-intro.ts:45]',cards); /* TODO */
             if (err) {
               this.popupProvider.ionicAlert('Error updating Debit Cards', err); //TODO gettextcatalog
               return;
