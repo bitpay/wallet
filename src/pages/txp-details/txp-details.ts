@@ -247,6 +247,7 @@ export class TxpDetailsPage {
         this.onGoingProcessProvider.set('removeTx', false);
         this.close();
       }).catch((err: any) => {
+        this.onGoingProcessProvider.set('removeTx', false);
         if (err && !(err.message && err.message.match(/Unexpected/))) {
           this.events.publish('UpdateTx');
           this.setError(err, this.translate.instant('Could not delete payment proposal'));
@@ -262,6 +263,7 @@ export class TxpDetailsPage {
       this.onGoingProcessProvider.set('broadcastingTx', false);
       this.openSuccessModal();
     }).catch((err: any) => {
+      this.onGoingProcessProvider.set('broadcastingTx', false);
       this.setError(err, 'Could not broadcast payment');
     });
   }
