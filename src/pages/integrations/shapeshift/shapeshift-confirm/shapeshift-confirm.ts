@@ -340,9 +340,7 @@ export class ShapeshiftConfirmPage {
         return;
       }
 
-      this.onGoingProcessProvider.set('sendingTx', true);
       this.publishAndSign(this.fromWallet, this.createdTx).then((txSent: any) => {
-        this.onGoingProcessProvider.set('sendingTx', false);
         this.txSent = txSent;
         this.saveShapeshiftData();
       }).catch((err: any) => {
