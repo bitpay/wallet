@@ -108,12 +108,12 @@ export class ShapeshiftConfirmPage {
       let amountNumber = Number(this.amount);
 
       if (amountNumber < min) {
-        let message = this.translate.instant('Minimum amount required is {{min}}', { min: min });
+        let message = 'Minimum amount required is ' + min; // TODO: translate
         this.showErrorAndBack(null, message);
         return;
       }
       if (amountNumber > max) {
-        let message = this.translate.instant('Maximum amount allowed is {{max}}', { max: max });
+        let message = 'Maximum amount allowed is ' + max; // TODO: translate
         this.showErrorAndBack(null, message);
         return;
       }
@@ -332,7 +332,7 @@ export class ShapeshiftConfirmPage {
     }
     let fromCoin = this.fromWallet.coin.toUpperCase();
     let toCoin = this.toWallet.coin.toUpperCase();
-    let title = this.translate.instant('Confirm to shift {{fromCoin}} to {{toCoin}}', { fromCoin: fromCoin, toCoin: toCoin });
+    let title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: translate
     let okText = this.translate.instant('OK');
     let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {

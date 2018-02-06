@@ -416,13 +416,13 @@ export class ConfirmPage {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = (sendMaxInfo.amountBelowFee / 1e8);
-      let message = this.translate.instant("A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.", { amountBelowFeeStr: amountBelowFeeStr, coin: this.tx.coin.toUpperCase() });
+      let message = "A total of " + amountBelowFeeStr + " " + this.tx.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided."; // TODO: translate
       warningMsg.push(message);
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
       let amountAboveMaxSizeStr = (sendMaxInfo.amountAboveMaxSize / 1e8);
-      let message = this.translate.instant("A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded.", { amountBelowFeeStr: amountAboveMaxSizeStr, coin: this.tx.coin.toUpperCase() });
+      let message = "A total of " + amountAboveMaxSizeStr + " " + this.tx.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded."; // TODO: translate
       warningMsg.push(message);
     }
     return warningMsg.join('\n');
@@ -530,7 +530,7 @@ export class ConfirmPage {
             let amount = (this.tx.amount / 1e8).toFixed(8);
             let unit = this.config.wallet.settings.unitName;
             let name = wallet.name;
-            let message = this.translate.instant('Sending {{amount}} {{unit}} from your {{name}} wallet', { amount: amount, unit: unit, name: name });
+            let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO: translate
             let okText = this.translate.instant('Confirm');
             let cancelText = this.translate.instant('Cancel');
             this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
