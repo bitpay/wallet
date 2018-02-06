@@ -408,7 +408,7 @@ export class ProfileProvider {
         let walletId: string = wallet.credentials.walletId
 
         if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-          let message = this.translate.instant("Wallet already in {{nameCase}}", { nameCase: this.appProvider.info.nameCase });
+          let message = "Wallet already in " + this.appProvider.info.nameCase; // TODO: translate
           return reject(message);
         }
 

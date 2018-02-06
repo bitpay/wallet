@@ -69,11 +69,11 @@ export class SendFeedbackPage {
         break;
       case 5:
         this.reaction = this.translate.instant("Thank you!");
-        this.comment = this.translate.instant("We're always looking for ways to improve {{appName}}. Is there anything we could do better?", { appName: this.appName });
+        this.comment = "We're always looking for ways to improve" + " " + this.appName + ". Is there anything we could do better?"; // TODO: translate
         break;
       default:
         this.justFeedback = true;
-        this.comment = this.translate.instant("We're always looking for ways to improve {{appName}}. How could we improve your experience?", { appName: this.appName });
+        this.comment = "We're always looking for ways to improve" + " " + this.appName + ". How could we improve your experience?"; // TODO: translate
         break;
     }
   }

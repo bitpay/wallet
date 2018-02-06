@@ -84,7 +84,7 @@ export class BuyAmazonPage {
 
     let limitPerDay = this.amazonProvider.limitPerDay;
 
-    this.limitPerDayMessage = this.translate.instant("Purchase Amount is limited to {{limitPerDay}} {{currency}} per day", { limitPerDay: limitPerDay, currency: this.currency });
+    this.limitPerDayMessage = "Purchase Amount is limited to " + limitPerDay + " " + this.currency + " per day"; // TODO: translate
 
     if (this.amount > this.amazonProvider.limitPerDay) {
       this.showErrorAndBack(null, this.limitPerDayMessage);
@@ -336,7 +336,7 @@ export class BuyAmazonPage {
       invoice['buyerPaidBtcMinerFee'] = invoice.buyerPaidBtcMinerFee || 0;
       let invoiceFeeSat = parseInt((invoice.buyerPaidBtcMinerFee * 100000000).toFixed());
 
-      this.message = this.translate.instant("{{amountUnitStr}} for Amazon.com Gift Card", { amountUnitStr: this.amountUnitStr });
+      this.message = this.amountUnitStr + " for Amazon.com Gift Card"; // TODO: translate
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.set('loadingTxInfo', false);
