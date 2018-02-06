@@ -64,14 +64,11 @@ export class TxDetailsPage {
     this.isShared = this.wallet.credentials.n > 1;
     this.txsUnsubscribedForNotifications = this.config.confirmedTxsNotifications ? !this.config.confirmedTxsNotifications.enabled : true;
 
+    let defaults = this.configProvider.getDefaults();
     if (this.wallet.coin == 'bch') {
-      if (this.walletProvider.useLegacyAddress()) {
-        this.blockexplorerUrl = 'bch-insight.bitpay.com';
-      } else {
-        this.blockexplorerUrl = 'blockdozer.com/insight';
-      }
+      this.blockexplorerUrl = defaults.blockExplorerUrl.bch;
     } else {
-      this.blockexplorerUrl = 'insight.bitpay.com';
+      this.blockexplorerUrl = defaults.blockExplorerUrl.btc;
     }
 
     this.txConfirmNotificationProvider.checkIfEnabled(this.txId).then((res: any) => {
