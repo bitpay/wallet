@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, Events, ModalController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
 import { ActivityPage } from './activity/activity';
@@ -87,6 +88,7 @@ export class HomePage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
+    private translate: TranslateService
   ) {
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
@@ -332,7 +334,9 @@ export class HomePage {
           this.openTxpModal(_txp);
         }).catch((err: any) => {
           this.logger.warn('No txp found');
-          return this.popupProvider.ionicAlert('Error', 'Transaction not found'); //TODO gettextcatalog
+          let title = this.translate.instant('Error');
+          let subtitle = this.translate.instant('Transaction not found');
+          return this.popupProvider.ionicAlert(title, subtitle);
         });
       }
     }
@@ -367,10 +371,10 @@ export class HomePage {
   public goToDownload(): void {
     let url = 'https://github.com/bitpay/copay/releases/latest';
     let optIn = true;
-    let title = 'Update Available'; //TODO gettextcatalog
-    let message = 'An update to this app is available. For your security, please update to the latest version.'; //TODO gettextcatalog
-    let okText = 'View Update'; //TODO gettextcatalog
-    let cancelText = 'Go Back'; //TODO gettextcatalog
+    let title = this.translate.instant('Update Available');
+    let message = this.translate.instant('An update to this app is available. For your security, please update to the latest version.');
+    let okText = this.translate.instant('View Update');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 

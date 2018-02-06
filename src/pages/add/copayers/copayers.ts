@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
 import { WalletDetailsPage } from '../../../pages/wallet-details/wallet-details';
@@ -40,7 +41,8 @@ export class CopayersPage {
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private translate: TranslateService
   ) {
     this.secret = null;
   }
@@ -77,15 +79,16 @@ export class CopayersPage {
         });
       }
     }).catch((err: any) => {
-      this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); // TODO: GetTextCatalog
+      let message = this.translate.instant('Could not update wallet');
+      this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, message));
       return;
     });
   }
 
   public showDeletePopup(): void {
-    let title = 'Confirm'; // TODO: GetTextCatalog
-    let msg = 'Are you sure you want to cancel and delete this wallet?'; // TODO: GetTextCatalog
-    this.popupProvider.ionicConfirm(title, msg, 'Ok', 'Cancel').then((res: any) => {
+    let title = this.translate.instant('Confirm');
+    let msg = this.translate.instant('Are you sure you want to cancel and delete this wallet?');
+    this.popupProvider.ionicConfirm(title, msg).then((res: any) => {
       if (res) this.deleteWallet();
     });
   }
@@ -100,7 +103,8 @@ export class CopayersPage {
       this.navCtrl.parent.select(0);
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('deletingWallet', false);
-      this.popupProvider.ionicAlert('Error', err.message || err); // TODO: GetTextCatalog  
+      let errorText = this.translate.instant('Error');
+      this.popupProvider.ionicAlert(errorText, err.message || err);
     });
   }
 

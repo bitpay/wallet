@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../providers/logger/logger';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
 import { ShapeshiftPage } from '../shapeshift';
@@ -73,7 +74,8 @@ export class ShapeshiftConfirmPage {
     private shapeshiftProvider: ShapeshiftProvider,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private translate: TranslateService
   ) {
     this.configWallet = this.configProvider.get().wallet;
     this.currencyIsoCode = 'USD';  // Only USD
@@ -93,7 +95,7 @@ export class ShapeshiftConfirmPage {
     this.toWallet = this.profileProvider.getWallet(this.toWalletId);
 
     if (_.isEmpty(this.fromWallet) || _.isEmpty(this.toWallet)) {
-      this.showErrorAndBack(null, 'No wallet found'); // TODO: gettextCatalog
+      this.showErrorAndBack(null, this.translate.instant('No wallet found'));
       return;
     }
 
@@ -106,11 +108,13 @@ export class ShapeshiftConfirmPage {
       let amountNumber = Number(this.amount);
 
       if (amountNumber < min) {
-        this.showErrorAndBack(null, 'Minimum amount required is ' + min); // TODO: gettextCatalog
+        let message = 'Minimum amount required is ' + min; // TODO: translate
+        this.showErrorAndBack(null, message);
         return;
       }
       if (amountNumber > max) {
-        this.showErrorAndBack(null, 'Maximum amount allowed is ' + max); // TODO: gettextCatalog
+        let message = 'Maximum amount allowed is ' + max; // TODO: translate
+        this.showErrorAndBack(null, message);
         return;
       }
       this.createShift();
@@ -126,7 +130,7 @@ export class ShapeshiftConfirmPage {
   };
 
   private showErrorAndBack(title: string, msg: any) {
-    title = title ? title : 'Error'; // TODO: gettextCatalog
+    title = title ? title : this.translate.instant('Error');
     this.logger.error(msg);
     msg = (msg && msg.errors) ? msg.errors[0].message : msg;
     this.popupProvider.ionicAlert(title, msg).then(() => {
@@ -137,7 +141,7 @@ export class ShapeshiftConfirmPage {
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
+        let err = this.translate.instant('No signing proposal: No private key');
         this.logger.info(err);
         return reject(err);
       }
@@ -233,7 +237,7 @@ export class ShapeshiftConfirmPage {
         return resolve(ctxp);
       }).catch((err: any) => {
         return reject({
-          title: 'Could not create transaction', // TODO: gettextCatalog
+          title: this.translate.instant('Could not create transaction'),
           message: this.bwcErrorProvider.msg(err)
         });
       });
@@ -323,14 +327,14 @@ export class ShapeshiftConfirmPage {
 
   public confirmTx(): void {
     if (!this.createdTx) {
-      this.showErrorAndBack(null, 'Transaction has not been created'); // TODO: gettextCatalog
+      this.showErrorAndBack(null, this.translate.instant('Transaction has not been created'));
       return;
     }
     let fromCoin = this.fromWallet.coin.toUpperCase();
     let toCoin = this.toWallet.coin.toUpperCase();
-    let title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: gettextCatalog
-    let okText = 'OK'; // TODO: gettextCatalog
-    let cancelText = 'Cancel'; // TODO: gettextCatalog
+    let title = 'Confirm to shift ' + fromCoin + ' to ' + toCoin; // TODO: translate
+    let okText = this.translate.instant('OK');
+    let cancelText = this.translate.instant('Cancel');
     this.popupProvider.ionicConfirm(title, '', okText, cancelText).then((ok: any) => {
       if (!ok) {
         return;
@@ -342,7 +346,7 @@ export class ShapeshiftConfirmPage {
         this.txSent = txSent;
         this.saveShapeshiftData();
       }).catch((err: any) => {
-        this.showErrorAndBack(null, 'Could not send transaction'), err; // TODO: gettextCatalog
+        this.showErrorAndBack(null, this.translate.instant('Could not send transaction')), err;
         return;
       });
     });

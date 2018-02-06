@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, Events, ViewController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -52,7 +53,8 @@ export class TxpDetailsPage {
     private viewCtrl: ViewController,
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private translate: TranslateService
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
@@ -118,18 +120,18 @@ export class TxpDetailsPage {
 
     if (lastSigner) {
       if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = 'Slide to send'; //TODO gettextcatalog
+        this.buttonText = this.translate.instant('Slide to send');
       } else {
-        this.buttonText = 'Click to send';//TODO gettextcatalog
+        this.buttonText = this.translate.instant('Click to send');
       }
-      this.successText = 'Payment Sent';//TODO gettextcatalog
+      this.successText = this.translate.instant('Payment Sent');
     } else {
       if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = 'Slide to accept';//TODO gettextcatalog
+        this.buttonText = this.translate.instant('Slide to accept');
       } else {
-        this.buttonText = 'Click to accept';//TODO gettextcatalog
+        this.buttonText = this.translate.instant('Click to accept');
       }
-      this.successText = 'Payment Accepted';//TODO gettextcatalog
+      this.successText = this.translate.instant('Payment Accepted');
     }
   }
 
@@ -139,10 +141,10 @@ export class TxpDetailsPage {
     if (!this.isShared) return;
 
     var actionDescriptions = {
-      created: 'Proposal Created', //TODO gettextcatalog
-      accept: 'Accepted', //TODO gettextcatalog
-      reject: 'Rejected', //TODO gettextcatalog
-      broadcasted: 'Broadcasted', //TODO gettextcatalog
+      created: this.translate.instant('Proposal Created'),
+      accept: this.translate.instant('Accepted'),
+      reject: this.translate.instant('Rejected'),
+      broadcasted: this.translate.instant('Broadcasted'),
     };
 
     this.actionList.push({
@@ -203,7 +205,7 @@ export class TxpDetailsPage {
 
   private setError(err: any, prefix: string): void {
     this.loading = false;
-    this.popupProvider.ionicAlert('Error', this.bwcError.msg(err, prefix)); //TODO gettextcatalog
+    this.popupProvider.ionicAlert(this.translate.instant('Error'), this.bwcError.msg(err, prefix));
   }
 
   public sign(): void {
@@ -212,27 +214,27 @@ export class TxpDetailsPage {
       this.events.publish('UpdateTx');
       //this.success(); TODO
     }).catch((err: any) => {
-      this.setError(err, 'Could not send payment'); //TODO gettextcatalog
+      this.setError(err, ('Could not send payment'));
     });
   }
 
   public reject(txp: any): void {
-    let title = 'Warning!'; //TODO gettextcatalog
-    let msg = 'Are you sure you want to reject this transaction?'; //TODO gettextcatalog
+    let title = this.translate.instant('Warning!');
+    let msg = this.translate.instant('Are you sure you want to reject this transaction?');
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return
       this.loading = true;
       this.walletProvider.reject(this.wallet, this.tx).then((txpr) => {
         this.close();
       }).catch((err: any) => {
-        this.setError(err, 'Could not reject payment');  //TODO gettextcatalog
+        this.setError(err, this.translate.instant('Could not reject payment'));
       });
     });
   }
 
   public remove(): void {
-    let title = 'Warning!'; //TODO gettextcatalog
-    let msg = 'Are you sure you want to remove this transaction?'; //TODO gettextcatalog
+    let title = this.translate.instant('Warning!');
+    let msg = this.translate.instant('Are you sure you want to remove this transaction?');
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return;
       this.onGoingProcessProvider.set('removeTx', true);
@@ -242,7 +244,7 @@ export class TxpDetailsPage {
       }).catch((err: any) => {
         if (err && !(err.message && err.message.match(/Unexpected/))) {
           this.events.publish('UpdateTx');
-          this.setError(err, 'Could not delete payment proposal'); //TODO gettextcatalog
+          this.setError(err, this.translate.instant('Could not delete payment proposal'));
         }
       });
     });

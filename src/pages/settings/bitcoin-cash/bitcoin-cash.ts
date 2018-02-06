@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { NavController } from 'ionic-angular';
 import { Logger } from "../../../providers/logger/logger";
 import * as lodash from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 // Providers
 import { WalletProvider } from "../../../providers/wallet/wallet";
@@ -39,6 +40,7 @@ export class BitcoinCashPage {
 		private bwcErrorProvider: BwcErrorProvider,
 		private bwcProvider: BwcProvider,
 		private logger: Logger,
+		private translate: TranslateService
 	) {
 		this.walletsBTC = this.profileProvider.getWallets({
 			coin: 'btc',
@@ -66,13 +68,13 @@ export class BitcoinCashPage {
 
 		lodash.each(this.walletsBTC, (w) => {
 			if (w.credentials.derivationStrategy != 'BIP44') {
-				w.excludeReason = 'Non BIP44 wallet'; // TODO gettextcatalog
+				w.excludeReason = this.translate.instant('Non BIP44 wallet');
 				this.nonEligibleWallets.push(w);
 			} else if (!w.canSign()) {
-				w.excludeReason = 'Read only wallet'; // TODO gettextcatalog
+				w.excludeReason = this.translate.instant('Read only wallet');
 				this.nonEligibleWallets.push(w);
 			} else if (w.needsBackup) {
-				w.excludeReason = 'Backup needed'; // TODO gettextcatalog
+				w.excludeReason = this.translate.instant('Backup needed');
 				this.nonEligibleWallets.push(w);
 			} else {
 				this.availableWallets.push(w);
@@ -94,9 +96,9 @@ export class BitcoinCashPage {
 	openRecoveryToolLink(): void {
 		let url = 'https://bitpay.github.io/copay-recovery/';
 		let optIn = true;
-		let title = 'Open the recovery tool'; //TODO gettextcatalog
-		let okText = 'Open'; //TODO gettextcatalog
-		let cancelText = 'Go Back'; //TODO gettextcatalog
+		let title = this.translate.instant('Open the recovery tool');
+		let okText = this.translate.instant('Open');
+		let cancelText = this.translate.instant('Go Back');
 		this.externalLinkProvider.open(url, optIn, title, null, okText, cancelText);
 	}
 

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
-
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../providers/logger/logger';
 
 @Injectable()
 export class PopupProvider {
   constructor(
     private alertCtrl: AlertController,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) {
   }
 
@@ -19,7 +20,7 @@ export class PopupProvider {
         enableBackdropDismiss: false,
         buttons: [
           {
-            text: okText ? okText : 'OK',
+            text: okText ? okText : this.translate.instant('Ok'),
             handler: () => {
               this.logger.info('Ok clicked');
               resolve();
@@ -38,14 +39,14 @@ export class PopupProvider {
         message: message,
         buttons: [
           {
-            text: cancelText ? cancelText : 'Cancel',
+            text: cancelText ? cancelText : this.translate.instant('Cancel'),
             handler: () => {
               this.logger.info('Disagree clicked');
               resolve(false);
             }
           },
           {
-            text: okText ? okText : 'OK',
+            text: okText ? okText : this.translate.instant('Ok'),
             handler: () => {
               this.logger.info('Agree clicked');
               resolve(true);
@@ -75,14 +76,14 @@ export class PopupProvider {
         ],
         buttons: [
           {
-            text: cancelText ? cancelText : 'Cancel',
+            text: cancelText ? cancelText : this.translate.instant('Cancel'),
             handler: data => {
               this.logger.info('Cancel clicked');
               resolve(null);
             }
           },
           {
-            text: okText ? okText : 'OK',
+            text: okText ? okText : this.translate.instant('Ok'),
             handler: data => {
               this.logger.info('Saved clicked');
               resolve(data[0]);

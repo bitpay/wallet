@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
 //providers
@@ -38,7 +39,8 @@ export class ProfileProvider {
     private languageProvider: LanguageProvider,
     private events: Events,
     private popupProvider: PopupProvider,
-    private onGoingProcessProvider: OnGoingProcessProvider
+    private onGoingProcessProvider: OnGoingProcessProvider,
+    private translate: TranslateService
   ) {
     this.throttledBwsEvent = _.throttle((n, wallet) => {
       this.newBwsEvent(n, wallet);
@@ -311,7 +313,7 @@ export class ProfileProvider {
           password: opts.password
         });
       } catch (err) {
-        return reject('Could not import. Check input file and spending password'); // TODO getTextCatalog
+        return reject(this.translate.instant('Could not import. Check input file and spending password'));
       }
 
       let strParsed: any = JSON.parse(str);
@@ -351,10 +353,10 @@ export class ProfileProvider {
 
   private showWarningNoEncrypt(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let title = 'Are you sure?'; //TODO gettextcatalog
-      let msg = 'Your wallet keys will be stored in plan text in this device, if an other app access the store it will be able to access your Bitcoin'; //TODO gettextcatalog
-      let okText = 'Yes'; //TODO gettextcatalog
-      let cancelText = 'No'; //TODO gettextcatalog
+      let title = this.translate.instant('Are you sure?');
+      let msg = this.translate.instant('Your wallet keys will be stored in plan text in this device, if an other app access the store it will be able to access your Bitcoin');
+      let okText = this.translate.instant('Yes');
+      let cancelText = this.translate.instant('No');
       this.popupProvider.ionicConfirm(title, msg, okText, cancelText).then((res: any) => {
         return resolve(res);
       });
@@ -363,19 +365,19 @@ export class ProfileProvider {
 
   private encrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let title = 'Please enter a password to encrypt your wallet keys on this device storage'; //TODO gettextcatalog
-      let warnMsg = 'Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.'; //TODO gettextcatalog
+      let title = this.translate.instant('Please enter a password to encrypt your wallet keys on this device storage');
+      let warnMsg = this.translate.instant('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
       this.askPassword(warnMsg, title).then((password: string) => {
         if (!password) {
           this.showWarningNoEncrypt().then((res: any) => {
-            if (res) return resolve(); //TODO gettextcatalog
+            if (res) return resolve();
             this.encrypt(wallet).then(() => {
               return resolve();
             });
           });
         }
         else {
-          title = 'Confirm your new spending password'; //TODO gettextcatalog
+          title = this.translate.instant('Confirm your new spending password');
           this.askPassword(warnMsg, title).then((password2: string) => {
             if (!password2 || password != password2) {
               this.encrypt(wallet).then(() => {
@@ -395,7 +397,7 @@ export class ProfileProvider {
   private addAndBindWalletClient(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet || !wallet.credentials) {
-        return reject('Could not access wallet'); // TODO gettextCatalog
+        return reject(this.translate.instant('Could not access wallet'));
       }
 
       // Encrypt wallet
@@ -406,7 +408,8 @@ export class ProfileProvider {
         let walletId: string = wallet.credentials.walletId
 
         if (!this.profile.addWallet(JSON.parse(wallet.export()))) {
-          return reject("Wallet already in " + this.appProvider.info.nameCase); // TODO gettextCatalog
+          let message = "Wallet already in " + this.appProvider.info.nameCase; // TODO: translate
+          return reject(message);
         }
 
         let skipKeyValidation: boolean = this.shouldSkipValidation(walletId);
@@ -476,7 +479,7 @@ export class ProfileProvider {
       walletClient.importFromExtendedPrivateKey(xPrivKey, opts, (err: any) => {
         if (err) {
           if (err instanceof this.errors.NOT_AUTHORIZED) return reject(err);
-          this.bwcErrorProvider.cb(err, 'Could not import').then((msg: string) => { //TODO getTextCatalog
+          this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
             return reject(msg);
           });
         } else {
@@ -521,7 +524,7 @@ export class ProfileProvider {
             return reject(err);
           }
 
-          this.bwcErrorProvider.cb(err, 'Could not import').then((msg: string) => { //TODO getTextCatalog
+          this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
             return reject(msg);
           });
 
@@ -555,7 +558,7 @@ export class ProfileProvider {
           if (err instanceof this.errors.NOT_AUTHORIZED)
             err.name = 'WALLET_DOES_NOT_EXIST';
 
-          this.bwcErrorProvider.cb(err, 'Could not import').then((msg: string) => { //TODO getTextCatalog
+          this.bwcErrorProvider.cb(err, this.translate.instant('Could not import')).then((msg: string) => {
             return reject(msg);
           });
 
@@ -708,7 +711,7 @@ export class ProfileProvider {
 
         } catch (ex) {
           this.logger.info(ex);
-          return reject('Could not create: Invalid wallet recovery phrase'); // TODO getTextCatalog
+          return reject(this.translate.instant('Could not create: Invalid wallet recovery phrase'));
         }
       } else if (opts.extendedPrivateKey) {
         try {
@@ -720,7 +723,7 @@ export class ProfileProvider {
           });
         } catch (ex) {
           this.logger.warn(ex);
-          return reject('Could not create using the specified extended private key'); // TODO GetTextCatalog
+          return reject(this.translate.instant('Could not create using the specified extended private key'));
         }
       } else if (opts.extendedPublicKey) {
         try {
@@ -732,7 +735,7 @@ export class ProfileProvider {
           walletClient.credentials.hwInfo = opts.hwInfo;
         } catch (ex) {
           this.logger.warn("Creating wallet from Extended Public Key Arg:", ex, opts);
-          return reject('Could not create using the specified extended public key'); // TODO GetTextCatalog
+          return reject(this.translate.instant('Could not create using the specified extended public key'));
         }
       } else {
         let lang = this.languageProvider.getCurrent();
@@ -775,8 +778,8 @@ export class ProfileProvider {
       setTimeout(() => {
         this.seedWallet(opts).then((walletClient: any) => {
 
-          let name = opts.name || 'Personal Wallet'; // TODO GetTextCatalog
-          let myName = opts.myName || 'me'; // TODO GetTextCatalog
+          let name = opts.name || this.translate.instant('Personal Wallet');
+          let myName = opts.myName || this.translate.instant('me');
 
           walletClient.createWallet(name, myName, opts.m, opts.n, {
             network: opts.networkName,
@@ -785,7 +788,7 @@ export class ProfileProvider {
             coin: opts.coin
           }, (err: any, secret: any) => {
             if (err) {
-              this.bwcErrorProvider.cb(err, 'Error creating wallet').then((msg: string) => { //TODO getTextCatalog
+              this.bwcErrorProvider.cb(err, this.translate.instant('Error creating wallet')).then((msg: string) => {
                 return reject(msg);
               });
             } else {
@@ -826,11 +829,11 @@ export class ProfileProvider {
         if (_.find(this.profile.credentials, {
           'walletId': walletData.walletId
         })) {
-          return reject('Cannot join the same wallet more that once'); // TODO getTextCatalog
+          return reject(this.translate.instant('Cannot join the same wallet more that once'));
         }
       } catch (ex) {
         this.logger.debug(ex);
-        return reject('Bad wallet invitation'); // TODO getTextCatalog
+        return reject(this.translate.instant('Bad wallet invitation'));
       }
       opts.networkName = walletData.network;
       this.logger.debug('Joining Wallet:', opts);
@@ -840,7 +843,7 @@ export class ProfileProvider {
           coin: opts.coin
         }, (err: any) => {
           if (err) {
-            this.bwcErrorProvider.cb(err, 'Could not join wallet').then((msg: string) => { //TODO getTextCatalog
+            this.bwcErrorProvider.cb(err, this.translate.instant('Could not join wallet')).then((msg: string) => {
               return reject(msg);
             });
           } else {

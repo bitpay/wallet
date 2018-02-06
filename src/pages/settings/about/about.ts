@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //pages
 import { TermsOfUsePage } from './terms-of-use/terms-of-use';
@@ -23,7 +24,8 @@ export class AboutPage {
     private navCtrl: NavController,
     private app: AppProvider,
     private logger: Logger,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private translate: TranslateService
   ) { }
 
   ionViewDidLoad() {
@@ -40,10 +42,10 @@ export class AboutPage {
   public openExternalLink(): void {
     let url = 'https://github.com/bitpay/' + this.app.info.gitHubRepoName + '/tree/' + this.app.info.commitHash + '';
     let optIn = true;
-    let title = 'Open GitHub Project'; //TODO gettextcatalog
-    let message = 'You can see the latest developments and contribute to this open source app by visiting our project on GitHub.'; //TODO gettextcatalog
-    let okText = 'Open GitHub'; //TODO gettextcatalog
-    let cancelText = 'Go Back'; //TODO gettextcatalog
+    let title = this.translate.instant('Open GitHub Project');
+    let message = this.translate.instant('You can see the latest developments and contribute to this open source app by visiting our project on GitHub.');
+    let okText = this.translate.instant('Open GitHub');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 

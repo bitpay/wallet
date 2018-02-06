@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { LanguageProvider } from '../../../providers/language/language';
@@ -17,7 +18,8 @@ export class LanguagePage {
   constructor(
     private navCtrl: NavController,
     private languageProvider: LanguageProvider,
-    private externalLinkProvider: ExternalLinkProvider
+    private externalLinkProvider: ExternalLinkProvider,
+    private translate: TranslateService
   ) {
     this.currentLanguage = this.languageProvider.getCurrent();
     this.languages = this.languageProvider.getAvailables();
@@ -26,10 +28,10 @@ export class LanguagePage {
   public openExternalLink(): void {
     let url = 'https://crowdin.com/project/copay';
     let optIn = true;
-    let title = 'Open Translation Community'; //TODO gettextcatalog
-    let message = 'You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!'; //TODO gettextcatalog
-    let okText = 'Open Crowdin'; //TODO gettextcatalog
-    let cancelText = 'Go Back'; //TODO gettextcatalog
+    let title = this.translate.instant('Open Translation Community');
+    let message = this.translate.instant('You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!');
+    let okText = this.translate.instant('Open Crowdin');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 

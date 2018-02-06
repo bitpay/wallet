@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { Logger } from '../../../providers/logger/logger';
 import { ModalController, NavController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -32,7 +33,8 @@ export class ActivityPage {
     private modalCtrl: ModalController,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
-    private popupProvider: PopupProvider
+    private popupProvider: PopupProvider,
+    private translate: TranslateService
   ) {
     this.fetchingNotifications = true;
   }
@@ -73,7 +75,9 @@ export class ActivityPage {
           modal.present();
         }).catch((err) => {
           this.logger.warn('No txp found');
-          this.popupProvider.ionicAlert('Error', 'Transaction not found'); //TODO gettextcatalog     
+          let title = this.translate.instant('Error');
+          let subtitle = this.translate.instant('Transaction not found');
+          this.popupProvider.ionicAlert(title, subtitle);
         });
       }
     }

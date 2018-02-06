@@ -56,9 +56,9 @@ export class MercadoLibreCardDetailsPage {
     let url = 'https://help.bitpay.com/requestHelp';
     let optIn = true;
     let title = null;
-    let message = 'Help and support information is available at the website.'; //TODO: getTextCatalog
-    let okText = 'Open'; //TODO: getTextCatalog
-    let cancelText = 'Go Back'; //TODO: getTextCatalog
+    let message = 'A informação de ajuda e suporte está disponível no site.';
+    let okText = 'Abrir';
+    let cancelText = 'Volte';
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   };
 

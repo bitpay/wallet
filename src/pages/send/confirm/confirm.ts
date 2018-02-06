@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
 import { PayProPage } from '../../paypro/paypro';
@@ -72,7 +73,8 @@ export class ConfirmPage {
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private modalCtrl: ModalController,
     private txFormatProvider: TxFormatProvider,
-    private events: Events
+    private events: Events,
+    private translate: TranslateService
   ) {
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
     this.CONFIRM_LIMIT_USD = 20;
@@ -110,7 +112,7 @@ export class ConfirmPage {
 
     this.tx.feeLevelName = this.feeProvider.feeOpts[this.tx.feeLevel];
     this.showAddress = false;
-    this.walletSelectorTitle = 'Send from'; // TODO gettextCatalog
+    this.walletSelectorTitle = this.translate.instant('Send from');
   }
 
   ionViewDidLoad() {
@@ -143,7 +145,7 @@ export class ConfirmPage {
       });
 
       if (!this.wallets || !this.wallets.length) {
-        this.setNoWallet('No wallets available', true); // TODO gettextCatalog
+        this.setNoWallet(this.translate.instant('No wallets available'), true);
         return resolve();
       }
 
@@ -165,7 +167,7 @@ export class ConfirmPage {
               return reject('Could not update any wallet');
 
             if (_.isEmpty(filteredWallets)) {
-              this.setNoWallet('Insufficient funds', true); // TODO gettextCatalog
+              this.setNoWallet(this.translate.instant('Insufficient funds'), true);
               return reject('Insufficient funds');
             }
             this.wallets = _.clone(filteredWallets);
@@ -178,7 +180,7 @@ export class ConfirmPage {
               return reject('Could not update any wallet');
 
             if (_.isEmpty(filteredWallets)) {
-              this.setNoWallet('Insufficient funds', true); // TODO gettextCatalog
+              this.setNoWallet(this.translate.instant('Insufficient funds'), true);
               return reject('Insufficient funds for fee');
             }
             this.wallets = _.clone(filteredWallets);
@@ -198,7 +200,7 @@ export class ConfirmPage {
 
   private exitWithError(err: any) {
     this.logger.info('Error setting wallet selector:' + err);
-    this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => { // TODO gettextCatalog
+    this.popupProvider.ionicAlert("", this.bwcErrorProvider.msg(err)).then(() => {
       this.navCtrl.popToRoot();
     });
   };
@@ -226,21 +228,21 @@ export class ConfirmPage {
   private setButtonText(isMultisig: boolean, isPayPro: boolean): void {
     if (isPayPro) {
       if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = 'Slide to pay'; // TODO gettextCatalog
+        this.buttonText = this.translate.instant('Slide to pay');
       } else {
-        this.buttonText = 'Click to pay'; // TODO gettextCatalog
+        this.buttonText = this.translate.instant('Click to pay');
       }
     } else if (isMultisig) {
       if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = 'Slide to accept'; // TODO gettextCatalog
+        this.buttonText = this.translate.instant('Slide to accept');
       } else {
-        this.buttonText = 'Click to accept'; // TODO gettextCatalog
+        this.buttonText = this.translate.instant('Click to accept');
       }
     } else {
       if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = 'Slide to send'; // TODO gettextCatalog
+        this.buttonText = this.translate.instant('Slide to send');
       } else {
-        this.buttonText = 'Click to send'; // TODO gettextCatalog
+        this.buttonText = this.translate.instant('Click to send');
       }
     }
   }
@@ -259,7 +261,7 @@ export class ConfirmPage {
 
     if (now > expirationTime) {
       this.paymentExpired = true;
-      this.remainingTimeStr = 'Expired'; // TODO gettextCatalog
+      this.remainingTimeStr = this.translate.instant('Expired');
       if (countDown) {
         /* later */
         clearInterval(countDown);
@@ -325,10 +327,10 @@ export class ConfirmPage {
           this.logger.debug('Send max info', sendMaxInfo);
 
           if (sendMaxInfo.amount == 0) {
-            this.setNoWallet('Insufficient funds for fee', false); // TODO gettextCatalog
+            this.setNoWallet(this.translate.instant('Insufficient funds for fee'), false);
             this.popupProvider.ionicAlert('Error', 'Not enough funds for fee').then(() => {
               return resolve('no_funds');
-            }); // TODO gettextCatalog
+            });
           }
 
           tx.sendMaxInfo = sendMaxInfo;
@@ -350,7 +352,7 @@ export class ConfirmPage {
         });
 
       }).catch((err: any) => {
-        let msg = 'Error getting SendMax information'; // TODO gettextCatalog
+        let msg = this.translate.instant('Error getting SendMax information');
         return reject(msg);
       });
     });
@@ -414,12 +416,14 @@ export class ConfirmPage {
     let warningMsg = [];
     if (sendMaxInfo.utxosBelowFee > 0) {
       let amountBelowFeeStr = (sendMaxInfo.amountBelowFee / 1e8);
-      warningMsg.push("A total of " + amountBelowFeeStr + " " + this.tx.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided.");// TODO gettextCatalog
+      let message = "A total of " + amountBelowFeeStr + " " + this.tx.coin.toUpperCase() + " were excluded. These funds come from UTXOs smaller than the network fee provided."; // TODO: translate
+      warningMsg.push(message);
     }
 
     if (sendMaxInfo.utxosAboveMaxSize > 0) {
       let amountAboveMaxSizeStr = (sendMaxInfo.amountAboveMaxSize / 1e8);
-      warningMsg.push("A total of " + amountAboveMaxSizeStr + " " + this.tx.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded.");// TODO gettextCatalog
+      let message = "A total of " + amountAboveMaxSizeStr + " " + this.tx.coin.toUpperCase() + " were excluded. The maximum size allowed for a transaction was exceeded."; // TODO: translate
+      warningMsg.push(message);
     }
     return warningMsg.join('\n');
   };
@@ -429,14 +433,14 @@ export class ConfirmPage {
 
       // ToDo: use a credential's (or fc's) function for this
       if (tx.description && !wallet.credentials.sharedEncryptingKey) {
-        let msg = 'Could not add message to imported wallet without shared encrypting key'; // TODO gettextCatalog
+        let msg = this.translate.instant('Could not add message to imported wallet without shared encrypting key');
         this.logger.warn(msg);
         this.setSendError(msg);
         return reject(msg);
       }
 
       if (tx.amount > Number.MAX_SAFE_INTEGER) {
-        let msg = 'Amount too big'; // TODO gettextCatalog
+        let msg = this.translate.instant('Amount too big');
         this.logger.warn(msg);
         this.setSendError(msg);
         return reject(msg);
@@ -477,7 +481,7 @@ export class ConfirmPage {
   }
 
   private setSendError(msg: string) {
-    this.popupProvider.ionicAlert('Error at confirm', this.bwcErrorProvider.msg(msg)); // TODO gettextCatalog
+    this.popupProvider.ionicAlert(this.translate.instant('Error at confirm'), this.bwcErrorProvider.msg(msg));
   }
 
   public toggleAddress(): void {
@@ -489,7 +493,7 @@ export class ConfirmPage {
   }
 
   public showDescriptionPopup(tx) {
-    let message = 'Add description'; // TODO gettextCatalog
+    let message = this.translate.instant('Add description');
     let opts = {
       defaultText: tx.description
     };
@@ -504,7 +508,7 @@ export class ConfirmPage {
     if (!tx || !wallet) return;
 
     if (this.paymentExpired) {
-      this.popupProvider.ionicAlert(null, 'This bitcoin payment request has expired.'); // TODO gettextCatalog
+      this.popupProvider.ionicAlert(null, this.translate.instant('This bitcoin payment request has expired.'));
       return;
     }
 
@@ -526,9 +530,9 @@ export class ConfirmPage {
             let amount = (this.tx.amount / 1e8).toFixed(8);
             let unit = this.config.wallet.settings.unitName;
             let name = wallet.name;
-            let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO gettextCatalog
-            let okText = 'Confirm'; // TODO gettextCatalog
-            let cancelText = 'Cancel'; // TODO gettextCatalog
+            let message = 'Sending ' + amount + ' ' + unit + ' from your ' + name + ' wallet'; // TODO: translate
+            let okText = this.translate.instant('Confirm');
+            let cancelText = this.translate.instant('Cancel');
             this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {
               return resolve(!ok);
             });

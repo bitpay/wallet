@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -24,7 +25,8 @@ export class WalletDeletePage {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private pushNotificationsProvider: PushNotificationsProvider,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) {
 
   }
@@ -39,14 +41,14 @@ export class WalletDeletePage {
   }
 
   public showDeletePopup(): void {
-    var title = 'Warning!'; //TODO gettextcatalog
-    var message = 'Are you sure you want to delete this wallet?'; //TODO gettextcatalog
+    let title = this.translate.instant('Warning!');
+    let message = this.translate.instant('Are you sure you want to delete this wallet?');
     this.popupProvider.ionicConfirm(title, message, null, null).then((res) => {
       if (res) this.deleteWallet();
     });
   };
 
-  public deleteWallet() {
+  public deleteWallet(): void {
     this.onGoingProcessProvider.set('deletingWallet', true);
     this.profileProvider.deleteWalletClient(this.wallet).then(() => {
       this.onGoingProcessProvider.set('deletingWallet', false);
@@ -54,7 +56,7 @@ export class WalletDeletePage {
       this.navCtrl.popToRoot();
       this.navCtrl.parent.select(0);
     }).catch((err) => {
-      this.popupProvider.ionicAlert('Error', err.message || err);//TODO gettextcatalog
+      this.popupProvider.ionicAlert(this.translate.instant('Error'), err.message || err);
     });
   };
 }

@@ -103,7 +103,7 @@ export class SellCoinbasePage {
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
+        let err = 'No signing proposal: No private key';
         this.logger.info(err);
         return reject(err);
       }
