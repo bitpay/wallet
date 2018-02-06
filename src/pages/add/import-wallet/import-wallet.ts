@@ -95,9 +95,12 @@ export class ImportWalletPage {
 
     switch (tab) {
       case 'words':
+        this.file = null;
+        this.formFile = null;
         this.importForm.get('words').setValidators([Validators.required]);
-        this.importForm.get('file').clearValidators();
         this.importForm.get('filePassword').clearValidators();
+        if (this.isCordova || this.isSafari) this.importForm.get('backupText').clearValidators();
+        else this.importForm.get('file').clearValidators();
         break;
       case 'file':
         if (this.isCordova || this.isSafari) this.importForm.get('backupText').setValidators([Validators.required]);
@@ -115,6 +118,7 @@ export class ImportWalletPage {
     this.importForm.get('words').updateValueAndValidity();
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
+    this.importForm.get('backupText').updateValueAndValidity();
   }
 
   normalizeMnemonic(words: string) {
