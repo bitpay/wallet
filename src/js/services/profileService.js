@@ -520,18 +520,32 @@ angular.module('copayApp.services')
 
     var showWarningNoEncrypt = function(cb) {
       var title = gettextCatalog.getString('Are you sure?');
-      var msg = gettextCatalog.getString('Your wallet keys will be stored in plan text in this device, if an other app access the store it will be able to access your Bitcoin');
-      var yes = gettextCatalog.getString('Yes');
-      var no = gettextCatalog.getString('No');
+      var msg = gettextCatalog.getString('Without encryption, a thief or another application on this device may be able to access your funds.');
+      var no = gettextCatalog.getString('Go Back');
+      var yes = gettextCatalog.getString('I\'m sure');
       popupService.showConfirm(title, msg, yes, no, function(res) {
         return cb(res);
       });
     };
 
+    var askToEncryptWallet = function(wallet, cb) {
+      var title = gettextCatalog.getString('Would you like to protect this wallet with a password?');
+      var message = gettextCatalog.getString('Encryption can protect your funds if this device is stolen or compromised by malicious software.');
+      var okText = gettextCatalog.getString('Yes');
+      var cancelText = gettextCatalog.getString('No');
+      popupService.showConfirm(title, message, okText, cancelText, function(res) {
+        if (!res) return showWarningNoEncrypt(function() {
+          if (res) return cb()
+          return encryptWallet(wallet, cb);
+        });
+        return encryptWallet(wallet, cb);
+      });
+    }
+
     var encryptWallet = function(wallet, cb) {
 
-      var title = gettextCatalog.getString('Please enter a password to encrypt your wallet keys on this device storage');
-      var warnMsg = gettextCatalog.getString('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
+      var title = gettextCatalog.getString('Enter a password to encrypt your wallet');
+      var warnMsg = gettextCatalog.getString('This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down.');
       askPassword(warnMsg, title, function(password) {
         if (!password) {
           showWarningNoEncrypt(function(res) {
@@ -539,7 +553,7 @@ angular.module('copayApp.services')
             return encryptWallet(wallet, cb);
           });
         } else {
-          title = gettextCatalog.getString('Confirm your new spending password');
+          title = gettextCatalog.getString('Enter your password again to confirm');
           askPassword(warnMsg, title, function(password2) {
             if (!password2 || password != password2)
               return encryptWallet(wallet, cb);
@@ -558,7 +572,7 @@ angular.module('copayApp.services')
 
       // Encrypt wallet
       ongoingProcess.pause();
-      encryptWallet(client, function() {
+      askToEncryptWallet(client, function() {
         ongoingProcess.resume();
 
         var walletId = client.credentials.walletId
