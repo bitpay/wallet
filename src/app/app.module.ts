@@ -94,6 +94,7 @@ import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
+import { CardItemPage } from '../pages/includes/card-item/card-item';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -302,6 +303,7 @@ export function createTranslateLoader(http: HttpClient) {
     WalletItemPage,
     WalletActivityPage,
     WalletSelectorPage,
+    CardItemPage,
     /* Directives */
     CopyToClipboard,
     LongPress,
@@ -425,7 +427,8 @@ export function createTranslateLoader(http: HttpClient) {
     WalletDetailsPage,
     WalletItemPage,
     WalletActivityPage,
-    WalletSelectorPage
+    WalletSelectorPage,
+    CardItemPage
   ],
   providers: [
     AddressProvider,

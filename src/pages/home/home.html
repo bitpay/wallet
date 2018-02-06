@@ -101,11 +101,11 @@
         <span translate>Bitcoin Wallets</span>
       </div>
       <div item-end *ngIf="!showReorderBtc">
-        <button ion-button clear icon-only color="secondary" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
-          <ion-icon name="reorder"></ion-icon>
-        </button>
-        <button ion-button clear icon-only color="primary" (click)="goToAddView()">
+        <button ion-button clear icon-only color="grey" (click)="goToAddView()">
           <ion-icon name="add"></ion-icon>
+        </button>
+        <button ion-button clear icon-only color="grey" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
+          <ion-icon name="reorder"></ion-icon>
         </button>
       </div>
       <div item-end *ngIf="showReorderBtc">
@@ -153,11 +153,11 @@
         <span translate>Bitcoin Cash Wallets</span>
       </div>
       <div item-end *ngIf="!showReorderBch">
-        <button ion-button clear icon-only color="secondary" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
-          <ion-icon name="reorder"></ion-icon>
-        </button>
-        <button ion-button clear icon-only color="primary" (click)="goToAddView('bch')">
+        <button ion-button clear icon-only color="grey" (click)="goToAddView('bch')">
           <ion-icon name="add"></ion-icon>
+        </button>
+        <button ion-button clear icon-only color="grey" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
+          <ion-icon name="reorder"></ion-icon>
         </button>
       </div>
       <div item-end *ngIf="showReorderBch">
@@ -194,6 +194,28 @@
             <span *ngIf="wallet.error" class="error">{{wallet.error}}</span>
           </span>
         </p>
+      </button>
+    </ion-list>
+  </div>
+
+  <div *ngIf="bitpayCardItems && bitpayCardItems[0]">
+    <ion-item-divider>
+      <div class="title" item-start>
+        <span translate>BitPay Visa<sup>&reg;</sup> Card</span>
+      </div>
+      <div item-end>
+        <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+    </ion-item-divider>
+    <ion-list>
+      <button ion-item *ngFor="let card of bitpayCardItems" (click)="goToCard(card.id)">
+        <ion-icon item-start>
+          <img src="assets/img/icon-card.svg" class="icon-card" />
+        </ion-icon>
+        <h2>BitPay Visa&reg; Card ({{card.lastFourDigits}})</h2>
+        <p>{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn ? (' &middot; ' + (card.updatedOn  * 1000 | amTimeAgo)) : ''}}</p>
       </button>
     </ion-list>
   </div>

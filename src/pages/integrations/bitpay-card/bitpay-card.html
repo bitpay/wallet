@@ -1,15 +1,27 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar>
     <ion-title>BitPay Visa<sup>&reg;</sup> Card ({{lastFourDigits}})</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <div class="balance-card" *ngIf="balance">
+  <div class="balance-card">
     <div class="balance-header">
-      <div (tap)="update()" class="balance-str">
+      <div (tap)="update()" class="balance-str" *ngIf="balance">
         {{balance | currency:currencySymbol:2 }}
       </div>
+      <button ion-button small clear color="light" (click)="topUp()" *ngIf="balance" no-low-fee>
+        {{'Add Funds'|translate}} &rarr;
+      </button>
+
+      <div class="card-info">
+        <ion-spinner *ngIf="!balance"></ion-spinner>
+
+        <span class="card-type" *ngIf="currency">
+          {{currency}}
+        </span>
+      </div>
+
     </div>
   </div>
 
@@ -25,7 +37,7 @@
       <ion-label>
         <span translate>Activity</span>
       </ion-label>
-      <ion-select [(ngModel)]="dataRange.value" (ionChange)="update()">
+      <ion-select [(ngModel)]="dateRange.value" (ionChange)="update()">
         <ion-option value="last30Days" selected>Recent</ion-option>
         <ion-option value="lastMonth">Last Month</ion-option>
         <ion-option value="all">All</ion-option>
@@ -36,11 +48,13 @@
       <i class="icon" (click)="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-do-you-require-one-blockchain-confirmation-for-bitpay-card-loads')">
         <img src="img/icon-help-support.svg" class="bg"/>
       </i>
-        <span translate>Confirming</span>
+      <span translate>Confirming</span>
     </ion-item-divider>
-    <ion-item *ngFor="let tx of bitpayCardTransactionHistoryConfirming">
-      {{tx.id}}
-    </ion-item>
+    <ion-list>
+      <div *ngFor="let card of bitpayCardTransactionHistoryConfirming">
+        <page-card-item [card]="card" [currencySymbol]="currencySymbol"></page-card-item>
+      </div>
+    </ion-list>
 
     <ion-item-divider *ngIf="bitpayCardTransactionHistoryPreAuth && bitpayCardTransactionHistoryPreAuth[0]">
       <i class="icon" (click)="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-was-i-overcharged-on-my-bitpay-card-account-why-is-there-a-hold-on-my-account')">
@@ -48,15 +62,19 @@
       </i>
       <span translate>Pre-Auth Holds</span>
     </ion-item-divider>
-    <ion-item *ngFor="let tx of bitpayCardTransactionHistoryPreAuth">
-      {{tx.id}}
-    </ion-item>
+    <ion-list>
+      <div *ngFor="let card of bitpayCardTransactionHistoryPreAuth">
+        <page-card-item [card]="card" [currencySymbol]="currencySymbol"></page-card-item>
+      </div>
+    </ion-list>
 
-    <ion-item-divider *ngIf="bitpayCardTransactionHistoryCompleted && bitpayCardTransactionHistoryCompleted[0]">
+    <ion-item-divider *ngIf="(bitpayCardTransactionHistoryPreAuth && bitpayCardTransactionHistoryPreAuth[0]) || (bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0])">
       <span translate>Completed</span>
     </ion-item-divider>
-    <ion-item *ngFor="let tx of bitpayCardTransactionHistoryCompleted">
-      {{tx.id}}
-    </ion-item>
+    <ion-list>
+      <div *ngFor="let card of bitpayCardTransactionHistoryCompleted">
+        <page-card-item [card]="card" [currencySymbol]="currencySymbol"></page-card-item>
+      </div>
+    </ion-list>
   </ion-list>
 </ion-content>

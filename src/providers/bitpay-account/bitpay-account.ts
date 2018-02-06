@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers

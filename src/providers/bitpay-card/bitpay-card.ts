@@ -195,7 +195,6 @@ export class BitPayCardProvider {
     };
     // Get Debit Cards
     this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      console.log('[bitpay-card.ts:1280]',data); /* TODO */
       if (data && data.error) return cb(data.error);
       this.logger.info('BitPay Get Debit Cards: SUCCESS');
 
@@ -250,8 +249,7 @@ export class BitPayCardProvider {
     this.appIdentityProvider.getIdentity(this.bitPayProvider.getEnvironment().network, (err, appIdentity) => {
       if (err) return cb(err);
 
-      this.getCards((err, data) => {
-        if (err) return cb(err);
+      this.getCards((data) => {
         var card: any = _.find(data, {
           id: cardId
         });
@@ -299,8 +297,7 @@ export class BitPayCardProvider {
     this.appIdentityProvider.getIdentity(this.bitPayProvider.getEnvironment().network, (err, appIdentity) => {
       if (err) return cb(err);
 
-      this.getCards((err, data) => {
-        if (err) return cb(err);
+      this.getCards((data) => {
 
         var card: any = _.find(data, {
           id: cardId
@@ -389,8 +386,7 @@ export class BitPayCardProvider {
 
 
   public get(opts, cb) {
-    this.getCards((err, cards) => {
-      if (err) return;
+    this.getCards((cards) => {
 
       if (_.isEmpty(cards)) {
         return cb();

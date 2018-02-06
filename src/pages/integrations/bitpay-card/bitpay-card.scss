@@ -1,17 +1,39 @@
 page-bitpay-card {
   .balance-card {
-    background: color($colors, primary);
+    background: $toolbar-background;
   }
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 15rem;
+    height: 14rem;
     text-align: center;
   }
   .balance-str {
     cursor: pointer;
-    padding-top: 5rem;
+    padding-top: 2rem;
+    margin-bottom: 5px;
     font-size: 35px;
     font-weight: 600;
+  }
+  .card-info {
+    .card-type {
+      font-weight: 300;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 8px;
+      color: color($colors, grey);
+    }
+    ion-spinner {
+      position: absolute;
+      bottom: 0;
+      margin: 8px;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      * {
+        stroke: color($colors, grey);
+      }
+    }
   }
 }

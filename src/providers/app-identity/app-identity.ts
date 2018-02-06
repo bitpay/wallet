@@ -19,7 +19,6 @@ export class AppIdentityProvider {
 
   public getIdentity(network, cb) {
     let pubkey;
-    let sin;
     let isNew;
     this.persistenceProvider.getAppIdentity(network).then((data) => {
       let appIdentity = data || {};
@@ -30,7 +29,7 @@ export class AppIdentityProvider {
       }
       try {
         pubkey = bitauthService.getPublicKeyFromPrivateKey(appIdentity.priv);
-        sin = bitauthService.getSinFromPublicKey(pubkey);
+        bitauthService.getSinFromPublicKey(pubkey);
         if (isNew)
           this.persistenceProvider.setAppIdentity(network, appIdentity);
       }

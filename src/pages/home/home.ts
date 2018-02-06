@@ -17,6 +17,7 @@ import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -34,6 +35,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
+import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -58,6 +60,7 @@ export class HomePage {
   public newRelease: boolean;
   public updateText: string;
   public homeIntegrations: Array<any>;
+  public bitpayCardItems: any;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -88,6 +91,7 @@ export class HomePage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
+    private bitpayCardProvider: BitPayCardProvider,
     private translate: TranslateService
   ) {
     this.cachedBalanceUpdateOn = '';
@@ -129,6 +133,9 @@ export class HomePage {
     });
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
+    });
+    this.bitPayCardProvider.get({}, (err, cards) => {
+      this.bitpayCardItems = cards;
     });
   }
 
@@ -407,6 +414,10 @@ export class HomePage {
         this.navCtrl.push(ShapeshiftPage);
         break;
     }
+  }
+
+  public goToCard(cardId): void {
+    this.navCtrl.push(BitPayCardPage, { id: cardId });
   }
 
   public doRefresh(refresher) {
