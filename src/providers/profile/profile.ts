@@ -354,19 +354,41 @@ export class ProfileProvider {
   private showWarningNoEncrypt(): Promise<any> {
     return new Promise((resolve, reject) => {
       let title = this.translate.instant('Are you sure?');
-      let msg = this.translate.instant('Your wallet keys will be stored in plan text in this device, if an other app access the store it will be able to access your Bitcoin');
-      let okText = this.translate.instant('Yes');
-      let cancelText = this.translate.instant('No');
+      let msg = this.translate.instant('Without encryption, a thief or another application on this device may be able to access your funds.');
+      let okText = this.translate.instant('I\'m sure');
+      let cancelText = this.translate.instant('Go Back');
       this.popupProvider.ionicConfirm(title, msg, okText, cancelText).then((res: any) => {
         return resolve(res);
       });
     });
   }
 
+  private askToEncryptWallet(wallet: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      var title = this.translate.instant('Would you like to protect this wallet with a password?');
+      var message = this.translate.instant('Encryption can protect your funds if this device is stolen or compromised by malicious software.');
+      var okText = this.translate.instant('Yes');
+      var cancelText = this.translate.instant('No');
+      this.popupProvider.ionicConfirm(title, message, okText, cancelText).then((res: any) => {
+        if (!res) {
+          return this.showWarningNoEncrypt().then((res) => {
+            if (res) return resolve()
+            return this.encrypt(wallet).then(() => {
+              return resolve();
+            });
+          });
+        }
+        return this.encrypt(wallet).then(() => {
+          return resolve();
+        });
+      });
+    });
+  }
+
   private encrypt(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      let title = this.translate.instant('Please enter a password to encrypt your wallet keys on this device storage');
-      let warnMsg = this.translate.instant('Your wallet key will be encrypted. The Spending Password cannot be recovered. Be sure to write it down.');
+      let title = this.translate.instant('Enter a password to encrypt your wallet');
+      let warnMsg = this.translate.instant('This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down.');
       this.askPassword(warnMsg, title).then((password: string) => {
         if (!password) {
           this.showWarningNoEncrypt().then((res: any) => {
@@ -377,7 +399,7 @@ export class ProfileProvider {
           });
         }
         else {
-          title = this.translate.instant('Confirm your new spending password');
+          title = this.translate.instant('Enter your password again to confirm');
           this.askPassword(warnMsg, title).then((password2: string) => {
             if (!password2 || password != password2) {
               this.encrypt(wallet).then(() => {
@@ -402,7 +424,7 @@ export class ProfileProvider {
 
       // Encrypt wallet
       this.onGoingProcessProvider.pause();
-      this.encrypt(wallet).then(() => {
+      this.askToEncryptWallet(wallet).then(() => {
         this.onGoingProcessProvider.resume();
 
         let walletId: string = wallet.credentials.walletId
