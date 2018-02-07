@@ -100,6 +100,8 @@ export class HomePage {
   ionViewWillEnter() {
     this.config = this.configProvider.get();
     this.wallets = this.profileProvider.getWallets();
+    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
 
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
     if (this.recentTransactionsEnabled) this.getNotifications();
@@ -117,20 +119,6 @@ export class HomePage {
     } else {
       this.homeIntegrations = null;
     }
-  }
-
-  ionViewDidEnter() {
-
-    if (this.isNW) this.checkUpdate();
-    this.checkHomeTip();
-    this.checkFeedbackInfo();
-    this.updateAllWallets();
-
-    this.addressBookProvider.list().then((ab: any) => {
-      this.addressbook = ab || {};
-    }).catch((err) => {
-      this.logger.error(err);
-    });
 
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       let wallet = this.profileProvider.getWallet(walletId);
@@ -145,7 +133,19 @@ export class HomePage {
     });
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
-    })
+    });
+  }
+
+  ionViewDidEnter() {
+    if (this.isNW) this.checkUpdate();
+    this.checkHomeTip();
+    this.checkFeedbackInfo();
+
+    this.addressBookProvider.list().then((ab: any) => {
+      this.addressbook = ab || {};
+    }).catch((err) => {
+      this.logger.error(err);
+    });
   }
 
   ionViewWillLeave() {
@@ -156,6 +156,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
+    this.updateAllWallets();
   }
 
   public checkHomeTip(): void {
@@ -235,9 +236,7 @@ export class HomePage {
 
   private updateAllWallets(): void {
     let wallets: Array<any> = [];
-    let foundMessage = false;
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    let foundMessage = false
 
     _.each(this.walletsBtc, (wBtc) => {
       wallets.push(wBtc);
