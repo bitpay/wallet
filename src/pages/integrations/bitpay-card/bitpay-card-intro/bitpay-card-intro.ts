@@ -47,7 +47,7 @@ export class BitPayCardIntroPage {
               this.popupProvider.ionicAlert('Error updating Debit Cards', err); //TODO gettextcatalog
               return;
             }
-            this.navCtrl.remove(2, 1);
+            this.navCtrl.pop();
             if (cards[0]) this.navCtrl.push(BitPayCardPage, { id: cards[0].id });
           });
         }

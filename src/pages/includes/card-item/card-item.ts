@@ -19,7 +19,6 @@ export class CardItemPage {
 
   @Input()
   set card(card: any) {
-    console.log('[card-item.ts:17]',card.price); /* TODO */
     this._card = card;
     if (card.pending) {
       this.pending = true;

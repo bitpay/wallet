@@ -86,6 +86,7 @@ import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift
 // Integrations: BitPayCard
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
+import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
 
 /*Includes */
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
@@ -227,6 +228,7 @@ export function createTranslateLoader(http: HttpClient) {
     BitcoinCashPage,
     BitPayCardIntroPage,
     BitPayCardPage,
+    BitPaySettingsPage,
     BuyAmazonPage,
     BuyCoinbasePage,
     BuyGlideraPage,
@@ -352,6 +354,7 @@ export function createTranslateLoader(http: HttpClient) {
     BitcoinCashPage,
     BitPayCardIntroPage,
     BitPayCardPage,
+    BitPaySettingsPage,
     BuyAmazonPage,
     BuyCoinbasePage,
     BuyGlideraPage,

@@ -28,6 +28,7 @@ import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
 import { EnabledServicesPage } from './enabled-services/enabled-services';
+import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 
 @Component({
   selector: 'page-settings',
@@ -45,6 +46,7 @@ export class SettingsPage {
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
   public exchangeServices: Array<any> = [];
+  public bitpayCardEnabled: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -84,6 +86,10 @@ export class SettingsPage {
     }
     this.lockMethod = this.config.lock.method;
     this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
+
+    if (this.app.info._enabledExtensions.debitcard) {
+      this.bitpayCardEnabled = true;
+    }
   }
 
   public openBitcoinCashPage(): void {
@@ -136,6 +142,10 @@ export class SettingsPage {
 
   public openEnabledServicesPage(): void {
     this.navCtrl.push(EnabledServicesPage);
+  }
+
+  public openBitPaySettings(): void {
+    this.navCtrl.push(BitPaySettingsPage);
   }
 
   public openIntegrationSettings(name: string): void {

@@ -75,6 +75,8 @@ $searchbar-ios-background-color: color($colors, blank);
 $searchbar-ios-padding-vertical: 16px;
 $searchbar-ios-padding-horizontal: 8px;
 
+$note-ios-color: color($colors, grey);
+
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
@@ -90,6 +92,8 @@ $searchbar-md-padding-top: 16px;
 $list-md-border-color: color($colors, light);
 $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
+
+$note-md-color: color($colors, grey);
 
 // App Windows Variables
 // --------------------------------------------------

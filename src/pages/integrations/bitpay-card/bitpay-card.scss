@@ -1,4 +1,13 @@
 page-bitpay-card {
+  .initial-message {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+  }
   .balance-card {
     background: $toolbar-background;
   }
