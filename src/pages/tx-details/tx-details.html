@@ -43,8 +43,8 @@
       <span class="payment-proposal-to">
         <img class="icon-bitcoin" *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg">
         <img class="icon-bitcoin" *ngIf="cardId" src="assets/img/icon-card.svg" width="34">
-        <div copy-to-clipboard="{{ btx.addressTo }}">
-          <span class="contact" *ngIf="!toName">{{ btx.addressTo }}"</span>
+        <div copy-to-clipboard="{{ btx.outputs[0].address }}">
+          <span class="contact" *ngIf="!toName">{{ btx.outputs[0].address }}"</span>
           <span *ngIf="toName">{{ toName }}</span>
         </div>
       </span>
@@ -80,8 +80,9 @@
 
     <button ion-item (click)="showCommentPopup()">
       <ion-label>{{'Memo' | translate}}</ion-label>
-      <ion-note item-end *ngIf="btx.note">
-        {{btx.note.body || btx.message}}
+      <ion-note item-end>
+        <span *ngIf="btx.note && btx.note.body">{{btx.note.body}}</span>
+        <span *ngIf="(!btx.note || !btx.note.body) && btx.message">{{btx.message}}</span>
       </ion-note>
     </button>
 
