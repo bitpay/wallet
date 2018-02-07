@@ -62,7 +62,7 @@ export class OnGoingProcessProvider {
     this.ongoingProcess = {};
   }
 
-  private clear() {
+  public clear() {
     this.ongoingProcess = {};
     this.loading.dismiss();
   }
@@ -88,9 +88,13 @@ export class OnGoingProcessProvider {
       this.loading.dismiss();
       return;
     }
-    this.loading = this.loadingCtrl.create({
-      content: showName
-    });
+    if (!this.loading) {
+      this.loading = this.loadingCtrl.create();
+      this.loading.onDidDismiss(() => {
+        this.loading = null;
+      });
+    }
+    this.loading.setContent(showName);
     this.loading.present();
   }
 }

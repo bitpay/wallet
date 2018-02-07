@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, Events, ViewController } from 'ionic-angular';
+import { NavController, NavParams, Events, ViewController, ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 //providers
@@ -12,6 +12,9 @@ import { OnGoingProcessProvider } from '../../providers/on-going-process/on-goin
 import { ConfigProvider } from '../../providers/config/config';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
+
+//pages
+import { SuccessModalPage } from '../success/success';
 
 import * as _ from 'lodash';
 
@@ -54,7 +57,9 @@ export class TxpDetailsPage {
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController,
+    private navCtrl: NavController,
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
@@ -212,7 +217,7 @@ export class TxpDetailsPage {
     this.loading = true;
     this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
       this.events.publish('UpdateTx');
-      //this.success(); TODO
+      this.openSuccessModal();
     }).catch((err: any) => {
       this.setError(err, ('Could not send payment'));
     });
@@ -242,6 +247,7 @@ export class TxpDetailsPage {
         this.onGoingProcessProvider.set('removeTx', false);
         this.close();
       }).catch((err: any) => {
+        this.onGoingProcessProvider.set('removeTx', false);
         if (err && !(err.message && err.message.match(/Unexpected/))) {
           this.events.publish('UpdateTx');
           this.setError(err, this.translate.instant('Could not delete payment proposal'));
@@ -255,8 +261,9 @@ export class TxpDetailsPage {
     this.onGoingProcessProvider.set('broadcastingTx', true);
     this.walletProvider.broadcastTx(this.wallet, this.tx).then((txpb: any) => {
       this.onGoingProcessProvider.set('broadcastingTx', false);
-      this.close();
+      this.openSuccessModal();
     }).catch((err: any) => {
+      this.onGoingProcessProvider.set('broadcastingTx', false);
       this.setError(err, 'Could not broadcast payment');
     });
   }
@@ -301,14 +308,18 @@ export class TxpDetailsPage {
     this.sign();
   };
 
-  public onSuccessConfirm(): void {
-    this.close();
-  }
-
   public close(): void {
     this.events.unsubscribe('bwsEvent');
     this.loading = false;
     this.viewCtrl.dismiss();
+  }
+
+  public openSuccessModal() {
+    let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.close();
+    })
   }
 
 }
