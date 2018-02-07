@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController } from 'ionic-angular';
+import { NavParams, NavController, ActionSheetController } from 'ionic-angular';
+
+import * as _ from 'lodash';
 
 //providers
 import { BitPayAccountProvider } from '../../../../providers/bitpay-account/bitpay-account';
@@ -19,6 +21,7 @@ export class BitPayCardIntroPage {
   public accounts: any;
 
   constructor(
+    private actionSheetCtrl: ActionSheetController,
     private navParams: NavParams,
     private bitPayAccountProvider: BitPayAccountProvider,
     private popupProvider: PopupProvider,
@@ -80,7 +83,7 @@ export class BitPayCardIntroPage {
     } else {
       this.showAccountSelector();
     }
-  };
+  }
 
   private startPairBitPayAccount() {
     let url = 'https://bitpay.com/visa/dashboard/add-to-bitpay-wallet-confirm';
@@ -88,11 +91,38 @@ export class BitPayCardIntroPage {
   }
 
   private showAccountSelector() {
-    /*     this.accountSelectorTitle = gettextCatalog.getString('From BitPay account');
-        this.showAccounts = (this.accounts != undefined); */
-  };
+    let options:Array<any> = [];
 
-  public onAccountSelect(account) {
+    _.forEach(this.accounts, (account: any) => {
+      options.push(
+        {
+          text: (account.givenName || account.familyName) + ' (' + account.email + ')',
+          handler: () => {
+            this.onAccountSelect(account);
+          }
+        }
+      );
+    });
+
+    // Cancel
+    options.push(
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          this.navCtrl.pop();
+        }
+      }
+    );
+
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'From BitPay account',
+      buttons: options
+    });
+    actionSheet.present();
+  }
+
+  private onAccountSelect(account): void {
     if (account == undefined) {
       this.startPairBitPayAccount();
     } else {
@@ -104,7 +134,6 @@ export class BitPayCardIntroPage {
         this.navCtrl.pop();
       });
     }
-  };
-
+  }
 
 }

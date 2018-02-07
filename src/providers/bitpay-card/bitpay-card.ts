@@ -217,10 +217,10 @@ export class BitPayCardProvider {
         cards.push(n);
       });
 
-      this.persistenceProvider.setBitpayDebitCards(this.bitPayProvider.getEnvironment().network, apiContext.pairData.email, cards);
-      this.register();
-      return cb(null, cards);
-
+      this.persistenceProvider.setBitpayDebitCards(this.bitPayProvider.getEnvironment().network, apiContext.pairData.email, cards).then(() => {
+        this.register();
+        return cb(null, cards);
+      });
     }, (data) => {
       return cb(this._setError('BitPay Card Error: Get Debit Cards', data));
     });

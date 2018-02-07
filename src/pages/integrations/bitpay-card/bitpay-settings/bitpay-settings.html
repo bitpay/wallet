@@ -4,6 +4,13 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+
+  <div
+    class="no-cards"
+    *ngIf="(bitpayCards && bitpayCards.length == 0) && (bitpayAccounts && bitpayAccounts.length == 0)" translate>
+    No cards available
+  </div>
+
   <ion-list>
     <div *ngIf="bitpayCards && bitpayCards.length > 0">
       <ion-item-divider>
