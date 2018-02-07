@@ -68,7 +68,6 @@ export class AmazonCardDetailsPage {
         this.popupProvider.ionicAlert('Error', err);
         return;
       }
-      var index = 0;
       _.forEach(gcds, function (dataFromStorage) {
         if (dataFromStorage.invoiceId == this.card.invoiceId) {
           this.logger.debug("creating gift card");

@@ -3,11 +3,15 @@ import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
+//native
+import { SplashScreen } from '@ionic-native/splash-screen';
+
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
 import { AppProvider } from '../../../../../providers/app/app';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../../../providers/platform/platform';
 
 @Component({
   selector: 'page-wallet-service-url',
@@ -31,7 +35,9 @@ export class WalletServiceUrlPage {
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private formBuilder: FormBuilder,
-    private events: Events
+    private events: Events,
+    private splashScreen: SplashScreen,
+    private platformProvider: PlatformProvider
   ) {
     this.walletServiceForm = this.formBuilder.group({
       bwsurl: ['', Validators.compose([Validators.minLength(1), Validators.required])]
@@ -82,11 +88,16 @@ export class WalletServiceUrlPage {
     opts.bwsFor[this.wallet.credentials.walletId] = this.walletServiceForm.value.bwsurl;
 
     this.configProvider.set(opts);
-    this.persistenceProvider.setCleanAndScanAddresses(this.wallet.credentials.walletId).then(() => {
-      this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-      this.navCtrl.popToRoot();
-      this.navCtrl.parent.select(0);
-      // TODO needs restart the app
-    });
+    this.persistenceProvider.setCleanAndScanAddresses(this.wallet.credentials.walletId);
+    this.events.publish('wallet:updated', this.wallet.credentials.walletId);
+    this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
+    this.reload();
   };
+
+  private reload(): void {
+    window.location.reload();
+    if (this.platformProvider.isCordova) this.splashScreen.show();
+  }
+
 }
