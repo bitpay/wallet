@@ -101,8 +101,8 @@ export class TxDetailsPage {
   }
 
   private updateMemo(): void {
-    this.walletProvider.getTxNote(this.wallet, this.btx.txid).then((note: string) => {
-      if (!note) return;
+    this.walletProvider.getTxNote(this.wallet, this.btx.txid).then((note: any) => {
+      if (!note || note.body == "") return;
       this.btx.note = note;
     }).catch((err: any) => {
       this.logger.warn('Could not fetch transaction note: ' + err);
@@ -194,7 +194,7 @@ export class TxDetailsPage {
     if (this.btx.note && this.btx.note.body) opts.defaultText = this.btx.note.body;
 
     this.popupProvider.ionicPrompt(this.wallet.name, this.translate.instant('Memo'), opts).then((text: string) => {
-      if (typeof text == "undefined") return;
+      if (text == null) return;
 
       this.btx.note = {
         body: text

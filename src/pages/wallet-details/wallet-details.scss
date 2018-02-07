@@ -43,6 +43,10 @@ page-wallet-details {
       width: 35px;
     }
     .action {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     ion-note {
       text-align: end;
@@ -121,7 +125,7 @@ page-wallet-details {
   .total-locked-amount {
     color: color($colors, dark);
   }
-  .total-alt-locked-amount {
+  .total-alt-locked-amount, .double-spend {
     font-size: 12.5px;
   }
 }
