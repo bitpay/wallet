@@ -100,6 +100,11 @@ interface Config {
   log: {
     weight: number;
   };
+
+  blockExplorerUrl: {
+    btc: string;
+    bch: string;
+  }
 };
 
 const configDefault: Config = {
@@ -201,6 +206,11 @@ const configDefault: Config = {
 
   log: {
     weight: 3
+  },
+
+  blockExplorerUrl: {
+    btc: 'insight.bitpay.com',
+    bch: 'bch-insight.bitpay.com'
   }
 };
 
