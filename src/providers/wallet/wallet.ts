@@ -74,7 +74,7 @@ export class WalletProvider {
       wallet.cachedTxps.isValid = false;
   }
 
-  getStatus(wallet: any, opts: any) {
+  public getStatus(wallet: any, opts: any): Promise<any> {
     return new Promise((resolve, reject) => {
       opts = opts || {};
       var walletId = wallet.id;
