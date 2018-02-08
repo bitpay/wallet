@@ -127,10 +127,17 @@
 
     <button ion-item *ngFor="let service of exchangeServices" (click)="openIntegrationSettings(service.name)">
       <ion-icon item-start>
-          <img src="{{service.icon}}" class="icon-services" />
+        <img src="{{service.icon}}" class="icon-services" />
       </ion-icon>
       <span>{{service.title || service.name}}</span>
     </button>
+
+    <ion-item-divider></ion-item-divider>
+
+    <ion-item (click)="openEnabledServicesPage()">
+      <ion-icon name="ios-list-outline" item-start></ion-icon>
+      {{'Enabled services' | translate}}
+    </ion-item>
 
     <ion-item-divider>More</ion-item-divider>
 
