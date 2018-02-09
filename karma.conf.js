@@ -38,8 +38,8 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeNoSandbox'],
-    // browsers: ['ChromeNoSandboxHeadless'],
+    // browsers: ['ChromeNoSandbox'],
+    browsers: ['ChromeNoSandboxHeadless'],
     singleRun: false,
     junitReporter: {
       outputDir: process.env.JUNIT_REPORT_PATH,
@@ -48,12 +48,10 @@ module.exports = function(config) {
     },
     customLaunchers: {
       ChromeNoSandbox: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
+        base: 'Chrome'
       },
       ChromeNoSandboxHeadless: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        base: 'ChromeHeadless'
       }
     }
   });

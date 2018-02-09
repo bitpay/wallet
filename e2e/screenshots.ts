@@ -7,21 +7,10 @@ export async function takeScreenshot(name: string) {
     mkdirSync(dir);
   }
   const config = await browser.getProcessedConfig();
-  const instance = config['capabilities']['chromeOptions'];
-  const deviceName = instance['mobileEmulation']
-    ? instance['mobileEmulation']['deviceName'].replace(/\s+/g, '')
-    : await nameFromWindowSize();
+  const deviceName = config['capabilities']['name'];
   const pngData = await browser.takeScreenshot();
   const path = `${dir}/${deviceName}_${name}`;
   writeFile(path, pngData, { encoding: 'base64' }, () => {
     console.log(`File written: ${path}`);
   });
-}
-
-async function nameFromWindowSize() {
-  const size = await browser.driver
-    .manage()
-    .window()
-    .getSize();
-  return `${size.width}x${size.height}`;
 }

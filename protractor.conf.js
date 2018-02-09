@@ -4,6 +4,7 @@ exports.config = {
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
     {
+      name: '1024x720',
       browserName: 'chrome',
       chromeOptions: {
         args: [
@@ -15,6 +16,7 @@ exports.config = {
       }
     },
     {
+      name: '800x600',
       browserName: 'chrome',
       chromeOptions: {
         args: [
@@ -26,6 +28,7 @@ exports.config = {
       }
     },
     {
+      name: '1920x1080',
       browserName: 'chrome',
       chromeOptions: {
         args: [
@@ -37,6 +40,7 @@ exports.config = {
       }
     },
     {
+      name: 'iPhoneX',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
@@ -46,6 +50,7 @@ exports.config = {
       }
     },
     {
+      name: 'iPhone8',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
@@ -55,6 +60,7 @@ exports.config = {
       }
     },
     {
+      name: 'iPad',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
@@ -64,6 +70,7 @@ exports.config = {
       }
     },
     {
+      name: 'iPadPro',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
@@ -73,6 +80,7 @@ exports.config = {
       }
     },
     {
+      name: 'Nexus6P',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
@@ -82,6 +90,7 @@ exports.config = {
       }
     },
     {
+      name: 'Nexus5X',
       browserName: 'chrome',
       chromeOptions: {
         mobileEmulation: {
