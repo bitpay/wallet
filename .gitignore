@@ -45,10 +45,12 @@ node_modules/
 tmp/
 temp/
 hooks/
+junitresults.xml
 platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
+screenshots/
 www/
 $RECYCLE.BIN/
 
