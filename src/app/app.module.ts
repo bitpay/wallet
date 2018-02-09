@@ -113,6 +113,7 @@ import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
+import { EnabledServicesPage } from '../pages/settings/enabled-services/enabled-services';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -234,6 +235,7 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
+    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,
@@ -357,6 +359,7 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
+    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,

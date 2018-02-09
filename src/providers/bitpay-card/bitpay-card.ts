@@ -1109,7 +1109,7 @@ export class BitPayCardProvider {
 
     this.homeItem = {
       name: 'bitpaycard',
-      title: 'Add BitPay Visa® Card',
+      title: 'BitPay Visa® Card',
       icon: 'assets/img/bitpay-card/icon-bitpay.svg',
       page: 'BitPayCardIntroPage',
     }

@@ -107,18 +107,14 @@ export class HomePage {
     if (this.recentTransactionsEnabled) this.getNotifications();
 
     this.pushNotificationsProvider.init();
-    if (this.config.showIntegrations.enabled) {
-      this.homeIntegrations = this.homeIntegrationsProvider.get();
-      this.showIntegration = this.config.showIntegration;
-      this.homeIntegrations.forEach((integration: any) => {
-        integration.show = this.showIntegration[integration.name];
-      });
-      this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
-        return homeIntegrations.show == true;
-      });
-    } else {
-      this.homeIntegrations = null;
-    }
+    this.homeIntegrations = this.homeIntegrationsProvider.get();
+    this.showIntegration = this.config.showIntegration;
+    this.homeIntegrations.forEach((integration: any) => {
+      integration.show = this.showIntegration[integration.name];
+    });
+    this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
+      return homeIntegrations.show == true;
+    });
 
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       let wallet = this.profileProvider.getWallet(walletId);

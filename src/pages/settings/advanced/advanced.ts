@@ -3,7 +3,6 @@ import { Logger } from '../../../providers/logger/logger';
 
 //providers
 import { ConfigProvider } from '../../../providers/config/config';
-import { HomeIntegrationsProvider } from '../../../providers/home-integrations/home-integrations';
 
 @Component({
   selector: 'page-advanced',
@@ -13,17 +12,12 @@ export class AdvancedPage {
 
   public spendUnconfirmed: boolean;
   public recentTransactionsEnabled: boolean;
-  public showIntegrations: boolean;
-  public showIntegration: any;
   public useLegacyAddress: boolean;
-  public homeIntegrations: any;
 
   constructor(
     private configProvider: ConfigProvider,
-    private logger: Logger,
-    private homeIntegrationsProvider: HomeIntegrationsProvider
+    private logger: Logger
   ) {
-    this.homeIntegrations = this.homeIntegrationsProvider.get();
   }
 
   ionViewDidLoad() {
@@ -36,11 +30,6 @@ export class AdvancedPage {
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
     this.recentTransactionsEnabled = config.recentTransactions.enabled;
     this.useLegacyAddress = config.wallet.useLegacyAddress;
-    this.showIntegrations = config.showIntegrations.enabled;
-    this.showIntegration = config.showIntegration;
-    this.homeIntegrations.forEach((integration: any) => {
-      integration.show = this.showIntegration[integration.name];
-    });
   }
 
   public spendUnconfirmedChange(): void {
@@ -66,23 +55,6 @@ export class AdvancedPage {
       wallet: {
         useLegacyAddress: this.useLegacyAddress
       }
-    };
-    this.configProvider.set(opts);
-  }
-
-  public integrationsChange(): void {
-    let opts = {
-      showIntegrations: {
-        enabled: this.showIntegrations
-      },
-    };
-    this.configProvider.set(opts);
-  }
-
-  public integrationChange(integrationName): void {
-    this.showIntegration[integrationName] = !this.showIntegration[integrationName];
-    let opts = {
-      showIntegration: this.showIntegration,
     };
     this.configProvider.set(opts);
   }
