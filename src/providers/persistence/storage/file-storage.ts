@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '../../../providers/logger/logger';
 import * as _ from 'lodash';
-import { File, DirectoryEntry } from '@ionic-native/file';
+import { File, DirectoryEntry, FileSystem } from '@ionic-native/file';
 import { IStorage, KeyAlreadyExistsError } from './istorage';
 
 @Injectable()
@@ -9,11 +9,7 @@ export class FileStorage implements IStorage {
   fs: FileSystem;
   dir: DirectoryEntry;
 
-  constructor(
-    private file: File,
-    private log: Logger
-  ) {
-  }
+  constructor(private file: File, private log: Logger) {}
 
   init(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -25,7 +21,7 @@ export class FileStorage implements IStorage {
         return this.getDir().then(dir => {
           if (!dir.nativeURL) return reject();
           this.dir = dir;
-          this.log.debug("Got main dir:", dir.nativeURL);
+          this.log.debug('Got main dir:', dir.nativeURL);
           return resolve();
         });
       };
@@ -35,7 +31,7 @@ export class FileStorage implements IStorage {
         return Promise.reject(err);
       };
 
-      window.requestFileSystem(1, 0, onSuccess, onFailure);
+      (window as any).requestFileSystem(1, 0, onSuccess, onFailure);
     });
   }
 
@@ -46,13 +42,12 @@ export class FileStorage implements IStorage {
     }
 
     var url = this.file.dataDirectory;
-    return this.file.resolveDirectoryUrl(url)
-      .catch(err => {
-        let msg = 'Could not resolve filesystem ' + url;
-        this.log.warn(msg, err);
-        throw err || new Error(msg);
-      });
-  };
+    return this.file.resolveDirectoryUrl(url).catch(err => {
+      let msg = 'Could not resolve filesystem ' + url;
+      this.log.warn(msg, err);
+      throw err || new Error(msg);
+    });
+  }
 
   get(k: string): Promise<any> {
     let parseResult = (v: any): any => {
@@ -68,17 +63,20 @@ export class FileStorage implements IStorage {
     };
 
     return Promise.resolve(
-      this.init().then(() => {
-        return Promise.resolve(this.file.getFile(this.dir, k, { create: false }));
-      })
+      this.init()
+        .then(() => {
+          return Promise.resolve(
+            this.file.getFile(this.dir, k, { create: false })
+          );
+        })
         .then(fileEntry => {
           if (!fileEntry) return;
-          return new Promise((resolve) => {
+          return new Promise(resolve => {
             fileEntry.file(file => {
               var reader = new FileReader();
               reader.onloadend = () => {
                 resolve(parseResult(reader.result));
-              }
+              };
               reader.readAsText(file);
             });
           });
@@ -99,39 +97,41 @@ export class FileStorage implements IStorage {
       .then(fileEntry => {
         // Create a FileWriter object for our FileEntry (log.txt).
         return new Promise<void>((resolve, reject) => {
-          fileEntry.createWriter(fileWriter => {
-            fileWriter.onwriteend = (e) => {
-              this.log.info('Write completed:' + k);
-              resolve();
-            };
+          fileEntry.createWriter(
+            fileWriter => {
+              fileWriter.onwriteend = e => {
+                this.log.info('Write completed:' + k);
+                resolve();
+              };
 
-            fileWriter.onerror = (e) => {
-              this.log.error('Write failed', e);
-              reject(e);
-            };
+              fileWriter.onerror = e => {
+                this.log.error('Write failed', e);
+                reject(e);
+              };
 
-            if (_.isObject(v))
-              v = JSON.stringify(v);
+              if (_.isObject(v)) v = JSON.stringify(v);
 
-            if (v && !_.isString(v)) {
-              v = v.toString();
+              if (v && !_.isString(v)) {
+                v = v.toString();
+              }
+
+              fileWriter.write(v);
+            },
+            err => {
+              this.log.error('Could not create writer', err);
+              reject(err);
             }
-
-            fileWriter.write(v);
-          }, err => {
-            this.log.error('Could not create writer', err);
-            reject(err);
-          });
+          );
         });
       });
-  };
+  }
 
   remove(k: string): Promise<void> {
     return Promise.resolve();
   }
 
   create(k: string, v: any): Promise<void> {
-    return this.get(k).then((data) => {
+    return this.get(k).then(data => {
       if (data) throw new KeyAlreadyExistsError();
       this.set(k, v);
     });
