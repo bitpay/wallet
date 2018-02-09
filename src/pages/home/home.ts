@@ -99,13 +99,13 @@ export class HomePage {
     this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.showReorderBtc = false;
     this.showReorderBch = false;
+    this.setWallets();
   }
 
   ionViewWillEnter() {
     this.config = this.configProvider.get();
-    this.wallets = this.profileProvider.getWallets();
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+
+    this.setWallets();
 
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
     if (this.recentTransactionsEnabled) this.getNotifications();
@@ -161,6 +161,12 @@ export class HomePage {
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
     this.updateAllWallets();
+  }
+
+  private setWallets(): void {
+    this.wallets = this.profileProvider.getWallets();
+    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
   }
 
   public checkHomeTip(): void {
