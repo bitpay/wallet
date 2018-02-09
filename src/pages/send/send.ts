@@ -51,6 +51,7 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
+    this.search = '';
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
     this.hasBtcWallets = !(_.isEmpty(this.walletsBtc));
@@ -58,10 +59,6 @@ export class SendPage {
     this.updateBchWalletsList();
     this.updateBtcWalletsList();
     this.updateContactsList();
-  }
-
-  ionViewDidEnter() {
-    this.search = '';
   }
 
   private updateBchWalletsList(): void {

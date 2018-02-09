@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { NavParams, NavController } from 'ionic-angular';
 import { Logger } from '@nsalaun/ng-logger';
+import { TranslateService } from '@ngx-translate/core';
+
+// Pages
+import { AmountPage } from '../../send/amount/amount';
 
 //providers
 import { BitPayProvider } from '../../../providers/bitpay/bitpay';
@@ -33,6 +37,7 @@ export class BitPayCardPage {
   public currency: string;
 
   constructor(
+    private translate: TranslateService,
     private bitPayProvider: BitPayProvider,
     private bitPayCardProvider: BitPayCardProvider,
     private logger: Logger,
@@ -123,7 +128,7 @@ export class BitPayCardPage {
         this.bitpayCardTransactionHistoryConfirming = null;
         this.bitpayCardTransactionHistoryPreAuth = null;
         this.balance = null;
-        this.popupProvider.ionicAlert('Error', 'Could not get transactions'); //TODO gettextcatalog
+        this.popupProvider.ionicAlert('Error', this.translate.instant('Could not get transactions'));
         return;
       }
 
@@ -166,9 +171,9 @@ export class BitPayCardPage {
   public openExternalLink(url: string) {
     let optIn = true;
     let title = null;
-    let message = 'Help and support information is available at the website.'; //TODO gettextcatalog
-    let okText = 'Open'; //TODO gettextcatalog
-    let cancelText = 'Go Back'; //TODO gettextcatalog
+    let message = this.translate.instant('Help and support information is available at the website.');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
@@ -176,10 +181,20 @@ export class BitPayCardPage {
     let url = 'https://insight.bitpay.com/tx/' + transactionId;
     let optIn = true;
     let title = null;
-    let message = 'View Transaction on Insight'; //TODO gettextcatalog
-    let okText = 'Open Insight'; //TODO gettextcatalog
-    let cancelText = 'Go Back'; //TODO gettextcatalog
+    let message = this.translate.instant('View Transaction on Insight');
+    let okText = this.translate.instant('Open Insight');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
+  public topUp(): void {
+    this.navCtrl.push(AmountPage, {
+      id: this.cardId,
+      nextPage: 'BitPayCardTopUpPage',
+      currency: 'USD',
+      coin: 'btc',
+      fixedUnit: true,
+
+    });
+  }
 }

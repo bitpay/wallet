@@ -18,7 +18,7 @@
 // --------------------------------------------------
 
 ion-alert.alert-top{
-  align-items: center; 
+  align-items: center;
 }
 
 .bottom-absolute {
@@ -52,6 +52,17 @@ ion-alert.alert-top{
 
 .icon-wallet {
   background-color: color($colors, primary);
+  border-radius: $icon-border-radius;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-size: 103%;
+  padding: 4px;
+}
+
+.icon-card {
   border-radius: $icon-border-radius;
   width: 35px;
   height: 35px;

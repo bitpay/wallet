@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
 
 //providers
@@ -199,9 +198,11 @@ export class BitPayAccountProvider {
     this.persistenceProvider.setBitpayAccount(this.bitPayProvider.getEnvironment().network, account);
   };
 
-  public removeAccount(account: any) {
-    this.persistenceProvider.removeBitpayAccount(this.bitPayProvider.getEnvironment().network, account);
-    this.bitPayCardProvider.register();
+  public removeAccount(email: string, cb: Function) {
+    this.persistenceProvider.removeBitpayAccount(this.bitPayProvider.getEnvironment().network, email).then(() => {
+      this.bitPayCardProvider.register();
+      return cb();
+    });
   };
 
   private _setError(msg: string, e: any): string {

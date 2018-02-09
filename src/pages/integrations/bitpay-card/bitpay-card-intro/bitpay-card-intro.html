@@ -1,14 +1,14 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar transparent>
     <ion-buttons end>
       <button ion-button icon-only (click)="bitPayCardInfo()">
-        <ion-icon name="information"></ion-icon>
+        <ion-icon name="information-circle"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content  no-bounce>
   <div class="bitpayCard-illustration">
     <img class="bitpayCard-illustration-img" src="assets/img/bitpay-card/bitpay-card-visa.svg" />
   </div>
@@ -32,7 +32,7 @@
     </ion-slide>
   </ion-slides>
 </ion-content>
-<ion-footer>
-  <button ion-button block class="button-footer" (click)="orderBitPayCard()">Order the BitPay Card</button>
-  <button ion-button block outline class="button-footer" (click)="connectBitPayCard()">Connect my BitPay Card</button>
+<ion-footer text-center padding-vertical>
+  <button ion-button (click)="orderBitPayCard()">Order the BitPay Card</button>
+  <button ion-button outline small (click)="connectBitPayCard()">Connect my BitPay Card</button>
 </ion-footer>

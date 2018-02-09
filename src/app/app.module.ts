@@ -86,6 +86,8 @@ import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift
 // Integrations: BitPayCard
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
+import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
+import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 
 /*Includes */
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
@@ -94,6 +96,7 @@ import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
+import { CardItemPage } from '../pages/includes/card-item/card-item';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -226,6 +229,8 @@ export function createTranslateLoader(http: HttpClient) {
     BitcoinCashPage,
     BitPayCardIntroPage,
     BitPayCardPage,
+    BitPaySettingsPage,
+    BitPayCardTopUpPage,
     BuyAmazonPage,
     BuyCoinbasePage,
     BuyGlideraPage,
@@ -302,6 +307,7 @@ export function createTranslateLoader(http: HttpClient) {
     WalletItemPage,
     WalletActivityPage,
     WalletSelectorPage,
+    CardItemPage,
     /* Directives */
     CopyToClipboard,
     LongPress,
@@ -350,6 +356,8 @@ export function createTranslateLoader(http: HttpClient) {
     BitcoinCashPage,
     BitPayCardIntroPage,
     BitPayCardPage,
+    BitPaySettingsPage,
+    BitPayCardTopUpPage,
     BuyAmazonPage,
     BuyCoinbasePage,
     BuyGlideraPage,
@@ -425,7 +433,8 @@ export function createTranslateLoader(http: HttpClient) {
     WalletDetailsPage,
     WalletItemPage,
     WalletActivityPage,
-    WalletSelectorPage
+    WalletSelectorPage,
+    CardItemPage
   ],
   providers: [
     AddressProvider,
