@@ -300,7 +300,7 @@ export class AmountPage {
       amount_ = parseInt(value);
       amountFiat = this.amount;
     } else
-      amount_ = this.amount * 1e8;
+      amount_ = +((this.amount * 1e8).toFixed(0));
 
     let data: any = {
       recipientType: this.recipientType,
