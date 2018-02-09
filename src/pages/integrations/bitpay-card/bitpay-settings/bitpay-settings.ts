@@ -17,7 +17,7 @@ export class BitPaySettingsPage {
 
   constructor(
     private bitpayAccountProvider: BitPayAccountProvider,
-    private bitpayCardProvider: BitPayCardProvider,
+    private bitPayCardProvider: BitPayCardProvider,
     private popupProvider: PopupProvider
   ) {
 
@@ -32,7 +32,7 @@ export class BitPaySettingsPage {
       if (err) return;
       this.bitpayAccounts = accounts;
 
-      this.bitpayCardProvider.getCards((cards) => {
+      this.bitPayCardProvider.getCards((cards) => {
         this.bitpayCards = cards;
       });
     });
@@ -57,7 +57,7 @@ export class BitPaySettingsPage {
     this.popupProvider.ionicConfirm(title, msg).then((res) => {
       slidingItem.close();
       if (res) {
-        this.bitpayCardProvider.remove(card.id, (err) => {
+        this.bitPayCardProvider.remove(card.id, (err) => {
           if (err) {
             this.popupProvider.ionicAlert('Error', 'Could not remove the card');
             return;

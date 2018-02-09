@@ -91,7 +91,7 @@ export class HomePage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
-    private bitpayCardProvider: BitPayCardProvider,
+    private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService
   ) {
     this.cachedBalanceUpdateOn = '';
@@ -134,6 +134,7 @@ export class HomePage {
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
     });
+
     this.bitPayCardProvider.get({}, (err, cards) => {
       this.bitpayCardItems = cards;
     });

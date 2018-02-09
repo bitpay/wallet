@@ -26,12 +26,13 @@ page-bitpay-card {
   }
   .card-info {
     .card-type {
-      font-weight: 300;
+      font-size: 12.5px;
+      font-weight: lighter;
       position: absolute;
       bottom: 0;
       left: 0;
       padding: 8px;
-      color: color($colors, grey);
+      color: color($colors, light);
     }
     ion-spinner {
       position: absolute;
@@ -41,7 +42,7 @@ page-bitpay-card {
       width: 20px;
       height: 20px;
       * {
-        stroke: color($colors, grey);
+        stroke: color($colors, light);
       }
     }
   }

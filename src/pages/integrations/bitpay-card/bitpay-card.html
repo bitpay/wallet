@@ -33,16 +33,16 @@
   </div>
 
   <ion-list *ngIf="!getStarted">
-    <ion-item>
+    <ion-item-divider>
       <ion-label>
         <span translate>Activity</span>
       </ion-label>
-      <ion-select [(ngModel)]="dateRange.value" (ionChange)="update()">
+      <ion-select padding-horizontal [(ngModel)]="dateRange.value" (ionChange)="update()">
         <ion-option value="last30Days" selected>Recent</ion-option>
         <ion-option value="lastMonth">Last Month</ion-option>
         <ion-option value="all">All</ion-option>
       </ion-select>
-    </ion-item>
+    </ion-item-divider>
 
     <ion-item-divider *ngIf="bitpayCardTransactionHistoryConfirming && bitpayCardTransactionHistoryConfirming[0]">
       <i class="icon" (click)="bitpayCard.openExternalLink('https://help.bitpay.com/bitpay-card/why-do-you-require-one-blockchain-confirmation-for-bitpay-card-loads')">
