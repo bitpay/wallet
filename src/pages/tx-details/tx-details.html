@@ -97,19 +97,19 @@
       </ion-note>
     </ion-item>
 
-    <div class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
+    <ion-item-divider text-wrap  class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
       <img src="assets/img/icon-warning.png" width="20">
       <span translate>This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender</span>
-    </div>
+    </ion-item-divider>
 
-    <div class="low-fees" *ngIf="btx.lowAmount">
+    <ion-item-divider text-wrap class="low-fees" *ngIf="btx.lowAmount">
       <img src="assets/img/icon-warning.png" width="20">
       <span translate>
         This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
         fee cost comparable to the funds itself.
       </span>
       <a (click)="readMore()" translate>Learn more</a>
-    </div>
+    </ion-item-divider>
 
     <ion-item>
       <ion-label>{{'Confirmations' | translate}}</ion-label>

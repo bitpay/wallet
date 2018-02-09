@@ -212,24 +212,25 @@
         since the proposal was created.
       </div>
       <ion-item-divider></ion-item-divider>
-      <button ion-item class="btn-remove" (click)="remove()" [disabled]="loading">
+      <button ion-item icon-left class="btn-remove" (click)="remove()" [disabled]="loading">
+        <ion-icon name="trash"></ion-icon>
         <span translate>Delete Payment Proposal</span>
       </button>
-      <ion-item-divider></ion-item-divider>
     </div>
+    <ion-item-divider></ion-item-divider>
   </ion-list>
 </ion-content>
 
 <ion-footer *ngIf="(isShared && tx.pendingForUs) || (tx.pendingForUs && canSign && !paymentExpired)">
   <ion-toolbar>
     <ion-buttons left>
-      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="danger" *ngIf="isShared && tx.pendingForUs">
-        <ion-icon name="trash"></ion-icon>
+      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="warning" *ngIf="isShared && tx.pendingForUs">
+        <ion-icon name="close"></ion-icon>
         {{'Reject'| translate}}
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button *ngIf="tx.pendingForUs && canSign && !paymentExpired" ion-button icon-right (click)="onConfirm()">
+      <button *ngIf="tx.pendingForUs && canSign && !paymentExpired" color="blank" ion-button icon-right (click)="onConfirm()">
         {{buttonText}}
         <ion-icon name="send"></ion-icon>
       </button>

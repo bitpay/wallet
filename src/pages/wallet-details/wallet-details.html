@@ -28,7 +28,9 @@
         <strong translate>[Scanning Funds]</strong>
       </div>
 
-      <div class="balance-spendable" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
+      <div class="balance-spendable"
+        (click)="openBalanceDetails()"
+        *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
         <div translate>Spendable</div>
         <strong>
           {{wallet.status.spendableBalanceStr}}
@@ -37,6 +39,7 @@
         <span>
           ({{wallet.status.spendableBalanceAlternative}} {{wallet.status.alternativeIsoCode}})
         </span>
+        &rarr;
       </div>
 
       <div class="balance-error" *ngIf="updateStatusError" (tap)="updateAll(true)">

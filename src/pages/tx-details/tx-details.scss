@@ -3,6 +3,10 @@ page-tx-details {
   $item-lateral-padding: 20px;
   $item-label-color: #6C6C6E;
 
+  ion-label, ion-note {
+    font-size: 12.5px;
+  }
+
   span.label {
     color: color($colors, grey);
   }
@@ -54,11 +58,10 @@ page-tx-details {
   }
 
   .low-fees {
-    font-size: 14px;
-    color: #777;
-    padding: 1rem 2rem 1rem 2rem;
+    font-size: 11px;
     img {
       margin-right: 0.1rem;
+      vertical-align: sub;
     }
   }
 
@@ -108,7 +111,7 @@ page-tx-details {
         display: flex;
         height: 26px;
         width: 26px;
-        font-size: 13px;
+        font-size: 12.5px;
         align-items: center;
         justify-content: center;
         font-weight: 600;

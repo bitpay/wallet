@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Logger } from '../../../providers/logger/logger';
-import * as _ from 'lodash';
 
 // Providers
 import { ConfigProvider } from '../../../providers/config/config';
@@ -17,7 +15,6 @@ export class EnabledServicesPage {
   public homeIntegrations: any;
 
   constructor(
-    private logger: Logger,
     private configProvider: ConfigProvider,
     private homeIntegrationsProvider: HomeIntegrationsProvider
   ) {

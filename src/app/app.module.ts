@@ -48,6 +48,7 @@ import { FeedbackPage } from '../pages/feedback/feedback/feedback';
 import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
@@ -304,6 +305,7 @@ export function createTranslateLoader(http: HttpClient) {
     WalletDeletePage,
     WalletExtendedPrivateKeyPage,
     WalletDetailsPage,
+    WalletBalancePage,
     WalletItemPage,
     WalletActivityPage,
     WalletSelectorPage,
@@ -431,6 +433,7 @@ export function createTranslateLoader(http: HttpClient) {
     WalletDeletePage,
     WalletExtendedPrivateKeyPage,
     WalletDetailsPage,
+    WalletBalancePage,
     WalletItemPage,
     WalletActivityPage,
     WalletSelectorPage,
