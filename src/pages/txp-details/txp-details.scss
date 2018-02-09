@@ -3,6 +3,10 @@ page-txp-details {
   $item-lateral-padding: 20px;
   $item-label-color: #6C6C6E;
 
+  ion-label, ion-note {
+    font-size: 12.5px;
+  }
+
   span.label {
     color: color($colors, grey);
   }

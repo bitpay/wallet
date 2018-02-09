@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, ViewController, ModalController } from 'ionic-angular';
+import { NavParams, Events, ViewController, ModalController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 //providers
@@ -58,8 +58,7 @@ export class TxpDetailsPage {
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
     private translate: TranslateService,
-    private modalCtrl: ModalController,
-    private navCtrl: NavController,
+    private modalCtrl: ModalController
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
