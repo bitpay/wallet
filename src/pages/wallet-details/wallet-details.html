@@ -31,7 +31,6 @@
       <div class="balance-spendable"
         (click)="openBalanceDetails()"
         *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
-        <div translate>Spendable</div>
         <strong>
           {{wallet.status.spendableBalanceStr}}
         </strong>
@@ -175,7 +174,7 @@
           <span class="assertive" *ngIf="!tx.message && !tx.note">{{'Invalid' | translate}}</span>
         </div>
 
-        <ion-note item-end>
+        <ion-note item-end text-end>
           <div class="amount">
             <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
             <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 @Component({
@@ -12,8 +12,7 @@ export class WalletBalancePage {
 
   constructor(
     private logger: Logger,
-    private navParams: NavParams,
-    private viewCtrl: ViewController
+    private navParams: NavParams
   ) {
     this.status = this.navParams.data.status;
   }
@@ -21,9 +20,4 @@ export class WalletBalancePage {
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletBalancePage');
   }
-
-  public close(): void {
-    this.viewCtrl.dismiss();
-  }
-
 }

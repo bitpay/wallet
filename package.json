@@ -2,7 +2,7 @@
   "name": "copay",
   "description": "A Secure Bitcoin Wallet",
   "author": "BitPay",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "main": "electron/main.js",
   "keywords": [
     "bitcoin",
@@ -24,7 +24,7 @@
   "scripts": {
     "postinstall": "sed -i  -e \"s/.*require(...\\/...);//g\" node_modules/asn1.js-rfc5280/index.js;",
     "start": "ionic serve --no-open",
-    "clean": "trash platforms && trash plugins && trash config.xml",
+    "clean": "rm -rf platforms && rm -rf plugins && rm -f config.xml",
     "prepare:copay": "npm run clean && npm run apply:copay && cordova prepare && npm run fix:fcm",
     "prepare:bitpay": "npm run clean && npm run apply:bitpay && cordova prepare && npm run fix:fcm",
     "clean-all": "git clean -dfx",
@@ -82,8 +82,8 @@
     "ajv": "^5.5.2",
     "angular2-moment": "^1.7.1",
     "autoprefixer": "^7.2.4",
+    "bitauth": "git+https://github.com/matiu/bitauth.git",
     "bitcore-wallet-client": "^6.5.0",
-    "bitauth": "git@github.com:matiu/bitauth.git",
     "buffer-compare": "^1.1.1",
     "cordova-android": "7.0.0",
     "cordova-clipboard": "^1.1.1",

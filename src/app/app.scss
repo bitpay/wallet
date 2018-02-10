@@ -45,6 +45,19 @@ ion-alert.alert-top{
   }
 }
 
+// Item font size
+.item-title {
+  font-size: 1.4rem;
+}
+.item-subtitle {
+  font-weight: 300;
+  font-size: 12.5px;
+  ion-icon {
+    vertical-align: text-bottom;
+    margin-left: 5px;
+  }
+}
+
 // This style prevents the names of the tabs from disappear
 .tabbar .tab-button .tab-button-text {
   display: block;

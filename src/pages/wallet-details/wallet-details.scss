@@ -5,7 +5,7 @@ page-wallet-details {
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 14rem;
+    height: 13rem;
     text-align: center;
   }
   .balance-str {
@@ -29,7 +29,7 @@ page-wallet-details {
   }
   .balance-spendable {
     margin-top: 5px;
-    font-size: 12.5px;
+    font-size: 13px;
     cursor: pointer;
     ion-icon {
       vertical-align: middle;
@@ -49,9 +49,6 @@ page-wallet-details {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-    ion-note {
-      text-align: end;
     }
     .amount {
       color: color($colors, dark);
