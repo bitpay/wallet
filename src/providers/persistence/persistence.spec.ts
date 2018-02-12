@@ -1,39 +1,61 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { Logger, Level as LoggerLevel } from '@nsalaun/ng-logger';
-import { Platform } from 'ionic-angular';
-import { } from 'jasmine';
-
+import { Logger } from '../../providers/logger/logger';
+import { PlatformProvider } from '../platform/platform';
+import { File } from '@ionic-native/file';
 import { PersistenceProvider } from './persistence';
-import { IStorage, ISTORAGE } from './storage/istorage';
-import { RamStorage } from './storage/ram-storage';
-import { LocalStorage } from './storage/local-storage';
-import { FileStorage } from './storage/file-storage';
 
-describe('Storage Service', () => {
+class FileMock extends File {}
+
+describe('Persistence Provider', () => {
+  let persistenceProvider: PersistenceProvider;
+  let logs: any[];
+
+  const loggerMock = {
+    info: info => {
+      logs.push(info);
+    }
+  } as Logger;
+  const platformMock = {} as PlatformProvider;
+  const fileMock = new FileMock();
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        PersistenceProvider,
-        { provide: Logger, useValue: new Logger(LoggerLevel.DEBUG) },
-        { provide: ISTORAGE, useClass: RamStorage, deps: [Logger, Platform] },
-        Platform,
-      ]
-    });
+    logs = [];
   });
 
-  describe('#profile', () => {
-    let service: PersistenceProvider;
-    beforeEach(inject([PersistenceProvider], (pp: PersistenceProvider) => {
-      service = pp;
-    }));
-    it('should correctly perform a profile roundtrip', (done) => {
+  function createAndLoad() {
+    persistenceProvider = new PersistenceProvider(
+      loggerMock,
+      platformMock,
+      fileMock
+    );
+    persistenceProvider.load();
+  }
+
+  describe('When platform is Cordova', () => {
+    beforeEach(() => {
+      platformMock.isCordova = true;
+      createAndLoad();
+    });
+    it('should use the FileStorage provider', () => {
+      expect(persistenceProvider.storage.constructor.name).toBe('FileStorage');
+    });
+  });
+  describe('When platform is not Cordova', () => {
+    beforeEach(() => {
+      platformMock.isCordova = false;
+      createAndLoad();
+    });
+    it('should use the LocalStorage provider', () => {
+      expect(persistenceProvider.storage.constructor.name).toBe('LocalStorage');
+    });
+    it('should correctly perform a profile roundtrip', done => {
       let p = { name: 'My profile' };
-      service.storeNewProfile(p)
-        .catch((err) => expect(err).toBeNull)
+      persistenceProvider
+        .storeNewProfile(p)
+        .catch(err => expect(err).toBeNull)
         .then(() => {
-          return service.getProfile();
+          return persistenceProvider.getProfile();
         })
-        .then((profile) => {
+        .then(profile => {
           expect(typeof profile).toEqual('object');
           expect(profile.name).toEqual('My profile');
         })
@@ -42,10 +64,12 @@ describe('Storage Service', () => {
 
     it('should fail to create a profile when one already exists', () => {
       let p = { name: 'My profile' };
-      service.storeNewProfile(p)
+      persistenceProvider
+        .storeNewProfile(p)
         .then(() => {
-          return service.storeNewProfile(p);
-        }).catch((err) => {
+          return persistenceProvider.storeNewProfile(p);
+        })
+        .catch(err => {
           expect(err.message).toEqual('Key already exists');
         });
     });
