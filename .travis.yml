@@ -8,13 +8,14 @@ node_js:
 addons:
   chrome: stable
 
+env:
+  - DISTRIBUTION=copay
+  - DISTRIBUTION=bitpay
+
 install:
   - npm install -g @angular/cli
 
 script:
-  - npm run apply:copay
-  - npm run test-ci
-  - npm run e2e
-  - npm run apply:bitpay
+  - npm run apply:$DISTRIBUTION
   - npm run test-ci
   - npm run e2e
