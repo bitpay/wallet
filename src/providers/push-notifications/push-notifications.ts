@@ -57,7 +57,6 @@ export class PushNotificationsProvider {
           // Notification was received on device tray and tapped by the user.
           var walletIdHashed = data.walletId;
           if (!walletIdHashed) return;
-          //this.navCtrl.popToRoot();
           this._openWallet(walletIdHashed);
         } else {
           // TODO
