@@ -1,8 +1,21 @@
 import { TestBed, inject, async } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
-import { Events } from 'ionic-angular';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  AlertController,
+  App,
+  Config,
+  Events,
+  LoadingController,
+  Platform
+} from 'ionic-angular';
 import * as _ from 'lodash';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  TranslateModule,
+  TranslateService,
+  TranslateLoader,
+  TranslateFakeLoader
+} from '@ngx-translate/core';
+import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 
 import { Logger } from '../../providers/logger/logger';
 import { WalletProvider } from '../wallet/wallet';
@@ -90,22 +103,34 @@ describe('Profile Provider', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        NgLoggerModule.forRoot(Level.LOG),
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
+        })
+      ],
       providers: [
+        AlertController,
+        App,
+        Config,
         ProfileProvider,
-        { provide: AppProvider },
+        AppProvider,
         { provide: BwcProvider, useClass: BwcProviderMock },
-        { provide: BwcErrorProvider },
-        { provide: ConfigProvider },
-        { provide: HttpClient },
-        { provide: LanguageProvider },
-        { provide: Logger },
-        { provide: OnGoingProcessProvider },
+        BwcErrorProvider,
+        ConfigProvider,
+        HttpClient,
+        LanguageProvider,
+        LoadingController,
+        Logger,
+        OnGoingProcessProvider,
         { provide: PersistenceProvider, useClass: PersistenceProviderMock },
-        { provide: PlatformProvider },
-        { provide: PopupProvider },
-        { provide: TranslateService },
-        { provide: TxFormatProvider },
-        { provide: WalletProvider },
+        Platform,
+        PlatformProvider,
+        PopupProvider,
+        TranslateService,
+        TxFormatProvider,
+        WalletProvider,
         Events
       ]
     });
