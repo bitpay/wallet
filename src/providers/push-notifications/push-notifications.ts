@@ -52,14 +52,12 @@ export class PushNotificationsProvider {
 
       this.FCMPlugin.onNotification().subscribe((data: any) => {
         if (!this._token) return;
-        this.navCtrl = this.app.getActiveNav(); //TODO TEST THIS
         this.logger.debug('New Event Push onNotification: ' + JSON.stringify(data));
         if (data.wasTapped) {
           // Notification was received on device tray and tapped by the user.
           var walletIdHashed = data.walletId;
           if (!walletIdHashed) return;
-          this.navCtrl.popToRoot();
-          this.navCtrl.parent.select(0);
+          //this.navCtrl.popToRoot();
           this._openWallet(walletIdHashed);
         } else {
           // TODO
@@ -144,14 +142,20 @@ export class PushNotificationsProvider {
   }
 
   private _openWallet(walletIdHashed: any): void {
+    let walletIdHash;
+    let sjcl = this.bwcProvider.getSJCL();
+
     let wallets = this.profileProvider.getWallets();
     let wallet: any = _.find(wallets, (w: any) => {
-      let walletIdHash = this.bwcProvider.getSJCL().hash.sha256.hash(parseInt(w.credentials.walletId));
-      return _.isEqual(walletIdHashed, this.bwcProvider.getSJCL().codec.hex.fromBits(walletIdHash));
+      walletIdHash = sjcl.hash.sha256.hash(w.credentials.walletId);
+      return _.isEqual(walletIdHashed, sjcl.codec.hex.fromBits(walletIdHash));
     });
 
     if (!wallet) return;
 
+    this.navCtrl = this.app.getActiveNav();
+    this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
     if (!wallet.isComplete()) {
       this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       return;
