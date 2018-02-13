@@ -1,6 +1,7 @@
 <img src="https://raw.githubusercontent.com/bitpay/copay/master/resources/copay/android/icon/drawable-xxxhdpi-icon.png" alt="Copay" width="79">
 
-[![Build Status](https://secure.travis-ci.org/bitpay/copay.svg)](http://travis-ci.org/bitpay/copay)
+[![Build Status](https://api.travis-ci.org/bitpay/copay.svg?branch=v4)](http://travis-ci.org/bitpay/copay)
+[![Code Coverage](https://codecov.io/gh/bitpay/copay/branch/v4/graph/badge.svg)](https://codecov.io/gh/bitpay/copay/branch/v4)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/copay/localized.png)](https://crowdin.com/project/copay)
 
 Copay is a secure bitcoin wallet platform for both desktop and mobile devices. Copay uses [Bitcore Wallet Service](https://github.com/bitpay/bitcore-wallet-service) (BWS) for peer synchronization and network interfacing.
