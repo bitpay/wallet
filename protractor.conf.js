@@ -11,7 +11,10 @@ exports.config = {
           '--headless',
           '--high-dpi-support=1',
           '--force-device-scale-factor=2',
-          '--window-size=1024,720'
+          '--window-size=1024,720',
+          // Sandbox causes Chrome to crash on Travis
+          // https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-359018652
+          '--no-sandbox'
         ]
       }
     },
@@ -23,7 +26,8 @@ exports.config = {
           '--headless',
           '--high-dpi-support=1',
           '--force-device-scale-factor=2',
-          '--window-size=800,600'
+          '--window-size=800,600',
+          '--no-sandbox'
         ]
       }
     },
@@ -35,7 +39,8 @@ exports.config = {
           '--headless',
           '--high-dpi-support=1',
           '--force-device-scale-factor=2',
-          '--window-size=1920,1080'
+          '--window-size=1920,1080',
+          '--no-sandbox'
         ]
       }
     },
@@ -46,7 +51,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPhone X'
         },
-        args: ['--headless']
+        args: ['--headless', '--no-sandbox']
       }
     },
     {
@@ -56,7 +61,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPhone 8'
         },
-        args: ['--headless']
+        args: ['--headless', '--no-sandbox']
       }
     },
     {
@@ -66,7 +71,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPad'
         },
-        args: ['--headless']
+        args: ['--headless', '--no-sandbox']
       }
     },
     {
@@ -76,7 +81,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPad Pro'
         },
-        args: ['--headless']
+        args: ['--headless', '--no-sandbox']
       }
     },
     {
@@ -86,7 +91,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'Nexus 6P'
         },
-        args: ['--headless']
+        args: ['--headless', '--no-sandbox']
       }
     },
     {
@@ -96,7 +101,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'Nexus 5X'
         },
-        args: ['--headless']
+        args: ['--headless', '--no-sandbox']
       }
     }
   ],
