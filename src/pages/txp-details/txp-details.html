@@ -13,48 +13,40 @@
 
 <ion-content no-bounce>
 
-  <ion-card>
-    <ion-card-content>
-      <div class="sending-label">
-        <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
-        <span translate>Sending</span>
-      </div>
-      <div class="amount-label">
-        <div class="amount">{{tx.amountStr}}</div>
-        <div class="alternative" *ngIf="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
-      </div>
-    </ion-card-content>
-  </ion-card>
+  <div padding>
+    <div class="sending-label">
+      <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
+      <span translate>Sending</span>
+    </div>
+    <div class="amount-label">
+      <div class="amount">{{tx.amountStr}}</div>
+      <div class="alternative" *ngIf="tx.alternativeAmountStr">{{tx.alternativeAmountStr}}</div>
+    </div>
+  </div>
 
-  <ion-card *ngIf="tx.removed">
-    <ion-card-content>
-      <span translate>The payment was removed by creator</span>
-    </ion-card-content>
-  </ion-card>
+  <ion-item *ngIf="tx.removed" text-wrap>
+    <span translate>The payment was removed by creator</span>
+  </ion-item>
 
-  <ion-card *ngIf="tx.status != 'pending'">
-    <ion-card-content>
-      <div *ngIf="tx.status == 'accepted' && !tx.isGlidera">
-        <div translate>Payment accepted, but not yet broadcasted</div>
-        <button ion-button block type="button" (click)="broadcast(tx)" [disabled]="loading">
-          <ion-icon name="cloud-upload"></ion-icon>
-          <span translate>Broadcast Payment</span>
-        </button>
-      </div>
-      <div *ngIf="tx.status == 'accepted' && tx.isGlidera">
-        <div translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after
-          it was created.</div>
-      </div>
-      <div *ngIf="tx.status == 'broadcasted'" translate>Payment Sent</div>
-      <div *ngIf="tx.status =='rejected'" translate>Payment Rejected</div>
-    </ion-card-content>
-  </ion-card>
+  <div *ngIf="tx.status != 'pending'">
+    <div *ngIf="tx.status == 'accepted' && !tx.isGlidera">
+      <ion-item text-wrap translate>Payment accepted, but not yet broadcasted</ion-item>
+      <button ion-item class="btn-broadcast" icon-left (click)="broadcast(tx)" [disabled]="loading">
+        <ion-icon name="cloud-upload"></ion-icon>
+        <span translate>Broadcast Payment</span>
+      </button>
+    </div>
+    <ion-item *ngIf="tx.status == 'accepted' && tx.isGlidera" text-wrap>
+      <span translate>Payment accepted. It will be broadcasted by Glidera. In case there is a problem, it can be deleted 6 hours after it
+        was created.</span>
+    </ion-item>
+    <ion-item *ngIf="tx.status == 'broadcasted'" text-wrap translate>Payment Sent</ion-item>
+    <ion-item *ngIf="tx.status =='rejected'" text-wrap translate>Payment Rejected</ion-item>
+  </div>
 
-  <ion-card *ngIf="!currentSpendUnconfirmed && tx.hasUnconfirmedInputs">
-    <ion-card-content>
-      <span translate>Warning: this transaction has unconfirmed inputs</span>
-    </ion-card-content>
-  </ion-card>
+  <ion-item *ngIf="!currentSpendUnconfirmed && tx.hasUnconfirmedInputs">
+    <span translate>Warning: this transaction has unconfirmed inputs</span>
+  </ion-item>
 
   <ion-list>
     <ion-item class="container-to">
@@ -101,7 +93,6 @@
       <div>
         <div class="wallet" *ngIf="wallet">
           <img class="icon-wallet" src="assets/img/icon-wallet.svg" />
-          <!-- TODO ng-include="'views/includes/walletIcon.html'" -->
           <div>{{wallet.name}}</div>
         </div>
       </div>
