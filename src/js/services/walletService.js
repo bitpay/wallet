@@ -999,7 +999,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     });
   };
 
-  root.useLegacyAddress = function(wallet) {
+  root.useLegacyAddress = function() {
     var config = configService.getSync();
     var walletSettings = config.wallet;
 
@@ -1008,7 +1008,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
 
 
   root.getAddressView = function(wallet, address) {
-    if (wallet.coin != 'bch' || root.useLegacyAddress(wallet)) return address;
+    if (wallet.coin != 'bch' || root.useLegacyAddress()) return address;
     return txFormatService.toCashAddress(address);
   };
 
@@ -1016,7 +1016,7 @@ angular.module('copayApp.services').factory('walletService', function($log, $tim
     var proto  = root.getProtocolHandler(wallet);
     var protoAddr = proto + ':' + address;
 
-    if (wallet.coin != 'bch' || root.useLegacyAddress(wallet)) {
+    if (wallet.coin != 'bch' || root.useLegacyAddress()) {
       return protoAddr;
     } else {
       return protoAddr.toUpperCase() ;

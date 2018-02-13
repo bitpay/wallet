@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     $scope.txsUnsubscribedForNotifications = config.confirmedTxsNotifications ? !config.confirmedTxsNotifications.enabled : true;
 
     if ($scope.wallet.coin == 'bch') {
-      if (walletService.useLegacyAddress($scope.wallet)) {
+      if (walletService.useLegacyAddress()) {
         blockexplorerUrl = 'bch-insight.bitpay.com';
       } else {
         blockexplorerUrl = 'blockdozer.com/insight';
@@ -123,8 +123,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         return popupService.showAlert(gettextCatalog.getString('Error'), gettextCatalog.getString('Transaction not available at this time'));
       }
 
-      $scope.btx = txFormatService.processTx($scope.wallet.coin, tx, 
-        walletService.useLegacyAddress($scope.wallet));
+      $scope.btx = txFormatService.processTx($scope.wallet.coin, tx,
+        walletService.useLegacyAddress());
 
       txFormatService.formatAlternativeStr($scope.wallet.coin, tx.fees, function(v) {
         $scope.btx.feeFiatStr = v;
