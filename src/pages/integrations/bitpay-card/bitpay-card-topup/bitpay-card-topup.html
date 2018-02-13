@@ -1,0 +1,83 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'Add funds' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <div class="bitpay-title">
+        <img src="assets/img/bitpay-card/bitpay-card-visa.svg">
+        <span>BitPay Visa&reg; Card ({{lastFourDigits}})</span>
+      </div>
+      <div class="amount-label">
+        <div class="amount">{{amountUnitStr}}</div>
+        <div class="alternative">
+          <span *ngIf="rate">
+            @ {{rate | currency:currencySymbol:2}} {{currencyIsoCode}} per BTC
+          </span>
+          <span *ngIf="!rate">...</span>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item-group class="info">
+      <button ion-item (click)="showWallets()" class="wallets-list">
+        <div translate>From</div>
+        <div class="wallet">
+          <ion-icon item-start>
+            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+              class="icon-wallet" />
+            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
+              class="icon-wallet" />
+          </ion-icon>
+          <div>{{wallet ? wallet.name : '...'}}</div>
+        </div>
+      </button>
+      <div *ngIf="totalAmountStr">
+        <ion-item-divider>
+          Details
+        </ion-item-divider>
+        <ion-item>
+          <span translate>Funds to be added</span>
+          <ion-note item-end>
+            <span *ngIf="amount">{{amount | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span *ngIf="!amount">...</span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Network Cost</span>
+          <ion-note item-end>
+            <span *ngIf="invoiceFee">{{invoiceFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span *ngIf="!invoiceFee">...</span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Miner Fee</span>
+          <ion-note item-end>
+            <span *ngIf="networkFee">{{networkFee | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span *ngIf="!networkFee">...</span>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <span translate>Total</span>
+          <ion-note item-end>
+            <span *ngIf="totalAmount">{{totalAmount | currency:currencySymbol:2}} {{currencyIsoCode}}</span>
+            <span *ngIf="totalAmountStr">({{totalAmountStr}})</span>
+          </ion-note>
+        </ion-item>
+      </div>
+      <ion-item-divider></ion-item-divider>
+    </ion-item-group>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <button ion-button full class="button-footer" (click)="topUpConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>
+    Add funds
+  </button>
+</ion-footer>
+

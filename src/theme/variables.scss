@@ -63,22 +63,26 @@ $onboarding-color: #fff;
 $tabs-ios-background: color($colors, blank);
 $tabs-ios-border-color: rgba(0, 0, 0, .1);
 
+$item-ios-body-text-font-size: 1.4rem;
 $item-ios-divider-background: color($colors, blank);
 $item-ios-padding-top: 16px;
 $item-ios-padding-bottom: 16px;
 
 $list-ios-border-color: color($colors, light);
-$list-ios-header-font-size: 1.3rem;
+$list-ios-header-font-size: 1.5rem;
 $list-ios-margin-bottom: 0;
 
 $searchbar-ios-background-color: color($colors, blank);
 $searchbar-ios-padding-vertical: 16px;
 $searchbar-ios-padding-horizontal: 8px;
 
+$note-ios-color: color($colors, grey);
+
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$item-md-font-size: 1.4rem;
 $item-md-divider-background: color($colors, blank);
 $item-md-padding-top: 16px;
 $item-md-padding-bottom: 16px;
@@ -90,6 +94,8 @@ $searchbar-md-padding-top: 16px;
 $list-md-border-color: color($colors, light);
 $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
+
+$note-md-color: color($colors, grey);
 
 // App Windows Variables
 // --------------------------------------------------

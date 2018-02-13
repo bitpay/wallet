@@ -40,20 +40,4 @@
     </ion-item-divider>
   </ion-list>
 
-  <ion-list>
-    <ion-item>
-      <ion-label>{{'Show Services Card' | translate}}</ion-label>
-      <ion-toggle [(ngModel)]="showIntegrations" (ionChange)="integrationsChange()"></ion-toggle>
-    </ion-item>
-    <div *ngIf="showIntegrations">
-      <ion-item *ngFor="let integration of homeIntegrations">
-        <ion-label>{{integration.title}}</ion-label>
-        <ion-checkbox [(ngModel)]="integration.show" (ionChange)="integrationChange(integration.name)"></ion-checkbox>
-      </ion-item>
-    </div>
-    <ion-item-divider class="item-description" padding-horizontal text-wrap>
-      <span translate>If enabled, the "Services Card" will appear in the Home tab.</span>
-    </ion-item-divider>
-  </ion-list>
-
 </ion-content>

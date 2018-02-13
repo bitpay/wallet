@@ -18,10 +18,10 @@
           <ion-icon item-start>
             <gravatar [name]="item.name" [width]="30" [email]="item.email"></gravatar>
           </ion-icon>
-          <h2>{{item.name}}</h2>
+          <div class="item-title">{{item.name}}</div>
         </button>
         <button ion-item class="show-more" *ngIf="contactsShowMore" (click)="showMore()">
-          <h2 translate>Show all</h2>
+          <span translate>Show all</span>
         </button>
       </ion-list>
     </div>
@@ -40,9 +40,9 @@
             <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
               class="icon-wallet" />
           </ion-icon>
-          <h2>{{wallet.name}}
+          <div class="item-title">{{wallet.name}}
             <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span>
-          </h2>
+          </div>
         </button>
       </ion-list>
     </div>
@@ -61,9 +61,9 @@
             <img *ngIf="wallet.network != 'testnet'" [ngStyle]="{'background-color': wallet.color}" src="assets/img/icon-wallet.svg"
               class="icon-wallet" />
           </ion-icon>
-          <h2>{{wallet.name}}
+          <div class="item-title">{{wallet.name}}
             <span *ngIf="wallet.m > 1">{{wallet.m}}-{{wallet.n}}</span>
-          </h2>
+          </div>
           <p></p>
         </button>
       </ion-list>

@@ -48,6 +48,7 @@ import { FeedbackPage } from '../pages/feedback/feedback/feedback';
 import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
@@ -86,6 +87,8 @@ import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift
 // Integrations: BitPayCard
 import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
+import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
+import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 
 /*Includes */
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
@@ -94,6 +97,7 @@ import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
+import { CardItemPage } from '../pages/includes/card-item/card-item';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -113,6 +117,7 @@ import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
+import { EnabledServicesPage } from '../pages/settings/enabled-services/enabled-services';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -225,6 +230,8 @@ export function createTranslateLoader(http: HttpClient) {
     BitcoinCashPage,
     BitPayCardIntroPage,
     BitPayCardPage,
+    BitPaySettingsPage,
+    BitPayCardTopUpPage,
     BuyAmazonPage,
     BuyCoinbasePage,
     BuyGlideraPage,
@@ -234,6 +241,7 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
+    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,
@@ -297,9 +305,11 @@ export function createTranslateLoader(http: HttpClient) {
     WalletDeletePage,
     WalletExtendedPrivateKeyPage,
     WalletDetailsPage,
+    WalletBalancePage,
     WalletItemPage,
     WalletActivityPage,
     WalletSelectorPage,
+    CardItemPage,
     /* Directives */
     CopyToClipboard,
     LongPress,
@@ -348,6 +358,8 @@ export function createTranslateLoader(http: HttpClient) {
     BitcoinCashPage,
     BitPayCardIntroPage,
     BitPayCardPage,
+    BitPaySettingsPage,
+    BitPayCardTopUpPage,
     BuyAmazonPage,
     BuyCoinbasePage,
     BuyGlideraPage,
@@ -357,6 +369,7 @@ export function createTranslateLoader(http: HttpClient) {
     CoinbasePage,
     CoinbaseTxDetailsPage,
     CopayersPage,
+    EnabledServicesPage,
     FeedbackCardPage,
     FeedbackPage,
     FeedbackCompletePage,
@@ -420,9 +433,11 @@ export function createTranslateLoader(http: HttpClient) {
     WalletDeletePage,
     WalletExtendedPrivateKeyPage,
     WalletDetailsPage,
+    WalletBalancePage,
     WalletItemPage,
     WalletActivityPage,
-    WalletSelectorPage
+    WalletSelectorPage,
+    CardItemPage
   ],
   providers: [
     AddressProvider,

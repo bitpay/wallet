@@ -17,6 +17,7 @@ import { TxDetailsPage } from '../tx-details/tx-details';
 import { TxpDetailsPage } from '../txp-details/txp-details';
 import { WalletDetailsPage } from '../wallet-details/wallet-details';
 import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
 
 // Providers
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
@@ -34,6 +35,7 @@ import { PlatformProvider } from '../../providers/platform/platform';
 import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { PersistenceProvider } from '../../providers/persistence/persistence';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
+import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -58,6 +60,7 @@ export class HomePage {
   public newRelease: boolean;
   public updateText: string;
   public homeIntegrations: Array<any>;
+  public bitpayCardItems: any;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -88,6 +91,7 @@ export class HomePage {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
+    private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService
   ) {
     this.cachedBalanceUpdateOn = '';
@@ -95,30 +99,26 @@ export class HomePage {
     this.isWindowsPhoneApp = this.platformProvider.isWP;
     this.showReorderBtc = false;
     this.showReorderBch = false;
+    this.setWallets();
   }
 
   ionViewWillEnter() {
     this.config = this.configProvider.get();
-    this.wallets = this.profileProvider.getWallets();
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+
+    this.setWallets();
 
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
     if (this.recentTransactionsEnabled) this.getNotifications();
 
     this.pushNotificationsProvider.init();
-    if (this.config.showIntegrations.enabled) {
-      this.homeIntegrations = this.homeIntegrationsProvider.get();
-      this.showIntegration = this.config.showIntegration;
-      this.homeIntegrations.forEach((integration: any) => {
-        integration.show = this.showIntegration[integration.name];
-      });
-      this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
-        return homeIntegrations.show == true;
-      });
-    } else {
-      this.homeIntegrations = null;
-    }
+    this.homeIntegrations = this.homeIntegrationsProvider.get();
+    this.showIntegration = this.config.showIntegration;
+    this.homeIntegrations.forEach((integration: any) => {
+      integration.show = this.showIntegration[integration.name];
+    });
+    this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
+      return homeIntegrations.show == true;
+    });
 
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       let wallet = this.profileProvider.getWallet(walletId);
@@ -133,6 +133,10 @@ export class HomePage {
     });
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
+    });
+
+    this.bitPayCardProvider.get({}, (err, cards) => {
+      this.bitpayCardItems = cards;
     });
   }
 
@@ -149,14 +153,18 @@ export class HomePage {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
-    this.events.unsubscribe('Local/TxAction');
     this.events.unsubscribe('feedback:hide');
   }
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
     this.updateAllWallets();
+  }
+
+  private setWallets(): void {
+    this.wallets = this.profileProvider.getWallets();
+    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
+    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
   }
 
   public checkHomeTip(): void {
@@ -411,6 +419,10 @@ export class HomePage {
         this.navCtrl.push(ShapeshiftPage);
         break;
     }
+  }
+
+  public goToCard(cardId): void {
+    this.navCtrl.push(BitPayCardPage, { id: cardId });
   }
 
   public doRefresh(refresher) {

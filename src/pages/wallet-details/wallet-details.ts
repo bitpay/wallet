@@ -14,6 +14,7 @@ import { TimeProvider } from '../../providers/time/time';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
+import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
 import * as _ from 'lodash';
 
@@ -255,5 +256,9 @@ export class WalletDetailsPage {
   public isUnconfirmed(tx) {
     return !tx.confirmations || tx.confirmations === 0;
   };
+
+  public openBalanceDetails(): void {
+    this.navCtrl.push(WalletBalancePage, { status: this.wallet.status });
+  }
 
 }

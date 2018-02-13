@@ -27,6 +27,8 @@ import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-com
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
 import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
 import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
+import { EnabledServicesPage } from './enabled-services/enabled-services';
+import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 
 @Component({
   selector: 'page-settings',
@@ -44,6 +46,7 @@ export class SettingsPage {
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
   public exchangeServices: Array<any> = [];
+  public bitpayCardEnabled: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -82,8 +85,10 @@ export class SettingsPage {
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
     this.lockMethod = this.config.lock.method;
-    if (this.config.showIntegrations.enabled) {
-      this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
+    this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
+
+    if (this.app.info._enabledExtensions.debitcard) {
+      this.bitpayCardEnabled = true;
     }
   }
 
@@ -133,6 +138,14 @@ export class SettingsPage {
 
   public openFeedbackCompletePage(): void {
     this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
+  }
+
+  public openEnabledServicesPage(): void {
+    this.navCtrl.push(EnabledServicesPage);
+  }
+
+  public openBitPaySettings(): void {
+    this.navCtrl.push(BitPaySettingsPage);
   }
 
   public openIntegrationSettings(name: string): void {

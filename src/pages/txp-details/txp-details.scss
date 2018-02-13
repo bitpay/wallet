@@ -1,7 +1,6 @@
 page-txp-details {
   $item-border-color: #EFEFEF;
   $item-lateral-padding: 20px;
-  $item-label-color: #6C6C6E;
 
   span.label {
     color: color($colors, grey);
@@ -32,8 +31,9 @@ page-txp-details {
   }
 
   .proposal-deletion-help {
-    color: $item-label-color;
+    color: color($colors, grey);
     padding: 1rem 2rem;
+    font-size: 12.5px;
   }
 
   .container-to, .container-from {
@@ -139,6 +139,9 @@ page-txp-details {
   }
   .btn-remove {
     color: color($colors, danger);
+  }
+  .btn-broadcast {
+    color: color($colors, primary);
   }
 }
 

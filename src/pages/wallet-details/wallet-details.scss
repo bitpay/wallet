@@ -5,18 +5,18 @@ page-wallet-details {
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 15rem;
+    height: 13rem;
     text-align: center;
   }
   .balance-str {
     cursor: pointer;
     padding-top: 5rem;
-    font-size: 35px;
+    font-size: 32px;
     font-weight: 600;
   }
   .balance-alt-str {
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
   }
   .balance-hidden {
     cursor: pointer;
@@ -28,10 +28,12 @@ page-wallet-details {
     padding: 15% 1rem 0 1rem;
   }
   .balance-spendable {
+    margin-top: 5px;
+    font-size: 13px;
     cursor: pointer;
     ion-icon {
-      vertical-align: middle;
-      margin: 0 5px;
+      vertical-align: text-bottom;
+      margin-right: 5px;
     }
   }
   .balance-scanning {
@@ -47,9 +49,6 @@ page-wallet-details {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-    ion-note {
-      text-align: end;
     }
     .amount {
       color: color($colors, dark);
@@ -72,22 +71,23 @@ page-wallet-details {
   }
 
   .wallet-info {
-    font-weight: 500;
+    font-weight: 400;
     color: color($colors, light);
     height: 30px;
+    padding: 0 5px;
     img {
       float: left;
       margin-right: 4px;
     }
     .testnet {
-      height: 2.5rem;
-      width: 2.5rem;
-      margin-top: 3px;
+      height: 2rem;
+      width: 2rem;
+      margin-top: 5px;
     }
     .testnet-text {
       color: color($colors, light);
       height: 3rem;
-      width: 5rem;
+      width: 4rem;
     }
     .read-only {
       height: 3rem;
@@ -95,21 +95,22 @@ page-wallet-details {
     }
     .read-only-text {
       height: 3rem;
-      width: 6rem;
+      width: 5rem;
     }
     .auditable-text {
       height: 3rem;
-      width: 5rem;
+      width: 4rem;
     }
     .custom-bws {
-      height: 3.2rem;
-      width: 3.2rem;
+      height: 3rem;
+      width: 3rem;
     }
     .wallet-type {
       display: block;
       float: left;
-      margin: 0 3px;
-      padding-top: 5px;
+      margin: 0 5px;
+      padding-top: 9px;
+      font-size: 11px;
     }
     ion-spinner {
       float: right;

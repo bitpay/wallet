@@ -18,7 +18,7 @@
 // --------------------------------------------------
 
 ion-alert.alert-top{
-  align-items: center; 
+  align-items: center;
 }
 
 .bottom-absolute {
@@ -45,6 +45,19 @@ ion-alert.alert-top{
   }
 }
 
+// Item font size
+.item-title {
+  font-size: 1.4rem;
+}
+.item-subtitle {
+  font-weight: 300;
+  font-size: 12.5px;
+  ion-icon {
+    vertical-align: text-bottom;
+    margin-left: 5px;
+  }
+}
+
 // This style prevents the names of the tabs from disappear
 .tabbar .tab-button .tab-button-text {
   display: block;
@@ -52,6 +65,17 @@ ion-alert.alert-top{
 
 .icon-wallet {
   background-color: color($colors, primary);
+  border-radius: $icon-border-radius;
+  width: 35px;
+  height: 35px;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-size: 103%;
+  padding: 4px;
+}
+
+.icon-card {
   border-radius: $icon-border-radius;
   width: 35px;
   height: 35px;

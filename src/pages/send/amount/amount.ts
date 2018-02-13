@@ -18,6 +18,7 @@ import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 
 @Component({
   selector: 'page-amount',
@@ -54,6 +55,7 @@ export class AmountPage {
   public config: any;
   public showRecipient: boolean;
   public toWalletId: string;
+  public cardId: string;
 
   private walletId: any;
 
@@ -90,6 +92,9 @@ export class AmountPage {
     this.nextView = this.getNextView();
     this.itemSelectorLabel = 'Send Max amount';
 
+    // BitPay Card ID
+    this.cardId = this.navParams.data.id;
+
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
     this.shiftMax = this.navParams.data.shiftMax;
@@ -111,7 +116,7 @@ export class AmountPage {
     this.isFiatAmount = this.unit != 'BCH' && this.unit != 'BTC' ? true : false;
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.expression = '';
     this.processAmount();
   }
@@ -141,6 +146,10 @@ export class AmountPage {
   private getNextView(): any {
     let nextPage;
     switch (this.navParams.data.nextPage) {
+      case 'BitPayCardTopUpPage':
+        this.showRecipient = false;
+        nextPage = BitPayCardTopUpPage;
+        break;
       case 'BuyAmazonPage':
         this.showRecipient = false;
         nextPage = BuyAmazonPage;
@@ -291,7 +300,7 @@ export class AmountPage {
       amount_ = parseInt(value);
       amountFiat = this.amount;
     } else
-      amount_ = this.amount * 1e8;
+      amount_ = +((this.amount * 1e8).toFixed(0));
 
     let data: any = {
       recipientType: this.recipientType,
@@ -306,7 +315,8 @@ export class AmountPage {
       network: this.network,
       useSendMax: this.useSendMax,
       walletId: this.walletId,
-      toWalletId: this.toWalletId ? this.toWalletId : null
+      toWalletId: this.toWalletId ? this.toWalletId : null,
+      id: this.cardId
     }
     this.navCtrl.push(this.nextView, data);
   }
