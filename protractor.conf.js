@@ -1,5 +1,15 @@
+const flags = [
+  '--headless',
+  // Sandbox causes Chrome to crash on Travis
+  // https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-359018652
+  '--no-sandbox',
+  '--disable-gpu'
+];
+
 exports.config = {
   allScriptsTimeout: 11000,
+  jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 10 },
+  maxSessions: 1,
   specs: ['./e2e/**/*.e2e-spec.ts'],
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
@@ -8,13 +18,10 @@ exports.config = {
       browserName: 'chrome',
       chromeOptions: {
         args: [
-          '--headless',
           '--high-dpi-support=1',
           '--force-device-scale-factor=2',
           '--window-size=1024,720',
-          // Sandbox causes Chrome to crash on Travis
-          // https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-359018652
-          '--no-sandbox'
+          ...flags
         ]
       }
     },
@@ -23,11 +30,10 @@ exports.config = {
       browserName: 'chrome',
       chromeOptions: {
         args: [
-          '--headless',
           '--high-dpi-support=1',
           '--force-device-scale-factor=2',
           '--window-size=800,600',
-          '--no-sandbox'
+          ...flags
         ]
       }
     },
@@ -36,11 +42,10 @@ exports.config = {
       browserName: 'chrome',
       chromeOptions: {
         args: [
-          '--headless',
           '--high-dpi-support=1',
           '--force-device-scale-factor=2',
           '--window-size=1920,1080',
-          '--no-sandbox'
+          ...flags
         ]
       }
     },
@@ -51,7 +56,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPhone X'
         },
-        args: ['--headless', '--no-sandbox']
+        args: [...flags]
       }
     },
     {
@@ -61,7 +66,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPhone 8'
         },
-        args: ['--headless', '--no-sandbox']
+        args: [...flags]
       }
     },
     {
@@ -71,7 +76,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPad'
         },
-        args: ['--headless', '--no-sandbox']
+        args: [...flags]
       }
     },
     {
@@ -81,7 +86,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'iPad Pro'
         },
-        args: ['--headless', '--no-sandbox']
+        args: [...flags]
       }
     },
     {
@@ -91,7 +96,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'Nexus 6P'
         },
-        args: ['--headless', '--no-sandbox']
+        args: [...flags]
       }
     },
     {
@@ -101,7 +106,7 @@ exports.config = {
         mobileEmulation: {
           deviceName: 'Nexus 5X'
         },
-        args: ['--headless', '--no-sandbox']
+        args: [...flags]
       }
     }
   ],
@@ -129,13 +134,6 @@ exports.config = {
         verbosity: 3,
         color: true,
         showStack: true
-      })
-    );
-    jasmine.getEnv().addReporter(
-      new jasmineReporters.JUnitXmlReporter({
-        savePath: process.env.JUNIT_REPORT_PATH,
-        outputFile: process.env.JUNIT_REPORT_NAME,
-        consolidateAll: true
       })
     );
   }

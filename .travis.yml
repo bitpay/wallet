@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 dist: trusty
 
 language: node_js
@@ -11,9 +11,6 @@ addons:
 env:
   - DISTRIBUTION=copay
   - DISTRIBUTION=bitpay
-
-install:
-  - npm install -g @angular/cli
 
 script:
   - npm run apply:$DISTRIBUTION
