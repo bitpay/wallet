@@ -75,18 +75,18 @@ export class ScanPage {
     //TODO support for browser
     if (!this.platform.isCordova) return;
     this.scanProvider.deactivate();
+    this.events.unsubscribe('incomingDataMenu.showMenu');
+    this.events.unsubscribe('scannerServiceInitialized');
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     //TODO support for browser
     if (!this.platform.isCordova) {
       this.notSupportedMessage = this.translate.instant("Scanner not supported");
       return;
     }
     // try initializing and refreshing status any time the view is entered
-    if (!this.scanProvider.isInitialized()) {
-      this.scanProvider.gentleInitialize();
-    }
+    this.scanProvider.gentleInitialize();
     this.activate();
 
     this.events.subscribe('incomingDataMenu.showMenu', (data) => {
@@ -128,21 +128,18 @@ export class ScanPage {
   }
 
   private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    //this.navCtrl.parent.select(3); TODO go to send and then amount page
     this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin: coin });
   }
 
   private addToAddressBook(bitcoinAddress: string): void {
-    //this.navCtrl.parent.select(4); TODO go to settings, addressbook and then addressbook add
     this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
   }
 
   private scanPaperWallet(privateKey: string) {
-    //this.navCtrl.parent.select(0); TODO go to home and then paperwallet page
     this.navCtrl.push(PaperWalletPage, { privateKey: privateKey });
   }
 
-  private _updateCapabilities(): void {
+  private updateCapabilities(): void {
     let capabilities = this.scanProvider.getCapabilities();
     this.scannerIsAvailable = capabilities.isAvailable;
     this.scannerHasPermission = capabilities.hasPermission;
@@ -153,27 +150,25 @@ export class ScanPage {
     this.canOpenSettings = capabilities.canOpenSettings;
   }
 
-  private _handleCapabilities(): void {
+  private handleCapabilities(): void {
     // always update the view
-    setTimeout(() => {
-      if (!this.scanProvider.isInitialized()) {
-        this.currentState = this.scannerStates.loading;
-      } else if (!this.scannerIsAvailable) {
-        this.currentState = this.scannerStates.unavailable;
-      } else if (this.scannerIsDenied) {
-        this.currentState = this.scannerStates.denied;
-      } else if (this.scannerIsRestricted) {
-        this.currentState = this.scannerStates.denied;
-      } else if (!this.scannerHasPermission) {
-        this.currentState = this.scannerStates.unauthorized;
-      }
-      this.logger.debug('Scan view state set to: ' + this.currentState);
-    });
+    if (!this.scanProvider.isInitialized()) {
+      this.currentState = this.scannerStates.loading;
+    } else if (!this.scannerIsAvailable) {
+      this.currentState = this.scannerStates.unavailable;
+    } else if (this.scannerIsDenied) {
+      this.currentState = this.scannerStates.denied;
+    } else if (this.scannerIsRestricted) {
+      this.currentState = this.scannerStates.denied;
+    } else if (!this.scannerHasPermission) {
+      this.currentState = this.scannerStates.unauthorized;
+    }
+    this.logger.debug('Scan view state set to: ' + this.currentState);
   }
 
   private _refreshScanView(): void {
-    this._updateCapabilities();
-    this._handleCapabilities();
+    this.updateCapabilities();
+    this.handleCapabilities();
     if (this.scannerHasPermission) {
       this.activate();
     }
@@ -181,30 +176,19 @@ export class ScanPage {
 
   public activate(): void {
     this.scanProvider.activate().then(() => {
-      this._updateCapabilities();
-      this._handleCapabilities();
+      this.updateCapabilities();
+      this.handleCapabilities();
       this.logger.debug('Scanner activated, setting to visible...');
       this.currentState = this.scannerStates.visible;
-      // pause to update the view
-      setTimeout(() => {
-        this.scanProvider.scan().then((contents: string) => {
-          this.logger.debug('Scan returned: "' + contents + '"');
-          //if (this.navParams.data.passthroughMode) {
-          //TODO $rootScope.scanResult = contents;
-          //goBack();
-          //} else {
-          this.handleSuccessfulScan(contents);
-          //}
-        });
-        // resume preview if paused
-        this.scanProvider.resumePreview();
+      this.scanProvider.scan().then((contents: string) => {
+        this.logger.debug('Scan returned: "' + contents + '"');
+        this.handleSuccessfulScan(contents);
       });
     });
   }
 
   private handleSuccessfulScan(contents: string): void {
     this.logger.debug('Scan returned: "' + contents + '"');
-    this.scanProvider.pausePreview();
     this.incomingDataProvider.redir(contents);
   }
 
@@ -212,11 +196,11 @@ export class ScanPage {
     this.scanProvider.initialize().then(() => {
       this._refreshScanView();
     });
-  };
+  }
 
   public attemptToReactivate(): void {
     this.scanProvider.reinitialize();
-  };
+  }
 
   public toggleLight(): void {
     this.scanProvider.toggleLight()
