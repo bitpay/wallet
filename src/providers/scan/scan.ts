@@ -85,30 +85,36 @@ export class ScanProvider {
    *
    * The `status` of QRScanner is returned to the callback.
    */
-  public gentleInitialize(): void {
-    if (this.initializeStarted && !this.isDesktop) {
-      this.qrScanner.getStatus().then((status) => {
-        this.completeInitialization(status);
-      });
-      return;
-    }
-    this.initializeStarted = true;
-    this.logger.debug('Trying to pre-initialize QRScanner.');
-    if (!this.isDesktop) {
-      this.qrScanner.getStatus().then((status) => {
-        this.checkCapabilities(status);
-        if (status.authorized) {
-          this.logger.debug('Camera permission already granted.');
-          this.initialize();
-        } else {
-          this.logger.debug('QRScanner not authorized, waiting to initalize.');
+  public gentleInitialize(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.initializeStarted && !this.isDesktop) {
+        this.qrScanner.getStatus().then((status) => {
           this.completeInitialization(status);
-        }
-      });
-    } else {
-      this.logger.debug('To avoid flashing the privacy light, we do not pre-initialize the camera on desktop.');
-    }
-  };
+        });
+        return resolve();
+      }
+      this.initializeStarted = true;
+      this.logger.debug('Trying to pre-initialize QRScanner.');
+      if (!this.isDesktop) {
+        this.qrScanner.getStatus().then((status) => {
+          this.checkCapabilities(status);
+          if (status.authorized) {
+            this.logger.debug('Camera permission already granted.');
+            this.initialize().then(() => {
+              return resolve();
+            });
+          } else {
+            this.logger.debug('QRScanner not authorized, waiting to initalize.');
+            this.completeInitialization(status);
+            return resolve();
+          }
+        });
+      } else {
+        this.logger.debug('To avoid flashing the privacy light, we do not pre-initialize the camera on desktop.');
+        return resolve();
+      }
+    });
+  }
 
   public reinitialize(): void {
     this.initializeCompleted = false;

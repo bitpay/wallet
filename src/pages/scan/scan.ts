@@ -49,7 +49,6 @@ export class ScanPage {
     private logger: Logger,
     private translate: TranslateService
   ) {
-    this.lightActive = false;
     this.canEnableLight = true;
     this.canChangeCamera = true;
     this.scannerStates = {
@@ -74,6 +73,9 @@ export class ScanPage {
   ionViewWillLeave() {
     //TODO support for browser
     if (!this.platform.isCordova) return;
+    this.cameraToggleActive = false;
+    this.lightActive = false;
+    this.scanProvider.frontCameraEnabled = false;
     this.scanProvider.deactivate();
     this.events.unsubscribe('incomingDataMenu.showMenu');
     this.events.unsubscribe('scannerServiceInitialized');
@@ -85,9 +87,20 @@ export class ScanPage {
       this.notSupportedMessage = this.translate.instant("Scanner not supported");
       return;
     }
+
     // try initializing and refreshing status any time the view is entered
-    this.scanProvider.gentleInitialize();
-    this.activate();
+    if (this.scannerHasPermission) {
+      this.activate();
+    } else {
+      if (!this.scanProvider.isInitialized()) {
+        this.scanProvider.gentleInitialize().then(() => {
+          this.authorize();
+        });
+      } else {
+        this.authorize();
+      }
+    }
+
 
     this.events.subscribe('incomingDataMenu.showMenu', (data) => {
       if (!this.modalIsOpen) {
@@ -202,6 +215,10 @@ export class ScanPage {
     this.scanProvider.reinitialize();
   }
 
+  public openSettings(): void {
+    this.scanProvider.openSettings();
+  };
+
   public toggleLight(): void {
     this.scanProvider.toggleLight()
       .then(resp => {
@@ -216,6 +233,7 @@ export class ScanPage {
     this.scanProvider.toggleCamera()
       .then(resp => {
         this.cameraToggleActive = resp;
+        this.lightActive = false;
       })
       .catch(error => {
         this.logger.warn("scanner error: " + error);
