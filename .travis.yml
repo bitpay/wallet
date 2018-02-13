@@ -5,17 +5,16 @@ language: node_js
 node_js:
   - node
 
-cache:
-  directories:
-    - "node_modules"
-
 addons:
   chrome: stable
 
 install:
   - npm install -g @angular/cli
-  - npm install
 
 script:
-  - npm test-ci
+  - npm run apply:copay
+  - npm run test-ci
+  - npm run e2e
+  - npm run apply:bitpay
+  - npm run test-ci
   - npm run e2e
