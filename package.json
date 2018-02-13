@@ -35,6 +35,8 @@
     "test": "ng test --browsers=Chrome",
     "test-coverage": "ng test --code-coverage",
     "test-ci": "ng test --watch=false --code-coverage --no-progress",
+    "fix:prettier": "prettier 'src/**/*.ts' --write",
+    "fix:tslint": "tslint --fix --project . src/**/*.ts",
     "e2e": "npm run ionic:build && npm run e2e-test",
     "e2e-test": "protractor",
     "e2e-update": "webdriver-manager update --gecko false",
@@ -162,6 +164,7 @@
     "null-loader": "^0.1.1",
     "path": "^0.12.7",
     "plist": "^2.1.0",
+    "prettier": "^1.10.2",
     "protractor": "^5.3.0",
     "serve-static": "^1.13.2",
     "shelljs": "^0.3.0",
@@ -169,7 +172,7 @@
     "ts-loader": "^3.2.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.8.0",
-    "tslint-eslint-rules": "^4.1.1",
+    "tslint-config-prettier": "^1.7.0",
     "typescript": "^2.6.2"
   },
   "cordova": {
@@ -210,5 +213,8 @@
       "android",
       "ios"
     ]
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
