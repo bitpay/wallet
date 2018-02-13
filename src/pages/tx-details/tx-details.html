@@ -5,37 +5,35 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-card *ngIf="btx">
-    <ion-card-content>
-      <div class="sending-label" *ngIf="btx.confirmations > 0">
-        <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
-        <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
-        <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
-        <span *ngIf="btx.action === 'sent'">{{'Sent' | translate}}</span>
-        <span *ngIf="btx.action === 'received'">{{'Received' | translate}}</span>
-        <span *ngIf="btx.action === 'moved'">{{'Moved' | translate}}</span>
+  <div *ngIf="btx" padding>
+    <div class="sending-label" *ngIf="btx.confirmations > 0">
+      <img class="sending-img" src="assets/img/tx-action/icon-sent.svg" width="40" *ngIf="btx.action === 'sent'">
+      <img class="sending-img" src="assets/img/tx-action/icon-received.svg" width="40" *ngIf="btx.action === 'received'">
+      <img class="sending-img" src="assets/img/tx-action/icon-moved.svg" width="40" *ngIf="btx.action === 'moved'">
+      <span *ngIf="btx.action === 'sent'">{{'Sent' | translate}}</span>
+      <span *ngIf="btx.action === 'received'">{{'Received' | translate}}</span>
+      <span *ngIf="btx.action === 'moved'">{{'Moved' | translate}}</span>
+    </div>
+    <div class="sending-label" *ngIf="btx.confirmations === 0">
+      <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
+      <span *ngIf="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
+      <span *ngIf="btx.action == 'received'" translate>Receiving</span>
+    </div>
+    <div class="amount-label">
+      <div class="amount">{{btx.amountValueStr}}
+        <span class="unit">{{btx.amountUnitStr}}</span>
       </div>
-      <div class="sending-label" *ngIf="btx.confirmations === 0">
-        <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
-        <span *ngIf="btx.action == 'sent' || btx.action == 'moved'" translate>Sending</span>
-        <span *ngIf="btx.action == 'received'" translate>Receiving</span>
-      </div>
-      <div class="amount-label">
-        <div class="amount">{{btx.amountValueStr}}
-          <span class="unit">{{btx.amountUnitStr}}</span>
-        </div>
-        <div class="alternative" (click)="showRate = !showRate">
-          <span *ngIf="!showRate">{{btx.alternativeAmountStr}}</span>
-          <span *ngIf="showRate">
-            <span *ngIf="!rate">...</span>
-            <span *ngIf="rate">
-              {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
-            </span>
+      <div class="alternative" (click)="showRate = !showRate">
+        <span *ngIf="!showRate">{{btx.alternativeAmountStr}}</span>
+        <span *ngIf="showRate">
+          <span *ngIf="!rate">...</span>
+          <span *ngIf="rate">
+            {{rate| currency:'':2}} {{alternativeIsoCode}} ({{rateDate | amDateFormat:'MM/DD/YYYY HH:mm a'}})
           </span>
-        </div>
+        </span>
       </div>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </div>
 
   <ion-list *ngIf="btx">
     <ion-item *ngIf="btx.action === 'sent'">
@@ -97,7 +95,7 @@
       </ion-note>
     </ion-item>
 
-    <ion-item-divider text-wrap  class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
+    <ion-item-divider text-wrap class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
       <img src="assets/img/icon-warning.png" width="20">
       <span translate>This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender</span>
     </ion-item-divider>
