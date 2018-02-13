@@ -153,8 +153,6 @@ export class HomePage {
   }
 
   ionViewWillLeave() {
-    this.events.unsubscribe('bwsEvent');
-    this.events.unsubscribe('Local/TxAction');
     this.events.unsubscribe('feedback:hide');
   }
 
