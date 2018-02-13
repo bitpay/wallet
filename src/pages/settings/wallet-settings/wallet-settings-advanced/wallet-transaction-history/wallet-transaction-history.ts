@@ -33,6 +33,8 @@ export class WalletTransactionHistoryPage {
   public satToUnit: number;
   public satToBtc: number;
 
+  private currency: string;
+
   constructor(
     private profileProvider: ProfileProvider,
     private navCtrl: NavController,
@@ -53,6 +55,7 @@ export class WalletTransactionHistoryPage {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
+    this.currency = this.wallet.coin.toUpperCase();
     this.isCordova = this.platformProvider.isCordova;
     this.appName = this.appProvider.info.nameCase;
     this.config = this.configProvider.get();
@@ -120,7 +123,7 @@ export class WalletTransactionHistoryPage {
           'Destination': it.addressTo || '',
           'Description': _note,
           'Amount': _amount,
-          'Currency': 'BTC',
+          'Currency': this.currency,
           'Txid': it.txid,
           'Creator': _creator,
           'Copayers': _copayers,
@@ -134,7 +137,7 @@ export class WalletTransactionHistoryPage {
             'Destination': 'Bitcoin Network Fees',
             'Description': '',
             'Amount': '-' + _fee,
-            'Currency': 'BTC',
+            'Currency': this.currency,
             'Txid': '',
             'Creator': '',
             'Copayers': ''
