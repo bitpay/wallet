@@ -87,7 +87,7 @@
     "angular2-moment": "^1.7.1",
     "autoprefixer": "^7.2.4",
     "bitcore-wallet-client": "^6.5.0",
-    "bitauth": "git@github.com:matiu/bitauth.git",
+    "bitauth": "git+https://github.com/matiu/bitauth.git",
     "buffer-compare": "^1.1.1",
     "cordova": "^8.0.0",
     "cordova-android": "7.0.0",
