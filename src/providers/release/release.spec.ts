@@ -58,11 +58,19 @@ describe('Release Provider', () => {
     githubReq.flush({ tag_name: latestAppVersion });
   });
 
+  it('should use appVersion when no currentVersion is supplied', () => {
+    let result = releaseService.checkForUpdates(latestAppVersion);
+
+    expect(result.updateAvailable).toBeNull;
+    expect(result.availableVersion).toBeNull;
+    expect(result.error).toBeNull;
+  });
+
   it('should check unsuccessfully the current app version format', () => {
     const result = releaseService.checkForUpdates(latestAppVersion, 'V..3.3.3');
 
     expect(result.updateAvailable).toBeNull;
-    expect(result.availabeVersion).toBeNull;
+    expect(result.availableVersion).toBeNull;
     expect(result.error).toBeDefined();
     expect(result.error).toMatch('Cannot');
     expect(result.error).toMatch('version tag');
@@ -75,7 +83,7 @@ describe('Release Provider', () => {
     );
 
     expect(result.updateAvailable).toBeNull;
-    expect(result.availabeVersion).toBeNull;
+    expect(result.availableVersion).toBeNull;
     expect(result.error).toBeDefined();
     expect(result.error).toMatch('Cannot');
     expect(result.error).toMatch('release tag');
@@ -86,7 +94,7 @@ describe('Release Provider', () => {
 
     expect(result.error).toBeNull;
     expect(result.updateAvailable).toBeNull;
-    expect(result.availabeVersion).toBeNull;
+    expect(result.availableVersion).toBeNull;
   });
 
   it('should be a new version available', () => {
@@ -97,6 +105,6 @@ describe('Release Provider', () => {
 
     expect(result.error).toBeNull;
     expect(result.updateAvailable).toBeTruthy;
-    expect(result.availabeVersion).toEqual(latestAppVersion);
+    expect(result.availableVersion).toEqual(latestAppVersion);
   });
 });
