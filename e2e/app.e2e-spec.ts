@@ -7,7 +7,7 @@ describe('Copay', () => {
   });
 
   it('Should display the logo on the landing view', async () => {
-    takeScreenshot('landing.png');
+    takeScreenshot('landing');
     const present = await element(by.css('#logo')).isPresent();
     expect(present).toEqual(true);
   });

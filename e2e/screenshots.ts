@@ -15,7 +15,7 @@ export async function takeScreenshot(name: string) {
   const config = await browser.getProcessedConfig();
   const deviceName = config['capabilities']['name'];
   const pngData = await browser.takeScreenshot();
-  const path = join(dir, `${name}_${deviceName}`);
+  const path = join(dir, `${name}_${deviceName}.png`);
   writeFile(path, pngData, { encoding: 'base64' }, err => {
     err ? console.error(err) : console.log(`File written: ${path}`);
   });
