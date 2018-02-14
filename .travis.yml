@@ -14,7 +14,7 @@ env:
 
 script:
   - npm run apply:$DISTRIBUTION
-  - npm run test-ci
+  - npm run test:ci
   - npm run e2e
 
 after_success:
