@@ -44,5 +44,5 @@ describe('PopupProvider', () => {
       spyOn(popupProvider, 'ionicAlert');
       popupProvider.ionicAlert('title', 'subtitle', 'ok text');
       expect(popupProvider.ionicAlert).toHaveBeenCalledWith('title', 'subtitle', 'ok text');
-  });
+  }));
 });
