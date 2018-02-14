@@ -37,7 +37,7 @@
     "test:coverage": "ng test --code-coverage",
     "test:ci": "ng test --watch=false --code-coverage --no-progress",
     "test:prettier": "prettier --list-different 'src/**/*.ts'",
-    "test:visual": "cd test && reg-cli latest approved diffs --report report.html --json report.json",
+    "test:visual": "cd test && reg-cli latest approved diffs --report report.html --json report.json --enableAntialias --thresholdRate 0.001",
     "fix:prettier": "prettier 'src/**/*.ts' --write",
     "fix:tslint": "tslint --fix --project . src/**/*.ts",
     "e2e": "npm run ionic:build && npm run e2e:test",

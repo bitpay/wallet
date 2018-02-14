@@ -11,7 +11,19 @@ const dir = join('test', 'latest', distribution);
 // create dir if it doesn't exist
 mkdirp(dir);
 
+// Dark magic to override proprietary `-apple-system` font for visual regression
+// screenshots (to avoid false alarms when testing on non-macOS systems) 🧙
+const hackAppleSysFont =
+  "@font-face { font-family: -apple-system; src: local('Roboto'); }";
+
+const jsToInjectCSSHack = `
+var elem = document.createElement('style');
+elem.innerHTML = "${hackAppleSysFont}";
+document.body.appendChild(elem);
+`;
+
 export async function takeScreenshot(name: string) {
+  browser.executeScript(jsToInjectCSSHack);
   const config = await browser.getProcessedConfig();
   const deviceName = config['capabilities']['name'];
   const pngData = await browser.takeScreenshot();
