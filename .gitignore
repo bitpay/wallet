@@ -31,6 +31,11 @@ src/assets/i18n/crowdin_api_key.txt
 src/index.html
 src/manifest.json
 
+test/latest
+test/diffs
+test/report.html
+test/report.json
+
 .sourcemaps/
 .idea/
 .sass-cache/
