@@ -26,18 +26,6 @@ exports.config = {
       }
     },
     {
-      name: '800x600',
-      browserName: 'chrome',
-      chromeOptions: {
-        args: [
-          '--high-dpi-support=1',
-          '--force-device-scale-factor=2',
-          '--window-size=800,600',
-          ...flags
-        ]
-      }
-    },
-    {
       name: '1920x1080',
       browserName: 'chrome',
       chromeOptions: {
@@ -85,16 +73,6 @@ exports.config = {
       chromeOptions: {
         mobileEmulation: {
           deviceName: 'iPad Pro'
-        },
-        args: [...flags]
-      }
-    },
-    {
-      name: 'Nexus6P',
-      browserName: 'chrome',
-      chromeOptions: {
-        mobileEmulation: {
-          deviceName: 'Nexus 6P'
         },
         args: [...flags]
       }
