@@ -8,7 +8,7 @@
   <div class="page-scan-has-problems" *ngIf="(currentState == scannerStates.unauthorized || currentState == scannerStates.denied || currentState == scannerStates.unavailable) && !notSupportedMessage">
     <div class="header" padding>
       <div class="image-container">
-        <img src="assets/img/app/tab-icons/ico-receive.svg" />
+        <img src="assets/img/ico-receive.svg" />
       </div>
       <div class="title" padding translate>Scan QR Codes</div>
     </div>
@@ -36,7 +36,7 @@
       <span *ngIf="canChangeCamera" class="icon-camera-toggle" [ngClass]="{'active': cameraToggleActive}" (click)="toggleCamera()"></span>
     </div>
   </div>
-  <div class="not-supported-message" *ngIf="notSupportedMessage">
+  <div class="page-scan-has-problems not-supported-message" *ngIf="notSupportedMessage">
     {{notSupportedMessage}}
   </div>
 </ion-content>
