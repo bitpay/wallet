@@ -9,7 +9,7 @@ const flags = [
 exports.config = {
   allScriptsTimeout: 11000,
   jasmineNodeOpts: { defaultTimeoutInterval: 1000 * 60 * 10 },
-  maxSessions: 1,
+  maxSessions: 4,
   specs: ['./e2e/**/*.e2e-spec.ts'],
   // Available deviceNames for mobileEmulation: https://chromium.googlesource.com/chromium/src/+/master/third_party/WebKit/Source/devtools/front_end/emulated_devices/module.json
   multiCapabilities: [
