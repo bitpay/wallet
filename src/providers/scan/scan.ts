@@ -6,7 +6,6 @@ import { Events } from 'ionic-angular';
 
 @Injectable()
 export class ScanProvider {
-
   public text: string;
   public scannerVisible: boolean;
   public lightEnabled: boolean;
@@ -37,7 +36,7 @@ export class ScanProvider {
   private checkCapabilities(status) {
     this.logger.debug('scannerService is reviewing platform capabilities...');
     // Permission can be assumed on the desktop builds
-    this.hasPermission = (this.isDesktop || status.authorized) ? true : false;
+    this.hasPermission = this.isDesktop || status.authorized ? true : false;
     this.isDenied = status.denied ? true : false;
     this.isRestricted = status.restricted ? true : false;
     this.canEnableLight = status.canEnableLight ? true : false;
@@ -51,21 +50,34 @@ export class ScanProvider {
   }
 
   private logCapabilities() {
-
-    this.logger.debug('A camera is ' + this.orIsNot(this.isAvailable) + 'available to this app.');
+    this.logger.debug(
+      'A camera is ' + this.orIsNot(this.isAvailable) + 'available to this app.'
+    );
     var access = 'not authorized';
     if (this.hasPermission) access = 'authorized';
     if (this.isDenied) access = 'denied';
     if (this.isRestricted) access = 'restricted';
     this.logger.debug('Camera access is ' + access + '.');
-    this.logger.debug('Support for opening device settings is ' + this.orIsNot(this.canOpenSettings) + 'available on this platform.');
-    this.logger.debug('A light is ' + this.orIsNot(this.canEnableLight) + 'available on this platform.');
-    this.logger.debug('A second camera is ' + this.orIsNot(this.canChangeCamera) + 'available on this platform.');
+    this.logger.debug(
+      'Support for opening device settings is ' +
+        this.orIsNot(this.canOpenSettings) +
+        'available on this platform.'
+    );
+    this.logger.debug(
+      'A light is ' +
+        this.orIsNot(this.canEnableLight) +
+        'available on this platform.'
+    );
+    this.logger.debug(
+      'A second camera is ' +
+        this.orIsNot(this.canChangeCamera) +
+        'available on this platform.'
+    );
   }
 
   /**
- * Immediately return known capabilities of the current platform.
- */
+   * Immediately return known capabilities of the current platform.
+   */
   public getCapabilities(): any {
     return {
       isAvailable: this.isAvailable,
@@ -76,7 +88,7 @@ export class ScanProvider {
       canChangeCamera: this.canChangeCamera,
       canOpenSettings: this.canOpenSettings
     };
-  };
+  }
 
   /**
    * If camera access has been granted, pre-initialize the QRScanner. This method
@@ -87,7 +99,7 @@ export class ScanProvider {
    */
   public gentleInitialize(): void {
     if (this.initializeStarted && !this.isDesktop) {
-      this.qrScanner.getStatus().then((status) => {
+      this.qrScanner.getStatus().then(status => {
         this.completeInitialization(status);
       });
       return;
@@ -95,7 +107,7 @@ export class ScanProvider {
     this.initializeStarted = true;
     this.logger.debug('Trying to pre-initialize QRScanner.');
     if (!this.isDesktop) {
-      this.qrScanner.getStatus().then((status) => {
+      this.qrScanner.getStatus().then(status => {
         this.checkCapabilities(status);
         if (status.authorized) {
           this.logger.debug('Camera permission already granted.');
@@ -106,31 +118,36 @@ export class ScanProvider {
         }
       });
     } else {
-      this.logger.debug('To avoid flashing the privacy light, we do not pre-initialize the camera on desktop.');
+      this.logger.debug(
+        'To avoid flashing the privacy light, we do not pre-initialize the camera on desktop.'
+      );
     }
-  };
+  }
 
   public reinitialize(): void {
     this.initializeCompleted = false;
     this.qrScanner.destroy();
     this.initialize();
-  };
+  }
 
   public initialize(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Initializing scanner...');
-      this.qrScanner.prepare().then((status: any) => {
-        this.completeInitialization(status);
-        return resolve();
-      }).catch((err) => {
-        this.isAvailable = false;
-        this.logger.error(err);
-        // does not return `status` if there is an error
-        this.qrScanner.getStatus().then((status) => {
+      this.qrScanner
+        .prepare()
+        .then((status: any) => {
           this.completeInitialization(status);
           return resolve();
+        })
+        .catch(err => {
+          this.isAvailable = false;
+          this.logger.error(err);
+          // does not return `status` if there is an error
+          this.qrScanner.getStatus().then(status => {
+            this.completeInitialization(status);
+            return resolve();
+          });
         });
-      });
     });
   }
 
@@ -142,10 +159,10 @@ export class ScanProvider {
 
   public isInitialized(): boolean {
     return this.initializeCompleted;
-  };
+  }
   public isInitializeStarted(): boolean {
     return this.initializeStarted;
-  };
+  }
 
   /**
    * (Re)activate the QRScanner, and cancel the timeouts if present.
@@ -156,7 +173,7 @@ export class ScanProvider {
   public activate(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Activating scanner...');
-      this.qrScanner.show().then((status) => {
+      this.qrScanner.show().then(status => {
         this.initializeCompleted = true;
         this.checkCapabilities(status);
         return resolve();
@@ -165,9 +182,9 @@ export class ScanProvider {
   }
 
   /**
-  * Start a new scan.
-  *
-  */
+   * Start a new scan.
+   *
+   */
   public scan(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Scanning...');
@@ -188,15 +205,14 @@ export class ScanProvider {
     this.qrScanner.resumePreview();
   }
 
-
   /**
- * Deactivate the QRScanner. To balance user-perceived performance and power
- * consumption, this kicks off a countdown which will "sleep" the scanner
- * after a certain amount of time.
- *
- * The `status` of QRScanner is passed to the callback when deactivation
- * is complete.
- */
+   * Deactivate the QRScanner. To balance user-perceived performance and power
+   * consumption, this kicks off a countdown which will "sleep" the scanner
+   * after a certain amount of time.
+   *
+   * The `status` of QRScanner is passed to the callback when deactivation
+   * is complete.
+   */
 
   public deactivate(): void {
     this.logger.debug('Deactivating scanner...');
@@ -221,37 +237,39 @@ export class ScanProvider {
   }
 
   /**
- * Toggle the device light (if available).
- *
- * The callback receives a boolean which is `true` if the light is enabled.
- */
+   * Toggle the device light (if available).
+   *
+   * The callback receives a boolean which is `true` if the light is enabled.
+   */
 
   public toggleLight(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.info('Toggling light...');
       if (this.lightEnabled) {
-        this.qrScanner.disableLight()
+        this.qrScanner
+          .disableLight()
           .then(resp => {
             this.lightEnabled = false;
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn("Error: ", err);
+            this.logger.warn('Error: ', err);
             return reject(err);
           });
       } else {
-        this.qrScanner.enableLight()
+        this.qrScanner
+          .enableLight()
           .then(resp => {
             this.lightEnabled = true;
             return resolve(this.lightEnabled);
           })
           .catch(err => {
-            this.logger.warn("Error: ", err);
+            this.logger.warn('Error: ', err);
             return reject(err);
           });
       }
     });
-  };
+  }
 
   /**
    * Switch cameras (if a second camera is available).
@@ -264,23 +282,25 @@ export class ScanProvider {
     return new Promise((resolve, reject) => {
       this.logger.info('Toggling camera...');
       if (this.frontCameraEnabled) {
-        this.qrScanner.useBackCamera()
+        this.qrScanner
+          .useBackCamera()
           .then(resp => {
             this.frontCameraEnabled = false;
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn("Error: ", err);
+            this.logger.warn('Error: ', err);
             return reject(err);
           });
       } else {
-        this.qrScanner.useFrontCamera()
+        this.qrScanner
+          .useFrontCamera()
           .then(resp => {
             this.frontCameraEnabled = true;
             return resolve(this.frontCameraEnabled);
           })
           .catch(err => {
-            this.logger.warn("Error: ", err);
+            this.logger.warn('Error: ', err);
             return reject(err);
           });
       }
@@ -291,5 +311,4 @@ export class ScanProvider {
     this.logger.debug('Attempting to open device settings...');
     this.qrScanner.openSettings();
   }
-
 }

@@ -9,14 +9,11 @@ import { SettingsPage } from '../settings/settings';
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-
   homeRoot = HomePage;
   receiveRoot = ReceivePage;
   scanRoot = ScanPage;
   sendRoot = SendPage;
   settingsRoot = SettingsPage;
 
-  constructor() {
-
-  }
+  constructor() {}
 }

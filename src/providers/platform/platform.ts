@@ -14,10 +14,7 @@ export class PlatformProvider {
   public isMobile: boolean;
   public isDevel: boolean;
 
-  constructor(
-    private platform: Platform,
-    private logger: Logger
-  ) {
+  constructor(private platform: Platform, private logger: Logger) {
     let ua: any = navigator ? navigator.userAgent : null;
 
     if (!ua) {
@@ -42,22 +39,28 @@ export class PlatformProvider {
 
   public getBrowserName(): string {
     let userAgent = window.navigator.userAgent;
-    let browsers = { chrome: /chrome/i, safari: /safari/i, firefox: /firefox/i, ie: /internet explorer/i };
+    let browsers = {
+      chrome: /chrome/i,
+      safari: /safari/i,
+      firefox: /firefox/i,
+      ie: /internet explorer/i
+    };
 
     for (let key in browsers) {
       if (browsers[key].test(userAgent)) {
         return key;
       }
-    };
+    }
 
     return 'unknown';
   }
 
   public isNodeWebkit(): boolean {
-    let isNode = (typeof process !== "undefined" && typeof require !== "undefined");
+    let isNode =
+      typeof process !== 'undefined' && typeof require !== 'undefined';
     if (isNode) {
       try {
-        return (typeof require('nw.gui') !== "undefined");
+        return typeof require('nw.gui') !== 'undefined';
       } catch (e) {
         return false;
       }

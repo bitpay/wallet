@@ -12,7 +12,6 @@ import * as moment from 'moment';
 
 @Injectable()
 export class BitPayCardProvider {
-
   public homeItem: any;
 
   constructor(
@@ -28,15 +27,15 @@ export class BitPayCardProvider {
       name: 'bitpaycard',
       title: 'BitPay Visa® Card',
       icon: 'assets/img/bitpay-card/icon-bitpay.svg',
-      page: 'BitPayCardIntroPage',
-    }
+      page: 'BitPayCardIntroPage'
+    };
   }
 
   private _setError(msg, e?) {
     this.logger.error(msg);
-    var error = (e && e.data && e.data.error) ? e.data.error : msg;
+    var error = e && e.data && e.data.error ? e.data.error : msg;
     return error;
-  };
+  }
 
   private _buildDate(date, time) {
     date = date.match(/(\d{2})\/(\d{2})\/(\d{4})/);
@@ -55,30 +54,30 @@ export class BitPayCardProvider {
     }
 
     return merchant;
-  };
+  }
 
   private _getMerchantInfo(tx) {
     var bpTranCodesTemp = bpTranCodes;
-    _.keys(bpTranCodesTemp).forEach((code) => {
+    _.keys(bpTranCodesTemp).forEach(code => {
       if (tx.type.indexOf(code) === 0) {
         _.assign(tx, bpTranCodesTemp[code]);
       }
     });
     return tx;
-  };
+  }
 
   private _getIconName(tx) {
     var icon = tx.mcc || tx.category || null;
     if (!icon || iconMap[icon] == undefined) return 'default';
     return iconMap[icon];
-  };
+  }
 
   private _processDescription(tx) {
     if (_.isArray(tx.description)) {
       return tx.description[0];
     }
     return tx.description;
-  };
+  }
 
   private _processLocation(tx) {
     if (tx.merchant.city && tx.merchant.state) {
@@ -86,7 +85,7 @@ export class BitPayCardProvider {
     } else {
       return tx.merchant.city || tx.merchant.state || '';
     }
-  };
+  }
 
   public _fromTransaction(txn, runningBalance) {
     var dateTime = this._buildDate(txn.date, txn.time);
@@ -100,10 +99,9 @@ export class BitPayCardProvider {
       type: txn.type,
       runningBalance: runningBalance
     });
-  };
+  }
 
   public _processTransactions(invoices, history) {
-
     var balance = history.endingBalance || history.currentCardBalance;
     var runningBalance = parseFloat(balance);
     var activityList = [];
@@ -111,12 +109,13 @@ export class BitPayCardProvider {
     if (history && history.transactionList) {
       for (let j = 0; j < history.transactionList.length; j++) {
         runningBalance -= parseFloat(history.transactionList[j].amount);
-        activityList.push(this._fromTransaction(history.transactionList[j], runningBalance));
+        activityList.push(
+          this._fromTransaction(history.transactionList[j], runningBalance)
+        );
       }
     }
 
     if (activityList.length > 0) {
-
       invoices = invoices || [];
       for (let i = 0; i < invoices.length; i++) {
         var matched = false;
@@ -129,25 +128,34 @@ export class BitPayCardProvider {
           }
         }
 
-        var isInvoiceLessThanOneDayOld = moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
+        var isInvoiceLessThanOneDayOld =
+          moment() < moment(new Date(invoices[i].invoiceTime)).add(1, 'day');
 
         if (!matched && isInvoiceLessThanOneDayOld) {
-          var isInvoiceUnderpaid = invoices[i].exceptionStatus === 'paidPartial';
+          var isInvoiceUnderpaid =
+            invoices[i].exceptionStatus === 'paidPartial';
 
-          if (['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >= 0 ||
-            (invoices[i].status === 'invalid' || isInvoiceUnderpaid)) {
-
-            activityList.unshift(this._getMerchantInfo({
-              date: new Date(invoices[i].invoiceTime),
-              category: '',
-              merchant: '',
-              description: invoices[i].itemDesc,
-              price: invoices[i].price,
-              type: '00611 = Client Funded Deposit',
-              runningBalance: null,
-              pending: true,
-              transactionId: invoices[i].transactions && invoices[i].transactions[0] ? invoices[i].transactions[0].txid : ''
-            }));
+          if (
+            ['paid', 'confirmed', 'complete'].indexOf(invoices[i].status) >=
+              0 ||
+            (invoices[i].status === 'invalid' || isInvoiceUnderpaid)
+          ) {
+            activityList.unshift(
+              this._getMerchantInfo({
+                date: new Date(invoices[i].invoiceTime),
+                category: '',
+                merchant: '',
+                description: invoices[i].itemDesc,
+                price: invoices[i].price,
+                type: '00611 = Client Funded Deposit',
+                runningBalance: null,
+                pending: true,
+                transactionId:
+                  invoices[i].transactions && invoices[i].transactions[0]
+                    ? invoices[i].transactions[0].txid
+                    : ''
+              })
+            );
           }
         }
       }
@@ -155,31 +163,33 @@ export class BitPayCardProvider {
     for (let i = 0; i < activityList.length; i++) {
       activityList[i].icon = this._getIconName(activityList[i]);
       activityList[i].desc = this._processDescription(activityList[i]);
-      activityList[i].merchant['location'] = this._processLocation(activityList[i]);
+      activityList[i].merchant['location'] = this._processLocation(
+        activityList[i]
+      );
     }
     return activityList;
-  };
+  }
 
   public filterTransactions(type, txns) {
     var list,
-      getPreAuth = _.filter(txns, (txn) => {
+      getPreAuth = _.filter(txns, txn => {
         return txn.type.indexOf('93') > -1;
       }),
-      getPending = _.filter(txns, (txn) => {
+      getPending = _.filter(txns, txn => {
         return txn.pending;
       }),
-      getCompleted = _.filter(txns, (txn) => {
+      getCompleted = _.filter(txns, txn => {
         return !txn.pending && txn.type.indexOf('93') == -1;
       });
 
     switch (type) {
-      case "preAuth":
+      case 'preAuth':
         list = _.filter(getPreAuth);
         break;
-      case "confirming":
+      case 'confirming':
         list = _.filter(getPending);
         break;
-      case "completed":
+      case 'completed':
         list = _.filter(getCompleted);
         break;
       default:
@@ -194,37 +204,48 @@ export class BitPayCardProvider {
       method: 'getDebitCards'
     };
     // Get Debit Cards
-    this.bitPayProvider.post('/api/v2/' + apiContext.token, json, (data) => {
-      if (data && data.error) return cb(data.error);
-      this.logger.info('BitPay Get Debit Cards: SUCCESS');
+    this.bitPayProvider.post(
+      '/api/v2/' + apiContext.token,
+      json,
+      data => {
+        if (data && data.error) return cb(data.error);
+        this.logger.info('BitPay Get Debit Cards: SUCCESS');
 
-      var cards = [];
+        var cards = [];
 
-      _.each(data.data, (x) => {
-        var n: any = {};
+        _.each(data.data, x => {
+          var n: any = {};
 
-        if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
-          this.logger.warn('BAD data from BitPay card' + JSON.stringify(x));
-          return;
-        }
+          if (!x.eid || !x.id || !x.lastFourDigits || !x.token) {
+            this.logger.warn('BAD data from BitPay card' + JSON.stringify(x));
+            return;
+          }
 
-        n.eid = x.eid;
-        n.id = x.id;
-        n.lastFourDigits = x.lastFourDigits;
-        n.token = x.token;
-        n.currency = x.currency;
-        n.country = x.country;
-        cards.push(n);
-      });
+          n.eid = x.eid;
+          n.id = x.id;
+          n.lastFourDigits = x.lastFourDigits;
+          n.token = x.token;
+          n.currency = x.currency;
+          n.country = x.country;
+          cards.push(n);
+        });
 
-      this.persistenceProvider.setBitpayDebitCards(this.bitPayProvider.getEnvironment().network, apiContext.pairData.email, cards).then(() => {
-        this.register();
-        return cb(null, cards);
-      });
-    }, (data) => {
-      return cb(this._setError('BitPay Card Error: Get Debit Cards', data));
-    });
-  };
+        this.persistenceProvider
+          .setBitpayDebitCards(
+            this.bitPayProvider.getEnvironment().network,
+            apiContext.pairData.email,
+            cards
+          )
+          .then(() => {
+            this.register();
+            return cb(null, cards);
+          });
+      },
+      data => {
+        return cb(this._setError('BitPay Card Error: Get Debit Cards', data));
+      }
+    );
+  }
 
   public setCurrencySymbol(card) {
     // Sets a currency symbol.
@@ -235,7 +256,7 @@ export class BitPayCardProvider {
       card.currency = 'USD';
     }
     card.currencySymbol = currencySymbols[card.currency] || card.currency + ' ';
-  };
+  }
 
   // opts: range
   public getHistory(cardId, opts, cb) {
@@ -246,47 +267,62 @@ export class BitPayCardProvider {
       method: 'getInvoiceHistory'
     };
 
-    this.appIdentityProvider.getIdentity(this.bitPayProvider.getEnvironment().network, (err, appIdentity) => {
-      if (err) return cb(err);
+    this.appIdentityProvider.getIdentity(
+      this.bitPayProvider.getEnvironment().network,
+      (err, appIdentity) => {
+        if (err) return cb(err);
 
-      this.getCards((data) => {
-        var card: any = _.find(data, {
-          id: cardId
-        });
-
-        if (!card)
-          return cb(this._setError('Card not found'));
-
-        // Get invoices
-        this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
-          this.logger.info('BitPay Get Invoices: SUCCESS');
-          invoices = data.data || [];
-
-          if (_.isEmpty(invoices))
-            this.logger.info('No invoices');
-
-          json = {
-            method: 'getTransactionHistory',
-            params: JSON.stringify(opts)
-          };
-          // Get transactions History list
-          this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
-            this.logger.info('BitPay Get History: SUCCESS');
-            history = data.data || {};
-            history['txs'] = this._processTransactions(invoices, history);
-
-            this.setLastKnownBalance(cardId, history.currentCardBalance);
-
-            return cb(data.error, history);
-          }, (data) => {
-            return cb(this._setError('BitPay Card Error: Get History', data));
+        this.getCards(data => {
+          var card: any = _.find(data, {
+            id: cardId
           });
-        }, (data) => {
-          return cb(this._setError('BitPay Card Error: Get Invoices', data));
+
+          if (!card) return cb(this._setError('Card not found'));
+
+          // Get invoices
+          this.bitPayProvider.post(
+            '/api/v2/' + card.token,
+            json,
+            data => {
+              this.logger.info('BitPay Get Invoices: SUCCESS');
+              invoices = data.data || [];
+
+              if (_.isEmpty(invoices)) this.logger.info('No invoices');
+
+              json = {
+                method: 'getTransactionHistory',
+                params: JSON.stringify(opts)
+              };
+              // Get transactions History list
+              this.bitPayProvider.post(
+                '/api/v2/' + card.token,
+                json,
+                data => {
+                  this.logger.info('BitPay Get History: SUCCESS');
+                  history = data.data || {};
+                  history['txs'] = this._processTransactions(invoices, history);
+
+                  this.setLastKnownBalance(cardId, history.currentCardBalance);
+
+                  return cb(data.error, history);
+                },
+                data => {
+                  return cb(
+                    this._setError('BitPay Card Error: Get History', data)
+                  );
+                }
+              );
+            },
+            data => {
+              return cb(
+                this._setError('BitPay Card Error: Get Invoices', data)
+              );
+            }
+          );
         });
-      });
-    });
-  };
+      }
+    );
+  }
 
   public topUp(cardId, opts, cb) {
     opts = opts || {};
@@ -294,53 +330,65 @@ export class BitPayCardProvider {
       method: 'generateTopUpInvoice',
       params: JSON.stringify(opts)
     };
-    this.appIdentityProvider.getIdentity(this.bitPayProvider.getEnvironment().network, (err, appIdentity) => {
-      if (err) return cb(err);
+    this.appIdentityProvider.getIdentity(
+      this.bitPayProvider.getEnvironment().network,
+      (err, appIdentity) => {
+        if (err) return cb(err);
 
-      this.getCards((data) => {
+        this.getCards(data => {
+          var card: any = _.find(data, {
+            id: cardId
+          });
 
-        var card: any = _.find(data, {
-          id: cardId
+          if (!card) return cb(this._setError('Card not found'));
+
+          this.bitPayProvider.post(
+            '/api/v2/' + card.token,
+            json,
+            data => {
+              this.logger.info('BitPay TopUp: SUCCESS');
+              if (data.error) {
+                return cb(data.error);
+              } else {
+                return cb(null, data.invoice);
+              }
+            },
+            data => {
+              return cb(this._setError('BitPay Card Error: TopUp', data));
+            }
+          );
         });
-
-        if (!card)
-          return cb(this._setError('Card not found'));
-
-        this.bitPayProvider.post('/api/v2/' + card.token, json, (data) => {
-          this.logger.info('BitPay TopUp: SUCCESS');
-          if (data.error) {
-            return cb(data.error);
-          } else {
-            return cb(null, data.invoice);
-          }
-        }, (data) => {
-          return cb(this._setError('BitPay Card Error: TopUp', data));
-        });
-      });
-    });
-  };
+      }
+    );
+  }
 
   public getInvoice(id, cb) {
-    this.bitPayProvider.get('/invoices/' + id, (data) => {
-      this.logger.info('BitPay Get Invoice: SUCCESS');
-      return cb(data.error, data.data);
-    }, (data) => {
-      return cb(this._setError('BitPay Card Error: Get Invoice', data));
-    });
-  };
+    this.bitPayProvider.get(
+      '/invoices/' + id,
+      data => {
+        this.logger.info('BitPay Get Invoice: SUCCESS');
+        return cb(data.error, data.data);
+      },
+      data => {
+        return cb(this._setError('BitPay Card Error: Get Invoice', data));
+      }
+    );
+  }
 
   // get all cards, for all accounts.
   public getCards(cb) {
-    this.persistenceProvider.getBitpayDebitCards(this.bitPayProvider.getEnvironment().network).then((val) => {
-      return cb(val);
-    });
-  };
+    this.persistenceProvider
+      .getBitpayDebitCards(this.bitPayProvider.getEnvironment().network)
+      .then(val => {
+        return cb(val);
+      });
+  }
 
   public getLastKnownBalance(cardId, cb) {
-    this.persistenceProvider.getBalanceCache(cardId).then((val) => {
+    this.persistenceProvider.getBalanceCache(cardId).then(val => {
       return cb(val);
     });
-  };
+  }
 
   public addLastKnownBalance(card, cb) {
     var now = Math.floor(Date.now() / 1000);
@@ -350,79 +398,88 @@ export class BitPayCardProvider {
       if (data) {
         data = JSON.parse(data);
         card.balance = data.balance;
-        card.updatedOn = (data.updatedOn < now - showRange) ? data.updatedOn : null;
+        card.updatedOn =
+          data.updatedOn < now - showRange ? data.updatedOn : null;
       }
       return cb();
     });
-  };
+  }
 
   public setLastKnownBalance(cardId, balance) {
-
     this.persistenceProvider.setBalanceCache(cardId, {
       balance: balance,
-      updatedOn: Math.floor(Date.now() / 1000),
+      updatedOn: Math.floor(Date.now() / 1000)
     });
-  };
+  }
 
   public remove(cardId, cb) {
-    this.persistenceProvider.removeBitpayDebitCard(this.bitPayProvider.getEnvironment().network, cardId).then(() => {
-      this.register();
-      this.persistenceProvider.removeBalanceCache(cardId);
-      return cb();
-    }).catch((err) => {
-      this.logger.error('Error removing BitPay debit card: ' + err);
-      return cb(err);
-    });
-  };
+    this.persistenceProvider
+      .removeBitpayDebitCard(
+        this.bitPayProvider.getEnvironment().network,
+        cardId
+      )
+      .then(() => {
+        this.register();
+        this.persistenceProvider.removeBalanceCache(cardId);
+        return cb();
+      })
+      .catch(err => {
+        this.logger.error('Error removing BitPay debit card: ' + err);
+        return cb(err);
+      });
+  }
 
   public getRates(currency, cb) {
-    this.bitPayProvider.get('/rates/' + currency, (data) => {
-      this.logger.info('BitPay Get Rates: SUCCESS');
-      return cb(data.error, data.data);
-    }, (data) => {
-      return cb(this._setError('BitPay Error: Get Rates', data));
-    });
-  };
-
+    this.bitPayProvider.get(
+      '/rates/' + currency,
+      data => {
+        this.logger.info('BitPay Get Rates: SUCCESS');
+        return cb(data.error, data.data);
+      },
+      data => {
+        return cb(this._setError('BitPay Error: Get Rates', data));
+      }
+    );
+  }
 
   public get(opts, cb) {
-    this.getCards((cards) => {
-
+    this.getCards(cards => {
       if (_.isEmpty(cards)) {
         return cb();
       }
 
       if (opts.cardId) {
-        cards = _.filter(cards, (x) => {
+        cards = _.filter(cards, x => {
           return opts.cardId == x.eid;
         });
       }
 
       // Async, no problem
-      _.each(cards, (x) => {
-
+      _.each(cards, x => {
         this.setCurrencySymbol(x);
-        this.addLastKnownBalance(x, () => { });
+        this.addLastKnownBalance(x, () => {});
 
         // async refresh
         if (!opts.noRefresh) {
           this.getHistory(x.id, {}, (err, data) => {
             if (err) return;
-            this.addLastKnownBalance(x, () => { });
+            this.addLastKnownBalance(x, () => {});
           });
         }
       });
 
       return cb(null, cards);
     });
-  };
-
+  }
 
   public register() {
-    this.persistenceProvider.getBitpayDebitCards(this.bitPayProvider.getEnvironment().network).then((cards) => {
-      if (_.isEmpty(cards)) this.homeIntegrationsProvider.register(this.homeItem);
-      else this.homeIntegrationsProvider.unregister(this.homeItem);
-    });
+    this.persistenceProvider
+      .getBitpayDebitCards(this.bitPayProvider.getEnvironment().network)
+      .then(cards => {
+        if (_.isEmpty(cards))
+          this.homeIntegrationsProvider.register(this.homeItem);
+        else this.homeIntegrationsProvider.unregister(this.homeItem);
+      });
   }
 }
 
@@ -431,9 +488,9 @@ export class BitPayCardProvider {
  */
 
 const currencySymbols = {
-  'EUR': '€',
-  'GBP': '£',
-  'USD': '$'
+  EUR: '€',
+  GBP: '£',
+  USD: '$'
 };
 
 const bpTranCodes = {
@@ -448,54 +505,54 @@ const bpTranCodes = {
   },
   '602': {
     merchant: {
-      name: 'ATM Withdrawal Fee',
+      name: 'ATM Withdrawal Fee'
     },
     category: 'bp002',
     description: ''
   },
   '604': {
     merchant: {
-      name: 'Foreign Transaction Fee',
+      name: 'Foreign Transaction Fee'
     },
     category: 'bp002',
     description: ''
   },
   '606': {
     merchant: {
-      name: 'International ATM Fee',
+      name: 'International ATM Fee'
     },
     category: 'bp002',
     description: ''
   },
   '00240': {
     merchant: {
-      name: 'ACH Debit Fee',
+      name: 'ACH Debit Fee'
     },
     category: 'bp002',
     description: ''
   },
   '5032': {
     merchant: {
-      name: 'ACH Debit',
+      name: 'ACH Debit'
     },
     category: 'bp002',
     description: ''
   },
   '37': {
     merchant: {
-      name: 'ACH / Payroll Deposit',
+      name: 'ACH / Payroll Deposit'
     },
     category: 'bp002',
     description: ''
   },
   '10036': {
     merchant: {
-      name: 'Inactivity Fee (90 days)',
+      name: 'Inactivity Fee (90 days)'
     },
     category: 'bp002',
     description: ''
   },
-  'load': {
+  load: {
     merchant: {
       name: 'BitPay',
       city: 'Atlanta',
@@ -510,9 +567,9 @@ const bpTranCodes = {
   'unload | epos': {
     description: 'Online Purchase'
   },
-  'transactionfee': {
+  transactionfee: {
     merchant: {
-      name: 'Transaction Fee',
+      name: 'Transaction Fee'
     },
     category: 'bp002',
     description: ''
@@ -1501,6 +1558,6 @@ const iconMap = {
   9701: 'default',
   9702: 'default',
   9950: 'default',
-  'bp001': 'bitcoin-topup',
-  'bp002': 'default'
+  bp001: 'bitcoin-topup',
+  bp002: 'default'
 };

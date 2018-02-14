@@ -12,10 +12,9 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-custom-amount',
-  templateUrl: 'custom-amount.html',
+  templateUrl: 'custom-amount.html'
 })
 export class CustomAmountPage {
-
   public protocolHandler: string;
   public address: string;
   public amount: string;
@@ -48,11 +47,13 @@ export class CustomAmountPage {
   }
 
   private updateQrAddress(): void {
-    this.qrAddress = this.walletProvider.getProtoAddress(this.wallet, this.address) + "?amount=" + this.amount;
+    this.qrAddress =
+      this.walletProvider.getProtoAddress(this.wallet, this.address) +
+      '?amount=' +
+      this.amount;
   }
 
   public shareAddress(): void {
     this.socialSharing.share(this.qrAddress);
   }
-
 }

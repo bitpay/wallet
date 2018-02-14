@@ -8,10 +8,9 @@ import { ExternalLinkProvider } from '../../../../providers/external-link/extern
 
 @Component({
   selector: 'page-mercado-libre-card-details',
-  templateUrl: 'mercado-libre-card-details.html',
+  templateUrl: 'mercado-libre-card-details.html'
 })
 export class MercadoLibreCardDetailsPage {
-
   public card: any;
 
   constructor(
@@ -29,11 +28,15 @@ export class MercadoLibreCardDetailsPage {
   }
 
   public remove(): void {
-    this.mercadoLibreProvider.savePendingGiftCard(this.card, {
-      remove: true
-    }, (err: any) => {
-      this.close();
-    });
+    this.mercadoLibreProvider.savePendingGiftCard(
+      this.card,
+      {
+        remove: true
+      },
+      (err: any) => {
+        this.close();
+      }
+    );
   }
 
   public close(): void {
@@ -46,8 +49,10 @@ export class MercadoLibreCardDetailsPage {
 
   public openRedeemLink() {
     let url;
-    let isSandbox = this.mercadoLibreProvider.getNetwork() == 'testnet' ? true : false;
-    if (isSandbox) url = 'https://beta.mercadolivre.com.br/vale-presente/resgate';
+    let isSandbox =
+      this.mercadoLibreProvider.getNetwork() == 'testnet' ? true : false;
+    if (isSandbox)
+      url = 'https://beta.mercadolivre.com.br/vale-presente/resgate';
     else url = 'https://www.mercadolivre.com.br/vale-presente/resgate';
     this.openExternalLink(url);
   }
@@ -59,7 +64,13 @@ export class MercadoLibreCardDetailsPage {
     let message = 'A informação de ajuda e suporte está disponível no site.';
     let okText = 'Abrir';
     let cancelText = 'Volte';
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
-  };
-
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
+  }
 }

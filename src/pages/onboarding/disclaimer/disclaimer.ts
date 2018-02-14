@@ -9,7 +9,7 @@ import { PersistenceProvider } from '../../../providers/persistence/persistence'
 
 @Component({
   selector: 'page-disclaimer',
-  templateUrl: 'disclaimer.html',
+  templateUrl: 'disclaimer.html'
 })
 export class DisclaimerPage {
   public accepted: any;
@@ -22,11 +22,11 @@ export class DisclaimerPage {
   ) {
     this.accepted = {
       first: false,
-      second: false,
+      second: false
     };
     this.terms = {
-      accepted: false,
-    }
+      accepted: false
+    };
   }
 
   ionViewDidLoad() {

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 import { NavController, Events } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,10 +13,9 @@ import { SendFeedbackPage } from '../../../pages/feedback/send-feedback/send-fee
 
 @Component({
   selector: 'page-feedback-card',
-  templateUrl: 'feedback-card.html',
+  templateUrl: 'feedback-card.html'
 })
 export class FeedbackCardPage {
-
   public appName: string;
   public score: number;
   public button_title: string;
@@ -34,11 +33,11 @@ export class FeedbackCardPage {
   }
 
   public hideCard(): void {
-    this.logger.debug('Feedback card dismissed.')
+    this.logger.debug('Feedback card dismissed.');
     this.persistenceProvider.getFeedbackInfo().then((info: any) => {
       let feedbackInfo = info;
       feedbackInfo.sent = true;
-      this.persistenceProvider.setFeedbackInfo((feedbackInfo))
+      this.persistenceProvider.setFeedbackInfo(feedbackInfo);
       this.events.publish('feedback:hide');
     });
   }
@@ -47,7 +46,9 @@ export class FeedbackCardPage {
     this.score = score;
     switch (this.score) {
       case 1:
-        this.button_title = this.translate.instant("I think this app is terrible");
+        this.button_title = this.translate.instant(
+          'I think this app is terrible'
+        );
         break;
       case 2:
         this.button_title = this.translate.instant("I don't like it");
@@ -56,10 +57,10 @@ export class FeedbackCardPage {
         this.button_title = this.translate.instant("Meh - it's alright");
         break;
       case 4:
-        this.button_title = this.translate.instant("I like the app");
+        this.button_title = this.translate.instant('I like the app');
         break;
       case 5:
-        this.button_title = this.translate.instant("This app is fantastic!");
+        this.button_title = this.translate.instant('This app is fantastic!');
         break;
     }
   }
@@ -72,5 +73,4 @@ export class FeedbackCardPage {
       this.navCtrl.push(SendFeedbackPage, { score: this.score });
     }
   }
-
 }

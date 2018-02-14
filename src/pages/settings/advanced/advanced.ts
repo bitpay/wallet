@@ -6,19 +6,14 @@ import { ConfigProvider } from '../../../providers/config/config';
 
 @Component({
   selector: 'page-advanced',
-  templateUrl: 'advanced.html',
+  templateUrl: 'advanced.html'
 })
 export class AdvancedPage {
-
   public spendUnconfirmed: boolean;
   public recentTransactionsEnabled: boolean;
   public useLegacyAddress: boolean;
 
-  constructor(
-    private configProvider: ConfigProvider,
-    private logger: Logger
-  ) {
-  }
+  constructor(private configProvider: ConfigProvider, private logger: Logger) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad AdvancedPage');

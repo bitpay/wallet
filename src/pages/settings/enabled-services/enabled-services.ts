@@ -6,10 +6,9 @@ import { HomeIntegrationsProvider } from '../../../providers/home-integrations/h
 
 @Component({
   selector: 'page-enabled-services',
-  templateUrl: 'enabled-services.html',
+  templateUrl: 'enabled-services.html'
 })
 export class EnabledServicesPage {
-
   public showIntegration: any;
   public useLegacyAddress: boolean;
   public homeIntegrations: any;
@@ -27,9 +26,11 @@ export class EnabledServicesPage {
   }
 
   public integrationChange(integrationName): void {
-    this.showIntegration[integrationName] = !this.showIntegration[integrationName];
+    this.showIntegration[integrationName] = !this.showIntegration[
+      integrationName
+    ];
     let opts = {
-      showIntegration: this.showIntegration,
+      showIntegration: this.showIntegration
     };
     this.configProvider.set(opts);
   }

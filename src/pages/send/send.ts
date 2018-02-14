@@ -17,7 +17,7 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-send',
-  templateUrl: 'send.html',
+  templateUrl: 'send.html'
 })
 export class SendPage {
   public search: string = '';
@@ -44,7 +44,7 @@ export class SendPage {
     private incomingDataProvider: IncomingDataProvider,
     private popupProvider: PopupProvider,
     private addressProvider: AddressProvider
-  ) { }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad SendPage');
@@ -54,8 +54,8 @@ export class SendPage {
     this.search = '';
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
-    this.hasBtcWallets = !(_.isEmpty(this.walletsBtc));
-    this.hasBchWallets = !(_.isEmpty(this.walletsBch));
+    this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
+    this.hasBchWallets = !_.isEmpty(this.walletsBch);
     this.updateBchWalletsList();
     this.updateBtcWalletsList();
     this.updateContactsList();
@@ -77,11 +77,14 @@ export class SendPage {
         n: v.credentials.n,
         getAddress: (): Promise<any> => {
           return new Promise((resolve, reject) => {
-            this.walletProvider.getAddress(v, false).then((addr) => {
-              return resolve(addr);
-            }).catch((err) => {
-              return reject(err);
-            });
+            this.walletProvider
+              .getAddress(v, false)
+              .then(addr => {
+                return resolve(addr);
+              })
+              .catch(err => {
+                return reject(err);
+              });
           });
         }
       });
@@ -104,11 +107,14 @@ export class SendPage {
         n: v.credentials.n,
         getAddress: (): Promise<any> => {
           return new Promise((resolve, reject) => {
-            this.walletProvider.getAddress(v, false).then((addr) => {
-              return resolve(addr);
-            }).catch((err) => {
-              return reject(err);
-            });
+            this.walletProvider
+              .getAddress(v, false)
+              .then(addr => {
+                return resolve(addr);
+              })
+              .catch(err => {
+                return reject(err);
+              });
           });
         }
       });
@@ -117,7 +123,6 @@ export class SendPage {
 
   private updateContactsList(): void {
     this.addressBookProvider.list().then((ab: any) => {
-
       this.hasContacts = _.isEmpty(ab) ? false : true;
       if (!this.hasContacts) return;
 
@@ -137,9 +142,15 @@ export class SendPage {
           }
         });
       });
-      let shortContactsList = _.clone(this.contactsList.slice(0, (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT));
+      let shortContactsList = _.clone(
+        this.contactsList.slice(
+          0,
+          (this.currentContactsPage + 1) * this.CONTACTS_SHOW_LIMIT
+        )
+      );
       this.filteredContactsList = _.clone(shortContactsList);
-      this.contactsShowMore = this.contactsList.length > shortContactsList.length;
+      this.contactsShowMore =
+        this.contactsList.length > shortContactsList.length;
     });
   }
 
@@ -172,25 +183,28 @@ export class SendPage {
   }
 
   public goToAmount(item: any): void {
-    item.getAddress().then((addr: string) => {
-      if (!addr) {
-        //Error is already formated
-        this.popupProvider.ionicAlert('Error - no address');
+    item
+      .getAddress()
+      .then((addr: string) => {
+        if (!addr) {
+          //Error is already formated
+          this.popupProvider.ionicAlert('Error - no address');
+          return;
+        }
+        this.logger.debug('Got address:' + addr + ' | ' + item.name);
+        this.navCtrl.push(AmountPage, {
+          recipientType: item.recipientType,
+          toAddress: addr,
+          name: item.name,
+          email: item.email,
+          color: item.color,
+          coin: item.coin,
+          network: item.network
+        });
         return;
-      }
-      this.logger.debug('Got address:' + addr + ' | ' + item.name);
-      this.navCtrl.push(AmountPage, {
-        recipientType: item.recipientType,
-        toAddress: addr,
-        name: item.name,
-        email: item.email,
-        color: item.color,
-        coin: item.coin,
-        network: item.network,
+      })
+      .catch((err: any) => {
+        this.logger.warn(err);
       });
-      return;
-    }).catch((err: any) => {
-      this.logger.warn(err);
-    });
-  };
+  }
 }

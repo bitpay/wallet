@@ -15,7 +15,7 @@ import { WalletDeletePage } from './wallet-delete/wallet-delete';
 
 @Component({
   selector: 'page-wallet-settings-advanced',
-  templateUrl: 'wallet-settings-advanced.html',
+  templateUrl: 'wallet-settings-advanced.html'
 })
 export class WalletSettingsAdvancedPage {
   public wallet: any;
@@ -25,8 +25,7 @@ export class WalletSettingsAdvancedPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private logger: Logger
-  ) {
-  }
+  ) {}
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad WalletSettingsAdvancedPage');
@@ -37,21 +36,33 @@ export class WalletSettingsAdvancedPage {
   }
 
   public openWalletInformation(): void {
-    this.navCtrl.push(WalletInformationPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletInformationPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
   public openWalletAddresses(): void {
-    this.navCtrl.push(WalletAddressesPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletAddressesPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
   public openExportWallet(): void {
-    this.navCtrl.push(WalletExportPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletExportPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
   public openWalletServiceUrl(): void {
-    this.navCtrl.push(WalletServiceUrlPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletServiceUrlPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
   public openTransactionHistory(): void {
-    this.navCtrl.push(WalletTransactionHistoryPage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletTransactionHistoryPage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
   public openDeleteWallet(): void {
-    this.navCtrl.push(WalletDeletePage, { walletId: this.wallet.credentials.walletId });
+    this.navCtrl.push(WalletDeletePage, {
+      walletId: this.wallet.credentials.walletId
+    });
   }
 }

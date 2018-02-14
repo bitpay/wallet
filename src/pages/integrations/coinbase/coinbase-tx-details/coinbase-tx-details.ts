@@ -7,10 +7,9 @@ import { PopupProvider } from '../../../../providers/popup/popup';
 
 @Component({
   selector: 'page-coinbase-tx-details',
-  templateUrl: 'coinbase-tx-details.html',
+  templateUrl: 'coinbase-tx-details.html'
 })
 export class CoinbaseTxDetailsPage {
-
   public updateRequired: boolean;
   public tx: any;
 
@@ -27,21 +26,26 @@ export class CoinbaseTxDetailsPage {
     this.coinbaseProvider.setCredentials();
     this.updateRequired = false;
     var message = 'Are you sure you want to remove this transaction?';
-    this.popupProvider.ionicConfirm(null, message, null, null).then((ok: boolean) => {
-      if (!ok) {
-        return;
-      }
-      this.coinbaseProvider.savePendingTransaction(this.tx, {
-        remove: true
-      }, (err: any) => {
-        this.updateRequired = true;
-        this.close();
+    this.popupProvider
+      .ionicConfirm(null, message, null, null)
+      .then((ok: boolean) => {
+        if (!ok) {
+          return;
+        }
+        this.coinbaseProvider.savePendingTransaction(
+          this.tx,
+          {
+            remove: true
+          },
+          (err: any) => {
+            this.updateRequired = true;
+            this.close();
+          }
+        );
       });
-    });
-  };
+  }
 
   public close() {
     this.viewCtrl.dismiss({ updateRequired: this.updateRequired });
   }
-
 }

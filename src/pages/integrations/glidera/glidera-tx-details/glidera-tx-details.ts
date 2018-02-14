@@ -3,16 +3,12 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'page-glidera-tx-details',
-  templateUrl: 'glidera-tx-details.html',
+  templateUrl: 'glidera-tx-details.html'
 })
 export class GlideraTxDetailsPage {
-
   public tx: any;
 
-  constructor(
-    private navParams: NavParams,
-    private viewCtrl: ViewController
-  ) {
+  constructor(private navParams: NavParams, private viewCtrl: ViewController) {
     this.tx = this.navParams.data.tx;
   }
 

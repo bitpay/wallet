@@ -9,10 +9,9 @@ import { CoinbaseProvider } from '../../../../providers/coinbase/coinbase';
 
 @Component({
   selector: 'page-coinbase-settings',
-  templateUrl: 'coinbase-settings.html',
+  templateUrl: 'coinbase-settings.html'
 })
 export class CoinbaseSettingsPage {
-
   public coinbaseAccount: any;
   public coinbaseUser: any;
 
@@ -22,8 +21,7 @@ export class CoinbaseSettingsPage {
     private popupProvider: PopupProvider,
     private logger: Logger,
     private coinbaseProvider: CoinbaseProvider
-  ) {
-  }
+  ) {}
 
   ionViewDidLoad() {
     this.onGoingProcessProvider.set('connectingCoinbase', true);
@@ -34,21 +32,27 @@ export class CoinbaseSettingsPage {
           this.logger.error(err);
           let errorId = err.errors ? err.errors[0].id : null;
           err = err.errors ? err.errors[0].message : err;
-          this.popupProvider.ionicAlert('Error connecting to Coinbase', err).then(() => {
-            if (errorId == 'revoked_token') {
-              this.coinbaseProvider.logout();
-              this.navCtrl.popToRoot();
-            }
-          });
+          this.popupProvider
+            .ionicAlert('Error connecting to Coinbase', err)
+            .then(() => {
+              if (errorId == 'revoked_token') {
+                this.coinbaseProvider.logout();
+                this.navCtrl.popToRoot();
+              }
+            });
         }
         return;
       }
       let accessToken = data.accessToken;
       let accountId = data.accountId;
-      this.coinbaseProvider.getAccount(accessToken, accountId, (err, account) => {
-        this.onGoingProcessProvider.set('connectingCoinbase', false);
-        this.coinbaseAccount = account.data[0];
-      });
+      this.coinbaseProvider.getAccount(
+        accessToken,
+        accountId,
+        (err, account) => {
+          this.onGoingProcessProvider.set('connectingCoinbase', false);
+          this.coinbaseAccount = account.data[0];
+        }
+      );
       this.coinbaseProvider.getCurrentUser(accessToken, (err, user) => {
         this.coinbaseUser = user.data;
       });
@@ -56,16 +60,17 @@ export class CoinbaseSettingsPage {
   }
 
   public revokeToken() {
-    this.popupProvider.ionicConfirm(
-      'Coinbase',
-      'Are you sure you would like to log out of your Coinbase account?'
-    ).then((res) => {
-      if (res) {
-        this.coinbaseProvider.logout();
-        this.navCtrl.popToRoot();
-        this.navCtrl.parent.select(0);
-      }
-    });
-  };
-
+    this.popupProvider
+      .ionicConfirm(
+        'Coinbase',
+        'Are you sure you would like to log out of your Coinbase account?'
+      )
+      .then(res => {
+        if (res) {
+          this.coinbaseProvider.logout();
+          this.navCtrl.popToRoot();
+          this.navCtrl.parent.select(0);
+        }
+      });
+  }
 }

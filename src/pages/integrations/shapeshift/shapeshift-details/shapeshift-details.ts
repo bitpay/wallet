@@ -8,11 +8,10 @@ import { ShapeshiftProvider } from '../../../../providers/shapeshift/shapeshift'
 
 @Component({
   selector: 'page-shapeshift-details',
-  templateUrl: 'shapeshift-details.html',
+  templateUrl: 'shapeshift-details.html'
 })
 export class ShapeshiftDetailsPage {
-
-  public ssData: any
+  public ssData: any;
 
   constructor(
     private externalLinkProvider: ExternalLinkProvider,
@@ -29,11 +28,15 @@ export class ShapeshiftDetailsPage {
   }
 
   public remove() {
-    this.shapeshiftProvider.saveShapeshift(this.ssData, {
-      remove: true
-    }, function (err) {
-      this.cancel();
-    });
+    this.shapeshiftProvider.saveShapeshift(
+      this.ssData,
+      {
+        remove: true
+      },
+      function(err) {
+        this.cancel();
+      }
+    );
   }
 
   public close() {
@@ -43,13 +46,12 @@ export class ShapeshiftDetailsPage {
   public openTransaction(id: string) {
     var url;
     if (this.ssData.outgoingType.toUpperCase() == 'BTC') {
-      url = "https://insight.bitpay.com/tx/" + id;
+      url = 'https://insight.bitpay.com/tx/' + id;
     } else if (this.ssData.outgoingType.toUpperCase() == 'BCH') {
-      url = "https://bch-insight.bitpay.com/tx/" + id;
+      url = 'https://bch-insight.bitpay.com/tx/' + id;
     } else {
       return;
     }
     this.externalLinkProvider.open(url);
   }
-
 }

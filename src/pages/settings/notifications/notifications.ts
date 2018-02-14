@@ -14,7 +14,7 @@ import { EmailValidator } from '../../../validators/email';
 
 @Component({
   selector: 'page-notifications',
-  templateUrl: 'notifications.html',
+  templateUrl: 'notifications.html'
 })
 export class NotificationsPage {
   public emailForm: FormGroup;
@@ -38,7 +38,13 @@ export class NotificationsPage {
     private logger: Logger
   ) {
     this.emailForm = this.formBuilder.group({
-      email: ['', Validators.compose([Validators.required, new EmailValidator(configProvider, emailProvider).isValid])]
+      email: [
+        '',
+        Validators.compose([
+          Validators.required,
+          new EmailValidator(configProvider, emailProvider).isValid
+        ])
+      ]
     });
   }
 
@@ -51,17 +57,22 @@ export class NotificationsPage {
     let config = this.configProvider.get();
     this.appName = this.appProvider.info.nameCase;
     this.usePushNotifications = this.platformProvider.isCordova;
-    this.isIOSApp = this.platformProvider.isIOS && this.platformProvider.isCordova;
+    this.isIOSApp =
+      this.platformProvider.isIOS && this.platformProvider.isCordova;
 
     this.pushNotifications = config.pushNotificationsEnabled;
-    this.confirmedTxsNotifications = config.confirmedTxsNotifications ? config.confirmedTxsNotifications.enabled : false;
+    this.confirmedTxsNotifications = config.confirmedTxsNotifications
+      ? config.confirmedTxsNotifications.enabled
+      : false;
 
     this.emailForm.setValue({
       email: this.emailProvider.getEmailIfEnabled(config) || ''
     });
 
-    this.emailNotifications = config.emailNotifications ? config.emailNotifications.enabled : false;
-  };
+    this.emailNotifications = config.emailNotifications
+      ? config.emailNotifications.enabled
+      : false;
+  }
 
   public pushNotificationsChange() {
     let opts = {
@@ -70,11 +81,9 @@ export class NotificationsPage {
 
     this.configProvider.set(opts);
 
-    if (opts.pushNotificationsEnabled)
-      this.pushProvider.init();
-    else
-      this.pushProvider.disable();
-  };
+    if (opts.pushNotificationsEnabled) this.pushProvider.init();
+    else this.pushProvider.disable();
+  }
 
   public confirmedTxsNotificationsChange() {
     let opts = {
@@ -83,7 +92,7 @@ export class NotificationsPage {
       }
     };
     this.configProvider.set(opts);
-  };
+  }
 
   public emailNotificationsChange() {
     let opts = {
@@ -91,14 +100,12 @@ export class NotificationsPage {
       email: this.emailForm.value.email
     };
     this.emailProvider.updateEmail(opts);
-  };
+  }
 
   public saveEmail() {
     this.emailProvider.updateEmail({
       enabled: this.emailNotifications,
       email: this.emailForm.value.email
     });
-
-  };
-
+  }
 }

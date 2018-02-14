@@ -61,7 +61,9 @@ export class SettingsPage {
     private translate: TranslateService
   ) {
     this.appName = this.app.info.nameCase;
-    this.currentLanguageName = this.language.getName(this.language.getCurrent());
+    this.currentLanguageName = this.language.getName(
+      this.language.getCurrent()
+    );
     this.walletsBch = [];
     this.walletsBtc = [];
     this.isCordova = this.platformProvider.isCordova;
@@ -83,7 +85,7 @@ export class SettingsPage {
     this.selectedAlternative = {
       name: this.config.wallet.settings.alternativeName,
       isoCode: this.config.wallet.settings.alternativeIsoCode
-    }
+    };
     this.lockMethod = this.config.lock.method;
     this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
 
@@ -137,7 +139,11 @@ export class SettingsPage {
   }
 
   public openFeedbackCompletePage(): void {
-    this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
+    this.navCtrl.push(FeedbackCompletePage, {
+      score: 4,
+      skipped: true,
+      fromSettings: true
+    });
   }
 
   public openEnabledServicesPage(): void {
@@ -160,12 +166,24 @@ export class SettingsPage {
   }
 
   public openHelpExternalLink(): void {
-    let url = this.appName == 'Copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
+    let url =
+      this.appName == 'Copay'
+        ? 'https://github.com/bitpay/copay/issues'
+        : 'https://help.bitpay.com/bitpay-app';
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Help and support information is available at the website.');
+    let message = this.translate.instant(
+      'Help and support information is available at the website.'
+    );
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
-    this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
+    this.externalLinkProvider.open(
+      url,
+      optIn,
+      title,
+      message,
+      okText,
+      cancelText
+    );
   }
 }

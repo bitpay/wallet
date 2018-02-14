@@ -51,7 +51,7 @@ export class AppProvider {
     private logger: Logger,
     private language: LanguageProvider,
     private config: ConfigProvider,
-    private persistence: PersistenceProvider,
+    private persistence: PersistenceProvider
   ) {
     this.logger.info('AppProvider initialized.');
   }
@@ -59,19 +59,22 @@ export class AppProvider {
   public load(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.persistence.load();
-      this.config.load().then(() => {
-        this.language.load();
-        this.getServicesInfo().subscribe((infoServices) => {
-          this.servicesInfo = infoServices;
-          this.getInfo().subscribe((infoApp) => {
-            this.info = infoApp;
-            resolve();
+      this.config
+        .load()
+        .then(() => {
+          this.language.load();
+          this.getServicesInfo().subscribe(infoServices => {
+            this.servicesInfo = infoServices;
+            this.getInfo().subscribe(infoApp => {
+              this.info = infoApp;
+              resolve();
+            });
           });
+        })
+        .catch(err => {
+          this.logger.error(err);
+          reject(err);
         });
-      }).catch((err) => {
-        this.logger.error(err);
-        reject(err);
-      });
     });
   }
 
@@ -81,5 +84,4 @@ export class AppProvider {
   private getServicesInfo() {
     return this.http.get(this.jsonPathServices);
   }
-
 }

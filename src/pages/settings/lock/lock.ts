@@ -14,11 +14,14 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-lock',
-  templateUrl: 'lock.html',
+  templateUrl: 'lock.html'
 })
 export class LockPage {
-
-  public options: Array<{ method: string, enabled: boolean, disabled: boolean }> = [];
+  public options: Array<{
+    method: string;
+    enabled: boolean;
+    disabled: boolean;
+  }> = [];
   public lockOptions: any;
   public needsBackupMsg: string;
 
@@ -39,7 +42,10 @@ export class LockPage {
       this.options = [
         {
           method: 'Disabled',
-          enabled: !this.lockOptions.method || this.lockOptions.method == 'Disabled' ? true : false,
+          enabled:
+            !this.lockOptions.method || this.lockOptions.method == 'Disabled'
+              ? true
+              : false,
           disabled: false
         },
         {
@@ -50,7 +56,8 @@ export class LockPage {
         {
           method: 'Fingerprint',
           enabled: this.lockOptions.method == 'Fingerprint' ? true : false,
-          disabled: !isAvailable || needsBackup || this.lockOptions.method == 'PIN'
+          disabled:
+            !isAvailable || needsBackup || this.lockOptions.method == 'PIN'
         }
       ];
     });
@@ -62,8 +69,10 @@ export class LockPage {
         this.openPinModal('pinSetUp');
         break;
       case 'Disabled':
-        if (this.lockOptions.method && this.lockOptions.method == 'PIN') this.openPinModal('removeLock');
-        if (this.lockOptions.method && this.lockOptions.method == 'Fingerprint') this.removeFingerprint();
+        if (this.lockOptions.method && this.lockOptions.method == 'PIN')
+          this.openPinModal('removeLock');
+        if (this.lockOptions.method && this.lockOptions.method == 'Fingerprint')
+          this.removeFingerprint();
         break;
       case 'Fingerprint':
         this.lockByFingerprint();
@@ -80,13 +89,16 @@ export class LockPage {
   }
 
   private removeFingerprint(): void {
-    this.touchIdProvider.check().then(() => {
-      let lock = { method: 'Disabled', value: null, bannedUntil: null };
-      this.configProvider.set({ lock });
-      this.checkLockOptions();
-    }).catch(() => {
-      this.checkLockOptions();
-    });
+    this.touchIdProvider
+      .check()
+      .then(() => {
+        let lock = { method: 'Disabled', value: null, bannedUntil: null };
+        this.configProvider.set({ lock });
+        this.checkLockOptions();
+      })
+      .catch(() => {
+        this.checkLockOptions();
+      });
   }
 
   public lockByFingerprint(): void {
@@ -97,20 +109,27 @@ export class LockPage {
 
   private needsBackup() {
     let wallets = this.profileProvider.getWallets();
-    let singleLivenetWallet = wallets.length == 1 && wallets[0].network == 'livenet' && wallets[0].needsBackup;
-    let atLeastOneLivenetWallet = _.find(wallets, (w) => {
+    let singleLivenetWallet =
+      wallets.length == 1 &&
+      wallets[0].network == 'livenet' &&
+      wallets[0].needsBackup;
+    let atLeastOneLivenetWallet = _.find(wallets, w => {
       return w.network == 'livenet' && w.needsBackup;
     });
 
     if (singleLivenetWallet) {
-      this.needsBackupMsg = this.translate.instant('Backup your wallet before using this function');
+      this.needsBackupMsg = this.translate.instant(
+        'Backup your wallet before using this function'
+      );
       return true;
     } else if (atLeastOneLivenetWallet) {
-      this.needsBackupMsg = this.translate.instant('Backup all your wallets before using this function');
+      this.needsBackupMsg = this.translate.instant(
+        'Backup all your wallets before using this function'
+      );
       return true;
     } else {
       this.needsBackupMsg = null;
       return false;
     }
-  };
+  }
 }

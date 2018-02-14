@@ -1,8 +1,8 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'page-wallet-item',
-  templateUrl: 'wallet-item.html',
+  templateUrl: 'wallet-item.html'
 })
 export class WalletItemPage {
   private _wallet: any;

@@ -7,7 +7,8 @@ import { IStorage, KeyAlreadyExistsError } from './istorage';
 export class LocalStorage implements IStorage {
   ls: Storage;
   constructor() {
-    this.ls = (typeof window.localStorage !== "undefined") ? window.localStorage : null;
+    this.ls =
+      typeof window.localStorage !== 'undefined' ? window.localStorage : null;
     if (!this.ls) throw new Error('localstorage not available');
   }
 
@@ -48,7 +49,7 @@ export class LocalStorage implements IStorage {
   }
 
   create(k: string, v: any): Promise<void> {
-    return this.get(k).then((data) => {
+    return this.get(k).then(data => {
       if (data) throw new KeyAlreadyExistsError();
       this.set(k, v);
     });

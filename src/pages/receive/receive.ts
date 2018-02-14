@@ -20,10 +20,9 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'page-receive',
-  templateUrl: 'receive.html',
+  templateUrl: 'receive.html'
 })
 export class ReceivePage {
-
   public protocolHandler: string;
   public address: string;
   public qrAddress: string;
@@ -51,7 +50,8 @@ export class ReceivePage {
     this.onWalletSelect(this.checkSelectedWallet(this.wallet, this.wallets));
     this.events.subscribe('bwsEvent', (walletId, type, n) => {
       // Update current address
-      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx') this.setAddress(true);
+      if (this.wallet && walletId == this.wallet.id && type == 'NewIncomingTx')
+        this.setAddress(true);
     });
   }
 
@@ -80,26 +80,31 @@ export class ReceivePage {
       color: this.wallet.color,
       coin: this.wallet.coin,
       network: this.wallet.network,
-      nextPage: 'CustomAmountPage',
+      nextPage: 'CustomAmountPage'
     });
   }
 
   private setAddress(newAddr?: boolean): void {
-
     this.loading = newAddr || _.isEmpty(this.address) ? true : false;
 
-    this.walletProvider.getAddress(this.wallet, newAddr).then((addr) => {
-      this.loading = false
-      this.address = this.walletProvider.getAddressView(this.wallet, addr);
-      this.updateQrAddress();
-    }).catch((err) => {
-      this.loading = false;
-      this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
-    });
+    this.walletProvider
+      .getAddress(this.wallet, newAddr)
+      .then(addr => {
+        this.loading = false;
+        this.address = this.walletProvider.getAddressView(this.wallet, addr);
+        this.updateQrAddress();
+      })
+      .catch(err => {
+        this.loading = false;
+        this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
+      });
   }
 
   private updateQrAddress(): void {
-    this.qrAddress = this.walletProvider.getProtoAddress(this.wallet, this.address);
+    this.qrAddress = this.walletProvider.getProtoAddress(
+      this.wallet,
+      this.address
+    );
   }
 
   public shareAddress(): void {
@@ -117,21 +122,27 @@ export class ReceivePage {
   }
 
   public goCopayers(): void {
-    this.navCtrl.push(CopayersPage, { walletId: this.wallet.credentials.walletId });
-  };
+    this.navCtrl.push(CopayersPage, {
+      walletId: this.wallet.credentials.walletId
+    });
+  }
 
   public goToBackup(): void {
     let opts = {
       title: 'Screenshots are not secure',
-      message: 'If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen',
-      buttons: [{
-        text: 'I understand',
-        handler: () => {
-          this.navCtrl.push(BackupGamePage, { walletId: this.wallet.credentials.walletId });
+      message:
+        'If you take a screenshot, your backup may be viewed by other apps. You can make a safe backup with physical paper and a pen',
+      buttons: [
+        {
+          text: 'I understand',
+          handler: () => {
+            this.navCtrl.push(BackupGamePage, {
+              walletId: this.wallet.credentials.walletId
+            });
+          }
         }
-      }],
-    }
+      ]
+    };
     this.alertCtrl.create(opts).present();
   }
-
 }

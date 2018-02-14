@@ -205,7 +205,7 @@ import { EmailNotificationsProvider } from '../providers/email-notifications/ema
 /* Directives */
 import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboard';
 import { LongPress } from '../directives/long-press/long-press';
-import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
+import { NoLowFee } from '../directives/no-low-fee/no-low-fee';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
@@ -337,7 +337,7 @@ export function createTranslateLoader(http: HttpClient) {
         useFactory: createTranslateLoader,
         deps: [HttpClient]
       }
-    }),
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -499,4 +499,4 @@ export function createTranslateLoader(http: HttpClient) {
     }
   ]
 })
-export class AppModule { }
+export class AppModule {}

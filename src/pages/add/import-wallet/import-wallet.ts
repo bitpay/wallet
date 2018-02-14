@@ -22,7 +22,6 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   templateUrl: 'import-wallet.html'
 })
 export class ImportWalletPage {
-
   private derivationPathByDefault: string;
   private derivationPathForTestnet: string;
   private importForm: FormGroup;
@@ -99,13 +98,19 @@ export class ImportWalletPage {
         this.formFile = null;
         this.importForm.get('words').setValidators([Validators.required]);
         this.importForm.get('filePassword').clearValidators();
-        if (this.isCordova || this.isSafari) this.importForm.get('backupText').clearValidators();
+        if (this.isCordova || this.isSafari)
+          this.importForm.get('backupText').clearValidators();
         else this.importForm.get('file').clearValidators();
         break;
       case 'file':
-        if (this.isCordova || this.isSafari) this.importForm.get('backupText').setValidators([Validators.required]);
+        if (this.isCordova || this.isSafari)
+          this.importForm
+            .get('backupText')
+            .setValidators([Validators.required]);
         else this.importForm.get('file').setValidators([Validators.required]);
-        this.importForm.get('filePassword').setValidators([Validators.required]);
+        this.importForm
+          .get('filePassword')
+          .setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
         break;
 
@@ -153,7 +158,9 @@ export class ImportWalletPage {
 
     if (info.type == '1' && info.hasPassphrase) {
       let title = this.translate.instant('Error');
-      let subtitle = this.translate.instant('Password required. Make sure to enter your password in advanced options');
+      let subtitle = this.translate.instant(
+        'Password required. Make sure to enter your password in advanced options'
+      );
       this.popupProvider.ionicAlert(title, subtitle);
     }
 
@@ -163,7 +170,9 @@ export class ImportWalletPage {
   }
 
   public setDerivationPath(): void {
-    let path = this.testnetEnabled ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    let path = this.testnetEnabled
+      ? this.derivationPathForTestnet
+      : this.derivationPathByDefault;
     this.importForm.controls['derivationPath'].setValue(path);
   }
 
@@ -171,11 +180,15 @@ export class ImportWalletPage {
     let str2: string;
     let err: any = null;
     try {
-      str2 = this.bwcProvider.getSJCL().decrypt(this.importForm.value.filePassword, str);
+      str2 = this.bwcProvider
+        .getSJCL()
+        .decrypt(this.importForm.value.filePassword, str);
     } catch (e) {
-      err = this.translate.instant('Could not decrypt file, check your password');
+      err = this.translate.instant(
+        'Could not decrypt file, check your password'
+      );
       this.logger.warn(e);
-    };
+    }
 
     if (err) {
       let title = this.translate.instant('Error');
@@ -188,75 +201,85 @@ export class ImportWalletPage {
     opts.password = null;
 
     setTimeout(() => {
-      this.profileProvider.importWallet(str2, opts).then((wallet: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
-        this.finish(wallet);
-      }).catch((err: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
-        let title = this.translate.instant('Error');
-        this.popupProvider.ionicAlert(title, err);
-        return;
-      });
+      this.profileProvider
+        .importWallet(str2, opts)
+        .then((wallet: any) => {
+          this.onGoingProcessProvider.set('importingWallet', false);
+          this.finish(wallet);
+        })
+        .catch((err: any) => {
+          this.onGoingProcessProvider.set('importingWallet', false);
+          let title = this.translate.instant('Error');
+          this.popupProvider.ionicAlert(title, err);
+          return;
+        });
     }, 100);
   }
 
   private finish(wallet: any): void {
-    this.walletProvider.updateRemotePreferences(wallet).then(() => {
-      this.profileProvider.setBackupFlag(wallet.credentials.walletId);
-      if (this.fromOnboarding) {
-        this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
-          this.logger.error(err);
-        });
-        this.navCtrl.setRoot(TabsPage);
-        this.navCtrl.popToRoot();
-      }
-      else {
-        this.navCtrl.popToRoot();
-        this.navCtrl.parent.select(0);
-      }
-    }).catch((err: any) => {
-      this.logger.warn(err);
-    });
+    this.walletProvider
+      .updateRemotePreferences(wallet)
+      .then(() => {
+        this.profileProvider.setBackupFlag(wallet.credentials.walletId);
+        if (this.fromOnboarding) {
+          this.profileProvider.setDisclaimerAccepted().catch((err: any) => {
+            this.logger.error(err);
+          });
+          this.navCtrl.setRoot(TabsPage);
+          this.navCtrl.popToRoot();
+        } else {
+          this.navCtrl.popToRoot();
+          this.navCtrl.parent.select(0);
+        }
+      })
+      .catch((err: any) => {
+        this.logger.warn(err);
+      });
   }
 
   private importExtendedPrivateKey(xPrivKey, opts) {
     this.onGoingProcessProvider.set('importingWallet', true);
     setTimeout(() => {
-      this.profileProvider.importExtendedPrivateKey(xPrivKey, opts).then((wallet: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
-        this.finish(wallet);
-      }).catch((err: any) => {
-        if (err instanceof this.errors.NOT_AUTHORIZED) {
-          this.importErr = true;
-        } else {
-          let title = this.translate.instant('Error');
-          this.popupProvider.ionicAlert(title, err);
-        }
-        this.onGoingProcessProvider.set('importingWallet', false);
-        return;
-      });
+      this.profileProvider
+        .importExtendedPrivateKey(xPrivKey, opts)
+        .then((wallet: any) => {
+          this.onGoingProcessProvider.set('importingWallet', false);
+          this.finish(wallet);
+        })
+        .catch((err: any) => {
+          if (err instanceof this.errors.NOT_AUTHORIZED) {
+            this.importErr = true;
+          } else {
+            let title = this.translate.instant('Error');
+            this.popupProvider.ionicAlert(title, err);
+          }
+          this.onGoingProcessProvider.set('importingWallet', false);
+          return;
+        });
     }, 100);
   }
 
   private importMnemonic(words: string, opts: any): void {
     this.onGoingProcessProvider.set('importingWallet', true);
     setTimeout(() => {
-      this.profileProvider.importMnemonic(words, opts).then((wallet: any) => {
-        this.onGoingProcessProvider.set('importingWallet', false);
-        this.finish(wallet);
-      }).catch((err: any) => {
-        if (err instanceof this.errors.NOT_AUTHORIZED) {
-          this.importErr = true;
-        } else {
-          let title = this.translate.instant('Error');
-          this.popupProvider.ionicAlert(title, err);
-        }
-        this.onGoingProcessProvider.set('importingWallet', false);
-        return;
-      });
+      this.profileProvider
+        .importMnemonic(words, opts)
+        .then((wallet: any) => {
+          this.onGoingProcessProvider.set('importingWallet', false);
+          this.finish(wallet);
+        })
+        .catch((err: any) => {
+          if (err instanceof this.errors.NOT_AUTHORIZED) {
+            this.importErr = true;
+          } else {
+            let title = this.translate.instant('Error');
+            this.popupProvider.ionicAlert(title, err);
+          }
+          this.onGoingProcessProvider.set('importingWallet', false);
+          return;
+        });
     }, 100);
   }
-
 
   import() {
     if (this.selectedTab === 'file') {
@@ -307,7 +330,9 @@ export class ImportWalletPage {
     if (this.importForm.value.bwsurl)
       opts.bwsurl = this.importForm.value.bwsurl;
 
-    let pathData: any = this.derivationPathHelperProvider.parse(this.importForm.value.derivationPath);
+    let pathData: any = this.derivationPathHelperProvider.parse(
+      this.importForm.value.derivationPath
+    );
 
     if (!pathData) {
       let title = this.translate.instant('Error');
@@ -333,9 +358,11 @@ export class ImportWalletPage {
     } else {
       let wordList: Array<any> = words.split(/[\u3000\s]+/);
 
-      if ((wordList.length % 3) != 0) {
+      if (wordList.length % 3 != 0) {
         let title = this.translate.instant('Error');
-        let subtitle = this.translate.instant('Wrong number of recovery words:');
+        let subtitle = this.translate.instant(
+          'Wrong number of recovery words:'
+        );
         this.popupProvider.ionicAlert(title, subtitle + ' ' + wordList.length);
         return;
       }
@@ -350,7 +377,9 @@ export class ImportWalletPage {
   }
 
   public fileChangeEvent($event: any) {
-    this.file = $event.target ? $event.target.files[0] : $event.srcElement.files[0];
+    this.file = $event.target
+      ? $event.target.files[0]
+      : $event.srcElement.files[0];
     this.formFile = $event.target.value;
     this.getFile();
   }
@@ -358,13 +387,14 @@ export class ImportWalletPage {
   private getFile() {
     // If we use onloadend, we need to check the readyState.
     this.reader.onloadend = (evt: any) => {
-      if (evt.target.readyState == 2) { // DONE == 2
+      if (evt.target.readyState == 2) {
+        // DONE == 2
         let opts: any = {};
         opts.bwsurl = this.importForm.value.bwsurl;
         opts.coin = this.importForm.value.coin;
         this.importBlob(evt.target.result, opts);
       }
-    }
+    };
   }
 
   public openScanner(): void {
@@ -375,5 +405,4 @@ export class ImportWalletPage {
       this.navCtrl.parent.select(2);
     }
   }
-
 }
